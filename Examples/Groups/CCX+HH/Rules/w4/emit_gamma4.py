@@ -37,7 +37,7 @@ def fin(k):
 
 
 def main():
-    rels = T.relators()
+    rels = T.relators_tower()
     ROOT.mkdir(parents=True, exist_ok=True)
     out = []
     w = out.append

@@ -15,7 +15,6 @@ open import Examples.Groups.CCX+HH.NaturalP.FourWire.Embed using (R4)
 
 module Examples.Groups.CCX+HH.NaturalP.FourWire.Transport (r4 : R4) where
 
-open import Data.Bool.Base using (true)
 open import Data.Nat.Base using (ℕ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using ([_]ʷ ; ε ; _•_)
@@ -26,17 +25,11 @@ import Presentation.Properties as PP
 
 import Examples.Groups.CCX+H.NaturalP.Syntactics as NH
 import Examples.Groups.CCX+HH.NaturalP.Syntactics as NP
-open import Examples.Groups.CCX+HH.NaturalP.Bridge using (τ)
-open import Examples.Groups.CCX+HH.NaturalP.Three using (complete₃)
-open import Examples.Groups.CCX+HH.Natural.ThreeWire.Fast using (fastCheck ; fast-sound)
+open import Examples.Groups.CCX+HH.NaturalP.FourWire.Kit using (fast₃)
 open import Examples.Groups.CCX+HH.NaturalP.FourWire.Embed using (ψ ; lift ; past)
 
 ------------------------------------------------------------------------
 -- Tools
-
--- Three wires, decided by integer row actions.
-fast₃ : (u v : S.Circuit 3) → fastCheck (τ u) (τ v) ≡ true → 3 S.⊢ u ≈ v
-fast₃ u v h = complete₃ (fast-sound (τ u) (τ v) h)
 
 private
   -- re-bracketing, for closed words

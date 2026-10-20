@@ -55,6 +55,20 @@ LETTERS += [('SW', a, b) for a in range(N) for b in range(a + 1, N)]
 INDEX = {g: k for k, g in enumerate(LETTERS)}
 
 
+def _name(l):
+    if l[0] == 'X':
+        return f'X{l[1]}'
+    if l[0] == 'CX':
+        return f'CX{l[1]}>{l[2]}'
+    if l[0] == 'CCX':
+        return f'CCX{l[1]};{l[2]}{l[3]}'
+    return f'SW{l[1]}{l[2]}'
+
+
+NAME = [_name(l) for l in LETTERS]
+INDEX_N = {n: k for k, n in enumerate(NAME)}
+
+
 def wires(g):
     return set(g[1:])
 
@@ -120,6 +134,148 @@ def relators():
             h = norm((g[0],) + tuple(tr.get(x, x) for x in g[1:]))
             rels.add((INDEX[s], INDEX[g], INDEX[s], INDEX[h]))
     return sorted(rels, key=lambda r: (len(r), r))
+
+
+#: The adjacent letters: the gates of NaturalP at four wires (with the
+#: reversed CNOT, NaturalP's XC = HH CX HH, as a letter).
+PRIMITIVE = [INDEX[adjacent(f'{b}{i}')] for b, n in
+             (('X', 4), ('CX', 3), ('CXr', 3), ('SW', 3), ('CCX', 2)) for i in range(n)]
+
+
+def definitions():
+    """Each other letter as w · b · rev(w), w a word in the adjacent
+    swaps and b an adjacent letter: the shortest such word."""
+    sws = [INDEX[('SW', i, i + 1)] for i in range(N - 1)]
+    def ev(word):
+        p = tuple(range(D))
+        for g in reversed(word):
+            q = PERMS[g]
+            p = tuple(q[x] for x in p)
+        return p
+    want = {PERMS[g]: g for g in range(len(LETTERS)) if g not in PRIMITIVE}
+    out = {}
+    layer = [()]
+    seen = {()}
+    for _ in range(6):
+        for w in layer:
+            for b in PRIMITIVE:
+                p = ev(w + (b,) + tuple(reversed(w)))
+                if p in want and want[p] not in out:
+                    out[want[p]] = w + (b,) + tuple(reversed(w))
+        nxt = []
+        for w in layer:
+            for s in sws:
+                if not w or w[-1] != s:
+                    nxt.append(w + (s,))
+        layer = nxt
+        if len(out) == len(want):
+            break
+    assert len(out) == len(want)
+    return out
+
+
+def relators_natural():
+    """The natural classical rules at adjacent placements, the structural
+    rules of the adjacent letters, every letter an involution, and the
+    definitions of the other letters."""
+    rels = set()
+    for t in CLASSICAL_RULES + [TOFFOLI_CNOT['commutator']] + FOUR:
+        if '=' in t:
+            l, r = t.split('=')
+            names = l.split() + list(reversed(r.split()))
+        else:
+            names = t.split()
+        for s in range(N):
+            try:
+                shifted = []
+                for x in names:
+                    base = x.rstrip('0123456789')
+                    i = int(x[len(base):]) + s
+                    g = adjacent(f'{base}{i}')
+                    if max(g[1:]) >= N:
+                        raise KeyError
+                    shifted.append(INDEX[norm(g)])
+                rels.add(tuple(shifted))
+            except KeyError:
+                break
+    for g in range(len(LETTERS)):
+        rels.add((g, g))
+    for i, g in enumerate(PRIMITIVE):
+        for h in PRIMITIVE[i + 1:]:
+            if not wires(LETTERS[g]) & wires(LETTERS[h]):
+                rels.add((g, h, g, h))
+    for g, w in definitions().items():
+        rels.add((g,) + w)
+    return sorted(rels, key=lambda r: (len(r), r))
+
+
+def image_gates(g, defs=None):
+    """The NaturalP gates (kind, bottom wire) of a letter's circuit."""
+    defs = definitions() if defs is None else defs
+    if g in defs:
+        return [x for h in defs[g] for x in image_gates(h, defs)]
+    l = LETTERS[g]
+    if l[0] == 'X':
+        return [('X', l[1])]
+    if l[0] == 'CX':
+        c, t = l[1], l[2]
+        return [('CX', t)] if c == t + 1 else [('HH', c), ('CX', c), ('HH', c)]
+    if l[0] == 'SW':
+        return [('SW', l[1])]
+    return [('CCX', l[1])]
+
+
+ARITY = {'X': 1, 'CX': 2, 'HH': 2, 'SW': 2, 'CCX': 3}
+
+
+def image_support(word, defs=None):
+    defs = definitions() if defs is None else defs
+    return {p + i for g in word for k, p in image_gates(g, defs) for i in range(ARITY[k])}
+
+
+AFFINE_CACHE = Path(__file__).resolve().parent / 'affine4.txt'
+
+
+def affine_relators():
+    """Affine relators whose circuits lie on wires 0 1 2 or on 1 2 3,
+    enough with the affine relators of relators_natural() to present
+    AGL(4, 2) (cached in affine4.txt)."""
+    if AFFINE_CACHE.exists():
+        return [tuple(INDEX_N[x] for x in line.split())
+                for line in AFFINE_CACHE.read_text().splitlines() if line.strip()]
+    import core as C
+    import ext4 as X
+    defs = definitions()
+    aff = [g for g in range(len(LETTERS)) if LETTERS[g][0] != 'CCX']
+    xs = [g for g in aff if LETTERS[g][0] == 'X']
+    pos = {g: i for i, g in enumerate(aff)}
+    base = [r for r in relators_natural() if all(g in pos for g in r)]
+    cands = [r for r in X.candidates(aff, 3)
+             if image_support(r, defs) <= {0, 1, 2} or image_support(r, defs) <= {1, 2, 3}]
+    cands.sort(key=lambda r: (len(r), r))
+    def index(rs):
+        return C.index_c(len(aff), [tuple(pos[g] for g in r) for r in base + rs],
+                         [(pos[g],) for g in xs], 1_000_000)
+    assert index(cands) == 20160
+    lo, hi = 0, len(cands)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if index(cands[:mid]) == 20160:
+            hi = mid
+        else:
+            lo = mid + 1
+    keep = cands[:lo]
+    for r in sorted(keep, key=lambda r: -len(r)):
+        trial = [x for x in keep if x != r]
+        if index(trial) == 20160:
+            keep = trial
+    AFFINE_CACHE.write_text(''.join(' '.join(NAME[g] for g in r) + '\n' for r in keep))
+    return keep
+
+
+def relators_tower():
+    """relators_natural() and affine_relators(): the level 0 of the tower."""
+    return sorted(set(relators_natural()) | set(affine_relators()), key=lambda r: (len(r), r))
 
 
 def is_identity(word):
