@@ -138,12 +138,49 @@ relations that contain them need this gluing.
 
 ## Classical completeness on four wires
 
-`check4.py classical`: the classical rules give index exactly 6435 for
-the subgroup P that preserves the partition by wire 3. That is
-|A₁₆| / |P|. `check4b.py`: P's own letters do not present P (overflow).
-S₈ on three wires is presented (index 5040). Whether the classical rules
-present A₁₆ needs a finer chain. A direct enumeration over S₈ has 2.6·10⁸
-cosets.
+**The classical rules present A₁₆ on four wires.** `check4c.py`
+enumerates the group they present over the affine subgroup (X, CX, SW).
+The index is exactly 32 432 400 = |A₁₆| / |AGL(4,2)|. The run takes
+12 minutes and 4 GB with `../tc`. The affine fragment is complete at
+every width (`../../NaturalP/Affine`), so the classical rules are
+complete on four wires.
+
+A certificate this size cannot go into Agda as a coset table. A proof
+there needs a chain with small indices instead. The coarser checks:
+`check4.py classical` gives index 6435 for the subgroup P that preserves
+the partition by wire 3, and `check4b.py` shows that P's own letters do
+not present P (overflow), while S₈ on three wires is presented (index
+5040).
+
+## The lattice graph g·ℤ¹⁶
+
+`gz.py`, `gz2.py`: the vertex group V_Z is the signed permutations in
+the circuit group, 2¹⁵ · A₁₆ (order 342 798 989 524 992 000). The step is
+h = HH(0,1). The edge group V_Z ∩ h V_Z h has order at least 1.63·10¹⁰,
+so ℤ¹⁶ has at most 21 021 000 neighbours: a partition of the levels into
+four quadruples, times 8. Sampled two-step lattices h σ h ℤ¹⁶ sit at
+relative positions (2-adic elementary divisors)
+
+| Position | Share of samples |
+| --- | --- |
+| (−2², −1², 0⁸, 1², 2²) | 60% |
+| (−2³, 0¹⁰, 2³) | 30% |
+| (−2, −1⁴, 0⁶, 1⁴, 2) | 10% |
+| (−1⁶, 0⁴, 1⁶) | rare |
+
+The last is at distance one but is not a neighbour: a neighbour sits at
+(−1⁴, 0⁸, 1⁴). So the local geometry has more cases than the E8 graph
+of CCX+H on three wires.
+
+## Gluing the Clifford group
+
+`cl4glue.py` asks whether the four-wire Clifford group (order
+89 181 388 800, the Barnes–Wall group) is the amalgam of the four
+embedded three-wire real Clifford groups φ_w(C3) and the affine group.
+`cl4glue.py calibrate` completes the three-wire Clifford presentation.
+The transcribed rules miss three relators, stored in `c3_extra.txt`, and
+with them the index is 2240. `cl4glue.py glue` enumerates over φ₃(C3);
+the expected index is 17 280.
 
 ## The decoded relations as they stand
 
