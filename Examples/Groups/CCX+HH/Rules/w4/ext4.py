@@ -114,11 +114,21 @@ def main():
                 lo = mid + 1
         keep = list(cand[:lo])
         print(f'  a prefix of {lo} closes', flush=True)
-        # ... thinned greedily, longest first
-        for r in sorted(keep, key=lambda r: -len(r)):
-            trial = [x for x in keep if x != r]
-            if index(lets, base + extras + trial, nxt) == want:
-                keep = trial
+        # ... thinned: whole chunks first (longest relators first), halving
+        # the chunk size, then one at a time
+        keep.sort(key=lambda r: (-len(r), r))
+        size = max(1, len(keep) // 2)
+        while True:
+            i = 0
+            while i < len(keep):
+                trial = keep[:i] + keep[i + size:]
+                if trial != keep and index(lets, base + extras + trial, nxt) == want:
+                    keep = trial
+                else:
+                    i += size
+            if size == 1:
+                break
+            size = max(1, size // 2)
         print(f'  kept {len(keep)}:', ['·'.join(name(g) for g in r) for r in keep], flush=True)
         extras += keep
     (HERE / 'ext4.txt').write_text(''.join(' '.join(name(g) for g in r) + '\n' for r in extras))
