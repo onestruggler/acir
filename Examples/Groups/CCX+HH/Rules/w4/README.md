@@ -288,6 +288,13 @@ rotation, reversal and relabelling of the wires. All 378 are derived
 by the affine finder from the natural rules with R4, at 30 000 cosets
 each, in about an hour in all.
 
+The same test with the Toffolis (`g4derive.py 3 20000`, all 40 placed
+letters, exact matrices) finds 926 classes. The finder derives 908 of
+them at 20 000 cosets. The 18 it misses are classical relations among
+Toffolis, or such a relation conjugated by an HH. The classical tower
+derives every classical relation, so none of the 18 is evidence against
+completeness on four wires with R4.
+
 **A bottom without the triple cover.** Instead of fixing a ninth
 point, take the setwise stabiliser of a pair the level-7 letters can
 swap. For {6, 7}, the seven level-7 letters preserving the pair
@@ -298,9 +305,37 @@ Relators of length at most 10 present S₇ over the trivial group: the
 enumeration closes at 5040 with words of at most 5 letters a side.
 
 So the classical tower can be: the eight point-stabiliser levels
-(indices 16 down to 9), then S₇ (index 36), then S₇ over the trivial
-group (or a further chain inside it). Every extra relator is short
-enough for the affine finder.
+(indices 16 down to 9), then S₇ (index 36), then a chain inside S₇.
+Every extra relator is short enough for the affine finder.
+
+S₇ over the trivial group is too big for Agda: its labelled enumeration
+makes 4.4 million facts. Inside S₇ the chain goes on by subgroups that
+the letters generate and that are the stabilisers of their orbit
+colourings, so that the cosets are separated by the colour of each
+level's image (`../../NaturalP/FourWire/Classical/StabCol`). A chain by
+points (S₆, then S₅) needs relators longer than twelve letters; the
+chain through the subgroups of order 144, 36 and 4 (indices 35, 4, 9,
+4) closes with three new extras of length 4 to 6
+(`tower16.py --extend`, `tower16extra.txt`, 38 extras in all).
+
+**All 38 extras are derived** (`derive16.py`, `derive16.pkl`). A first
+pass derives 22 of them over AGL(4, 2) at 100 000 cosets; a second
+(`--again`) adds the derived ones as relators and gets the rest at
+150 000. At 300 000 cosets the enumerator needs more than 7 GB. The
+derivations have 50 to 15 700 facts each.
+
+**Agda.** The affine tower (`Classical/Aff/L0`–`L4`, `emit16.py aff`)
+typechecks, so `Aff.L0.complete` gives the norm steps of the extras'
+derivations. It first took 430 s at the 7 GB cap for L0 alone, for a
+reason worth knowing: a use of a definition that comes from a
+parameterised module application (`normE` from `LevelKit ιX ιB
+Below.complete`, each level's `complete` from `Checked`) carries the
+module's parameters into the term, and since each level's `complete` is
+a parameter of the level above, the terms nest through the tower. The
+profile showed 0.8 s of typing against 20 s of serialization,
+positivity, dead-code and termination passes. Re-exporting through
+plain definitions (`normB = normE` in each Base, `complete = complete′`)
+brings every level under 20 s and 0.7 GB.
 
 The cost, roughly:
 
@@ -385,12 +420,59 @@ completeness absorbing the routes. The decoded relations would then
 become short canonical relations among those atoms, one per Table 1
 family and equality pattern.
 
+**How many.** The Schreier generators sit at the four states, whose
+representatives use only the levels 0 and 1. So the decoded relations
+need only be derived up to the classical permutations that fix 0 and 1:
+A₁₄ on the other fourteen levels is twelve-transitive, and no relation
+has more than eight indices. `patterns4.py` counts the classes: each
+index is 0, 1 or another level, and the other levels are relabelled in
+order of first occurrence. The 21 families of Table 1 give 109
+patterns, so there are 436 canonical decoded relations on four wires,
+against about 4.4 million translated equations over 7824 edges.
+
+**What a four-wire proof needs, in this order.**
+
+1. Classical completeness on four wires (above; in Agda now).
+2. A decoder equivariant under those permutations. An atom at the
+   levels x decodes to φ(R x)⁻¹ · core · φ(R x), where R x is a
+   classical word sending x to canonical levels taken from the tower's
+   chain (0, 1, 2, 4, …). Then φ(σ) D(atom at x) φ(σ)⁻¹ ≈ D(atom at σx)
+   reduces to: the permutation R(σx) σ R(x)⁻¹ fixes the canonical
+   levels, so by the tower's normal form it is a word in the letters of
+   the matching level, and each such letter commutes with the core.
+   That is a few dozen fixed four-wire identities for the finder.
+3. The 436 canonical relations and the 12 roundtrip schemas, by the
+   finder with R4. The proof of each Table 1 instance is then a case
+   split on its equality pattern, the routing, and one canonical
+   relation.
+
+R4 itself stays a hypothesis (as for P₀) unless it is derived.
+
+**Beyond four wires.** `../../NaturalP/EveryWidth` needs completeness
+on up to twelve wires, because affine routing preserves the affine
+dimension of a relation's indices and that can reach twelve. Classical
+routing does not: A_{2ⁿ} moves any ten levels into the sixteen of a
+four-wire window. With classical completeness at every width, the
+same equivariant decoder would lower the base to four wires, once the
+completeness on at most eight wires that the ctrl lemma uses is
+replaced by derivations of the finitely many identities it is applied
+to: the controlled rules and the commutation cores. Classical
+completeness at every width could come the same way: Clément's
+argument for A_N with Carmichael's presentation by the 3-cycles
+(0 1 i), whose relations x_i³ = (x_i x_j)² = 1 involve four levels
+only, so the windows have at most four wires.
+
 ## Scripts
 
 - `r4.py`: R4 holds exactly.
 - `spin4.py`: the twisted spin lifts of the rules on four wires.
 - `bw16.py`: the Barnes–Wall lattice has 2025 neighbours g·CCX·BW16
   under the Clifford group (a much smaller graph than ℤ¹⁶'s).
+- `patterns4.py`: Table 1 instances on 16 levels up to relabelling
+  fixing 0 and 1 (109 patterns).
+- `tower16.py`, `pipe16.py`, `derive16.py`, `emit16.py`: the A₁₆ tower
+  with the S₇ bottom and its colouring sub-chain, the extras and
+  their derivations, and the Agda for both towers.
 - `tower4.py`, `ext4.py`, `rs4.py`, `pipe4.py`: the tower of point
   stabilisers for A₁₆, and its relators.
 - `emit_gamma4.py`, `emit_circuit4.py`, `emit_levels4.py`: the Agda for

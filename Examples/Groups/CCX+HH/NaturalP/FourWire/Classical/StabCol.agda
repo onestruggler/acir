@@ -16,7 +16,7 @@ open import Data.Fin.Base using (Fin)
 module Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.StabCol
   (col : Fin 16 → Fin 16) where
 
-open import Data.Bool.Base using (Bool)
+open import Data.Bool.Base using (Bool ; true)
 open import Data.Vec.Base using (Vec ; map ; lookup)
 import Data.Vec.Properties as VP
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)

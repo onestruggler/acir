@@ -28,6 +28,7 @@ from emit_gamma4 import AG
 ROOT = HERE.parents[1] / 'NaturalP' / 'FourWire' / 'Classical'
 MOD = 'Examples.Groups.CCX+HH.NaturalP.FourWire.Classical'
 CHUNK = 400
+XCHUNK = 1500
 AFF = [g for g in range(len(T.LETTERS)) if T.LETTERS[g][0] != 'CCX']
 
 HEADER = '''------------------------------------------------------------------------
@@ -128,7 +129,7 @@ def emit_level(tag, lev, title):
             raise ValueError(kind)
         return e if fwd else f'sym⁼ ({e})'
 
-    uses_extras = any(a.name.startswith('e') for a in tc.axioms)
+    chunk_of = {f: ci for ci, ch in enumerate(chunks) for f in ch}
     for ci, ch in enumerate(chunks):
         out = [HEADER.format(title=f'{title}, level {k}: derivations, part {ci}.'),
                f'module {MOD}.{K}.Facts{ci} where\n',
@@ -137,9 +138,13 @@ def emit_level(tag, lev, title):
                'open import Relation.Binary.PropositionalEquality using (refl)',
                f'open import {MOD}.Pure',
                f'open import {MOD}.{K}.Base using (normB)']
-        if uses_extras:
-            out.append(f'open import {MOD}.Extras')
-        out += [f'open import {MOD}.{K}.Facts{j}' for j in range(ci)]
+        # only the extras and the earlier chunks this chunk cites
+        steps = [(kk, key) for f in ch for _, (kk, key), _ in tc.facts[f].steps]
+        used = sorted({tc.axioms[key].name for kk, key in steps
+                       if kk == 'ax' and tc.axioms[key].name[0] == 'e'}, key=lambda n: int(n[1:]))
+        out += [f'open import {MOD}.Extras.{u.upper()} using ({u})' for u in used]
+        cited = sorted({chunk_of[key] for kk, key in steps if kk == 'fact' and chunk_of[key] != ci})
+        out += [f'open import {MOD}.{K}.Facts{j}' for j in cited]
         out.append('')
         for f in ch:
             fact = tc.facts[f]
@@ -285,32 +290,44 @@ def emit_extras(derivs):
                 raise ValueError(kind)
             return e if fwd else f'sym⁼ ({e})'
 
-        out = [HEADER.format(title=f'The extra relator {nm} of the four-wire classical tower, derived '
-                                   f'from level 0 by a partial enumeration over the affine group.'),
+        # facts only cite earlier facts, so chunks in order are closed
+        chunks = [ids[i:i + XCHUNK] for i in range(0, len(ids), XCHUNK)]
+        (ROOT / 'Extras' / nm.upper()).mkdir(parents=True, exist_ok=True)
+        for ci, ch in enumerate(chunks):
+            out = [HEADER.format(title=f'The extra relator {nm} of the four-wire classical tower, derived '
+                                       f'from level 0 by a partial enumeration over the affine group: '
+                                       f'part {ci}.'),
+                   f'module {MOD}.Extras.{nm.upper()}.P{ci} where\n',
+                   'open import Data.Fin using (#_)',
+                   'open import Data.List.Base using (List ; [] ; _∷_)',
+                   'open import Relation.Binary.PropositionalEquality using (refl)',
+                   f'open import {MOD}.Pure',
+                   f'open import {MOD}.Extras.Norm using (normA)']
+            used = sorted({axnames[key] for f in ch for _, (kk, key), _ in facts[f].steps
+                           if kk == 'ax' and axnames[key][0] == 'e'}, key=lambda n: int(n[1:]))
+            out += [f'open import {MOD}.Extras.{u.upper()} using ({u})' for u in used]
+            out += [f'open import {MOD}.Extras.{nm.upper()}.P{j}' for j in range(ci)]
+            out.append('')
+            for f in ch:
+                fact = facts[f]
+                st = fact.steps
+                out.append(f'{nm}-{num[f]} : Eqn')
+                if len(st) == 1 and st[0][1][0] == 'norm':
+                    lab, nf = st[0][1][1]
+                    out.append(f'{nm}-{num[f]} = normA ({lst(fin(AFF.index(x)) for x in lab)}) '
+                               f'({lst(fin(AFF.index(x)) for x in nf)}) refl')
+                else:
+                    steps = lst(f'rw {p} ({eqn(kk, key, fw)})' for p, (kk, key), fw in st)
+                    out.append(f'{nm}-{num[f]} = derive ({lst(AG[y] for y in fact.lhs)}) '
+                               f'({lst(AG[y] for y in fact.rhs)})\n  ({steps}) refl')
+            (ROOT / 'Extras' / nm.upper() / f'P{ci}.agda').write_text('\n'.join(out) + '\n', encoding='utf-8')
+        last = next(ci for ci, ch in enumerate(chunks) if top in ch)
+        out = [HEADER.format(title=f'The extra relator {nm} of the four-wire classical tower.'),
                f'module {MOD}.Extras.{nm.upper()} where\n',
-               'open import Data.Fin using (#_)',
-               'open import Data.List.Base using (List ; [] ; _∷_)',
-               'open import Relation.Binary.PropositionalEquality using (refl)',
-               f'open import {MOD}.Pure',
-               f'open import {MOD}.Extras.Norm using (normA)']
-        used = sorted({axnames[key] for f in ids for _, (kk, key), _ in facts[f].steps
-                       if kk == 'ax' and axnames[key][0] == 'e'}, key=lambda n: int(n[1:]))
-        out += [f'open import {MOD}.Extras.{u.upper()} using ({u})' for u in used]
-        out.append('')
-        for f in ids:
-            fact = facts[f]
-            st = fact.steps
-            out.append(f'{nm}-{num[f]} : Eqn')
-            if len(st) == 1 and st[0][1][0] == 'norm':
-                lab, nf = st[0][1][1]
-                out.append(f'{nm}-{num[f]} = normA ({lst(fin(AFF.index(x)) for x in lab)}) '
-                           f'({lst(fin(AFF.index(x)) for x in nf)}) refl')
-            else:
-                steps = lst(f'rw {p} ({eqn(kk, key, fw)})' for p, (kk, key), fw in st)
-                out.append(f'{nm}-{num[f]} = derive ({lst(AG[y] for y in fact.lhs)}) '
-                           f'({lst(AG[y] for y in fact.rhs)})\n  ({steps}) refl')
-        out.append(f'\n{nm} : Eqn')
-        out.append(f'{nm} = {nm}-{num[top]}')
+               f'open import {MOD}.Pure using (Eqn)',
+               f'open import {MOD}.Extras.{nm.upper()}.P{last} using ({nm}-{num[top]})', '',
+               f'{nm} : Eqn',
+               f'{nm} = {nm}-{num[top]}']
         (ROOT / 'Extras' / f'{nm.upper()}.agda').write_text('\n'.join(out) + '\n', encoding='utf-8')
     out = [HEADER.format(title='The extra relators of the four-wire classical tower.'),
            f'module {MOD}.Extras where\n']
