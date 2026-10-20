@@ -288,6 +288,35 @@ rotation, reversal and relabelling of the wires. All 378 are derived
 by the affine finder from the natural rules with R4, at 30 000 cosets
 each, in about an hour in all.
 
+**A bottom without the triple cover.** Instead of fixing a ninth
+point, take the setwise stabiliser of a pair the level-7 letters can
+swap. For {6, 7}, the seven level-7 letters preserving the pair
+generate the whole stabiliser, S₇ (order 5040, index 36 in A₉). One of
+them swaps 6 and 7 and acts on the other seven points as a
+transposition, so conjugation by it inverts the centre of 3·A₇.
+Relators of length at most 10 present S₇ over the trivial group: the
+enumeration closes at 5040 with words of at most 5 letters a side.
+
+So the classical tower can be: the eight point-stabiliser levels
+(indices 16 down to 9), then S₇ (index 36), then S₇ over the trivial
+group (or a further chain inside it). Every extra relator is short
+enough for the affine finder.
+
+The cost, roughly:
+
+- The tables plus the extras' derivations come to tens of thousands of
+  facts.
+- The four-wire group would add one canonical decoded relation per
+  Table 1 family, charge and overlap with the coset representatives'
+  indices 0 and 1: some hundreds. Each fine-grained derivation has
+  thousands of facts.
+
+That is too much for Agda unless the derivations are coarse: whole
+steps inside one P_w (by `Partner.partner-complete`) or inside the
+classical group (by classical completeness), as the three-wire CCX+H
+proof used Θ-steps. A finder whose moves are such steps (a contraction
+over P₀ … P₃ and A₁₆) is the next tool to build.
+
 The same finder works with HH (`g4partial.py`). The letters gain the
 six placed HH, and the relators gain the HH rules of `../natural3.py`
 at adjacent placements. It derives that CCZ(0,1,2) and CCZ(1,2,3)
