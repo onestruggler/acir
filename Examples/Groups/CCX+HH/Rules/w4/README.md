@@ -606,3 +606,13 @@ canonical r2f relations have about 465 letters, and the finder does
 not derive them at 20 000 cosets. So the K relations need
 intermediate lemmas about the controlled HH (merges, commutations
 with signed letters), or a decoder with shorter cores.
+
+`jstruct.py`: the core J₀ = M₀ X₁₂ K₀₁₂₃ has order 3, and on its four
+levels it commutes exactly with the permutations of the levels 1, 2,
+3 and with the block's overall sign. So the K content of the
+four-wire group is the relations among V_Z-conjugates of one element
+of order 3, or of the involution q (J₀ = q s q s). With the merge lemma
+among the relators the V_Z finder still derives none of the decoded
+canonical r2f, r4b, r5a relations (418–500 letters, 40 000 cosets,
+`g4dec.py --merge`). They need a library of shorter lemmas about q and
+J₀, the four-wire counterpart of Clément's Appendix D.
