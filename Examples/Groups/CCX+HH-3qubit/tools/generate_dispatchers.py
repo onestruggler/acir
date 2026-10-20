@@ -33,7 +33,9 @@ chunk_count=0
 for rule,(vs,orders,nes,lr,*_) in t.SCHEMAS.items():
     ps=['p'+str(i) for i in range(len(orders))];ns=['ne'+str(i) for i in range(len(nes))]
     tuples=list(t.enumerate_valid(vs,orders,nes))
-    split_width=4 if len(vs)>=8 else 2
+    # A four-index table is split by its first index too: as one
+    # function, r2a's 1437 clauses took 24 s to check.
+    split_width=4 if len(vs)>=8 else 2 if len(vs)>=5 else 1
 
     def indices(prefix):
         s='\nprivate\n  '+' '.join(vs[:len(prefix)])+' : Fin 8\n'
@@ -78,7 +80,7 @@ for rule,(vs,orders,nes,lr,*_) in t.SCHEMAS.items():
         return s
 
     s=imports('Transport.'+rule)
-    if len(vs)>=5:
+    if len(vs)>=4:
         folder=ROOT/'TransportChunks'/rule
         folder.mkdir(parents=True,exist_ok=True)
         def prefixes(values):

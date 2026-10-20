@@ -131,7 +131,7 @@ For the large finite translation, first check `Transport/r1a.agda`,
 …, `Transport/r6a.agda` in separate processes, then `TwoLevel.agda`.
 This frees each process's heap between relation families.
 The prefix modules bound the size of each coverage check as well:
-the six- and eight-index tables are not checked as one large case
+the four- to eight-index tables are not checked as one large case
 analysis.
 
 `bash Examples/Groups/CCX+HH-3qubit/tools/check.sh` runs the checks,
@@ -211,4 +211,6 @@ that they stay cheap to check and to load (the repository's
   `Repaired/TwoLevelScaled` supplies: each loads about 1100 interfaces
   rather than all 7900.
 - The four-level decoding certificates are dispatched by first index,
-  one module each (`Repaired/DecodingLetters`).
+  one module each (`Repaired/DecodingLetters`), and so are the
+  four-index transport tables (`TransportChunks/r1c`, `r2a`, `r4a`–`r4c`;
+  `r2a` was 1437 clauses in one function, 24 s).
