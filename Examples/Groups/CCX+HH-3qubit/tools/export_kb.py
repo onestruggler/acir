@@ -73,11 +73,11 @@ for i in sorted(needed):
     b=Build();l,r,e=b.cert(certs[i]);assert [l,r]==rules[i]
     s=make_module(f'{SPACE}.KB{i:04d}',refs(certs[i]))+b.s
     s+=f'proved : {word(l)} ≈ {word(r)}\nproved = {e}\n'
-    (out/f'KB{i:04d}.agda').write_text(s,encoding='utf-8')
+    (out/f'KB{i:04d}.agda').write_text(g.kit(s),encoding='utf-8')
 for name,paths in data['solved'].items():
     a,b=data['goals'][name];build=Build();na,pa=build.path(a,paths[0]);nb,pb=build.path(b,paths[1]);assert na==nb
     deps={i for path in paths for i,_ in path}
     s=make_module(SPACE+'.'+name,deps)+build.s
     s+=f'proved : {word(a)} ≈ {word(b)}\nproved = trans {pa} (sym {pb})\n'
-    (out/(name+'.agda')).write_text(s,encoding='utf-8')
+    (out/(name+'.agda')).write_text(g.kit(s),encoding='utf-8')
 print('Exported',len(needed),'completion lemmas and',len(data['solved']),'goals')

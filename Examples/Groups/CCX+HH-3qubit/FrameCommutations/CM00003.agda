@@ -2,11 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.FrameCommutations.CM00003 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Frames
-open import Examples.Groups.CCX+HH-3qubit.FrameWords
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (_•_ ; _≈_ ; axiom ; m0 ; p ; r087 ; s3)
+open K
 
 proved : p (s3) • m0 ≈ m0 • p (s3)
 proved = axiom r087

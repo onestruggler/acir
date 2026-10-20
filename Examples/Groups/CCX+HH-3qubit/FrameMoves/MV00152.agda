@@ -2,11 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.FrameMoves.MV00152 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Frames
-open import Examples.Groups.CCX+HH-3qubit.FrameWords
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (X14 ; X24 ; _•_ ; _≈_ ; by-assoc-and ; p ; s1 ; module Eq)
+open K
 import Examples.Groups.CCX+HH-3qubit.FramePermutations.PE00117 as E
 
 proved : p (s1) • X24 ≈ X14 • p (s1)

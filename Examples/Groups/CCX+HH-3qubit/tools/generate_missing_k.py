@@ -116,7 +116,7 @@ for t,i in E.items():
         m=I;w='ε';proof='Eq.trans readM-ε Eq.refl'
     else:
         a,b=E[t[0]],E[t[1]];m=mul(matrices[t[0]],matrices[t[1]]);w=f'w{a} • w{b}'
-        proof=f'Eq.trans (readM-• w{a} w{b}) (Eq.trans (Eq.cong₂ mulM e{a} e{b}) step{i})'
+        proof=f'Eq.trans (readM-• w{a} w{b}) (Eq.trans (Eq.cong₂ mulM {{x = readM w{a}}} {{y = matrix{a}}} {{u = readM w{b}}} {{v = matrix{b}}} e{a} e{b}) step{i})'
     matrices[t]=m
     s+=f'w{i} : Word Gen\nw{i} = {w}\nmatrix{i} : Mat 3\nmatrix{i} = {literal(m)}\n'
     if isinstance(t,tuple) and t:s+=f'step{i} : mulM matrix{a} matrix{b} ≡ matrix{i}\nstep{i} = Eq.refl\n'
@@ -125,15 +125,7 @@ start=s.index('w0 : Word Gen')
 imports=s[len(g.header('MissingK.Evaluation')):start]
 blocks=re.split(r'(?=^w[0-9]+ : Word Gen)',s[start:],flags=re.M)
 blocks=[block for block in blocks if block]
-evdir=OUT/'Evaluations';evdir.mkdir(exist_ok=True)
-for chunk,offset in enumerate(range(0,len(blocks),16)):
-    name=f'MissingK.Evaluations.E{chunk:02d}'
-    part=g.header(name)+imports
-    if chunk:part+=f'open import {P}.MissingK.Evaluations.E{chunk-1:02d} public\n\n'
-    part+=''.join(blocks[offset:offset+16])
-    (evdir/f'E{chunk:02d}.agda').write_text(part,encoding='utf-8')
-(OUT/'Evaluation.agda').write_text(g.header('MissingK.Evaluation')+
-    f'open import {P}.MissingK.Evaluations.E{chunk:02d} public\n',encoding='utf-8')
+g.evaluation_chunks('MissingK.Evaluations','MissingK.Evaluation',lambda body:imports.rstrip('\n')+'\n',blocks,16)
 s=g.header('MissingK')
 s+=f'''open import Data.Bool.Base using (true ; false)
 open import Data.Empty using (⊥)

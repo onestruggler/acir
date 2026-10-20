@@ -6,8 +6,8 @@ open import Data.Product.Base using (_,_ )
 open import Examples.Groups.CCX+HH-3qubit.Syntactics
 open import Examples.Groups.CCX+HH-3qubit.MissingK.Model
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-
-open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E01 public
+open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E00 using (e1 ; e2 ; matrix1 ; matrix2 ; w1 ; w2)
+open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E01 using (e17 ; e29 ; matrix17 ; matrix29 ; w17 ; w29)
 
 w32 : Word Gen
 w32 = CX02
@@ -23,7 +23,7 @@ matrix33 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (1 ,
 step33 : mulM matrix2 matrix29 ≡ matrix33
 step33 = Eq.refl
 e33 : readM w33 ≡ matrix33
-e33 = Eq.trans (readM-• w2 w29) (Eq.trans (Eq.cong₂ mulM e2 e29) step33)
+e33 = Eq.trans (readM-• w2 w29) (Eq.trans (Eq.cong₂ mulM {x = readM w2} {y = matrix2} {u = readM w29} {v = matrix29} e2 e29) step33)
 
 w34 : Word Gen
 w34 = w29 • w33
@@ -32,7 +32,7 @@ matrix34 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 1) , (0 ,
 step34 : mulM matrix29 matrix33 ≡ matrix34
 step34 = Eq.refl
 e34 : readM w34 ≡ matrix34
-e34 = Eq.trans (readM-• w29 w33) (Eq.trans (Eq.cong₂ mulM e29 e33) step34)
+e34 = Eq.trans (readM-• w29 w33) (Eq.trans (Eq.cong₂ mulM {x = readM w29} {y = matrix29} {u = readM w33} {v = matrix33} e29 e33) step34)
 
 w35 : Word Gen
 w35 = SWAP02
@@ -48,7 +48,7 @@ matrix36 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (0 ,
 step36 : mulM matrix17 matrix32 ≡ matrix36
 step36 = Eq.refl
 e36 : readM w36 ≡ matrix36
-e36 = Eq.trans (readM-• w17 w32) (Eq.trans (Eq.cong₂ mulM e17 e32) step36)
+e36 = Eq.trans (readM-• w17 w32) (Eq.trans (Eq.cong₂ mulM {x = readM w17} {y = matrix17} {u = readM w32} {v = matrix32} e17 e32) step36)
 
 w37 : Word Gen
 w37 = w32 • w36
@@ -57,7 +57,7 @@ matrix37 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (0 ,
 step37 : mulM matrix32 matrix36 ≡ matrix37
 step37 = Eq.refl
 e37 : readM w37 ≡ matrix37
-e37 = Eq.trans (readM-• w32 w36) (Eq.trans (Eq.cong₂ mulM e32 e36) step37)
+e37 = Eq.trans (readM-• w32 w36) (Eq.trans (Eq.cong₂ mulM {x = readM w32} {y = matrix32} {u = readM w36} {v = matrix36} e32 e36) step37)
 
 w38 : Word Gen
 w38 = K01
@@ -73,7 +73,7 @@ matrix39 = mat ((((((4 , 12) , (13 , 4)) , ((13 , 4) , (13 , 4))) , (((13 , 4) ,
 step39 : mulM matrix1 matrix35 ≡ matrix39
 step39 = Eq.refl
 e39 : readM w39 ≡ matrix39
-e39 = Eq.trans (readM-• w1 w35) (Eq.trans (Eq.cong₂ mulM e1 e35) step39)
+e39 = Eq.trans (readM-• w1 w35) (Eq.trans (Eq.cong₂ mulM {x = readM w1} {y = matrix1} {u = readM w35} {v = matrix35} e1 e35) step39)
 
 w40 : Word Gen
 w40 = w35 • w39
@@ -82,7 +82,7 @@ matrix40 = mat ((((((4 , 12) , (13 , 4)) , ((13 , 4) , (13 , 4))) , (((12 , 4) ,
 step40 : mulM matrix35 matrix39 ≡ matrix40
 step40 = Eq.refl
 e40 : readM w40 ≡ matrix40
-e40 = Eq.trans (readM-• w35 w39) (Eq.trans (Eq.cong₂ mulM e35 e39) step40)
+e40 = Eq.trans (readM-• w35 w39) (Eq.trans (Eq.cong₂ mulM {x = readM w35} {y = matrix35} {u = readM w39} {v = matrix39} e35 e39) step40)
 
 w41 : Word Gen
 w41 = CX10
@@ -98,7 +98,7 @@ matrix42 = mat ((((((4 , 12) , (13 , 4)) , ((13 , 4) , (13 , 4))) , (((12 , 4) ,
 step42 : mulM matrix2 matrix38 ≡ matrix42
 step42 = Eq.refl
 e42 : readM w42 ≡ matrix42
-e42 = Eq.trans (readM-• w2 w38) (Eq.trans (Eq.cong₂ mulM e2 e38) step42)
+e42 = Eq.trans (readM-• w2 w38) (Eq.trans (Eq.cong₂ mulM {x = readM w2} {y = matrix2} {u = readM w38} {v = matrix38} e2 e38) step42)
 
 w43 : Word Gen
 w43 = w38 • w42
@@ -107,7 +107,7 @@ matrix43 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 1) , (0 ,
 step43 : mulM matrix38 matrix42 ≡ matrix43
 step43 = Eq.refl
 e43 : readM w43 ≡ matrix43
-e43 = Eq.trans (readM-• w38 w42) (Eq.trans (Eq.cong₂ mulM e38 e42) step43)
+e43 = Eq.trans (readM-• w38 w42) (Eq.trans (Eq.cong₂ mulM {x = readM w38} {y = matrix38} {u = readM w42} {v = matrix42} e38 e42) step43)
 
 w44 : Word Gen
 w44 = SWAP01
@@ -123,7 +123,7 @@ matrix45 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 1) , (0 ,
 step45 : mulM matrix41 matrix2 ≡ matrix45
 step45 = Eq.refl
 e45 : readM w45 ≡ matrix45
-e45 = Eq.trans (readM-• w41 w2) (Eq.trans (Eq.cong₂ mulM e41 e2) step45)
+e45 = Eq.trans (readM-• w41 w2) (Eq.trans (Eq.cong₂ mulM {x = readM w41} {y = matrix41} {u = readM w2} {v = matrix2} e41 e2) step45)
 
 w46 : Word Gen
 w46 = w2 • w45
@@ -132,7 +132,7 @@ matrix46 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 1) , (0 ,
 step46 : mulM matrix2 matrix45 ≡ matrix46
 step46 = Eq.refl
 e46 : readM w46 ≡ matrix46
-e46 = Eq.trans (readM-• w2 w45) (Eq.trans (Eq.cong₂ mulM e2 e45) step46)
+e46 = Eq.trans (readM-• w2 w45) (Eq.trans (Eq.cong₂ mulM {x = readM w2} {y = matrix2} {u = readM w45} {v = matrix45} e2 e45) step46)
 
 w47 : Word Gen
 w47 = CCX02

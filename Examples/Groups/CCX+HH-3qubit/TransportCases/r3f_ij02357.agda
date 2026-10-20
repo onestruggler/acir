@@ -2,11 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.TransportCases.r3f_ij02357 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Frames
-open import Examples.Groups.CCX+HH-3qubit.FrameWords
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (K0237 ; K0257 ; X35 ; _•_ ; _≈_ ; by-assoc-and ; module Eq)
+open K
 import Examples.Groups.CCX+HH-3qubit.FrameMoves.MV02524 as Move
 
 proved : X35 • K0237 ≈ K0257 • X35

@@ -9,21 +9,32 @@ import Data.Nat.Properties as NP
 import Relation.Binary.PropositionalEquality as Eq
 open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
 open import Examples.Groups.CCX+HH-3qubit.Repaired.Encoding using (decode ; dyadic-decoding)
+open import Examples.Groups.CCX+HH-3qubit.Repaired.EvenCompleteness using (from-even)
 import Examples.Groups.CCX+HH-3qubit.TwoLevel as T
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open PB _===_ hiding (_===_ ; _≈_)
 
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7b_i0123 as C0
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7c_i01 as C1
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i01 as C2
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i23 as C3
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i45 as C4
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i67 as C5
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i0123 as C6
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i2345 as C7
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i4567 as C8
+import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7b_i0123
+import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7c_i01
+import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i01
+import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i23
+import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i45
+import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i67
+import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i0123
+import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i2345
+import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i4567
+
+module C0 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7b_i0123 from-even using (proved)
+module C1 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7c_i01 from-even using (proved)
+module C2 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i01 from-even using (proved)
+module C3 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i23 from-even using (proved)
+module C4 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i45 from-even using (proved)
+module C5 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i67 from-even using (proved)
+module C6 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i0123 from-even using (proved)
+module C7 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i2345 from-even using (proved)
+module C8 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i4567 from-even using (proved)
 
 axiom-decode : ∀ {w v} → L._===ᴸ_ {8} w v → (decode ʷ) w ≈ (decode ʷ) v
 axiom-decode (L.table1 {w} {v} proof) = trans

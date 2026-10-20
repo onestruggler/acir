@@ -2,9 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.Tietze.elim_CZ01 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.Kit as K using (CX01 ; CZ01 ; K12 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; r001 ; r022 ; r023 ; refl ; trans ; under ; ε ; module Eq)
+open K
 
 step0 : CZ01 • CZ01 ≈ CZ01 • K12 • CX01 • K12
 step0 = by-assoc-and (under (CZ01) (ε) (axiom r001)) Eq.refl Eq.refl

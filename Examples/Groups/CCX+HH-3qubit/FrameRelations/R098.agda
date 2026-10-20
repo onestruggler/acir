@@ -2,11 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.FrameRelations.R098 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Frames
-open import Examples.Groups.CCX+HH-3qubit.FrameWords
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (K0123 ; M0 ; NK ; X12 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; cong ; m0 ; r098 ; sym ; t12 ; trans ; module Eq)
+open K
 import Examples.Groups.CCX+HH-3qubit.FrameAliases.ANK as ANK
 import Examples.Groups.CCX+HH-3qubit.FrameAliases.Am0 as Am0
 import Examples.Groups.CCX+HH-3qubit.FrameAliases.At12 as At12

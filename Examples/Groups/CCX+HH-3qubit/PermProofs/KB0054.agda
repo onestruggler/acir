@@ -2,9 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.PermProofs.KB0054 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.Kit as K using (SWAP12 ; X1 ; X2 ; _•_ ; _≈_ ; refl ; sym ; trans)
+open K
 
 import Examples.Groups.CCX+HH-3qubit.Tietze.symmetry_X_c as Tsymmetry_X_c
 p0 : X2 ≈ SWAP12 • X1 • SWAP12

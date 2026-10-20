@@ -2,9 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.Tietze.elim_SWAP01 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.Kit as K using (CX01 ; CX10 ; SWAP01 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; r013 ; r022 ; refl ; trans ; under ; ε ; module Eq)
+open K
 import Examples.Groups.CCX+HH-3qubit.Tietze.elim_CX10 as elim_CX10
 
 step0 : SWAP01 • SWAP01 ≈ SWAP01 • CX01 • CX10 • CX01

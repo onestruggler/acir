@@ -181,3 +181,34 @@ checks for the retained K equation.
 
 Run `generate_transport.py` before `generate_dispatchers.py`, since
 the latter refers to the finite instances emitted by the former.
+`export_kb.py --permutation` writes `PermProofs/`; without the flag it
+writes `Proofs/`, of which the repository keeps the 22 modules in use.
+
+## Typechecking cost
+
+The certificates are small and many, and the generators write them so
+that they stay cheap to check and to load (the repository's
+`typecheck-efficiency.md` has the measurements):
+
+- A certificate imports `Kit` or `FrameKit` restricted to the names it
+  uses (`import Kit as K using (…)`, then `open K`; `generate.py`'s
+  `kit`). An interface records the whole scope of every module its
+  module imports, so certificates that opened Syntactics, Frames,
+  FrameWords and Engine had 50–65 kB interfaces for one line of proof;
+  now 9–15 kB, the folder's interfaces 350 MB rather than 595 MB.
+  `Kit` and `FrameKit` are separate because Frames imports the
+  permutation certificates, which import `Kit`.
+- The matrix evaluations (`Evaluation`, `FrameEvaluation`,
+  `MissingK/Evaluations`) come in chunks of 16–24, each importing from
+  the earlier chunks only the names it uses (`evaluation_chunks`): a
+  matrix literal has some 250 parenthesised subterms, and Agda's
+  operator parser looks every name in scope up for each of them. A
+  product over ℤ[√2] is decided by one boolean on the sparse product,
+  and each `Eq.cong₂ mulM` step gives its matrices, which left to
+  unification made Agda unfold both readings.
+- The nine Hadamard relations take the comparison by dyadic
+  completeness as a module parameter (`Repaired/Even.FromEven`), which
+  `Repaired/TwoLevelScaled` supplies: each loads about 1100 interfaces
+  rather than all 7900.
+- The four-level decoding certificates are dispatched by first index,
+  one module each (`Repaired/DecodingLetters`).

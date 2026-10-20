@@ -100,7 +100,7 @@ def case(rule,values):
     if rep is not None:
         intro=f'import Presentation.GroupLike as GLib\nopen import {P}.GroupLike using (grouplike)\nmodule GL = GLib.Group-Lemmas _===_ grouplike\n\n'
         s=s.replace('\nproved :', '\n'+intro+'proved :')
-    (ROOT/'TransportCases'/(label+'.agda')).write_text(s,encoding='utf-8')
+    (ROOT/'TransportCases'/(label+'.agda')).write_text(g.kit(s),encoding='utf-8')
     CASES[(rule,tuple(values))]=label
 
 def enumerate_valid(vars,orders,nes):

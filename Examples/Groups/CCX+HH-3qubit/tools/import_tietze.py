@@ -84,7 +84,7 @@ for name in ordered:
     p='refl'
     for i in reversed(range(len(steps))):p=f'trans step{i} ({p})'
     s+=f'proved : {aword(l)} ≈ {aword(r)}\nproved = {p}\n'
-    (target/(name+'.agda')).write_text(s,encoding='utf-8')
+    (target/(name+'.agda')).write_text(g.kit(s),encoding='utf-8')
 s=g.header('CircuitLemmas')
 for name in ordered:s+=f'import {g.PREFIX}.Tietze.{name}\n'
 (g.ROOT/'CircuitLemmas.agda').write_text(s,encoding='utf-8')

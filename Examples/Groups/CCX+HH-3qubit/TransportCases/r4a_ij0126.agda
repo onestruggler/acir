@@ -2,21 +2,14 @@
 
 module Examples.Groups.CCX+HH-3qubit.TransportCases.r4a_ij0126 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Frames
-open import Examples.Groups.CCX+HH-3qubit.FrameWords
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (K0126 ; M1 ; M6 ; X01 ; X16 ; _•_ ; _≈_ ; cong ; move-product ; p ; refl ; s3 ; s4 ; s5 ; sym ; trans ; module GL)
+open K
 import Examples.Groups.CCX+HH-3qubit.FrameMoves.MV00643 as MV00643
 import Examples.Groups.CCX+HH-3qubit.FrameMoves.MV02563 as MV02563
 import Examples.Groups.CCX+HH-3qubit.FrameMoves.MV02564 as MV02564
 import Examples.Groups.CCX+HH-3qubit.FrameMoves.MV02565 as MV02565
 import Examples.Groups.CCX+HH-3qubit.FrameMoves.MV02566 as MV02566
 import Examples.Groups.CCX+HH-3qubit.FrameRelations.R097 as Base
-
-import Presentation.GroupLike as GLib
-open import Examples.Groups.CCX+HH-3qubit.GroupLike using (grouplike)
-module GL = GLib.Group-Lemmas _===_ grouplike
 
 proved : X01 • K0126 ≈ K0126 • X16 • M1 • M6
 proved = GL.•-cancelʳ {g = X01 • K0126} {g' = K0126 • X16 • M1 • M6} {h = p (s5 • s4 • s3)}

@@ -2,18 +2,11 @@
 
 module Examples.Groups.CCX+HH-3qubit.TransportCases.r2b_ij024 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Frames
-open import Examples.Groups.CCX+HH-3qubit.FrameWords
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (M4 ; X02 ; _•_ ; _≈_ ; cong ; move-product ; p ; refl ; s0 ; s1 ; s2 ; s3 ; sym ; trans ; module GL)
+open K
 import Examples.Groups.CCX+HH-3qubit.FrameMoves.MV00717 as MV00717
 import Examples.Groups.CCX+HH-3qubit.FrameMoves.MV00718 as MV00718
 import Examples.Groups.CCX+HH-3qubit.FrameRelations.R085 as Base
-
-import Presentation.GroupLike as GLib
-open import Examples.Groups.CCX+HH-3qubit.GroupLike using (grouplike)
-module GL = GLib.Group-Lemmas _===_ grouplike
 
 proved : X02 • M4 ≈ M4 • X02
 proved = GL.•-cancelʳ {g = X02 • M4} {g' = M4 • X02} {h = p (s3 • s2 • s1 • s0 • s2)}

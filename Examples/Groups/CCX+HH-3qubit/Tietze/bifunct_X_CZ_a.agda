@@ -2,9 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.Tietze.bifunct_X_CZ_a where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.Kit as K using (CX01 ; CZ01 ; CZ02 ; K12 ; SWAP12 ; X1 ; X2 ; Z2 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; r001 ; r018 ; refl ; sym ; trans ; under ; ε ; module Eq)
+open K
 import Examples.Groups.CCX+HH-3qubit.Tietze.bifunct_Z_CX_e as bifunct_Z_CX_e
 import Examples.Groups.CCX+HH-3qubit.Tietze.drel64 as drel64
 import Examples.Groups.CCX+HH-3qubit.Tietze.drel66 as drel66

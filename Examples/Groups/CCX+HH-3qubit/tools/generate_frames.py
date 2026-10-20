@@ -68,7 +68,7 @@ def pe(a,b):
     s+='open import Data.Fin.Base using (zero ; suc)\n\n'
     s+=f'proved : {cp(a)} ≈ {cp(b)}\nproved = checked ({pw(a)}) ({pw(b)})\n  (λ {{ '
     s+=' ; '.join(finpat(i)+' → Eq.refl' for i in range(8))+' ; '+ '(suc (suc (suc (suc (suc (suc (suc (suc ()))))))))'+' })\n'
-    (g.ROOT/'FramePermutations'/(ident+'.agda')).write_text(s,encoding='utf-8')
+    (g.ROOT/'FramePermutations'/(ident+'.agda')).write_text(g.kit(s),encoding='utf-8')
     return ident
 def commute(w,c):
     key=(w,c)
@@ -87,7 +87,7 @@ def commute(w,c):
             n=84+j if c=='m0' else 87+j
             expr=f'commute-product (axiom r{n:03d}) ({expr})'
     s+=f'proved : {cp(w)} • {c} ≈ {c} • {cp(w)}\nproved = {expr}\n'
-    (g.ROOT/'FrameCommutations'/(ident+'.agda')).write_text(s,encoding='utf-8')
+    (g.ROOT/'FrameCommutations'/(ident+'.agda')).write_text(g.kit(s),encoding='utf-8')
     return ident
 def move(q,atom):
     key=(q,atom)
@@ -108,7 +108,7 @@ def move(q,atom):
             current=(current[0],)+tuple(perm((j,))[i] for i in current[1:])
         s=imports('FrameMoves.'+ident,files)
         s+=f'proved : {cp(q)} • {name(atom)} ≈ {name(target)} • {cp(q)}\nproved = by-assoc-and ({expr}) Eq.refl Eq.refl\n'
-        (g.ROOT/'FrameMoves'/(ident+'.agda')).write_text(s,encoding='utf-8')
+        (g.ROOT/'FrameMoves'/(ident+'.agda')).write_text(g.kit(s),encoding='utf-8')
         return ident
     if atom[0]=='X':
         e=pe(q+transposition(*atom[1:]),transposition(*target[1:])+q)
@@ -133,7 +133,7 @@ def move(q,atom):
             s+=f'step{i} : {u} ≈ {v}\nstep{i} = by-assoc-and (under ({prefix}) ({suffix}) {e}) Eq.refl Eq.refl\n\n'
         expr='trans step0 (trans step1 step2)'
     s+=f'proved : {cp(q)} • {name(atom)} ≈ {name(target)} • {cp(q)}\nproved = {expr}\n'
-    (g.ROOT/'FrameMoves'/(ident+'.agda')).write_text(s,encoding='utf-8')
+    (g.ROOT/'FrameMoves'/(ident+'.agda')).write_text(g.kit(s),encoding='utf-8')
     return ident
 
 def bootstrap():

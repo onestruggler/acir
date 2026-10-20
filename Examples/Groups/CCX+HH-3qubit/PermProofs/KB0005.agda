@@ -2,9 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.PermProofs.KB0005 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.Kit as K using (CX10 ; _•_ ; _≈_ ; refl ; sym ; trans ; ε)
+open K
 
 import Examples.Groups.CCX+HH-3qubit.Tietze.elim_CX10 as Telim_CX10
 p0 : CX10 • CX10 ≈ ε

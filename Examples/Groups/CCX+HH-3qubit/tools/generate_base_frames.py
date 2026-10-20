@@ -76,7 +76,7 @@ def alias(label,atom,prefix=''):
             inv=f.pe(a+ar,());pi=b.use('FramePermutations.'+inv,'Inv')
             e2=b.step(source1,f.name(atom),f'forget-frame (by-assoc-and {pm} Eq.refl Eq.refl) (by-assoc-and {pi} Eq.refl Eq.refl)')
             expr=f'trans {e0} (trans {e1} {e2})'
-    (ROOT/'FrameAliases'/(ident+'.agda')).write_text(b.output('FrameAliases.'+ident,label,f.name(atom),expr),encoding='utf-8')
+    (ROOT/'FrameAliases'/(ident+'.agda')).write_text(g.kit(b.output('FrameAliases.'+ident,label,f.name(atom),expr)),encoding='utf-8')
     return ident
 
 defs=[('m0',('M',0),''),('m1',('M',1),'t01'),('m3',('M',3),'t23 t12 t01'),('m4',('M',4),'X0'),
@@ -112,7 +112,7 @@ for n in range(83,102):
     re=b.step(g.word(r),dw(ra),f'by-assoc-and ({canonical(r,b)}) Eq.refl Eq.refl')
     expr=f'trans (sym ({le})) (trans (axiom r{n:03d}) ({re}))'
     mod=f'R{n:03d}'
-    (ROOT/'FrameRelations'/(mod+'.agda')).write_text(b.output('FrameRelations.'+mod,dw(la),dw(ra),expr),encoding='utf-8')
+    (ROOT/'FrameRelations'/(mod+'.agda')).write_text(g.kit(b.output('FrameRelations.'+mod,dw(la),dw(ra),expr)),encoding='utf-8')
     REPRESENTATIVES[n]=(la,ra)
 s=g.header('RepresentativeChecks')
 for ident in ALIASES.values():s+=f'import {P}.FrameAliases.{ident}\n'

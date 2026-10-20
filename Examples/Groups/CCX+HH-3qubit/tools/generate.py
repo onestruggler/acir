@@ -101,8 +101,7 @@ def collect(t):
 def generate_evaluation():
     for l,r in list(RELATIONS.values())+list(ERRATA.values()):
         collect(tree(l)); collect(tree(r))
-    s=header('Evaluation')
-    s+=f'open import Data.Integer.Base using (+_ ; -[1+_])\nopen import Data.Product.Base using (_,_ )\nopen import Relation.Binary.PropositionalEquality as Eq using (_≡_)\nopen import {PREFIX}.Syntactics\nopen import {PREFIX}.GateMatrices\nopen import {PREFIX}.Interpretation\n\n'
+    blocks=[]
     def tab(v):
         if len(v)==1: return v[0]
         k=len(v)//2
@@ -116,18 +115,19 @@ def generate_evaluation():
         else:
             left,right=EVAL[t[0]],EVAL[t[1]]; w=f'w{left} • w{right}'
             m=mul(mats[t[0]],mats[t[1]])
-            p=f'Eq.trans (readM-• w{left} w{right}) (Eq.trans (Eq.cong₂ mulM e{left} e{right}) step{i})'
+            p=f'Eq.trans (readM-• w{left} w{right}) (Eq.trans (Eq.cong₂ mulM {{x = readM w{left}}} {{y = matrix{left}}} {{u = readM w{right}}} {{v = matrix{right}}} e{left} e{right}) step{i})'
         mats[t]=m
         entries=[]
         for row in m:
             for a in row:
                 z=f'(+ {a})' if a>=0 else f'(-[1+ {-a-1} ])'
                 entries.append(f'({z} +√2 (+ 0))')
-        s+=f'w{i} : Word Gen\nw{i} = {w}\n\nmatrix{i} : Mat 3\nmatrix{i} = mat {tab(entries)}\n\n'
+        s=f'w{i} : Word Gen\nw{i} = {w}\n\nmatrix{i} : Mat 3\nmatrix{i} = mat {tab(entries)}\n\n'
         if isinstance(t,tuple) and t:
-            s+=f'step{i} : mulM matrix{left} matrix{right} ≡ matrix{i}\nstep{i} = Eq.refl\n\n'
+            s+=matrix_step(i,left,right)+'\n'
         s+=f'e{i} : readM w{i} ≡ matrix{i}\ne{i} = {p}\n\n'
-    (ROOT/'Evaluation.agda').write_text(s,encoding='utf-8')
+        blocks.append(s)
+    evaluation_chunks('Evaluation','Evaluation',matrix_imports,blocks,24)
     print('Certified evaluation subexpressions:',len(EVAL))
 
 def eval_name(w): return 'e'+str(EVAL[tree(w)])
@@ -141,6 +141,111 @@ def word(w):
 
 def header(mod):
     return f"{{-# OPTIONS --without-K --safe #-}}\n\nmodule {PREFIX}.{mod} where\n\n"
+
+# Matrix evaluations, written in chunks of `size` blocks: <chunks>.E00 …,
+# and <whole> re-exporting them all.  Agda's operator parser takes time in
+# proportion to the names in scope for every parenthesised subterm, and a
+# matrix literal has some 250 of them, so a chunk imports from the earlier
+# chunks only the names it uses, and imports(body) its libraries the same
+# way.  (Evaluation was one module of a thousand names, 27 of its 50 s
+# spent parsing; FrameEvaluation's chunks re-exported each other publicly,
+# the last with three thousand names in scope.)
+def evaluation_chunks(chunks, whole, imports, blocks, size):
+    import re
+    folder = ROOT.joinpath(*chunks.split("."))
+    folder.mkdir(parents=True, exist_ok=True)
+    defined = []
+    parts = [blocks[o:o + size] for o in range(0, len(blocks), size)]
+    for k, part in enumerate(parts):
+        body = "".join(part)
+        own = set(re.findall(r"^(\S+) : ", body, re.M))
+        used = set(re.findall(r"\b(?:w|matrix|e)[0-9]+\b", body)) - own
+        s = header(f"{chunks}.E{k:02d}") + imports(body)
+        for j in range(k):
+            names = sorted(used & defined[j], key=lambda x: (re.sub(r"[0-9]+", "", x), int(re.sub(r"[^0-9]", "", x))))
+            if names:
+                s += f"open import {PREFIX}.{chunks}.E{j:02d} using ({' ; '.join(names)})\n"
+        (folder / f"E{k:02d}.agda").write_text(s + "\n" + body, encoding="utf-8")
+        defined.append(own)
+    s = header(whole) + "".join(f"open import {PREFIX}.{chunks}.E{k:02d} public\n" for k in range(len(parts)))
+    ROOT.joinpath(*whole.split(".")).with_suffix(".agda").write_text(s, encoding="utf-8")
+
+# The imports of an evaluation chunk over ℤ[√2], each a `using` list; a
+# product is decided by one boolean on the sparse product (Real-Clifford+CH's
+# eqM, mulS), not by Eq.refl between stored matrices.
+def matrix_imports(body):
+    import re
+    toks = set(re.findall(r"[^\s(){}]+", body))
+    gates = [x for x in GATES if x in toks] + [x + "-gen" for x in GATES if x + "-gen" in toks]
+    return (f"open import Data.Integer.Base using (+_ ; -[1+_])\n"
+            f"open import Data.Product.Base using (_,_ )\n"
+            f"open import Relation.Binary.PropositionalEquality as Eq using (_≡_)\n"
+            f"open import {PREFIX}.Syntactics using ({' ; '.join(['Word', 'Gen', '_•_', 'ε'] + gates)})\n"
+            f"open import {PREFIX}.GateMatrices using (Mat ; mat ; mulM ; _+√2_)\n"
+            f"open import {PREFIX}.Interpretation using (readM ; readM-gen ; readM-ε ; readM-•)\n"
+            f"open import Examples.Groups.Real-Clifford+CH.Semantics.Decide using (eqM-sound)\n"
+            f"open import Examples.Groups.Real-Clifford+CH.Semantics.Sparse using (mulS ; mulS-ok)\n")
+
+def matrix_step(i, a, b):
+    return (f"step{i} : mulM matrix{a} matrix{b} ≡ matrix{i}\n"
+            f"step{i} = Eq.trans (Eq.sym (mulS-ok matrix{a} matrix{b})) (eqM-sound (mulS matrix{a} matrix{b}) matrix{i} Eq.refl)\n")
+
+# A certificate's imports, as one restricted import of Kit (or FrameKit,
+# for one that used the frames).  An interface records the whole scope
+# of every module its module imports, so a certificate that opened
+# Syntactics, Frames, FrameWords and Engine took 50-65 kB on disk for one
+# line of proof; importing the kit with the names it uses (`import Kit as
+# K using (…)`, then `open K`) takes about 9 kB.  Kit.agda and
+# FrameKit.agda list what they export; kit() leaves other modules alone.
+KIT_LINES = [
+    "import Relation.Binary.PropositionalEquality as Eq",
+    f"open import {PREFIX}.Syntactics",
+    f"open import {PREFIX}.Frames",
+    f"open import {PREFIX}.FrameWords",
+    f"open import {PREFIX}.Engine",
+    "open import Data.Fin.Base using (zero ; suc)",
+    "import Presentation.GroupLike as GLib",
+    f"open import {PREFIX}.GroupLike using (grouplike)",
+    "module GL = GLib.Group-Lemmas _===_ grouplike",
+]
+FRAME_LINES = KIT_LINES[2:4] + KIT_LINES[6:]
+_kit_names = {}
+
+def kit_names(mod):
+    if mod not in _kit_names:
+        import re
+        names = set()
+        for m in re.finditer(r"^open import \S+ public\s+using \(([^)]*)\)",
+                             (ROOT / f"{mod}.agda").read_text(encoding="utf-8"), re.M):
+            names.update(x.strip() for x in m.group(1).split(";"))
+        names.discard("")
+        if mod == "FrameKit":
+            names |= kit_names("Kit")
+        _kit_names[mod] = names
+    return _kit_names[mod]
+
+def kit(s):
+    import re
+    lines = s.split("\n")
+    if not (f"open import {PREFIX}.Syntactics" in lines and f"open import {PREFIX}.Engine" in lines):
+        return s
+    mod = "FrameKit" if any(l in FRAME_LINES for l in lines) else "Kit"
+    first = min(i for i, l in enumerate(lines) if l in KIT_LINES)
+    rest = [l for l in lines if l not in KIT_LINES]
+    body = [l for l in rest if not l.startswith(("{-#", "module ", "import ", "open import "))]
+    local = {m.group(1) for l in body for m in [re.match(r"(\S+) [:=] ", l)] if m}
+    names, mods = set(), set()
+    for t in re.findall(r"[^\s(){};]+", "\n".join(body)):
+        if t.startswith("Eq."): mods.add("Eq")
+        elif t.startswith("GL."): mods.add("GL")
+        elif "." in t: continue
+        else:
+            t = {"•": "_•_", "≈": "_≈_"}.get(t, t)
+            if t in kit_names(mod) and t not in local: names.add(t)
+    using = sorted(names) + ["module " + m for m in sorted(mods)]
+    head = [f"import {PREFIX}.{mod} as K using ({' ; '.join(using)})", "open K"]
+    out = "\n".join(rest[:first] + head + rest[first:])
+    return re.sub(r"\n\n\n+", "\n\n", out)
 
 def generate_syntax():
     s = "-- Figures 4, 7 and 8 of arXiv:2407.11152v3. See README.md for corrections.\n"

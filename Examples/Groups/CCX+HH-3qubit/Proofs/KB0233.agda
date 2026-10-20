@@ -2,9 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.Proofs.KB0233 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.Kit as K using (CX01 ; X0 ; X1 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; r002 ; refl ; sym ; trans ; module Eq)
+open K
 
 p0 : X1 ≈ CX01 • X0 • CX01 • X0
 p0 = by-assoc-and (axiom r002) Eq.refl Eq.refl

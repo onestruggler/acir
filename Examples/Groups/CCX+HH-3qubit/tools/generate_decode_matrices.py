@@ -38,19 +38,13 @@ for t,i in E.items():
         m=[[int(i==j) for j in range(8)] for i in range(8)];w='ε';pr='Eq.trans readM-ε Eq.refl'
     else:
         a,b=E[t[0]],E[t[1]];m=g.mul(mats[t[0]],mats[t[1]]);w=f'w{a} • w{b}'
-        pr=f'Eq.trans (readM-• w{a} w{b}) (Eq.trans (Eq.cong₂ mulM e{a} e{b}) step{i})'
+        pr=f'Eq.trans (readM-• w{a} w{b}) (Eq.trans (Eq.cong₂ mulM {{x = readM w{a}}} {{y = matrix{a}}} {{u = readM w{b}}} {{v = matrix{b}}} e{a} e{b}) step{i})'
     mats[t]=m
     block=f'w{i} : Word Gen\nw{i} = {w}\nmatrix{i} : Mat 3\nmatrix{i} = {literal(m)}\n'
-    if isinstance(t,tuple) and t:block+=f'step{i} : mulM matrix{a} matrix{b} ≡ matrix{i}\nstep{i} = Eq.refl\n'
+    if isinstance(t,tuple) and t:block+=g.matrix_step(i,a,b)
     block+=f'e{i} : readM w{i} ≡ matrix{i}\ne{i} = {pr}\n\n'
     blocks.append(block)
-for chunk,offset in enumerate(range(0,len(blocks),24)):
-    s=g.header(f'FrameEvaluation.E{chunk:02d}')+imports
-    if chunk:s+=f'open import {P}.FrameEvaluation.E{chunk-1:02d} public\n\n'
-    s+=''.join(blocks[offset:offset+24])
-    (folder/f'E{chunk:02d}.agda').write_text(s,encoding='utf-8')
-s=g.header('FrameEvaluation')+f'open import {P}.FrameEvaluation.E{chunk:02d} public\n'
-(ROOT/'FrameEvaluation.agda').write_text(s,encoding='utf-8')
+g.evaluation_chunks('FrameEvaluation','FrameEvaluation',g.matrix_imports,blocks,24)
 
 def bound(a):
     r='z≤n'
@@ -116,24 +110,59 @@ import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring as R
 module Dim = SS.Dim 4
 '''
-for atom in f.atoms:s+=f'import {P}.DecodeMatrices.{f.name(atom)} as C{f.name(atom)}\n'
-s+='\ndyadic-letter : ∀ g → Dim.⟦ [ L.⌊ g ⌋ ]ʷ ⟧ᴸ ≡ ⟦ decode (L.⌊ g ⌋) ⟧ᴹ\n'
-from itertools import combinations
-for kind,arity in [('M',1),('X',2),('K',4)]:
+# The cases of one letter kind below a fixed prefix of indices: lhs is the
+# clause head up to its first pattern, fixed the prefix not written there.
+def cases(lhs,kind,arity,vals,fixed):
     vs=list('abcd')[:arity];ps=['p'+str(i) for i in range(arity-1)]
-    def clause(vals):
-        global s
-        pats=[f.finpat(i) for i in vals]+vs[len(vals):]
-        lhs='dyadic-letter (T.'+kind+'-gen '+' '.join(pats+ps)+')'
-        for j in range(len(vals)-1):
-            if vals[j]>=vals[j+1]:
-                b='z≤n'
-                for _ in range(vals[j+1]):b='(s≤s '+b+')'
-                s+=lhs+f' = ⊥-elim (NP.≤⇒≯ {b} p{j})\n';return
-        if len(vals)==arity:
-            s+=lhs+' = C'+kind+''.join(str(i) for i in vals)+'.proved\n';return
-        for i in range(8):clause(vals+[i])
-    clause([])
+    pats=[f.finpat(i) for i in vals[fixed:]]+vs[len(vals):]
+    head=lhs+' '.join(pats+ps)
+    for j in range(len(vals)-1):
+        if vals[j]>=vals[j+1]:
+            b='z≤n'
+            for _ in range(vals[j+1]):b='(s≤s '+b+')'
+            return head+f' = ⊥-elim (NP.≤⇒≯ {b} p{j})\n'
+    if len(vals)==arity:
+        return head+' = C'+kind+''.join(str(i) for i in vals)+'.proved\n'
+    return ''.join(cases(lhs,kind,arity,vals+[i],fixed) for i in range(8))
+LETTER_IMPORTS=f'''open import Data.Empty.Irrelevant using (⊥-elim)
+open import Data.Fin.Base using (Fin ; zero ; suc ; _<_)
+open import Data.Nat.Base using (s≤s ; z≤n)
+import Data.Nat.Properties as NP
+import Relation.Binary.PropositionalEquality as Eq
+open Eq using (_≡_)
+open import {P}.Repaired.Syntactics
+open import {P}.Matrix using (⟦_⟧ᴹ)
+open import {P}.Repaired.Encoding using (decode)
+import Examples.Groups.CCX+HH-TwoLevel.Syntactics as T
+import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
+import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
+module Dim = SS.Dim 4
+'''
+# The four-level letters, one module per first index: as one function of
+# some 650 clauses beside the others, dyadic-letter took 38 s to check.
+kdir=ROOT/'Repaired'/'DecodingLetters';kdir.mkdir(exist_ok=True)
+for a in range(8):
+    k=g.header(f'Repaired.DecodingLetters.K{a}')+LETTER_IMPORTS
+    for atom in f.atoms:
+        if f.name(atom).startswith('K') and f.name(atom)[1]==str(a):
+            k+=f'import {P}.DecodeMatrices.{f.name(atom)} as C{f.name(atom)}\n'
+    # The first index as a definition at Fin 8: Fin's _<_ is heterogeneous,
+    # so a bare (zero) in the type would leave its size unsolved.
+    k+=(f'\nprivate\n  a : Fin 8\n  a = {f.finpat(a)}\n'
+        f'\nletter : (b c d : Fin 8) → .(p0 : a < b) → .(p1 : b < c) → .(p2 : c < d) →\n'
+        f'  Dim.⟦ [ L.⌊ T.K-gen a b c d p0 p1 p2 ⌋ ]ʷ ⟧ᴸ ≡ ⟦ decode (L.⌊ T.K-gen a b c d p0 p1 p2 ⌋) ⟧ᴹ\n')
+    k+=cases('letter ','K',4,[a],1)
+    (kdir/f'K{a}.agda').write_text(k,encoding='utf-8')
+for atom in f.atoms:
+    if not f.name(atom).startswith('K'):s+=f'import {P}.DecodeMatrices.{f.name(atom)} as C{f.name(atom)}\n'
+for a in range(8):s+=f'import {P}.Repaired.DecodingLetters.K{a} as K{a}\n'
+s+='\ndyadic-letter : ∀ g → Dim.⟦ [ L.⌊ g ⌋ ]ʷ ⟧ᴸ ≡ ⟦ decode (L.⌊ g ⌋) ⟧ᴹ\n'
+for kind,arity in [('M',1),('X',2)]:
+    for line in cases('§',kind,arity,[],0).splitlines():
+        head,rhs=line.split(' = ',1)
+        s+='dyadic-letter (T.'+kind+'-gen '+head[1:]+') = '+rhs+'\n'
+for a in range(8):
+    s+=f'dyadic-letter (T.K-gen {f.finpat(a)} b c d p0 p1 p2) = K{a}.letter b c d p0 p1 p2\n'
 s+='''
 letter-matrix : ∀ g → Dim.⟦ [ g ]ʷ ⟧ᴸ ≡ ⟦ decode g ⟧ᴹ
 letter-matrix (L.⌊ g ⌋) = dyadic-letter g

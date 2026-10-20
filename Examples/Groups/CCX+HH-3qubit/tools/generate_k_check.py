@@ -27,7 +27,7 @@ for t,i in E.items():
         m=g.matrix(t)[1];w=t;proof=f'Eq.trans (readM-gen {t}-gen) Eq.refl'
     else:
         a,b=E[t[0]],E[t[1]];m=g.mul(mats[t[0]],mats[t[1]]);w=f'w{a} • w{b}'
-        proof=f'Eq.trans (readM-• w{a} w{b}) (Eq.trans (Eq.cong₂ mulM e{a} e{b}) step{i})'
+        proof=f'Eq.trans (readM-• w{a} w{b}) (Eq.trans (Eq.cong₂ mulM {{x = readM w{a}}} {{y = matrix{a}}} {{u = readM w{b}}} {{v = matrix{b}}} e{a} e{b}) step{i})'
     mats[t]=m
     s+=f'\nw{i} : Word Gen\nw{i} = {w}\nmatrix{i} : Mat 3\nmatrix{i} = {literal(m)}\n'
     if isinstance(t,tuple):s+=f'step{i} : mulM matrix{a} matrix{b} ≡ matrix{i}\nstep{i} = Eq.refl\n'

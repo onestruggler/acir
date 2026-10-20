@@ -2,9 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.Tietze.symmetry_K_a where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.Kit as K using (CX12 ; CX21 ; K12 ; SWAP12 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; r008 ; refl ; sym ; trans ; under ; ε ; module Eq)
+open K
 import Examples.Groups.CCX+HH-3qubit.Tietze.drel154 as drel154
 import Examples.Groups.CCX+HH-3qubit.Tietze.drel30 as drel30
 import Examples.Groups.CCX+HH-3qubit.Tietze.drel46 as drel46

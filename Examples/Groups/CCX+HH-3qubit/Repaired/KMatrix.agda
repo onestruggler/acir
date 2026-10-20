@@ -37,7 +37,7 @@ matrix3 = mat ((((((((+ 0) +√2 (+ 0)), ((+ 0) +√2 (+ 0))), (((+ 0) +√2 (+ 
 step3 : mulM matrix1 matrix2 ≡ matrix3
 step3 = Eq.refl
 e3 : readM w3 ≡ matrix3
-e3 = Eq.trans (readM-• w1 w2) (Eq.trans (Eq.cong₂ mulM e1 e2) step3)
+e3 = Eq.trans (readM-• w1 w2) (Eq.trans (Eq.cong₂ mulM {x = readM w1} {y = matrix1} {u = readM w2} {v = matrix2} e1 e2) step3)
 
 w4 : Word Gen
 w4 = w2 • w3
@@ -46,7 +46,7 @@ matrix4 = mat ((((((((+ 2) +√2 (+ 0)), ((+ 0) +√2 (+ 0))), (((+ 0) +√2 (+ 
 step4 : mulM matrix2 matrix3 ≡ matrix4
 step4 = Eq.refl
 e4 : readM w4 ≡ matrix4
-e4 = Eq.trans (readM-• w2 w3) (Eq.trans (Eq.cong₂ mulM e2 e3) step4)
+e4 = Eq.trans (readM-• w2 w3) (Eq.trans (Eq.cong₂ mulM {x = readM w2} {y = matrix2} {u = readM w3} {v = matrix3} e2 e3) step4)
 
 w5 : Word Gen
 w5 = w1 • w4
@@ -55,7 +55,7 @@ matrix5 = mat ((((((((+ 2) +√2 (+ 0)), ((+ 2) +√2 (+ 0))), (((+ 2) +√2 (+ 
 step5 : mulM matrix1 matrix4 ≡ matrix5
 step5 = Eq.refl
 e5 : readM w5 ≡ matrix5
-e5 = Eq.trans (readM-• w1 w4) (Eq.trans (Eq.cong₂ mulM e1 e4) step5)
+e5 = Eq.trans (readM-• w1 w4) (Eq.trans (Eq.cong₂ mulM {x = readM w1} {y = matrix1} {u = readM w4} {v = matrix4} e1 e4) step5)
 
 checked : scaledM K12 (NK • X0 • NK • X0) ≡ scaledM (NK • X0 • NK • X0) K12
 checked = Eq.trans (Eq.cong (scaleM (√2^ len (NK • X0 • NK • X0))) e0)

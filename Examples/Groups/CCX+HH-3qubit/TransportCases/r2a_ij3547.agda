@@ -2,11 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.TransportCases.r2a_ij3547 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Frames
-open import Examples.Groups.CCX+HH-3qubit.FrameWords
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (X35 ; X47 ; _•_ ; _≈_ ; by-assoc-and ; module Eq)
+open K
 import Examples.Groups.CCX+HH-3qubit.FramePermutations.PE01222 as E
 
 proved : X35 • X47 ≈ X47 • X35

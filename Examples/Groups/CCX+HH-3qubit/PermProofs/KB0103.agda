@@ -2,9 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.PermProofs.KB0103 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.Kit as K using (CCX01 ; CCX12 ; SWAP02 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; r032 ; refl ; sym ; trans ; module Eq)
+open K
 
 p0 : CCX01 ≈ SWAP02 • CCX12 • SWAP02
 p0 = by-assoc-and (axiom r032) Eq.refl Eq.refl

@@ -101,6 +101,11 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
 | A where-function's result type written out, not left as `_` | `Independence/Clifford+CS/Bridge` | 24.0 → 1.2 s (`split` 19.8 → 0.06 s) |
 | A where block full of module applications made a parameterised module, the function a one-line call into it | `Real-Clifford+CH-TwoLevel/Diamond` | 23.6 → 8.9 s (Positivity 12.1 → 0.15 s) |
 | Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived`, `Qubit-Clifford/Relations/Rules/Figure5`, `Figure7` | 44.6 → 14.7 s (0.8 GB), 22.5 → 7.9 s, 22.8 → 9.2 s |
+| `Eq.cong₂ f eA eB` given its implicit arguments when f reduces (`mulM`): the expected type is compared with `f ?x ?u` before the arguments are checked, which unfolds both sides | `CCX+HH-3qubit` matrix evaluations (`MissingK/Evaluations`, `Evaluation`, `FrameEvaluation`; `tools/generate*.py`) | MissingK's E04 41.3 → 12.6 s (its checking 32.7 → 1.3 s); the fifteen such modules 21–38 s → 3–4 s |
+| Generated certificates import a slim re-export module restricted to the names each uses (`import Kit as K using (…)`, then `open K`), not the four modules whose names they take | `CCX+HH-3qubit` (7548 certificates; `Kit`, `FrameKit`, `generate.py`'s `kit`) | a one-line certificate's interface 52.7 → 9.2 kB; the folder's interfaces 595 → 350 MB; the heaviest root (`DyadicCompleteness`) 9.5 → 6.2 GB |
+| Matrix literals in chunks that import from each other only the names they use, rather than one module of a thousand names or a chain of public re-exports | `CCX+HH-3qubit/Evaluation`, `FrameEvaluation`, `MissingK/Evaluations` (`evaluation_chunks`) | `Evaluation` 79.7 s (operator parsing 27 s of it) → twelve chunks of 1.0–1.5 s; `FrameEvaluation`'s chunks 5.7–13.7 s → at most 1.2 s |
+| A heavy import that a proof uses through one lemma made a module parameter, its one client applying it | `CCX+HH-3qubit/HadamardRelations` (`Repaired/Even.FromEven`, applied in `Repaired/TwoLevelScaled`) | each loads about 1100 interfaces, not 7900: a batch of three 3.5–4.5 min → 49–99 s, peak 6.0–6.9 → 2.7–3.2 GB |
+| A dispatcher of some 700 clauses split by its first argument, one module per value (each clause's right-hand side costs some 70 ms, its type matching the certificate's only after reduction) | `CCX+HH-3qubit/Repaired/DecodingMatrices` (`dyadic-letter`; `Repaired/DecodingLetters/K0`…`K7`) | 41.8 s → 0.1 s and eight modules of 15.7 s at most |
 
 - **A `with` normalises the goal before abstracting.** `with b ≟ c`
   where `b` is a successor and `c` is zero is `no` by computation, so the
@@ -476,6 +481,33 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   own peak can be far below what a batch reaches: `Selinger/Translation`
   overflowed 3 GB in a batch that also rechecked other modules, and
   peaks under 1 GB alone.
+- **An interface records the scope of every module its module imports.**
+  Not only the names it opens: `import M as N` puts the whole of M in
+  scope qualified, and the interface keeps that scope (it is what
+  reloading the file restores). A module whose only import was `import
+  …PE00008 as E` wrote 2.9 kB; adding `open import …Syntactics using
+  (_≈_)` made it 20 kB. So `CCX+HH-3qubit`'s 7548 one-line certificates,
+  each opening Syntactics, Frames, FrameWords and Engine (which
+  re-exports Presentation.Base's congruence), wrote 50–65 kB each, and a
+  root that imports them all (`TwoLevel`, `DyadicCompleteness`, the
+  presentation) loaded 595 MB of interfaces into 7–9.5 GB. An `import
+  Kit as K using (…)` restricts the qualified scope too (`open import
+  Kit using (…)` does not: it imports all of Kit, then opens some), so
+  each certificate now imports a slim module listing what certificates
+  use, with exactly the names it uses, and then `open K`: 9 kB, 350 MB in
+  all, 6.2 GB at the heaviest root. A module application inside a
+  certificate (`module GL = GLib.Group-Lemmas _===_ grouplike` in 1310 of
+  them, for one lemma) is copied into its interface too; apply it once
+  in the slim module and re-export the one name.
+- **Load less: a heavy import used through one lemma can be a
+  parameter.** Each of the nine Hadamard relations of `CCX+HH-3qubit`
+  checked a few seconds of proof after loading 7900 interfaces (6–7 GB),
+  because it compared even normal forms by dyadic completeness, which
+  imports the whole transport development. With that comparison a
+  module parameter (its type in the light `Repaired/Even`), each loads
+  1100 interfaces and peaks at 3 GB; the one client,
+  `Repaired/TwoLevelScaled`, which loads everything anyway, applies them
+  (`module C0 = …r7b_i0123 from-even using (proved)`).
 - **Fewer with-functions, smaller interfaces.** Each `with` creates an
   auxiliary function whose type carries the abstracted goal; deep chains
   of them are serialised into the interface and loaded by every

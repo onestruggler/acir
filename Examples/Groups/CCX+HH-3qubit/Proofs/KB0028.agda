@@ -2,9 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.Proofs.KB0028 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.Kit as K using (CX01 ; CX10 ; K01 ; _•_ ; _≈_ ; by-assoc-and ; refl ; sym ; trans ; under ; ε ; module Eq)
+open K
 import Examples.Groups.CCX+HH-3qubit.Proofs.KB0004 as B4
 import Examples.Groups.CCX+HH-3qubit.Proofs.KB0026 as B26
 

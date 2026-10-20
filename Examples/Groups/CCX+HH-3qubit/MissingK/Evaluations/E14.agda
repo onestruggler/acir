@@ -6,8 +6,11 @@ open import Data.Product.Base using (_,_ )
 open import Examples.Groups.CCX+HH-3qubit.Syntactics
 open import Examples.Groups.CCX+HH-3qubit.MissingK.Model
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-
-open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E13 public
+open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E08 using (e130 ; e132 ; e137 ; e140 ; matrix130 ; matrix132 ; matrix137 ; matrix140 ; w130 ; w132 ; w137 ; w140)
+open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E09 using (e152 ; matrix152 ; w152)
+open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E10 using (e170 ; matrix170 ; w170)
+open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E11 using (e176 ; e177 ; e181 ; e184 ; matrix176 ; matrix177 ; matrix181 ; matrix184 ; w176 ; w177 ; w181 ; w184)
+open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E13 using (e216 ; e217 ; e223 ; matrix216 ; matrix217 ; matrix223 ; w216 ; w217 ; w223)
 
 w224 : Word Gen
 w224 = w184 • w223
@@ -16,7 +19,7 @@ matrix224 = mat ((((((0 , 0) , (9 , 9)) , ((9 , 9) , (0 , 0))) , (((0 , 1) , (0 
 step224 : mulM matrix184 matrix223 ≡ matrix224
 step224 = Eq.refl
 e224 : readM w224 ≡ matrix224
-e224 = Eq.trans (readM-• w184 w223) (Eq.trans (Eq.cong₂ mulM e184 e223) step224)
+e224 = Eq.trans (readM-• w184 w223) (Eq.trans (Eq.cong₂ mulM {x = readM w184} {y = matrix184} {u = readM w223} {v = matrix223} e184 e223) step224)
 
 w225 : Word Gen
 w225 = w217 • w224
@@ -25,7 +28,7 @@ matrix225 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 1) , (0 
 step225 : mulM matrix217 matrix224 ≡ matrix225
 step225 = Eq.refl
 e225 : readM w225 ≡ matrix225
-e225 = Eq.trans (readM-• w217 w224) (Eq.trans (Eq.cong₂ mulM e217 e224) step225)
+e225 = Eq.trans (readM-• w217 w224) (Eq.trans (Eq.cong₂ mulM {x = readM w217} {y = matrix217} {u = readM w224} {v = matrix224} e217 e224) step225)
 
 w226 : Word Gen
 w226 = w132 • w152
@@ -34,7 +37,7 @@ matrix226 = mat ((((((9 , 9) , (9 , 0)) , ((9 , 0) , (0 , 0))) , (((9 , 8) , (9 
 step226 : mulM matrix132 matrix152 ≡ matrix226
 step226 = Eq.refl
 e226 : readM w226 ≡ matrix226
-e226 = Eq.trans (readM-• w132 w152) (Eq.trans (Eq.cong₂ mulM e132 e152) step226)
+e226 = Eq.trans (readM-• w132 w152) (Eq.trans (Eq.cong₂ mulM {x = readM w132} {y = matrix132} {u = readM w152} {v = matrix152} e132 e152) step226)
 
 w227 : Word Gen
 w227 = w152 • w226
@@ -43,7 +46,7 @@ matrix227 = mat ((((((9 , 9) , (9 , 0)) , ((9 , 0) , (0 , 0))) , (((9 , 8) , (9 
 step227 : mulM matrix152 matrix226 ≡ matrix227
 step227 = Eq.refl
 e227 : readM w227 ≡ matrix227
-e227 = Eq.trans (readM-• w152 w226) (Eq.trans (Eq.cong₂ mulM e152 e226) step227)
+e227 = Eq.trans (readM-• w152 w226) (Eq.trans (Eq.cong₂ mulM {x = readM w152} {y = matrix152} {u = readM w226} {v = matrix226} e152 e226) step227)
 
 w228 : Word Gen
 w228 = w225 • w227
@@ -52,7 +55,7 @@ matrix228 = mat ((((((9 , 9) , (9 , 0)) , ((9 , 0) , (0 , 0))) , (((9 , 8) , (9 
 step228 : mulM matrix225 matrix227 ≡ matrix228
 step228 = Eq.refl
 e228 : readM w228 ≡ matrix228
-e228 = Eq.trans (readM-• w225 w227) (Eq.trans (Eq.cong₂ mulM e225 e227) step228)
+e228 = Eq.trans (readM-• w225 w227) (Eq.trans (Eq.cong₂ mulM {x = readM w225} {y = matrix225} {u = readM w227} {v = matrix227} e225 e227) step228)
 
 w229 : Word Gen
 w229 = w140 • w216
@@ -61,7 +64,7 @@ matrix229 = mat ((((((0 , 1) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (1 
 step229 : mulM matrix140 matrix216 ≡ matrix229
 step229 = Eq.refl
 e229 : readM w229 ≡ matrix229
-e229 = Eq.trans (readM-• w140 w216) (Eq.trans (Eq.cong₂ mulM e140 e216) step229)
+e229 = Eq.trans (readM-• w140 w216) (Eq.trans (Eq.cong₂ mulM {x = readM w140} {y = matrix140} {u = readM w216} {v = matrix216} e140 e216) step229)
 
 w230 : Word Gen
 w230 = w152 • w229
@@ -70,7 +73,7 @@ matrix230 = mat ((((((0 , 1) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (1 
 step230 : mulM matrix152 matrix229 ≡ matrix230
 step230 = Eq.refl
 e230 : readM w230 ≡ matrix230
-e230 = Eq.trans (readM-• w152 w229) (Eq.trans (Eq.cong₂ mulM e152 e229) step230)
+e230 = Eq.trans (readM-• w152 w229) (Eq.trans (Eq.cong₂ mulM {x = readM w152} {y = matrix152} {u = readM w229} {v = matrix229} e152 e229) step230)
 
 w231 : Word Gen
 w231 = w140 • w230
@@ -79,7 +82,7 @@ matrix231 = mat ((((((0 , 1) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (1 
 step231 : mulM matrix140 matrix230 ≡ matrix231
 step231 = Eq.refl
 e231 : readM w231 ≡ matrix231
-e231 = Eq.trans (readM-• w140 w230) (Eq.trans (Eq.cong₂ mulM e140 e230) step231)
+e231 = Eq.trans (readM-• w140 w230) (Eq.trans (Eq.cong₂ mulM {x = readM w140} {y = matrix140} {u = readM w230} {v = matrix230} e140 e230) step231)
 
 w232 : Word Gen
 w232 = w137 • w231
@@ -88,7 +91,7 @@ matrix232 = mat ((((((0 , 1) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (0 
 step232 : mulM matrix137 matrix231 ≡ matrix232
 step232 = Eq.refl
 e232 : readM w232 ≡ matrix232
-e232 = Eq.trans (readM-• w137 w231) (Eq.trans (Eq.cong₂ mulM e137 e231) step232)
+e232 = Eq.trans (readM-• w137 w231) (Eq.trans (Eq.cong₂ mulM {x = readM w137} {y = matrix137} {u = readM w231} {v = matrix231} e137 e231) step232)
 
 w233 : Word Gen
 w233 = w181 • w232
@@ -97,7 +100,7 @@ matrix233 = mat ((((((0 , 0) , (0 , 0)) , ((1 , 0) , (0 , 0))) , (((0 , 1) , (0 
 step233 : mulM matrix181 matrix232 ≡ matrix233
 step233 = Eq.refl
 e233 : readM w233 ≡ matrix233
-e233 = Eq.trans (readM-• w181 w232) (Eq.trans (Eq.cong₂ mulM e181 e232) step233)
+e233 = Eq.trans (readM-• w181 w232) (Eq.trans (Eq.cong₂ mulM {x = readM w181} {y = matrix181} {u = readM w232} {v = matrix232} e181 e232) step233)
 
 w234 : Word Gen
 w234 = w152 • w177
@@ -106,7 +109,7 @@ matrix234 = mat ((((((9 , 9) , (9 , 9)) , ((0 , 0) , (0 , 0))) , (((9 , 8) , (9 
 step234 : mulM matrix152 matrix177 ≡ matrix234
 step234 = Eq.refl
 e234 : readM w234 ≡ matrix234
-e234 = Eq.trans (readM-• w152 w177) (Eq.trans (Eq.cong₂ mulM e152 e177) step234)
+e234 = Eq.trans (readM-• w152 w177) (Eq.trans (Eq.cong₂ mulM {x = readM w152} {y = matrix152} {u = readM w177} {v = matrix177} e152 e177) step234)
 
 w235 : Word Gen
 w235 = w132 • w234
@@ -115,7 +118,7 @@ matrix235 = mat ((((((5 , 13) , (13 , 4)) , ((13 , 13) , (13 , 13))) , (((13 , 5
 step235 : mulM matrix132 matrix234 ≡ matrix235
 step235 = Eq.refl
 e235 : readM w235 ≡ matrix235
-e235 = Eq.trans (readM-• w132 w234) (Eq.trans (Eq.cong₂ mulM e132 e234) step235)
+e235 = Eq.trans (readM-• w132 w234) (Eq.trans (Eq.cong₂ mulM {x = readM w132} {y = matrix132} {u = readM w234} {v = matrix234} e132 e234) step235)
 
 w236 : Word Gen
 w236 = w176 • w235
@@ -124,7 +127,7 @@ matrix236 = mat ((((((5 , 13) , (13 , 4)) , ((13 , 13) , (13 , 13))) , (((13 , 5
 step236 : mulM matrix176 matrix235 ≡ matrix236
 step236 = Eq.refl
 e236 : readM w236 ≡ matrix236
-e236 = Eq.trans (readM-• w176 w235) (Eq.trans (Eq.cong₂ mulM e176 e235) step236)
+e236 = Eq.trans (readM-• w176 w235) (Eq.trans (Eq.cong₂ mulM {x = readM w176} {y = matrix176} {u = readM w235} {v = matrix235} e176 e235) step236)
 
 w237 : Word Gen
 w237 = w233 • w236
@@ -133,7 +136,7 @@ matrix237 = mat ((((((13 , 4) , (4 , 13)) , ((5 , 4) , (4 , 4))) , (((13 , 5) , 
 step237 : mulM matrix233 matrix236 ≡ matrix237
 step237 = Eq.refl
 e237 : readM w237 ≡ matrix237
-e237 = Eq.trans (readM-• w233 w236) (Eq.trans (Eq.cong₂ mulM e233 e236) step237)
+e237 = Eq.trans (readM-• w233 w236) (Eq.trans (Eq.cong₂ mulM {x = readM w233} {y = matrix233} {u = readM w236} {v = matrix236} e233 e236) step237)
 
 w238 : Word Gen
 w238 = w170 • w237
@@ -142,7 +145,7 @@ matrix238 = mat ((((((13 , 4) , (4 , 13)) , ((5 , 4) , (4 , 4))) , (((13 , 5) , 
 step238 : mulM matrix170 matrix237 ≡ matrix238
 step238 = Eq.refl
 e238 : readM w238 ≡ matrix238
-e238 = Eq.trans (readM-• w170 w237) (Eq.trans (Eq.cong₂ mulM e170 e237) step238)
+e238 = Eq.trans (readM-• w170 w237) (Eq.trans (Eq.cong₂ mulM {x = readM w170} {y = matrix170} {u = readM w237} {v = matrix237} e170 e237) step238)
 
 w239 : Word Gen
 w239 = w130 • w238
@@ -151,5 +154,5 @@ matrix239 = mat ((((((4 , 13) , (13 , 4)) , ((12 , 13) , (13 , 13))) , (((13 , 5
 step239 : mulM matrix130 matrix238 ≡ matrix239
 step239 = Eq.refl
 e239 : readM w239 ≡ matrix239
-e239 = Eq.trans (readM-• w130 w238) (Eq.trans (Eq.cong₂ mulM e130 e238) step239)
+e239 = Eq.trans (readM-• w130 w238) (Eq.trans (Eq.cong₂ mulM {x = readM w130} {y = matrix130} {u = readM w238} {v = matrix238} e130 e238) step239)
 

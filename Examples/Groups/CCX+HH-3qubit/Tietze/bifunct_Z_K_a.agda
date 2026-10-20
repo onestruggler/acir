@@ -2,9 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.Tietze.bifunct_Z_K_a where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.Kit as K using (K01 ; K12 ; X0 ; Z0 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; r025 ; r027 ; r039 ; r041 ; refl ; sym ; trans ; under ; ε ; module Eq)
+open K
 
 step0 : Z0 • K12 ≈ K01 • K01 • Z0 • K12
 step0 = by-assoc-and (under (ε) (Z0 • K12) (sym (axiom r025))) Eq.refl Eq.refl

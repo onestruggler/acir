@@ -18,16 +18,11 @@ open import Examples.Groups.CCX+HH-3qubit.Matrix using (⟦_⟧ᴹ)
 import Examples.Groups.CCX+HH-3qubit.Normalization as N
 open import Examples.Groups.CCX+HH-3qubit.Repaired.DyadicCompleteness
   using (matrix-sound ; completeness)
+open import Examples.Groups.CCX+HH-3qubit.Repaired.Even public
+  using (even ; FromEven)
 open import Presentation.Base _===_ hiding (_===_ ; _≈_)
 
-even : ∀ {w} (nf : N.Normal w) → N.Normal.odd nf ≡ false →
-       w ≈ N.dyadic (N.Normal.body nf)
-even (N.normal b false e) Eq.refl = trans (lift e) right-unit
-even (N.normal b true e) ()
-
-from-even : ∀ {w v} (b c : Word N.DGen) →
-            w ≈ N.dyadic b → v ≈ N.dyadic c →
-            ⟦ w ⟧ᴹ ≡ ⟦ v ⟧ᴹ → w ≈ v
+from-even : FromEven
 from-even {w} {v} b c pw pv eq = trans pw (trans bodies (sym pv))
   where
   bodies : N.dyadic b ≈ N.dyadic c

@@ -25,17 +25,24 @@ def theorem(rule,values):
     else:
         w,x,y,z=values;l=W(['L.H',X(x,y),'L.H']);r=W([X(x,y),K(w,x,y,z)])
         ax=f'L.r7d₁ {{w = {fin(w)}}} {{x = {fin(x)}}} {{y = {fin(y)}}} {{z = {fin(z)}}} '+' '.join(bound(i) for i in [w,x,y])+' Eq.refl Eq.refl Eq.refl Eq.refl'
-    s=g.header('HadamardRelations.'+label)
-    s+=f'''open import Data.Fin.Base using (zero ; suc)
+    # The comparison of even normal forms by dyadic completeness is a
+    # parameter (Repaired/Even): with it imported, each of these modules
+    # loaded the whole transport development, some 7900 interfaces and
+    # 6-7 GB, to check a few seconds of proof.
+    s=f'''{{-# OPTIONS --without-K --safe #-}}
+
+open import Data.Fin.Base using (zero ; suc)
 open import Data.Nat.Base using (s≤s ; z≤n)
 import Relation.Binary.PropositionalEquality as Eq
 open import {P}.Repaired.Syntactics
 open import {P}.Repaired.Encoding using (decode)
-open import {P}.Repaired.EvenCompleteness using (even ; from-even)
+open import {P}.Repaired.Even using (even ; FromEven)
 import {P}.Normalization as N
 import {P}.Repaired.DecodingMatrices as DM
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
+
+module {P}.HadamardRelations.{label} (from-even : FromEven) where
 
 left right : Word (L.Genᴸ 8)
 left = {l}
@@ -74,6 +81,7 @@ import Data.Nat.Properties as NP
 import Relation.Binary.PropositionalEquality as Eq
 open import {P}.Repaired.Syntactics
 open import {P}.Repaired.Encoding using (decode ; dyadic-decoding)
+open import {P}.Repaired.EvenCompleteness using (from-even)
 import {P}.TwoLevel as T
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Presentation.Base as PB
@@ -87,7 +95,7 @@ axiom-decode (L.table1 {w} {v} proof) = trans
   (trans (lift (T.axiom-decode {w} {v} proof)) (sym (refl' (dyadic-decoding v))))
 axiom-decode L.r7a = axiom (paper r108)
 '''
-count=0
+count=0;apps=[]
 for rule,(vs,orders,guards) in SCHEMAS.items():
     ps=['p'+str(i) for i in range(len(orders))];hs=['h'+str(i) for i in range(len(guards))]
     def walk(vals):
@@ -106,11 +114,12 @@ for rule,(vs,orders,guards) in SCHEMAS.items():
                 clauses+='axiom-decode (L.'+rule+' '+' '.join(pats+args)+f') = ⊥-elim (NP.≤⇒≯ {lower} p{j})\n';return
         if len(vals)==len(vs):
             label=theorem(rule,vals);alias='C'+str(count);count+=1
-            s+=f'import {P}.HadamardRelations.{label} as {alias}\n'
+            s+=f'import {P}.HadamardRelations.{label}\n'
+            apps.append(f'module {alias} = {P}.HadamardRelations.{label} from-even using (proved)\n')
             clauses+='axiom-decode (L.'+rule+' '+' '.join(pats+args)+f') = {alias}.proved\n';return
         for i in range(8):walk(vals+[i])
     walk([])
-s+='\n'+clauses+'''
+s+='\n'+''.join(apps)+'\n'+clauses+'''
 decode-cong : ∀ {w v} → PB._≈_ (L._===ᴸ_ {8}) w v → (decode ʷ) w ≈ (decode ʷ) v
 decode-cong = PP.StarCongruence.fʷ-cong (L._===ᴸ_ {8}) _===_ decode axiom-decode
 '''

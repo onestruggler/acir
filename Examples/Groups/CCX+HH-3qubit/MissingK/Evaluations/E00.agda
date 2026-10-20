@@ -35,7 +35,7 @@ matrix3 = mat ((((((4 , 13) , (13 , 13)) , ((12 , 4) , (4 , 4))) , (((13 , 4) , 
 step3 : mulM matrix2 matrix1 ≡ matrix3
 step3 = Eq.refl
 e3 : readM w3 ≡ matrix3
-e3 = Eq.trans (readM-• w2 w1) (Eq.trans (Eq.cong₂ mulM e2 e1) step3)
+e3 = Eq.trans (readM-• w2 w1) (Eq.trans (Eq.cong₂ mulM {x = readM w2} {y = matrix2} {u = readM w1} {v = matrix1} e2 e1) step3)
 
 w4 : Word Gen
 w4 = w1 • w3
@@ -44,7 +44,7 @@ matrix4 = mat ((((((5 , 4) , (4 , 4)) , ((4 , 4) , (13 , 13))) , (((4 , 5) , (4 
 step4 : mulM matrix1 matrix3 ≡ matrix4
 step4 = Eq.refl
 e4 : readM w4 ≡ matrix4
-e4 = Eq.trans (readM-• w1 w3) (Eq.trans (Eq.cong₂ mulM e1 e3) step4)
+e4 = Eq.trans (readM-• w1 w3) (Eq.trans (Eq.cong₂ mulM {x = readM w1} {y = matrix1} {u = readM w3} {v = matrix3} e1 e3) step4)
 
 w5 : Word Gen
 w5 = X1
@@ -67,7 +67,7 @@ matrix7 = mat ((((((0 , 0) , (0 , 0)) , ((1 , 0) , (0 , 0))) , (((0 , 0) , (0 , 
 step7 : mulM matrix2 matrix6 ≡ matrix7
 step7 = Eq.refl
 e7 : readM w7 ≡ matrix7
-e7 = Eq.trans (readM-• w2 w6) (Eq.trans (Eq.cong₂ mulM e2 e6) step7)
+e7 = Eq.trans (readM-• w2 w6) (Eq.trans (Eq.cong₂ mulM {x = readM w2} {y = matrix2} {u = readM w6} {v = matrix6} e2 e6) step7)
 
 w8 : Word Gen
 w8 = w6 • w7
@@ -76,7 +76,7 @@ matrix8 = mat ((((((0 , 0) , (1 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (0 , 
 step8 : mulM matrix6 matrix7 ≡ matrix8
 step8 = Eq.refl
 e8 : readM w8 ≡ matrix8
-e8 = Eq.trans (readM-• w6 w7) (Eq.trans (Eq.cong₂ mulM e6 e7) step8)
+e8 = Eq.trans (readM-• w6 w7) (Eq.trans (Eq.cong₂ mulM {x = readM w6} {y = matrix6} {u = readM w7} {v = matrix7} e6 e7) step8)
 
 w9 : Word Gen
 w9 = w2 • w8
@@ -85,7 +85,7 @@ matrix9 = mat ((((((0 , 0) , (1 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (0 , 
 step9 : mulM matrix2 matrix8 ≡ matrix9
 step9 = Eq.refl
 e9 : readM w9 ≡ matrix9
-e9 = Eq.trans (readM-• w2 w8) (Eq.trans (Eq.cong₂ mulM e2 e8) step9)
+e9 = Eq.trans (readM-• w2 w8) (Eq.trans (Eq.cong₂ mulM {x = readM w2} {y = matrix2} {u = readM w8} {v = matrix8} e2 e8) step9)
 
 w10 : Word Gen
 w10 = Z0
@@ -101,7 +101,7 @@ matrix11 = mat ((((((5 , 4) , (4 , 4)) , ((13 , 13) , (4 , 4))) , (((4 , 5) , (4
 step11 : mulM matrix0 matrix2 ≡ matrix11
 step11 = Eq.refl
 e11 : readM w11 ≡ matrix11
-e11 = Eq.trans (readM-• w0 w2) (Eq.trans (Eq.cong₂ mulM e0 e2) step11)
+e11 = Eq.trans (readM-• w0 w2) (Eq.trans (Eq.cong₂ mulM {x = readM w0} {y = matrix0} {u = readM w2} {v = matrix2} e0 e2) step11)
 
 w12 : Word Gen
 w12 = w2 • w11
@@ -110,7 +110,7 @@ matrix12 = mat ((((((5 , 4) , (4 , 4)) , ((13 , 13) , (4 , 4))) , (((4 , 5) , (4
 step12 : mulM matrix2 matrix11 ≡ matrix12
 step12 = Eq.refl
 e12 : readM w12 ≡ matrix12
-e12 = Eq.trans (readM-• w2 w11) (Eq.trans (Eq.cong₂ mulM e2 e11) step12)
+e12 = Eq.trans (readM-• w2 w11) (Eq.trans (Eq.cong₂ mulM {x = readM w2} {y = matrix2} {u = readM w11} {v = matrix11} e2 e11) step12)
 
 w13 : Word Gen
 w13 = w0 • w12
@@ -119,7 +119,7 @@ matrix13 = mat ((((((9 , 8) , (8 , 8)) , ((0 , 0) , (0 , 0))) , (((8 , 9) , (8 ,
 step13 : mulM matrix0 matrix12 ≡ matrix13
 step13 = Eq.refl
 e13 : readM w13 ≡ matrix13
-e13 = Eq.trans (readM-• w0 w12) (Eq.trans (Eq.cong₂ mulM e0 e12) step13)
+e13 = Eq.trans (readM-• w0 w12) (Eq.trans (Eq.cong₂ mulM {x = readM w0} {y = matrix0} {u = readM w12} {v = matrix12} e0 e12) step13)
 
 w14 : Word Gen
 w14 = Z1
@@ -135,5 +135,5 @@ matrix15 = mat ((((((13 , 5) , (4 , 4)) , ((4 , 13) , (13 , 13))) , (((13 , 4) ,
 step15 : mulM matrix5 matrix1 ≡ matrix15
 step15 = Eq.refl
 e15 : readM w15 ≡ matrix15
-e15 = Eq.trans (readM-• w5 w1) (Eq.trans (Eq.cong₂ mulM e5 e1) step15)
+e15 = Eq.trans (readM-• w5 w1) (Eq.trans (Eq.cong₂ mulM {x = readM w5} {y = matrix5} {u = readM w1} {v = matrix1} e5 e1) step15)
 

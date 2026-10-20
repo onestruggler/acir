@@ -6,8 +6,9 @@ open import Data.Product.Base using (_,_ )
 open import Examples.Groups.CCX+HH-3qubit.Syntactics
 open import Examples.Groups.CCX+HH-3qubit.MissingK.Model
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-
-open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E04 public
+open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E00 using (e6 ; e10 ; matrix6 ; matrix10 ; w6 ; w10)
+open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E01 using (e17 ; e18 ; e29 ; matrix17 ; matrix18 ; matrix29 ; w17 ; w18 ; w29)
+open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E02 using (e32 ; e35 ; e38 ; e44 ; e47 ; matrix32 ; matrix35 ; matrix38 ; matrix44 ; matrix47 ; w32 ; w35 ; w38 ; w44 ; w47)
 
 w80 : Word Gen
 w80 = w6 • w44
@@ -16,7 +17,7 @@ matrix80 = mat ((((((0 , 0) , (1 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (0 ,
 step80 : mulM matrix6 matrix44 ≡ matrix80
 step80 = Eq.refl
 e80 : readM w80 ≡ matrix80
-e80 = Eq.trans (readM-• w6 w44) (Eq.trans (Eq.cong₂ mulM e6 e44) step80)
+e80 = Eq.trans (readM-• w6 w44) (Eq.trans (Eq.cong₂ mulM {x = readM w6} {y = matrix6} {u = readM w44} {v = matrix44} e6 e44) step80)
 
 w81 : Word Gen
 w81 = w44 • w80
@@ -25,7 +26,7 @@ matrix81 = mat ((((((0 , 0) , (1 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (0 ,
 step81 : mulM matrix44 matrix80 ≡ matrix81
 step81 = Eq.refl
 e81 : readM w81 ≡ matrix81
-e81 = Eq.trans (readM-• w44 w80) (Eq.trans (Eq.cong₂ mulM e44 e80) step81)
+e81 = Eq.trans (readM-• w44 w80) (Eq.trans (Eq.cong₂ mulM {x = readM w44} {y = matrix44} {u = readM w80} {v = matrix80} e44 e80) step81)
 
 w82 : Word Gen
 w82 = w32 • w35
@@ -34,7 +35,7 @@ matrix82 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (0 ,
 step82 : mulM matrix32 matrix35 ≡ matrix82
 step82 = Eq.refl
 e82 : readM w82 ≡ matrix82
-e82 = Eq.trans (readM-• w32 w35) (Eq.trans (Eq.cong₂ mulM e32 e35) step82)
+e82 = Eq.trans (readM-• w32 w35) (Eq.trans (Eq.cong₂ mulM {x = readM w32} {y = matrix32} {u = readM w35} {v = matrix35} e32 e35) step82)
 
 w83 : Word Gen
 w83 = w35 • w82
@@ -43,7 +44,7 @@ matrix83 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (0 ,
 step83 : mulM matrix35 matrix82 ≡ matrix83
 step83 = Eq.refl
 e83 : readM w83 ≡ matrix83
-e83 = Eq.trans (readM-• w35 w82) (Eq.trans (Eq.cong₂ mulM e35 e82) step83)
+e83 = Eq.trans (readM-• w35 w82) (Eq.trans (Eq.cong₂ mulM {x = readM w35} {y = matrix35} {u = readM w82} {v = matrix82} e35 e82) step83)
 
 w84 : Word Gen
 w84 = w32 • w44
@@ -52,7 +53,7 @@ matrix84 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 1) , (0 ,
 step84 : mulM matrix32 matrix44 ≡ matrix84
 step84 = Eq.refl
 e84 : readM w84 ≡ matrix84
-e84 = Eq.trans (readM-• w32 w44) (Eq.trans (Eq.cong₂ mulM e32 e44) step84)
+e84 = Eq.trans (readM-• w32 w44) (Eq.trans (Eq.cong₂ mulM {x = readM w32} {y = matrix32} {u = readM w44} {v = matrix44} e32 e44) step84)
 
 w85 : Word Gen
 w85 = w44 • w84
@@ -61,7 +62,7 @@ matrix85 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 1) , (0 ,
 step85 : mulM matrix44 matrix84 ≡ matrix85
 step85 = Eq.refl
 e85 : readM w85 ≡ matrix85
-e85 = Eq.trans (readM-• w44 w84) (Eq.trans (Eq.cong₂ mulM e44 e84) step85)
+e85 = Eq.trans (readM-• w44 w84) (Eq.trans (Eq.cong₂ mulM {x = readM w44} {y = matrix44} {u = readM w84} {v = matrix84} e44 e84) step85)
 
 w86 : Word Gen
 w86 = w17 • w44
@@ -70,7 +71,7 @@ matrix86 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (0 ,
 step86 : mulM matrix17 matrix44 ≡ matrix86
 step86 = Eq.refl
 e86 : readM w86 ≡ matrix86
-e86 = Eq.trans (readM-• w17 w44) (Eq.trans (Eq.cong₂ mulM e17 e44) step86)
+e86 = Eq.trans (readM-• w17 w44) (Eq.trans (Eq.cong₂ mulM {x = readM w17} {y = matrix17} {u = readM w44} {v = matrix44} e17 e44) step86)
 
 w87 : Word Gen
 w87 = w44 • w86
@@ -79,7 +80,7 @@ matrix87 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (0 ,
 step87 : mulM matrix44 matrix86 ≡ matrix87
 step87 = Eq.refl
 e87 : readM w87 ≡ matrix87
-e87 = Eq.trans (readM-• w44 w86) (Eq.trans (Eq.cong₂ mulM e44 e86) step87)
+e87 = Eq.trans (readM-• w44 w86) (Eq.trans (Eq.cong₂ mulM {x = readM w44} {y = matrix44} {u = readM w86} {v = matrix86} e44 e86) step87)
 
 w88 : Word Gen
 w88 = w18 • w35
@@ -88,7 +89,7 @@ matrix88 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (0 ,
 step88 : mulM matrix18 matrix35 ≡ matrix88
 step88 = Eq.refl
 e88 : readM w88 ≡ matrix88
-e88 = Eq.trans (readM-• w18 w35) (Eq.trans (Eq.cong₂ mulM e18 e35) step88)
+e88 = Eq.trans (readM-• w18 w35) (Eq.trans (Eq.cong₂ mulM {x = readM w18} {y = matrix18} {u = readM w35} {v = matrix35} e18 e35) step88)
 
 w89 : Word Gen
 w89 = w35 • w88
@@ -97,7 +98,7 @@ matrix89 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 1) , (0 ,
 step89 : mulM matrix35 matrix88 ≡ matrix89
 step89 = Eq.refl
 e89 : readM w89 ≡ matrix89
-e89 = Eq.trans (readM-• w35 w88) (Eq.trans (Eq.cong₂ mulM e35 e88) step89)
+e89 = Eq.trans (readM-• w35 w88) (Eq.trans (Eq.cong₂ mulM {x = readM w35} {y = matrix35} {u = readM w88} {v = matrix88} e35 e88) step89)
 
 w90 : Word Gen
 w90 = w47 • w29
@@ -106,7 +107,7 @@ matrix90 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 0) , (1 ,
 step90 : mulM matrix47 matrix29 ≡ matrix90
 step90 = Eq.refl
 e90 : readM w90 ≡ matrix90
-e90 = Eq.trans (readM-• w47 w29) (Eq.trans (Eq.cong₂ mulM e47 e29) step90)
+e90 = Eq.trans (readM-• w47 w29) (Eq.trans (Eq.cong₂ mulM {x = readM w47} {y = matrix47} {u = readM w29} {v = matrix29} e47 e29) step90)
 
 w91 : Word Gen
 w91 = w29 • w90
@@ -115,7 +116,7 @@ matrix91 = mat ((((((1 , 0) , (0 , 0)) , ((0 , 0) , (0 , 0))) , (((0 , 1) , (0 ,
 step91 : mulM matrix29 matrix90 ≡ matrix91
 step91 = Eq.refl
 e91 : readM w91 ≡ matrix91
-e91 = Eq.trans (readM-• w29 w90) (Eq.trans (Eq.cong₂ mulM e29 e90) step91)
+e91 = Eq.trans (readM-• w29 w90) (Eq.trans (Eq.cong₂ mulM {x = readM w29} {y = matrix29} {u = readM w90} {v = matrix90} e29 e90) step91)
 
 w92 : Word Gen
 w92 = w10 • w44
@@ -124,7 +125,7 @@ matrix92 = mat ((((((9 , 8) , (0 , 0)) , ((8 , 8) , (0 , 0))) , (((8 , 9) , (0 ,
 step92 : mulM matrix10 matrix44 ≡ matrix92
 step92 = Eq.refl
 e92 : readM w92 ≡ matrix92
-e92 = Eq.trans (readM-• w10 w44) (Eq.trans (Eq.cong₂ mulM e10 e44) step92)
+e92 = Eq.trans (readM-• w10 w44) (Eq.trans (Eq.cong₂ mulM {x = readM w10} {y = matrix10} {u = readM w44} {v = matrix44} e10 e44) step92)
 
 w93 : Word Gen
 w93 = w44 • w92
@@ -133,7 +134,7 @@ matrix93 = mat ((((((9 , 8) , (0 , 0)) , ((8 , 8) , (0 , 0))) , (((8 , 9) , (0 ,
 step93 : mulM matrix44 matrix92 ≡ matrix93
 step93 = Eq.refl
 e93 : readM w93 ≡ matrix93
-e93 = Eq.trans (readM-• w44 w92) (Eq.trans (Eq.cong₂ mulM e44 e92) step93)
+e93 = Eq.trans (readM-• w44 w92) (Eq.trans (Eq.cong₂ mulM {x = readM w44} {y = matrix44} {u = readM w92} {v = matrix92} e44 e92) step93)
 
 w94 : Word Gen
 w94 = w38 • w44
@@ -142,7 +143,7 @@ matrix94 = mat ((((((4 , 12) , (13 , 4)) , ((13 , 4) , (13 , 4))) , (((12 , 4) ,
 step94 : mulM matrix38 matrix44 ≡ matrix94
 step94 = Eq.refl
 e94 : readM w94 ≡ matrix94
-e94 = Eq.trans (readM-• w38 w44) (Eq.trans (Eq.cong₂ mulM e38 e44) step94)
+e94 = Eq.trans (readM-• w38 w44) (Eq.trans (Eq.cong₂ mulM {x = readM w38} {y = matrix38} {u = readM w44} {v = matrix44} e38 e44) step94)
 
 w95 : Word Gen
 w95 = w44 • w94
@@ -151,5 +152,5 @@ matrix95 = mat ((((((4 , 12) , (13 , 4)) , ((13 , 4) , (13 , 4))) , (((12 , 4) ,
 step95 : mulM matrix44 matrix94 ≡ matrix95
 step95 = Eq.refl
 e95 : readM w95 ≡ matrix95
-e95 = Eq.trans (readM-• w44 w94) (Eq.trans (Eq.cong₂ mulM e44 e94) step95)
+e95 = Eq.trans (readM-• w44 w94) (Eq.trans (Eq.cong₂ mulM {x = readM w44} {y = matrix44} {u = readM w94} {v = matrix94} e44 e94) step95)
 

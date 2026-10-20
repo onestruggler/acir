@@ -2,9 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.Tietze.drel36 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.Kit as K using (CCX01 ; CCX02 ; CX01 ; CZ01 ; K12 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; r001 ; refl ; sym ; trans ; under ; ε ; module Eq)
+open K
 import Examples.Groups.CCX+HH-3qubit.Tietze.drel128 as drel128
 import Examples.Groups.CCX+HH-3qubit.Tietze.drel29 as drel29
 import Examples.Groups.CCX+HH-3qubit.Tietze.drel92 as drel92

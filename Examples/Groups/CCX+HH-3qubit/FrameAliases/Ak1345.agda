@@ -2,11 +2,8 @@
 
 module Examples.Groups.CCX+HH-3qubit.FrameAliases.Ak1345 where
 
-import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Frames
-open import Examples.Groups.CCX+HH-3qubit.FrameWords
-open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (K1345 ; NK ; _•_ ; _≈_ ; by-assoc-and ; cong ; forget-frame ; k1345 ; p ; refl ; s0 ; s1 ; s2 ; s3 ; s4 ; trans ; module Eq)
+open K
 import Examples.Groups.CCX+HH-3qubit.FrameMoves.MV00633 as Move
 import Examples.Groups.CCX+HH-3qubit.FramePermutations.PE00683 as R
 import Examples.Groups.CCX+HH-3qubit.FramePermutations.PE00952 as Inv

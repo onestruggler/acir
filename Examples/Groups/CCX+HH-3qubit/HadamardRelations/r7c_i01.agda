@@ -1,17 +1,17 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7c_i01 where
-
 open import Data.Fin.Base using (zero ; suc)
 open import Data.Nat.Base using (s≤s ; z≤n)
 import Relation.Binary.PropositionalEquality as Eq
 open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
 open import Examples.Groups.CCX+HH-3qubit.Repaired.Encoding using (decode)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.EvenCompleteness using (even ; from-even)
+open import Examples.Groups.CCX+HH-3qubit.Repaired.Even using (even ; FromEven)
 import Examples.Groups.CCX+HH-3qubit.Normalization as N
 import Examples.Groups.CCX+HH-3qubit.Repaired.DecodingMatrices as DM
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
+
+module Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7c_i01 (from-even : FromEven) where
 
 left right : Word (L.Genᴸ 8)
 left = (L.H) • (L.Mᴸ (zero)) • (L.H)
