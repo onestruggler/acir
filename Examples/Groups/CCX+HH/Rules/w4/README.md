@@ -584,3 +584,25 @@ only, so the windows have at most four wires.
   wire 3. Its stabiliser V has order |W(E8)|². The V-orbit of HH(2,3)·L
   grows fourfold per level beyond 7637, so that graph is not small
   locally.
+
+## A finder over V_Z
+
+`g4vz.py` enumerates the cosets of V_Z (the lattices g·ℤ¹⁶) instead of
+AGL(4, 2). The subgroup's generators are the classical letters and the
+14 monomial gates. A label is kept canonical by its signed permutation:
+the algebraic normal form of its signs, then the A₁₆ tower's canonical
+word for its permutation (`canonA16.py`, which pickles the tower's
+representatives). A norm step is an instance of completeness for V_Z.
+It is much stronger on the K content. The merge of a white- and a
+black-controlled HH (the controlled-HH gadget of NaturalP/Ctrl) into
+HH(0,1), a 35-letter identity, is derived in 67 s (`merge4.py`); the
+AGL finder does not derive it.
+
+`g4dec.py` decodes the canonical K relations into circuits. An M- or
+X-edge becomes its canonical V_Z word. A K-edge L · K_A · R becomes
+T · S⁻¹ · ρ · J₀ · ρ⁻¹ · S, with J₀ = q s q s (q the controlled HH
+under a white control, s = M₀M₈; 54 letters). Decoded this way the
+canonical r2f relations have about 465 letters, and the finder does
+not derive them at 20 000 cosets. So the K relations need
+intermediate lemmas about the controlled HH (merges, commutations
+with signed letters), or a decoder with shorter cores.
