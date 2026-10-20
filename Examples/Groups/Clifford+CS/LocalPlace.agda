@@ -125,10 +125,19 @@ lift-k : ∀ k (u : Word (S.Gen (k + r))) → (∀ (i : Fin (k + r)) → toℕ i
          Σ (Word (S.Gen r)) λ v → (k + r) ⊢ net u ≈ up k (net v)
 lift-k {r} zero    u fix = u , refl
   where open Tools (r VRel,_===_)
-lift-k {r} (suc k) u fix with lift0′ u (fix 0F (s≤s z≤n))
-... | v , e , sv with lift-k k v (λ i i<k → sF-inj (Eq.trans (Eq.sym (sv i)) (fix (sF i) (s≤s i<k))))
-... | w , e′ = w , trans e (lemma-cong↑ (net v) (up k (net w)) e′)
-  where open Tools ((suc (k + r)) VRel,_===_)
+lift-k {r} (suc k) u fix = step₁ (lift0′ u (fix 0F (s≤s z≤n)))
+  where
+  open Tools ((suc (k + r)) VRel,_===_)
+  -- Helpers taking the two results as arguments: abstracted by ,
+  -- they made the goal be normalised (15 s).
+  step₁ : (Σ (Word (S.Gen (k + r))) λ v → ((₁₊ (k + r)) ⊢ net u ≈ net v ↑) ×
+                                          (∀ i → perm u ⟨$⟩ʳ sF i ≡ sF (perm v ⟨$⟩ʳ i))) →
+          Σ (Word (S.Gen r)) λ w → (suc k + r) ⊢ net u ≈ up (suc k) (net w)
+  step₁ (v , e , sv) = step₂ (lift-k k v (λ i i<k → sF-inj (Eq.trans (Eq.sym (sv i)) (fix (sF i) (s≤s i<k)))))
+    where
+    step₂ : (Σ (Word (S.Gen r)) λ w → (k + r) ⊢ net v ≈ up k (net w)) →
+            Σ (Word (S.Gen r)) λ w → (suc k + r) ⊢ net u ≈ up (suc k) (net w)
+    step₂ (w , e′) = w , trans e (lemma-cong↑ (net v) (up k (net w)) e′)
 
 ------------------------------------------------------------------------
 -- The placement depends only on the k wires
