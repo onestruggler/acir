@@ -125,8 +125,9 @@ private
     n : ℕ
 '''
 
-# Letters per Steps module: a step costs about its length.
-STEP_LETTERS = 3000
+# Letters per Steps module: a step costs about its length (3000 made
+# modules of 20–31 s).
+STEP_LETTERS = 1800
 
 def emit_steps():
     """Write the Steps modules, split by total length; their names."""
