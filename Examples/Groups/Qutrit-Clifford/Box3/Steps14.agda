@@ -12,90 +12,87 @@
 
 module Examples.Groups.Qutrit-Clifford.Box3.Steps14 where
 
-open import Data.List.Base using (List ; [] ; _∷_)
 open import Data.Nat.Base using (ℕ)
 
 open import Notations using (₂₊)
-open import Examples.Groups.Qutrit-Clifford.Syntactics
 open import Examples.Groups.Qutrit-Clifford.Engine using (Eqn)
-open import Examples.Groups.Qutrit-Clifford.Axioms
-open import Examples.Groups.Qutrit-Clifford.Box3.Kit using (sem₀₁)
+open import Examples.Groups.Qutrit-Clifford.Box3.Kit using (semℓ)
 
 private
   variable
     n : ℕ
 
 t2-468 : Eqn (₂₊ n)
-t2-468 = sem₀₁ (h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ s₀ ∷ c₀ ∷ []) (h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ s₀ ∷ []) _
+t2-468 = semℓ "HHHCCHHHHHHHHHIIIIIIHSSC" "IIHSS" _
 
 t2-469 : Eqn (₂₊ n)
-t2-469 = sem₀₁ (h₁ ∷ h₀ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₀ ∷ s₀ ∷ s₁ ∷ s₁ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ []) (c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₀ ∷ s₀ ∷ s₁ ∷ s₁ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ []) _
+t2-469 = semℓ "IHSSHHHCCCCITTHSTTTTIIICCCCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICC" "CHICHICHHHHCCIIIHHHCCIIIHHHCCHHHHHHHHHSSHHHIIIIIIIIICCCCITTHSTTTTIIICCCCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICC" _
 
 t2-470 : Eqn (₂₊ n)
-t2-470 = sem₀₁ (h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₀ ∷ s₀ ∷ s₁ ∷ s₁ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ []) (𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₀ ∷ s₀ ∷ s₀ ∷ []) _
+t2-470 = semℓ "HHHCCIIIHHHCCIIIHHHCCHHHHHHHHHSSHHHIIIIIIIIICCCCITTHSTTTTIIICCCCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICC" "nnnnIHSS" _
 
 t2-471 : Eqn (₂₊ n)
-t2-471 = sem₀₁ (s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₀ ∷ s₀ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ []) (h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₀ ∷ s₀ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ []) _
+t2-471 = semℓ "TTIIICCCCITTHSTTIIICCCCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICC" "IIIHHHCCIIIHHHCCIIIHHHCCCCCCCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIITTIIICCCCITTHSTTIIICCCCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICC" _
 
 t2-472 : Eqn (₂₊ n)
-t2-472 = sem₀₁ (c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₀ ∷ s₀ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ []) (𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ []) _
+t2-472 = semℓ "CCCCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIITTIIICCCCITTHSTTIIICCCCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICC" "nnnnnIIITTHHHSS" _
 
 t2-473 : Eqn (₂₊ n)
-t2-473 = sem₀₁ (s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₀ ∷ s₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ []) (h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ s₁ ∷ s₁ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₀ ∷ s₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ []) _
+t2-473 = semℓ "TIIIHHSSCCCCITTHSIIICCCCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICC" "IIIHHHCCIIIHHHCCIIIHHHCCCCCCCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIIHHHHHHSSTTTTIIICCCCITTHSIIICCCCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICC" _
 
 t2-474 : Eqn (₂₊ n)
-t2-474 = sem₀₁ (c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ s₁ ∷ s₁ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₀ ∷ s₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ []) (s₁ ∷ h₁ ∷ h₁ ∷ s₁ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₁ ∷ s₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ []) _
+t2-474 = semℓ "CCCCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIIHHHHHHSSTTTTIIICCCCITTHSIIICCCCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICC" "TIITITTITHHHSS" _
 
 t2-475 : Eqn (₂₊ n)
-t2-475 = sem₀₁ (h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ []) (h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ []) _
+t2-475 = semℓ "HHHC" "HHHCHHHHCCHHHHHHHHHHHHC" _
 
 t2-476 : Eqn (₂₊ n)
-t2-476 = sem₀₁ (c₀ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ []) (c₀ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ 𝕟 ∷ 𝕟 ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ []) _
+t2-476 = semℓ "CCHICHICHISSHHHnnnnnnnnnnnnnnnnnnnn" "CCHICHICHInnSSHHH" _
 
 t2-477 : Eqn (₂₊ n)
-t2-477 = sem₀₁ (h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ []) (h₀ ∷ h₀ ∷ h₀ ∷ []) _
+t2-477 = semℓ "HHHCCHHHHHHHHHHHHC" "HHH" _
 
 t2-478 : Eqn (₂₊ n)
-t2-478 = sem₀₁ (h₁ ∷ h₀ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ []) (c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ []) _
+t2-478 = semℓ "IHSSHHHCCCCIIIHSIIIIIIIIICCCCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICC" "CHICHICHHHHCCIIIHHHCCIIIHHHCCHHHHHHHHHSSHHHIIIIIIIIICCCCIIIHSIIIIIIIIICCCCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICC" _
 
 t2-479 : Eqn (₂₊ n)
-t2-479 = sem₀₁ (h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ []) (𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₀ ∷ s₀ ∷ s₀ ∷ []) _
+t2-479 = semℓ "HHHCCIIIHHHCCIIIHHHCCHHHHHHHHHSSHHHIIIIIIIIICCCCIIIHSIIIIIIIIICCCCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICC" "nnnnIHSS" _
 
 t2-480 : Eqn (₂₊ n)
-t2-480 = sem₀₁ (h₁ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₀ ∷ s₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ []) (c₀ ∷ c₀ ∷ c₀ ∷ s₀ ∷ s₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ []) _
+t2-480 = semℓ "ITTIIISSIIIHHHCCIIIHHHCCIIIHHHCCHHHnnnnIIHHHHHHHHHHIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICCIIIIIIIII" "CCCSSIIIIIIIIITTIIIIIIHHHCCIIIHHHCCIIIHHHCCHHHnnnnIIHHHHHHHHHHIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICCIIIIIIIII" _
 
 t2-481 : Eqn (₂₊ n)
-t2-481 = sem₀₁ (c₀ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ 𝕟 ∷ 𝕟 ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₀ ∷ s₀ ∷ s₀ ∷ s₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₁ ∷ s₁ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ []) (c₀ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ 𝕟 ∷ 𝕟 ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₀ ∷ []) _
+t2-481 = semℓ "CCHICHICHInnSSHHHCCCCIIHSHHHCCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIISSSSIIIIIIIIITTTTIII" "CCHICHICHInnSSHHHCCCCIIHSHHHCCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIIITIIIS" _
 
 t2-482 : Eqn (₂₊ n)
-t2-482 = sem₀₁ (c₀ ∷ c₀ ∷ s₀ ∷ s₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ []) (h₁ ∷ s₁ ∷ s₁ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ []) _
+t2-482 = semℓ "CCSSIIIIIIIIITTIIIIIIHHHCCIIIHHHCCIIIHHHCCHHHnnnnIIHHHHHHHHHHIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICCIIIIIIIII" "ITTSSHHS" _
 
 t2-483 : Eqn (₂₊ n)
-t2-483 = sem₀₁ (h₁ ∷ s₁ ∷ s₁ ∷ []) (h₁ ∷ s₁ ∷ s₁ ∷ []) _
+t2-483 = semℓ "ITT" "ITT" _
 
 t2-484 : Eqn (₂₊ n)
-t2-484 = sem₀₁ (c₀ ∷ c₀ ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ s₁ ∷ h₀ ∷ s₀ ∷ s₀ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ []) (h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ s₀ ∷ []) _
+t2-484 = semℓ "CCTTIITHSSSSHHHHHHSSHHHCCCCHHHSSSSHHHHHHSSSSHHHHHH" "IIHSS" _
 
 t2-485 : Eqn (₂₊ n)
-t2-485 = sem₀₁ (c₀ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ 𝕟 ∷ 𝕟 ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₀ ∷ h₀ ∷ []) ([]) _
+t2-485 = semℓ "CCHICHICHInnSSHHHCCCCIIHSHHHCCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIIITIIISCCCCITTHH" "" _
 
 t2-486 : Eqn (₂₊ n)
-t2-486 = sem₀₁ (𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ []) (𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ 𝕟 ∷ 𝕟 ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ []) _
+t2-486 = semℓ "nnnnnnnnnnIIICICCCHICHICHISSHHHnnnnnnnnnnnnnnnnnnnn" "nnnnnnnnnnIIICICCCHICHICHInnSSHHH" _
 
 t2-487 : Eqn (₂₊ n)
-t2-487 = sem₀₁ (h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ []) (c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ []) _
+t2-487 = semℓ "IIIIIHHHCCIIIHHHCCIIIHHHCCHHHnnnnIIHHHHHHHHHHIIIIIICCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICCIIIIIIIII" "CCCIIIIIIIIIHHHCCIIIHHHCCIIIHHHCCHHHnnnnIIHHHHHHHHHHIIIIIICCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICCIIIIIIIII" _
 
 t2-488 : Eqn (₂₊ n)
-t2-488 = sem₀₁ (𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ 𝕟 ∷ 𝕟 ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ []) (𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ 𝕟 ∷ 𝕟 ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ []) _
+t2-488 = semℓ "nnnnnnnnnnIIICICCCHICHICHInnSSHHHCCCCIIHSHHHCCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIIIIIIII" "nnnnnnnnnnIIICICCCHICHICHInnSSHHHCCCCIIHSHHHCCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIIII" _
 
 t2-489 : Eqn (₂₊ n)
-t2-489 = sem₀₁ (c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ []) (𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₁ ∷ []) _
+t2-489 = semℓ "CCIIIIIIIIIHHHCCIIIHHHCCIIIHHHCCHHHnnnnIIHHHHHHHHHHIIIIIICCIIIHHHCCIIIHHHCCIIIHHHCCCCCCIIICCIIIIIIIII" "nnnnIII" _
 
 t2-490 : Eqn (₂₊ n)
-t2-490 = sem₀₁ (c₀ ∷ c₀ ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₀ ∷ s₀ ∷ s₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₁ ∷ s₁ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ []) (𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ s₁ ∷ s₁ ∷ h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ s₀ ∷ []) _
+t2-490 = semℓ "CCnnnnHSSIIIIIITTHHHHHHSSSSHHHCCCCHHHHHHHHHSSHHHHHH" "nnnnTTIIHSS" _
 
 t2-491 : Eqn (₂₊ n)
-t2-491 = sem₀₁ (𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ 𝕟 ∷ 𝕟 ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₁ ∷ h₁ ∷ h₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ c₀ ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₁ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ []) ([]) _
+t2-491 = semℓ "nnnnnnnnnnIIICICCCHICHICHInnSSHHHCCCCIIHSHHHCCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIICCCCHHHHHHHHHIIIIIIIIIIICCCCnnnnIIISSHH" "" _
 
 t2-492 : Eqn (₂₊ n)
-t2-492 = sem₀₁ (𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₁ ∷ h₁ ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ []) (𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ 𝕟 ∷ h₁ ∷ h₁ ∷ h₁ ∷ c₀ ∷ h₁ ∷ c₀ ∷ c₀ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₀ ∷ h₁ ∷ c₀ ∷ h₁ ∷ h₁ ∷ 𝕟 ∷ 𝕟 ∷ s₀ ∷ s₀ ∷ h₀ ∷ h₀ ∷ h₀ ∷ []) _
+t2-492 = semℓ "nnnnnnnnnnnnnnnnnnnnIIICICCCHICHICHICIISSHHHnnnnnnnnnnnnnnnnnnnn" "nnnnnnnnnnnnnnnnnnnnIIICICCCHICHICHICIInnSSHHH" _

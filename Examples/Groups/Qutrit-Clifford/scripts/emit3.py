@@ -5,17 +5,24 @@ Each distinct equation on two adjacent wires is one lemma of a Steps
 module, decided once, its evidence left to a metavariable (which Agda
 solves by eta for ⊤: an explicit tt makes it evaluate the same boolean
 about six times slower); the parts refer to the lemmas by name.  The
-relations take 4134 such steps, of which 896 are distinct."""
+relations take 4134 such steps, of which 896 are distinct.
+
+Words are in the compact spelling of Qutrit-Clifford.Letters (and
+Box3.Kit): a letter list is a string, and each kind of step a function
+of its index and strings (rwPℓ, rwCˡ, rwˡ, …), without parentheses:
+Agda's operator parser takes time in proportion to the names in scope
+for every parenthesised subterm."""
 import sys, os, pickle
 QT = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.environ.get('BR3OUTDIR', os.path.normpath(os.path.join(QT, '..')))
 
-AGN = {('H', 0): 'h₀', ('H', 1): 'h₁', ('H', 2): 'h₂', ('S', 0): 's₀', ('S', 1): 's₁',
-       ('S', 2): 's₂', ('CZ', 0): 'c₀', ('CZ', 1): 'c₁', ('nu',): '𝕟'}
+# One character per letter (Qutrit-Clifford.Letters).
+CODE = {('H', 0): 'H', ('H', 1): 'I', ('H', 2): 'J', ('S', 0): 'S', ('S', 1): 'T',
+        ('S', 2): 'U', ('CZ', 0): 'C', ('CZ', 1): 'D', ('nu',): 'n'}
 AXN = {'C15': 'C₁₅ᵉ', 'C16': 'C₁₆ᵉ', 'C17': 'C₁₇ᵉ', 'C18': 'C₁₈ᵉ'}
 
-def alist(ts):
-    return ' ∷ '.join([AGN[t] for t in reversed(ts)] + ['[]'])
+def word(ts):
+    return '"%s"' % ''.join(CODE[t] for t in reversed(ts))
 
 def down(ts):
     return [t if t[0] == 'nu' else (t[0], t[1] - 1) for t in ts]
@@ -24,27 +31,26 @@ def down(ts):
 STEPS = {}
 
 def step(l, r):
-    key = (alist(l), alist(r))
+    key = (word(l), word(r))
     if key not in STEPS:
         STEPS[key] = len(STEPS)
     return 't2-%d' % STEPS[key]
 
-def eqn(old, new, j):
+def stepstr(p, old, new, j):
+    """The step at index p replacing old by new, justified by j."""
     k = j[0]
     if k == 'sem':
         if j[1] == '01':
-            return step(old, new)
-        return '(lift⁼ %s)' % step(down(old), down(new))
+            return 'rw %d %s' % (p, step(old, new))
+        return 'rwˡ %d %s' % (p, step(down(old), down(new)))
     if k == 'perm':
-        return '(permE (%s) (%s) refl)' % (alist(old), alist(new))
+        return 'rwPℓ %d %s %s refl' % (p, word(old), word(new))
     if k == 'ax':
-        return AXN[j[1]] if j[2] > 0 else '(sym⁼ %s)' % AXN[j[1]]
+        return '%s %d %s' % ('rw' if j[2] > 0 else 'rwˢ', p, AXN[j[1]])
     if k == 'cancel':
-        e = '(cancelˡ (%s))' % alist(j[1])
-        return e if j[2] > 0 else '(sym⁼ %s)' % e
+        return '%s %d %s' % ('rwCˡ' if j[2] > 0 else 'rwCˡˢ', p, word(j[1]))
     if k == 'cancelL':
-        e = '(cancelʳ (%s))' % alist(j[1])
-        return e if j[2] > 0 else '(sym⁼ %s)' % e
+        return '%s %d %s' % ('rwCʳ' if j[2] > 0 else 'rwCʳˢ', p, word(j[1]))
     raise ValueError(j)
 
 def steps(l, sts):
@@ -52,7 +58,7 @@ def steps(l, sts):
     out = []
     for (pos, old, new, j) in sts:
         p = N - pos - len(old)
-        out.append('rw %d %s' % (p, eqn(old, new, j)))
+        out.append(stepstr(p, old, new, j))
         N = N - len(old) + len(new)
     return ' ∷ '.join(out + ['[]'])
 
@@ -83,9 +89,10 @@ open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Notations using (₃₊)
 open import Examples.Groups.Qutrit-Clifford.Syntactics
-open import Examples.Groups.Qutrit-Clifford.Engine using (Eqn ; sym⁼ ; lift⁼ ; derive ; rw)
+open import Examples.Groups.Qutrit-Clifford.Engine using (Eqn ; rw)
+open import Examples.Groups.Qutrit-Clifford.Letters using (rwˢ ; rwˡ ; deriveℓ)
 open import Examples.Groups.Qutrit-Clifford.Axioms
-open import Examples.Groups.Qutrit-Clifford.Box3.Kit using (cancelˡ ; cancelʳ ; permE)
+open import Examples.Groups.Qutrit-Clifford.Box3.Kit using (rwPℓ ; rwCˡ ; rwCˡˢ ; rwCʳ ; rwCʳˢ)
 {steps}
 private
   variable
@@ -107,14 +114,11 @@ STEPS_HEAD = '''----------------------------------------------------------------
 
 module Examples.Groups.Qutrit-Clifford.Box3.Steps{k} where
 
-open import Data.List.Base using (List ; [] ; _∷_)
 open import Data.Nat.Base using (ℕ)
 
 open import Notations using (₂₊)
-open import Examples.Groups.Qutrit-Clifford.Syntactics
 open import Examples.Groups.Qutrit-Clifford.Engine using (Eqn)
-open import Examples.Groups.Qutrit-Clifford.Axioms
-open import Examples.Groups.Qutrit-Clifford.Box3.Kit using (sem₀₁)
+open import Examples.Groups.Qutrit-Clifford.Box3.Kit using (semℓ)
 
 private
   variable
@@ -128,7 +132,7 @@ def emit_steps():
     """Write the Steps modules, split by total length; their names."""
     chunks, cur, size = [], [], 0
     for (l, r), i in STEPS.items():
-        w = l.count('∷') + r.count('∷')
+        w = len(l) + len(r) - 4
         if cur and size + w > STEP_LETTERS:
             chunks.append(cur)
             cur, size = [], 0
@@ -139,7 +143,7 @@ def emit_steps():
     for k, ch in enumerate(chunks, 1):
         txt = STEPS_HEAD.format(k=k, m=len(chunks))
         for (l, r), i in ch:
-            txt += '\nt2-%d : Eqn (₂₊ n)\nt2-%d = sem₀₁ (%s) (%s) _\n' % (i, i, l, r)
+            txt += '\nt2-%d : Eqn (₂₊ n)\nt2-%d = semℓ %s %s _\n' % (i, i, l, r)
         open(ROOT + '/Box3/Steps%d.agda' % k, 'w', encoding='utf-8').write(txt)
     return ['Examples.Groups.Qutrit-Clifford.Box3.Steps%d' % k for k in range(1, len(chunks) + 1)]
 
@@ -153,8 +157,8 @@ def main(per=20):
         txt = ''
         for nm in ps:
             field, args, l, r, sts = res[nm]
-            txt += '%s : Eqn (₃₊ n)\n%s = derive (%s)\n  (%s)\n  (%s) refl\n\n' % (
-                lname(nm), lname(nm), alist(l), alist(r), steps(l, sts))
+            txt += '%s : Eqn (₃₊ n)\n%s = deriveℓ %s\n  %s\n  (%s) refl\n\n' % (
+                lname(nm), lname(nm), word(l), word(r), steps(l, sts))
         bodies.append(txt)
     smods = emit_steps()
     imports = ''.join('open import %s\n' % m for m in smods)

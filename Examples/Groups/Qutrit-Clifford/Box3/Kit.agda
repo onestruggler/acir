@@ -7,7 +7,8 @@
 -- circuits on two adjacent wires a step (sem₀₁, and lift⁼ of it one
 -- wire up); a word followed or preceded by its inverse cancels
 -- (cancelʳ, cancelˡ); and letters on disjoint wires are reordered
--- inside a segment (permE).
+-- inside a segment (permE).  The generated parts write these steps in
+-- the compact spelling of Qutrit-Clifford.Letters (semℓ, rwPℓ, rwCˡ, …).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -17,6 +18,7 @@ module Examples.Groups.Qutrit-Clifford.Box3.Kit where
 open import Data.Bool.Base using (T)
 open import Data.List.Base using (List ; [] ; _∷_ ; _++_ ; map)
 open import Data.Nat.Base using (ℕ)
+open import Data.String.Base using (String)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using ([_]ʷ ; ε ; _•_)
 
@@ -25,7 +27,8 @@ import Presentation.Base as PB
 open import Notations using (₂₊)
 open import Examples.Groups.Qutrit-Clifford.Syntactics
 open import Examples.Groups.Qutrit-Clifford.Engine
-  using (Eqn ; eqn ; ⟪_⟫ ; ⟪++⟫ ; ⟪map↥⟫ ; module Canon ; perm-sound)
+  using (Eqn ; eqn ; ⟪_⟫ ; ⟪++⟫ ; ⟪map↥⟫ ; module Canon ; perm-sound ; Step ; rw ; sym⁼)
+open import Examples.Groups.Qutrit-Clifford.Letters using (ℓ)
 open import Examples.Groups.Qutrit-Clifford.Evaluation using (ev ; eqF ; checked)
 open import Examples.Groups.Qutrit-Clifford.Completeness2 using (completeness₂)
 open import Examples.Groups.Qutrit-Clifford.Weakening using (weaken)
@@ -106,3 +109,19 @@ cancelˡ xs = eqn (invList xs ++ xs) [] (PB.trans (⟪++⟫ (invList xs) xs) (in
 
 permE : (xs ys : List (Gen n)) → Canon.comm-canonical xs ≡ Canon.comm-canonical ys → Eqn n
 permE xs ys h = eqn xs ys (perm-sound xs ys h)
+
+------------------------------------------------------------------------
+-- The steps without parentheses (see Qutrit-Clifford.Letters)
+
+semℓ : (l r : String) → T (eqF (ev ⟪ ℓ l ⟫) (ev ⟪ ℓ r ⟫)) → Eqn (₂₊ n)
+semℓ l r = sem₀₁ (ℓ l) (ℓ r)
+
+rwPℓ : ℕ → (xs ys : String) →
+       Canon.comm-canonical (ℓ {n} xs) ≡ Canon.comm-canonical (ℓ ys) → Step n
+rwPℓ i xs ys h = rw i (permE (ℓ xs) (ℓ ys) h)
+
+rwCˡ rwCˡˢ rwCʳ rwCʳˢ : ℕ → String → Step n
+rwCˡ  i s = rw i (cancelˡ (ℓ s))
+rwCˡˢ i s = rw i (sym⁼ (cancelˡ (ℓ s)))
+rwCʳ  i s = rw i (cancelʳ (ℓ s))
+rwCʳˢ i s = rw i (sym⁼ (cancelʳ (ℓ s)))
