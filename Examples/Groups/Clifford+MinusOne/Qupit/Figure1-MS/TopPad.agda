@@ -77,8 +77,20 @@ legendre-by-⇓ (no _)  = ⇓-same
 
 -- (Quoted from the module itself: a goal shows the original, not the
 -- copy an applied import makes.)
+lemmas₀ : List (Name × Name × ℕ)
+lemmas₀ = (quote Figure1.legendre-by , quote legendre-by-⇓ , 1) ∷ []
+
+-- The multipliers and the swap, which many rules share, ⇓'d once each:
+-- the traversal of a rule stops at them rather than going through
+-- their definitions again.
+M-⇓ : ∀ {n} (a* : ℤ* ₚ) → _⇓ {₁₊ n} (M a*) ≡ M a*
+M-⇓ a* = ⇓-same-by lemmas₀
+
+SWAP-⇓ : ∀ {n} → _⇓ {₂₊ n} SWAP ≡ SWAP
+SWAP-⇓ = ⇓-same
+
 lemmas : List (Name × Name × ℕ)
-lemmas = (quote Figure1.legendre-by , quote legendre-by-⇓ , 1) ∷ []
+lemmas = (quote Figure1.M , quote M-⇓ , 1) ∷ (quote Figure1.SWAP , quote SWAP-⇓ , 0) ∷ lemmas₀
 
 infix 4 _Base,_===_
 data _Base,_===_ : (n : ℕ) → WRel (Gen n) where

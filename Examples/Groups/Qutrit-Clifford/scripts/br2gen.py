@@ -51,21 +51,55 @@ if len(sys.argv) > 1 and sys.argv[1] == 'emit':
     base = ROOT + '/'
     os.makedirs(base + 'Box2', exist_ok=True)
     parts = [gen[i:i + size] for i in range(0, len(gen), size)]
+    # Each module imports from each earlier part only the lemmas it uses
+    # (import … as Pj using (…), then open Pj), not a chain of public
+    # re-exports, which put every earlier lemma in its scope and interface.
+    import re
+    LEMMA = r'(?:E\d+|comm-[A-Za-z]+)'
+    home = {}
+    def uses(body, own):
+        by = {}
+        for x in set(re.findall(r'\b' + LEMMA + r'\b', body)) - own:
+            by.setdefault(home[x], set()).add(x)
+        key = lambda x: (0, int(x[1:])) if x[0] == 'E' else (1, x)
+        return ''.join('import Examples.Groups.Qutrit-Clifford.Box2.Part%d as P%d\n  using (%s)\nopen P%d\n'
+                       % (j, j, ' ; '.join(sorted(by[j], key=key)), j) for j in sorted(by))
     for k, part in enumerate(parts, 1):
-        imp = ('open import Examples.Groups.Qutrit-Clifford.Box2.Part%d public\n' % (k - 1)) if k > 1 else ''
         body = (COMMS if k == 1 else '') + ''.join(E.lemma(i) + '\n' for i in part)
+        own = {x for m in re.finditer('^(' + LEMMA + '(?: ' + LEMMA + ')*) : Eqn', body, re.M)
+               for x in m.group(1).split()}
+        imp = uses(body, own)
+        for x in own:
+            home[x] = k
         src = HEADER.format(title='Two-qutrit lemmas, part %d of %d' % (k, len(parts)),
                             mod='Box2.Part%d' % k, imports=imp) + body
         open(base + 'Box2/Part%d.agda' % k, 'w', encoding='utf-8', newline='\n').write(src)
-    # the relations and the record
+    # the relations, in modules of about REL_CHARS characters (in one
+    # module, with the record, they took Box2.agda 45 s), and the record
     names = {}
-    out = []
-    w = out.append
+    rels = []
     for f, args, l, r, st in PROOFS:
         nm = 'b-%s-%s' % (f, '-'.join(a.strip('()').replace(' ', '') for a in args)) if args else 'b-%s' % f
         names[(f, args)] = nm
         steps = E.steps(l, st)
-        w('%s : Eqn (₂₊ n)\n%s = deriveℓ %s\n  %s\n  (%s) refl\n\n' % (nm, nm, word(l), word(r), steps))
+        rels.append('%s : Eqn (₂₊ n)\n%s = deriveℓ %s\n  %s\n  (%s) refl\n\n' % (nm, nm, word(l), word(r), steps))
+    REL_CHARS = 240000
+    chunks, cur, csize = [], [], 0
+    for t in rels:
+        if cur and csize + len(t) > REL_CHARS:
+            chunks.append(cur)
+            cur, csize = [], 0
+        cur.append(t)
+        csize += len(t)
+    if cur:
+        chunks.append(cur)
+    for k, ch in enumerate(chunks, 1):
+        src = HEADER.format(title='The box relations on two qutrits, derivations %d of %d' % (k, len(chunks)),
+                            mod='Box2.Relations%d' % k,
+                            imports=uses(''.join(ch), set())) + ''.join(ch)
+        open(base + 'Box2/Relations%d.agda' % k, 'w', encoding='utf-8', newline='\n').write(src)
+    out = []
+    w = out.append
     def clauses(fam, fld, ty, pat):
         w('  %s : %s\n' % (fld, ty))
         for (f, args), nm in names.items():
@@ -88,14 +122,15 @@ br₂ = record
     clauses('ruleZ1D', 'Z1D-ok', '∀ {n} (d : DT) → (₂₊ n) ⊢ ⟪ Dl d ++ map _↥ Zˡ ⟫ ≈ ⟪ Zˡ ++ Dl d ⟫', sp)
     clauses('ruleCD', 'CD-ok', '∀ {n} (d : DT) →\n    (₂₊ n) ⊢ ⟪ Dl d ++ c₀ ∷ [] ⟫ ≈ ⟪ O2ls (proj₂ (ruleCD d)) ++ Dl (proj₁ (ruleCD d)) ⟫', sp)
     head = HEADER.format(title='The box relations on two qutrits (Appendix C.3), derived from C₁–C₁₄',
-                         mod='Box2', imports='open import Examples.Groups.Qutrit-Clifford.Box2.Part%d\n' % len(parts))
+                         mod='Box2', imports=''.join('open import Examples.Groups.Qutrit-Clifford.Box2.Relations%d\n' % k
+                                                     for k in range(1, len(chunks) + 1)))
     head = head.replace('open import Data.List.Base using (List ; [] ; _∷_)',
                         'open import Data.List.Base using (List ; [] ; _∷_ ; _++_ ; map)\nopen import Data.Product.Base using (proj₁ ; proj₂)')
     head = head.replace('using (Eqn ; rw)', 'using (Eqn ; prf ; rw ; ⟪_⟫)')
     head = head.replace('open import Examples.Groups.Qutrit-Clifford.Axioms\n',
                         'open import Examples.Groups.Qutrit-Clifford.Axioms\nopen import Examples.Groups.Qutrit-Clifford.NormalForm\nopen import Examples.Groups.Qutrit-Clifford.Tables\n')
     open(base + 'Box2.agda', 'w', encoding='utf-8', newline='\n').write(head + ''.join(out))
-    print('emitted', len(parts), 'parts', file=sys.stderr)
+    print('emitted', len(parts), 'parts,', len(chunks), 'relation modules', file=sys.stderr)
 
 if len(sys.argv) > 1 and sys.argv[1] == 'stats':
     from emit2 import Emitter

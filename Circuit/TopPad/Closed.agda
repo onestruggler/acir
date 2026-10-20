@@ -18,7 +18,9 @@
 -- u) against wmap _↥ u′), and assembles the proof from the two lemmas
 -- and Eq.cong₂ _•_; Agda checks the leaves.  The words' names never
 -- enter: a rule over S^, M x, CZ^ and so on needs no lemma about any of
--- them.
+-- them.  But a word that many rules share may be given one (⇓-same-by),
+-- so that its definition is traversed once, in the lemma, and not once
+-- per rule.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -29,7 +31,7 @@ module Circuit.TopPad.Closed (Gate : ℕ → Set) where
 
 open import Agda.Builtin.Reflection using (withReduceDefs)
 open import Data.Bool using (Bool ; true ; false)
-open import Data.List using (List ; [] ; _∷_ ; map ; drop ; length)
+open import Data.List using (List ; [] ; _∷_ ; drop ; length)
 open import Data.Maybe using (Maybe ; just ; nothing)
 open import Data.Product using (_×_ ; _,_)
 open import Data.Unit using (⊤)
@@ -90,6 +92,20 @@ private
   last-visible (arg (arg-info visible _) u ∷ as) t = last-visible as u
   last-visible (_ ∷ as)                          t = last-visible as t
 
+  -- A lemma (f , f-⇓ , k) says that f-⇓, applied to the last k visible
+  -- arguments of f, proves (f …) ⇓ ≡ f …: for a word chosen by a case
+  -- split on a label, which is stuck for good, and for a word that many
+  -- rules share, so that the traversal goes through its definition once,
+  -- in its lemma, rather than once per rule.
+  Lemma : Set
+  Lemma = Name × Name × ℕ
+
+  lemma-for : Name → List Lemma → Maybe (Name × ℕ)
+  lemma-for f []                = nothing
+  lemma-for f ((g , l , k) ∷ T) with f is g
+  ... | true  = just (l , k)
+  ... | false = lemma-for f T
+
   -- Did unfolding f make progress?
   unfolded : Name → Term → Bool
   unfolded f (def g _) with f is g
@@ -106,37 +122,42 @@ private
   -- yet known waits until it is.  It is only ever applied to a word, so
   -- the definition at its head is the definition of a word: asking its
   -- type first (inferType, as this once did) cost a seventh of the time.
-  whnf     : ℕ → Term → TC Term
-  whnf-def : ℕ → Name → List (Arg Term) → Bool → Bool → TC Term
+  -- A word with a lemma is not unfolded: the lemma proves it.
+  whnf     : List Lemma → ℕ → Term → TC Term
+  whnf-lem : List Lemma → ℕ → Name → List (Arg Term) → Maybe (Name × ℕ) → TC Term
+  whnf-def : List Lemma → ℕ → Name → List (Arg Term) → Bool → Bool → TC Term
   -- t, f unfolded, if that got past f; otherwise u, f not unfolded.
-  whnf-go  : ℕ → Name → Term → Term → Bool → TC Term
+  whnf-go  : List Lemma → ℕ → Name → Term → Term → Bool → TC Term
   -- Restricted unfolding does not take a record pattern apart (a case
   -- split on a decision): failing it, plain weak head reduction, kept
   -- only if it gets past f.
-  whnf-or  : ℕ → Name → Term → Term → Bool → TC Term
+  whnf-or  : List Lemma → ℕ → Name → Term → Term → Bool → TC Term
 
-  whnf 0       t          = pure t
-  whnf (suc k) (meta m _) = blockOnMeta m
-  whnf (suc k) (def f as) = whnf-def k f as (f is quote wmap) (f is quote _^_)
-  whnf (suc k) t          = pure t
+  whnf T 0       t          = pure t
+  whnf T (suc k) (meta m _) = blockOnMeta m
+  whnf T (suc k) (def f as) = whnf-lem T k f as (lemma-for f T)
+  whnf T (suc k) t          = pure t
 
-  whnf-def k f as true _ = do
-    u ← whnf k (last-visible as (def f as))
+  whnf-lem T k f as (just _) = pure (def f as)
+  whnf-lem T k f as nothing  = whnf-def T k f as (f is quote wmap) (f is quote _^_)
+
+  whnf-def T k f as true _ = do
+    u ← whnf T k (last-visible as (def f as))
     unfold f (def f (set-last as u))
-  whnf-def k f as false true = do
+  whnf-def T k f as false true = do
     t ← unfold f (def f as)
-    whnf-go k f t (def f as) (unfolded f t)
-  whnf-def k f as false false = do
+    whnf-go T k f t (def f as) (unfolded f t)
+  whnf-def T k f as false false = do
     t ← unfold f (def f as)
-    whnf-or k f t (def f as) (unfolded f t)
+    whnf-or T k f t (def f as) (unfolded f t)
 
-  whnf-go k f t u true  = whnf k t
-  whnf-go k f t u false = pure u
+  whnf-go T k f t u true  = whnf T k t
+  whnf-go T k f t u false = pure u
 
-  whnf-or k f t u true  = whnf k t
-  whnf-or k f t u false = do
+  whnf-or T k f t u true  = whnf T k t
+  whnf-or T k f t u false = do
     t′ ← reduce u
-    whnf-go k f t′ u (unfolded f t′)
+    whnf-go T k f t′ u (unfolded f t′)
 
   -- The shapes a word can take, in weak head normal form.
   data Shape : Set where
@@ -173,20 +194,14 @@ private
     just (def (quote Eq.cong₂) (vArg (con (quote _•_) []) ∷
                                 vArg (refl-or p) ∷ vArg (refl-or q) ∷ []))
 
-  -- A word chosen by a case split on a label is stuck for good: a lemma
-  -- (f , f-⇓ , k) says that f-⇓, applied to the last k visible
-  -- arguments of f, proves (f …) ⇓ ≡ f ….
-  Lemma : Set
-  Lemma = Name × Name × ℕ
-
-  lemma-for : Name → List Lemma → Maybe (Name × ℕ)
-  lemma-for f []                = nothing
-  lemma-for f ((g , l , k) ∷ T) with f is g
-  ... | true  = just (l , k)
-  ... | false = lemma-for f T
-
-  last : ℕ → List Term → List Term
+  last : ∀ {A : Set} → ℕ → List A → List A
   last k ts = drop (length ts ∸ k) ts
+
+  -- The visible arguments, as arguments: an irrelevant label stays one.
+  visible-args : List (Arg Term) → List (Arg Term)
+  visible-args []                                  = []
+  visible-args (a@(arg (arg-info visible _) _) ∷ as) = a ∷ visible-args as
+  visible-args (_ ∷ as)                            = visible-args as
 
   -- A proof of x ≡ y, x a word ⇓'d and y the same word one wire wider;
   -- nothing for Eq.refl.  G is Gate quoted: outside this module, its
@@ -199,8 +214,8 @@ private
 
   same G T 0       x y = failure x y
   same G T (suc k) x y = do
-    x ← whnf k x
-    y ← whnf k y
+    x ← whnf T k x
+    y ← whnf T k y
     step G T k (shape x) (shape y) x y
 
   step G T k (dot a b) (dot a′ b′) _ _ = do
@@ -222,7 +237,7 @@ private
   stuck G T k other _ u@(def f as) y = use (lemma-for f T)
     where
     use : Maybe (Name × ℕ) → TC (Maybe Term)
-    use (just (l , j)) = pure (just (def l (map vArg (last j (visibles as)))))
+    use (just (l , j)) = pure (just (def l (last j (visible-args as))))
     use nothing        = failure (def (quote _⇓) (vArg G ∷ vArg u ∷ [])) y
   stuck G T k _ _ u y = failure (def (quote _⇓) (vArg G ∷ vArg u ∷ [])) y
 
@@ -242,8 +257,9 @@ private
     go t            = typeError (strErr "⇓-same: not an equation" ∷ termErr t ∷ [])
 
 -- w ⇓ ≡ w′, for two readings of one word at consecutive widths; with
--- lemmas for the words a case split on a label chooses, (f , f-⇓ , k),
--- f-⇓ taking the last k visible arguments of f.
+-- lemmas (f , f-⇓ , k), f-⇓ taking the last k visible arguments of f,
+-- for the words a case split on a label chooses and for words many
+-- rules share.
 --
 -- Eq.refl is tried first: it holds whenever no power is stuck, and
 -- then the traversal, which would end in Eq.refl too, is not needed

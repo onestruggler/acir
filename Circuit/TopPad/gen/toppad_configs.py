@@ -258,8 +258,20 @@ def figure1(name, dirname, title, gl):
             '',
             '-- (Quoted from the module itself: a goal shows the original, not the',
             '-- copy an applied import makes.)',
+            'lemmas₀ : List (Name × Name × ℕ)',
+            'lemmas₀ = (quote Figure1.legendre-by , quote legendre-by-⇓ , 1) ∷ []',
+            '',
+            '-- The multipliers and the swap, which many rules share, ⇓\'d once each:',
+            '-- the traversal of a rule stops at them rather than going through',
+            '-- their definitions again.',
+            'M-⇓ : ∀ {n} (a* : ℤ* ₚ) → _⇓ {₁₊ n} (M a*) ≡ M a*',
+            'M-⇓ a* = ⇓-same-by lemmas₀',
+            '',
+            'SWAP-⇓ : ∀ {n} → _⇓ {₂₊ n} SWAP ≡ SWAP',
+            'SWAP-⇓ = ⇓-same',
+            '',
             'lemmas : List (Name × Name × ℕ)',
-            'lemmas = (quote Figure1.legendre-by , quote legendre-by-⇓ , 1) ∷ []',
+            'lemmas = (quote Figure1.M , quote M-⇓ , 1) ∷ (quote Figure1.SWAP , quote SWAP-⇓ , 0) ∷ lemmas₀',
             '']},
         header=header(title, mod + '.TopPad',
                       'open import Data.List using (List ; [] ; _∷_)\n'
@@ -288,16 +300,42 @@ cfg('Qupit-Phase-Affine',
     src='Examples/Groups/Qupit-Phase-Affine/Syntactics.agda',
     out='Examples/Groups/Qupit-Phase-Affine/TopPad.agda',
     prop='SWAP-gate', lift='srel (srel {})', stuck=True, grouplike='grouplike',
+    **{'same-by': 'lemmas', 'pre-defs': [
+        '-- The derived diagonals, which several rules share, ⇓\'d once each: the',
+        '-- traversal of a rule stops at them rather than going through their',
+        '-- definitions again (CCZ has seventeen factors, most of them stuck',
+        '-- powers).',
+        'CZ-⇓ : ∀ {n} .(h : 2 ≤ lv) → _⇓ {₂₊ n} (CZ h) ≡ CZ h',
+        'CZ-⇓ h = ⇓-same',
+        '',
+        'CCZ-⇓ : ∀ {n} .(h : 3 ≤ lv) → _⇓ {₃₊ n} (CCZ h) ≡ CCZ h',
+        'CCZ-⇓ h = ⇓-same',
+        '',
+        '-- (Quoted from the module itself: a goal shows the original, not the',
+        '-- copy an applied import makes.)',
+        'lemmas₀ : List (Name × Name × ℕ)',
+        'lemmas₀ = (quote QS.CZ , quote CZ-⇓ , 1) ∷ (quote QS.CCZ , quote CCZ-⇓ , 1) ∷ []',
+        '',
+        'CS-⇓ : ∀ {n} .(h : 3 ≤ lv) → _⇓ {₂₊ n} (CS h) ≡ CS h',
+        'CS-⇓ h = ⇓-same-by lemmas₀',
+        '',
+        'lemmas : List (Name × Name × ℕ)',
+        'lemmas = (quote QS.CS , quote CS-⇓ , 1) ∷ lemmas₀',
+        '']},
     header=header("Blake's phase-affine relations at every level",
                   QPA + '.TopPad',
-                  'open import Data.Product.Base using (proj₁)\n\n'
+                  'open import Data.List.Base using (List ; [] ; _∷_)\n'
+                  'open import Data.Product.Base using (proj₁ ; _×_ ; _,_)\n'
+                  'open import Reflection using (Name)\n'
+                  'open import Relation.Binary.PropositionalEquality using (_≡_)\n\n'
                   f'open import {QPA}.Field p-2 p-prime\n'
                   '  using (F ; F* ; p ; 0F ; 1F ; 2F ; half ; binom2 ; binom3 ; _+_ ; _*_\n'
                   '        ; -_ ; _-_ ; 1* ; -1* ; _⊛_)\n'
                   f'open import {QPA}.Syntactics p-2 p-prime lv\n'
+                  f'import {QPA}.Syntactics as QS\n'
                   f'open import {QPA}.Basic p-2 p-prime lv using (grouplike)\n\n'
                   'open Circuit.TopPad Gate using (_⇓)\n'
-                  'open import Circuit.TopPad.Closed Gate using (⇓-same)',
+                  'open import Circuit.TopPad.Closed Gate using (⇓-same ; ⇓-same-by)',
                   params=' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) (lv : ℕ)',
                   pre='open import Data.Nat.Base using (ℕ ; _≤_)\n'
                       'open import Data.Nat.Primality using (Prime)\n'

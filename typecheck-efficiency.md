@@ -28,8 +28,9 @@ and `More` (one cause each, now under 10 s). Four of those last were
 first counted as spread. Left at 20–27 s: `Paper-V0/Lemmas` (spread
 over 4754 lines; a split would recheck `Clifford/Qupit` under the
 root), `Weyl` (evaluation), `TreeNF38` (one generated check),
-Qupit-Phase-Affine's TopPad (stuck powers through the macro's
-traversal), `U33Di` and `Amalgamation` (spread).
+`U33Di` and `Amalgamation` (spread). Qupit-Phase-Affine's TopPad, left
+there too, is now about 8 s (its shared words through the macro's
+lemma table), and Figure 1's two about 6 s.
 Wall-clock figures from a chunk the watchdog killed are estimates only
 (marked approximate): rechecked alone, four of them were 2–8 s.
 
@@ -106,6 +107,8 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
 | Matrix literals in chunks that import from each other only the names they use, rather than one module of a thousand names or a chain of public re-exports | `CCX+HH-3qubit/Evaluation`, `FrameEvaluation`, `MissingK/Evaluations` (`evaluation_chunks`) | `Evaluation` 79.7 s (operator parsing 27 s of it) → twelve chunks of 1.0–1.5 s; `FrameEvaluation`'s chunks 5.7–13.7 s → at most 1.2 s |
 | Identities of 8 × 8 matrices over 𝔻 or ℤ[1/√2] (EucDomain's `Matrix`, vectors of vectors) decided by one boolean (`Decide.eqM`, from `_≟ᴰ_` on the entries) rather than `refl`; the costly ones as lemmas in modules of their own | `CCX+HH-3qubit-opus`: `Soundness` (Figure 7 in `Soundness/Figure7a`, `Figure7b`), `TableMatrices`, `Independence` and `PushMatrices` (`gen/mk_indep.py`, `gen/mk_push.py`), `SoundnessH` | 101.8 s → 2.0 + 0.8 + 11.4 s, 81.2 → 15.8 s, 42.7 → 6.3 s, 17.7 → 2.7 s |
 | A constructor's implicit indices given (`trK {i₀ = # 0} {i₁ = # 1} …`) when the only argument that fixes them is an equation `act (frame ts D) i ≡ a`: left to unification, the comparison reduces the frame of the symbolic states ts, which grows with their number | `CCX+HH-3qubit-opus/Decode` (`dec-ax`: (2f) and (6a), on eight states) | 94 → 6.7 s ((2f) 24 → 0.2 s) |
+| A reflection macro given lemmas for the words several of its goals share, so that its traversal stops at them rather than going through their definitions in every goal | `Circuit/TopPad/Closed` (`⇓-same-by`; a tabled word stays folded), `Qupit-Phase-Affine/TopPad` (`CZ-⇓`, `CS-⇓`, `CCZ-⇓`, from `toppad_configs.py`), Figure 1's two (`M-⇓`, `SWAP-⇓`) | 27 → 10.1 s loaded (about 21 → 8 s), its costliest rule side 4.7 → 0.25 s; Figure 1's 29.3 → 10.0 s and 32.0 → 9.9 s loaded (about 19.5 → 6 s each) |
+| Generated lemma modules that import from each earlier part only the lemmas they use (`import … as Pj using (…)`, then `open Pj`), not a chain of public re-exports, and so can be smaller; a record's long derivations in modules of their own | `Qutrit-Clifford/Box2` (`scripts/br2gen.py emit 1000`: `Box2/Part1`–`Part11`, `Box2/Relations1`–`3`) | six parts of 21–64 s and `Box2` 45 s → fourteen modules of 18.5 s at most, Box2 in all 263 → 181 s, the folder's peak 1.13 → 0.76 GB (one loaded session; halving the parts alone, still chained, made the total 357 s) |
 | A heavy import that a proof uses through one lemma made a module parameter, its one client applying it | `CCX+HH-3qubit/HadamardRelations` (`Repaired/Even.FromEven`, applied in `Repaired/TwoLevelScaled`) | each loads about 1100 interfaces, not 7900: a batch of three 3.5–4.5 min → 49–99 s, peak 6.0–6.9 → 2.7–3.2 GB |
 | A dispatcher of some 700 clauses split by its first argument, one module per value (each clause's right-hand side costs some 70 ms, its type matching the certificate's only after reduction) | `CCX+HH-3qubit/Repaired/DecodingMatrices` (`dyadic-letter`; `Repaired/DecodingLetters/K0`…`K7`); the four-index transport dispatchers (`TransportChunks/r1c`, `r2a`, `r4a`–`r4c`) | 41.8 s → 0.1 s and eight modules of 15.7 s at most; `Transport/r2a` 23.7 s → eight modules of 7.3 s at most |
 
@@ -598,7 +601,14 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   (dropping it saves nothing), nor the fallback to unrestricted
   `reduce` (dropping it saves nothing on Paper-V0, and Figure1's words
   need it); `--lossy-unification` does nothing, and `Eq.refl` in place
-  of the macro fails at the first power with a symbolic exponent.
+  of the macro fails at the first power with a symbolic exponent. The rules that cost most there shared words
+  (CS, CCZ, CZ inside them, CCZ of seventeen factors) whose definitions
+  the traversal went through once per rule side; the macro now leaves a
+  word folded when it is given a lemma for it (`⇓-same-by`, the table
+  Figure 1 already passed for its Legendre symbol), and the generator
+  gives Qupit-Phase-Affine `CZ-⇓`, `CS-⇓` and `CCZ-⇓`, each the macro
+  once: the rule lemmas went from about 25 s to 7 s in one loaded
+  session (the module 27 → 10.1 s; about 21 → 8 s unloaded).
 - **Tactic-generated proofs and `--lossy-unification`.** Bian and
   Selinger's ports (`Clifford+CS-3qubit`, `Clifford+T-2qubit`) fail
   under the flag: their tactics take `auto : nf w ≡ nf v` with `w`, `v`

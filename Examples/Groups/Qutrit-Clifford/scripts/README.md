@@ -15,7 +15,7 @@ finite groups.
 | `Pauli.agda` | `perl gen_pauli.pl > ../Pauli.agda` |
 | `Uniqueness.agda` | `python3 gen_uniq.py` (box actions from `pauli_act.py`) |
 | `Box1.agda` | `python3 kb_one.py` (Knuth–Bendix on C1–C5) |
-| `Box2.agda`, `Box2/Part*.agda` | `python3 br2gen.py emit 2000` (Felsch enumeration, `felsch.py` on `relcos2.py`, `relcos.py`, `kb.py`, `coset2.py`; relations from `br2rels.py`; Agda from `emit2.py`) |
+| `Box2.agda`, `Box2/Part*.agda`, `Box2/Relations*.agda` | `python3 br2gen.py emit 1000` (Felsch enumeration, `felsch.py` on `relcos2.py`, `relcos.py`, `kb.py`, `coset2.py`; relations from `br2rels.py`; Agda from `emit2.py`) |
 | `Box3.agda`, `Box3/Part*.agda`, `Box3/Steps*.agda` | `python3 br3gen.py && python3 emit3.py 10` (each relation a loop in the graph of hyperbolic planes of F₃⁶, `geo.py`, filled by translates of the loops of C15–C18, `fill.py`; the derivations pass through `br3.pkl` in the working directory, and each distinct two-wire step is a lemma of `Box3/Steps*`, decided once) |
 
 `rules.py` checks the 18 rules and `boxes.py` the boxes' Figure 8

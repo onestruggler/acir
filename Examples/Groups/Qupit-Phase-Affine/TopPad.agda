@@ -30,16 +30,20 @@ import Circuit.TopPad
 import Circuit.Prop.TopPad
 import Presentation.Base as PB
 
-open import Data.Product.Base using (proj₁)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Product.Base using (proj₁ ; _×_ ; _,_)
+open import Reflection using (Name)
+open import Relation.Binary.PropositionalEquality using (_≡_)
 
 open import Examples.Groups.Qupit-Phase-Affine.Field p-2 p-prime
   using (F ; F* ; p ; 0F ; 1F ; 2F ; half ; binom2 ; binom3 ; _+_ ; _*_
         ; -_ ; _-_ ; 1* ; -1* ; _⊛_)
 open import Examples.Groups.Qupit-Phase-Affine.Syntactics p-2 p-prime lv
+import Examples.Groups.Qupit-Phase-Affine.Syntactics as QS
 open import Examples.Groups.Qupit-Phase-Affine.Basic p-2 p-prime lv using (grouplike)
 
 open Circuit.TopPad Gate using (_⇓)
-open import Circuit.TopPad.Closed Gate using (⇓-same)
+open import Circuit.TopPad.Closed Gate using (⇓-same ; ⇓-same-by)
 
 private
   variable
@@ -48,6 +52,27 @@ private
 
 ------------------------------------------------------------------------
 -- The rules on their own wires, padded by Top-Pad
+
+-- The derived diagonals, which several rules share, ⇓'d once each: the
+-- traversal of a rule stops at them rather than going through their
+-- definitions again (CCZ has seventeen factors, most of them stuck
+-- powers).
+CZ-⇓ : ∀ {n} .(h : 2 ≤ lv) → _⇓ {₂₊ n} (CZ h) ≡ CZ h
+CZ-⇓ h = ⇓-same
+
+CCZ-⇓ : ∀ {n} .(h : 3 ≤ lv) → _⇓ {₃₊ n} (CCZ h) ≡ CCZ h
+CCZ-⇓ h = ⇓-same
+
+-- (Quoted from the module itself: a goal shows the original, not the
+-- copy an applied import makes.)
+lemmas₀ : List (Name × Name × ℕ)
+lemmas₀ = (quote QS.CZ , quote CZ-⇓ , 1) ∷ (quote QS.CCZ , quote CCZ-⇓ , 1) ∷ []
+
+CS-⇓ : ∀ {n} .(h : 3 ≤ lv) → _⇓ {₂₊ n} (CS h) ≡ CS h
+CS-⇓ h = ⇓-same-by lemmas₀
+
+lemmas : List (Name × Name × ℕ)
+lemmas = (quote QS.CS , quote CS-⇓ , 1) ∷ lemmas₀
 
 infix 4 _Base,_===_
 data _Base,_===_ : (n : ℕ) → WRel (Gen n) where
@@ -117,196 +142,196 @@ import Relation.Binary.PropositionalEquality as TopPad-≡
 ⇓ʳ {v = v} {v′ = v′} _ _ = TopPad-≡._≡_ (v ⇓) v′
 
 ax1⇓ˡ : ⇓ˡ {(₁₊ n)} ax1 ax1
-ax1⇓ˡ = ⇓-same
+ax1⇓ˡ = (⇓-same-by lemmas)
 
 ax1⇓ʳ : ⇓ʳ {(₁₊ n)} ax1 ax1
-ax1⇓ʳ = ⇓-same
+ax1⇓ʳ = (⇓-same-by lemmas)
 
 ax2⇓ˡ : (x y : F*) → ⇓ˡ {(₁₊ n)} (ax2 x y) (ax2 x y)
-ax2⇓ˡ x y = ⇓-same
+ax2⇓ˡ x y = (⇓-same-by lemmas)
 
 ax2⇓ʳ : (x y : F*) → ⇓ʳ {(₁₊ n)} (ax2 x y) (ax2 x y)
-ax2⇓ʳ x y = ⇓-same
+ax2⇓ʳ x y = (⇓-same-by lemmas)
 
 ax3⇓ˡ : (x : F*) → ⇓ˡ {(₁₊ n)} (ax3 x) (ax3 x)
-ax3⇓ˡ x = ⇓-same
+ax3⇓ˡ x = (⇓-same-by lemmas)
 
 ax3⇓ʳ : (x : F*) → ⇓ʳ {(₁₊ n)} (ax3 x) (ax3 x)
-ax3⇓ʳ x = ⇓-same
+ax3⇓ʳ x = (⇓-same-by lemmas)
 
 ax4⇓ˡ : (x : F*) → ⇓ˡ {(₂₊ n)} (ax4 x) (ax4 x)
-ax4⇓ˡ x = ⇓-same
+ax4⇓ˡ x = (⇓-same-by lemmas)
 
 ax4⇓ʳ : (x : F*) → ⇓ʳ {(₂₊ n)} (ax4 x) (ax4 x)
-ax4⇓ʳ x = ⇓-same
+ax4⇓ʳ x = (⇓-same-by lemmas)
 
 ax5⇓ˡ : (x : F*) → ⇓ˡ {(₂₊ n)} (ax5 x) (ax5 x)
-ax5⇓ˡ x = ⇓-same
+ax5⇓ˡ x = (⇓-same-by lemmas)
 
 ax5⇓ʳ : (x : F*) → ⇓ʳ {(₂₊ n)} (ax5 x) (ax5 x)
-ax5⇓ʳ x = ⇓-same
+ax5⇓ʳ x = (⇓-same-by lemmas)
 
 ax6⇓ˡ : ⇓ˡ {(₂₊ n)} ax6 ax6
-ax6⇓ˡ = ⇓-same
+ax6⇓ˡ = (⇓-same-by lemmas)
 
 ax6⇓ʳ : ⇓ʳ {(₂₊ n)} ax6 ax6
-ax6⇓ʳ = ⇓-same
+ax6⇓ʳ = (⇓-same-by lemmas)
 
 ax7⇓ˡ : ⇓ˡ {(₂₊ n)} ax7 ax7
-ax7⇓ˡ = ⇓-same
+ax7⇓ˡ = (⇓-same-by lemmas)
 
 ax7⇓ʳ : ⇓ʳ {(₂₊ n)} ax7 ax7
-ax7⇓ʳ = ⇓-same
+ax7⇓ʳ = (⇓-same-by lemmas)
 
 ax8⇓ˡ : ⇓ˡ {(₃₊ n)} ax8 ax8
-ax8⇓ˡ = ⇓-same
+ax8⇓ˡ = (⇓-same-by lemmas)
 
 ax8⇓ʳ : ⇓ʳ {(₃₊ n)} ax8 ax8
-ax8⇓ʳ = ⇓-same
+ax8⇓ʳ = (⇓-same-by lemmas)
 
 ax19⇓ˡ : .(h : 1 ≤ lv) → ⇓ˡ {n} (ax19 h) (ax19 h)
-ax19⇓ˡ h = ⇓-same
+ax19⇓ˡ h = (⇓-same-by lemmas)
 
 ax19⇓ʳ : .(h : 1 ≤ lv) → ⇓ʳ {n} (ax19 h) (ax19 h)
-ax19⇓ʳ h = ⇓-same
+ax19⇓ʳ h = (⇓-same-by lemmas)
 
 ax20⇓ˡ : .(h : 1 ≤ lv) → ⇓ˡ {(₁₊ n)} (ax20 h) (ax20 h)
-ax20⇓ˡ h = ⇓-same
+ax20⇓ˡ h = (⇓-same-by lemmas)
 
 ax20⇓ʳ : .(h : 1 ≤ lv) → ⇓ʳ {(₁₊ n)} (ax20 h) (ax20 h)
-ax20⇓ʳ h = ⇓-same
+ax20⇓ʳ h = (⇓-same-by lemmas)
 
 ax21⇓ˡ : .(h : 1 ≤ lv) → ⇓ˡ {(₂₊ n)} (ax21 h) (ax21 h)
-ax21⇓ˡ h = ⇓-same
+ax21⇓ˡ h = (⇓-same-by lemmas)
 
 ax21⇓ʳ : .(h : 1 ≤ lv) → ⇓ʳ {(₂₊ n)} (ax21 h) (ax21 h)
-ax21⇓ʳ h = ⇓-same
+ax21⇓ʳ h = (⇓-same-by lemmas)
 
 ax22⇓ˡ : .(h : 1 ≤ lv) (x : F*) → ⇓ˡ {(₁₊ n)} (ax22 h x) (ax22 h x)
-ax22⇓ˡ h x = ⇓-same
+ax22⇓ˡ h x = (⇓-same-by lemmas)
 
 ax22⇓ʳ : .(h : 1 ≤ lv) (x : F*) → ⇓ʳ {(₁₊ n)} (ax22 h x) (ax22 h x)
-ax22⇓ʳ h x = ⇓-same
+ax22⇓ʳ h x = (⇓-same-by lemmas)
 
 ax23⇓ˡ : .(h : 1 ≤ lv) → ⇓ˡ {(₁₊ n)} (ax23 h) (ax23 h)
-ax23⇓ˡ h = ⇓-same
+ax23⇓ˡ h = (⇓-same-by lemmas)
 
 ax23⇓ʳ : .(h : 1 ≤ lv) → ⇓ʳ {(₁₊ n)} (ax23 h) (ax23 h)
-ax23⇓ʳ h = ⇓-same
+ax23⇓ʳ h = (⇓-same-by lemmas)
 
 ax24⇓ˡ : .(h : 2 ≤ lv) → ⇓ˡ {(₁₊ n)} (ax24 h) (ax24 h)
-ax24⇓ˡ h = ⇓-same
+ax24⇓ˡ h = (⇓-same-by lemmas)
 
 ax24⇓ʳ : .(h : 2 ≤ lv) → ⇓ʳ {(₁₊ n)} (ax24 h) (ax24 h)
-ax24⇓ʳ h = ⇓-same
+ax24⇓ʳ h = (⇓-same-by lemmas)
 
 ax25⇓ˡ : .(h : 2 ≤ lv) → ⇓ˡ {(₁₊ n)} (ax25 h) (ax25 h)
-ax25⇓ˡ h = ⇓-same
+ax25⇓ˡ h = (⇓-same-by lemmas)
 
 ax25⇓ʳ : .(h : 2 ≤ lv) → ⇓ʳ {(₁₊ n)} (ax25 h) (ax25 h)
-ax25⇓ʳ h = ⇓-same
+ax25⇓ʳ h = (⇓-same-by lemmas)
 
 ax26⇓ˡ : .(h : 2 ≤ lv) → ⇓ˡ {(₁₊ n)} (ax26 h) (ax26 h)
-ax26⇓ˡ h = ⇓-same
+ax26⇓ˡ h = (⇓-same-by lemmas)
 
 ax26⇓ʳ : .(h : 2 ≤ lv) → ⇓ʳ {(₁₊ n)} (ax26 h) (ax26 h)
-ax26⇓ʳ h = ⇓-same
+ax26⇓ʳ h = (⇓-same-by lemmas)
 
 ax27⇓ˡ : .(h : 2 ≤ lv) (x : F*) → ⇓ˡ {(₁₊ n)} (ax27 h x) (ax27 h x)
-ax27⇓ˡ h x = ⇓-same
+ax27⇓ˡ h x = (⇓-same-by lemmas)
 
 ax27⇓ʳ : .(h : 2 ≤ lv) (x : F*) → ⇓ʳ {(₁₊ n)} (ax27 h x) (ax27 h x)
-ax27⇓ʳ h x = ⇓-same
+ax27⇓ʳ h x = (⇓-same-by lemmas)
 
 ax28⇓ˡ : .(h : 2 ≤ lv) → ⇓ˡ {(₂₊ n)} (ax28 h) (ax28 h)
-ax28⇓ˡ h = ⇓-same
+ax28⇓ˡ h = (⇓-same-by lemmas)
 
 ax28⇓ʳ : .(h : 2 ≤ lv) → ⇓ʳ {(₂₊ n)} (ax28 h) (ax28 h)
-ax28⇓ʳ h = ⇓-same
+ax28⇓ʳ h = (⇓-same-by lemmas)
 
 ax29⇓ˡ : .(h : 2 ≤ lv) → ⇓ˡ {(₂₊ n)} (ax29 h) (ax29 h)
-ax29⇓ˡ h = ⇓-same
+ax29⇓ˡ h = (⇓-same-by lemmas)
 
 ax29⇓ʳ : .(h : 2 ≤ lv) → ⇓ʳ {(₂₊ n)} (ax29 h) (ax29 h)
-ax29⇓ʳ h = ⇓-same
+ax29⇓ʳ h = (⇓-same-by lemmas)
 
 ax30⇓ˡ : .(h : 2 ≤ lv) → ⇓ˡ {(₃₊ n)} (ax30 h) (ax30 h)
-ax30⇓ˡ h = ⇓-same
+ax30⇓ˡ h = (⇓-same-by lemmas)
 
 ax30⇓ʳ : .(h : 2 ≤ lv) → ⇓ʳ {(₃₊ n)} (ax30 h) (ax30 h)
-ax30⇓ʳ h = ⇓-same
+ax30⇓ʳ h = (⇓-same-by lemmas)
 
 ax31⇓ˡ : .(h : 3 ≤ lv) → ⇓ˡ {(₁₊ n)} (ax31 h) (ax31 h)
-ax31⇓ˡ h = ⇓-same
+ax31⇓ˡ h = (⇓-same-by lemmas)
 
 ax31⇓ʳ : .(h : 3 ≤ lv) → ⇓ʳ {(₁₊ n)} (ax31 h) (ax31 h)
-ax31⇓ʳ h = ⇓-same
+ax31⇓ʳ h = (⇓-same-by lemmas)
 
 ax32⇓ˡ : .(h : 3 ≤ lv) (x : F*) → ⇓ˡ {(₁₊ n)} (ax32 h x) (ax32 h x)
-ax32⇓ˡ h x = ⇓-same
+ax32⇓ˡ h x = (⇓-same-by lemmas)
 
 ax32⇓ʳ : .(h : 3 ≤ lv) (x : F*) → ⇓ʳ {(₁₊ n)} (ax32 h x) (ax32 h x)
-ax32⇓ʳ h x = ⇓-same
+ax32⇓ʳ h x = (⇓-same-by lemmas)
 
 ax33⇓ˡ : .(h : 3 ≤ lv) → ⇓ˡ {(₁₊ n)} (ax33 h) (ax33 h)
-ax33⇓ˡ h = ⇓-same
+ax33⇓ˡ h = (⇓-same-by lemmas)
 
 ax33⇓ʳ : .(h : 3 ≤ lv) → ⇓ʳ {(₁₊ n)} (ax33 h) (ax33 h)
-ax33⇓ʳ h = ⇓-same
+ax33⇓ʳ h = (⇓-same-by lemmas)
 
 ax34⇓ˡ : .(h : 3 ≤ lv) → ⇓ˡ {(₁₊ n)} (ax34 h) (ax34 h)
-ax34⇓ˡ h = ⇓-same
+ax34⇓ˡ h = (⇓-same-by lemmas)
 
 ax34⇓ʳ : .(h : 3 ≤ lv) → ⇓ʳ {(₁₊ n)} (ax34 h) (ax34 h)
-ax34⇓ʳ h = ⇓-same
+ax34⇓ʳ h = (⇓-same-by lemmas)
 
 ax35⇓ˡ : .(h : 3 ≤ lv) (a : F*) → ⇓ˡ {(₂₊ n)} (ax35 h a) (ax35 h a)
-ax35⇓ˡ h a = ⇓-same
+ax35⇓ˡ h a = (⇓-same-by lemmas)
 
 ax35⇓ʳ : .(h : 3 ≤ lv) (a : F*) → ⇓ʳ {(₂₊ n)} (ax35 h a) (ax35 h a)
-ax35⇓ʳ h a = ⇓-same
+ax35⇓ʳ h a = (⇓-same-by lemmas)
 
 ax36⇓ˡ : .(h : 3 ≤ lv) → ⇓ˡ {(₁₊ n)} (ax36 h) (ax36 h)
-ax36⇓ˡ h = ⇓-same
+ax36⇓ˡ h = (⇓-same-by lemmas)
 
 ax36⇓ʳ : .(h : 3 ≤ lv) → ⇓ʳ {(₁₊ n)} (ax36 h) (ax36 h)
-ax36⇓ʳ h = ⇓-same
+ax36⇓ʳ h = (⇓-same-by lemmas)
 
 ax37⇓ˡ : .(h : 3 ≤ lv) (x : F*) → ⇓ˡ {(₂₊ n)} (ax37 h x) (ax37 h x)
-ax37⇓ˡ h x = ⇓-same
+ax37⇓ˡ h x = (⇓-same-by lemmas)
 
 ax37⇓ʳ : .(h : 3 ≤ lv) (x : F*) → ⇓ʳ {(₂₊ n)} (ax37 h x) (ax37 h x)
-ax37⇓ʳ h x = ⇓-same
+ax37⇓ʳ h x = (⇓-same-by lemmas)
 
 ax38⇓ˡ : .(h : 3 ≤ lv) → ⇓ˡ {(₃₊ n)} (ax38 h) (ax38 h)
-ax38⇓ˡ h = ⇓-same
+ax38⇓ˡ h = (⇓-same-by lemmas)
 
 ax38⇓ʳ : .(h : 3 ≤ lv) → ⇓ʳ {(₃₊ n)} (ax38 h) (ax38 h)
-ax38⇓ʳ h = ⇓-same
+ax38⇓ʳ h = (⇓-same-by lemmas)
 
 ax39⇓ˡ : .(h : 3 ≤ lv) → ⇓ˡ {(₂₊ n)} (ax39 h) (ax39 h)
-ax39⇓ˡ h = ⇓-same
+ax39⇓ˡ h = (⇓-same-by lemmas)
 
 ax39⇓ʳ : .(h : 3 ≤ lv) → ⇓ʳ {(₂₊ n)} (ax39 h) (ax39 h)
-ax39⇓ʳ h = ⇓-same
+ax39⇓ʳ h = (⇓-same-by lemmas)
 
 ax40⇓ˡ : .(h : 3 ≤ lv) (x : F*) → ⇓ˡ {(₃₊ n)} (ax40 h x) (ax40 h x)
-ax40⇓ˡ h x = ⇓-same
+ax40⇓ˡ h x = (⇓-same-by lemmas)
 
 ax40⇓ʳ : .(h : 3 ≤ lv) (x : F*) → ⇓ʳ {(₃₊ n)} (ax40 h x) (ax40 h x)
-ax40⇓ʳ h x = ⇓-same
+ax40⇓ʳ h x = (⇓-same-by lemmas)
 
 ax41⇓ˡ : .(h : 3 ≤ lv) → ⇓ˡ {(₄₊ n)} (ax41 h) (ax41 h)
-ax41⇓ˡ h = ⇓-same
+ax41⇓ˡ h = (⇓-same-by lemmas)
 
 ax41⇓ʳ : .(h : 3 ≤ lv) → ⇓ʳ {(₄₊ n)} (ax41 h) (ax41 h)
-ax41⇓ʳ h = ⇓-same
+ax41⇓ʳ h = (⇓-same-by lemmas)
 
 ax42⇓ˡ : .(h : 3 ≤ lv) → ⇓ˡ {(₃₊ n)} (ax42 h) (ax42 h)
-ax42⇓ˡ h = ⇓-same
+ax42⇓ˡ h = (⇓-same-by lemmas)
 
 ax42⇓ʳ : .(h : 3 ≤ lv) → ⇓ʳ {(₃₊ n)} (ax42 h) (ax42 h)
-ax42⇓ʳ h = ⇓-same
+ax42⇓ʳ h = (⇓-same-by lemmas)
 
 -- Each rule on the bottom wires of every wider circuit: one wire wider
 -- its words are the same words, up to the powers ⇓ does not compute
