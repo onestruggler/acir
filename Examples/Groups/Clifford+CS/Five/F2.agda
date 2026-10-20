@@ -22,8 +22,13 @@ open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws)
 open import Examples.Groups.Clifford+CS.Lambda using (λ⁰ ; λ¹)
 open import Examples.Groups.Clifford+CS.Five.Rules using (_⊢ₓ_≈_)
 open import Examples.Groups.Clifford+CS.Five.Chain
-open import Examples.Groups.Clifford+CS.Five.D.D013 using (lem-F2-I-CS0 ; lem-F2-I-CS1 ; lem-F2-I-K0 ; lem-F2-I-K1 ; lem-F2-I-K2 ; lem-F2-I-K3 ; lem-F2-I-S0 ; lem-F2-I-S1 ; lem-F2-I-S2 ; lem-F2-I-S3)
-open import Examples.Groups.Clifford+CS.Five.D.D014 using (lem-F2-CS0-CS2 ; lem-F2-I-CS2 ; lem-F2-K0-CS1 ; lem-F2-K0-CS2 ; lem-F2-K0-K1 ; lem-F2-K0-K2 ; lem-F2-K0-K3 ; lem-F2-K1-CS2 ; lem-F2-K1-K2 ; lem-F2-K1-K3 ; lem-F2-K2-CS0 ; lem-F2-K2-K3 ; lem-F2-K3-CS0 ; lem-F2-K3-CS1 ; lem-F2-S0-CS1 ; lem-F2-S0-CS2 ; lem-F2-S0-K1 ; lem-F2-S0-K2 ; lem-F2-S0-K3 ; lem-F2-S0-S1 ; lem-F2-S0-S2 ; lem-F2-S0-S3 ; lem-F2-S1-CS2 ; lem-F2-S1-K0 ; lem-F2-S1-K2 ; lem-F2-S1-K3 ; lem-F2-S1-S2 ; lem-F2-S1-S3 ; lem-F2-S2-CS0 ; lem-F2-S2-K0 ; lem-F2-S2-K1 ; lem-F2-S2-K3 ; lem-F2-S2-S3 ; lem-F2-S3-CS0 ; lem-F2-S3-CS1 ; lem-F2-S3-K0 ; lem-F2-S3-K1 ; lem-F2-S3-K2)
+open import Examples.Groups.Clifford+CS.Five.D.D002 using (lem-F2-I-K0 ; lem-F2-I-K1 ; lem-F2-I-K2 ; lem-F2-I-K3 ; lem-F2-I-S0 ; lem-F2-I-S1 ; lem-F2-I-S2 ; lem-F2-I-S3 ; lem-F2-K0-K1 ; lem-F2-K0-K2 ; lem-F2-K0-K3 ; lem-F2-K1-K2 ; lem-F2-K1-K3 ; lem-F2-K2-K3 ; lem-F2-S0-K1 ; lem-F2-S0-K2 ; lem-F2-S0-K3 ; lem-F2-S0-S1 ; lem-F2-S0-S2 ; lem-F2-S0-S3 ; lem-F2-S1-K0 ; lem-F2-S1-K2 ; lem-F2-S1-K3 ; lem-F2-S1-S2 ; lem-F2-S1-S3 ; lem-F2-S2-K0 ; lem-F2-S2-K1 ; lem-F2-S2-K3 ; lem-F2-S2-S3 ; lem-F2-S3-K0 ; lem-F2-S3-K1 ; lem-F2-S3-K2)
+open import Examples.Groups.Clifford+CS.Five.D.D014 using (lem-F2-S0-CS1 ; lem-F2-S0-CS2 ; lem-F2-S2-CS0)
+open import Examples.Groups.Clifford+CS.Five.D.D020 using (lem-F2-I-CS0 ; lem-F2-I-CS1 ; lem-F2-I-CS2 ; lem-F2-S1-CS2 ; lem-F2-S3-CS0 ; lem-F2-S3-CS1)
+open import Examples.Groups.Clifford+CS.Five.D.D025 using (lem-F2-K1-CS2)
+open import Examples.Groups.Clifford+CS.Five.D.D026 using (lem-F2-K3-CS0 ; lem-F2-K3-CS1)
+open import Examples.Groups.Clifford+CS.Five.D.D038 using (lem-F2-K0-CS1 ; lem-F2-K0-CS2 ; lem-F2-K2-CS0)
+open import Examples.Groups.Clifford+CS.Five.D.D067 using (lem-F2-CS0-CS2)
 
 -- Two generators on disjoint wires (the scalar is disjoint from all).
 apart : Gen 4 → Gen 4 → Bool

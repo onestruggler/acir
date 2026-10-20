@@ -9,644 +9,1046 @@ open import Word.Base using (ε ; _•_)
 
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
-open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl0166 ; wl0217 ; wl0219 ; wl0220 ; wl0221 ; wl0222 ; wl0241 ; wl0244 ; wl0245 ; wl0246 ; wl0247 ; wl0256 ; wl0621 ; wl0698 ; wl0743 ; wl0872 ; wl0888 ; wl0910 ; wl1374 ; wl1375 ; wl1376 ; wp0034 ; wp0035 ; wp0036 ; wp0038 ; wp0053 ; wp0060 ; wp0061 ; wp0062 ; wp0063 ; wp0064 ; wp0065 ; wp0066 ; wp0069 ; wp0070 ; wp0072 ; wp0074 ; wp0081 ; wp0087 ; wp0088 ; wp0089 ; wp0090 ; wp0094 ; wp0095 ; wp0097 ; wp0109 ; wp0173 ; wp0272 ; wp0513 ; wp0546 ; wp0654 ; wp0669 ; wp0725 ; wp0753 ; wp0785 ; wp0790 ; wp0805 ; wp0806 ; wp0816 ; wp0817 ; wp0818 ; wp0819 ; wp0820 ; wp0821 ; wp0823 ; wp0827 ; wp0839 ; wp0842 ; wp0843 ; wp0845 ; wp1046 ; wp1208 ; wp1209 ; wp1210 ; wp1211 ; wp1212 ; wp1213 ; wp1214 ; wp1215)
+open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl0166 ; wl0199 ; wl0238 ; wl0256 ; wl0274 ; wl0298 ; wl0305 ; wl0313 ; wl0321 ; wl0341 ; wl0348 ; wl0366 ; wl0367 ; wl0379 ; wl0380 ; wl0381 ; wl0382 ; wl0389 ; wl0390 ; wl0408 ; wl0409 ; wl0410 ; wl0411 ; wl0412 ; wl0413 ; wp0003 ; wp0053 ; wp0062 ; wp0063 ; wp0064 ; wp0117 ; wp0141 ; wp0142 ; wp0161 ; wp0167 ; wp0221 ; wp0231 ; wp0259 ; wp0260 ; wp0275 ; wp0276 ; wp0277 ; wp0278 ; wl0167 ; wl0214 ; wl0263 ; wl0296 ; wl0325 ; wl0327 ; wl0426 ; wl0427 ; wl0428 ; wl0429 ; wl0430 ; wl0431 ; wl0444 ; wl0445 ; wl0446 ; wl0447 ; wl0448 ; wl0449 ; wl0450 ; wl0460 ; wl0461 ; wp0007 ; wp0011 ; wp0034 ; wp0035 ; wp0036 ; wp0054 ; wp0077 ; wp0106 ; wp0107 ; wp0108 ; wp0186 ; wp0290 ; wp0291 ; wp0292 ; wp0293 ; wp0295 ; wp0296 ; wp0297 ; wp0298 ; wp0299 ; wp0300 ; wp0311 ; wl0499 ; wl0501 ; wl0503 ; wl0511 ; wl0512 ; wl0513 ; wl0514 ; wl0515 ; wl0516 ; wl0517 ; wp0061 ; wp0065 ; wp0357 ; wp0372 ; wp0373 ; wp0374 ; wp0375 ; wp0376 ; wl0204 ; wl0642 ; wl0665 ; wp0517 ; wp0524 ; wl0685 ; wl0704 ; wl0706 ; wl0720 ; wl0721 ; wl0722 ; wl0723 ; wl0725 ; wl0726 ; wl0727 ; wl0728 ; wl0736 ; wl0737 ; wp0555 ; wp0587 ; wp0610 ; wp0613 ; wp0614 ; wp0615 ; wp0616 ; wp0617 ; wp0629 ; wp0630 ; wp0631 ; wp0632 ; wp0633 ; wp0635 ; wl0771 ; wl0772 ; wl0773 ; wl0774 ; wl0775 ; wl0776 ; wl0777 ; wl0778 ; wl0779 ; wl0780 ; wp0041 ; wp0644 ; wp0645 ; wp0646 ; wp0647 ; wp0684 ; wp0686 ; wp0697 ; wp0698 ; wp0699 ; wp0700 ; wp0701 ; wp0702 ; wl0829 ; wl0850 ; wl0869 ; wl0870 ; wl0871 ; wp0183 ; wp0185 ; wp0190 ; wp0739 ; wp0740 ; wp0741 ; wp0742 ; wp0743)
 open import Examples.Groups.Clifford+CS.Five.Chain
-open import Examples.Groups.Clifford+CS.Five.D.D001 using (lem-box-cP-at122441 ; lem-box-cP-at243243)
-open import Examples.Groups.Clifford+CS.Five.D.D006 using (lem-box-cP-at12233441 ; lem-box-perm-1324-at122441)
-open import Examples.Groups.Clifford+CS.Five.D.D015 using (lem-S2-SBOX⟨0·2·43·1⟩)
-open import Examples.Groups.Clifford+CS.Five.D.D030 using (lem-L-CX01-1)
-open import Examples.Groups.Clifford+CS.Five.D.D033 using (lem-L-CX01-2)
-open import Examples.Groups.Clifford+CS.Five.D.D034 using (lem-L-CX10-2)
-open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-TOFF013-CSd24)
-open import Examples.Groups.Clifford+CS.Five.D.R004 using (lem-comm-CCZ024-CX13)
-open import Examples.Groups.Clifford+CS.Five.D.R005 using (lem-comm-CCZ014-CX23 ; lem-comm-CCZ023-CX14 ; lem-comm-CCZ024-CS13 ; lem-comm-TOFF013-CS24 ; lem-comm-TOFF013-CX24 ; lem-comm-TOFF014-CX23 ; lem-comm-TOFF023-CX14)
--- L-CCZ-1 part0: 500 steps
-lem-L-CCZ-1-part0 : Ws → ⟪ (Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ Sb0-1-42-3 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ CS13 ∷ CCZ124 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ Toff014 ∷ K3⁻ ∷ CCZ024 ∷ CCZ023 ∷ Toff014 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) ⟫ʷ
-lem-L-CCZ-1-part0 c4 = trans (run b0) (trans (run b1) (trans (run b2) (trans (run b3) (trans (run b4) (trans (run b5) (trans (run b6) (trans (run b7) (trans (run b8) (trans (run b9) (trans (run b10) (trans (run b11) (trans (run b12) (trans (run b13) (trans (run b14) (trans (run b15) (trans (run b16) (trans (run b17) (trans (run b18) (trans (run b19) (trans (run b20) (trans (run b21) (trans (run b22) (trans (run b23) (trans (run b24) (trans (run b25) (trans (run b26) (trans (run b27) (trans (run b28) (trans (run b29) (trans (run b30) (trans (run b31) (trans (run b32) (trans (run b33) (trans (run b34) (trans (run b35) (trans (run b36) (trans (run b37) (trans (run b38) (trans (run b39) (trans (run b40) (trans (run b41) (trans (run b42) (trans (run b43) (trans (run b44) (trans (run b45) (trans (run b46) (trans (run b47) (trans (run b48) (trans (run b49) (trans (run b50) (trans (run b51) (trans (run b52) (trans (run b53) (trans (run b54) (trans (run b55) (trans (run b56) (trans (run b57) (trans (run b58) (trans (run b59) (trans (run b60) (trans (run b61) (run b62))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+open import Examples.Groups.Clifford+CS.Five.D.D006 using (lem-box-tQ-at0214213043 ; lem-box-tQ-at0314213042 ; lem-box-tQ-at0330 ; lem-box-tQ-at033440 ; lem-box-tQ-at043043 ; lem-box-tQ-at12233441 ; lem-box-tQ-at233442 ; lem-box-tQ-at3443)
+open import Examples.Groups.Clifford+CS.Five.D.D014 using (lem-box-cP-at021021 ; lem-box-cP-at03102132 ; lem-box-cP-at04203243)
+open import Examples.Groups.Clifford+CS.Five.D.D016 using (lem-box-cP-at0110 ; lem-box-cP-at0210233441 ; lem-box-cP-at0210243143 ; lem-box-cP-at0314203142 ; lem-box-cP-at122441 ; lem-box-cP-at132132 ; lem-box-cP-at233442 ; lem-box-cP-at243243 ; lem-box-perm-2314-at0410213243)
+open import Examples.Groups.Clifford+CS.Five.D.D018 using (lem-Kdu-box ; lem-Ku-box ; lem-Ku-box-at0210243143 ; lem-Ku-box-at122441 ; lem-Ku-box-at243243 ; lem-box-box-4-at0410213243 ; lem-box-perm-1324-at043043 ; lem-box-perm-1423-at233442 ; lem-box-perm-3124-at043043 ; lem-box-perm-4123-at12233441)
+open import Examples.Groups.Clifford+CS.Five.D.D019 using (lem-box-box-4-at0310243142 ; lem-box-perm-1324-at0314213042 ; lem-box-perm-2314-at0310243142 ; lem-box-perm-2341-at03102132 ; lem-box-perm-3124-at0314213042)
+open import Examples.Groups.Clifford+CS.Five.D.D025 using (lem-CKdu-box-1 ; lem-CKdu-box-2 ; lem-CKdu-box-2-at0210243143 ; lem-CKdu-box-2-at122441 ; lem-CKdu-box-2-at243243 ; lem-CKdu-box-3 ; lem-CKdu-box-4 ; lem-CKu-box-1 ; lem-CKu-box-2 ; lem-CKu-box-2-at0210243143 ; lem-CKu-box-2-at122441 ; lem-CKu-box-2-at243243 ; lem-CKu-box-3 ; lem-CKu-box-4 ; lem-box-perm-1243 ; lem-box-perm-1243-at3443 ; lem-box-perm-1342 ; lem-box-perm-1423-at0210243143 ; lem-box-perm-1423-at243243 ; lem-box-perm-2341 ; lem-box-perm-3421-at0213203441 ; lem-box-perm-3421-at0314203142 ; lem-box-perm-4123-at033440 ; lem-box-perm-4312-at0214213043 ; lem-box-perm-4312-at0330)
+open import Examples.Groups.Clifford+CS.Five.D.R001 using (lem-comm-CS12-CCZ034 ; lem-comm-CS23-CCZ014 ; lem-comm-CS24-CCZ013 ; lem-comm-CSd12-CCZ034 ; lem-comm-CSd23-CCZ014 ; lem-comm-CSd24-CCZ013 ; lem-comm-CX02-TOFF134 ; lem-comm-CX12-CCZ034 ; lem-comm-CX13-CCZ024 ; lem-comm-CX23-CCZ014 ; lem-comm-CZ03-TOFF412)
+open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-CCZ013-CK42 ; lem-comm-CK41-CCZ023 ; lem-comm-CK42-CCZ013 ; lem-comm-CS14-CCZ023 ; lem-comm-CSd14-CCZ023 ; lem-comm-CX04-TOFF312 ; lem-comm-CX31-TOFF024 ; lem-comm-CZ02-TOFF314)
+open import Examples.Groups.Clifford+CS.Five.D.R009 using (lem-comm-CCZ023-CK41)
+
+-- XCKX-box-1: 4 steps
+lem-XCKX-box-1 : Ws → ⟪ (X1 ∷ CK10 ∷ X1 ∷ Bx0-1234 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1234 ∷ X1 ∷ CK10 ∷ X1 ∷ []) ⟫ʷ
+lem-XCKX-box-1 c4 = run b0
   where
-  b0 : Chain (Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ Sb0-1-42-3 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ []) (Sb0-2-43-1 ∷ Toff214 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ Sb0-1-42-3 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ [])
-  b0 = at 1 5 (Toff214 ∷ []) (lem-L-CX01-1 c4) ▸
-       at 5 5 (Toff214 ∷ []) (lem-L-CX01-1 c4) ▸
-       at 6 5 (Toff324 ∷ []) (lem-L-CX01-2 c4) ▸
-       at 7 5 (Toff234 ∷ []) (lem-L-CX10-2 c4) ▸
-       at 8 5 (Toff324 ∷ []) (lem-L-CX01-2 c4) ▸
-       at 10 5 (Toff324 ∷ []) (lem-L-CX01-2 c4) ▸
-       at 11 5 (Toff234 ∷ []) (lem-L-CX10-2 c4) ▸
-       at 12 5 (Toff324 ∷ []) (lem-L-CX01-2 c4) ▸ done
+  b0 : Chain (X1 ∷ CK10 ∷ X1 ∷ Bx0-1234 ∷ []) (Bx0-1234 ∷ X1 ∷ CK10 ∷ X1 ∷ [])
+  b0 = at 0 3 (K0 ∷ CK10⁻ ∷ []) (sym (wl0366 (lit c4))) ▸
+       at 1 2 (Bx0-1234 ∷ CK10⁻ ∷ []) (lem-CKdu-box-1 c4) ▸
+       at 0 2 (Bx0-1234 ∷ K0 ∷ []) (lem-Ku-box c4) ▸
+       at 1 2 (X1 ∷ CK10 ∷ X1 ∷ []) (wl0366 (lit c4)) ▸ done
 
-  b1 : Chain (Sb0-2-43-1 ∷ Toff214 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ Sb0-1-42-3 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ Bx0-1423 ∷ Toff324 ∷ Sb0-1-3-2 ∷ Toff324 ∷ Sb⁻0-1-3-2 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ [])
-  b1 = at 2 2 (CCZ234 ∷ []) (lem-S2-SBOX⟨0·2·43·1⟩ c4) ▸
-       at 0 1 (Bx0-2431 ∷ Toff134 ∷ Sb0-2-1-3 ∷ Toff134 ∷ Sb⁻0-2-1-3 ∷ []) (refl) ▸
-       at 2 1 (CS12 ∷ []) (refl) ▸
-       at 4 1 (CS12⁻ ∷ []) (refl) ▸
-       at 7 1 (Bx0-2431 ∷ Toff134 ∷ Sb0-2-1-3 ∷ Toff134 ∷ Sb⁻0-2-1-3 ∷ []) (refl) ▸
-       at 9 1 (CS12 ∷ []) (refl) ▸
-       at 11 1 (CS12⁻ ∷ []) (refl) ▸
-       at 16 1 (Bx0-1423 ∷ Toff324 ∷ Sb0-1-3-2 ∷ Toff324 ∷ Sb⁻0-1-3-2 ∷ []) (refl) ▸ done
+-- XCKdX-box-1: 4 steps
+lem-XCKdX-box-1 : Ws → ⟪ (X1 ∷ CK10⁻ ∷ X1 ∷ Bx0-1234 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1234 ∷ X1 ∷ CK10⁻ ∷ X1 ∷ []) ⟫ʷ
+lem-XCKdX-box-1 c4 = run b0
+  where
+  b0 : Chain (X1 ∷ CK10⁻ ∷ X1 ∷ Bx0-1234 ∷ []) (Bx0-1234 ∷ X1 ∷ CK10⁻ ∷ X1 ∷ [])
+  b0 = at 0 3 (K0⁻ ∷ CK10 ∷ []) (sym (wl0367 (lit c4))) ▸
+       at 1 2 (Bx0-1234 ∷ CK10 ∷ []) (lem-CKu-box-1 c4) ▸
+       at 0 2 (Bx0-1234 ∷ K0⁻ ∷ []) (lem-Kdu-box c4) ▸
+       at 1 2 (X1 ∷ CK10⁻ ∷ X1 ∷ []) (wl0367 (lit c4)) ▸ done
 
-  b2 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ Bx0-1423 ∷ Toff324 ∷ Sb0-1-3-2 ∷ Toff324 ∷ Sb⁻0-1-3-2 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ Toff024 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CCZ014 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ Toff023 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ [])
-  b2 = at 18 1 (CS13 ∷ []) (refl) ▸
-       at 20 1 (CS13⁻ ∷ []) (refl) ▸
-       at 16 1 (CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ []) (lem-box-cP-at243243 c4) ▸
-       at 19 2 (Toff024 ∷ Toff324 ∷ Toff023 ∷ []) (wp0805 c4) ▸
-       at 18 2 (Toff024 ∷ CCZ124 ∷ CCZ014 ∷ []) (wp0806 c4) ▸
-       at 21 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 20 2 (K3 ∷ CCZ014 ∷ []) (wp0065 c4) ▸
-       at 21 2 (CS34 ∷ CCZ014 ∷ []) (wp0064 c4) ▸ done
+-- XCKX-box-2: 4 steps
+lem-XCKX-box-2 : Ws → ⟪ (X2 ∷ CK20 ∷ X2 ∷ Bx0-1234 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1234 ∷ X2 ∷ CK20 ∷ X2 ∷ []) ⟫ʷ
+lem-XCKX-box-2 c4 = run b0
+  where
+  b0 : Chain (X2 ∷ CK20 ∷ X2 ∷ Bx0-1234 ∷ []) (Bx0-1234 ∷ X2 ∷ CK20 ∷ X2 ∷ [])
+  b0 = at 0 3 (K0 ∷ CK20⁻ ∷ []) (sym (wl0379 (lit c4))) ▸
+       at 1 2 (Bx0-1234 ∷ CK20⁻ ∷ []) (lem-CKdu-box-2 c4) ▸
+       at 0 2 (Bx0-1234 ∷ K0 ∷ []) (lem-Ku-box c4) ▸
+       at 1 2 (X2 ∷ CK20 ∷ X2 ∷ []) (wl0379 (lit c4)) ▸ done
 
-  b3 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ Toff024 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CCZ014 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ Toff023 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ014 ∷ Toff024 ∷ Toff023 ∷ CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ [])
-  b3 = at 22 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 23 2 (CS34⁻ ∷ CCZ014 ∷ []) (wp0063 c4) ▸
-       at 24 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 25 2 (CS24 ∷ CCZ014 ∷ []) (wp0062 c4) ▸
-       at 26 2 (K3⁻ ∷ CCZ014 ∷ []) (wp0061 c4) ▸
-       at 20 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 17 2 (Toff024 ∷ Toff023 ∷ []) (wp0072 c4) ▸
-       at 19 1 (CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ []) (wl0220 (lit c4)) ▸ done
+-- XCKdX-box-2: 4 steps
+lem-XCKdX-box-2 : Ws → ⟪ (X2 ∷ CK20⁻ ∷ X2 ∷ Bx0-1234 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1234 ∷ X2 ∷ CK20⁻ ∷ X2 ∷ []) ⟫ʷ
+lem-XCKdX-box-2 c4 = run b0
+  where
+  b0 : Chain (X2 ∷ CK20⁻ ∷ X2 ∷ Bx0-1234 ∷ []) (Bx0-1234 ∷ X2 ∷ CK20⁻ ∷ X2 ∷ [])
+  b0 = at 0 3 (K0⁻ ∷ CK20 ∷ []) (sym (wl0380 (lit c4))) ▸
+       at 1 2 (Bx0-1234 ∷ CK20 ∷ []) (lem-CKu-box-2 c4) ▸
+       at 0 2 (Bx0-1234 ∷ K0⁻ ∷ []) (lem-Kdu-box c4) ▸
+       at 1 2 (X2 ∷ CK20⁻ ∷ X2 ∷ []) (wl0380 (lit c4)) ▸ done
 
-  b4 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ014 ∷ Toff024 ∷ Toff023 ∷ CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ014 ∷ CCZ124 ∷ Toff324 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ [])
-  b4 = at 18 2 (CS24 ∷ Toff023 ∷ []) (sym (wp0070 c4)) ▸
-       at 19 2 (CX14 ∷ Toff023 ∷ []) (lem-comm-TOFF023-CX14 (lit c4)) ▸
-       at 20 2 (CS24⁻ ∷ Toff023 ∷ []) (sym (wp0069 c4)) ▸
-       at 21 2 (CX14 ∷ Toff023 ∷ []) (lem-comm-TOFF023-CX14 (lit c4)) ▸
-       at 22 2 (CS12 ∷ Toff023 ∷ []) (sym (wl0221 (lit c4))) ▸
-       at 18 5 (CCZ124 ∷ []) (sym (wl0220 (lit c4))) ▸
-       at 19 2 (Toff024 ∷ Toff324 ∷ Toff023 ∷ []) (wp0805 c4) ▸
-       at 17 3 (CCZ124 ∷ []) (sym (wp0074 c4)) ▸ done
+-- XCKX-box-3: 4 steps
+lem-XCKX-box-3 : Ws → ⟪ (X3 ∷ CK30 ∷ X3 ∷ Bx0-1234 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1234 ∷ X3 ∷ CK30 ∷ X3 ∷ []) ⟫ʷ
+lem-XCKX-box-3 c4 = run b0
+  where
+  b0 : Chain (X3 ∷ CK30 ∷ X3 ∷ Bx0-1234 ∷ []) (Bx0-1234 ∷ X3 ∷ CK30 ∷ X3 ∷ [])
+  b0 = at 0 3 (K0 ∷ CK30⁻ ∷ []) (sym (wl0389 (lit c4))) ▸
+       at 1 2 (Bx0-1234 ∷ CK30⁻ ∷ []) (lem-CKdu-box-3 c4) ▸
+       at 0 2 (Bx0-1234 ∷ K0 ∷ []) (lem-Ku-box c4) ▸
+       at 1 2 (X3 ∷ CK30 ∷ X3 ∷ []) (wl0389 (lit c4)) ▸ done
 
-  b5 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ014 ∷ CCZ124 ∷ Toff324 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ CCZ014 ∷ K3⁻ ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ [])
-  b5 = at 16 2 (CCZ124 ∷ CCZ014 ∷ []) (wp0066 c4) ▸
-       at 18 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 17 2 (K3 ∷ CCZ014 ∷ []) (wp0065 c4) ▸
-       at 18 2 (CS34 ∷ CCZ014 ∷ []) (wp0064 c4) ▸
-       at 19 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 20 2 (CS34⁻ ∷ CCZ014 ∷ []) (wp0063 c4) ▸
-       at 21 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 22 2 (CS24 ∷ CCZ014 ∷ []) (wp0062 c4) ▸ done
+-- XCKdX-box-3: 4 steps
+lem-XCKdX-box-3 : Ws → ⟪ (X3 ∷ CK30⁻ ∷ X3 ∷ Bx0-1234 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1234 ∷ X3 ∷ CK30⁻ ∷ X3 ∷ []) ⟫ʷ
+lem-XCKdX-box-3 c4 = run b0
+  where
+  b0 : Chain (X3 ∷ CK30⁻ ∷ X3 ∷ Bx0-1234 ∷ []) (Bx0-1234 ∷ X3 ∷ CK30⁻ ∷ X3 ∷ [])
+  b0 = at 0 3 (K0⁻ ∷ CK30 ∷ []) (sym (wl0390 (lit c4))) ▸
+       at 1 2 (Bx0-1234 ∷ CK30 ∷ []) (lem-CKu-box-3 c4) ▸
+       at 0 2 (Bx0-1234 ∷ K0⁻ ∷ []) (lem-Kdu-box c4) ▸
+       at 1 2 (X3 ∷ CK30⁻ ∷ X3 ∷ []) (wl0390 (lit c4)) ▸ done
 
-  b6 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ CCZ014 ∷ K3⁻ ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ Toff324 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ [])
-  b6 = at 23 2 (K3⁻ ∷ CCZ014 ∷ []) (wp0061 c4) ▸
-       at 17 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 18 4 (Bx0-1423 ∷ []) (sym (lem-box-cP-at243243 c4)) ▸
-       at 18 1 (CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ []) (lem-box-cP-at243243 c4) ▸
-       at 21 2 (CS13 ∷ Toff023 ∷ []) (sym (wl0222 (lit c4))) ▸
-       at 20 2 (CS13 ∷ CCZ014 ∷ []) (wp0053 c4) ▸
-       at 19 2 (CS13 ∷ Toff023 ∷ []) (sym (wl0222 (lit c4))) ▸
-       at 18 2 (CS13 ∷ CCZ014 ∷ []) (wp0053 c4) ▸ done
+-- XCKX-box-4: 4 steps
+lem-XCKX-box-4 : Ws → ⟪ (X4 ∷ CK40 ∷ X4 ∷ Bx0-1234 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1234 ∷ X4 ∷ CK40 ∷ X4 ∷ []) ⟫ʷ
+lem-XCKX-box-4 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK40 ∷ X4 ∷ Bx0-1234 ∷ []) (Bx0-1234 ∷ X4 ∷ CK40 ∷ X4 ∷ [])
+  b0 = at 0 3 (K0 ∷ CK40⁻ ∷ []) (sym (wp0259 c4)) ▸
+       at 1 2 (Bx0-1234 ∷ CK40⁻ ∷ []) (lem-CKdu-box-4 c4) ▸
+       at 0 2 (Bx0-1234 ∷ K0 ∷ []) (lem-Ku-box c4) ▸
+       at 1 2 (X4 ∷ CK40 ∷ X4 ∷ []) (wp0259 c4) ▸ done
 
-  b7 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ Toff324 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ014 ∷ Toff023 ∷ Toff024 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CX23 ∷ CCZ014 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ Toff023 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ [])
-  b7 = at 19 4 (Bx0-1423 ∷ []) (sym (lem-box-cP-at243243 c4)) ▸
-       at 19 1 (CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ []) (lem-box-cP-at243243 c4) ▸
-       at 22 2 (Toff024 ∷ Toff324 ∷ Toff023 ∷ []) (wp0805 c4) ▸
-       at 21 2 (Toff024 ∷ CCZ124 ∷ CCZ014 ∷ []) (wp0806 c4) ▸
-       at 24 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 23 2 (K3 ∷ CCZ014 ∷ []) (wp0065 c4) ▸
-       at 24 2 (CS34 ∷ CCZ014 ∷ []) (wp0064 c4) ▸
-       at 25 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸ done
+-- XCKdX-box-4: 4 steps
+lem-XCKdX-box-4 : Ws → ⟪ (X4 ∷ CK40⁻ ∷ X4 ∷ Bx0-1234 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1234 ∷ X4 ∷ CK40⁻ ∷ X4 ∷ []) ⟫ʷ
+lem-XCKdX-box-4 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK40⁻ ∷ X4 ∷ Bx0-1234 ∷ []) (Bx0-1234 ∷ X4 ∷ CK40⁻ ∷ X4 ∷ [])
+  b0 = at 0 3 (K0⁻ ∷ CK40 ∷ []) (sym (wp0260 c4)) ▸
+       at 1 2 (Bx0-1234 ∷ CK40 ∷ []) (lem-CKu-box-4 c4) ▸
+       at 0 2 (Bx0-1234 ∷ K0⁻ ∷ []) (lem-Kdu-box c4) ▸
+       at 1 2 (X4 ∷ CK40⁻ ∷ X4 ∷ []) (wp0260 c4) ▸ done
 
-  b8 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ014 ∷ Toff023 ∷ Toff024 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CX23 ∷ CCZ014 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ Toff023 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ014 ∷ Toff024 ∷ CS24 ∷ Toff023 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ [])
-  b8 = at 26 2 (CS34⁻ ∷ CCZ014 ∷ []) (wp0063 c4) ▸
-       at 27 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 28 2 (CS24 ∷ CCZ014 ∷ []) (wp0062 c4) ▸
-       at 29 2 (K3⁻ ∷ CCZ014 ∷ []) (wp0061 c4) ▸
-       at 23 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 20 2 (Toff024 ∷ Toff023 ∷ []) (wp0072 c4) ▸
-       at 22 1 (CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ []) (wl0220 (lit c4)) ▸
-       at 21 2 (CS24 ∷ Toff023 ∷ []) (sym (wp0070 c4)) ▸ done
+-- box-box-1: 105 steps
+lem-box-box-1 : Ws → ⟪ (Bx0-1234 ∷ Bx1-0234 ∷ []) ⟫ʷ ≈ ⟪ (Bx1-0234 ∷ Bx0-1234 ∷ []) ⟫ʷ
+lem-box-box-1 c4 = trans (run b0) (trans (run b1) (trans (run b2) (trans (run b3) (trans (run b4) (trans (run b5) (trans (run b6) (trans (run b7) (trans (run b8) (trans (run b9) (trans (run b10) (trans (run b11) (trans (run b12) (run b13)))))))))))))
+  where
+  b0 : Chain (Bx0-1234 ∷ Bx1-0234 ∷ []) (Toff023 ∷ CCZ014 ∷ Toff023 ∷ CCZ012 ∷ Toff134 ∷ CCZ014 ∷ CS34 ∷ CX03 ∷ CS34⁻ ∷ CCZ012 ∷ CX03 ∷ CS04 ∷ Toff134 ∷ [])
+  b0 = at 0 1 (Bx0-2341 ∷ []) (lem-box-perm-2341 c4) ▸
+       at 0 1 (Toff023 ∷ CCZ014 ∷ Toff023 ∷ CCZ014 ∷ []) (lem-box-tQ-at12233441 c4) ▸
+       at 4 1 (CCZ012 ∷ Toff134 ∷ CCZ012 ∷ Toff134 ∷ []) (lem-box-cP-at0110 c4) ▸
+       at 3 2 (CCZ012 ∷ CCZ014 ∷ []) (sym (wp0167 c4)) ▸
+       at 4 2 (Toff134 ∷ CCZ014 ∷ CCZ034 ∷ []) (wp0275 c4) ▸
+       at 6 1 (CS34 ∷ CX03 ∷ CS34⁻ ∷ CX03 ∷ CS04 ∷ []) (wp0231 c4) ▸
+       at 10 2 (CCZ012 ∷ CS04 ∷ []) (sym (wp0117 c4)) ▸
+       at 9 2 (CCZ012 ∷ CX03 ∷ []) (sym (wl0381 (lit c4))) ▸ done
 
-  b9 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ014 ∷ Toff024 ∷ CS24 ∷ Toff023 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ CCZ014 ∷ Toff324 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ [])
-  b9 = at 22 2 (CX14 ∷ Toff023 ∷ []) (lem-comm-TOFF023-CX14 (lit c4)) ▸
-       at 23 2 (CS24⁻ ∷ Toff023 ∷ []) (sym (wp0069 c4)) ▸
-       at 24 2 (CX14 ∷ Toff023 ∷ []) (lem-comm-TOFF023-CX14 (lit c4)) ▸
-       at 25 2 (CS12 ∷ Toff023 ∷ []) (sym (wl0221 (lit c4))) ▸
-       at 21 5 (CCZ124 ∷ []) (sym (wl0220 (lit c4))) ▸
-       at 22 2 (Toff024 ∷ Toff324 ∷ Toff023 ∷ []) (wp0805 c4) ▸
-       at 20 3 (CCZ124 ∷ []) (sym (wp0074 c4)) ▸
-       at 19 2 (CCZ124 ∷ CCZ014 ∷ []) (wp0066 c4) ▸ done
+  b1 : Chain (Toff023 ∷ CCZ014 ∷ Toff023 ∷ CCZ012 ∷ Toff134 ∷ CCZ014 ∷ CS34 ∷ CX03 ∷ CS34⁻ ∷ CCZ012 ∷ CX03 ∷ CS04 ∷ Toff134 ∷ []) (Toff023 ∷ CCZ014 ∷ Toff023 ∷ CCZ012 ∷ Toff134 ∷ CCZ012 ∷ Toff134 ∷ CCZ014 ∷ [])
+  b1 = at 8 2 (CCZ012 ∷ CS34⁻ ∷ []) (sym (c₃ (CCZ) (CS • CS • CS))) ▸
+       at 7 2 (CCZ012 ∷ CX03 ∷ []) (sym (wl0381 (lit c4))) ▸
+       at 6 2 (CCZ012 ∷ CS34 ∷ []) (sym (c₃ (CCZ) (CS))) ▸
+       at 7 5 (CCZ034 ∷ []) (sym (wp0231 c4)) ▸
+       at 5 2 (CCZ012 ∷ CCZ014 ∷ []) (sym (wp0167 c4)) ▸
+       at 6 3 (Toff134 ∷ CCZ014 ∷ []) (wp0276 c4) ▸
+       at 3 4 (Bx1-0234 ∷ []) (sym (lem-box-cP-at0110 c4)) ▸
+       at 3 1 (CCZ012 ∷ Toff134 ∷ CCZ012 ∷ Toff134 ∷ []) (lem-box-cP-at0110 c4) ▸ done
 
-  b10 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ CCZ014 ∷ Toff324 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ [])
-  b10 = at 21 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 20 2 (K3 ∷ CCZ014 ∷ []) (wp0065 c4) ▸
-       at 21 2 (CS34 ∷ CCZ014 ∷ []) (wp0064 c4) ▸
-       at 22 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 23 2 (CS34⁻ ∷ CCZ014 ∷ []) (wp0063 c4) ▸
-       at 24 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 25 2 (CS24 ∷ CCZ014 ∷ []) (wp0062 c4) ▸
-       at 26 2 (K3⁻ ∷ CCZ014 ∷ []) (wp0061 c4) ▸ done
+  b2 : Chain (Toff023 ∷ CCZ014 ∷ Toff023 ∷ CCZ012 ∷ Toff134 ∷ CCZ012 ∷ Toff134 ∷ CCZ014 ∷ []) (Toff023 ∷ CCZ014 ∷ CCZ012 ∷ K0 ∷ CS23 ∷ Toff134 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ K0⁻ ∷ CCZ123 ∷ CCZ234 ∷ CCZ012 ∷ Toff134 ∷ CCZ014 ∷ [])
+  b2 = at 2 2 (CCZ012 ∷ Toff023 ∷ CCZ123 ∷ []) (sym (wl0313 (lit c4))) ▸
+       at 4 2 (Toff134 ∷ CCZ123 ∷ CCZ234 ∷ []) (wl0408 (lit c4)) ▸
+       at 3 1 (K0 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ K0⁻ ∷ []) (sym (wl0409 (lit c4))) ▸
+       at 9 2 (Toff134 ∷ K0⁻ ∷ []) (c₁ (K • iI) (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑)) ▸
+       at 8 2 (Toff134 ∷ CS03 ∷ []) (wp0277 c4) ▸
+       at 7 2 (Toff134 ∷ CX02 ∷ []) (lem-comm-CX02-TOFF134 (lit c4)) ▸
+       at 6 2 (Toff134 ∷ CS23⁻ ∷ []) (wl0410 (lit c4)) ▸
+       at 5 2 (Toff134 ∷ CX02 ∷ []) (lem-comm-CX02-TOFF134 (lit c4)) ▸ done
 
-  b11 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ CS13⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ Bx0-1423 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ [])
-  b11 = at 20 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 21 4 (Bx0-1423 ∷ []) (sym (lem-box-cP-at243243 c4)) ▸
-       at 21 1 (CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ []) (lem-box-cP-at243243 c4) ▸
-       at 24 2 (CS13⁻ ∷ Toff023 ∷ []) (sym (wl0219 (lit c4))) ▸
-       at 23 2 (CS13⁻ ∷ CCZ014 ∷ []) (wp0060 c4) ▸
-       at 22 2 (CS13⁻ ∷ Toff023 ∷ []) (sym (wl0219 (lit c4))) ▸
-       at 21 2 (CS13⁻ ∷ CCZ014 ∷ []) (wp0060 c4) ▸
-       at 22 4 (Bx0-1423 ∷ []) (sym (lem-box-cP-at243243 c4)) ▸ done
+  b3 : Chain (Toff023 ∷ CCZ014 ∷ CCZ012 ∷ K0 ∷ CS23 ∷ Toff134 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ K0⁻ ∷ CCZ123 ∷ CCZ234 ∷ CCZ012 ∷ Toff134 ∷ CCZ014 ∷ []) (Toff023 ∷ CCZ014 ∷ CCZ012 ∷ Toff134 ∷ Toff023 ∷ CCZ123 ∷ CS34 ∷ CCZ012 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ Toff134 ∷ CCZ014 ∷ [])
+  b3 = at 4 2 (Toff134 ∷ CS23 ∷ []) (wl0238 (lit c4)) ▸
+       at 3 2 (Toff134 ∷ K0 ∷ []) (c₁ (K) (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑)) ▸
+       at 4 7 (Toff023 ∷ []) (wl0409 (lit c4)) ▸
+       at 6 1 (CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ []) (wl0274 (lit c4)) ▸
+       at 10 2 (CCZ012 ∷ CS24 ∷ []) (sym (wp0141 c4)) ▸
+       at 9 2 (CCZ012 ∷ CX23 ∷ []) (sym (wl0411 (lit c4))) ▸
+       at 8 2 (CCZ012 ∷ CS34⁻ ∷ []) (sym (c₃ (CCZ) (CS • CS • CS))) ▸
+       at 7 2 (CCZ012 ∷ CX23 ∷ []) (sym (wl0411 (lit c4))) ▸ done
 
-  b12 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ Bx0-1423 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ014 ∷ Toff023 ∷ Toff024 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CCZ014 ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ Toff023 ∷ Toff234 ∷ Toff324 ∷ [])
-  b12 = at 22 1 (CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ []) (lem-box-cP-at243243 c4) ▸
-       at 25 2 (Toff024 ∷ Toff324 ∷ Toff023 ∷ []) (wp0805 c4) ▸
-       at 24 2 (Toff024 ∷ CCZ124 ∷ CCZ014 ∷ []) (wp0806 c4) ▸
-       at 27 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 26 2 (K3 ∷ CCZ014 ∷ []) (wp0065 c4) ▸
-       at 27 2 (CS34 ∷ CCZ014 ∷ []) (wp0064 c4) ▸
-       at 28 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 29 2 (CS34⁻ ∷ CCZ014 ∷ []) (wp0063 c4) ▸ done
+  b4 : Chain (Toff023 ∷ CCZ014 ∷ CCZ012 ∷ Toff134 ∷ Toff023 ∷ CCZ123 ∷ CS34 ∷ CCZ012 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ Toff134 ∷ CCZ014 ∷ []) (Toff023 ∷ CCZ014 ∷ CCZ012 ∷ Toff134 ∷ CCZ012 ∷ K0 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ Toff134 ∷ K0⁻ ∷ CCZ234 ∷ CCZ014 ∷ [])
+  b4 = at 6 2 (CCZ012 ∷ CS34 ∷ []) (sym (c₃ (CCZ) (CS))) ▸
+       at 7 5 (CCZ234 ∷ []) (sym (wl0274 (lit c4))) ▸
+       at 5 2 (CCZ012 ∷ CCZ123 ∷ []) (sym (wl0298 (lit c4))) ▸
+       at 4 2 (CCZ012 ∷ Toff023 ∷ CCZ123 ∷ []) (sym (wl0313 (lit c4))) ▸
+       at 5 3 (Toff023 ∷ []) (wl0412 (lit c4)) ▸
+       at 6 2 (Toff134 ∷ CCZ234 ∷ []) (wl0413 (lit c4)) ▸
+       at 5 1 (K0 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ K0⁻ ∷ []) (sym (wl0409 (lit c4))) ▸
+       at 11 2 (Toff134 ∷ K0⁻ ∷ []) (c₁ (K • iI) (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑)) ▸ done
 
-  b13 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ014 ∷ Toff023 ∷ Toff024 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CCZ014 ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ Toff023 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ014 ∷ Toff024 ∷ CS24 ∷ CX14 ∷ Toff023 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ Toff234 ∷ Toff324 ∷ [])
-  b13 = at 30 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 31 2 (CS24 ∷ CCZ014 ∷ []) (wp0062 c4) ▸
-       at 32 2 (K3⁻ ∷ CCZ014 ∷ []) (wp0061 c4) ▸
-       at 26 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 23 2 (Toff024 ∷ Toff023 ∷ []) (wp0072 c4) ▸
-       at 25 1 (CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ []) (wl0220 (lit c4)) ▸
-       at 24 2 (CS24 ∷ Toff023 ∷ []) (sym (wp0070 c4)) ▸
-       at 25 2 (CX14 ∷ Toff023 ∷ []) (lem-comm-TOFF023-CX14 (lit c4)) ▸ done
+  b5 : Chain (Toff023 ∷ CCZ014 ∷ CCZ012 ∷ Toff134 ∷ CCZ012 ∷ K0 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ Toff134 ∷ K0⁻ ∷ CCZ234 ∷ CCZ014 ∷ []) (Toff023 ∷ CCZ014 ∷ Bx1-0234 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ [])
+  b5 = at 10 2 (Toff134 ∷ CS03 ∷ []) (wp0277 c4) ▸
+       at 9 2 (Toff134 ∷ CX02 ∷ []) (lem-comm-CX02-TOFF134 (lit c4)) ▸
+       at 8 2 (Toff134 ∷ CS23⁻ ∷ []) (wl0410 (lit c4)) ▸
+       at 7 2 (Toff134 ∷ CX02 ∷ []) (lem-comm-CX02-TOFF134 (lit c4)) ▸
+       at 6 2 (Toff134 ∷ CS23 ∷ []) (wl0238 (lit c4)) ▸
+       at 5 2 (Toff134 ∷ K0 ∷ []) (c₁ (K) (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑)) ▸
+       at 6 7 (Toff023 ∷ []) (wl0409 (lit c4)) ▸
+       at 2 4 (Bx1-0234 ∷ []) (sym (lem-box-cP-at0110 c4)) ▸ done
 
-  b14 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ014 ∷ Toff024 ∷ CS24 ∷ CX14 ∷ Toff023 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ CCZ014 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ Toff234 ∷ Toff324 ∷ [])
-  b14 = at 26 2 (CS24⁻ ∷ Toff023 ∷ []) (sym (wp0069 c4)) ▸
-       at 27 2 (CX14 ∷ Toff023 ∷ []) (lem-comm-TOFF023-CX14 (lit c4)) ▸
-       at 28 2 (CS12 ∷ Toff023 ∷ []) (sym (wl0221 (lit c4))) ▸
-       at 24 5 (CCZ124 ∷ []) (sym (wl0220 (lit c4))) ▸
-       at 25 2 (Toff024 ∷ Toff324 ∷ Toff023 ∷ []) (wp0805 c4) ▸
-       at 23 3 (CCZ124 ∷ []) (sym (wp0074 c4)) ▸
-       at 22 2 (CCZ124 ∷ CCZ014 ∷ []) (wp0066 c4) ▸
-       at 24 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸ done
+  b6 : Chain (Toff023 ∷ CCZ014 ∷ Bx1-0234 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ []) (Toff023 ∷ CCZ012 ∷ Toff134 ∷ CCZ014 ∷ CS34 ∷ CCZ012 ∷ CX03 ∷ CS34⁻ ∷ CX03 ∷ CS04 ∷ Toff134 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ [])
+  b6 = at 2 1 (CCZ012 ∷ Toff134 ∷ CCZ012 ∷ Toff134 ∷ []) (lem-box-cP-at0110 c4) ▸
+       at 1 2 (CCZ012 ∷ CCZ014 ∷ []) (sym (wp0167 c4)) ▸
+       at 2 2 (Toff134 ∷ CCZ014 ∷ CCZ034 ∷ []) (wp0275 c4) ▸
+       at 4 1 (CS34 ∷ CX03 ∷ CS34⁻ ∷ CX03 ∷ CS04 ∷ []) (wp0231 c4) ▸
+       at 8 2 (CCZ012 ∷ CS04 ∷ []) (sym (wp0117 c4)) ▸
+       at 7 2 (CCZ012 ∷ CX03 ∷ []) (sym (wl0381 (lit c4))) ▸
+       at 6 2 (CCZ012 ∷ CS34⁻ ∷ []) (sym (c₃ (CCZ) (CS • CS • CS))) ▸
+       at 5 2 (CCZ012 ∷ CX03 ∷ []) (sym (wl0381 (lit c4))) ▸ done
 
-  b15 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ CCZ014 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ Toff234 ∷ Toff324 ∷ [])
-  b15 = at 23 2 (K3 ∷ CCZ014 ∷ []) (wp0065 c4) ▸
-       at 24 2 (CS34 ∷ CCZ014 ∷ []) (wp0064 c4) ▸
-       at 25 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 26 2 (CS34⁻ ∷ CCZ014 ∷ []) (wp0063 c4) ▸
-       at 27 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 28 2 (CS24 ∷ CCZ014 ∷ []) (wp0062 c4) ▸
-       at 29 2 (K3⁻ ∷ CCZ014 ∷ []) (wp0061 c4) ▸
-       at 23 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸ done
+  b7 : Chain (Toff023 ∷ CCZ012 ∷ Toff134 ∷ CCZ014 ∷ CS34 ∷ CCZ012 ∷ CX03 ∷ CS34⁻ ∷ CX03 ∷ CS04 ∷ Toff134 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ []) (CCZ012 ∷ Toff023 ∷ Toff134 ∷ CCZ123 ∷ CCZ234 ∷ CCZ012 ∷ Toff134 ∷ CCZ014 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ [])
+  b7 = at 4 2 (CCZ012 ∷ CS34 ∷ []) (sym (c₃ (CCZ) (CS))) ▸
+       at 5 5 (CCZ034 ∷ []) (sym (wp0231 c4)) ▸
+       at 3 2 (CCZ012 ∷ CCZ014 ∷ []) (sym (wp0167 c4)) ▸
+       at 4 3 (Toff134 ∷ CCZ014 ∷ []) (wp0276 c4) ▸
+       at 1 4 (Bx1-0234 ∷ []) (sym (lem-box-cP-at0110 c4)) ▸
+       at 1 1 (CCZ012 ∷ Toff134 ∷ CCZ012 ∷ Toff134 ∷ []) (lem-box-cP-at0110 c4) ▸
+       at 0 2 (CCZ012 ∷ Toff023 ∷ CCZ123 ∷ []) (sym (wl0313 (lit c4))) ▸
+       at 2 2 (Toff134 ∷ CCZ123 ∷ CCZ234 ∷ []) (wl0408 (lit c4)) ▸ done
 
-  b16 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ Toff234 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ Toff034 ∷ CCZ134 ∷ K2 ∷ CS34 ∷ CX23 ∷ CCZ014 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K2⁻ ∷ Toff023 ∷ Toff324 ∷ [])
-  b16 = at 24 4 (Bx0-1423 ∷ []) (sym (lem-box-cP-at243243 c4)) ▸
-       at 24 1 (CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ []) (lem-box-cP-at243243 c4) ▸
-       at 27 2 (Toff034 ∷ Toff234 ∷ Toff023 ∷ []) (wp1208 c4) ▸
-       at 26 2 (Toff034 ∷ CCZ134 ∷ CCZ014 ∷ []) (wp1209 c4) ▸
-       at 29 1 (K2 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K2⁻ ∷ []) (sym (wl1374 (lit c4))) ▸
-       at 28 2 (K2 ∷ CCZ014 ∷ []) (wp1210 c4) ▸
-       at 29 2 (CS34 ∷ CCZ014 ∷ []) (wp0064 c4) ▸
-       at 30 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸ done
+  b8 : Chain (CCZ012 ∷ Toff023 ∷ Toff134 ∷ CCZ123 ∷ CCZ234 ∷ CCZ012 ∷ Toff134 ∷ CCZ014 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ []) (CCZ012 ∷ Toff134 ∷ K0 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ K0⁻ ∷ CCZ123 ∷ CCZ234 ∷ CCZ012 ∷ Toff134 ∷ CCZ014 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ [])
+  b8 = at 1 1 (K0 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ K0⁻ ∷ []) (sym (wl0409 (lit c4))) ▸
+       at 7 2 (Toff134 ∷ K0⁻ ∷ []) (c₁ (K • iI) (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑)) ▸
+       at 6 2 (Toff134 ∷ CS03 ∷ []) (wp0277 c4) ▸
+       at 5 2 (Toff134 ∷ CX02 ∷ []) (lem-comm-CX02-TOFF134 (lit c4)) ▸
+       at 4 2 (Toff134 ∷ CS23⁻ ∷ []) (wl0410 (lit c4)) ▸
+       at 3 2 (Toff134 ∷ CX02 ∷ []) (lem-comm-CX02-TOFF134 (lit c4)) ▸
+       at 2 2 (Toff134 ∷ CS23 ∷ []) (wl0238 (lit c4)) ▸
+       at 1 2 (Toff134 ∷ K0 ∷ []) (c₁ (K) (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑)) ▸ done
 
-  b17 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ Toff034 ∷ CCZ134 ∷ K2 ∷ CS34 ∷ CX23 ∷ CCZ014 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K2⁻ ∷ Toff023 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ014 ∷ Toff034 ∷ CS34 ∷ Toff023 ∷ CX14 ∷ CS34⁻ ∷ CX14 ∷ CS13 ∷ Toff234 ∷ CCZ014 ∷ Toff023 ∷ Toff324 ∷ [])
-  b17 = at 31 2 (CS34⁻ ∷ CCZ014 ∷ []) (wp0063 c4) ▸
-       at 32 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 33 2 (CS24 ∷ CCZ014 ∷ []) (wp0062 c4) ▸
-       at 34 2 (K2⁻ ∷ CCZ014 ∷ []) (wp1211 c4) ▸
-       at 28 7 (Toff234 ∷ []) (wl1374 (lit c4)) ▸
-       at 25 2 (Toff034 ∷ Toff023 ∷ []) (wp0173 c4) ▸
-       at 27 1 (CS34 ∷ CX14 ∷ CS34⁻ ∷ CX14 ∷ CS13 ∷ []) (wl0698 (lit c4)) ▸
-       at 26 2 (CS34 ∷ Toff023 ∷ []) (sym (wp0725 c4)) ▸ done
+  b9 : Chain (CCZ012 ∷ Toff134 ∷ K0 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ K0⁻ ∷ CCZ123 ∷ CCZ234 ∷ CCZ012 ∷ Toff134 ∷ CCZ014 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ []) (CCZ012 ∷ Toff134 ∷ Toff023 ∷ CCZ123 ∷ CCZ012 ∷ CCZ234 ∷ Toff134 ∷ CCZ014 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ [])
+  b9 = at 2 7 (Toff023 ∷ []) (wl0409 (lit c4)) ▸
+       at 4 1 (CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ []) (wl0274 (lit c4)) ▸
+       at 8 2 (CCZ012 ∷ CS24 ∷ []) (sym (wp0141 c4)) ▸
+       at 7 2 (CCZ012 ∷ CX23 ∷ []) (sym (wl0411 (lit c4))) ▸
+       at 6 2 (CCZ012 ∷ CS34⁻ ∷ []) (sym (c₃ (CCZ) (CS • CS • CS))) ▸
+       at 5 2 (CCZ012 ∷ CX23 ∷ []) (sym (wl0411 (lit c4))) ▸
+       at 4 2 (CCZ012 ∷ CS34 ∷ []) (sym (c₃ (CCZ) (CS))) ▸
+       at 5 5 (CCZ234 ∷ []) (sym (wl0274 (lit c4))) ▸ done
 
-  b18 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ014 ∷ Toff034 ∷ CS34 ∷ Toff023 ∷ CX14 ∷ CS34⁻ ∷ CX14 ∷ CS13 ∷ Toff234 ∷ CCZ014 ∷ Toff023 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ CCZ014 ∷ Toff234 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ Toff324 ∷ [])
-  b18 = at 27 2 (CX14 ∷ Toff023 ∷ []) (lem-comm-TOFF023-CX14 (lit c4)) ▸
-       at 28 2 (CS34⁻ ∷ Toff023 ∷ []) (sym (wp0823 c4)) ▸
-       at 29 2 (CX14 ∷ Toff023 ∷ []) (lem-comm-TOFF023-CX14 (lit c4)) ▸
-       at 30 2 (CS13 ∷ Toff023 ∷ []) (sym (wl0222 (lit c4))) ▸
-       at 26 5 (CCZ134 ∷ []) (sym (wl0698 (lit c4))) ▸
-       at 27 2 (Toff034 ∷ Toff234 ∷ Toff023 ∷ []) (wp1208 c4) ▸
-       at 25 3 (CCZ134 ∷ []) (sym (wp1212 c4)) ▸
-       at 24 2 (CCZ134 ∷ CCZ014 ∷ []) (wp0272 c4) ▸ done
+  b10 : Chain (CCZ012 ∷ Toff134 ∷ Toff023 ∷ CCZ123 ∷ CCZ012 ∷ CCZ234 ∷ Toff134 ∷ CCZ014 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ []) (CCZ012 ∷ Toff134 ∷ CCZ012 ∷ K0 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ Toff134 ∷ CX02 ∷ CS03 ∷ K0⁻ ∷ CCZ234 ∷ CCZ014 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ [])
+  b10 = at 3 2 (CCZ012 ∷ CCZ123 ∷ []) (sym (wl0298 (lit c4))) ▸
+       at 2 2 (CCZ012 ∷ Toff023 ∷ CCZ123 ∷ []) (sym (wl0313 (lit c4))) ▸
+       at 3 3 (Toff023 ∷ []) (wl0412 (lit c4)) ▸
+       at 4 2 (Toff134 ∷ CCZ234 ∷ []) (wl0413 (lit c4)) ▸
+       at 3 1 (K0 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ K0⁻ ∷ []) (sym (wl0409 (lit c4))) ▸
+       at 9 2 (Toff134 ∷ K0⁻ ∷ []) (c₁ (K • iI) (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑)) ▸
+       at 8 2 (Toff134 ∷ CS03 ∷ []) (wp0277 c4) ▸
+       at 7 2 (Toff134 ∷ CX02 ∷ []) (lem-comm-CX02-TOFF134 (lit c4)) ▸ done
 
-  b19 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ CCZ014 ∷ Toff234 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ K2 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K2⁻ ∷ CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ Toff324 ∷ [])
-  b19 = at 26 1 (K2 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K2⁻ ∷ []) (sym (wl1374 (lit c4))) ▸
-       at 25 2 (K2 ∷ CCZ014 ∷ []) (wp1210 c4) ▸
-       at 26 2 (CS34 ∷ CCZ014 ∷ []) (wp0064 c4) ▸
-       at 27 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 28 2 (CS34⁻ ∷ CCZ014 ∷ []) (wp0063 c4) ▸
-       at 29 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 30 2 (CS24 ∷ CCZ014 ∷ []) (wp0062 c4) ▸
-       at 31 2 (K2⁻ ∷ CCZ014 ∷ []) (wp1211 c4) ▸ done
+  b11 : Chain (CCZ012 ∷ Toff134 ∷ CCZ012 ∷ K0 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ Toff134 ∷ CX02 ∷ CS03 ∷ K0⁻ ∷ CCZ234 ∷ CCZ014 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ []) (Bx1-0234 ∷ Toff023 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CCZ014 ∷ CS24 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ [])
+  b11 = at 6 2 (Toff134 ∷ CS23⁻ ∷ []) (wl0410 (lit c4)) ▸
+       at 5 2 (Toff134 ∷ CX02 ∷ []) (lem-comm-CX02-TOFF134 (lit c4)) ▸
+       at 4 2 (Toff134 ∷ CS23 ∷ []) (wl0238 (lit c4)) ▸
+       at 3 2 (Toff134 ∷ K0 ∷ []) (c₁ (K) (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑)) ▸
+       at 4 7 (Toff023 ∷ []) (wl0409 (lit c4)) ▸
+       at 0 4 (Bx1-0234 ∷ []) (sym (lem-box-cP-at0110 c4)) ▸
+       at 2 1 (CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ []) (wl0274 (lit c4)) ▸
+       at 6 2 (CCZ014 ∷ CS24 ∷ []) (sym (wp0062 c4)) ▸ done
 
-  b20 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ K2 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K2⁻ ∷ CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ Toff324 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ014 ∷ Toff023 ∷ Toff024 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CCZ014 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ Toff023 ∷ [])
-  b20 = at 25 7 (Toff234 ∷ []) (wl1374 (lit c4)) ▸
-       at 26 4 (Bx0-1423 ∷ []) (sym (lem-box-cP-at243243 c4)) ▸
-       at 26 1 (CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ []) (lem-box-cP-at243243 c4) ▸
-       at 29 2 (Toff024 ∷ Toff324 ∷ Toff023 ∷ []) (wp0805 c4) ▸
-       at 28 2 (Toff024 ∷ CCZ124 ∷ CCZ014 ∷ []) (wp0806 c4) ▸
-       at 31 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 30 2 (K3 ∷ CCZ014 ∷ []) (wp0065 c4) ▸
-       at 31 2 (CS34 ∷ CCZ014 ∷ []) (wp0064 c4) ▸ done
+  b12 : Chain (Bx1-0234 ∷ Toff023 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CCZ014 ∷ CS24 ∷ Toff023 ∷ CCZ234 ∷ CCZ014 ∷ []) (Bx1-0234 ∷ Bx0-2341 ∷ [])
+  b12 = at 5 2 (CCZ014 ∷ CX23 ∷ []) (lem-comm-CX23-CCZ014 (lit c4)) ▸
+       at 4 2 (CCZ014 ∷ CS34⁻ ∷ []) (sym (wp0063 c4)) ▸
+       at 3 2 (CCZ014 ∷ CX23 ∷ []) (lem-comm-CX23-CCZ014 (lit c4)) ▸
+       at 2 2 (CCZ014 ∷ CS34 ∷ []) (sym (wp0064 c4)) ▸
+       at 3 5 (CCZ234 ∷ []) (sym (wl0274 (lit c4))) ▸
+       at 3 2 (Toff023 ∷ CCZ234 ∷ []) (wp0278 c4) ▸
+       at 4 2 [] (wl0305 (lit c4)) ▸
+       at 1 4 (Bx0-2341 ∷ []) (sym (lem-box-tQ-at12233441 c4)) ▸ done
 
-  b21 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ014 ∷ Toff023 ∷ Toff024 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CCZ014 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ Toff023 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ014 ∷ Toff024 ∷ Toff023 ∷ CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ [])
-  b21 = at 32 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 33 2 (CS34⁻ ∷ CCZ014 ∷ []) (wp0063 c4) ▸
-       at 34 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 35 2 (CS24 ∷ CCZ014 ∷ []) (wp0062 c4) ▸
-       at 36 2 (K3⁻ ∷ CCZ014 ∷ []) (wp0061 c4) ▸
-       at 30 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 27 2 (Toff024 ∷ Toff023 ∷ []) (wp0072 c4) ▸
-       at 29 1 (CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ []) (wl0220 (lit c4)) ▸ done
+  b13 : Chain (Bx1-0234 ∷ Bx0-2341 ∷ []) (Bx1-0234 ∷ Bx0-1234 ∷ [])
+  b13 = at 1 1 (Bx0-1234 ∷ []) (lem-box-perm-4123-at12233441 c4) ▸ done
 
-  b22 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ014 ∷ Toff024 ∷ Toff023 ∷ CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ Toff324 ∷ CCZ014 ∷ Toff023 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ014 ∷ CCZ124 ∷ Toff324 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ [])
-  b22 = at 28 2 (CS24 ∷ Toff023 ∷ []) (sym (wp0070 c4)) ▸
-       at 29 2 (CX14 ∷ Toff023 ∷ []) (lem-comm-TOFF023-CX14 (lit c4)) ▸
-       at 30 2 (CS24⁻ ∷ Toff023 ∷ []) (sym (wp0069 c4)) ▸
-       at 31 2 (CX14 ∷ Toff023 ∷ []) (lem-comm-TOFF023-CX14 (lit c4)) ▸
-       at 32 2 (CS12 ∷ Toff023 ∷ []) (sym (wl0221 (lit c4))) ▸
-       at 28 5 (CCZ124 ∷ []) (sym (wl0220 (lit c4))) ▸
-       at 29 2 (Toff024 ∷ Toff324 ∷ Toff023 ∷ []) (wp0805 c4) ▸
-       at 27 3 (CCZ124 ∷ []) (sym (wp0074 c4)) ▸ done
+-- box-box-2: 105 steps
+lem-box-box-2 : Ws → ⟪ (Bx0-1234 ∷ Bx2-0134 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-0134 ∷ Bx0-1234 ∷ []) ⟫ʷ
+lem-box-box-2 c4 = trans (run b0) (trans (run b1) (trans (run b2) (trans (run b3) (trans (run b4) (trans (run b5) (trans (run b6) (trans (run b7) (trans (run b8) (trans (run b9) (trans (run b10) (trans (run b11) (trans (run b12) (run b13)))))))))))))
+  where
+  b0 : Chain (Bx0-1234 ∷ Bx2-0134 ∷ []) (Toff013 ∷ CCZ024 ∷ Toff013 ∷ CCZ012 ∷ Toff234 ∷ CCZ024 ∷ CS34 ∷ CX03 ∷ CS34⁻ ∷ CCZ012 ∷ CX03 ∷ CS04 ∷ Toff234 ∷ [])
+  b0 = at 0 1 (Bx0-1342 ∷ []) (lem-box-perm-1342 c4) ▸
+       at 0 1 (Toff013 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ []) (lem-box-tQ-at233442 c4) ▸
+       at 4 1 (CCZ012 ∷ Toff234 ∷ CCZ012 ∷ Toff234 ∷ []) (lem-box-cP-at021021 c4) ▸
+       at 3 2 (CCZ012 ∷ CCZ024 ∷ []) (sym (wp0142 c4)) ▸
+       at 4 2 (Toff234 ∷ CCZ024 ∷ CCZ034 ∷ []) (wp0290 c4) ▸
+       at 6 1 (CS34 ∷ CX03 ∷ CS34⁻ ∷ CX03 ∷ CS04 ∷ []) (wp0231 c4) ▸
+       at 10 2 (CCZ012 ∷ CS04 ∷ []) (sym (wp0117 c4)) ▸
+       at 9 2 (CCZ012 ∷ CX03 ∷ []) (sym (wl0381 (lit c4))) ▸ done
 
-  b23 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ014 ∷ CCZ124 ∷ Toff324 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ CCZ014 ∷ K3⁻ ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ [])
-  b23 = at 26 2 (CCZ124 ∷ CCZ014 ∷ []) (wp0066 c4) ▸
-       at 28 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 27 2 (K3 ∷ CCZ014 ∷ []) (wp0065 c4) ▸
-       at 28 2 (CS34 ∷ CCZ014 ∷ []) (wp0064 c4) ▸
-       at 29 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 30 2 (CS34⁻ ∷ CCZ014 ∷ []) (wp0063 c4) ▸
-       at 31 2 (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4)) ▸
-       at 32 2 (CS24 ∷ CCZ014 ∷ []) (wp0062 c4) ▸ done
+  b1 : Chain (Toff013 ∷ CCZ024 ∷ Toff013 ∷ CCZ012 ∷ Toff234 ∷ CCZ024 ∷ CS34 ∷ CX03 ∷ CS34⁻ ∷ CCZ012 ∷ CX03 ∷ CS04 ∷ Toff234 ∷ []) (Toff013 ∷ CCZ024 ∷ Toff013 ∷ CCZ012 ∷ Toff234 ∷ CCZ012 ∷ Toff234 ∷ CCZ024 ∷ [])
+  b1 = at 8 2 (CCZ012 ∷ CS34⁻ ∷ []) (sym (c₃ (CCZ) (CS • CS • CS))) ▸
+       at 7 2 (CCZ012 ∷ CX03 ∷ []) (sym (wl0381 (lit c4))) ▸
+       at 6 2 (CCZ012 ∷ CS34 ∷ []) (sym (c₃ (CCZ) (CS))) ▸
+       at 7 5 (CCZ034 ∷ []) (sym (wp0231 c4)) ▸
+       at 5 2 (CCZ012 ∷ CCZ024 ∷ []) (sym (wp0142 c4)) ▸
+       at 6 3 (Toff234 ∷ CCZ024 ∷ []) (wp0291 c4) ▸
+       at 3 4 (Bx2-0134 ∷ []) (sym (lem-box-cP-at021021 c4)) ▸
+       at 3 1 (CCZ012 ∷ Toff234 ∷ CCZ012 ∷ Toff234 ∷ []) (lem-box-cP-at021021 c4) ▸ done
 
-  b24 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ CCZ014 ∷ K3⁻ ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ024 ∷ Toff013 ∷ Toff034 ∷ CCZ234 ∷ K1 ∷ CCZ024 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ K1⁻ ∷ Toff013 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b24 = at 33 2 (K3⁻ ∷ CCZ014 ∷ []) (wp0061 c4) ▸
-       at 27 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 28 4 (Bx0-1423 ∷ []) (sym (lem-box-cP-at243243 c4)) ▸
-       at 7 1 (CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ []) (lem-box-cP-at122441 c4) ▸
-       at 10 2 (Toff034 ∷ Toff134 ∷ Toff013 ∷ []) (wp0843 c4) ▸
-       at 9 2 (Toff034 ∷ CCZ234 ∷ CCZ024 ∷ []) (wp0845 c4) ▸
-       at 12 1 (K1 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ K1⁻ ∷ []) (sym (wl0241 (lit c4))) ▸
-       at 11 2 (K1 ∷ CCZ024 ∷ []) (wp0089 c4) ▸ done
+  b2 : Chain (Toff013 ∷ CCZ024 ∷ Toff013 ∷ CCZ012 ∷ Toff234 ∷ CCZ012 ∷ Toff234 ∷ CCZ024 ∷ []) (Toff013 ∷ CCZ024 ∷ CCZ012 ∷ K0 ∷ CS13 ∷ Toff234 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ K0⁻ ∷ CCZ123 ∷ CCZ134 ∷ CCZ012 ∷ Toff234 ∷ CCZ024 ∷ [])
+  b2 = at 2 2 (CCZ012 ∷ Toff013 ∷ CCZ123 ∷ []) (sym (wl0296 (lit c4))) ▸
+       at 4 2 (Toff234 ∷ CCZ123 ∷ CCZ134 ∷ []) (wl0426 (lit c4)) ▸
+       at 3 1 (K0 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ K0⁻ ∷ []) (sym (wl0427 (lit c4))) ▸
+       at 9 2 (Toff234 ∷ K0⁻ ∷ []) (c₁ (K • iI) (Toff ↑)) ▸
+       at 8 2 (Toff234 ∷ CS03 ∷ []) (wp0292 c4) ▸
+       at 7 2 (Toff234 ∷ CX01 ∷ []) (c₂ (CX₀₁) (Toff)) ▸
+       at 6 2 (Toff234 ∷ CS13⁻ ∷ []) (wl0428 (lit c4)) ▸
+       at 5 2 (Toff234 ∷ CX01 ∷ []) (c₂ (CX₀₁) (Toff)) ▸ done
 
-  b25 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ024 ∷ Toff013 ∷ Toff034 ∷ CCZ234 ∷ K1 ∷ CCZ024 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ K1⁻ ∷ Toff013 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ024 ∷ Toff034 ∷ Toff013 ∷ CCZ234 ∷ Toff134 ∷ CCZ024 ∷ Toff013 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b25 = at 12 2 (CS34 ∷ CCZ024 ∷ []) (wp0036 c4) ▸
-       at 13 2 (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4)) ▸
-       at 14 2 (CS34⁻ ∷ CCZ024 ∷ []) (wp0035 c4) ▸
-       at 15 2 (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4)) ▸
-       at 16 2 (CS14 ∷ CCZ024 ∷ []) (wp0034 c4) ▸
-       at 17 2 (K1⁻ ∷ CCZ024 ∷ []) (wp0088 c4) ▸
-       at 11 7 (Toff134 ∷ []) (wl0241 (lit c4)) ▸
-       at 8 2 (Toff034 ∷ Toff013 ∷ []) (wp0097 c4) ▸ done
+  b3 : Chain (Toff013 ∷ CCZ024 ∷ CCZ012 ∷ K0 ∷ CS13 ∷ Toff234 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ K0⁻ ∷ CCZ123 ∷ CCZ134 ∷ CCZ012 ∷ Toff234 ∷ CCZ024 ∷ []) (Toff013 ∷ CCZ024 ∷ CCZ012 ∷ Toff234 ∷ Toff013 ∷ CCZ123 ∷ CS34 ∷ CCZ012 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ Toff234 ∷ CCZ024 ∷ [])
+  b3 = at 4 2 (Toff234 ∷ CS13 ∷ []) (wl0429 (lit c4)) ▸
+       at 3 2 (Toff234 ∷ K0 ∷ []) (c₁ (K) (Toff ↑)) ▸
+       at 4 7 (Toff013 ∷ []) (wl0427 (lit c4)) ▸
+       at 6 1 (CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ []) (wl0166 (lit c4)) ▸
+       at 10 2 (CCZ012 ∷ CS14 ∷ []) (sym (wp0011 c4)) ▸
+       at 9 2 (CCZ012 ∷ CX13 ∷ []) (sym (wl0167 (lit c4))) ▸
+       at 8 2 (CCZ012 ∷ CS34⁻ ∷ []) (sym (c₃ (CCZ) (CS • CS • CS))) ▸
+       at 7 2 (CCZ012 ∷ CX13 ∷ []) (sym (wl0167 (lit c4))) ▸ done
 
-  b26 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ024 ∷ Toff034 ∷ Toff013 ∷ CCZ234 ∷ Toff134 ∷ CCZ024 ∷ Toff013 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ024 ∷ Toff034 ∷ CCZ234 ∷ Toff034 ∷ Toff134 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b26 = at 10 1 (CS34 ∷ CX24 ∷ CS34⁻ ∷ CX24 ∷ CS23 ∷ []) (wl0245 (lit c4)) ▸
-       at 9 2 (CS34 ∷ Toff013 ∷ []) (sym (wp0095 c4)) ▸
-       at 10 2 (CX24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CX24 (lit c4)) ▸
-       at 11 2 (CS34⁻ ∷ Toff013 ∷ []) (sym (wp0094 c4)) ▸
-       at 12 2 (CX24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CX24 (lit c4)) ▸
-       at 13 2 (CS23 ∷ Toff013 ∷ []) (sym (wl0246 (lit c4))) ▸
-       at 9 5 (CCZ234 ∷ []) (sym (wl0245 (lit c4))) ▸
-       at 10 2 (Toff034 ∷ Toff134 ∷ Toff013 ∷ []) (wp0843 c4) ▸ done
+  b4 : Chain (Toff013 ∷ CCZ024 ∷ CCZ012 ∷ Toff234 ∷ Toff013 ∷ CCZ123 ∷ CS34 ∷ CCZ012 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ Toff234 ∷ CCZ024 ∷ []) (Toff013 ∷ CCZ024 ∷ CCZ012 ∷ Toff234 ∷ CCZ012 ∷ K0 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ Toff234 ∷ K0⁻ ∷ CCZ134 ∷ CCZ024 ∷ [])
+  b4 = at 6 2 (CCZ012 ∷ CS34 ∷ []) (sym (c₃ (CCZ) (CS))) ▸
+       at 7 5 (CCZ134 ∷ []) (sym (wl0166 (lit c4))) ▸
+       at 5 2 (CCZ012 ∷ CCZ123 ∷ []) (sym (wl0298 (lit c4))) ▸
+       at 4 2 (CCZ012 ∷ Toff013 ∷ CCZ123 ∷ []) (sym (wl0296 (lit c4))) ▸
+       at 5 3 (Toff013 ∷ []) (wl0430 (lit c4)) ▸
+       at 6 2 (Toff234 ∷ CCZ134 ∷ []) (wl0431 (lit c4)) ▸
+       at 5 1 (K0 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ K0⁻ ∷ []) (sym (wl0427 (lit c4))) ▸
+       at 11 2 (Toff234 ∷ K0⁻ ∷ []) (c₁ (K • iI) (Toff ↑)) ▸ done
 
-  b27 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ024 ∷ Toff034 ∷ CCZ234 ∷ Toff034 ∷ Toff134 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ K1 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CCZ024 ∷ CS14 ∷ K1⁻ ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b27 = at 8 3 (CCZ234 ∷ []) (sym (wp0842 c4)) ▸
-       at 7 2 (CCZ234 ∷ CCZ024 ∷ []) (wp0090 c4) ▸
-       at 9 1 (K1 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ K1⁻ ∷ []) (sym (wl0241 (lit c4))) ▸
-       at 8 2 (K1 ∷ CCZ024 ∷ []) (wp0089 c4) ▸
-       at 9 2 (CS34 ∷ CCZ024 ∷ []) (wp0036 c4) ▸
-       at 10 2 (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4)) ▸
-       at 11 2 (CS34⁻ ∷ CCZ024 ∷ []) (wp0035 c4) ▸
-       at 12 2 (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4)) ▸ done
+  b5 : Chain (Toff013 ∷ CCZ024 ∷ CCZ012 ∷ Toff234 ∷ CCZ012 ∷ K0 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ Toff234 ∷ K0⁻ ∷ CCZ134 ∷ CCZ024 ∷ []) (Toff013 ∷ CCZ024 ∷ Bx2-0134 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ [])
+  b5 = at 10 2 (Toff234 ∷ CS03 ∷ []) (wp0292 c4) ▸
+       at 9 2 (Toff234 ∷ CX01 ∷ []) (c₂ (CX₀₁) (Toff)) ▸
+       at 8 2 (Toff234 ∷ CS13⁻ ∷ []) (wl0428 (lit c4)) ▸
+       at 7 2 (Toff234 ∷ CX01 ∷ []) (c₂ (CX₀₁) (Toff)) ▸
+       at 6 2 (Toff234 ∷ CS13 ∷ []) (wl0429 (lit c4)) ▸
+       at 5 2 (Toff234 ∷ K0 ∷ []) (c₁ (K) (Toff ↑)) ▸
+       at 6 7 (Toff013 ∷ []) (wl0427 (lit c4)) ▸
+       at 2 4 (Bx2-0134 ∷ []) (sym (lem-box-cP-at021021 c4)) ▸ done
 
-  b28 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ K1 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CCZ024 ∷ CS14 ∷ K1⁻ ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CCZ024 ∷ CS12 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b28 = at 13 2 (CS14 ∷ CCZ024 ∷ []) (wp0034 c4) ▸
-       at 14 2 (K1⁻ ∷ CCZ024 ∷ []) (wp0088 c4) ▸
-       at 8 7 (Toff134 ∷ []) (wl0241 (lit c4)) ▸
-       at 9 4 (Bx0-2431 ∷ []) (sym (lem-box-cP-at122441 c4)) ▸
-       at 9 1 (CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ []) (lem-box-cP-at122441 c4) ▸
-       at 12 2 (CS12 ∷ Toff013 ∷ []) (sym (wl0247 (lit c4))) ▸
-       at 11 2 (CS12 ∷ CCZ024 ∷ []) (wp0081 c4) ▸
-       at 10 2 (CS12 ∷ Toff013 ∷ []) (sym (wl0247 (lit c4))) ▸ done
+  b6 : Chain (Toff013 ∷ CCZ024 ∷ Bx2-0134 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ []) (Toff013 ∷ CCZ012 ∷ Toff234 ∷ CCZ024 ∷ CS34 ∷ CCZ012 ∷ CX03 ∷ CS34⁻ ∷ CX03 ∷ CS04 ∷ Toff234 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ [])
+  b6 = at 2 1 (CCZ012 ∷ Toff234 ∷ CCZ012 ∷ Toff234 ∷ []) (lem-box-cP-at021021 c4) ▸
+       at 1 2 (CCZ012 ∷ CCZ024 ∷ []) (sym (wp0142 c4)) ▸
+       at 2 2 (Toff234 ∷ CCZ024 ∷ CCZ034 ∷ []) (wp0290 c4) ▸
+       at 4 1 (CS34 ∷ CX03 ∷ CS34⁻ ∷ CX03 ∷ CS04 ∷ []) (wp0231 c4) ▸
+       at 8 2 (CCZ012 ∷ CS04 ∷ []) (sym (wp0117 c4)) ▸
+       at 7 2 (CCZ012 ∷ CX03 ∷ []) (sym (wl0381 (lit c4))) ▸
+       at 6 2 (CCZ012 ∷ CS34⁻ ∷ []) (sym (c₃ (CCZ) (CS • CS • CS))) ▸
+       at 5 2 (CCZ012 ∷ CX03 ∷ []) (sym (wl0381 (lit c4))) ▸ done
 
-  b29 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CCZ024 ∷ CS12 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ024 ∷ Toff013 ∷ Toff034 ∷ CCZ234 ∷ K1 ∷ CS34 ∷ CCZ024 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ K1⁻ ∷ Toff013 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b29 = at 9 2 (CS12 ∷ CCZ024 ∷ []) (wp0081 c4) ▸
-       at 10 4 (Bx0-2431 ∷ []) (sym (lem-box-cP-at122441 c4)) ▸
-       at 10 1 (CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ []) (lem-box-cP-at122441 c4) ▸
-       at 13 2 (Toff034 ∷ Toff134 ∷ Toff013 ∷ []) (wp0843 c4) ▸
-       at 12 2 (Toff034 ∷ CCZ234 ∷ CCZ024 ∷ []) (wp0845 c4) ▸
-       at 15 1 (K1 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ K1⁻ ∷ []) (sym (wl0241 (lit c4))) ▸
-       at 14 2 (K1 ∷ CCZ024 ∷ []) (wp0089 c4) ▸
-       at 15 2 (CS34 ∷ CCZ024 ∷ []) (wp0036 c4) ▸ done
+  b7 : Chain (Toff013 ∷ CCZ012 ∷ Toff234 ∷ CCZ024 ∷ CS34 ∷ CCZ012 ∷ CX03 ∷ CS34⁻ ∷ CX03 ∷ CS04 ∷ Toff234 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ []) (CCZ012 ∷ Toff013 ∷ Toff234 ∷ CCZ123 ∷ CCZ134 ∷ CCZ012 ∷ Toff234 ∷ CCZ024 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ [])
+  b7 = at 4 2 (CCZ012 ∷ CS34 ∷ []) (sym (c₃ (CCZ) (CS))) ▸
+       at 5 5 (CCZ034 ∷ []) (sym (wp0231 c4)) ▸
+       at 3 2 (CCZ012 ∷ CCZ024 ∷ []) (sym (wp0142 c4)) ▸
+       at 4 3 (Toff234 ∷ CCZ024 ∷ []) (wp0291 c4) ▸
+       at 1 4 (Bx2-0134 ∷ []) (sym (lem-box-cP-at021021 c4)) ▸
+       at 1 1 (CCZ012 ∷ Toff234 ∷ CCZ012 ∷ Toff234 ∷ []) (lem-box-cP-at021021 c4) ▸
+       at 0 2 (CCZ012 ∷ Toff013 ∷ CCZ123 ∷ []) (sym (wl0296 (lit c4))) ▸
+       at 2 2 (Toff234 ∷ CCZ123 ∷ CCZ134 ∷ []) (wl0426 (lit c4)) ▸ done
 
-  b30 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ024 ∷ Toff013 ∷ Toff034 ∷ CCZ234 ∷ K1 ∷ CS34 ∷ CCZ024 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ K1⁻ ∷ Toff013 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ024 ∷ Toff034 ∷ Toff013 ∷ CS34 ∷ CX24 ∷ CS34⁻ ∷ CX24 ∷ CS23 ∷ Toff134 ∷ CCZ024 ∷ Toff013 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b30 = at 16 2 (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4)) ▸
-       at 17 2 (CS34⁻ ∷ CCZ024 ∷ []) (wp0035 c4) ▸
-       at 18 2 (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4)) ▸
-       at 19 2 (CS14 ∷ CCZ024 ∷ []) (wp0034 c4) ▸
-       at 20 2 (K1⁻ ∷ CCZ024 ∷ []) (wp0088 c4) ▸
-       at 14 7 (Toff134 ∷ []) (wl0241 (lit c4)) ▸
-       at 11 2 (Toff034 ∷ Toff013 ∷ []) (wp0097 c4) ▸
-       at 13 1 (CS34 ∷ CX24 ∷ CS34⁻ ∷ CX24 ∷ CS23 ∷ []) (wl0245 (lit c4)) ▸ done
+  b8 : Chain (CCZ012 ∷ Toff013 ∷ Toff234 ∷ CCZ123 ∷ CCZ134 ∷ CCZ012 ∷ Toff234 ∷ CCZ024 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ []) (CCZ012 ∷ Toff234 ∷ K0 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ K0⁻ ∷ CCZ123 ∷ CCZ134 ∷ CCZ012 ∷ Toff234 ∷ CCZ024 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ [])
+  b8 = at 1 1 (K0 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ K0⁻ ∷ []) (sym (wl0427 (lit c4))) ▸
+       at 7 2 (Toff234 ∷ K0⁻ ∷ []) (c₁ (K • iI) (Toff ↑)) ▸
+       at 6 2 (Toff234 ∷ CS03 ∷ []) (wp0292 c4) ▸
+       at 5 2 (Toff234 ∷ CX01 ∷ []) (c₂ (CX₀₁) (Toff)) ▸
+       at 4 2 (Toff234 ∷ CS13⁻ ∷ []) (wl0428 (lit c4)) ▸
+       at 3 2 (Toff234 ∷ CX01 ∷ []) (c₂ (CX₀₁) (Toff)) ▸
+       at 2 2 (Toff234 ∷ CS13 ∷ []) (wl0429 (lit c4)) ▸
+       at 1 2 (Toff234 ∷ K0 ∷ []) (c₁ (K) (Toff ↑)) ▸ done
 
-  b31 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ024 ∷ Toff034 ∷ Toff013 ∷ CS34 ∷ CX24 ∷ CS34⁻ ∷ CX24 ∷ CS23 ∷ Toff134 ∷ CCZ024 ∷ Toff013 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ024 ∷ CCZ234 ∷ Toff134 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b31 = at 12 2 (CS34 ∷ Toff013 ∷ []) (sym (wp0095 c4)) ▸
-       at 13 2 (CX24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CX24 (lit c4)) ▸
-       at 14 2 (CS34⁻ ∷ Toff013 ∷ []) (sym (wp0094 c4)) ▸
-       at 15 2 (CX24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CX24 (lit c4)) ▸
-       at 16 2 (CS23 ∷ Toff013 ∷ []) (sym (wl0246 (lit c4))) ▸
-       at 12 5 (CCZ234 ∷ []) (sym (wl0245 (lit c4))) ▸
-       at 13 2 (Toff034 ∷ Toff134 ∷ Toff013 ∷ []) (wp0843 c4) ▸
-       at 11 3 (CCZ234 ∷ []) (sym (wp0842 c4)) ▸ done
+  b9 : Chain (CCZ012 ∷ Toff234 ∷ K0 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ K0⁻ ∷ CCZ123 ∷ CCZ134 ∷ CCZ012 ∷ Toff234 ∷ CCZ024 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ []) (CCZ012 ∷ Toff234 ∷ Toff013 ∷ CCZ123 ∷ CCZ012 ∷ CCZ134 ∷ Toff234 ∷ CCZ024 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ [])
+  b9 = at 2 7 (Toff013 ∷ []) (wl0427 (lit c4)) ▸
+       at 4 1 (CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ []) (wl0166 (lit c4)) ▸
+       at 8 2 (CCZ012 ∷ CS14 ∷ []) (sym (wp0011 c4)) ▸
+       at 7 2 (CCZ012 ∷ CX13 ∷ []) (sym (wl0167 (lit c4))) ▸
+       at 6 2 (CCZ012 ∷ CS34⁻ ∷ []) (sym (c₃ (CCZ) (CS • CS • CS))) ▸
+       at 5 2 (CCZ012 ∷ CX13 ∷ []) (sym (wl0167 (lit c4))) ▸
+       at 4 2 (CCZ012 ∷ CS34 ∷ []) (sym (c₃ (CCZ) (CS))) ▸
+       at 5 5 (CCZ134 ∷ []) (sym (wl0166 (lit c4))) ▸ done
 
-  b32 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ024 ∷ CCZ234 ∷ Toff134 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ K1 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ CCZ024 ∷ K1⁻ ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b32 = at 10 2 (CCZ234 ∷ CCZ024 ∷ []) (wp0090 c4) ▸
-       at 12 1 (K1 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ K1⁻ ∷ []) (sym (wl0241 (lit c4))) ▸
-       at 11 2 (K1 ∷ CCZ024 ∷ []) (wp0089 c4) ▸
-       at 12 2 (CS34 ∷ CCZ024 ∷ []) (wp0036 c4) ▸
-       at 13 2 (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4)) ▸
-       at 14 2 (CS34⁻ ∷ CCZ024 ∷ []) (wp0035 c4) ▸
-       at 15 2 (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4)) ▸
-       at 16 2 (CS14 ∷ CCZ024 ∷ []) (wp0034 c4) ▸ done
+  b10 : Chain (CCZ012 ∷ Toff234 ∷ Toff013 ∷ CCZ123 ∷ CCZ012 ∷ CCZ134 ∷ Toff234 ∷ CCZ024 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ []) (CCZ012 ∷ Toff234 ∷ CCZ012 ∷ K0 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ Toff234 ∷ CX01 ∷ CS03 ∷ K0⁻ ∷ CCZ134 ∷ CCZ024 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ [])
+  b10 = at 3 2 (CCZ012 ∷ CCZ123 ∷ []) (sym (wl0298 (lit c4))) ▸
+       at 2 2 (CCZ012 ∷ Toff013 ∷ CCZ123 ∷ []) (sym (wl0296 (lit c4))) ▸
+       at 3 3 (Toff013 ∷ []) (wl0430 (lit c4)) ▸
+       at 4 2 (Toff234 ∷ CCZ134 ∷ []) (wl0431 (lit c4)) ▸
+       at 3 1 (K0 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ K0⁻ ∷ []) (sym (wl0427 (lit c4))) ▸
+       at 9 2 (Toff234 ∷ K0⁻ ∷ []) (c₁ (K • iI) (Toff ↑)) ▸
+       at 8 2 (Toff234 ∷ CS03 ∷ []) (wp0292 c4) ▸
+       at 7 2 (Toff234 ∷ CX01 ∷ []) (c₂ (CX₀₁) (Toff)) ▸ done
 
-  b33 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ K1 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ CCZ024 ∷ K1⁻ ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ CS12⁻ ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b33 = at 17 2 (K1⁻ ∷ CCZ024 ∷ []) (wp0088 c4) ▸
-       at 11 7 (Toff134 ∷ []) (wl0241 (lit c4)) ▸
-       at 12 4 (Bx0-2431 ∷ []) (sym (lem-box-cP-at122441 c4)) ▸
-       at 12 1 (CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ []) (lem-box-cP-at122441 c4) ▸
-       at 15 2 (CS12⁻ ∷ Toff013 ∷ []) (sym (wl0244 (lit c4))) ▸
-       at 14 2 (CS12⁻ ∷ CCZ024 ∷ []) (wp0087 c4) ▸
-       at 13 2 (CS12⁻ ∷ Toff013 ∷ []) (sym (wl0244 (lit c4))) ▸
-       at 12 2 (CS12⁻ ∷ CCZ024 ∷ []) (wp0087 c4) ▸ done
+  b11 : Chain (CCZ012 ∷ Toff234 ∷ CCZ012 ∷ K0 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ Toff234 ∷ CX01 ∷ CS03 ∷ K0⁻ ∷ CCZ134 ∷ CCZ024 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ []) (Bx2-0134 ∷ Toff013 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CCZ024 ∷ CS14 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ [])
+  b11 = at 6 2 (Toff234 ∷ CS13⁻ ∷ []) (wl0428 (lit c4)) ▸
+       at 5 2 (Toff234 ∷ CX01 ∷ []) (c₂ (CX₀₁) (Toff)) ▸
+       at 4 2 (Toff234 ∷ CS13 ∷ []) (wl0429 (lit c4)) ▸
+       at 3 2 (Toff234 ∷ K0 ∷ []) (c₁ (K) (Toff ↑)) ▸
+       at 4 7 (Toff013 ∷ []) (wl0427 (lit c4)) ▸
+       at 0 4 (Bx2-0134 ∷ []) (sym (lem-box-cP-at021021 c4)) ▸
+       at 2 1 (CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ []) (wl0166 (lit c4)) ▸
+       at 6 2 (CCZ024 ∷ CS14 ∷ []) (sym (wp0034 c4)) ▸ done
 
-  b34 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff214 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ K2 ∷ CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ Toff013 ∷ CS14 ∷ K2⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b34 = at 13 4 (Bx0-2431 ∷ []) (sym (lem-box-cP-at122441 c4)) ▸
-       at 13 1 (CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ []) (lem-box-cP-at122441 c4) ▸
-       at 17 1 (K2 ∷ CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ K2⁻ ∷ []) (sym (wl0888 (lit c4))) ▸
-       at 16 2 (K2 ∷ Toff013 ∷ []) (sym (wl0743 (lit c4))) ▸
-       at 17 2 (CS24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CS24 (lit c4)) ▸
-       at 18 2 (CX12 ∷ Toff013 ∷ []) (sym (wl0872 (lit c4))) ▸
-       at 19 2 (CS24⁻ ∷ Toff013 ∷ []) (lem-comm-TOFF013-CSd24 (lit c4)) ▸
-       at 20 2 (CX12 ∷ Toff013 ∷ []) (sym (wl0872 (lit c4))) ▸ done
+  b12 : Chain (Bx2-0134 ∷ Toff013 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CCZ024 ∷ CS14 ∷ Toff013 ∷ CCZ134 ∷ CCZ024 ∷ []) (Bx2-0134 ∷ Bx0-1342 ∷ [])
+  b12 = at 5 2 (CCZ024 ∷ CX13 ∷ []) (lem-comm-CX13-CCZ024 (lit c4)) ▸
+       at 4 2 (CCZ024 ∷ CS34⁻ ∷ []) (sym (wp0035 c4)) ▸
+       at 3 2 (CCZ024 ∷ CX13 ∷ []) (lem-comm-CX13-CCZ024 (lit c4)) ▸
+       at 2 2 (CCZ024 ∷ CS34 ∷ []) (sym (wp0036 c4)) ▸
+       at 3 5 (CCZ134 ∷ []) (sym (wl0166 (lit c4))) ▸
+       at 3 2 (Toff013 ∷ CCZ134 ∷ []) (wp0293 c4) ▸
+       at 4 2 [] (wl0321 (lit c4)) ▸
+       at 1 4 (Bx0-1342 ∷ []) (sym (lem-box-tQ-at233442 c4)) ▸ done
 
-  b35 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ K2 ∷ CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ Toff013 ∷ CS14 ∷ K2⁻ ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ CCZ024 ∷ K2 ∷ CS24 ∷ CX12 ∷ Toff013 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ K2⁻ ∷ CCZ014 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b35 = at 21 2 (CS14 ∷ Toff013 ∷ []) (sym (wp0785 c4)) ▸
-       at 22 2 (K2⁻ ∷ Toff013 ∷ []) (sym (wl1375 (lit c4))) ▸
-       at 16 7 (Toff214 ∷ []) (wl0888 (lit c4)) ▸
-       at 15 2 (Toff214 ∷ CCZ014 ∷ CCZ024 ∷ []) (wp0654 c4) ▸
-       at 15 1 (K2 ∷ CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ K2⁻ ∷ []) (sym (wl0888 (lit c4))) ▸
-       at 14 2 (K2 ∷ Toff013 ∷ []) (sym (wl0743 (lit c4))) ▸
-       at 15 2 (CS24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CS24 (lit c4)) ▸
-       at 16 2 (CX12 ∷ Toff013 ∷ []) (sym (wl0872 (lit c4))) ▸ done
+  b13 : Chain (Bx2-0134 ∷ Bx0-1342 ∷ []) (Bx2-0134 ∷ Bx0-1234 ∷ [])
+  b13 = at 1 1 (Bx0-1234 ∷ []) (lem-box-perm-1423-at233442 c4) ▸ done
 
-  b36 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ CCZ024 ∷ K2 ∷ CS24 ∷ CX12 ∷ Toff013 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ K2⁻ ∷ CCZ014 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CCZ024 ∷ CCZ134 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b36 = at 17 2 (CS24⁻ ∷ Toff013 ∷ []) (lem-comm-TOFF013-CSd24 (lit c4)) ▸
-       at 18 2 (CX12 ∷ Toff013 ∷ []) (sym (wl0872 (lit c4))) ▸
-       at 19 2 (CS14 ∷ Toff013 ∷ []) (sym (wp0785 c4)) ▸
-       at 20 2 (K2⁻ ∷ Toff013 ∷ []) (sym (wl1375 (lit c4))) ▸
-       at 14 7 (Toff214 ∷ []) (wl0888 (lit c4)) ▸
-       at 15 2 (CCZ014 ∷ CCZ134 ∷ Toff013 ∷ []) (sym (wp1213 c4)) ▸
-       at 13 2 (Toff214 ∷ CCZ014 ∷ CCZ024 ∷ []) (wp0654 c4) ▸
-       at 15 2 (CCZ014 ∷ CCZ024 ∷ []) (sym (wp0038 c4)) ▸ done
+-- box-box-3: 105 steps
+lem-box-box-3 : Ws → ⟪ (Bx0-1234 ∷ Bx3-0124 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0124 ∷ Bx0-1234 ∷ []) ⟫ʷ
+lem-box-box-3 c4 = trans (run b0) (trans (run b1) (trans (run b2) (trans (run b3) (trans (run b4) (trans (run b5) (trans (run b6) (trans (run b7) (trans (run b8) (trans (run b9) (trans (run b10) (trans (run b11) (trans (run b12) (run b13)))))))))))))
+  where
+  b0 : Chain (Bx0-1234 ∷ Bx3-0124 ∷ []) (Toff012 ∷ CCZ034 ∷ Toff012 ∷ CCZ013 ∷ Toff324 ∷ CS24 ∷ CX02 ∷ CS24⁻ ∷ CX02 ∷ CCZ013 ∷ CS04 ∷ CCZ034 ∷ Toff324 ∷ [])
+  b0 = at 0 1 (Bx0-1243 ∷ []) (lem-box-perm-1243 c4) ▸
+       at 0 1 (Toff012 ∷ CCZ034 ∷ Toff012 ∷ CCZ034 ∷ []) (lem-box-tQ-at3443 c4) ▸
+       at 4 1 (CCZ013 ∷ Toff324 ∷ CCZ013 ∷ Toff324 ∷ []) (lem-box-cP-at03102132 c4) ▸
+       at 3 2 (CCZ013 ∷ CCZ034 ∷ []) (sym (wp0186 c4)) ▸
+       at 4 2 (Toff324 ∷ CCZ024 ∷ CCZ034 ∷ []) (wp0295 c4) ▸
+       at 6 2 (CCZ013 ∷ CCZ034 ∷ []) (sym (wp0186 c4)) ▸
+       at 5 1 (CS24 ∷ CX02 ∷ CS24⁻ ∷ CX02 ∷ CS04 ∷ []) (wp0296 c4) ▸
+       at 9 2 (CCZ013 ∷ CS04 ∷ []) (sym (wp0077 c4)) ▸ done
 
-  b37 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CCZ024 ∷ CCZ134 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b37 = at 17 1 (CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ []) (wl0166 (lit c4)) ▸
-       at 16 2 (CS34 ∷ CCZ024 ∷ []) (wp0036 c4) ▸
-       at 17 2 (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4)) ▸
-       at 18 2 (CS34⁻ ∷ CCZ024 ∷ []) (wp0035 c4) ▸
-       at 19 2 (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4)) ▸
-       at 20 2 (CS14 ∷ CCZ024 ∷ []) (wp0034 c4) ▸
-       at 16 5 (CCZ134 ∷ []) (sym (wl0166 (lit c4))) ▸
-       at 13 3 (Toff214 ∷ []) (wp0753 c4) ▸ done
+  b1 : Chain (Toff012 ∷ CCZ034 ∷ Toff012 ∷ CCZ013 ∷ Toff324 ∷ CS24 ∷ CX02 ∷ CS24⁻ ∷ CX02 ∷ CCZ013 ∷ CS04 ∷ CCZ034 ∷ Toff324 ∷ []) (Toff012 ∷ CCZ034 ∷ Toff012 ∷ CCZ013 ∷ Toff324 ∷ CCZ013 ∷ Toff324 ∷ CCZ034 ∷ [])
+  b1 = at 8 2 (CCZ013 ∷ CX02 ∷ []) (sym (wl0444 (lit c4))) ▸
+       at 7 2 (CCZ013 ∷ CS24⁻ ∷ []) (lem-comm-CSd24-CCZ013 (lit c4)) ▸
+       at 6 2 (CCZ013 ∷ CX02 ∷ []) (sym (wl0444 (lit c4))) ▸
+       at 5 2 (CCZ013 ∷ CS24 ∷ []) (lem-comm-CS24-CCZ013 (lit c4)) ▸
+       at 6 5 (CCZ024 ∷ []) (sym (wp0296 c4)) ▸
+       at 6 3 (Toff324 ∷ CCZ034 ∷ []) (wp0297 c4) ▸
+       at 3 4 (Bx3-0124 ∷ []) (sym (lem-box-cP-at03102132 c4)) ▸
+       at 3 1 (CCZ013 ∷ Toff324 ∷ CCZ013 ∷ Toff324 ∷ []) (lem-box-cP-at03102132 c4) ▸ done
 
-  b38 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ CCZ023 ∷ Toff014 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ Toff014 ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b38 = at 15 4 (Bx0-2431 ∷ []) (sym (lem-box-cP-at122441 c4)) ▸
-       at 15 1 (Bx0-2341 ∷ []) (lem-box-perm-1324-at122441 c4) ▸
-       at 15 1 (CCZ023 ∷ Toff014 ∷ CCZ023 ∷ Toff014 ∷ []) (lem-box-cP-at12233441 c4) ▸
-       at 19 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 18 2 (K3 ∷ Toff014 ∷ []) (sym (wp0819 c4)) ▸
-       at 19 2 (CS34 ∷ Toff014 ∷ []) (sym (wp0546 c4)) ▸
-       at 20 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 21 2 (CS34⁻ ∷ Toff014 ∷ []) (sym (wp0818 c4)) ▸ done
+  b2 : Chain (Toff012 ∷ CCZ034 ∷ Toff012 ∷ CCZ013 ∷ Toff324 ∷ CCZ013 ∷ Toff324 ∷ CCZ034 ∷ []) (Toff012 ∷ CCZ034 ∷ CCZ013 ∷ K0 ∷ CS12 ∷ Toff324 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0⁻ ∷ CCZ123 ∷ CCZ124 ∷ CCZ013 ∷ Toff324 ∷ CCZ034 ∷ [])
+  b2 = at 2 2 (CCZ013 ∷ Toff012 ∷ CCZ123 ∷ []) (sym (wl0325 (lit c4))) ▸
+       at 4 2 (Toff324 ∷ CCZ123 ∷ CCZ124 ∷ []) (wl0445 (lit c4)) ▸
+       at 3 1 (K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0⁻ ∷ []) (sym (wl0446 (lit c4))) ▸
+       at 9 2 (Toff324 ∷ K0⁻ ∷ []) (c₁ (K • iI) ((K ↑ • CCZ • K ↑ • iI) ↑)) ▸
+       at 8 2 (Toff324 ∷ CS02 ∷ []) (wp0298 c4) ▸
+       at 7 2 (Toff324 ∷ CX01 ∷ []) (c₂ (CX₀₁) (K ↑ • CCZ • K ↑ • iI)) ▸
+       at 6 2 (Toff324 ∷ CS12⁻ ∷ []) (wl0447 (lit c4)) ▸
+       at 5 2 (Toff324 ∷ CX01 ∷ []) (c₂ (CX₀₁) (K ↑ • CCZ • K ↑ • iI)) ▸ done
 
-  b39 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ CCZ023 ∷ Toff014 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ Toff014 ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ Toff014 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CCZ024 ∷ CCZ023 ∷ Toff014 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b39 = at 22 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 23 2 (CS24 ∷ Toff014 ∷ []) (sym (wp0817 c4)) ▸
-       at 24 2 (K3⁻ ∷ Toff014 ∷ []) (sym (wp0816 c4)) ▸
-       at 18 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 17 2 (Toff324 ∷ CCZ024 ∷ CCZ023 ∷ []) (wp1046 c4) ▸
-       at 17 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 16 2 (K3 ∷ Toff014 ∷ []) (sym (wp0819 c4)) ▸
-       at 17 2 (CS34 ∷ Toff014 ∷ []) (sym (wp0546 c4)) ▸ done
+  b3 : Chain (Toff012 ∷ CCZ034 ∷ CCZ013 ∷ K0 ∷ CS12 ∷ Toff324 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0⁻ ∷ CCZ123 ∷ CCZ124 ∷ CCZ013 ∷ Toff324 ∷ CCZ034 ∷ []) (Toff012 ∷ CCZ034 ∷ CCZ013 ∷ Toff324 ∷ Toff012 ∷ CCZ123 ∷ CS24 ∷ CCZ013 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ Toff324 ∷ CCZ034 ∷ [])
+  b3 = at 4 2 (Toff324 ∷ CS12 ∷ []) (wl0214 (lit c4)) ▸
+       at 3 2 (Toff324 ∷ K0 ∷ []) (c₁ (K) ((K ↑ • CCZ • K ↑ • iI) ↑)) ▸
+       at 4 7 (Toff012 ∷ []) (wl0446 (lit c4)) ▸
+       at 6 1 (CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ []) (wl0256 (lit c4)) ▸
+       at 10 2 (CCZ013 ∷ CS14 ∷ []) (sym (wp0299 c4)) ▸
+       at 9 2 (CCZ013 ∷ CX12 ∷ []) (sym (wl0448 (lit c4))) ▸
+       at 8 2 (CCZ013 ∷ CS24⁻ ∷ []) (lem-comm-CSd24-CCZ013 (lit c4)) ▸
+       at 7 2 (CCZ013 ∷ CX12 ∷ []) (sym (wl0448 (lit c4))) ▸ done
 
-  b40 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ Toff014 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CCZ024 ∷ CCZ023 ∷ Toff014 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ024 ∷ CCZ023 ∷ CCZ024 ∷ CCZ124 ∷ Toff014 ∷ CCZ023 ∷ Toff014 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b40 = at 18 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 19 2 (CS34⁻ ∷ Toff014 ∷ []) (sym (wp0818 c4)) ▸
-       at 20 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 21 2 (CS24 ∷ Toff014 ∷ []) (sym (wp0817 c4)) ▸
-       at 22 2 (K3⁻ ∷ Toff014 ∷ []) (sym (wp0816 c4)) ▸
-       at 16 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 17 2 (CCZ024 ∷ CCZ124 ∷ Toff014 ∷ []) (sym (wp0839 c4)) ▸
-       at 15 2 (Toff324 ∷ CCZ024 ∷ CCZ023 ∷ []) (wp1046 c4) ▸ done
+  b4 : Chain (Toff012 ∷ CCZ034 ∷ CCZ013 ∷ Toff324 ∷ Toff012 ∷ CCZ123 ∷ CS24 ∷ CCZ013 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ Toff324 ∷ CCZ034 ∷ []) (Toff012 ∷ CCZ034 ∷ CCZ013 ∷ Toff324 ∷ CCZ013 ∷ K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ Toff324 ∷ K0⁻ ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b4 = at 6 2 (CCZ013 ∷ CS24 ∷ []) (lem-comm-CS24-CCZ013 (lit c4)) ▸
+       at 7 5 (CCZ124 ∷ []) (sym (wl0256 (lit c4))) ▸
+       at 5 2 (CCZ013 ∷ CCZ123 ∷ []) (sym (wl0327 (lit c4))) ▸
+       at 4 2 (CCZ013 ∷ Toff012 ∷ CCZ123 ∷ []) (sym (wl0325 (lit c4))) ▸
+       at 5 3 (Toff012 ∷ []) (wl0449 (lit c4)) ▸
+       at 6 2 (Toff324 ∷ CCZ124 ∷ []) (wl0450 (lit c4)) ▸
+       at 5 1 (K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0⁻ ∷ []) (sym (wl0446 (lit c4))) ▸
+       at 11 2 (Toff324 ∷ K0⁻ ∷ []) (c₁ (K • iI) ((K ↑ • CCZ • K ↑ • iI) ↑)) ▸ done
 
-  b41 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ024 ∷ CCZ023 ∷ CCZ024 ∷ CCZ124 ∷ Toff014 ∷ CCZ023 ∷ Toff014 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ024 ∷ CCZ024 ∷ CCZ124 ∷ CCZ023 ∷ Toff014 ∷ CCZ023 ∷ Toff014 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b41 = at 17 2 (CCZ024 ∷ CCZ023 ∷ []) (wp0669 c4) ▸
-       at 19 1 (CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ []) (wl0220 (lit c4)) ▸
-       at 18 2 (CS24 ∷ CCZ023 ∷ []) (wp0513 c4) ▸
-       at 19 2 (CX14 ∷ CCZ023 ∷ []) (lem-comm-CCZ023-CX14 (lit c4)) ▸
-       at 20 2 (CS24⁻ ∷ CCZ023 ∷ []) (wp0820 c4) ▸
-       at 21 2 (CX14 ∷ CCZ023 ∷ []) (lem-comm-CCZ023-CX14 (lit c4)) ▸
-       at 22 2 (CS12 ∷ CCZ023 ∷ []) (wl0621 (lit c4)) ▸
-       at 18 5 (CCZ124 ∷ []) (sym (wl0220 (lit c4))) ▸ done
+  b5 : Chain (Toff012 ∷ CCZ034 ∷ CCZ013 ∷ Toff324 ∷ CCZ013 ∷ K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ Toff324 ∷ K0⁻ ∷ CCZ124 ∷ CCZ034 ∷ []) (Toff012 ∷ CCZ034 ∷ Bx3-0124 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b5 = at 10 2 (Toff324 ∷ CS02 ∷ []) (wp0298 c4) ▸
+       at 9 2 (Toff324 ∷ CX01 ∷ []) (c₂ (CX₀₁) (K ↑ • CCZ • K ↑ • iI)) ▸
+       at 8 2 (Toff324 ∷ CS12⁻ ∷ []) (wl0447 (lit c4)) ▸
+       at 7 2 (Toff324 ∷ CX01 ∷ []) (c₂ (CX₀₁) (K ↑ • CCZ • K ↑ • iI)) ▸
+       at 6 2 (Toff324 ∷ CS12 ∷ []) (wl0214 (lit c4)) ▸
+       at 5 2 (Toff324 ∷ K0 ∷ []) (c₁ (K) ((K ↑ • CCZ • K ↑ • iI) ↑)) ▸
+       at 6 7 (Toff012 ∷ []) (wl0446 (lit c4)) ▸
+       at 2 4 (Bx3-0124 ∷ []) (sym (lem-box-cP-at03102132 c4)) ▸ done
 
-  b42 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ024 ∷ CCZ024 ∷ CCZ124 ∷ CCZ023 ∷ Toff014 ∷ CCZ023 ∷ Toff014 ∷ Toff234 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ K2 ∷ CS34 ∷ CX24 ∷ Toff013 ∷ CS34⁻ ∷ CX24 ∷ CS23 ∷ K2⁻ ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b42 = at 15 3 (Toff324 ∷ []) (wp0821 c4) ▸
-       at 17 4 (Bx0-2341 ∷ []) (sym (lem-box-cP-at12233441 c4)) ▸
-       at 17 1 (Bx0-2431 ∷ []) (sym (lem-box-perm-1324-at122441 c4)) ▸
-       at 17 1 (CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ []) (lem-box-cP-at122441 c4) ▸
-       at 21 1 (K2 ∷ CS34 ∷ CX24 ∷ CS34⁻ ∷ CX24 ∷ CS23 ∷ K2⁻ ∷ []) (sym (wl1376 (lit c4))) ▸
-       at 20 2 (K2 ∷ Toff013 ∷ []) (sym (wl0743 (lit c4))) ▸
-       at 21 2 (CS34 ∷ Toff013 ∷ []) (sym (wp0095 c4)) ▸
-       at 22 2 (CX24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CX24 (lit c4)) ▸ done
+  b6 : Chain (Toff012 ∷ CCZ034 ∷ Bx3-0124 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ []) (Toff012 ∷ CCZ013 ∷ Toff324 ∷ CS24 ∷ CX02 ∷ CCZ013 ∷ CS24⁻ ∷ CX02 ∷ CS04 ∷ CCZ034 ∷ Toff324 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b6 = at 2 1 (CCZ013 ∷ Toff324 ∷ CCZ013 ∷ Toff324 ∷ []) (lem-box-cP-at03102132 c4) ▸
+       at 1 2 (CCZ013 ∷ CCZ034 ∷ []) (sym (wp0186 c4)) ▸
+       at 2 2 (Toff324 ∷ CCZ024 ∷ CCZ034 ∷ []) (wp0295 c4) ▸
+       at 4 2 (CCZ013 ∷ CCZ034 ∷ []) (sym (wp0186 c4)) ▸
+       at 3 1 (CS24 ∷ CX02 ∷ CS24⁻ ∷ CX02 ∷ CS04 ∷ []) (wp0296 c4) ▸
+       at 7 2 (CCZ013 ∷ CS04 ∷ []) (sym (wp0077 c4)) ▸
+       at 6 2 (CCZ013 ∷ CX02 ∷ []) (sym (wl0444 (lit c4))) ▸
+       at 5 2 (CCZ013 ∷ CS24⁻ ∷ []) (lem-comm-CSd24-CCZ013 (lit c4)) ▸ done
 
-  b43 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ K2 ∷ CS34 ∷ CX24 ∷ Toff013 ∷ CS34⁻ ∷ CX24 ∷ CS23 ∷ K2⁻ ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ024 ∷ K2 ∷ Toff013 ∷ CS34 ∷ CX24 ∷ CS34⁻ ∷ CX24 ∷ CS23 ∷ K2⁻ ∷ CCZ034 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b43 = at 23 2 (CS34⁻ ∷ Toff013 ∷ []) (sym (wp0094 c4)) ▸
-       at 24 2 (CX24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CX24 (lit c4)) ▸
-       at 25 2 (CS23 ∷ Toff013 ∷ []) (sym (wl0246 (lit c4))) ▸
-       at 26 2 (K2⁻ ∷ Toff013 ∷ []) (sym (wl1375 (lit c4))) ▸
-       at 20 7 (Toff234 ∷ []) (wl1376 (lit c4)) ▸
-       at 19 2 (Toff234 ∷ CCZ034 ∷ CCZ024 ∷ []) (wp0790 c4) ▸
-       at 19 1 (K2 ∷ CS34 ∷ CX24 ∷ CS34⁻ ∷ CX24 ∷ CS23 ∷ K2⁻ ∷ []) (sym (wl1376 (lit c4))) ▸
-       at 18 2 (K2 ∷ Toff013 ∷ []) (sym (wl0743 (lit c4))) ▸ done
+  b7 : Chain (Toff012 ∷ CCZ013 ∷ Toff324 ∷ CS24 ∷ CX02 ∷ CCZ013 ∷ CS24⁻ ∷ CX02 ∷ CS04 ∷ CCZ034 ∷ Toff324 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ []) (CCZ013 ∷ Toff012 ∷ Toff324 ∷ CCZ123 ∷ CCZ124 ∷ CCZ013 ∷ Toff324 ∷ CCZ034 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b7 = at 4 2 (CCZ013 ∷ CX02 ∷ []) (sym (wl0444 (lit c4))) ▸
+       at 3 2 (CCZ013 ∷ CS24 ∷ []) (lem-comm-CS24-CCZ013 (lit c4)) ▸
+       at 4 5 (CCZ024 ∷ []) (sym (wp0296 c4)) ▸
+       at 4 3 (Toff324 ∷ CCZ034 ∷ []) (wp0297 c4) ▸
+       at 1 4 (Bx3-0124 ∷ []) (sym (lem-box-cP-at03102132 c4)) ▸
+       at 1 1 (CCZ013 ∷ Toff324 ∷ CCZ013 ∷ Toff324 ∷ []) (lem-box-cP-at03102132 c4) ▸
+       at 0 2 (CCZ013 ∷ Toff012 ∷ CCZ123 ∷ []) (sym (wl0325 (lit c4))) ▸
+       at 2 2 (Toff324 ∷ CCZ123 ∷ CCZ124 ∷ []) (wl0445 (lit c4)) ▸ done
 
-  b44 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ024 ∷ K2 ∷ Toff013 ∷ CS34 ∷ CX24 ∷ CS34⁻ ∷ CX24 ∷ CS23 ∷ K2⁻ ∷ CCZ034 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ024 ∷ Toff234 ∷ CCZ034 ∷ CCZ134 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b44 = at 19 2 (CS34 ∷ Toff013 ∷ []) (sym (wp0095 c4)) ▸
-       at 20 2 (CX24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CX24 (lit c4)) ▸
-       at 21 2 (CS34⁻ ∷ Toff013 ∷ []) (sym (wp0094 c4)) ▸
-       at 22 2 (CX24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CX24 (lit c4)) ▸
-       at 23 2 (CS23 ∷ Toff013 ∷ []) (sym (wl0246 (lit c4))) ▸
-       at 24 2 (K2⁻ ∷ Toff013 ∷ []) (sym (wl1375 (lit c4))) ▸
-       at 18 7 (Toff234 ∷ []) (wl1376 (lit c4)) ▸
-       at 19 2 (CCZ034 ∷ CCZ134 ∷ Toff013 ∷ []) (sym (wp1214 c4)) ▸ done
+  b8 : Chain (CCZ013 ∷ Toff012 ∷ Toff324 ∷ CCZ123 ∷ CCZ124 ∷ CCZ013 ∷ Toff324 ∷ CCZ034 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ []) (CCZ013 ∷ Toff324 ∷ K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0⁻ ∷ CCZ123 ∷ CCZ124 ∷ CCZ013 ∷ Toff324 ∷ CCZ034 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b8 = at 1 1 (K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0⁻ ∷ []) (sym (wl0446 (lit c4))) ▸
+       at 7 2 (Toff324 ∷ K0⁻ ∷ []) (c₁ (K • iI) ((K ↑ • CCZ • K ↑ • iI) ↑)) ▸
+       at 6 2 (Toff324 ∷ CS02 ∷ []) (wp0298 c4) ▸
+       at 5 2 (Toff324 ∷ CX01 ∷ []) (c₂ (CX₀₁) (K ↑ • CCZ • K ↑ • iI)) ▸
+       at 4 2 (Toff324 ∷ CS12⁻ ∷ []) (wl0447 (lit c4)) ▸
+       at 3 2 (Toff324 ∷ CX01 ∷ []) (c₂ (CX₀₁) (K ↑ • CCZ • K ↑ • iI)) ▸
+       at 2 2 (Toff324 ∷ CS12 ∷ []) (wl0214 (lit c4)) ▸
+       at 1 2 (Toff324 ∷ K0 ∷ []) (c₁ (K) ((K ↑ • CCZ • K ↑ • iI) ↑)) ▸ done
 
-  b45 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ024 ∷ Toff234 ∷ CCZ034 ∷ CCZ134 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ034 ∷ CCZ034 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b45 = at 17 2 (Toff234 ∷ CCZ034 ∷ CCZ024 ∷ []) (wp0790 c4) ▸
-       at 19 2 (CCZ034 ∷ CCZ024 ∷ []) (wp0109 c4) ▸
-       at 21 1 (CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ []) (wl0166 (lit c4)) ▸
-       at 20 2 (CS34 ∷ CCZ024 ∷ []) (wp0036 c4) ▸
-       at 21 2 (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4)) ▸
-       at 22 2 (CS34⁻ ∷ CCZ024 ∷ []) (wp0035 c4) ▸
-       at 23 2 (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4)) ▸
-       at 24 2 (CS14 ∷ CCZ024 ∷ []) (wp0034 c4) ▸ done
+  b9 : Chain (CCZ013 ∷ Toff324 ∷ K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0⁻ ∷ CCZ123 ∷ CCZ124 ∷ CCZ013 ∷ Toff324 ∷ CCZ034 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ []) (CCZ013 ∷ Toff324 ∷ Toff012 ∷ CCZ123 ∷ CCZ013 ∷ CCZ124 ∷ Toff324 ∷ CCZ034 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b9 = at 2 7 (Toff012 ∷ []) (wl0446 (lit c4)) ▸
+       at 4 1 (CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ []) (wl0256 (lit c4)) ▸
+       at 8 2 (CCZ013 ∷ CS14 ∷ []) (sym (wp0299 c4)) ▸
+       at 7 2 (CCZ013 ∷ CX12 ∷ []) (sym (wl0448 (lit c4))) ▸
+       at 6 2 (CCZ013 ∷ CS24⁻ ∷ []) (lem-comm-CSd24-CCZ013 (lit c4)) ▸
+       at 5 2 (CCZ013 ∷ CX12 ∷ []) (sym (wl0448 (lit c4))) ▸
+       at 4 2 (CCZ013 ∷ CS24 ∷ []) (lem-comm-CS24-CCZ013 (lit c4)) ▸
+       at 5 5 (CCZ124 ∷ []) (sym (wl0256 (lit c4))) ▸ done
 
-  b46 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ034 ∷ CCZ034 ∷ CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ CCZ023 ∷ Toff014 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ Toff014 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b46 = at 20 5 (CCZ134 ∷ []) (sym (wl0166 (lit c4))) ▸
-       at 17 3 (Toff234 ∷ []) (wp1215 c4) ▸
-       at 19 4 (Bx0-2431 ∷ []) (sym (lem-box-cP-at122441 c4)) ▸
-       at 19 1 (Bx0-2341 ∷ []) (lem-box-perm-1324-at122441 c4) ▸
-       at 19 1 (CCZ023 ∷ Toff014 ∷ CCZ023 ∷ Toff014 ∷ []) (lem-box-cP-at12233441 c4) ▸
-       at 23 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 22 2 (K3 ∷ Toff014 ∷ []) (sym (wp0819 c4)) ▸
-       at 23 2 (CS34 ∷ Toff014 ∷ []) (sym (wp0546 c4)) ▸ done
+  b10 : Chain (CCZ013 ∷ Toff324 ∷ Toff012 ∷ CCZ123 ∷ CCZ013 ∷ CCZ124 ∷ Toff324 ∷ CCZ034 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ []) (CCZ013 ∷ Toff324 ∷ CCZ013 ∷ K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ Toff324 ∷ CX01 ∷ CS02 ∷ K0⁻ ∷ CCZ124 ∷ CCZ034 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b10 = at 3 2 (CCZ013 ∷ CCZ123 ∷ []) (sym (wl0327 (lit c4))) ▸
+       at 2 2 (CCZ013 ∷ Toff012 ∷ CCZ123 ∷ []) (sym (wl0325 (lit c4))) ▸
+       at 3 3 (Toff012 ∷ []) (wl0449 (lit c4)) ▸
+       at 4 2 (Toff324 ∷ CCZ124 ∷ []) (wl0450 (lit c4)) ▸
+       at 3 1 (K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0⁻ ∷ []) (sym (wl0446 (lit c4))) ▸
+       at 9 2 (Toff324 ∷ K0⁻ ∷ []) (c₁ (K • iI) ((K ↑ • CCZ • K ↑ • iI) ↑)) ▸
+       at 8 2 (Toff324 ∷ CS02 ∷ []) (wp0298 c4) ▸
+       at 7 2 (Toff324 ∷ CX01 ∷ []) (c₂ (CX₀₁) (K ↑ • CCZ • K ↑ • iI)) ▸ done
 
-  b47 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ CCZ023 ∷ Toff014 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ Toff014 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ CCZ023 ∷ Toff014 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CCZ024 ∷ CCZ023 ∷ Toff014 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b47 = at 24 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 25 2 (CS34⁻ ∷ Toff014 ∷ []) (sym (wp0818 c4)) ▸
-       at 26 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 27 2 (CS24 ∷ Toff014 ∷ []) (sym (wp0817 c4)) ▸
-       at 28 2 (K3⁻ ∷ Toff014 ∷ []) (sym (wp0816 c4)) ▸
-       at 22 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 21 2 (Toff324 ∷ CCZ024 ∷ CCZ023 ∷ []) (wp1046 c4) ▸
-       at 21 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸ done
+  b11 : Chain (CCZ013 ∷ Toff324 ∷ CCZ013 ∷ K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ Toff324 ∷ CX01 ∷ CS02 ∷ K0⁻ ∷ CCZ124 ∷ CCZ034 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ []) (Bx3-0124 ∷ Toff012 ∷ CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CCZ034 ∷ CS14 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b11 = at 6 2 (Toff324 ∷ CS12⁻ ∷ []) (wl0447 (lit c4)) ▸
+       at 5 2 (Toff324 ∷ CX01 ∷ []) (c₂ (CX₀₁) (K ↑ • CCZ • K ↑ • iI)) ▸
+       at 4 2 (Toff324 ∷ CS12 ∷ []) (wl0214 (lit c4)) ▸
+       at 3 2 (Toff324 ∷ K0 ∷ []) (c₁ (K) ((K ↑ • CCZ • K ↑ • iI) ↑)) ▸
+       at 4 7 (Toff012 ∷ []) (wl0446 (lit c4)) ▸
+       at 0 4 (Bx3-0124 ∷ []) (sym (lem-box-cP-at03102132 c4)) ▸
+       at 2 1 (CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ []) (wl0256 (lit c4)) ▸
+       at 6 2 (CCZ034 ∷ CS14 ∷ []) (sym (wp0106 c4)) ▸ done
 
-  b48 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ CCZ023 ∷ Toff014 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CCZ024 ∷ CCZ023 ∷ Toff014 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ CCZ023 ∷ Toff324 ∷ Toff014 ∷ CCZ024 ∷ CCZ023 ∷ Toff014 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b48 = at 20 2 (K3 ∷ Toff014 ∷ []) (sym (wp0819 c4)) ▸
-       at 21 2 (CS34 ∷ Toff014 ∷ []) (sym (wp0546 c4)) ▸
-       at 22 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 23 2 (CS34⁻ ∷ Toff014 ∷ []) (sym (wp0818 c4)) ▸
-       at 24 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 25 2 (CS24 ∷ Toff014 ∷ []) (sym (wp0817 c4)) ▸
-       at 26 2 (K3⁻ ∷ Toff014 ∷ []) (sym (wp0816 c4)) ▸
-       at 20 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸ done
+  b12 : Chain (Bx3-0124 ∷ Toff012 ∷ CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CCZ034 ∷ CS14 ∷ Toff012 ∷ CCZ124 ∷ CCZ034 ∷ []) (Bx3-0124 ∷ Bx0-1243 ∷ [])
+  b12 = at 5 2 (CCZ034 ∷ CX12 ∷ []) (lem-comm-CX12-CCZ034 (lit c4)) ▸
+       at 4 2 (CCZ034 ∷ CS24⁻ ∷ []) (sym (wp0107 c4)) ▸
+       at 3 2 (CCZ034 ∷ CX12 ∷ []) (lem-comm-CX12-CCZ034 (lit c4)) ▸
+       at 2 2 (CCZ034 ∷ CS24 ∷ []) (sym (wp0108 c4)) ▸
+       at 3 5 (CCZ124 ∷ []) (sym (wl0256 (lit c4))) ▸
+       at 3 2 (Toff012 ∷ CCZ124 ∷ []) (wp0300 c4) ▸
+       at 4 2 [] (wl0263 (lit c4)) ▸
+       at 1 4 (Bx0-1243 ∷ []) (sym (lem-box-tQ-at3443 c4)) ▸ done
 
-  b49 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ CCZ023 ∷ Toff324 ∷ Toff014 ∷ CCZ024 ∷ CCZ023 ∷ Toff014 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ024 ∷ CCZ024 ∷ CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CCZ023 ∷ CS12 ∷ Toff014 ∷ CCZ023 ∷ Toff014 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b49 = at 21 2 (CCZ024 ∷ CCZ124 ∷ Toff014 ∷ []) (sym (wp0839 c4)) ▸
-       at 19 2 (Toff324 ∷ CCZ024 ∷ CCZ023 ∷ []) (wp1046 c4) ▸
-       at 21 2 (CCZ024 ∷ CCZ023 ∷ []) (wp0669 c4) ▸
-       at 23 1 (CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ []) (wl0220 (lit c4)) ▸
-       at 22 2 (CS24 ∷ CCZ023 ∷ []) (wp0513 c4) ▸
-       at 23 2 (CX14 ∷ CCZ023 ∷ []) (lem-comm-CCZ023-CX14 (lit c4)) ▸
-       at 24 2 (CS24⁻ ∷ CCZ023 ∷ []) (wp0820 c4) ▸
-       at 25 2 (CX14 ∷ CCZ023 ∷ []) (lem-comm-CCZ023-CX14 (lit c4)) ▸ done
+  b13 : Chain (Bx3-0124 ∷ Bx0-1243 ∷ []) (Bx3-0124 ∷ Bx0-1234 ∷ [])
+  b13 = at 1 1 (Bx0-1234 ∷ []) (lem-box-perm-1243-at3443 c4) ▸ done
 
-  b50 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ024 ∷ CCZ024 ∷ CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CCZ023 ∷ CS12 ∷ Toff014 ∷ CCZ023 ∷ Toff014 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ CS24 ∷ Toff013 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b50 = at 26 2 (CS12 ∷ CCZ023 ∷ []) (wl0621 (lit c4)) ▸
-       at 22 5 (CCZ124 ∷ []) (sym (wl0220 (lit c4))) ▸
-       at 19 3 (Toff324 ∷ []) (wp0821 c4) ▸
-       at 21 4 (Bx0-2341 ∷ []) (sym (lem-box-cP-at12233441 c4)) ▸
-       at 21 1 (Bx0-2431 ∷ []) (sym (lem-box-perm-1324-at122441 c4)) ▸
-       at 21 1 (CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ []) (lem-box-cP-at122441 c4) ▸
-       at 25 1 (CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ []) (wl0256 (lit c4)) ▸
-       at 24 2 (CS24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CS24 (lit c4)) ▸ done
+-- F0-B: 62 steps
+lem-F0-B : Ws → ⟪ (CX34 ∷ Bx3-1204 ∷ CX34 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-1204 ∷ Bx4-1203 ∷ []) ⟫ʷ
+lem-F0-B c4 = trans (run b0) (trans (run b1) (trans (run b2) (trans (run b3) (trans (run b4) (trans (run b5) (trans (run b6) (run b7)))))))
+  where
+  b0 : Chain (CX34 ∷ Bx3-1204 ∷ CX34 ∷ []) (Toff312 ∷ Toff412 ∷ CCZ034 ∷ Toff312 ∷ Toff412 ∷ CZ03 ∷ CCZ012 ∷ CCZ034 ∷ CZ03 ∷ [])
+  b0 = at 1 1 (Toff312 ∷ CCZ034 ∷ Toff312 ∷ CCZ034 ∷ []) (lem-box-tQ-at0330 c4) ▸
+       at 0 2 (Toff312 ∷ Toff412 ∷ CX34 ∷ []) (wl0511 (lit c4)) ▸
+       at 2 2 (CCZ034 ∷ CZ03 ∷ CX34 ∷ []) (sym (wp0372 c4)) ▸
+       at 4 2 (Toff312 ∷ Toff412 ∷ CX34 ∷ []) (wl0511 (lit c4)) ▸
+       at 6 3 (CCZ034 ∷ CZ03 ∷ []) (sym (wp0373 c4)) ▸
+       at 3 2 (Toff312 ∷ CZ03 ∷ CCZ012 ∷ []) (wl0512 (lit c4)) ▸
+       at 5 2 (Toff412 ∷ CCZ012 ∷ []) (wp0374 c4) ▸
+       at 4 2 (Toff412 ∷ CZ03 ∷ []) (lem-comm-CZ03-TOFF412 (lit c4)) ▸ done
 
-  b51 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ CS24 ∷ Toff013 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ024 ∷ CS24 ∷ Toff013 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b51 = at 25 2 (CX12 ∷ Toff013 ∷ []) (sym (wl0872 (lit c4))) ▸
-       at 26 2 (CS24⁻ ∷ Toff013 ∷ []) (lem-comm-TOFF013-CSd24 (lit c4)) ▸
-       at 27 2 (CX12 ∷ Toff013 ∷ []) (sym (wl0872 (lit c4))) ▸
-       at 28 2 (CS14 ∷ Toff013 ∷ []) (sym (wp0785 c4)) ▸
-       at 24 5 (CCZ124 ∷ []) (sym (wl0256 (lit c4))) ▸
-       at 23 2 (CCZ124 ∷ CCZ024 ∷ []) (wp0827 c4) ▸
-       at 23 1 (CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ []) (wl0256 (lit c4)) ▸
-       at 22 2 (CS24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CS24 (lit c4)) ▸ done
+  b1 : Chain (Toff312 ∷ Toff412 ∷ CCZ034 ∷ Toff312 ∷ Toff412 ∷ CZ03 ∷ CCZ012 ∷ CCZ034 ∷ CZ03 ∷ []) (K3 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ K3⁻ ∷ CCZ014 ∷ Toff423 ∷ CCZ014 ∷ Toff423 ∷ CCZ034 ∷ Toff312 ∷ CCZ012 ∷ CCZ034 ∷ [])
+  b1 = at 5 2 (CCZ012 ∷ CZ03 ∷ []) (sym (wl0382 (lit c4))) ▸
+       at 6 3 (CCZ034 ∷ []) (sym (wp0375 c4)) ▸
+       at 3 2 (Toff412 ∷ Toff312 ∷ []) (wl0513 (lit c4)) ▸
+       at 4 0 (CCZ034 ∷ CCZ034 ∷ []) (sym (wp0007 c4)) ▸
+       at 1 4 (Bx4-1203 ∷ []) (sym (lem-box-tQ-at043043 c4)) ▸
+       at 1 1 (Bx4-1023 ∷ []) (lem-box-perm-1324-at043043 c4) ▸
+       at 1 1 (CCZ014 ∷ Toff423 ∷ CCZ014 ∷ Toff423 ∷ []) (lem-box-cP-at04203243 c4) ▸
+       at 0 1 (K3 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ K3⁻ ∷ []) (sym (wl0514 (lit c4))) ▸ done
 
-  b52 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ024 ∷ CS24 ∷ Toff013 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Bx0-2341 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b52 = at 23 2 (CX12 ∷ Toff013 ∷ []) (sym (wl0872 (lit c4))) ▸
-       at 24 2 (CS24⁻ ∷ Toff013 ∷ []) (lem-comm-TOFF013-CSd24 (lit c4)) ▸
-       at 25 2 (CX12 ∷ Toff013 ∷ []) (sym (wl0872 (lit c4))) ▸
-       at 26 2 (CS14 ∷ Toff013 ∷ []) (sym (wp0785 c4)) ▸
-       at 22 5 (CCZ124 ∷ []) (sym (wl0256 (lit c4))) ▸
-       at 21 2 (CCZ124 ∷ CCZ024 ∷ []) (wp0827 c4) ▸
-       at 22 4 (Bx0-2431 ∷ []) (sym (lem-box-cP-at122441 c4)) ▸
-       at 22 1 (Bx0-2341 ∷ []) (lem-box-perm-1324-at122441 c4) ▸ done
+  b2 : Chain (K3 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ K3⁻ ∷ CCZ014 ∷ Toff423 ∷ CCZ014 ∷ Toff423 ∷ CCZ034 ∷ Toff312 ∷ CCZ012 ∷ CCZ034 ∷ []) (CCZ014 ∷ Toff312 ∷ Toff423 ∷ CCZ014 ∷ Toff423 ∷ CCZ034 ∷ Toff312 ∷ CCZ012 ∷ CCZ034 ∷ [])
+  b2 = at 6 2 (CCZ014 ∷ K3⁻ ∷ []) (sym (wp0061 c4)) ▸
+       at 5 2 (CCZ014 ∷ CS13 ∷ []) (sym (wp0053 c4)) ▸
+       at 4 2 (CCZ014 ∷ CX12 ∷ []) (sym (wp0054 c4)) ▸
+       at 3 2 (CCZ014 ∷ CS23⁻ ∷ []) (lem-comm-CSd23-CCZ014 (lit c4)) ▸
+       at 2 2 (CCZ014 ∷ CX12 ∷ []) (sym (wp0054 c4)) ▸
+       at 1 2 (CCZ014 ∷ CS23 ∷ []) (lem-comm-CS23-CCZ014 (lit c4)) ▸
+       at 0 2 (CCZ014 ∷ K3 ∷ []) (sym (wp0065 c4)) ▸
+       at 1 7 (Toff312 ∷ []) (wl0514 (lit c4)) ▸ done
 
-  b53 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Bx0-2341 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ CCZ023 ∷ Toff014 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ Toff014 ∷ K3⁻ ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b53 = at 22 1 (CCZ023 ∷ Toff014 ∷ CCZ023 ∷ Toff014 ∷ []) (lem-box-cP-at12233441 c4) ▸
-       at 26 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 25 2 (K3 ∷ Toff014 ∷ []) (sym (wp0819 c4)) ▸
-       at 26 2 (CS34 ∷ Toff014 ∷ []) (sym (wp0546 c4)) ▸
-       at 27 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 28 2 (CS34⁻ ∷ Toff014 ∷ []) (sym (wp0818 c4)) ▸
-       at 29 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 30 2 (CS24 ∷ Toff014 ∷ []) (sym (wp0817 c4)) ▸ done
+  b3 : Chain (CCZ014 ∷ Toff312 ∷ Toff423 ∷ CCZ014 ∷ Toff423 ∷ CCZ034 ∷ Toff312 ∷ CCZ012 ∷ CCZ034 ∷ []) (CCZ014 ∷ Toff423 ∷ K3 ∷ CS23 ∷ CCZ014 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ K3⁻ ∷ Toff412 ∷ CCZ012 ∷ Toff423 ∷ CCZ034 ∷ Toff312 ∷ CCZ012 ∷ CCZ034 ∷ [])
+  b3 = at 1 2 (Toff423 ∷ Toff312 ∷ Toff412 ∷ []) (wl0515 (lit c4)) ▸
+       at 3 2 (CCZ014 ∷ Toff412 ∷ CCZ012 ∷ []) (sym (wp0376 c4)) ▸
+       at 2 1 (K3 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ K3⁻ ∷ []) (sym (wl0514 (lit c4))) ▸
+       at 8 2 (CCZ014 ∷ K3⁻ ∷ []) (sym (wp0061 c4)) ▸
+       at 7 2 (CCZ014 ∷ CS13 ∷ []) (sym (wp0053 c4)) ▸
+       at 6 2 (CCZ014 ∷ CX12 ∷ []) (sym (wp0054 c4)) ▸
+       at 5 2 (CCZ014 ∷ CS23⁻ ∷ []) (lem-comm-CSd23-CCZ014 (lit c4)) ▸
+       at 4 2 (CCZ014 ∷ CX12 ∷ []) (sym (wp0054 c4)) ▸ done
 
-  b54 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ CCZ023 ∷ Toff014 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ Toff014 ∷ K3⁻ ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ Toff014 ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CCZ024 ∷ CCZ023 ∷ Toff014 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b54 = at 31 2 (K3⁻ ∷ Toff014 ∷ []) (sym (wp0816 c4)) ▸
-       at 25 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 24 2 (Toff324 ∷ CCZ024 ∷ CCZ023 ∷ []) (wp1046 c4) ▸
-       at 24 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 23 2 (K3 ∷ Toff014 ∷ []) (sym (wp0819 c4)) ▸
-       at 24 2 (CS34 ∷ Toff014 ∷ []) (sym (wp0546 c4)) ▸
-       at 25 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 26 2 (CS34⁻ ∷ Toff014 ∷ []) (sym (wp0818 c4)) ▸ done
+  b4 : Chain (CCZ014 ∷ Toff423 ∷ K3 ∷ CS23 ∷ CCZ014 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ K3⁻ ∷ Toff412 ∷ CCZ012 ∷ Toff423 ∷ CCZ034 ∷ Toff312 ∷ CCZ012 ∷ CCZ034 ∷ []) (CCZ014 ∷ Toff423 ∷ CCZ014 ∷ Toff312 ∷ Toff412 ∷ CS12 ∷ Toff423 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ CCZ034 ∷ Toff312 ∷ CCZ012 ∷ CCZ034 ∷ [])
+  b4 = at 3 2 (CCZ014 ∷ CS23 ∷ []) (lem-comm-CS23-CCZ014 (lit c4)) ▸
+       at 2 2 (CCZ014 ∷ K3 ∷ []) (sym (wp0065 c4)) ▸
+       at 3 7 (Toff312 ∷ []) (wl0514 (lit c4)) ▸
+       at 5 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (wl0348 (lit c4)) ▸
+       at 9 2 (Toff423 ∷ CS02 ∷ []) (wp0311 c4) ▸
+       at 8 2 (Toff423 ∷ CX01 ∷ []) (c₂ (CX₀₁) (Toffᵗ)) ▸
+       at 7 2 (Toff423 ∷ CS12⁻ ∷ []) (wl0460 (lit c4)) ▸
+       at 6 2 (Toff423 ∷ CX01 ∷ []) (c₂ (CX₀₁) (Toffᵗ)) ▸ done
 
-  b55 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ Toff014 ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CCZ024 ∷ CCZ023 ∷ Toff014 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ024 ∷ CCZ024 ∷ CCZ023 ∷ CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ Toff014 ∷ CCZ023 ∷ Toff014 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b55 = at 27 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 28 2 (CS24 ∷ Toff014 ∷ []) (sym (wp0817 c4)) ▸
-       at 29 2 (K3⁻ ∷ Toff014 ∷ []) (sym (wp0816 c4)) ▸
-       at 23 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 24 2 (CCZ024 ∷ CCZ124 ∷ Toff014 ∷ []) (sym (wp0839 c4)) ▸
-       at 22 2 (Toff324 ∷ CCZ024 ∷ CCZ023 ∷ []) (wp1046 c4) ▸
-       at 24 2 (CCZ024 ∷ CCZ023 ∷ []) (wp0669 c4) ▸
-       at 26 1 (CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ []) (wl0220 (lit c4)) ▸ done
+  b5 : Chain (CCZ014 ∷ Toff423 ∷ CCZ014 ∷ Toff312 ∷ Toff412 ∷ CS12 ∷ Toff423 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ CCZ034 ∷ Toff312 ∷ CCZ012 ∷ CCZ034 ∷ []) (Bx4-1203 ∷ Toff312 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ CCZ034 ∷ Toff312 ∷ CCZ012 ∷ CCZ034 ∷ [])
+  b5 = at 5 2 (Toff423 ∷ CS12 ∷ []) (wl0461 (lit c4)) ▸
+       at 6 5 (CCZ012 ∷ []) (sym (wl0348 (lit c4))) ▸
+       at 4 2 (Toff423 ∷ Toff412 ∷ []) (wl0516 (lit c4)) ▸
+       at 3 2 (Toff423 ∷ Toff312 ∷ Toff412 ∷ []) (wl0515 (lit c4)) ▸
+       at 4 3 (Toff312 ∷ []) (wl0517 (lit c4)) ▸
+       at 0 4 (Bx4-1023 ∷ []) (sym (lem-box-cP-at04203243 c4)) ▸
+       at 0 1 (Bx4-1203 ∷ []) (sym (lem-box-perm-1324-at043043 c4)) ▸
+       at 2 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (wl0348 (lit c4)) ▸ done
 
-  b56 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ024 ∷ CCZ024 ∷ CCZ023 ∷ CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ Toff014 ∷ CCZ023 ∷ Toff014 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ Bx0-2341 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b56 = at 25 2 (CS24 ∷ CCZ023 ∷ []) (wp0513 c4) ▸
-       at 26 2 (CX14 ∷ CCZ023 ∷ []) (lem-comm-CCZ023-CX14 (lit c4)) ▸
-       at 27 2 (CS24⁻ ∷ CCZ023 ∷ []) (wp0820 c4) ▸
-       at 28 2 (CX14 ∷ CCZ023 ∷ []) (lem-comm-CCZ023-CX14 (lit c4)) ▸
-       at 29 2 (CS12 ∷ CCZ023 ∷ []) (wl0621 (lit c4)) ▸
-       at 25 5 (CCZ124 ∷ []) (sym (wl0220 (lit c4))) ▸
-       at 22 3 (Toff324 ∷ []) (wp0821 c4) ▸
-       at 24 4 (Bx0-2341 ∷ []) (sym (lem-box-cP-at12233441 c4)) ▸ done
+  b6 : Chain (Bx4-1203 ∷ Toff312 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ CCZ034 ∷ Toff312 ∷ CCZ012 ∷ CCZ034 ∷ []) (Bx4-1203 ∷ Toff312 ∷ CCZ034 ∷ Toff312 ∷ CCZ034 ∷ [])
+  b6 = at 6 2 (CCZ034 ∷ CS02 ∷ []) (sym (wp0003 c4)) ▸
+       at 5 2 (CCZ034 ∷ CX01 ∷ []) (sym (wp0221 c4)) ▸
+       at 4 2 (CCZ034 ∷ CS12⁻ ∷ []) (lem-comm-CSd12-CCZ034 (lit c4)) ▸
+       at 3 2 (CCZ034 ∷ CX01 ∷ []) (sym (wp0221 c4)) ▸
+       at 2 2 (CCZ034 ∷ CS12 ∷ []) (lem-comm-CS12-CCZ034 (lit c4)) ▸
+       at 3 5 (CCZ012 ∷ []) (sym (wl0348 (lit c4))) ▸
+       at 3 2 (Toff312 ∷ CCZ012 ∷ []) (wl0503 (lit c4)) ▸
+       at 4 2 [] (wl0341 (lit c4)) ▸ done
 
-  b57 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ Bx0-2341 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ CS13 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b57 = at 24 1 (Bx0-2431 ∷ []) (sym (lem-box-perm-1324-at122441 c4)) ▸
-       at 24 1 (CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ []) (lem-box-cP-at122441 c4) ▸
-       at 27 2 (CS13 ∷ Toff013 ∷ []) (sym (wl0910 (lit c4))) ▸
-       at 26 2 (CS13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CS13 (lit c4)) ▸
-       at 25 2 (CS13 ∷ Toff013 ∷ []) (sym (wl0910 (lit c4))) ▸
-       at 24 2 (CS13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CS13 (lit c4)) ▸
-       at 25 4 (Bx0-2431 ∷ []) (sym (lem-box-cP-at122441 c4)) ▸
-       at 25 1 (CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ []) (lem-box-cP-at122441 c4) ▸ done
+  b7 : Chain (Bx4-1203 ∷ Toff312 ∷ CCZ034 ∷ Toff312 ∷ CCZ034 ∷ []) (Bx3-1204 ∷ Bx4-1203 ∷ [])
+  b7 = at 1 4 (Bx3-1204 ∷ []) (sym (lem-box-tQ-at0330 c4)) ▸
+       at 0 1 (Bx4-0123 ∷ []) (lem-box-perm-3124-at043043 c4) ▸
+       at 1 1 (Bx3-4012 ∷ []) (lem-box-perm-4312-at0330 c4) ▸
+       at 0 2 (Bx3-4012 ∷ Bx4-0123 ∷ []) (lem-box-box-4-at0410213243 c4) ▸
+       at 0 1 (Bx3-1204 ∷ []) (lem-box-perm-3421-at0314203142 c4) ▸
+       at 1 1 (Bx4-1203 ∷ []) (lem-box-perm-2314-at0410213243 c4) ▸ done
 
-  b58 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ CS13 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ CS13 ∷ CCZ024 ∷ Toff013 ∷ CCZ124 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b58 = at 29 1 (CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ []) (wl0256 (lit c4)) ▸
-       at 28 2 (CS24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CS24 (lit c4)) ▸
-       at 29 2 (CX12 ∷ Toff013 ∷ []) (sym (wl0872 (lit c4))) ▸
-       at 30 2 (CS24⁻ ∷ Toff013 ∷ []) (lem-comm-TOFF013-CSd24 (lit c4)) ▸
-       at 31 2 (CX12 ∷ Toff013 ∷ []) (sym (wl0872 (lit c4))) ▸
-       at 32 2 (CS14 ∷ Toff013 ∷ []) (sym (wp0785 c4)) ▸
-       at 28 5 (CCZ124 ∷ []) (sym (wl0256 (lit c4))) ▸
-       at 27 2 (CCZ124 ∷ CCZ024 ∷ []) (wp0827 c4) ▸ done
+-- XCKX-box-2 @243243: 4 steps
+lem-XCKX-box-2-at243243 : Ws → ⟪ (X4 ∷ CK40 ∷ X4 ∷ Bx0-1423 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1423 ∷ X4 ∷ CK40 ∷ X4 ∷ []) ⟫ʷ
+lem-XCKX-box-2-at243243 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK40 ∷ X4 ∷ Bx0-1423 ∷ []) (Bx0-1423 ∷ X4 ∷ CK40 ∷ X4 ∷ [])
+  b0 = at 0 3 (K0 ∷ CK40⁻ ∷ []) (sym (wp0259 c4)) ▸
+       at 1 2 (Bx0-1423 ∷ CK40⁻ ∷ []) (lem-CKdu-box-2-at243243 c4) ▸
+       at 0 2 (Bx0-1423 ∷ K0 ∷ []) (lem-Ku-box-at243243 c4) ▸
+       at 1 2 (X4 ∷ CK40 ∷ X4 ∷ []) (wp0259 c4) ▸ done
 
-  b59 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ CS13 ∷ CCZ024 ∷ Toff013 ∷ CCZ124 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ CS13 ∷ CCZ124 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b59 = at 27 1 (CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ []) (wl0256 (lit c4)) ▸
-       at 26 2 (CS24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CS24 (lit c4)) ▸
-       at 27 2 (CX12 ∷ Toff013 ∷ []) (sym (wl0872 (lit c4))) ▸
-       at 28 2 (CS24⁻ ∷ Toff013 ∷ []) (lem-comm-TOFF013-CSd24 (lit c4)) ▸
-       at 29 2 (CX12 ∷ Toff013 ∷ []) (sym (wl0872 (lit c4))) ▸
-       at 30 2 (CS14 ∷ Toff013 ∷ []) (sym (wp0785 c4)) ▸
-       at 26 5 (CCZ124 ∷ []) (sym (wl0256 (lit c4))) ▸
-       at 25 2 (CCZ124 ∷ CCZ024 ∷ []) (wp0827 c4) ▸ done
+-- XCKX-box-2 @122441: 4 steps
+lem-XCKX-box-2-at122441 : Ws → ⟪ (X4 ∷ CK40 ∷ X4 ∷ Bx0-2431 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2431 ∷ X4 ∷ CK40 ∷ X4 ∷ []) ⟫ʷ
+lem-XCKX-box-2-at122441 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK40 ∷ X4 ∷ Bx0-2431 ∷ []) (Bx0-2431 ∷ X4 ∷ CK40 ∷ X4 ∷ [])
+  b0 = at 0 3 (K0 ∷ CK40⁻ ∷ []) (sym (wp0259 c4)) ▸
+       at 1 2 (Bx0-2431 ∷ CK40⁻ ∷ []) (lem-CKdu-box-2-at122441 c4) ▸
+       at 0 2 (Bx0-2431 ∷ K0 ∷ []) (lem-Ku-box-at122441 c4) ▸
+       at 1 2 (X4 ∷ CK40 ∷ X4 ∷ []) (wp0259 c4) ▸ done
 
-  b60 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ CS13 ∷ CCZ124 ∷ CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ Toff324 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ CS13 ∷ CCZ124 ∷ CCZ023 ∷ Toff014 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ Toff014 ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b60 = at 26 4 (Bx0-2431 ∷ []) (sym (lem-box-cP-at122441 c4)) ▸
-       at 26 1 (Bx0-2341 ∷ []) (lem-box-perm-1324-at122441 c4) ▸
-       at 26 1 (CCZ023 ∷ Toff014 ∷ CCZ023 ∷ Toff014 ∷ []) (lem-box-cP-at12233441 c4) ▸
-       at 30 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 29 2 (K3 ∷ Toff014 ∷ []) (sym (wp0819 c4)) ▸
-       at 30 2 (CS34 ∷ Toff014 ∷ []) (sym (wp0546 c4)) ▸
-       at 31 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 32 2 (CS34⁻ ∷ Toff014 ∷ []) (sym (wp0818 c4)) ▸ done
+-- F4-K1-CS0: 19 steps
+lem-F4-K1-CS0 : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-0-41-3 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-F4-K1-CS0 c4 = trans (run b0) (trans (run b1) (run b2))
+  where
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ Sb2-0-41-3 ∷ []) (CCZ023 ∷ X4 ∷ CK41 ∷ X4 ∷ Toff214 ∷ CCZ023 ∷ Toff214 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ [])
+  b0 = at 3 1 (Bx2-0413 ∷ Toff314 ∷ Sb2-0-3-1 ∷ Toff314 ∷ Sb⁻2-0-3-1 ∷ []) (refl) ▸
+       at 5 1 (CS03 ∷ []) (refl) ▸
+       at 7 1 (CS03⁻ ∷ []) (refl) ▸
+       at 3 1 (Bx2-0341 ∷ []) (lem-box-perm-1423-at0210243143 c4) ▸
+       at 3 1 (CCZ023 ∷ Toff214 ∷ CCZ023 ∷ Toff214 ∷ []) (lem-box-cP-at0210233441 c4) ▸
+       at 2 2 (CCZ023 ∷ X4 ∷ []) (sym (c₄ (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) (X))) ▸
+       at 1 2 (CCZ023 ∷ CK41 ∷ []) (lem-comm-CK41-CCZ023 (lit c4)) ▸
+       at 0 2 (CCZ023 ∷ X4 ∷ []) (sym (c₄ (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) (X))) ▸ done
 
-  b61 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ CS13 ∷ CCZ124 ∷ CCZ023 ∷ Toff014 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ Toff014 ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ CS13 ∷ CCZ124 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ Toff014 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CCZ024 ∷ CCZ023 ∷ Toff014 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b61 = at 33 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 34 2 (CS24 ∷ Toff014 ∷ []) (sym (wp0817 c4)) ▸
-       at 35 2 (K3⁻ ∷ Toff014 ∷ []) (sym (wp0816 c4)) ▸
-       at 29 7 (Toff324 ∷ []) (wl0217 (lit c4)) ▸
-       at 28 2 (Toff324 ∷ CCZ024 ∷ CCZ023 ∷ []) (wp1046 c4) ▸
-       at 28 1 (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (sym (wl0217 (lit c4))) ▸
-       at 27 2 (K3 ∷ Toff014 ∷ []) (sym (wp0819 c4)) ▸
-       at 28 2 (CS34 ∷ Toff014 ∷ []) (sym (wp0546 c4)) ▸ done
+  b1 : Chain (CCZ023 ∷ X4 ∷ CK41 ∷ X4 ∷ Toff214 ∷ CCZ023 ∷ Toff214 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ []) (Bx2-0413 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b1 = at 1 4 (Toff214 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (sym (wl0642 (lit c4))) ▸
+       at 4 2 (CCZ023 ∷ X4 ∷ []) (sym (c₄ (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) (X))) ▸
+       at 3 2 (CCZ023 ∷ CK41 ∷ []) (lem-comm-CK41-CCZ023 (lit c4)) ▸
+       at 2 2 (CCZ023 ∷ X4 ∷ []) (sym (c₄ (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) (X))) ▸
+       at 3 4 (Toff214 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (sym (wl0642 (lit c4))) ▸
+       at 0 4 (Bx2-0341 ∷ []) (sym (lem-box-cP-at0210233441 c4)) ▸
+       at 0 1 (Bx2-0413 ∷ []) (sym (lem-box-perm-1423-at0210243143 c4)) ▸
+       at 1 7 (Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ X4 ∷ CK41 ∷ X4 ∷ []) (sym (wp0517 c4)) ▸ done
 
-  b62 : Chain (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ CS13 ∷ CCZ124 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ Toff014 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ CCZ024 ∷ CCZ023 ∷ Toff014 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ []) (Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ234 ∷ CCZ234 ∷ Toff134 ∷ CS12 ∷ CCZ234 ∷ Toff134 ∷ CS12⁻ ∷ Toff214 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ Toff234 ∷ CCZ134 ∷ Toff324 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CCZ124 ∷ CS13 ∷ CCZ124 ∷ CCZ023 ∷ K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ Toff014 ∷ K3⁻ ∷ CCZ024 ∷ CCZ023 ∷ Toff014 ∷ CS13⁻ ∷ CCZ124 ∷ Toff324 ∷ CCZ134 ∷ Toff234 ∷ CCZ124 ∷ Toff324 ∷ Bx0-1423 ∷ [])
-  b62 = at 29 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 30 2 (CS34⁻ ∷ Toff014 ∷ []) (sym (wp0818 c4)) ▸
-       at 31 2 (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4)) ▸
-       at 32 2 (CS24 ∷ Toff014 ∷ []) (sym (wp0817 c4)) ▸ done
+  b2 : Chain (Bx2-0413 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ X4 ∷ CK41 ∷ X4 ∷ []) (Sb2-0-41-3 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b2 = at 2 1 (Sb2-0-3-1 ∷ []) (refl) ▸
+       at 4 1 (Sb⁻2-0-3-1 ∷ []) (refl) ▸
+       at 0 5 (Sb2-0-41-3 ∷ []) (refl) ▸ done
 
+-- XCKX-box-2 @0210243143: 4 steps
+lem-XCKX-box-2-at0210243143 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ Bx2-0413 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-0413 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-XCKX-box-2-at0210243143 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ Bx2-0413 ∷ []) (Bx2-0413 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 3 (K2 ∷ CK42⁻ ∷ []) (sym (wl0665 (lit c4))) ▸
+       at 1 2 (Bx2-0413 ∷ CK42⁻ ∷ []) (lem-CKdu-box-2-at0210243143 c4) ▸
+       at 0 2 (Bx2-0413 ∷ K2 ∷ []) (lem-Ku-box-at0210243143 c4) ▸
+       at 1 2 (X4 ∷ CK42 ∷ X4 ∷ []) (wl0665 (lit c4)) ▸ done
+
+-- F4-K2-CS1: 19 steps
+lem-F4-K2-CS1 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-1-42-3 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-F4-K2-CS1 c4 = trans (run b0) (trans (run b1) (run b2))
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ Sb0-1-42-3 ∷ []) (CCZ013 ∷ X4 ∷ CK42 ∷ X4 ∷ Toff024 ∷ CCZ013 ∷ Toff024 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ [])
+  b0 = at 3 1 (Bx0-1423 ∷ Toff324 ∷ Sb0-1-3-2 ∷ Toff324 ∷ Sb⁻0-1-3-2 ∷ []) (refl) ▸
+       at 5 1 (CS13 ∷ []) (refl) ▸
+       at 7 1 (CS13⁻ ∷ []) (refl) ▸
+       at 3 1 (Bx0-1342 ∷ []) (lem-box-perm-1423-at243243 c4) ▸
+       at 3 1 (CCZ013 ∷ Toff024 ∷ CCZ013 ∷ Toff024 ∷ []) (lem-box-cP-at233442 c4) ▸
+       at 2 2 (CCZ013 ∷ X4 ∷ []) (sym (c₄ (Swap ↑ ↑ • CCZ • Swap ↑ ↑) (X))) ▸
+       at 1 2 (CCZ013 ∷ CK42 ∷ []) (lem-comm-CK42-CCZ013 (lit c4)) ▸
+       at 0 2 (CCZ013 ∷ X4 ∷ []) (sym (c₄ (Swap ↑ ↑ • CCZ • Swap ↑ ↑) (X))) ▸ done
+
+  b1 : Chain (CCZ013 ∷ X4 ∷ CK42 ∷ X4 ∷ Toff024 ∷ CCZ013 ∷ Toff024 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ []) (Bx0-1423 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b1 = at 1 4 (Toff024 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (sym (wp0555 c4)) ▸
+       at 4 2 (CCZ013 ∷ X4 ∷ []) (sym (c₄ (Swap ↑ ↑ • CCZ • Swap ↑ ↑) (X))) ▸
+       at 3 2 (CCZ013 ∷ CK42 ∷ []) (lem-comm-CK42-CCZ013 (lit c4)) ▸
+       at 2 2 (CCZ013 ∷ X4 ∷ []) (sym (c₄ (Swap ↑ ↑ • CCZ • Swap ↑ ↑) (X))) ▸
+       at 3 4 (Toff024 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (sym (wp0555 c4)) ▸
+       at 0 4 (Bx0-1342 ∷ []) (sym (lem-box-cP-at233442 c4)) ▸
+       at 0 1 (Bx0-1423 ∷ []) (sym (lem-box-perm-1423-at243243 c4)) ▸
+       at 1 7 (Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ X4 ∷ CK42 ∷ X4 ∷ []) (sym (wl0685 (lit c4))) ▸ done
+
+  b2 : Chain (Bx0-1423 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ X4 ∷ CK42 ∷ X4 ∷ []) (Sb0-1-42-3 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b2 = at 2 1 (Sb0-1-3-2 ∷ []) (refl) ▸
+       at 4 1 (Sb⁻0-1-3-2 ∷ []) (refl) ▸
+       at 0 5 (Sb0-1-42-3 ∷ []) (refl) ▸ done
+
+-- F4-CS0-K1: 21 steps
+lem-F4-CS0-K1 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CK41 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-F4-CS0-K1 c4 = trans (run b0) (trans (run b1) (run b2))
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CK41 ∷ []) (X4 ∷ CCZ023 ∷ Toff214 ∷ CCZ023 ∷ K1 ∷ CK41 ∷ S4 ∷ Toff214 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ X4 ∷ [])
+  b0 = at 2 2 (K1 ∷ CK41 ∷ S4 ∷ X4 ∷ []) (sym (wl0720 (lit c4))) ▸
+       at 1 1 (Bx2-0413 ∷ Toff314 ∷ Sb2-0-3-1 ∷ Toff314 ∷ Sb⁻2-0-3-1 ∷ []) (refl) ▸
+       at 3 1 (CS03 ∷ []) (refl) ▸
+       at 5 1 (CS03⁻ ∷ []) (refl) ▸
+       at 2 7 (K1 ∷ CK41 ∷ S4 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ []) (sym (wp0614 c4)) ▸
+       at 1 1 (Bx2-0341 ∷ []) (lem-box-perm-1423-at0210243143 c4) ▸
+       at 1 1 (CCZ023 ∷ Toff214 ∷ CCZ023 ∷ Toff214 ∷ []) (lem-box-cP-at0210233441 c4) ▸
+       at 4 4 (K1 ∷ CK41 ∷ S4 ∷ Toff214 ∷ []) (sym (wl0721 (lit c4))) ▸ done
+
+  b1 : Chain (X4 ∷ CCZ023 ∷ Toff214 ∷ CCZ023 ∷ K1 ∷ CK41 ∷ S4 ∷ Toff214 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ X4 ∷ []) (X4 ∷ K1 ∷ CK41 ∷ S4 ∷ Bx2-0341 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ X4 ∷ [])
+  b1 = at 3 2 (K1 ∷ CCZ023 ∷ []) (wl0722 (lit c4)) ▸
+       at 4 2 (CK41 ∷ CCZ023 ∷ []) (lem-comm-CCZ023-CK41 (lit c4)) ▸
+       at 5 2 (S4 ∷ CCZ023 ∷ []) (c₄ (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) (S)) ▸
+       at 2 4 (K1 ∷ CK41 ∷ S4 ∷ Toff214 ∷ []) (sym (wl0721 (lit c4))) ▸
+       at 1 2 (K1 ∷ CCZ023 ∷ []) (wl0722 (lit c4)) ▸
+       at 2 2 (CK41 ∷ CCZ023 ∷ []) (lem-comm-CCZ023-CK41 (lit c4)) ▸
+       at 3 2 (S4 ∷ CCZ023 ∷ []) (c₄ (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) (S)) ▸
+       at 4 4 (Bx2-0341 ∷ []) (sym (lem-box-cP-at0210233441 c4)) ▸ done
+
+  b2 : Chain (X4 ∷ K1 ∷ CK41 ∷ S4 ∷ Bx2-0341 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ X4 ∷ []) (CK41 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b2 = at 4 1 (Bx2-0413 ∷ []) (sym (lem-box-perm-1423-at0210243143 c4)) ▸
+       at 6 1 (Sb2-0-3-1 ∷ []) (refl) ▸
+       at 8 1 (Sb⁻2-0-3-1 ∷ []) (refl) ▸
+       at 4 5 (Sb2-0-41-3 ∷ []) (refl) ▸
+       at 0 4 (CK41 ∷ X4 ∷ []) (sym (wl0723 (lit c4))) ▸ done
+
+-- F4-CS0-K2: 20 steps
+lem-F4-CS0-K2 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CK42 ∷ []) ⟫ʷ ≈ ⟪ (CK42 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-F4-CS0-K2 c4 = trans (run b0) (trans (run b1) (run b2))
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CK42 ∷ []) (X4 ∷ Bx2-0413 ∷ K2 ∷ CK42 ∷ S4 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ X4 ∷ [])
+  b0 = at 2 2 (K2 ∷ CK42 ∷ S4 ∷ X4 ∷ []) (sym (wl0725 (lit c4))) ▸
+       at 1 1 (Bx2-0413 ∷ Toff314 ∷ Sb2-0-3-1 ∷ Toff314 ∷ Sb⁻2-0-3-1 ∷ []) (refl) ▸
+       at 3 1 (CS03 ∷ []) (refl) ▸
+       at 5 1 (CS03⁻ ∷ []) (refl) ▸
+       at 5 4 (K2 ∷ CK42 ∷ S4 ∷ CS03⁻ ∷ []) (wp0615 c4) ▸
+       at 4 4 (K2 ∷ CK42 ∷ S4 ∷ Toff314 ∷ []) (sym (wl0726 (lit c4))) ▸
+       at 3 4 (K2 ∷ CK42 ∷ S4 ∷ CS03 ∷ []) (wp0616 c4) ▸
+       at 2 4 (K2 ∷ CK42 ∷ S4 ∷ Toff314 ∷ []) (sym (wl0726 (lit c4))) ▸ done
+
+  b1 : Chain (X4 ∷ Bx2-0413 ∷ K2 ∷ CK42 ∷ S4 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ X4 ∷ []) (X4 ∷ K2 ∷ CK42 ∷ S4 ∷ Bx2-0413 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ X4 ∷ [])
+  b1 = at 1 2 (K2 ∷ Bx2-0413 ∷ []) (sym (lem-Ku-box-at0210243143 c4)) ▸
+       at 2 2 (CK42 ∷ Bx2-0413 ∷ []) (sym (lem-CKu-box-2-at0210243143 c4)) ▸
+       at 3 1 (CCZ024 ∷ Toff213 ∷ CCZ024 ∷ Toff213 ∷ []) (lem-box-cP-at0210243143 c4) ▸
+       at 6 2 (S4 ∷ Toff213 ∷ []) (sym (wl0727 (lit c4))) ▸
+       at 5 2 (S4 ∷ CCZ024 ∷ []) (wp0617 c4) ▸
+       at 4 2 (S4 ∷ Toff213 ∷ []) (sym (wl0727 (lit c4))) ▸
+       at 3 2 (S4 ∷ CCZ024 ∷ []) (wp0617 c4) ▸
+       at 4 4 (Bx2-0413 ∷ []) (sym (lem-box-cP-at0210243143 c4)) ▸ done
+
+  b2 : Chain (X4 ∷ K2 ∷ CK42 ∷ S4 ∷ Bx2-0413 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ X4 ∷ []) (CK42 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b2 = at 6 1 (Sb2-0-3-1 ∷ []) (refl) ▸
+       at 8 1 (Sb⁻2-0-3-1 ∷ []) (refl) ▸
+       at 4 5 (Sb2-0-41-3 ∷ []) (refl) ▸
+       at 0 4 (CK42 ∷ X4 ∷ []) (sym (wl0728 (lit c4))) ▸ done
+
+-- F4-CS1-K0: 20 steps
+lem-F4-CS1-K0 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CK40 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-F4-CS1-K0 c4 = trans (run b0) (trans (run b1) (run b2))
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CK40 ∷ []) (X4 ∷ Bx0-1423 ∷ K0 ∷ CK40 ∷ S4 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ X4 ∷ [])
+  b0 = at 2 2 (K0 ∷ CK40 ∷ S4 ∷ X4 ∷ []) (sym (wp0610 c4)) ▸
+       at 1 1 (Bx0-1423 ∷ Toff324 ∷ Sb0-1-3-2 ∷ Toff324 ∷ Sb⁻0-1-3-2 ∷ []) (refl) ▸
+       at 3 1 (CS13 ∷ []) (refl) ▸
+       at 5 1 (CS13⁻ ∷ []) (refl) ▸
+       at 5 4 (K0 ∷ CK40 ∷ S4 ∷ CS13⁻ ∷ []) (wp0629 c4) ▸
+       at 4 4 (K0 ∷ CK40 ∷ S4 ∷ Toff324 ∷ []) (sym (wp0630 c4)) ▸
+       at 3 4 (K0 ∷ CK40 ∷ S4 ∷ CS13 ∷ []) (wp0631 c4) ▸
+       at 2 4 (K0 ∷ CK40 ∷ S4 ∷ Toff324 ∷ []) (sym (wp0630 c4)) ▸ done
+
+  b1 : Chain (X4 ∷ Bx0-1423 ∷ K0 ∷ CK40 ∷ S4 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ X4 ∷ []) (X4 ∷ K0 ∷ CK40 ∷ S4 ∷ Bx0-1423 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ X4 ∷ [])
+  b1 = at 1 2 (K0 ∷ Bx0-1423 ∷ []) (sym (lem-Ku-box-at243243 c4)) ▸
+       at 2 2 (CK40 ∷ Bx0-1423 ∷ []) (sym (lem-CKu-box-2-at243243 c4)) ▸
+       at 3 1 (CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ []) (lem-box-cP-at243243 c4) ▸
+       at 6 2 (S4 ∷ Toff023 ∷ []) (sym (wp0632 c4)) ▸
+       at 5 2 (S4 ∷ CCZ014 ∷ []) (wp0633 c4) ▸
+       at 4 2 (S4 ∷ Toff023 ∷ []) (sym (wp0632 c4)) ▸
+       at 3 2 (S4 ∷ CCZ014 ∷ []) (wp0633 c4) ▸
+       at 4 4 (Bx0-1423 ∷ []) (sym (lem-box-cP-at243243 c4)) ▸ done
+
+  b2 : Chain (X4 ∷ K0 ∷ CK40 ∷ S4 ∷ Bx0-1423 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ X4 ∷ []) (CK40 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b2 = at 6 1 (Sb0-1-3-2 ∷ []) (refl) ▸
+       at 8 1 (Sb⁻0-1-3-2 ∷ []) (refl) ▸
+       at 4 5 (Sb0-1-42-3 ∷ []) (refl) ▸
+       at 0 4 (CK40 ∷ X4 ∷ []) (sym (wp0613 c4)) ▸ done
+
+-- F4-CS1-K2: 21 steps
+lem-F4-CS1-K2 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CK42 ∷ []) ⟫ʷ ≈ ⟪ (CK42 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-F4-CS1-K2 c4 = trans (run b0) (trans (run b1) (run b2))
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CK42 ∷ []) (X4 ∷ CCZ013 ∷ Toff024 ∷ CCZ013 ∷ K2 ∷ CK42 ∷ S4 ∷ Toff024 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ X4 ∷ [])
+  b0 = at 2 2 (K2 ∷ CK42 ∷ S4 ∷ X4 ∷ []) (sym (wl0725 (lit c4))) ▸
+       at 1 1 (Bx0-1423 ∷ Toff324 ∷ Sb0-1-3-2 ∷ Toff324 ∷ Sb⁻0-1-3-2 ∷ []) (refl) ▸
+       at 3 1 (CS13 ∷ []) (refl) ▸
+       at 5 1 (CS13⁻ ∷ []) (refl) ▸
+       at 2 7 (K2 ∷ CK42 ∷ S4 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ []) (sym (wl0736 (lit c4))) ▸
+       at 1 1 (Bx0-1342 ∷ []) (lem-box-perm-1423-at243243 c4) ▸
+       at 1 1 (CCZ013 ∷ Toff024 ∷ CCZ013 ∷ Toff024 ∷ []) (lem-box-cP-at233442 c4) ▸
+       at 4 4 (K2 ∷ CK42 ∷ S4 ∷ Toff024 ∷ []) (sym (wp0635 c4)) ▸ done
+
+  b1 : Chain (X4 ∷ CCZ013 ∷ Toff024 ∷ CCZ013 ∷ K2 ∷ CK42 ∷ S4 ∷ Toff024 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ X4 ∷ []) (X4 ∷ K2 ∷ CK42 ∷ S4 ∷ Bx0-1342 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ X4 ∷ [])
+  b1 = at 3 2 (K2 ∷ CCZ013 ∷ []) (wl0737 (lit c4)) ▸
+       at 4 2 (CK42 ∷ CCZ013 ∷ []) (lem-comm-CCZ013-CK42 (lit c4)) ▸
+       at 5 2 (S4 ∷ CCZ013 ∷ []) (c₄ (Swap ↑ ↑ • CCZ • Swap ↑ ↑) (S)) ▸
+       at 2 4 (K2 ∷ CK42 ∷ S4 ∷ Toff024 ∷ []) (sym (wp0635 c4)) ▸
+       at 1 2 (K2 ∷ CCZ013 ∷ []) (wl0737 (lit c4)) ▸
+       at 2 2 (CK42 ∷ CCZ013 ∷ []) (lem-comm-CCZ013-CK42 (lit c4)) ▸
+       at 3 2 (S4 ∷ CCZ013 ∷ []) (c₄ (Swap ↑ ↑ • CCZ • Swap ↑ ↑) (S)) ▸
+       at 4 4 (Bx0-1342 ∷ []) (sym (lem-box-cP-at233442 c4)) ▸ done
+
+  b2 : Chain (X4 ∷ K2 ∷ CK42 ∷ S4 ∷ Bx0-1342 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ X4 ∷ []) (CK42 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b2 = at 4 1 (Bx0-1423 ∷ []) (sym (lem-box-perm-1423-at243243 c4)) ▸
+       at 6 1 (Sb0-1-3-2 ∷ []) (refl) ▸
+       at 8 1 (Sb⁻0-1-3-2 ∷ []) (refl) ▸
+       at 4 5 (Sb0-1-42-3 ∷ []) (refl) ▸
+       at 0 4 (CK42 ∷ X4 ∷ []) (sym (wl0728 (lit c4))) ▸ done
+
+-- F4-CS2-K0: 20 steps
+lem-F4-CS2-K0 : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CK40 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-F4-CS2-K0 c4 = trans (run b0) (trans (run b1) (run b2))
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CK40 ∷ []) (X4 ∷ Bx0-2431 ∷ K0 ∷ CK40 ∷ S4 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ X4 ∷ [])
+  b0 = at 2 2 (K0 ∷ CK40 ∷ S4 ∷ X4 ∷ []) (sym (wp0610 c4)) ▸
+       at 1 1 (Bx0-2431 ∷ Toff134 ∷ Sb0-2-1-3 ∷ Toff134 ∷ Sb⁻0-2-1-3 ∷ []) (refl) ▸
+       at 3 1 (CS12 ∷ []) (refl) ▸
+       at 5 1 (CS12⁻ ∷ []) (refl) ▸
+       at 5 4 (K0 ∷ CK40 ∷ S4 ∷ CS12⁻ ∷ []) (wp0644 c4) ▸
+       at 4 4 (K0 ∷ CK40 ∷ S4 ∷ Toff134 ∷ []) (sym (wp0645 c4)) ▸
+       at 3 4 (K0 ∷ CK40 ∷ S4 ∷ CS12 ∷ []) (wp0646 c4) ▸
+       at 2 4 (K0 ∷ CK40 ∷ S4 ∷ Toff134 ∷ []) (sym (wp0645 c4)) ▸ done
+
+  b1 : Chain (X4 ∷ Bx0-2431 ∷ K0 ∷ CK40 ∷ S4 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ X4 ∷ []) (X4 ∷ K0 ∷ CK40 ∷ S4 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ X4 ∷ [])
+  b1 = at 1 2 (K0 ∷ Bx0-2431 ∷ []) (sym (lem-Ku-box-at122441 c4)) ▸
+       at 2 2 (CK40 ∷ Bx0-2431 ∷ []) (sym (lem-CKu-box-2-at122441 c4)) ▸
+       at 3 1 (CCZ024 ∷ Toff013 ∷ CCZ024 ∷ Toff013 ∷ []) (lem-box-cP-at122441 c4) ▸
+       at 6 2 (S4 ∷ Toff013 ∷ []) (sym (wp0647 c4)) ▸
+       at 5 2 (S4 ∷ CCZ024 ∷ []) (wp0617 c4) ▸
+       at 4 2 (S4 ∷ Toff013 ∷ []) (sym (wp0647 c4)) ▸
+       at 3 2 (S4 ∷ CCZ024 ∷ []) (wp0617 c4) ▸
+       at 4 4 (Bx0-2431 ∷ []) (sym (lem-box-cP-at122441 c4)) ▸ done
+
+  b2 : Chain (X4 ∷ K0 ∷ CK40 ∷ S4 ∷ Bx0-2431 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ X4 ∷ []) (CK40 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b2 = at 6 1 (Sb0-2-1-3 ∷ []) (refl) ▸
+       at 8 1 (Sb⁻0-2-1-3 ∷ []) (refl) ▸
+       at 4 5 (Sb0-2-43-1 ∷ []) (refl) ▸
+       at 0 4 (CK40 ∷ X4 ∷ []) (sym (wp0613 c4)) ▸ done
+
+-- F0-B @14213243: 62 steps
+lem-F0-B-at14213243 : Ws → ⟪ (CX23 ∷ Bx2-4103 ∷ CX23 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-4103 ∷ Bx3-4102 ∷ []) ⟫ʷ
+lem-F0-B-at14213243 c4 = trans (run b0) (trans (run b1) (trans (run b2) (trans (run b3) (trans (run b4) (trans (run b5) (trans (run b6) (run b7)))))))
+  where
+  b0 : Chain (CX23 ∷ Bx2-4103 ∷ CX23 ∷ []) (Toff214 ∷ Toff314 ∷ CCZ023 ∷ Toff214 ∷ Toff314 ∷ CZ02 ∷ CCZ014 ∷ CCZ023 ∷ CZ02 ∷ [])
+  b0 = at 1 1 (Toff214 ∷ CCZ023 ∷ Toff214 ∷ CCZ023 ∷ []) (lem-box-tQ-at0214213043 c4) ▸
+       at 0 2 (Toff214 ∷ Toff314 ∷ CX23 ∷ []) (wl0771 (lit c4)) ▸
+       at 2 2 (CCZ023 ∷ CZ02 ∷ CX23 ∷ []) (sym (wl0772 (lit c4))) ▸
+       at 4 2 (Toff214 ∷ Toff314 ∷ CX23 ∷ []) (wl0771 (lit c4)) ▸
+       at 6 3 (CCZ023 ∷ CZ02 ∷ []) (sym (wl0773 (lit c4))) ▸
+       at 3 2 (Toff214 ∷ CZ02 ∷ CCZ014 ∷ []) (wp0697 c4) ▸
+       at 5 2 (Toff314 ∷ CCZ014 ∷ []) (wp0698 c4) ▸
+       at 4 2 (Toff314 ∷ CZ02 ∷ []) (lem-comm-CZ02-TOFF314 (lit c4)) ▸ done
+
+  b1 : Chain (Toff214 ∷ Toff314 ∷ CCZ023 ∷ Toff214 ∷ Toff314 ∷ CZ02 ∷ CCZ014 ∷ CCZ023 ∷ CZ02 ∷ []) (K2 ∷ CS12 ∷ CX41 ∷ CS12⁻ ∷ CX41 ∷ CS24 ∷ K2⁻ ∷ CCZ034 ∷ Toff312 ∷ CCZ034 ∷ Toff312 ∷ CCZ023 ∷ Toff214 ∷ CCZ014 ∷ CCZ023 ∷ [])
+  b1 = at 5 2 (CCZ014 ∷ CZ02 ∷ []) (sym (wp0699 c4)) ▸
+       at 6 3 (CCZ023 ∷ []) (sym (wl0774 (lit c4))) ▸
+       at 3 2 (Toff314 ∷ Toff214 ∷ []) (wl0775 (lit c4)) ▸
+       at 4 0 (CCZ023 ∷ CCZ023 ∷ []) (sym (wl0204 (lit c4))) ▸
+       at 1 4 (Bx3-4102 ∷ []) (sym (lem-box-tQ-at0314213042 c4)) ▸
+       at 1 1 (Bx3-4012 ∷ []) (lem-box-perm-1324-at0314213042 c4) ▸
+       at 1 1 (CCZ034 ∷ Toff312 ∷ CCZ034 ∷ Toff312 ∷ []) (lem-box-cP-at0314203142 c4) ▸
+       at 0 1 (K2 ∷ CS12 ∷ CX41 ∷ CS12⁻ ∷ CX41 ∷ CS24 ∷ K2⁻ ∷ []) (sym (wl0776 (lit c4))) ▸ done
+
+  b2 : Chain (K2 ∷ CS12 ∷ CX41 ∷ CS12⁻ ∷ CX41 ∷ CS24 ∷ K2⁻ ∷ CCZ034 ∷ Toff312 ∷ CCZ034 ∷ Toff312 ∷ CCZ023 ∷ Toff214 ∷ CCZ014 ∷ CCZ023 ∷ []) (CCZ034 ∷ Toff214 ∷ Toff312 ∷ CCZ034 ∷ Toff312 ∷ CCZ023 ∷ Toff214 ∷ CCZ014 ∷ CCZ023 ∷ [])
+  b2 = at 6 2 (CCZ034 ∷ K2⁻ ∷ []) (sym (wp0700 c4)) ▸
+       at 5 2 (CCZ034 ∷ CS24 ∷ []) (sym (wp0108 c4)) ▸
+       at 4 2 (CCZ034 ∷ CX41 ∷ []) (sym (wp0357 c4)) ▸
+       at 3 2 (CCZ034 ∷ CS12⁻ ∷ []) (lem-comm-CSd12-CCZ034 (lit c4)) ▸
+       at 2 2 (CCZ034 ∷ CX41 ∷ []) (sym (wp0357 c4)) ▸
+       at 1 2 (CCZ034 ∷ CS12 ∷ []) (lem-comm-CS12-CCZ034 (lit c4)) ▸
+       at 0 2 (CCZ034 ∷ K2 ∷ []) (sym (wp0701 c4)) ▸
+       at 1 7 (Toff214 ∷ []) (wl0776 (lit c4)) ▸ done
+
+  b3 : Chain (CCZ034 ∷ Toff214 ∷ Toff312 ∷ CCZ034 ∷ Toff312 ∷ CCZ023 ∷ Toff214 ∷ CCZ014 ∷ CCZ023 ∷ []) (CCZ034 ∷ Toff312 ∷ K2 ∷ CS12 ∷ CCZ034 ∷ CX41 ∷ CS12⁻ ∷ CX41 ∷ CS24 ∷ K2⁻ ∷ Toff314 ∷ CCZ014 ∷ Toff312 ∷ CCZ023 ∷ Toff214 ∷ CCZ014 ∷ CCZ023 ∷ [])
+  b3 = at 1 2 (Toff312 ∷ Toff214 ∷ Toff314 ∷ []) (wl0777 (lit c4)) ▸
+       at 3 2 (CCZ034 ∷ Toff314 ∷ CCZ014 ∷ []) (sym (wp0702 c4)) ▸
+       at 2 1 (K2 ∷ CS12 ∷ CX41 ∷ CS12⁻ ∷ CX41 ∷ CS24 ∷ K2⁻ ∷ []) (sym (wl0776 (lit c4))) ▸
+       at 8 2 (CCZ034 ∷ K2⁻ ∷ []) (sym (wp0700 c4)) ▸
+       at 7 2 (CCZ034 ∷ CS24 ∷ []) (sym (wp0108 c4)) ▸
+       at 6 2 (CCZ034 ∷ CX41 ∷ []) (sym (wp0357 c4)) ▸
+       at 5 2 (CCZ034 ∷ CS12⁻ ∷ []) (lem-comm-CSd12-CCZ034 (lit c4)) ▸
+       at 4 2 (CCZ034 ∷ CX41 ∷ []) (sym (wp0357 c4)) ▸ done
+
+  b4 : Chain (CCZ034 ∷ Toff312 ∷ K2 ∷ CS12 ∷ CCZ034 ∷ CX41 ∷ CS12⁻ ∷ CX41 ∷ CS24 ∷ K2⁻ ∷ Toff314 ∷ CCZ014 ∷ Toff312 ∷ CCZ023 ∷ Toff214 ∷ CCZ014 ∷ CCZ023 ∷ []) (CCZ034 ∷ Toff312 ∷ CCZ034 ∷ Toff214 ∷ Toff314 ∷ CS14 ∷ Toff312 ∷ CX04 ∷ CS14⁻ ∷ CX04 ∷ CS01 ∷ CCZ023 ∷ Toff214 ∷ CCZ014 ∷ CCZ023 ∷ [])
+  b4 = at 3 2 (CCZ034 ∷ CS12 ∷ []) (lem-comm-CS12-CCZ034 (lit c4)) ▸
+       at 2 2 (CCZ034 ∷ K2 ∷ []) (sym (wp0701 c4)) ▸
+       at 3 7 (Toff214 ∷ []) (wl0776 (lit c4)) ▸
+       at 5 1 (CS14 ∷ CX04 ∷ CS14⁻ ∷ CX04 ∷ CS01 ∷ []) (wp0041 c4) ▸
+       at 9 2 (Toff312 ∷ CS01 ∷ []) (wl0501 (lit c4)) ▸
+       at 8 2 (Toff312 ∷ CX04 ∷ []) (lem-comm-CX04-TOFF312 (lit c4)) ▸
+       at 7 2 (Toff312 ∷ CS14⁻ ∷ []) (wl0778 (lit c4)) ▸
+       at 6 2 (Toff312 ∷ CX04 ∷ []) (lem-comm-CX04-TOFF312 (lit c4)) ▸ done
+
+  b5 : Chain (CCZ034 ∷ Toff312 ∷ CCZ034 ∷ Toff214 ∷ Toff314 ∷ CS14 ∷ Toff312 ∷ CX04 ∷ CS14⁻ ∷ CX04 ∷ CS01 ∷ CCZ023 ∷ Toff214 ∷ CCZ014 ∷ CCZ023 ∷ []) (Bx3-4102 ∷ Toff214 ∷ CS14 ∷ CX04 ∷ CS14⁻ ∷ CX04 ∷ CS01 ∷ CCZ023 ∷ Toff214 ∷ CCZ014 ∷ CCZ023 ∷ [])
+  b5 = at 5 2 (Toff312 ∷ CS14 ∷ []) (wl0499 (lit c4)) ▸
+       at 6 5 (CCZ014 ∷ []) (sym (wp0041 c4)) ▸
+       at 4 2 (Toff312 ∷ Toff314 ∷ []) (sym (wl0779 (lit c4))) ▸
+       at 3 2 (Toff312 ∷ Toff214 ∷ Toff314 ∷ []) (wl0777 (lit c4)) ▸
+       at 4 3 (Toff214 ∷ []) (wl0780 (lit c4)) ▸
+       at 0 4 (Bx3-4012 ∷ []) (sym (lem-box-cP-at0314203142 c4)) ▸
+       at 0 1 (Bx3-4102 ∷ []) (sym (lem-box-perm-1324-at0314213042 c4)) ▸
+       at 2 1 (CS14 ∷ CX04 ∷ CS14⁻ ∷ CX04 ∷ CS01 ∷ []) (wp0041 c4) ▸ done
+
+  b6 : Chain (Bx3-4102 ∷ Toff214 ∷ CS14 ∷ CX04 ∷ CS14⁻ ∷ CX04 ∷ CS01 ∷ CCZ023 ∷ Toff214 ∷ CCZ014 ∷ CCZ023 ∷ []) (Bx3-4102 ∷ Toff214 ∷ CCZ023 ∷ Toff214 ∷ CCZ023 ∷ [])
+  b6 = at 6 2 (CCZ023 ∷ CS01 ∷ []) (sym (wl0199 (lit c4))) ▸
+       at 5 2 (CCZ023 ∷ CX04 ∷ []) (sym (wp0684 c4)) ▸
+       at 4 2 (CCZ023 ∷ CS14⁻ ∷ []) (lem-comm-CSd14-CCZ023 (lit c4)) ▸
+       at 3 2 (CCZ023 ∷ CX04 ∷ []) (sym (wp0684 c4)) ▸
+       at 2 2 (CCZ023 ∷ CS14 ∷ []) (lem-comm-CS14-CCZ023 (lit c4)) ▸
+       at 3 5 (CCZ014 ∷ []) (sym (wp0041 c4)) ▸
+       at 3 2 (Toff214 ∷ CCZ014 ∷ []) (wp0686 c4) ▸
+       at 4 2 [] (wp0161 c4) ▸ done
+
+  b7 : Chain (Bx3-4102 ∷ Toff214 ∷ CCZ023 ∷ Toff214 ∷ CCZ023 ∷ []) (Bx2-4103 ∷ Bx3-4102 ∷ [])
+  b7 = at 1 4 (Bx2-4103 ∷ []) (sym (lem-box-tQ-at0214213043 c4)) ▸
+       at 0 1 (Bx3-0412 ∷ []) (lem-box-perm-3124-at0314213042 c4) ▸
+       at 1 1 (Bx2-3041 ∷ []) (lem-box-perm-4312-at0214213043 c4) ▸
+       at 0 2 (Bx2-3041 ∷ Bx3-0412 ∷ []) (lem-box-box-4-at0310243142 c4) ▸
+       at 0 1 (Bx2-4103 ∷ []) (lem-box-perm-3421-at0213203441 c4) ▸
+       at 1 1 (Bx3-4102 ∷ []) (lem-box-perm-2314-at0310243142 c4) ▸ done
+
+-- box-box-1 @03102132: 105 steps
+lem-box-box-1-at03102132 : Ws → ⟪ (Bx3-0124 ∷ Bx0-3124 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-3124 ∷ Bx3-0124 ∷ []) ⟫ʷ
+lem-box-box-1-at03102132 c4 = trans (run b0) (trans (run b1) (trans (run b2) (trans (run b3) (trans (run b4) (trans (run b5) (trans (run b6) (trans (run b7) (trans (run b8) (trans (run b9) (trans (run b10) (trans (run b11) (trans (run b12) (run b13)))))))))))))
+  where
+  b0 : Chain (Bx3-0124 ∷ Bx0-3124 ∷ []) (Toff312 ∷ CCZ034 ∷ Toff312 ∷ CCZ013 ∷ Toff024 ∷ CCZ034 ∷ CS24 ∷ CX32 ∷ CS24⁻ ∷ CCZ013 ∷ CX32 ∷ CS34 ∷ Toff024 ∷ [])
+  b0 = at 0 1 (Bx3-1240 ∷ []) (lem-box-perm-2341-at03102132 c4) ▸
+       at 0 1 (Toff312 ∷ CCZ034 ∷ Toff312 ∷ CCZ034 ∷ []) (lem-box-tQ-at033440 c4) ▸
+       at 4 1 (CCZ013 ∷ Toff024 ∷ CCZ013 ∷ Toff024 ∷ []) (lem-box-cP-at132132 c4) ▸
+       at 3 2 (CCZ013 ∷ CCZ034 ∷ []) (sym (wp0186 c4)) ▸
+       at 4 2 (Toff024 ∷ CCZ034 ∷ CCZ234 ∷ []) (wp0183 c4) ▸
+       at 6 1 (CS24 ∷ CX32 ∷ CS24⁻ ∷ CX32 ∷ CS34 ∷ []) (wl0829 (lit c4)) ▸
+       at 10 2 (CCZ013 ∷ CS34 ∷ []) (sym (wp0185 c4)) ▸
+       at 9 2 (CCZ013 ∷ CX32 ∷ []) (sym (wl0706 (lit c4))) ▸ done
+
+  b1 : Chain (Toff312 ∷ CCZ034 ∷ Toff312 ∷ CCZ013 ∷ Toff024 ∷ CCZ034 ∷ CS24 ∷ CX32 ∷ CS24⁻ ∷ CCZ013 ∷ CX32 ∷ CS34 ∷ Toff024 ∷ []) (Toff312 ∷ CCZ034 ∷ Toff312 ∷ CCZ013 ∷ Toff024 ∷ CCZ013 ∷ Toff024 ∷ CCZ034 ∷ [])
+  b1 = at 8 2 (CCZ013 ∷ CS24⁻ ∷ []) (lem-comm-CSd24-CCZ013 (lit c4)) ▸
+       at 7 2 (CCZ013 ∷ CX32 ∷ []) (sym (wl0706 (lit c4))) ▸
+       at 6 2 (CCZ013 ∷ CS24 ∷ []) (lem-comm-CS24-CCZ013 (lit c4)) ▸
+       at 7 5 (CCZ234 ∷ []) (sym (wl0829 (lit c4))) ▸
+       at 5 2 (CCZ013 ∷ CCZ034 ∷ []) (sym (wp0186 c4)) ▸
+       at 6 3 (Toff024 ∷ CCZ034 ∷ []) (wp0739 c4) ▸
+       at 3 4 (Bx0-3124 ∷ []) (sym (lem-box-cP-at132132 c4)) ▸
+       at 3 1 (CCZ013 ∷ Toff024 ∷ CCZ013 ∷ Toff024 ∷ []) (lem-box-cP-at132132 c4) ▸ done
+
+  b2 : Chain (Toff312 ∷ CCZ034 ∷ Toff312 ∷ CCZ013 ∷ Toff024 ∷ CCZ013 ∷ Toff024 ∷ CCZ034 ∷ []) (Toff312 ∷ CCZ034 ∷ CCZ013 ∷ K3 ∷ CS12 ∷ Toff024 ∷ CX31 ∷ CS12⁻ ∷ CX31 ∷ CS23 ∷ K3⁻ ∷ CCZ012 ∷ CCZ124 ∷ CCZ013 ∷ Toff024 ∷ CCZ034 ∷ [])
+  b2 = at 2 2 (CCZ013 ∷ Toff312 ∷ CCZ012 ∷ []) (sym (wl0850 (lit c4))) ▸
+       at 4 2 (Toff024 ∷ CCZ012 ∷ CCZ124 ∷ []) (wp0587 c4) ▸
+       at 3 1 (K3 ∷ CS12 ∷ CX31 ∷ CS12⁻ ∷ CX31 ∷ CS23 ∷ K3⁻ ∷ []) (sym (wl0869 (lit c4))) ▸
+       at 9 2 (Toff024 ∷ K3⁻ ∷ []) (wp0740 c4) ▸
+       at 8 2 (Toff024 ∷ CS23 ∷ []) (wp0190 c4) ▸
+       at 7 2 (Toff024 ∷ CX31 ∷ []) (lem-comm-CX31-TOFF024 (lit c4)) ▸
+       at 6 2 (Toff024 ∷ CS12⁻ ∷ []) (wp0741 c4) ▸
+       at 5 2 (Toff024 ∷ CX31 ∷ []) (lem-comm-CX31-TOFF024 (lit c4)) ▸ done
+
+  b3 : Chain (Toff312 ∷ CCZ034 ∷ CCZ013 ∷ K3 ∷ CS12 ∷ Toff024 ∷ CX31 ∷ CS12⁻ ∷ CX31 ∷ CS23 ∷ K3⁻ ∷ CCZ012 ∷ CCZ124 ∷ CCZ013 ∷ Toff024 ∷ CCZ034 ∷ []) (Toff312 ∷ CCZ034 ∷ CCZ013 ∷ Toff024 ∷ Toff312 ∷ CCZ012 ∷ CS24 ∷ CCZ013 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ Toff024 ∷ CCZ034 ∷ [])
+  b3 = at 4 2 (Toff024 ∷ CS12 ∷ []) (wp0524 c4) ▸
+       at 3 2 (Toff024 ∷ K3 ∷ []) (wp0742 c4) ▸
+       at 4 7 (Toff312 ∷ []) (wl0869 (lit c4)) ▸
+       at 6 1 (CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ []) (wl0256 (lit c4)) ▸
+       at 10 2 (CCZ013 ∷ CS14 ∷ []) (sym (wp0299 c4)) ▸
+       at 9 2 (CCZ013 ∷ CX12 ∷ []) (sym (wl0448 (lit c4))) ▸
+       at 8 2 (CCZ013 ∷ CS24⁻ ∷ []) (lem-comm-CSd24-CCZ013 (lit c4)) ▸
+       at 7 2 (CCZ013 ∷ CX12 ∷ []) (sym (wl0448 (lit c4))) ▸ done
+
+  b4 : Chain (Toff312 ∷ CCZ034 ∷ CCZ013 ∷ Toff024 ∷ Toff312 ∷ CCZ012 ∷ CS24 ∷ CCZ013 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ Toff024 ∷ CCZ034 ∷ []) (Toff312 ∷ CCZ034 ∷ CCZ013 ∷ Toff024 ∷ CCZ013 ∷ K3 ∷ CS12 ∷ CX31 ∷ CS12⁻ ∷ CX31 ∷ CS23 ∷ Toff024 ∷ K3⁻ ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b4 = at 6 2 (CCZ013 ∷ CS24 ∷ []) (lem-comm-CS24-CCZ013 (lit c4)) ▸
+       at 7 5 (CCZ124 ∷ []) (sym (wl0256 (lit c4))) ▸
+       at 5 2 (CCZ013 ∷ CCZ012 ∷ []) (wl0704 (lit c4)) ▸
+       at 4 2 (CCZ013 ∷ Toff312 ∷ CCZ012 ∷ []) (sym (wl0850 (lit c4))) ▸
+       at 5 3 (Toff312 ∷ []) (wl0870 (lit c4)) ▸
+       at 6 2 (Toff024 ∷ CCZ124 ∷ []) (wp0743 c4) ▸
+       at 5 1 (K3 ∷ CS12 ∷ CX31 ∷ CS12⁻ ∷ CX31 ∷ CS23 ∷ K3⁻ ∷ []) (sym (wl0869 (lit c4))) ▸
+       at 11 2 (Toff024 ∷ K3⁻ ∷ []) (wp0740 c4) ▸ done
+
+  b5 : Chain (Toff312 ∷ CCZ034 ∷ CCZ013 ∷ Toff024 ∷ CCZ013 ∷ K3 ∷ CS12 ∷ CX31 ∷ CS12⁻ ∷ CX31 ∷ CS23 ∷ Toff024 ∷ K3⁻ ∷ CCZ124 ∷ CCZ034 ∷ []) (Toff312 ∷ CCZ034 ∷ Bx0-3124 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b5 = at 10 2 (Toff024 ∷ CS23 ∷ []) (wp0190 c4) ▸
+       at 9 2 (Toff024 ∷ CX31 ∷ []) (lem-comm-CX31-TOFF024 (lit c4)) ▸
+       at 8 2 (Toff024 ∷ CS12⁻ ∷ []) (wp0741 c4) ▸
+       at 7 2 (Toff024 ∷ CX31 ∷ []) (lem-comm-CX31-TOFF024 (lit c4)) ▸
+       at 6 2 (Toff024 ∷ CS12 ∷ []) (wp0524 c4) ▸
+       at 5 2 (Toff024 ∷ K3 ∷ []) (wp0742 c4) ▸
+       at 6 7 (Toff312 ∷ []) (wl0869 (lit c4)) ▸
+       at 2 4 (Bx0-3124 ∷ []) (sym (lem-box-cP-at132132 c4)) ▸ done
+
+  b6 : Chain (Toff312 ∷ CCZ034 ∷ Bx0-3124 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ []) (Toff312 ∷ CCZ013 ∷ Toff024 ∷ CCZ034 ∷ CS24 ∷ CCZ013 ∷ CX32 ∷ CS24⁻ ∷ CX32 ∷ CS34 ∷ Toff024 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b6 = at 2 1 (CCZ013 ∷ Toff024 ∷ CCZ013 ∷ Toff024 ∷ []) (lem-box-cP-at132132 c4) ▸
+       at 1 2 (CCZ013 ∷ CCZ034 ∷ []) (sym (wp0186 c4)) ▸
+       at 2 2 (Toff024 ∷ CCZ034 ∷ CCZ234 ∷ []) (wp0183 c4) ▸
+       at 4 1 (CS24 ∷ CX32 ∷ CS24⁻ ∷ CX32 ∷ CS34 ∷ []) (wl0829 (lit c4)) ▸
+       at 8 2 (CCZ013 ∷ CS34 ∷ []) (sym (wp0185 c4)) ▸
+       at 7 2 (CCZ013 ∷ CX32 ∷ []) (sym (wl0706 (lit c4))) ▸
+       at 6 2 (CCZ013 ∷ CS24⁻ ∷ []) (lem-comm-CSd24-CCZ013 (lit c4)) ▸
+       at 5 2 (CCZ013 ∷ CX32 ∷ []) (sym (wl0706 (lit c4))) ▸ done
+
+  b7 : Chain (Toff312 ∷ CCZ013 ∷ Toff024 ∷ CCZ034 ∷ CS24 ∷ CCZ013 ∷ CX32 ∷ CS24⁻ ∷ CX32 ∷ CS34 ∷ Toff024 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ []) (CCZ013 ∷ Toff312 ∷ Toff024 ∷ CCZ012 ∷ CCZ124 ∷ CCZ013 ∷ Toff024 ∷ CCZ034 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b7 = at 4 2 (CCZ013 ∷ CS24 ∷ []) (lem-comm-CS24-CCZ013 (lit c4)) ▸
+       at 5 5 (CCZ234 ∷ []) (sym (wl0829 (lit c4))) ▸
+       at 3 2 (CCZ013 ∷ CCZ034 ∷ []) (sym (wp0186 c4)) ▸
+       at 4 3 (Toff024 ∷ CCZ034 ∷ []) (wp0739 c4) ▸
+       at 1 4 (Bx0-3124 ∷ []) (sym (lem-box-cP-at132132 c4)) ▸
+       at 1 1 (CCZ013 ∷ Toff024 ∷ CCZ013 ∷ Toff024 ∷ []) (lem-box-cP-at132132 c4) ▸
+       at 0 2 (CCZ013 ∷ Toff312 ∷ CCZ012 ∷ []) (sym (wl0850 (lit c4))) ▸
+       at 2 2 (Toff024 ∷ CCZ012 ∷ CCZ124 ∷ []) (wp0587 c4) ▸ done
+
+  b8 : Chain (CCZ013 ∷ Toff312 ∷ Toff024 ∷ CCZ012 ∷ CCZ124 ∷ CCZ013 ∷ Toff024 ∷ CCZ034 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ []) (CCZ013 ∷ Toff024 ∷ K3 ∷ CS12 ∷ CX31 ∷ CS12⁻ ∷ CX31 ∷ CS23 ∷ K3⁻ ∷ CCZ012 ∷ CCZ124 ∷ CCZ013 ∷ Toff024 ∷ CCZ034 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b8 = at 1 1 (K3 ∷ CS12 ∷ CX31 ∷ CS12⁻ ∷ CX31 ∷ CS23 ∷ K3⁻ ∷ []) (sym (wl0869 (lit c4))) ▸
+       at 7 2 (Toff024 ∷ K3⁻ ∷ []) (wp0740 c4) ▸
+       at 6 2 (Toff024 ∷ CS23 ∷ []) (wp0190 c4) ▸
+       at 5 2 (Toff024 ∷ CX31 ∷ []) (lem-comm-CX31-TOFF024 (lit c4)) ▸
+       at 4 2 (Toff024 ∷ CS12⁻ ∷ []) (wp0741 c4) ▸
+       at 3 2 (Toff024 ∷ CX31 ∷ []) (lem-comm-CX31-TOFF024 (lit c4)) ▸
+       at 2 2 (Toff024 ∷ CS12 ∷ []) (wp0524 c4) ▸
+       at 1 2 (Toff024 ∷ K3 ∷ []) (wp0742 c4) ▸ done
+
+  b9 : Chain (CCZ013 ∷ Toff024 ∷ K3 ∷ CS12 ∷ CX31 ∷ CS12⁻ ∷ CX31 ∷ CS23 ∷ K3⁻ ∷ CCZ012 ∷ CCZ124 ∷ CCZ013 ∷ Toff024 ∷ CCZ034 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ []) (CCZ013 ∷ Toff024 ∷ Toff312 ∷ CCZ012 ∷ CCZ013 ∷ CCZ124 ∷ Toff024 ∷ CCZ034 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b9 = at 2 7 (Toff312 ∷ []) (wl0869 (lit c4)) ▸
+       at 4 1 (CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ []) (wl0256 (lit c4)) ▸
+       at 8 2 (CCZ013 ∷ CS14 ∷ []) (sym (wp0299 c4)) ▸
+       at 7 2 (CCZ013 ∷ CX12 ∷ []) (sym (wl0448 (lit c4))) ▸
+       at 6 2 (CCZ013 ∷ CS24⁻ ∷ []) (lem-comm-CSd24-CCZ013 (lit c4)) ▸
+       at 5 2 (CCZ013 ∷ CX12 ∷ []) (sym (wl0448 (lit c4))) ▸
+       at 4 2 (CCZ013 ∷ CS24 ∷ []) (lem-comm-CS24-CCZ013 (lit c4)) ▸
+       at 5 5 (CCZ124 ∷ []) (sym (wl0256 (lit c4))) ▸ done
+
+  b10 : Chain (CCZ013 ∷ Toff024 ∷ Toff312 ∷ CCZ012 ∷ CCZ013 ∷ CCZ124 ∷ Toff024 ∷ CCZ034 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ []) (CCZ013 ∷ Toff024 ∷ CCZ013 ∷ K3 ∷ CS12 ∷ CX31 ∷ CS12⁻ ∷ Toff024 ∷ CX31 ∷ CS23 ∷ K3⁻ ∷ CCZ124 ∷ CCZ034 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b10 = at 3 2 (CCZ013 ∷ CCZ012 ∷ []) (wl0704 (lit c4)) ▸
+       at 2 2 (CCZ013 ∷ Toff312 ∷ CCZ012 ∷ []) (sym (wl0850 (lit c4))) ▸
+       at 3 3 (Toff312 ∷ []) (wl0870 (lit c4)) ▸
+       at 4 2 (Toff024 ∷ CCZ124 ∷ []) (wp0743 c4) ▸
+       at 3 1 (K3 ∷ CS12 ∷ CX31 ∷ CS12⁻ ∷ CX31 ∷ CS23 ∷ K3⁻ ∷ []) (sym (wl0869 (lit c4))) ▸
+       at 9 2 (Toff024 ∷ K3⁻ ∷ []) (wp0740 c4) ▸
+       at 8 2 (Toff024 ∷ CS23 ∷ []) (wp0190 c4) ▸
+       at 7 2 (Toff024 ∷ CX31 ∷ []) (lem-comm-CX31-TOFF024 (lit c4)) ▸ done
+
+  b11 : Chain (CCZ013 ∷ Toff024 ∷ CCZ013 ∷ K3 ∷ CS12 ∷ CX31 ∷ CS12⁻ ∷ Toff024 ∷ CX31 ∷ CS23 ∷ K3⁻ ∷ CCZ124 ∷ CCZ034 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ []) (Bx0-3124 ∷ Toff312 ∷ CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CCZ034 ∷ CS14 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ [])
+  b11 = at 6 2 (Toff024 ∷ CS12⁻ ∷ []) (wp0741 c4) ▸
+       at 5 2 (Toff024 ∷ CX31 ∷ []) (lem-comm-CX31-TOFF024 (lit c4)) ▸
+       at 4 2 (Toff024 ∷ CS12 ∷ []) (wp0524 c4) ▸
+       at 3 2 (Toff024 ∷ K3 ∷ []) (wp0742 c4) ▸
+       at 4 7 (Toff312 ∷ []) (wl0869 (lit c4)) ▸
+       at 0 4 (Bx0-3124 ∷ []) (sym (lem-box-cP-at132132 c4)) ▸
+       at 2 1 (CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ []) (wl0256 (lit c4)) ▸
+       at 6 2 (CCZ034 ∷ CS14 ∷ []) (sym (wp0106 c4)) ▸ done
+
+  b12 : Chain (Bx0-3124 ∷ Toff312 ∷ CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CCZ034 ∷ CS14 ∷ Toff312 ∷ CCZ124 ∷ CCZ034 ∷ []) (Bx0-3124 ∷ Bx3-1240 ∷ [])
+  b12 = at 5 2 (CCZ034 ∷ CX12 ∷ []) (lem-comm-CX12-CCZ034 (lit c4)) ▸
+       at 4 2 (CCZ034 ∷ CS24⁻ ∷ []) (sym (wp0107 c4)) ▸
+       at 3 2 (CCZ034 ∷ CX12 ∷ []) (lem-comm-CX12-CCZ034 (lit c4)) ▸
+       at 2 2 (CCZ034 ∷ CS24 ∷ []) (sym (wp0108 c4)) ▸
+       at 3 5 (CCZ124 ∷ []) (sym (wl0256 (lit c4))) ▸
+       at 3 2 (Toff312 ∷ CCZ124 ∷ []) (wl0871 (lit c4)) ▸
+       at 4 2 [] (wl0263 (lit c4)) ▸
+       at 1 4 (Bx3-1240 ∷ []) (sym (lem-box-tQ-at033440 c4)) ▸ done
+
+  b13 : Chain (Bx0-3124 ∷ Bx3-1240 ∷ []) (Bx0-3124 ∷ Bx3-0124 ∷ [])
+  b13 = at 1 1 (Bx3-0124 ∷ []) (lem-box-perm-4123-at033440 c4) ▸ done

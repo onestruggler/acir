@@ -28,7 +28,7 @@ open import Examples.Groups.Clifford+CS.Four.Transport
 open import Examples.Groups.Clifford+CS.MultiControlled using (Layout ; mc ; G-pp ; G-rot)
 open import Examples.Groups.Clifford+CS.Decoding 0 using (layout□ ; dPP₁ ; dPP₁′ ; lo₁ ; hi₁)
 open import Examples.Groups.Clifford+CS.Four.Bridge using (G-pp-≈)
-open import Examples.Groups.Clifford+CS.Four.D.D165 using (lem-bridge-G-rot)
+open import Examples.Groups.Clifford+CS.Four.D.D735 using (lem-bridge-G-rot)
 
 ------------------------------------------------------------------------
 -- Generic lemmas
