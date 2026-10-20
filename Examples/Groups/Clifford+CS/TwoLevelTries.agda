@@ -29,7 +29,7 @@ open import Examples.Groups.Clifford+CS.Semantics hiding (_^_)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧ ; len ; ⟦_⟧M ; ⟦⟧-ix)
 open import Examples.Groups.Clifford+CS.Semantics.Decide using (eqM ; eqM-sound)
-open import Examples.Groups.Clifford+CS.Evaluation using (⟦_⟧R ; ⟦⟧R≡⟦⟧M)
+open import Examples.Groups.Clifford+CS.FastEval using (⟦_⟧Q ; nK ; Q-≡)
 import Examples.Groups.Clifford+CS-TwoLevel.Syntactics as TL
 import Examples.Groups.Clifford+CS.Bridge as Bridge
 
@@ -67,9 +67,8 @@ by-tries w u eq =
 -- The same, decided by one boolean on the row-operation reading of the
 -- circuit.  The words are explicit: they cannot be read back off it.
 Same : Circuit n → Word (TL.Gen N) → Set
-Same w u = eqM (scaleM (γ^ proj₁ ⟦ u ⟧Y) ⟦ w ⟧R) (scaleM (γ^ len w) ⟦ u ⟧YM) ≡ true
+Same w u = eqM (scaleM (γ^ proj₁ ⟦ u ⟧Y) ⟦ w ⟧Q) (scaleM (γ^ nK w) ⟦ u ⟧YM) ≡ true
 
 by-same : (w : Circuit n) (u : Word (TL.Gen N)) → Same w u → ⟦ w ⟧ ~ ⟦ u ⟧Y
 by-same w u e =
-  by-tries w u (Eq.subst (λ A → scaleM (γ^ proj₁ ⟦ u ⟧Y) A ≡ scaleM (γ^ len w) ⟦ u ⟧YM)
-                         (⟦⟧R≡⟦⟧M w) (eqM-sound _ _ e))
+  by-tries w u (Q-≡ w (proj₁ ⟦ u ⟧Y) ⟦ u ⟧YM e)

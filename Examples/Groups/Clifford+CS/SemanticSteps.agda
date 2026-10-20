@@ -7,7 +7,8 @@
 -- on fewer qubits as a black box, and so does the development from
 -- four wires on here: a step is an equation between two circuits on
 -- k ≤ 3 wires with the same matrix, decided by one boolean on their
--- row-operation readings (`Same u v`, by `Eq.refl`), turned into a
+-- row-operation readings (`Same u v`, by `Eq.refl`; FastEval's, which
+-- charges γ to K alone), turned into a
 -- derivation by completeness on k wires (Completeness.complete≤₃, the
 -- parameter of `Below`) and
 -- carried to the bottom k wires of a wider circuit by Weakening, or to
@@ -20,7 +21,6 @@
 
 module Examples.Groups.Clifford+CS.SemanticSteps where
 
-open import Data.Bool using (true)
 open import Data.Nat using (ℕ ; _≤_) renaming (_+_ to _+ℕ_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
@@ -29,31 +29,29 @@ open import Notations using (₁₊)
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧ ; ⟦_⟧M ; ⟦⟧-ix ; len)
-open import Examples.Groups.Clifford+CS.Semantics.Decide using (eqM ; eqM-sound)
-open import Examples.Groups.Clifford+CS.Evaluation using (⟦_⟧R ; ⟦⟧R≡⟦⟧M)
+open import Examples.Groups.Clifford+CS.FastEval using (SameQ ; sameQ-sem)
 open import Examples.Groups.Clifford+CS.Weakening using (weaken)
 
 ------------------------------------------------------------------------
 -- Two circuits with the same matrix
 
--- Decided by one boolean on the row-operation readings, each scaled by
--- the other's power of γ.
+-- Decided by one boolean on the fast row-operation readings, each scaled
+-- by the other's power of γ (FastEval: the readings charge γ to K alone,
+-- three times faster than Evaluation's on long words).
 Same : ∀ {k} → Circuit k → Circuit k → Set
-Same u v = eqM (scaleM (γ^ len v) ⟦ u ⟧R) (scaleM (γ^ len u) ⟦ v ⟧R) ≡ true
+Same u v = SameQ u v
+
+-- Hence the same semantics.
+same-sem : ∀ {k} (u v : Circuit k) → Same u v → ⟦ u ⟧ ~ ⟦ v ⟧
+same-sem = sameQ-sem
 
 same-≡ : ∀ {k} (u v : Circuit k) → Same u v →
          scaleM (γ^ len v) ⟦ u ⟧M ≡ scaleM (γ^ len u) ⟦ v ⟧M
 same-≡ u v e =
-  Eq.subst₂ (λ A B → scaleM (γ^ len v) A ≡ scaleM (γ^ len u) B)
-            (⟦⟧R≡⟦⟧M u) (⟦⟧R≡⟦⟧M v) (eqM-sound _ _ e)
-
--- Hence the same semantics.
-same-sem : ∀ {k} (u v : Circuit k) → Same u v → ⟦ u ⟧ ~ ⟦ v ⟧
-same-sem u v eq =
-  ≐-trans (·-cong Eq.refl (⟦⟧-ix u))
-    (≐-trans (≐-sym (ix-scaleM (γ^ len v) ⟦ u ⟧M))
-      (≐-trans (ix-≡ (same-≡ u v eq))
-        (≐-trans (ix-scaleM (γ^ len u) ⟦ v ⟧M) (·-cong Eq.refl (≐-sym (⟦⟧-ix v))))))
+  mat-ext (≐-trans (ix-scaleM (γ^ len v) ⟦ u ⟧M)
+    (≐-trans (·-cong Eq.refl (≐-sym (⟦⟧-ix u)))
+      (≐-trans (same-sem u v e)
+        (≐-trans (·-cong Eq.refl (⟦⟧-ix v)) (≐-sym (ix-scaleM (γ^ len u) ⟦ v ⟧M))))))
 
 -- An evaluation, as a record: a lemma that takes one as a hypothesis
 -- about words with a free variable must not let the conversion checker

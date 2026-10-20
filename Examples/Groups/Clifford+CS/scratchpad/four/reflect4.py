@@ -26,7 +26,7 @@
 #   * the modules outside Four/D that import it, applied to WinInst.ws.
 #
 # Lemma names, statements and INDEX.txt are unchanged.
-import os, re, sys, collections
+import os, re, sys, subprocess, collections
 
 REPO = sys.argv[1]
 T = os.path.join(REPO, 'Examples/Groups/Clifford+CS')
@@ -357,3 +357,7 @@ for root, _, fs in os.walk(T):
         cons.append(os.path.relpath(p, T))
 print(f'{len(mods)} modules, {nst} steps ({nre} re-bracketings), {neq} table equations, '
       f'{len(wins)} windows; consumers: {", ".join(sorted(cons))}')
+
+# the window libraries, restated over the macro letters
+subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'winmac4.py'), REPO],
+               check=True)

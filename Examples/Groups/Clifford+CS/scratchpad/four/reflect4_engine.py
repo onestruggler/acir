@@ -1,18 +1,26 @@
-# Write Four/Reflect.agda, the reflective engine over the macro letters
-# (run by reflect4.py).
-#   python3 reflect4_engine.py REPO
+# Write TREE/Reflect.agda (TREE Four or Five, default Four), the reflective
+# engine over the macro letters (run by reflect4.py and reflect5.py).
+#   python3 reflect4_engine.py REPO [TREE]
 import re, sys
 REPO = sys.argv[1]
-F = REPO + '/Examples/Groups/Clifford+CS/Four/'
+TREE = sys.argv[2] if len(sys.argv) > 2 else 'Four'
+W = {'Four': 4, 'Five': 5}[TREE]
+F = REPO + f'/Examples/Groups/Clifford+CS/{TREE}/'
 letters = open(F + 'Letters.agda', encoding='utf-8').read()
-macs = re.search(r'data Mac : Set where\n  (.*) : Mac', letters).group(1).split()
+decl = re.search(r'data Mac : Set where\n((?:  .*\n)+)', letters).group(1)
+macs = [x for line in decl.split('\n') if line.strip()
+        for x in line.split(':')[0].split()]
 gens = []
-for k in range(5):
+for k in range(W + 1):
     gens.append('gate₀ I-gate' + ' ↥' * k)
-for k in range(4):
+for k in range(W):
     gens += ['gate₁ S-gate' + ' ↥' * k, 'gate₁ K-gate' + ' ↥' * k]
-for k in range(3):
+for k in range(W - 1):
     gens.append('gate₂ CS-gate' + ' ↥' * k)
+REL = {'Four': '_VRel,_===_ 4', 'Five': '_XVRel,_===_ 5'}[TREE]
+SYN = {'Four': 'open import Examples.Groups.Clifford+CS.Syntactics',
+       'Five': 'open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)\n'
+               'open import Examples.Groups.Clifford+CS.Five.Rules using (_XVRel,_===_)'}[TREE]
 
 
 def table(name, ty, items):
@@ -181,5 +189,17 @@ check-sound ss l r () | nothing
 derive : (l r : List Mac) (ss : List Step) → check ss l r ≡ true → ⟪ l ⟫ʷ ≈ ⟪ r ⟫ʷ
 derive l r ss h = check-sound ss l r h
 '''
+if TREE != 'Four':
+    for a, b in [('-- Four-wire derivations by reflection', '-- Five-wire derivations by reflection'),
+                 ('A derivation of Four/D as', 'A derivation of Five/D as'),
+                 ('(Four.Letters)', '(Five.Letters)'),
+                 ('`scratchpad/four/reflect4.py`', '`scratchpad/five/reflect5.py`'),
+                 ('Clifford+CS.Four.Reflect where', 'Clifford+CS.Five.Reflect where'),
+                 ('open import Examples.Groups.Clifford+CS.Syntactics\n', SYN + '\n'),
+                 ('Clifford+CS.Four.Chain hiding', 'Clifford+CS.Five.Chain hiding'),
+                 ('open Assoc (_VRel,_===_ 4)', f'open Assoc ({REL})')]:
+        assert body.count(a) == 1, a
+        body = body.replace(a, b)
+    body = body.replace('Gen 4', f'Gen {W}')
 open(F + 'Reflect.agda', 'w', encoding='utf-8', newline='\n').write(body)
 print(len(macs), 'letters,', len(gens), 'generators')
