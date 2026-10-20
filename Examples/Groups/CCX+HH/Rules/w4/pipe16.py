@@ -4,7 +4,8 @@
 A tower is a list of levels, top first; level k has letters and a kind
 saying which subgroup the next level is: ('point', p), the stabiliser
 of p; ('pair', p, q), the setwise stabiliser of {p, q}; ('trivial',),
-the bottom.  Level k is enumerated over level k+1 by a labelled coset
+the bottom; ('colour', col), the stabiliser of the colouring col.
+Level k is enumerated over level k+1 by a labelled coset
 enumeration (`../labelled.py`) with the named relators among its
 letters; labels are kept canonical by level k+1's canonical words (a
 "norm" step, justified in Agda by level k+1's completeness).
@@ -105,6 +106,10 @@ class Level:
             return all(g[p] == p for p in self.fixed) and g[up[1]] == up[1]
         if up[0] == 'pair':
             return all(g[p] == p for p in self.fixed) and {g[up[1]], g[up[2]]} == {up[1], up[2]}
+        if up[0] == 'colour':
+            # g lies in the level above (the caller's), so the new
+            # condition is all that separates
+            return all(up[1][g[x]] == up[1][x] for x in range(D))
         raise ValueError(up)
 
     def below_canon(self, lab):
@@ -166,9 +171,9 @@ def aff_spec():
 def a16_spec():
     import tower16 as T16
     lv = T16.levels()
-    spec = [(lv[k], ('point', T16.POINTS[k])) for k in range(len(T16.POINTS))]
-    spec.append((lv[len(T16.POINTS)], ('pair',) + T16.PAIR))
-    spec.append((lv[len(T16.POINTS) + 1], ('trivial',)))
+    kinds = T16.kinds()
+    spec = [(lv[k], kinds[k]) for k in range(len(kinds))]
+    spec.append((lv[len(kinds)], ('trivial',)))
     return spec
 
 

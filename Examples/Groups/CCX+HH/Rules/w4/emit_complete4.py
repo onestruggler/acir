@@ -28,7 +28,8 @@ def main():
 -- Two words in the 34 placed classical letters with one permutation of
 -- the sixteen levels have equal circuits in NaturalP with the schema
 -- (`classical-complete`): the tower's level 0 is complete for its
--- relators (L0.complete, by the tower of point stabilisers), and each
+-- relators (A16.L0.complete, by the tower of point stabilisers down to
+-- S7, whose extra relators are derived in Extras), and each
 -- of its relators is derived in NaturalP (Circuit.rel-φ), so its
 -- derivations are carried over (`φ-cong`).
 --
@@ -47,8 +48,8 @@ import Presentation.Base as PB
 import Examples.Groups.CCX+HH.NaturalP.Schema as S
 open import ''' + MOD + '''.Pure
 open import ''' + MOD + '''.Circuit using (φL ; φ ; rel-φ)
-import ''' + MOD + '''.L0 as L0
-open import ''' + MOD + '''.L0.Base using (ιX)
+import ''' + MOD + '''.A16.L0 as L0
+open import ''' + MOD + '''.A16.L0.Base using (ιX)
 
 ------------------------------------------------------------------------
 -- Derivations carried into NaturalP

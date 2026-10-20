@@ -3,7 +3,11 @@
 level 0 and the affine extras, by partial proof-producing enumerations
 over the affine group (labels canonical by affine completeness).
 
-    python3 -B derive16.py [limit]
+    python3 -B derive16.py [limit] [--again]
+
+With --again, only the extras missing from derive16.pkl are attempted,
+with those already derived among the relators (an 'ax' step naming
+'e<j>' is that extra's derivation).
 
 Pickles the derivations (derive16.pkl): per extra, its facts (the
 closure of its trace) with steps naming relators ('r<j>' level 0,
@@ -81,16 +85,21 @@ def derive(target, rels, limit):
 
 def main():
     global CAN
-    limit = int(sys.argv[1]) if len(sys.argv) > 1 else 100_000
+    args = [a for a in sys.argv[1:] if not a.startswith('--')]
+    again = '--again' in sys.argv
+    limit = int(args[0]) if args else 100_000
     rels = P16.named_relators([('a', HERE / 'aff4extra.txt')])
+    out = pickle.load(open(HERE / 'derive16.pkl', 'rb')) if again else {}
+    rels = rels + [(nm, out[nm][0]) for nm in sorted(out, key=lambda n: int(n[1:]))]
     extras = []
     for j, line in enumerate((HERE / 'tower16extra.txt').read_text().splitlines()):
         ws = line.split()
         if ws:
             extras.append((f'e{j}', int(ws[0]), tuple(T.INDEX_N[x] for x in ws[1:])))
     CAN = canaff()
-    out = {}
     for nm, lvl, r in extras:
+        if nm in out:
+            continue
         t0 = time.time()
         res = derive(r, rels, limit)
         if res is None:
@@ -101,6 +110,9 @@ def main():
         print(f'{nm} (level {lvl}, length {len(r)}): {len(facts)} facts, {steps} steps',
               round(time.time() - t0, 1), 's', flush=True)
         out[nm] = (r, top, facts, names)
+        if again:
+            rels.append((nm, r))
+            pickle.dump(out, open(HERE / 'derive16.pkl', 'wb'))
     pickle.dump(out, open(HERE / 'derive16.pkl', 'wb'))
     print(len(out), 'of', len(extras), 'derived')
 
