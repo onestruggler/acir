@@ -154,6 +154,19 @@ relations that contain them need this gluing.
 
 ## Classical completeness on four wires
 
+**Proved in Agda.** `../../NaturalP/FourWire/Classical/Complete.agda`:
+two words in the 34 placed classical letters with one permutation of
+the sixteen levels have equal circuits in NaturalP with the schema
+(`classical-complete`). The proof is the tower below: the affine
+tower `Aff/L0`–`L4` (norm steps for the extras), the 38 extras
+(`Extras/E0`–`E37`, derived by `derive16.py`), and the A₁₆ tower
+`A16/L0`–`L11` (points 0, 1, 2, 4, 8, 3, 5, the pair {6, 7}, then the
+colourings of orders 144, 36 and 4), each level a certificate checked
+by one evaluation. Times from scratch, one process per level: level 5
+(70 500 facts) 21 minutes and 10.8 GB; the others 1.5 to 12 minutes;
+`Complete` 2 minutes. The extras' derivations, one definition per fact,
+took about 1.5 hours.
+
 **The classical rules present A₁₆ on four wires.** `check4c.py`
 enumerates the group they present over the affine subgroup (X, CX, SW).
 The index is exactly 32 432 400 = |A₁₆| / |AGL(4,2)|. The run takes
@@ -508,6 +521,28 @@ with s in P₀. One on wire 0 is a commutator of such a Toffoli with a
 CNOT, CCX0;12 = [CCX3;12, CX3>0], and the CNOT commutes by the finder.
 So the decoder's identities should be found with coarse P_w steps as
 well as the finder's fine ones.
+
+**The order of work, as it now stands.**
+
+1. Classical completeness on four wires: the A₁₆ tower, as certificates
+   (`emitcert16.py`, `../../../../Presentation/Certificate.agda`).
+2. Completeness for V_Z, signed permutations, as A₁₆ and the 15 monomial
+   gates. The normal form is a set of monomials times a classical word.
+   It needs the 615 monomial identities. With K_CCZ as a rule the
+   finder derives the four-wire ones; the others are on three wires or
+   in some P_w.
+3. A finder for G₄ over V_Z: the partial enumeration of the cosets of
+   V_Z (the lattices g·ℤ¹⁶, as in the three-wire CCX+H proof), with
+   labels kept canonical by step 2. Its derivations of the K-cores'
+   stabiliser commutations, the cores' transitions between states, and
+   the 84 relations between several K's become certificates.
+4. The equivariant decoder, the case split on patterns, the roundtrip,
+   and the assembly with `CircuitTranslation` at width four.
+
+The derivations of steps 2 and 3 cite placed instances of the rules;
+each needs its NaturalP proof once (a swap conjugate of an adjacent
+instance), and the short P_w identities need `Partner`, which needs R4,
+which K_CCZ gives.
 
 **Beyond four wires.** `../../NaturalP/EveryWidth` needs completeness
 on up to twelve wires, because affine routing preserves the affine
