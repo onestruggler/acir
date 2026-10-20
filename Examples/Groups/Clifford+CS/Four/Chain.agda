@@ -29,7 +29,7 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Tools using (module Tools)
-open import Examples.Groups.Clifford+CS.TopWeakening using (low-comm)
+open import Examples.Groups.Clifford+CS.LowComm using (low-comm)
 open import Examples.Groups.Clifford+CS.Four.Letters public
 
 open Tools (_VRel,_===_ 4) public

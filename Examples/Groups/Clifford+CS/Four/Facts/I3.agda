@@ -26,9 +26,10 @@ open import Examples.Groups.Clifford+CS.Four.Transport
 open import Examples.Groups.Clifford+CS.Decoding 0 using (dPP₁ ; dPP₁′ ; lo₁ ; hi₁)
 open import Examples.Groups.Clifford+CS.Four.Facts.Bridges
 open import Examples.Groups.Clifford+CS.Four.Facts.Classes
-open import Examples.Groups.Clifford+CS.Four.D.D684 using (lem-resp-TOFF013-CS02-TOFF013-CSd02)
-open import Examples.Groups.Clifford+CS.Four.D.D703 using (lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 ; lem-resp-TOFF023-CS01-TOFF023-CSd01)
-open import Examples.Groups.Clifford+CS.Four.D.D715 using (lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1 ; lem-resp-S1-K1-CS12-TOFF103-CSd12-TOFF103-Kd1-Sd1 ; lem-resp-S2-K2-CS02-TOFF213-CSd02-TOFF213-Kd2-Sd2 ; lem-resp-S2-K2-CS12-TOFF203-CSd12-TOFF203-Kd2-Sd2)
+import Examples.Groups.Clifford+CS.Four.WinInst as WI
+open import Examples.Groups.Clifford+CS.Four.D.D684 WI.ws using (lem-resp-TOFF013-CS02-TOFF013-CSd02)
+open import Examples.Groups.Clifford+CS.Four.D.D703 WI.ws using (lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 ; lem-resp-TOFF023-CS01-TOFF023-CSd01)
+open import Examples.Groups.Clifford+CS.Four.D.D715 WI.ws using (lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1 ; lem-resp-S1-K1-CS12-TOFF103-CSd12-TOFF103-Kd1-Sd1 ; lem-resp-S2-K2-CS02-TOFF213-CSd02-TOFF213-Kd2-Sd2 ; lem-resp-S2-K2-CS12-TOFF203-CSd12-TOFF203-Kd2-Sd2)
 
 i-far-pl⁺-0 : dPP₁ 0 • lo₁ 2 ≈ lo₁ 2 • dPP₁ 0
 i-far-pl⁺-0 = trans (trans (cong br-p-0 br-l-2) (sym (++≈ (flatB B-p-0) (flat (B-l-2 ∷ [])))))
