@@ -504,7 +504,9 @@ three-wire kickbacks, but the controlled Toffoli needs a fifth wire.
 - with K_CZ as a rule, none of the K_CCZ is;
 - **with K_CCZ as a rule and without R4, R4 is derived** (40 s).
 
-So K_CCZ subsumes R4 and K_CZ. The natural rules with R4 are probably
+So K_CCZ subsumes R4 and K_CZ, and with it as a rule all 36 are
+derived (`diag4.py --kick`), so all 170 four-wire monomial identities
+are. The natural rules with R4 are probably
 not complete on four wires, and the four-wire rule to add is K_CCZ:
 a Toffoli and a CCZ that share the target and one control commute up
 to the CCZ on the other three wires.

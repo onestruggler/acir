@@ -17,7 +17,7 @@ four: the finder), and runs the finder on the four-wire ones.
 
     python3 -B diag4.py [limit] [--coarse L] [--retry]
 
---coarse L adds the short identities (words of at most L letters) inside
+--kick adds the kickback K_CCZ at every placement; --coarse L adds the short identities (words of at most L letters) inside
 each P_w and among the classical letters as relators; --retry runs only
 what diag4.log records as not derived.
 """
@@ -111,8 +111,15 @@ def main():
     if coarse:
         for kind in [('P', w) for w in range(N)] + [('C',)]:
             extra |= A.short_identities(kind, coarse)
+    if '--kick' in sys.argv:
+        # the kickback K_CCZ at every placement (../wn/kick.py)
+        import kick as KK
+        for t, a, b, c in itertools.permutations(range(N)):
+            extra.add(KK.kick(A, 'CCZ', t, a, b, c))
+        A = F.Alphabet(N, r4=True, placed=True, extra=sorted(extra, key=lambda r: (len(r), r)))
+        print(len(A.rels), 'relators with K_CCZ', flush=True)
     boot = '--bootstrap' in sys.argv
-    if coarse or boot:
+    if (coarse or boot) and '--kick' not in sys.argv:
         A0 = A
         if not boot:
             A = F.Alphabet(N, r4=True, placed=True, extra=sorted(extra, key=lambda r: (len(r), r)))
