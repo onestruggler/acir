@@ -448,6 +448,28 @@ against about 4.4 million translated equations over 7824 edges.
 
 R4 itself stays a hypothesis (as for P₀) unless it is derived.
 
+What the 436 are made of (`canon4.py`): an edge is a signed
+permutation, from an M or an X, or a signed permutation times one K.
+Counting the K-edges in each canonical relation:
+
+| K-edges | Relations | Families |
+| --- | --- | --- |
+| 0 | 172 | r1a, r1b, r2a, r2b, r2d, r3a–r3c |
+| 2 | 180 | r1c, r2c, r2e, r3d–r3g, r4a, r4c |
+| 3, 4, 8 | 84 | r4b (16), r2f (36), r5a (16), r6a (16) |
+
+The first 172 lie in the signed permutations V_Z (2¹⁵ · A₁₆). They
+follow from completeness for V_Z, the classical tower extended by the
+signs. The next 180 say that a K squares to one (r1c) or that a signed
+letter conjugates a K to another K (the commutations r2c, r2e, r4a and
+the relabellings r3d–r3g, r4c). Both follow from a decoder of the
+K-edges that is equivariant under V_Z: each K-edge decoded as a
+signed permutation conjugate of a few fixed cores, whose stabilisers
+commute with them. So the genuinely new four-wire content is 84
+relations between two or more K's. Those are r4b (the mixed atom),
+r2f (K's on disjoint quadruples commute), r5a and r6a, each with its
+equality patterns and four states.
+
 A first test of step 2 (`stabs4.py`): the canonical sign pair
 s = M₀M₁ is X1 X2 X3 · HH03 · CCX3;12 · HH03 · X1 X2 X3. The finder
 derives its commutation with the 12 affine letters fixing the levels
