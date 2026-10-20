@@ -1,6 +1,6 @@
 # Replace Five's window records by Braun trees, as Four.WinSig has:
 #
-#   python3 wintree5.py REPO
+#   python3 wintree5.py REPO [TREE]      (TREE Five, the default, or FiveV)
 #
 # Run on the record form of Five/WinSig (winlib5.py's), after reflect5.py.
 # The literal windows (`wlNNNN`) and the placed ones (`wpNNNN`) become two
@@ -13,7 +13,8 @@
 import os, re, sys
 
 REPO = sys.argv[1]
-F = os.path.join(REPO, 'Examples/Groups/Clifford+CS/Five')
+TREE = sys.argv[2] if len(sys.argv) > 2 else 'Five'
+F = os.path.join(REPO, 'Examples/Groups/Clifford+CS', TREE)
 P = 'Examples.Groups.Clifford+CS.'
 
 
@@ -87,18 +88,20 @@ head = re.sub(r'-- The windows of the five-wire derivations, as records\n(--.*\n
 -- Written by `scratchpad/five/wintree5.py`.
 ------------------------------------------------------------------------
 ''', head)
-out = [head + '''{-# OPTIONS --without-K --safe #-}
+if TREE != 'Five':
+    head = head.replace('Five.D', TREE + '.D').replace('Five.WinInst', TREE + '.WinInst')
+out = [head +'''{-# OPTIONS --without-K --safe #-}
 
 
-module Examples.Groups.Clifford+CS.Five.WinSig where
+module Examples.Groups.Clifford+CS.''' + TREE + '''.WinSig where
 
 open import Data.Bool using (Bool ; true ; false ; if_then_else_)
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Nat using (ℕ ; zero ; suc ; _/_ ; _%_ ; _≡ᵇ_)
 open import Data.Unit using (⊤ ; tt)
 
-open import Examples.Groups.Clifford+CS.Five.Chain using (Mac ; ⟪_⟫ʷ ; _≈_)
-open import Examples.Groups.Clifford+CS.Five.Letters
+open import Examples.Groups.Clifford+CS.''' + TREE + '''.Chain using (Mac ; ⟪_⟫ʷ ; _≈_)
+open import Examples.Groups.Clifford+CS.''' + TREE + '''.Letters
 
 -- A Braun tree of statements: the n-th is at the root for n = 0, and
 -- otherwise the ⌊(n − 1)/2⌋-th of the left subtree for n odd, of the
@@ -157,11 +160,11 @@ for name, k, ty, extra in [('WinInstL', 'l', 'WsL', ''), ('WinInst', 'p', 'Ws', 
     s = rd(p)
     i = s.index('\n' + ('wsL01' if k == 'l' else 'ws01') + ' : ')
     pre = s[:i]
-    pre = re.sub(r'open import ' + re.escape(P) + r'Five\.WinSig using \([^)]*\)',
-                 f'open import {P}Five.WinSig using ({"WsL" if k == "l" else "Ws ; WsL"} ; pleaf ; pnode)', pre)
+    pre = re.sub(r'open import ' + re.escape(P) + TREE + r'\.WinSig using \([^)]*\)',
+                 f'open import {P}{TREE}.WinSig using ({"WsL" if k == "l" else "Ws ; WsL"} ; pleaf ; pnode)', pre)
     pre = pre.replace('open import ' + P + 'Completeness using (Complete)\n',
                       'open import ' + P + 'Completeness using (Complete)\n'
-                      'open import ' + P + 'Five.Chain using (refl)\n')
+                      'open import ' + P + TREE + '.Chain using (refl)\n')
     body = []
     if k == 'l':
         body += ['', 'wsL : Complete 4 → WsL', 'wsL c4 =']
@@ -178,11 +181,11 @@ for f in sorted(os.listdir(os.path.join(F, 'D'))):
         continue
     p = os.path.join(F, 'D', f)
     s = rd(p)
-    s = re.sub(r'^(open import ' + re.escape(P) + r'Five\.WinSig) using \(([^)]*)\)',
+    s = re.sub(r'^(open import ' + re.escape(P) + TREE + r'\.WinSig) using \(([^)]*)\)',
                lambda m: m.group(1) + ' using (' + ' ; '.join(
                    [x for x in ('Ws', 'WsL', 'lit') if re.search(r'(?<![\w-])' + x + r'(?![\w-])', m.group(2))]
                    + ['wl', 'wp']) + ')', s, flags=re.M)
     s = re.sub(r'(?<![\w-])w([lp])(\d{4})(?![\w-])', lambda m: f'w{m.group(1)} {int(m.group(2))}', s)
     wr(p, s)
     nd += 1
-print(f"{len(stmt['l'])} literal and {len(stmt['p'])} placed windows; {nd} modules of Five/D")
+print(f"{len(stmt['l'])} literal and {len(stmt['p'])} placed windows; {nd} modules of {TREE}/D")

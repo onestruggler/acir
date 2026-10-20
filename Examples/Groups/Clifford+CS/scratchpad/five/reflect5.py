@@ -1,7 +1,7 @@
 # Turn Five/D's chains into derivations by reflection (Five.Reflect), as
 # scratchpad/four/reflect4.py does for Four/D:
 #
-#   python3 reflect5.py REPO
+#   python3 reflect5.py REPO [TREE]      (TREE Five, the default, or FiveV)
 #
 # Run on the chain form (`bN : Chain … ; bN = at k n ys proof ▸ … ▸ done`),
 # after emit5.py, repack.py and winlib5.py.  It writes Five/Reflect.agda
@@ -15,11 +15,12 @@
 import os, re, sys, subprocess
 
 REPO = sys.argv[1]
+TREE = sys.argv[2] if len(sys.argv) > 2 else 'Five'
 HERE = os.path.dirname(os.path.abspath(__file__))
 T = os.path.join(REPO, 'Examples/Groups/Clifford+CS')
-D = os.path.join(T, 'Five/D')
+D = os.path.join(T, TREE, 'D')
 P = 'Examples.Groups.Clifford+CS.'
-subprocess.run([sys.executable, os.path.join(HERE, '../four/reflect4_engine.py'), REPO, 'Five'], check=True)
+subprocess.run([sys.executable, os.path.join(HERE, '../four/reflect4_engine.py'), REPO, TREE], check=True)
 
 
 def rd(p):
@@ -96,7 +97,7 @@ mods = sorted(f[:-5] for f in os.listdir(D) if re.fullmatch(r'[A-Z]\d+\.agda', f
 nst = nre = neq = 0
 for m in mods:
     text = rd(os.path.join(D, m + '.agda'))
-    assert 'Five.Reflect' not in text, 'Five/D is already reflected'
+    assert f'{TREE}.Reflect' not in text, f'{TREE}/D is already reflected'
     first = re.search(LEM, text, re.M).start()
     header, body = text[:first], text[first:]
     starts = [mm.start() for mm in re.finditer(LEM, body, re.M)] + [len(body)]
@@ -147,9 +148,9 @@ for m in mods:
         out.append('\n'.join(blkout))
     neq += len(table)
     header = header.replace(
-        f'open import {P}Five.Chain\n',
-        f'open import {P}Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)\n'
-        f'open import {P}Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)\n')
-    assert 'Five.Reflect' in header, m
+        f'open import {P}{TREE}.Chain\n',
+        f'open import {P}{TREE}.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)\n'
+        f'open import {P}{TREE}.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)\n')
+    assert f'{TREE}.Reflect' in header, m
     wr(os.path.join(D, m + '.agda'), header.rstrip('\n') + '\n' + '\n'.join(out) + '\n')
 print(f'{len(mods)} modules, {nst} steps ({nre} re-bracketings and folds), {neq} table equations')
