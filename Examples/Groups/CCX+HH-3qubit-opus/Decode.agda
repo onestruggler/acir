@@ -50,7 +50,6 @@ open import Examples.Groups.CCX+HH-3qubit-opus.Gates
 open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
 open import Examples.Groups.CCX+HH-3qubit-opus.Encoding using (lt)
 open import Examples.Groups.CCX+HH-3qubit-opus.Perm hiding (Coxeter)
-open import Examples.Groups.CCX+HH-3qubit-opus.Frame
 open import Examples.Groups.CCX+HH-3qubit-opus.Check using (all8 ; below ; eqᵇ ; agree ; everywhere ; distinct)
 import Examples.Groups.Symmetric.Syntactics as Sym
 open Sym using (gate₂ ; σ-gate ; _↥)

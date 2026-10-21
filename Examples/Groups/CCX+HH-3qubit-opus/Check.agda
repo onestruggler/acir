@@ -21,7 +21,7 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Relation.Nullary using (yes ; no)
 open import Relation.Nullary.Decidable using (does)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Frame using (Avoid ; Distinct ; [] ; _∷_)
+open import Examples.Groups.Symmetric.CoxeterFrames using (Avoid ; Distinct ; [] ; _∷_)
 
 eqᵇ : Fin 8 → Fin 8 → Bool
 eqᵇ x y = does (x FinP.≟ y)

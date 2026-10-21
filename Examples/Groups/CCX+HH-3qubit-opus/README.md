@@ -30,12 +30,13 @@ proves complete:
   `SoundnessH`).
 - **Decoding.** Their generators (-1)_[a], X_[a,b], K_[a,b,c,d] are m0, T 0
   and NK of Figure 7 carried by permutation circuits ("frames") to their
-  indices (`Decode`). The frame lemma (`Perm`) says the result depends only on
+  indices (`Decode`). The frame lemma (`Perm`, an instance of
+  `Examples/Groups/Symmetric/CoxeterFrames`) says the result depends only on
   where the frame sends the base's indices, since the circuits above them
   commute with the base (Figure 7's (85)–(93)). It rests on the completeness
   of the circuit presentation of S₈ (`Examples/Groups/Symmetric`), transferred
   to the circuits T d of Figure 7 through their Coxeter relations. So every
-  relation of Table 1 is carried by one frame (`Frame`) to its standard
+  relation of Table 1 is carried by one frame (`frame`) to its standard
   instance, which is a relation of Figure 7 or a Coxeter relation (`dec-cong`).
 - **Decoding the encoding gives the circuit back.** `Good` holds of T d,
   (-1)_[0] and NK, is closed under products and, by soundness and Li, Ross and
