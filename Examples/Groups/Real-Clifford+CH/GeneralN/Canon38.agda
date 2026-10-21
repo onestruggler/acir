@@ -84,7 +84,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.ZX353 complete₂ complete
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon40 complete₂ complete₃ using (Kcol)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon32 complete₂ complete₃
   using (letter ; letters ; letter-comm ; rot-rigid ; HG-letter₁ ; Kneg-HG)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base38
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base4
   using (c₄ ; Q₄ ; e-ZX ; e-XZ ; e-Kb ; e-Kb′ ; e-°c ; e-pc)
 
 -- The transposition of the wires 0 3, and the network putting the box

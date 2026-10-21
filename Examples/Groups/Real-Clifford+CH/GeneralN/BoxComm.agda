@@ -69,8 +69,8 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires
   using (negsB ; negs² ; swB ; swapAt-negsB ; negs-flip ; negs-flip′ ; X-negs ; Xat²)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.GrayStep using (flipAt)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon4 complete₂ complete₃ using (canon4)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base335 using (d335)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base336 using (d336)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base4 using (d335)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base4 using (d336)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.SwapCalc using (swapAt²)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Idle using (X-place ; swapX ; swapX′)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Place using (place ; place-• ; place-cong ; place-low ; lemma-5-1 ; low-comm)
@@ -102,7 +102,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.LocalPlace using (up)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col public using (col-flip ; X₁-B)
 
 ------------------------------------------------------------------------
--- On four wires, decided (Base335, Base336)
+-- On four wires, decided (Base4)
 
 module Base (comp₄ : Comp 4) where
 

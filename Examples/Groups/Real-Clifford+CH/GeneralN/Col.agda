@@ -7,10 +7,9 @@
 -- is the box on wire 1 controlled by wire 0 and the wires 2 …, and
 -- `Hg m` the H gate with its H on wire 0 and its box wire 1, controlled
 -- by the wires 2 … (P ⊗ P on the wires 0 1 around B₁).  In a module of
--- their own so that the four-wire decisions (Base335, Base336,
--- Base338) and their uses (BoxComm, Box338) state them with the same
--- names: a stored evaluation is only ever compared with its use
--- syntactically.
+-- their own so that the four-wire decisions (Base4) and their uses
+-- (BoxComm, Box338) state them with the same names: a stored
+-- evaluation is only ever compared with its use syntactically.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
