@@ -65,7 +65,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Box337 complete₂ complet
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxComm complete₂ complete₃ using (eq335 ; eq336ᶜ)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Box337 complete₂ complete₃ using (eq337)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon46a complete₂ complete₃ using (module At)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base46At using (Base46At)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base46At using (Base46At ; lift)
 import Examples.Groups.Real-Clifford+CH.GeneralN.Base46 as B46
 import Examples.Groups.Real-Clifford+CH.GeneralN.Canon46bGen complete₂ complete₃ as G46b
 
@@ -104,13 +104,19 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     ev {u} {v} e = by-ev e {m′}
 
     -- The four-wire steps, evaluated.
+    -- An evaluation at the record's own spelling of its fields
+    -- (Base46At.lift at ₄₊ m′): through ev, each field was matched against
+    -- the width 4 + m′ and _↓ᵏ_, 9.5 s for the record.
+    evL : ∀ {u v : Circuit 4} → Evaluated u v → (₄₊ m′) ⊢ lift u m′ ≈ lift v m′
+    evL e = by-ev e {m′}
+
     b46 : Base46At m′
     b46 = record
-      { ea₁ = ev B46.ea₁ ; ea₂ = ev B46.ea₂ ; eb₁ = ev B46.eb₁ ; eb₂ = ev B46.eb₂
-      ; ea-bb = ev B46.ea-bb ; eb-bb = ev B46.eb-bb
-      ; ea-X = ev B46.ea-X ; ea-X₁ = ev B46.ea-X₁ ; ea-P = ev B46.ea-P ; ea-L = ev B46.ea-L ; ea-R = ev B46.ea-R
-      ; eb-X = ev B46.eb-X ; eb-X₂ = ev B46.eb-X₂ ; eb-P = ev B46.eb-P ; eb-L = ev B46.eb-L ; eb-R = ev B46.eb-R
-      ; e-X₂P = ev B46.e-X₂P ; e-ζη = ev B46.e-ζη ; e-Vc = ev B46.e-Vc }
+      { ea₁ = evL B46.ea₁ ; ea₂ = evL B46.ea₂ ; eb₁ = evL B46.eb₁ ; eb₂ = evL B46.eb₂
+      ; ea-bb = evL B46.ea-bb ; eb-bb = evL B46.eb-bb
+      ; ea-X = evL B46.ea-X ; ea-X₁ = evL B46.ea-X₁ ; ea-P = evL B46.ea-P ; ea-L = evL B46.ea-L ; ea-R = evL B46.ea-R
+      ; eb-X = evL B46.eb-X ; eb-X₂ = evL B46.eb-X₂ ; eb-P = evL B46.eb-P ; eb-L = evL B46.eb-L ; eb-R = evL B46.eb-R
+      ; e-X₂P = evL B46.e-X₂P ; e-ζη = evL B46.e-ζη ; e-Vc = evL B46.e-Vc }
 
     -- (339): the four-wire box, as the box over every colouring of the
     -- wires 4 …, against the H gate on wire 3 with its box wire 1, white
