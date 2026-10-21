@@ -9,7 +9,7 @@
 -- word up to the commutation of letters on disjoint wires (the
 -- canonical forms of Presentation.Tactics.Words.Commuting agree), and
 -- `rw i e` rewrites the occurrence of lhs e at position i to rhs e.
--- `run` executes the steps, and run-sound turns a successful run into
+-- `runs` executes the steps, and run-sound turns a successful run into
 -- a derivation, so that a proof is a list of steps closed by refl.
 --
 -- Equations are transformed by sym⁼ and by lift⁼ (one wire up).
@@ -25,7 +25,7 @@ open import Data.Bool.Base using (Bool ; true ; false ; if_then_else_ ; _∧_)
 open import Data.List.Base using (List ; [] ; _∷_ ; _++_ ; length ; take ; drop ; map)
 open import Data.List.Properties using (take++drop≡id ; ++-assoc)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
-open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_ ; _<ᵇ_ ; _≡ᵇ_)
+open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_ ; _<ᵇ_ ; _≡ᵇ_ ; pred ; _∸_)
 open import Data.Nat.Properties using (≡ᵇ⇒≡)
 open import Data.Product.Base using (_,_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
@@ -207,31 +207,64 @@ data Step (n : ℕ) : Set where
   perm : List (Gen n) → Step n
   rw   : ℕ → Eqn n → Step n
 
-rewrite-at : ℕ → Eqn n → List (Gen n) → List (Gen n)
-rewrite-at i e xs = take i xs ++ (rhs e ++ drop (length (lhs e)) (drop i xs))
+-- The word being rewritten is kept as a zipper: the letters before the
+-- focus, last first, and the letters from it on, with the index of the
+-- focus.  `rw i e` moves the focus to i, which costs the distance from
+-- where the last step was: the derivations of the box relations
+-- rewrite words of over a thousand letters at positions 870 on average
+-- but 87 from the one before.  The equation's sides and the parts of
+-- the word are passed on as arguments (runZ-rw, runZ-at), which Agda's
+-- evaluator computes once however often they are used.
+record Zip (n : ℕ) : Set where
+  constructor zp
+  field
+    at     : ℕ
+    before : List (Gen n)
+    after  : List (Gen n)
 
-matches-at : ℕ → Eqn n → List (Gen n) → Bool
-matches-at i e xs = eqL (take (length (lhs e)) (drop i xs)) (lhs e)
+-- before reversed onto after.
+revApp : List (Gen n) → List (Gen n) → List (Gen n)
+revApp []       ys = ys
+revApp (x ∷ xs) ys = revApp xs (x ∷ ys)
 
--- A rewrite passes the equation's sides and the two parts of the word
--- on as arguments (run-rw, run-at), which Agda's evaluator computes once
--- however often they are used; written out as in rewrite-at and
--- matches-at, lhs e was computed three times a step.  The derivations
--- of the box relations rewrite at positions in the thousands and
--- cancel words of hundreds of letters.
+unzip : Zip n → List (Gen n)
+unzip (zp _ b a) = revApp b a
+
+left right : ℕ → Zip n → Maybe (Zip n)
+left zero    z               = just z
+left (suc k) (zp c (x ∷ b) a) = left k (zp (pred c) b (x ∷ a))
+left (suc k) (zp c [] a)      = nothing
+right zero    z               = just z
+right (suc k) (zp c b (x ∷ a)) = right k (zp (suc c) (x ∷ b) a)
+right (suc k) (zp c b [])      = nothing
+
+moveTo : ℕ → Zip n → Maybe (Zip n)
+moveTo i (zp c b a) = if i <ᵇ c then left (c ∸ i) (zp c b a) else right (i ∸ c) (zp c b a)
+
 mutual
-  run : List (Step n) → List (Gen n) → Maybe (List (Gen n))
-  run []              xs = just xs
-  run (perm ys ∷ ss)  xs =
-    if eqL (comm-canonical xs) (comm-canonical ys) then run ss ys else nothing
-  run (rw i e ∷ ss)   xs = run-rw ss (lhs e) (rhs e) (take i xs) (drop i xs)
+  runZ : List (Step n) → Zip n → Maybe (Zip n)
+  runZ []              z = just z
+  runZ (perm ys ∷ ss)  z =
+    if eqL (comm-canonical (unzip z)) (comm-canonical ys) then runZ ss (zp 0 [] ys) else nothing
+  runZ (rw i e ∷ ss)   z = runZ-rw ss (lhs e) (rhs e) (moveTo i z)
 
-  run-rw : List (Step n) → (l r pre suf : List (Gen n)) → Maybe (List (Gen n))
-  run-rw ss l r pre suf = run-at ss (length l) l r pre suf
+  runZ-rw : List (Step n) → (l r : List (Gen n)) → Maybe (Zip n) → Maybe (Zip n)
+  runZ-rw ss l r nothing            = nothing
+  runZ-rw ss l r (just (zp c b a))  = runZ-at ss (length l) l r c b a
 
-  run-at : List (Step n) → ℕ → (l r pre suf : List (Gen n)) → Maybe (List (Gen n))
-  run-at ss m l r pre suf =
-    if eqL (take m suf) l then run ss (pre ++ (r ++ drop m suf)) else nothing
+  runZ-at : List (Step n) → ℕ → (l r : List (Gen n)) → ℕ → (b a : List (Gen n)) → Maybe (Zip n)
+  runZ-at ss m l r c b a =
+    if eqL (take m a) l then runZ ss (zp c b (r ++ drop m a)) else nothing
+
+-- Whether the steps turn l into r, as one Boolean: Agda decides it in
+-- one evaluation, where comparing the lists by conversion evaluates
+-- each letter of the result anew.
+okZ : List (Gen n) → Maybe (Zip n) → Bool
+okZ r (just z) = eqL (unzip z) r
+okZ r nothing  = false
+
+runs : List (Step n) → List (Gen n) → List (Gen n) → Bool
+runs ss l r = okZ r (runZ ss (zp 0 [] l))
 
 module _ {n : ℕ} where
 
@@ -241,40 +274,66 @@ module _ {n : ℕ} where
   perm-sound xs ys e =
     trans (lemma-comm-canonical xs) (trans (⟪≈⟫ e) (sym (lemma-comm-canonical ys)))
 
-  rw-sound : (i : ℕ) (e : Eqn n) (xs : List (Gen n)) → matches-at i e xs ≡ true →
-             ⟪ xs ⟫ ≈ ⟪ rewrite-at i e xs ⟫
-  rw-sound i e xs h = begin
-    ⟪ xs ⟫                                          ≈⟨ ⟪≈⟫ (Eq.sym (take++drop≡id i xs)) ⟩
-    ⟪ take i xs ++ drop i xs ⟫                      ≈⟨ ⟪++⟫ (take i xs) (drop i xs) ⟩
-    ⟪ take i xs ⟫ • ⟪ drop i xs ⟫                   ≈⟨ cong refl (⟪≈⟫ (Eq.sym (take++drop≡id m (drop i xs)))) ⟩
-    ⟪ take i xs ⟫ • ⟪ take m (drop i xs) ++ rest ⟫  ≈⟨ cong refl (⟪++⟫ (take m (drop i xs)) rest) ⟩
-    ⟪ take i xs ⟫ • (⟪ take m (drop i xs) ⟫ • ⟪ rest ⟫)
-                                                    ≈⟨ cong refl (cong (⟪≈⟫ (eqL-sound _ _ h)) refl) ⟩
-    ⟪ take i xs ⟫ • (⟪ lhs e ⟫ • ⟪ rest ⟫)          ≈⟨ cong refl (cong (prf e) refl) ⟩
-    ⟪ take i xs ⟫ • (⟪ rhs e ⟫ • ⟪ rest ⟫)          ≈⟨ cong refl (sym (⟪++⟫ (rhs e) rest)) ⟩
-    ⟪ take i xs ⟫ • ⟪ rhs e ++ rest ⟫               ≈⟨ sym (⟪++⟫ (take i xs) (rhs e ++ rest)) ⟩
-    ⟪ rewrite-at i e xs ⟫                           ∎
+  -- Moving the focus keeps the word.
+  left-un : (k : ℕ) (z z' : Zip n) → left k z ≡ just z' → unzip z' ≡ unzip z
+  left-un zero    z                z' Eq.refl = Eq.refl
+  left-un (suc k) (zp c (x ∷ b) a) z' h       = left-un k (zp (pred c) b (x ∷ a)) z' h
+  left-un (suc k) (zp c [] a)      z' ()
+
+  right-un : (k : ℕ) (z z' : Zip n) → right k z ≡ just z' → unzip z' ≡ unzip z
+  right-un zero    z                z' Eq.refl = Eq.refl
+  right-un (suc k) (zp c b (x ∷ a)) z' h       = right-un k (zp (suc c) (x ∷ b) a) z' h
+  right-un (suc k) (zp c b [])      z' ()
+
+  moveTo-un : (i : ℕ) (z z' : Zip n) → moveTo i z ≡ just z' → unzip z' ≡ unzip z
+  moveTo-un i (zp c b a) z' h with i <ᵇ c
+  ... | true  = left-un (c ∸ i) (zp c b a) z' h
+  ... | false = right-un (i ∸ c) (zp c b a) z' h
+
+  revApp-cong : (b : List (Gen n)) {x y : List (Gen n)} → ⟪ x ⟫ ≈ ⟪ y ⟫ → ⟪ revApp b x ⟫ ≈ ⟪ revApp b y ⟫
+  revApp-cong []      e = e
+  revApp-cong (g ∷ b) e = revApp-cong b (cong refl e)
+
+  -- A rewrite at the focus.
+  at-sound : (e : Eqn n) (a : List (Gen n)) → eqL (take (length (lhs e)) a) (lhs e) ≡ true →
+             ⟪ a ⟫ ≈ ⟪ rhs e ++ drop (length (lhs e)) a ⟫
+  at-sound e a h = begin
+    ⟪ a ⟫                            ≈⟨ ⟪≈⟫ (Eq.sym (take++drop≡id m a)) ⟩
+    ⟪ take m a ++ drop m a ⟫         ≈⟨ ⟪++⟫ (take m a) (drop m a) ⟩
+    ⟪ take m a ⟫ • ⟪ drop m a ⟫      ≈⟨ cong (⟪≈⟫ (eqL-sound _ _ h)) refl ⟩
+    ⟪ lhs e ⟫ • ⟪ drop m a ⟫         ≈⟨ cong (prf e) refl ⟩
+    ⟪ rhs e ⟫ • ⟪ drop m a ⟫         ≈⟨ sym (⟪++⟫ (rhs e) (drop m a)) ⟩
+    ⟪ rhs e ++ drop m a ⟫            ∎
     where
     open SR (PP.word-setoid (n VRel,_===_))
     m = length (lhs e)
-    rest = drop m (drop i xs)
 
   mutual
-    run-sound : (ss : List (Step n)) (xs ys : List (Gen n)) → run ss xs ≡ just ys → ⟪ xs ⟫ ≈ ⟪ ys ⟫
-    run-sound []             xs ys Eq.refl = refl
-    run-sound (perm zs ∷ ss) xs ys h with eqL (comm-canonical xs) (comm-canonical zs) in c
-    run-sound (perm zs ∷ ss) xs ys h  | true  = trans (perm-sound xs zs (eqL-sound _ _ c)) (run-sound ss zs ys h)
-    run-sound (perm zs ∷ ss) xs ys () | false
-    run-sound (rw i e ∷ ss)  xs ys h = run-at-sound i e ss xs ys h
+    runZ-sound : (ss : List (Step n)) (z z' : Zip n) → runZ ss z ≡ just z' → ⟪ unzip z ⟫ ≈ ⟪ unzip z' ⟫
+    runZ-sound []             z z' Eq.refl = refl
+    runZ-sound (perm ys ∷ ss) z z' h with eqL (comm-canonical (unzip z)) (comm-canonical ys) in c
+    runZ-sound (perm ys ∷ ss) z z' h  | true  =
+      trans (perm-sound (unzip z) ys (eqL-sound _ _ c)) (runZ-sound ss (zp 0 [] ys) z' h)
+    runZ-sound (perm ys ∷ ss) z z' () | false
+    runZ-sound (rw i e ∷ ss)  z z' h with moveTo i z in mv
+    runZ-sound (rw i e ∷ ss)  z z' () | nothing
+    runZ-sound (rw i e ∷ ss)  z z' h  | just (zp c b a) =
+      trans (⟪≈⟫ (Eq.sym (moveTo-un i z (zp c b a) mv))) (runZ-at-sound e ss c b a z' h)
 
-    run-at-sound : (i : ℕ) (e : Eqn n) (ss : List (Step n)) (xs ys : List (Gen n)) →
-                   run-at ss (length (lhs e)) (lhs e) (rhs e) (take i xs) (drop i xs) ≡ just ys →
-                   ⟪ xs ⟫ ≈ ⟪ ys ⟫
-    run-at-sound i e ss xs ys h with eqL (take (length (lhs e)) (drop i xs)) (lhs e) in c
-    run-at-sound i e ss xs ys h  | true  = trans (rw-sound i e xs c) (run-sound ss (rewrite-at i e xs) ys h)
-    run-at-sound i e ss xs ys () | false
+    runZ-at-sound : (e : Eqn n) (ss : List (Step n)) (c : ℕ) (b a : List (Gen n)) (z' : Zip n) →
+                    runZ-at ss (length (lhs e)) (lhs e) (rhs e) c b a ≡ just z' →
+                    ⟪ revApp b a ⟫ ≈ ⟪ unzip z' ⟫
+    runZ-at-sound e ss c b a z' h with eqL (take (length (lhs e)) a) (lhs e) in q
+    runZ-at-sound e ss c b a z' h  | true  =
+      trans (revApp-cong b (at-sound e a q)) (runZ-sound ss (zp c b (rhs e ++ drop (length (lhs e)) a)) z' h)
+    runZ-at-sound e ss c b a z' () | false
+
+  run-sound : (ss : List (Step n)) (xs ys : List (Gen n)) → runs ss xs ys ≡ true → ⟪ xs ⟫ ≈ ⟪ ys ⟫
+  run-sound ss xs ys h with runZ ss (zp 0 [] xs) in q
+  run-sound ss xs ys h  | just z  = trans (runZ-sound ss (zp 0 [] xs) z q) (⟪≈⟫ (eqL-sound _ _ h))
+  run-sound ss xs ys () | nothing
 
 -- A derivation: an equation from the steps that turn lhs into rhs.
-derive : (l r : List (Gen n)) (ss : List (Step n)) → run ss l ≡ just r → Eqn n
+derive : (l r : List (Gen n)) (ss : List (Step n)) → runs ss l r ≡ true → Eqn n
 derive l r ss h = eqn l r (run-sound ss l r h)
 

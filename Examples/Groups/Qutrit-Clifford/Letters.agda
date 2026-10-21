@@ -18,6 +18,7 @@
 
 module Examples.Groups.Qutrit-Clifford.Letters where
 
+open import Data.Bool.Base using (true)
 open import Data.Char.Base using (Char)
 open import Data.List.Base using (List ; [] ; _∷_)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
@@ -28,7 +29,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Notations using (₁₊)
 open import Examples.Groups.Qutrit-Clifford.Syntactics
 open import Examples.Groups.Qutrit-Clifford.Engine
-  using (Eqn ; Step ; perm ; rw ; run ; derive ; sym⁼ ; lift⁼)
+  using (Eqn ; Step ; perm ; rw ; runs ; derive ; sym⁼ ; lift⁼)
 
 private
   data Kind : Set where
@@ -93,5 +94,5 @@ rwˢˡ i e = rw i (sym⁼ (lift⁼ e))
 permℓ : String → Step n
 permℓ s = perm (ℓ s)
 
-deriveℓ : (l r : String) (ss : List (Step n)) → run ss (ℓ l) ≡ just (ℓ r) → Eqn n
+deriveℓ : (l r : String) (ss : List (Step n)) → runs ss (ℓ l) (ℓ r) ≡ true → Eqn n
 deriveℓ l r = derive (ℓ l) (ℓ r)
