@@ -26,7 +26,7 @@
 -- `g292`: CCZX between P ⊗ P passes the box on wire 1 negated on wire 2
 -- (the paper's (292), between P ⊗ P).  Semantically the one acts only
 -- where wire 2 is 1, the other only where it is 0.  By induction on the
--- width: on four wires decided (Base338Eq); above, the box is expanded
+-- width: on four wires decided (Base4); above, the box is expanded
 -- by (320) (Gadget322's letters), its rotations are four-wire letters,
 -- decided once and weakened (`SemanticSteps.Below`), and its smaller box
 -- has wire 3 idle, as has CCZX between P ⊗ P, so that pair is the
@@ -76,7 +76,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Colours complete₂ comple
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (B₁ ; Hg)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Gadget322 complete₂ complete₃
   using (L ; zx ; xz ; kb ; kb′ ; bb ; lt ; es ; word ; pass-word ; via ; module CW ; E320 ; S-place)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base338Eq
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base4
   using (RW₄ ; Dw₄ ; L-zx ; L-kb ; d-base ; d-zx ; d-kb)
 
 ------------------------------------------------------------------------

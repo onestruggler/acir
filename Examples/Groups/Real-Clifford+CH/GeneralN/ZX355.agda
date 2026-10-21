@@ -20,7 +20,7 @@
 --     ΛZX: ΛZX ≈ h E h E by (353) (h the four-wire H gate H●), and E
 --     white on wire 2 is X on wire 2 around E, which h passes (ZX353's
 --     `Bo-h`), up to a colouring above wire 2 that h does not see (X on
---     its box wire 3 passes it, Base355); other white controls are moved
+--     its box wire 3 passes it, Base353); other white controls are moved
 --     to wire 2 by adjacent swaps (`move′`);
 --   * so D′ = Z₀ E passes ΛZX (Canon40's `pass-last`) and E, and
 --     Λ ≈ D′ E W D′ E W ≈ E W E W = ΛXZ ΛXZ.
@@ -76,8 +76,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxSym complete₂ complet
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87All complete₂ complete₃ using (mergesₙ)
 import Examples.Groups.Real-Clifford+CH.GeneralN.MergeAll as MergeAll
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Colours complete₂ complete₃ using (col ; col-Ex ; conj-swap)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base353 using (H○ ; H● ; e-CH ; e-comm ; e-○²)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base355 using (e-X₃●)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base353 using (H○ ; H● ; e-CH ; e-comm ; e-○² ; e-X₃●)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.ZX353 complete₂ complete₃
   using (B-o ; Bo-h ; ∏-conj ; ∏-cong ; allT)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon40 complete₂ complete₃ using (pass-last ; swB-invol ; swB-1)

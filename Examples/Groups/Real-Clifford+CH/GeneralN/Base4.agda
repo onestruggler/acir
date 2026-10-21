@@ -4,11 +4,16 @@
 -- The four-wire evaluations over the box and the triply controlled
 -- rotations, decided by one boolean (Clément, Lemma D.13)
 --
--- Seven families, each once a module of its own (Base335 … Base38), are
--- one ProdEval family here, so that the gates they share — the box
--- Λ□ 3, the rotations ΛZX 3 and ΛXZ 3, the H gates — are read once in
--- all: reading them was nearly all of each module's time (ΛZX 3 about a
--- second, read in six of them).
+-- Ten families, each once a module of its own (Base322 … Base38,
+-- Base338Eq, BaseRotMerge's four-wire pair), are one ProdEval family
+-- here, so that the gates they share — the box Λ□ 3, the rotations
+-- ΛZX 3 and ΛXZ 3, the H gates — are read once in all: reading them was
+-- nearly all of each module's time (ΛZX 3 about a second, read in nine
+-- of them, twice in some).
+--
+-- (322) `d322`, `d322b`: FourQubit.PForms' Aᴾ α β true on four wires
+-- (`AᴾF`, β true resp. false) against the placed box (`P322`) — the base
+-- of GeneralN.Gadget322.
 --
 -- (335) `d335`: the box Λ□ 3 commutes with each colouring of itself
 -- whose bit on the box wire is true; the other colourings follow by X
@@ -52,6 +57,13 @@
 -- the CH from wire 2 onto wire 0 under the transposition of the wires
 -- 0 3 (`e-pc`).
 --
+-- (338) with x = y, `d-base`, `d-zx`, `d-kb`: CCZX between P ⊗ P
+-- against the box and two rotations under the swap of the wires 0 1
+-- around X on wire 2 (GeneralN.Box338Eq).
+--
+-- The merges of the rotations on four wires, `e-zx3`, `e-xz3`
+-- (GeneralN.RotMerge; the smaller ones are in BaseRotMerge).
+--
 -- Each is, with completeness on four wires, an equation.
 ------------------------------------------------------------------------
 
@@ -74,12 +86,27 @@ open import Examples.Groups.Real-Clifford+CH.Interpretation using (len)
 open import Examples.Groups.Real-Clifford+CH.Evaluation using (⟦_⟧R)
 open import Examples.Groups.Real-Clifford+CH.ProdEval using (allOK ; fam-eval)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires using (negsB)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (col ; B₁ ; Hg ; Hg₃ ; P₁₃)
+open import Examples.Groups.Real-Clifford+CH.MultiControlled using (Xat)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (col ; B₁ ; Hg ; Hg₃ ; P₁₃ ; Vb ; bot)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Place using (place)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base322 using (N3F)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.PlaceAt using (placeAt)
 
 ------------------------------------------------------------------------
 -- The circuits the statements name
+
+-- (322): X on wire 3, resp. wire 1, around w when the colour is false;
+-- FourQubit.PForms' Aᴾ α β true on four wires, and the placed box.
+N3F N1F : Bool → Circuit 4 → Circuit 4
+N3F true  w = w
+N3F false w = X ↑ ↑ ↑ • w • X ↑ ↑ ↑
+N1F true  w = w
+N1F false w = X ↑ • w • X ↑
+
+AᴾF : Bool → Bool → Circuit 4
+AᴾF α β = PP ↓ • N3F α (N1F β (ΛZX 3 ↓ᵏ 0)) • PP ↓
+
+P322 : Bool → Bool → Circuit 4
+P322 v γ = place 3 (col (bot v γ []) (Vb v 0))
 
 -- (337): the triply controlled ZX on wire 0 (true) or on wire 1
 -- (false), and the H gate's, between P ⊗ P on the wires 0 1 and white
@@ -121,11 +148,24 @@ c₄ Q₄ : Circuit 4
 c₄ = (Ex • CH • Ex) ↑ ↑
 Q₄ = X ↑ ↑ • X ↑ ↑ ↑
 
+-- (338) with x = y: CCZX between P ⊗ P, and the swap of the wires 0 1
+-- around X on wire 2 around w.
+RW₄ : Circuit 4
+RW₄ = PP ↓ • CCZX • PP ↓
+
+SN : Circuit 4 → Circuit 4
+SN w = Ex ↓ • (X ↑ ↑ • w • X ↑ ↑) • Ex ↓
+
+Dw₄ L-zx L-kb : Circuit 4
+Dw₄  = SN (Λ□ 3)
+L-zx = SN (ΛZX 3 ↓ᵏ 0)
+L-kb = SN (Ex ↓ • (ΛZX 3 ↓ᵏ 0) • Ex ↓)
+
 ------------------------------------------------------------------------
 -- The family
 --
 -- A factor that a statement spells `w ↓ᵏ 0` is w's: the two are the
--- same word once each gate is re-indexed.
+-- same word once each gate is re-indexed; and `Xat 3` is X ↑ ↑ ↑.
 
 private
   -- The factors, then the sixteen negations negsB (a ∷ b ∷ c ∷ d ∷ [])
@@ -142,6 +182,8 @@ private
     ∷ negsB (true ∷ false ∷ true ∷ false ∷ []) ∷ negsB (true ∷ false ∷ true ∷ true ∷ [])
     ∷ negsB (true ∷ true ∷ false ∷ false ∷ []) ∷ negsB (true ∷ true ∷ false ∷ true ∷ [])
     ∷ negsB (true ∷ true ∷ true ∷ false ∷ []) ∷ negsB (true ∷ true ∷ true ∷ true ∷ [])
+    ∷ X ↑ ∷ P322 true true ∷ P322 true false ∷ P322 false true ∷ P322 false false
+    ∷ CCZX ∷ placeAt 3 (ΛZX 2) ∷ placeAt 3 (ΛXZ 2)
     ∷ []
 
   box hg hg3 b1 zx xz pl exd exu ex ex2 x2 x3 ppd p13 c4 q4 chw ch : Word ℕ
@@ -212,6 +254,35 @@ private
   k₄ : Word ℕ
   k₄ = exu • (exd • box • exd) • exu
 
+  -- (322): AᴾF, and P322.
+  x1 ccz pzx pxz : Word ℕ
+  x1  = [ 35 ]ʷ
+  ccz = [ 40 ]ʷ
+  pzx = [ 41 ]ʷ
+  pxz = [ 42 ]ʷ
+
+  n3f n1f : Bool → Word ℕ → Word ℕ
+  n3f true  w = w
+  n3f false w = x3 • w • x3
+  n1f true  w = w
+  n1f false w = x1 • w • x1
+
+  aᴾ : Bool → Bool → Word ℕ
+  aᴾ α β = ppd • n3f α (n1f β zx) • ppd
+
+  p322 : Bool → Bool → Word ℕ
+  p322 true  true  = [ 36 ]ʷ
+  p322 true  false = [ 37 ]ʷ
+  p322 false true  = [ 38 ]ʷ
+  p322 false false = [ 39 ]ʷ
+
+  c322 : Bool → Bool → Bool → Bool → Word ℕ × Word ℕ
+  c322 β α γ v = comm (aᴾ α β) (p322 v γ)
+
+  -- (338) with x = y: SN.
+  sn : Word ℕ → Word ℕ
+  sn w = exd • (x2 • w • x2) • exd
+
   -- (38): c₄ against a gate between the two Q₄.
   c38 : Word ℕ → Word ℕ × Word ℕ
   c38 g = c4 • (q4 • g • q4) , (q4 • g • q4) • c4
@@ -242,6 +313,15 @@ private
     ∷ c38 zx ∷ c38 xz ∷ c38 (ex • zx • ex) ∷ c38 (ex • xz • ex)
     ∷ (x2 • c4 • x2 , (ex2 • exu) • chw • (exu • ex2))
     ∷ ((ex • (exu • (ex2 • (exu • ex)))) • (exu • ch • exu) • ((((ex • exu) • ex2) • exu) • ex) , c4)
+      -- (322), 43 … 50, and with β false, 51 … 58
+    ∷ c322 true true true true ∷ c322 true true true false ∷ c322 true true false true ∷ c322 true true false false
+    ∷ c322 true false true true ∷ c322 true false true false ∷ c322 true false false true ∷ c322 true false false false
+    ∷ c322 false true true true ∷ c322 false true true false ∷ c322 false true false true ∷ c322 false true false false
+    ∷ c322 false false true true ∷ c322 false false true false ∷ c322 false false false true ∷ c322 false false false false
+      -- (338) with x = y, 59 … 61
+    ∷ comm (ppd • ccz • ppd) (sn box) ∷ comm (ppd • ccz • ppd) (sn zx) ∷ comm (ppd • ccz • ppd) (sn (exd • zx • exd))
+      -- the merges, 62 63
+    ∷ ((x3 • zx • x3) • zx , pzx) ∷ ((x3 • xz • x3) • xz , pxz)
     ∷ []
 
   all4 : allOK (map ⟦_⟧R F) (map len F) E ≡ true
@@ -325,3 +405,38 @@ e-°c = fam-eval F E all4 41
 
 e-pc : Evaluated {4} ((Ex • (Ex ↑ • (Ex ↑ ↑ • (Ex ↑ • Ex)))) • (Ex ↑ • CH • Ex ↑) • ((((Ex • Ex ↑) • Ex ↑ ↑) • Ex ↑) • Ex)) c₄
 e-pc = fam-eval F E all4 42
+
+d322 : ∀ (α γ v : Bool) → Evaluated (AᴾF α true • P322 v γ) (P322 v γ • AᴾF α true)
+d322 true  true  true  = fam-eval F E all4 43
+d322 true  true  false = fam-eval F E all4 44
+d322 true  false true  = fam-eval F E all4 45
+d322 true  false false = fam-eval F E all4 46
+d322 false true  true  = fam-eval F E all4 47
+d322 false true  false = fam-eval F E all4 48
+d322 false false true  = fam-eval F E all4 49
+d322 false false false = fam-eval F E all4 50
+
+d322b : ∀ (α γ v : Bool) → Evaluated (AᴾF α false • P322 v γ) (P322 v γ • AᴾF α false)
+d322b true  true  true  = fam-eval F E all4 51
+d322b true  true  false = fam-eval F E all4 52
+d322b true  false true  = fam-eval F E all4 53
+d322b true  false false = fam-eval F E all4 54
+d322b false true  true  = fam-eval F E all4 55
+d322b false true  false = fam-eval F E all4 56
+d322b false false true  = fam-eval F E all4 57
+d322b false false false = fam-eval F E all4 58
+
+d-base : Evaluated (RW₄ • Dw₄) (Dw₄ • RW₄)
+d-base = fam-eval F E all4 59
+
+d-zx : Evaluated (RW₄ • L-zx) (L-zx • RW₄)
+d-zx = fam-eval F E all4 60
+
+d-kb : Evaluated (RW₄ • L-kb) (L-kb • RW₄)
+d-kb = fam-eval F E all4 61
+
+e-zx3 : Evaluated {4} ((Xat 3 • ΛZX 3 • Xat 3) • ΛZX 3) (placeAt 3 (ΛZX 2))
+e-zx3 = fam-eval F E all4 62
+
+e-xz3 : Evaluated {4} ((Xat 3 • ΛXZ 3 • Xat 3) • ΛXZ 3) (placeAt 3 (ΛXZ 2))
+e-xz3 = fam-eval F E all4 63

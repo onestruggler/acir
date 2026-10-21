@@ -48,7 +48,8 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon32 complete₂ comple
 open import Examples.Groups.Real-Clifford+CH.GeneralN.ZX354 complete₂ complete₃ using (eq354)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.MergeGen using (merge-up′ ; module MergeTop)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BaseRotMerge
-  using (e-zx1 ; e-zx2 ; e-zx3 ; e-xz1 ; e-xz2 ; e-xz3)
+  using (e-zx1 ; e-zx2 ; e-xz1 ; e-xz2)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base4 using (e-zx3 ; e-xz3)
 
 -- The family of rotations with no control on wire 0 left out, and (354)
 -- on the top wire.
