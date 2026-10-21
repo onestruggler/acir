@@ -21,9 +21,10 @@
 module Examples.Groups.Qutrit-Clifford.Evaluation where
 
 open import Algebra.Bundles using (CommutativeRing)
-open import Data.Bool.Base using (Bool ; T ; true ; false ; _∧_)
+open import Data.Bool.Base using (Bool ; T ; true ; false ; _∧_ ; if_then_else_)
 open import Data.Fin.Base using (Fin ; zero ; suc)
 open import Data.Integer.Base as ℤ using (+_ ; -[1+_])
+import Data.List.Base as List
 open import Data.Integer.Solver using (module +-*-Solver)
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc) renaming (_+_ to _+ℕ_)
 import Data.Nat.Properties as ℕP
@@ -538,6 +539,215 @@ ev-≈ : (w : Circuit k) → ev w ≈ ⟦ w ⟧
 ev-≈ w = ≐→≈ {s = ev w} {⟦ w ⟧} refl (⟦⟧R-ok w)
 
 ------------------------------------------------------------------------
+-- Two H on one wire at once
+
+-- Two H on one wire are −3 times the permutation |j⟩ ↦ |−j⟩ (at the
+-- scale of two H): the row a of their image is −3 times the row −a.
+-- Half the H in the words that the box relations evaluate come in such
+-- pairs, and H is the costliest letter, so runL takes two at a time.
+m3 : Q → Q
+m3 ⟨ a , b , c , e ⟩ =
+  ⟨ -[1+ 2 ] ℤ.* a , -[1+ 2 ] ℤ.* b , -[1+ 2 ] ℤ.* c , -[1+ 2 ] ℤ.* e ⟩
+
+-- The row −a of p q r.
+sel : Fin 3 → Q → Q → Q → Q
+sel zero             p q r = p
+sel (suc zero)       p q r = r
+sel (suc (suc zero)) p q r = q
+
+private
+  -- hrow over any operations, so that the solver can read its
+  -- coefficients: at the polynomials, ⟦_⟧ of it is what hrow computes
+  -- on ⟨ … ⟩.
+  module Lin {A : Set} (_⊕_ : A → A → A) (⊖_ : A → A) (o : A) where
+
+    r3ᴬ r4ᴬ r8ᴬ : Q⁴ A → Q⁴ A
+    r3ᴬ (a , b , c , e) = ⊖ (b ⊕ e) , ⊖ c , b , a ⊕ c
+    r4ᴬ (a , b , c , e) = ⊖ (a ⊕ c) , ⊖ (b ⊕ e) , a , b
+    r8ᴬ (a , b , c , e) = c , e , ⊖ (a ⊕ c) , ⊖ (b ⊕ e)
+
+    rotᴬ : Fin 3 → Q⁴ A → Q⁴ A
+    rotᴬ zero             v = v
+    rotᴬ (suc zero)       v = r4ᴬ v
+    rotᴬ (suc (suc zero)) v = r8ᴬ v
+
+    addᴬ : Q⁴ A → Q⁴ A → Q⁴ A
+    addᴬ (a₀ , a₁ , a₂ , a₃) (b₀ , b₁ , b₂ , b₃) = a₀ ⊕ b₀ , a₁ ⊕ b₁ , a₂ ⊕ b₂ , a₃ ⊕ b₃
+
+    hrowᴬ : Fin 3 → Q⁴ A → Q⁴ A → Q⁴ A → Q⁴ A
+    hrowᴬ a p q r = r3ᴬ (addᴬ (rotᴬ (a ⊠ zero) p) (addᴬ (rotᴬ (a ⊠ suc zero) q)
+                      (addᴬ (rotᴬ (a ⊠ suc (suc zero)) r) (o , o , o , o))))
+
+    hhᴬ : Fin 3 → Q⁴ A → Q⁴ A → Q⁴ A → Q⁴ A
+    hhᴬ a p q r = hrowᴬ a (hrowᴬ zero p q r) (hrowᴬ (suc zero) p q r) (hrowᴬ (suc (suc zero)) p q r)
+
+  module LP {m : ℕ} = Lin (_:+_ {m}) :-_ (con (+ 0))
+
+hh-ok : (a : Fin 3) (p q r : Q) →
+        hrow a (hrow zero p q r) (hrow (suc zero) p q r) (hrow (suc (suc zero)) p q r) ≡
+        m3 (sel a p q r)
+hh-ok zero ⟨ p₀ , p₁ , p₂ , p₃ ⟩ ⟨ q₀ , q₁ , q₂ , q₃ ⟩ ⟨ r₀ , r₁ , r₂ , r₃ ⟩ = ⟨≡⟩
+    (solve 12 (λ p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃ →
+       π₀ (LP.hhᴬ zero (p₀ , p₁ , p₂ , p₃) (q₀ , q₁ , q₂ , q₃) (r₀ , r₁ , r₂ , r₃))
+         := con -[1+ 2 ] :* p₀) refl p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃)
+    (solve 12 (λ p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃ →
+       π₁ (LP.hhᴬ zero (p₀ , p₁ , p₂ , p₃) (q₀ , q₁ , q₂ , q₃) (r₀ , r₁ , r₂ , r₃))
+         := con -[1+ 2 ] :* p₁) refl p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃)
+    (solve 12 (λ p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃ →
+       π₂ (LP.hhᴬ zero (p₀ , p₁ , p₂ , p₃) (q₀ , q₁ , q₂ , q₃) (r₀ , r₁ , r₂ , r₃))
+         := con -[1+ 2 ] :* p₂) refl p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃)
+    (solve 12 (λ p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃ →
+       π₃ (LP.hhᴬ zero (p₀ , p₁ , p₂ , p₃) (q₀ , q₁ , q₂ , q₃) (r₀ , r₁ , r₂ , r₃))
+         := con -[1+ 2 ] :* p₃) refl p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃)
+hh-ok (suc zero) ⟨ p₀ , p₁ , p₂ , p₃ ⟩ ⟨ q₀ , q₁ , q₂ , q₃ ⟩ ⟨ r₀ , r₁ , r₂ , r₃ ⟩ = ⟨≡⟩
+    (solve 12 (λ p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃ →
+       π₀ (LP.hhᴬ (suc zero) (p₀ , p₁ , p₂ , p₃) (q₀ , q₁ , q₂ , q₃) (r₀ , r₁ , r₂ , r₃))
+         := con -[1+ 2 ] :* r₀) refl p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃)
+    (solve 12 (λ p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃ →
+       π₁ (LP.hhᴬ (suc zero) (p₀ , p₁ , p₂ , p₃) (q₀ , q₁ , q₂ , q₃) (r₀ , r₁ , r₂ , r₃))
+         := con -[1+ 2 ] :* r₁) refl p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃)
+    (solve 12 (λ p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃ →
+       π₂ (LP.hhᴬ (suc zero) (p₀ , p₁ , p₂ , p₃) (q₀ , q₁ , q₂ , q₃) (r₀ , r₁ , r₂ , r₃))
+         := con -[1+ 2 ] :* r₂) refl p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃)
+    (solve 12 (λ p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃ →
+       π₃ (LP.hhᴬ (suc zero) (p₀ , p₁ , p₂ , p₃) (q₀ , q₁ , q₂ , q₃) (r₀ , r₁ , r₂ , r₃))
+         := con -[1+ 2 ] :* r₃) refl p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃)
+hh-ok (suc (suc zero)) ⟨ p₀ , p₁ , p₂ , p₃ ⟩ ⟨ q₀ , q₁ , q₂ , q₃ ⟩ ⟨ r₀ , r₁ , r₂ , r₃ ⟩ = ⟨≡⟩
+    (solve 12 (λ p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃ →
+       π₀ (LP.hhᴬ (suc (suc zero)) (p₀ , p₁ , p₂ , p₃) (q₀ , q₁ , q₂ , q₃) (r₀ , r₁ , r₂ , r₃))
+         := con -[1+ 2 ] :* q₀) refl p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃)
+    (solve 12 (λ p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃ →
+       π₁ (LP.hhᴬ (suc (suc zero)) (p₀ , p₁ , p₂ , p₃) (q₀ , q₁ , q₂ , q₃) (r₀ , r₁ , r₂ , r₃))
+         := con -[1+ 2 ] :* q₁) refl p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃)
+    (solve 12 (λ p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃ →
+       π₂ (LP.hhᴬ (suc (suc zero)) (p₀ , p₁ , p₂ , p₃) (q₀ , q₁ , q₂ , q₃) (r₀ , r₁ , r₂ , r₃))
+         := con -[1+ 2 ] :* q₂) refl p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃)
+    (solve 12 (λ p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃ →
+       π₃ (LP.hhᴬ (suc (suc zero)) (p₀ , p₁ , p₂ , p₃) (q₀ , q₁ , q₂ , q₃) (r₀ , r₁ , r₂ , r₃))
+         := con -[1+ 2 ] :* q₃) refl p₀ p₁ p₂ p₃ q₀ q₁ q₂ q₃ r₀ r₁ r₂ r₃)
+
+private
+  -- The entry of the row a of H's image of H's image of R₀ R₁ R₂.
+  hh-at : (k c : ℕ) (a : Fin 3) (R₀ R₁ R₂ : Rows k c) (xs : Digits k) (ys : Digits c) →
+          m3 (sel a (rix R₀ xs ys) (rix R₁ xs ys) (rix R₂ xs ys)) ≡
+          rix (hR k c a (hR k c zero R₀ R₁ R₂) (hR k c (suc zero) R₀ R₁ R₂)
+                        (hR k c (suc (suc zero)) R₀ R₁ R₂)) xs ys
+  hh-at k c a R₀ R₁ R₂ xs ys = Eq.sym (Eq.trans (rix-hR k c a S₀ S₁ S₂ xs ys)
+    (Eq.trans (Eq.cong₂ (λ u v → hrow a u v (rix S₂ xs ys)) (rix-hR k c zero R₀ R₁ R₂ xs ys)
+                 (rix-hR k c (suc zero) R₀ R₁ R₂ xs ys))
+       (Eq.trans (Eq.cong (hrow a (hrow zero p q r) (hrow (suc zero) p q r))
+                    (rix-hR k c (suc (suc zero)) R₀ R₁ R₂ xs ys))
+          (hh-ok a p q r))))
+    where
+    S₀ = hR k c zero R₀ R₁ R₂
+    S₁ = hR k c (suc zero) R₀ R₁ R₂
+    S₂ = hR k c (suc (suc zero)) R₀ R₁ R₂
+    p = rix R₀ xs ys
+    q = rix R₁ xs ys
+    r = rix R₂ xs ys
+
+-- Two applications of a generator; for H, the rows exchanged and scaled.
+applyR2 : (c : ℕ) → Gen k → Rows k c → Rows k c
+applyR2 {suc k} c (gate₁ H-gate) (R₀ ∷ R₁ ∷ R₂ ∷ []) =
+  mapR k c m3 R₀ ∷ mapR k c m3 R₂ ∷ mapR k c m3 R₁ ∷ []
+applyR2 {suc k} c (g ↥) (R₀ ∷ R₁ ∷ R₂ ∷ []) =
+  applyR2 c g R₀ ∷ applyR2 c g R₁ ∷ applyR2 c g R₂ ∷ []
+applyR2 c g R = applyR c g (applyR c g R)
+
+applyR2-ok : (c : ℕ) (g : Gen k) (R : Rows k c) (xs : Digits k) (ys : Digits c) →
+             rix (applyR2 c g R) xs ys ≡ rix (applyR c g (applyR c g R)) xs ys
+applyR2-ok {suc k} c (gate₁ H-gate) (R₀ ∷ R₁ ∷ R₂ ∷ []) (zero ∷ xs) ys =
+  Eq.trans (rix-mapR k c m3 R₀ xs ys) (hh-at k c zero R₀ R₁ R₂ xs ys)
+applyR2-ok {suc k} c (gate₁ H-gate) (R₀ ∷ R₁ ∷ R₂ ∷ []) (suc zero ∷ xs) ys =
+  Eq.trans (rix-mapR k c m3 R₂ xs ys) (hh-at k c (suc zero) R₀ R₁ R₂ xs ys)
+applyR2-ok {suc k} c (gate₁ H-gate) (R₀ ∷ R₁ ∷ R₂ ∷ []) (suc (suc zero) ∷ xs) ys =
+  Eq.trans (rix-mapR k c m3 R₁ xs ys) (hh-at k c (suc (suc zero)) R₀ R₁ R₂ xs ys)
+applyR2-ok {suc k} c (g ↥) (R₀ ∷ R₁ ∷ R₂ ∷ []) (zero ∷ xs) ys = applyR2-ok c g R₀ xs ys
+applyR2-ok {suc k} c (g ↥) (R₀ ∷ R₁ ∷ R₂ ∷ []) (suc zero ∷ xs) ys = applyR2-ok c g R₁ xs ys
+applyR2-ok {suc k} c (g ↥) (R₀ ∷ R₁ ∷ R₂ ∷ []) (suc (suc zero) ∷ xs) ys = applyR2-ok c g R₂ xs ys
+applyR2-ok {zero} c (gate₀ ν-gate) R xs ys = refl
+applyR2-ok {suc k} c (gate₀ ν-gate) R xs ys = refl
+applyR2-ok {suc k} c (gate₁ S-gate) R xs ys = refl
+applyR2-ok {suc (suc k)} c (gate₂ CZ-gate) R xs ys = refl
+
+-- A generator's row operation respects the entries it is applied to.
+applyR-cong : (c : ℕ) (g : Gen k) {A B : Rows k c} (ys : Digits c) →
+              (∀ zs → rix A zs ys ≡ rix B zs ys) →
+              (xs : Digits k) → rix (applyR c g A) xs ys ≡ rix (applyR c g B) xs ys
+applyR-cong c g {A} {B} ys e xs =
+  Eq.trans (applyR-ok c g A xs ys) (Eq.trans (loc-ok g (λ zs → rix A zs ys) xs)
+    (Eq.trans (app-congᶠ (ix (proj₂ ⟦ g ⟧₀)) e xs)
+      (Eq.sym (Eq.trans (applyR-ok c g B xs ys) (loc-ok g (λ zs → rix B zs ys) xs)))))
+
+-- A list of letters as a word, in operator order (the head acts last):
+-- Presentation.Tactics.Words.Associative.word-of-list, which this
+-- module, being --cubical-compatible, cannot import.
+wordL : List.List (Gen k) → Circuit k
+wordL List.[]       = ε
+wordL (g List.∷ gs) = [ g ]ʷ • wordL gs
+
+-- The same H twice.
+pairH : Gen k → Gen k → Bool
+pairH (gate₁ H-gate) (gate₁ H-gate) = true
+pairH (g ↥)          (g' ↥)         = pairH g g'
+pairH _              _              = false
+
+pairH-≡ : (g g' : Gen k) → pairH g g' ≡ true → g' ≡ g
+pairH-≡ (gate₁ H-gate) (gate₁ H-gate) _ = refl
+pairH-≡ (g ↥)          (g' ↥)         e = Eq.cong _↥ (pairH-≡ g g' e)
+pairH-≡ (gate₀ ν-gate)  g'            ()
+pairH-≡ (gate₁ S-gate)  g'            ()
+pairH-≡ (gate₂ CZ-gate) g'            ()
+pairH-≡ (gate₁ H-gate) (gate₀ ν-gate)  ()
+pairH-≡ (gate₁ H-gate) (gate₁ S-gate)  ()
+pairH-≡ (gate₁ H-gate) (gate₂ CZ-gate) ()
+pairH-≡ (gate₁ H-gate) (g' ↥)          ()
+pairH-≡ (g ↥)          (gate₀ ν-gate)  ()
+pairH-≡ (g ↥)          (gate₁ H-gate)  ()
+pairH-≡ (g ↥)          (gate₁ S-gate)  ()
+pairH-≡ (g ↥)          (gate₂ CZ-gate) ()
+
+-- A list of letters, in operator order, the same H twice in one step.
+runL : (c : ℕ) → List.List (Gen k) → Rows k c → Rows k c
+runL c List.[]                         R = R
+runL c (g List.∷ List.[])              R = applyR c g R
+runL c (g List.∷ gs@(g' List.∷ hs))    R =
+  if pairH g g' then applyR2 c g (runL c hs R) else applyR c g (runL c gs R)
+
+-- A step of runL, the soundness of the rest given.
+runL-step : (c : ℕ) (g g' : Gen k) (hs : List.List (Gen k)) (R : Rows k c) (xs : Digits k) (ys : Digits c) →
+            (∀ zs → rix (runL c hs R) zs ys ≡ rix (run c (wordL hs) R) zs ys) →
+            (∀ zs → rix (runL c (g' List.∷ hs) R) zs ys ≡ rix (run c (wordL (g' List.∷ hs)) R) zs ys) →
+            rix (runL c (g List.∷ g' List.∷ hs) R) xs ys ≡ rix (run c (wordL (g List.∷ g' List.∷ hs)) R) xs ys
+runL-step c g g' hs R xs ys ih₂ ih₁ with pairH g g' in e
+... | true  = Eq.trans (applyR2-ok c g (runL c hs R) xs ys)
+               (applyR-cong c g ys (λ zs → Eq.trans (applyR-cong c g ys ih₂ zs)
+                                          (Eq.cong (λ h → rix (applyR c h (run c (wordL hs) R)) zs ys)
+                                                   (Eq.sym (pairH-≡ g g' e))))
+                 xs)
+... | false = applyR-cong c g ys ih₁ xs
+
+runL-ok : (c : ℕ) (gs : List.List (Gen k)) (R : Rows k c) (xs : Digits k) (ys : Digits c) →
+          rix (runL c gs R) xs ys ≡ rix (run c (wordL gs) R) xs ys
+runL-ok c List.[]                      R xs ys = refl
+runL-ok c (g List.∷ List.[])           R xs ys = refl
+runL-ok c (g List.∷ gs@(g' List.∷ hs)) R xs ys =
+  runL-step c g g' hs R xs ys (λ zs → runL-ok c hs R zs ys) (λ zs → runL-ok c gs R zs ys)
+
+⟦_⟧L : List.List (Gen k) → Mat k
+⟦_⟧L {k} gs = mat (runL k gs (entries (idM {k})))
+
+⟦⟧L-ok : (gs : List.List (Gen k)) → ix ⟦ gs ⟧L ≐ ix (proj₂ ⟦ wordL gs ⟧)
+⟦⟧L-ok {k} gs xs ys = Eq.trans (runL-ok k gs (entries (idM {k})) xs ys) (⟦⟧R-ok (wordL gs) xs ys)
+
+-- The value of a list of letters, by runL.
+evL : List.List (Gen k) → Sc k
+evL gs = proj₁ ⟦ wordL gs ⟧ , ⟦ gs ⟧L
+
+evL-≈ : (gs : List.List (Gen k)) → evL gs ≈ ⟦ wordL gs ⟧
+evL-≈ gs = ≐→≈ {s = evL gs} {⟦ wordL gs ⟧} refl (⟦⟧L-ok gs)
+
+------------------------------------------------------------------------
 -- Exact comparison
 
 -- Equality of elements as a Boolean on the builtin equality of natural
@@ -618,6 +828,14 @@ checked : (l r : Circuit k) → T (eqF (ev l) (ev r)) → ⟦ l ⟧ ≈ ⟦ r �
 checked l r t =
   ≈-trans' {s₁ = ⟦ l ⟧} {ev l} {⟦ r ⟧} (≈-sym' {s = ev l} {⟦ l ⟧} (ev-≈ l))
     (≈-trans' {s₁ = ev l} {ev r} {⟦ r ⟧} (eqF-sound (ev l) (ev r) t) (ev-≈ r))
+
+-- The same for lists of letters, by evL.
+checkedL : (l r : List.List (Gen k)) → T (eqF (evL l) (evL r)) →
+           ⟦ wordL l ⟧ ≈ ⟦ wordL r ⟧
+checkedL l r t =
+  ≈-trans' {s₁ = ⟦ wordL l ⟧} {evL l} {⟦ wordL r ⟧}
+    (≈-sym' {s = evL l} {⟦ wordL l ⟧} (evL-≈ l))
+    (≈-trans' {s₁ = evL l} {evL r} {⟦ wordL r ⟧} (eqF-sound (evL l) (evL r) t) (evL-≈ r))
 
 -- An equation on k wires, checked by evaluation, holds on the bottom k
 -- wires of every wider circuit.

@@ -30,7 +30,8 @@ open import Examples.Groups.Qutrit-Clifford.Syntactics
 open import Examples.Groups.Qutrit-Clifford.Engine
   using (Eqn ; eqn ; ⟪_⟫ ; ⟪++⟫ ; ⟪≈⟫ ; ⟪map↥⟫ ; module Canon ; perm-sound ; Step ; rw ; sym⁼)
 open import Examples.Groups.Qutrit-Clifford.Letters using (ℓ)
-open import Examples.Groups.Qutrit-Clifford.Evaluation using (ev ; eqF ; checked)
+import Examples.Groups.Qutrit-Clifford.Semantics as Sem
+open import Examples.Groups.Qutrit-Clifford.Evaluation using (evL ; eqF ; checkedL ; wordL)
 open import Examples.Groups.Qutrit-Clifford.Completeness2 using (completeness₂)
 open import Examples.Groups.Qutrit-Clifford.Weakening using (weaken)
 open import Examples.Groups.Qutrit-Clifford.Inverse using (invL ; invL-r ; invL-l)
@@ -47,12 +48,16 @@ private
 ⟪↧⟫ []       k = Eq.refl
 ⟪↧⟫ (x ∷ xs) k = Eq.cong ([ x ↧ᵏ k ]ʷ •_) (⟪↧⟫ xs k)
 
+wordL-⟪⟫ : ∀ {m} (xs : List (Gen m)) → wordL xs ≡ ⟪ xs ⟫
+wordL-⟪⟫ []       = Eq.refl
+wordL-⟪⟫ (x ∷ xs) = Eq.cong ([ x ]ʷ •_) (wordL-⟪⟫ xs)
+
 -- A true equation between two-wire letter lists, on the bottom two
 -- wires of any wider circuit.
-sem₀₁ : (l r : List (Gen 2)) → T (eqF (ev ⟪ l ⟫) (ev ⟪ r ⟫)) → Eqn (₂₊ n)
+sem₀₁ : (l r : List (Gen 2)) → T (eqF (evL l) (evL r)) → Eqn (₂₊ n)
 sem₀₁ {n} l r t = eqn (map (_↧ᵏ n) l) (map (_↧ᵏ n) r)
   (Eq.subst₂ (λ a b → (₂₊ n) ⊢ a ≈ b) (Eq.sym (⟪↧⟫ l n)) (Eq.sym (⟪↧⟫ r n))
-    (weaken n (completeness₂ (checked ⟪ l ⟫ ⟪ r ⟫ t))))
+    (weaken n (completeness₂ (Eq.subst₂ (λ a b → Sem._≈_ (Sem.⟦_⟧ a) (Sem.⟦_⟧ b)) (wordL-⟪⟫ l) (wordL-⟪⟫ r) (checkedL l r t)))))
 
 ------------------------------------------------------------------------
 -- Inverses
@@ -131,7 +136,7 @@ permE xs ys h = eqn xs ys (perm-sound xs ys h)
 ------------------------------------------------------------------------
 -- The steps without parentheses (see Qutrit-Clifford.Letters)
 
-semℓ : (l r : String) → T (eqF (ev ⟪ ℓ l ⟫) (ev ⟪ ℓ r ⟫)) → Eqn (₂₊ n)
+semℓ : (l r : String) → T (eqF (evL (ℓ l)) (evL (ℓ r))) → Eqn (₂₊ n)
 semℓ l r = sem₀₁ (ℓ l) (ℓ r)
 
 rwPℓ : ℕ → (xs ys : String) →
