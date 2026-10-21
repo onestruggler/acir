@@ -503,23 +503,29 @@ private
   cong-dHH : ∀ {a a′ b b′ c c′ e e′ : ℕ} → a ≡ a′ → b ≡ b′ → c ≡ c′ → e ≡ e′ → dHH {m} a b c e ≡ dHH a′ b′ c′ e′
   cong-dHH Eq.refl Eq.refl Eq.refl Eq.refl = Eq.refl
 
-  -- A letter decodes through `dP`, over a variable letter: stated at a
-  -- letter, the two sides are compared by reducing `dP`.
-  d-letter : ∀ (p : GenP N) → (d ʷ) [ p ]ʷ ≡ rev (dP {m} p)
-  d-letter p = Eq.refl
-
--- The standard pair decodes to the gadget of Definition 8.3.
-d-hh0132 : (d ʷ) (hhℕ {N} 0 1 3 2) ≡ rev gadget
-d-hh0132 = Eq.trans (Eq.cong (d ʷ) (Eq.trans (cong-hhℕ (Eq.sym toℕ-i₀) (Eq.sym toℕ-i₁) (Eq.sym toℕ-i₃) (Eq.sym toℕ-i₂))
-                                            (Eq.trans (hhℕ-hh i₀ i₁ i₃ i₂) (hh-letter i₀ i₁ i₃ i₂ i₀≢i₁ i₃≢i₂))))
-                    (Eq.trans (d-letter (HH i₀ i₁ i₃ i₂ i₀≢i₁ i₃≢i₂))
-                    (Eq.cong rev (Eq.trans (dP-HH i₀ i₁ i₃ i₂ i₀≢i₁ i₃≢i₂ 0 1 3 2 toℕ-i₀ toℕ-i₁ toℕ-i₃ toℕ-i₂)
-                                 (Eq.trans (dHH-true 0 1 3 2 Eq.refl) (dHH₄-pat 0 1 3 2 0 1 pat0132)))))
-  where
+-- The standard pair decodes to the gadget of Definition 8.3.  The
+-- steps are lemmas with their types written out, so that every junction
+-- is between written terms: chained inline, Agda compared the letter's
+-- decoding with `dP-HH`'s by reducing `dHH` (3 s); through a lemma
+-- `(d ʷ) [ p ]ʷ ≡ rev (dP p)` instantiated at the letter, 5 s.
+private
   i₀≢i₁ : i₀ ≢ i₁
   i₀≢i₁ e = ᵇ-ne {0} {1} Eq.refl (Eq.trans (Eq.sym toℕ-i₀) (Eq.trans (Eq.cong toℕ e) toℕ-i₁))
   i₃≢i₂ : i₃ ≢ i₂
   i₃≢i₂ e = ᵇ-ne {3} {2} Eq.refl (Eq.trans (Eq.sym toℕ-i₃) (Eq.trans (Eq.cong toℕ e) toℕ-i₂))
+
+  hh0132-letter : hhℕ {N} 0 1 3 2 ≡ [ HH i₀ i₁ i₃ i₂ i₀≢i₁ i₃≢i₂ ]ʷ
+  hh0132-letter = Eq.trans (cong-hhℕ (Eq.sym toℕ-i₀) (Eq.sym toℕ-i₁) (Eq.sym toℕ-i₃) (Eq.sym toℕ-i₂))
+                           (Eq.trans (hhℕ-hh i₀ i₁ i₃ i₂) (hh-letter i₀ i₁ i₃ i₂ i₀≢i₁ i₃≢i₂))
+
+  hh0132-dHH : (d ʷ) [ HH i₀ i₁ i₃ i₂ i₀≢i₁ i₃≢i₂ ]ʷ ≡ rev (dHH {m} 0 1 3 2)
+  hh0132-dHH = Eq.cong rev (dP-HH i₀ i₁ i₃ i₂ i₀≢i₁ i₃≢i₂ 0 1 3 2 toℕ-i₀ toℕ-i₁ toℕ-i₃ toℕ-i₂)
+
+  dHH0132 : dHH {m} 0 1 3 2 ≡ gadget
+  dHH0132 = Eq.trans (dHH-true 0 1 3 2 Eq.refl) (dHH₄-pat 0 1 3 2 0 1 pat0132)
+
+d-hh0132 : (d ʷ) (hhℕ {N} 0 1 3 2) ≡ rev gadget
+d-hh0132 = Eq.trans (Eq.cong (d ʷ) hh0132-letter) (Eq.trans hh0132-dHH (Eq.cong rev dHH0132))
 
 -- A Hadamard pair on four distinct indices below 8 whose codes form an
 -- H-pattern decodes to the multi-controlled H of that pattern.

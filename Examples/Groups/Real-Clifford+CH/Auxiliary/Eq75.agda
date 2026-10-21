@@ -447,6 +447,35 @@ private
 eq75₀ : zx {₃₊ m} i₀ i₀ i₁ • Λ ≈ Λ • zx {₃₊ m} i₁ i₀ i₁
 eq75₀ = unsandwich ΛY001Λ
 
+-- The two crossings, over any Hadamard-free word T that sends a, b to
+-- 0, 1 signing them alike (and its inverse T′): stated at Definition
+-- E.1's word, the signed permutations were compared by evaluating the
+-- word's (inL 3.4 s), where over a variable word `sp T` is stuck.
+private
+  crossL : ∀ (T : W) → HFreeʷ T → ∀ (a b : Fin N) (ab : a ≢ b) →
+           prm (sp T) a ≡ i₀ → prm (sp T) b ≡ i₁ → sgn (sp T) a ≡ sgn (sp T) b →
+           zx {₃₊ m} a a b • T ≈ T • Y001
+  crossL T hT a b ab pa pb sab = A5-full (cat (hfree-zx a a b) hT) (cat hT (hfree-zx i₀ i₀ i₁))
+    (≐-trans′ (⊙-cong′ (sp-zx a a b ab) (≐-refl′ {sp T}))
+    (≐-trans′ (L-by (sp T) (sp-inj T) a a b sab)
+              (⊙-cong′ (≐-refl′ {sp T})
+                (≐-trans′ (Eq.subst₂ (λ u v → L (prm (sp T) a) (prm (sp T) a)
+                                                (prm (sp T) b) ≗ L u u v)
+                                     pa pb ≐-refl′)
+                          (≐-sym′ (sp-zx i₀ i₀ i₁ i₀≢i₁))))))
+
+  crossR : ∀ (T′ : W) → HFreeʷ T′ → ∀ (a b : Fin N) (ab : a ≢ b) →
+           prm (sp T′) i₀ ≡ a → prm (sp T′) i₁ ≡ b → sgn (sp T′) i₀ ≡ sgn (sp T′) i₁ →
+           Y101 • T′ ≈ T′ • zx {₃₊ m} b a b
+  crossR T′ hT′ a b ab back-a back-b s = A5-full (cat (hfree-zx i₁ i₀ i₁) hT′) (cat hT′ (hfree-zx b a b))
+    (≐-trans′ (⊙-cong′ (sp-zx i₁ i₀ i₁ i₀≢i₁) (≐-refl′ {sp T′}))
+    (≐-trans′ (L-by (sp T′) (sp-inj T′) i₁ i₀ i₁ s)
+              (⊙-cong′ (≐-refl′ {sp T′})
+                (≐-trans′ (Eq.subst₂ (λ u v → L (prm (sp T′) i₁) (prm (sp T′) i₀)
+                                                (prm (sp T′) i₁) ≗ L v u v)
+                                     back-a back-b ≐-refl′)
+                          (≐-sym′ (sp-zx b a b ab))))))
+
 ------------------------------------------------------------------------
 -- (75) at any tuple
 --
@@ -524,22 +553,8 @@ module _ (e65 : Eq65) where
 
     -- The letter crosses into the standard frame …
     inL : zx {₃₊ m} a a b • T ≈ T • Y001
-    inL = A5-full (cat (hfree-zx a a b) S.hfree-Σ) (cat S.hfree-Σ (hfree-zx i₀ i₀ i₁))
-      (≐-trans′ (⊙-cong′ (sp-zx a a b ab) (≐-refl′ {sp T}))
-      (≐-trans′ (L-by (sp T) (sp-inj T) a a b (Eq.trans S.sgn-Σ-a (Eq.sym S.sgn-Σ-b)))
-                (⊙-cong′ (≐-refl′ {sp T})
-                  (≐-trans′ (Eq.subst₂ (λ u v → L (prm (sp T) a) (prm (sp T) a)
-                                                  (prm (sp T) b) ≗ L u u v)
-                                       pa pb ≐-refl′)
-                            (≐-sym′ (sp-zx i₀ i₀ i₁ i₀≢i₁))))))
+    inL = crossL T S.hfree-Σ a b ab pa pb (Eq.trans S.sgn-Σ-a (Eq.sym S.sgn-Σ-b))
 
     -- … and back out of it.
     inR : Y101 • T′ ≈ T′ • zx {₃₊ m} b a b
-    inR = A5-full (cat (hfree-zx i₁ i₀ i₁) S.hfree-Σ′) (cat S.hfree-Σ′ (hfree-zx b a b))
-      (≐-trans′ (⊙-cong′ (sp-zx i₁ i₀ i₁ i₀≢i₁) (≐-refl′ {sp T′}))
-      (≐-trans′ (L-by (sp T′) (sp-inj T′) i₁ i₀ i₁ (Eq.trans s₀ (Eq.sym s₁)))
-                (⊙-cong′ (≐-refl′ {sp T′})
-                  (≐-trans′ (Eq.subst₂ (λ u v → L (prm (sp T′) i₁) (prm (sp T′) i₀)
-                                                  (prm (sp T′) i₁) ≗ L v u v)
-                                       back-a back-b ≐-refl′)
-                            (≐-sym′ (sp-zx b a b ab))))))
+    inR = crossR T′ S.hfree-Σ′ a b ab back-a back-b (Eq.trans s₀ (Eq.sym s₁))

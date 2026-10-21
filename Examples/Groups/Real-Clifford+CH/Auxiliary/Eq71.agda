@@ -168,6 +168,15 @@ private
   xw-sgn : ∀ (t : Fin N) → sgn (sp Xw) t ≡ false
   xw-sgn = sgn≡′ sp-Xw
 
+  -- A product's permutation and signs, over variable words: at the
+  -- concrete words below the two sides were compared by evaluating the
+  -- words' signed permutations (cW 2.5 s, cTV 2.2 s).
+  prm-• : ∀ (U V : W) x → prm (sp (U • V)) x ≡ prm (sp V) (prm (sp U) x)
+  prm-• U V x = Eq.refl
+
+  sgn-• : ∀ (U V : W) x → sgn (sp (U • V)) x ≡ sgn (sp U) x xor sgn (sp V) (prm (sp U) x)
+  sgn-• U V x = Eq.refl
+
   -- Words that pair off cancel through the middle.
   peel : ∀ (F A B G : SP) → (A ⊛ B) ≗ idSP → (F ⊛ G) ≗ idSP →
          (F ⊛ A) ⊛ (B ⊛ G) ≗ idSP
@@ -358,17 +367,17 @@ module _ (e65 : Eq65)
     cTV : (spOp (sp TV) ⊙ (Mpair ⊙ spOp (sp V′T′)))
           ≐ (hadOp (code n c) (code n d) ⊙ hadOp (code n e) (code n f))
     cTV = conj-at TV V′T′ (sp-inj V′T′) inv-TV c d e f
-            (Eq.trans (Eq.cong (prm (sp V)) T-3) V-3)
-            (Eq.trans (Eq.cong (prm (sp V)) T-2) V-2)
-            (Eq.trans (Eq.cong (prm (sp V)) T-4) V-4)
-            (Eq.trans (Eq.cong (prm (sp V)) T-5) V-5)
+            (Eq.trans (prm-• T V c) (Eq.trans (Eq.cong (prm (sp V)) T-3) V-3))
+            (Eq.trans (prm-• T V d) (Eq.trans (Eq.cong (prm (sp V)) T-2) V-2))
+            (Eq.trans (prm-• T V e) (Eq.trans (Eq.cong (prm (sp V)) T-4) V-4))
+            (Eq.trans (prm-• T V f) (Eq.trans (Eq.cong (prm (sp V)) T-5) V-5))
             (sg T6.T-sc T-3 SV.sgn-Σ-a) (sg T6.T-sd T-2 SV.sgn-Σ-b)
             (sg T6.T-se T-4 SV.sgn-Σ-c) (sg T6.T-sf T-5 SV.sgn-Σ-d)
       where
       sg : ∀ {x k : Fin N} → sgn (sp T) x ≡ false → prm (sp T) x ≡ k →
            sgn (sp V) k ≡ false → sgn (sp TV) x ≡ false
       sg {x} {k} t p v =
-        Eq.trans (Eq.cong₂ _xor_ t (Eq.trans (Eq.cong (sgn (sp V)) p) v)) Eq.refl
+        Eq.trans (sgn-• T V x) (Eq.cong₂ _xor_ t (Eq.trans (Eq.cong (sgn (sp V)) p) v))
 
     -- … and T, the double exchange and V together carry a, b, e, f.
     cW : (spOp (sp Wd) ⊙ (Mpair ⊙ spOp (sp Wd′)))
@@ -382,17 +391,19 @@ module _ (e65 : Eq65)
       mv : ∀ {x u v w : Fin N} → prm (sp T) x ≡ u → prm (sp Xw) u ≡ v →
            prm (sp V) v ≡ w → prm (sp Wd) x ≡ w
       mv {x} p q r =
-        Eq.trans (Eq.cong (λ z → prm (sp V) (prm (sp Xw) z)) p)
-                 (Eq.trans (Eq.cong (prm (sp V)) q) r)
+        Eq.trans (prm-• T (Xw • V) x) (Eq.trans (prm-• Xw V (prm (sp T) x))
+          (Eq.trans (Eq.cong (λ z → prm (sp V) (prm (sp Xw) z)) p)
+                    (Eq.trans (Eq.cong (prm (sp V)) q) r)))
 
       sg : ∀ {x u v : Fin N} → sgn (sp T) x ≡ false → prm (sp T) x ≡ u →
            prm (sp Xw) u ≡ v → sgn (sp V) v ≡ false → sgn (sp Wd) x ≡ false
       sg {x} {u} {v} t p q s =
-        Eq.trans (Eq.cong₂ _xor_ t
-                   (Eq.cong₂ _xor_ (xw-sgn (prm (sp T) x))
-                     (Eq.trans (Eq.cong (λ z → sgn (sp V) (prm (sp Xw) z)) p)
-                               (Eq.trans (Eq.cong (sgn (sp V)) q) s))))
-                 Eq.refl
+        Eq.trans (sgn-• T (Xw • V) x)
+          (Eq.trans (Eq.cong (sgn (sp T) x xor_) (sgn-• Xw V (prm (sp T) x)))
+            (Eq.cong₂ _xor_ t
+              (Eq.cong₂ _xor_ (xw-sgn (prm (sp T) x))
+                (Eq.trans (Eq.cong (λ z → sgn (sp V) (prm (sp Xw) z)) p)
+                          (Eq.trans (Eq.cong (sgn (sp V)) q) s)))))
 
     ------------------------------------------------------------------
     -- The three joins
