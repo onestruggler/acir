@@ -28,23 +28,6 @@ open import Examples.Groups.Qutrit-Clifford.Box3.Steps1
 open import Examples.Groups.Qutrit-Clifford.Box3.Steps2
 open import Examples.Groups.Qutrit-Clifford.Box3.Steps3
 open import Examples.Groups.Qutrit-Clifford.Box3.Steps4
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps5
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps6
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps7
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps8
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps9
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps10
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps11
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps12
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps13
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps14
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps15
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps16
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps17
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps18
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps19
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps20
-open import Examples.Groups.Qutrit-Clifford.Box3.Steps21
 
 private
   variable
