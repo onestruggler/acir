@@ -368,45 +368,59 @@ module Step (j : ℕ) (ih : Gd j) (α β a γ : Bool) (x₄ : Bool) (x′ : Bits
     A : Circuit (₁₊ (₄₊ j))
     A = Aᴾ α β a
 
-  -- A letter coloured and placed, for the box on wire 0 or 1.
-  pc : Bool → Circuit (₄₊ j) → Circuit (₁₊ (₄₊ j))
-  pc v w = place 3 (col (bot v γ (x₄ ∷ x′)) w)
+  -- A letter coloured and placed, for the box on wire 0 or 1.  It is
+  -- opaque: letter matches pc v (lv j v l) against the lemmas' pc v ZX₃
+  -- and so on argument by argument, where Agda unfolded the placement and
+  -- the colouring on both sides first (5.8 s of letter's 5.8).
+  opaque
+    pc : Bool → Circuit (₄₊ j) → Circuit (₁₊ (₄₊ j))
+    pc v w = place 3 (col (bot v γ (x₄ ∷ x′)) w)
 
   private
-    pc-cong : ∀ v {w w′} → (₄₊ j) ⊢ w ≈ w′ → pc v w ≈ pc v w′
-    pc-cong v e = place-cong 3 (Col.⟪⟫-cong (bot v γ (x₄ ∷ x′)) e)
-
-    pc-inv : ∀ v {w w′} → (₄₊ j) ⊢ w • w′ ≈ ε → pc v w • pc v w′ ≈ ε
-    pc-inv v {w} {w′} e =
-      trans (sym (place-• 3 (col (bot v γ (x₄ ∷ x′)) w) (col (bot v γ (x₄ ∷ x′)) w′)))
-            (trans (place-cong 3 (col-inv (bot v γ (x₄ ∷ x′)) e)) place-ε)
-
-    -- A passes the inverse of what it passes.
-    inv : ∀ v {w w′} → (₄₊ j) ⊢ w • w′ ≈ ε → (₄₊ j) ⊢ w′ • w ≈ ε → A • pc v w ≈ pc v w • A → A • pc v w′ ≈ pc v w′ • A
-    inv v e e′ p = comm-inv (pc-inv v e) (pc-inv v e′) p
-
     t : Bool → Bits (₁₊ (₄₊ j))
     t v = c₀ v γ ∷ c₁ v γ ∷ false ∷ x₄ ∷ true ∷ x′
 
-    -- The rotations, placed: the second gates of (268) and (267) under
-    -- the swap of the wires 3 4.
-    pc-Z : ∀ v → pc v ZX₃ ≈ S₃₄.⟪ C₂₄₁ x₄ (c₁ v γ) (c₀ v γ) ⟫
-    pc-Z v = begin
-      place 3 (col (bot v γ (x₄ ∷ x′)) ZX₃)
-        ≈⟨ sym (col-place (c₀ v γ) (c₁ v γ) false true (x₄ ∷ x′) ZX₃) ⟩
-      col (swB 3 (t v)) (place 3 ZX₃)                  ≈⟨ Col.⟪⟫-cong (swB 3 (t v)) (place3-loc (ΛZX 3)) ⟩
-      col (swB 3 (t v)) (S₃₄.⟪ ZX₃ ⟫)                  ≈⟨ sym (col-S₃₄ (t v) ZX₃) ⟩
-      S₃₄.⟪ col (t v) ZX₃ ⟫                            ≈⟨ S₃₄.⟪⟫-cong (norm-ZX (c₀ v γ) (c₁ v γ) x₄ (true ∷ x′)) ⟩
-      S₃₄.⟪ C₂₄₁ x₄ (c₁ v γ) (c₀ v γ) ⟫ ∎
+  -- What needs pc's definition.
+  opaque
+    unfolding pc
+    private
+      pc-cong : ∀ v {w w′} → (₄₊ j) ⊢ w ≈ w′ → pc v w ≈ pc v w′
+      pc-cong v e = place-cong 3 (Col.⟪⟫-cong (bot v γ (x₄ ∷ x′)) e)
 
-    pc-K : ∀ v → pc v (S₀₁.⟪ ZX₃ ⟫) ≈ S₃₄.⟪ D₂₄₀ x₄ (c₀ v γ) (c₁ v γ) ⟫
-    pc-K v = begin
-      place 3 (col (bot v γ (x₄ ∷ x′)) (S₀₁.⟪ ZX₃ ⟫))
-        ≈⟨ sym (col-place (c₀ v γ) (c₁ v γ) false true (x₄ ∷ x′) (S₀₁.⟪ ZX₃ ⟫)) ⟩
-      col (swB 3 (t v)) (place 3 (S₀₁.⟪ ZX₃ ⟫))        ≈⟨ Col.⟪⟫-cong (swB 3 (t v)) (place3-loc (Ex • ΛZX 3 • Ex)) ⟩
-      col (swB 3 (t v)) (S₃₄.⟪ S₀₁.⟪ ZX₃ ⟫ ⟫)          ≈⟨ sym (col-S₃₄ (t v) (S₀₁.⟪ ZX₃ ⟫)) ⟩
-      S₃₄.⟪ col (t v) (S₀₁.⟪ ZX₃ ⟫) ⟫                  ≈⟨ S₃₄.⟪⟫-cong (norm-K (c₀ v γ) (c₁ v γ) x₄ (true ∷ x′)) ⟩
-      S₃₄.⟪ D₂₄₀ x₄ (c₀ v γ) (c₁ v γ) ⟫ ∎
+      pc-inv : ∀ v {w w′} → (₄₊ j) ⊢ w • w′ ≈ ε → pc v w • pc v w′ ≈ ε
+      pc-inv v {w} {w′} e =
+        trans (sym (place-• 3 (col (bot v γ (x₄ ∷ x′)) w) (col (bot v γ (x₄ ∷ x′)) w′)))
+              (trans (place-cong 3 (col-inv (bot v γ (x₄ ∷ x′)) e)) place-ε)
+
+      -- The rotations, placed: the second gates of (268) and (267) under
+      -- the swap of the wires 3 4.
+      pc-Z : ∀ v → pc v ZX₃ ≈ S₃₄.⟪ C₂₄₁ x₄ (c₁ v γ) (c₀ v γ) ⟫
+      pc-Z v = begin
+        place 3 (col (bot v γ (x₄ ∷ x′)) ZX₃)
+          ≈⟨ sym (col-place (c₀ v γ) (c₁ v γ) false true (x₄ ∷ x′) ZX₃) ⟩
+        col (swB 3 (t v)) (place 3 ZX₃)                  ≈⟨ Col.⟪⟫-cong (swB 3 (t v)) (place3-loc (ΛZX 3)) ⟩
+        col (swB 3 (t v)) (S₃₄.⟪ ZX₃ ⟫)                  ≈⟨ sym (col-S₃₄ (t v) ZX₃) ⟩
+        S₃₄.⟪ col (t v) ZX₃ ⟫                            ≈⟨ S₃₄.⟪⟫-cong (norm-ZX (c₀ v γ) (c₁ v γ) x₄ (true ∷ x′)) ⟩
+        S₃₄.⟪ C₂₄₁ x₄ (c₁ v γ) (c₀ v γ) ⟫ ∎
+
+      pc-K : ∀ v → pc v (S₀₁.⟪ ZX₃ ⟫) ≈ S₃₄.⟪ D₂₄₀ x₄ (c₀ v γ) (c₁ v γ) ⟫
+      pc-K v = begin
+        place 3 (col (bot v γ (x₄ ∷ x′)) (S₀₁.⟪ ZX₃ ⟫))
+          ≈⟨ sym (col-place (c₀ v γ) (c₁ v γ) false true (x₄ ∷ x′) (S₀₁.⟪ ZX₃ ⟫)) ⟩
+        col (swB 3 (t v)) (place 3 (S₀₁.⟪ ZX₃ ⟫))        ≈⟨ Col.⟪⟫-cong (swB 3 (t v)) (place3-loc (Ex • ΛZX 3 • Ex)) ⟩
+        col (swB 3 (t v)) (S₃₄.⟪ S₀₁.⟪ ZX₃ ⟫ ⟫)          ≈⟨ sym (col-S₃₄ (t v) (S₀₁.⟪ ZX₃ ⟫)) ⟩
+        S₃₄.⟪ col (t v) (S₀₁.⟪ ZX₃ ⟫) ⟫                  ≈⟨ S₃₄.⟪⟫-cong (norm-K (c₀ v γ) (c₁ v γ) x₄ (true ∷ x′)) ⟩
+        S₃₄.⟪ D₂₄₀ x₄ (c₀ v γ) (c₁ v γ) ⟫ ∎
+
+      -- The smaller box, placed twice: the statement one width down.
+      rB : ∀ v → A • pc v (place 3 (Vb v j)) ≈ pc v (place 3 (Vb v j)) • A
+      rB v = via (trans (place-cong 3 (col-place (c₀ v γ) (c₁ v γ) false x₄ x′ (Vb v j))) (place-34 _))
+                 (lift4 α β a (ih α β a γ x′ v))
+
+  private
+    -- A passes the inverse of what it passes.
+    inv : ∀ v {w w′} → (₄₊ j) ⊢ w • w′ ≈ ε → (₄₊ j) ⊢ w′ • w ≈ ε → A • pc v w ≈ pc v w • A → A • pc v w′ ≈ pc v w′ • A
+    inv v e e′ p = comm-inv (pc-inv v e) (pc-inv v e′) p
 
     fam268 : ∀ x c d → A • S₃₄.⟪ C₂₄₁ x c d ⟫ ≈ S₃₄.⟪ C₂₄₁ x c d ⟫ • A
     fam268 true  c d = eq268 α β c a d
@@ -421,11 +435,6 @@ module Step (j : ℕ) (ih : Gd j) (α β a γ : Bool) (x₄ : Bool) (x′ : Bits
 
     rK : ∀ v → A • pc v (S₀₁.⟪ ZX₃ ⟫) ≈ pc v (S₀₁.⟪ ZX₃ ⟫) • A
     rK v = via (pc-K v) (fam267 x₄ (c₀ v γ) (c₁ v γ))
-
-    -- The smaller box, placed twice: the statement one width down.
-    rB : ∀ v → A • pc v (place 3 (Vb v j)) ≈ pc v (place 3 (Vb v j)) • A
-    rB v = via (trans (place-cong 3 (col-place (c₀ v γ) (c₁ v γ) false x₄ x′ (Vb v j))) (place-34 _))
-               (lift4 α β a (ih α β a γ x′ v))
 
     SS : ∀ w → (₄₊ j) ⊢ S₀₁.⟪ S₀₁.⟪ w ⟫ ⟫ ≈ w
     SS w = S₀₁.⟪⟫-⟪⟫ w
@@ -445,16 +454,19 @@ module Step (j : ℕ) (ih : Gd j) (α β a γ : Bool) (x₄ : Bool) (x′ : Bits
 ------------------------------------------------------------------------
 -- At every width
 
-gd : Comp 4 → ∀ j → Below (₄₊ j) → Gd j
-gd c₄ zero    _ = gd₀ c₄
-gd c₄ (suc j) b α β a γ (x₄ ∷ x′) v =
-  via (trans (place-cong 3 (Col.⟪⟫-cong s (Vb-word c₄ j b′ v)))
-             (trans (place-cong 3 (CW.⟪⟫-word (negsB s) (negs² s) (lv j v) es))
-                    (place-word (λ l → col s (lv j v l)) es)))
-      (pass-word (λ l → place 3 (col s (lv j v l))) es (Step.letter j (gd c₄ j b′) α β a γ x₄ x′ v))
-  where
-  open Tools ((₄₊ (suc j)) VRel,_===_)
-  b′ : Below (₄₊ j)
-  b′ = below-suc b
-  s : Bits (₄₊ j)
-  s = bot v γ (x₄ ∷ x′)
+-- Step.letter is stated with Step.pc, which gd reads unfolded.
+opaque
+  unfolding Step.pc
+  gd : Comp 4 → ∀ j → Below (₄₊ j) → Gd j
+  gd c₄ zero    _ = gd₀ c₄
+  gd c₄ (suc j) b α β a γ (x₄ ∷ x′) v =
+    via (trans (place-cong 3 (Col.⟪⟫-cong s (Vb-word c₄ j b′ v)))
+               (trans (place-cong 3 (CW.⟪⟫-word (negsB s) (negs² s) (lv j v) es))
+                      (place-word (λ l → col s (lv j v l)) es)))
+        (pass-word (λ l → place 3 (col s (lv j v l))) es (Step.letter j (gd c₄ j b′) α β a γ x₄ x′ v))
+    where
+    open Tools ((₄₊ (suc j)) VRel,_===_)
+    b′ : Below (₄₊ j)
+    b′ = below-suc b
+    s : Bits (₄₊ j)
+    s = bot v γ (x₄ ∷ x′)

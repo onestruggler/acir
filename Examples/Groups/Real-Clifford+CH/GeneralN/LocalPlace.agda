@@ -20,7 +20,7 @@ open import Data.Fin using (Fin ; toℕ) renaming (zero to 0F ; suc to sF)
 open import Data.Fin.Permutation using (_⟨$⟩ʳ_ ; remove ; lift₀ ; lift₀-remove)
 open import Data.Nat using (ℕ ; zero ; suc ; _+_ ; _<_ ; s≤s ; z≤n)
 open import Data.Nat.Properties using (suc-injective)
-open import Data.Product using (Σ ; _×_ ; _,_)
+open import Data.Product using (Σ ; _×_ ; _,_ ; proj₁ ; proj₂)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
@@ -79,9 +79,15 @@ private
   lift0′ : ∀ {n} (u : Word (S.Gen (₁₊ n))) → perm u ⟨$⟩ʳ 0F ≡ 0F →
            Σ (Word (S.Gen n)) λ v → ((₁₊ n) ⊢ net u ≈ net v ↑) ×
                                     (∀ i → perm u ⟨$⟩ʳ sF i ≡ sF (perm v ⟨$⟩ʳ i))
-  lift0′ {n} u p with surjective {n} (remove 0F (perm u))
-  ... | v , ok = v , Eq.subst (λ w → (₁₊ n) ⊢ net u ≈ w) (net-↑ v) (perm-≈ {u = u} {v = v S.↑} pw) , sv
+  -- The pairs below are taken apart by projection: a with on them
+  -- abstracted them over goals full of computed permutations, which
+  -- Agda normalised (12.6 s of this module's 13).
+  lift0′ {n} u p = v , Eq.subst (λ w → (₁₊ n) ⊢ net u ≈ w) (net-↑ v) (perm-≈ {u = u} {v = v S.↑} pw) , sv
     where
+    s = surjective {n} (remove 0F (perm u))
+    v = proj₁ s
+    ok = proj₂ s
+
     sv : ∀ i → perm u ⟨$⟩ʳ sF i ≡ sF (perm v ⟨$⟩ʳ i)
     sv i = Eq.trans (Eq.sym (lift₀-remove (perm u) p (sF i))) (Eq.cong sF (Eq.sym (ok PB.refl i)))
 
@@ -93,10 +99,16 @@ lift-k : ∀ k (u : Word (S.Gen (k + r))) → (∀ (i : Fin (k + r)) → toℕ i
          Σ (Word (S.Gen r)) λ v → (k + r) ⊢ net u ≈ up k (net v)
 lift-k {r} zero    u fix = u , refl
   where open Tools (r VRel,_===_)
-lift-k {r} (suc k) u fix with lift0′ u (fix 0F (s≤s z≤n))
-... | v , e , sv with lift-k k v (λ i i<k → sF-inj (Eq.trans (Eq.sym (sv i)) (fix (sF i) (s≤s i<k))))
-... | w , e′ = w , trans e (lemma-cong↑ (net v) (up k (net w)) e′)
-  where open Tools ((suc (k + r)) VRel,_===_)
+lift-k {r} (suc k) u fix = w , trans e (lemma-cong↑ (net v) (up k (net w)) e′)
+  where
+  open Tools ((suc (k + r)) VRel,_===_)
+  L = lift0′ u (fix 0F (s≤s z≤n))
+  v = proj₁ L
+  e = proj₁ (proj₂ L)
+  sv = proj₂ (proj₂ L)
+  L′ = lift-k k v (λ i i<k → sF-inj (Eq.trans (Eq.sym (sv i)) (fix (sF i) (s≤s i<k))))
+  w = proj₁ L′
+  e′ = proj₂ L′
 
 ------------------------------------------------------------------------
 -- The placement depends only on the k wires
@@ -104,8 +116,7 @@ lift-k {r} (suc k) u fix with lift0′ u (fix 0F (s≤s z≤n))
 place-eq : ∀ {k} (u : Circuit k) (σ σ′ : Word (S.Gen (k + r))) →
            (∀ (j : Fin (k + r)) → toℕ j < k → perm σ′ ⟨$⟩ʳ (perm (revS σ) ⟨$⟩ʳ j) ≡ j) →
            (k + r) ⊢ pl σ (u ↓ᵏ r) ≈ pl σ′ (u ↓ᵏ r)
-place-eq {r} {k} u σ σ′ agree with lift-k k (revS σ • σ′) agree
-... | v , e = sym (begin
+place-eq {r} {k} u σ σ′ agree = sym (begin
   net σ′ • U • net (revS σ′)
     ≈⟨ sym left-unit ⟩
   ε • (net σ′ • U • net (revS σ′))
@@ -125,3 +136,6 @@ place-eq {r} {k} u σ σ′ agree with lift-k k (revS σ • σ′) agree
   open Tools ((k + r) VRel,_===_)
   U : Circuit (k + r)
   U = u ↓ᵏ r
+  L = lift-k k (revS σ • σ′) agree
+  v = proj₁ L
+  e = proj₂ L
