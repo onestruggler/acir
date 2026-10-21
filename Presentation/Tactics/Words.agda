@@ -21,6 +21,8 @@ open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_ ; _∸_)
 open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Unit.Base using (⊤ ; tt)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+import Data.List.Base as L using (take ; drop ; reverse)
+open import Data.List.Properties using (take++drop≡id)
 
 open import Word.Base
 import Presentation.Base as PB
@@ -409,6 +411,54 @@ module Commuting
         equals word-of-list (x ∷ comm-canonical xs)
             by lemma-insert x (comm-canonical xs)
         equals word-of-list (insert x (comm-canonical xs))
+
+  -- ----------------------------------------------------------------------
+  -- ** Restandardization
+
+  -- The canonical form of a word ys that shares a suffix with a
+  -- canonical form xs, as after a rewrite step, which changes a word
+  -- only locally: only the letters of ys before their longest common
+  -- suffix are inserted.  A suffix of a canonical form is canonical,
+  -- so the result is comm-canonical ys, at the cost of the changed part
+  -- rather than of the whole word.  The test eq? only finds the suffix:
+  -- whatever it answers, the result is equivalent to ys
+  -- (lemma-restandardize).
+  insert-all : List X -> List X -> List X
+  insert-all []       zs = zs
+  insert-all (x ∷ xs) zs = insert x (insert-all xs zs)
+
+  lemma-insert-all : (xs zs : List X) -> Γ ⊢ word-of-list (xs ++ zs) === word-of-list (insert-all xs zs)
+  lemma-insert-all []       zs = refl
+  lemma-insert-all (x ∷ xs) zs =
+    equational word-of-list (x ∷ (xs ++ zs))
+            by right (lemma-insert-all xs zs)
+        equals word-of-list (x ∷ insert-all xs zs)
+            by lemma-insert x (insert-all xs zs)
+        equals word-of-list (insert x (insert-all xs zs))
+
+  common-length : (X -> X -> Bool) -> List X -> List X -> ℕ
+  common-length eq? (x ∷ xs) (y ∷ ys) with eq? x y
+  ... | true  = suc (common-length eq? xs ys)
+  ... | false = zero
+  common-length eq? _        _        = zero
+
+  -- The length of the part of ys before its common suffix with xs.
+  changed-length : (X -> X -> Bool) -> List X -> List X -> ℕ
+  changed-length eq? xs ys = length ys ∸ common-length eq? (L.reverse xs) (L.reverse ys)
+
+  restandardize : (X -> X -> Bool) -> List X -> List X -> List X
+  restandardize eq? xs ys = insert-all (L.take (changed-length eq? xs ys) ys) (L.drop (changed-length eq? xs ys) ys)
+
+  lemma-restandardize : (eq? : X -> X -> Bool) (xs ys : List X) ->
+                        Γ ⊢ word-of-list ys === word-of-list (restandardize eq? xs ys)
+  lemma-restandardize eq? xs ys =
+    equational word-of-list ys
+            by refl' (Eq.cong word-of-list (Eq.sym (take++drop≡id m ys)))
+        equals word-of-list (L.take m ys ++ L.drop m ys)
+            by lemma-insert-all (L.take m ys) (L.drop m ys)
+        equals word-of-list (restandardize eq? xs ys)
+    where
+    m = changed-length eq? xs ys
 
   -- ----------------------------------------------------------------------
   -- ** The general-comm tactic
@@ -1494,6 +1544,86 @@ module Rewriting
 
 
   -- ----------------------------------------------------------------------
+  -- ** Multistep rewriting with restandardization
+
+  -- Step-With-Standardization, with the word standardized afresh after
+  -- each step by restandardize, which is given the word before the
+  -- step too: for the canonical forms modulo commutativity,
+  -- Commuting.restandardize, which inserts only what the step changed.
+  -- On the long two-level words of Clifford+CS-3qubit (some 230 letters,
+  -- a thousand steps) standardizing the whole word after each step was
+  -- about half the time.
+  module Step-With-Restandardization
+         {X : Set}
+         {Γ : Context X}
+         (step : Step-Function X Γ)
+         (standardize : List X -> List X)
+         (lemma-standardize : (xs : List X) ->  Γ ⊢ word-of-list xs === word-of-list (standardize xs))
+         (restandardize : List X -> List X -> List X)
+         (lemma-restandardize : (xs ys : List X) -> Γ ⊢ word-of-list ys === word-of-list (restandardize xs ys))
+    where
+
+    open Presentation.Tactics.Lists.Strict
+
+    mutual
+      multistep : (n : ℕ) -> List X -> List X
+      multistep n xs = multistep-st n (standardize xs)
+
+      -- multistep-st assumes that its input is standardized.
+      multistep-st : (n : ℕ) -> List X -> List X
+      multistep-st zero xs = xs
+      multistep-st (suc n) xs = strict {P = λ _ -> List X} xs (λ xs' -> multistep-after n xs' (step xs'))
+
+      multistep-after : ℕ -> (xs : List X) -> Maybe (∃ λ (xs' : List X) -> Γ ⊢ word-of-list xs === word-of-list xs') -> List X
+      multistep-after n xs nothing = xs
+      multistep-after n xs (just p) = multistep-st n (restandardize xs (proj₁ p))
+
+    mutual
+      lemma-multistep : (n : ℕ) -> (xs : List X) -> Γ ⊢ word-of-list xs === word-of-list (multistep n xs)
+      lemma-multistep n xs =
+        equational word-of-list xs
+                by lemma-standardize xs
+            equals word-of-list (standardize xs)
+                by lemma-multistep-st n (standardize xs)
+            equals word-of-list (multistep n xs)
+
+      lemma-multistep-st : (n : ℕ) -> (xs : List X) -> Γ ⊢ word-of-list xs === word-of-list (multistep-st n xs)
+      lemma-multistep-st zero xs = refl
+      lemma-multistep-st (suc n) xs =
+        Eq.subst (λ l -> Γ ⊢ word-of-list xs === word-of-list l)
+          (Eq.sym (lemma-strict {P = λ _ -> List X} xs (λ xs' -> multistep-after n xs' (step xs'))))
+          (lemma-multistep-after n xs (step xs))
+
+      lemma-multistep-after : (n : ℕ) -> (xs : List X) -> (m : Maybe (∃ λ (xs' : List X) -> Γ ⊢ word-of-list xs === word-of-list xs')) ->
+        Γ ⊢ word-of-list xs === word-of-list (multistep-after n xs m)
+      lemma-multistep-after n xs nothing = refl
+      lemma-multistep-after n xs (just p) =
+        equational word-of-list xs
+                by proj₂ p
+            equals word-of-list (proj₁ p)
+                by lemma-restandardize xs (proj₁ p)
+            equals word-of-list (restandardize xs (proj₁ p))
+                by lemma-multistep-st n (restandardize xs (proj₁ p))
+            equals word-of-list (multistep-st n (restandardize xs (proj₁ p)))
+
+    general-rewrite : (n : ℕ) -> {w u : Word X} -> multistep n (list-of-word w) ≡ multistep n (list-of-word u) -> Γ ⊢ w === u
+    general-rewrite n {w} {u} eq =
+      let ws = list-of-word w
+          us = list-of-word u
+      in
+        equational w
+                by lemma-list-of-word w
+            equals word-of-list ws
+                by lemma-multistep n ws
+            equals word-of-list (multistep n ws)
+                by refl' (Eq.cong word-of-list eq)
+            equals word-of-list (multistep n us)
+                by lemma-multistep n us reversed
+            equals word-of-list us
+                by lemma-list-of-word u reversed
+            equals u
+
+  -- ----------------------------------------------------------------------
   -- ** Multistep rewriting with standardization
   module Step-With-Standardization1
          {X : Set}
@@ -1725,6 +1855,53 @@ module Basis-Change-With-Standardization
   open Monoid-Equational
   open Inverse X Γ group-like
   open Rewriting.Step-With-Standardization (Rewriting.step-cong step) standardize lemma-standardize
+  
+  -- A simple tactic for proving an equation by doing a suitable basis
+  -- change (i.e., conjugating the equation by a given word g).
+  by-basis-change : ∀ {u v u' v'} -> (g : Word X) -> Γ ⊢ u === v -> (n : ℕ) -> (multistep n (list-of-word u) , multistep n (list-of-word (g • v' • g ⁻¹))) ≡ (multistep n (list-of-word (g • u' • g ⁻¹)) , multistep n (list-of-word v)) -> Γ ⊢ u' === v'
+  by-basis-change {u} {v} {u'} {v'} g hyp n x =
+    equational u'
+            by symm (trans left-unit right-unit)
+        equals ε • u' • ε
+            by (left (lemma-left-inverse reversed))
+        equals (g ⁻¹ • g) • u' • ε
+            by (right right (lemma-left-inverse reversed))
+        equals (g ⁻¹ • g) • u' • (g ⁻¹ • g)
+            by special-assoc ((□ • □) • □ • (□ • □)) (□ • (□ • □ • □) • □) Eq.refl
+        equals g ⁻¹ • (g • u' • g ⁻¹) • g
+            by right left general-rewrite n (Eq.cong proj₁ x) reversed
+        equals g ⁻¹ • u • g
+            by right left hyp
+        equals g ⁻¹ • v • g
+            by right left (general-rewrite n ((Eq.cong proj₂ x)) reversed)
+        equals g ⁻¹ • (g • v' • g ⁻¹) • g
+            by special-assoc (□ • (□ • □ • □) • □) ((□ • □) • □ • (□ • □)) Eq.refl
+        equals (g ⁻¹ • g) • v' • (g ⁻¹ • g)
+            by (left lemma-left-inverse)
+        equals ε • v' • (g ⁻¹ • g)
+            by (right right lemma-left-inverse)
+        equals ε • v' • ε
+            by trans left-unit right-unit
+        equals v'
+
+
+module Basis-Change-With-Restandardization
+       {X : Set}
+       {Γ : Context X}
+       (group-like : Grouplike Γ)
+       (step : Rewriting.Step-Function X Γ)
+       (standardize : List X -> List X)
+       (lemma-standardize : (xs : List X) ->  Γ ⊢ word-of-list xs === word-of-list (standardize xs))
+       (restandardize : List X -> List X -> List X)
+       (lemma-restandardize : (xs ys : List X) -> Γ ⊢ word-of-list ys === word-of-list (restandardize xs ys))
+  where
+
+  -- Basis-Change-With-Standardization on Rewriting.Step-With-Restandardization.
+
+  open Associative
+  open Monoid-Equational
+  open Inverse X Γ group-like
+  open Rewriting.Step-With-Restandardization (Rewriting.step-cong step) standardize lemma-standardize restandardize lemma-restandardize
   
   -- A simple tactic for proving an equation by doing a suitable basis
   -- change (i.e., conjugating the equation by a given word g).

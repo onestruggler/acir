@@ -95,7 +95,7 @@ module Examples.Groups.Clifford+CS-3qubit.Step8.Monoidal where
   order-step _ = nothing
 
 
-  module Order = Step-With-Standardization (step-cong (order-step)) comm-canonical lemma-comm-canonical
+  module Order = Step-With-Restandardization (step-cong (order-step)) comm-canonical lemma-comm-canonical (restandardize same) (lemma-restandardize same)
 
 
   lemma-S0K0S0 : Rel ⊢ S0 • K0 • S0 === K0 • S0 ^ 3 • K0 • iI
@@ -588,7 +588,7 @@ module Examples.Groups.Clifford+CS-3qubit.Step8.Monoidal where
   mvCSL-step _ = nothing
 
 
-  module mvSL = Step-With-Standardization (step-cong (order-step then mvSL-step)) comm-canonical lemma-comm-canonical
-  module mvSCSL = Step-With-Standardization (step-cong (mvI-step then order-step then mvSL-step then mvCSL-step))comm-canonical lemma-comm-canonical
+  module mvSL = Step-With-Restandardization (step-cong (order-step then mvSL-step)) comm-canonical lemma-comm-canonical (restandardize same) (lemma-restandardize same)
+  module mvSCSL = Step-With-Restandardization (step-cong (mvI-step then order-step then mvSL-step then mvCSL-step)) comm-canonical lemma-comm-canonical (restandardize same) (lemma-restandardize same)
 
 
