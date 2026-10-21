@@ -41,7 +41,7 @@
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)
 
-module Examples.Groups.Clifford.Qubit.Selinger.Figure8
+module Examples.Groups.ProjectiveClifford.Qubit.Selinger.Figure8
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Data.Product using (_,_)

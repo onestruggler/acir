@@ -47,7 +47,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.Clifford.Qubit.Model.Algebra where
+module Examples.Groups.CCX+HH-3qubit.MissingK.Algebra where
 
 open import Data.Bool using (Bool ; true ; false)
 open import Data.Nat using (ℕ) renaming (_+_ to _+ℕ_)

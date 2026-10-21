@@ -76,7 +76,7 @@ open import Examples.Groups.ProjectiveClifford.Qubit.CliffordAction using (cact 
 open import Examples.Groups.ProjectiveClifford.Qubit.CliffordGroup
   using (_≈ᶜ_ ; cact-↑ ; ≈ᶜ-refl ; ≈ᶜ-sym ; ≈ᶜ-trans ; ∙-congᶜ)
 
-import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
+import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
 open F8
   using ( _CRel,_===_ ; srel ; cong↑ ; comm₁ ; comm₂ ; ω-gate
         ; c1 ; c2 ; c3 ; c4 ; c5 ; c6 ; c7 ; c8 ; c9 ; c10 ; c11
@@ -84,7 +84,7 @@ open F8
 
 -- Figure 8's alphabet is ExactGate and the action's is SympGate, so a
 -- Figure-8 word reaches cact through the translation D.
-open import Examples.Groups.Clifford.Qubit.Selinger.Relabel p-2 p-prime
+open import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Relabel p-2 p-prime
   using (D ; D-↑ ; ex→sym)
 
 -- The scalar as a symplectic word, and the long relations C1, C10, C11,

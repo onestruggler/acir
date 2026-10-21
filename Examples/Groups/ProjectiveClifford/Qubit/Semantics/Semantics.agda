@@ -29,7 +29,8 @@
 --
 -- The scalar layer above this one — 1 → ⟨ω⟩ → Exact n → CMS n → 1,
 -- which restores the global scalar ω of order 8 — is outside the
--- projective development, in Examples.Groups.Clifford.Qubit.Semantics.
+-- projective development; the exact group is presented in
+-- Examples.Groups.Qubit-Clifford.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

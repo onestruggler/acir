@@ -12,7 +12,7 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 A from-scratch timing of every module at c93c2201 (188 minutes, with
 other Agda jobs on the machine) checked 1394 of 1405; the 11 failures
 are the files already failing (S3xC5's two, `Clifford/Qubit/Selinger/
-Placed` and the two modules it blocks, six stale `vqupit` slide files).
+Placed` and the two modules it blocks — the folder has since been removed — six stale `vqupit` slide files).
 Against the run at e56e9fbc the summed module time went 6718 → 4119 s
 and the modules over 20 s 53 → 32.
 
@@ -76,8 +76,8 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
 | Apply reasoning modules once, not per clause | `Simplified-V1/Forward`, `Simplified-V1/Iso` | 23.0 → 10.8 s, −20 % |
 | Share duplicated rewrite rules through `then` | `Ex-Sym3n/Swap` | 21.0 → 15.4 s |
 | Split only on what blocks reduction, not on every intermediate result | `Construct/Properties/Amalgamation` | 54.6 → 25.1 s (profile total) |
-| Decide a matrix identity as one boolean, not `refl` on tries | `Clifford/Qubit/Model/Gates` | 71 → 2.9 s |
-| Pass the axiom's own words; compare readings as words | `Clifford/Qubit/Model/Faithful`; `Real-Clifford+CH/Auxiliary/Soundness` (its literal rules, there with a boolean in place of `refl` on tries) | 1436 → 1.5 s; 20.1 → 2.2 s (`sound` 13 → 0.2 s) |
+| Decide a matrix identity as one boolean, not `refl` on tries | `Clifford/Qubit/Model/Gates` (since removed) | 71 → 2.9 s |
+| Pass the axiom's own words; compare readings as words | `Clifford/Qubit/Model/Faithful` (since removed); `Real-Clifford+CH/Auxiliary/Soundness` (its literal rules, there with a boolean in place of `refl` on tries) | 1436 → 1.5 s; 20.1 → 2.2 s (`sound` 13 → 0.2 s) |
 | Bundle many module parameters into one record | `Qupit-Phase-Affine/Phase/Control` | 26.9 → 5.3 s |
 | Decide each distinct generated check once, as a named lemma, its evidence left to `_` rather than `tt` (`tt` made the same boolean evaluate about six times slower) | `Groups/Qutrit-Clifford/Box3` (`scripts/emit3.py`: 4134 two-wire steps, 896 distinct, in `Box3/Steps*`); `Soundness/Checks`, `PauliLocal` (`_` only) | nine parts of 15–25 min each → 43 modules of at most 32 s, about 11 min in all, and with the steps in modules of 1800 letters (`STEP_LETTERS`) the 25 Steps modules of 20–31 s are 42 of at most 14 s, and with six relations a part (`emit3.py 6`) the 18 parts of up to 20 s are 29 of at most 11.4 s; 50 → 9.1 s, 41 → 8.2 s |
 | Decide a generated equation between two words on what is left of them once their common prefix and suffix are cut off (the step is then made at an index further on): fewer letters to evaluate, and more steps coincide | `Groups/Qutrit-Clifford/Box3` (`scripts/emit3.py`'s `step`: 896 distinct two-wire steps of 72,162 letters → 626 of 41,186) | `Box3/Steps*` 348 → 194 s (42 modules of at most 14 s → 21 of at most 11.8 s), `Box3` in all 464 → 312 s |
@@ -234,7 +234,7 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   on two tries makes the conversion checker compare them entry by
   entry, re-evaluating the stored product for every entry. `eqM A B ≡
   true` by `Eq.refl` is one evaluation, and `eqM-sound A B` turns it
-  into the equation (`Clifford/Qubit/Model/Decide`, after
+  into the equation (`Clifford/Qubit/Model/Decide`, since removed, after
   Real-Clifford+CH's `Semantics/Decide`; give both matrices, `eqM` being
   a function). Model.Gates' fifteen relations: 71 → 2.9 s.
 - **Compare readings as words, never as operators.** An operator is a

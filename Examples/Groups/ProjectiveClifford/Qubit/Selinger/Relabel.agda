@@ -30,7 +30,7 @@
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)
 
-module Examples.Groups.Clifford.Qubit.Selinger.Relabel
+module Examples.Groups.ProjectiveClifford.Qubit.Selinger.Relabel
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
@@ -42,7 +42,7 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
 open Symplectic using (Gen ; SympGate ; Circuit ; S ; H ; _↑)
 
-import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
+import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
 open F8 using (ExactGate ; ω-gate)
 
 private

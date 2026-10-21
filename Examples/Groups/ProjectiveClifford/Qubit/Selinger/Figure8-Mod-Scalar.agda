@@ -3,7 +3,7 @@
 --
 -- Selinger's Figure-8 presentation of the n-qubit Clifford operators
 -- (arXiv:1310.6813), taken MOD SCALARS: the copy of
--- Examples.Groups.Clifford.Qubit.Selinger.Figure8 with the order-8
+-- Examples.Groups.ProjectiveClifford.Qubit.Selinger.Figure8 with the order-8
 -- scalar ω quotiented out.
 --
 -- The scalars form the central subgroup ⟨ω⟩ ≅ ℤ/8, so the quotient is

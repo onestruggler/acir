@@ -32,7 +32,7 @@ open import Data.Vec.Base using ([] ; _∷_)
 open import Level using (0ℓ)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
-open import Examples.Groups.Clifford.Qubit.Model.Algebra public
+open import Examples.Groups.CCX+HH-3qubit.MissingK.Algebra public
 open import {P}.Syntactics
 import Presentation.Base as PB
 open import Presentation.Independence using (Select ; _∣_)

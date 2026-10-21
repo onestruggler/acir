@@ -244,4 +244,4 @@ pauliIncl n = Extension.incl (CMS-extension n)
 
 -- The scalar layer above this one, 1 → ⟨ω⟩ → Exact n → CMS n → 1, with
 -- Clifford-group n as its quotient, is outside the projective
--- development: see Examples.Groups.Clifford.Qubit.Semantics.
+-- development; the exact group is presented in Examples.Groups.Qubit-Clifford.

@@ -42,23 +42,6 @@ cfg('Clifford+CS',
 PRIME = ' (p-2 : ℕ) (p-prime : Prime (2+ p-2))'
 PRIME_IMPORTS = 'open import Data.Nat using (2+)\nopen import Data.Nat.Primality using (Prime)\n\n'
 
-cfg('Selinger',
-    src='Examples/Groups/Clifford/Qubit/Selinger/Figure8.agda',
-    out='Examples/Groups/Clifford/Qubit/Selinger/TopPad.agda',
-    rel='Sel', gate='ExactGate', srel='_Sel,_===_', grouplike='grouplike',
-    header=header("Selinger's Figure 8, C1–C15",
-                  'Examples.Groups.Clifford.Qubit.Selinger.TopPad',
-                  PRIME_IMPORTS + 'open import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime\n\nopen Circuit.TopPad ExactGate using (_⇓)',
-                  params=PRIME))
-
-cfg('Selinger2',
-    src='Examples/Groups/Clifford/Qubit/Selinger2/Figure8.agda',
-    out='Examples/Groups/Clifford/Qubit/Selinger2/TopPad.agda',
-    rel='Sel', gate='ExactGate', srel='_Sel,_===_', grouplike='grouplike',
-    header=header("Selinger's Figure 8, C1–C15",
-                  'Examples.Groups.Clifford.Qubit.Selinger2.TopPad',
-                  'open import Examples.Groups.Clifford.Qubit.Selinger2.Figure8\n\nopen Circuit.TopPad ExactGate using (_⇓)'))
-
 cfg('Figure8-Mod-Scalar',
     src='Examples/Groups/ProjectiveClifford/Qubit/Selinger/Figure8-Mod-Scalar.agda',
     out='Examples/Groups/ProjectiveClifford/Qubit/Selinger/TopPad.agda',
