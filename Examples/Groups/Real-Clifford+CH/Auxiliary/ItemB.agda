@@ -245,7 +245,7 @@ module _ (e65 : Eq65) where
   rule-a2 c a b ab =
     W.by-frame c (G.X a b • G.X a b) ε ((W.av-a , W.av-b) , (W.av-a , W.av-b)) tt
       (ab , ab) tt (cs c)
-      (A5-tmpl (⌜ ty ₂ ₀ ₁ ⌝ •ᵗ ⌜ ty ₂ ₀ ₁ ⌝) emp Eq.refl)
+      (A5-tmplᵇ (⌜ ty ₂ ₀ ₁ ⌝ •ᵗ ⌜ ty ₂ ₀ ₁ ⌝) emp Eq.refl)
     where
     module W = With a b b
     open W.NV (a ∷ b ∷ W.g ∷ [])
@@ -356,7 +356,7 @@ module _ (e65 : Eq65) where
   rule-c1 c a b ab =
     W.by-frame c (G.−1 a • G.X a b) (G.X a b • G.−1 b)
       (W.av-a , (W.av-a , W.av-b)) ((W.av-a , W.av-b) , W.av-b) (tt , ab) (ab , tt) (cs c)
-      (A5-tmpl (⌜ tz ₀ ₂ ⌝ •ᵗ ⌜ ty ₂ ₀ ₁ ⌝) (⌜ ty ₂ ₀ ₁ ⌝ •ᵗ ⌜ tz ₁ ₂ ⌝) Eq.refl)
+      (A5-tmplᵇ (⌜ tz ₀ ₂ ⌝ •ᵗ ⌜ ty ₂ ₀ ₁ ⌝) (⌜ ty ₂ ₀ ₁ ⌝ •ᵗ ⌜ tz ₁ ₂ ⌝) Eq.refl)
     where
     module W = With a b b
     open W.NV (a ∷ b ∷ W.g ∷ [])
@@ -375,8 +375,8 @@ module _ (e65 : Eq65) where
     W.by-frame c (G.H a d • G.X b d) (G.X b d • G.H a b)
       ((W.av-a , W.av-c) , (W.av-b , W.av-c)) ((W.av-b , W.av-c) , (W.av-a , W.av-b))
       (ad , bd) (bd , ab) (cs c)
-      (by-norm (⌞ hl ₀ ₂ ⌟ •ᶠ ⌞ hf (ty ₃ ₁ ₂) ⌟) (⌞ hf (ty ₃ ₁ ₂) ⌟ •ᶠ ⌞ hl ₀ ₁ ⌟)
-               Eq.refl Eq.refl)
+      (by-normᵇ (⌞ hl ₀ ₂ ⌟ •ᶠ ⌞ hf (ty ₃ ₁ ₂) ⌟) (⌞ hf (ty ₃ ₁ ₂) ⌟ •ᶠ ⌞ hl ₀ ₁ ⌟)
+               Eq.refl)
     where
     module W = With a b d
     open W.NV (a ∷ b ∷ d ∷ W.g ∷ [])
@@ -396,8 +396,8 @@ module _ (e65 : Eq65) where
     W.by-frame c (G.−1 b • G.H a b) (G.H a b • G.X a b)
       (W.av-b , (W.av-a , W.av-b)) ((W.av-a , W.av-b) , (W.av-a , W.av-b)) (tt , ab) (ab , ab)
       (cs c)
-      (by-norm (⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hl ₀ ₁ ⌟) (⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (ty ₂ ₀ ₁) ⌟)
-               Eq.refl Eq.refl)
+      (by-normᵇ (⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hl ₀ ₁ ⌟) (⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (ty ₂ ₀ ₁) ⌟)
+               Eq.refl)
     where
     module W = With a b b
     open W.NV (a ∷ b ∷ W.g ∷ [])
@@ -416,8 +416,8 @@ module _ (e65 : Eq65) where
     W.by-frame c (G.H d b • G.X b d) (G.X b d • G.H b d)
       ((W.av-b , W.av-a) , (W.av-a , W.av-b)) ((W.av-a , W.av-b) , (W.av-a , W.av-b))
       ((λ h → bd (Eq.sym h)) , bd) (bd , bd) (cs c)
-      (by-norm (⌞ hl ₁ ₀ ⌟ •ᶠ ⌞ hf (ty ₂ ₀ ₁) ⌟) (⌞ hf (ty ₂ ₀ ₁) ⌟ •ᶠ ⌞ hl ₀ ₁ ⌟)
-               Eq.refl Eq.refl)
+      (by-normᵇ (⌞ hl ₁ ₀ ⌟ •ᶠ ⌞ hf (ty ₂ ₀ ₁) ⌟) (⌞ hf (ty ₂ ₀ ₁) ⌟ •ᶠ ⌞ hl ₀ ₁ ⌟)
+               Eq.refl)
     where
     module W = With b d d
     open W.NV (b ∷ d ∷ W.g ∷ [])

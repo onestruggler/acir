@@ -28,7 +28,7 @@ open import Data.Nat using (ℕ)
 
 module Examples.Groups.Real-Clifford+CH.Auxiliary.FrameNorm (m : ℕ) where
 
-open import Data.Bool using (Bool ; true ; false ; _xor_)
+open import Data.Bool using (Bool ; true ; false ; _xor_ ; _∧_)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin)
 open import Data.Fin.Properties using (_≟_ ; _<?_)
@@ -514,3 +514,30 @@ module Norm (e65 : Eq65) {k : ℕ} (ι : Fin k → Fin N)
                                                                (A5-tmpl (proj₂ (norm w)) (proj₂ (norm w′)) et) ⟩
     halves (proj₁ (norm w′)) • inst (proj₂ (norm w′))     ≈⟨ sym (norm-sound w′) ⟩
     instF w′                                              ∎
+
+  -- by-norm's two conditions as one boolean, each normal form computed
+  -- once and compared by evaluation (`refl` on the computed lists and
+  -- tables made the conversion checker compare them entry by entry).
+  pairs-eq : List P → List P → Bool
+  pairs-eq []             []               = true
+  pairs-eq ((a , b) ∷ hs) ((c , d) ∷ hs′) = fin-eq a c ∧ (fin-eq b d ∧ pairs-eq hs hs′)
+  pairs-eq _              _                = false
+
+  pairs-eq-sound : ∀ (hs hs′ : List P) → pairs-eq hs hs′ ≡ true → hs ≡ hs′
+  pairs-eq-sound []             []              _ = Eq.refl
+  pairs-eq-sound ((a , b) ∷ hs) ((c , d) ∷ hs′) h =
+    Eq.cong₂ _∷_ (Eq.cong₂ _,_ (fin-eq-sound a c (∧ᵗ-l {fin-eq a c} h))
+                               (fin-eq-sound b d (∧ᵗ-l {fin-eq b d} (∧ᵗ-r {fin-eq a c} h))))
+                 (pairs-eq-sound hs hs′ (∧ᵗ-r {fin-eq b d} (∧ᵗ-r {fin-eq a c} h)))
+  pairs-eq-sound []             (_ ∷ _)         ()
+  pairs-eq-sound (_ ∷ _)        []              ()
+
+  cmpNF : NF → NF → Bool
+  cmpNF (hs , t) (hs′ , t′) = pairs-eq hs hs′ ∧ tab-eq (tab (tW t)) (tab (tW t′))
+
+  by-normᵇ : ∀ (w w′ : FW) → cmpNF (norm w) (norm w′) ≡ true → instF w ≈ instF w′
+  by-normᵇ w w′ h = by-norm w w′ (pairs-eq-sound _ _ (∧ᵗ-l {pairs-eq hs hs′} h))
+                                 (tab-eq-sound _ _ (∧ᵗ-r {pairs-eq hs hs′} h))
+    where
+    hs = proj₁ (norm w)
+    hs′ = proj₁ (norm w′)

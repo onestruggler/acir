@@ -9,7 +9,7 @@
 -- allows when every Hadamard is read at ⟨ε⟩ or ⟨K⟩ — as it is when the
 -- word starts at one of those, the two signs of (d4*) being adjacent.
 -- Through that frame the image of (d4*) is Figure 11's (80), each side
--- one normaliser call away (`by-norm`, checked in Python first,
+-- one normaliser call away (`by-normᵇ`, checked in Python first,
 -- `scratchpad/tN.py`), and (80) is `Eq80.eq80`, from Figure 8's (46).
 -- At ⟨M⟩ and ⟨KM⟩ the obligation is the one at ⟨ε⟩ and ⟨K⟩ conjugated
 -- by a sign on the index 6 (`SignSym.obl-M`).
@@ -208,10 +208,10 @@ module _ (e65 : Eq65) where
 
       -- The image of (d4*) is (80).
       img : F.Φʷ L ≈ F.Φʷ R
-      img = trans (by-norm φL L80ᶠ Eq.refl Eq.refl)
+      img = trans (by-normᵇ φL L80ᶠ Eq.refl)
             (trans (e80 a b x d y w (is-lit ₀ h₀) (is-lit ₁ h₁) (is-lit ₂ h₂)
                         (is-lit ₃ h₃) (is-lit ₄ h₄) (is-lit ₅ h₅))
-                   (by-norm R80ᶠ φR Eq.refl Eq.refl))
+                   (by-normᵇ R80ᶠ φR Eq.refl))
 
       -- The sign on 6, for ⟨M⟩ and ⟨KM⟩.
       s6z : f6 ≢ z₀

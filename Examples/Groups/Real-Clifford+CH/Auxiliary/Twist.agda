@@ -17,7 +17,7 @@
 -- the tuple: `std-any`, which is `Eq77.Frame.std` with the sign's
 -- partner any index fresh to the four, and `std-any₂`, the same for
 -- the second pair.  The Hadamard-free bookkeeping is decided on
--- templates (`Template.A5-tmpl`).
+-- templates (`Template.A5-tmplᵇ`).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -169,10 +169,10 @@ module _ (e65 : Eq65) where
       open At (lookup (a ∷ b ∷ e₀ ∷ x ∷ [])) (lookup-inj dv)
 
       split : zzʷ a x ≈ zzʷ a e₀ • zzʷ e₀ x
-      split = A5-tmpl ⌜ tz ₀ ₃ ⌝ (⌜ tz ₀ ₂ ⌝ •ᵗ ⌜ tz ₂ ₃ ⌝) Eq.refl
+      split = A5-tmplᵇ ⌜ tz ₀ ₃ ⌝ (⌜ tz ₀ ₂ ⌝ •ᵗ ⌜ tz ₂ ₃ ⌝) Eq.refl
 
       fold : (zzʷ a e₀ • zxʷ b b a) • zzʷ e₀ x ≈ zzʷ a x • zxʷ b b a
-      fold = A5-tmpl ((⌜ tz ₀ ₂ ⌝ •ᵗ ⌜ ty ₁ ₁ ₀ ⌝) •ᵗ ⌜ tz ₂ ₃ ⌝)
+      fold = A5-tmplᵇ ((⌜ tz ₀ ₂ ⌝ •ᵗ ⌜ ty ₁ ₁ ₀ ⌝) •ᵗ ⌜ tz ₂ ₃ ⌝)
                      (⌜ tz ₀ ₃ ⌝ •ᵗ ⌜ ty ₁ ₁ ₀ ⌝) Eq.refl
 
       com : zzʷ e₀ x • H ≈ H • zzʷ e₀ x
@@ -283,7 +283,7 @@ module _ (e65 : Eq65) where
       open At (lookup (p ∷ q ∷ x ∷ [])) (lookup-inj dv)
 
       fold : (zzʷ p x • zxʷ q q p) • zzʷ p x ≈ zxʷ p p q
-      fold = A5-tmpl ((⌜ tz ₀ ₂ ⌝ •ᵗ ⌜ ty ₁ ₁ ₀ ⌝) •ᵗ ⌜ tz ₀ ₂ ⌝) ⌜ ty ₀ ₀ ₁ ⌝ Eq.refl
+      fold = A5-tmplᵇ ((⌜ tz ₀ ₂ ⌝ •ᵗ ⌜ ty ₁ ₁ ₀ ⌝) •ᵗ ⌜ tz ₀ ₂ ⌝) ⌜ ty ₀ ₀ ₁ ⌝ Eq.refl
     go false true e₁ e₂ =
       via r x (zzʷ r x • zxʷ s s r) (zxʷ r r s)
           (Eq.trans (keep r x p pr (≢sym xp))
@@ -299,7 +299,7 @@ module _ (e65 : Eq65) where
       open At (lookup (r ∷ s ∷ x ∷ [])) (lookup-inj dv)
 
       fold : (zzʷ r x • zxʷ s s r) • zzʷ r x ≈ zxʷ r r s
-      fold = A5-tmpl ((⌜ tz ₀ ₂ ⌝ •ᵗ ⌜ ty ₁ ₁ ₀ ⌝) •ᵗ ⌜ tz ₀ ₂ ⌝) ⌜ ty ₀ ₀ ₁ ⌝ Eq.refl
+      fold = A5-tmplᵇ ((⌜ tz ₀ ₂ ⌝ •ᵗ ⌜ ty ₁ ₁ ₀ ⌝) •ᵗ ⌜ tz ₀ ₂ ⌝) ⌜ ty ₀ ₀ ₁ ⌝ Eq.refl
     go true true e₁ e₂ =
       trans (via p r C (zxʷ p p q • zxʷ r r s)
           (Eq.trans (Eq.cong (_xor sgn (sp u) p) (δδ-fst p r pr))
@@ -319,7 +319,7 @@ module _ (e65 : Eq65) where
       open At (lookup (p ∷ q ∷ r ∷ s ∷ x ∷ [])) (lookup-inj dv)
 
       split : zzʷ p r ≈ zzʷ p x • zzʷ r x
-      split = A5-tmpl ⌜ tz ₀ ₂ ⌝ (⌜ tz ₀ ₄ ⌝ •ᵗ ⌜ tz ₂ ₄ ⌝) Eq.refl
+      split = A5-tmplᵇ ⌜ tz ₀ ₂ ⌝ (⌜ tz ₀ ₄ ⌝ •ᵗ ⌜ tz ₂ ₄ ⌝) Eq.refl
 
       zH : zzʷ p r • H ≈ H • C
       zH = begin
@@ -334,6 +334,6 @@ module _ (e65 : Eq65) where
         H • C                                                    ∎
 
       fold : C • zzʷ p r ≈ zxʷ p p q • zxʷ r r s
-      fold = A5-tmpl (((⌜ tz ₀ ₄ ⌝ •ᵗ ⌜ ty ₁ ₁ ₀ ⌝) •ᵗ (⌜ tz ₂ ₄ ⌝ •ᵗ ⌜ ty ₃ ₃ ₂ ⌝))
+      fold = A5-tmplᵇ (((⌜ tz ₀ ₄ ⌝ •ᵗ ⌜ ty ₁ ₁ ₀ ⌝) •ᵗ (⌜ tz ₂ ₄ ⌝ •ᵗ ⌜ ty ₃ ₃ ₂ ⌝))
                         •ᵗ ⌜ tz ₀ ₂ ⌝)
                      (⌜ ty ₀ ₀ ₁ ⌝ •ᵗ ⌜ ty ₂ ₂ ₃ ⌝) Eq.refl

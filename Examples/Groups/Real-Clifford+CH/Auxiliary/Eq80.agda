@@ -227,26 +227,26 @@ module _ (e65 : Eq65) where
     -- The segments
 
     s0 : ε ≈ Y ₆ ₂ ₃ • Z ₂ ₃ • Z ₂ ₃ • Y ₆ ₂ ₃
-    s0 = A5-tmpl emp (⌜ ty ₂ ₀ ₁ ⌝ •ᵗ ⌜ tz ₀ ₁ ⌝ •ᵗ ⌜ tz ₀ ₁ ⌝ •ᵗ ⌜ ty ₂ ₀ ₁ ⌝) Eq.refl
+    s0 = A5-tmplᵇ emp (⌜ ty ₂ ₀ ₁ ⌝ •ᵗ ⌜ tz ₀ ₁ ⌝ •ᵗ ⌜ tz ₀ ₁ ⌝ •ᵗ ⌜ ty ₂ ₀ ₁ ⌝) Eq.refl
       where open L (₂ ∷ ₃ ∷ ₆ ∷ []) tt
 
     s1 : Z ₂ ₃ • Y ₆ ₂ ₃ • P ₀ ₁ ₀ ₂ ≈ P ₀ ₁ ₀ ₃ • Y ₂ ₀ ₃ • Y ₆ ₂ ₃
-    s1 = by-norm (⌞ hf (tz ₂ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟ •ᶠ ⌞ hp ₀ ₁ ₀ ₂ ⌟)
-                 (⌞ hp ₀ ₁ ₀ ₃ ⌟ •ᶠ ⌞ hf (ty ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟) Eq.refl Eq.refl
+    s1 = by-normᵇ (⌞ hf (tz ₂ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟ •ᶠ ⌞ hp ₀ ₁ ₀ ₂ ⌟)
+                 (⌞ hp ₀ ₁ ₀ ₃ ⌟ •ᶠ ⌞ hf (ty ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟) Eq.refl
       where open F (₀ ∷ ₁ ∷ ₂ ∷ ₃ ∷ ₆ ∷ []) ₄ ₅ tt tt tt (λ ())
 
     s2 : Y ₂ ₀ ₃ • Y ₆ ₂ ₃ • P ₁ ₃ ₀ ₄ ≈ P ₁ ₂ ₃ ₄ • X ₁ ₂ ₀ ₃ • Y ₆ ₂ ₃
-    s2 = by-norm (⌞ hf (ty ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟ •ᶠ ⌞ hp ₁ ₃ ₀ ₄ ⌟)
-                 (⌞ hp ₁ ₂ ₃ ₄ ⌟ •ᶠ ⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟) Eq.refl Eq.refl
+    s2 = by-normᵇ (⌞ hf (ty ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟ •ᶠ ⌞ hp ₁ ₃ ₀ ₄ ⌟)
+                 (⌞ hp ₁ ₂ ₃ ₄ ⌟ •ᶠ ⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟) Eq.refl
       where open F (₀ ∷ ₁ ∷ ₂ ∷ ₃ ∷ ₄ ∷ ₆ ∷ []) ₅ ₇ tt tt tt (λ ())
 
     s3 : X ₁ ₂ ₀ ₃ • Y ₆ ₂ ₃ • P ₁ ₅ ₀ ₁ ≈ P ₂ ₅ ₃ ₂ • X ₁ ₂ ₀ ₃ • Y ₆ ₂ ₃
-    s3 = by-norm (⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟ •ᶠ ⌞ hp ₁ ₄ ₀ ₁ ⌟)
-                 (⌞ hp ₂ ₄ ₃ ₂ ⌟ •ᶠ ⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟) Eq.refl Eq.refl
+    s3 = by-normᵇ (⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟ •ᶠ ⌞ hp ₁ ₄ ₀ ₁ ⌟)
+                 (⌞ hp ₂ ₄ ₃ ₂ ⌟ •ᶠ ⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟) Eq.refl
       where open F (₀ ∷ ₁ ∷ ₂ ∷ ₃ ∷ ₅ ∷ ₆ ∷ []) ₄ ₇ tt tt tt (λ ())
 
     s4 : X ₁ ₂ ₀ ₃ • Y ₆ ₂ ₃ • Z ₁ ₀ ≈ Z ₂ ₃ • X ₁ ₂ ₀ ₃ • Y ₆ ₂ ₃
-    s4 = A5-tmpl (⌜ tx ₁ ₂ ₀ ₃ ⌝ •ᵗ ⌜ ty ₄ ₂ ₃ ⌝ •ᵗ ⌜ tz ₁ ₀ ⌝)
+    s4 = A5-tmplᵇ (⌜ tx ₁ ₂ ₀ ₃ ⌝ •ᵗ ⌜ ty ₄ ₂ ₃ ⌝ •ᵗ ⌜ tz ₁ ₀ ⌝)
                  (⌜ tz ₂ ₃ ⌝ •ᵗ ⌜ tx ₁ ₂ ₀ ₃ ⌝ •ᵗ ⌜ ty ₄ ₂ ₃ ⌝) Eq.refl
       where open L (₀ ∷ ₁ ∷ ₂ ∷ ₃ ∷ ₆ ∷ []) tt
 
@@ -269,8 +269,8 @@ module _ (e65 : Eq65) where
       tu′ = ⌜ ty ₆ ₂ ₃ ⌝ •ᵗ ⌜ tx ₁ ₂ ₀ ₃ ⌝
 
     s6 : X ₁ ₂ ₀ ₃ • Y ₆ ₂ ₃ • P ₀ ₂ ₁ ₃ ≈ P ₀ ₃ ₁ ₂ • Z ₂ ₃ • Y ₆ ₂ ₃
-    s6 = by-norm (⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟ •ᶠ ⌞ hp ₀ ₂ ₁ ₃ ⌟)
-                 (⌞ hp ₀ ₃ ₁ ₂ ⌟ •ᶠ ⌞ hf (tz ₂ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟) Eq.refl Eq.refl
+    s6 = by-normᵇ (⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟ •ᶠ ⌞ hp ₀ ₂ ₁ ₃ ⌟)
+                 (⌞ hp ₀ ₃ ₁ ₂ ⌟ •ᶠ ⌞ hf (tz ₂ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟) Eq.refl
       where open F (₀ ∷ ₁ ∷ ₂ ∷ ₃ ∷ ₆ ∷ []) ₄ ₅ tt tt tt (λ ())
 
     s7 : ε ≈ P ₇ ₆ ₄ ₅ • P ₇ ₆ ₄ ₅
@@ -359,23 +359,23 @@ module _ (e65 : Eq65) where
                (d ₁ ₂ (λ ())) (d ₇ ₆ (λ ())) (d ₀ ₁ (λ ()))
 
     s20 : P ₁ ₂ ₀ ₁ • Z ₂ ₃ • Y ₆ ₂ ₃ ≈ Y ₃ ₁ ₂ • Y ₆ ₂ ₃ • P ₁ ₃ ₀ ₁
-    s20 = by-norm (⌞ hp ₁ ₂ ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₂ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟)
-                  (⌞ hf (ty ₃ ₁ ₂) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟ •ᶠ ⌞ hp ₁ ₃ ₀ ₁ ⌟) Eq.refl Eq.refl
+    s20 = by-normᵇ (⌞ hp ₁ ₂ ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₂ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟)
+                  (⌞ hf (ty ₃ ₁ ₂) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟ •ᶠ ⌞ hp ₁ ₃ ₀ ₁ ⌟) Eq.refl
       where open F (₀ ∷ ₁ ∷ ₂ ∷ ₃ ∷ ₆ ∷ []) ₄ ₅ tt tt tt (λ ())
 
     s21 : P ₂ ₅ ₀ ₃ • Y ₃ ₁ ₂ • Y ₆ ₂ ₃ ≈ X ₁ ₂ ₀ ₃ • Y ₆ ₂ ₃ • P ₁ ₅ ₀ ₂
-    s21 = by-norm (⌞ hp ₂ ₄ ₀ ₃ ⌟ •ᶠ ⌞ hf (ty ₃ ₁ ₂) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟)
-                  (⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟ •ᶠ ⌞ hp ₁ ₄ ₀ ₂ ⌟) Eq.refl Eq.refl
+    s21 = by-normᵇ (⌞ hp ₂ ₄ ₀ ₃ ⌟ •ᶠ ⌞ hf (ty ₃ ₁ ₂) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟)
+                  (⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟ •ᶠ ⌞ hp ₁ ₄ ₀ ₂ ⌟) Eq.refl
       where open F (₀ ∷ ₁ ∷ ₂ ∷ ₃ ∷ ₅ ∷ ₆ ∷ []) ₄ ₇ tt tt tt (λ ())
 
     s22 : P ₃ ₂ ₃ ₄ • X ₁ ₂ ₀ ₃ • Y ₆ ₂ ₃ ≈ X ₁ ₂ ₀ ₃ • Y ₆ ₂ ₃ • P ₀ ₁ ₀ ₄
-    s22 = by-norm (⌞ hp ₃ ₂ ₃ ₄ ⌟ •ᶠ ⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟)
-                  (⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟ •ᶠ ⌞ hp ₀ ₁ ₀ ₄ ⌟) Eq.refl Eq.refl
+    s22 = by-normᵇ (⌞ hp ₃ ₂ ₃ ₄ ⌟ •ᶠ ⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟)
+                  (⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₅ ₂ ₃) ⌟ •ᶠ ⌞ hp ₀ ₁ ₀ ₄ ⌟) Eq.refl
       where open F (₀ ∷ ₁ ∷ ₂ ∷ ₃ ∷ ₄ ∷ ₆ ∷ []) ₅ ₇ tt tt tt (λ ())
 
     s25 : P ₀ ₃ ₁ ₂ • X ₁ ₂ ₀ ₃ • Y ₆ ₂ ₃ ≈ Z ₂ ₃ • Y ₆ ₂ ₃ • P ₀ ₂ ₁ ₃
-    s25 = by-norm (⌞ hp ₀ ₃ ₁ ₂ ⌟ •ᶠ ⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟)
-                  (⌞ hf (tz ₂ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟ •ᶠ ⌞ hp ₀ ₂ ₁ ₃ ⌟) Eq.refl Eq.refl
+    s25 = by-normᵇ (⌞ hp ₀ ₃ ₁ ₂ ⌟ •ᶠ ⌞ hf (tx ₁ ₂ ₀ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟)
+                  (⌞ hf (tz ₂ ₃) ⌟ •ᶠ ⌞ hf (ty ₄ ₂ ₃) ⌟ •ᶠ ⌞ hp ₀ ₂ ₁ ₃ ⌟) Eq.refl
       where open F (₀ ∷ ₁ ∷ ₂ ∷ ₃ ∷ ₆ ∷ []) ₄ ₅ tt tt tt (λ ())
 
   ----------------------------------------------------------------------

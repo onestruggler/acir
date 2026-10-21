@@ -293,7 +293,7 @@ module Frame (e65 : Eq65) (z o : Fin N) (z≢o : z ≢ o) (e f g : Fin N)
   module NV {k : ℕ} (v : Vec (Fin N) k) (dv : Distinct v)
             (ae : All (λ y → y ≢ e) v) (af : All (λ y → y ≢ f) v) =
     Norm e65 (lookup v) (lookup-inj dv) e f ef (allAt ae) (allAt af)
-      using (by-norm ; A5-tmpl ; FL ; FW ; hf ; hl ; hr ; hp ; femp ; ⌞_⌟ ; _•ᶠ_)
+      using (by-normᵇ ; A5-tmplᵇ ; FL ; FW ; hf ; hl ; hr ; hp ; femp ; ⌞_⌟ ; _•ᶠ_)
 
   -- The three we use most: 0 1 g, 0 1 x g and 0 1 a b g.
   module N3 = NV (z ∷ o ∷ g ∷ [])
@@ -330,7 +330,7 @@ module Frame (e65 : Eq65) (z o : Fin N) (z≢o : z ≢ o) (e f g : Fin N)
   -- The transport, branch by branch
   --
   -- Each branch reads the action by its lemma in `FrameAct` and then
-  -- either decides the equation on a template (`by-norm`, `A5-tmpl`) or,
+  -- either decides the equation on a template (`by-normᵇ`, `A5-tmplᵇ`) or,
   -- when no index meets 0 or 1, says it in a line.
 
   private
@@ -356,17 +356,17 @@ module Frame (e65 : Eq65) (z o : Fin N) (z≢o : z ≢ o) (e f g : Fin N)
   tr-ε-X .o b av bv (no ab) (yes Eq.refl) _ =
     via-act ⟨ε⟩ X[ o , b ] (aεX-o b ab)
       (trans (refl≡ (gen-zx b o b ab))
-             (A5-tmpl ⌜ ty ₁ ₀ ₁ ⌝ (emp •ᵗ (⌜ ty ₂ ₀ ₁ ⌝ •ᵗ ⌜ tz ₀ ₂ ⌝)) Eq.refl))
+             (A5-tmplᵇ ⌜ ty ₁ ₀ ₁ ⌝ (emp •ᵗ (⌜ ty ₂ ₀ ₁ ⌝ •ᵗ ⌜ tz ₀ ₂ ⌝)) Eq.refl))
     where open O3 b (≢sym ab) bv
   tr-ε-X a .o av bv (no ab) (no ao) (yes Eq.refl) =
     via-act ⟨ε⟩ X[ a , o ] (aεX-o′ a ao)
       (trans (refl≡ (gen-zx a a o ao))
-             (A5-tmpl ⌜ ty ₁ ₁ ₀ ⌝ (emp •ᵗ (⌜ ty ₂ ₁ ₀ ⌝ •ᵗ ⌜ tz ₀ ₂ ⌝)) Eq.refl))
+             (A5-tmplᵇ ⌜ ty ₁ ₁ ₀ ⌝ (emp •ᵗ (⌜ ty ₂ ₁ ₀ ⌝ •ᵗ ⌜ tz ₀ ₂ ⌝)) Eq.refl))
     where open O3 a ao av
   tr-ε-X a b av bv (no ab) (no ao) (no bo) =
     via-act ⟨ε⟩ X[ a , b ] (aεX-off a b ab ao bo)
       (trans (refl≡ (gen-zx o a b ab))
-             (A5-tmpl ⌜ ty ₀ ₁ ₂ ⌝ (emp •ᵗ (⌜ ty ₃ ₁ ₂ ⌝ •ᵗ ⌜ tz ₀ ₃ ⌝)) Eq.refl))
+             (A5-tmplᵇ ⌜ ty ₀ ₁ ₂ ⌝ (emp •ᵗ (⌜ ty ₃ ₁ ₂ ⌝ •ᵗ ⌜ tz ₀ ₃ ⌝)) Eq.refl))
     where open O4 a b ao bo (≢sym ab) av bv
 
   tr-ε-H : ∀ (a b : Fin N) → Dec (a ≡ b) → Goal ⟨ε⟩ H[ a , b ]
@@ -396,30 +396,30 @@ module Frame (e65 : Eq65) (z o : Fin N) (z≢o : z ≢ o) (e f g : Fin N)
   tr-M-H .o .z av bv (no ab) (yes Eq.refl) _ _ (yes Eq.refl) =
     via-act ⟨M⟩ H[ o , z ] (aMH-o z ab)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-zx z o z ab) (gen-hh o z z o ab z≢o)))
-             (by-norm (⌞ hf (ty ₀ ₁ ₀) ⌟ •ᶠ ⌞ hp ₁ ₀ ₀ ₁ ⌟)
+             (by-normᵇ (⌞ hf (ty ₀ ₁ ₀) ⌟ •ᶠ ⌞ hp ₁ ₀ ₀ ₁ ⌟)
                       (⌞ hf (tz ₁ ₂) ⌟ •ᶠ (⌞ hl ₁ ₀ ⌟ •ᶠ (⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N3
   tr-M-H .o b av bv (no ab) (yes Eq.refl) _ _ (no bz) =
     via-act ⟨M⟩ H[ o , b ] (aMH-o b ab)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-zx b o b ab) (gen-hh o b z o ab z≢o)))
-             (by-norm (⌞ hf (ty ₂ ₁ ₂) ⌟ •ᶠ ⌞ hp ₁ ₂ ₀ ₁ ⌟)
+             (by-normᵇ (⌞ hf (ty ₂ ₁ ₂) ⌟ •ᶠ ⌞ hp ₁ ₂ ₀ ₁ ⌟)
                       (⌞ hf (tz ₁ ₃) ⌟ •ᶠ (⌞ hl ₁ ₂ ⌟ •ᶠ (⌞ hf (tz ₁ ₃) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 b bz (≢sym ab) bv
   tr-M-H .z .o av bv (no ab) (no ao) (yes Eq.refl) (yes Eq.refl) _ =
     via-act ⟨M⟩ H[ z , o ] (aMH-o′ z ab)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-zx o z o ab) (gen-hh z o z o ab z≢o)))
-             (by-norm (⌞ hf (ty ₁ ₀ ₁) ⌟ •ᶠ ⌞ hp ₀ ₁ ₀ ₁ ⌟)
+             (by-normᵇ (⌞ hf (ty ₁ ₀ ₁) ⌟ •ᶠ ⌞ hp ₀ ₁ ₀ ₁ ⌟)
                       (⌞ hf (tz ₁ ₂) ⌟ •ᶠ (⌞ hl ₀ ₁ ⌟ •ᶠ (⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N3
   tr-M-H a .o av bv (no ab) (no ao) (yes Eq.refl) (no az) _ =
     via-act ⟨M⟩ H[ a , o ] (aMH-o′ a ab)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-zx o a o ab) (gen-hh a o z o ab z≢o)))
-             (by-norm (⌞ hf (ty ₁ ₂ ₁) ⌟ •ᶠ ⌞ hp ₂ ₁ ₀ ₁ ⌟)
+             (by-normᵇ (⌞ hf (ty ₁ ₂ ₁) ⌟ •ᶠ ⌞ hp ₂ ₁ ₀ ₁ ⌟)
                       (⌞ hf (tz ₁ ₃) ⌟ •ᶠ (⌞ hl ₂ ₁ ⌟ •ᶠ (⌞ hf (tz ₁ ₃) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 a az ab av
   tr-M-H a b av bv (no ab) (no ao) (no bo) _ _ =
     via-act ⟨M⟩ H[ a , b ] (aMH-off a b ab ao bo)
@@ -440,22 +440,22 @@ module Frame (e65 : Eq65) (z o : Fin N) (z≢o : z ≢ o) (e f g : Fin N)
   tr-K-Z : ∀ (a : Fin N) → Av a → Dec (a ≡ z) → Dec (a ≡ o) → Goal ⟨K⟩ −1[ a ]
   tr-K-Z .z av (yes Eq.refl) _ =
     via-act ⟨K⟩ −1[ z ] aKZ-z
-      (by-norm ⌞ hf (tz ₁ ₀) ⌟
+      (by-normᵇ ⌞ hf (tz ₁ ₀) ⌟
                (⌞ hl ₀ ₁ ⌟ •ᶠ (⌞ hf (tz ₀ ₂) ⌟ •ᶠ (⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-               Eq.refl Eq.refl)
+               Eq.refl)
     where open N3
   tr-K-Z .o av (no az) (yes Eq.refl) =
     via-act ⟨K⟩ −1[ o ] aKZ-o
-      (by-norm ⌞ hf (tz ₁ ₁) ⌟
+      (by-normᵇ ⌞ hf (tz ₁ ₁) ⌟
                (⌞ hl ₀ ₁ ⌟ •ᶠ (⌞ hf (tz ₁ ₂) ⌟ •ᶠ (⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-               Eq.refl Eq.refl)
+               Eq.refl)
     where open N3
   tr-K-Z a av (no az) (no ao) =
     via-act ⟨K⟩ −1[ a ] (aKZ-off a az ao)
       (trans (refl≡ (gen-zx a z o z≢o))
-             (by-norm ⌞ hf (ty ₂ ₀ ₁) ⌟
+             (by-normᵇ ⌞ hf (ty ₂ ₀ ₁) ⌟
                       (⌞ hl ₀ ₁ ⌟ •ᶠ (⌞ hf (tz ₂ ₃) ⌟ •ᶠ (⌞ hf (tz ₁ ₃) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 a az ao av
 
   tr-K-X : ∀ (a b : Fin N) → Av a → Av b →
@@ -466,51 +466,51 @@ module Frame (e65 : Eq65) (z o : Fin N) (z≢o : z ≢ o) (e f g : Fin N)
   tr-K-X .z .o av bv (no ab) (yes Eq.refl) (yes Eq.refl) _ _ =
     via-act ⟨K⟩ X[ z , o ] aKX-zo
       (trans (refl≡ (gen-zx o z o z≢o))
-             (by-norm ⌞ hf (ty ₁ ₀ ₁) ⌟
+             (by-normᵇ ⌞ hf (ty ₁ ₀ ₁) ⌟
                       (⌞ hl ₀ ₁ ⌟ •ᶠ (⌞ hf (ty ₂ ₀ ₁) ⌟ •ᶠ (⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N3
   tr-K-X .z b av bv (no ab) (yes Eq.refl) (no bo) _ _ =
     via-act ⟨K⟩ X[ z , b ] (aKX-zt b ab bo)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-xx z o z b z≢o ab) (gen-hh b o z o bo z≢o)))
-             (by-norm (⌞ hf (tx ₀ ₁ ₀ ₂) ⌟ •ᶠ ⌞ hp ₂ ₁ ₀ ₁ ⌟)
+             (by-normᵇ (⌞ hf (tx ₀ ₁ ₀ ₂) ⌟ •ᶠ ⌞ hp ₂ ₁ ₀ ₁ ⌟)
                       (⌞ hl ₀ ₁ ⌟ •ᶠ (⌞ hf (ty ₃ ₀ ₂) ⌟ •ᶠ (⌞ hf (tz ₁ ₃) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 b (≢sym ab) bo bv
   tr-K-X .o .z av bv (no ab) (no az) _ (yes Eq.refl) (yes Eq.refl) =
     via-act ⟨K⟩ X[ o , z ] aKX-oz
       (trans (refl≡ (gen-zx o z o z≢o))
-             (by-norm ⌞ hf (ty ₁ ₀ ₁) ⌟
+             (by-normᵇ ⌞ hf (ty ₁ ₀ ₁) ⌟
                       (⌞ hl ₀ ₁ ⌟ •ᶠ (⌞ hf (ty ₂ ₁ ₀) ⌟ •ᶠ (⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N3
   tr-K-X a .z av bv (no ab) (no az) _ (yes Eq.refl) (no ao) =
     via-act ⟨K⟩ X[ a , z ] (aKX-tz a az ao)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-xx z o a z z≢o ab) (gen-hh a o z o ao z≢o)))
-             (by-norm (⌞ hf (tx ₀ ₁ ₂ ₀) ⌟ •ᶠ ⌞ hp ₂ ₁ ₀ ₁ ⌟)
+             (by-normᵇ (⌞ hf (tx ₀ ₁ ₂ ₀) ⌟ •ᶠ ⌞ hp ₂ ₁ ₀ ₁ ⌟)
                       (⌞ hl ₀ ₁ ⌟ •ᶠ (⌞ hf (ty ₃ ₂ ₀) ⌟ •ᶠ (⌞ hf (tz ₁ ₃) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 a az ao av
   tr-K-X .o b av bv (no ab) (no az) _ (no bz) (yes Eq.refl) =
     via-act ⟨K⟩ X[ o , b ] (aKX-ot b bz ab)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-zx b o b ab) (gen-hh z b z o (λ h → bz (Eq.sym h)) z≢o)))
-             (by-norm (⌞ hf (ty ₂ ₁ ₂) ⌟ •ᶠ ⌞ hp ₀ ₂ ₀ ₁ ⌟)
+             (by-normᵇ (⌞ hf (ty ₂ ₁ ₂) ⌟ •ᶠ ⌞ hp ₀ ₂ ₀ ₁ ⌟)
                       (⌞ hl ₀ ₁ ⌟ •ᶠ (⌞ hf (ty ₃ ₁ ₂) ⌟ •ᶠ (⌞ hf (tz ₁ ₃) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 b bz (≢sym ab) bv
   tr-K-X a .o av bv (no ab) (no az) (yes Eq.refl) (no bz) (no ao) =
     via-act ⟨K⟩ X[ a , o ] (aKX-to a az ab)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-zx a a o ab) (gen-hh z a z o (λ h → az (Eq.sym h)) z≢o)))
-             (by-norm (⌞ hf (ty ₂ ₂ ₁) ⌟ •ᶠ ⌞ hp ₀ ₂ ₀ ₁ ⌟)
+             (by-normᵇ (⌞ hf (ty ₂ ₂ ₁) ⌟ •ᶠ ⌞ hp ₀ ₂ ₀ ₁ ⌟)
                       (⌞ hl ₀ ₁ ⌟ •ᶠ (⌞ hf (ty ₃ ₂ ₁) ⌟ •ᶠ (⌞ hf (tz ₁ ₃) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 a az ab av
   tr-K-X a b av bv (no ab) (no az) (no bo) (no bz) (no ao) =
     via-act ⟨K⟩ X[ a , b ] (aKX-none a b ab az bz ao bo)
       (trans (refl≡ (gen-xx a b z o ab z≢o))
-             (by-norm ⌞ hf (tx ₂ ₃ ₀ ₁) ⌟
+             (by-normᵇ ⌞ hf (tx ₂ ₃ ₀ ₁) ⌟
                       (⌞ hl ₀ ₁ ⌟ •ᶠ (⌞ hf (ty ₄ ₂ ₃) ⌟ •ᶠ (⌞ hf (tz ₁ ₄) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟)))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N5 a b az ao bz bo (≢sym ab) av bv
 
   tr-K-H : ∀ (a b : Fin N) → Av a → Av b → Dec (a ≡ b) → Goal ⟨K⟩ H[ a , b ]
@@ -530,22 +530,22 @@ module Frame (e65 : Eq65) (z o : Fin N) (z≢o : z ≢ o) (e f g : Fin N)
   tr-KM-Z : ∀ (a : Fin N) → Av a → Dec (a ≡ z) → Dec (a ≡ o) → Goal ⟨KM⟩ −1[ a ]
   tr-KM-Z .z av (yes Eq.refl) _ =
     via-act ⟨KM⟩ −1[ z ] aKMZ-z
-      (by-norm ⌞ hf (tz ₁ ₀) ⌟
+      (by-normᵇ ⌞ hf (tz ₁ ₀) ⌟
                ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₂) ⌟) •ᶠ (⌞ hf (tz ₀ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟))
-               Eq.refl Eq.refl)
+               Eq.refl)
     where open N3
   tr-KM-Z .o av (no az) (yes Eq.refl) =
     via-act ⟨KM⟩ −1[ o ] aKMZ-o
-      (by-norm ⌞ hf (tz ₁ ₁) ⌟
+      (by-normᵇ ⌞ hf (tz ₁ ₁) ⌟
                ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₂) ⌟) •ᶠ (⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟))
-               Eq.refl Eq.refl)
+               Eq.refl)
     where open N3
   tr-KM-Z a av (no az) (no ao) =
     via-act ⟨KM⟩ −1[ a ] (aKMZ-off a az ao)
       (trans (refl≡ (gen-zx a z o z≢o))
-             (by-norm ⌞ hf (ty ₂ ₀ ₁) ⌟
+             (by-normᵇ ⌞ hf (ty ₂ ₀ ₁) ⌟
                       ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₃) ⌟) •ᶠ (⌞ hf (tz ₂ ₃) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 a az ao av
 
   tr-KM-X : ∀ (a b : Fin N) → Av a → Av b →
@@ -556,51 +556,51 @@ module Frame (e65 : Eq65) (z o : Fin N) (z≢o : z ≢ o) (e f g : Fin N)
   tr-KM-X .z .o av bv (no ab) (yes Eq.refl) (yes Eq.refl) _ _ =
     via-act ⟨KM⟩ X[ z , o ] aKMX-zo
       (trans (refl≡ (gen-zx z z o z≢o))
-             (by-norm ⌞ hf (ty ₀ ₀ ₁) ⌟
+             (by-normᵇ ⌞ hf (ty ₀ ₀ ₁) ⌟
                       ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₂) ⌟) •ᶠ (⌞ hf (ty ₂ ₀ ₁) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N3
   tr-KM-X .z b av bv (no ab) (yes Eq.refl) (no bo) _ _ =
     via-act ⟨KM⟩ X[ z , b ] (aKMX-zt b ab bo)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-xx z o z b z≢o ab) (gen-hh b o z o bo z≢o)))
-             (by-norm (⌞ hf (tx ₀ ₁ ₀ ₂) ⌟ •ᶠ ⌞ hp ₂ ₁ ₀ ₁ ⌟)
+             (by-normᵇ (⌞ hf (tx ₀ ₁ ₀ ₂) ⌟ •ᶠ ⌞ hp ₂ ₁ ₀ ₁ ⌟)
                       ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₃) ⌟) •ᶠ (⌞ hf (ty ₃ ₀ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 b (≢sym ab) bo bv
   tr-KM-X .o .z av bv (no ab) (no az) _ (yes Eq.refl) (yes Eq.refl) =
     via-act ⟨KM⟩ X[ o , z ] aKMX-oz
       (trans (refl≡ (gen-zx z z o z≢o))
-             (by-norm ⌞ hf (ty ₀ ₀ ₁) ⌟
+             (by-normᵇ ⌞ hf (ty ₀ ₀ ₁) ⌟
                       ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₂) ⌟) •ᶠ (⌞ hf (ty ₂ ₁ ₀) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N3
   tr-KM-X a .z av bv (no ab) (no az) _ (yes Eq.refl) (no ao) =
     via-act ⟨KM⟩ X[ a , z ] (aKMX-tz a az ao)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-xx z o a z z≢o ab) (gen-hh a o z o ao z≢o)))
-             (by-norm (⌞ hf (tx ₀ ₁ ₂ ₀) ⌟ •ᶠ ⌞ hp ₂ ₁ ₀ ₁ ⌟)
+             (by-normᵇ (⌞ hf (tx ₀ ₁ ₂ ₀) ⌟ •ᶠ ⌞ hp ₂ ₁ ₀ ₁ ⌟)
                       ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₃) ⌟) •ᶠ (⌞ hf (ty ₃ ₂ ₀) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 a az ao av
   tr-KM-X .o b av bv (no ab) (no az) _ (no bz) (yes Eq.refl) =
     via-act ⟨KM⟩ X[ o , b ] (aKMX-ot b bz ab)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-xx z o o b z≢o ab) (gen-hh z b z o (λ h → bz (Eq.sym h)) z≢o)))
-             (by-norm (⌞ hf (tx ₀ ₁ ₁ ₂) ⌟ •ᶠ ⌞ hp ₀ ₂ ₀ ₁ ⌟)
+             (by-normᵇ (⌞ hf (tx ₀ ₁ ₁ ₂) ⌟ •ᶠ ⌞ hp ₀ ₂ ₀ ₁ ⌟)
                       ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₃) ⌟) •ᶠ (⌞ hf (ty ₃ ₁ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 b bz (≢sym ab) bv
   tr-KM-X a .o av bv (no ab) (no az) (yes Eq.refl) (no bz) (no ao) =
     via-act ⟨KM⟩ X[ a , o ] (aKMX-to a az ab)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-xx z o a o z≢o ab) (gen-hh z a z o (λ h → az (Eq.sym h)) z≢o)))
-             (by-norm (⌞ hf (tx ₀ ₁ ₂ ₁) ⌟ •ᶠ ⌞ hp ₀ ₂ ₀ ₁ ⌟)
+             (by-normᵇ (⌞ hf (tx ₀ ₁ ₂ ₁) ⌟ •ᶠ ⌞ hp ₀ ₂ ₀ ₁ ⌟)
                       ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₃) ⌟) •ᶠ (⌞ hf (ty ₃ ₂ ₁) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 a az ab av
   tr-KM-X a b av bv (no ab) (no az) (no bo) (no bz) (no ao) =
     via-act ⟨KM⟩ X[ a , b ] (aKMX-none a b ab az bz ao bo)
       (trans (refl≡ (gen-xx a b z o ab z≢o))
-             (by-norm ⌞ hf (tx ₂ ₃ ₀ ₁) ⌟
+             (by-normᵇ ⌞ hf (tx ₂ ₃ ₀ ₁) ⌟
                       ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₄) ⌟) •ᶠ (⌞ hf (ty ₄ ₂ ₃) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N5 a b az ao bz bo (≢sym ab) av bv
 
   tr-KM-H : ∀ (a b : Fin N) → Av a → Av b →
@@ -611,30 +611,30 @@ module Frame (e65 : Eq65) (z o : Fin N) (z≢o : z ≢ o) (e f g : Fin N)
   tr-KM-H .o .z av bv (no ab) (yes Eq.refl) _ _ (yes Eq.refl) =
     via-act ⟨KM⟩ H[ o , z ] (aKMH-o z ab)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-hh z o o z z≢o ab) (gen-zx o o z ab)))
-             (by-norm (⌞ hp ₀ ₁ ₁ ₀ ⌟ •ᶠ ⌞ hf (ty ₁ ₁ ₀) ⌟)
+             (by-normᵇ (⌞ hp ₀ ₁ ₁ ₀ ⌟ •ᶠ ⌞ hf (ty ₁ ₁ ₀) ⌟)
                       ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₂) ⌟) •ᶠ (⌞ hl ₁ ₀ ⌟ •ᶠ ⌞ hf (tz ₁ ₂) ⌟))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N3
   tr-KM-H .o b av bv (no ab) (yes Eq.refl) _ _ (no bz) =
     via-act ⟨KM⟩ H[ o , b ] (aKMH-o b ab)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-hh z o o b z≢o ab) (gen-zx o o b ab)))
-             (by-norm (⌞ hp ₀ ₁ ₁ ₂ ⌟ •ᶠ ⌞ hf (ty ₁ ₁ ₂) ⌟)
+             (by-normᵇ (⌞ hp ₀ ₁ ₁ ₂ ⌟ •ᶠ ⌞ hf (ty ₁ ₁ ₂) ⌟)
                       ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₃) ⌟) •ᶠ (⌞ hl ₁ ₂ ⌟ •ᶠ ⌞ hf (tz ₁ ₃) ⌟))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 b bz (≢sym ab) bv
   tr-KM-H .z .o av bv (no ab) (no ao) (yes Eq.refl) (yes Eq.refl) _ =
     via-act ⟨KM⟩ H[ z , o ] (aKMH-o′ z ab)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-hh z o z o z≢o ab) (gen-zx z z o ab)))
-             (by-norm (⌞ hp ₀ ₁ ₀ ₁ ⌟ •ᶠ ⌞ hf (ty ₀ ₀ ₁) ⌟)
+             (by-normᵇ (⌞ hp ₀ ₁ ₀ ₁ ⌟ •ᶠ ⌞ hf (ty ₀ ₀ ₁) ⌟)
                       ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₂) ⌟) •ᶠ (⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₂) ⌟))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N3
   tr-KM-H a .o av bv (no ab) (no ao) (yes Eq.refl) (no az) _ =
     via-act ⟨KM⟩ H[ a , o ] (aKMH-o′ a ab)
       (trans (refl≡ (Eq.cong₂ _•_ (gen-hh z o a o z≢o ab) (gen-zx a a o ab)))
-             (by-norm (⌞ hp ₀ ₁ ₂ ₁ ⌟ •ᶠ ⌞ hf (ty ₂ ₂ ₁) ⌟)
+             (by-normᵇ (⌞ hp ₀ ₁ ₂ ₁ ⌟ •ᶠ ⌞ hf (ty ₂ ₂ ₁) ⌟)
                       ((⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₃) ⌟) •ᶠ (⌞ hl ₂ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₃) ⌟))
-                      Eq.refl Eq.refl))
+                      Eq.refl))
     where open N4 a az ab av
   tr-KM-H a b av bv (no ab) (no ao) (no bo) _ _ =
     via-act ⟨KM⟩ H[ a , b ] (aKMH-off a b ab ao bo)

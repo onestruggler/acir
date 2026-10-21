@@ -23,7 +23,7 @@ open import Data.Nat using (ℕ)
 
 module Examples.Groups.Real-Clifford+CH.Auxiliary.Template (m : ℕ) where
 
-open import Data.Bool using (Bool ; true ; false ; _xor_)
+open import Data.Bool using (Bool ; true ; false ; _xor_ ; _∧_ ; not)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin ; zero ; suc)
 open import Data.Fin.Properties using (_≟_ ; any?)
@@ -34,6 +34,7 @@ open import Data.Vec.Properties using (lookup∘tabulate)
 open import Data.Vec.Relation.Unary.All as All using (All)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Relation.Nullary using (yes ; no)
+open import Relation.Nullary.Decidable using (does)
 open import Word.Base using (Word ; ε ; _•_)
 
 open import Notations using (₃₊)
@@ -151,6 +152,52 @@ module _ {k : ℕ} where
   -- The table of a template signed permutation, which `refl` compares.
   tab : TS k → Vec Bool k × Vec (Fin k) k
   tab f = tabulate (tsg f) , tabulate (tpm f)
+
+------------------------------------------------------------------------
+-- Tables compared by one boolean
+--
+-- `refl` on two computed tables makes the conversion checker compare
+-- them entry by entry, reducing the words behind them again for each
+-- entry; one boolean is reduced once (`tab-eq`, `tab-eq-sound`).
+
+∧ᵗ-l : ∀ {p q : Bool} → p ∧ q ≡ true → p ≡ true
+∧ᵗ-l {true} _ = Eq.refl
+
+∧ᵗ-r : ∀ {p q : Bool} → p ∧ q ≡ true → q ≡ true
+∧ᵗ-r {true} h = h
+
+fin-eq : ∀ {n : ℕ} → Fin n → Fin n → Bool
+fin-eq a b = does (a ≟ b)
+
+fin-eq-sound : ∀ {n : ℕ} (a b : Fin n) → fin-eq a b ≡ true → a ≡ b
+fin-eq-sound a b h with a ≟ b
+... | yes e = e
+fin-eq-sound a b () | no _
+
+bool-eq : Bool → Bool → Bool
+bool-eq a b = not (a xor b)
+
+bool-eq-sound : ∀ (a b : Bool) → bool-eq a b ≡ true → a ≡ b
+bool-eq-sound true  true  _ = Eq.refl
+bool-eq-sound false false _ = Eq.refl
+
+vec-eq : ∀ {A : Set} {n : ℕ} → (A → A → Bool) → Vec A n → Vec A n → Bool
+vec-eq eq []       []       = true
+vec-eq eq (x ∷ xs) (y ∷ ys) = eq x y ∧ vec-eq eq xs ys
+
+vec-eq-sound : ∀ {A : Set} {n : ℕ} (eq : A → A → Bool) → (∀ x y → eq x y ≡ true → x ≡ y) →
+               (xs ys : Vec A n) → vec-eq eq xs ys ≡ true → xs ≡ ys
+vec-eq-sound eq ok []       []       _ = Eq.refl
+vec-eq-sound eq ok (x ∷ xs) (y ∷ ys) h =
+  Eq.cong₂ _∷_ (ok x y (∧ᵗ-l {eq x y} h)) (vec-eq-sound eq ok xs ys (∧ᵗ-r {eq x y} h))
+
+tab-eq : ∀ {k : ℕ} → Vec Bool k × Vec (Fin k) k → Vec Bool k × Vec (Fin k) k → Bool
+tab-eq (s , p) (s′ , p′) = vec-eq bool-eq s s′ ∧ vec-eq fin-eq p p′
+
+tab-eq-sound : ∀ {k : ℕ} (t t′ : Vec Bool k × Vec (Fin k) k) → tab-eq t t′ ≡ true → t ≡ t′
+tab-eq-sound (s , p) (s′ , p′) h =
+  Eq.cong₂ _,_ (vec-eq-sound bool-eq bool-eq-sound s s′ (∧ᵗ-l {vec-eq bool-eq s s′} h))
+               (vec-eq-sound fin-eq fin-eq-sound p p′ (∧ᵗ-r {vec-eq bool-eq s s′} h))
 
 ------------------------------------------------------------------------
 -- Pairwise distinct indices, and the injection they are
@@ -380,6 +427,11 @@ module At {k : ℕ} (ι : Fin k → Fin N)
   A5-tmpl : ∀ (w w′ : TW k) → tab (tW w) ≡ tab (tW w′) →
             PB._≈_ (m P,_===_) (inst w) (inst w′)
   A5-tmpl w w′ e = A5-full (hf-inst w) (hf-inst w′) (same-sp w w′ e)
+
+  -- The same, the tables compared by one boolean.
+  A5-tmplᵇ : ∀ (w w′ : TW k) → tab-eq (tab (tW w)) (tab (tW w′)) ≡ true →
+             PB._≈_ (m P,_===_) (inst w) (inst w′)
+  A5-tmplᵇ w w′ h = A5-tmpl w w′ (tab-eq-sound (tab (tW w)) (tab (tW w′)) h)
 
   -- The side conditions of `Move.hh-pass`, read off the template.
   prm-at : ∀ (w : TW k) (x : Fin k) → prm (sp (inst w)) (ι x) ≡ ι (tpm (tW w) x)
