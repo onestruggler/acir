@@ -25,23 +25,13 @@ check() {
     return 1
   fi
 }
+# These seven roots reach every module of the directory.  Theorems
+# reaches the transport, the decoding, dyadic completeness, the Hadamard
+# relations and the presentation, in one process (peak about 6.5 GB);
+# checking their parts as roots of their own only loaded the same
+# interfaces again, a process each.
 check "$development/CircuitLemmas.agda"
-for part in "$development"/MissingK/Evaluations/E*.agda; do check "$part"; done
 check "$development/MissingK.agda"
-check "$development/Repaired/Encoding.agda"
-check "$development/Repaired/Soundness.agda"
-check "$development/Repaired/EncodingMatrices.agda"
-for rule in r1a r1b r1c r2a r2b r2c r2d r2e r2f r3a r3b r3c r3d r3e r3f r3g r4a r4b r4c r5a r6a; do
-  check "$development/Transport/$rule.agda"
-done
-check "$development/TwoLevel.agda"
-for part in "$development"/FrameEvaluation/E*.agda; do check "$part"; done
-for part in "$development"/DecodeMatrices/*.agda; do check "$part"; done
-check "$development/Repaired/DecodingMatrices.agda"
-check "$development/Repaired/DyadicCompleteness.agda"
-for part in "$development"/HadamardRelations/*.agda; do check "$part"; done
-check "$development/Repaired/TwoLevelScaled.agda"
-check "$development/Repaired/Presentation.agda"
 check "$development/Theorems.agda"
 for audit in FrameChecks RepresentativeChecks StrictMatrix TransportCaseChecks; do
   check "$development/$audit.agda"

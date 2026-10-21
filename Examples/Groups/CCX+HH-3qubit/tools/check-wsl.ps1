@@ -9,26 +9,11 @@ $checkLogs = Join-Path $taskRepo 'local/ccxhh-3qubit-checks'
 New-Item -ItemType Directory -Path $checkLogs -Force | Out-Null
 
 if (-not $Targets) {
-    $Targets = @("$development/CircuitLemmas.agda")
-    $Targets += @(Get-ChildItem "$development/MissingK/Evaluations/E*.agda" |
-        ForEach-Object { $_.FullName.Substring($taskRepo.Length + 1).Replace('\', '/') })
-    $Targets += @("$development/MissingK.agda", "$development/Repaired/Encoding.agda",
-        "$development/Repaired/Soundness.agda", "$development/Repaired/EncodingMatrices.agda")
-    $Targets += @('r1a', 'r1b', 'r1c', 'r2a', 'r2b', 'r2c', 'r2d', 'r2e', 'r2f',
-        'r3a', 'r3b', 'r3c', 'r3d', 'r3e', 'r3f', 'r3g', 'r4a', 'r4b', 'r4c', 'r5a', 'r6a') |
-        ForEach-Object { "$development/Transport/$_.agda" }
-    $Targets += "$development/TwoLevel.agda"
-    foreach ($pattern in @('FrameEvaluation/E*.agda', 'DecodeMatrices/*.agda')) {
-        $Targets += @(Get-ChildItem "$development/$pattern" |
-            ForEach-Object { $_.FullName.Substring($taskRepo.Length + 1).Replace('\', '/') })
-    }
-    $Targets += @("$development/Repaired/DecodingMatrices.agda",
-        "$development/Repaired/DyadicCompleteness.agda")
-    $Targets += @(Get-ChildItem "$development/HadamardRelations/*.agda" |
-        ForEach-Object { $_.FullName.Substring($taskRepo.Length + 1).Replace('\', '/') })
-    $Targets += @("$development/Repaired/TwoLevelScaled.agda",
-        "$development/Repaired/Presentation.agda", "$development/Theorems.agda")
-    $Targets += @('FrameChecks', 'RepresentativeChecks', 'StrictMatrix', 'TransportCaseChecks') |
+    # These seven reach every module of the directory; Theorems reaches
+    # the transport, the decoding, dyadic completeness, the Hadamard
+    # relations and the presentation, in one process (peak about 6.5 GB).
+    $Targets = @('CircuitLemmas', 'MissingK', 'Theorems',
+        'FrameChecks', 'RepresentativeChecks', 'StrictMatrix', 'TransportCaseChecks') |
         ForEach-Object { "$development/$_.agda" }
     $Targets += 'MainTheorems.agda'
 }

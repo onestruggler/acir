@@ -127,16 +127,18 @@ agda Examples/Groups/CCX+HH-3qubit/Repaired/Soundness.agda
 agda Examples/Groups/CCX+HH-3qubit/Repaired/Presentation.agda
 ```
 
-For the large finite translation, first check `Transport/r1a.agda`,
-…, `Transport/r6a.agda` in separate processes, then `TwoLevel.agda`.
-This frees each process's heap between relation families.
-The prefix modules bound the size of each coverage check as well:
-the four- to eight-index tables are not checked as one large case
-analysis.
+The prefix modules (`TransportChunks/`) bound the size of each
+coverage check: the four- to eight-index tables are not checked as one
+large case analysis.
 
-`bash Examples/Groups/CCX+HH-3qubit/tools/check.sh` runs the checks,
-including the standalone audits, sequentially with a compacting 8 GB
-heap, followed by `MainTheorems.agda`.
+`bash Examples/Groups/CCX+HH-3qubit/tools/check.sh` checks the seven
+roots that reach every module of the directory — `CircuitLemmas`,
+`MissingK`, `Theorems` and the four audits — sequentially with a
+compacting 8 GB heap, followed by `MainTheorems.agda`: about 12 minutes
+from scratch, `Theorems` 11 of them with a peak of 6.2 GB. (It used to
+check the relation families, the decoding certificates and the Hadamard
+relations as roots of their own, some 200 processes that each loaded
+the same interfaces again: about two hours.)
 It writes durable logs under `local/ccxhh-3qubit-checks/`. A local
 `tools/libraries-wsl` file can supply the library locations through
 Agda's `--library-file` option when the WSL user has no global list;
