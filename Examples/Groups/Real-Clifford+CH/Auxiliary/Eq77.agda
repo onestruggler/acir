@@ -117,6 +117,32 @@ NEG2-by f inj u v =
   (≐-trans′ (⊙-cong′ (NEG-by f inj u) (≐-refl′ {NEG (prm f v)}))
             (⊙-assoc′ f (NEG (prm f u)) (NEG (prm f v))))))
 
+-- A sign pair and a signed exchange cross a Hadamard-free word, landing
+-- on the images (Corollary A.5), over a variable word: stated at
+-- Definition E.1's word, the signed permutations were compared by
+-- evaluating the word's (`inZ` 2.8 s), where over a variable word
+-- `sp T` is stuck.
+private
+  L≡ : ∀ {u v w u′ v′ w′ : Fin N} → u ≡ u′ → v ≡ v′ → w ≡ w′ → L u v w ≗ L u′ v′ w′
+  L≡ Eq.refl Eq.refl Eq.refl = ≐-refl′
+
+  zzCross : ∀ (T : W) → HFreeʷ T → ∀ (x y x′ y′ : Fin N) →
+            prm (sp T) x ≡ x′ → prm (sp T) y ≡ y′ → zz {₃₊ m} x y • T ≈ T • zz {₃₊ m} x′ y′
+  zzCross T hT x y x′ y′ px py =
+    A5-full (cat (gen (hf-zz x y)) hT) (cat hT (gen (hf-zz x′ y′)))
+      (≐-trans′ (NEG2-by (sp T) (sp-inj T) x y)
+                (⊙-cong′ (≐-refl′ {sp T}) (⊙-cong′ (neg≡ px) (neg≡ py))))
+
+  zxCross : ∀ (T : W) → HFreeʷ T → ∀ (x y z : Fin N) (yz : y ≢ z) (x′ y′ z′ : Fin N) (y′z′ : y′ ≢ z′) →
+            prm (sp T) x ≡ x′ → prm (sp T) y ≡ y′ → prm (sp T) z ≡ z′ → sgn (sp T) y ≡ sgn (sp T) z →
+            zx {₃₊ m} x y z • T ≈ T • zx {₃₊ m} x′ y′ z′
+  zxCross T hT x y z yz x′ y′ z′ y′z′ px py pz s =
+    A5-full (cat (hfree-zx x y z) hT) (cat hT (hfree-zx x′ y′ z′))
+      (≐-trans′ (⊙-cong′ (sp-zx x y z yz) (≐-refl′ {sp T}))
+      (≐-trans′ (L-by (sp T) (sp-inj T) x y z s)
+                (⊙-cong′ (≐-refl′ {sp T})
+                  (≐-trans′ (L≡ px py pz) (≐-sym′ (sp-zx x′ y′ z′ y′z′))))))
+
 module _ (e65 : Eq65) where
 
   ----------------------------------------------------------------------
@@ -190,27 +216,15 @@ module _ (e65 : Eq65) where
 
       -- The sign pair crosses into the standard frame, onto 0 and 4 …
       inZ : zz {₃₊ m} a e₀ • T ≈ T • zz {₃₊ m} i₀ f₄
-      inZ = A5-full (cat (gen (hf-zz a e₀)) S.hfree-Σ) (cat S.hfree-Σ (gen (hf-zz i₀ f₄)))
-        (≐-trans′ (NEG2-by (sp T) (sp-inj T) a e₀)
-                  (⊙-cong′ (≐-refl′ {sp T}) (⊙-cong′ (neg≡ pa) (neg≡ Te₀))))
+      inZ = zzCross T S.hfree-Σ a e₀ i₀ f₄ pa Te₀
 
       -- … and the letters come back out of it.
       outY : zx {₃₊ m} i₁ i₁ i₀ • T′ ≈ T′ • zx {₃₊ m} b b a
-      outY = A5-full (cat (hfree-zx i₁ i₁ i₀) S.hfree-Σ′) (cat S.hfree-Σ′ (hfree-zx b b a))
-        (≐-trans′ (⊙-cong′ (sp-zx i₁ i₁ i₀ (≢sym i₀≢i₁)) (≐-refl′ {sp T′}))
-        (≐-trans′ (L-by (sp T′) (sp-inj T′) i₁ i₁ i₀
-                        (Eq.trans (sgn′ b i₁ pb S.sgn-Σ-b)
-                                  (Eq.sym (sgn′ a i₀ pa S.sgn-Σ-a))))
-                  (⊙-cong′ (≐-refl′ {sp T′})
-                    (≐-trans′ (Eq.subst₂ (λ u v → L (prm (sp T′) i₁) (prm (sp T′) i₁)
-                                                    (prm (sp T′) i₀) ≗ L u u v)
-                                         (bk pb) (bk pa) ≐-refl′)
-                              (≐-sym′ (sp-zx b b a (≢sym ab)))))))
+      outY = zxCross T′ S.hfree-Σ′ i₁ i₁ i₀ (≢sym i₀≢i₁) b b a (≢sym ab) (bk pb) (bk pb) (bk pa)
+               (Eq.trans (sgn′ b i₁ pb S.sgn-Σ-b) (Eq.sym (sgn′ a i₀ pa S.sgn-Σ-a)))
 
       outZ : zz {₃₊ m} i₀ f₄ • T′ ≈ T′ • zz {₃₊ m} a e₀
-      outZ = A5-full (cat (gen (hf-zz i₀ f₄)) S.hfree-Σ′) (cat S.hfree-Σ′ (gen (hf-zz a e₀)))
-        (≐-trans′ (NEG2-by (sp T′) (sp-inj T′) i₀ f₄)
-                  (⊙-cong′ (≐-refl′ {sp T′}) (⊙-cong′ (neg≡ (bk pa)) (≐-refl′ {NEG e₀}))))
+      outZ = zzCross T′ S.hfree-Σ′ i₀ f₄ a e₀ (bk pa) Eq.refl
 
       Z04 Y110 : W
       Z04  = zz {₃₊ m} i₀ f₄

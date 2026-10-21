@@ -47,7 +47,7 @@ open import Examples.Groups.Real-Clifford+CH.Auxiliary.Gray using (index ; code 
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Bitstrings using (lookupℕ ; diff ; diffFrom)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.GrayStep using (flipAt ; flipAt-comm)
 open import Examples.Groups.Real-Clifford+CH.Encoding using (hh ; hpat ; distinct4 ; twoSmallest)
-open import Examples.Groups.Real-Clifford+CH.Decoding using (d ; dHH ; dHH₄ ; dHH₄-pat ; layoutH ; layoutHFrom)
+open import Examples.Groups.Real-Clifford+CH.Decoding using (d ; dHH ; dHH₄ ; dHH₄-pat ; dP-HH ; layoutH ; layoutHFrom)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires using (negsB)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Layouts using (layoutAt ; setT ; tgtWire-at ; negs-at)
 
@@ -301,9 +301,11 @@ module _ {m : ℕ} where
              ≡ rev (mcH (layoutH {m} G h q))
   dH-pat G h q h< q< h≢q gh gq =
     Eq.trans (Eq.cong (d ʷ) (Eq.sym (gen-hh A B C D (ne-Fin AB) (ne-Fin CD))))
-             (Eq.cong rev (Eq.trans (dHH-true (toℕ A) (toℕ B) (toℕ C) (toℕ D) dist)
+             (Eq.cong rev (Eq.trans (dP-HH A B C D (ne-Fin AB) (ne-Fin CD) (toℕ A) (toℕ B) (toℕ C) (toℕ D)
+                                           Eq.refl Eq.refl Eq.refl Eq.refl)
+                           (Eq.trans (dHH-true (toℕ A) (toℕ B) (toℕ C) (toℕ D) dist)
                            (Eq.trans (dHH₄-pat (toℕ A) (toℕ B) (toℕ C) (toℕ D) h q pat)
-                                     (Eq.cong (λ x → mcH (layoutH x h q)) (code-index N G)))))
+                                     (Eq.cong (λ x → mcH (layoutH x h q)) (code-index N G))))))
     where
     Gh Gq Ghq : Bits N
     Gh  = flipAt h G
