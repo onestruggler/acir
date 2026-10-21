@@ -174,18 +174,18 @@ module _ (e65 : Eq65) (s : Fin N) (sz : s ≢ z₀) (so : s ≢ o₁) where
       cornerL : ∀ (c : Coset) → F.T (c ⊕ ⟨M⟩) ≈ Zs c • F.T c
       cornerL ⟨ε⟩  = sym right-unit
       cornerL ⟨M⟩  = sym zz-sq
-      cornerL ⟨K⟩  = by-norm (⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₂) ⌟) (⌞ hf (ty ₂ ₀ ₁) ⌟ •ᶠ ⌞ hl ₀ ₁ ⌟)
-                             Eq.refl Eq.refl
-      cornerL ⟨KM⟩ = by-norm ⌞ hl ₀ ₁ ⌟ (⌞ hf (ty ₂ ₀ ₁) ⌟ •ᶠ ⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₂) ⌟)
-                             Eq.refl Eq.refl
+      cornerL ⟨K⟩  = by-normᵇ (⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₂) ⌟) (⌞ hf (ty ₂ ₀ ₁) ⌟ •ᶠ ⌞ hl ₀ ₁ ⌟)
+                             Eq.refl
+      cornerL ⟨KM⟩ = by-normᵇ ⌞ hl ₀ ₁ ⌟ (⌞ hf (ty ₂ ₀ ₁) ⌟ •ᶠ ⌞ hl ₀ ₁ ⌟ •ᶠ ⌞ hf (tz ₁ ₂) ⌟)
+                             Eq.refl
 
       cornerR : ∀ (c : Coset) → F.T⁻ (c ⊕ ⟨M⟩) ≈ F.T⁻ c • Zs c
       cornerR ⟨ε⟩  = sym left-unit
       cornerR ⟨M⟩  = sym zz-sq
-      cornerR ⟨K⟩  = by-norm (⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟) (⌞ hr ₀ ₁ ⌟ •ᶠ ⌞ hf (ty ₂ ₀ ₁) ⌟)
-                             Eq.refl Eq.refl
-      cornerR ⟨KM⟩ = by-norm ⌞ hr ₀ ₁ ⌟ ((⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟) •ᶠ ⌞ hf (ty ₂ ₀ ₁) ⌟)
-                             Eq.refl Eq.refl
+      cornerR ⟨K⟩  = by-normᵇ (⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟) (⌞ hr ₀ ₁ ⌟ •ᶠ ⌞ hf (ty ₂ ₀ ₁) ⌟)
+                             Eq.refl
+      cornerR ⟨KM⟩ = by-normᵇ ⌞ hr ₀ ₁ ⌟ ((⌞ hf (tz ₁ ₂) ⌟ •ᶠ ⌞ hr ₀ ₁ ⌟) •ᶠ ⌞ hf (ty ₂ ₀ ₁) ⌟)
+                             Eq.refl
 
       sym-at : ∀ (c : Coset) (y : G.Gen N) → F.Avoids y → F.NonDeg y → Sym c y
       sym-at c y av nd = word , c′M

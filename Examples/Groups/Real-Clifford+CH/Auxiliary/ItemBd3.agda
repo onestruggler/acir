@@ -197,9 +197,9 @@ module _ (e65 : Eq65) where
     ξ = ⌞ hf (ty ₄ ₂ ₃) ⌟
 
     img : F.Φʷ (d3L a b x d) ≈ F.Φʷ (d3R a b x d)
-    img = trans (by-norm φL (ξ •ᶠ r45L •ᶠ ξ) Eq.refl Eq.refl)
+    img = trans (by-normᵇ φL (ξ •ᶠ r45L •ᶠ ξ) Eq.refl)
           (trans (back X (front X e45))
-                 (by-norm (ξ •ᶠ r45R •ᶠ ξ) φR Eq.refl Eq.refl))
+                 (by-normᵇ (ξ •ᶠ r45R •ᶠ ξ) φR Eq.refl))
 
   -- (d3*), at the literals carried to N.
   d3 : D3 e65
