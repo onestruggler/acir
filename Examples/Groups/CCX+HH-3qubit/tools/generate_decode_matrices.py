@@ -1,8 +1,16 @@
-"""Check the matrix meaning of every finite two-level decoding frame."""
+"""Check the matrix meaning of the basic two-level decoding frames.
+
+Only the basic generators of Li, Ross and Selinger — (-1)_[0], the
+X_[x,x+1] and K_[0,1,2,3] — get a matrix certificate (DecodeMatrices):
+every other generator is conjugate to a basic one by adjacent X's
+(CCX+HH-TwoLevel's Conjugation.decompose), both readings respect that
+conjugation, and Repaired/DecodingMatrices carries the certificates
+along it."""
 import generate as g
 import generate_frames as f
 from pathlib import Path
 ROOT=g.ROOT;P=g.PREFIX
+BASIC=[('M',0)]+[('X',i,i+1) for i in range(7)]+[('K',0,1,2,3)]
 def pt(q):return g.tree(' '.join('t'+str(i)+str(i+1) for i in q))
 def at(atom):
     if atom[0]=='X':return pt(f.transposition(*atom[1:]))
@@ -14,22 +22,15 @@ def collect(t):
         if isinstance(t,tuple) and t:collect(t[0]);collect(t[1])
         E[t]=len(E)
     return E[t]
-for atom in f.atoms:collect(at(atom))
+for atom in BASIC:collect(at(atom))
 def tab(v):
     if len(v)==1:return v[0]
     k=len(v)//2;return '('+tab(v[:k])+' , '+tab(v[k:])+')'
 def literal(m):
     def z(a):return '(+ '+str(a)+')' if a>=0 else '(-[1+ '+str(-a-1)+' ])'
     return 'mat '+tab(['('+z(a)+' +√2 (+ 0))' for row in m for a in row])
-imports=f'''open import Data.Integer.Base using (+_ ; -[1+_])
-open import Data.Product.Base using (_,_ )
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import {P}.Syntactics
-open import {P}.GateMatrices
-open import {P}.Interpretation
-
-'''
 folder=ROOT/'FrameEvaluation';folder.mkdir(exist_ok=True)
+for old in folder.glob('E*.agda'):old.unlink()
 blocks=[]
 for t,i in E.items():
     if isinstance(t,str):
@@ -55,7 +56,8 @@ def gen(atom):
     if k=='M':return 'T.M-gen '+f.finpat(xs[0])
     return 'T.'+k+'-gen '+' '.join(f.finpat(i) for i in xs)+' '+' '.join(bound(i) for i in xs[:-1])
 folder=ROOT/'DecodeMatrices';folder.mkdir(exist_ok=True)
-for atom in f.atoms:
+for old in folder.glob('*.agda'):old.unlink()
+for atom in BASIC:
     name=f.name(atom);i=E[at(atom)];degree=2 if atom[0]=='K' else 0
     s=g.header('DecodeMatrices.'+name)
     s+=f'''open import Data.Fin.Base using (zero ; suc)
@@ -92,78 +94,108 @@ proved = Eq.trans calculation (Eq.sym
 '''
     (folder/(name+'.agda')).write_text(s,encoding='utf-8')
 
+# The basic letters, read off their certificates; the other index
+# choices contradict Conj.Basic.
+fp=f.finpat
+def suc_(k,inner):return '('+'suc ('*k+inner+')'*k+')' if k else inner
+NONE='(suc (suc (suc (suc (suc (suc (suc (suc ()))))))))'
+basic=['basic (T.M-gen (zero)) _ = CM0.proved','basic (T.M-gen (suc _)) ()']
+for a in range(8):
+    for b in range(8):
+        if a<7 and b==a+1:basic.append(f'basic (T.X-gen {fp(a)} {fp(b)} _) _ = CX{a}{b}.proved')
+        else:basic.append(f'basic (T.X-gen {fp(a)} {fp(b)} _) ()')
+    basic.append(f'basic (T.X-gen {fp(a)} {NONE} _) _')
+basic.append(f'basic (T.X-gen {NONE} _ _) _')
+basic+=['basic (T.K-gen (suc _) _ _ _ _ _ _) (() , _)',
+        'basic (T.K-gen (zero) (zero) _ _ _ _ _) (_ , () , _)',
+        'basic (T.K-gen (zero) (suc (suc _)) _ _ _ _ _) (_ , () , _)',
+        f'basic (T.K-gen (zero) {fp(1)} (zero) _ _ _ _) (_ , _ , () , _)',
+        f'basic (T.K-gen (zero) {fp(1)} {fp(1)} _ _ _ _) (_ , _ , () , _)',
+        f'basic (T.K-gen (zero) {fp(1)} (suc (suc (suc _))) _ _ _ _) (_ , _ , () , _)']
+for d in range(3):basic.append(f'basic (T.K-gen (zero) {fp(1)} {fp(2)} {fp(d)} _ _ _) (_ , _ , _ , ())')
+basic.append(f'basic (T.K-gen (zero) {fp(1)} {fp(2)} {fp(3)} _ _ _) _ = CK0123.proved')
+basic.append(f'basic (T.K-gen (zero) {fp(1)} {fp(2)} (suc (suc (suc (suc _)))) _ _ _) (_ , _ , _ , ())')
+
 s=g.header('Repaired.DecodingMatrices')
-s+=f'''open import Data.Empty.Irrelevant using (⊥-elim)
+s+=f'''open import Data.Nat.Base as ℕ using (ℕ ; suc ; s≤s)
+import Data.Nat.Properties as ℕP
 open import Data.Fin.Base using (Fin ; zero ; suc ; _<_)
-open import Data.Nat.Base using (s≤s ; z≤n)
-import Data.Nat.Properties as NP
+open import Data.Product.Base using (_,_)
+open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
 open import Quantum.Synthesis.Matrix using (_·*·_)
 open import {P}.Repaired.Syntactics
-open import {P}.Matrix using (⟦_⟧ᴹ ; matrix-• ; matrix-ε)
+open import {P}.Matrix using (⟦_⟧ᴹ ; matrix-• ; matrix-ε ; matrix-sound)
 open import {P}.Repaired.Encoding using (decode)
 import {P}.Repaired.EncodingMatrices as EM
+import {P}.FrameWords as F
+import {P}.TwoLevel as TwoLevel
+import Presentation.Base as PB
 import Examples.Groups.CCX+HH-TwoLevel.Syntactics as T
+import Examples.Groups.CCX+HH-TwoLevel.Semantics as S1
+open import Examples.Groups.CCX+HH-TwoLevel.Reduction {{8}} using () renaming (sound-act to sound-act₁)
+import Examples.Groups.CCX+HH-TwoLevel.Conjugation {{8}} as Conj
+  using (Basic ; size ; decompose ; Step ; module Step)
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring as R
 module Dim = SS.Dim 4
 '''
-# The cases of one letter kind below a fixed prefix of indices: lhs is the
-# clause head up to its first pattern, fixed the prefix not written there.
-def cases(lhs,kind,arity,vals,fixed):
-    vs=list('abcd')[:arity];ps=['p'+str(i) for i in range(arity-1)]
-    pats=[f.finpat(i) for i in vals[fixed:]]+vs[len(vals):]
-    head=lhs+' '.join(pats+ps)
-    for j in range(len(vals)-1):
-        if vals[j]>=vals[j+1]:
-            b='z≤n'
-            for _ in range(vals[j+1]):b='(s≤s '+b+')'
-            return head+f' = ⊥-elim (NP.≤⇒≯ {b} p{j})\n'
-    if len(vals)==arity:
-        return head+' = C'+kind+''.join(str(i) for i in vals)+'.proved\n'
-    return ''.join(cases(lhs,kind,arity,vals+[i],fixed) for i in range(8))
-LETTER_IMPORTS=f'''open import Data.Empty.Irrelevant using (⊥-elim)
-open import Data.Fin.Base using (Fin ; zero ; suc ; _<_)
-open import Data.Nat.Base using (s≤s ; z≤n)
-import Data.Nat.Properties as NP
-import Relation.Binary.PropositionalEquality as Eq
-open Eq using (_≡_)
-open import {P}.Repaired.Syntactics
-open import {P}.Matrix using (⟦_⟧ᴹ)
-open import {P}.Repaired.Encoding using (decode)
-import Examples.Groups.CCX+HH-TwoLevel.Syntactics as T
-import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
-import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
-module Dim = SS.Dim 4
-'''
-# The four-level letters, one module per first index: as one function of
-# some 650 clauses beside the others, dyadic-letter took 38 s to check.
-kdir=ROOT/'Repaired'/'DecodingLetters';kdir.mkdir(exist_ok=True)
-for a in range(8):
-    k=g.header(f'Repaired.DecodingLetters.K{a}')+LETTER_IMPORTS
-    for atom in f.atoms:
-        if f.name(atom).startswith('K') and f.name(atom)[1]==str(a):
-            k+=f'import {P}.DecodeMatrices.{f.name(atom)} as C{f.name(atom)}\n'
-    # The first index as a definition at Fin 8: Fin's _<_ is heterogeneous,
-    # so a bare (zero) in the type would leave its size unsolved.
-    k+=(f'\nprivate\n  a : Fin 8\n  a = {f.finpat(a)}\n'
-        f'\nletter : (b c d : Fin 8) → .(p0 : a < b) → .(p1 : b < c) → .(p2 : c < d) →\n'
-        f'  Dim.⟦ [ L.⌊ T.K-gen a b c d p0 p1 p2 ⌋ ]ʷ ⟧ᴸ ≡ ⟦ decode (L.⌊ T.K-gen a b c d p0 p1 p2 ⌋) ⟧ᴹ\n')
-    k+=cases('letter ','K',4,[a],1)
-    (kdir/f'K{a}.agda').write_text(k,encoding='utf-8')
-for atom in f.atoms:
-    if not f.name(atom).startswith('K'):s+=f'import {P}.DecodeMatrices.{f.name(atom)} as C{f.name(atom)}\n'
-for a in range(8):s+=f'import {P}.Repaired.DecodingLetters.K{a} as K{a}\n'
-s+='\ndyadic-letter : ∀ g → Dim.⟦ [ L.⌊ g ⌋ ]ʷ ⟧ᴸ ≡ ⟦ decode (L.⌊ g ⌋) ⟧ᴹ\n'
-for kind,arity in [('M',1),('X',2)]:
-    for line in cases('§',kind,arity,[],0).splitlines():
-        head,rhs=line.split(' = ',1)
-        s+='dyadic-letter (T.'+kind+'-gen '+head[1:]+') = '+rhs+'\n'
-for a in range(8):
-    s+=f'dyadic-letter (T.K-gen {f.finpat(a)} b c d p0 p1 p2) = K{a}.letter b c d p0 p1 p2\n'
+for atom in BASIC:s+=f'import {P}.DecodeMatrices.{f.name(atom)} as C{f.name(atom)}\n'
 s+='''
+-- The basic letters, from their matrix certificates.
+basic : ∀ g → Conj.Basic g → Dim.⟦ [ L.⌊ g ⌋ ]ʷ ⟧ᴸ ≡ ⟦ F.decode g ⟧ᴹ
+'''+'\n'.join(basic)+'''
+
+-- Every other letter is a basic one conjugated by adjacent X's, and both
+-- readings respect that conjugation: the two-level one by the soundness
+-- of Table 1 (two-level), the circuit one by TwoLevel.decode-cong and
+-- soundness (circuit).
+private
+  module _ (g g′ : T.Gen 8) (x y : Fin 8) .(xy : x < y)
+           (rel : PB._≈_ (T._===_ {8}) [ g ]ʷ ([ T.X-gen x y xy ]ʷ • ([ g′ ]ʷ • [ T.X-gen x y xy ]ʷ))) where
+
+    -- The words are written out in the types, not abbreviated: two
+    -- spellings of one reading are compared by unfolding it.
+    two-level : Dim.⟦ [ L.⌊ g ⌋ ]ʷ ⟧ᴸ ≡ _·*·_ {{R.RingD}} Dim.⟦ [ L.⌊ T.X-gen x y xy ⌋ ]ʷ ⟧ᴸ
+                  (_·*·_ {{R.RingD}} Dim.⟦ [ L.⌊ g′ ⌋ ]ʷ ⟧ᴸ Dim.⟦ [ L.⌊ T.X-gen x y xy ⌋ ]ʷ ⟧ᴸ)
+    two-level = Eq.trans (SS.⟦⌊⌋⟧ 4 [ g ]ʷ)
+      (Eq.trans (Eq.cong SS.mapM (sound-act₁ rel S1.𝕀))
+        (Eq.trans (Eq.sym (SS.⟦⌊⌋⟧ 4 w))
+          (Eq.trans (Dim.⟦•⟧ᴸ [ ⌊X⌋ ]ʷ ([ L.⌊ g′ ⌋ ]ʷ • [ ⌊X⌋ ]ʷ))
+            (Eq.cong (_·*·_ {{R.RingD}} Dim.⟦ [ ⌊X⌋ ]ʷ ⟧ᴸ) (Dim.⟦•⟧ᴸ [ L.⌊ g′ ⌋ ]ʷ [ ⌊X⌋ ]ʷ)))))
+      where
+      ⌊X⌋ = L.⌊ T.X-gen x y xy ⌋
+      w = [ T.X-gen x y xy ]ʷ • ([ g′ ]ʷ • [ T.X-gen x y xy ]ʷ)
+
+    circuit : _·*·_ {{R.RingD}} ⟦ F.decode (T.X-gen x y xy) ⟧ᴹ
+                (_·*·_ {{R.RingD}} ⟦ F.decode g′ ⟧ᴹ ⟦ F.decode (T.X-gen x y xy) ⟧ᴹ) ≡ ⟦ F.decode g ⟧ᴹ
+    circuit = Eq.trans (Eq.cong (_·*·_ {{R.RingD}} ⟦ F.decode (T.X-gen x y xy) ⟧ᴹ)
+                          (Eq.sym (matrix-• (F.decode g′) (F.decode (T.X-gen x y xy)))))
+      (Eq.trans (Eq.sym (matrix-• (F.decode (T.X-gen x y xy)) (F.decode g′ • F.decode (T.X-gen x y xy))))
+        (matrix-sound {F.decode (T.X-gen x y xy) • (F.decode g′ • F.decode (T.X-gen x y xy))} {F.decode g}
+          (TwoLevel.decode-cong (PB.sym rel))))
+
+mutual
+  dyadic-letter′ : (k : ℕ) (g : T.Gen 8) → Conj.size g ℕ.< k → Dim.⟦ [ L.⌊ g ⌋ ]ʷ ⟧ᴸ ≡ ⟦ F.decode g ⟧ᴹ
+  dyadic-letter′ (suc k) g (s≤s lt) = by k g lt (Conj.decompose g)
+
+  by : (k : ℕ) (g : T.Gen 8) → Conj.size g ℕ.≤ k → Conj.Basic g ⊎ Conj.Step g →
+       Dim.⟦ [ L.⌊ g ⌋ ]ʷ ⟧ᴸ ≡ ⟦ F.decode g ⟧ᴹ
+  by k g lt (inj₁ b) = basic g b
+  by k g lt (inj₂ s) =
+    Eq.trans (two-level g g′ x y xy rel)
+      (Eq.trans (Eq.cong₂ (_·*·_ {{R.RingD}}) bX (Eq.cong₂ (_·*·_ {{R.RingD}}) ih bX))
+        (circuit g g′ x y xy rel))
+    where
+    open Conj.Step s using (x ; y ; xy ; g′ ; rel)
+    bX = basic (T.X-gen x y xy) (Conj.Step.adj s)
+    ih = dyadic-letter′ k g′ (ℕP.<-≤-trans (Conj.Step.small s) lt)
+
+dyadic-letter : ∀ g → Dim.⟦ [ L.⌊ g ⌋ ]ʷ ⟧ᴸ ≡ ⟦ decode (L.⌊ g ⌋) ⟧ᴹ
+dyadic-letter g = dyadic-letter′ (suc (Conj.size g)) g ℕP.≤-refl
+
 letter-matrix : ∀ g → Dim.⟦ [ g ]ʷ ⟧ᴸ ≡ ⟦ decode g ⟧ᴹ
 letter-matrix (L.⌊ g ⌋) = dyadic-letter g
 letter-matrix L.IH = EM.gen-matrix H2-gen
@@ -178,4 +210,8 @@ decode-matrix (w • v) = Eq.trans (Dim.⟦•⟧ᴸ w v)
     (Eq.sym (matrix-• ((decode ʷ) w) ((decode ʷ) v))))
 '''
 (ROOT/'Repaired'/'DecodingMatrices.agda').write_text(s,encoding='utf-8')
-print('Decoding matrix certificates:',len(f.atoms),'letters;',len(E),'shared evaluations')
+letters=ROOT/'Repaired'/'DecodingLetters'
+if letters.exists():
+    for old in letters.glob('*.agda'):old.unlink()
+    letters.rmdir()
+print('Decoding matrix certificates:',len(BASIC),'basic letters;',len(E),'shared evaluations')

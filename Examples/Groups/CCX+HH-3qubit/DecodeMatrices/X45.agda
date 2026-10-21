@@ -12,7 +12,7 @@ open import Examples.Groups.CCX+HH-3qubit.GateMatrices
 open import Examples.Groups.CCX+HH-3qubit.Interpretation
 import Examples.Groups.CCX+HH-3qubit.FrameWords as F
 open import Examples.Groups.CCX+HH-3qubit.Matrix using (module BM ; ⟦_⟧ᴹ)
-open import Examples.Groups.CCX+HH-3qubit.FrameEvaluation using (matrix52 ; e52)
+open import Examples.Groups.CCX+HH-3qubit.FrameEvaluation using (matrix35 ; e35)
 import Examples.Groups.CCX+HH-TwoLevel.Syntactics as T
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
@@ -24,7 +24,7 @@ letter = T.X-gen (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero))
 
 opaque
   unfolding R._+ᴰ_ R._*ᴰ_ R.-ᴰ_ SS.actV SS.set₁ SS.set₂
-  calculation : Dim.⟦ [ L.⌊ letter ⌋ ]ʷ ⟧ᴸ ≡ BM.Φ (0 , ix matrix52)
+  calculation : Dim.⟦ [ L.⌊ letter ⌋ ]ʷ ⟧ᴸ ≡ BM.Φ (0 , ix matrix35)
   calculation = SS.mat-ext (λ { (zero) (zero) → Eq.refl
     ; (zero) (suc (zero)) → Eq.refl
     ; (zero) (suc (suc (zero))) → Eq.refl
@@ -94,5 +94,5 @@ opaque
 
 proved : Dim.⟦ [ L.⌊ letter ⌋ ]ʷ ⟧ᴸ ≡ ⟦ F.X45 ⟧ᴹ
 proved = Eq.trans calculation (Eq.sym
-  (BM.Φ-≐ {ℓ = 0} {M = ix (readM F.X45)} {M′ = ix matrix52}
-    (λ x y → Eq.cong (λ M → ix M x y) e52)))
+  (BM.Φ-≐ {ℓ = 0} {M = ix (readM F.X45)} {M′ = ix matrix35}
+    (λ x y → Eq.cong (λ M → ix M x y) e35)))

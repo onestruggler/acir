@@ -40,6 +40,15 @@ table (`okM`, `okX`, `okK`). This replaces the 2,123 finite instances,
 their dispatchers and the frame moves that were checked one by one:
 577 modules and about 440 s of checking, against 3 s.
 
+Decoding preserves the matrix (`Repaired/DecodingMatrices`): the basic
+letters (-1)_[0], X_[x,x+1] and K_[0,1,2,3] have matrix certificates
+(`DecodeMatrices/`), and every other letter is a basic one conjugated
+by adjacent X's (`CCX+HH-TwoLevel`'s `Conjugation.decompose`), which
+both readings respect — the two-level one by the soundness of Table 1,
+the circuit one by `TwoLevel.decode-cong` — as in
+`CCX+HH-3qubit-opus`'s `dec-sem`. It replaces 97 certificates and 722
+of their 763 matrix evaluations.
+
 `Repaired/Presentation.agda` proves completeness for exact matrix
 equality and gives a full group presentation of L₈, the orthogonal
 scaled dyadic matrices: matrices over ℤ[1/√2] with a common power of
@@ -104,13 +113,13 @@ give the full presentation.
 
 ## Checking
 
-All 333 Agda modules in this directory pass Agda 2.8.0 with
+All 198 Agda modules in this directory pass Agda 2.8.0 with
 standard-library 2.4, including the assembled presentation, its public
 exports, the original circuit lemmas, the missing-K countermodel and
 the standalone audits. The public entry point, full-directory audit
 and `MainTheorems.agda` also pass through WSL from the Windows working
-tree. This includes all 32 shared evaluation modules,
-all 106 decoding certificates and both matrix bridges.
+tree. This includes the shared evaluation modules, the nine
+decoding certificates of the basic letters and both matrix bridges.
 `TwoLevel.agda` covers all 21 relation families at symbolic indices.
 Dyadic completeness, the scaled two-level map and its nine Hadamard
 certificates all pass. The repository-wide `MainTheorems.agda`
@@ -135,10 +144,11 @@ agda Examples/Groups/CCX+HH-3qubit/Repaired/Presentation.agda
 `bash Examples/Groups/CCX+HH-3qubit/tools/check.sh` checks the four
 roots that reach every module of the directory — `CircuitLemmas`,
 `MissingK`, `Theorems` and `StrictMatrix` — sequentially with a
-compacting 8 GB heap, followed by `MainTheorems.agda`: under five
-minutes from scratch, `Theorems` about three of them with a peak of
-3.8 GB. (It was about twelve minutes, `Theorems` eleven with a peak of
-6.2 GB, while the relations were transported instance by instance; and
+compacting 8 GB heap, followed by `MainTheorems.agda`: about three
+minutes from scratch, `Theorems` 94 s of them. (It was about
+twelve minutes, `Theorems` eleven with a peak of 6.2 GB, while the
+relations were transported and the decoding checked instance by
+instance; and
 about two hours when the relation families, the decoding certificates
 and the Hadamard relations were roots of their own, some 200 processes
 that each loaded the same interfaces again.)
@@ -227,6 +237,7 @@ that they stay cheap to check and to load (the repository's
   completeness as a module parameter (`Repaired/Even.FromEven`), which
   `Repaired/TwoLevelScaled` supplies, so that each loads only what
   that comparison does not need.
-- The four-level decoding certificates are dispatched by first index,
-  one module each (`Repaired/DecodingLetters`): one function of that
-  many clauses costs more to check than its parts.
+- The decoding is certified on the nine basic letters only and
+  carried to the others along `Conjugation.decompose` (above): its 106
+  certificates, 763 matrix evaluations and a dispatcher by first index
+  were about 100 s.
