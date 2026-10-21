@@ -17,6 +17,7 @@ module Examples.Groups.Qutrit-Clifford.Box3.Kit where
 
 open import Data.Bool.Base using (T)
 open import Data.List.Base using (List ; [] ; _∷_ ; _++_ ; map)
+open import Data.List.Properties using (++-assoc ; ++-identityʳ)
 open import Data.Nat.Base using (ℕ)
 open import Data.String.Base using (String)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
@@ -27,7 +28,7 @@ import Presentation.Base as PB
 open import Notations using (₂₊)
 open import Examples.Groups.Qutrit-Clifford.Syntactics
 open import Examples.Groups.Qutrit-Clifford.Engine
-  using (Eqn ; eqn ; ⟪_⟫ ; ⟪++⟫ ; ⟪map↥⟫ ; module Canon ; perm-sound ; Step ; rw ; sym⁼)
+  using (Eqn ; eqn ; ⟪_⟫ ; ⟪++⟫ ; ⟪≈⟫ ; ⟪map↥⟫ ; module Canon ; perm-sound ; Step ; rw ; sym⁼)
 open import Examples.Groups.Qutrit-Clifford.Letters using (ℓ)
 open import Examples.Groups.Qutrit-Clifford.Evaluation using (ev ; eqF ; checked)
 open import Examples.Groups.Qutrit-Clifford.Completeness2 using (completeness₂)
@@ -63,9 +64,24 @@ invT (gate₁ S-gate)  = gate₁ S-gate ∷ gate₁ S-gate ∷ []
 invT (gate₂ CZ-gate) = gate₂ CZ-gate ∷ gate₂ CZ-gate ∷ []
 invT (g ↥)           = map _↥ (invT g)
 
+-- With an accumulator: the plain recursion, invList xs ++ invT x,
+-- nests its appends to the left, and inverting k letters cost k²
+-- (the derivations cancel words of hundreds of letters).
+invAcc : List (Gen n) → List (Gen n) → List (Gen n)
+invAcc []       acc = acc
+invAcc (x ∷ xs) acc = invAcc xs (invT x ++ acc)
+
 invList : List (Gen n) → List (Gen n)
-invList []       = []
-invList (x ∷ xs) = invList xs ++ invT x
+invList xs = invAcc xs []
+
+mutual
+  invAcc-++ : (xs acc : List (Gen n)) → invAcc xs acc ≡ invList xs ++ acc
+  invAcc-++ []       acc = Eq.refl
+  invAcc-++ (x ∷ xs) acc = Eq.trans (invAcc-++ xs (invT x ++ acc))
+    (Eq.sym (Eq.trans (Eq.cong (_++ acc) (invList-∷ x xs)) (++-assoc (invList xs) (invT x) acc)))
+
+  invList-∷ : (x : Gen n) (xs : List (Gen n)) → invList (x ∷ xs) ≡ invList xs ++ invT x
+  invList-∷ x xs = Eq.trans (invAcc-++ xs (invT x ++ [])) (Eq.cong (invList xs ++_) (++-identityʳ (invT x)))
 
 invT-≈ : (g : Gen n) → n ⊢ ⟪ invT g ⟫ ≈ invL g
 invT-≈ {n} (gate₀ ν-gate)  = Width.by-assoc n Eq.refl
@@ -78,6 +94,7 @@ private
   inv-r′ : (xs : List (Gen n)) → n ⊢ ⟪ xs ⟫ • ⟪ invList xs ⟫ ≈ ε
   inv-r′ []       = Width.left-unit
   inv-r′ {n} (x ∷ xs) = begin
+    ([ x ]ʷ • ⟪ xs ⟫) • ⟪ invList (x ∷ xs) ⟫              ≈⟨ back ([ x ]ʷ • ⟪ xs ⟫) (⟪≈⟫ (invList-∷ x xs)) ⟩
     ([ x ]ʷ • ⟪ xs ⟫) • ⟪ invList xs ++ invT x ⟫          ≈⟨ back ([ x ]ʷ • ⟪ xs ⟫) (⟪++⟫ (invList xs) (invT x)) ⟩
     ([ x ]ʷ • ⟪ xs ⟫) • (⟪ invList xs ⟫ • ⟪ invT x ⟫)     ≈⟨ trans assoc (back [ x ]ʷ (sym assoc)) ⟩
     [ x ]ʷ • ((⟪ xs ⟫ • ⟪ invList xs ⟫) • ⟪ invT x ⟫)     ≈⟨ back [ x ]ʷ (front ⟪ invT x ⟫ (inv-r′ xs)) ⟩
@@ -89,6 +106,7 @@ private
   inv-l′ : (xs : List (Gen n)) → n ⊢ ⟪ invList xs ⟫ • ⟪ xs ⟫ ≈ ε
   inv-l′ []       = Width.left-unit
   inv-l′ {n} (x ∷ xs) = begin
+    ⟪ invList (x ∷ xs) ⟫ • ([ x ]ʷ • ⟪ xs ⟫)              ≈⟨ front ([ x ]ʷ • ⟪ xs ⟫) (⟪≈⟫ (invList-∷ x xs)) ⟩
     ⟪ invList xs ++ invT x ⟫ • ([ x ]ʷ • ⟪ xs ⟫)          ≈⟨ front ([ x ]ʷ • ⟪ xs ⟫) (⟪++⟫ (invList xs) (invT x)) ⟩
     (⟪ invList xs ⟫ • ⟪ invT x ⟫) • ([ x ]ʷ • ⟪ xs ⟫)     ≈⟨ trans assoc (back ⟪ invList xs ⟫ (sym assoc)) ⟩
     ⟪ invList xs ⟫ • ((⟪ invT x ⟫ • [ x ]ʷ) • ⟪ xs ⟫)     ≈⟨ back ⟪ invList xs ⟫ (front ⟪ xs ⟫ (trans (front [ x ]ʷ (invT-≈ x)) (invL-l x))) ⟩

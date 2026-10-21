@@ -213,12 +213,25 @@ rewrite-at i e xs = take i xs ++ (rhs e ++ drop (length (lhs e)) (drop i xs))
 matches-at : ℕ → Eqn n → List (Gen n) → Bool
 matches-at i e xs = eqL (take (length (lhs e)) (drop i xs)) (lhs e)
 
-run : List (Step n) → List (Gen n) → Maybe (List (Gen n))
-run []              xs = just xs
-run (perm ys ∷ ss)  xs =
-  if eqL (comm-canonical xs) (comm-canonical ys) then run ss ys else nothing
-run (rw i e ∷ ss)   xs =
-  if matches-at i e xs then run ss (rewrite-at i e xs) else nothing
+-- A rewrite passes the equation's sides and the two parts of the word
+-- on as arguments (run-rw, run-at), which Agda's evaluator computes once
+-- however often they are used; written out as in rewrite-at and
+-- matches-at, lhs e was computed three times a step.  The derivations
+-- of the box relations rewrite at positions in the thousands and
+-- cancel words of hundreds of letters.
+mutual
+  run : List (Step n) → List (Gen n) → Maybe (List (Gen n))
+  run []              xs = just xs
+  run (perm ys ∷ ss)  xs =
+    if eqL (comm-canonical xs) (comm-canonical ys) then run ss ys else nothing
+  run (rw i e ∷ ss)   xs = run-rw ss (lhs e) (rhs e) (take i xs) (drop i xs)
+
+  run-rw : List (Step n) → (l r pre suf : List (Gen n)) → Maybe (List (Gen n))
+  run-rw ss l r pre suf = run-at ss (length l) l r pre suf
+
+  run-at : List (Step n) → ℕ → (l r pre suf : List (Gen n)) → Maybe (List (Gen n))
+  run-at ss m l r pre suf =
+    if eqL (take m suf) l then run ss (pre ++ (r ++ drop m suf)) else nothing
 
 module _ {n : ℕ} where
 
@@ -246,14 +259,20 @@ module _ {n : ℕ} where
     m = length (lhs e)
     rest = drop m (drop i xs)
 
-  run-sound : (ss : List (Step n)) (xs ys : List (Gen n)) → run ss xs ≡ just ys → ⟪ xs ⟫ ≈ ⟪ ys ⟫
-  run-sound []             xs ys Eq.refl = refl
-  run-sound (perm zs ∷ ss) xs ys h with eqL (comm-canonical xs) (comm-canonical zs) in c
-  run-sound (perm zs ∷ ss) xs ys h  | true  = trans (perm-sound xs zs (eqL-sound _ _ c)) (run-sound ss zs ys h)
-  run-sound (perm zs ∷ ss) xs ys () | false
-  run-sound (rw i e ∷ ss)  xs ys h with matches-at i e xs in c
-  run-sound (rw i e ∷ ss)  xs ys h  | true  = trans (rw-sound i e xs c) (run-sound ss (rewrite-at i e xs) ys h)
-  run-sound (rw i e ∷ ss)  xs ys () | false
+  mutual
+    run-sound : (ss : List (Step n)) (xs ys : List (Gen n)) → run ss xs ≡ just ys → ⟪ xs ⟫ ≈ ⟪ ys ⟫
+    run-sound []             xs ys Eq.refl = refl
+    run-sound (perm zs ∷ ss) xs ys h with eqL (comm-canonical xs) (comm-canonical zs) in c
+    run-sound (perm zs ∷ ss) xs ys h  | true  = trans (perm-sound xs zs (eqL-sound _ _ c)) (run-sound ss zs ys h)
+    run-sound (perm zs ∷ ss) xs ys () | false
+    run-sound (rw i e ∷ ss)  xs ys h = run-at-sound i e ss xs ys h
+
+    run-at-sound : (i : ℕ) (e : Eqn n) (ss : List (Step n)) (xs ys : List (Gen n)) →
+                   run-at ss (length (lhs e)) (lhs e) (rhs e) (take i xs) (drop i xs) ≡ just ys →
+                   ⟪ xs ⟫ ≈ ⟪ ys ⟫
+    run-at-sound i e ss xs ys h with eqL (take (length (lhs e)) (drop i xs)) (lhs e) in c
+    run-at-sound i e ss xs ys h  | true  = trans (rw-sound i e xs c) (run-sound ss (rewrite-at i e xs) ys h)
+    run-at-sound i e ss xs ys () | false
 
 -- A derivation: an equation from the steps that turn lhs into rhs.
 derive : (l r : List (Gen n)) (ss : List (Step n)) → run ss l ≡ just r → Eqn n
