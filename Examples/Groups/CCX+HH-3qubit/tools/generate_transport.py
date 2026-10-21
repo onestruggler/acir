@@ -121,9 +121,4 @@ if __name__=='__main__':
     s=g.header('TransportCaseChecks')
     for label in CASES.values():s+=f'import {P}.TransportCases.{label}\n'
     (ROOT/'TransportCaseChecks.agda').write_text(s,encoding='utf-8')
-    for rule in SCHEMAS:
-        s=g.header('TransportCases.Check_'+rule)
-        for (r,v),label in CASES.items():
-            if r==rule:s+=f'import {P}.TransportCases.{label}\n'
-        (ROOT/'TransportCases'/('Check_'+rule+'.agda')).write_text(s,encoding='utf-8')
     print('Total generated cases:',len(CASES))

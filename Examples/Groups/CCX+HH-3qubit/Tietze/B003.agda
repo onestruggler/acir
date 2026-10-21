@@ -4,7 +4,7 @@ module Examples.Groups.CCX+HH-3qubit.Tietze.B003 where
 
 import Examples.Groups.CCX+HH-3qubit.Kit as K using (CCX01 ; CCX02 ; CCX12 ; CX01 ; CX02 ; CX10 ; CX12 ; CX20 ; CX21 ; CZ01 ; CZ02 ; CZ12 ; K01 ; K12 ; SWAP01 ; SWAP02 ; SWAP12 ; X0 ; X1 ; X2 ; Z0 ; Z1 ; Z2 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; module Eq ; r001 ; r008 ; r009 ; r010 ; r013 ; r014 ; r018 ; r019 ; r021 ; r022 ; r023 ; r025 ; r026 ; r029 ; r032 ; r033 ; r034 ; r041 ; r042 ; r044 ; r045 ; refl ; sym ; trans ; under ; ε)
 open K
-import Examples.Groups.CCX+HH-3qubit.Proofs.X0X1 as X0X1
+open import Examples.Groups.CCX+HH-3qubit.Proofs.B000 using (module X0X1)
 open import Examples.Groups.CCX+HH-3qubit.Tietze.B000 using (module bifunct_X_CX_d ; module bifunct_X_CX_e ; module drel131 ; module drel154 ; module drel46 ; module elim_CX02 ; module elim_CX10 ; module elim_CX12 ; module elim_CX21 ; module elim_SWAP01 ; module elim_SWAP02 ; module elim_SWAP12 ; module elim_X1 ; module symmetry_CX_f ; module symmetry_CX_g ; module symmetry_CX_i ; module symmetry_SWAP02)
 open import Examples.Groups.CCX+HH-3qubit.Tietze.B001 using (module bifunct_Z_CX_b ; module bifunct_Z_K_b ; module drel64 ; module drel66 ; module elim_CZ02 ; module symmetry_CX_b ; module symmetry_CX_j ; module symmetry_SWAP01 ; module symmetry_SWAP01_alt)
 open import Examples.Groups.CCX+HH-3qubit.Tietze.B002 using (module bifunct_X_SWAP_c ; module bifunct_X_Z_e ; module bifunct_X_c ; module bifunct_Z_CX_d ; module bifunct_Z_CX_e ; module bifunct_Z_CX_f ; module drel137 ; module drel58 ; module drel65 ; module elim_Z1)

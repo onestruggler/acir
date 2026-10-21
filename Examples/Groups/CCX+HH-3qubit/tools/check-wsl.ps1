@@ -30,8 +30,6 @@ if (-not $Targets) {
         "$development/Repaired/Presentation.agda", "$development/Theorems.agda")
     $Targets += @('FrameChecks', 'RepresentativeChecks', 'StrictMatrix', 'TransportCaseChecks') |
         ForEach-Object { "$development/$_.agda" }
-    $Targets += @(Get-ChildItem "$development/TransportCases/Check_*.agda" |
-        ForEach-Object { $_.FullName.Substring($taskRepo.Length + 1).Replace('\', '/') })
     $Targets += 'MainTheorems.agda'
 }
 

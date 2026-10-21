@@ -4,13 +4,13 @@ module Examples.Groups.CCX+HH-3qubit.TransportCases.r4b_B01 where
 
 import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (K1367 ; K1456 ; K1457 ; K1467 ; K1567 ; K2345 ; K2346 ; K2347 ; K2356 ; K2357 ; K2367 ; K2456 ; K2457 ; K2467 ; K2567 ; K3456 ; K3457 ; K3467 ; K3567 ; K4567 ; M1 ; M2 ; M3 ; M4 ; X34 ; X35 ; X36 ; X45 ; X46 ; X56 ; _•_ ; _≈_ ; cong ; module GL ; move-product ; p ; refl ; s0 ; s1 ; s2 ; s3 ; s4 ; s5 ; s6 ; sym ; trans)
 open K
-import Examples.Groups.CCX+HH-3qubit.FrameRelations.R098 as R098
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B000 using (module MV00632)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B001 using (module MV00631)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B017 using (module MV00690)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B018 using (module MV00691 ; module MV00692 ; module MV00693 ; module MV00694 ; module MV00695 ; module MV00696 ; module MV00697 ; module MV00698 ; module MV00699 ; module MV00700 ; module MV00701 ; module MV00702 ; module MV00703 ; module MV00704 ; module MV00705 ; module MV00706 ; module MV00707 ; module MV00708)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B074 using (module MV02924 ; module MV02925 ; module MV02926 ; module MV02927 ; module MV02928 ; module MV02929 ; module MV02930 ; module MV02931 ; module MV02932 ; module MV02933 ; module MV02934 ; module MV02935 ; module MV02936 ; module MV02937 ; module MV02938 ; module MV02939 ; module MV02940 ; module MV02941 ; module MV02942 ; module MV02943 ; module MV02944 ; module MV02945 ; module MV02946 ; module MV02947 ; module MV02948 ; module MV02949 ; module MV02950 ; module MV02951 ; module MV02952 ; module MV02953)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B075 using (module MV02954 ; module MV02955 ; module MV02956 ; module MV02957 ; module MV02958 ; module MV02959 ; module MV02960 ; module MV02961 ; module MV02962)
+open import Examples.Groups.CCX+HH-3qubit.FrameRelations.B000 using (module R098)
 
 module r4b_ij1367 where
 

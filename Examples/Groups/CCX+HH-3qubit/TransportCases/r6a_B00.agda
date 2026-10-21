@@ -4,12 +4,10 @@ module Examples.Groups.CCX+HH-3qubit.TransportCases.r6a_B00 where
 
 import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (K0123 ; K4567 ; M0 ; M4 ; X04 ; X34 ; _•_ ; _≈_ ; by-assoc-and ; cong ; module Eq ; move-product ; refl ; right-unit ; sym ; trans ; under ; ε)
 open K
-import Examples.Groups.CCX+HH-3qubit.FrameRelations.R083 as R083
-import Examples.Groups.CCX+HH-3qubit.FrameRelations.R095 as R095
-import Examples.Groups.CCX+HH-3qubit.FrameRelations.R101 as R101
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B064 using (module MV02452)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B078 using (module MV03113)
 open import Examples.Groups.CCX+HH-3qubit.FramePermutations.B018 using (module PE00959)
+open import Examples.Groups.CCX+HH-3qubit.FrameRelations.B000 using (module R083 ; module R095 ; module R101)
 open import Examples.Groups.CCX+HH-3qubit.TransportCases.r1b_B00 using (module r1b_ij4)
 
 module r6a_ij01234567 where

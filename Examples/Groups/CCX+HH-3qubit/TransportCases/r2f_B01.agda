@@ -4,11 +4,11 @@ module Examples.Groups.CCX+HH-3qubit.TransportCases.r2f_B01 where
 
 import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (K0123 ; K0124 ; K0125 ; K0126 ; K0127 ; K0134 ; K0135 ; K0136 ; K0137 ; K2456 ; K2457 ; K2467 ; K2567 ; K3456 ; K3457 ; K3467 ; K3567 ; K4567 ; _•_ ; _≈_ ; cong ; module GL ; move-product ; p ; refl ; s0 ; s1 ; s2 ; s3 ; s4 ; s5 ; s6 ; sym ; trans)
 open K
-import Examples.Groups.CCX+HH-3qubit.FrameRelations.R096 as R096
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B000 using (module MV00632)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B018 using (module MV00701 ; module MV00702 ; module MV00703 ; module MV00704 ; module MV00705 ; module MV00706 ; module MV00707 ; module MV00708)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B063 using (module MV02441 ; module MV02442 ; module MV02443)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B064 using (module MV02444 ; module MV02445 ; module MV02446 ; module MV02447 ; module MV02448 ; module MV02449)
+open import Examples.Groups.CCX+HH-3qubit.FrameRelations.B000 using (module R096)
 
 module r2f_ij24560137 where
 

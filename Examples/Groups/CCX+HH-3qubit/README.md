@@ -97,7 +97,7 @@ give the full presentation.
 
 ## Checking
 
-All 987 Agda modules in this directory pass Agda 2.8.0 with
+All 910 Agda modules in this directory pass Agda 2.8.0 with
 standard-library 2.4, including the assembled presentation, its public
 exports, the original circuit lemmas, the missing-K countermodel and
 the standalone audits. The public entry point, full-directory audit
@@ -194,9 +194,10 @@ The certificates are small and many, and the generators write them so
 that they stay cheap to check and to load (the repository's
 `typecheck-efficiency.md` has the measurements):
 
-- The 7489 one-line certificates (`FrameMoves`, `FramePermutations`,
-  `FrameCommutations`, `TransportCases`, `Tietze`, `PermProofs`) are
-  nested modules of 184 chunk modules (`B000`, …; in `TransportCases`
+- The 7548 one-line certificates (`FrameMoves`, `FramePermutations`,
+  `FrameCommutations`, `TransportCases`, `Tietze`, `PermProofs`,
+  `FrameAliases`, `FrameRelations`, `Proofs`) are nested modules of 187
+  chunk modules (`B000`, …; in `TransportCases`
   one family per chunk, `r2a_B00`, …), each under its old name, and a
   module that used one imports it from its chunk (`open import
   ….FrameMoves.B012 using (module MV00313)`). `tools/bundle.py` does
@@ -209,6 +210,9 @@ that they stay cheap to check and to load (the repository's
   `Repaired/Presentation` and `Theorems`, about three minutes each and
   one minute, `TwoLevel` 148 → 33 s, `TransportCaseChecks` 127 → 14 s;
   the peak 5.9 → 5.0 GB, the interfaces 350 → 280 MB.
+  `TransportCaseChecks` checks every transport case; the roots that did
+  it one relation family at a time (`TransportCases/Check_r1a`, …) are
+  gone, as they only imported one or two chunks each.
 
 - A certificate imports `Kit` or `FrameKit` restricted to the names it
   uses (`import Kit as K using (…)`, then `open K`; `generate.py`'s

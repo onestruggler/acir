@@ -9,7 +9,7 @@ open import Examples.Groups.CCX+HH-3qubit.FrameWords
 open import Examples.Groups.CCX+HH-3qubit.Engine
 
 import Examples.Groups.CCX+HH-3qubit.GatePermutations as GP
-import Examples.Groups.CCX+HH-3qubit.FrameAliases.Ak4567 as A4567
+open import Examples.Groups.CCX+HH-3qubit.FrameAliases.B000 using (module Ak4567)
 
 open import Data.Fin.Base using (zero ; suc)
 
@@ -98,4 +98,4 @@ backNK : K0123 ≈ NK
 backNK = by-assoc Eq.refl
 
 backK4567 : K4567 ≈ X0 • NK • X0
-backK4567 = sym A4567.proved
+backK4567 = sym Ak4567.proved

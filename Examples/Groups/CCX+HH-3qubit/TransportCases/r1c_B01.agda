@@ -4,8 +4,8 @@ module Examples.Groups.CCX+HH-3qubit.TransportCases.r1c_B01 where
 
 import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (K4567 ; _•_ ; _≈_ ; cong ; left-unit ; module GL ; move-product ; p ; refl ; right-unit ; s0 ; s1 ; s2 ; s3 ; s4 ; s5 ; s6 ; sym ; trans ; ε)
 open K
-import Examples.Groups.CCX+HH-3qubit.FrameRelations.R084 as R084
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B000 using (module MV00632)
+open import Examples.Groups.CCX+HH-3qubit.FrameRelations.B000 using (module R084)
 
 module r1c_ij4567 where
 

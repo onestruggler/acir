@@ -4,10 +4,10 @@ module Examples.Groups.CCX+HH-3qubit.TransportCases.r2b_B02 where
 
 import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (M0 ; M1 ; M2 ; M3 ; M4 ; M5 ; M6 ; M7 ; X37 ; X45 ; X46 ; X47 ; X56 ; X57 ; X67 ; _•_ ; _≈_ ; cong ; module GL ; move-product ; p ; refl ; s0 ; s1 ; s2 ; s3 ; s4 ; s5 ; s6 ; sym ; trans)
 open K
-import Examples.Groups.CCX+HH-3qubit.FrameRelations.R085 as R085
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B024 using (module MV00952 ; module MV00953 ; module MV00954 ; module MV00955 ; module MV00956 ; module MV00957 ; module MV00958 ; module MV00959 ; module MV00960 ; module MV00961 ; module MV00962 ; module MV00963 ; module MV00964 ; module MV00965 ; module MV00966 ; module MV00967 ; module MV00968 ; module MV00969 ; module MV00970 ; module MV00971 ; module MV00972 ; module MV00973 ; module MV00974 ; module MV00975 ; module MV00976 ; module MV00977 ; module MV00978 ; module MV00979 ; module MV00980 ; module MV00981 ; module MV00982 ; module MV00983 ; module MV00984 ; module MV00985)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B025 using (module MV00986 ; module MV00987 ; module MV00988 ; module MV00989 ; module MV00990 ; module MV00991 ; module MV00992 ; module MV00993 ; module MV00994 ; module MV00995 ; module MV00996 ; module MV00997 ; module MV00998 ; module MV00999 ; module MV01000 ; module MV01001 ; module MV01002 ; module MV01003 ; module MV01004 ; module MV01005 ; module MV01006 ; module MV01007 ; module MV01008 ; module MV01009 ; module MV01010 ; module MV01011 ; module MV01012 ; module MV01013 ; module MV01014 ; module MV01015 ; module MV01016 ; module MV01017 ; module MV01018 ; module MV01019)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B026 using (module MV01020 ; module MV01021 ; module MV01022 ; module MV01023 ; module MV01024 ; module MV01025 ; module MV01026 ; module MV01027 ; module MV01028 ; module MV01029 ; module MV01030 ; module MV01031 ; module MV01032 ; module MV01033)
+open import Examples.Groups.CCX+HH-3qubit.FrameRelations.B000 using (module R085)
 
 module r2b_ij371 where
 

@@ -4,13 +4,13 @@ module Examples.Groups.CCX+HH-3qubit.TransportCases.r2d_B00 where
 
 import Examples.Groups.CCX+HH-3qubit.FrameKit as K using (M0 ; M1 ; M2 ; M3 ; M4 ; M5 ; M6 ; M7 ; _•_ ; _≈_ ; cong ; module GL ; move-product ; p ; refl ; s0 ; s1 ; s2 ; s3 ; s4 ; s5 ; s6 ; sym ; trans ; ε)
 open K
-import Examples.Groups.CCX+HH-3qubit.FrameRelations.R095 as R095
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B000 using (module MV00000)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B001 using (module MV00003 ; module MV00004 ; module MV00028 ; module MV00031 ; module MV00032 ; module MV00630)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B016 using (module MV00635 ; module MV00636 ; module MV00637 ; module MV00638 ; module MV00639 ; module MV00640)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B047 using (module MV01801 ; module MV01802 ; module MV01803 ; module MV01804 ; module MV01805 ; module MV01806 ; module MV01807 ; module MV01808 ; module MV01809 ; module MV01810 ; module MV01811 ; module MV01812 ; module MV01813 ; module MV01814 ; module MV01815 ; module MV01816 ; module MV01817 ; module MV01818 ; module MV01819 ; module MV01820)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B048 using (module MV01821 ; module MV01822 ; module MV01823 ; module MV01824 ; module MV01825 ; module MV01826 ; module MV01827 ; module MV01828 ; module MV01829 ; module MV01830 ; module MV01831 ; module MV01832 ; module MV01833 ; module MV01834 ; module MV01835 ; module MV01836 ; module MV01837 ; module MV01838 ; module MV01839 ; module MV01840 ; module MV01841 ; module MV01842 ; module MV01843 ; module MV01844 ; module MV01845 ; module MV01846 ; module MV01847 ; module MV01848 ; module MV01849 ; module MV01850 ; module MV01851 ; module MV01852 ; module MV01853 ; module MV01854 ; module MV01855 ; module MV01856 ; module MV01857 ; module MV01858 ; module MV01859 ; module MV01860 ; module MV01861 ; module MV01862 ; module MV01863 ; module MV01864 ; module MV01865 ; module MV01866 ; module MV01867 ; module MV01868 ; module MV01869 ; module MV01870 ; module MV01871 ; module MV01872 ; module MV01873 ; module MV01874 ; module MV01875 ; module MV01876)
 open import Examples.Groups.CCX+HH-3qubit.FrameMoves.B049 using (module MV01877 ; module MV01878 ; module MV01879 ; module MV01880 ; module MV01881 ; module MV01882 ; module MV01883 ; module MV01884 ; module MV01885 ; module MV01886 ; module MV01887 ; module MV01888 ; module MV01889 ; module MV01890 ; module MV01891 ; module MV01892 ; module MV01893 ; module MV01894 ; module MV01895 ; module MV01896 ; module MV01897 ; module MV01898 ; module MV01899)
+open import Examples.Groups.CCX+HH-3qubit.FrameRelations.B000 using (module R095)
 
 module r2d_ij01 where
 

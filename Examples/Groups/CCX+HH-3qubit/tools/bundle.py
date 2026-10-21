@@ -2,7 +2,8 @@
 
 The generators write one module per certificate: FrameMoves/MV*,
 FramePermutations/PE*, FrameCommutations/CM*, TransportCases/r*_ij*,
-PermProofs/* and Tietze/*, some 7500 in all.  Agda pays for a module
+PermProofs/*, Tietze/*, FrameAliases/*, FrameRelations/R* and Proofs/*,
+some 7500 in all.  Agda pays for a module
 apart from its contents: it is loaded, merged into the state of every
 module that imports it, and has an interface of its own.  So this
 script, run after the generators, writes each folder as chunk modules
@@ -26,11 +27,13 @@ import generate as g
 ROOT = g.ROOT
 P = g.PREFIX
 FOLDERS = ['FramePermutations', 'FrameCommutations', 'FrameMoves', 'TransportCases',
-           'Tietze', 'PermProofs']
+           'Tietze', 'PermProofs', 'FrameAliases', 'FrameRelations', 'Proofs']
 # Characters of certificate text per chunk: about a hundred frame moves.
 CHUNK = 48000
 
 IMPORT = re.compile(r'^import (\S+)(?: as (\S+))?$')
+DEPLINE = re.compile(r'^(?:open )?import (\S+)')
+NESTED = re.compile(r'^module (\S+) where$', re.M)
 KITLINE = re.compile(r'^import ' + re.escape(P) + r'\.(Kit|FrameKit) as K using \((.*)\)$')
 CHUNKNAME = re.compile(r'^(?:B\d+|r\d[a-g]_B\d+)$')
 
@@ -63,7 +66,7 @@ def main():
     for folder in FOLDERS:
         for path in sorted((ROOT / folder).glob('*.agda')):
             name = path.stem
-            if CHUNKNAME.match(name) or name.startswith('Check_'):
+            if CHUNKNAME.match(name):
                 continue
             files[f'{P}.{folder}.{name}'] = path
     if not files:
@@ -80,7 +83,7 @@ def main():
         m = modname(path)
         text[m] = path.read_text(encoding='utf-8')
     for m, s in text.items():
-        deps[m] = [i.group(1) for l in s.split('\n') for i in [IMPORT.match(l)]
+        deps[m] = [i.group(1) for l in s.split('\n') for i in [DEPLINE.match(l)]
                    if i and i.group(1) in text]
     # Topological order, by name among ready modules; closures as bit sets.
     order, seen = [], set()
@@ -145,6 +148,16 @@ def main():
         cur[1] += len(text[m])
         cur[2] |= bit[m]
         where[m] = (folder, chunk_name(folder, key[1], len(chunks[key]) - 1))
+
+    # Certificates merged by an earlier run, in the folders not written
+    # anew: a regenerated module may still name them singly.
+    for folder in FOLDERS:
+        if any(m.split('.')[-2] == folder for m in files):
+            continue
+        for path in sorted((ROOT / folder).glob('*.agda')):
+            if CHUNKNAME.match(path.stem):
+                for nm in NESTED.findall(text[modname(path)]):
+                    where[f'{P}.{folder}.{nm}'] = (folder, path.stem)
 
     def bundle(m):
         folder, c = where[m]

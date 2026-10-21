@@ -4,10 +4,10 @@ module Examples.Groups.CCX+HH-3qubit.PermProofs.B003 where
 
 import Examples.Groups.CCX+HH-3qubit.Kit as K using (CCX01 ; CCX02 ; CCX12 ; CX01 ; CX02 ; CX10 ; CX12 ; CX20 ; SWAP01 ; SWAP02 ; X0 ; X1 ; X2 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; module Eq ; r013 ; r038 ; r042 ; refl ; sym ; trans ; under ; ε)
 open K
-import Examples.Groups.CCX+HH-3qubit.Proofs.X0X1 as X0X1
 open import Examples.Groups.CCX+HH-3qubit.PermProofs.B000 using (module KB0009 ; module KB0010 ; module KB0011 ; module KB0012 ; module KB0013 ; module KB0014 ; module KB0023 ; module KB0026 ; module KB0027 ; module KB0031 ; module KB0033 ; module KB0035 ; module KB0046 ; module KB0118 ; module KB0121 ; module KB0127 ; module KB0144 ; module KB0147 ; module KB0151 ; module KB0216 ; module KB0338)
 open import Examples.Groups.CCX+HH-3qubit.PermProofs.B001 using (module KB0002 ; module KB0025 ; module KB0038 ; module KB0086 ; module KB0122 ; module KB0124 ; module KB0157 ; module KB0159 ; module KB0211)
 open import Examples.Groups.CCX+HH-3qubit.PermProofs.B002 using (module KB0000 ; module KB0004 ; module KB0005 ; module KB0018 ; module KB0032 ; module KB0045 ; module KB0090 ; module KB0091 ; module KB0141 ; module KB0149 ; module KB0221)
+open import Examples.Groups.CCX+HH-3qubit.Proofs.B000 using (module X0X1)
 open import Examples.Groups.CCX+HH-3qubit.Tietze.B000 using (module bifunct_X_CX_c)
 open import Examples.Groups.CCX+HH-3qubit.Tietze.B001 using (module symmetry_CX_b)
 open import Examples.Groups.CCX+HH-3qubit.Tietze.B002 using (module drel67 ; module drel70)

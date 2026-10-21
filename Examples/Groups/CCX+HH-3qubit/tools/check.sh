@@ -46,5 +46,4 @@ check "$development/Theorems.agda"
 for audit in FrameChecks RepresentativeChecks StrictMatrix TransportCaseChecks; do
   check "$development/$audit.agda"
 done
-for part in "$development"/TransportCases/Check_*.agda; do check "$part"; done
 check MainTheorems.agda
