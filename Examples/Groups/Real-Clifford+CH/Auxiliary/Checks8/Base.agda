@@ -28,11 +28,11 @@ module Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.Base where
 open import Data.Bool using (Bool ; true ; false ; _∧_ ; not ; if_then_else_ ; T)
 open import Data.Unit using (tt)
 open import Data.Bool.Properties using (∧-assoc)
-open import Data.Empty using (⊥-elim)
+open import Data.Empty using (⊥ ; ⊥-elim)
 open import Data.Fin using (Fin ; toℕ)
 open import Data.Maybe using (Maybe ; just ; nothing)
-open import Data.Nat using (ℕ ; suc ; _+_ ; _∸_ ; _<_ ; _≤_ ; _<ᵇ_ ; _≡ᵇ_ ; _≤ᵇ_)
-open import Data.Nat.Properties using (<⇒<ᵇ ; ≡ᵇ⇒≡ ; ≡⇒≡ᵇ ; ≤⇒≤ᵇ)
+open import Data.Nat using (ℕ ; zero ; suc ; _+_ ; _∸_ ; _<_ ; _≤_ ; _<ᵇ_ ; _≡ᵇ_ ; _≤ᵇ_)
+open import Data.Nat.Properties using (<⇒<ᵇ ; ≡ᵇ⇒≡ ; ≡⇒≡ᵇ ; ≤⇒≤ᵇ ; ≤ᵇ⇒≤ ; m+[n∸m]≡n ; <⇒≤ ; ≰⇒>)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
@@ -42,7 +42,7 @@ open import Notations using (₀ ; ₁ ; ₂ ; ₃ ; ₄ ; ₅ ; ₆ ; ₇)
 open import Examples.Groups.Real-Clifford+CH.Semantics hiding (_^_ ; ^-+)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧ ; len)
-open import Examples.Groups.Real-Clifford+CH.Evaluation using (Rows ; rix ; _⊙ʳ_ ; ⟦_⟧R ; ⟦⟧R-ix)
+open import Examples.Groups.Real-Clifford+CH.Evaluation using (Rows ; rix ; _⊙ʳ_ ; ⟦_⟧R ; ⟦⟧R-ix ; sc ; rix-sc)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Decide using (eqM ; eqM-sound)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Gray using (code ; parity)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Matrices using (⟦_⟧ᴳ)
@@ -86,47 +86,128 @@ private
       (Eq.trans (⊙ʳ-ext (proj₂ ⟦ g ⟧ᴳ) (applyG-ok h R) x y)
                 (⊙ʳ-assoc (proj₂ ⟦ g ⟧ᴳ) (proj₂ ⟦ h ⟧ᴳ) (rix R) x y))
 
-  -- A word over P, from the right.
-  runP : Word (GenP 3) → Rows 3 3 → Rows 3 3
-  runP [ −1−1 a b ]ʷ       = apply₂ −1[ a ] −1[ b ]
-  runP [ −1X c a b _ ]ʷ    = apply₂ −1[ c ] X[ a , b ]
-  runP [ XX a b c d _ _ ]ʷ = apply₂ X[ a , b ] X[ c , d ]
-  runP [ HH a b c d _ _ ]ʷ = apply₂ H[ a , b ] H[ c , d ]
-  runP ε R                 = R
-  runP (u • t) R           = runP u (runP t R)
+-- A word over P, from the right.
+runP : Word (GenP 3) → Rows 3 3 → Rows 3 3
+runP [ −1−1 a b ]ʷ       = apply₂ −1[ a ] −1[ b ]
+runP [ −1X c a b _ ]ʷ    = apply₂ −1[ c ] X[ a , b ]
+runP [ XX a b c d _ _ ]ʷ = apply₂ X[ a , b ] X[ c , d ]
+runP [ HH a b c d _ _ ]ʷ = apply₂ H[ a , b ] H[ c , d ]
+runP ε R                 = R
+runP (u • t) R           = runP u (runP t R)
 
-  runP-ok : (u : Word (GenP 3)) (R : Rows 3 3) (x y : Bits 3) →
-            rix (runP u R) x y ≡ (proj₂ ⟦ u ⟧Y ⊙ʳ rix R) x y
-  runP-ok [ −1−1 a b ]ʷ       = apply₂-ok −1[ a ] −1[ b ]
-  runP-ok [ −1X c a b _ ]ʷ    = apply₂-ok −1[ c ] X[ a , b ]
-  runP-ok [ XX a b c d _ _ ]ʷ = apply₂-ok X[ a , b ] X[ c , d ]
-  runP-ok [ HH a b c d _ _ ]ʷ = apply₂-ok H[ a , b ] H[ c , d ]
-  runP-ok ε R x y             = Eq.sym (⊙ʳ-id (rix R) x y)
-  runP-ok (u • t) R x y =
-    Eq.trans (runP-ok u (runP t R) x y)
-      (Eq.trans (⊙ʳ-ext (proj₂ ⟦ u ⟧Y) (runP-ok t R) x y)
-                (⊙ʳ-assoc (proj₂ ⟦ u ⟧Y) (proj₂ ⟦ t ⟧Y) (rix R) x y))
+runP-ok : (u : Word (GenP 3)) (R : Rows 3 3) (x y : Bits 3) →
+          rix (runP u R) x y ≡ (proj₂ ⟦ u ⟧Y ⊙ʳ rix R) x y
+runP-ok [ −1−1 a b ]ʷ       = apply₂-ok −1[ a ] −1[ b ]
+runP-ok [ −1X c a b _ ]ʷ    = apply₂-ok −1[ c ] X[ a , b ]
+runP-ok [ XX a b c d _ _ ]ʷ = apply₂-ok X[ a , b ] X[ c , d ]
+runP-ok [ HH a b c d _ _ ]ʷ = apply₂-ok H[ a , b ] H[ c , d ]
+runP-ok ε R x y             = Eq.sym (⊙ʳ-id (rix R) x y)
+runP-ok (u • t) R x y =
+  Eq.trans (runP-ok u (runP t R) x y)
+    (Eq.trans (⊙ʳ-ext (proj₂ ⟦ u ⟧Y) (runP-ok t R) x y)
+              (⊙ʳ-assoc (proj₂ ⟦ u ⟧Y) (proj₂ ⟦ t ⟧Y) (rix R) x y))
 
-  -- The stored reading of a word over P, and its correctness.
-  ⟦_⟧PR : Word (GenP 3) → Mat 3
-  ⟦ u ⟧PR = mat (runP u (entries (idM {3})))
+-- The identity rows, written out: built by `idM` they were tabulated
+-- again for every reading.
+I₃ : Rows 3 3
+I₃ =
+    ((((((1# , 0#) , (0# , 0#)) , ((0# , 0#) , (0# , 0#)))
+     , (((0# , 1#) , (0# , 0#)) , ((0# , 0#) , (0# , 0#))))
+     , ((((0# , 0#) , (1# , 0#)) , ((0# , 0#) , (0# , 0#)))
+     , (((0# , 0#) , (0# , 1#)) , ((0# , 0#) , (0# , 0#)))))
+     , (((((0# , 0#) , (0# , 0#)) , ((1# , 0#) , (0# , 0#)))
+     , (((0# , 0#) , (0# , 0#)) , ((0# , 1#) , (0# , 0#))))
+     , ((((0# , 0#) , (0# , 0#)) , ((0# , 0#) , (1# , 0#)))
+     , (((0# , 0#) , (0# , 0#)) , ((0# , 0#) , (0# , 1#))))))
 
-  PR-ix : (u : Word (GenP 3)) → proj₂ ⟦ u ⟧Y ≐ ix ⟦ u ⟧PR
-  PR-ix u x y = Eq.sym
-    (Eq.trans (runP-ok u (entries (idM {3})) x y)
-      (Eq.trans (⊙ʳ-ext (proj₂ ⟦ u ⟧Y) (ix-id {3}) x y)
-                (Σ-δʳ y (λ z → proj₂ ⟦ u ⟧Y x z))))
+private
+  I₃-ok : I₃ ≡ entries (idM {3})
+  I₃-ok = Eq.refl
+
+  I₃-ix : rix I₃ ≐ Idₒ
+  I₃-ix x y = Eq.trans (Eq.cong (λ R → rix R x y) I₃-ok) (ix-id {3} x y)
+
+-- The stored reading of a word over P, and its correctness.
+⟦_⟧PR : Word (GenP 3) → Mat 3
+⟦ u ⟧PR = mat (runP u I₃)
+
+PR-ix : (u : Word (GenP 3)) → proj₂ ⟦ u ⟧Y ≐ ix ⟦ u ⟧PR
+PR-ix u x y = Eq.sym
+  (Eq.trans (runP-ok u I₃ x y)
+    (Eq.trans (⊙ʳ-ext (proj₂ ⟦ u ⟧Y) I₃-ix x y)
+              (Σ-δʳ y (λ z → proj₂ ⟦ u ⟧Y x z))))
+
+------------------------------------------------------------------------
+-- Two readings compared, each scaled by a power of √2
+--
+-- The smaller power is cancelled, so that two readings at the same
+-- power — the Hadamard-free rules, and every rule with as many
+-- Hadamards on each side — are compared as they are: scaling both by
+-- `scaleM` rebuilt each matrix entry by entry, which cost more than
+-- reading the words.
+
+-- A power of √2 on rows, nothing done for the power 0.
+scP : ℕ → Rows 3 3 → Rows 3 3
+scP zero    R = R
+scP (suc n) R = sc {3} 3 (√2^ suc n) R
+
+rix-scP : ∀ n (R : Rows 3 3) (x y : Bits 3) → rix (scP n R) x y ≡ √2^ n * rix R x y
+rix-scP zero    R x y = Eq.sym (*-identityˡ (rix R x y))
+rix-scP (suc n) R x y = rix-sc {3} 3 (√2^ suc n) R x y
+
+eqR : Rows 3 3 → Rows 3 3 → Bool
+eqR R S = eqM {3} (mat {3} R) (mat {3} S)
+
+eqR-sound : ∀ R S → eqR R S ≡ true → ∀ (x y : Bits 3) → rix R x y ≡ rix S x y
+eqR-sound R S h x y = Eq.cong (λ M → ix M x y) (eqM-sound (mat {3} R) (mat {3} S) h)
+
+-- Whether √2^k · R and √2^l · S are the same rows.
+cmpB : Bool → ℕ → Rows 3 3 → ℕ → Rows 3 3 → Bool
+cmpB true  k R l S = eqR R (scP (l ∸ k) S)
+cmpB false k R l S = eqR (scP (k ∸ l) R) S
+
+cmpR : ℕ → Rows 3 3 → ℕ → Rows 3 3 → Bool
+cmpR k R l S = cmpB (k ≤ᵇ l) k R l S
+
+private
+  f≢t : false ≡ true → ⊥
+  f≢t ()
+
+  t→T : ∀ {b} → b ≡ true → T b
+  t→T Eq.refl = tt
+
+  T→t : ∀ {b} → T b → b ≡ true
+  T→t {true} _ = Eq.refl
+
+  cmpB-sound : ∀ b k R l S → (k ≤ᵇ l) ≡ b → cmpB b k R l S ≡ true →
+               ∀ (x y : Bits 3) → √2^ k * rix R x y ≡ √2^ l * rix S x y
+  cmpB-sound true k R l S p h x y =
+    Eq.trans (Eq.cong (λ z → √2^ k * z)
+                      (Eq.trans (eqR-sound R (scP (l ∸ k) S) h x y) (rix-scP (l ∸ k) S x y)))
+      (Eq.trans (Eq.sym (*-assoc (√2^ k) (√2^ (l ∸ k)) (rix S x y)))
+        (Eq.trans (Eq.cong (λ z → z * rix S x y) (Eq.sym (√2^-+ k (l ∸ k))))
+                  (Eq.cong (λ j → √2^ j * rix S x y) (m+[n∸m]≡n (≤ᵇ⇒≤ k l (t→T p))))))
+  cmpB-sound false k R l S p h x y =
+    Eq.trans (Eq.cong (λ j → √2^ j * rix R x y) (Eq.sym (m+[n∸m]≡n l≤k)))
+      (Eq.trans (Eq.cong (λ z → z * rix R x y) (√2^-+ l (k ∸ l)))
+        (Eq.trans (*-assoc (√2^ l) (√2^ (k ∸ l)) (rix R x y))
+          (Eq.cong (λ z → √2^ l * z)
+                   (Eq.trans (Eq.sym (rix-scP (k ∸ l) R x y)) (eqR-sound (scP (k ∸ l) R) S h x y)))))
+    where
+    l≤k : l ≤ k
+    l≤k = <⇒≤ (≰⇒> (λ k≤l → f≢t (Eq.trans (Eq.sym p) (T→t (≤⇒≤ᵇ k≤l)))))
+
+cmpR-sound : ∀ k R l S → cmpR k R l S ≡ true → ∀ (x y : Bits 3) → √2^ k * rix R x y ≡ √2^ l * rix S x y
+cmpR-sound k R l S h = cmpB-sound (k ≤ᵇ l) k R l S Eq.refl h
 
 decide : Word (GenP 3) → Word (GenP 3) → Bool
-decide u t = eqM (scaleM (√2^ proj₁ ⟦ t ⟧Y) ⟦ u ⟧PR) (scaleM (√2^ proj₁ ⟦ u ⟧Y) ⟦ t ⟧PR)
+decide u t = cmpR (proj₁ ⟦ t ⟧Y) (runP u I₃) (proj₁ ⟦ u ⟧Y) (runP t I₃)
 
 decide-sound : (u t : Word (GenP 3)) → decide u t ≡ true → ⟦ u ⟧Y ~ ⟦ t ⟧Y
-decide-sound u t eq =
-  ≐-trans (·-cong Eq.refl (PR-ix u))
-    (≐-trans (≐-sym (ix-scaleM _ _))
-      (≐-trans (ix-≡ (eqM-sound (scaleM (√2^ proj₁ ⟦ t ⟧Y) ⟦ u ⟧PR)
-                                (scaleM (√2^ proj₁ ⟦ u ⟧Y) ⟦ t ⟧PR) eq))
-        (≐-trans (ix-scaleM _ _) (·-cong Eq.refl (≐-sym (PR-ix t))))))
+decide-sound u t h x y =
+  Eq.trans (Eq.cong (λ z → √2^ proj₁ ⟦ t ⟧Y * z) (PR-ix u x y))
+    (Eq.trans (cmpR-sound (proj₁ ⟦ t ⟧Y) (runP u I₃) (proj₁ ⟦ u ⟧Y) (runP t I₃) h x y)
+              (Eq.cong (λ z → √2^ proj₁ ⟦ u ⟧Y * z) (Eq.sym (PR-ix t x y))))
 
 
 private

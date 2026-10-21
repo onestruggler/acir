@@ -114,21 +114,23 @@ private
   atM-reads (w ∷ ws) zero    = ⟦⟧R≡⟦⟧M w
   atM-reads (w ∷ ws) (suc i) = atM-reads ws i
 
-  prod-reads : ∀ (ws : List (Circuit k)) e → prodM (map ⟦_⟧R ws) e ≡ ⟦ expand ws e ⟧M
-  prod-reads ws [ i ]ʷ  = atM-reads ws i
-  prod-reads ws ε       = Eq.refl
-  prod-reads ws (a • b) =
-    Eq.trans (mulS-ok _ _) (Eq.cong₂ mulM (prod-reads ws a) (prod-reads ws b))
-
   atL-lens : ∀ (ws : List (Circuit k)) i → atL (map len ws) i ≡ len (at ws i)
   atL-lens []       i       = Eq.refl
   atL-lens (w ∷ ws) zero    = Eq.refl
   atL-lens (w ∷ ws) (suc i) = atL-lens ws i
 
-  lenW-lens : ∀ (ws : List (Circuit k)) e → lenW (map len ws) e ≡ len (expand ws e)
-  lenW-lens ws [ i ]ʷ  = atL-lens ws i
-  lenW-lens ws ε       = Eq.refl
-  lenW-lens ws (a • b) = Eq.cong₂ _+ℕ_ (lenW-lens ws a) (lenW-lens ws b)
+-- A product of the factors' matrices is the matrix of the word it
+-- spells, and likewise the lengths.
+prod-reads : ∀ (ws : List (Circuit k)) e → prodM (map ⟦_⟧R ws) e ≡ ⟦ expand ws e ⟧M
+prod-reads ws [ i ]ʷ  = atM-reads ws i
+prod-reads ws ε       = Eq.refl
+prod-reads ws (a • b) =
+  Eq.trans (mulS-ok _ _) (Eq.cong₂ mulM (prod-reads ws a) (prod-reads ws b))
+
+lenW-lens : ∀ (ws : List (Circuit k)) e → lenW (map len ws) e ≡ len (expand ws e)
+lenW-lens ws [ i ]ʷ  = atL-lens ws i
+lenW-lens ws ε       = Eq.refl
+lenW-lens ws (a • b) = Eq.cong₂ _+ℕ_ (lenW-lens ws a) (lenW-lens ws b)
 
 -- The i-th equation of a family whose boolean holds.
 fam-eval : (ws : List (Circuit k)) (es : List (Word ℕ × Word ℕ)) →
