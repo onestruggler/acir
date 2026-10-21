@@ -15,7 +15,7 @@
 --
 -- The paper's induction on the length of x: on four wires it is decided
 -- (Base322; the paper cites (247), (248)).  At width 5 + j the box one
--- width down is expanded by (320) — on four wires decided too (Base338),
+-- width down is expanded by (320) — on four wires decided too (Base4),
 -- from five on GeneralN.Box320 — and placed around wire 3: its rotations
 -- land on the wires 0 1 2 4 (`place3-loc`), coloured they are the
 -- second gates of (267) and (268) (Colours' `norm-ZX`/`norm-K`, a white
@@ -74,7 +74,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Box320 complete₂ complet
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Colours complete₂ complete₃
   using (col ; module Col ; col-place ; norm-ZX ; norm-K)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (B₁ ; Vb ; bot ; c₀ ; c₁)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base338 using (W320 ; d320)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base4 using (W320 ; d320)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Base322 using (AᴾF ; P322 ; d322)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Base322b using (d322b)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Families2 complete₂ complete₃ using (N₁ᵇ ; N₃ᵇ)

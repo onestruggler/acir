@@ -12,7 +12,7 @@
 -- on the wires 0 1 and X on wire 2 — and every letter of one passes
 -- every letter of the other:
 --
---   * two rotations: decided on four wires (Base337) and weakened;
+--   * two rotations: decided on four wires (Base4) and weakened;
 --   * a rotation of one against the smaller box of the other: between
 --     P ⊗ P and X on wire 2 this is (322) (GeneralN.Gadget322), with the
 --     box wire on wire 0 or, under the swap of the wires 0 1, on wire 1;
@@ -65,7 +65,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Gadget322 complete₂ comp
          ZX-XZ ; XZ-ZX ; K-K′ ; K′-K)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Box338 complete₂ complete₃ using (all-pairs ; module Carry)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Box338Eq complete₂ complete₃ using (N₂-place ; X₂²)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base337 using (U₄ ; G2 ; d337r)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base4 using (U₄ ; G2 ; d337r)
 
 ------------------------------------------------------------------------
 -- The two smaller boxes, one width down: decided on the controlled forms

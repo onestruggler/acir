@@ -12,7 +12,7 @@
 -- GeneralN.Box338Eq, and this module does the others (`sep-all`).
 --
 -- The paper's induction on the width.  On four wires it is decided
--- (Base338).  At width 5 + k with y white on wire 2 (`Pair`), both
+-- (Base4).  At width 5 + k with y white on wire 2 (`Pair`), both
 -- gates are expanded by (320) — Hg as the box on wire 1 between P ⊗ P
 -- (GeneralN.Gadget322's letters, `H-word`) — and every letter of one
 -- passes every letter of the other:
@@ -74,7 +74,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxSym complete₂ complet
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Colours complete₂ complete₃
   using (col ; module Col ; col-place ; col-Ex ; norm-ZX ; norm-K ; conj-swap ; N₃-S₀₁)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (B₁ ; Hg ; Vb ; C338)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base338 using (d338)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base4 using (d338)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxComm complete₂ complete₃ using (move′)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Gadget322 complete₂ complete₃
   using (L ; zx ; xz ; kb ; kb′ ; bb ; lt ; es ; word ; pass-word ; via ; module CW ;

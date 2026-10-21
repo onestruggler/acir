@@ -15,7 +15,7 @@
 -- the wires 1 3 — and every letter of one passes every letter of the
 -- other:
 --
---   * two rotations: decided on four wires (Base339) and weakened;
+--   * two rotations: decided on four wires (Base4) and weakened;
 --   * a rotation of the box against the smaller box of the H gate, which
 --     P ⊗ P on the wires 1 3 passes — its box wire and an idle wire,
 --     (276) under the cycle of the placement (`P₀₃-place`, `P₁₃-S`):
@@ -75,7 +75,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Colours complete₂ comple
   using (col ; module Col ; col-place ; col-Ex ; peel ; colT ; colT-local ; colT-pass ;
          conj-swap ; N₂-colT ; N₂-S₀₁ ; N₃ᵇ-cong)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (B₁ ; P₀₃ ; P₁₃ ; Hg₃ ; C336 ; C339)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base339 using (d339 ; d339r ; G1r ; G2r)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base4 using (d339 ; d339r ; G1r ; G2r)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Base339K using (dK ; dK′)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxComm complete₂ complete₃ using (module Base ; eq336ᶜ)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxAnywhere using (col-pair′)

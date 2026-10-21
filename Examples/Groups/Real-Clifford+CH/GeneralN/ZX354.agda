@@ -19,7 +19,7 @@
 -- (BoxMergeAt), the H gate by (309) between P ⊗ P ((310)), the gates
 -- below wire 3 entering the placement by Place.place-low.  The placed
 -- word is (333)/(334) one width down (Canon32 there, or on four wires by
--- evaluation, Base354).
+-- evaluation, Base4).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -61,7 +61,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (Hg)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.ZX353 complete₂ complete₃ using (allT)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.RotCol using (rot)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon32 complete₂ complete₃ using (letter ; letters ; letter-comm ; rot-rigid)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Base354 using (K₄ ; e-333 ; e-334)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base4 using (K₄ ; e-333 ; e-334)
 
 ------------------------------------------------------------------------
 -- The letters one width down
