@@ -10,10 +10,7 @@ import Data.Nat.Properties as NP
 import Relation.Binary.PropositionalEquality as Eq
 open import Examples.Groups.CCX+HH-3qubit.Syntactics
 open import Examples.Groups.CCX+HH-3qubit.FrameWords
-import Examples.Groups.CCX+HH-3qubit.TransportCases.r3f_ij23456 as C23456
-import Examples.Groups.CCX+HH-3qubit.TransportCases.r3f_ij23457 as C23457
-import Examples.Groups.CCX+HH-3qubit.TransportCases.r3f_ij23467 as C23467
-import Examples.Groups.CCX+HH-3qubit.TransportCases.r3f_ij23567 as C23567
+open import Examples.Groups.CCX+HH-3qubit.TransportCases.r3f_B00 using (module r3f_ij23456 ; module r3f_ij23457 ; module r3f_ij23467 ; module r3f_ij23567)
 
 private
   a b : Fin 8
@@ -43,8 +40,8 @@ translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (s
 translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (zero)))) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s (s≤s z≤n))) p3)
 translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (zero))))) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s (s≤s (s≤s z≤n)))) p3)
 translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (zero)))))) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s (s≤s (s≤s (s≤s z≤n))))) p3)
-translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p0 p1 p2 p3 p4 p5 = C23456.proved
-translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p0 p1 p2 p3 p4 p5 = C23457.proved
+translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p0 p1 p2 p3 p4 p5 = r3f_ij23456.proved
+translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p0 p1 p2 p3 p4 p5 = r3f_ij23457.proved
 translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (zero) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ z≤n p3)
 translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (zero)) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s z≤n) p3)
 translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (zero))) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s z≤n)) p3)
@@ -52,7 +49,7 @@ translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))
 translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s (s≤s (s≤s z≤n)))) p3)
 translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s (s≤s (s≤s (s≤s z≤n))))) p3)
 translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))) p3)
-translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p0 p1 p2 p3 p4 p5 = C23467.proved
+translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p0 p1 p2 p3 p4 p5 = r3f_ij23467.proved
 translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ z≤n p3)
 translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s z≤n) p3)
 translate (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s z≤n)) p3)
@@ -74,7 +71,7 @@ translate (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (ze
 translate (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s (s≤s (s≤s z≤n)))) p3)
 translate (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s (s≤s (s≤s (s≤s z≤n))))) p3)
 translate (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))) p3)
-translate (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p0 p1 p2 p3 p4 p5 = C23567.proved
+translate (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p0 p1 p2 p3 p4 p5 = r3f_ij23567.proved
 translate (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ z≤n p3)
 translate (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s z≤n) p3)
 translate (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p0 p1 p2 p3 p4 p5 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s z≤n)) p3)

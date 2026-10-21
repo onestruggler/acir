@@ -15,34 +15,12 @@ import Examples.Groups.Symmetric.Syntactics as S
 import Examples.Groups.Symmetric.SubPresentation.Semantics as SS
 import Examples.Groups.Symmetric.SubPresentation.SubPres as SP
 open import Examples.Groups.CCX+HH-3qubit.Syntactics
-import Examples.Groups.CCX+HH-3qubit.PermProofs.invol0 as I0
-import Examples.Groups.CCX+HH-3qubit.PermProofs.invol1 as I1
-import Examples.Groups.CCX+HH-3qubit.PermProofs.invol2 as I2
-import Examples.Groups.CCX+HH-3qubit.PermProofs.invol3 as I3
-import Examples.Groups.CCX+HH-3qubit.PermProofs.invol4 as I4
-import Examples.Groups.CCX+HH-3qubit.PermProofs.invol5 as I5
-import Examples.Groups.CCX+HH-3qubit.PermProofs.invol6 as I6
-import Examples.Groups.CCX+HH-3qubit.PermProofs.braid0 as B0
-import Examples.Groups.CCX+HH-3qubit.PermProofs.braid1 as B1
-import Examples.Groups.CCX+HH-3qubit.PermProofs.braid2 as B2
-import Examples.Groups.CCX+HH-3qubit.PermProofs.braid3 as B3
-import Examples.Groups.CCX+HH-3qubit.PermProofs.braid4 as B4
-import Examples.Groups.CCX+HH-3qubit.PermProofs.braid5 as B5
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm02 as C02
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm03 as C03
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm04 as C04
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm05 as C05
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm06 as C06
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm13 as C13
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm14 as C14
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm15 as C15
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm16 as C16
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm24 as C24
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm25 as C25
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm26 as C26
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm35 as C35
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm36 as C36
-import Examples.Groups.CCX+HH-3qubit.PermProofs.comm46 as C46
+open import Examples.Groups.CCX+HH-3qubit.PermProofs.B021 using (module braid0 ; module braid1)
+open import Examples.Groups.CCX+HH-3qubit.PermProofs.B022 using (module braid2)
+open import Examples.Groups.CCX+HH-3qubit.PermProofs.B023 using (module braid3 ; module braid4 ; module braid5 ; module comm02)
+open import Examples.Groups.CCX+HH-3qubit.PermProofs.B024 using (module comm03 ; module comm04 ; module comm05 ; module comm06 ; module comm13 ; module comm14)
+open import Examples.Groups.CCX+HH-3qubit.PermProofs.B025 using (module comm15 ; module comm16 ; module comm24 ; module comm25 ; module comm26 ; module comm35 ; module comm36 ; module comm46 ; module invol0 ; module invol1 ; module invol2)
+open import Examples.Groups.CCX+HH-3qubit.PermProofs.B026 using (module invol3 ; module invol4 ; module invol5 ; module invol6)
 
 adjacent : ℕ → Word Gen
 adjacent 0 = t01
@@ -69,22 +47,22 @@ open PB _===_ hiding (_===_ ; _≈_)
 open PP _===_ using (by-assoc-and)
 
 involution : ∀ k → adjacent k • adjacent k ≈ ε
-involution 0 = by-assoc-and I0.proved Eq.refl Eq.refl
-involution 1 = by-assoc-and I1.proved Eq.refl Eq.refl
-involution 2 = by-assoc-and I2.proved Eq.refl Eq.refl
-involution 3 = by-assoc-and I3.proved Eq.refl Eq.refl
-involution 4 = by-assoc-and I4.proved Eq.refl Eq.refl
-involution 5 = by-assoc-and I5.proved Eq.refl Eq.refl
-involution 6 = by-assoc-and I6.proved Eq.refl Eq.refl
+involution 0 = by-assoc-and invol0.proved Eq.refl Eq.refl
+involution 1 = by-assoc-and invol1.proved Eq.refl Eq.refl
+involution 2 = by-assoc-and invol2.proved Eq.refl Eq.refl
+involution 3 = by-assoc-and invol3.proved Eq.refl Eq.refl
+involution 4 = by-assoc-and invol4.proved Eq.refl Eq.refl
+involution 5 = by-assoc-and invol5.proved Eq.refl Eq.refl
+involution 6 = by-assoc-and invol6.proved Eq.refl Eq.refl
 involution (suc (suc (suc (suc (suc (suc (suc k))))))) = left-unit
 
 braid : ∀ {m} k → k Data.Nat.Base.+ suc (suc (suc m)) ≤ 8 → adjacent k • adjacent (suc k) • adjacent k ≈ adjacent (suc k) • adjacent k • adjacent (suc k)
-braid 0 bound = by-assoc-and B0.proved Eq.refl Eq.refl
-braid 1 bound = by-assoc-and B1.proved Eq.refl Eq.refl
-braid 2 bound = by-assoc-and B2.proved Eq.refl Eq.refl
-braid 3 bound = by-assoc-and B3.proved Eq.refl Eq.refl
-braid 4 bound = by-assoc-and B4.proved Eq.refl Eq.refl
-braid 5 bound = by-assoc-and B5.proved Eq.refl Eq.refl
+braid 0 bound = by-assoc-and braid0.proved Eq.refl Eq.refl
+braid 1 bound = by-assoc-and braid1.proved Eq.refl Eq.refl
+braid 2 bound = by-assoc-and braid2.proved Eq.refl Eq.refl
+braid 3 bound = by-assoc-and braid3.proved Eq.refl Eq.refl
+braid 4 bound = by-assoc-and braid4.proved Eq.refl Eq.refl
+braid 5 bound = by-assoc-and braid5.proved Eq.refl Eq.refl
 braid {m} (suc (suc (suc (suc (suc (suc k)))))) (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s p)))))) = ⊥-elim (impossible k p)
   where
   impossible : ∀ k → k Data.Nat.Base.+ suc (suc (suc m)) ≤ 2 → ⊥
@@ -94,25 +72,25 @@ braid {m} (suc (suc (suc (suc (suc (suc k)))))) (s≤s (s≤s (s≤s (s≤s (s�
   impossible (suc (suc (suc k))) (s≤s (s≤s ()))
 
 apart : ∀ k l → adjacent k • adjacent (suc (suc (k Data.Nat.Base.+ l))) ≈ adjacent (suc (suc (k Data.Nat.Base.+ l))) • adjacent k
-apart 0 0 = by-assoc-and C02.proved Eq.refl Eq.refl
-apart 0 1 = by-assoc-and C03.proved Eq.refl Eq.refl
-apart 0 2 = by-assoc-and C04.proved Eq.refl Eq.refl
-apart 0 3 = by-assoc-and C05.proved Eq.refl Eq.refl
-apart 0 4 = by-assoc-and C06.proved Eq.refl Eq.refl
+apart 0 0 = by-assoc-and comm02.proved Eq.refl Eq.refl
+apart 0 1 = by-assoc-and comm03.proved Eq.refl Eq.refl
+apart 0 2 = by-assoc-and comm04.proved Eq.refl Eq.refl
+apart 0 3 = by-assoc-and comm05.proved Eq.refl Eq.refl
+apart 0 4 = by-assoc-and comm06.proved Eq.refl Eq.refl
 apart 0 (suc (suc (suc (suc (suc l))))) = trans right-unit (sym left-unit)
-apart 1 0 = by-assoc-and C13.proved Eq.refl Eq.refl
-apart 1 1 = by-assoc-and C14.proved Eq.refl Eq.refl
-apart 1 2 = by-assoc-and C15.proved Eq.refl Eq.refl
-apart 1 3 = by-assoc-and C16.proved Eq.refl Eq.refl
+apart 1 0 = by-assoc-and comm13.proved Eq.refl Eq.refl
+apart 1 1 = by-assoc-and comm14.proved Eq.refl Eq.refl
+apart 1 2 = by-assoc-and comm15.proved Eq.refl Eq.refl
+apart 1 3 = by-assoc-and comm16.proved Eq.refl Eq.refl
 apart 1 (suc (suc (suc (suc l)))) = trans right-unit (sym left-unit)
-apart 2 0 = by-assoc-and C24.proved Eq.refl Eq.refl
-apart 2 1 = by-assoc-and C25.proved Eq.refl Eq.refl
-apart 2 2 = by-assoc-and C26.proved Eq.refl Eq.refl
+apart 2 0 = by-assoc-and comm24.proved Eq.refl Eq.refl
+apart 2 1 = by-assoc-and comm25.proved Eq.refl Eq.refl
+apart 2 2 = by-assoc-and comm26.proved Eq.refl Eq.refl
 apart 2 (suc (suc (suc l))) = trans right-unit (sym left-unit)
-apart 3 0 = by-assoc-and C35.proved Eq.refl Eq.refl
-apart 3 1 = by-assoc-and C36.proved Eq.refl Eq.refl
+apart 3 0 = by-assoc-and comm35.proved Eq.refl Eq.refl
+apart 3 1 = by-assoc-and comm36.proved Eq.refl Eq.refl
 apart 3 (suc (suc l)) = trans right-unit (sym left-unit)
-apart 4 0 = by-assoc-and C46.proved Eq.refl Eq.refl
+apart 4 0 = by-assoc-and comm46.proved Eq.refl Eq.refl
 apart 4 (suc l) = trans right-unit (sym left-unit)
 apart 5 l = trans right-unit (sym left-unit)
 apart 6 l = trans right-unit (sym left-unit)

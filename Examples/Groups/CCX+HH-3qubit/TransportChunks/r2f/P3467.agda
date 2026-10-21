@@ -10,7 +10,7 @@ import Data.Nat.Properties as NP
 import Relation.Binary.PropositionalEquality as Eq
 open import Examples.Groups.CCX+HH-3qubit.Syntactics
 open import Examples.Groups.CCX+HH-3qubit.FrameWords
-import Examples.Groups.CCX+HH-3qubit.TransportCases.r2f_ij34670125 as C34670125
+open import Examples.Groups.CCX+HH-3qubit.TransportCases.r2f_B01 using (module r2f_ij34670125)
 
 private
   a b c d : Fin 8
@@ -51,7 +51,7 @@ translate (zero) (suc (zero)) (suc (suc (zero))) (suc (zero)) p0 p1 p2 p3 p4 p5 
 translate (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (zero))) p0 p1 p2 p3 p4 p5 ne0 ne1 ne2 ne3 ne4 ne5 ne6 ne7 ne8 ne9 ne10 ne11 ne12 ne13 ne14 ne15 = ⊥-elim-irr (NP.≤⇒≯ (s≤s (s≤s z≤n)) p5)
 translate (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) p0 p1 p2 p3 p4 p5 ne0 ne1 ne2 ne3 ne4 ne5 ne6 ne7 ne8 ne9 ne10 ne11 ne12 ne13 ne14 ne15 = ⊥-elim (ne3 Eq.refl)
 translate (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) p0 p1 p2 p3 p4 p5 ne0 ne1 ne2 ne3 ne4 ne5 ne6 ne7 ne8 ne9 ne10 ne11 ne12 ne13 ne14 ne15 = ⊥-elim (ne7 Eq.refl)
-translate (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) p0 p1 p2 p3 p4 p5 ne0 ne1 ne2 ne3 ne4 ne5 ne6 ne7 ne8 ne9 ne10 ne11 ne12 ne13 ne14 ne15 = C34670125.proved
+translate (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) p0 p1 p2 p3 p4 p5 ne0 ne1 ne2 ne3 ne4 ne5 ne6 ne7 ne8 ne9 ne10 ne11 ne12 ne13 ne14 ne15 = r2f_ij34670125.proved
 translate (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) p0 p1 p2 p3 p4 p5 ne0 ne1 ne2 ne3 ne4 ne5 ne6 ne7 ne8 ne9 ne10 ne11 ne12 ne13 ne14 ne15 = ⊥-elim (ne11 Eq.refl)
 translate (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p0 p1 p2 p3 p4 p5 ne0 ne1 ne2 ne3 ne4 ne5 ne6 ne7 ne8 ne9 ne10 ne11 ne12 ne13 ne14 ne15 = ⊥-elim (ne15 Eq.refl)
 translate (zero) (suc (zero)) (suc (suc (suc (zero)))) h p0 p1 p2 p3 p4 p5 ne0 ne1 ne2 ne3 ne4 ne5 ne6 ne7 ne8 ne9 ne10 ne11 ne12 ne13 ne14 ne15 = ⊥-elim (ne2 Eq.refl)

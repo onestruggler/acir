@@ -97,7 +97,7 @@ give the full presentation.
 
 ## Checking
 
-All 8,229 Agda modules in this directory pass Agda 2.8.0 with
+All 987 Agda modules in this directory pass Agda 2.8.0 with
 standard-library 2.4, including the assembled presentation, its public
 exports, the original circuit lemmas, the missing-K countermodel and
 the standalone audits. The public entry point, full-directory audit
@@ -180,7 +180,11 @@ and their exhaustive dispatcher;
 checks for the retained K equation.
 
 Run `generate_transport.py` before `generate_dispatchers.py`, since
-the latter refers to the finite instances emitted by the former.
+the latter refers to the finite instances emitted by the former, and
+`bundle.py` after all of them: the generators write one module per
+certificate, and `bundle.py` merges them into chunk modules (below). On Windows set
+`PYTHONUTF8=1`: `import_tietze.py` reads its inputs in the default
+encoding.
 `export_kb.py --permutation` writes `PermProofs/`; without the flag it
 writes `Proofs/`, of which the repository keeps the 22 modules in use.
 
@@ -189,6 +193,22 @@ writes `Proofs/`, of which the repository keeps the 22 modules in use.
 The certificates are small and many, and the generators write them so
 that they stay cheap to check and to load (the repository's
 `typecheck-efficiency.md` has the measurements):
+
+- The 7489 one-line certificates (`FrameMoves`, `FramePermutations`,
+  `FrameCommutations`, `TransportCases`, `Tietze`, `PermProofs`) are
+  nested modules of 184 chunk modules (`B000`, …; in `TransportCases`
+  one family per chunk, `r2a_B00`, …), each under its old name, and a
+  module that used one imports it from its chunk (`open import
+  ….FrameMoves.B012 using (module MV00313)`). `tools/bundle.py` does
+  this after the generators. Agda pays for a module apart from its
+  contents — it is loaded, merged into the state of every module that
+  imports it, and has an interface of its own — and the directory was
+  8279 modules. `check.sh`'s roots (140 of them, every fifth
+  `DecodeMatrices` root) took 4646 s from scratch and take 2927 s; the
+  roots that load everything, `Repaired/TwoLevelScaled`,
+  `Repaired/Presentation` and `Theorems`, about three minutes each and
+  one minute, `TwoLevel` 148 → 33 s, `TransportCaseChecks` 127 → 14 s;
+  the peak 5.9 → 5.0 GB, the interfaces 350 → 280 MB.
 
 - A certificate imports `Kit` or `FrameKit` restricted to the names it
   uses (`import Kit as K using (…)`, then `open K`; `generate.py`'s
