@@ -27,22 +27,37 @@ def word(ts):
 def down(ts):
     return [t if t[0] == 'nu' else (t[0], t[1] - 1) for t in ts]
 
-# The distinct two-wire steps, in order of first use.
+# The distinct two-wire steps, in order of first use.  A step replacing
+# a x b by a y b is the step x ↦ y at an index further on, and is
+# decided on x and y alone: the letters a step's two sides share at
+# either end are nearly half of all its letters, and without them more
+# steps coincide (896 distinct steps, 72162 letters; trimmed, 626 and
+# 41186).  A step whose reverse is known is that one backwards.
 STEPS = {}
 
 def step(l, r):
-    key = (word(l), word(r))
-    if key not in STEPS:
-        STEPS[key] = len(STEPS)
-    return 't2-%d' % STEPS[key]
+    """(name, backwards, offset of the trimmed step in l)"""
+    x, y = word(l)[1:-1], word(r)[1:-1]
+    i = 0
+    while i < min(len(x), len(y)) and x[i] == y[i]:
+        i += 1
+    j = 0
+    while j < min(len(x), len(y)) - i and x[-1 - j] == y[-1 - j]:
+        j += 1
+    x, y = '"%s"' % x[i:len(x) - j], '"%s"' % y[i:len(y) - j]
+    if (y, x) in STEPS:
+        return 't2-%d' % STEPS[(y, x)], True, i
+    if (x, y) not in STEPS:
+        STEPS[(x, y)] = len(STEPS)
+    return 't2-%d' % STEPS[(x, y)], False, i
 
 def stepstr(p, old, new, j):
     """The step at index p replacing old by new, justified by j."""
     k = j[0]
     if k == 'sem':
-        if j[1] == '01':
-            return 'rw %d %s' % (p, step(old, new))
-        return 'rwˡ %d %s' % (p, step(down(old), down(new)))
+        up = j[1] != '01'
+        t, back, i = step(down(old), down(new)) if up else step(old, new)
+        return '%s %d %s' % ('rw' + ('ˢ' if back else '') + ('ˡ' if up else ''), p + i, t)
     if k == 'perm':
         return 'rwPℓ %d %s %s refl' % (p, word(old), word(new))
     if k == 'ax':
@@ -90,7 +105,7 @@ open import Relation.Binary.PropositionalEquality using (refl)
 open import Notations using (₃₊)
 open import Examples.Groups.Qutrit-Clifford.Syntactics
 open import Examples.Groups.Qutrit-Clifford.Engine using (Eqn ; rw)
-open import Examples.Groups.Qutrit-Clifford.Letters using (rwˢ ; rwˡ ; deriveℓ)
+open import Examples.Groups.Qutrit-Clifford.Letters using (rwˢ ; rwˡ ; rwˢˡ ; deriveℓ)
 open import Examples.Groups.Qutrit-Clifford.Axioms
 open import Examples.Groups.Qutrit-Clifford.Box3.Kit using (rwPℓ ; rwCˡ ; rwCˡˢ ; rwCʳ ; rwCʳˢ)
 {steps}
