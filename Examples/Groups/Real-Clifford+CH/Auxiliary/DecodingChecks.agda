@@ -5,16 +5,18 @@
 -- letter has the matrix of the letter
 --
 -- D(p) is a circuit of multi-controlled gates read off the Gray codes
--- of the indices of p (Decoding, MultiControlled).  Here its stored
--- matrix is compared with that of p: for every sign pair and every
--- signed exchange on eight indices (`zz-all`, and `zx-all₀` … `zx-all₇`
--- by the index of the sign, each in a module of its own,
--- DecodingChecks.ZX0 … ZX7), and on samples of the exchange pairs and
--- of the Hadamard pairs, on and off the H-pattern and with repeated
--- indices.  The circuit is read by row operations and compared by one
--- boolean (DecodingChecks.Base: Evaluation, Semantics.Decide); read as
--- a dense product and compared by `mat-dec`, as this module first did,
--- a decoded letter cost about 1.27ⁿ in its n gates and only the five
+-- of the indices of p (Decoding, MultiControlled).  Here its matrix is
+-- compared with that of p: for every sign pair and every signed
+-- exchange on eight indices (`zz-all`, `zx-all`), on samples of the
+-- exchange pairs, and on samples of the Hadamard pairs, on and off the
+-- H-pattern and with repeated indices.  A Hadamard-free letter decodes
+-- to a word in 21 atoms (DecodingChecks.Atoms), so the sign pairs and
+-- signed exchanges are decided by one boolean each on products of the
+-- atoms' matrices, every atom read once (DecodingChecks.Base: `okD`);
+-- a Hadamard pair is read gate by gate.  Read gate by gate, the 512
+-- signed exchanges took about 100 s, in eight modules; read as a dense
+-- product and compared by `mat-dec`, as this module first did, a
+-- decoded letter cost about 1.27ⁿ in its n gates and only the five
 -- letters under 43 gates were within reach, where a Hadamard pair off
 -- the H-pattern has some 1800.
 ------------------------------------------------------------------------
@@ -23,20 +25,24 @@
 
 module Examples.Groups.Real-Clifford+CH.Auxiliary.DecodingChecks where
 
-open import Data.Bool using (true)
-open import Data.Bool.ListAction using (all)
-open import Data.List using (allFin)
+open import Data.Bool using (Bool ; true)
+open import Data.Fin using (Fin)
+open import Data.List using (List ; map)
+open import Data.Nat using (ℕ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (_ʷ)
 
 open import Notations using (₀ ; ₁ ; ₂ ; ₃ ; ₄ ; ₅ ; ₆ ; ₇)
 
-open import Examples.Groups.Real-Clifford+CH.Semantics using (_~_)
-open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧)
-open import Examples.Groups.Real-Clifford+CH.Encoding using (zz ; xx ; hh)
+open import Examples.Groups.Real-Clifford+CH.Semantics using (_~_ ; Mat)
+open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧ ; len)
+open import Examples.Groups.Real-Clifford+CH.Evaluation using (⟦_⟧R)
+open import Examples.Groups.Real-Clifford+CH.Encoding using (zz ; zx ; xx ; hh)
 open import Examples.Groups.Real-Clifford+CH.Decoding using () renaming (d to D)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.Base
+  using (all8₂ ; all8₃ ; all8₂-true ; all8₃-true)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.DecodingChecks.Base
-  using (⟦_⟧Y ; decideD-sound ; check)
+  using (⟦_⟧Y ; decideD-sound ; check ; atoms ; okD ; okD-sound)
 
 ------------------------------------------------------------------------
 -- The letters checked
@@ -44,31 +50,34 @@ open import Examples.Groups.Real-Clifford+CH.Auxiliary.DecodingChecks.Base
 -- The Gray codes of 0 … 7, top wire first: 000, 001, 011, 010, 110,
 -- 111, 101, 100.
 
+-- The families, over the atoms' matrices and lengths.
+zzP : List (Mat 3) → List ℕ → Fin 8 → Fin 8 → Bool
+zzP ms ls a b = okD ms ls (zz a b)
+
+zxP : List (Mat 3) → List ℕ → Fin 8 → Fin 8 → Fin 8 → Bool
+zxP ms ls c a b = okD ms ls (zx c a b)
+
 -- Every sign pair (−1)_[a] (−1)_[b]: boxes on every wire, and chains of
 -- up to seven of them.
-zz-all : all (λ a → all (λ b → check (zz a b)) (allFin 8)) (allFin 8) ≡ true
-zz-all = Eq.refl
+zz-all : ∀ a b → ⟦ (D ʷ) (zz a b) ⟧ ~ ⟦ zz a b ⟧Y
+zz-all a b =
+  okD-sound (zz a b) (all8₂-true (zzP (map ⟦_⟧R atoms) (map len atoms)) Eq.refl a b)
 
 -- Every signed exchange (−1)_[c] X_[a,b]: on its own pair, in either
 -- order of the pair, and with the sign elsewhere.
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.DecodingChecks.ZX0 public using (zx-all₀)
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.DecodingChecks.ZX1 public using (zx-all₁)
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.DecodingChecks.ZX2 public using (zx-all₂)
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.DecodingChecks.ZX3 public using (zx-all₃)
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.DecodingChecks.ZX4 public using (zx-all₄)
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.DecodingChecks.ZX5 public using (zx-all₅)
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.DecodingChecks.ZX6 public using (zx-all₆)
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.DecodingChecks.ZX7 public using (zx-all₇)
+zx-all : ∀ c a b → ⟦ (D ʷ) (zx c a b) ⟧ ~ ⟦ zx c a b ⟧Y
+zx-all c a b =
+  okD-sound (zx c a b) (all8₃-true (zxP (map ⟦_⟧R atoms) (map len atoms)) Eq.refl c a b)
 
 -- Exchange pairs X_[a,b] X_[c,d].
-xx-0123 : check (xx ₀ ₁ ₂ ₃) ≡ true
-xx-0123 = Eq.refl
+xx-0123 : ⟦ (D ʷ) (xx ₀ ₁ ₂ ₃) ⟧ ~ ⟦ xx ₀ ₁ ₂ ₃ ⟧Y
+xx-0123 = okD-sound (xx ₀ ₁ ₂ ₃) Eq.refl
 
-xx-0725 : check (xx ₀ ₇ ₂ ₅) ≡ true
-xx-0725 = Eq.refl
+xx-0725 : ⟦ (D ʷ) (xx ₀ ₇ ₂ ₅) ⟧ ~ ⟦ xx ₀ ₇ ₂ ₅ ⟧Y
+xx-0725 = okD-sound (xx ₀ ₇ ₂ ₅) Eq.refl
 
-xx-6134 : check (xx ₆ ₁ ₃ ₄) ≡ true
-xx-6134 = Eq.refl
+xx-6134 : ⟦ (D ʷ) (xx ₆ ₁ ₃ ₄) ⟧ ~ ⟦ xx ₆ ₁ ₃ ₄ ⟧Y
+xx-6134 = okD-sound (xx ₆ ₁ ₃ ₄) Eq.refl
 
 -- Hadamard pairs of the H-pattern: the all-white gate, a black
 -- control, and the other order of the two varying wires.
@@ -92,9 +101,6 @@ hh-1527 = Eq.refl
 hh-0102 : check (hh ₀ ₁ ₀ ₂) ≡ true
 hh-0102 = Eq.refl
 
--- As statements about the semantics.
-D-zz-01 : ⟦ (D ʷ) (zz ₀ ₁) ⟧ ~ ⟦ zz ₀ ₁ ⟧Y
-D-zz-01 = decideD-sound ((D ʷ) (zz ₀ ₁)) (zz ₀ ₁) Eq.refl
-
+-- As a statement about the semantics.
 D-hh-0132 : ⟦ (D ʷ) (hh ₀ ₁ ₃ ₂) ⟧ ~ ⟦ hh ₀ ₁ ₃ ₂ ⟧Y
 D-hh-0132 = decideD-sound ((D ʷ) (hh ₀ ₁ ₃ ₂)) (hh ₀ ₁ ₃ ₂) hh-0132
