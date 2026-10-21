@@ -25,15 +25,13 @@ check() {
     return 1
   fi
 }
-# These seven roots reach every module of the directory.  Theorems
+# These four roots reach every module of the directory.  Theorems
 # reaches the transport, the decoding, dyadic completeness, the Hadamard
-# relations and the presentation, in one process (peak about 6.5 GB);
-# checking their parts as roots of their own only loaded the same
-# interfaces again, a process each.
+# relations and the presentation, in one process; checking their parts
+# as roots of their own only loaded the same interfaces again, a
+# process each.
 check "$development/CircuitLemmas.agda"
 check "$development/MissingK.agda"
 check "$development/Theorems.agda"
-for audit in FrameChecks RepresentativeChecks StrictMatrix TransportCaseChecks; do
-  check "$development/$audit.agda"
-done
+check "$development/StrictMatrix.agda"
 check MainTheorems.agda

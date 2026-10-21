@@ -1,13 +1,13 @@
 """Merge the one-line certificate modules into chunk modules.
 
-The generators write one module per certificate: FrameMoves/MV*,
-FramePermutations/PE*, FrameCommutations/CM*, TransportCases/r*_ij*,
-PermProofs/*, Tietze/*, FrameAliases/*, FrameRelations/R* and Proofs/*,
-some 7500 in all.  Agda pays for a module
+The generators write one module per certificate: PermProofs/*,
+Tietze/* and Proofs/* (and, before TwoLevel transported the relations
+generically, the frame moves and the 2,123 transport cases, some 7500
+modules in all).  Agda pays for a module
 apart from its contents: it is loaded, merged into the state of every
 module that imports it, and has an interface of its own.  So this
 script, run after the generators, writes each folder as chunk modules
-B000, B001, … (TransportCases per relation family, r2a_B00, …), each
+B000, B001, …, each
 certificate a nested module of its chunk under its old name, deletes
 the single modules, and rewrites every module of the development that
 imported one: `import P.F.N as A` becomes `open import P.F.Bk using
@@ -26,16 +26,15 @@ import generate as g
 
 ROOT = g.ROOT
 P = g.PREFIX
-FOLDERS = ['FramePermutations', 'FrameCommutations', 'FrameMoves', 'TransportCases',
-           'Tietze', 'PermProofs', 'FrameAliases', 'FrameRelations', 'Proofs']
+FOLDERS = ['Tietze', 'PermProofs', 'Proofs']
 # Characters of certificate text per chunk: about a hundred frame moves.
 CHUNK = 48000
 
 IMPORT = re.compile(r'^import (\S+)(?: as (\S+))?$')
 DEPLINE = re.compile(r'^(?:open )?import (\S+)')
 NESTED = re.compile(r'^module (\S+) where$', re.M)
-KITLINE = re.compile(r'^import ' + re.escape(P) + r'\.(Kit|FrameKit) as K using \((.*)\)$')
-CHUNKNAME = re.compile(r'^(?:B\d+|r\d[a-g]_B\d+)$')
+KITLINE = re.compile(r'^import ' + re.escape(P) + r'\.(Kit) as K using \((.*)\)$')
+CHUNKNAME = re.compile(r'^B\d+$')
 
 
 def modname(path):
@@ -44,8 +43,6 @@ def modname(path):
 
 def group(folder, name):
     """Certificates of one group share chunks."""
-    if folder == 'TransportCases':
-        return name.split('_ij')[0]
     return ''
 
 

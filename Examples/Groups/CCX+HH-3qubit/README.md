@@ -28,10 +28,17 @@ from the existing presentation of S₈. `CircuitLemmas.agda` replays
 `FrameWords.agda` define the reindexing calculus and the 106 one-,
 two- and four-level generators on eight basis states. `TwoLevel.agda`
 translates the relations of the existing dyadic two-level development
-into the circuit theory; its finite instances are in `Transport/`
-and `TransportCases/`. Wide dispatchers use `TransportChunks/` to
-split the index choices into modules with at most four remaining
-indices; the public `translate` functions retain their original types.
+into the circuit theory, each of its 21 relation families once, at
+symbolic indices: every generator is a centre (`m0`, `t01` or `NK`)
+conjugated by a Coxeter word, and by the frame lemma of
+`Examples/Groups/Symmetric/CoxeterFrames` that conjugate depends only
+on where the word sends the centre's states, so a relation follows
+from its standard instance (the argument of `CCX+HH-3qubit-opus`'s
+`Decode`). The tables of Coxeter words in `FrameWords` (`fM`, `fX`,
+`fK`, `fK′`) are related to those frames by one evaluated check per
+table (`okM`, `okX`, `okK`). This replaces the 2,123 finite instances,
+their dispatchers and the frame moves that were checked one by one:
+577 modules and about 440 s of checking, against 3 s.
 
 `Repaired/Presentation.agda` proves completeness for exact matrix
 equality and gives a full group presentation of L₈, the orthogonal
@@ -97,22 +104,20 @@ give the full presentation.
 
 ## Checking
 
-All 910 Agda modules in this directory pass Agda 2.8.0 with
+All 333 Agda modules in this directory pass Agda 2.8.0 with
 standard-library 2.4, including the assembled presentation, its public
 exports, the original circuit lemmas, the missing-K countermodel and
 the standalone audits. The public entry point, full-directory audit
 and `MainTheorems.agda` also pass through WSL from the Windows working
 tree. This includes all 32 shared evaluation modules,
 all 106 decoding certificates and both matrix bridges.
-The six-index `Transport/r2c.agda` dispatcher, including its 420 cases,
-passes with a compacting 3 GB heap. The complete `TwoLevel.agda` map
-covers all 21 relation families and their 2,123 finite instances.
+`TwoLevel.agda` covers all 21 relation families at symbolic indices.
 Dyadic completeness, the scaled two-level map and its nine Hadamard
 certificates all pass. The repository-wide `MainTheorems.agda`
 regression check also passes.
 
-Regenerating the finite transports, dispatchers, decoding matrices
-and Hadamard relations reproduces all 2,648 corresponding files exactly.
+Regenerating the frame words, the permutation certificates, the
+decoding matrices and the Hadamard relations reproduces them exactly.
 
 Use Agda 2.8.0 and standard-library 2.4, with the registered EucDomain
 dependency. Check separate entry points sequentially; do not run
@@ -127,26 +132,23 @@ agda Examples/Groups/CCX+HH-3qubit/Repaired/Soundness.agda
 agda Examples/Groups/CCX+HH-3qubit/Repaired/Presentation.agda
 ```
 
-The prefix modules (`TransportChunks/`) bound the size of each
-coverage check: the four- to eight-index tables are not checked as one
-large case analysis.
-
-`bash Examples/Groups/CCX+HH-3qubit/tools/check.sh` checks the seven
+`bash Examples/Groups/CCX+HH-3qubit/tools/check.sh` checks the four
 roots that reach every module of the directory — `CircuitLemmas`,
-`MissingK`, `Theorems` and the four audits — sequentially with a
-compacting 8 GB heap, followed by `MainTheorems.agda`: about 12 minutes
-from scratch, `Theorems` 11 of them with a peak of 6.2 GB. (It used to
-check the relation families, the decoding certificates and the Hadamard
-relations as roots of their own, some 200 processes that each loaded
-the same interfaces again: about two hours.)
+`MissingK`, `Theorems` and `StrictMatrix` — sequentially with a
+compacting 8 GB heap, followed by `MainTheorems.agda`: under five
+minutes from scratch, `Theorems` about three of them with a peak of
+3.8 GB. (It was about twelve minutes, `Theorems` eleven with a peak of
+6.2 GB, while the relations were transported instance by instance; and
+about two hours when the relation families, the decoding certificates
+and the Hadamard relations were roots of their own, some 200 processes
+that each loaded the same interfaces again.)
 It writes durable logs under `local/ccxhh-3qubit-checks/`. A local
 `tools/libraries-wsl` file can supply the library locations through
 Agda's `--library-file` option when the WSL user has no global list;
 the file is ignored because its paths depend on the machine.
 From PowerShell, use `tools/check-wsl.ps1`, which invokes WSL directly.
 Its `-Heap` option, or `AGDA_HEAP` for `check.sh`, changes the bounded
-heap. Individual relation families can be checked with 3 GB; the
-assembled presentation imports all families in one process.
+heap.
 The PowerShell supervisor retries interrupted runs from the interfaces
 already saved on the Windows filesystem.
 The repository instructions' `/home/bonest/.local/bin/agda` path is not
@@ -170,10 +172,9 @@ The downloaded paper and exploratory reference files are ignored.
 The generators are split by purpose: `generate.py` transcribes and
 checks the paper's equations; `import_tietze.py` replays the authors'
 traces; `export_kb.py` emits checked permutation certificates from
-saved search results; `generate_transport.py` builds the frame
-relations and their finite instances; `generate_dispatchers.py`
-assembles them into the two-level relation map;
-`generate_encoding.py` emits the encoding retraction;
+saved search results; `generate_frames.py` writes the frame words
+and their tables, `generate_base_frames.py` the classical gates as
+Coxeter words; `generate_encoding.py` emits the encoding retraction;
 `generate_matrix_bridge.py` and `generate_decode_matrices.py` check
 the matrix meanings of encoding and decoding;
 `generate_hadamard_transport.py` emits the nine even-parity proofs
@@ -181,9 +182,7 @@ and their exhaustive dispatcher;
 `generate_missing_k.py` and `generate_k_check.py` emit the two matrix
 checks for the retained K equation.
 
-Run `generate_transport.py` before `generate_dispatchers.py`, since
-the latter refers to the finite instances emitted by the former, and
-`bundle.py` after all of them: the generators write one module per
+Run `bundle.py` after the generators: they write one module per
 certificate, and `bundle.py` merges them into chunk modules (below). On Windows set
 `PYTHONUTF8=1`: `import_tietze.py` reads its inputs in the default
 encoding.
@@ -196,34 +195,26 @@ The certificates are small and many, and the generators write them so
 that they stay cheap to check and to load (the repository's
 `typecheck-efficiency.md` has the measurements):
 
-- The 7548 one-line certificates (`FrameMoves`, `FramePermutations`,
-  `FrameCommutations`, `TransportCases`, `Tietze`, `PermProofs`,
-  `FrameAliases`, `FrameRelations`, `Proofs`) are nested modules of 187
-  chunk modules (`B000`, …; in `TransportCases`
-  one family per chunk, `r2a_B00`, …), each under its old name, and a
-  module that used one imports it from its chunk (`open import
-  ….FrameMoves.B012 using (module MV00313)`). `tools/bundle.py` does
-  this after the generators. Agda pays for a module apart from its
-  contents — it is loaded, merged into the state of every module that
-  imports it, and has an interface of its own — and the directory was
-  8279 modules. `check.sh`'s roots (140 of them, every fifth
-  `DecodeMatrices` root) took 4646 s from scratch and take 2927 s; the
-  roots that load everything, `Repaired/TwoLevelScaled`,
-  `Repaired/Presentation` and `Theorems`, about three minutes each and
-  one minute, `TwoLevel` 148 → 33 s, `TransportCaseChecks` 127 → 14 s;
-  the peak 5.9 → 5.0 GB, the interfaces 350 → 280 MB.
-  `TransportCaseChecks` checks every transport case; the roots that did
-  it one relation family at a time (`TransportCases/Check_r1a`, …) are
-  gone, as they only imported one or two chunks each.
-
-- A certificate imports `Kit` or `FrameKit` restricted to the names it
-  uses (`import Kit as K using (…)`, then `open K`; `generate.py`'s
-  `kit`). An interface records the whole scope of every module its
-  module imports, so certificates that opened Syntactics, Frames,
-  FrameWords and Engine had 50–65 kB interfaces for one line of proof;
-  now 9–15 kB, the folder's interfaces 350 MB rather than 595 MB.
-  `Kit` and `FrameKit` are separate because Frames imports the
-  permutation certificates, which import `Kit`.
+- The relations of Table 1 are transported generically (`TwoLevel`,
+  above), one argument per relation family, where 2,123 finite
+  instances, their dispatchers and some 2,000 frame moves and
+  permutation checks used to be certificates of their own: 577 modules
+  and about 440 s of the directory's 624 s of checking.
+- The 882 remaining one-line certificates (`PermProofs`, `Tietze`,
+  `Proofs`) are nested modules of 37 chunk modules (`B000`, …), each
+  under its old name, and a module that used one imports it from its
+  chunk (`open import ….PermProofs.B021 using (module braid0)`).
+  `tools/bundle.py` does this after the generators. Agda pays for a
+  module apart from its contents — it is loaded, merged into the state
+  of every module that imports it, and has an interface of its own —
+  and with the transport certificates the directory was 8279 modules,
+  910 once bundled.
+- A certificate imports `Kit` restricted to the names it uses
+  (`import Kit as K using (…)`, then `open K`; `generate.py`'s `kit`).
+  An interface records the whole scope of every module its module
+  imports, so certificates that opened Syntactics, Frames, FrameWords
+  and Engine had 50–65 kB interfaces for one line of proof, against
+  9–15 kB.
 - The matrix evaluations (`Evaluation`, `FrameEvaluation`,
   `MissingK/Evaluations`) come in chunks of 16–24, each importing from
   the earlier chunks only the names it uses (`evaluation_chunks`): a
@@ -234,9 +225,8 @@ that they stay cheap to check and to load (the repository's
   unification made Agda unfold both readings.
 - The nine Hadamard relations take the comparison by dyadic
   completeness as a module parameter (`Repaired/Even.FromEven`), which
-  `Repaired/TwoLevelScaled` supplies: each loads about 1100 interfaces
-  rather than all 7900.
+  `Repaired/TwoLevelScaled` supplies, so that each loads only what
+  that comparison does not need.
 - The four-level decoding certificates are dispatched by first index,
-  one module each (`Repaired/DecodingLetters`), and so are the
-  four-index transport tables (`TransportChunks/r1c`, `r2a`, `r4a`–`r4c`;
-  `r2a` was 1437 clauses in one function, 24 s).
+  one module each (`Repaired/DecodingLetters`): one function of that
+  many clauses costs more to check than its parts.

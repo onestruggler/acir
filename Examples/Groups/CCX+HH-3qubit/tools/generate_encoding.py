@@ -4,7 +4,7 @@ import generate_frames as f
 import generate_base_frames as base
 ROOT=g.ROOT;P=g.PREFIX
 s=f.imports('PrimitiveFrames')
-s+=f'import {P}.GatePermutations as GP\nimport {P}.FrameAliases.Ak4567 as A4567\n\n'
+s+=f'import {P}.GatePermutations as GP\nopen import {P}.TwoLevel using (k4567≈K4567)\n\n'
 def pe(name,a,b):
     global s
     assert f.perm(a)==f.perm(b)
@@ -70,7 +70,7 @@ backNK : K0123 ≈ NK
 backNK = by-assoc Eq.refl
 
 backK4567 : K4567 ≈ X0 • NK • X0
-backK4567 = sym A4567.proved
+backK4567 = sym k4567≈K4567
 '''
 (ROOT/'PrimitiveFrames.agda').write_text(s,encoding='utf-8')
 

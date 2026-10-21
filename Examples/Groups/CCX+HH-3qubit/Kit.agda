@@ -5,14 +5,12 @@
 -- not only the names it uses: a certificate that opened Syntactics,
 -- Frames, FrameWords and Engine (Engine re-exports Presentation.Base's
 -- congruence, Syntactics re-exports Word.Base) took 50-65 kB on disk
--- for a proof of one line, and the eight thousand of them are loaded
--- together by TwoLevel and the presentation.  A certificate imports
--- this module, or FrameKit, restricted to the names it uses
+-- for a proof of one line, and thousands of them are loaded together.
+-- A certificate imports this module restricted to the names it uses
 -- (`import Kit as K using (…)`, then `open K`), and its interface
 -- records those names alone.  This module has the gates, the words of
--- Figure 4, the rules and the congruence; FrameKit adds the frames.
--- The two are separate because Frames imports the permutation
--- certificates, which import this module.
+-- Figure 4, the rules and the congruence (not the frames: Frames
+-- imports the permutation certificates, which import this module).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

@@ -9,11 +9,10 @@ $checkLogs = Join-Path $taskRepo 'local/ccxhh-3qubit-checks'
 New-Item -ItemType Directory -Path $checkLogs -Force | Out-Null
 
 if (-not $Targets) {
-    # These seven reach every module of the directory; Theorems reaches
+    # These four reach every module of the directory; Theorems reaches
     # the transport, the decoding, dyadic completeness, the Hadamard
-    # relations and the presentation, in one process (peak about 6.5 GB).
-    $Targets = @('CircuitLemmas', 'MissingK', 'Theorems',
-        'FrameChecks', 'RepresentativeChecks', 'StrictMatrix', 'TransportCaseChecks') |
+    # relations and the presentation, in one process.
+    $Targets = @('CircuitLemmas', 'MissingK', 'Theorems', 'StrictMatrix') |
         ForEach-Object { "$development/$_.agda" }
     $Targets += 'MainTheorems.agda'
 }

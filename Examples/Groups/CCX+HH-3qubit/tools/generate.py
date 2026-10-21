@@ -190,13 +190,13 @@ def matrix_step(i, a, b):
     return (f"step{i} : mulM matrix{a} matrix{b} ≡ matrix{i}\n"
             f"step{i} = Eq.trans (Eq.sym (mulS-ok matrix{a} matrix{b})) (eqM-sound (mulS matrix{a} matrix{b}) matrix{i} Eq.refl)\n")
 
-# A certificate's imports, as one restricted import of Kit (or FrameKit,
-# for one that used the frames).  An interface records the whole scope
+# A certificate's imports, as one restricted import of Kit.  An interface records the whole scope
 # of every module its module imports, so a certificate that opened
 # Syntactics, Frames, FrameWords and Engine took 50-65 kB on disk for one
 # line of proof; importing the kit with the names it uses (`import Kit as
-# K using (…)`, then `open K`) takes about 9 kB.  Kit.agda and
-# FrameKit.agda list what they export; kit() leaves other modules alone.
+# K using (…)`, then `open K`) takes about 9 kB.  Kit.agda lists what
+# it exports; kit() leaves other modules alone, and those that use the
+# frames (FrameKit, which they imported, went with the frame moves).
 KIT_LINES = [
     "import Relation.Binary.PropositionalEquality as Eq",
     f"open import {PREFIX}.Syntactics",
@@ -219,8 +219,6 @@ def kit_names(mod):
                              (ROOT / f"{mod}.agda").read_text(encoding="utf-8"), re.M):
             names.update(x.strip() for x in m.group(1).split(";"))
         names.discard("")
-        if mod == "FrameKit":
-            names |= kit_names("Kit")
         _kit_names[mod] = names
     return _kit_names[mod]
 
@@ -229,7 +227,9 @@ def kit(s):
     lines = s.split("\n")
     if not (f"open import {PREFIX}.Syntactics" in lines and f"open import {PREFIX}.Engine" in lines):
         return s
-    mod = "FrameKit" if any(l in FRAME_LINES for l in lines) else "Kit"
+    if any(l in FRAME_LINES for l in lines):
+        return s
+    mod = "Kit"
     first = min(i for i, l in enumerate(lines) if l in KIT_LINES)
     rest = [l for l in lines if l not in KIT_LINES]
     body = [l for l in rest if not l.startswith(("{-#", "module ", "import ", "open import "))]
