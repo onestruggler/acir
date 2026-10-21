@@ -18,13 +18,13 @@
 
 
 open import Presentation.Tactics.Equality as Eq using (auto)
-open import Data.Bool.Base using (Bool ; true ; false ; if_then_else_)
+open import Data.Bool.Base using (Bool ; true ; false ; if_then_else_ ; _∧_)
 open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Unit.Base using (⊤ ; tt)
 open import Data.Empty using (⊥ ; ⊥-elim)
 open import Relation.Nullary using (¬_)
 open import Relation.Nullary using (Dec ; yes ; no ; does)
-open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_ ; _∸_ ; _*_)
+open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_ ; _∸_ ; _*_ ; _≡ᵇ_)
 open import Data.Nat.Properties using (_≟_ ; _≤?_)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
 open import Presentation.Tactics.Lists
@@ -105,6 +105,14 @@ module TwoLevel-Data where
 
   _<?_ : (j k : Index) -> Maybe (Less j k)
   _<?_ = maybe-less
+
+  -- Whether two generators are the same, for Commuting.restandardize
+  -- (which only uses it to find where two words agree).
+  eq-gen : Gen -> Gen -> Bool
+  eq-gen (i-gen j) (i-gen k) = nat-of-index j ≡ᵇ nat-of-index k
+  eq-gen (X-gen {j = j} {k = k} _) (X-gen {j = l} {k = m} _) = (nat-of-index j ≡ᵇ nat-of-index l) ∧ (nat-of-index k ≡ᵇ nat-of-index m)
+  eq-gen (K-gen {j = j} {k = k} _) (K-gen {j = l} {k = m} _) = (nat-of-index j ≡ᵇ nat-of-index l) ∧ (nat-of-index k ≡ᵇ nat-of-index m)
+  eq-gen _ _ = false
   
 
   -- Information on the commutativity of generators.
@@ -337,7 +345,7 @@ module TwoLevel-Step-Order where
   step _ = nothing
 
 
-module TwoLevel-Rewrite-Order = Step-With-Standardization (step-cong TwoLevel-Step-Order.step) Commuting-TwoLevel.comm-canonical Commuting-TwoLevel.lemma-comm-canonical renaming (general-rewrite to rewrite-order)
+module TwoLevel-Rewrite-Order = Step-With-Restandardization (step-cong TwoLevel-Step-Order.step) Commuting-TwoLevel.comm-canonical Commuting-TwoLevel.lemma-comm-canonical (Commuting-TwoLevel.restandardize TwoLevel-Data.eq-gen) (Commuting-TwoLevel.lemma-restandardize TwoLevel-Data.eq-gen) renaming (general-rewrite to rewrite-order)
 
 -- ----------------------------------------------------------------------
 -- * A set of rewrite rules for 2-level operators
@@ -1236,15 +1244,18 @@ module TwoLevel-Step-Twolevel where
   X-step _ = nothing
 
 
--- Finally, we instantiate the Step-With-Standardization module with
+-- Finally, we instantiate the Step-With-Restandardization module with
 -- the two rewrite relations defined above, to obtain a tactic
--- 'rewrite-twolevel'.
+-- 'rewrite-twolevel'.  After each step only what the step changed is
+-- put in canonical form again (Commuting.restandardize), which gives the
+-- same canonical forms as Step-With-Standardization's comm-canonical of
+-- the whole word, at a fraction of the cost.
 
-module TwoLevel-Rewrite-Twolevel = Step-With-Standardization (step-cong (TwoLevel-Step-Order.step then TwoLevel-Step-Twolevel.step)) Commuting-TwoLevel.comm-canonical Commuting-TwoLevel.lemma-comm-canonical renaming (general-rewrite to rewrite-twolevel)
+module TwoLevel-Rewrite-Twolevel = Step-With-Restandardization (step-cong (TwoLevel-Step-Order.step then TwoLevel-Step-Twolevel.step)) Commuting-TwoLevel.comm-canonical Commuting-TwoLevel.lemma-comm-canonical (Commuting-TwoLevel.restandardize TwoLevel-Data.eq-gen) (Commuting-TwoLevel.lemma-restandardize TwoLevel-Data.eq-gen) renaming (general-rewrite to rewrite-twolevel)
 
-module TwoLevel-Rewrite-Twolevel2 = Step-With-Standardization (step-cong (TwoLevel-Step-Order.step then TwoLevel-Step-Twolevel.X-step)) Commuting-TwoLevel.comm-canonical Commuting-TwoLevel.lemma-comm-canonical renaming (general-rewrite to rewrite-twolevel)
+module TwoLevel-Rewrite-Twolevel2 = Step-With-Restandardization (step-cong (TwoLevel-Step-Order.step then TwoLevel-Step-Twolevel.X-step)) Commuting-TwoLevel.comm-canonical Commuting-TwoLevel.lemma-comm-canonical (Commuting-TwoLevel.restandardize TwoLevel-Data.eq-gen) (Commuting-TwoLevel.lemma-restandardize TwoLevel-Data.eq-gen) renaming (general-rewrite to rewrite-twolevel)
 
-module TwoLevel-Rewrite-Twolevel3 = Step-With-Standardization (step-cong (TwoLevel-Step-Order.step then TwoLevel-Step-Twolevel.step then TwoLevel-Step-Twolevel.X-step)) Commuting-TwoLevel.comm-canonical Commuting-TwoLevel.lemma-comm-canonical renaming (general-rewrite to rewrite-twolevel)
+module TwoLevel-Rewrite-Twolevel3 = Step-With-Restandardization (step-cong (TwoLevel-Step-Order.step then TwoLevel-Step-Twolevel.step then TwoLevel-Step-Twolevel.X-step)) Commuting-TwoLevel.comm-canonical Commuting-TwoLevel.lemma-comm-canonical (Commuting-TwoLevel.restandardize TwoLevel-Data.eq-gen) (Commuting-TwoLevel.lemma-restandardize TwoLevel-Data.eq-gen) renaming (general-rewrite to rewrite-twolevel)
 
 open Associative
 
@@ -1253,7 +1264,7 @@ group-like (i-gen x) = i x ^ 3 , trans (general-assoc auto) (axiom [1])
 group-like (X-gen jk) = X jk , axiom [2]
 group-like (K-gen jk) = K jk ^ 7 , trans (general-assoc auto) (axiom [3])
 
-module BC = Basis-Change-With-Standardization group-like (TwoLevel-Step-Order.step then TwoLevel-Step-Twolevel.step) Commuting-TwoLevel.comm-canonical Commuting-TwoLevel.lemma-comm-canonical
+module BC = Basis-Change-With-Restandardization group-like (TwoLevel-Step-Order.step then TwoLevel-Step-Twolevel.step) Commuting-TwoLevel.comm-canonical Commuting-TwoLevel.lemma-comm-canonical (Commuting-TwoLevel.restandardize TwoLevel-Data.eq-gen) (Commuting-TwoLevel.lemma-restandardize TwoLevel-Data.eq-gen)
 
 
 

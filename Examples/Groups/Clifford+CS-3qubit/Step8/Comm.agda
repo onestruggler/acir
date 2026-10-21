@@ -9,7 +9,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Presentation.Tactics.Equality as Eq using (_≡_ ; auto)
-open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_ ; _∸_ ; _*_)
+open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_ ; _∸_ ; _*_ ; _≡ᵇ_)
 open import Data.Nat.Properties using (_≟_ ; _≤?_)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
 open import Relation.Nullary using (Dec ; yes ; no ; does)
@@ -120,6 +120,11 @@ module Examples.Groups.Clifford+CS-3qubit.Step8.Comm where
   less x y | yes _ = true
   less x y | no _ = false
   
+  -- Whether two generators are the same (ord is injective), for
+  -- Commuting.restandardize.
+  same : Gen -> Gen -> Bool
+  same x y = ord x ≡ᵇ ord y
+
   open Commuting Gen Rel comm less public
 
   nf-comm : ListNF Rel

@@ -15,7 +15,7 @@ module Examples.Groups.Clifford+T-2qubit.Greylyn-Lemmas where
 open import Data.Bool.Base using (Bool ; true ; false)
 open import Data.Empty using (⊥ ; ⊥-elim)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
-open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_ ; _∸_ ; _*_)
+open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_ ; _∸_ ; _*_ ; _≡ᵇ_)
 open import Data.Nat.Properties using (_≤?_ ; _≟_)
 open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Unit.Base using (⊤ ; tt)
@@ -123,6 +123,11 @@ module Greylyn-Data where
   rank (X-gen {j} {k} jk) = 2 + 3 * (nat-of-index k) + 9 * (nat-of-index j)
   rank (H-gen {j} {k} jk) = 0 + 3 * (nat-of-index k) + 9 * (nat-of-index j)
 
+  -- Whether two generators are the same (rank is injective), for
+  -- Commuting.restandardize.
+  same : Greylyn.Generator -> Greylyn.Generator -> Bool
+  same g h = rank g ≡ᵇ rank h
+
   -- An ordering of the generators.
   less : Greylyn.Generator -> Greylyn.Generator -> Bool
   less g h = does (rank g ≤? rank h)
@@ -174,7 +179,7 @@ module Greylyn-Step-Order where
 
   step _ = nothing
 
-module Greylyn-Rewrite-Order = Step-With-Standardization (step-cong Greylyn-Step-Order.step) Commuting-Greylyn.comm-canonical Commuting-Greylyn.lemma-comm-canonical renaming (general-rewrite to rewrite-order)
+module Greylyn-Rewrite-Order = Step-With-Restandardization (step-cong Greylyn-Step-Order.step) Commuting-Greylyn.comm-canonical Commuting-Greylyn.lemma-comm-canonical (Commuting-Greylyn.restandardize Greylyn-Data.same) (Commuting-Greylyn.lemma-restandardize Greylyn-Data.same) renaming (general-rewrite to rewrite-order)
 
 -- ----------------------------------------------------------------------
 -- * A set of rewrite rules for 2-level Greylyn operators
@@ -483,4 +488,4 @@ module Greylyn-Step-Twolevel where
 -- the two rewrite relations defined above, to obtain a tactic
 -- 'rewrite-twolevel'.
 
-module Greylyn-Rewrite-Twolevel = Step-With-Standardization (step-cong Greylyn-Step-Order.step then step-cong Greylyn-Step-Twolevel.step) Commuting-Greylyn.comm-canonical Commuting-Greylyn.lemma-comm-canonical renaming (general-rewrite to rewrite-twolevel)
+module Greylyn-Rewrite-Twolevel = Step-With-Restandardization (step-cong Greylyn-Step-Order.step then step-cong Greylyn-Step-Twolevel.step) Commuting-Greylyn.comm-canonical Commuting-Greylyn.lemma-comm-canonical (Commuting-Greylyn.restandardize Greylyn-Data.same) (Commuting-Greylyn.lemma-restandardize Greylyn-Data.same) renaming (general-rewrite to rewrite-twolevel)

@@ -249,7 +249,7 @@ lemma-normalize-tlxs w = symm (
 open Rewriting
 open import Examples.Groups.Clifford+CS-3qubit.CosetNF
 
-module BC2 = Basis-Change-With-Standardization TwoLevel-Lemmas.group-like (TwoLevel-Step-Order.step then TwoLevel-Step-Twolevel.step then TwoLevel-Step-Twolevel.X-step) Commuting-TwoLevel.comm-canonical Commuting-TwoLevel.lemma-comm-canonical
+module BC2 = Basis-Change-With-Restandardization TwoLevel-Lemmas.group-like (TwoLevel-Step-Order.step then TwoLevel-Step-Twolevel.step then TwoLevel-Step-Twolevel.X-step) Commuting-TwoLevel.comm-canonical Commuting-TwoLevel.lemma-comm-canonical (Commuting-TwoLevel.restandardize TwoLevel-Lemmas.TwoLevel-Data.eq-gen) (Commuting-TwoLevel.lemma-restandardize TwoLevel-Lemmas.TwoLevel-Data.eq-gen)
 
 module BC4 = Basis-Change-With-Standardization TwoLevel-Lemmas.group-like (TwoLevel-Step-Twolevel.step) (Legacy.listf-of-f normalize-tlxs) (Legacy.lemma-listf-of-f lemma-normalize-tlxs)
 module TRT4 = Step-With-Standardization (step-cong (TwoLevel-Step-Order.step then TwoLevel-Step-Twolevel.step)) (Legacy.listf-of-f normalize-tlxs) (Legacy.lemma-listf-of-f lemma-normalize-tlxs) renaming (general-rewrite to rewrite-twolevel)
