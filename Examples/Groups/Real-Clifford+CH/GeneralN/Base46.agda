@@ -57,22 +57,27 @@ Vo′ = (PP ↑ • b₀₁ • PP ↑) • b₀₀
 ------------------------------------------------------------------------
 -- The splitting over wire 0
 
--- The four equations with the box are one family over shared factors,
--- each read once (ProdEval); bb reads the box once for all of them.
+-- Every equation of this module is one family over shared factors,
+-- each read once (ProdEval): bb is the box between swaps, so the box is
+-- read once for all of them, and the relabellings below are products
+-- of swaps, X and P ⊗ P.  Read word by word, they took 4.6 s.
 private
   F : List (Circuit 4)
-  F = Ex ↑ ∷ Ex ∷ Ex ↑ ↑ ∷ bb ∷ X ↑ ↑ ∷ X ∷ CZ ↑ ∷ PP ↑ ∷ Λ□ 3 ∷ []
+  F = Ex ↑ ∷ Ex ∷ Ex ↑ ↑ ∷ X ↑ ↑ ∷ X ∷ CZ ↑ ∷ PP ↑ ∷ Λ□ 3 ∷ X ↑ ∷ X ↑ ↑ ↑ ∷ P₁₃ ∷ []
 
-  ex₁ ex ex₂ bbᵉ x₂ x cz pp box : Word ℕ
+  ex₁ ex ex₂ bbᵉ x₂ x cz pp box x₁ x₃ p₁₃ : Word ℕ
   ex₁ = [ 0 ]ʷ
   ex  = [ 1 ]ʷ
   ex₂ = [ 2 ]ʷ
-  bbᵉ = [ 3 ]ʷ
-  x₂  = [ 4 ]ʷ
-  x   = [ 5 ]ʷ
-  cz  = [ 6 ]ʷ
-  pp  = [ 7 ]ʷ
-  box = [ 8 ]ʷ
+  x₂  = [ 3 ]ʷ
+  x   = [ 4 ]ʷ
+  cz  = [ 5 ]ʷ
+  pp  = [ 6 ]ʷ
+  box = [ 7 ]ʷ
+  x₁  = [ 8 ]ʷ
+  x₃  = [ 9 ]ʷ
+  p₁₃ = [ 10 ]ʷ
+  bbᵉ = (ex₂ • ex₁ • ex) • box • (ex • ex₁ • ex₂)
 
   πaᵉ πa′ᵉ πbᵉ πb′ᵉ b₁₀ᵉ b₀₁ᵉ b₀₀ᵉ ζᵉ ηᵉ Voᵉ Vcᵉ Vo′ᵉ : Word ℕ
   πaᵉ  = ex₁ • ex • ex₂ • ex₁ • ex₂
@@ -93,6 +98,12 @@ private
     ∷ (Vcᵉ • ηᵉ • ζᵉ , Vo′ᵉ)
     ∷ (πaᵉ • bbᵉ • πa′ᵉ , box)
     ∷ (πbᵉ • bbᵉ • πb′ᵉ , box)
+    ∷ (πaᵉ • πa′ᵉ , ε) ∷ (πa′ᵉ • πaᵉ , ε) ∷ (πbᵉ • πb′ᵉ , ε) ∷ (πb′ᵉ • πbᵉ , ε)
+    ∷ (πaᵉ • x • πa′ᵉ , x₂) ∷ (πaᵉ • x₁ • πa′ᵉ , x₃) ∷ (πaᵉ • pp • πa′ᵉ , p₁₃)
+    ∷ (πaᵉ • (ex₁ • ex) , ex • (ex₁ • ex₂)) ∷ ((ex • ex₁) • πa′ᵉ , (ex₂ • ex₁) • ex)
+    ∷ (πbᵉ • x • πb′ᵉ , x₂) ∷ (πbᵉ • x₂ • πb′ᵉ , x₃) ∷ (πbᵉ • pp • πb′ᵉ , p₁₃)
+    ∷ (πbᵉ • ex , ex • (ex₁ • ex₂)) ∷ (ex • πb′ᵉ , (ex₂ • ex₁) • ex)
+    ∷ (x₂ • p₁₃ , p₁₃ • x₂)
     ∷ []
 
   all46 : allOK (map ⟦_⟧R F) (map len F) E ≡ true
@@ -108,16 +119,16 @@ e-Vc = fam-eval F E all46 1
 -- The two relabellings
 
 ea₁ : Evaluated (πa • πa′) ε
-ea₁ = evaluated Eq.refl
+ea₁ = fam-eval F E all46 4
 
 ea₂ : Evaluated (πa′ • πa) ε
-ea₂ = evaluated Eq.refl
+ea₂ = fam-eval F E all46 5
 
 eb₁ : Evaluated (πb • πb′) ε
-eb₁ = evaluated Eq.refl
+eb₁ = fam-eval F E all46 6
 
 eb₂ : Evaluated (πb′ • πb) ε
-eb₂ = evaluated Eq.refl
+eb₂ = fam-eval F E all46 7
 
 ea-bb : Evaluated (πa • bb • πa′) (Λ□ 3)
 ea-bb = fam-eval F E all46 2
@@ -126,35 +137,35 @@ eb-bb : Evaluated (πb • bb • πb′) (Λ□ 3)
 eb-bb = fam-eval F E all46 3
 
 ea-X : Evaluated (πa • X • πa′) (X ↑ ↑)
-ea-X = evaluated Eq.refl
+ea-X = fam-eval F E all46 8
 
 ea-X₁ : Evaluated (πa • X ↑ • πa′) (X ↑ ↑ ↑)
-ea-X₁ = evaluated Eq.refl
+ea-X₁ = fam-eval F E all46 9
 
 ea-P : Evaluated (πa • PP ↑ • πa′) P₁₃
-ea-P = evaluated Eq.refl
+ea-P = fam-eval F E all46 10
 
 ea-L : Evaluated (πa • (Ex ↑ • Ex)) (Ex • (Ex ↑ • Ex ↑ ↑))
-ea-L = evaluated Eq.refl
+ea-L = fam-eval F E all46 11
 
 ea-R : Evaluated ((Ex • Ex ↑) • πa′) ((Ex ↑ ↑ • Ex ↑) • Ex)
-ea-R = evaluated Eq.refl
+ea-R = fam-eval F E all46 12
 
 eb-X : Evaluated (πb • X • πb′) (X ↑ ↑)
-eb-X = evaluated Eq.refl
+eb-X = fam-eval F E all46 13
 
 eb-X₂ : Evaluated (πb • X ↑ ↑ • πb′) (X ↑ ↑ ↑)
-eb-X₂ = evaluated Eq.refl
+eb-X₂ = fam-eval F E all46 14
 
 eb-P : Evaluated (πb • PP ↑ • πb′) P₁₃
-eb-P = evaluated Eq.refl
+eb-P = fam-eval F E all46 15
 
 eb-L : Evaluated (πb • Ex) (Ex • (Ex ↑ • Ex ↑ ↑))
-eb-L = evaluated Eq.refl
+eb-L = fam-eval F E all46 16
 
 eb-R : Evaluated (Ex • πb′) ((Ex ↑ ↑ • Ex ↑) • Ex)
-eb-R = evaluated Eq.refl
+eb-R = fam-eval F E all46 17
 
 -- X on wire 2 passes P ⊗ P on the wires 1 3.
 e-X₂P : Evaluated {4} (X ↑ ↑ • P₁₃) (P₁₃ • X ↑ ↑)
-e-X₂P = evaluated Eq.refl
+e-X₂P = fam-eval F E all46 18

@@ -13,7 +13,7 @@
 -- an H gate with its box wire on wire 3 (the proof of (353), case iii):
 -- CH is H● H○ (`e-CH`), the two commute (`e-comm`), each is an
 -- involution (`e-○²`, `e-●²`), and H● does not see the swap of the
--- wires 1 2 (`e-S`).  Each an evaluation of a few seconds.
+-- wires 1 2 (`e-S`) nor X on its box wire (`e-X₃●`, for (355)).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -48,12 +48,14 @@ Lm = X ↑ ↑ • (P₁₃ • (Ex ↓ • Λ□ 3 • Ex ↓) • P₁₃) •
 H○ = φ Lm
 H● = X ↑ ↑ • H○ • X ↑ ↑
 
--- The five equations are one family over the factors H○, X ↑ ↑, CH ↓
--- and Ex ↑ (H● being X ↑ ↑ • H○ • X ↑ ↑), decided by one boolean that
--- reads the box in H○ once (ProdEval).
+-- The six equations are one family over the factors H○, X ↑ ↑, CH ↓,
+-- Ex ↑ and X ↑ ↑ ↑ (H● being X ↑ ↑ • H○ • X ↑ ↑), decided by one boolean
+-- that reads the box in H○ once (ProdEval).  The sixth, X on the box
+-- wire of H● passing it, is for the proof of (355) (GeneralN.ZX355);
+-- in a module of its own it read H● twice, 2.4 s.
 private
   F : List (Circuit 4)
-  F = H○ ∷ X ↑ ↑ ∷ CH ↓ ∷ Ex ↑ ∷ []
+  F = H○ ∷ X ↑ ↑ ∷ CH ↓ ∷ Ex ↑ ∷ X ↑ ↑ ↑ ∷ []
 
   h○ h● : Word ℕ
   h○ = [ 0 ]ʷ
@@ -65,6 +67,7 @@ private
     ∷ (h○ • h○ , ε)
     ∷ (h● • h● , ε)
     ∷ ([ 3 ]ʷ • h● • [ 3 ]ʷ , h●)
+    ∷ ([ 4 ]ʷ • h● • [ 4 ]ʷ , h●)
     ∷ []
 
   all353 : allOK (map ⟦_⟧R F) (map len F) E ≡ true
@@ -84,3 +87,6 @@ e-●² = fam-eval F E all353 3
 
 e-S : Evaluated (Ex ↑ • H● • Ex ↑) H●
 e-S = fam-eval F E all353 4
+
+e-X₃● : Evaluated {4} (X ↑ ↑ ↑ • H● • X ↑ ↑ ↑) H●
+e-X₃● = fam-eval F E all353 5
