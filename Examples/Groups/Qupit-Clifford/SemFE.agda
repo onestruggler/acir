@@ -3,7 +3,7 @@
 --
 -- The qupit factor set, from the Weyl cocycle.
 --
--- Clifford.Qupit.SemGeneratorData reduces the `GeneratorData` record
+-- Qupit-Clifford.SemGeneratorData reduces the `GeneratorData` record
 -- that the scalar layer's cocycle is built from to a FACTOR SET for the
 -- quotient,
 --
@@ -16,7 +16,7 @@
 -- to take, and it is how the qubit development builds its (Qubit.SemFE).
 --
 -- This file builds one a different way, and needs none of the three.
--- Clifford.Qupit.Semantics already proves `weyl`: the Weyl cocycle
+-- Qupit-Clifford.Semantics already proves `weyl`: the Weyl cocycle
 --
 --     cocy (P , S) (Q , _) = ½ · sform P (ap S Q)
 --
@@ -52,7 +52,7 @@
 -- accumulated along the two sides differs by exactly corr: zero for
 -- fifteen of them and ω^((p²-1)/8) for order-SH.  That is the qupit
 -- analogue of Selinger.ScalarKernel and is still open.  With this file,
--- it is the ONLY thing still open: Clifford.Qupit.Presentation's
+-- it is the ONLY thing still open: Qupit-Clifford.Presentation's
 -- presentation theorem now takes one hypothesis rather than two.
 ------------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ open import Notations
 open import ForStdlib.Data.Fin.Mod
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
-module Examples.Groups.Clifford.Qupit.SemFE
+module Examples.Groups.Qupit-Clifford.SemFE
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -97,10 +97,10 @@ import Examples.Groups.ProjectiveClifford.Qupit.SemiDirect.Presentation
   p-3 p-prime g* g-gen as SDPres
 
 -- The syntax, the semantics, and the reduction to a factor set.
-import Examples.Groups.Clifford.Qupit.Syntactics
+import Examples.Groups.Qupit-Clifford.Syntactics
   p-3 p-prime g* g-gen as QS
-import Examples.Groups.Clifford.Qupit.Semantics p-3 p-prime as Sem
-import Examples.Groups.Clifford.Qupit.SemGeneratorData
+import Examples.Groups.Qupit-Clifford.Semantics p-3 p-prime as Sem
+import Examples.Groups.Qupit-Clifford.SemGeneratorData
   p-3 p-prime g* g-gen as SGD
 
 module PE = Sem.Presented-Extension g* g-gen

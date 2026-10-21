@@ -3,7 +3,7 @@
 --
 -- Shifting a circuit shifts its denotation.
 --
--- Clifford.Qupit.SemRealises reduces Realises to nineteen equations in
+-- Qupit-Clifford.SemRealises reduces Realises to nineteen equations in
 -- ℤ/pℤ about the phase Φ.  Three of them are the STRUCTURAL rules —
 -- cong↑, comm₁, comm₂ — and all three are about a circuit that has been
 -- moved up a wire.  What they need, and what nothing in the library had,
@@ -48,7 +48,7 @@ open import Notations
 open import ForStdlib.Data.Fin.Mod
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
-module Examples.Groups.Clifford.Qupit.SemShift
+module Examples.Groups.Qupit-Clifford.SemShift
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -77,7 +77,7 @@ open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime
   using (Symplectic ; _≈ˢ_ ; εˢ ; _∘ˢ_ ; lift₀ˢ ; lift₀ˢ-ε ; lift₀ˢ-∘)
 open Symplectic using (ap)
-import Examples.Groups.Clifford.Qupit.Semantics p-3 p-prime as Sem
+import Examples.Groups.Qupit-Clifford.Semantics p-3 p-prime as Sem
 
 
 open import Examples.Groups.ProjectiveClifford.Qupit.SemiDirect.Syntactics
@@ -90,9 +90,9 @@ import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.Syntactics
   p-3 p-prime g* g-gen as Cli
 import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Syntactics
   p-3 p-prime g* g-gen as Pap
-import Examples.Groups.Clifford.Qupit.Syntactics
+import Examples.Groups.Qupit-Clifford.Syntactics
   p-3 p-prime g* g-gen as QS
-import Examples.Groups.Clifford.Qupit.SemFE p-3 p-prime g* g-gen as FE
+import Examples.Groups.Qupit-Clifford.SemFE p-3 p-prime g* g-gen as FE
 
 private
   variable

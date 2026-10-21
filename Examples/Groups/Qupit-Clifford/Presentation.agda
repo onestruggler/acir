@@ -6,10 +6,10 @@
 --
 --     (n Exact,_===_)  IsPresentationOf  Presented-group n gd.
 --
--- On the left is Clifford.Qupit.Syntactics: the scalar ω and the gates,
+-- On the left is Qupit-Clifford.Syntactics: the scalar ω and the gates,
 -- with the cyclic relation ωᵖ = 1, centrality of ω, and the sixteen
 -- Paper-V0 relations each twisted by its power of ω (only order-SH
--- carries one).  On the right is Clifford.Qupit.Semantics.Presented-
+-- carries one).  On the right is Qupit-Clifford.Semantics.Presented-
 -- Extension: the group A ×_γᶜ H whose kernel A is the scalars presented
 -- by ⟨ ω ∣ ωᵖ = 1 ⟩, whose quotient H is the Paper-V0 rule set, and
 -- whose cocycle γᶜ comes from the generator data through CocycleGen.
@@ -80,7 +80,7 @@ open import Notations
 open import ForStdlib.Data.Fin.Mod
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
-module Examples.Groups.Clifford.Qupit.Presentation
+module Examples.Groups.Qupit-Clifford.Presentation
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -123,21 +123,21 @@ import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Lemmas
   p-3 p-prime g* g-gen as PapL
 
 -- The syntax: ScalarGen, ω, Scalar-relation, conj, corr, _Exact,_===_.
-import Examples.Groups.Clifford.Qupit.Syntactics
+import Examples.Groups.Qupit-Clifford.Syntactics
   p-3 p-prime g* g-gen as QS
 
 -- The semantics: A, H, the cocycle, the total group, and Realises.
-import Examples.Groups.Clifford.Qupit.Semantics p-3 p-prime as Sem
+import Examples.Groups.Qupit-Clifford.Semantics p-3 p-prime as Sem
 module PE = Sem.Presented-Extension g* g-gen
 
 -- The generator data, built from the Weyl cocycle, and the reduction of
 -- Realises to arithmetic in ℤ/pℤ.
-import Examples.Groups.Clifford.Qupit.SemFE p-3 p-prime g* g-gen as FE
-import Examples.Groups.Clifford.Qupit.SemRealises p-3 p-prime g* g-gen as RL
+import Examples.Groups.Qupit-Clifford.SemFE p-3 p-prime g* g-gen as FE
+import Examples.Groups.Qupit-Clifford.SemRealises p-3 p-prime g* g-gen as RL
 
 -- ... and the sixteen equations in ℤ/pℤ that Realises reduces to,
 -- proved.
-import Examples.Groups.Clifford.Qupit.SemSRel p-3 p-prime g* g-gen as SR
+import Examples.Groups.Qupit-Clifford.SemSRel p-3 p-prime g* g-gen as SR
 
 ------------------------------------------------------------------------
 -- The two grouplike witnesses
@@ -553,7 +553,7 @@ presentation n gd real = Exact-Presentation.presentation n gd real
 -- Of the two inputs above only one is an assumption.  The generator
 -- data — which is what the cocycle, hence the group itself, is built
 -- from — is supplied at every width by SemFE, by pulling the Weyl
--- cocycle of Clifford.Qupit.Semantics back along Paper-V0's
+-- cocycle of Qupit-Clifford.Semantics back along Paper-V0's
 -- presentation; it needs no hypothesis.
 --
 -- What is left is Realises alone: that the corrections that cocycle

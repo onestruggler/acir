@@ -67,7 +67,7 @@ open import Presentation.Construct.Base
 open import Presentation.Construct.Properties.Extension using (tw)
 
 import Examples.Groups.Cyclic.Syntactics as Cy
-import Examples.Groups.Clifford.Qupit.SemSHExp p-3 p-prime as SHE
+import Examples.Groups.Qupit-Clifford.SemSHExp p-3 p-prime as SHE
 
 import Examples.Groups.Clifford+MinusOne.Qupit.Syntactics
   p-3 p-prime g* g-gen as N

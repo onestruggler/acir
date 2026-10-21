@@ -265,11 +265,11 @@ import Examples.Groups.ProjectiveClifford.Qupit.SemiDirect.Presentation
   p-3 p-prime g* g-gen as SDPres
 
 -- The exact (with-scalars) Clifford development.
-import Examples.Groups.Clifford.Qupit.Syntactics
+import Examples.Groups.Qupit-Clifford.Syntactics
   p-3 p-prime g* g-gen as QS
-import Examples.Groups.Clifford.Qupit.Semantics p-3 p-prime as CSem
+import Examples.Groups.Qupit-Clifford.Semantics p-3 p-prime as CSem
 module PE = CSem.Presented-Extension g* g-gen
-import Examples.Groups.Clifford.Qupit.Presentation
+import Examples.Groups.Qupit-Clifford.Presentation
   p-3 p-prime g* g-gen as CQP
 \end{code}
 

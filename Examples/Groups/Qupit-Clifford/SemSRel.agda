@@ -3,8 +3,8 @@
 --
 -- The sixteen Paper-V0 rules, as equations in ℤ/pℤ.
 --
--- Clifford.Qupit.SemRealises reduces `Realises` — the last hypothesis of
--- Clifford.Qupit.Presentation — to `SRel-Φ`: for each of the sixteen
+-- Qupit-Clifford.SemRealises reduces `Realises` — the last hypothesis of
+-- Qupit-Clifford.Presentation — to `SRel-Φ`: for each of the sixteen
 -- group-specific rules u === v, the phases satisfy
 --
 --     Φ u ≡ srel-corrℤ r + Φ v.
@@ -39,7 +39,7 @@ open import Notations
 open import ForStdlib.Data.Fin.Mod
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
-module Examples.Groups.Clifford.Qupit.SemSRel
+module Examples.Groups.Qupit-Clifford.SemSRel
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -67,16 +67,16 @@ open PR g* g-gen using (g′ ; g^_)
 
 import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Syntactics
   p-3 p-prime g* g-gen as Pap
-import Examples.Groups.Clifford.Qupit.Syntactics
+import Examples.Groups.Qupit-Clifford.Syntactics
   p-3 p-prime g* g-gen as QS
-import Examples.Groups.Clifford.Qupit.SemRealises
+import Examples.Groups.Qupit-Clifford.SemRealises
   p-3 p-prime g* g-gen as RL
-import Examples.Groups.Clifford.Qupit.SemLocal
+import Examples.Groups.Qupit-Clifford.SemLocal
   p-3 p-prime g* g-gen as SL
-import Examples.Groups.Clifford.Qupit.SemZBlock
+import Examples.Groups.Qupit-Clifford.SemZBlock
   p-3 p-prime g* g-gen as ZB
-import Examples.Groups.Clifford.Qupit.SemFE p-3 p-prime g* g-gen as FE
-import Examples.Groups.Clifford.Qupit.SemSHExp p-3 p-prime as SHE
+import Examples.Groups.Qupit-Clifford.SemFE p-3 p-prime g* g-gen as FE
+import Examples.Groups.Qupit-Clifford.SemSHExp p-3 p-prime as SHE
 
 ------------------------------------------------------------------------
 -- modp is mult

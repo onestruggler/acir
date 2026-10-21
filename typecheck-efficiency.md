@@ -26,7 +26,7 @@ modules of 9–20 s), `DecodingChecks` and `Checks8`'s R34 and R42
 `Independence/Clifford+CS/Bridge`, `Lemma88/Easy` and `LemmaA1/Base`
 and `More` (one cause each, now under 10 s). Four of those last were
 first counted as spread. Left at 20–27 s: `Paper-V0/Lemmas` (spread
-over 4754 lines; a split would recheck `Clifford/Qupit` under the
+over 4754 lines; a split would recheck `Qupit-Clifford` under the
 root), `Weyl` (evaluation), `TreeNF38` (one generated check),
 `U33Di` and `Amalgamation` (spread). Qupit-Phase-Affine's TopPad, left
 there too, is now about 8 s (its shared words through the macro's
@@ -387,7 +387,7 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   (∙ˢᵈ x y)`, once at the particular words `Z^ -1/2` and `S`. The
   endpoints are then solved against the goal at the pair type, so the
   two readings of the word are compared symplectic part and all: the
-  pitfall `CLAUDE.md` records for `Clifford/Qupit/SemShift`. The same
+  pitfall `CLAUDE.md` records for `Qupit-Clifford/SemShift`. The same
   fix works: `∙ˢᵈ₁ x y = Eq.cong proj₁ (∙ˢᵈ x y)` proved once over
   variable words, used at the four places — 8.2 s.
 - **A small function as its table.** Qutrit-Clifford's `ω^ a` was
@@ -488,7 +488,7 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   overflowing a 3 GB heap (1.5 GB peak residency at 8 GB) to 0.7 GB,
   and the `Derived` modules of `Clifford+MinusOne/Qupit/Figure1` and
   `Figure1-MS`, which overflowed it, now fit (1.59 → 1.44 GB peak, 7.3 →
-  6.2 s). It did nothing for `Clifford/Qupit/SemRealises`. A module's
+  6.2 s). It did nothing for `Qupit-Clifford/SemRealises`. A module's
   own peak can be far below what a batch reaches: `Selinger/Translation`
   overflowed 3 GB in a batch that also rechecked other modules, and
   peaks under 1 GB alone.

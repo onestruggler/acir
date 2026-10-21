@@ -6,7 +6,7 @@
 -- Two rule sets, one group:
 --
 --   1) _Exact±,_===_ (Syntactics) over ω, -1 and the gates H, S, CZ —
---      the exact qupit Clifford rule set of Clifford.Qupit with -1
+--      the exact qupit Clifford rule set of Qupit-Clifford with -1
 --      adjoined as a central generator of order 2;
 --   2) _F,_===_ (Figure1.Syntactics) over -ω, H, S, CZ — Figure 1's
 --      rules C0–C15 with the structural rules of circuits.
@@ -109,7 +109,7 @@ import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Lift
   p-3 p-prime g* g-gen as Lift
 import Examples.Groups.Clifford+MinusOne.Qupit.Presentation
   p-3 p-prime g* g-gen as P
-import Examples.Groups.Clifford.Qupit.SemSHExp p-3 p-prime as SHE
+import Examples.Groups.Qupit-Clifford.SemSHExp p-3 p-prime as SHE
 
 open T using (Alph ; _≈±_ ; _≈ᶠ_ ; fig ; new ; Fʷ ; Gʷ)
 

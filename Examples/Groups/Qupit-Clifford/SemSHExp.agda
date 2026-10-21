@@ -3,8 +3,8 @@
 --
 -- (p² - 1)/8, as an element of ℤ/pℤ.
 --
--- Clifford.Qupit.Syntactics gives order-SH the correction ω^((p²-1)/8),
--- and Clifford.Qupit.SemLocal computes the phase that rule actually
+-- Qupit-Clifford.Syntactics gives order-SH the correction ω^((p²-1)/8),
+-- and Qupit-Clifford.SemLocal computes the phase that rule actually
 -- carries: -h·σ², with h = ½ and σ = -½, i.e. -⅛.  This file is the
 -- bridge — that the residue of (p²-1)/8 IS -⅛ — and it is elementary
 -- number theory with no circuits in it.
@@ -32,7 +32,7 @@ open import Notations
 open import ForStdlib.Data.Fin.Mod
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
-module Examples.Groups.Clifford.Qupit.SemSHExp
+module Examples.Groups.Qupit-Clifford.SemSHExp
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -53,7 +53,7 @@ open import Algebra.Properties.Ring (+-*-ring p-2) using (-1*x≈-x)
 open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime
   using (mult ; mult-p)
 
-import Examples.Groups.Clifford.Qupit.Semantics p-3 p-prime as Sem
+import Examples.Groups.Qupit-Clifford.Semantics p-3 p-prime as Sem
 
 open +-*-Solver using (_:=_ ; _:+_ ; _:*_ ; con) renaming (solve to nsolve)
 

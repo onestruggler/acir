@@ -4,7 +4,7 @@
 -- The n-qupit Clifford group with the scalar -1 adjoined, for an odd
 -- prime p = 3 + p-3.
 --
--- Clifford.Qupit presents the Clifford group whose only scalars are the
+-- Qupit-Clifford presents the Clifford group whose only scalars are the
 -- powers of ω = e^(2πi/p):
 --
 --     _Exact,_===_   over   ScalarGen ⊎ Gen n,
@@ -32,7 +32,7 @@
 --   mid     -1 commutes with ω and with every gate.
 --
 -- Nothing in the left factor is restated: every derivation of
--- Clifford.Qupit is a derivation here, along the left embedding.  That
+-- Qupit-Clifford is a derivation here, along the left embedding.  That
 -- is why the direct product, and not a re-built extension over the
 -- scalar group ℤ/2pℤ, is the shape chosen.
 --
@@ -76,7 +76,7 @@ import Examples.Groups.Cyclic.Syntactics as Cy
 -- The exact layer, re-exported: its alphabet, its relation and its
 -- names are part of this module's interface, since _Exact±,_===_ is
 -- written over them.
-import Examples.Groups.Clifford.Qupit.Syntactics
+import Examples.Groups.Qupit-Clifford.Syntactics
   p-3 p-prime g* g-gen as QS
 open QS public
   using (ScalarGen ; ω ; Scalar-relation ; Gen ; Circuit ; _Exact,_===_

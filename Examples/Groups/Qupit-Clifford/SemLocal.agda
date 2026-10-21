@@ -3,7 +3,7 @@
 --
 -- The phase of a one-wire circuit, as a triple.
 --
--- Clifford.Qupit.SemRealises reduces `Realises` to sixteen equations in
+-- Qupit-Clifford.SemRealises reduces `Realises` to sixteen equations in
 -- ℤ/pℤ about the phase Φ, and ten of them are already discharged.  The
 -- ones that are not — order-H, M-power, semi-MR, order-SH — all live on
 -- the bottom wire and all need Φ COMPUTED rather than merely shown to
@@ -57,7 +57,7 @@ open import Notations
 open import ForStdlib.Data.Fin.Mod
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
-module Examples.Groups.Clifford.Qupit.SemLocal
+module Examples.Groups.Qupit-Clifford.SemLocal
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -88,12 +88,12 @@ import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Syntactics
   p-3 p-prime g* g-gen as Pap
 import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.Syntactics
   p-3 p-prime g* g-gen as Cli
-import Examples.Groups.Clifford.Qupit.Syntactics
+import Examples.Groups.Qupit-Clifford.Syntactics
   p-3 p-prime g* g-gen as QS
-import Examples.Groups.Clifford.Qupit.Semantics p-3 p-prime as Sem
-import Examples.Groups.Clifford.Qupit.SemFE p-3 p-prime g* g-gen as FE
-import Examples.Groups.Clifford.Qupit.SemShift p-3 p-prime g* g-gen as SH
-import Examples.Groups.Clifford.Qupit.SemRealises p-3 p-prime g* g-gen as RL
+import Examples.Groups.Qupit-Clifford.Semantics p-3 p-prime as Sem
+import Examples.Groups.Qupit-Clifford.SemFE p-3 p-prime g* g-gen as FE
+import Examples.Groups.Qupit-Clifford.SemShift p-3 p-prime g* g-gen as SH
+import Examples.Groups.Qupit-Clifford.SemRealises p-3 p-prime g* g-gen as RL
 
 ------------------------------------------------------------------------
 -- The two constants

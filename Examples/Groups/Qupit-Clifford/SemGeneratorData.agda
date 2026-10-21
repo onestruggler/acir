@@ -3,7 +3,7 @@
 --
 -- Reducing the qupit generator data to a factor set.
 --
--- Clifford.Qupit.Semantics.Presented-Extension derives the scalar
+-- Qupit-Clifford.Semantics.Presented-Extension derives the scalar
 -- cocycle of
 --
 --     1 ─→ A ─→ A ×_γᶜ H ─→ H ─→ 1
@@ -22,9 +22,9 @@
 -- mod-scalar Figure 8.
 --
 -- What is NOT here: the factor set itself.  For qubits that is
--- Qubit.SemFE; for qupits it is now Clifford.Qupit.SemFE, which is
+-- Qubit.SemFE; for qupits it is now Qupit-Clifford.SemFE, which is
 -- unconditional and takes a route none of what follows describes — it
--- pulls the WEYL cocycle of Clifford.Qupit.Semantics back along
+-- pulls the WEYL cocycle of Qupit-Clifford.Semantics back along
 -- Paper-V0's presentation, so no section is chosen, no scalar kernel is
 -- computed, and ω-faithfulness is not needed (in that model ω is
 -- faithful by construction).  What remains open is not the factor set
@@ -40,7 +40,7 @@
 --     the mod-scalar rule set with a DISCRETE codomain, so that rep-cong
 --     is propositional;
 --   * a SCALAR KERNEL theorem: two words equal mod scalars have exact
---     images differing by a power of ω.  Over Clifford.Qupit.Syntactics.
+--     images differing by a power of ω.  Over Qupit-Clifford.Syntactics.
 --     _Exact,_===_ this is an induction on Paper-V0 derivations that
 --     accumulates `corr`, and it is nearly definitional at a relator,
 --     the twisted relator being [ u ]ᵣ === [ corr r ]ₗ • [ v ]ᵣ;
@@ -48,7 +48,7 @@
 --     which makes the defect UNIQUE and hence every cocycle law
 --     provable.  This is the semantic one: for qubits it is a theorem
 --     about a mod-17 matrix model, and for qupits the natural target is
---     the central extension already in Clifford.Qupit.Semantics, where ω
+--     the central extension already in Qupit-Clifford.Semantics, where ω
 --     is faithful by construction — but mapping into it needs soundness
 --     of the exact rule set, i.e. lifts of S, H and CZ satisfying all
 --     sixteen relations with their corrections.  That is the piece of
@@ -78,7 +78,7 @@ open import Notations
 open import ForStdlib.Data.Fin.Mod
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
-module Examples.Groups.Clifford.Qupit.SemGeneratorData
+module Examples.Groups.Qupit-Clifford.SemGeneratorData
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -105,7 +105,7 @@ import Examples.Groups.Cyclic.Scalars as Sc
 module Sp = Sc p-2
 
 -- The record to be filled, with its two presented groups.
-import Examples.Groups.Clifford.Qupit.Semantics p-3 p-prime as Sem
+import Examples.Groups.Qupit-Clifford.Semantics p-3 p-prime as Sem
 module PE = Sem.Presented-Extension g* g-gen
 
 open PE using (A ; H ; φ ; GeneratorData)

@@ -15,12 +15,12 @@
 --     M-phase a = (-a² + 4a - 2)/(8a),
 --
 -- and the gate word in front is Figure1.ModScalar's XM a.  Read in the
--- exact Clifford group with the Weyl cocycle (Clifford.Qupit.SemRealises),
+-- exact Clifford group with the Weyl cocycle (Qupit-Clifford.SemRealises),
 -- XM a picks up the phase ω^(-M-phase a): exactly the power of ω that
 -- T1 appends cancels it.  This file proves that, and the facts about Φ
 -- that the rules mentioning the multiplier then need.
 --
--- How.  Clifford.Qupit.SemLocal reads a one-wire word as a triple — a
+-- How.  Qupit-Clifford.SemLocal reads a one-wire word as a triple — a
 -- Pauli (x , z), a matrix (a b ; c d) and the phase φ — and multiplies
 -- triples by the Heisenberg–Weyl law.  Over S rather than SemLocal's R
 -- the multiplier is NOT phase-free, and its triple is computed here
@@ -86,11 +86,11 @@ open import Word.Base using (_•_ ; _^_)
 
 open Primitive-Root-Modp' g* g-gen using (g′)
 
-import Examples.Groups.Clifford.Qupit.Syntactics
+import Examples.Groups.Qupit-Clifford.Syntactics
   p-3 p-prime g* g-gen as QS
-import Examples.Groups.Clifford.Qupit.SemLocal
+import Examples.Groups.Qupit-Clifford.SemLocal
   p-3 p-prime g* g-gen as SL
-import Examples.Groups.Clifford.Qupit.SemRealises
+import Examples.Groups.Qupit-Clifford.SemRealises
   p-3 p-prime g* g-gen as RL
 import Examples.Groups.Clifford+MinusOne.Qupit.Figure1-MS.Syntactics
   p-3 p-prime g* g-gen as F

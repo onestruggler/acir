@@ -9,7 +9,7 @@
 -- The paper's Theorem 4.10: the rules C0–C15 are sound and complete for
 -- n-qudit Clifford circuits over -ω, H, S, CZ.  Here the group is the
 -- one the rule set with -1 presents (Semantics.Clifford±: the exact
--- Clifford group of Clifford.Qupit, the central extension of the
+-- Clifford group of Qupit-Clifford, the central extension of the
 -- projective Clifford group by ⟨ω⟩, times ⟨-1⟩), and the theorem is the
 -- composite of two isomorphisms already proved:
 --

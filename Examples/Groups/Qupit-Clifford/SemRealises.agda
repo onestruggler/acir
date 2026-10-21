@@ -3,7 +3,7 @@
 --
 -- Realises, reduced to arithmetic in ℤ/pℤ.
 --
--- Clifford.Qupit.Presentation proves that the exact rule set presents
+-- Qupit-Clifford.Presentation proves that the exact rule set presents
 -- the presented central extension, on one hypothesis:
 --
 --     Realises  —  ∀ r : u === v,  scal u ≈ corr r • scal v,
@@ -85,7 +85,7 @@ open import Notations
 open import ForStdlib.Data.Fin.Mod
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
-module Examples.Groups.Clifford.Qupit.SemRealises
+module Examples.Groups.Qupit-Clifford.SemRealises
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -119,13 +119,13 @@ module Sp = Sc p-2
 
 import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Syntactics
   p-3 p-prime g* g-gen as Pap
-import Examples.Groups.Clifford.Qupit.Syntactics
+import Examples.Groups.Qupit-Clifford.Syntactics
   p-3 p-prime g* g-gen as QS
-import Examples.Groups.Clifford.Qupit.Semantics p-3 p-prime as Sem
-import Examples.Groups.Clifford.Qupit.SemGeneratorData
+import Examples.Groups.Qupit-Clifford.Semantics p-3 p-prime as Sem
+import Examples.Groups.Qupit-Clifford.SemGeneratorData
   p-3 p-prime g* g-gen as SGD
-import Examples.Groups.Clifford.Qupit.SemFE p-3 p-prime g* g-gen as FE
-import Examples.Groups.Clifford.Qupit.SemShift p-3 p-prime g* g-gen as SH
+import Examples.Groups.Qupit-Clifford.SemFE p-3 p-prime g* g-gen as FE
+import Examples.Groups.Qupit-Clifford.SemShift p-3 p-prime g* g-gen as SH
 
 module PE = Sem.Presented-Extension g* g-gen
 module KB = PB QS.Scalar-relation
@@ -1007,7 +1007,7 @@ comm-Φ (QS.CR.comm₂ h g)  _ = comm₂-Φ h g
 -- The reduction
 --
 -- Realises for SemFE's generator data — the last hypothesis of
--- Clifford.Qupit.Presentation — follows from Φ-Corr at that width.
+-- Qupit-Clifford.Presentation — follows from Φ-Corr at that width.
 
 realises : ∀ (n : ℕ) → Width.Φ-Corr n → PE.Realises n (FE.generator-data n)
 realises = Width.realises

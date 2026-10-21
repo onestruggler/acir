@@ -52,7 +52,7 @@ primitive root g, and every file is checked under `--safe`: there are
 no postulates and no holes.  The two "glue facts" — that the
 constructed groups are the groups of unitaries the gates generate — are
 classical and not formalised.  From scratch the root takes about half
-an hour, most of it the symplectic chain and `Clifford/Qupit/`.
+an hour, most of it the symplectic chain and `Qupit-Clifford/`.
 
 This is the `qupit` branch, so the root covers only that chain.  The
 library's other developments are still in the tree but are not reached

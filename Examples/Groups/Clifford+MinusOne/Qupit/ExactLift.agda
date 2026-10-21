@@ -7,7 +7,7 @@
 -- A Paper-V0 derivation u ≈ v holds in the exact Clifford group only up
 -- to a power of ω.  Which power is what the exact group's cocycle says:
 -- reading a circuit there with every gate lifted trivially, it picks up
--- the scalar ω ^ Φ w (Clifford.Qupit.SemRealises.Width.scal≈).  So if
+-- the scalar ω ^ Φ w (Qupit-Clifford.SemRealises.Width.scal≈).  So if
 -- Φ u = c + Φ v in ℤ/pℤ, then
 --
 --     [ u ]ᵣ  ≈  [ ω ^ c ]ₗ • [ v ]ᵣ        in n Exact,_===_,
@@ -19,7 +19,7 @@
 -- through the derivation.
 --
 -- How.  Not by induction on the derivation: by COMPLETENESS of the exact
--- presentation (Clifford.Qupit.Presentation's `injective`).  It is
+-- presentation (Qupit-Clifford.Presentation's `injective`).  It is
 -- enough that the two sides have the same denotation, and denotations
 -- are pairs compared componentwise:
 --
@@ -73,7 +73,7 @@ open import Examples.Groups.Clifford+MinusOne.Qupit.Semantics
   using (Exact-group ; module Exact-Reading)
 
 -- The phase Φ, and the scalar it computes.
-import Examples.Groups.Clifford.Qupit.SemRealises
+import Examples.Groups.Qupit-Clifford.SemRealises
   p-3 p-prime g* g-gen as RL
 
 ------------------------------------------------------------------------

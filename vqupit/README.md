@@ -237,7 +237,7 @@ texlive-pictures texlive-science texlive-plain-generic latexmk`.
 - `MainTheorems.agda` restates `unique-nf`, `simplified-presentation`,
   `v1-presentation` and `clifford-presentation`; it typechecks with
   `wsl --exec ~/.local/bin/agda MainTheorems.agda` (26 s from cache on
-  2026-09-04).  `Examples/Groups/Clifford/Qupit/Presentation.agda`
+  2026-09-04).  `Examples/Groups/Qupit-Clifford/Presentation.agda`
   (`presentation-exact`) is not reached from that root and was checked
   separately (5 m 50 s with the chain's interfaces cached).
 - Counts used in the paper: full symplectic rules 17 (+3 structural),

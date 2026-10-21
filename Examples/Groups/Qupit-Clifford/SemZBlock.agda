@@ -4,7 +4,7 @@
 -- Circuits that keep every Pauli pure-Z.
 --
 -- One of the sixteen Paper-V0 rules is left over from the one-wire
--- calculus of Clifford.Qupit.SemLocal: blake-c12,
+-- calculus of Qupit-Clifford.SemLocal: blake-c12,
 --
 --     (S^(p-1))↑ · (S^(p-1))↓ · CX^(p-1) · S↓ · CX  =  CZ,
 --
@@ -43,7 +43,7 @@ open import Notations
 open import ForStdlib.Data.Fin.Mod
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
-module Examples.Groups.Clifford.Qupit.SemZBlock
+module Examples.Groups.Qupit-Clifford.SemZBlock
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -69,12 +69,12 @@ open Symplectic using (ap)
 
 import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Syntactics
   p-3 p-prime g* g-gen as Pap
-import Examples.Groups.Clifford.Qupit.Syntactics
+import Examples.Groups.Qupit-Clifford.Syntactics
   p-3 p-prime g* g-gen as QS
-import Examples.Groups.Clifford.Qupit.Semantics p-3 p-prime as Sem
-import Examples.Groups.Clifford.Qupit.SemFE p-3 p-prime g* g-gen as FE
-import Examples.Groups.Clifford.Qupit.SemShift p-3 p-prime g* g-gen as SH
-import Examples.Groups.Clifford.Qupit.SemRealises p-3 p-prime g* g-gen as RL
+import Examples.Groups.Qupit-Clifford.Semantics p-3 p-prime as Sem
+import Examples.Groups.Qupit-Clifford.SemFE p-3 p-prime g* g-gen as FE
+import Examples.Groups.Qupit-Clifford.SemShift p-3 p-prime g* g-gen as SH
+import Examples.Groups.Qupit-Clifford.SemRealises p-3 p-prime g* g-gen as RL
 
 private
   variable

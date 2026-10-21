@@ -1,4 +1,4 @@
-# Survey: ProjectivePauli, ProjectiveClifford/Qupit, Clifford/Qupit — 2026-09-04
+# Survey: ProjectivePauli, ProjectiveClifford/Qupit, Qupit-Clifford — 2026-09-04
 
 ## ProjectivePauli (1220 lines: Presentation-Alt 779, Semantics 369, Presentation 72)
 Presentation-Alt.agda (circuit alphabet XZGate: X-gate, Z-gate : XZGate 1):
@@ -130,7 +130,7 @@ OneWire.agda: lemma-M1 (:167), lemma-M1-unfold : M₁ ≈ (S • H) ^ 3 (:184-20
 ## Shared/PauliBase.agda (885)
 `module Calculus (n) (Γ) (grouplike) (order-S' : S ^ p ≈ ε) (order-H4 : H ^ 4 ≈ ε) (order-SH' : (S • H) ^ 3 ≈ ε)`: S⁻¹S, lemma-SHSH : S • H • S • H ≈ H ^ 3 • S⁻¹, lemma-HSH. `module BridgeCalc (n) (Γ) (order-X) (order-Z) (comm-Z-S) (comm-X-Z) (conj-H-X^k) (conj-X^k-H) (lemma-XS) (pow-mod) (induction) (inductionˡ)`: MulZ (Z-W : ∀ k → Z^ k • W ≈ W • Z^ (a * k)), SemiMR (S⇒R, R⇒S), Bridge (bridge : RHR a b ≈ SHS' a b).
 
-## Clifford/Qupit (5029) — scalars
+## Qupit-Clifford (5029) — scalars
 Syntactics.agda:130-197: `Scalar-relation = p Cn,_===_` (ω from Cyclic.Syntactics: renaming X to ScalarGen, T to ω); `conj _ _ = ω` (central); `sh-exponent = (p * p ∸ 1) / 8`; `ω^SH = ω ^ sh-exponent`; `srel-corr CB.order-SH = ω^SH ; srel-corr _ = ε`; `corr (CR.srel r) = srel-corr r ; corr (CR.cong↑ r) = corr r ; corr (comm₁) = ε ; corr (comm₂) = ε`;
 ```agda
 _Exact,_===_ : (n : ℕ) → WRel (ScalarGen ⊎ Gen n)
@@ -139,6 +139,6 @@ _Exact,_===_ n = extension-presentation Scalar-relation (n CR.QRel,_===_) conj c
 Quotient = Paper-V0 (16 rules). Header: matrix conventions (δ_p), "exactly ONE of the sixteen ... fails on the nose, order-SH picks up ω^((p²-1)/8)"; residues p=3..47: 1,3,6,4,8,2,7,20,18,27,23,5,16,41. No matrices in Agda.
 Semantics.agda: Model A (structural): `record Scalar` (ω^_ exponent : ℤ ₚ); `cocy (P , S) (Q , _) = 1/2 * sform P (ap S Q)`; `weyl : Cocycle Scalar-abelianGroup (Pauli⋊Sp-group n)`; `Clifford-group = CE.group Scalar-abelianGroup (Pauli⋊Sp-group n) weyl`; `Clifford-extension = CE.centralExtension ...`; multiplication (ω^e , g) ·ᶜ (ω^f , h) = (ω^(e + f + cocy g h) , g ∙ h); heisenberg law. Model B (Presented-Extension g* g-gen): `A n = CGn.K n` (scalars as words), `H n = CGn.Q n` (Paper-V0 word group), `φ n = trivialAction`; `record GeneratorData n` (G, G-cong, G-ε, f-axiom); `Presented-group n gd = CE.group (A n) (H n) (γᶜ n gd)`; `Presented-extension n gd = CE.centralExtension ...`; `Realises-corr = ∀ {u v} (r : QRel u v) → scal u ≈ QS.corr r • scal v`; split-forces (non-split since ω^((p²−1)/8) ≠ ε). **Model A vs Model B total groups not proved equal** (Semantics.agda:585-589).
 Presentation.agda: `presentation-exact : ∀ (n : ℕ) → (n Exact,_===_) IsPresentationOf (PE.Presented-group n (exact-generator-data n))` (:641-645), unconditional; monoid presentation promoted. SemFE pulls weyl back along Paper-V0's presentation (generator-data); SemRealises reduces Realises to equations on phase Φ : Circuit n → ℤ/pℤ; SemShift (Φ-↑); SemLocal (one-wire phase calculus, has-SH3); SemZBlock (blake-c12 pure-Z); SemSHExp ((p²−1)/8 ≡ −⅛); SemSRel (dispatcher `realises`).
-NOT formalised: link to unitary matrices; the "glue facts" (projective Clifford ≅ Pauli⋊Sp; Clifford = central extension) — the theorems are about the constructed groups; Model A ≠ Model B identification; Clifford/Qupit not reached from MainTheorems root (typechecks separately). Slides cite `Theorem-Clifford = CQP.presentation-exact`.
+NOT formalised: link to unitary matrices; the "glue facts" (projective Clifford ≅ Pauli⋊Sp; Clifford = central extension) — the theorems are about the constructed groups; Model A ≠ Model B identification; Qupit-Clifford not reached from MainTheorems root (typechecks separately). Slides cite `Theorem-Clifford = CQP.presentation-exact`.
 
 ## Simplified-V2 (4132): fifth rule set (~24 constructors) with Pauli parts pushed right; identity iso onto V1; nothing imports it.

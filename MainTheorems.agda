@@ -62,7 +62,7 @@ import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Syntactics
   as PapV1Syn
 import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Presentation
   as PapV1Pres
-import Examples.Groups.Clifford.Qupit.Presentation as QupitExact
+import Examples.Groups.Qupit-Clifford.Presentation as QupitExact
 import Examples.Groups.Clifford+MinusOne.Qupit.Syntactics as Qupit±Syn
 import Examples.Groups.Clifford+MinusOne.Qupit.Semantics as Qupit±Sem
 import Examples.Groups.Clifford+MinusOne.Qupit.Presentation as Qupit±Pres
@@ -193,7 +193,7 @@ module Qupit-Clifford-Theorems
 ------------------------------------------------------------------------
 -- Concrete presentations: the qupit Clifford group, scalars included
 --
--- Homes: Examples.Groups.Clifford.Qupit.Presentation (the exact group),
+-- Homes: Examples.Groups.Qupit-Clifford.Presentation (the exact group),
 -- Examples.Groups.Clifford+MinusOne.Qupit.Presentation (-1 adjoined)
 -- and Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Presentation
 -- (Figure 1 itself), with its variant in Figure1-MS.Presentation.

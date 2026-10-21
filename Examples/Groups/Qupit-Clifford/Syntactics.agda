@@ -74,7 +74,7 @@
 --
 -- This module is the syntax only.  That these correction words are the
 -- right ones — soundness of conj and corr in the central extension of
--- Clifford.Qupit.Semantics — and Proposition 2.55 instantiated at it,
+-- Qupit-Clifford.Semantics — and Proposition 2.55 instantiated at it,
 -- belong to the presentation layer above.
 ------------------------------------------------------------------------
 
@@ -90,7 +90,7 @@ open import Notations
 open import ForStdlib.Data.Fin.Mod
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
-module Examples.Groups.Clifford.Qupit.Syntactics
+module Examples.Groups.Qupit-Clifford.Syntactics
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))

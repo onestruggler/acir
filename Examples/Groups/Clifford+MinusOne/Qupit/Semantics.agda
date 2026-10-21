@@ -3,12 +3,12 @@
 --
 -- The group the rule set with -1 presents.
 --
--- Clifford.Qupit presents the exact Clifford group: the central
+-- Qupit-Clifford presents the exact Clifford group: the central
 -- extension
 --
 --     1 ─→ ⟨ω⟩ ─→ Exact-group n ─→ Pauli n ⋊ Sp(2n, ℤ/pℤ) ─→ 1
 --
--- built from the Weyl cocycle (Clifford.Qupit.Presentation's
+-- built from the Weyl cocycle (Qupit-Clifford.Presentation's
 -- presentation-exact).  Its scalars are ⟨ω⟩ ≅ ℤ/pℤ, of odd order p,
 -- so it cannot contain -1, which has order 2.
 --
@@ -30,7 +30,7 @@
 -- It also re-derives how the exact interpretation reads the two
 -- embeddings — a scalar word on the left is that scalar with no gate,
 -- a circuit on the right is the circuit with the scalar the cocycle
--- accumulates along it.  Clifford.Qupit.Presentation proves exactly
+-- accumulates along it.  Qupit-Clifford.Presentation proves exactly
 -- these facts but keeps them private; both clients here (the direct
 -- product's scalar part, and lifting a mod-scalar derivation in
 -- ExactLift) need them.  They are stated generically in the generator
@@ -78,11 +78,11 @@ import Examples.Groups.Clifford+MinusOne.Qupit.Syntactics
 
 -- The exact layer: its total group, its presentation, and the proof
 -- that the cocycle realises the corrections.
-import Examples.Groups.Clifford.Qupit.Semantics p-3 p-prime as Sem
+import Examples.Groups.Qupit-Clifford.Semantics p-3 p-prime as Sem
 module PE = Sem.Presented-Extension g* g-gen
-import Examples.Groups.Clifford.Qupit.Presentation
+import Examples.Groups.Qupit-Clifford.Presentation
   p-3 p-prime g* g-gen as QP
-import Examples.Groups.Clifford.Qupit.SemSRel p-3 p-prime g* g-gen as SR
+import Examples.Groups.Qupit-Clifford.SemSRel p-3 p-prime g* g-gen as SR
 
 ------------------------------------------------------------------------
 -- The three groups
@@ -102,7 +102,7 @@ Clifford± n = ADP.group (Exact-group n) Z₂
 ------------------------------------------------------------------------
 -- Reading embedded words in the exact group
 --
--- Clifford.Qupit.Presentation's private emb-l, emb-r, gate, ev-pair and
+-- Qupit-Clifford.Presentation's private emb-l, emb-r, gate, ev-pair and
 -- val, restated.  Equality in the total group is pointwise — the
 -- scalar words on the left, Paper-V0 on the right — so the combinators
 -- are written out on pairs, as there: the implicits of a Pointwise

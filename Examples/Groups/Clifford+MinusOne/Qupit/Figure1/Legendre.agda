@@ -73,7 +73,7 @@ open import Word.Base using (Word ; WRel ; ε ; _•_ ; _^_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 
-import Examples.Groups.Clifford.Qupit.SemSHExp p-3 p-prime as SHE
+import Examples.Groups.Qupit-Clifford.SemSHExp p-3 p-prime as SHE
 import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Syntactics
   p-3 p-prime g* g-gen as F
 

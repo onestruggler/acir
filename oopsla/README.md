@@ -6,7 +6,7 @@ this repository since the POPL paper on the library (branch
 under `Examples/Groups/` (and `Examples/Independence/`) that came after
 it: the two-level groups, the circuit theories, the qudit Clifford
 chain of the `qupit` branch (Symplectic, ProjectivePauli,
-ProjectiveClifford/Qupit, Clifford/Qupit, Clifford+MinusOne/Qupit),
+ProjectiveClifford/Qupit, Qupit-Clifford, Clifford+MinusOne/Qupit),
 Blake's minimality theorem, and the gap in Hadamard-Pi with Clément's
 repair.
 

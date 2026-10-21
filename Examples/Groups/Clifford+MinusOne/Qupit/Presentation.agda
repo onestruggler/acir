@@ -9,7 +9,7 @@
 -- afresh.  The rule set is the direct product of presentations
 -- (n Exact,_===_) ⊕ ⟨ -1 ∣ (-1)² = 1 ⟩, and Presentation.Construct.
 -- Properties.DirectProduct turns presentations of the two factors into
--- one of the product: Clifford.Qupit's presentation-exact for the left,
+-- one of the product: Qupit-Clifford's presentation-exact for the left,
 -- Cyclic.Presentation at order 2 for the right.
 --
 -- The scalars are then separated.  A power of the paper's scalar -ω
@@ -69,7 +69,7 @@ open import Examples.Groups.Clifford+MinusOne.Qupit.Semantics
   p-3 p-prime g* g-gen
   using (Exact-group ; Z₂ ; Clifford± ; module Exact-Reading)
 
-import Examples.Groups.Clifford.Qupit.Presentation
+import Examples.Groups.Qupit-Clifford.Presentation
   p-3 p-prime g* g-gen as QP
 
 ------------------------------------------------------------------------

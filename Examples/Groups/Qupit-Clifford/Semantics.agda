@@ -44,7 +44,7 @@ open import Data.Nat.Primality using (Prime)
 
 open import Notations
 
-module Examples.Groups.Clifford.Qupit.Semantics
+module Examples.Groups.Qupit-Clifford.Semantics
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -582,7 +582,7 @@ module _ (n : ℕ) where
 -- of the quotient, Pauli n ⋊ Sp(2n, ℤ/pℤ), with the Weyl cocycle written
 -- out.  This section builds it over the SYNTACTIC one instead: both
 -- factors are groups of words modulo a congruence, and the cocycle comes
--- from the correction data of Clifford.Qupit.Syntactics.  The two
+-- from the correction data of Qupit-Clifford.Syntactics.  The two
 -- QUOTIENTS are already known to agree — that is Paper-V0.Presentation,
 -- H ≅ Pauli⋊Sp — but that the two total groups do is NOT proved here:
 -- it needs the generator data below, after which the two cocycles have
@@ -647,7 +647,7 @@ module Presented-Extension
   import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Lemmas
     p-3 p-prime g* g-gen as PapL
   -- The syntax of the scalar layer: ScalarGen, ω, Scalar-relation, corr.
-  import Examples.Groups.Clifford.Qupit.Syntactics
+  import Examples.Groups.Qupit-Clifford.Syntactics
     p-3 p-prime g* g-gen as QS
 
   module KB = PB QS.Scalar-relation

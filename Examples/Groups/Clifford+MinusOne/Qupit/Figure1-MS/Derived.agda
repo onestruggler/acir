@@ -93,7 +93,7 @@ import Examples.Groups.Clifford+MinusOne.Qupit.ExactLift
   p-3 p-prime g* g-gen as XL
 import Examples.Groups.Clifford+MinusOne.Qupit.Figure1-MS.SemFigure1
   p-3 p-prime g* g-gen as SF
-import Examples.Groups.Clifford.Qupit.SemRealises
+import Examples.Groups.Qupit-Clifford.SemRealises
   p-3 p-prime g* g-gen as RL
 
 open T using (Alph ; _≈±_ ; Gʷ ; ⇑ ; new)
