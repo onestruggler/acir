@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD763 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D763 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D763 (W : Ws) (Sᴰ : SD763) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,26 +16,119 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D432 W using (lem-HD-units ; lem-xconj-0-Gad⟨t≡0-W≡⟨⟩-d≡1-e≡1⟩ ; lem-xconj-0-Gad⟨t≡0-W≡⟨⟩-d≡KSdKK-e≡1⟩)
-open import Examples.Groups.Clifford+CS.Four.D.D596 W using (lem-pass-CS20-vs-X2-CS03-TOFF012-CSd03-TOFF012-X2)
-open import Examples.Groups.Clifford+CS.Four.D.D615 W using (lem-pass-CK21-vs-X2-Sd0-Kd0-S0-S0-CS03-TOFF012-CSd03-TOFF012-Sd0-Sd0-K0-S0-X2 ; lem-pass-CKd21-vs-X2-Sd0-Kd0-S0-S0-CS03-TOFF012-CSd03-TOFF012-Sd0-Sd0-K0-S0-X2)
-open import Examples.Groups.Clifford+CS.Four.D.D644 W using (lem-CA-CS10-Gad⟨t≡0-W≡⟨⟩-d≡SdKKKK-e≡-1⟩ ; lem-CA-CS10-Gad⟨t≡0-W≡⟨⟩-d≡SdKdKd-e≡-1⟩ ; lem-pass-CS21-vs-X0-X2-CS13-TOFF102-CSd13-TOFF102-X0-X2 ; lem-pass-CSd21-vs-X0-X2-CS13-TOFF102-CSd13-TOFF102-X0-X2)
-open import Examples.Groups.Clifford+CS.Four.D.D677 W using (lem-S2-at0213)
-open import Examples.Groups.Clifford+CS.Four.D.D698 W using (lem-pass-TOFF012-CS03-TOFF012-CSd03-vs-CCZ023)
-open import Examples.Groups.Clifford+CS.Four.D.D712 W using (lem-pass-CS30-vs-X3-CS03-TOFF012-CSd03-TOFF012-X3)
-open import Examples.Groups.Clifford+CS.Four.D.D726 W using (lem-PP2≡E)
-open import Examples.Groups.Clifford+CS.Four.D.D737 W using (lem-pass-CSd30-vs-X3-Kd0-CS03-TOFF012-CSd03-TOFF012-K0-X3)
-open import Examples.Groups.Clifford+CS.Four.D.D738 W using (lem-pass-CS30-vs-X2-X3-CS03-TOFF012-CSd03-TOFF012-X2-X3)
-open import Examples.Groups.Clifford+CS.Four.D.D740 W using (lem-CCZ⟨312⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ ; lem-pass-CSd20-vs-X2-Kd0-CS03-TOFF012-CSd03-TOFF012-K0-X2)
-open import Examples.Groups.Clifford+CS.Four.D.D741 W using (lem-CA-CK20-Gad⟨t≡0-W≡⟨⟩-d≡SSKdS-e≡-1⟩ ; lem-CA-CK30-Gad⟨t≡0-W≡⟨⟩-d≡SdKdSSKd-e≡-1⟩ ; lem-CA-CKd20-Gad⟨t≡0-W≡⟨⟩-d≡KdKd-e≡-1⟩ ; lem-CA-CKd30-Gad⟨t≡0-W≡⟨⟩-d≡SdKdSS-e≡-1⟩ ; lem-pass-CSd30-vs-X2-X3-Kd0-CS03-TOFF012-CSd03-TOFF012-K0-X2-X3)
-open import Examples.Groups.Clifford+CS.Four.D.D742 W using (lem-CA-CK20-Gad⟨t≡0-W≡⟨⟩-d≡SdKSS-e≡-1⟩)
-open import Examples.Groups.Clifford+CS.Four.D.D745 W using (lem-CA-CKd10-Gad⟨t≡0-W≡⟨2-3⟩-d≡1-e≡-1⟩)
-open import Examples.Groups.Clifford+CS.Four.D.D748 W using (lem-Bar⟨SSKSKK32-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩)
-open import Examples.Groups.Clifford+CS.Four.D.D749 W using (lem-Bar⟨SSKSKK31-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩ ; lem-Bar⟨SSKSKK31-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ ; lem-Bar⟨SSKSKK32-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩ ; lem-Bar⟨SSSKSS31-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩ ; lem-Bar⟨SSSKSS31-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ ; lem-Bar⟨SSSKSS32-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩ ; lem-Bar⟨SSSKSS32-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ ; lem-CA-CKd10-Gad⟨t≡0-W≡⟨2⟩-d≡1-e≡-1⟩ ; lem-CA-CKd10-Gad⟨t≡0-W≡⟨3⟩-d≡1-e≡-1⟩ ; lem-CA-CKd10-Gad⟨t≡0-W≡⟨⟩-d≡KdSd-e≡-1⟩ ; lem-CA-CKd20-Gad⟨t≡0-W≡⟨⟩-d≡SSKS-e≡-1⟩ ; lem-CA-CS10-Gad⟨t≡0-W≡⟨⟩-d≡SKdS-e≡-1⟩ ; lem-CA-CS10-Gad⟨t≡0-W≡⟨⟩-d≡SSKSS-e≡-1⟩)
-open import Examples.Groups.Clifford+CS.Four.D.D754 W using (lem-CA-CK10-Gad⟨t≡0-W≡⟨2-3⟩-d≡Kd-e≡-1⟩)
-open import Examples.Groups.Clifford+CS.Four.D.D756 W using (lem-ca-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩-3 ; lem-pass-CCZ123-vs-X2-Sd0-Kd0-S0-S0-CS03-TOFF012-CSd03-TOFF012-Sd0-Sd0-K0-S0-X2 ; lem-pass-CKd21-vs-X0-X2-CS13-TOFF102-CSd13-TOFF102-X0-X2)
-open import Examples.Groups.Clifford+CS.Four.D.D757 W using (lem-CA-CK10-Gad⟨t≡0-W≡⟨2⟩-d≡Kd-e≡-1⟩ ; lem-CA-CK10-Gad⟨t≡0-W≡⟨3⟩-d≡Kd-e≡-1⟩ ; lem-CA-CK10-Gad⟨t≡0-W≡⟨⟩-d≡KSdKK-e≡-1⟩ ; lem-CA-CK10-Gad⟨t≡0-W≡⟨⟩-d≡SdKdKdKd-e≡-1⟩ ; lem-CA-CKd10-Gad⟨t≡0-W≡⟨⟩-d≡SSKdSSKd-e≡-1⟩ ; lem-CA-CSd10-Gad⟨t≡0-W≡⟨⟩-d≡KdKdKd-e≡-1⟩ ; lem-CA-CSd10-Gad⟨t≡0-W≡⟨⟩-d≡SKSdKK-e≡-1⟩ ; lem-CA-CSd10-Gad⟨t≡0-W≡⟨⟩-d≡SKdSd-e≡-1⟩ ; lem-CA-CSd10-Gad⟨t≡0-W≡⟨⟩-d≡SdKdSSKd-e≡-1⟩ ; lem-HD-conj-Gad⟨t≡0-W≡⟨⟩-d≡KSSKd-e≡1⟩ ; lem-ca-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩-3)
-open import Examples.Groups.Clifford+CS.Four.D.D758 W using (lem-merge3-at0321)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-HD-units : St 2829
+  lem-HD-units = pickᴰ 0 Sᴰ
+  lem-xconj-0-Gad⟨t≡0-W≡⟨⟩-d≡1-e≡1⟩ : St 3015
+  lem-xconj-0-Gad⟨t≡0-W≡⟨⟩-d≡1-e≡1⟩ = pickᴰ 1 Sᴰ
+  lem-xconj-0-Gad⟨t≡0-W≡⟨⟩-d≡KSdKK-e≡1⟩ : St 3016
+  lem-xconj-0-Gad⟨t≡0-W≡⟨⟩-d≡KSdKK-e≡1⟩ = pickᴰ 2 Sᴰ
+  lem-pass-CS20-vs-X2-CS03-TOFF012-CSd03-TOFF012-X2 : St 2219
+  lem-pass-CS20-vs-X2-CS03-TOFF012-CSd03-TOFF012-X2 = pickᴰ 3 Sᴰ
+  lem-pass-CK21-vs-X2-Sd0-Kd0-S0-S0-CS03-TOFF012-CSd03-TOFF012-Sd0-Sd0-K0-S0-X2 : St 3017
+  lem-pass-CK21-vs-X2-Sd0-Kd0-S0-S0-CS03-TOFF012-CSd03-TOFF012-Sd0-Sd0-K0-S0-X2 = pickᴰ 4 Sᴰ
+  lem-pass-CKd21-vs-X2-Sd0-Kd0-S0-S0-CS03-TOFF012-CSd03-TOFF012-Sd0-Sd0-K0-S0-X2 : St 3018
+  lem-pass-CKd21-vs-X2-Sd0-Kd0-S0-S0-CS03-TOFF012-CSd03-TOFF012-Sd0-Sd0-K0-S0-X2 = pickᴰ 5 Sᴰ
+  lem-CA-CS10-Gad⟨t≡0-W≡⟨⟩-d≡SdKKKK-e≡-1⟩ : St 3019
+  lem-CA-CS10-Gad⟨t≡0-W≡⟨⟩-d≡SdKKKK-e≡-1⟩ = pickᴰ 6 Sᴰ
+  lem-CA-CS10-Gad⟨t≡0-W≡⟨⟩-d≡SdKdKd-e≡-1⟩ : St 3020
+  lem-CA-CS10-Gad⟨t≡0-W≡⟨⟩-d≡SdKdKd-e≡-1⟩ = pickᴰ 7 Sᴰ
+  lem-pass-CS21-vs-X0-X2-CS13-TOFF102-CSd13-TOFF102-X0-X2 : St 3021
+  lem-pass-CS21-vs-X0-X2-CS13-TOFF102-CSd13-TOFF102-X0-X2 = pickᴰ 8 Sᴰ
+  lem-pass-CSd21-vs-X0-X2-CS13-TOFF102-CSd13-TOFF102-X0-X2 : St 3022
+  lem-pass-CSd21-vs-X0-X2-CS13-TOFF102-CSd13-TOFF102-X0-X2 = pickᴰ 9 Sᴰ
+  lem-S2-at0213 : St 1917
+  lem-S2-at0213 = pickᴰ 10 Sᴰ
+  lem-pass-TOFF012-CS03-TOFF012-CSd03-vs-CCZ023 : St 3023
+  lem-pass-TOFF012-CS03-TOFF012-CSd03-vs-CCZ023 = pickᴰ 11 Sᴰ
+  lem-pass-CS30-vs-X3-CS03-TOFF012-CSd03-TOFF012-X3 : St 2231
+  lem-pass-CS30-vs-X3-CS03-TOFF012-CSd03-TOFF012-X3 = pickᴰ 12 Sᴰ
+  lem-PP2≡E : St 2474
+  lem-PP2≡E = pickᴰ 13 Sᴰ
+  lem-pass-CSd30-vs-X3-Kd0-CS03-TOFF012-CSd03-TOFF012-K0-X3 : St 2731
+  lem-pass-CSd30-vs-X3-Kd0-CS03-TOFF012-CSd03-TOFF012-K0-X3 = pickᴰ 14 Sᴰ
+  lem-pass-CS30-vs-X2-X3-CS03-TOFF012-CSd03-TOFF012-X2-X3 : St 2622
+  lem-pass-CS30-vs-X2-X3-CS03-TOFF012-CSd03-TOFF012-X2-X3 = pickᴰ 15 Sᴰ
+  lem-CCZ⟨312⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ : St 3024
+  lem-CCZ⟨312⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ = pickᴰ 16 Sᴰ
+  lem-pass-CSd20-vs-X2-Kd0-CS03-TOFF012-CSd03-TOFF012-K0-X2 : St 2625
+  lem-pass-CSd20-vs-X2-Kd0-CS03-TOFF012-CSd03-TOFF012-K0-X2 = pickᴰ 17 Sᴰ
+  lem-CA-CK20-Gad⟨t≡0-W≡⟨⟩-d≡SSKdS-e≡-1⟩ : St 3025
+  lem-CA-CK20-Gad⟨t≡0-W≡⟨⟩-d≡SSKdS-e≡-1⟩ = pickᴰ 18 Sᴰ
+  lem-CA-CK30-Gad⟨t≡0-W≡⟨⟩-d≡SdKdSSKd-e≡-1⟩ : St 3026
+  lem-CA-CK30-Gad⟨t≡0-W≡⟨⟩-d≡SdKdSSKd-e≡-1⟩ = pickᴰ 19 Sᴰ
+  lem-CA-CKd20-Gad⟨t≡0-W≡⟨⟩-d≡KdKd-e≡-1⟩ : St 3027
+  lem-CA-CKd20-Gad⟨t≡0-W≡⟨⟩-d≡KdKd-e≡-1⟩ = pickᴰ 20 Sᴰ
+  lem-CA-CKd30-Gad⟨t≡0-W≡⟨⟩-d≡SdKdSS-e≡-1⟩ : St 3028
+  lem-CA-CKd30-Gad⟨t≡0-W≡⟨⟩-d≡SdKdSS-e≡-1⟩ = pickᴰ 21 Sᴰ
+  lem-pass-CSd30-vs-X2-X3-Kd0-CS03-TOFF012-CSd03-TOFF012-K0-X2-X3 : St 3029
+  lem-pass-CSd30-vs-X2-X3-Kd0-CS03-TOFF012-CSd03-TOFF012-K0-X2-X3 = pickᴰ 22 Sᴰ
+  lem-CA-CK20-Gad⟨t≡0-W≡⟨⟩-d≡SdKSS-e≡-1⟩ : St 3030
+  lem-CA-CK20-Gad⟨t≡0-W≡⟨⟩-d≡SdKSS-e≡-1⟩ = pickᴰ 23 Sᴰ
+  lem-CA-CKd10-Gad⟨t≡0-W≡⟨2-3⟩-d≡1-e≡-1⟩ : St 2961
+  lem-CA-CKd10-Gad⟨t≡0-W≡⟨2-3⟩-d≡1-e≡-1⟩ = pickᴰ 24 Sᴰ
+  lem-Bar⟨SSKSKK32-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ : St 3031
+  lem-Bar⟨SSKSKK32-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ = pickᴰ 25 Sᴰ
+  lem-Bar⟨SSKSKK31-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩ : St 3032
+  lem-Bar⟨SSKSKK31-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩ = pickᴰ 26 Sᴰ
+  lem-Bar⟨SSKSKK31-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ : St 3033
+  lem-Bar⟨SSKSKK31-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ = pickᴰ 27 Sᴰ
+  lem-Bar⟨SSKSKK32-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩ : St 3034
+  lem-Bar⟨SSKSKK32-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩ = pickᴰ 28 Sᴰ
+  lem-Bar⟨SSSKSS31-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩ : St 3035
+  lem-Bar⟨SSSKSS31-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩ = pickᴰ 29 Sᴰ
+  lem-Bar⟨SSSKSS31-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ : St 3036
+  lem-Bar⟨SSSKSS31-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ = pickᴰ 30 Sᴰ
+  lem-Bar⟨SSSKSS32-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩ : St 3037
+  lem-Bar⟨SSSKSS32-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩ = pickᴰ 31 Sᴰ
+  lem-Bar⟨SSSKSS32-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ : St 3038
+  lem-Bar⟨SSSKSS32-⟶0⟩-passes-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩ = pickᴰ 32 Sᴰ
+  lem-CA-CKd10-Gad⟨t≡0-W≡⟨2⟩-d≡1-e≡-1⟩ : St 3039
+  lem-CA-CKd10-Gad⟨t≡0-W≡⟨2⟩-d≡1-e≡-1⟩ = pickᴰ 33 Sᴰ
+  lem-CA-CKd10-Gad⟨t≡0-W≡⟨3⟩-d≡1-e≡-1⟩ : St 3040
+  lem-CA-CKd10-Gad⟨t≡0-W≡⟨3⟩-d≡1-e≡-1⟩ = pickᴰ 34 Sᴰ
+  lem-CA-CKd10-Gad⟨t≡0-W≡⟨⟩-d≡KdSd-e≡-1⟩ : St 3041
+  lem-CA-CKd10-Gad⟨t≡0-W≡⟨⟩-d≡KdSd-e≡-1⟩ = pickᴰ 35 Sᴰ
+  lem-CA-CKd20-Gad⟨t≡0-W≡⟨⟩-d≡SSKS-e≡-1⟩ : St 3042
+  lem-CA-CKd20-Gad⟨t≡0-W≡⟨⟩-d≡SSKS-e≡-1⟩ = pickᴰ 36 Sᴰ
+  lem-CA-CS10-Gad⟨t≡0-W≡⟨⟩-d≡SKdS-e≡-1⟩ : St 3043
+  lem-CA-CS10-Gad⟨t≡0-W≡⟨⟩-d≡SKdS-e≡-1⟩ = pickᴰ 37 Sᴰ
+  lem-CA-CS10-Gad⟨t≡0-W≡⟨⟩-d≡SSKSS-e≡-1⟩ : St 3044
+  lem-CA-CS10-Gad⟨t≡0-W≡⟨⟩-d≡SSKSS-e≡-1⟩ = pickᴰ 38 Sᴰ
+  lem-CA-CK10-Gad⟨t≡0-W≡⟨2-3⟩-d≡Kd-e≡-1⟩ : St 2974
+  lem-CA-CK10-Gad⟨t≡0-W≡⟨2-3⟩-d≡Kd-e≡-1⟩ = pickᴰ 39 Sᴰ
+  lem-ca-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩-3 : St 3045
+  lem-ca-split-Gad⟨t≡1-W≡⟨0-3⟩-d≡SdKdSS-e≡-1⟩-3 = pickᴰ 40 Sᴰ
+  lem-pass-CCZ123-vs-X2-Sd0-Kd0-S0-S0-CS03-TOFF012-CSd03-TOFF012-Sd0-Sd0-K0-S0-X2 : St 3011
+  lem-pass-CCZ123-vs-X2-Sd0-Kd0-S0-S0-CS03-TOFF012-CSd03-TOFF012-Sd0-Sd0-K0-S0-X2 = pickᴰ 41 Sᴰ
+  lem-pass-CKd21-vs-X0-X2-CS13-TOFF102-CSd13-TOFF102-X0-X2 : St 3046
+  lem-pass-CKd21-vs-X0-X2-CS13-TOFF102-CSd13-TOFF102-X0-X2 = pickᴰ 42 Sᴰ
+  lem-CA-CK10-Gad⟨t≡0-W≡⟨2⟩-d≡Kd-e≡-1⟩ : St 3047
+  lem-CA-CK10-Gad⟨t≡0-W≡⟨2⟩-d≡Kd-e≡-1⟩ = pickᴰ 43 Sᴰ
+  lem-CA-CK10-Gad⟨t≡0-W≡⟨3⟩-d≡Kd-e≡-1⟩ : St 3048
+  lem-CA-CK10-Gad⟨t≡0-W≡⟨3⟩-d≡Kd-e≡-1⟩ = pickᴰ 44 Sᴰ
+  lem-CA-CK10-Gad⟨t≡0-W≡⟨⟩-d≡KSdKK-e≡-1⟩ : St 3049
+  lem-CA-CK10-Gad⟨t≡0-W≡⟨⟩-d≡KSdKK-e≡-1⟩ = pickᴰ 45 Sᴰ
+  lem-CA-CK10-Gad⟨t≡0-W≡⟨⟩-d≡SdKdKdKd-e≡-1⟩ : St 3050
+  lem-CA-CK10-Gad⟨t≡0-W≡⟨⟩-d≡SdKdKdKd-e≡-1⟩ = pickᴰ 46 Sᴰ
+  lem-CA-CKd10-Gad⟨t≡0-W≡⟨⟩-d≡SSKdSSKd-e≡-1⟩ : St 3051
+  lem-CA-CKd10-Gad⟨t≡0-W≡⟨⟩-d≡SSKdSSKd-e≡-1⟩ = pickᴰ 47 Sᴰ
+  lem-CA-CSd10-Gad⟨t≡0-W≡⟨⟩-d≡KdKdKd-e≡-1⟩ : St 3052
+  lem-CA-CSd10-Gad⟨t≡0-W≡⟨⟩-d≡KdKdKd-e≡-1⟩ = pickᴰ 48 Sᴰ
+  lem-CA-CSd10-Gad⟨t≡0-W≡⟨⟩-d≡SKSdKK-e≡-1⟩ : St 3053
+  lem-CA-CSd10-Gad⟨t≡0-W≡⟨⟩-d≡SKSdKK-e≡-1⟩ = pickᴰ 49 Sᴰ
+  lem-CA-CSd10-Gad⟨t≡0-W≡⟨⟩-d≡SKdSd-e≡-1⟩ : St 3054
+  lem-CA-CSd10-Gad⟨t≡0-W≡⟨⟩-d≡SKdSd-e≡-1⟩ = pickᴰ 50 Sᴰ
+  lem-CA-CSd10-Gad⟨t≡0-W≡⟨⟩-d≡SdKdSSKd-e≡-1⟩ : St 3055
+  lem-CA-CSd10-Gad⟨t≡0-W≡⟨⟩-d≡SdKdSSKd-e≡-1⟩ = pickᴰ 51 Sᴰ
+  lem-HD-conj-Gad⟨t≡0-W≡⟨⟩-d≡KSSKd-e≡1⟩ : St 3056
+  lem-HD-conj-Gad⟨t≡0-W≡⟨⟩-d≡KSSKd-e≡1⟩ = pickᴰ 52 Sᴰ
+  lem-ca-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩-3 : St 3057
+  lem-ca-split-Gad⟨t≡1-W≡⟨0-2-3⟩-d≡SdKdSS-e≡-1⟩-3 = pickᴰ 53 Sᴰ
+  lem-merge3-at0321 : St 3058
+  lem-merge3-at0321 = pickᴰ 54 Sᴰ
 
 private
   q1 : Eqn

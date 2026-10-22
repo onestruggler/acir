@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD545 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D545 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D545 (W : Ws) (Sᴰ : SD545) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -15,11 +17,27 @@ open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
 open import Examples.Groups.Clifford+CS.Canonical using (can-≈)
-open import Examples.Groups.Clifford+CS.Four.D.D008 W using (lem-pass-CCZ013-vs-CSd13 ; lem-pass-CCZ013-vs-CZ13 ; lem-pass-CSd02-vs-CS03)
-open import Examples.Groups.Clifford+CS.Four.D.D510 W using (lem-pass-CCZ012-vs-CSd03)
-open import Examples.Groups.Clifford+CS.Four.D.D513 W using (lem-pass-CS03-vs-S0)
-open import Examples.Groups.Clifford+CS.Four.D.D517 W using (lem-pass-X2-CK20-X2-vs-CS13-TOFF102-CSd13-TOFF102 ; lem-pass-X2-CS20-X2-vs-CS13-TOFF102-CSd13-TOFF102 ; lem-pass-X2-CSd20-X2-vs-CS13-TOFF102-CSd13-TOFF102)
-open import Examples.Groups.Clifford+CS.Four.D.D518 W using (lem-pass-S0-vs-CS23-TOFF201-CSd23-TOFF201)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-pass-CCZ013-vs-CSd13 : St 175
+  lem-pass-CCZ013-vs-CSd13 = pickᴰ 0 Sᴰ
+  lem-pass-CCZ013-vs-CZ13 : St 58
+  lem-pass-CCZ013-vs-CZ13 = pickᴰ 1 Sᴰ
+  lem-pass-CSd02-vs-CS03 : St 60
+  lem-pass-CSd02-vs-CS03 = pickᴰ 2 Sᴰ
+  lem-pass-CCZ012-vs-CSd03 : St 830
+  lem-pass-CCZ012-vs-CSd03 = pickᴰ 3 Sᴰ
+  lem-pass-CS03-vs-S0 : St 918
+  lem-pass-CS03-vs-S0 = pickᴰ 4 Sᴰ
+  lem-pass-X2-CK20-X2-vs-CS13-TOFF102-CSd13-TOFF102 : St 914
+  lem-pass-X2-CK20-X2-vs-CS13-TOFF102-CSd13-TOFF102 = pickᴰ 5 Sᴰ
+  lem-pass-X2-CS20-X2-vs-CS13-TOFF102-CSd13-TOFF102 : St 916
+  lem-pass-X2-CS20-X2-vs-CS13-TOFF102-CSd13-TOFF102 = pickᴰ 6 Sᴰ
+  lem-pass-X2-CSd20-X2-vs-CS13-TOFF102-CSd13-TOFF102 : St 917
+  lem-pass-X2-CSd20-X2-vs-CS13-TOFF102-CSd13-TOFF102 = pickᴰ 7 Sᴰ
+  lem-pass-S0-vs-CS23-TOFF201-CSd23-TOFF201 : St 919
+  lem-pass-S0-vs-CS23-TOFF201-CSd23-TOFF201 = pickᴰ 8 Sᴰ
 
 private
   q1 : Eqn

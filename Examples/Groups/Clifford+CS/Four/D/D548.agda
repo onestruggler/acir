@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD548 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D548 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D548 (W : Ws) (Sᴰ : SD548) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,8 +16,19 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D513 W using (lem-pass-CCZ123-vs-CCZ023)
-open import Examples.Groups.Clifford+CS.Four.D.D519 W using (lem-Bar⟨'S'-'S'-'K'-'S'-'K'-'K'30-⟶1⟩-passes-white-iX-via-V2-conjugates-2 ; lem-Bar⟨SSKSKK32-⟶0⟩-passes-comm-WBar⟨SSKSKK~32-⟶1⟩ ; lem-Bar⟨SSKSKK32-⟶0⟩-passes-comm-WBar⟨SSSKSS~32-⟶1⟩ ; lem-Bar⟨SSKSKK32-⟶0⟩-passes-groups-of-WBar⟨SSKSKK~31-⟶0⟩)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-pass-CCZ123-vs-CCZ023 : St 922
+  lem-pass-CCZ123-vs-CCZ023 = pickᴰ 0 Sᴰ
+  lem-Bar⟨'S'-'S'-'K'-'S'-'K'-'K'30-⟶1⟩-passes-white-iX-via-V2-conjugates-2 : St 923
+  lem-Bar⟨'S'-'S'-'K'-'S'-'K'-'K'30-⟶1⟩-passes-white-iX-via-V2-conjugates-2 = pickᴰ 1 Sᴰ
+  lem-Bar⟨SSKSKK32-⟶0⟩-passes-comm-WBar⟨SSKSKK~32-⟶1⟩ : St 924
+  lem-Bar⟨SSKSKK32-⟶0⟩-passes-comm-WBar⟨SSKSKK~32-⟶1⟩ = pickᴰ 2 Sᴰ
+  lem-Bar⟨SSKSKK32-⟶0⟩-passes-comm-WBar⟨SSSKSS~32-⟶1⟩ : St 925
+  lem-Bar⟨SSKSKK32-⟶0⟩-passes-comm-WBar⟨SSSKSS~32-⟶1⟩ = pickᴰ 3 Sᴰ
+  lem-Bar⟨SSKSKK32-⟶0⟩-passes-groups-of-WBar⟨SSKSKK~31-⟶0⟩ : St 926
+  lem-Bar⟨SSKSKK32-⟶0⟩-passes-groups-of-WBar⟨SSKSKK~31-⟶0⟩ = pickᴰ 4 Sᴰ
 
 private
   q1 : Eqn

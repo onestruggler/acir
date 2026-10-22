@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D224 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD224 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D224 (Sᴰ : SD224) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,59 +15,115 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D033 using (lem-ckt-TST-part51)
-open import Examples.Groups.Clifford+CS.Five.D.D057 using (lem-ckt-TST-part19)
-open import Examples.Groups.Clifford+CS.Five.D.D058 using (lem-ckt-TST-part30)
-open import Examples.Groups.Clifford+CS.Five.D.D059 using (lem-ckt-TST-part39)
-open import Examples.Groups.Clifford+CS.Five.D.D060 using (lem-ckt-TST-part49)
-open import Examples.Groups.Clifford+CS.Five.D.D076 using (lem-ckt-TST-part0)
-open import Examples.Groups.Clifford+CS.Five.D.D077 using (lem-ckt-TST-part1)
-open import Examples.Groups.Clifford+CS.Five.D.D078 using (lem-ckt-TST-part2)
-open import Examples.Groups.Clifford+CS.Five.D.D079 using (lem-ckt-TST-part3)
-open import Examples.Groups.Clifford+CS.Five.D.D080 using (lem-ckt-TST-part4)
-open import Examples.Groups.Clifford+CS.Five.D.D081 using (lem-ckt-TST-part5)
-open import Examples.Groups.Clifford+CS.Five.D.D082 using (lem-ckt-TST-part6)
-open import Examples.Groups.Clifford+CS.Five.D.D083 using (lem-ckt-TST-part7)
-open import Examples.Groups.Clifford+CS.Five.D.D084 using (lem-ckt-TST-part8)
-open import Examples.Groups.Clifford+CS.Five.D.D085 using (lem-ckt-TST-part9)
-open import Examples.Groups.Clifford+CS.Five.D.D086 using (lem-ckt-TST-part10)
-open import Examples.Groups.Clifford+CS.Five.D.D087 using (lem-ckt-TST-part11)
-open import Examples.Groups.Clifford+CS.Five.D.D088 using (lem-ckt-TST-part12)
-open import Examples.Groups.Clifford+CS.Five.D.D089 using (lem-ckt-TST-part13)
-open import Examples.Groups.Clifford+CS.Five.D.D090 using (lem-ckt-TST-part14)
-open import Examples.Groups.Clifford+CS.Five.D.D091 using (lem-ckt-TST-part15)
-open import Examples.Groups.Clifford+CS.Five.D.D092 using (lem-ckt-TST-part16)
-open import Examples.Groups.Clifford+CS.Five.D.D093 using (lem-ckt-TST-part17)
-open import Examples.Groups.Clifford+CS.Five.D.D094 using (lem-ckt-TST-part18)
-open import Examples.Groups.Clifford+CS.Five.D.D095 using (lem-ckt-TST-part20)
-open import Examples.Groups.Clifford+CS.Five.D.D096 using (lem-ckt-TST-part32)
-open import Examples.Groups.Clifford+CS.Five.D.D097 using (lem-ckt-TST-part36)
-open import Examples.Groups.Clifford+CS.Five.D.D098 using (lem-ckt-TST-part42)
-open import Examples.Groups.Clifford+CS.Five.D.D099 using (lem-ckt-TST-part46)
-open import Examples.Groups.Clifford+CS.Five.D.D100 using (lem-ckt-TST-part50)
-open import Examples.Groups.Clifford+CS.Five.D.D153 using (lem-ckt-TST-part21)
-open import Examples.Groups.Clifford+CS.Five.D.D154 using (lem-ckt-TST-part24)
-open import Examples.Groups.Clifford+CS.Five.D.D155 using (lem-ckt-TST-part25)
-open import Examples.Groups.Clifford+CS.Five.D.D156 using (lem-ckt-TST-part26)
-open import Examples.Groups.Clifford+CS.Five.D.D157 using (lem-ckt-TST-part29)
-open import Examples.Groups.Clifford+CS.Five.D.D158 using (lem-ckt-TST-part31)
-open import Examples.Groups.Clifford+CS.Five.D.D159 using (lem-ckt-TST-part33)
-open import Examples.Groups.Clifford+CS.Five.D.D160 using (lem-ckt-TST-part34)
-open import Examples.Groups.Clifford+CS.Five.D.D161 using (lem-ckt-TST-part35)
-open import Examples.Groups.Clifford+CS.Five.D.D162 using (lem-ckt-TST-part37)
-open import Examples.Groups.Clifford+CS.Five.D.D163 using (lem-ckt-TST-part38)
-open import Examples.Groups.Clifford+CS.Five.D.D164 using (lem-ckt-TST-part41)
-open import Examples.Groups.Clifford+CS.Five.D.D165 using (lem-ckt-TST-part43)
-open import Examples.Groups.Clifford+CS.Five.D.D166 using (lem-ckt-TST-part44)
-open import Examples.Groups.Clifford+CS.Five.D.D167 using (lem-ckt-TST-part45)
-open import Examples.Groups.Clifford+CS.Five.D.D168 using (lem-ckt-TST-part47)
-open import Examples.Groups.Clifford+CS.Five.D.D169 using (lem-ckt-TST-part48)
-open import Examples.Groups.Clifford+CS.Five.D.D207 using (lem-ckt-TST-part52)
-open import Examples.Groups.Clifford+CS.Five.D.D217 using (lem-ckt-TST-part22)
-open import Examples.Groups.Clifford+CS.Five.D.D218 using (lem-ckt-TST-part23)
-open import Examples.Groups.Clifford+CS.Five.D.D219 using (lem-ckt-TST-part27)
-open import Examples.Groups.Clifford+CS.Five.D.D220 using (lem-ckt-TST-part28)
-open import Examples.Groups.Clifford+CS.Five.D.D221 using (lem-ckt-TST-part40)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-ckt-TST-part51 : Ws → St 1973
+  lem-ckt-TST-part51 = pickᴰ 0 Sᴰ
+  lem-ckt-TST-part19 : Ws → St 1974
+  lem-ckt-TST-part19 = pickᴰ 1 Sᴰ
+  lem-ckt-TST-part30 : Ws → St 1975
+  lem-ckt-TST-part30 = pickᴰ 2 Sᴰ
+  lem-ckt-TST-part39 : Ws → St 1976
+  lem-ckt-TST-part39 = pickᴰ 3 Sᴰ
+  lem-ckt-TST-part49 : Ws → St 1977
+  lem-ckt-TST-part49 = pickᴰ 4 Sᴰ
+  lem-ckt-TST-part0 : Ws → St 1978
+  lem-ckt-TST-part0 = pickᴰ 5 Sᴰ
+  lem-ckt-TST-part1 : Ws → St 1979
+  lem-ckt-TST-part1 = pickᴰ 6 Sᴰ
+  lem-ckt-TST-part2 : Ws → St 1980
+  lem-ckt-TST-part2 = pickᴰ 7 Sᴰ
+  lem-ckt-TST-part3 : Ws → St 1981
+  lem-ckt-TST-part3 = pickᴰ 8 Sᴰ
+  lem-ckt-TST-part4 : Ws → St 1982
+  lem-ckt-TST-part4 = pickᴰ 9 Sᴰ
+  lem-ckt-TST-part5 : Ws → St 1983
+  lem-ckt-TST-part5 = pickᴰ 10 Sᴰ
+  lem-ckt-TST-part6 : Ws → St 1984
+  lem-ckt-TST-part6 = pickᴰ 11 Sᴰ
+  lem-ckt-TST-part7 : Ws → St 1985
+  lem-ckt-TST-part7 = pickᴰ 12 Sᴰ
+  lem-ckt-TST-part8 : Ws → St 1986
+  lem-ckt-TST-part8 = pickᴰ 13 Sᴰ
+  lem-ckt-TST-part9 : Ws → St 1987
+  lem-ckt-TST-part9 = pickᴰ 14 Sᴰ
+  lem-ckt-TST-part10 : Ws → St 1988
+  lem-ckt-TST-part10 = pickᴰ 15 Sᴰ
+  lem-ckt-TST-part11 : Ws → St 1989
+  lem-ckt-TST-part11 = pickᴰ 16 Sᴰ
+  lem-ckt-TST-part12 : Ws → St 1990
+  lem-ckt-TST-part12 = pickᴰ 17 Sᴰ
+  lem-ckt-TST-part13 : Ws → St 1991
+  lem-ckt-TST-part13 = pickᴰ 18 Sᴰ
+  lem-ckt-TST-part14 : Ws → St 1992
+  lem-ckt-TST-part14 = pickᴰ 19 Sᴰ
+  lem-ckt-TST-part15 : Ws → St 1993
+  lem-ckt-TST-part15 = pickᴰ 20 Sᴰ
+  lem-ckt-TST-part16 : Ws → St 1994
+  lem-ckt-TST-part16 = pickᴰ 21 Sᴰ
+  lem-ckt-TST-part17 : Ws → St 1995
+  lem-ckt-TST-part17 = pickᴰ 22 Sᴰ
+  lem-ckt-TST-part18 : Ws → St 1996
+  lem-ckt-TST-part18 = pickᴰ 23 Sᴰ
+  lem-ckt-TST-part20 : Ws → St 1997
+  lem-ckt-TST-part20 = pickᴰ 24 Sᴰ
+  lem-ckt-TST-part32 : Ws → St 1998
+  lem-ckt-TST-part32 = pickᴰ 25 Sᴰ
+  lem-ckt-TST-part36 : Ws → St 1999
+  lem-ckt-TST-part36 = pickᴰ 26 Sᴰ
+  lem-ckt-TST-part42 : Ws → St 2000
+  lem-ckt-TST-part42 = pickᴰ 27 Sᴰ
+  lem-ckt-TST-part46 : Ws → St 2001
+  lem-ckt-TST-part46 = pickᴰ 28 Sᴰ
+  lem-ckt-TST-part50 : Ws → St 2002
+  lem-ckt-TST-part50 = pickᴰ 29 Sᴰ
+  lem-ckt-TST-part21 : Ws → St 2003
+  lem-ckt-TST-part21 = pickᴰ 30 Sᴰ
+  lem-ckt-TST-part24 : Ws → St 2004
+  lem-ckt-TST-part24 = pickᴰ 31 Sᴰ
+  lem-ckt-TST-part25 : Ws → St 2005
+  lem-ckt-TST-part25 = pickᴰ 32 Sᴰ
+  lem-ckt-TST-part26 : Ws → St 2006
+  lem-ckt-TST-part26 = pickᴰ 33 Sᴰ
+  lem-ckt-TST-part29 : Ws → St 2007
+  lem-ckt-TST-part29 = pickᴰ 34 Sᴰ
+  lem-ckt-TST-part31 : Ws → St 2008
+  lem-ckt-TST-part31 = pickᴰ 35 Sᴰ
+  lem-ckt-TST-part33 : Ws → St 2009
+  lem-ckt-TST-part33 = pickᴰ 36 Sᴰ
+  lem-ckt-TST-part34 : Ws → St 2010
+  lem-ckt-TST-part34 = pickᴰ 37 Sᴰ
+  lem-ckt-TST-part35 : Ws → St 2011
+  lem-ckt-TST-part35 = pickᴰ 38 Sᴰ
+  lem-ckt-TST-part37 : Ws → St 2012
+  lem-ckt-TST-part37 = pickᴰ 39 Sᴰ
+  lem-ckt-TST-part38 : Ws → St 2013
+  lem-ckt-TST-part38 = pickᴰ 40 Sᴰ
+  lem-ckt-TST-part41 : Ws → St 2014
+  lem-ckt-TST-part41 = pickᴰ 41 Sᴰ
+  lem-ckt-TST-part43 : Ws → St 2015
+  lem-ckt-TST-part43 = pickᴰ 42 Sᴰ
+  lem-ckt-TST-part44 : Ws → St 2016
+  lem-ckt-TST-part44 = pickᴰ 43 Sᴰ
+  lem-ckt-TST-part45 : Ws → St 2017
+  lem-ckt-TST-part45 = pickᴰ 44 Sᴰ
+  lem-ckt-TST-part47 : Ws → St 2018
+  lem-ckt-TST-part47 = pickᴰ 45 Sᴰ
+  lem-ckt-TST-part48 : Ws → St 2019
+  lem-ckt-TST-part48 = pickᴰ 46 Sᴰ
+  lem-ckt-TST-part52 : Ws → St 2020
+  lem-ckt-TST-part52 = pickᴰ 47 Sᴰ
+  lem-ckt-TST-part22 : Ws → St 2021
+  lem-ckt-TST-part22 = pickᴰ 48 Sᴰ
+  lem-ckt-TST-part23 : Ws → St 2022
+  lem-ckt-TST-part23 = pickᴰ 49 Sᴰ
+  lem-ckt-TST-part27 : Ws → St 2023
+  lem-ckt-TST-part27 = pickᴰ 50 Sᴰ
+  lem-ckt-TST-part28 : Ws → St 2024
+  lem-ckt-TST-part28 = pickᴰ 51 Sᴰ
+  lem-ckt-TST-part40 : Ws → St 2025
+  lem-ckt-TST-part40 = pickᴰ 52 Sᴰ
 
 private
   q1 : Ws → Eqn

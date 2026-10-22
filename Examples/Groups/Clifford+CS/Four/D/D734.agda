@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD734 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D734 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D734 (W : Ws) (Sᴰ : SD734) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,13 +16,47 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D539 W using (lem-pass-X2-CS20-X2-vs-CS03-TOFF012-CSd03-TOFF012)
-open import Examples.Groups.Clifford+CS.Four.D.D541 W using (lem-pass-X2-CSd20-X2-vs-CS03-TOFF012-CSd03-TOFF012)
-open import Examples.Groups.Clifford+CS.Four.D.D542 W using (lem-pass-X1-CS10-X1-vs-CS03-TOFF012-CSd03-TOFF012)
-open import Examples.Groups.Clifford+CS.Four.D.D544 W using (lem-pass-X1-CSd10-X1-vs-CS03-TOFF012-CSd03-TOFF012)
-open import Examples.Groups.Clifford+CS.Four.D.D701 W using (lem-pass-X2-CK20-X2-vs-CS03-TOFF012-CSd03-TOFF012)
-open import Examples.Groups.Clifford+CS.Four.D.D714 W using (lem-pass-X1-CK10-X1-vs-CS03-TOFF012-CSd03-TOFF012 ; lem-pass-X2-CKd20-X2-vs-CS03-TOFF012-CSd03-TOFF012 ; lem-pass-X2-CKd21-X2-vs-TOFF102-CS13-TOFF102-CSd13)
-open import Examples.Groups.Clifford+CS.Four.D.D715 W using (lem-pass-TOFF012-CS03-TOFF012-CSd03-vs-X1-X2-X3-CS03-TOFF012-CSd03-TOFF012-X1-X2-X3 ; lem-pass-X1-CKd10-X1-vs-TOFF012-CS03-TOFF012-CSd03 ; lem-pass-X2-CK20-X2-vs-X3-S0-K0-CS03-TOFF012-CSd03-TOFF012-Kd0-Sd0-X3 ; lem-pass-X3-CK30-X3-vs-CS13-TOFF102-CSd13-TOFF102 ; lem-pass-X3-CK30-X3-vs-CS23-TOFF201-CSd23-TOFF201 ; lem-pass-X3-CKd30-X3-vs-CS13-TOFF102-CSd13-TOFF102 ; lem-pass-X3-CKd30-X3-vs-CS23-TOFF201-CSd23-TOFF201 ; lem-pass-X3-CS30-X3-vs-CS13-TOFF102-CSd13-TOFF102 ; lem-pass-X3-CS31-X3-vs-CS13-TOFF102-CSd13-TOFF102 ; lem-pass-X3-CSd30-X3-vs-CS13-TOFF102-CSd13-TOFF102 ; lem-pass-X3-CSd30-X3-vs-CS23-TOFF201-CSd23-TOFF201)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-pass-X2-CS20-X2-vs-CS03-TOFF012-CSd03-TOFF012 : St 1131
+  lem-pass-X2-CS20-X2-vs-CS03-TOFF012-CSd03-TOFF012 = pickᴰ 0 Sᴰ
+  lem-pass-X2-CSd20-X2-vs-CS03-TOFF012-CSd03-TOFF012 : St 1143
+  lem-pass-X2-CSd20-X2-vs-CS03-TOFF012-CSd03-TOFF012 = pickᴰ 1 Sᴰ
+  lem-pass-X1-CS10-X1-vs-CS03-TOFF012-CSd03-TOFF012 : St 1175
+  lem-pass-X1-CS10-X1-vs-CS03-TOFF012-CSd03-TOFF012 = pickᴰ 2 Sᴰ
+  lem-pass-X1-CSd10-X1-vs-CS03-TOFF012-CSd03-TOFF012 : St 1191
+  lem-pass-X1-CSd10-X1-vs-CS03-TOFF012-CSd03-TOFF012 = pickᴰ 3 Sᴰ
+  lem-pass-X2-CK20-X2-vs-CS03-TOFF012-CSd03-TOFF012 : St 2034
+  lem-pass-X2-CK20-X2-vs-CS03-TOFF012-CSd03-TOFF012 = pickᴰ 4 Sᴰ
+  lem-pass-X1-CK10-X1-vs-CS03-TOFF012-CSd03-TOFF012 : St 2240
+  lem-pass-X1-CK10-X1-vs-CS03-TOFF012-CSd03-TOFF012 = pickᴰ 5 Sᴰ
+  lem-pass-X2-CKd20-X2-vs-CS03-TOFF012-CSd03-TOFF012 : St 2244
+  lem-pass-X2-CKd20-X2-vs-CS03-TOFF012-CSd03-TOFF012 = pickᴰ 6 Sᴰ
+  lem-pass-X2-CKd21-X2-vs-TOFF102-CS13-TOFF102-CSd13 : St 2245
+  lem-pass-X2-CKd21-X2-vs-TOFF102-CS13-TOFF102-CSd13 = pickᴰ 7 Sᴰ
+  lem-pass-TOFF012-CS03-TOFF012-CSd03-vs-X1-X2-X3-CS03-TOFF012-CSd03-TOFF012-X1-X2-X3 : St 2277
+  lem-pass-TOFF012-CS03-TOFF012-CSd03-vs-X1-X2-X3-CS03-TOFF012-CSd03-TOFF012-X1-X2-X3 = pickᴰ 8 Sᴰ
+  lem-pass-X1-CKd10-X1-vs-TOFF012-CS03-TOFF012-CSd03 : St 2278
+  lem-pass-X1-CKd10-X1-vs-TOFF012-CS03-TOFF012-CSd03 = pickᴰ 9 Sᴰ
+  lem-pass-X2-CK20-X2-vs-X3-S0-K0-CS03-TOFF012-CSd03-TOFF012-Kd0-Sd0-X3 : St 2279
+  lem-pass-X2-CK20-X2-vs-X3-S0-K0-CS03-TOFF012-CSd03-TOFF012-Kd0-Sd0-X3 = pickᴰ 10 Sᴰ
+  lem-pass-X3-CK30-X3-vs-CS13-TOFF102-CSd13-TOFF102 : St 2280
+  lem-pass-X3-CK30-X3-vs-CS13-TOFF102-CSd13-TOFF102 = pickᴰ 11 Sᴰ
+  lem-pass-X3-CK30-X3-vs-CS23-TOFF201-CSd23-TOFF201 : St 2272
+  lem-pass-X3-CK30-X3-vs-CS23-TOFF201-CSd23-TOFF201 = pickᴰ 12 Sᴰ
+  lem-pass-X3-CKd30-X3-vs-CS13-TOFF102-CSd13-TOFF102 : St 2281
+  lem-pass-X3-CKd30-X3-vs-CS13-TOFF102-CSd13-TOFF102 = pickᴰ 13 Sᴰ
+  lem-pass-X3-CKd30-X3-vs-CS23-TOFF201-CSd23-TOFF201 : St 2275
+  lem-pass-X3-CKd30-X3-vs-CS23-TOFF201-CSd23-TOFF201 = pickᴰ 14 Sᴰ
+  lem-pass-X3-CS30-X3-vs-CS13-TOFF102-CSd13-TOFF102 : St 2282
+  lem-pass-X3-CS30-X3-vs-CS13-TOFF102-CSd13-TOFF102 = pickᴰ 15 Sᴰ
+  lem-pass-X3-CS31-X3-vs-CS13-TOFF102-CSd13-TOFF102 : St 2267
+  lem-pass-X3-CS31-X3-vs-CS13-TOFF102-CSd13-TOFF102 = pickᴰ 16 Sᴰ
+  lem-pass-X3-CSd30-X3-vs-CS13-TOFF102-CSd13-TOFF102 : St 2283
+  lem-pass-X3-CSd30-X3-vs-CS13-TOFF102-CSd13-TOFF102 = pickᴰ 17 Sᴰ
+  lem-pass-X3-CSd30-X3-vs-CS23-TOFF201-CSd23-TOFF201 : St 2276
+  lem-pass-X3-CSd30-X3-vs-CS23-TOFF201-CSd23-TOFF201 = pickᴰ 18 Sᴰ
 
 private
   q1 : Eqn

@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D221 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD221 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D221 (Sᴰ : SD221) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,13 +15,45 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D001 using (lem-F4-I-K1 ; lem-F4-I-K2 ; lem-F4-K3-I ; lem-F4-K3-K1 ; lem-F4-K3-K2 ; lem-F4-K3-K3)
-open import Examples.Groups.Clifford+CS.Five.D.D018 using (lem-F4-CS1-I ; lem-F4-CS1-K1 ; lem-F4-I-CS1 ; lem-F4-I-CS2)
-open import Examples.Groups.Clifford+CS.Five.D.D020 using (lem-F4-CS1-CS1)
-open import Examples.Groups.Clifford+CS.Five.D.D025 using (lem-F4-CS1-K3 ; lem-F4-K3-CS0 ; lem-F4-K3-CS1 ; lem-F4-K3-CS2)
-open import Examples.Groups.Clifford+CS.Five.D.D037 using (lem-F4-CS1-K2)
-open import Examples.Groups.Clifford+CS.Five.D.D038 using (lem-F4-CS1-CS2)
-open import Examples.Groups.Clifford+CS.Five.D.D204 using (lem-F4-CS1-CS0)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-F4-I-K1 : Ws → St 1206
+  lem-F4-I-K1 = pickᴰ 0 Sᴰ
+  lem-F4-I-K2 : Ws → St 1207
+  lem-F4-I-K2 = pickᴰ 1 Sᴰ
+  lem-F4-K3-I : Ws → St 1405
+  lem-F4-K3-I = pickᴰ 2 Sᴰ
+  lem-F4-K3-K1 : Ws → St 1426
+  lem-F4-K3-K1 = pickᴰ 3 Sᴰ
+  lem-F4-K3-K2 : Ws → St 1427
+  lem-F4-K3-K2 = pickᴰ 4 Sᴰ
+  lem-F4-K3-K3 : Ws → St 1383
+  lem-F4-K3-K3 = pickᴰ 5 Sᴰ
+  lem-F4-CS1-I : Ws → St 1576
+  lem-F4-CS1-I = pickᴰ 6 Sᴰ
+  lem-F4-CS1-K1 : Ws → St 1577
+  lem-F4-CS1-K1 = pickᴰ 7 Sᴰ
+  lem-F4-I-CS1 : Ws → St 1229
+  lem-F4-I-CS1 = pickᴰ 8 Sᴰ
+  lem-F4-I-CS2 : Ws → St 1230
+  lem-F4-I-CS2 = pickᴰ 9 Sᴰ
+  lem-F4-CS1-CS1 : Ws → St 1578
+  lem-F4-CS1-CS1 = pickᴰ 10 Sᴰ
+  lem-F4-CS1-K3 : Ws → St 1585
+  lem-F4-CS1-K3 = pickᴰ 11 Sᴰ
+  lem-F4-K3-CS0 : Ws → St 1431
+  lem-F4-K3-CS0 = pickᴰ 12 Sᴰ
+  lem-F4-K3-CS1 : Ws → St 1430
+  lem-F4-K3-CS1 = pickᴰ 13 Sᴰ
+  lem-F4-K3-CS2 : Ws → St 1403
+  lem-F4-K3-CS2 = pickᴰ 14 Sᴰ
+  lem-F4-CS1-K2 : Ws → St 1581
+  lem-F4-CS1-K2 = pickᴰ 15 Sᴰ
+  lem-F4-CS1-CS2 : Ws → St 1583
+  lem-F4-CS1-CS2 = pickᴰ 16 Sᴰ
+  lem-F4-CS1-CS0 : Ws → St 1877
+  lem-F4-CS1-CS0 = pickᴰ 17 Sᴰ
 
 private
   q1 : Ws → Eqn

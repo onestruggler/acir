@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D102 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD102 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D102 (Sᴰ : SD102) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,15 +15,28 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D014 using (lem-box-cP-at04203243)
-open import Examples.Groups.Clifford+CS.Five.D.D017 using (lem-box-cP-at04122041 ; lem-box-cP-at0412233041)
-open import Examples.Groups.Clifford+CS.Five.D.D023 using (lem-box-perm-1324-at04122041)
-open import Examples.Groups.Clifford+CS.Five.D.D033 using (lem-L-CX01-1-at0440)
-open import Examples.Groups.Clifford+CS.Five.D.D034 using (lem-S2-SBOX⟨0·2·43·1⟩-at0440)
-open import Examples.Groups.Clifford+CS.Five.D.D061 using (lem-L-CX01-2-at0440 ; lem-L-CX10-2-at0440)
 open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-CCZ014-CX23 ; lem-comm-CCZ024-CS13 ; lem-comm-CCZ024-CX13)
 open import Examples.Groups.Clifford+CS.Five.D.R003 using (lem-comm-TOFF401-CX23 ; lem-comm-TOFF413-CSd02)
 open import Examples.Groups.Clifford+CS.Five.D.R004 using (lem-comm-TOFF413-CS02 ; lem-comm-TOFF413-CX20)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-box-cP-at04203243 : Ws → St 779
+  lem-box-cP-at04203243 = pickᴰ 0 Sᴰ
+  lem-box-cP-at04122041 : Ws → St 1019
+  lem-box-cP-at04122041 = pickᴰ 1 Sᴰ
+  lem-box-cP-at0412233041 : Ws → St 1020
+  lem-box-cP-at0412233041 = pickᴰ 2 Sᴰ
+  lem-box-perm-1324-at04122041 : Ws → St 1234
+  lem-box-perm-1324-at04122041 = pickᴰ 3 Sᴰ
+  lem-L-CX01-1-at0440 : Ws → St 1599
+  lem-L-CX01-1-at0440 = pickᴰ 4 Sᴰ
+  lem-S2-SBOX⟨0·2·43·1⟩-at0440 : Ws → St 1450
+  lem-S2-SBOX⟨0·2·43·1⟩-at0440 = pickᴰ 5 Sᴰ
+  lem-L-CX01-2-at0440 : Ws → St 1600
+  lem-L-CX01-2-at0440 = pickᴰ 6 Sᴰ
+  lem-L-CX10-2-at0440 : Ws → St 1601
+  lem-L-CX10-2-at0440 = pickᴰ 7 Sᴰ
 
 private
   q1 : Ws → Eqn

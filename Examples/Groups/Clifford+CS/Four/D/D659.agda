@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD659 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D659 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D659 (W : Ws) (Sᴰ : SD659) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,10 +16,25 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D378 W using (lem-pass-CCZ123-vs-CS23 ; lem-pass-CCZ123-vs-CSd23 ; lem-pass-CZ01-vs-CSd23 ; lem-pass-CZ12-vs-CS23 ; lem-pass-CZ12-vs-CSd23)
-open import Examples.Groups.Clifford+CS.Four.D.D514 W using (lem-pass-CCZ013-vs-CCZ123)
-open import Examples.Groups.Clifford+CS.Four.D.D529 W using (lem-pass-CCZ013-vs-CSd23)
-open import Examples.Groups.Clifford+CS.Four.D.D642 W using (lem-pass-CCZ013-vs-TOFF201)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-pass-CCZ123-vs-CS23 : St 1735
+  lem-pass-CCZ123-vs-CS23 = pickᴰ 0 Sᴰ
+  lem-pass-CCZ123-vs-CSd23 : St 1736
+  lem-pass-CCZ123-vs-CSd23 = pickᴰ 1 Sᴰ
+  lem-pass-CZ01-vs-CSd23 : St 1737
+  lem-pass-CZ01-vs-CSd23 = pickᴰ 2 Sᴰ
+  lem-pass-CZ12-vs-CS23 : St 1738
+  lem-pass-CZ12-vs-CS23 = pickᴰ 3 Sᴰ
+  lem-pass-CZ12-vs-CSd23 : St 1739
+  lem-pass-CZ12-vs-CSd23 = pickᴰ 4 Sᴰ
+  lem-pass-CCZ013-vs-CCZ123 : St 906
+  lem-pass-CCZ013-vs-CCZ123 = pickᴰ 5 Sᴰ
+  lem-pass-CCZ013-vs-CSd23 : St 1740
+  lem-pass-CCZ013-vs-CSd23 = pickᴰ 6 Sᴰ
+  lem-pass-CCZ013-vs-TOFF201 : St 1741
+  lem-pass-CCZ013-vs-TOFF201 = pickᴰ 7 Sᴰ
 
 private
   q1 : Eqn

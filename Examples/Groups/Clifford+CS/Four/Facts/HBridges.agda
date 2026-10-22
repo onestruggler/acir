@@ -30,7 +30,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (Layout ; mc ; G-k
 open import Examples.Groups.Clifford+CS.Decoding 0 using (layout□ ; dKI₁)
 open import Examples.Groups.Clifford+CS.Four.Facts.Bridges using (mc-cong ; negs-F)
 import Examples.Groups.Clifford+CS.Four.WinInst as WI
-open import Examples.Groups.Clifford+CS.Four.D.D447 WI.ws using (lem-bridge-G-ki)
+open import Examples.Groups.Clifford+CS.Four.DAll WI.ws using (lem-bridge-G-ki)
 
 ------------------------------------------------------------------------
 -- The decoding's hybrid gadget in the spelling of the derivations

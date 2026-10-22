@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD783 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D783 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D783 (W : Ws) (Sᴰ : SD783) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,13 +16,23 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D711 W using (lem-ROT-gad)
-open import Examples.Groups.Clifford+CS.Four.D.D726 W using (lem-PP-flip)
-open import Examples.Groups.Clifford+CS.Four.D.D765 W using (lem-h-gad-at1023)
-open import Examples.Groups.Clifford+CS.Four.D.D771 W using (lem-a1-a0i)
-open import Examples.Groups.Clifford+CS.Four.D.D775 W using (lem-a0-Ri-≡-Ri-a0ᵖ-1-at1023)
-open import Examples.Groups.Clifford+CS.Four.D.D780 W using (lem-F7a-gad-inv-at1023)
-open import Examples.Groups.Clifford+CS.Four.D.D781 W using (lem-R0-P--⟶-P-Q)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-ROT-gad : St 2261
+  lem-ROT-gad = pickᴰ 0 Sᴰ
+  lem-PP-flip : St 2473
+  lem-PP-flip = pickᴰ 1 Sᴰ
+  lem-h-gad-at1023 : St 3478
+  lem-h-gad-at1023 = pickᴰ 2 Sᴰ
+  lem-a1-a0i : St 3401
+  lem-a1-a0i = pickᴰ 3 Sᴰ
+  lem-a0-Ri-≡-Ri-a0ᵖ-1-at1023 : St 3479
+  lem-a0-Ri-≡-Ri-a0ᵖ-1-at1023 = pickᴰ 4 Sᴰ
+  lem-F7a-gad-inv-at1023 : St 3480
+  lem-F7a-gad-inv-at1023 = pickᴰ 5 Sᴰ
+  lem-R0-P--⟶-P-Q : St 3481
+  lem-R0-P--⟶-P-Q = pickᴰ 6 Sᴰ
 
 private
   q1 : Eqn

@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD587 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D587 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D587 (W : Ws) (Sᴰ : SD587) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,7 +16,21 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D529 W using (lem-Bar⟨'K'-'i'-'K'-'i'-'S'-'S'-'S'-'K'-'i'-'S'-'S'-'S'-'S'-'S'-'S'20-⟶1⟩-passes-white-iX-via-V2-conjugates-3 ; lem-Bar⟨SSKSKK21-⟶0⟩-passes-factors-of-X0-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X0-X1-X2 ; lem-Bar⟨SSKSKK23-⟶0⟩-passes-factors-of-X0-X2-X3-TOFF302-X0-X2-X3 ; lem-Bar⟨SSKSKK23-⟶0⟩-passes-groups-of-WBar⟨KiKiSSSKiSSSSSS~21-⟶0⟩ ; lem-Bar⟨SSSKSS23-⟶0⟩-passes-factors-of-X0-X2-X3-TOFF302-X0-X2-X3 ; lem-Bar⟨SSSKSS23-⟶0⟩-passes-groups-of-WBar⟨KiKiSSSKiSSSSSS~21-⟶0⟩)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-Bar⟨'K'-'i'-'K'-'i'-'S'-'S'-'S'-'K'-'i'-'S'-'S'-'S'-'S'-'S'-'S'20-⟶1⟩-passes-white-iX-via-V2-conjugates-3 : St 1026
+  lem-Bar⟨'K'-'i'-'K'-'i'-'S'-'S'-'S'-'K'-'i'-'S'-'S'-'S'-'S'-'S'-'S'20-⟶1⟩-passes-white-iX-via-V2-conjugates-3 = pickᴰ 0 Sᴰ
+  lem-Bar⟨SSKSKK21-⟶0⟩-passes-factors-of-X0-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X0-X1-X2 : St 1027
+  lem-Bar⟨SSKSKK21-⟶0⟩-passes-factors-of-X0-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X0-X1-X2 = pickᴰ 1 Sᴰ
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-factors-of-X0-X2-X3-TOFF302-X0-X2-X3 : St 1028
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-factors-of-X0-X2-X3-TOFF302-X0-X2-X3 = pickᴰ 2 Sᴰ
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-groups-of-WBar⟨KiKiSSSKiSSSSSS~21-⟶0⟩ : St 1029
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-groups-of-WBar⟨KiKiSSSKiSSSSSS~21-⟶0⟩ = pickᴰ 3 Sᴰ
+  lem-Bar⟨SSSKSS23-⟶0⟩-passes-factors-of-X0-X2-X3-TOFF302-X0-X2-X3 : St 1030
+  lem-Bar⟨SSSKSS23-⟶0⟩-passes-factors-of-X0-X2-X3-TOFF302-X0-X2-X3 = pickᴰ 4 Sᴰ
+  lem-Bar⟨SSSKSS23-⟶0⟩-passes-groups-of-WBar⟨KiKiSSSKiSSSSSS~21-⟶0⟩ : St 1031
+  lem-Bar⟨SSSKSS23-⟶0⟩-passes-groups-of-WBar⟨KiKiSSSKiSSSSSS~21-⟶0⟩ = pickᴰ 5 Sᴰ
 
 private
   q1 : Eqn

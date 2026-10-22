@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD667 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D667 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D667 (W : Ws) (Sᴰ : SD667) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,11 +16,21 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D445 W using (lem-Xᵖ3)
-open import Examples.Groups.Clifford+CS.Four.D.D531 W using (lem-pass-CS01-CS01-CK10-CS01-CK10-CK10-CX13-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX13-CS03-CS03-CK30-CS03-CK30-CK30-vs-CS01-CS01-CK10-CS01-CK10-CK10-CX12-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CK20-CS02-CK20-CK20)
-open import Examples.Groups.Clifford+CS.Four.D.D616 W using (lem-X-P1--⟶-P1-X)
-open import Examples.Groups.Clifford+CS.Four.D.D645 W using (lem-X-P3--⟶-P3-X)
-open import Examples.Groups.Clifford+CS.Four.D.D646 W using (lem-pass-CCZ023-vs-TOFF013-CS02-TOFF013-CSd02 ; lem-pass-CZ23-CCZ123-vs-TOFF012-CS03-TOFF012-CSd03)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-Xᵖ3 : St 1769
+  lem-Xᵖ3 = pickᴰ 0 Sᴰ
+  lem-pass-CS01-CS01-CK10-CS01-CK10-CK10-CX13-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX13-CS03-CS03-CK30-CS03-CK30-CK30-vs-CS01-CS01-CK10-CS01-CK10-CK10-CX12-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CK20-CS02-CK20-CK20 : St 1053
+  lem-pass-CS01-CS01-CK10-CS01-CK10-CK10-CX13-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX13-CS03-CS03-CK30-CS03-CK30-CK30-vs-CS01-CS01-CK10-CS01-CK10-CK10-CX12-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CK20-CS02-CK20-CK20 = pickᴰ 1 Sᴰ
+  lem-X-P1--⟶-P1-X : St 1770
+  lem-X-P1--⟶-P1-X = pickᴰ 2 Sᴰ
+  lem-X-P3--⟶-P3-X : St 1771
+  lem-X-P3--⟶-P3-X = pickᴰ 3 Sᴰ
+  lem-pass-CCZ023-vs-TOFF013-CS02-TOFF013-CSd02 : St 1772
+  lem-pass-CCZ023-vs-TOFF013-CS02-TOFF013-CSd02 = pickᴰ 4 Sᴰ
+  lem-pass-CZ23-CCZ123-vs-TOFF012-CS03-TOFF012-CSd03 : St 1773
+  lem-pass-CZ23-CCZ123-vs-TOFF012-CS03-TOFF012-CSd03 = pickᴰ 5 Sᴰ
 
 private
   q1 : Eqn

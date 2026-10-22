@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D226 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD226 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D226 (Sᴰ : SD226) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,21 +15,69 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D004 using (lem-box-perm-2134-at03102132)
-open import Examples.Groups.Clifford+CS.Five.D.D005 using (lem-box-perm-2134-at021021 ; lem-box-perm-2134-at0220 ; lem-box-perm-2134-at032032)
-open import Examples.Groups.Clifford+CS.Five.D.D012 using (lem-CK-box-at033440)
-open import Examples.Groups.Clifford+CS.Five.D.D014 using (lem-box-cP-at032032)
-open import Examples.Groups.Clifford+CS.Five.D.D017 using (lem-box-cP-at02102331 ; lem-box-cP-at142142 ; lem-box-perm-1324-at021021 ; lem-box-perm-3124-at021021 ; lem-box-perm-3214-at032032 ; lem-box2-at032032)
-open import Examples.Groups.Clifford+CS.Five.D.D021 using (lem-box-perm-2314-at02132031 ; lem-box-perm-2431-at142142 ; lem-box-perm-3214-at03122031 ; lem-box2-at033440 ; lem-box2-at142142)
-open import Examples.Groups.Clifford+CS.Five.D.D030 using (lem-box-box-3-at021021)
-open import Examples.Groups.Clifford+CS.Five.D.D032 using (lem-box-perm-2341-at0314213042 ; lem-box-perm-3241-at142142 ; lem-box-perm-4123-at032032 ; lem-box-perm-4213-at132132)
-open import Examples.Groups.Clifford+CS.Five.D.D037 using (lem-box-box-1-at03102132)
-open import Examples.Groups.Clifford+CS.Five.D.D044 using (lem-box-box-3-at03102132)
-open import Examples.Groups.Clifford+CS.Five.D.D071 using (lem-Tu-box-at0220 ; lem-Tu-box-at0314213042)
-open import Examples.Groups.Clifford+CS.Five.D.D223 using (lem-L-CCZ013-0 ; lem-L-Toff-0)
-open import Examples.Groups.Clifford+CS.Five.D.D225 using (lem-nf-toff-cczat0)
 open import Examples.Groups.Clifford+CS.Five.D.R003 using (lem-comm-CCZ013-CS24 ; lem-comm-CCZ013-CSd24 ; lem-comm-CCZ014-CS23 ; lem-comm-CCZ014-CSd23 ; lem-comm-TOFF214-CX03)
 open import Examples.Groups.Clifford+CS.Five.D.R009 using (lem-comm-CCZ023-CX14 ; lem-comm-TOFF023-CX14)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-box-perm-2134-at03102132 : Ws → St 76
+  lem-box-perm-2134-at03102132 = pickᴰ 0 Sᴰ
+  lem-box-perm-2134-at021021 : Ws → St 2032
+  lem-box-perm-2134-at021021 = pickᴰ 1 Sᴰ
+  lem-box-perm-2134-at0220 : Ws → St 2033
+  lem-box-perm-2134-at0220 = pickᴰ 2 Sᴰ
+  lem-box-perm-2134-at032032 : Ws → St 2034
+  lem-box-perm-2134-at032032 = pickᴰ 3 Sᴰ
+  lem-CK-box-at033440 : Ws → St 1949
+  lem-CK-box-at033440 = pickᴰ 4 Sᴰ
+  lem-box-cP-at032032 : Ws → St 729
+  lem-box-cP-at032032 = pickᴰ 5 Sᴰ
+  lem-box-cP-at02102331 : Ws → St 2035
+  lem-box-cP-at02102331 = pickᴰ 6 Sᴰ
+  lem-box-cP-at142142 : Ws → St 1003
+  lem-box-cP-at142142 = pickᴰ 7 Sᴰ
+  lem-box-perm-1324-at021021 : Ws → St 2036
+  lem-box-perm-1324-at021021 = pickᴰ 8 Sᴰ
+  lem-box-perm-3124-at021021 : Ws → St 2037
+  lem-box-perm-3124-at021021 = pickᴰ 9 Sᴰ
+  lem-box-perm-3214-at032032 : Ws → St 2038
+  lem-box-perm-3214-at032032 = pickᴰ 10 Sᴰ
+  lem-box2-at032032 : Ws → St 2039
+  lem-box2-at032032 = pickᴰ 11 Sᴰ
+  lem-box-perm-2314-at02132031 : Ws → St 2040
+  lem-box-perm-2314-at02132031 = pickᴰ 12 Sᴰ
+  lem-box-perm-2431-at142142 : Ws → St 2041
+  lem-box-perm-2431-at142142 = pickᴰ 13 Sᴰ
+  lem-box-perm-3214-at03122031 : Ws → St 2042
+  lem-box-perm-3214-at03122031 = pickᴰ 14 Sᴰ
+  lem-box2-at033440 : Ws → St 2043
+  lem-box2-at033440 = pickᴰ 15 Sᴰ
+  lem-box2-at142142 : Ws → St 2044
+  lem-box2-at142142 = pickᴰ 16 Sᴰ
+  lem-box-box-3-at021021 : Ws → St 1956
+  lem-box-box-3-at021021 = pickᴰ 17 Sᴰ
+  lem-box-perm-2341-at0314213042 : Ws → St 2045
+  lem-box-perm-2341-at0314213042 = pickᴰ 18 Sᴰ
+  lem-box-perm-3241-at142142 : Ws → St 2046
+  lem-box-perm-3241-at142142 = pickᴰ 19 Sᴰ
+  lem-box-perm-4123-at032032 : Ws → St 2047
+  lem-box-perm-4123-at032032 = pickᴰ 20 Sᴰ
+  lem-box-perm-4213-at132132 : Ws → St 2048
+  lem-box-perm-4213-at132132 = pickᴰ 21 Sᴰ
+  lem-box-box-1-at03102132 : Ws → St 1495
+  lem-box-box-1-at03102132 = pickᴰ 22 Sᴰ
+  lem-box-box-3-at03102132 : Ws → St 1964
+  lem-box-box-3-at03102132 = pickᴰ 23 Sᴰ
+  lem-Tu-box-at0220 : Ws → St 2049
+  lem-Tu-box-at0220 = pickᴰ 24 Sᴰ
+  lem-Tu-box-at0314213042 : Ws → St 2050
+  lem-Tu-box-at0314213042 = pickᴰ 25 Sᴰ
+  lem-L-CCZ013-0 : Ws → St 2029
+  lem-L-CCZ013-0 = pickᴰ 26 Sᴰ
+  lem-L-Toff-0 : Ws → St 2051
+  lem-L-Toff-0 = pickᴰ 27 Sᴰ
+  lem-nf-toff-cczat0 : Ws → St 2052
+  lem-nf-toff-cczat0 = pickᴰ 28 Sᴰ
 
 private
   q1 : Ws → Eqn

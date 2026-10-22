@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD581 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D581 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D581 (W : Ws) (Sᴰ : SD581) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,8 +16,23 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D306 W using (lem-pass-TOFF312-vs-X1-TOFF312-X1)
-open import Examples.Groups.Clifford+CS.Four.D.D527 W using (lem-Bar⟨'K'-'i'-'K'-'i'-'S'-'S'-'S'-'K'-'i'-'S'-'S'-'S'-'S'-'S'-'S'12-⟶0⟩-passes-II/IV-units-3-2 ; lem-Bar⟨'K'-'i'-'K'-'i'-'S'-'S'-'S'-'K'-'i'-'S'-'S'-'S'-'S'-'S'-'S'13-⟶0⟩-passes-II/IV-units-3-2 ; lem-Bar⟨'S'-'S'-'S'-'S'-'S'-'S'-'K'-'i'-'S'-'S'-'S'-'S'-'S'-'S'-'S'-'S'-'S'13-⟶0⟩-passes-II/IV-units-3-2 ; lem-Bar⟨SSSKSS13-⟶0⟩-passes-II/IV-units-3-2 ; lem-Bar⟨SSSKSS13-⟶0⟩-passes-groups-of-WBar⟨KiKiSSSKiSSSSSS~12-⟶0⟩ ; lem-pass-CX13-vs-X1-TOFF312-X1)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-pass-TOFF312-vs-X1-TOFF312-X1 : St 1013
+  lem-pass-TOFF312-vs-X1-TOFF312-X1 = pickᴰ 0 Sᴰ
+  lem-Bar⟨'K'-'i'-'K'-'i'-'S'-'S'-'S'-'K'-'i'-'S'-'S'-'S'-'S'-'S'-'S'12-⟶0⟩-passes-II/IV-units-3-2 : St 1014
+  lem-Bar⟨'K'-'i'-'K'-'i'-'S'-'S'-'S'-'K'-'i'-'S'-'S'-'S'-'S'-'S'-'S'12-⟶0⟩-passes-II/IV-units-3-2 = pickᴰ 1 Sᴰ
+  lem-Bar⟨'K'-'i'-'K'-'i'-'S'-'S'-'S'-'K'-'i'-'S'-'S'-'S'-'S'-'S'-'S'13-⟶0⟩-passes-II/IV-units-3-2 : St 1015
+  lem-Bar⟨'K'-'i'-'K'-'i'-'S'-'S'-'S'-'K'-'i'-'S'-'S'-'S'-'S'-'S'-'S'13-⟶0⟩-passes-II/IV-units-3-2 = pickᴰ 2 Sᴰ
+  lem-Bar⟨'S'-'S'-'S'-'S'-'S'-'S'-'K'-'i'-'S'-'S'-'S'-'S'-'S'-'S'-'S'-'S'-'S'13-⟶0⟩-passes-II/IV-units-3-2 : St 1016
+  lem-Bar⟨'S'-'S'-'S'-'S'-'S'-'S'-'K'-'i'-'S'-'S'-'S'-'S'-'S'-'S'-'S'-'S'-'S'13-⟶0⟩-passes-II/IV-units-3-2 = pickᴰ 3 Sᴰ
+  lem-Bar⟨SSSKSS13-⟶0⟩-passes-II/IV-units-3-2 : St 1017
+  lem-Bar⟨SSSKSS13-⟶0⟩-passes-II/IV-units-3-2 = pickᴰ 4 Sᴰ
+  lem-Bar⟨SSSKSS13-⟶0⟩-passes-groups-of-WBar⟨KiKiSSSKiSSSSSS~12-⟶0⟩ : St 1018
+  lem-Bar⟨SSSKSS13-⟶0⟩-passes-groups-of-WBar⟨KiKiSSSKiSSSSSS~12-⟶0⟩ = pickᴰ 5 Sᴰ
+  lem-pass-CX13-vs-X1-TOFF312-X1 : St 1019
+  lem-pass-CX13-vs-X1-TOFF312-X1 = pickᴰ 6 Sᴰ
 
 private
   q1 : Eqn

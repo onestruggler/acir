@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD567 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D567 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D567 (W : Ws) (Sᴰ : SD567) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,7 +16,13 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D525 W using (lem-Bar⟨'S'-'S'-'S'-'K'-'S'-'S'32-⟶0⟩-passes-II/IV-units-2-1 ; lem-Bar⟨SSKSKK32-⟶0⟩-passes-factors-of-X0-X3-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-X0-X3)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-Bar⟨'S'-'S'-'S'-'K'-'S'-'S'32-⟶0⟩-passes-II/IV-units-2-1 : St 995
+  lem-Bar⟨'S'-'S'-'S'-'K'-'S'-'S'32-⟶0⟩-passes-II/IV-units-2-1 = pickᴰ 0 Sᴰ
+  lem-Bar⟨SSKSKK32-⟶0⟩-passes-factors-of-X0-X3-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-X0-X3 : St 996
+  lem-Bar⟨SSKSKK32-⟶0⟩-passes-factors-of-X0-X3-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-X0-X3 = pickᴰ 1 Sᴰ
 
 private
   q1 : Eqn

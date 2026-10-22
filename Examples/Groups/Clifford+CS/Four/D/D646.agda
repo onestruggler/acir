@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD646 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D646 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D646 (W : Ws) (Sᴰ : SD646) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,14 +16,29 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D380 W using (lem-pass-CS03-vs-CZ23 ; lem-pass-CSd03-vs-CZ23)
-open import Examples.Groups.Clifford+CS.Four.D.D445 W using (lem-pass-CCZ023-vs-CS02 ; lem-pass-CCZ023-vs-CSd02)
-open import Examples.Groups.Clifford+CS.Four.D.D510 W using (lem-pass-CCZ123-vs-CSd03)
-open import Examples.Groups.Clifford+CS.Four.D.D511 W using (lem-pass-CCZ123-vs-CS03)
-open import Examples.Groups.Clifford+CS.Four.D.D534 W using (lem-pass-CCZ123-vs-CS02)
-open import Examples.Groups.Clifford+CS.Four.D.D588 W using (lem-pass-TOFF012-vs-CZ23)
-open import Examples.Groups.Clifford+CS.Four.D.D596 W using (lem-pass-CCZ123-vs-TOFF012)
-open import Examples.Groups.Clifford+CS.Four.D.D597 W using (lem-pass-CCZ123-vs-TOFF013)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-pass-CS03-vs-CZ23 : St 1342
+  lem-pass-CS03-vs-CZ23 = pickᴰ 0 Sᴰ
+  lem-pass-CSd03-vs-CZ23 : St 1348
+  lem-pass-CSd03-vs-CZ23 = pickᴰ 1 Sᴰ
+  lem-pass-CCZ023-vs-CS02 : St 1591
+  lem-pass-CCZ023-vs-CS02 = pickᴰ 2 Sᴰ
+  lem-pass-CCZ023-vs-CSd02 : St 1592
+  lem-pass-CCZ023-vs-CSd02 = pickᴰ 3 Sᴰ
+  lem-pass-CCZ123-vs-CSd03 : St 861
+  lem-pass-CCZ123-vs-CSd03 = pickᴰ 4 Sᴰ
+  lem-pass-CCZ123-vs-CS03 : St 843
+  lem-pass-CCZ123-vs-CS03 = pickᴰ 5 Sᴰ
+  lem-pass-CCZ123-vs-CS02 : St 1593
+  lem-pass-CCZ123-vs-CS02 = pickᴰ 6 Sᴰ
+  lem-pass-TOFF012-vs-CZ23 : St 1364
+  lem-pass-TOFF012-vs-CZ23 = pickᴰ 7 Sᴰ
+  lem-pass-CCZ123-vs-TOFF012 : St 1444
+  lem-pass-CCZ123-vs-TOFF012 = pickᴰ 8 Sᴰ
+  lem-pass-CCZ123-vs-TOFF013 : St 1465
+  lem-pass-CCZ123-vs-TOFF013 = pickᴰ 9 Sᴰ
 
 private
   q1 : Eqn

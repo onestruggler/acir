@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D005 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD005 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D005 (Sᴰ : SD005) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,13 +15,33 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D001 using (lem-cQ-at021021 ; lem-sym-ab-at0210243143 ; lem-sym-ab-at032032 ; lem-sym-ab-at1221)
-open import Examples.Groups.Clifford+CS.Five.D.D002 using (lem-cQ-at0213243041 ; lem-cQ-at0214233041 ; lem-cQ-at0310213442 ; lem-sym-ab-at021021 ; lem-sym-ab-at0220)
-open import Examples.Groups.Clifford+CS.Five.D.D003 using (lem-cQ-at03203442)
 open import Examples.Groups.Clifford+CS.Five.D.R001 using (lem-comm-CX02-CCZ134 ; lem-comm-CX04-CCZ123 ; lem-comm-CX12-CCZ034 ; lem-comm-CX13-CCZ024 ; lem-comm-CX14-CCZ023 ; lem-comm-CX21-CCZ034 ; lem-comm-CX23-CCZ014 ; lem-comm-CX24-CCZ013 ; lem-comm-CX31-CCZ024 ; lem-comm-CX32-CCZ014 ; lem-comm-CX42-CCZ013 ; lem-comm-SWAP13-BOX⟨0·42⟩ ; lem-comm-SWAP14-BOX⟨0·23⟩)
 open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-CX03-CCZ124 ; lem-comm-CX30-CCZ124 ; lem-comm-CX40-CCZ123 ; lem-comm-CX41-CCZ023 ; lem-comm-SWAP12-BOX⟨3·04⟩ ; lem-comm-SWAP12-BOX⟨3·40⟩ ; lem-comm-SWAP14-BOX⟨2·03⟩ ; lem-comm-SWAP23-BOX⟨0·41⟩ ; lem-comm-SWAP24-BOX⟨0·13⟩)
 open import Examples.Groups.Clifford+CS.Five.D.R003 using (lem-comm-CX20-CCZ134 ; lem-comm-SWAP02-BOX⟨3·41⟩ ; lem-comm-SWAP03-BOX⟨4·21⟩ ; lem-comm-SWAP04-BOX⟨3·21⟩ ; lem-comm-SWAP12-BOX⟨4·03⟩ ; lem-comm-SWAP13-BOX⟨2·04⟩ ; lem-comm-SWAP14-BOX⟨3·02⟩)
 open import Examples.Groups.Clifford+CS.Five.D.R004 using (lem-comm-SWAP12-BOX⟨4·30⟩ ; lem-comm-SWAP13-BOX⟨4·20⟩)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-cQ-at021021 : Ws → St 0
+  lem-cQ-at021021 = pickᴰ 0 Sᴰ
+  lem-sym-ab-at0210243143 : Ws → St 14
+  lem-sym-ab-at0210243143 = pickᴰ 1 Sᴰ
+  lem-sym-ab-at032032 : Ws → St 15
+  lem-sym-ab-at032032 = pickᴰ 2 Sᴰ
+  lem-sym-ab-at1221 : Ws → St 16
+  lem-sym-ab-at1221 = pickᴰ 3 Sᴰ
+  lem-cQ-at0213243041 : Ws → St 17
+  lem-cQ-at0213243041 = pickᴰ 4 Sᴰ
+  lem-cQ-at0214233041 : Ws → St 18
+  lem-cQ-at0214233041 = pickᴰ 5 Sᴰ
+  lem-cQ-at0310213442 : Ws → St 19
+  lem-cQ-at0310213442 = pickᴰ 6 Sᴰ
+  lem-sym-ab-at021021 : Ws → St 20
+  lem-sym-ab-at021021 = pickᴰ 7 Sᴰ
+  lem-sym-ab-at0220 : Ws → St 21
+  lem-sym-ab-at0220 = pickᴰ 8 Sᴰ
+  lem-cQ-at03203442 : Ws → St 22
+  lem-cQ-at03203442 = pickᴰ 9 Sᴰ
 
 private
   q1 : Ws → Eqn

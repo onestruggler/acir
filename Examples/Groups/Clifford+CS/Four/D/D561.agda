@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD561 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D561 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D561 (W : Ws) (Sᴰ : SD561) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,8 +16,27 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D522 W using (lem-Bar⟨SSKSKK23-⟶0⟩-passes-comm-WBar⟨SSSSSSKiSSSSSSSSS~23-⟶1⟩ ; lem-Bar⟨SSKSKK23-⟶0⟩-passes-factors-of-X2-X3-TOFF302-X2-X3 ; lem-Bar⟨SSKSKK23-⟶0⟩-passes-white-iX-via-V2-conjugates-1 ; lem-Bar⟨SSSKSS21-⟶0⟩-passes-II/IV-units-3-1 ; lem-Bar⟨SSSKSS21-⟶0⟩-passes-comm-WBar⟨KiKiSSSKiSSSSSS~21-⟶3⟩ ; lem-Bar⟨SSSKSS21-⟶0⟩-passes-comm-WBar⟨SSSSSSKiSSSSSSSSS~21-⟶3⟩)
-open import Examples.Groups.Clifford+CS.Four.D.D523 W using (lem-AXIOM-LF-at2301 ; lem-Bar⟨'S'-'S'-'K'-'S'-'K'-'K'30-⟶2⟩-passes-white-iX-via-V2-conjugates-1 ; lem-Bar⟨SSKSKK23-⟶0⟩-passes-comm-WBar⟨KiKiSSSKiSSSSSS~23-⟶1⟩)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-comm-WBar⟨SSSSSSKiSSSSSSSSS~23-⟶1⟩ : St 963
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-comm-WBar⟨SSSSSSKiSSSSSSSSS~23-⟶1⟩ = pickᴰ 0 Sᴰ
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-factors-of-X2-X3-TOFF302-X2-X3 : St 964
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-factors-of-X2-X3-TOFF302-X2-X3 = pickᴰ 1 Sᴰ
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-white-iX-via-V2-conjugates-1 : St 965
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-white-iX-via-V2-conjugates-1 = pickᴰ 2 Sᴰ
+  lem-Bar⟨SSSKSS21-⟶0⟩-passes-II/IV-units-3-1 : St 966
+  lem-Bar⟨SSSKSS21-⟶0⟩-passes-II/IV-units-3-1 = pickᴰ 3 Sᴰ
+  lem-Bar⟨SSSKSS21-⟶0⟩-passes-comm-WBar⟨KiKiSSSKiSSSSSS~21-⟶3⟩ : St 967
+  lem-Bar⟨SSSKSS21-⟶0⟩-passes-comm-WBar⟨KiKiSSSKiSSSSSS~21-⟶3⟩ = pickᴰ 4 Sᴰ
+  lem-Bar⟨SSSKSS21-⟶0⟩-passes-comm-WBar⟨SSSSSSKiSSSSSSSSS~21-⟶3⟩ : St 968
+  lem-Bar⟨SSSKSS21-⟶0⟩-passes-comm-WBar⟨SSSSSSKiSSSSSSSSS~21-⟶3⟩ = pickᴰ 5 Sᴰ
+  lem-AXIOM-LF-at2301 : St 969
+  lem-AXIOM-LF-at2301 = pickᴰ 6 Sᴰ
+  lem-Bar⟨'S'-'S'-'K'-'S'-'K'-'K'30-⟶2⟩-passes-white-iX-via-V2-conjugates-1 : St 970
+  lem-Bar⟨'S'-'S'-'K'-'S'-'K'-'K'30-⟶2⟩-passes-white-iX-via-V2-conjugates-1 = pickᴰ 7 Sᴰ
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-comm-WBar⟨KiKiSSSKiSSSSSS~23-⟶1⟩ : St 971
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-comm-WBar⟨KiKiSSSKiSSSSSS~23-⟶1⟩ = pickᴰ 8 Sᴰ
 
 private
   q1 : Eqn

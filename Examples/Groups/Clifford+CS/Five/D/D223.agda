@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D223 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD223 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D223 (Sᴰ : SD223) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,37 +17,213 @@ open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ;
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
 
 open import Examples.Groups.Clifford+CS.Five.TR2 using (lem-TR2-1b52048e ; lem-TR2-ff6c1f51)
-open import Examples.Groups.Clifford+CS.Five.D.D002 using (lem-F1-order-Iat0 ; lem-F1-order-Kat2 ; lem-F1-order-Kat3 ; lem-F1-order-SKat2 ; lem-F1-order-SKat3 ; lem-F1-order-Sat2 ; lem-F1-order-Sat3 ; lem-F2-I-K0 ; lem-F2-I-K1 ; lem-F2-I-K2 ; lem-F2-I-K3 ; lem-F2-I-S0 ; lem-F2-I-S1 ; lem-F2-I-S2 ; lem-F2-I-S3 ; lem-F2-K0-K1 ; lem-F2-K0-K2 ; lem-F2-K0-K3 ; lem-F2-K1-K2 ; lem-F2-K1-K3 ; lem-F2-K2-K3 ; lem-F2-S0-K1 ; lem-F2-S0-K2 ; lem-F2-S0-K3 ; lem-F2-S0-S1 ; lem-F2-S0-S2 ; lem-F2-S0-S3 ; lem-F2-S1-K0 ; lem-F2-S1-K2 ; lem-F2-S1-K3 ; lem-F2-S1-S2 ; lem-F2-S1-S3 ; lem-F2-S2-K0 ; lem-F2-S2-K1 ; lem-F2-S2-K3 ; lem-F2-S2-S3 ; lem-F2-S3-K0 ; lem-F2-S3-K1 ; lem-F2-S3-K2)
-open import Examples.Groups.Clifford+CS.Five.D.D007 using (lem-S-sym-xt-at14213243)
-open import Examples.Groups.Clifford+CS.Five.D.D012 using (lem-CK-box-at033440)
-open import Examples.Groups.Clifford+CS.Five.D.D014 using (lem-F2-S0-CS1 ; lem-F2-S0-CS2 ; lem-F2-S2-CS0)
-open import Examples.Groups.Clifford+CS.Five.D.D016 using (lem-box-cP-at031031 ; lem-box-perm-1324-at03102132)
-open import Examples.Groups.Clifford+CS.Five.D.D017 using (lem-box-cP-at02142041 ; lem-box-cP-at0314203241 ; lem-box2-at03102132)
-open import Examples.Groups.Clifford+CS.Five.D.D019 using (lem-box-perm-2341-at03102132)
-open import Examples.Groups.Clifford+CS.Five.D.D020 using (lem-F2-I-CS0 ; lem-F2-I-CS1 ; lem-F2-I-CS2 ; lem-F2-S1-CS2 ; lem-F2-S3-CS0 ; lem-F2-S3-CS1)
-open import Examples.Groups.Clifford+CS.Five.D.D021 using (lem-box-perm-2431-at02142041 ; lem-box-perm-4132-at021021 ; lem-box-perm-4132-at03102132 ; lem-box2-at02142041 ; lem-box2-at0314203241)
-open import Examples.Groups.Clifford+CS.Five.D.D025 using (lem-F2-K1-CS2)
-open import Examples.Groups.Clifford+CS.Five.D.D026 using (lem-F1-comm-CS-S0at2 ; lem-F2-K3-CS0 ; lem-F2-K3-CS1)
-open import Examples.Groups.Clifford+CS.Five.D.D027 using (lem-F1-comm-CS-S1at2)
-open import Examples.Groups.Clifford+CS.Five.D.D030 using (lem-box-box-3-at021021 ; lem-box-perm-2431-at0314203241 ; lem-box-perm-3241-at02142041 ; lem-box-perm-3241-at0314203241 ; lem-box-perm-4213-at02132031 ; lem-box-perm-4213-at03122031)
-open import Examples.Groups.Clifford+CS.Five.D.D032 using (lem-ckt-Dinv)
-open import Examples.Groups.Clifford+CS.Five.D.D038 using (lem-F1-order-CSat2 ; lem-F2-K0-CS1 ; lem-F2-K0-CS2 ; lem-F2-K2-CS0)
-open import Examples.Groups.Clifford+CS.Five.D.D043 using (lem-L-CX01-2 ; lem-L-CX10-2)
-open import Examples.Groups.Clifford+CS.Five.D.D044 using (lem-Tu-box-at0314203241 ; lem-box-box-3-at03102132)
-open import Examples.Groups.Clifford+CS.Five.D.D067 using (lem-F1-X-CS0at2 ; lem-F2-CS0-CS2)
-open import Examples.Groups.Clifford+CS.Five.D.D068 using (lem-F1-X-CS1at2)
-open import Examples.Groups.Clifford+CS.Five.D.D070 using (lem-F1-CS-K0at2 ; lem-F1-CS-K1at2 ; lem-Tu-box-at02142041)
-open import Examples.Groups.Clifford+CS.Five.D.D196 using (lem-deb-Q-lo-at02132031)
-open import Examples.Groups.Clifford+CS.Five.D.D197 using (lem-deb-Q-hi-at132132)
-open import Examples.Groups.Clifford+CS.Five.D.D206 using (lem-deb-P-hi ; lem-deb-P-hi-at132132 ; lem-deb-P-lo-at02132031 ; lem-deb-P-lo-at132132)
-open import Examples.Groups.Clifford+CS.Five.D.D207 using (lem-deb-AD-at02132031 ; lem-deb-rel-272at0-R)
-open import Examples.Groups.Clifford+CS.Five.D.D214 using (lem-F1-comm-CSu-CSat0)
-open import Examples.Groups.Clifford+CS.Five.D.D215 using (lem-L-CCZ-0 ; lem-deb-rel-269at0-R ; lem-deb-rel-269at1-R)
-open import Examples.Groups.Clifford+CS.Five.D.D216 using (lem-ckt-A-R)
 open import Examples.Groups.Clifford+CS.Five.D.R001 using (lem-comm-push-CK40-sw0-L ; lem-comm-push-CS04-sw0-L ; lem-comm-push-CS04-sw1-L ; lem-comm-push-CS04-sw1-R)
 open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-TOFF213-CX04 ; lem-comm-TOFF312-CX04 ; lem-comm-push-CK40-sw1-L)
 open import Examples.Groups.Clifford+CS.Five.D.R003 using (lem-comm-TOFF314-CX02 ; lem-comm-push-CK40-sw1-R ; lem-comm-push-CK41-sw0-R ; lem-comm-push-CS14-sw0-R)
 open import Examples.Groups.Clifford+CS.Five.D.R010 using (lem-comm-push-SBOX⟨0·1·42·3⟩-sw0-R ; lem-comm-push-SBOX⟨0·1·42·3⟩-sw2-L ; lem-comm-push-SBOX⟨0·1·43·2⟩-sw1-L ; lem-comm-push-SBOX⟨0·1·43·2⟩-sw2-R ; lem-comm-push-SBOX⟨0·2·43·1⟩-sw1-R ; lem-comm-push-SBOX⟨1·0·42·3⟩-sw0-L ; lem-comm-push-SBOX⟨1·0·42·3⟩-sw1-R ; lem-comm-push-SBOX⟨2·0·41·3⟩-sw1-L)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-F1-order-Iat0 : Ws → St 1630
+  lem-F1-order-Iat0 = pickᴰ 0 Sᴰ
+  lem-F1-order-Kat2 : Ws → St 1631
+  lem-F1-order-Kat2 = pickᴰ 1 Sᴰ
+  lem-F1-order-Kat3 : Ws → St 1632
+  lem-F1-order-Kat3 = pickᴰ 2 Sᴰ
+  lem-F1-order-SKat2 : Ws → St 1633
+  lem-F1-order-SKat2 = pickᴰ 3 Sᴰ
+  lem-F1-order-SKat3 : Ws → St 1634
+  lem-F1-order-SKat3 = pickᴰ 4 Sᴰ
+  lem-F1-order-Sat2 : Ws → St 1635
+  lem-F1-order-Sat2 = pickᴰ 5 Sᴰ
+  lem-F1-order-Sat3 : Ws → St 1636
+  lem-F1-order-Sat3 = pickᴰ 6 Sᴰ
+  lem-F2-I-K0 : Ws → St 1637
+  lem-F2-I-K0 = pickᴰ 7 Sᴰ
+  lem-F2-I-K1 : Ws → St 1638
+  lem-F2-I-K1 = pickᴰ 8 Sᴰ
+  lem-F2-I-K2 : Ws → St 1639
+  lem-F2-I-K2 = pickᴰ 9 Sᴰ
+  lem-F2-I-K3 : Ws → St 1640
+  lem-F2-I-K3 = pickᴰ 10 Sᴰ
+  lem-F2-I-S0 : Ws → St 1641
+  lem-F2-I-S0 = pickᴰ 11 Sᴰ
+  lem-F2-I-S1 : Ws → St 1642
+  lem-F2-I-S1 = pickᴰ 12 Sᴰ
+  lem-F2-I-S2 : Ws → St 1643
+  lem-F2-I-S2 = pickᴰ 13 Sᴰ
+  lem-F2-I-S3 : Ws → St 1644
+  lem-F2-I-S3 = pickᴰ 14 Sᴰ
+  lem-F2-K0-K1 : Ws → St 1645
+  lem-F2-K0-K1 = pickᴰ 15 Sᴰ
+  lem-F2-K0-K2 : Ws → St 1646
+  lem-F2-K0-K2 = pickᴰ 16 Sᴰ
+  lem-F2-K0-K3 : Ws → St 1647
+  lem-F2-K0-K3 = pickᴰ 17 Sᴰ
+  lem-F2-K1-K2 : Ws → St 1648
+  lem-F2-K1-K2 = pickᴰ 18 Sᴰ
+  lem-F2-K1-K3 : Ws → St 1649
+  lem-F2-K1-K3 = pickᴰ 19 Sᴰ
+  lem-F2-K2-K3 : Ws → St 1650
+  lem-F2-K2-K3 = pickᴰ 20 Sᴰ
+  lem-F2-S0-K1 : Ws → St 1651
+  lem-F2-S0-K1 = pickᴰ 21 Sᴰ
+  lem-F2-S0-K2 : Ws → St 1652
+  lem-F2-S0-K2 = pickᴰ 22 Sᴰ
+  lem-F2-S0-K3 : Ws → St 1653
+  lem-F2-S0-K3 = pickᴰ 23 Sᴰ
+  lem-F2-S0-S1 : Ws → St 1654
+  lem-F2-S0-S1 = pickᴰ 24 Sᴰ
+  lem-F2-S0-S2 : Ws → St 1655
+  lem-F2-S0-S2 = pickᴰ 25 Sᴰ
+  lem-F2-S0-S3 : Ws → St 1656
+  lem-F2-S0-S3 = pickᴰ 26 Sᴰ
+  lem-F2-S1-K0 : Ws → St 1657
+  lem-F2-S1-K0 = pickᴰ 27 Sᴰ
+  lem-F2-S1-K2 : Ws → St 1658
+  lem-F2-S1-K2 = pickᴰ 28 Sᴰ
+  lem-F2-S1-K3 : Ws → St 1659
+  lem-F2-S1-K3 = pickᴰ 29 Sᴰ
+  lem-F2-S1-S2 : Ws → St 1660
+  lem-F2-S1-S2 = pickᴰ 30 Sᴰ
+  lem-F2-S1-S3 : Ws → St 1661
+  lem-F2-S1-S3 = pickᴰ 31 Sᴰ
+  lem-F2-S2-K0 : Ws → St 1662
+  lem-F2-S2-K0 = pickᴰ 32 Sᴰ
+  lem-F2-S2-K1 : Ws → St 1663
+  lem-F2-S2-K1 = pickᴰ 33 Sᴰ
+  lem-F2-S2-K3 : Ws → St 1664
+  lem-F2-S2-K3 = pickᴰ 34 Sᴰ
+  lem-F2-S2-S3 : Ws → St 1665
+  lem-F2-S2-S3 = pickᴰ 35 Sᴰ
+  lem-F2-S3-K0 : Ws → St 1666
+  lem-F2-S3-K0 = pickᴰ 36 Sᴰ
+  lem-F2-S3-K1 : Ws → St 1667
+  lem-F2-S3-K1 = pickᴰ 37 Sᴰ
+  lem-F2-S3-K2 : Ws → St 1668
+  lem-F2-S3-K2 = pickᴰ 38 Sᴰ
+  lem-S-sym-xt-at14213243 : Ws → St 1948
+  lem-S-sym-xt-at14213243 = pickᴰ 39 Sᴰ
+  lem-CK-box-at033440 : Ws → St 1949
+  lem-CK-box-at033440 = pickᴰ 40 Sᴰ
+  lem-F2-S0-CS1 : Ws → St 1669
+  lem-F2-S0-CS1 = pickᴰ 41 Sᴰ
+  lem-F2-S0-CS2 : Ws → St 1670
+  lem-F2-S0-CS2 = pickᴰ 42 Sᴰ
+  lem-F2-S2-CS0 : Ws → St 1671
+  lem-F2-S2-CS0 = pickᴰ 43 Sᴰ
+  lem-box-cP-at031031 : Ws → St 952
+  lem-box-cP-at031031 = pickᴰ 44 Sᴰ
+  lem-box-perm-1324-at03102132 : Ws → St 904
+  lem-box-perm-1324-at03102132 = pickᴰ 45 Sᴰ
+  lem-box-cP-at02142041 : Ws → St 1000
+  lem-box-cP-at02142041 = pickᴰ 46 Sᴰ
+  lem-box-cP-at0314203241 : Ws → St 1001
+  lem-box-cP-at0314203241 = pickᴰ 47 Sᴰ
+  lem-box2-at03102132 : Ws → St 1950
+  lem-box2-at03102132 = pickᴰ 48 Sᴰ
+  lem-box-perm-2341-at03102132 : Ws → St 1269
+  lem-box-perm-2341-at03102132 = pickᴰ 49 Sᴰ
+  lem-F2-I-CS0 : Ws → St 1673
+  lem-F2-I-CS0 = pickᴰ 50 Sᴰ
+  lem-F2-I-CS1 : Ws → St 1674
+  lem-F2-I-CS1 = pickᴰ 51 Sᴰ
+  lem-F2-I-CS2 : Ws → St 1675
+  lem-F2-I-CS2 = pickᴰ 52 Sᴰ
+  lem-F2-S1-CS2 : Ws → St 1676
+  lem-F2-S1-CS2 = pickᴰ 53 Sᴰ
+  lem-F2-S3-CS0 : Ws → St 1677
+  lem-F2-S3-CS0 = pickᴰ 54 Sᴰ
+  lem-F2-S3-CS1 : Ws → St 1678
+  lem-F2-S3-CS1 = pickᴰ 55 Sᴰ
+  lem-box-perm-2431-at02142041 : Ws → St 1951
+  lem-box-perm-2431-at02142041 = pickᴰ 56 Sᴰ
+  lem-box-perm-4132-at021021 : Ws → St 1952
+  lem-box-perm-4132-at021021 = pickᴰ 57 Sᴰ
+  lem-box-perm-4132-at03102132 : Ws → St 1953
+  lem-box-perm-4132-at03102132 = pickᴰ 58 Sᴰ
+  lem-box2-at02142041 : Ws → St 1954
+  lem-box2-at02142041 = pickᴰ 59 Sᴰ
+  lem-box2-at0314203241 : Ws → St 1955
+  lem-box2-at0314203241 = pickᴰ 60 Sᴰ
+  lem-F2-K1-CS2 : Ws → St 1680
+  lem-F2-K1-CS2 = pickᴰ 61 Sᴰ
+  lem-F1-comm-CS-S0at2 : Ws → St 1681
+  lem-F1-comm-CS-S0at2 = pickᴰ 62 Sᴰ
+  lem-F2-K3-CS0 : Ws → St 1682
+  lem-F2-K3-CS0 = pickᴰ 63 Sᴰ
+  lem-F2-K3-CS1 : Ws → St 1683
+  lem-F2-K3-CS1 = pickᴰ 64 Sᴰ
+  lem-F1-comm-CS-S1at2 : Ws → St 1685
+  lem-F1-comm-CS-S1at2 = pickᴰ 65 Sᴰ
+  lem-box-box-3-at021021 : Ws → St 1956
+  lem-box-box-3-at021021 = pickᴰ 66 Sᴰ
+  lem-box-perm-2431-at0314203241 : Ws → St 1957
+  lem-box-perm-2431-at0314203241 = pickᴰ 67 Sᴰ
+  lem-box-perm-3241-at02142041 : Ws → St 1958
+  lem-box-perm-3241-at02142041 = pickᴰ 68 Sᴰ
+  lem-box-perm-3241-at0314203241 : Ws → St 1959
+  lem-box-perm-3241-at0314203241 = pickᴰ 69 Sᴰ
+  lem-box-perm-4213-at02132031 : Ws → St 1960
+  lem-box-perm-4213-at02132031 = pickᴰ 70 Sᴰ
+  lem-box-perm-4213-at03122031 : Ws → St 1961
+  lem-box-perm-4213-at03122031 = pickᴰ 71 Sᴰ
+  lem-ckt-Dinv : Ws → St 1962
+  lem-ckt-Dinv = pickᴰ 72 Sᴰ
+  lem-F1-order-CSat2 : Ws → St 1687
+  lem-F1-order-CSat2 = pickᴰ 73 Sᴰ
+  lem-F2-K0-CS1 : Ws → St 1688
+  lem-F2-K0-CS1 = pickᴰ 74 Sᴰ
+  lem-F2-K0-CS2 : Ws → St 1689
+  lem-F2-K0-CS2 = pickᴰ 75 Sᴰ
+  lem-F2-K2-CS0 : Ws → St 1690
+  lem-F2-K2-CS0 = pickᴰ 76 Sᴰ
+  lem-L-CX01-2 : Ws → St 1527
+  lem-L-CX01-2 = pickᴰ 77 Sᴰ
+  lem-L-CX10-2 : Ws → St 1528
+  lem-L-CX10-2 = pickᴰ 78 Sᴰ
+  lem-Tu-box-at0314203241 : Ws → St 1963
+  lem-Tu-box-at0314203241 = pickᴰ 79 Sᴰ
+  lem-box-box-3-at03102132 : Ws → St 1964
+  lem-box-box-3-at03102132 = pickᴰ 80 Sᴰ
+  lem-F1-X-CS0at2 : Ws → St 1695
+  lem-F1-X-CS0at2 = pickᴰ 81 Sᴰ
+  lem-F2-CS0-CS2 : Ws → St 1696
+  lem-F2-CS0-CS2 = pickᴰ 82 Sᴰ
+  lem-F1-X-CS1at2 : Ws → St 1698
+  lem-F1-X-CS1at2 = pickᴰ 83 Sᴰ
+  lem-F1-CS-K0at2 : Ws → St 1699
+  lem-F1-CS-K0at2 = pickᴰ 84 Sᴰ
+  lem-F1-CS-K1at2 : Ws → St 1700
+  lem-F1-CS-K1at2 = pickᴰ 85 Sᴰ
+  lem-Tu-box-at02142041 : Ws → St 1965
+  lem-Tu-box-at02142041 = pickᴰ 86 Sᴰ
+  lem-deb-Q-lo-at02132031 : Ws → St 1833
+  lem-deb-Q-lo-at02132031 = pickᴰ 87 Sᴰ
+  lem-deb-Q-hi-at132132 : Ws → St 1834
+  lem-deb-Q-hi-at132132 = pickᴰ 88 Sᴰ
+  lem-deb-P-hi : Ws → St 1870
+  lem-deb-P-hi = pickᴰ 89 Sᴰ
+  lem-deb-P-hi-at132132 : Ws → St 1872
+  lem-deb-P-hi-at132132 = pickᴰ 90 Sᴰ
+  lem-deb-P-lo-at02132031 : Ws → St 1873
+  lem-deb-P-lo-at02132031 = pickᴰ 91 Sᴰ
+  lem-deb-P-lo-at132132 : Ws → St 1874
+  lem-deb-P-lo-at132132 = pickᴰ 92 Sᴰ
+  lem-deb-AD-at02132031 : Ws → St 1966
+  lem-deb-AD-at02132031 = pickᴰ 93 Sᴰ
+  lem-deb-rel-272at0-R : Ws → St 1967
+  lem-deb-rel-272at0-R = pickᴰ 94 Sᴰ
+  lem-F1-comm-CSu-CSat0 : Ws → St 1968
+  lem-F1-comm-CSu-CSat0 = pickᴰ 95 Sᴰ
+  lem-L-CCZ-0 : Ws → St 1969
+  lem-L-CCZ-0 = pickᴰ 96 Sᴰ
+  lem-deb-rel-269at0-R : Ws → St 1970
+  lem-deb-rel-269at0-R = pickᴰ 97 Sᴰ
+  lem-deb-rel-269at1-R : Ws → St 1971
+  lem-deb-rel-269at1-R = pickᴰ 98 Sᴰ
+  lem-ckt-A-R : Ws → St 1972
+  lem-ckt-A-R = pickᴰ 99 Sᴰ
 
 private
   q1 : Ws → Eqn

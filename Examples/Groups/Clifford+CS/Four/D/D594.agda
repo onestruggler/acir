@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD594 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D594 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D594 (W : Ws) (Sᴰ : SD594) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,7 +16,17 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D535 W using (lem-Bar⟨'S'-'S'-'K'-'S'-'K'-'K'01-⟶3⟩-passes-II/IV-units-2-1 ; lem-Bar⟨SSKSKK02-⟶3⟩-passes-groups-of-WBar⟨SSKSKK~01-⟶3⟩ ; lem-Bar⟨SSKSKK03-⟶2⟩-passes-II/IV-units-3-1 ; lem-Bar⟨SSSKSS03-⟶2⟩-passes-II/IV-units-3-1)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-Bar⟨'S'-'S'-'K'-'S'-'K'-'K'01-⟶3⟩-passes-II/IV-units-2-1 : St 1082
+  lem-Bar⟨'S'-'S'-'K'-'S'-'K'-'K'01-⟶3⟩-passes-II/IV-units-2-1 = pickᴰ 0 Sᴰ
+  lem-Bar⟨SSKSKK02-⟶3⟩-passes-groups-of-WBar⟨SSKSKK~01-⟶3⟩ : St 1083
+  lem-Bar⟨SSKSKK02-⟶3⟩-passes-groups-of-WBar⟨SSKSKK~01-⟶3⟩ = pickᴰ 1 Sᴰ
+  lem-Bar⟨SSKSKK03-⟶2⟩-passes-II/IV-units-3-1 : St 1084
+  lem-Bar⟨SSKSKK03-⟶2⟩-passes-II/IV-units-3-1 = pickᴰ 2 Sᴰ
+  lem-Bar⟨SSSKSS03-⟶2⟩-passes-II/IV-units-3-1 : St 1085
+  lem-Bar⟨SSSKSS03-⟶2⟩-passes-II/IV-units-3-1 = pickᴰ 3 Sᴰ
 
 private
   q1 : Eqn

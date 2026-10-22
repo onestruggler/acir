@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD697 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D697 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D697 (W : Ws) (Sᴰ : SD697) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,14 +16,41 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D117 W using (lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-CK21-X2)
-open import Examples.Groups.Clifford+CS.Four.D.D122 W using (lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-CKd21-X2)
-open import Examples.Groups.Clifford+CS.Four.D.D174 W using (lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-CS12-X2)
-open import Examples.Groups.Clifford+CS.Four.D.D176 W using (lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-CSd12-X2)
-open import Examples.Groups.Clifford+CS.Four.D.D658 W using (lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-X3-CS13-TOFF102-CSd13-TOFF102-X2-X3)
-open import Examples.Groups.Clifford+CS.Four.D.D660 W using (lem-Bar⟨SSKSKK23-⟶0⟩-passes-II-white-units-1-0 ; lem-Bar⟨SSKSKK31-⟶0⟩-passes-II-white-units-2-0 ; lem-Bar⟨SSSKSS23-⟶0⟩-passes-II-white-units-1-0 ; lem-Bar⟨SSSKSS31-⟶0⟩-passes-II-white-units-2-0 ; lem-Bar⟨SSSKSS32-⟶0⟩-passes-II-white-units-1-0 ; lem-pass-CS03-TOFF012-CSd03-TOFF012-vs-Z1-CZ12-CZ13-CCZ123 ; lem-pass-TOFF012-CS03-TOFF012-CSd03-vs-CZ12-CCZ123 ; lem-pass-X0-X2-X3-CS13-TOFF102-CSd13-TOFF102-X0-X2-X3-vs-CCZ123)
-open import Examples.Groups.Clifford+CS.Four.D.D661 W using (lem-pass-CZ12-CCZ123-vs-TOFF102-CS13-TOFF102-CSd13 ; lem-pass-X2-X3-TOFF102-CS13-TOFF102-CSd13-X2-X3-vs-CCZ123)
-open import Examples.Groups.Clifford+CS.Four.D.D662 W using (lem-pass-CZ12-CCZ123-vs-TOFF201-CS23-TOFF201-CSd23)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-CK21-X2 : St 293
+  lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-CK21-X2 = pickᴰ 0 Sᴰ
+  lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-CKd21-X2 : St 299
+  lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-CKd21-X2 = pickᴰ 1 Sᴰ
+  lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-CS12-X2 : St 365
+  lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-CS12-X2 = pickᴰ 2 Sᴰ
+  lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-CSd12-X2 : St 367
+  lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-CSd12-X2 = pickᴰ 3 Sᴰ
+  lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-X3-CS13-TOFF102-CSd13-TOFF102-X2-X3 : St 1853
+  lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-X3-CS13-TOFF102-CSd13-TOFF102-X2-X3 = pickᴰ 4 Sᴰ
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-II-white-units-1-0 : St 1860
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-II-white-units-1-0 = pickᴰ 5 Sᴰ
+  lem-Bar⟨SSKSKK31-⟶0⟩-passes-II-white-units-2-0 : St 1861
+  lem-Bar⟨SSKSKK31-⟶0⟩-passes-II-white-units-2-0 = pickᴰ 6 Sᴰ
+  lem-Bar⟨SSSKSS23-⟶0⟩-passes-II-white-units-1-0 : St 1862
+  lem-Bar⟨SSSKSS23-⟶0⟩-passes-II-white-units-1-0 = pickᴰ 7 Sᴰ
+  lem-Bar⟨SSSKSS31-⟶0⟩-passes-II-white-units-2-0 : St 1863
+  lem-Bar⟨SSSKSS31-⟶0⟩-passes-II-white-units-2-0 = pickᴰ 8 Sᴰ
+  lem-Bar⟨SSSKSS32-⟶0⟩-passes-II-white-units-1-0 : St 1864
+  lem-Bar⟨SSSKSS32-⟶0⟩-passes-II-white-units-1-0 = pickᴰ 9 Sᴰ
+  lem-pass-CS03-TOFF012-CSd03-TOFF012-vs-Z1-CZ12-CZ13-CCZ123 : St 1865
+  lem-pass-CS03-TOFF012-CSd03-TOFF012-vs-Z1-CZ12-CZ13-CCZ123 = pickᴰ 10 Sᴰ
+  lem-pass-TOFF012-CS03-TOFF012-CSd03-vs-CZ12-CCZ123 : St 1866
+  lem-pass-TOFF012-CS03-TOFF012-CSd03-vs-CZ12-CCZ123 = pickᴰ 11 Sᴰ
+  lem-pass-X0-X2-X3-CS13-TOFF102-CSd13-TOFF102-X0-X2-X3-vs-CCZ123 : St 1867
+  lem-pass-X0-X2-X3-CS13-TOFF102-CSd13-TOFF102-X0-X2-X3-vs-CCZ123 = pickᴰ 12 Sᴰ
+  lem-pass-CZ12-CCZ123-vs-TOFF102-CS13-TOFF102-CSd13 : St 1868
+  lem-pass-CZ12-CCZ123-vs-TOFF102-CS13-TOFF102-CSd13 = pickᴰ 13 Sᴰ
+  lem-pass-X2-X3-TOFF102-CS13-TOFF102-CSd13-X2-X3-vs-CCZ123 : St 1869
+  lem-pass-X2-X3-TOFF102-CS13-TOFF102-CSd13-X2-X3-vs-CCZ123 = pickᴰ 14 Sᴰ
+  lem-pass-CZ12-CCZ123-vs-TOFF201-CS23-TOFF201-CSd23 : St 1870
+  lem-pass-CZ12-CCZ123-vs-TOFF201-CS23-TOFF201-CSd23 = pickᴰ 15 Sᴰ
 
 private
   q1 : Eqn

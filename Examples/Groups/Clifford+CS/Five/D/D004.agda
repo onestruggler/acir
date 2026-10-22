@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D004 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD004 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D004 (Sᴰ : SD004) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,10 +15,39 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D001 using (lem-cQ-at021021 ; lem-cQ-at0210213443 ; lem-cQ-at03102132 ; lem-cQ-at032032 ; lem-cQ-at0410213243 ; lem-cQ-at04203243 ; lem-cQ-at13243142 ; lem-cQ-at13243241 ; lem-cQ-at14233142 ; lem-cQ-at14233241 ; lem-sym-ab ; lem-sym-ab-at03102132)
-open import Examples.Groups.Clifford+CS.Five.D.D002 using (lem-cQ-at0213243140 ; lem-cQ-at0220)
 open import Examples.Groups.Clifford+CS.Five.D.R001 using (lem-comm-CX02-CCZ134 ; lem-comm-CX04-CCZ123 ; lem-comm-CX12-CCZ034 ; lem-comm-CX13-CCZ024 ; lem-comm-CX14-CCZ023 ; lem-comm-CX21-CCZ034 ; lem-comm-CX23-CCZ014 ; lem-comm-CX24-CCZ013 ; lem-comm-CX31-CCZ024 ; lem-comm-CX32-CCZ014 ; lem-comm-CX42-CCZ013 ; lem-comm-SWAP02-BOX⟨4·13⟩ ; lem-comm-SWAP13-BOX⟨0·24⟩ ; lem-comm-SWAP13-BOX⟨0·42⟩ ; lem-comm-SWAP14-BOX⟨0·23⟩ ; lem-comm-SWAP14-BOX⟨0·32⟩ ; lem-comm-SWAP23-BOX⟨0·14⟩ ; lem-comm-SWAP24-BOX⟨0·31⟩)
 open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-CX03-CCZ124 ; lem-comm-CX30-CCZ124 ; lem-comm-CX40-CCZ123 ; lem-comm-CX41-CCZ023 ; lem-comm-SWAP02-BOX⟨3·14⟩ ; lem-comm-SWAP12-BOX⟨3·04⟩ ; lem-comm-SWAP14-BOX⟨2·03⟩ ; lem-comm-SWAP14-BOX⟨2·30⟩ ; lem-comm-SWAP14-BOX⟨3·20⟩ ; lem-comm-SWAP23-BOX⟨0·41⟩ ; lem-comm-SWAP24-BOX⟨0·13⟩)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-cQ-at021021 : Ws → St 0
+  lem-cQ-at021021 = pickᴰ 0 Sᴰ
+  lem-cQ-at0210213443 : Ws → St 1
+  lem-cQ-at0210213443 = pickᴰ 1 Sᴰ
+  lem-cQ-at03102132 : Ws → St 2
+  lem-cQ-at03102132 = pickᴰ 2 Sᴰ
+  lem-cQ-at032032 : Ws → St 3
+  lem-cQ-at032032 = pickᴰ 3 Sᴰ
+  lem-cQ-at0410213243 : Ws → St 4
+  lem-cQ-at0410213243 = pickᴰ 4 Sᴰ
+  lem-cQ-at04203243 : Ws → St 5
+  lem-cQ-at04203243 = pickᴰ 5 Sᴰ
+  lem-cQ-at13243142 : Ws → St 6
+  lem-cQ-at13243142 = pickᴰ 6 Sᴰ
+  lem-cQ-at13243241 : Ws → St 7
+  lem-cQ-at13243241 = pickᴰ 7 Sᴰ
+  lem-cQ-at14233142 : Ws → St 8
+  lem-cQ-at14233142 = pickᴰ 8 Sᴰ
+  lem-cQ-at14233241 : Ws → St 9
+  lem-cQ-at14233241 = pickᴰ 9 Sᴰ
+  lem-sym-ab : Ws → St 10
+  lem-sym-ab = pickᴰ 10 Sᴰ
+  lem-sym-ab-at03102132 : Ws → St 11
+  lem-sym-ab-at03102132 = pickᴰ 11 Sᴰ
+  lem-cQ-at0213243140 : Ws → St 12
+  lem-cQ-at0213243140 = pickᴰ 12 Sᴰ
+  lem-cQ-at0220 : Ws → St 13
+  lem-cQ-at0220 = pickᴰ 13 Sᴰ
 
 private
   q1 : Ws → Eqn

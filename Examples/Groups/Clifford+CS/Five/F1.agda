@@ -31,18 +31,7 @@ open import Examples.Groups.Clifford+CS.Five.Transport using (F1)
 import Examples.Groups.Clifford+CS.Five.F1Low as F1Low
 open import Examples.Groups.Clifford+CS.Five.Chain
 open import Examples.Groups.Clifford+CS.Five.Flat using (by-flat)
-open import Examples.Groups.Clifford+CS.Five.D.D002 using (lem-F1-order-Iat0 ; lem-F1-order-Kat0 ; lem-F1-order-Kat1 ; lem-F1-order-SKat0 ; lem-F1-order-SKat1 ; lem-F1-order-Sat0 ; lem-F1-order-Sat1)
-open import Examples.Groups.Clifford+CS.Five.D.D026 using (lem-F1-comm-CS-S0at0 ; lem-F1-comm-CS-S0at1 ; lem-F1-comm-CS-S1at0 ; lem-F1-comm-CS-S1at1)
-open import Examples.Groups.Clifford+CS.Five.D.D038 using (lem-F1-order-CSat0 ; lem-F1-order-CSat1)
-open import Examples.Groups.Clifford+CS.Five.D.D067 using (lem-F1-X-CS0at0 ; lem-F1-X-CS0at1 ; lem-F1-X-CS1at0 ; lem-F1-X-CS1at1)
-open import Examples.Groups.Clifford+CS.Five.D.D068 using (lem-F1-comm-CSu-CSat1 ; lem-F1-rel-266at1 ; lem-F1-rel-267at1)
-open import Examples.Groups.Clifford+CS.Five.D.D069 using (lem-F1-rel-268at1)
-open import Examples.Groups.Clifford+CS.Five.D.D214 using (lem-F1-comm-CSu-CSat0 ; lem-F1-rel-266at0 ; lem-F1-rel-267at0)
-open import Examples.Groups.Clifford+CS.Five.D.D215 using (lem-F1-CS-K0at0 ; lem-F1-CS-K0at1 ; lem-F1-CS-K1at0 ; lem-F1-CS-K1at1 ; lem-F1-rel-268at0 ; lem-F1-rel-272at1)
-open import Examples.Groups.Clifford+CS.Five.D.D223 using (lem-F1-rel-269at0 ; lem-F1-rel-269at1 ; lem-F1-rel-272at0)
-open import Examples.Groups.Clifford+CS.Five.D.D225 using (lem-F1-cx-cczat0)
-open import Examples.Groups.Clifford+CS.Five.D.D226 using (lem-F1-toff-cczat0)
-open import Examples.Groups.Clifford+CS.Five.D.D229 using (lem-F1-ck-tctat0)
+open import Examples.Groups.Clifford+CS.Five.DAll.F1 using (lem-F1-order-Iat0 ; lem-F1-order-Kat0 ; lem-F1-order-Kat1 ; lem-F1-order-SKat0 ; lem-F1-order-SKat1 ; lem-F1-order-Sat0 ; lem-F1-order-Sat1 ; lem-F1-comm-CS-S0at0 ; lem-F1-comm-CS-S0at1 ; lem-F1-comm-CS-S1at0 ; lem-F1-comm-CS-S1at1 ; lem-F1-order-CSat0 ; lem-F1-order-CSat1 ; lem-F1-X-CS0at0 ; lem-F1-X-CS0at1 ; lem-F1-X-CS1at0 ; lem-F1-X-CS1at1 ; lem-F1-comm-CSu-CSat1 ; lem-F1-rel-266at1 ; lem-F1-rel-267at1 ; lem-F1-rel-268at1 ; lem-F1-comm-CSu-CSat0 ; lem-F1-rel-266at0 ; lem-F1-rel-267at0 ; lem-F1-CS-K0at0 ; lem-F1-CS-K0at1 ; lem-F1-CS-K1at0 ; lem-F1-CS-K1at1 ; lem-F1-rel-268at0 ; lem-F1-rel-272at1 ; lem-F1-rel-269at0 ; lem-F1-rel-269at1 ; lem-F1-rel-272at0 ; lem-F1-cx-cczat0 ; lem-F1-toff-cczat0 ; lem-F1-ck-tctat0)
 
 private
   variable

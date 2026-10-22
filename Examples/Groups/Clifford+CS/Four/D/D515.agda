@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD515 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D515 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D515 (W : Ws) (Sᴰ : SD515) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -15,10 +17,63 @@ open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
 open import Examples.Groups.Clifford+CS.Canonical using (can-≈)
-open import Examples.Groups.Clifford+CS.Four.D.D009 W using (lem-pass-CS13-vs-CS02 ; lem-pass-CSd02-vs-CS13 ; lem-pass-S2-vs-CS13 ; lem-pass-Sd2-vs-CS13)
-open import Examples.Groups.Clifford+CS.Four.D.D015 W using (lem-pass-X3-CKd31-X3-vs-CS02 ; lem-pass-X3-CKd31-X3-vs-CSd02 ; lem-pass-X3-CKd31-X3-vs-TOFF013 ; lem-pass-X3-CSd31-X3-vs-CS02 ; lem-pass-X3-CSd31-X3-vs-CSd02 ; lem-pass-X3-CSd31-X3-vs-TOFF013)
-open import Examples.Groups.Clifford+CS.Four.D.D021 W using (lem-pass-CS23-vs-Sd0 ; lem-pass-X3-CKd32-X3-vs-CS01 ; lem-pass-X3-CKd32-X3-vs-CSd01 ; lem-pass-X3-CKd32-X3-vs-TOFF023 ; lem-pass-X3-CS32-X3-vs-CS01 ; lem-pass-X3-CS32-X3-vs-CSd01 ; lem-pass-X3-CS32-X3-vs-TOFF023 ; lem-pass-X3-CSd32-X3-vs-CS01 ; lem-pass-X3-CSd32-X3-vs-CSd01 ; lem-pass-X3-CSd32-X3-vs-TOFF023)
-open import Examples.Groups.Clifford+CS.Four.D.D023 W using (lem-comm-CCZ023-CS13 ; lem-pass-CS23-vs-Sd3 ; lem-pass-CS23-vs-iI ; lem-pass-CSd23-vs-iI ; lem-pass-Sd0-vs-CSd23 ; lem-pass-Sd3-vs-CSd23 ; lem-pass-TOFF201-vs-iI)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-pass-CS13-vs-CS02 : St 27
+  lem-pass-CS13-vs-CS02 = pickᴰ 0 Sᴰ
+  lem-pass-CSd02-vs-CS13 : St 28
+  lem-pass-CSd02-vs-CS13 = pickᴰ 1 Sᴰ
+  lem-pass-S2-vs-CS13 : St 30
+  lem-pass-S2-vs-CS13 = pickᴰ 2 Sᴰ
+  lem-pass-Sd2-vs-CS13 : St 32
+  lem-pass-Sd2-vs-CS13 = pickᴰ 3 Sᴰ
+  lem-pass-X3-CKd31-X3-vs-CS02 : St 117
+  lem-pass-X3-CKd31-X3-vs-CS02 = pickᴰ 4 Sᴰ
+  lem-pass-X3-CKd31-X3-vs-CSd02 : St 118
+  lem-pass-X3-CKd31-X3-vs-CSd02 = pickᴰ 5 Sᴰ
+  lem-pass-X3-CKd31-X3-vs-TOFF013 : St 119
+  lem-pass-X3-CKd31-X3-vs-TOFF013 = pickᴰ 6 Sᴰ
+  lem-pass-X3-CSd31-X3-vs-CS02 : St 122
+  lem-pass-X3-CSd31-X3-vs-CS02 = pickᴰ 7 Sᴰ
+  lem-pass-X3-CSd31-X3-vs-CSd02 : St 123
+  lem-pass-X3-CSd31-X3-vs-CSd02 = pickᴰ 8 Sᴰ
+  lem-pass-X3-CSd31-X3-vs-TOFF013 : St 124
+  lem-pass-X3-CSd31-X3-vs-TOFF013 = pickᴰ 9 Sᴰ
+  lem-pass-CS23-vs-Sd0 : St 157
+  lem-pass-CS23-vs-Sd0 = pickᴰ 10 Sᴰ
+  lem-pass-X3-CKd32-X3-vs-CS01 : St 139
+  lem-pass-X3-CKd32-X3-vs-CS01 = pickᴰ 11 Sᴰ
+  lem-pass-X3-CKd32-X3-vs-CSd01 : St 140
+  lem-pass-X3-CKd32-X3-vs-CSd01 = pickᴰ 12 Sᴰ
+  lem-pass-X3-CKd32-X3-vs-TOFF023 : St 141
+  lem-pass-X3-CKd32-X3-vs-TOFF023 = pickᴰ 13 Sᴰ
+  lem-pass-X3-CS32-X3-vs-CS01 : St 142
+  lem-pass-X3-CS32-X3-vs-CS01 = pickᴰ 14 Sᴰ
+  lem-pass-X3-CS32-X3-vs-CSd01 : St 143
+  lem-pass-X3-CS32-X3-vs-CSd01 = pickᴰ 15 Sᴰ
+  lem-pass-X3-CS32-X3-vs-TOFF023 : St 144
+  lem-pass-X3-CS32-X3-vs-TOFF023 = pickᴰ 16 Sᴰ
+  lem-pass-X3-CSd32-X3-vs-CS01 : St 145
+  lem-pass-X3-CSd32-X3-vs-CS01 = pickᴰ 17 Sᴰ
+  lem-pass-X3-CSd32-X3-vs-CSd01 : St 147
+  lem-pass-X3-CSd32-X3-vs-CSd01 = pickᴰ 18 Sᴰ
+  lem-pass-X3-CSd32-X3-vs-TOFF023 : St 149
+  lem-pass-X3-CSd32-X3-vs-TOFF023 = pickᴰ 19 Sᴰ
+  lem-comm-CCZ023-CS13 : St 158
+  lem-comm-CCZ023-CS13 = pickᴰ 20 Sᴰ
+  lem-pass-CS23-vs-Sd3 : St 159
+  lem-pass-CS23-vs-Sd3 = pickᴰ 21 Sᴰ
+  lem-pass-CS23-vs-iI : St 160
+  lem-pass-CS23-vs-iI = pickᴰ 22 Sᴰ
+  lem-pass-CSd23-vs-iI : St 161
+  lem-pass-CSd23-vs-iI = pickᴰ 23 Sᴰ
+  lem-pass-Sd0-vs-CSd23 : St 162
+  lem-pass-Sd0-vs-CSd23 = pickᴰ 24 Sᴰ
+  lem-pass-Sd3-vs-CSd23 : St 163
+  lem-pass-Sd3-vs-CSd23 = pickᴰ 25 Sᴰ
+  lem-pass-TOFF201-vs-iI : St 164
+  lem-pass-TOFF201-vs-iI = pickᴰ 26 Sᴰ
 
 private
   q1 : Eqn

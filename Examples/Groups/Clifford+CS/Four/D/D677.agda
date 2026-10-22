@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD677 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D677 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D677 (W : Ws) (Sᴰ : SD677) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,8 +16,13 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D004 W using (lem-comm-CCZ013-CS02)
-open import Examples.Groups.Clifford+CS.Four.D.D651 W using (lem-S2)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-comm-CCZ013-CS02 : St 14
+  lem-comm-CCZ013-CS02 = pickᴰ 0 Sᴰ
+  lem-S2 : St 1778
+  lem-S2 = pickᴰ 1 Sᴰ
 
 private
   q1 : Eqn

@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D055 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD055 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D055 (Sᴰ : SD055) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,10 +15,41 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D003 using (lem-F4-I-I-at0213243140 ; lem-F4-I-K3-at0213243140 ; lem-F4-I-S2-at0213243140 ; lem-F4-K3-I-at0213243140 ; lem-F4-K3-K3-at0213243140 ; lem-F4-K3-S2-at0213243140 ; lem-F4-S2-I-at0213243140 ; lem-F4-S2-K3-at0213243140 ; lem-F4-S2-S2-at0213243140)
-open import Examples.Groups.Clifford+CS.Five.D.D022 using (lem-F4-I-CS2-at0213243140 ; lem-F4-S2-CS2-at0213243140)
-open import Examples.Groups.Clifford+CS.Five.D.D023 using (lem-F4-CS2-CS2-at0213243140 ; lem-F4-CS2-I-at0213243140 ; lem-F4-CS2-S2-at0213243140)
-open import Examples.Groups.Clifford+CS.Five.D.D032 using (lem-F4-CS2-K3-at0213243140 ; lem-F4-K3-CS2-at0213243140)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-F4-I-I-at0213243140 : Ws → St 1422
+  lem-F4-I-I-at0213243140 = pickᴰ 0 Sᴰ
+  lem-F4-I-K3-at0213243140 : Ws → St 1407
+  lem-F4-I-K3-at0213243140 = pickᴰ 1 Sᴰ
+  lem-F4-I-S2-at0213243140 : Ws → St 1408
+  lem-F4-I-S2-at0213243140 = pickᴰ 2 Sᴰ
+  lem-F4-K3-I-at0213243140 : Ws → St 1409
+  lem-F4-K3-I-at0213243140 = pickᴰ 3 Sᴰ
+  lem-F4-K3-K3-at0213243140 : Ws → St 1410
+  lem-F4-K3-K3-at0213243140 = pickᴰ 4 Sᴰ
+  lem-F4-K3-S2-at0213243140 : Ws → St 1411
+  lem-F4-K3-S2-at0213243140 = pickᴰ 5 Sᴰ
+  lem-F4-S2-I-at0213243140 : Ws → St 1412
+  lem-F4-S2-I-at0213243140 = pickᴰ 6 Sᴰ
+  lem-F4-S2-K3-at0213243140 : Ws → St 1413
+  lem-F4-S2-K3-at0213243140 = pickᴰ 7 Sᴰ
+  lem-F4-S2-S2-at0213243140 : Ws → St 1414
+  lem-F4-S2-S2-at0213243140 = pickᴰ 8 Sᴰ
+  lem-F4-I-CS2-at0213243140 : Ws → St 1415
+  lem-F4-I-CS2-at0213243140 = pickᴰ 9 Sᴰ
+  lem-F4-S2-CS2-at0213243140 : Ws → St 1416
+  lem-F4-S2-CS2-at0213243140 = pickᴰ 10 Sᴰ
+  lem-F4-CS2-CS2-at0213243140 : Ws → St 1417
+  lem-F4-CS2-CS2-at0213243140 = pickᴰ 11 Sᴰ
+  lem-F4-CS2-I-at0213243140 : Ws → St 1418
+  lem-F4-CS2-I-at0213243140 = pickᴰ 12 Sᴰ
+  lem-F4-CS2-S2-at0213243140 : Ws → St 1419
+  lem-F4-CS2-S2-at0213243140 = pickᴰ 13 Sᴰ
+  lem-F4-CS2-K3-at0213243140 : Ws → St 1420
+  lem-F4-CS2-K3-at0213243140 = pickᴰ 14 Sᴰ
+  lem-F4-K3-CS2-at0213243140 : Ws → St 1421
+  lem-F4-K3-CS2-at0213243140 = pickᴰ 15 Sᴰ
 
 private
   q1 : Ws → Eqn

@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD708 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D708 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D708 (W : Ws) (Sᴰ : SD708) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,9 +16,19 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D681 W using (lem-pass-X3-CS30-X3-vs-TOFF012-CS03-TOFF012-CSd03)
-open import Examples.Groups.Clifford+CS.Four.D.D682 W using (lem-pass-X3-CSd30-X3-vs-TOFF012-CS03-TOFF012-CSd03)
-open import Examples.Groups.Clifford+CS.Four.D.D698 W using (lem-pass-X1-CK13-X1-vs-TOFF012-CS03-TOFF012-CSd03 ; lem-pass-X1-CKd13-X1-vs-TOFF012-CS03-TOFF012-CSd03 ; lem-pass-X1-TOFF012-CS03-TOFF012-CSd03-X1-vs-CCZ123)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-pass-X3-CS30-X3-vs-TOFF012-CS03-TOFF012-CSd03 : St 1926
+  lem-pass-X3-CS30-X3-vs-TOFF012-CS03-TOFF012-CSd03 = pickᴰ 0 Sᴰ
+  lem-pass-X3-CSd30-X3-vs-TOFF012-CS03-TOFF012-CSd03 : St 1930
+  lem-pass-X3-CSd30-X3-vs-TOFF012-CS03-TOFF012-CSd03 = pickᴰ 1 Sᴰ
+  lem-pass-X1-CK13-X1-vs-TOFF012-CS03-TOFF012-CSd03 : St 2008
+  lem-pass-X1-CK13-X1-vs-TOFF012-CS03-TOFF012-CSd03 = pickᴰ 2 Sᴰ
+  lem-pass-X1-CKd13-X1-vs-TOFF012-CS03-TOFF012-CSd03 : St 2009
+  lem-pass-X1-CKd13-X1-vs-TOFF012-CS03-TOFF012-CSd03 = pickᴰ 3 Sᴰ
+  lem-pass-X1-TOFF012-CS03-TOFF012-CSd03-X1-vs-CCZ123 : St 2016
+  lem-pass-X1-TOFF012-CS03-TOFF012-CSd03-X1-vs-CCZ123 = pickᴰ 4 Sᴰ
 
 private
   q1 : Eqn

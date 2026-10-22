@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD632 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D632 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D632 (W : Ws) (Sᴰ : SD632) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,9 +16,29 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D522 W using (lem-pass-TOFF302-vs-X2-CK21-X2 ; lem-pass-TOFF302-vs-X2-CK23-X2 ; lem-pass-TOFF302-vs-X2-CKd21-X2 ; lem-pass-TOFF302-vs-X2-CKd23-X2)
-open import Examples.Groups.Clifford+CS.Four.D.D598 W using (lem-Bar⟨SSKSKK21-⟶0⟩-passes-Fredkin-WBar⟨SSSSSSKiSSSSSSSSS~23-⟶1⟩ ; lem-Bar⟨SSKSKK21-⟶0⟩-passes-III-units-3 ; lem-Bar⟨SSKSKK23-⟶0⟩-passes-factors-of-X2-X3-TOFF123-X2-X3 ; lem-Bar⟨SSSKSS21-⟶0⟩-passes-factors-of-X2-X3-TOFF123-X2-X3)
-open import Examples.Groups.Clifford+CS.Four.D.D599 W using (lem-Bar⟨SSKSKK21-⟶0⟩-passes-Fredkin-WBar⟨KiKiSSSKiSSSSSS~23-⟶1⟩ ; lem-pass-TOFF302-vs-X2-TOFF312-X2)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-pass-TOFF302-vs-X2-CK21-X2 : St 1501
+  lem-pass-TOFF302-vs-X2-CK21-X2 = pickᴰ 0 Sᴰ
+  lem-pass-TOFF302-vs-X2-CK23-X2 : St 1502
+  lem-pass-TOFF302-vs-X2-CK23-X2 = pickᴰ 1 Sᴰ
+  lem-pass-TOFF302-vs-X2-CKd21-X2 : St 1503
+  lem-pass-TOFF302-vs-X2-CKd21-X2 = pickᴰ 2 Sᴰ
+  lem-pass-TOFF302-vs-X2-CKd23-X2 : St 1504
+  lem-pass-TOFF302-vs-X2-CKd23-X2 = pickᴰ 3 Sᴰ
+  lem-Bar⟨SSKSKK21-⟶0⟩-passes-Fredkin-WBar⟨SSSSSSKiSSSSSSSSS~23-⟶1⟩ : St 1505
+  lem-Bar⟨SSKSKK21-⟶0⟩-passes-Fredkin-WBar⟨SSSSSSKiSSSSSSSSS~23-⟶1⟩ = pickᴰ 4 Sᴰ
+  lem-Bar⟨SSKSKK21-⟶0⟩-passes-III-units-3 : St 1506
+  lem-Bar⟨SSKSKK21-⟶0⟩-passes-III-units-3 = pickᴰ 5 Sᴰ
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-factors-of-X2-X3-TOFF123-X2-X3 : St 1507
+  lem-Bar⟨SSKSKK23-⟶0⟩-passes-factors-of-X2-X3-TOFF123-X2-X3 = pickᴰ 6 Sᴰ
+  lem-Bar⟨SSSKSS21-⟶0⟩-passes-factors-of-X2-X3-TOFF123-X2-X3 : St 1508
+  lem-Bar⟨SSSKSS21-⟶0⟩-passes-factors-of-X2-X3-TOFF123-X2-X3 = pickᴰ 7 Sᴰ
+  lem-Bar⟨SSKSKK21-⟶0⟩-passes-Fredkin-WBar⟨KiKiSSSKiSSSSSS~23-⟶1⟩ : St 1509
+  lem-Bar⟨SSKSKK21-⟶0⟩-passes-Fredkin-WBar⟨KiKiSSSKiSSSSSS~23-⟶1⟩ = pickᴰ 8 Sᴰ
+  lem-pass-TOFF302-vs-X2-TOFF312-X2 : St 1510
+  lem-pass-TOFF302-vs-X2-TOFF312-X2 = pickᴰ 9 Sᴰ
 
 private
   q1 : Eqn

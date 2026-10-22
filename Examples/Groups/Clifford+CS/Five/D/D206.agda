@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D206 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD206 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D206 (Sᴰ : SD206) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,21 +15,56 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D016 using (lem-box-cP-at0310243142 ; lem-box-cP-at03243240 ; lem-box-cP-at033440)
-open import Examples.Groups.Clifford+CS.Five.D.D021 using (lem-box-perm-1324-at03243240)
-open import Examples.Groups.Clifford+CS.Five.D.D027 using (lem-S2-SBOX⟨3·1·42·0⟩)
-open import Examples.Groups.Clifford+CS.Five.D.D042 using (lem-L-CX01-0 ; lem-L-CX01-1 ; lem-L-CX10-1)
-open import Examples.Groups.Clifford+CS.Five.D.D072 using (lem-deb-P-hi-at02132031-part1 ; lem-deb-P-hi-at132132-part1 ; lem-deb-P-hi-part1 ; lem-deb-P-lo-part1)
-open import Examples.Groups.Clifford+CS.Five.D.D148 using (lem-deb-P-lo-at02132031-part1 ; lem-deb-P-lo-at132132-part1)
-open import Examples.Groups.Clifford+CS.Five.D.D189 using (lem-F0-at01143043 ; lem-F0-at14213243 ; lem-deb-P-hi-part0)
-open import Examples.Groups.Clifford+CS.Five.D.D190 using (lem-deb-P-hi-at02132031-part0)
-open import Examples.Groups.Clifford+CS.Five.D.D191 using (lem-deb-P-hi-at132132-part0)
-open import Examples.Groups.Clifford+CS.Five.D.D192 using (lem-deb-P-lo-part0)
-open import Examples.Groups.Clifford+CS.Five.D.D193 using (lem-deb-P-lo-at02132031-part0)
-open import Examples.Groups.Clifford+CS.Five.D.D194 using (lem-deb-P-lo-at132132-part0)
 open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-CCZ034-CX12 ; lem-comm-CCZ134-CS02 ; lem-comm-CCZ134-CX02 ; lem-comm-TOFF304-CX12 ; lem-comm-TOFF312-CX04)
 open import Examples.Groups.Clifford+CS.Five.D.R003 using (lem-comm-CCZ123-CX04)
 open import Examples.Groups.Clifford+CS.Five.D.R009 using (lem-comm-TOFF302-CS14 ; lem-comm-TOFF302-CSd14 ; lem-comm-TOFF302-CX14)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-box-cP-at0310243142 : Ws → St 844
+  lem-box-cP-at0310243142 = pickᴰ 0 Sᴰ
+  lem-box-cP-at03243240 : Ws → St 960
+  lem-box-cP-at03243240 = pickᴰ 1 Sᴰ
+  lem-box-cP-at033440 : Ws → St 961
+  lem-box-cP-at033440 = pickᴰ 2 Sᴰ
+  lem-box-perm-1324-at03243240 : Ws → St 1141
+  lem-box-perm-1324-at03243240 = pickᴰ 3 Sᴰ
+  lem-S2-SBOX⟨3·1·42·0⟩ : Ws → St 1808
+  lem-S2-SBOX⟨3·1·42·0⟩ = pickᴰ 4 Sᴰ
+  lem-L-CX01-0 : Ws → St 1811
+  lem-L-CX01-0 = pickᴰ 5 Sᴰ
+  lem-L-CX01-1 : Ws → St 1526
+  lem-L-CX01-1 = pickᴰ 6 Sᴰ
+  lem-L-CX10-1 : Ws → St 1812
+  lem-L-CX10-1 = pickᴰ 7 Sᴰ
+  lem-deb-P-hi-at02132031-part1 : Ws → St 1813
+  lem-deb-P-hi-at02132031-part1 = pickᴰ 8 Sᴰ
+  lem-deb-P-hi-at132132-part1 : Ws → St 1814
+  lem-deb-P-hi-at132132-part1 = pickᴰ 9 Sᴰ
+  lem-deb-P-hi-part1 : Ws → St 1815
+  lem-deb-P-hi-part1 = pickᴰ 10 Sᴰ
+  lem-deb-P-lo-part1 : Ws → St 1816
+  lem-deb-P-lo-part1 = pickᴰ 11 Sᴰ
+  lem-deb-P-lo-at02132031-part1 : Ws → St 1817
+  lem-deb-P-lo-at02132031-part1 = pickᴰ 12 Sᴰ
+  lem-deb-P-lo-at132132-part1 : Ws → St 1818
+  lem-deb-P-lo-at132132-part1 = pickᴰ 13 Sᴰ
+  lem-F0-at01143043 : Ws → St 1803
+  lem-F0-at01143043 = pickᴰ 14 Sᴰ
+  lem-F0-at14213243 : Ws → St 1804
+  lem-F0-at14213243 = pickᴰ 15 Sᴰ
+  lem-deb-P-hi-part0 : Ws → St 1819
+  lem-deb-P-hi-part0 = pickᴰ 16 Sᴰ
+  lem-deb-P-hi-at02132031-part0 : Ws → St 1820
+  lem-deb-P-hi-at02132031-part0 = pickᴰ 17 Sᴰ
+  lem-deb-P-hi-at132132-part0 : Ws → St 1821
+  lem-deb-P-hi-at132132-part0 = pickᴰ 18 Sᴰ
+  lem-deb-P-lo-part0 : Ws → St 1822
+  lem-deb-P-lo-part0 = pickᴰ 19 Sᴰ
+  lem-deb-P-lo-at02132031-part0 : Ws → St 1823
+  lem-deb-P-lo-at02132031-part0 = pickᴰ 20 Sᴰ
+  lem-deb-P-lo-at132132-part0 : Ws → St 1824
+  lem-deb-P-lo-at132132-part0 = pickᴰ 21 Sᴰ
 
 private
   q1 : Ws → Eqn

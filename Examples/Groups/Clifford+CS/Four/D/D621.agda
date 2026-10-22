@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD621 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D621 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D621 (W : Ws) (Sᴰ : SD621) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,13 +16,47 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D002 W using (lem-N23-D ; lem-comm-CCZ123-CCZ023)
-open import Examples.Groups.Clifford+CS.Four.D.D003 W using (lem-comm-CCZ123-CCZ012)
-open import Examples.Groups.Clifford+CS.Four.D.D004 W using (lem-comm-CCZ012-CZ13 ; lem-comm-CCZ013-CCZ012 ; lem-comm-CCZ013-CS12 ; lem-comm-CCZ123-CCZ013)
-open import Examples.Groups.Clifford+CS.Four.D.D008 W using (lem-CCZ123-passes-CKd10 ; lem-comm-CZ01-CCZ023 ; lem-comm-CZ01-CCZ123)
-open import Examples.Groups.Clifford+CS.Four.D.D510 W using (lem-CCZ012-passes-PP3 ; lem-CS12-passes-PP3 ; lem-CS13-passes-PP3 ; lem-CZ13-passes-PP3 ; lem-N23-PP3)
-open import Examples.Groups.Clifford+CS.Four.D.D536 W using (lem-CCZ013-passes-PP3 ; lem-N32-PP3)
-open import Examples.Groups.Clifford+CS.Four.D.D596 W using (lem-CCZ123-passes-PP3 ; lem-ROT≡cF)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-N23-D : St 1411
+  lem-N23-D = pickᴰ 0 Sᴰ
+  lem-comm-CCZ123-CCZ023 : St 8
+  lem-comm-CCZ123-CCZ023 = pickᴰ 1 Sᴰ
+  lem-comm-CCZ123-CCZ012 : St 1412
+  lem-comm-CCZ123-CCZ012 = pickᴰ 2 Sᴰ
+  lem-comm-CCZ012-CZ13 : St 573
+  lem-comm-CCZ012-CZ13 = pickᴰ 3 Sᴰ
+  lem-comm-CCZ013-CCZ012 : St 13
+  lem-comm-CCZ013-CCZ012 = pickᴰ 4 Sᴰ
+  lem-comm-CCZ013-CS12 : St 15
+  lem-comm-CCZ013-CS12 = pickᴰ 5 Sᴰ
+  lem-comm-CCZ123-CCZ013 : St 1413
+  lem-comm-CCZ123-CCZ013 = pickᴰ 6 Sᴰ
+  lem-CCZ123-passes-CKd10 : St 1414
+  lem-CCZ123-passes-CKd10 = pickᴰ 7 Sᴰ
+  lem-comm-CZ01-CCZ023 : St 1415
+  lem-comm-CZ01-CCZ023 = pickᴰ 8 Sᴰ
+  lem-comm-CZ01-CCZ123 : St 1416
+  lem-comm-CZ01-CCZ123 = pickᴰ 9 Sᴰ
+  lem-CCZ012-passes-PP3 : St 1417
+  lem-CCZ012-passes-PP3 = pickᴰ 10 Sᴰ
+  lem-CS12-passes-PP3 : St 1418
+  lem-CS12-passes-PP3 = pickᴰ 11 Sᴰ
+  lem-CS13-passes-PP3 : St 1419
+  lem-CS13-passes-PP3 = pickᴰ 12 Sᴰ
+  lem-CZ13-passes-PP3 : St 1420
+  lem-CZ13-passes-PP3 = pickᴰ 13 Sᴰ
+  lem-N23-PP3 : St 1421
+  lem-N23-PP3 = pickᴰ 14 Sᴰ
+  lem-CCZ013-passes-PP3 : St 1422
+  lem-CCZ013-passes-PP3 = pickᴰ 15 Sᴰ
+  lem-N32-PP3 : St 1423
+  lem-N32-PP3 = pickᴰ 16 Sᴰ
+  lem-CCZ123-passes-PP3 : St 1424
+  lem-CCZ123-passes-PP3 = pickᴰ 17 Sᴰ
+  lem-ROT≡cF : St 1425
+  lem-ROT≡cF = pickᴰ 18 Sᴰ
 
 private
   q1 : Eqn

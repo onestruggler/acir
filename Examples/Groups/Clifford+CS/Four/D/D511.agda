@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD511 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D511 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D511 (W : Ws) (Sᴰ : SD511) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,10 +16,21 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D003 W using (lem-comm-CCZ123-CS03)
-open import Examples.Groups.Clifford+CS.Four.D.D008 W using (lem-pass-CS12-vs-CS03 ; lem-pass-CSd12-vs-CS03)
-open import Examples.Groups.Clifford+CS.Four.D.D010 W using (lem-pass-CS12-vs-CSd03 ; lem-pass-CSd12-vs-CSd03)
-open import Examples.Groups.Clifford+CS.Four.D.D011 W using (lem-comm-CCZ013-CSd02)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-comm-CCZ123-CS03 : St 54
+  lem-comm-CCZ123-CS03 = pickᴰ 0 Sᴰ
+  lem-pass-CS12-vs-CS03 : St 21
+  lem-pass-CS12-vs-CS03 = pickᴰ 1 Sᴰ
+  lem-pass-CSd12-vs-CS03 : St 55
+  lem-pass-CSd12-vs-CS03 = pickᴰ 2 Sᴰ
+  lem-pass-CS12-vs-CSd03 : St 34
+  lem-pass-CS12-vs-CSd03 = pickᴰ 3 Sᴰ
+  lem-pass-CSd12-vs-CSd03 : St 56
+  lem-pass-CSd12-vs-CSd03 = pickᴰ 4 Sᴰ
+  lem-comm-CCZ013-CSd02 : St 57
+  lem-comm-CCZ013-CSd02 = pickᴰ 5 Sᴰ
 
 private
   q1 : Eqn

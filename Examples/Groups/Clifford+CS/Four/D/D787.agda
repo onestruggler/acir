@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD787 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D787 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D787 (W : Ws) (Sᴰ : SD787) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,10 +16,17 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D422 W using (lem-b2g-0100R1)
-open import Examples.Groups.Clifford+CS.Four.D.D591 W using (lem-conjF-X0-CS01-CS01-CK10-CS01-CX13-CS)
-open import Examples.Groups.Clifford+CS.Four.D.D777 W using (lem-Pm-Gad⟨t≡0-W≡⟨⟩-d≡SK-e≡-1⟩-Gad⟨t≡1-W≡⟨⟩-d≡SdKdSS-e≡-1⟩)
-open import Examples.Groups.Clifford+CS.Four.D.D784 W using (lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-b2g-0100R1 : St 3487
+  lem-b2g-0100R1 = pickᴰ 0 Sᴰ
+  lem-conjF-X0-CS01-CS01-CK10-CS01-CX13-CS : St 3488
+  lem-conjF-X0-CS01-CS01-CK10-CS01-CX13-CS = pickᴰ 1 Sᴰ
+  lem-Pm-Gad⟨t≡0-W≡⟨⟩-d≡SK-e≡-1⟩-Gad⟨t≡1-W≡⟨⟩-d≡SdKdSS-e≡-1⟩ : St 3489
+  lem-Pm-Gad⟨t≡0-W≡⟨⟩-d≡SK-e≡-1⟩-Gad⟨t≡1-W≡⟨⟩-d≡SdKdSS-e≡-1⟩ = pickᴰ 2 Sᴰ
+  lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv : St 3490
+  lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv = pickᴰ 3 Sᴰ
 
 private
   q1 : Eqn

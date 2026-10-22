@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D069 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD069 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D069 (Sᴰ : SD069) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,13 +15,27 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D016 using (lem-box-cP-at122441)
-open import Examples.Groups.Clifford+CS.Five.D.D018 using (lem-box2-at122441)
-open import Examples.Groups.Clifford+CS.Five.D.D026 using (lem-S2-SBOX⟨0·1·42·3⟩ ; lem-S2-SBOX⟨0·2·43·1⟩)
-open import Examples.Groups.Clifford+CS.Five.D.D027 using (lem-CKc-box-at13213442 ; lem-box-perm-3421-at122441 ; lem-box-perm-4312-at13213442)
-open import Examples.Groups.Clifford+CS.Five.D.D041 using (lem-nf-rel-268at1)
 open import Examples.Groups.Clifford+CS.Five.D.R001 using (lem-comm-TOFF013-CSd24)
 open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-CCZ024-CX13 ; lem-comm-TOFF013-CS24 ; lem-comm-TOFF013-CX24)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-box-cP-at122441 : Ws → St 850
+  lem-box-cP-at122441 = pickᴰ 0 Sᴰ
+  lem-box2-at122441 : Ws → St 1082
+  lem-box2-at122441 = pickᴰ 1 Sᴰ
+  lem-S2-SBOX⟨0·1·42·3⟩ : Ws → St 1313
+  lem-S2-SBOX⟨0·1·42·3⟩ = pickᴰ 2 Sᴰ
+  lem-S2-SBOX⟨0·2·43·1⟩ : Ws → St 1314
+  lem-S2-SBOX⟨0·2·43·1⟩ = pickᴰ 3 Sᴰ
+  lem-CKc-box-at13213442 : Ws → St 1324
+  lem-CKc-box-at13213442 = pickᴰ 4 Sᴰ
+  lem-box-perm-3421-at122441 : Ws → St 1330
+  lem-box-perm-3421-at122441 = pickᴰ 5 Sᴰ
+  lem-box-perm-4312-at13213442 : Ws → St 1335
+  lem-box-perm-4312-at13213442 = pickᴰ 6 Sᴰ
+  lem-nf-rel-268at1 : Ws → St 1513
+  lem-nf-rel-268at1 = pickᴰ 7 Sᴰ
 
 private
   q1 : Ws → Eqn

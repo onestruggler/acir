@@ -31,7 +31,7 @@ open import Examples.Groups.Clifford+CS.Lambda.Split using (F5 ; split)
 open import Examples.Groups.Clifford+CS.Five.Rules using (_⊢ₓ_≈_)
 open import Examples.Groups.Clifford+CS.Five.Chain
 open import Examples.Groups.Clifford+CS.Five.Flat using (by-flat)
-open import Examples.Groups.Clifford+CS.Five.D.D025 using (lem-F5-01 ; lem-F5-12 ; lem-F5-23)
+open import Examples.Groups.Clifford+CS.Five.DAll.F5 using (lem-F5-01 ; lem-F5-12 ; lem-F5-23)
 
 f5 : Ws → F5
 f5 c4 = record

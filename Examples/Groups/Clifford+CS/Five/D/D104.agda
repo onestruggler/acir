@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D104 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD104 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D104 (Sᴰ : SD104) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,16 +15,46 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D003 using (lem-F4-K2-I-at0440 ; lem-F4-K2-K1-at0440 ; lem-F4-K2-K2-at0440)
-open import Examples.Groups.Clifford+CS.Five.D.D017 using (lem-F4-CS1-CS1-at0440 ; lem-F4-CS1-I-at0440 ; lem-F4-CS1-K1-at0440)
-open import Examples.Groups.Clifford+CS.Five.D.D023 using (lem-F4-CS2-CS2-at0440 ; lem-F4-CS2-I-at0440 ; lem-F4-CS2-K2-at0440 ; lem-F4-K2-CS2-at0440)
-open import Examples.Groups.Clifford+CS.Five.D.D025 using (lem-F5-12 ; lem-F5-23)
-open import Examples.Groups.Clifford+CS.Five.D.D033 using (lem-F4-CS2-K1-at0440)
-open import Examples.Groups.Clifford+CS.Five.D.D060 using (lem-F4-CS1-K2-at0440)
-open import Examples.Groups.Clifford+CS.Five.D.D061 using (lem-F4-CS1-CS2-at0440 ; lem-F4-CS2-CS1-at0440 ; lem-F4-K2-CS1-at0440)
 open import Examples.Groups.Clifford+CS.Five.D.R009 using (lem-comm-push-SBOX⟨2·1·43·0⟩-sw2-R ; lem-comm-push-SBOX⟨3·1·42·0⟩-sw3-R ; lem-comm-push-SBOX⟨4·1·32·0⟩-sw2-R)
 open import Examples.Groups.Clifford+CS.Five.D.R010 using (lem-comm-push-SBOX⟨0·1·42·3⟩-sw0-R ; lem-comm-push-SBOX⟨0·2·43·1⟩-sw0-R ; lem-comm-push-SBOX⟨1·0·42·3⟩-sw1-R ; lem-comm-push-SBOX⟨1·2·43·0⟩-sw1-R ; lem-comm-push-SBOX⟨2·0·41·3⟩-sw2-R ; lem-comm-push-SBOX⟨3·0·41·2⟩-sw3-R ; lem-comm-push-SBOX⟨4·0·21·3⟩-sw1-R ; lem-comm-push-SBOX⟨4·1·23·0⟩-sw1-R ; lem-comm-push-SBOX⟨4·2·13·0⟩-sw0-R)
 open import Examples.Groups.Clifford+CS.Five.D.R011 using (lem-comm-push-SBOX⟨4·0·12·3⟩-sw0-R ; lem-comm-push-SBOX⟨4·0·31·2⟩-sw2-R)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-F4-K2-I-at0440 : Ws → St 1615
+  lem-F4-K2-I-at0440 = pickᴰ 0 Sᴰ
+  lem-F4-K2-K1-at0440 : Ws → St 1602
+  lem-F4-K2-K1-at0440 = pickᴰ 1 Sᴰ
+  lem-F4-K2-K2-at0440 : Ws → St 1603
+  lem-F4-K2-K2-at0440 = pickᴰ 2 Sᴰ
+  lem-F4-CS1-CS1-at0440 : Ws → St 1604
+  lem-F4-CS1-CS1-at0440 = pickᴰ 3 Sᴰ
+  lem-F4-CS1-I-at0440 : Ws → St 1616
+  lem-F4-CS1-I-at0440 = pickᴰ 4 Sᴰ
+  lem-F4-CS1-K1-at0440 : Ws → St 1605
+  lem-F4-CS1-K1-at0440 = pickᴰ 5 Sᴰ
+  lem-F4-CS2-CS2-at0440 : Ws → St 1606
+  lem-F4-CS2-CS2-at0440 = pickᴰ 6 Sᴰ
+  lem-F4-CS2-I-at0440 : Ws → St 1607
+  lem-F4-CS2-I-at0440 = pickᴰ 7 Sᴰ
+  lem-F4-CS2-K2-at0440 : Ws → St 1608
+  lem-F4-CS2-K2-at0440 = pickᴰ 8 Sᴰ
+  lem-F4-K2-CS2-at0440 : Ws → St 1609
+  lem-F4-K2-CS2-at0440 = pickᴰ 9 Sᴰ
+  lem-F5-12 : Ws → St 1580
+  lem-F5-12 = pickᴰ 10 Sᴰ
+  lem-F5-23 : Ws → St 1377
+  lem-F5-23 = pickᴰ 11 Sᴰ
+  lem-F4-CS2-K1-at0440 : Ws → St 1610
+  lem-F4-CS2-K1-at0440 = pickᴰ 12 Sᴰ
+  lem-F4-CS1-K2-at0440 : Ws → St 1611
+  lem-F4-CS1-K2-at0440 = pickᴰ 13 Sᴰ
+  lem-F4-CS1-CS2-at0440 : Ws → St 1612
+  lem-F4-CS1-CS2-at0440 = pickᴰ 14 Sᴰ
+  lem-F4-CS2-CS1-at0440 : Ws → St 1613
+  lem-F4-CS2-CS1-at0440 = pickᴰ 15 Sᴰ
+  lem-F4-K2-CS1-at0440 : Ws → St 1614
+  lem-F4-K2-CS1-at0440 = pickᴰ 16 Sᴰ
 
 private
   q1 : Ws → Eqn

@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D156 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD156 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D156 (Sᴰ : SD156) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,12 +15,23 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D018 using (lem-F4-CS2-I)
-open import Examples.Groups.Clifford+CS.Five.D.D019 using (lem-F4-CS2-K2)
-open import Examples.Groups.Clifford+CS.Five.D.D020 using (lem-F4-CS2-CS2)
-open import Examples.Groups.Clifford+CS.Five.D.D025 using (lem-F4-CS2-K1 ; lem-F4-CS2-K3)
-open import Examples.Groups.Clifford+CS.Five.D.D038 using (lem-F4-CS2-CS1)
-open import Examples.Groups.Clifford+CS.Five.D.D067 using (lem-F4-CS2-CS0)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-F4-CS2-I : Ws → St 1363
+  lem-F4-CS2-I = pickᴰ 0 Sᴰ
+  lem-F4-CS2-K2 : Ws → St 1367
+  lem-F4-CS2-K2 = pickᴰ 1 Sᴰ
+  lem-F4-CS2-CS2 : Ws → St 1368
+  lem-F4-CS2-CS2 = pickᴰ 2 Sᴰ
+  lem-F4-CS2-K1 : Ws → St 1579
+  lem-F4-CS2-K1 = pickᴰ 3 Sᴰ
+  lem-F4-CS2-K3 : Ws → St 1402
+  lem-F4-CS2-K3 = pickᴰ 4 Sᴰ
+  lem-F4-CS2-CS1 : Ws → St 1584
+  lem-F4-CS2-CS1 = pickᴰ 5 Sᴰ
+  lem-F4-CS2-CS0 : Ws → St 1721
+  lem-F4-CS2-CS0 = pickᴰ 6 Sᴰ
 
 private
   q1 : Ws → Eqn

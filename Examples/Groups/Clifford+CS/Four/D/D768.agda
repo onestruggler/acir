@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD768 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D768 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D768 (W : Ws) (Sᴰ : SD768) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,10 +16,27 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D750 W using (lem-PP2≡E-at1023 ; lem-PP2≡E-at3012)
-open import Examples.Groups.Clifford+CS.Four.D.D758 W using (lem-L87-merge-p-0123-3)
-open import Examples.Groups.Clifford+CS.Four.D.D760 W using (lem-merge-R0)
-open import Examples.Groups.Clifford+CS.Four.D.D764 W using (lem-L87-merge-p-0123-1 ; lem-L87-merge-p-0123-2 ; lem-L87-merge-p-1023-2 ; lem-L87-merge-p-1023-3 ; lem-L87-merge-p-2013-3)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-PP2≡E-at1023 : St 2862
+  lem-PP2≡E-at1023 = pickᴰ 0 Sᴰ
+  lem-PP2≡E-at3012 : St 3207
+  lem-PP2≡E-at3012 = pickᴰ 1 Sᴰ
+  lem-L87-merge-p-0123-3 : St 3208
+  lem-L87-merge-p-0123-3 = pickᴰ 2 Sᴰ
+  lem-merge-R0 : St 3093
+  lem-merge-R0 = pickᴰ 3 Sᴰ
+  lem-L87-merge-p-0123-1 : St 3209
+  lem-L87-merge-p-0123-1 = pickᴰ 4 Sᴰ
+  lem-L87-merge-p-0123-2 : St 3210
+  lem-L87-merge-p-0123-2 = pickᴰ 5 Sᴰ
+  lem-L87-merge-p-1023-2 : St 3211
+  lem-L87-merge-p-1023-2 = pickᴰ 6 Sᴰ
+  lem-L87-merge-p-1023-3 : St 3212
+  lem-L87-merge-p-1023-3 = pickᴰ 7 Sᴰ
+  lem-L87-merge-p-2013-3 : St 3213
+  lem-L87-merge-p-2013-3 = pickᴰ 8 Sᴰ
 
 private
   q1 : Eqn

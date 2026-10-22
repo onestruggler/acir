@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D229 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD229 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D229 (Sᴰ : SD229) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,10 +15,17 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D212 using (lem-F1-ck-tctat0-part1)
-open import Examples.Groups.Clifford+CS.Five.D.D213 using (lem-F1-ck-tctat0-part2)
-open import Examples.Groups.Clifford+CS.Five.D.D227 using (lem-F1-ck-tctat0-part0)
-open import Examples.Groups.Clifford+CS.Five.D.D228 using (lem-F1-ck-tctat0-part3)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-F1-ck-tctat0-part1 : Ws → St 2055
+  lem-F1-ck-tctat0-part1 = pickᴰ 0 Sᴰ
+  lem-F1-ck-tctat0-part2 : Ws → St 2056
+  lem-F1-ck-tctat0-part2 = pickᴰ 1 Sᴰ
+  lem-F1-ck-tctat0-part0 : Ws → St 2057
+  lem-F1-ck-tctat0-part0 = pickᴰ 2 Sᴰ
+  lem-F1-ck-tctat0-part3 : Ws → St 2058
+  lem-F1-ck-tctat0-part3 = pickᴰ 3 Sᴰ
 
 private
   q1 : Ws → Eqn

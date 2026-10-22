@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD624 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D624 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D624 (W : Ws) (Sᴰ : SD624) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -15,10 +17,27 @@ open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
 open import Examples.Groups.Clifford+CS.Canonical using (can-≈)
-open import Examples.Groups.Clifford+CS.Four.D.D009 W using (lem-pass-CS13-vs-CS03 ; lem-pass-CS13-vs-CSd03 ; lem-pass-CS13-vs-S0 ; lem-pass-CS13-vs-Sd0)
-open import Examples.Groups.Clifford+CS.Four.D.D023 W using (lem-pass-CS13-vs-S3 ; lem-pass-CS13-vs-Sd3 ; lem-pass-CS13-vs-iI)
-open import Examples.Groups.Clifford+CS.Four.D.D596 W using (lem-pass-CS13-vs-TOFF012)
-open import Examples.Groups.Clifford+CS.Four.D.D597 W using (lem-pass-CCZ123-vs-TOFF013)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-pass-CS13-vs-CS03 : St 1092
+  lem-pass-CS13-vs-CS03 = pickᴰ 0 Sᴰ
+  lem-pass-CS13-vs-CSd03 : St 1093
+  lem-pass-CS13-vs-CSd03 = pickᴰ 1 Sᴰ
+  lem-pass-CS13-vs-S0 : St 63
+  lem-pass-CS13-vs-S0 = pickᴰ 2 Sᴰ
+  lem-pass-CS13-vs-Sd0 : St 1428
+  lem-pass-CS13-vs-Sd0 = pickᴰ 3 Sᴰ
+  lem-pass-CS13-vs-S3 : St 1462
+  lem-pass-CS13-vs-S3 = pickᴰ 4 Sᴰ
+  lem-pass-CS13-vs-Sd3 : St 1463
+  lem-pass-CS13-vs-Sd3 = pickᴰ 5 Sᴰ
+  lem-pass-CS13-vs-iI : St 1464
+  lem-pass-CS13-vs-iI = pickᴰ 6 Sᴰ
+  lem-pass-CS13-vs-TOFF012 : St 1434
+  lem-pass-CS13-vs-TOFF012 = pickᴰ 7 Sᴰ
+  lem-pass-CCZ123-vs-TOFF013 : St 1465
+  lem-pass-CCZ123-vs-TOFF013 = pickᴰ 8 Sᴰ
 
 private
   q1 : Eqn

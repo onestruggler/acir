@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D045 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD045 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D045 (Sᴰ : SD045) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,12 +15,24 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D016 using (lem-box-cP-at12233441 ; lem-box-cP-at122441)
-open import Examples.Groups.Clifford+CS.Five.D.D018 using (lem-box-perm-1324-at122441 ; lem-box2-at243243)
-open import Examples.Groups.Clifford+CS.Five.D.D025 using (lem-box-perm-4132-at122441 ; lem-box-perm-4213-at122441)
 open import Examples.Groups.Clifford+CS.Five.D.R001 using (lem-comm-TOFF013-CSd24)
 open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-CCZ024-CSd13 ; lem-comm-CCZ024-CX13 ; lem-comm-TOFF013-CS24 ; lem-comm-TOFF013-CX24 ; lem-comm-TOFF014-CX23)
 open import Examples.Groups.Clifford+CS.Five.D.R009 using (lem-comm-CCZ023-CX14)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-box-cP-at12233441 : Ws → St 902
+  lem-box-cP-at12233441 = pickᴰ 0 Sᴰ
+  lem-box-cP-at122441 : Ws → St 850
+  lem-box-cP-at122441 = pickᴰ 1 Sᴰ
+  lem-box-perm-1324-at122441 : Ws → St 1078
+  lem-box-perm-1324-at122441 = pickᴰ 2 Sᴰ
+  lem-box2-at243243 : Ws → St 1083
+  lem-box2-at243243 = pickᴰ 3 Sᴰ
+  lem-box-perm-4132-at122441 : Ws → St 1350
+  lem-box-perm-4132-at122441 = pickᴰ 4 Sᴰ
+  lem-box-perm-4213-at122441 : Ws → St 1310
+  lem-box-perm-4213-at122441 = pickᴰ 5 Sᴰ
 
 private
   q1 : Ws → Eqn

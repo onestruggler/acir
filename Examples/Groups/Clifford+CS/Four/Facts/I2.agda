@@ -27,8 +27,7 @@ open import Examples.Groups.Clifford+CS.Decoding 0 using (dPP₁ ; dPP₁′ ; l
 open import Examples.Groups.Clifford+CS.Four.Facts.Bridges
 open import Examples.Groups.Clifford+CS.Four.Facts.Classes
 import Examples.Groups.Clifford+CS.Four.WinInst as WI
-open import Examples.Groups.Clifford+CS.Four.D.D703 WI.ws using (lem-resp-TOFF023-CS01-TOFF023-CSd01 ; lem-resp-TOFF123-CS01-TOFF123-CSd01)
-open import Examples.Groups.Clifford+CS.Four.D.D715 WI.ws using (lem-resp-S0-K0-CS01-TOFF023-CSd01-TOFF023-Kd0-Sd0 ; lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1)
+open import Examples.Groups.Clifford+CS.Four.DAll WI.ws using (lem-resp-TOFF023-CS01-TOFF023-CSd01 ; lem-resp-TOFF123-CS01-TOFF123-CSd01 ; lem-resp-S0-K0-CS01-TOFF023-CSd01-TOFF023-Kd0-Sd0 ; lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1)
 
 i-p-adj-0 : dPP₁ 0 • dPP₁ 1 ≈ dPP₁ 1 • dPP₁ 0
 i-p-adj-0 = trans (trans (cong br-p-0 br-p-1) (sym (++≈ (flatB B-p-0) (flat (B-p-1 ∷ [])))))

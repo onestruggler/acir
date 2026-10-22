@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD639 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D639 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D639 (W : Ws) (Sᴰ : SD639) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,8 +16,17 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D608 W using (lem-pass-X0-X3-CS01-CS01-CK10-CS01-CK10-CK10-CX13-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX13-CS03-CS03-CK30-CS03-CK30-CK30-X0-X3-vs-X1-TOFF312-X1)
-open import Examples.Groups.Clifford+CS.Four.D.D609 W using (lem-Bar⟨SSKSKK12-⟶0⟩-passes-factors-of-X1-X2-X3-TOFF312-X1-X2-X3 ; lem-Bar⟨SSSKSS13-⟶0⟩-passes-factors-of-X0-X1-X2-CS01-CS01-CK10-CS01-CK10-CK10-CX12-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CK20-CS02-CK20-CK20-X0-X1-X2 ; lem-Bar⟨SSSKSS13-⟶0⟩-passes-factors-of-X1-X2-X3-TOFF312-X1-X2-X3)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-pass-X0-X3-CS01-CS01-CK10-CS01-CK10-CK10-CX13-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX13-CS03-CS03-CK30-CS03-CK30-CK30-X0-X3-vs-X1-TOFF312-X1 : St 1542
+  lem-pass-X0-X3-CS01-CS01-CK10-CS01-CK10-CK10-CX13-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX13-CS03-CS03-CK30-CS03-CK30-CK30-X0-X3-vs-X1-TOFF312-X1 = pickᴰ 0 Sᴰ
+  lem-Bar⟨SSKSKK12-⟶0⟩-passes-factors-of-X1-X2-X3-TOFF312-X1-X2-X3 : St 1543
+  lem-Bar⟨SSKSKK12-⟶0⟩-passes-factors-of-X1-X2-X3-TOFF312-X1-X2-X3 = pickᴰ 1 Sᴰ
+  lem-Bar⟨SSSKSS13-⟶0⟩-passes-factors-of-X0-X1-X2-CS01-CS01-CK10-CS01-CK10-CK10-CX12-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CK20-CS02-CK20-CK20-X0-X1-X2 : St 1544
+  lem-Bar⟨SSSKSS13-⟶0⟩-passes-factors-of-X0-X1-X2-CS01-CS01-CK10-CS01-CK10-CK10-CX12-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CK20-CS02-CK20-CK20-X0-X1-X2 = pickᴰ 2 Sᴰ
+  lem-Bar⟨SSSKSS13-⟶0⟩-passes-factors-of-X1-X2-X3-TOFF312-X1-X2-X3 : St 1545
+  lem-Bar⟨SSSKSS13-⟶0⟩-passes-factors-of-X1-X2-X3-TOFF312-X1-X2-X3 = pickᴰ 3 Sᴰ
 
 private
   q1 : Eqn

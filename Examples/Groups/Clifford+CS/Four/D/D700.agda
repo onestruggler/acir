@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD700 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D700 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D700 (W : Ws) (Sᴰ : SD700) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,11 +16,19 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D448 W using (lem-hyb-sym-23-at2310-part0)
-open import Examples.Groups.Clifford+CS.Four.D.D449 W using (lem-hyb-sym-23-at2310-part2)
-open import Examples.Groups.Clifford+CS.Four.D.D669 W using (lem-hyb-sym-23-at0213)
-open import Examples.Groups.Clifford+CS.Four.D.D671 W using (lem-hyb-sym-23-at1023)
-open import Examples.Groups.Clifford+CS.Four.D.D672 W using (lem-hyb-sym-23-at2310-part1)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-hyb-sym-23-at2310-part0 : St 1897
+  lem-hyb-sym-23-at2310-part0 = pickᴰ 0 Sᴰ
+  lem-hyb-sym-23-at2310-part2 : St 1898
+  lem-hyb-sym-23-at2310-part2 = pickᴰ 1 Sᴰ
+  lem-hyb-sym-23-at0213 : St 1896
+  lem-hyb-sym-23-at0213 = pickᴰ 2 Sᴰ
+  lem-hyb-sym-23-at1023 : St 1899
+  lem-hyb-sym-23-at1023 = pickᴰ 3 Sᴰ
+  lem-hyb-sym-23-at2310-part1 : St 1900
+  lem-hyb-sym-23-at2310-part1 = pickᴰ 4 Sᴰ
 
 private
   q1 : Eqn

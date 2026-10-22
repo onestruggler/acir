@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD764 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D764 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D764 (W : Ws) (Sᴰ : SD764) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,14 +16,33 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D651 W using (lem-S2)
-open import Examples.Groups.Clifford+CS.Four.D.D677 W using (lem-S2-at0213 ; lem-S2-at1023)
-open import Examples.Groups.Clifford+CS.Four.D.D725 W using (lem-pass-TOFF312-vs-X1-TOFF012-CS03-TOFF012-CSd03-X1)
-open import Examples.Groups.Clifford+CS.Four.D.D750 W using (lem-pass-CS01-CS01-CS01-CK10-CS01-CS01-CX13-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX13-CS03-CS03-CS03-CK30-CS03-CS03-vs-X1-TOFF012-CS03-TOFF012-CSd03-X1)
-open import Examples.Groups.Clifford+CS.Four.D.D751 W using (lem-merge3-at1023)
-open import Examples.Groups.Clifford+CS.Four.D.D752 W using (lem-merge3-at1032)
-open import Examples.Groups.Clifford+CS.Four.D.D758 W using (lem-merge3-at0321 ; lem-pass-CS01-CS01-CK10-CS01-CK10-CK10-CX12-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CK20-CS02-CK20-CK20-vs-X1-TOFF012-CS03-TOFF012-CSd03-X1 ; lem-pass-CS01-CS01-CK10-CS01-CK10-CK10-CX13-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX13-CS03-CS03-CK30-CS03-CK30-CK30-vs-X1-TOFF012-CS03-TOFF012-CSd03-X1)
-open import Examples.Groups.Clifford+CS.Four.D.D759 W using (lem-merge3-at0132 ; lem-merge3-at2013)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-S2 : St 1778
+  lem-S2 = pickᴰ 0 Sᴰ
+  lem-S2-at0213 : St 1917
+  lem-S2-at0213 = pickᴰ 1 Sᴰ
+  lem-S2-at1023 : St 1918
+  lem-S2-at1023 = pickᴰ 2 Sᴰ
+  lem-pass-TOFF312-vs-X1-TOFF012-CS03-TOFF012-CSd03-X1 : St 3059
+  lem-pass-TOFF312-vs-X1-TOFF012-CS03-TOFF012-CSd03-X1 = pickᴰ 3 Sᴰ
+  lem-pass-CS01-CS01-CS01-CK10-CS01-CS01-CX13-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX13-CS03-CS03-CS03-CK30-CS03-CS03-vs-X1-TOFF012-CS03-TOFF012-CSd03-X1 : St 3060
+  lem-pass-CS01-CS01-CS01-CK10-CS01-CS01-CX13-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX13-CS03-CS03-CS03-CK30-CS03-CS03-vs-X1-TOFF012-CS03-TOFF012-CSd03-X1 = pickᴰ 4 Sᴰ
+  lem-merge3-at1023 : St 2909
+  lem-merge3-at1023 = pickᴰ 5 Sᴰ
+  lem-merge3-at1032 : St 2917
+  lem-merge3-at1032 = pickᴰ 6 Sᴰ
+  lem-merge3-at0321 : St 3058
+  lem-merge3-at0321 = pickᴰ 7 Sᴰ
+  lem-pass-CS01-CS01-CK10-CS01-CK10-CK10-CX12-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CK20-CS02-CK20-CK20-vs-X1-TOFF012-CS03-TOFF012-CSd03-X1 : St 3061
+  lem-pass-CS01-CS01-CK10-CS01-CK10-CK10-CX12-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CK20-CS02-CK20-CK20-vs-X1-TOFF012-CS03-TOFF012-CSd03-X1 = pickᴰ 8 Sᴰ
+  lem-pass-CS01-CS01-CK10-CS01-CK10-CK10-CX13-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX13-CS03-CS03-CK30-CS03-CK30-CK30-vs-X1-TOFF012-CS03-TOFF012-CSd03-X1 : St 3062
+  lem-pass-CS01-CS01-CK10-CS01-CK10-CK10-CX13-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX13-CS03-CS03-CK30-CS03-CK30-CK30-vs-X1-TOFF012-CS03-TOFF012-CSd03-X1 = pickᴰ 9 Sᴰ
+  lem-merge3-at0132 : St 3063
+  lem-merge3-at0132 = pickᴰ 10 Sᴰ
+  lem-merge3-at2013 : St 3064
+  lem-merge3-at2013 = pickᴰ 11 Sᴰ
 
 private
   q1 : Eqn

@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.D.D014 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD014 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.D.D014 (Sᴰ : SD014) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -12,13 +15,397 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.D004 using (lem-nat-SWbc-at0213243140 ; lem-nat-SWbc-at03102132 ; lem-nat-SWbc-at032032 ; lem-nat-SWbc-at04203243 ; lem-nat-SWbc-at13243142 ; lem-nat-SWbc-at13243241 ; lem-nat-SWbc-at14233142 ; lem-tP-at021021 ; lem-tP-at0210213443 ; lem-tP-at0213243140 ; lem-tP-at0220 ; lem-tP-at03102132 ; lem-tP-at032032 ; lem-tP-at0410213243 ; lem-tP-at04203243 ; lem-tP-at13243142 ; lem-tP-at13243241 ; lem-tP-at14233142 ; lem-tP-at14233241)
-open import Examples.Groups.Clifford+CS.Five.D.D005 using (lem-nat-SWbc-at0310213442 ; lem-nat-SWbc-at14233241)
-open import Examples.Groups.Clifford+CS.Five.D.D007 using (lem-nat-SWbc-at0220)
-open import Examples.Groups.Clifford+CS.Five.D.D009 using (lem-CSdu-box-1 ; lem-CSdu-box-2 ; lem-CSdu-box-2-at0210243143 ; lem-CSdu-box-2-at122441 ; lem-CSdu-box-2-at243243 ; lem-CSu-box-1 ; lem-CSu-box-2 ; lem-CSu-box-2-at122441 ; lem-CSu-box-2-at243243 ; lem-CXbc-box ; lem-CXbc-box-at0214203143 ; lem-CXbc-box-at0330 ; lem-CXbc-box-at043043 ; lem-CXbc-box-at1221 ; lem-CXbc-box-at12243143 ; lem-CXbc-box-at13213442 ; lem-CXbc-box-at133441 ; lem-CXcb-box ; lem-CXcb-box-at0214203143 ; lem-CXcb-box-at0330 ; lem-CXcb-box-at043043 ; lem-CXcb-box-at1221 ; lem-CXcb-box-at12243143 ; lem-CXcb-box-at13213442 ; lem-CXcb-box-at133441 ; lem-QVQ-at021021 ; lem-QVQ-at03102132 ; lem-QVQ-at0410213243 ; lem-QVQ-at04203243 ; lem-QVQ-at13243142 ; lem-QVQ-at13243241 ; lem-QVQ-at14233142 ; lem-SWbc-box-at032032 ; lem-SWbc-box-at04203243 ; lem-SWbc-box-at13243142 ; lem-SWbc-box-at13243241 ; lem-SWbc-box-at14233142 ; lem-Sdu-box ; lem-Su-box ; lem-Su-box-at0210243143 ; lem-Su-box-at122441 ; lem-Su-box-at243243 ; lem-VPQ ; lem-VPQ-at0110 ; lem-VPQ-at0210243143 ; lem-VPQ-at0310243142 ; lem-VPQ-at0314203142 ; lem-VPQ-at0330 ; lem-VPQ-at043043 ; lem-VPQ-at1221 ; lem-VPQ-at122331 ; lem-VPQ-at122441 ; lem-VPQ-at132132 ; lem-VPQ-at13213442 ; lem-VPQ-at1331 ; lem-VPQ-at2332 ; lem-VPQ-at243243 ; lem-VPQ-at3443)
-open import Examples.Groups.Clifford+CS.Five.D.D010 using (lem-CSu-box-2-at0210243143 ; lem-CXbc-box-at0210243143 ; lem-CXbc-box-at0213213440 ; lem-CXbc-box-at0214213043 ; lem-CXbc-box-at022330 ; lem-CXbc-box-at02233440 ; lem-CXbc-box-at022440 ; lem-CXbc-box-at0312213440 ; lem-CXbc-box-at0312243140 ; lem-CXbc-box-at0314203142 ; lem-CXbc-box-at0314213042 ; lem-CXbc-box-at122331 ; lem-CXbc-box-at12233441 ; lem-CXbc-box-at122441 ; lem-CXbc-box-at132132 ; lem-CXbc-box-at1331 ; lem-CXbc-box-at14213243 ; lem-CXbc-box-at1441 ; lem-CXbc-box-at2332 ; lem-CXbc-box-at243243 ; lem-CXcb-box-at0210243143 ; lem-CXcb-box-at0213213440 ; lem-CXcb-box-at0214213043 ; lem-CXcb-box-at022330 ; lem-CXcb-box-at02233440 ; lem-CXcb-box-at0312213440 ; lem-CXcb-box-at0312243140 ; lem-CXcb-box-at0314203142 ; lem-CXcb-box-at0314213042 ; lem-CXcb-box-at122331 ; lem-CXcb-box-at12233441 ; lem-CXcb-box-at122441 ; lem-CXcb-box-at132132 ; lem-CXcb-box-at1331 ; lem-CXcb-box-at14213243 ; lem-CXcb-box-at1441 ; lem-CXcb-box-at2332 ; lem-CXcb-box-at243243 ; lem-QVQ-at0210213443 ; lem-QVQ-at0213243140 ; lem-QVQ-at0220 ; lem-QVQ-at032032 ; lem-QVQ-at14233241 ; lem-SWbc-box-at0213243140 ; lem-SWbc-box-at0220 ; lem-SWbc-box-at03102132 ; lem-VPQ-at0210233441 ; lem-VPQ-at0213203441 ; lem-VPQ-at0214203143 ; lem-VPQ-at0214213043 ; lem-VPQ-at022330 ; lem-VPQ-at022440 ; lem-VPQ-at0312243140 ; lem-VPQ-at0314213042 ; lem-VPQ-at12213443 ; lem-VPQ-at12233441 ; lem-VPQ-at14213243 ; lem-VPQ-at143143 ; lem-VPQ-at233442)
-open import Examples.Groups.Clifford+CS.Five.D.D011 using (lem-CXbc-box-at0210233441 ; lem-CXbc-box-at02102441 ; lem-CXbc-box-at02142041 ; lem-CXbc-box-at0310243142 ; lem-CXbc-box-at0310243241 ; lem-CXbc-box-at031031 ; lem-CXbc-box-at03103441 ; lem-CXbc-box-at0312203441 ; lem-CXbc-box-at0312243041 ; lem-CXbc-box-at0314213240 ; lem-CXbc-box-at03143041 ; lem-CXbc-box-at03143140 ; lem-CXbc-box-at03243240 ; lem-CXbc-box-at033440 ; lem-CXbc-box-at12213443 ; lem-CXbc-box-at143143 ; lem-CXbc-box-at233442 ; lem-CXbc-box-at2442 ; lem-CXbc-box-at3443 ; lem-CXcb-box-at0210233441 ; lem-CXcb-box-at02102441 ; lem-CXcb-box-at022440 ; lem-CXcb-box-at0310243142 ; lem-CXcb-box-at0310243241 ; lem-CXcb-box-at031031 ; lem-CXcb-box-at03103441 ; lem-CXcb-box-at0312203441 ; lem-CXcb-box-at0312243041 ; lem-CXcb-box-at0314213240 ; lem-CXcb-box-at03143041 ; lem-CXcb-box-at03143140 ; lem-CXcb-box-at03243240 ; lem-CXcb-box-at033440 ; lem-CXcb-box-at12213443 ; lem-CXcb-box-at143143 ; lem-CXcb-box-at233442 ; lem-CXcb-box-at2442 ; lem-CXcb-box-at3443 ; lem-SWbc-box-at0310213442 ; lem-SWbc-box-at14233241 ; lem-VPQ-at02102441 ; lem-VPQ-at02233440 ; lem-VPQ-at0310243241 ; lem-VPQ-at031031 ; lem-VPQ-at03103441 ; lem-VPQ-at0312203441 ; lem-VPQ-at0312243041 ; lem-VPQ-at0314213240 ; lem-VPQ-at03143140 ; lem-VPQ-at03243240 ; lem-VPQ-at033440 ; lem-VPQ-at12243143 ; lem-VPQ-at1441 ; lem-VPQ-at2442)
-open import Examples.Groups.Clifford+CS.Five.D.D012 using (lem-CXcb-box-at02142041)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-nat-SWbc-at0213243140 : Ws → St 310
+  lem-nat-SWbc-at0213243140 = pickᴰ 0 Sᴰ
+  lem-nat-SWbc-at03102132 : Ws → St 311
+  lem-nat-SWbc-at03102132 = pickᴰ 1 Sᴰ
+  lem-nat-SWbc-at032032 : Ws → St 312
+  lem-nat-SWbc-at032032 = pickᴰ 2 Sᴰ
+  lem-nat-SWbc-at04203243 : Ws → St 313
+  lem-nat-SWbc-at04203243 = pickᴰ 3 Sᴰ
+  lem-nat-SWbc-at13243142 : Ws → St 314
+  lem-nat-SWbc-at13243142 = pickᴰ 4 Sᴰ
+  lem-nat-SWbc-at13243241 : Ws → St 315
+  lem-nat-SWbc-at13243241 = pickᴰ 5 Sᴰ
+  lem-nat-SWbc-at14233142 : Ws → St 316
+  lem-nat-SWbc-at14233142 = pickᴰ 6 Sᴰ
+  lem-tP-at021021 : Ws → St 65
+  lem-tP-at021021 = pickᴰ 7 Sᴰ
+  lem-tP-at0210213443 : Ws → St 66
+  lem-tP-at0210213443 = pickᴰ 8 Sᴰ
+  lem-tP-at0213243140 : Ws → St 84
+  lem-tP-at0213243140 = pickᴰ 9 Sᴰ
+  lem-tP-at0220 : Ws → St 67
+  lem-tP-at0220 = pickᴰ 10 Sᴰ
+  lem-tP-at03102132 : Ws → St 68
+  lem-tP-at03102132 = pickᴰ 11 Sᴰ
+  lem-tP-at032032 : Ws → St 69
+  lem-tP-at032032 = pickᴰ 12 Sᴰ
+  lem-tP-at0410213243 : Ws → St 70
+  lem-tP-at0410213243 = pickᴰ 13 Sᴰ
+  lem-tP-at04203243 : Ws → St 71
+  lem-tP-at04203243 = pickᴰ 14 Sᴰ
+  lem-tP-at13243142 : Ws → St 72
+  lem-tP-at13243142 = pickᴰ 15 Sᴰ
+  lem-tP-at13243241 : Ws → St 73
+  lem-tP-at13243241 = pickᴰ 16 Sᴰ
+  lem-tP-at14233142 : Ws → St 74
+  lem-tP-at14233142 = pickᴰ 17 Sᴰ
+  lem-tP-at14233241 : Ws → St 75
+  lem-tP-at14233241 = pickᴰ 18 Sᴰ
+  lem-nat-SWbc-at0310213442 : Ws → St 317
+  lem-nat-SWbc-at0310213442 = pickᴰ 19 Sᴰ
+  lem-nat-SWbc-at14233241 : Ws → St 318
+  lem-nat-SWbc-at14233241 = pickᴰ 20 Sᴰ
+  lem-nat-SWbc-at0220 : Ws → St 319
+  lem-nat-SWbc-at0220 = pickᴰ 21 Sᴰ
+  lem-CSdu-box-1 : Ws → St 320
+  lem-CSdu-box-1 = pickᴰ 22 Sᴰ
+  lem-CSdu-box-2 : Ws → St 321
+  lem-CSdu-box-2 = pickᴰ 23 Sᴰ
+  lem-CSdu-box-2-at0210243143 : Ws → St 322
+  lem-CSdu-box-2-at0210243143 = pickᴰ 24 Sᴰ
+  lem-CSdu-box-2-at122441 : Ws → St 323
+  lem-CSdu-box-2-at122441 = pickᴰ 25 Sᴰ
+  lem-CSdu-box-2-at243243 : Ws → St 324
+  lem-CSdu-box-2-at243243 = pickᴰ 26 Sᴰ
+  lem-CSu-box-1 : Ws → St 325
+  lem-CSu-box-1 = pickᴰ 27 Sᴰ
+  lem-CSu-box-2 : Ws → St 326
+  lem-CSu-box-2 = pickᴰ 28 Sᴰ
+  lem-CSu-box-2-at122441 : Ws → St 327
+  lem-CSu-box-2-at122441 = pickᴰ 29 Sᴰ
+  lem-CSu-box-2-at243243 : Ws → St 328
+  lem-CSu-box-2-at243243 = pickᴰ 30 Sᴰ
+  lem-CXbc-box : Ws → St 329
+  lem-CXbc-box = pickᴰ 31 Sᴰ
+  lem-CXbc-box-at0214203143 : Ws → St 330
+  lem-CXbc-box-at0214203143 = pickᴰ 32 Sᴰ
+  lem-CXbc-box-at0330 : Ws → St 331
+  lem-CXbc-box-at0330 = pickᴰ 33 Sᴰ
+  lem-CXbc-box-at043043 : Ws → St 332
+  lem-CXbc-box-at043043 = pickᴰ 34 Sᴰ
+  lem-CXbc-box-at1221 : Ws → St 333
+  lem-CXbc-box-at1221 = pickᴰ 35 Sᴰ
+  lem-CXbc-box-at12243143 : Ws → St 334
+  lem-CXbc-box-at12243143 = pickᴰ 36 Sᴰ
+  lem-CXbc-box-at13213442 : Ws → St 335
+  lem-CXbc-box-at13213442 = pickᴰ 37 Sᴰ
+  lem-CXbc-box-at133441 : Ws → St 336
+  lem-CXbc-box-at133441 = pickᴰ 38 Sᴰ
+  lem-CXcb-box : Ws → St 337
+  lem-CXcb-box = pickᴰ 39 Sᴰ
+  lem-CXcb-box-at0214203143 : Ws → St 338
+  lem-CXcb-box-at0214203143 = pickᴰ 40 Sᴰ
+  lem-CXcb-box-at0330 : Ws → St 339
+  lem-CXcb-box-at0330 = pickᴰ 41 Sᴰ
+  lem-CXcb-box-at043043 : Ws → St 340
+  lem-CXcb-box-at043043 = pickᴰ 42 Sᴰ
+  lem-CXcb-box-at1221 : Ws → St 341
+  lem-CXcb-box-at1221 = pickᴰ 43 Sᴰ
+  lem-CXcb-box-at12243143 : Ws → St 342
+  lem-CXcb-box-at12243143 = pickᴰ 44 Sᴰ
+  lem-CXcb-box-at13213442 : Ws → St 343
+  lem-CXcb-box-at13213442 = pickᴰ 45 Sᴰ
+  lem-CXcb-box-at133441 : Ws → St 344
+  lem-CXcb-box-at133441 = pickᴰ 46 Sᴰ
+  lem-QVQ-at021021 : Ws → St 345
+  lem-QVQ-at021021 = pickᴰ 47 Sᴰ
+  lem-QVQ-at03102132 : Ws → St 346
+  lem-QVQ-at03102132 = pickᴰ 48 Sᴰ
+  lem-QVQ-at0410213243 : Ws → St 347
+  lem-QVQ-at0410213243 = pickᴰ 49 Sᴰ
+  lem-QVQ-at04203243 : Ws → St 348
+  lem-QVQ-at04203243 = pickᴰ 50 Sᴰ
+  lem-QVQ-at13243142 : Ws → St 349
+  lem-QVQ-at13243142 = pickᴰ 51 Sᴰ
+  lem-QVQ-at13243241 : Ws → St 350
+  lem-QVQ-at13243241 = pickᴰ 52 Sᴰ
+  lem-QVQ-at14233142 : Ws → St 351
+  lem-QVQ-at14233142 = pickᴰ 53 Sᴰ
+  lem-SWbc-box-at032032 : Ws → St 352
+  lem-SWbc-box-at032032 = pickᴰ 54 Sᴰ
+  lem-SWbc-box-at04203243 : Ws → St 353
+  lem-SWbc-box-at04203243 = pickᴰ 55 Sᴰ
+  lem-SWbc-box-at13243142 : Ws → St 354
+  lem-SWbc-box-at13243142 = pickᴰ 56 Sᴰ
+  lem-SWbc-box-at13243241 : Ws → St 355
+  lem-SWbc-box-at13243241 = pickᴰ 57 Sᴰ
+  lem-SWbc-box-at14233142 : Ws → St 356
+  lem-SWbc-box-at14233142 = pickᴰ 58 Sᴰ
+  lem-Sdu-box : Ws → St 357
+  lem-Sdu-box = pickᴰ 59 Sᴰ
+  lem-Su-box : Ws → St 358
+  lem-Su-box = pickᴰ 60 Sᴰ
+  lem-Su-box-at0210243143 : Ws → St 359
+  lem-Su-box-at0210243143 = pickᴰ 61 Sᴰ
+  lem-Su-box-at122441 : Ws → St 360
+  lem-Su-box-at122441 = pickᴰ 62 Sᴰ
+  lem-Su-box-at243243 : Ws → St 361
+  lem-Su-box-at243243 = pickᴰ 63 Sᴰ
+  lem-VPQ : Ws → St 362
+  lem-VPQ = pickᴰ 64 Sᴰ
+  lem-VPQ-at0110 : Ws → St 363
+  lem-VPQ-at0110 = pickᴰ 65 Sᴰ
+  lem-VPQ-at0210243143 : Ws → St 364
+  lem-VPQ-at0210243143 = pickᴰ 66 Sᴰ
+  lem-VPQ-at0310243142 : Ws → St 365
+  lem-VPQ-at0310243142 = pickᴰ 67 Sᴰ
+  lem-VPQ-at0314203142 : Ws → St 366
+  lem-VPQ-at0314203142 = pickᴰ 68 Sᴰ
+  lem-VPQ-at0330 : Ws → St 367
+  lem-VPQ-at0330 = pickᴰ 69 Sᴰ
+  lem-VPQ-at043043 : Ws → St 368
+  lem-VPQ-at043043 = pickᴰ 70 Sᴰ
+  lem-VPQ-at1221 : Ws → St 369
+  lem-VPQ-at1221 = pickᴰ 71 Sᴰ
+  lem-VPQ-at122331 : Ws → St 370
+  lem-VPQ-at122331 = pickᴰ 72 Sᴰ
+  lem-VPQ-at122441 : Ws → St 371
+  lem-VPQ-at122441 = pickᴰ 73 Sᴰ
+  lem-VPQ-at132132 : Ws → St 372
+  lem-VPQ-at132132 = pickᴰ 74 Sᴰ
+  lem-VPQ-at13213442 : Ws → St 373
+  lem-VPQ-at13213442 = pickᴰ 75 Sᴰ
+  lem-VPQ-at1331 : Ws → St 374
+  lem-VPQ-at1331 = pickᴰ 76 Sᴰ
+  lem-VPQ-at2332 : Ws → St 375
+  lem-VPQ-at2332 = pickᴰ 77 Sᴰ
+  lem-VPQ-at243243 : Ws → St 376
+  lem-VPQ-at243243 = pickᴰ 78 Sᴰ
+  lem-VPQ-at3443 : Ws → St 377
+  lem-VPQ-at3443 = pickᴰ 79 Sᴰ
+  lem-CSu-box-2-at0210243143 : Ws → St 378
+  lem-CSu-box-2-at0210243143 = pickᴰ 80 Sᴰ
+  lem-CXbc-box-at0210243143 : Ws → St 379
+  lem-CXbc-box-at0210243143 = pickᴰ 81 Sᴰ
+  lem-CXbc-box-at0213213440 : Ws → St 380
+  lem-CXbc-box-at0213213440 = pickᴰ 82 Sᴰ
+  lem-CXbc-box-at0214213043 : Ws → St 381
+  lem-CXbc-box-at0214213043 = pickᴰ 83 Sᴰ
+  lem-CXbc-box-at022330 : Ws → St 382
+  lem-CXbc-box-at022330 = pickᴰ 84 Sᴰ
+  lem-CXbc-box-at02233440 : Ws → St 383
+  lem-CXbc-box-at02233440 = pickᴰ 85 Sᴰ
+  lem-CXbc-box-at022440 : Ws → St 384
+  lem-CXbc-box-at022440 = pickᴰ 86 Sᴰ
+  lem-CXbc-box-at0312213440 : Ws → St 385
+  lem-CXbc-box-at0312213440 = pickᴰ 87 Sᴰ
+  lem-CXbc-box-at0312243140 : Ws → St 386
+  lem-CXbc-box-at0312243140 = pickᴰ 88 Sᴰ
+  lem-CXbc-box-at0314203142 : Ws → St 387
+  lem-CXbc-box-at0314203142 = pickᴰ 89 Sᴰ
+  lem-CXbc-box-at0314213042 : Ws → St 388
+  lem-CXbc-box-at0314213042 = pickᴰ 90 Sᴰ
+  lem-CXbc-box-at122331 : Ws → St 389
+  lem-CXbc-box-at122331 = pickᴰ 91 Sᴰ
+  lem-CXbc-box-at12233441 : Ws → St 390
+  lem-CXbc-box-at12233441 = pickᴰ 92 Sᴰ
+  lem-CXbc-box-at122441 : Ws → St 391
+  lem-CXbc-box-at122441 = pickᴰ 93 Sᴰ
+  lem-CXbc-box-at132132 : Ws → St 392
+  lem-CXbc-box-at132132 = pickᴰ 94 Sᴰ
+  lem-CXbc-box-at1331 : Ws → St 393
+  lem-CXbc-box-at1331 = pickᴰ 95 Sᴰ
+  lem-CXbc-box-at14213243 : Ws → St 394
+  lem-CXbc-box-at14213243 = pickᴰ 96 Sᴰ
+  lem-CXbc-box-at1441 : Ws → St 395
+  lem-CXbc-box-at1441 = pickᴰ 97 Sᴰ
+  lem-CXbc-box-at2332 : Ws → St 396
+  lem-CXbc-box-at2332 = pickᴰ 98 Sᴰ
+  lem-CXbc-box-at243243 : Ws → St 397
+  lem-CXbc-box-at243243 = pickᴰ 99 Sᴰ
+  lem-CXcb-box-at0210243143 : Ws → St 398
+  lem-CXcb-box-at0210243143 = pickᴰ 100 Sᴰ
+  lem-CXcb-box-at0213213440 : Ws → St 399
+  lem-CXcb-box-at0213213440 = pickᴰ 101 Sᴰ
+  lem-CXcb-box-at0214213043 : Ws → St 400
+  lem-CXcb-box-at0214213043 = pickᴰ 102 Sᴰ
+  lem-CXcb-box-at022330 : Ws → St 401
+  lem-CXcb-box-at022330 = pickᴰ 103 Sᴰ
+  lem-CXcb-box-at02233440 : Ws → St 402
+  lem-CXcb-box-at02233440 = pickᴰ 104 Sᴰ
+  lem-CXcb-box-at0312213440 : Ws → St 403
+  lem-CXcb-box-at0312213440 = pickᴰ 105 Sᴰ
+  lem-CXcb-box-at0312243140 : Ws → St 404
+  lem-CXcb-box-at0312243140 = pickᴰ 106 Sᴰ
+  lem-CXcb-box-at0314203142 : Ws → St 405
+  lem-CXcb-box-at0314203142 = pickᴰ 107 Sᴰ
+  lem-CXcb-box-at0314213042 : Ws → St 406
+  lem-CXcb-box-at0314213042 = pickᴰ 108 Sᴰ
+  lem-CXcb-box-at122331 : Ws → St 407
+  lem-CXcb-box-at122331 = pickᴰ 109 Sᴰ
+  lem-CXcb-box-at12233441 : Ws → St 408
+  lem-CXcb-box-at12233441 = pickᴰ 110 Sᴰ
+  lem-CXcb-box-at122441 : Ws → St 409
+  lem-CXcb-box-at122441 = pickᴰ 111 Sᴰ
+  lem-CXcb-box-at132132 : Ws → St 410
+  lem-CXcb-box-at132132 = pickᴰ 112 Sᴰ
+  lem-CXcb-box-at1331 : Ws → St 411
+  lem-CXcb-box-at1331 = pickᴰ 113 Sᴰ
+  lem-CXcb-box-at14213243 : Ws → St 412
+  lem-CXcb-box-at14213243 = pickᴰ 114 Sᴰ
+  lem-CXcb-box-at1441 : Ws → St 413
+  lem-CXcb-box-at1441 = pickᴰ 115 Sᴰ
+  lem-CXcb-box-at2332 : Ws → St 414
+  lem-CXcb-box-at2332 = pickᴰ 116 Sᴰ
+  lem-CXcb-box-at243243 : Ws → St 415
+  lem-CXcb-box-at243243 = pickᴰ 117 Sᴰ
+  lem-QVQ-at0210213443 : Ws → St 416
+  lem-QVQ-at0210213443 = pickᴰ 118 Sᴰ
+  lem-QVQ-at0213243140 : Ws → St 417
+  lem-QVQ-at0213243140 = pickᴰ 119 Sᴰ
+  lem-QVQ-at0220 : Ws → St 418
+  lem-QVQ-at0220 = pickᴰ 120 Sᴰ
+  lem-QVQ-at032032 : Ws → St 419
+  lem-QVQ-at032032 = pickᴰ 121 Sᴰ
+  lem-QVQ-at14233241 : Ws → St 420
+  lem-QVQ-at14233241 = pickᴰ 122 Sᴰ
+  lem-SWbc-box-at0213243140 : Ws → St 421
+  lem-SWbc-box-at0213243140 = pickᴰ 123 Sᴰ
+  lem-SWbc-box-at0220 : Ws → St 422
+  lem-SWbc-box-at0220 = pickᴰ 124 Sᴰ
+  lem-SWbc-box-at03102132 : Ws → St 423
+  lem-SWbc-box-at03102132 = pickᴰ 125 Sᴰ
+  lem-VPQ-at0210233441 : Ws → St 424
+  lem-VPQ-at0210233441 = pickᴰ 126 Sᴰ
+  lem-VPQ-at0213203441 : Ws → St 425
+  lem-VPQ-at0213203441 = pickᴰ 127 Sᴰ
+  lem-VPQ-at0214203143 : Ws → St 426
+  lem-VPQ-at0214203143 = pickᴰ 128 Sᴰ
+  lem-VPQ-at0214213043 : Ws → St 427
+  lem-VPQ-at0214213043 = pickᴰ 129 Sᴰ
+  lem-VPQ-at022330 : Ws → St 428
+  lem-VPQ-at022330 = pickᴰ 130 Sᴰ
+  lem-VPQ-at022440 : Ws → St 429
+  lem-VPQ-at022440 = pickᴰ 131 Sᴰ
+  lem-VPQ-at0312243140 : Ws → St 430
+  lem-VPQ-at0312243140 = pickᴰ 132 Sᴰ
+  lem-VPQ-at0314213042 : Ws → St 431
+  lem-VPQ-at0314213042 = pickᴰ 133 Sᴰ
+  lem-VPQ-at12213443 : Ws → St 432
+  lem-VPQ-at12213443 = pickᴰ 134 Sᴰ
+  lem-VPQ-at12233441 : Ws → St 433
+  lem-VPQ-at12233441 = pickᴰ 135 Sᴰ
+  lem-VPQ-at14213243 : Ws → St 434
+  lem-VPQ-at14213243 = pickᴰ 136 Sᴰ
+  lem-VPQ-at143143 : Ws → St 435
+  lem-VPQ-at143143 = pickᴰ 137 Sᴰ
+  lem-VPQ-at233442 : Ws → St 436
+  lem-VPQ-at233442 = pickᴰ 138 Sᴰ
+  lem-CXbc-box-at0210233441 : Ws → St 437
+  lem-CXbc-box-at0210233441 = pickᴰ 139 Sᴰ
+  lem-CXbc-box-at02102441 : Ws → St 438
+  lem-CXbc-box-at02102441 = pickᴰ 140 Sᴰ
+  lem-CXbc-box-at02142041 : Ws → St 439
+  lem-CXbc-box-at02142041 = pickᴰ 141 Sᴰ
+  lem-CXbc-box-at0310243142 : Ws → St 440
+  lem-CXbc-box-at0310243142 = pickᴰ 142 Sᴰ
+  lem-CXbc-box-at0310243241 : Ws → St 441
+  lem-CXbc-box-at0310243241 = pickᴰ 143 Sᴰ
+  lem-CXbc-box-at031031 : Ws → St 442
+  lem-CXbc-box-at031031 = pickᴰ 144 Sᴰ
+  lem-CXbc-box-at03103441 : Ws → St 443
+  lem-CXbc-box-at03103441 = pickᴰ 145 Sᴰ
+  lem-CXbc-box-at0312203441 : Ws → St 444
+  lem-CXbc-box-at0312203441 = pickᴰ 146 Sᴰ
+  lem-CXbc-box-at0312243041 : Ws → St 445
+  lem-CXbc-box-at0312243041 = pickᴰ 147 Sᴰ
+  lem-CXbc-box-at0314213240 : Ws → St 446
+  lem-CXbc-box-at0314213240 = pickᴰ 148 Sᴰ
+  lem-CXbc-box-at03143041 : Ws → St 447
+  lem-CXbc-box-at03143041 = pickᴰ 149 Sᴰ
+  lem-CXbc-box-at03143140 : Ws → St 448
+  lem-CXbc-box-at03143140 = pickᴰ 150 Sᴰ
+  lem-CXbc-box-at03243240 : Ws → St 449
+  lem-CXbc-box-at03243240 = pickᴰ 151 Sᴰ
+  lem-CXbc-box-at033440 : Ws → St 450
+  lem-CXbc-box-at033440 = pickᴰ 152 Sᴰ
+  lem-CXbc-box-at12213443 : Ws → St 451
+  lem-CXbc-box-at12213443 = pickᴰ 153 Sᴰ
+  lem-CXbc-box-at143143 : Ws → St 452
+  lem-CXbc-box-at143143 = pickᴰ 154 Sᴰ
+  lem-CXbc-box-at233442 : Ws → St 453
+  lem-CXbc-box-at233442 = pickᴰ 155 Sᴰ
+  lem-CXbc-box-at2442 : Ws → St 454
+  lem-CXbc-box-at2442 = pickᴰ 156 Sᴰ
+  lem-CXbc-box-at3443 : Ws → St 455
+  lem-CXbc-box-at3443 = pickᴰ 157 Sᴰ
+  lem-CXcb-box-at0210233441 : Ws → St 456
+  lem-CXcb-box-at0210233441 = pickᴰ 158 Sᴰ
+  lem-CXcb-box-at02102441 : Ws → St 457
+  lem-CXcb-box-at02102441 = pickᴰ 159 Sᴰ
+  lem-CXcb-box-at022440 : Ws → St 458
+  lem-CXcb-box-at022440 = pickᴰ 160 Sᴰ
+  lem-CXcb-box-at0310243142 : Ws → St 459
+  lem-CXcb-box-at0310243142 = pickᴰ 161 Sᴰ
+  lem-CXcb-box-at0310243241 : Ws → St 460
+  lem-CXcb-box-at0310243241 = pickᴰ 162 Sᴰ
+  lem-CXcb-box-at031031 : Ws → St 461
+  lem-CXcb-box-at031031 = pickᴰ 163 Sᴰ
+  lem-CXcb-box-at03103441 : Ws → St 462
+  lem-CXcb-box-at03103441 = pickᴰ 164 Sᴰ
+  lem-CXcb-box-at0312203441 : Ws → St 463
+  lem-CXcb-box-at0312203441 = pickᴰ 165 Sᴰ
+  lem-CXcb-box-at0312243041 : Ws → St 464
+  lem-CXcb-box-at0312243041 = pickᴰ 166 Sᴰ
+  lem-CXcb-box-at0314213240 : Ws → St 465
+  lem-CXcb-box-at0314213240 = pickᴰ 167 Sᴰ
+  lem-CXcb-box-at03143041 : Ws → St 466
+  lem-CXcb-box-at03143041 = pickᴰ 168 Sᴰ
+  lem-CXcb-box-at03143140 : Ws → St 467
+  lem-CXcb-box-at03143140 = pickᴰ 169 Sᴰ
+  lem-CXcb-box-at03243240 : Ws → St 468
+  lem-CXcb-box-at03243240 = pickᴰ 170 Sᴰ
+  lem-CXcb-box-at033440 : Ws → St 469
+  lem-CXcb-box-at033440 = pickᴰ 171 Sᴰ
+  lem-CXcb-box-at12213443 : Ws → St 470
+  lem-CXcb-box-at12213443 = pickᴰ 172 Sᴰ
+  lem-CXcb-box-at143143 : Ws → St 471
+  lem-CXcb-box-at143143 = pickᴰ 173 Sᴰ
+  lem-CXcb-box-at233442 : Ws → St 472
+  lem-CXcb-box-at233442 = pickᴰ 174 Sᴰ
+  lem-CXcb-box-at2442 : Ws → St 473
+  lem-CXcb-box-at2442 = pickᴰ 175 Sᴰ
+  lem-CXcb-box-at3443 : Ws → St 474
+  lem-CXcb-box-at3443 = pickᴰ 176 Sᴰ
+  lem-SWbc-box-at0310213442 : Ws → St 475
+  lem-SWbc-box-at0310213442 = pickᴰ 177 Sᴰ
+  lem-SWbc-box-at14233241 : Ws → St 476
+  lem-SWbc-box-at14233241 = pickᴰ 178 Sᴰ
+  lem-VPQ-at02102441 : Ws → St 477
+  lem-VPQ-at02102441 = pickᴰ 179 Sᴰ
+  lem-VPQ-at02233440 : Ws → St 478
+  lem-VPQ-at02233440 = pickᴰ 180 Sᴰ
+  lem-VPQ-at0310243241 : Ws → St 479
+  lem-VPQ-at0310243241 = pickᴰ 181 Sᴰ
+  lem-VPQ-at031031 : Ws → St 480
+  lem-VPQ-at031031 = pickᴰ 182 Sᴰ
+  lem-VPQ-at03103441 : Ws → St 481
+  lem-VPQ-at03103441 = pickᴰ 183 Sᴰ
+  lem-VPQ-at0312203441 : Ws → St 482
+  lem-VPQ-at0312203441 = pickᴰ 184 Sᴰ
+  lem-VPQ-at0312243041 : Ws → St 483
+  lem-VPQ-at0312243041 = pickᴰ 185 Sᴰ
+  lem-VPQ-at0314213240 : Ws → St 484
+  lem-VPQ-at0314213240 = pickᴰ 186 Sᴰ
+  lem-VPQ-at03143140 : Ws → St 485
+  lem-VPQ-at03143140 = pickᴰ 187 Sᴰ
+  lem-VPQ-at03243240 : Ws → St 486
+  lem-VPQ-at03243240 = pickᴰ 188 Sᴰ
+  lem-VPQ-at033440 : Ws → St 487
+  lem-VPQ-at033440 = pickᴰ 189 Sᴰ
+  lem-VPQ-at12243143 : Ws → St 488
+  lem-VPQ-at12243143 = pickᴰ 190 Sᴰ
+  lem-VPQ-at1441 : Ws → St 489
+  lem-VPQ-at1441 = pickᴰ 191 Sᴰ
+  lem-VPQ-at2442 : Ws → St 490
+  lem-VPQ-at2442 = pickᴰ 192 Sᴰ
+  lem-CXcb-box-at02142041 : Ws → St 491
+  lem-CXcb-box-at02142041 = pickᴰ 193 Sᴰ
 
 private
   q1 : Ws → Eqn

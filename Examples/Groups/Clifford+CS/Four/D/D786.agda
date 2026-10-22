@@ -1,8 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD786 ; pickᴰ)
 
-module Examples.Groups.Clifford+CS.Four.D.D786 (W : Ws) where
+module Examples.Groups.Clifford+CS.Four.D.D786 (W : Ws) (Sᴰ : SD786) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
@@ -14,9 +16,17 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Four.D.D711 W using (lem-ROT-gad)
-open import Examples.Groups.Clifford+CS.Four.D.D731 W using (lem-ROT-gad-at1023)
-open import Examples.Groups.Clifford+CS.Four.D.D783 W using (lem-F10 ; lem-F7b)
+
+-- The lemmas of other derivation modules (DSig).
+private
+  lem-ROT-gad : St 2261
+  lem-ROT-gad = pickᴰ 0 Sᴰ
+  lem-ROT-gad-at1023 : St 3484
+  lem-ROT-gad-at1023 = pickᴰ 1 Sᴰ
+  lem-F10 : St 3485
+  lem-F10 = pickᴰ 2 Sᴰ
+  lem-F7b : St 3486
+  lem-F7b = pickᴰ 3 Sᴰ
 
 private
   q1 : Eqn
