@@ -19,72 +19,72 @@ open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw�
 
 -- The lemmas of other derivation modules (DSig).
 private
-  lem-F4-I-I-at0213243140 : Ws → St 1422
+  lem-F4-I-I-at0213243140 : Ws → St 1645
   lem-F4-I-I-at0213243140 = pickᴰ 0 Sᴰ
-  lem-F4-I-K3-at0213243140 : Ws → St 1407
+  lem-F4-I-K3-at0213243140 : Ws → St 1630
   lem-F4-I-K3-at0213243140 = pickᴰ 1 Sᴰ
-  lem-F4-I-S2-at0213243140 : Ws → St 1408
+  lem-F4-I-S2-at0213243140 : Ws → St 1631
   lem-F4-I-S2-at0213243140 = pickᴰ 2 Sᴰ
-  lem-F4-K3-I-at0213243140 : Ws → St 1409
+  lem-F4-K3-I-at0213243140 : Ws → St 1632
   lem-F4-K3-I-at0213243140 = pickᴰ 3 Sᴰ
-  lem-F4-K3-K3-at0213243140 : Ws → St 1410
+  lem-F4-K3-K3-at0213243140 : Ws → St 1633
   lem-F4-K3-K3-at0213243140 = pickᴰ 4 Sᴰ
-  lem-F4-K3-S2-at0213243140 : Ws → St 1411
+  lem-F4-K3-S2-at0213243140 : Ws → St 1634
   lem-F4-K3-S2-at0213243140 = pickᴰ 5 Sᴰ
-  lem-F4-S2-I-at0213243140 : Ws → St 1412
+  lem-F4-S2-I-at0213243140 : Ws → St 1635
   lem-F4-S2-I-at0213243140 = pickᴰ 6 Sᴰ
-  lem-F4-S2-K3-at0213243140 : Ws → St 1413
+  lem-F4-S2-K3-at0213243140 : Ws → St 1636
   lem-F4-S2-K3-at0213243140 = pickᴰ 7 Sᴰ
-  lem-F4-S2-S2-at0213243140 : Ws → St 1414
+  lem-F4-S2-S2-at0213243140 : Ws → St 1637
   lem-F4-S2-S2-at0213243140 = pickᴰ 8 Sᴰ
-  lem-F4-I-CS2-at0213243140 : Ws → St 1415
+  lem-F4-I-CS2-at0213243140 : Ws → St 1638
   lem-F4-I-CS2-at0213243140 = pickᴰ 9 Sᴰ
-  lem-F4-S2-CS2-at0213243140 : Ws → St 1416
+  lem-F4-S2-CS2-at0213243140 : Ws → St 1639
   lem-F4-S2-CS2-at0213243140 = pickᴰ 10 Sᴰ
-  lem-F4-CS2-CS2-at0213243140 : Ws → St 1417
+  lem-F4-CS2-CS2-at0213243140 : Ws → St 1640
   lem-F4-CS2-CS2-at0213243140 = pickᴰ 11 Sᴰ
-  lem-F4-CS2-I-at0213243140 : Ws → St 1418
+  lem-F4-CS2-I-at0213243140 : Ws → St 1641
   lem-F4-CS2-I-at0213243140 = pickᴰ 12 Sᴰ
-  lem-F4-CS2-S2-at0213243140 : Ws → St 1419
+  lem-F4-CS2-S2-at0213243140 : Ws → St 1642
   lem-F4-CS2-S2-at0213243140 = pickᴰ 13 Sᴰ
-  lem-F4-CS2-K3-at0213243140 : Ws → St 1420
+  lem-F4-CS2-K3-at0213243140 : Ws → St 1643
   lem-F4-CS2-K3-at0213243140 = pickᴰ 14 Sᴰ
-  lem-F4-K3-CS2-at0213243140 : Ws → St 1421
+  lem-F4-K3-CS2-at0213243140 : Ws → St 1644
   lem-F4-K3-CS2-at0213243140 = pickᴰ 15 Sᴰ
 
 private
   q1 : Ws → Eqn
-  q1 c4 = sE 1420 (lem-F4-CS2-K3-at0213243140 c4)
+  q1 c4 = sE 1643 (lem-F4-CS2-K3-at0213243140 c4)
   q2 : Ws → Eqn
-  q2 c4 = sE 1410 (lem-F4-K3-K3-at0213243140 c4)
+  q2 c4 = sE 1633 (lem-F4-K3-K3-at0213243140 c4)
   q3 : Ws → Eqn
-  q3 c4 = sE 1415 (lem-F4-I-CS2-at0213243140 c4)
+  q3 c4 = sE 1638 (lem-F4-I-CS2-at0213243140 c4)
   q4 : Ws → Eqn
-  q4 c4 = sE 1416 (lem-F4-S2-CS2-at0213243140 c4)
+  q4 c4 = sE 1639 (lem-F4-S2-CS2-at0213243140 c4)
   q5 : Ws → Eqn
-  q5 c4 = sE 1417 (lem-F4-CS2-CS2-at0213243140 c4)
+  q5 c4 = sE 1640 (lem-F4-CS2-CS2-at0213243140 c4)
   q6 : Ws → Eqn
-  q6 c4 = sE 1421 (lem-F4-K3-CS2-at0213243140 c4)
+  q6 c4 = sE 1644 (lem-F4-K3-CS2-at0213243140 c4)
   q7 : Ws → Eqn
-  q7 c4 = sE 1407 (lem-F4-I-K3-at0213243140 c4)
+  q7 c4 = sE 1630 (lem-F4-I-K3-at0213243140 c4)
   q8 : Ws → Eqn
-  q8 c4 = sE 1413 (lem-F4-S2-K3-at0213243140 c4)
+  q8 c4 = sE 1636 (lem-F4-S2-K3-at0213243140 c4)
   q9 : Ws → Eqn
-  q9 c4 = sE 1408 (lem-F4-I-S2-at0213243140 c4)
+  q9 c4 = sE 1631 (lem-F4-I-S2-at0213243140 c4)
   q10 : Ws → Eqn
-  q10 c4 = sE 1414 (lem-F4-S2-S2-at0213243140 c4)
+  q10 c4 = sE 1637 (lem-F4-S2-S2-at0213243140 c4)
   q11 : Ws → Eqn
-  q11 c4 = sE 1419 (lem-F4-CS2-S2-at0213243140 c4)
+  q11 c4 = sE 1642 (lem-F4-CS2-S2-at0213243140 c4)
   q12 : Ws → Eqn
-  q12 c4 = sE 1411 (lem-F4-K3-S2-at0213243140 c4)
+  q12 c4 = sE 1634 (lem-F4-K3-S2-at0213243140 c4)
   q13 : Ws → Eqn
-  q13 c4 = sE 1422 (lem-F4-I-I-at0213243140 c4)
+  q13 c4 = sE 1645 (lem-F4-I-I-at0213243140 c4)
   q14 : Ws → Eqn
-  q14 c4 = sE 1412 (lem-F4-S2-I-at0213243140 c4)
+  q14 c4 = sE 1635 (lem-F4-S2-I-at0213243140 c4)
   q15 : Ws → Eqn
-  q15 c4 = sE 1418 (lem-F4-CS2-I-at0213243140 c4)
+  q15 c4 = sE 1641 (lem-F4-CS2-I-at0213243140 c4)
   q16 : Ws → Eqn
-  q16 c4 = sE 1409 (lem-F4-K3-I-at0213243140 c4)
+  q16 c4 = sE 1632 (lem-F4-K3-I-at0213243140 c4)
 
 -- deb-CKS @0213243140 part1: 173 steps
 lem-deb-CKS-at0213243140-part1 : Ws → ⟪ (CCZ014 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ CK01 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS04 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS04 ∷ CS01 ∷ CS01 ∷ CS01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS01 ∷ []) ⟫ʷ ≈ ⟪ (CCZ014 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS04 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS04 ∷ CS01 ∷ CS01 ∷ CS01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS01 ∷ []) ⟫ʷ

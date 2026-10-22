@@ -19,82 +19,82 @@ open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw�
 
 -- The lemmas of other derivation modules (DSig).
 private
-  lem-F4-I-I : Ws → St 1183
+  lem-F4-I-I : Ws → St 1386
   lem-F4-I-I = pickᴰ 0 Sᴰ
-  lem-F4-I-K3 : Ws → St 1208
+  lem-F4-I-K3 : Ws → St 1411
   lem-F4-I-K3 = pickᴰ 1 Sᴰ
-  lem-F4-I-S2 : Ws → St 1382
+  lem-F4-I-S2 : Ws → St 1595
   lem-F4-I-S2 = pickᴰ 2 Sᴰ
-  lem-F4-K3-I : Ws → St 1405
+  lem-F4-K3-I : Ws → St 1618
   lem-F4-K3-I = pickᴰ 3 Sᴰ
-  lem-F4-K3-K3 : Ws → St 1383
+  lem-F4-K3-K3 : Ws → St 1596
   lem-F4-K3-K3 = pickᴰ 4 Sᴰ
-  lem-F4-K3-S2 : Ws → St 1406
+  lem-F4-K3-S2 : Ws → St 1619
   lem-F4-K3-S2 = pickᴰ 5 Sᴰ
-  lem-F4-S2-I : Ws → St 1384
+  lem-F4-S2-I : Ws → St 1597
   lem-F4-S2-I = pickᴰ 6 Sᴰ
-  lem-F4-S2-K3 : Ws → St 1385
+  lem-F4-S2-K3 : Ws → St 1598
   lem-F4-S2-K3 = pickᴰ 7 Sᴰ
-  lem-F4-S2-S2 : Ws → St 1386
+  lem-F4-S2-S2 : Ws → St 1599
   lem-F4-S2-S2 = pickᴰ 8 Sᴰ
-  lem-F4-CS2-I : Ws → St 1363
+  lem-F4-CS2-I : Ws → St 1576
   lem-F4-CS2-I = pickᴰ 9 Sᴰ
-  lem-F4-CS2-S2 : Ws → St 1393
+  lem-F4-CS2-S2 : Ws → St 1606
   lem-F4-CS2-S2 = pickᴰ 10 Sᴰ
-  lem-F4-I-CS2 : Ws → St 1230
+  lem-F4-I-CS2 : Ws → St 1433
   lem-F4-I-CS2 = pickᴰ 11 Sᴰ
-  lem-F4-S2-CS2 : Ws → St 1394
+  lem-F4-S2-CS2 : Ws → St 1607
   lem-F4-S2-CS2 = pickᴰ 12 Sᴰ
-  lem-F4-CS2-CS2 : Ws → St 1368
+  lem-F4-CS2-CS2 : Ws → St 1581
   lem-F4-CS2-CS2 = pickᴰ 13 Sᴰ
-  lem-F4-CS2-K3 : Ws → St 1402
+  lem-F4-CS2-K3 : Ws → St 1615
   lem-F4-CS2-K3 = pickᴰ 14 Sᴰ
-  lem-F4-K3-CS2 : Ws → St 1403
+  lem-F4-K3-CS2 : Ws → St 1616
   lem-F4-K3-CS2 = pickᴰ 15 Sᴰ
-  lem-F5-23 : Ws → St 1377
+  lem-F5-23 : Ws → St 1590
   lem-F5-23 = pickᴰ 16 Sᴰ
 
 private
   q1 : Ws → Eqn
-  q1 c4 = sE 1377 (lem-F5-23 c4)
+  q1 c4 = sE 1590 (lem-F5-23 c4)
   q2 : Ws → Eqn
   q2 c4 = wlE 1419 (lit c4)
   q3 : Ws → Eqn
-  q3 c4 = sE 1403 (lem-F4-K3-CS2 c4)
+  q3 c4 = sE 1616 (lem-F4-K3-CS2 c4)
   q4 : Ws → Eqn
-  q4 c4 = sE 1402 (lem-F4-CS2-K3 c4)
+  q4 c4 = sE 1615 (lem-F4-CS2-K3 c4)
   q5 : Ws → Eqn
-  q5 c4 = sE 1368 (lem-F4-CS2-CS2 c4)
+  q5 c4 = sE 1581 (lem-F4-CS2-CS2 c4)
   q6 : Ws → Eqn
-  q6 c4 = sE 1383 (lem-F4-K3-K3 c4)
+  q6 c4 = sE 1596 (lem-F4-K3-K3 c4)
   q7 : Ws → Eqn
   q7 c4 = wlE 1418 (lit c4)
   q8 : Ws → Eqn
-  q8 c4 = sE 1394 (lem-F4-S2-CS2 c4)
+  q8 c4 = sE 1607 (lem-F4-S2-CS2 c4)
   q9 : Ws → Eqn
-  q9 c4 = sE 1385 (lem-F4-S2-K3 c4)
+  q9 c4 = sE 1598 (lem-F4-S2-K3 c4)
   q10 : Ws → Eqn
-  q10 c4 = sE 1386 (lem-F4-S2-S2 c4)
+  q10 c4 = sE 1599 (lem-F4-S2-S2 c4)
   q11 : Ws → Eqn
   q11 c4 = wlE 1411 (lit c4)
   q12 : Ws → Eqn
-  q12 c4 = sE 1382 (lem-F4-I-S2 c4)
+  q12 c4 = sE 1595 (lem-F4-I-S2 c4)
   q13 : Ws → Eqn
-  q13 c4 = sE 1230 (lem-F4-I-CS2 c4)
+  q13 c4 = sE 1433 (lem-F4-I-CS2 c4)
   q14 : Ws → Eqn
-  q14 c4 = sE 1208 (lem-F4-I-K3 c4)
+  q14 c4 = sE 1411 (lem-F4-I-K3 c4)
   q15 : Ws → Eqn
-  q15 c4 = sE 1363 (lem-F4-CS2-I c4)
+  q15 c4 = sE 1576 (lem-F4-CS2-I c4)
   q16 : Ws → Eqn
-  q16 c4 = sE 1393 (lem-F4-CS2-S2 c4)
+  q16 c4 = sE 1606 (lem-F4-CS2-S2 c4)
   q17 : Ws → Eqn
-  q17 c4 = sE 1405 (lem-F4-K3-I c4)
+  q17 c4 = sE 1618 (lem-F4-K3-I c4)
   q18 : Ws → Eqn
-  q18 c4 = sE 1406 (lem-F4-K3-S2 c4)
+  q18 c4 = sE 1619 (lem-F4-K3-S2 c4)
   q19 : Ws → Eqn
-  q19 c4 = sE 1384 (lem-F4-S2-I c4)
+  q19 c4 = sE 1597 (lem-F4-S2-I c4)
   q20 : Ws → Eqn
-  q20 c4 = sE 1183 (lem-F4-I-I c4)
+  q20 c4 = sE 1386 (lem-F4-I-I c4)
 
 -- deb-CKS-split-b: 190 steps
 lem-deb-CKS-split-b : Ws → ⟪ (CS23 ∷ K3 ∷ CS23 ∷ K3 ∷ CS23 ∷ S2 ∷ S2 ∷ S2 ∷ ι ∷ CS23 ∷ CS23 ∷ K3 ∷ CS23 ∷ K3 ∷ CS23 ∷ S2 ∷ S2 ∷ S2 ∷ ι ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ S4 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ S4 ∷ X4 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CS24 ∷ CS24 ∷ CS24 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CS24 ∷ CS24 ∷ CS24 ∷ S4 ∷ []) ⟫ʷ

@@ -16,36 +16,49 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.R001 using (lem-comm-TOFF013-CSd24)
-open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-CCZ024-CS13 ; lem-comm-CCZ024-CSd13 ; lem-comm-CCZ024-CX13 ; lem-comm-TOFF013-CS24 ; lem-comm-TOFF013-CX24 ; lem-comm-TOFF014-CX23)
-open import Examples.Groups.Clifford+CS.Five.D.R009 using (lem-comm-CCZ023-CX14)
 
 -- The lemmas of other derivation modules (DSig).
 private
-  lem-box-cP-at12233441 : Ws → St 902
-  lem-box-cP-at12233441 = pickᴰ 0 Sᴰ
-  lem-box-cP-at122441 : Ws → St 850
-  lem-box-cP-at122441 = pickᴰ 1 Sᴰ
-  lem-box-perm-1324-at122441 : Ws → St 1078
-  lem-box-perm-1324-at122441 = pickᴰ 2 Sᴰ
+  lem-comm-TOFF013-CSd24 : Ws → St 210
+  lem-comm-TOFF013-CSd24 = pickᴰ 0 Sᴰ
+  lem-comm-CCZ024-CS13 : Ws → St 1382
+  lem-comm-CCZ024-CS13 = pickᴰ 1 Sᴰ
+  lem-comm-CCZ024-CSd13 : Ws → St 1383
+  lem-comm-CCZ024-CSd13 = pickᴰ 2 Sᴰ
+  lem-comm-CCZ024-CX13 : Ws → St 1024
+  lem-comm-CCZ024-CX13 = pickᴰ 3 Sᴰ
+  lem-comm-TOFF013-CS24 : Ws → St 1286
+  lem-comm-TOFF013-CS24 = pickᴰ 4 Sᴰ
+  lem-comm-TOFF013-CX24 : Ws → St 1059
+  lem-comm-TOFF013-CX24 = pickᴰ 5 Sᴰ
+  lem-comm-TOFF014-CX23 : Ws → St 1384
+  lem-comm-TOFF014-CX23 = pickᴰ 6 Sᴰ
+  lem-comm-CCZ023-CX14 : Ws → St 1385
+  lem-comm-CCZ023-CX14 = pickᴰ 7 Sᴰ
+  lem-box-cP-at12233441 : Ws → St 1065
+  lem-box-cP-at12233441 = pickᴰ 8 Sᴰ
+  lem-box-cP-at122441 : Ws → St 1002
+  lem-box-cP-at122441 = pickᴰ 9 Sᴰ
+  lem-box-perm-1324-at122441 : Ws → St 1255
+  lem-box-perm-1324-at122441 = pickᴰ 10 Sᴰ
 
 private
   q1 : Ws → Eqn
   q1 c4 = wpE 821 c4
   q2 : Ws → Eqn
-  q2 c4 = sE 902 (lem-box-cP-at12233441 c4)
+  q2 c4 = sE 1065 (lem-box-cP-at12233441 c4)
   q3 : Ws → Eqn
-  q3 c4 = sE 1078 (lem-box-perm-1324-at122441 c4)
+  q3 c4 = sE 1255 (lem-box-perm-1324-at122441 c4)
   q4 : Ws → Eqn
-  q4 c4 = sE 850 (lem-box-cP-at122441 c4)
+  q4 c4 = sE 1002 (lem-box-cP-at122441 c4)
   q5 : Ws → Eqn
   q5 c4 = wlE 256 (lit c4)
   q6 : Ws → Eqn
-  q6 c4 = eqn (Toff013 ∷ CS24 ∷ []) (CS24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CS24 (lit c4))
+  q6 c4 = sE 1286 (lem-comm-TOFF013-CS24 c4)
   q7 : Ws → Eqn
   q7 c4 = wlE 872 (lit c4)
   q8 : Ws → Eqn
-  q8 c4 = eqn (Toff013 ∷ CS24⁻ ∷ []) (CS24⁻ ∷ Toff013 ∷ []) (lem-comm-TOFF013-CSd24 (lit c4))
+  q8 c4 = sE 210 (lem-comm-TOFF013-CSd24 c4)
   q9 : Ws → Eqn
   q9 c4 = wpE 785 c4
   q10 : Ws → Eqn
@@ -57,7 +70,7 @@ private
   q13 : Ws → Eqn
   q13 c4 = wpE 95 c4
   q14 : Ws → Eqn
-  q14 c4 = eqn (Toff013 ∷ CX24 ∷ []) (CX24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CX24 (lit c4))
+  q14 c4 = sE 1059 (lem-comm-TOFF013-CX24 c4)
   q15 : Ws → Eqn
   q15 c4 = wpE 94 c4
   q16 : Ws → Eqn
@@ -75,7 +88,7 @@ private
   q22 : Ws → Eqn
   q22 c4 = wpE 36 c4
   q23 : Ws → Eqn
-  q23 c4 = eqn (CCZ024 ∷ CX13 ∷ []) (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4))
+  q23 c4 = sE 1024 (lem-comm-CCZ024-CX13 c4)
   q24 : Ws → Eqn
   q24 c4 = wpE 35 c4
   q25 : Ws → Eqn
@@ -91,7 +104,7 @@ private
   q30 : Ws → Eqn
   q30 c4 = wpE 546 c4
   q31 : Ws → Eqn
-  q31 c4 = eqn (Toff014 ∷ CX23 ∷ []) (CX23 ∷ Toff014 ∷ []) (lem-comm-TOFF014-CX23 (lit c4))
+  q31 c4 = sE 1384 (lem-comm-TOFF014-CX23 c4)
   q32 : Ws → Eqn
   q32 c4 = wpE 818 c4
   q33 : Ws → Eqn
@@ -109,7 +122,7 @@ private
   q39 : Ws → Eqn
   q39 c4 = wpE 513 c4
   q40 : Ws → Eqn
-  q40 c4 = eqn (CCZ023 ∷ CX14 ∷ []) (CX14 ∷ CCZ023 ∷ []) (lem-comm-CCZ023-CX14 (lit c4))
+  q40 c4 = sE 1385 (lem-comm-CCZ023-CX14 c4)
   q41 : Ws → Eqn
   q41 c4 = wpE 820 c4
   q42 : Ws → Eqn
@@ -117,11 +130,11 @@ private
   q43 : Ws → Eqn
   q43 c4 = wlE 910 (lit c4)
   q44 : Ws → Eqn
-  q44 c4 = eqn (CCZ024 ∷ CS13 ∷ []) (CS13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CS13 (lit c4))
+  q44 c4 = sE 1382 (lem-comm-CCZ024-CS13 c4)
   q45 : Ws → Eqn
   q45 c4 = wlE 907 (lit c4)
   q46 : Ws → Eqn
-  q46 c4 = eqn (CCZ024 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CSd13 (lit c4))
+  q46 c4 = sE 1383 (lem-comm-CCZ024-CSd13 c4)
   q47 : Ws → Eqn
   q47 c4 = wlE 1037 (lit c4)
   q48 : Ws → Eqn

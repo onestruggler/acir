@@ -14,10 +14,20 @@
 module Examples.Groups.Clifford+CS.Five.DAll.F1Low where
 
 open import Examples.Groups.Clifford+CS.Five.DSig
+open import Examples.Groups.Clifford+CS.Five.WinSig using (lit)
 import Examples.Groups.Clifford+CS.Five.D.D002 as D002
+import Examples.Groups.Clifford+CS.Five.D.R001 as R001
+import Examples.Groups.Clifford+CS.Five.D.R002 as R002
+import Examples.Groups.Clifford+CS.Five.D.R003 as R003
+import Examples.Groups.Clifford+CS.Five.D.R005 as R005
+import Examples.Groups.Clifford+CS.Five.D.R006 as R006
+import Examples.Groups.Clifford+CS.Five.D.R007 as R007
+import Examples.Groups.Clifford+CS.Five.D.R008 as R008
+import Examples.Groups.Clifford+CS.Five.D.R009 as R009
 import Examples.Groups.Clifford+CS.Five.D.D001 as D001
 import Examples.Groups.Clifford+CS.Five.D.D004 as D004
 import Examples.Groups.Clifford+CS.Five.D.D006 as D006
+import Examples.Groups.Clifford+CS.Five.D.R004 as R004
 import Examples.Groups.Clifford+CS.Five.D.D003 as D003
 import Examples.Groups.Clifford+CS.Five.D.D005 as D005
 import Examples.Groups.Clifford+CS.Five.D.D007 as D007
@@ -162,6 +172,656 @@ lem-sym-ab-at022330 : _
 lem-sym-ab-at022330 = D002.lem-sym-ab-at022330
 lem-sym-ab-at03122130 : _
 lem-sym-ab-at03122130 = D002.lem-sym-ab-at03122130
+lem-comm-push-CS04-sw1-R : _
+lem-comm-push-CS04-sw1-R = R001.lem-comm-push-CS04-sw1-R
+lem-comm-push-CS04-sw2-R : _
+lem-comm-push-CS04-sw2-R = R001.lem-comm-push-CS04-sw2-R
+lem-comm-push-CS04-sw1-L : _
+lem-comm-push-CS04-sw1-L = R001.lem-comm-push-CS04-sw1-L
+lem-comm-push-CS04-sw0-L : _
+lem-comm-push-CS04-sw0-L = R001.lem-comm-push-CS04-sw0-L
+lem-comm-CX12-CCZ034 : _
+lem-comm-CX12-CCZ034 = R001.lem-comm-CX12-CCZ034
+lem-comm-CSd12-TOFF034 : _
+lem-comm-CSd12-TOFF034 = R001.lem-comm-CSd12-TOFF034
+lem-comm-CZ12-CCZ034 : _
+lem-comm-CZ12-CCZ034 = R001.lem-comm-CZ12-CCZ034
+lem-comm-CZ12-TOFF034 : _
+lem-comm-CZ12-TOFF034 = R001.lem-comm-CZ12-TOFF034
+lem-comm-push-CSd04-sw0-L : _
+lem-comm-push-CSd04-sw0-L = R001.lem-comm-push-CSd04-sw0-L
+lem-comm-TOFF204-CSd13 : _
+lem-comm-TOFF204-CSd13 = R001.lem-comm-TOFF204-CSd13
+lem-comm-push-CSd04-sw1-L : _
+lem-comm-push-CSd04-sw1-L = R001.lem-comm-push-CSd04-sw1-L
+lem-comm-push-CX04-sw0-L : _
+lem-comm-push-CX04-sw0-L = R001.lem-comm-push-CX04-sw0-L
+lem-comm-CX04-CCZ123 : _
+lem-comm-CX04-CCZ123 = R001.lem-comm-CX04-CCZ123
+lem-comm-CSd04-TOFF213 : _
+lem-comm-CSd04-TOFF213 = R001.lem-comm-CSd04-TOFF213
+lem-comm-CSd13-CCZ024 : _
+lem-comm-CSd13-CCZ024 = R001.lem-comm-CSd13-CCZ024
+lem-comm-CS13-CCZ024 : _
+lem-comm-CS13-CCZ024 = R001.lem-comm-CS13-CCZ024
+lem-comm-CX13-CCZ024 : _
+lem-comm-CX13-CCZ024 = R001.lem-comm-CX13-CCZ024
+lem-comm-push-CS04-sw2-L : _
+lem-comm-push-CS04-sw2-L = R001.lem-comm-push-CS04-sw2-L
+lem-comm-push-CX04-sw1-L : _
+lem-comm-push-CX04-sw1-L = R001.lem-comm-push-CX04-sw1-L
+lem-comm-CX04-TOFF213 : _
+lem-comm-CX04-TOFF213 = R001.lem-comm-CX04-TOFF213
+lem-comm-push-CZ04-sw0-L : _
+lem-comm-push-CZ04-sw0-L = R001.lem-comm-push-CZ04-sw0-L
+lem-comm-CZ04-CCZ123 : _
+lem-comm-CZ04-CCZ123 = R001.lem-comm-CZ04-CCZ123
+lem-comm-CZ04-TOFF213 : _
+lem-comm-CZ04-TOFF213 = R001.lem-comm-CZ04-TOFF213
+lem-comm-TOFF014-CSd23 : _
+lem-comm-TOFF014-CSd23 = R001.lem-comm-TOFF014-CSd23
+lem-comm-CX14-CCZ023 : _
+lem-comm-CX14-CCZ023 = R001.lem-comm-CX14-CCZ023
+lem-comm-CSd14-TOFF023 : _
+lem-comm-CSd14-TOFF023 = R001.lem-comm-CSd14-TOFF023
+lem-comm-CSd23-CCZ014 : _
+lem-comm-CSd23-CCZ014 = R001.lem-comm-CSd23-CCZ014
+lem-comm-CS23-CCZ014 : _
+lem-comm-CS23-CCZ014 = R001.lem-comm-CS23-CCZ014
+lem-comm-CX23-CCZ014 : _
+lem-comm-CX23-CCZ014 = R001.lem-comm-CX23-CCZ014
+lem-comm-CX14-TOFF023 : _
+lem-comm-CX14-TOFF023 = R001.lem-comm-CX14-TOFF023
+lem-comm-CZ14-CCZ023 : _
+lem-comm-CZ14-CCZ023 = R001.lem-comm-CZ14-CCZ023
+lem-comm-CZ14-TOFF023 : _
+lem-comm-CZ14-TOFF023 = R001.lem-comm-CZ14-TOFF023
+lem-comm-TOFF024-CSd13 : _
+lem-comm-TOFF024-CSd13 = R001.lem-comm-TOFF024-CSd13
+lem-comm-CX24-CCZ013 : _
+lem-comm-CX24-CCZ013 = R001.lem-comm-CX24-CCZ013
+lem-comm-CSd24-TOFF013 : _
+lem-comm-CSd24-TOFF013 = R001.lem-comm-CSd24-TOFF013
+lem-comm-CX24-TOFF013 : _
+lem-comm-CX24-TOFF013 = R001.lem-comm-CX24-TOFF013
+lem-comm-CZ24-CCZ013 : _
+lem-comm-CZ24-CCZ013 = R001.lem-comm-CZ24-CCZ013
+lem-comm-CZ24-TOFF013 : _
+lem-comm-CZ24-TOFF013 = R001.lem-comm-CZ24-TOFF013
+lem-comm-SWAP23-BOX⟨0·14⟩ : _
+lem-comm-SWAP23-BOX⟨0·14⟩ = R001.lem-comm-SWAP23-BOX⟨0·14⟩
+lem-comm-push-CSd04-sw2-L : _
+lem-comm-push-CSd04-sw2-L = R001.lem-comm-push-CSd04-sw2-L
+lem-comm-CX21-CCZ034 : _
+lem-comm-CX21-CCZ034 = R001.lem-comm-CX21-CCZ034
+lem-comm-SWAP13-BOX⟨0·24⟩ : _
+lem-comm-SWAP13-BOX⟨0·24⟩ = R001.lem-comm-SWAP13-BOX⟨0·24⟩
+lem-comm-CZ13-CCZ024 : _
+lem-comm-CZ13-CCZ024 = R001.lem-comm-CZ13-CCZ024
+lem-comm-TOFF013-CSd24 : _
+lem-comm-TOFF013-CSd24 = R001.lem-comm-TOFF013-CSd24
+lem-comm-CSd13-TOFF024 : _
+lem-comm-CSd13-TOFF024 = R001.lem-comm-CSd13-TOFF024
+lem-comm-CS12-TOFF034 : _
+lem-comm-CS12-TOFF034 = R001.lem-comm-CS12-TOFF034
+lem-comm-SWAP14-BOX⟨0·32⟩ : _
+lem-comm-SWAP14-BOX⟨0·32⟩ = R001.lem-comm-SWAP14-BOX⟨0·32⟩
+lem-comm-CZ23-CCZ014 : _
+lem-comm-CZ23-CCZ014 = R001.lem-comm-CZ23-CCZ014
+lem-comm-CSd23-TOFF014 : _
+lem-comm-CSd23-TOFF014 = R001.lem-comm-CSd23-TOFF014
+lem-comm-SWAP24-BOX⟨0·31⟩ : _
+lem-comm-SWAP24-BOX⟨0·31⟩ = R001.lem-comm-SWAP24-BOX⟨0·31⟩
+lem-comm-CX31-CCZ024 : _
+lem-comm-CX31-CCZ024 = R001.lem-comm-CX31-CCZ024
+lem-comm-CS13-TOFF024 : _
+lem-comm-CS13-TOFF024 = R001.lem-comm-CS13-TOFF024
+lem-comm-SWAP14-BOX⟨0·23⟩ : _
+lem-comm-SWAP14-BOX⟨0·23⟩ = R001.lem-comm-SWAP14-BOX⟨0·23⟩
+lem-comm-SWAP13-BOX⟨0·42⟩ : _
+lem-comm-SWAP13-BOX⟨0·42⟩ = R001.lem-comm-SWAP13-BOX⟨0·42⟩
+lem-comm-TOFF034-CSd12 : _
+lem-comm-TOFF034-CSd12 = R001.lem-comm-TOFF034-CSd12
+lem-comm-CX42-CCZ013 : _
+lem-comm-CX42-CCZ013 = R001.lem-comm-CX42-CCZ013
+lem-comm-CX32-CCZ014 : _
+lem-comm-CX32-CCZ014 = R001.lem-comm-CX32-CCZ014
+lem-comm-CSd12-CCZ034 : _
+lem-comm-CSd12-CCZ034 = R001.lem-comm-CSd12-CCZ034
+lem-comm-CS12-CCZ034 : _
+lem-comm-CS12-CCZ034 = R001.lem-comm-CS12-CCZ034
+lem-comm-CX12-TOFF034 : _
+lem-comm-CX12-TOFF034 = R001.lem-comm-CX12-TOFF034
+lem-comm-push-CZ04-sw2-L : _
+lem-comm-push-CZ04-sw2-L = R001.lem-comm-push-CZ04-sw2-L
+lem-comm-push-CZ04-sw1-L : _
+lem-comm-push-CZ04-sw1-L = R001.lem-comm-push-CZ04-sw1-L
+lem-comm-push-CX40-sw2-L : _
+lem-comm-push-CX40-sw2-L = R001.lem-comm-push-CX40-sw2-L
+lem-comm-push-CX40-sw1-L : _
+lem-comm-push-CX40-sw1-L = R001.lem-comm-push-CX40-sw1-L
+lem-comm-push-CX40-sw0-L : _
+lem-comm-push-CX40-sw0-L = R001.lem-comm-push-CX40-sw0-L
+lem-comm-push-CK40-sw0-L : _
+lem-comm-push-CK40-sw0-L = R001.lem-comm-push-CK40-sw0-L
+lem-comm-push-CKd40-sw0-L : _
+lem-comm-push-CKd40-sw0-L = R001.lem-comm-push-CKd40-sw0-L
+lem-comm-CX02-CCZ134 : _
+lem-comm-CX02-CCZ134 = R001.lem-comm-CX02-CCZ134
+lem-comm-CSd02-TOFF134 : _
+lem-comm-CSd02-TOFF134 = R001.lem-comm-CSd02-TOFF134
+lem-comm-CX02-TOFF134 : _
+lem-comm-CX02-TOFF134 = R001.lem-comm-CX02-TOFF134
+lem-comm-CS14-TOFF023 : _
+lem-comm-CS14-TOFF023 = R001.lem-comm-CS14-TOFF023
+lem-comm-CS24-TOFF013 : _
+lem-comm-CS24-TOFF013 = R001.lem-comm-CS24-TOFF013
+lem-comm-TOFF301-CSd24 : _
+lem-comm-TOFF301-CSd24 = R001.lem-comm-TOFF301-CSd24
+lem-comm-CSd24-CCZ013 : _
+lem-comm-CSd24-CCZ013 = R001.lem-comm-CSd24-CCZ013
+lem-comm-CS24-CCZ013 : _
+lem-comm-CS24-CCZ013 = R001.lem-comm-CS24-CCZ013
+lem-comm-TOFF401-CSd23 : _
+lem-comm-TOFF401-CSd23 = R001.lem-comm-TOFF401-CSd23
+lem-comm-CS03-TOFF412 : _
+lem-comm-CS03-TOFF412 = R001.lem-comm-CS03-TOFF412
+lem-comm-TOFF412-CSd03 : _
+lem-comm-TOFF412-CSd03 = R001.lem-comm-TOFF412-CSd03
+lem-comm-CSd12-TOFF403 : _
+lem-comm-CSd12-TOFF403 = R001.lem-comm-CSd12-TOFF403
+lem-comm-CSd03-CCZ124 : _
+lem-comm-CSd03-CCZ124 = R001.lem-comm-CSd03-CCZ124
+lem-comm-CS03-CCZ124 : _
+lem-comm-CS03-CCZ124 = R001.lem-comm-CS03-CCZ124
+lem-comm-CZ03-TOFF412 : _
+lem-comm-CZ03-TOFF412 = R001.lem-comm-CZ03-TOFF412
+lem-comm-CSd03-TOFF412 : _
+lem-comm-CSd03-TOFF412 = R001.lem-comm-CSd03-TOFF412
+lem-comm-SWAP02-BOX⟨4·13⟩ : _
+lem-comm-SWAP02-BOX⟨4·13⟩ = R001.lem-comm-SWAP02-BOX⟨4·13⟩
+lem-comm-CZ04-TOFF312 : _
+lem-comm-CZ04-TOFF312 = R001.lem-comm-CZ04-TOFF312
+lem-comm-TOFF312-CSd04 : _
+lem-comm-TOFF312-CSd04 = R001.lem-comm-TOFF312-CSd04
+lem-comm-CSd12-TOFF304 : _
+lem-comm-CSd12-TOFF304 = R002.lem-comm-CSd12-TOFF304
+lem-comm-TOFF304-CSd12 : _
+lem-comm-TOFF304-CSd12 = R002.lem-comm-TOFF304-CSd12
+lem-comm-CX40-CCZ123 : _
+lem-comm-CX40-CCZ123 = R002.lem-comm-CX40-CCZ123
+lem-comm-CSd04-TOFF312 : _
+lem-comm-CSd04-TOFF312 = R002.lem-comm-CSd04-TOFF312
+lem-comm-CX40-TOFF312 : _
+lem-comm-CX40-TOFF312 = R002.lem-comm-CX40-TOFF312
+lem-comm-CZ12-TOFF304 : _
+lem-comm-CZ12-TOFF304 = R002.lem-comm-CZ12-TOFF304
+lem-comm-CSd23-TOFF401 : _
+lem-comm-CSd23-TOFF401 = R002.lem-comm-CSd23-TOFF401
+lem-comm-CS23-TOFF401 : _
+lem-comm-CS23-TOFF401 = R002.lem-comm-CS23-TOFF401
+lem-comm-CSd24-TOFF301 : _
+lem-comm-CSd24-TOFF301 = R002.lem-comm-CSd24-TOFF301
+lem-comm-CS24-TOFF301 : _
+lem-comm-CS24-TOFF301 = R002.lem-comm-CS24-TOFF301
+lem-comm-SWAP02-BOX⟨3·14⟩ : _
+lem-comm-SWAP02-BOX⟨3·14⟩ = R002.lem-comm-SWAP02-BOX⟨3·14⟩
+lem-comm-CZ12-TOFF403 : _
+lem-comm-CZ12-TOFF403 = R002.lem-comm-CZ12-TOFF403
+lem-comm-CS04-TOFF312 : _
+lem-comm-CS04-TOFF312 = R002.lem-comm-CS04-TOFF312
+lem-comm-TOFF312-CS04 : _
+lem-comm-TOFF312-CS04 = R002.lem-comm-TOFF312-CS04
+lem-comm-CS04-TOFF213 : _
+lem-comm-CS04-TOFF213 = R002.lem-comm-CS04-TOFF213
+lem-comm-CSd14-CCZ023 : _
+lem-comm-CSd14-CCZ023 = R002.lem-comm-CSd14-CCZ023
+lem-comm-CS14-CCZ023 : _
+lem-comm-CS14-CCZ023 = R002.lem-comm-CS14-CCZ023
+lem-comm-push-CK40-sw1-L : _
+lem-comm-push-CK40-sw1-L = R002.lem-comm-push-CK40-sw1-L
+lem-comm-CSd04-CCZ123 : _
+lem-comm-CSd04-CCZ123 = R002.lem-comm-CSd04-CCZ123
+lem-comm-CS04-CCZ123 : _
+lem-comm-CS04-CCZ123 = R002.lem-comm-CS04-CCZ123
+lem-comm-CK40-TOFF213 : _
+lem-comm-CK40-TOFF213 = R002.lem-comm-CK40-TOFF213
+lem-comm-push-CK40-sw2-L : _
+lem-comm-push-CK40-sw2-L = R002.lem-comm-push-CK40-sw2-L
+lem-comm-CSd13-TOFF204 : _
+lem-comm-CSd13-TOFF204 = R002.lem-comm-CSd13-TOFF204
+lem-comm-CS13-TOFF204 : _
+lem-comm-CS13-TOFF204 = R002.lem-comm-CS13-TOFF204
+lem-comm-CX41-CCZ023 : _
+lem-comm-CX41-CCZ023 = R002.lem-comm-CX41-CCZ023
+lem-comm-CZ03-TOFF214 : _
+lem-comm-CZ03-TOFF214 = R002.lem-comm-CZ03-TOFF214
+lem-comm-TOFF214-CSd03 : _
+lem-comm-TOFF214-CSd03 = R002.lem-comm-TOFF214-CSd03
+lem-comm-CSd14-TOFF203 : _
+lem-comm-CSd14-TOFF203 = R002.lem-comm-CSd14-TOFF203
+lem-comm-CZ03-CCZ124 : _
+lem-comm-CZ03-CCZ124 = R002.lem-comm-CZ03-CCZ124
+lem-comm-CX03-CCZ124 : _
+lem-comm-CX03-CCZ124 = R002.lem-comm-CX03-CCZ124
+lem-comm-CSd03-TOFF214 : _
+lem-comm-CSd03-TOFF214 = R002.lem-comm-CSd03-TOFF214
+lem-comm-CK41-CCZ023 : _
+lem-comm-CK41-CCZ023 = R002.lem-comm-CK41-CCZ023
+lem-comm-CK41-TOFF023 : _
+lem-comm-CK41-TOFF023 = R002.lem-comm-CK41-TOFF023
+lem-comm-CS23-TOFF014 : _
+lem-comm-CS23-TOFF014 = R002.lem-comm-CS23-TOFF014
+lem-comm-CZ13-TOFF024 : _
+lem-comm-CZ13-TOFF024 = R002.lem-comm-CZ13-TOFF024
+lem-comm-CK42-CCZ013 : _
+lem-comm-CK42-CCZ013 = R002.lem-comm-CK42-CCZ013
+lem-comm-CK42-TOFF013 : _
+lem-comm-CK42-TOFF013 = R002.lem-comm-CK42-TOFF013
+lem-comm-SWAP14-BOX⟨2·03⟩ : _
+lem-comm-SWAP14-BOX⟨2·03⟩ = R002.lem-comm-SWAP14-BOX⟨2·03⟩
+lem-comm-SWAP24-BOX⟨0·13⟩ : _
+lem-comm-SWAP24-BOX⟨0·13⟩ = R002.lem-comm-SWAP24-BOX⟨0·13⟩
+lem-comm-SWAP23-BOX⟨0·41⟩ : _
+lem-comm-SWAP23-BOX⟨0·41⟩ = R002.lem-comm-SWAP23-BOX⟨0·41⟩
+lem-comm-TOFF213-CSd04 : _
+lem-comm-TOFF213-CSd04 = R002.lem-comm-TOFF213-CSd04
+lem-comm-TOFF213-CK40 : _
+lem-comm-TOFF213-CK40 = R002.lem-comm-TOFF213-CK40
+lem-comm-CCZ013-CK42 : _
+lem-comm-CCZ013-CK42 = R002.lem-comm-CCZ013-CK42
+lem-comm-TOFF013-CK42 : _
+lem-comm-TOFF013-CK42 = R002.lem-comm-TOFF013-CK42
+lem-comm-CCZ024-CX13 : _
+lem-comm-CCZ024-CX13 = R002.lem-comm-CCZ024-CX13
+lem-comm-TOFF213-CX04 : _
+lem-comm-TOFF213-CX04 = R002.lem-comm-TOFF213-CX04
+lem-comm-CZ02-TOFF314 : _
+lem-comm-CZ02-TOFF314 = R002.lem-comm-CZ02-TOFF314
+lem-comm-CSd02-TOFF314 : _
+lem-comm-CSd02-TOFF314 = R002.lem-comm-CSd02-TOFF314
+lem-comm-CS02-TOFF314 : _
+lem-comm-CS02-TOFF314 = R002.lem-comm-CS02-TOFF314
+lem-comm-CX04-TOFF312 : _
+lem-comm-CX04-TOFF312 = R002.lem-comm-CX04-TOFF312
+lem-comm-CX30-CCZ124 : _
+lem-comm-CX30-CCZ124 = R002.lem-comm-CX30-CCZ124
+lem-comm-CX30-TOFF214 : _
+lem-comm-CX30-TOFF214 = R002.lem-comm-CX30-TOFF214
+lem-comm-CZ14-TOFF203 : _
+lem-comm-CZ14-TOFF203 = R002.lem-comm-CZ14-TOFF203
+lem-comm-CS12-TOFF304 : _
+lem-comm-CS12-TOFF304 = R002.lem-comm-CS12-TOFF304
+lem-comm-TOFF314-CSd02 : _
+lem-comm-TOFF314-CSd02 = R002.lem-comm-TOFF314-CSd02
+lem-comm-CSd14-TOFF302 : _
+lem-comm-CSd14-TOFF302 = R002.lem-comm-CSd14-TOFF302
+lem-comm-CSd02-CCZ134 : _
+lem-comm-CSd02-CCZ134 = R002.lem-comm-CSd02-CCZ134
+lem-comm-CS02-CCZ134 : _
+lem-comm-CS02-CCZ134 = R002.lem-comm-CS02-CCZ134
+lem-comm-CZ14-TOFF302 : _
+lem-comm-CZ14-TOFF302 = R002.lem-comm-CZ14-TOFF302
+lem-comm-CS03-TOFF214 : _
+lem-comm-CS03-TOFF214 = R002.lem-comm-CS03-TOFF214
+lem-comm-TOFF214-CS03 : _
+lem-comm-TOFF214-CS03 = R002.lem-comm-TOFF214-CS03
+lem-comm-CZ23-TOFF014 : _
+lem-comm-CZ23-TOFF014 = R002.lem-comm-CZ23-TOFF014
+lem-comm-CZ24-TOFF301 : _
+lem-comm-CZ24-TOFF301 = R002.lem-comm-CZ24-TOFF301
+lem-comm-SWAP14-BOX⟨3·20⟩ : _
+lem-comm-SWAP14-BOX⟨3·20⟩ = R002.lem-comm-SWAP14-BOX⟨3·20⟩
+lem-comm-CX31-TOFF024 : _
+lem-comm-CX31-TOFF024 = R002.lem-comm-CX31-TOFF024
+lem-comm-CZ13-TOFF204 : _
+lem-comm-CZ13-TOFF204 = R002.lem-comm-CZ13-TOFF204
+lem-comm-push-SWAP04-sw2-L : _
+lem-comm-push-SWAP04-sw2-L = R002.lem-comm-push-SWAP04-sw2-L
+lem-comm-SWAP14-BOX⟨2·30⟩ : _
+lem-comm-SWAP14-BOX⟨2·30⟩ = R002.lem-comm-SWAP14-BOX⟨2·30⟩
+lem-comm-CX21-TOFF034 : _
+lem-comm-CX21-TOFF034 = R002.lem-comm-CX21-TOFF034
+lem-comm-CCZ124-CS03 : _
+lem-comm-CCZ124-CS03 = R002.lem-comm-CCZ124-CS03
+lem-comm-CCZ024-CX31 : _
+lem-comm-CCZ024-CX31 = R002.lem-comm-CCZ024-CX31
+lem-comm-CCZ014-CX23 : _
+lem-comm-CCZ014-CX23 = R002.lem-comm-CCZ014-CX23
+lem-comm-CX23-TOFF014 : _
+lem-comm-CX23-TOFF014 = R002.lem-comm-CX23-TOFF014
+lem-comm-CCZ034-CS12 : _
+lem-comm-CCZ034-CS12 = R002.lem-comm-CCZ034-CS12
+lem-comm-TOFF013-CS24 : _
+lem-comm-TOFF013-CS24 = R002.lem-comm-TOFF013-CS24
+lem-comm-TOFF014-CX23 : _
+lem-comm-TOFF014-CX23 = R002.lem-comm-TOFF014-CX23
+lem-comm-CCZ024-CS13 : _
+lem-comm-CCZ024-CS13 = R002.lem-comm-CCZ024-CS13
+lem-comm-CCZ024-CSd13 : _
+lem-comm-CCZ024-CSd13 = R002.lem-comm-CCZ024-CSd13
+lem-comm-TOFF013-CX24 : _
+lem-comm-TOFF013-CX24 = R002.lem-comm-TOFF013-CX24
+lem-comm-CCZ034-CX12 : _
+lem-comm-CCZ034-CX12 = R002.lem-comm-CCZ034-CX12
+lem-comm-SWAP12-BOX⟨3·04⟩ : _
+lem-comm-SWAP12-BOX⟨3·04⟩ = R002.lem-comm-SWAP12-BOX⟨3·04⟩
+lem-comm-TOFF213-CS04 : _
+lem-comm-TOFF213-CS04 = R002.lem-comm-TOFF213-CS04
+lem-comm-CS14-TOFF203 : _
+lem-comm-CS14-TOFF203 = R002.lem-comm-CS14-TOFF203
+lem-comm-CCZ124-CX03 : _
+lem-comm-CCZ124-CX03 = R002.lem-comm-CCZ124-CX03
+lem-comm-CCZ034-CX21 : _
+lem-comm-CCZ034-CX21 = R002.lem-comm-CCZ034-CX21
+lem-comm-SWAP12-BOX⟨3·40⟩ : _
+lem-comm-SWAP12-BOX⟨3·40⟩ = R002.lem-comm-SWAP12-BOX⟨3·40⟩
+lem-comm-CX14-TOFF302 : _
+lem-comm-CX14-TOFF302 = R002.lem-comm-CX14-TOFF302
+lem-comm-TOFF024-CS13 : _
+lem-comm-TOFF024-CS13 = R002.lem-comm-TOFF024-CS13
+lem-comm-CCZ134-CX02 : _
+lem-comm-CCZ134-CX02 = R002.lem-comm-CCZ134-CX02
+lem-comm-CZ02-CCZ134 : _
+lem-comm-CZ02-CCZ134 = R003.lem-comm-CZ02-CCZ134
+lem-comm-CS14-TOFF302 : _
+lem-comm-CS14-TOFF302 = R003.lem-comm-CS14-TOFF302
+lem-comm-SWAP14-BOX⟨3·02⟩ : _
+lem-comm-SWAP14-BOX⟨3·02⟩ = R003.lem-comm-SWAP14-BOX⟨3·02⟩
+lem-comm-TOFF301-CK42 : _
+lem-comm-TOFF301-CK42 = R003.lem-comm-TOFF301-CK42
+lem-comm-CX20-CCZ134 : _
+lem-comm-CX20-CCZ134 = R003.lem-comm-CX20-CCZ134
+lem-comm-push-SWAP04-sw0-L : _
+lem-comm-push-SWAP04-sw0-L = R003.lem-comm-push-SWAP04-sw0-L
+lem-comm-push-CX04-sw2-L : _
+lem-comm-push-CX04-sw2-L = R003.lem-comm-push-CX04-sw2-L
+lem-comm-SWAP04-BOX⟨3·21⟩ : _
+lem-comm-SWAP04-BOX⟨3·21⟩ = R003.lem-comm-SWAP04-BOX⟨3·21⟩
+lem-comm-CCZ134-CX20 : _
+lem-comm-CCZ134-CX20 = R003.lem-comm-CCZ134-CX20
+lem-comm-TOFF312-CK40 : _
+lem-comm-TOFF312-CK40 = R003.lem-comm-TOFF312-CK40
+lem-comm-SWAP02-BOX⟨3·41⟩ : _
+lem-comm-SWAP02-BOX⟨3·41⟩ = R003.lem-comm-SWAP02-BOX⟨3·41⟩
+lem-comm-CX31-TOFF204 : _
+lem-comm-CX31-TOFF204 = R003.lem-comm-CX31-TOFF204
+lem-comm-CX24-TOFF301 : _
+lem-comm-CX24-TOFF301 = R003.lem-comm-CX24-TOFF301
+lem-comm-CX21-TOFF304 : _
+lem-comm-CX21-TOFF304 = R003.lem-comm-CX21-TOFF304
+lem-comm-CX20-TOFF314 : _
+lem-comm-CX20-TOFF314 = R003.lem-comm-CX20-TOFF314
+lem-comm-CK40-TOFF312 : _
+lem-comm-CK40-TOFF312 = R003.lem-comm-CK40-TOFF312
+lem-comm-SWAP13-BOX⟨2·04⟩ : _
+lem-comm-SWAP13-BOX⟨2·04⟩ = R003.lem-comm-SWAP13-BOX⟨2·04⟩
+lem-comm-push-BOX⟨2·03⟩-sw1-L : _
+lem-comm-push-BOX⟨2·03⟩-sw1-L = R003.lem-comm-push-BOX⟨2·03⟩-sw1-L
+lem-comm-push-BOX⟨1·03⟩-sw0-L : _
+lem-comm-push-BOX⟨1·03⟩-sw0-L = R003.lem-comm-push-BOX⟨1·03⟩-sw0-L
+lem-comm-push-CSd14-sw0-L : _
+lem-comm-push-CSd14-sw0-L = R003.lem-comm-push-CSd14-sw0-L
+lem-comm-push-CS14-sw0-L : _
+lem-comm-push-CS14-sw0-L = R003.lem-comm-push-CS14-sw0-L
+lem-comm-push-BOX⟨0·13⟩-sw2-L : _
+lem-comm-push-BOX⟨0·13⟩-sw2-L = R003.lem-comm-push-BOX⟨0·13⟩-sw2-L
+lem-comm-push-BOX⟨0·12⟩-sw1-L : _
+lem-comm-push-BOX⟨0·12⟩-sw1-L = R003.lem-comm-push-BOX⟨0·12⟩-sw1-L
+lem-comm-push-BOX⟨0·21⟩-sw1-R : _
+lem-comm-push-BOX⟨0·21⟩-sw1-R = R003.lem-comm-push-BOX⟨0·21⟩-sw1-R
+lem-comm-push-BOX⟨0·12⟩-sw2-R : _
+lem-comm-push-BOX⟨0·12⟩-sw2-R = R003.lem-comm-push-BOX⟨0·12⟩-sw2-R
+lem-comm-push-CS14-sw0-R : _
+lem-comm-push-CS14-sw0-R = R003.lem-comm-push-CS14-sw0-R
+lem-comm-push-CSd14-sw0-R : _
+lem-comm-push-CSd14-sw0-R = R003.lem-comm-push-CSd14-sw0-R
+lem-comm-push-CS04-sw0-R : _
+lem-comm-push-CS04-sw0-R = R003.lem-comm-push-CS04-sw0-R
+lem-comm-push-BOX⟨0·13⟩-sw0-R : _
+lem-comm-push-BOX⟨0·13⟩-sw0-R = R003.lem-comm-push-BOX⟨0·13⟩-sw0-R
+lem-comm-push-BOX⟨1·03⟩-sw1-R : _
+lem-comm-push-BOX⟨1·03⟩-sw1-R = R003.lem-comm-push-BOX⟨1·03⟩-sw1-R
+lem-comm-push-BOX⟨4·203⟩-sw1-L : _
+lem-comm-push-BOX⟨4·203⟩-sw1-L = R003.lem-comm-push-BOX⟨4·203⟩-sw1-L
+lem-comm-push-BOX⟨0·43⟩-sw2-L : _
+lem-comm-push-BOX⟨0·43⟩-sw2-L = R003.lem-comm-push-BOX⟨0·43⟩-sw2-L
+lem-comm-push-BOX⟨0·42⟩-sw1-L : _
+lem-comm-push-BOX⟨0·42⟩-sw1-L = R003.lem-comm-push-BOX⟨0·42⟩-sw1-L
+lem-comm-push-BOX⟨0·41⟩-sw3-L : _
+lem-comm-push-BOX⟨0·41⟩-sw3-L = R003.lem-comm-push-BOX⟨0·41⟩-sw3-L
+lem-comm-push-CX04-sw2-R : _
+lem-comm-push-CX04-sw2-R = R003.lem-comm-push-CX04-sw2-R
+lem-comm-push-CX04-sw1-R : _
+lem-comm-push-CX04-sw1-R = R003.lem-comm-push-CX04-sw1-R
+lem-comm-push-BOX⟨0·31⟩-sw2-L : _
+lem-comm-push-BOX⟨0·31⟩-sw2-L = R003.lem-comm-push-BOX⟨0·31⟩-sw2-L
+lem-comm-push-BOX⟨0·21⟩-sw2-R : _
+lem-comm-push-BOX⟨0·21⟩-sw2-R = R003.lem-comm-push-BOX⟨0·21⟩-sw2-R
+lem-comm-push-BOX⟨0·31⟩-sw3-R : _
+lem-comm-push-BOX⟨0·31⟩-sw3-R = R003.lem-comm-push-BOX⟨0·31⟩-sw3-R
+lem-comm-push-BOX⟨0·41⟩-sw1-R : _
+lem-comm-push-BOX⟨0·41⟩-sw1-R = R003.lem-comm-push-BOX⟨0·41⟩-sw1-R
+lem-comm-push-BOX⟨0·42⟩-sw2-R : _
+lem-comm-push-BOX⟨0·42⟩-sw2-R = R003.lem-comm-push-BOX⟨0·42⟩-sw2-R
+lem-comm-push-BOX⟨4·103⟩-sw1-R : _
+lem-comm-push-BOX⟨4·103⟩-sw1-R = R003.lem-comm-push-BOX⟨4·103⟩-sw1-R
+lem-comm-push-BOX⟨0·21⟩-sw0-R : _
+lem-comm-push-BOX⟨0·21⟩-sw0-R = R003.lem-comm-push-BOX⟨0·21⟩-sw0-R
+lem-comm-push-BOX⟨1·20⟩-sw1-R : _
+lem-comm-push-BOX⟨1·20⟩-sw1-R = R003.lem-comm-push-BOX⟨1·20⟩-sw1-R
+lem-comm-push-BOX⟨1·230⟩-sw2-R : _
+lem-comm-push-BOX⟨1·230⟩-sw2-R = R003.lem-comm-push-BOX⟨1·230⟩-sw2-R
+lem-comm-push-BOX⟨1·320⟩-sw3-R : _
+lem-comm-push-BOX⟨1·320⟩-sw3-R = R003.lem-comm-push-BOX⟨1·320⟩-sw3-R
+lem-comm-push-BOX⟨1·420⟩-sw2-R : _
+lem-comm-push-BOX⟨1·420⟩-sw2-R = R003.lem-comm-push-BOX⟨1·420⟩-sw2-R
+lem-comm-push-BOX⟨4·10⟩-sw1-R : _
+lem-comm-push-BOX⟨4·10⟩-sw1-R = R003.lem-comm-push-BOX⟨4·10⟩-sw1-R
+lem-comm-push-BOX⟨4·20⟩-sw0-R : _
+lem-comm-push-BOX⟨4·20⟩-sw0-R = R003.lem-comm-push-BOX⟨4·20⟩-sw0-R
+lem-comm-CSd13-TOFF402 : _
+lem-comm-CSd13-TOFF402 = R003.lem-comm-CSd13-TOFF402
+lem-comm-CS13-TOFF402 : _
+lem-comm-CS13-TOFF402 = R003.lem-comm-CS13-TOFF402
+lem-comm-SWAP03-BOX⟨4·21⟩ : _
+lem-comm-SWAP03-BOX⟨4·21⟩ = R003.lem-comm-SWAP03-BOX⟨4·21⟩
+lem-comm-TOFF402-CSd13 : _
+lem-comm-TOFF402-CSd13 = R003.lem-comm-TOFF402-CSd13
+lem-comm-CSd02-TOFF413 : _
+lem-comm-CSd02-TOFF413 = R003.lem-comm-CSd02-TOFF413
+lem-comm-push-BOX⟨2·03⟩-sw2-R : _
+lem-comm-push-BOX⟨2·03⟩-sw2-R = R003.lem-comm-push-BOX⟨2·03⟩-sw2-R
+lem-comm-push-BOX⟨0·312⟩-sw3-R : _
+lem-comm-push-BOX⟨0·312⟩-sw3-R = R003.lem-comm-push-BOX⟨0·312⟩-sw3-R
+lem-comm-push-BOX⟨4·02⟩-sw2-R : _
+lem-comm-push-BOX⟨4·02⟩-sw2-R = R003.lem-comm-push-BOX⟨4·02⟩-sw2-R
+lem-comm-push-BOX⟨4·03⟩-sw1-R : _
+lem-comm-push-BOX⟨4·03⟩-sw1-R = R003.lem-comm-push-BOX⟨4·03⟩-sw1-R
+lem-comm-push-BOX⟨4·03⟩-sw0-R : _
+lem-comm-push-BOX⟨4·03⟩-sw0-R = R003.lem-comm-push-BOX⟨4·03⟩-sw0-R
+lem-comm-SWAP12-BOX⟨4·03⟩ : _
+lem-comm-SWAP12-BOX⟨4·03⟩ = R003.lem-comm-SWAP12-BOX⟨4·03⟩
+lem-comm-CZ13-TOFF402 : _
+lem-comm-CZ13-TOFF402 = R003.lem-comm-CZ13-TOFF402
+lem-comm-TOFF413-CSd02 : _
+lem-comm-TOFF413-CSd02 = R003.lem-comm-TOFF413-CSd02
+lem-comm-CZ23-TOFF401 : _
+lem-comm-CZ23-TOFF401 = R003.lem-comm-CZ23-TOFF401
+sR005 : SR005
+sR005 = lem-comm-push-CS04-sw0-L ∷ᵃ lem-comm-push-CS04-sw1-L ∷ᵃ lem-comm-push-CS04-sw1-R ∷ᵃ lem-comm-push-CS04-sw2-L ∷ᵃ lem-comm-push-CS04-sw2-R ∷ᵃ lem-comm-push-CSd04-sw0-L ∷ᵃ lem-comm-push-CSd04-sw1-L ∷ᵃ lem-comm-push-CSd04-sw2-L ∷ᵃ lem-comm-push-CX04-sw0-L ∷ᵃ lem-comm-push-CX04-sw1-L ∷ᵃ lem-comm-push-CZ04-sw0-L ∷ᵃ nil
+lem-comm-push-CCZ034-sw1-L : _
+lem-comm-push-CCZ034-sw1-L = R005.lem-comm-push-CCZ034-sw1-L sR005
+lem-comm-push-CCZ034-sw0-L : _
+lem-comm-push-CCZ034-sw0-L = R005.lem-comm-push-CCZ034-sw0-L sR005
+lem-comm-push-TOFF034-sw0-L : _
+lem-comm-push-TOFF034-sw0-L = R005.lem-comm-push-TOFF034-sw0-L sR005
+lem-comm-push-TOFF034-sw1-L : _
+lem-comm-push-TOFF034-sw1-L = R005.lem-comm-push-TOFF034-sw1-L sR005
+lem-comm-push-CCZ024-sw0-L : _
+lem-comm-push-CCZ024-sw0-L = R005.lem-comm-push-CCZ024-sw0-L sR005
+lem-comm-push-TOFF204-sw0-L : _
+lem-comm-push-TOFF204-sw0-L = R005.lem-comm-push-TOFF204-sw0-L sR005
+lem-comm-push-CCZ014-sw2-L : _
+lem-comm-push-CCZ014-sw2-L = R005.lem-comm-push-CCZ014-sw2-L sR005
+lem-comm-push-TOFF024-sw0-L : _
+lem-comm-push-TOFF024-sw0-L = R005.lem-comm-push-TOFF024-sw0-L sR005
+lem-comm-push-TOFF401-sw2-L : _
+lem-comm-push-TOFF401-sw2-L = R005.lem-comm-push-TOFF401-sw2-L sR005
+lem-comm-push-TOFF402-sw0-L : _
+lem-comm-push-TOFF402-sw0-L = R005.lem-comm-push-TOFF402-sw0-L sR005
+lem-comm-push-TOFF304-sw1-L : _
+lem-comm-push-TOFF304-sw1-L = R005.lem-comm-push-TOFF304-sw1-L sR005
+lem-comm-push-TOFF304-sw0-L : _
+lem-comm-push-TOFF304-sw0-L = R005.lem-comm-push-TOFF304-sw0-L sR005
+lem-comm-push-TOFF023-sw3-L : _
+lem-comm-push-TOFF023-sw3-L = R005.lem-comm-push-TOFF023-sw3-L sR005
+lem-comm-push-TOFF024-sw3-L : _
+lem-comm-push-TOFF024-sw3-L = R005.lem-comm-push-TOFF024-sw3-L sR005
+sR006 : SR006
+sR006 = lem-comm-push-CK40-sw0-L ∷ᵃ lem-comm-push-CKd40-sw0-L ∷ᵃ lem-comm-push-CS04-sw0-L ∷ᵃ lem-comm-push-CS04-sw1-L ∷ᵃ lem-comm-push-CS04-sw1-R ∷ᵃ lem-comm-push-CS04-sw2-L ∷ᵃ lem-comm-push-CS04-sw2-R ∷ᵃ lem-comm-push-CX04-sw0-L ∷ᵃ lem-comm-push-CX04-sw1-L ∷ᵃ lem-comm-push-CX40-sw0-L ∷ᵃ lem-comm-push-CX40-sw1-L ∷ᵃ lem-comm-push-CX40-sw2-L ∷ᵃ lem-comm-push-CZ04-sw0-L ∷ᵃ lem-comm-push-CZ04-sw1-L ∷ᵃ lem-comm-push-CZ04-sw2-L ∷ᵃ lem-comm-push-CK40-sw1-L ∷ᵃ lem-comm-push-CK40-sw2-L ∷ᵃ lem-comm-push-SWAP04-sw2-L ∷ᵃ lem-comm-push-BOX⟨0·12⟩-sw1-L ∷ᵃ lem-comm-push-BOX⟨0·12⟩-sw2-R ∷ᵃ lem-comm-push-BOX⟨0·13⟩-sw2-L ∷ᵃ lem-comm-push-BOX⟨0·21⟩-sw1-R ∷ᵃ lem-comm-push-BOX⟨1·03⟩-sw0-L ∷ᵃ lem-comm-push-BOX⟨2·03⟩-sw1-L ∷ᵃ lem-comm-push-CS14-sw0-L ∷ᵃ lem-comm-push-CSd14-sw0-L ∷ᵃ lem-comm-push-CX04-sw2-L ∷ᵃ lem-comm-push-SWAP04-sw0-L ∷ᵃ nil
+lem-comm-push-TOFF403-sw1-L : _
+lem-comm-push-TOFF403-sw1-L = R006.lem-comm-push-TOFF403-sw1-L sR006
+lem-comm-push-TOFF403-sw0-L : _
+lem-comm-push-TOFF403-sw0-L = R006.lem-comm-push-TOFF403-sw0-L sR006
+lem-comm-push-TOFF014-sw2-L : _
+lem-comm-push-TOFF014-sw2-L = R006.lem-comm-push-TOFF014-sw2-L sR006
+lem-comm-push-TOFF104-sw2-L : _
+lem-comm-push-TOFF104-sw2-L = R006.lem-comm-push-TOFF104-sw2-L sR006
+lem-comm-push-TOFF203-sw3-L : _
+lem-comm-push-TOFF203-sw3-L = R006.lem-comm-push-TOFF203-sw3-L sR006
+lem-comm-push-TOFF204-sw3-L : _
+lem-comm-push-TOFF204-sw3-L = R006.lem-comm-push-TOFF204-sw3-L sR006
+lem-comm-push-CCZ023-sw3-L : _
+lem-comm-push-CCZ023-sw3-L = R006.lem-comm-push-CCZ023-sw3-L sR006
+lem-comm-push-CCZ024-sw3-L : _
+lem-comm-push-CCZ024-sw3-L = R006.lem-comm-push-CCZ024-sw3-L sR006
+lem-comm-SWAP03-BOX⟨2·14⟩ : _
+lem-comm-SWAP03-BOX⟨2·14⟩ = R006.lem-comm-SWAP03-BOX⟨2·14⟩ sR006
+lem-comm-push-TOFF302-sw3-L : _
+lem-comm-push-TOFF302-sw3-L = R006.lem-comm-push-TOFF302-sw3-L sR006
+lem-comm-push-TOFF402-sw3-L : _
+lem-comm-push-TOFF402-sw3-L = R006.lem-comm-push-TOFF402-sw3-L sR006
+lem-comm-SWAP03-BOX⟨2·41⟩ : _
+lem-comm-SWAP03-BOX⟨2·41⟩ = R006.lem-comm-SWAP03-BOX⟨2·41⟩ sR006
+lem-comm-push-BOX⟨0·213⟩-sw1-L : _
+lem-comm-push-BOX⟨0·213⟩-sw1-L = R006.lem-comm-push-BOX⟨0·213⟩-sw1-L sR006
+lem-comm-push-BOX⟨0·123⟩-sw0-L : _
+lem-comm-push-BOX⟨0·123⟩-sw0-L = R006.lem-comm-push-BOX⟨0·123⟩-sw0-L sR006
+lem-comm-push-CCZ014-sw0-L : _
+lem-comm-push-CCZ014-sw0-L = R006.lem-comm-push-CCZ014-sw0-L sR006
+lem-comm-push-TOFF104-sw0-L : _
+lem-comm-push-TOFF104-sw0-L = R006.lem-comm-push-TOFF104-sw0-L sR006
+lem-comm-push-BOX⟨1·023⟩-sw2-L : _
+lem-comm-push-BOX⟨1·023⟩-sw2-L = R006.lem-comm-push-BOX⟨1·023⟩-sw2-L sR006
+lem-comm-push-BOX⟨1·032⟩-sw1-L : _
+lem-comm-push-BOX⟨1·032⟩-sw1-L = R006.lem-comm-push-BOX⟨1·032⟩-sw1-L sR006
+lem-comm-push-BOX⟨2·031⟩-sw1-R : _
+lem-comm-push-BOX⟨2·031⟩-sw1-R = R006.lem-comm-push-BOX⟨2·031⟩-sw1-R sR006
+lem-comm-push-CCZ014-sw2-R : _
+lem-comm-push-CCZ014-sw2-R = R006.lem-comm-push-CCZ014-sw2-R sR006
+lem-comm-push-TOFF014-sw2-R : _
+lem-comm-push-TOFF014-sw2-R = R006.lem-comm-push-TOFF014-sw2-R sR006
+lem-comm-push-BOX⟨1·032⟩-sw2-R : _
+lem-comm-push-BOX⟨1·032⟩-sw2-R = R006.lem-comm-push-BOX⟨1·032⟩-sw2-R sR006
+sR007 : SR007
+sR007 = lem-comm-push-CS04-sw0-L ∷ᵃ lem-comm-push-CS04-sw1-R ∷ᵃ lem-comm-push-CS04-sw2-R ∷ᵃ lem-comm-push-BOX⟨0·13⟩-sw0-R ∷ᵃ lem-comm-push-BOX⟨0·21⟩-sw2-R ∷ᵃ lem-comm-push-BOX⟨0·31⟩-sw2-L ∷ᵃ lem-comm-push-BOX⟨0·41⟩-sw1-R ∷ᵃ lem-comm-push-BOX⟨0·42⟩-sw1-L ∷ᵃ lem-comm-push-BOX⟨1·03⟩-sw1-R ∷ᵃ lem-comm-push-BOX⟨4·203⟩-sw1-L ∷ᵃ lem-comm-push-CS04-sw0-R ∷ᵃ lem-comm-push-CS14-sw0-L ∷ᵃ lem-comm-push-CS14-sw0-R ∷ᵃ lem-comm-push-CSd14-sw0-L ∷ᵃ lem-comm-push-CSd14-sw0-R ∷ᵃ lem-comm-push-CX04-sw1-R ∷ᵃ lem-comm-push-CX04-sw2-R ∷ᵃ nil
+lem-comm-push-CCZ014-sw0-R : _
+lem-comm-push-CCZ014-sw0-R = R007.lem-comm-push-CCZ014-sw0-R sR007
+lem-comm-push-TOFF014-sw0-R : _
+lem-comm-push-TOFF014-sw0-R = R007.lem-comm-push-TOFF014-sw0-R sR007
+lem-comm-push-BOX⟨1·023⟩-sw0-R : _
+lem-comm-push-BOX⟨1·023⟩-sw0-R = R007.lem-comm-push-BOX⟨1·023⟩-sw0-R sR007
+lem-comm-push-BOX⟨0·123⟩-sw1-R : _
+lem-comm-push-BOX⟨0·123⟩-sw1-R = R007.lem-comm-push-BOX⟨0·123⟩-sw1-R sR007
+lem-comm-push-CCZ124-sw0-L : _
+lem-comm-push-CCZ124-sw0-L = R007.lem-comm-push-CCZ124-sw0-L sR007
+lem-comm-push-TOFF412-sw0-L : _
+lem-comm-push-TOFF412-sw0-L = R007.lem-comm-push-TOFF412-sw0-L sR007
+lem-comm-push-BOX⟨2·4103⟩-sw1-L : _
+lem-comm-push-BOX⟨2·4103⟩-sw1-L = R007.lem-comm-push-BOX⟨2·4103⟩-sw1-L sR007
+lem-comm-push-TOFF401-sw0-L : _
+lem-comm-push-TOFF401-sw0-L = R007.lem-comm-push-TOFF401-sw0-L sR007
+lem-comm-push-BOX⟨4·012⟩-sw1-L : _
+lem-comm-push-BOX⟨4·012⟩-sw1-L = R007.lem-comm-push-BOX⟨4·012⟩-sw1-L sR007
+lem-comm-push-BOX⟨3·021⟩-sw2-L : _
+lem-comm-push-BOX⟨3·021⟩-sw2-L = R007.lem-comm-push-BOX⟨3·021⟩-sw2-L sR007
+lem-comm-push-BOX⟨2·031⟩-sw2-R : _
+lem-comm-push-BOX⟨2·031⟩-sw2-R = R007.lem-comm-push-BOX⟨2·031⟩-sw2-R sR007
+lem-comm-push-CCZ034-sw3-R : _
+lem-comm-push-CCZ034-sw3-R = R007.lem-comm-push-CCZ034-sw3-R sR007
+lem-comm-push-CCZ023-sw3-R : _
+lem-comm-push-CCZ023-sw3-R = R007.lem-comm-push-CCZ023-sw3-R sR007
+lem-comm-push-TOFF302-sw3-R : _
+lem-comm-push-TOFF302-sw3-R = R007.lem-comm-push-TOFF302-sw3-R sR007
+lem-comm-push-CCZ034-sw1-R : _
+lem-comm-push-CCZ034-sw1-R = R007.lem-comm-push-CCZ034-sw1-R sR007
+lem-comm-push-TOFF034-sw1-R : _
+lem-comm-push-TOFF034-sw1-R = R007.lem-comm-push-TOFF034-sw1-R sR007
+lem-comm-push-BOX⟨4·021⟩-sw1-R : _
+lem-comm-push-BOX⟨4·021⟩-sw1-R = R007.lem-comm-push-BOX⟨4·021⟩-sw1-R sR007
+sR008 : SR008
+sR008 = lem-comm-push-CS04-sw1-R ∷ᵃ lem-comm-push-CS04-sw2-R ∷ᵃ lem-comm-push-BOX⟨0·21⟩-sw0-R ∷ᵃ lem-comm-push-BOX⟨1·20⟩-sw1-R ∷ᵃ lem-comm-push-BOX⟨1·230⟩-sw2-R ∷ᵃ lem-comm-push-BOX⟨1·320⟩-sw3-R ∷ᵃ lem-comm-push-BOX⟨1·420⟩-sw2-R ∷ᵃ lem-comm-push-BOX⟨2·03⟩-sw2-R ∷ᵃ lem-comm-push-BOX⟨4·03⟩-sw1-R ∷ᵃ lem-comm-push-BOX⟨4·103⟩-sw1-R ∷ᵃ lem-comm-push-BOX⟨4·10⟩-sw1-R ∷ᵃ lem-comm-push-BOX⟨4·20⟩-sw0-R ∷ᵃ lem-comm-push-CS04-sw0-R ∷ᵃ lem-comm-push-CS14-sw0-R ∷ᵃ lem-comm-push-CSd14-sw0-R ∷ᵃ lem-comm-push-CX04-sw1-R ∷ᵃ lem-comm-push-CX04-sw2-R ∷ᵃ nil
+lem-comm-push-TOFF401-sw2-R : _
+lem-comm-push-TOFF401-sw2-R = R008.lem-comm-push-TOFF401-sw2-R sR008
+lem-comm-push-CCZ024-sw0-R : _
+lem-comm-push-CCZ024-sw0-R = R008.lem-comm-push-CCZ024-sw0-R sR008
+lem-comm-push-TOFF024-sw0-R : _
+lem-comm-push-TOFF024-sw0-R = R008.lem-comm-push-TOFF024-sw0-R sR008
+lem-comm-push-TOFF401-sw0-R : _
+lem-comm-push-TOFF401-sw0-R = R008.lem-comm-push-TOFF401-sw0-R sR008
+lem-comm-push-BOX⟨1·4203⟩-sw1-R : _
+lem-comm-push-BOX⟨1·4203⟩-sw1-R = R008.lem-comm-push-BOX⟨1·4203⟩-sw1-R sR008
+lem-comm-push-CCZ124-sw0-R : _
+lem-comm-push-CCZ124-sw0-R = R008.lem-comm-push-CCZ124-sw0-R sR008
+lem-comm-push-TOFF402-sw0-R : _
+lem-comm-push-TOFF402-sw0-R = R008.lem-comm-push-TOFF402-sw0-R sR008
+lem-comm-push-BOX⟨2·031⟩-sw0-R : _
+lem-comm-push-BOX⟨2·031⟩-sw0-R = R008.lem-comm-push-BOX⟨2·031⟩-sw0-R sR008
+lem-comm-push-BOX⟨2·130⟩-sw1-R : _
+lem-comm-push-BOX⟨2·130⟩-sw1-R = R008.lem-comm-push-BOX⟨2·130⟩-sw1-R sR008
+lem-comm-push-BOX⟨2·1430⟩-sw2-R : _
+lem-comm-push-BOX⟨2·1430⟩-sw2-R = R008.lem-comm-push-BOX⟨2·1430⟩-sw2-R sR008
+lem-comm-push-BOX⟨3·1420⟩-sw3-R : _
+lem-comm-push-BOX⟨3·1420⟩-sw3-R = R008.lem-comm-push-BOX⟨3·1420⟩-sw3-R sR008
+lem-comm-push-TOFF024-sw3-R : _
+lem-comm-push-TOFF024-sw3-R = R008.lem-comm-push-TOFF024-sw3-R sR008
+lem-comm-push-BOX⟨4·1320⟩-sw2-R : _
+lem-comm-push-BOX⟨4·1320⟩-sw2-R = R008.lem-comm-push-BOX⟨4·1320⟩-sw2-R sR008
+lem-comm-push-BOX⟨1·430⟩-sw1-R : _
+lem-comm-push-BOX⟨1·430⟩-sw1-R = R008.lem-comm-push-BOX⟨1·430⟩-sw1-R sR008
+lem-comm-push-TOFF412-sw0-R : _
+lem-comm-push-TOFF412-sw0-R = R008.lem-comm-push-TOFF412-sw0-R sR008
+lem-comm-push-BOX⟨2·430⟩-sw0-R : _
+lem-comm-push-BOX⟨2·430⟩-sw0-R = R008.lem-comm-push-BOX⟨2·430⟩-sw0-R sR008
+lem-comm-push-BOX⟨0·213⟩-sw2-R : _
+lem-comm-push-BOX⟨0·213⟩-sw2-R = R008.lem-comm-push-BOX⟨0·213⟩-sw2-R sR008
+lem-comm-push-TOFF304-sw3-R : _
+lem-comm-push-TOFF304-sw3-R = R008.lem-comm-push-TOFF304-sw3-R sR008
+lem-comm-push-BOX⟨0·413⟩-sw1-R : _
+lem-comm-push-BOX⟨0·413⟩-sw1-R = R008.lem-comm-push-BOX⟨0·413⟩-sw1-R sR008
+sR009 : SR009
+sR009 = lem-comm-push-BOX⟨0·312⟩-sw3-R ∷ᵃ lem-comm-push-BOX⟨0·31⟩-sw3-R ∷ᵃ lem-comm-push-BOX⟨0·41⟩-sw3-L ∷ᵃ lem-comm-push-BOX⟨0·42⟩-sw2-R ∷ᵃ lem-comm-push-BOX⟨0·43⟩-sw2-L ∷ᵃ lem-comm-push-BOX⟨4·02⟩-sw2-R ∷ᵃ lem-comm-push-BOX⟨4·03⟩-sw0-R ∷ᵃ lem-comm-push-CCZ014-sw2-L ∷ᵃ lem-comm-push-CCZ024-sw0-L ∷ᵃ lem-comm-push-CCZ034-sw0-L ∷ᵃ lem-comm-push-CCZ034-sw1-L ∷ᵃ lem-comm-push-TOFF023-sw3-L ∷ᵃ lem-comm-push-TOFF024-sw0-L ∷ᵃ lem-comm-push-TOFF024-sw3-L ∷ᵃ lem-comm-push-TOFF034-sw0-L ∷ᵃ lem-comm-push-TOFF034-sw1-L ∷ᵃ lem-comm-push-TOFF204-sw0-L ∷ᵃ lem-comm-push-TOFF304-sw0-L ∷ᵃ lem-comm-push-TOFF304-sw1-L ∷ᵃ lem-comm-push-TOFF401-sw2-L ∷ᵃ lem-comm-push-TOFF402-sw0-L ∷ᵃ lem-comm-push-BOX⟨0·123⟩-sw0-L ∷ᵃ lem-comm-push-BOX⟨0·213⟩-sw1-L ∷ᵃ lem-comm-push-BOX⟨1·023⟩-sw2-L ∷ᵃ lem-comm-push-BOX⟨1·032⟩-sw1-L ∷ᵃ lem-comm-push-BOX⟨1·032⟩-sw2-R ∷ᵃ lem-comm-push-BOX⟨2·031⟩-sw1-R ∷ᵃ lem-comm-push-CCZ014-sw0-L ∷ᵃ lem-comm-push-CCZ014-sw2-R ∷ᵃ lem-comm-push-CCZ023-sw3-L ∷ᵃ lem-comm-push-CCZ024-sw3-L ∷ᵃ lem-comm-push-TOFF014-sw2-L ∷ᵃ lem-comm-push-TOFF014-sw2-R ∷ᵃ lem-comm-push-TOFF104-sw0-L ∷ᵃ lem-comm-push-TOFF104-sw2-L ∷ᵃ lem-comm-push-TOFF203-sw3-L ∷ᵃ lem-comm-push-TOFF204-sw3-L ∷ᵃ lem-comm-push-TOFF302-sw3-L ∷ᵃ lem-comm-push-TOFF402-sw3-L ∷ᵃ lem-comm-push-TOFF403-sw0-L ∷ᵃ lem-comm-push-TOFF403-sw1-L ∷ᵃ lem-comm-push-BOX⟨0·123⟩-sw1-R ∷ᵃ lem-comm-push-BOX⟨1·023⟩-sw0-R ∷ᵃ lem-comm-push-BOX⟨2·031⟩-sw2-R ∷ᵃ lem-comm-push-BOX⟨2·4103⟩-sw1-L ∷ᵃ lem-comm-push-BOX⟨3·021⟩-sw2-L ∷ᵃ lem-comm-push-BOX⟨4·012⟩-sw1-L ∷ᵃ lem-comm-push-BOX⟨4·021⟩-sw1-R ∷ᵃ lem-comm-push-CCZ014-sw0-R ∷ᵃ lem-comm-push-CCZ023-sw3-R ∷ᵃ lem-comm-push-CCZ034-sw1-R ∷ᵃ lem-comm-push-CCZ034-sw3-R ∷ᵃ lem-comm-push-CCZ124-sw0-L ∷ᵃ lem-comm-push-TOFF014-sw0-R ∷ᵃ lem-comm-push-TOFF034-sw1-R ∷ᵃ lem-comm-push-TOFF302-sw3-R ∷ᵃ lem-comm-push-TOFF401-sw0-L ∷ᵃ lem-comm-push-TOFF412-sw0-L ∷ᵃ lem-comm-push-BOX⟨0·213⟩-sw2-R ∷ᵃ lem-comm-push-BOX⟨0·413⟩-sw1-R ∷ᵃ lem-comm-push-BOX⟨1·4203⟩-sw1-R ∷ᵃ lem-comm-push-BOX⟨1·430⟩-sw1-R ∷ᵃ lem-comm-push-BOX⟨2·031⟩-sw0-R ∷ᵃ lem-comm-push-BOX⟨2·130⟩-sw1-R ∷ᵃ lem-comm-push-BOX⟨2·1430⟩-sw2-R ∷ᵃ lem-comm-push-BOX⟨2·430⟩-sw0-R ∷ᵃ lem-comm-push-BOX⟨3·1420⟩-sw3-R ∷ᵃ lem-comm-push-BOX⟨4·1320⟩-sw2-R ∷ᵃ lem-comm-push-CCZ024-sw0-R ∷ᵃ lem-comm-push-CCZ124-sw0-R ∷ᵃ lem-comm-push-TOFF024-sw0-R ∷ᵃ lem-comm-push-TOFF024-sw3-R ∷ᵃ lem-comm-push-TOFF304-sw3-R ∷ᵃ lem-comm-push-TOFF401-sw0-R ∷ᵃ lem-comm-push-TOFF401-sw2-R ∷ᵃ lem-comm-push-TOFF402-sw0-R ∷ᵃ lem-comm-push-TOFF412-sw0-R ∷ᵃ nil
+lem-comm-TOFF023-CSd14 : _
+lem-comm-TOFF023-CSd14 = R009.lem-comm-TOFF023-CSd14 sR009
+lem-comm-TOFF203-CSd14 : _
+lem-comm-TOFF203-CSd14 = R009.lem-comm-TOFF203-CSd14 sR009
+lem-comm-CCZ023-CK41 : _
+lem-comm-CCZ023-CK41 = R009.lem-comm-CCZ023-CK41 sR009
+lem-comm-TOFF023-CK41 : _
+lem-comm-TOFF023-CK41 = R009.lem-comm-TOFF023-CK41 sR009
+lem-comm-TOFF023-CX14 : _
+lem-comm-TOFF023-CX14 = R009.lem-comm-TOFF023-CX14 sR009
+lem-comm-TOFF023-CS14 : _
+lem-comm-TOFF023-CS14 = R009.lem-comm-TOFF023-CS14 sR009
+lem-comm-TOFF203-CK41 : _
+lem-comm-TOFF203-CK41 = R009.lem-comm-TOFF203-CK41 sR009
+lem-comm-TOFF302-CSd14 : _
+lem-comm-TOFF302-CSd14 = R009.lem-comm-TOFF302-CSd14 sR009
+lem-comm-CCZ023-CX14 : _
+lem-comm-CCZ023-CX14 = R009.lem-comm-CCZ023-CX14 sR009
+lem-comm-TOFF302-CK41 : _
+lem-comm-TOFF302-CK41 = R009.lem-comm-TOFF302-CK41 sR009
 lem-sym-ab : _
 lem-sym-ab = D001.lem-sym-ab
 lem-cQ-at13243142 : _
@@ -251,7 +911,7 @@ lem-sym-ab-at033440 = D001.lem-sym-ab-at033440
 lem-nat-SWbc-at132132 : _
 lem-nat-SWbc-at132132 = D001.lem-nat-SWbc-at132132
 sD004 : SD004
-sD004 = lem-cQ-at021021 ∷ᵃ lem-cQ-at0210213443 ∷ᵃ lem-cQ-at03102132 ∷ᵃ lem-cQ-at032032 ∷ᵃ lem-cQ-at0410213243 ∷ᵃ lem-cQ-at04203243 ∷ᵃ lem-cQ-at13243142 ∷ᵃ lem-cQ-at13243241 ∷ᵃ lem-cQ-at14233142 ∷ᵃ lem-cQ-at14233241 ∷ᵃ lem-sym-ab ∷ᵃ lem-sym-ab-at03102132 ∷ᵃ lem-cQ-at0213243140 ∷ᵃ lem-cQ-at0220 ∷ᵃ nil
+sD004 = (λ c → lem-comm-CX02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CX04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CX12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CX21-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CX31-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX32-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX42-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-SWAP02-BOX⟨4·13⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP13-BOX⟨0·24⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP13-BOX⟨0·42⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP14-BOX⟨0·23⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP14-BOX⟨0·32⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP23-BOX⟨0·14⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP24-BOX⟨0·31⟩ (lit c)) ∷ᵃ (λ c → lem-comm-CX03-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CX30-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CX40-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CX41-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-SWAP02-BOX⟨3·14⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP12-BOX⟨3·04⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP14-BOX⟨2·03⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP14-BOX⟨2·30⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP14-BOX⟨3·20⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP23-BOX⟨0·41⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP24-BOX⟨0·13⟩ (lit c)) ∷ᵃ lem-cQ-at021021 ∷ᵃ lem-cQ-at0210213443 ∷ᵃ lem-cQ-at03102132 ∷ᵃ lem-cQ-at032032 ∷ᵃ lem-cQ-at0410213243 ∷ᵃ lem-cQ-at04203243 ∷ᵃ lem-cQ-at13243142 ∷ᵃ lem-cQ-at13243241 ∷ᵃ lem-cQ-at14233142 ∷ᵃ lem-cQ-at14233241 ∷ᵃ lem-sym-ab ∷ᵃ lem-sym-ab-at03102132 ∷ᵃ lem-cQ-at0213243140 ∷ᵃ lem-cQ-at0220 ∷ᵃ nil
 lem-cQ : _
 lem-cQ = D004.lem-cQ sD004
 lem-cQ-at0210243143 : _
@@ -421,7 +1081,7 @@ lem-cQ-at022440 = D004.lem-cQ-at022440 sD004
 lem-cQ-at02102441 : _
 lem-cQ-at02102441 = D004.lem-cQ-at02102441 sD004
 sD006 : SD006
-sD006 = lem-box-tQ-at0213243140 ∷ᵃ lem-box-tQ-at0220 ∷ᵃ lem-box-tQ-at032032 ∷ᵃ lem-box-tQ-at04203243 ∷ᵃ lem-box-tQ-at13243142 ∷ᵃ lem-box-tQ-at13243241 ∷ᵃ lem-box-tQ-at14233142 ∷ᵃ lem-box-tQ-at14233241 ∷ᵃ lem-cQ ∷ᵃ lem-cQ-at0110 ∷ᵃ lem-cQ-at0210233441 ∷ᵃ lem-cQ-at0210243143 ∷ᵃ lem-cQ-at0213203441 ∷ᵃ lem-cQ-at0214203143 ∷ᵃ lem-cQ-at0214213043 ∷ᵃ lem-cQ-at022330 ∷ᵃ lem-cQ-at0310243142 ∷ᵃ lem-cQ-at0312213440 ∷ᵃ lem-cQ-at0312243140 ∷ᵃ lem-cQ-at0314203142 ∷ᵃ lem-cQ-at0314213042 ∷ᵃ lem-cQ-at0330 ∷ᵃ lem-cQ-at033440 ∷ᵃ lem-cQ-at043043 ∷ᵃ lem-cQ-at1221 ∷ᵃ lem-cQ-at12213443 ∷ᵃ lem-cQ-at122331 ∷ᵃ lem-cQ-at12233441 ∷ᵃ lem-cQ-at12243143 ∷ᵃ lem-cQ-at122441 ∷ᵃ lem-cQ-at132132 ∷ᵃ lem-cQ-at13213442 ∷ᵃ lem-cQ-at1331 ∷ᵃ lem-cQ-at133441 ∷ᵃ lem-cQ-at14213243 ∷ᵃ lem-cQ-at143143 ∷ᵃ lem-cQ-at1441 ∷ᵃ lem-cQ-at2332 ∷ᵃ lem-cQ-at233442 ∷ᵃ lem-cQ-at243243 ∷ᵃ lem-cQ-at2442 ∷ᵃ lem-cQ-at3443 ∷ᵃ lem-tP-at021021 ∷ᵃ lem-tP-at0210213443 ∷ᵃ lem-tP-at0220 ∷ᵃ lem-tP-at03102132 ∷ᵃ lem-tP-at032032 ∷ᵃ lem-tP-at0410213243 ∷ᵃ lem-tP-at04203243 ∷ᵃ lem-tP-at13243142 ∷ᵃ lem-tP-at13243241 ∷ᵃ lem-tP-at14233142 ∷ᵃ lem-tP-at14233241 ∷ᵃ nil
+sD006 = (λ c → lem-comm-CS12-TOFF034 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-TOFF034 (lit c)) ∷ᵃ (λ c → lem-comm-CZ04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CZ12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CZ12-TOFF034 (lit c)) ∷ᵃ (λ c → lem-comm-CZ13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CZ14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CZ23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CZ24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF034-CSd12 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF301-CSd24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF401-CSd23 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-TOFF401 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-TOFF301 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-TOFF401 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-TOFF301 (lit c)) ∷ᵃ (λ c → lem-comm-CZ03-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CZ24-TOFF301 (lit c)) ∷ᵃ (λ c → lem-comm-SWAP03-BOX⟨2·14⟩ (lit c)) ∷ᵃ lem-box-tQ-at0213243140 ∷ᵃ lem-box-tQ-at0220 ∷ᵃ lem-box-tQ-at032032 ∷ᵃ lem-box-tQ-at04203243 ∷ᵃ lem-box-tQ-at13243142 ∷ᵃ lem-box-tQ-at13243241 ∷ᵃ lem-box-tQ-at14233142 ∷ᵃ lem-box-tQ-at14233241 ∷ᵃ lem-cQ ∷ᵃ lem-cQ-at0110 ∷ᵃ lem-cQ-at0210233441 ∷ᵃ lem-cQ-at0210243143 ∷ᵃ lem-cQ-at0213203441 ∷ᵃ lem-cQ-at0214203143 ∷ᵃ lem-cQ-at0214213043 ∷ᵃ lem-cQ-at022330 ∷ᵃ lem-cQ-at0310243142 ∷ᵃ lem-cQ-at0312213440 ∷ᵃ lem-cQ-at0312243140 ∷ᵃ lem-cQ-at0314203142 ∷ᵃ lem-cQ-at0314213042 ∷ᵃ lem-cQ-at0330 ∷ᵃ lem-cQ-at033440 ∷ᵃ lem-cQ-at043043 ∷ᵃ lem-cQ-at1221 ∷ᵃ lem-cQ-at12213443 ∷ᵃ lem-cQ-at122331 ∷ᵃ lem-cQ-at12233441 ∷ᵃ lem-cQ-at12243143 ∷ᵃ lem-cQ-at122441 ∷ᵃ lem-cQ-at132132 ∷ᵃ lem-cQ-at13213442 ∷ᵃ lem-cQ-at1331 ∷ᵃ lem-cQ-at133441 ∷ᵃ lem-cQ-at14213243 ∷ᵃ lem-cQ-at143143 ∷ᵃ lem-cQ-at1441 ∷ᵃ lem-cQ-at2332 ∷ᵃ lem-cQ-at233442 ∷ᵃ lem-cQ-at243243 ∷ᵃ lem-cQ-at2442 ∷ᵃ lem-cQ-at3443 ∷ᵃ lem-tP-at021021 ∷ᵃ lem-tP-at0210213443 ∷ᵃ lem-tP-at0220 ∷ᵃ lem-tP-at03102132 ∷ᵃ lem-tP-at032032 ∷ᵃ lem-tP-at0410213243 ∷ᵃ lem-tP-at04203243 ∷ᵃ lem-tP-at13243142 ∷ᵃ lem-tP-at13243241 ∷ᵃ lem-tP-at14233142 ∷ᵃ lem-tP-at14233241 ∷ᵃ nil
 lem-tP : _
 lem-tP = D006.lem-tP sD006
 lem-box-tQ : _
@@ -596,6 +1256,18 @@ lem-CXbc-box-at0213243140 : _
 lem-CXbc-box-at0213243140 = D006.lem-CXbc-box-at0213243140 sD006
 lem-CXcb-box-at0213243140 : _
 lem-CXcb-box-at0213243140 = D006.lem-CXcb-box-at0213243140 sD006
+lem-comm-TOFF403-CSd12 : _
+lem-comm-TOFF403-CSd12 = R004.lem-comm-TOFF403-CSd12
+lem-comm-CS02-TOFF413 : _
+lem-comm-CS02-TOFF413 = R004.lem-comm-CS02-TOFF413
+lem-comm-CS12-TOFF403 : _
+lem-comm-CS12-TOFF403 = R004.lem-comm-CS12-TOFF403
+lem-comm-CZ02-TOFF413 : _
+lem-comm-CZ02-TOFF413 = R004.lem-comm-CZ02-TOFF413
+lem-comm-SWAP13-BOX⟨4·20⟩ : _
+lem-comm-SWAP13-BOX⟨4·20⟩ = R004.lem-comm-SWAP13-BOX⟨4·20⟩
+lem-comm-SWAP12-BOX⟨4·30⟩ : _
+lem-comm-SWAP12-BOX⟨4·30⟩ = R004.lem-comm-SWAP12-BOX⟨4·30⟩
 lem-cQ-at03203442 : _
 lem-cQ-at03203442 = D003.lem-cQ-at03203442
 lem-sym-ab-at02132130 : _
@@ -617,7 +1289,7 @@ lem-nat-SWbc-at0413213042 = D003.lem-nat-SWbc-at0413213042
 lem-nat-SWbc-at0440 : _
 lem-nat-SWbc-at0440 = D003.lem-nat-SWbc-at0440
 sD005 : SD005
-sD005 = lem-cQ-at021021 ∷ᵃ lem-sym-ab-at0210243143 ∷ᵃ lem-sym-ab-at032032 ∷ᵃ lem-sym-ab-at1221 ∷ᵃ lem-cQ-at0213243041 ∷ᵃ lem-cQ-at0214233041 ∷ᵃ lem-cQ-at0310213442 ∷ᵃ lem-sym-ab-at021021 ∷ᵃ lem-sym-ab-at0220 ∷ᵃ lem-cQ-at03203442 ∷ᵃ nil
+sD005 = (λ c → lem-comm-CX02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CX04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CX12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CX21-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CX31-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX32-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX42-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-SWAP13-BOX⟨0·42⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP14-BOX⟨0·23⟩ (lit c)) ∷ᵃ (λ c → lem-comm-CX03-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CX30-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CX40-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CX41-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-SWAP12-BOX⟨3·04⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP12-BOX⟨3·40⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP14-BOX⟨2·03⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP23-BOX⟨0·41⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP24-BOX⟨0·13⟩ (lit c)) ∷ᵃ (λ c → lem-comm-CX20-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-SWAP02-BOX⟨3·41⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP03-BOX⟨4·21⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP04-BOX⟨3·21⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP12-BOX⟨4·03⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP13-BOX⟨2·04⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP14-BOX⟨3·02⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP12-BOX⟨4·30⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP13-BOX⟨4·20⟩ (lit c)) ∷ᵃ lem-cQ-at021021 ∷ᵃ lem-sym-ab-at0210243143 ∷ᵃ lem-sym-ab-at032032 ∷ᵃ lem-sym-ab-at1221 ∷ᵃ lem-cQ-at0213243041 ∷ᵃ lem-cQ-at0214233041 ∷ᵃ lem-cQ-at0310213442 ∷ᵃ lem-sym-ab-at021021 ∷ᵃ lem-sym-ab-at0220 ∷ᵃ lem-cQ-at03203442 ∷ᵃ nil
 lem-nat-SWbc-at12213443 : _
 lem-nat-SWbc-at12213443 = D005.lem-nat-SWbc-at12213443 sD005
 lem-nat-SWbc-at14233241 : _
@@ -753,7 +1425,7 @@ lem-nat-SWbc-at04133140 = D005.lem-nat-SWbc-at04133140 sD005
 lem-nat-SWbc-at0413213240 : _
 lem-nat-SWbc-at0413213240 = D005.lem-nat-SWbc-at0413213240 sD005
 sD007 : SD007
-sD007 = lem-box-perm-2134-at03102132 ∷ᵃ lem-box-tQ-at0210213443 ∷ᵃ lem-box-tQ-at0213243140 ∷ᵃ lem-box-tQ-at0220 ∷ᵃ lem-box-tQ-at03102132 ∷ᵃ lem-box-tQ-at0410213243 ∷ᵃ lem-box-tQ-at14233241 ∷ᵃ lem-cQ-at02102441 ∷ᵃ lem-cQ-at0213213440 ∷ᵃ lem-cQ-at0214203143 ∷ᵃ lem-cQ-at022330 ∷ᵃ lem-cQ-at02233440 ∷ᵃ lem-cQ-at022440 ∷ᵃ lem-cQ-at033440 ∷ᵃ lem-cQ-at12243143 ∷ᵃ lem-cQ-at14213243 ∷ᵃ lem-cQ-at1441 ∷ᵃ lem-cQ-at2442 ∷ᵃ lem-tP-at021021 ∷ᵃ lem-tP-at0210213443 ∷ᵃ lem-tP-at0213243140 ∷ᵃ lem-tP-at03102132 ∷ᵃ lem-tP-at032032 ∷ᵃ lem-box-perm-2134-at0210243143 ∷ᵃ lem-box-tQ-at021021 ∷ᵃ lem-box-tQ-at0213243041 ∷ᵃ lem-box-tQ-at0214233041 ∷ᵃ lem-box-tQ-at0310213442 ∷ᵃ lem-cQ-at02102331 ∷ᵃ lem-cQ-at02132031 ∷ᵃ lem-cQ-at02132130 ∷ᵃ lem-cQ-at02142041 ∷ᵃ lem-cQ-at0310243241 ∷ᵃ lem-cQ-at031031 ∷ᵃ lem-cQ-at03103441 ∷ᵃ lem-cQ-at03122031 ∷ᵃ lem-cQ-at0312203441 ∷ᵃ lem-cQ-at03122130 ∷ᵃ lem-cQ-at0312243041 ∷ᵃ lem-cQ-at0314203241 ∷ᵃ lem-cQ-at0314213240 ∷ᵃ lem-cQ-at03143041 ∷ᵃ lem-cQ-at03143140 ∷ᵃ lem-cQ-at03243042 ∷ᵃ lem-cQ-at03243240 ∷ᵃ lem-cQ-at04103143 ∷ᵃ lem-cQ-at04122041 ∷ᵃ lem-cQ-at0412233041 ∷ᵃ lem-cQ-at04233042 ∷ᵃ lem-cQ-at142142 ∷ᵃ lem-tP-at0213243041 ∷ᵃ lem-tP-at0214233041 ∷ᵃ lem-tP-at0310213442 ∷ᵃ nil
+sD007 = (λ c → lem-comm-CS12-TOFF034 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-TOFF034 (lit c)) ∷ᵃ (λ c → lem-comm-CZ04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CZ12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CZ13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CZ14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CZ24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF301-CSd24 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-TOFF401 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-TOFF301 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-TOFF401 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-TOFF301 (lit c)) ∷ᵃ (λ c → lem-comm-CZ03-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CZ24-TOFF301 (lit c)) ∷ᵃ (λ c → lem-comm-CZ02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-SWAP03-BOX⟨2·14⟩ (lit c)) ∷ᵃ (λ c → lem-comm-SWAP03-BOX⟨2·41⟩ (lit c)) ∷ᵃ lem-box-perm-2134-at03102132 ∷ᵃ lem-box-tQ-at0210213443 ∷ᵃ lem-box-tQ-at0213243140 ∷ᵃ lem-box-tQ-at0220 ∷ᵃ lem-box-tQ-at03102132 ∷ᵃ lem-box-tQ-at0410213243 ∷ᵃ lem-box-tQ-at14233241 ∷ᵃ lem-cQ-at02102441 ∷ᵃ lem-cQ-at0213213440 ∷ᵃ lem-cQ-at0214203143 ∷ᵃ lem-cQ-at022330 ∷ᵃ lem-cQ-at02233440 ∷ᵃ lem-cQ-at022440 ∷ᵃ lem-cQ-at033440 ∷ᵃ lem-cQ-at12243143 ∷ᵃ lem-cQ-at14213243 ∷ᵃ lem-cQ-at1441 ∷ᵃ lem-cQ-at2442 ∷ᵃ lem-tP-at021021 ∷ᵃ lem-tP-at0210213443 ∷ᵃ lem-tP-at0213243140 ∷ᵃ lem-tP-at03102132 ∷ᵃ lem-tP-at032032 ∷ᵃ lem-box-perm-2134-at0210243143 ∷ᵃ lem-box-tQ-at021021 ∷ᵃ lem-box-tQ-at0213243041 ∷ᵃ lem-box-tQ-at0214233041 ∷ᵃ lem-box-tQ-at0310213442 ∷ᵃ lem-cQ-at02102331 ∷ᵃ lem-cQ-at02132031 ∷ᵃ lem-cQ-at02132130 ∷ᵃ lem-cQ-at02142041 ∷ᵃ lem-cQ-at0310243241 ∷ᵃ lem-cQ-at031031 ∷ᵃ lem-cQ-at03103441 ∷ᵃ lem-cQ-at03122031 ∷ᵃ lem-cQ-at0312203441 ∷ᵃ lem-cQ-at03122130 ∷ᵃ lem-cQ-at0312243041 ∷ᵃ lem-cQ-at0314203241 ∷ᵃ lem-cQ-at0314213240 ∷ᵃ lem-cQ-at03143041 ∷ᵃ lem-cQ-at03143140 ∷ᵃ lem-cQ-at03243042 ∷ᵃ lem-cQ-at03243240 ∷ᵃ lem-cQ-at04103143 ∷ᵃ lem-cQ-at04122041 ∷ᵃ lem-cQ-at0412233041 ∷ᵃ lem-cQ-at04233042 ∷ᵃ lem-cQ-at142142 ∷ᵃ lem-tP-at0213243041 ∷ᵃ lem-tP-at0214233041 ∷ᵃ lem-tP-at0310213442 ∷ᵃ nil
 lem-box-tQ-at02233440 : _
 lem-box-tQ-at02233440 = D007.lem-box-tQ-at02233440 sD007
 lem-box-tQ-at0213213440 : _
@@ -931,7 +1603,7 @@ lem-tP-at04103143 = D007.lem-tP-at04103143 sD007
 lem-tP-at04233042 : _
 lem-tP-at04233042 = D007.lem-tP-at04233042 sD007
 sD009 : SD009
-sD009 = lem-CXbc-box-at032032 ∷ᵃ lem-CXbc-box-at04203243 ∷ᵃ lem-CXbc-box-at13243142 ∷ᵃ lem-CXbc-box-at13243241 ∷ᵃ lem-CXbc-box-at14233142 ∷ᵃ lem-CXcb-box-at032032 ∷ᵃ lem-CXcb-box-at04203243 ∷ᵃ lem-CXcb-box-at13243142 ∷ᵃ lem-CXcb-box-at13243241 ∷ᵃ lem-CXcb-box-at14233142 ∷ᵃ lem-VPQ-at021021 ∷ᵃ lem-VPQ-at03102132 ∷ᵃ lem-VPQ-at0410213243 ∷ᵃ lem-VPQ-at04203243 ∷ᵃ lem-VPQ-at13243142 ∷ᵃ lem-VPQ-at13243241 ∷ᵃ lem-VPQ-at14233142 ∷ᵃ lem-box-tQ ∷ᵃ lem-box-tQ-at0210243143 ∷ᵃ lem-box-tQ-at0214203143 ∷ᵃ lem-box-tQ-at0214213043 ∷ᵃ lem-box-tQ-at0310243142 ∷ᵃ lem-box-tQ-at0330 ∷ᵃ lem-box-tQ-at043043 ∷ᵃ lem-box-tQ-at1221 ∷ᵃ lem-box-tQ-at122331 ∷ᵃ lem-box-tQ-at12243143 ∷ᵃ lem-box-tQ-at122441 ∷ᵃ lem-box-tQ-at132132 ∷ᵃ lem-box-tQ-at13213442 ∷ᵃ lem-box-tQ-at1331 ∷ᵃ lem-box-tQ-at133441 ∷ᵃ lem-box-tQ-at2332 ∷ᵃ lem-box-tQ-at243243 ∷ᵃ lem-box-tQ-at3443 ∷ᵃ lem-tP ∷ᵃ lem-tP-at0110 ∷ᵃ lem-tP-at0210243143 ∷ᵃ lem-tP-at0214213043 ∷ᵃ lem-tP-at0310243142 ∷ᵃ lem-tP-at0314203142 ∷ᵃ lem-tP-at0330 ∷ᵃ lem-tP-at043043 ∷ᵃ lem-tP-at1221 ∷ᵃ lem-tP-at122331 ∷ᵃ lem-tP-at122441 ∷ᵃ lem-tP-at132132 ∷ᵃ lem-tP-at13213442 ∷ᵃ lem-tP-at1331 ∷ᵃ lem-tP-at2332 ∷ᵃ lem-tP-at243243 ∷ᵃ lem-tP-at3443 ∷ᵃ nil
+sD009 = (λ c → lem-comm-CS03-TOFF412 (lit c)) ∷ᵃ (λ c → lem-comm-CS12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CS13-TOFF024 (lit c)) ∷ᵃ (λ c → lem-comm-CS14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CSd02-TOFF134 (lit c)) ∷ᵃ (λ c → lem-comm-CSd03-TOFF412 (lit c)) ∷ᵃ (λ c → lem-comm-CSd04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-TOFF034 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-TOFF403 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-TOFF024 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-TOFF014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CX12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX21-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CX31-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX32-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CZ04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CZ04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CZ12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CZ12-TOFF034 (lit c)) ∷ᵃ (λ c → lem-comm-CZ14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CZ24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CSd24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF014-CSd23 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF024-CSd13 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF204-CSd13 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF312-CSd04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF412-CSd03 (lit c)) ∷ᵃ (λ c → lem-comm-CS04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CS04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CS13-TOFF204 (lit c)) ∷ᵃ (λ c → lem-comm-CS14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CSd04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CSd04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-TOFF304 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-TOFF204 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CX40-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CZ03-TOFF214 (lit c)) ∷ᵃ (λ c → lem-comm-CZ12-TOFF304 (lit c)) ∷ᵃ (λ c → lem-comm-CZ12-TOFF403 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF304-CSd12 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CSd14 (lit c)) ∷ᵃ lem-CXbc-box-at032032 ∷ᵃ lem-CXbc-box-at04203243 ∷ᵃ lem-CXbc-box-at13243142 ∷ᵃ lem-CXbc-box-at13243241 ∷ᵃ lem-CXbc-box-at14233142 ∷ᵃ lem-CXcb-box-at032032 ∷ᵃ lem-CXcb-box-at04203243 ∷ᵃ lem-CXcb-box-at13243142 ∷ᵃ lem-CXcb-box-at13243241 ∷ᵃ lem-CXcb-box-at14233142 ∷ᵃ lem-VPQ-at021021 ∷ᵃ lem-VPQ-at03102132 ∷ᵃ lem-VPQ-at0410213243 ∷ᵃ lem-VPQ-at04203243 ∷ᵃ lem-VPQ-at13243142 ∷ᵃ lem-VPQ-at13243241 ∷ᵃ lem-VPQ-at14233142 ∷ᵃ lem-box-tQ ∷ᵃ lem-box-tQ-at0210243143 ∷ᵃ lem-box-tQ-at0214203143 ∷ᵃ lem-box-tQ-at0214213043 ∷ᵃ lem-box-tQ-at0310243142 ∷ᵃ lem-box-tQ-at0330 ∷ᵃ lem-box-tQ-at043043 ∷ᵃ lem-box-tQ-at1221 ∷ᵃ lem-box-tQ-at122331 ∷ᵃ lem-box-tQ-at12243143 ∷ᵃ lem-box-tQ-at122441 ∷ᵃ lem-box-tQ-at132132 ∷ᵃ lem-box-tQ-at13213442 ∷ᵃ lem-box-tQ-at1331 ∷ᵃ lem-box-tQ-at133441 ∷ᵃ lem-box-tQ-at2332 ∷ᵃ lem-box-tQ-at243243 ∷ᵃ lem-box-tQ-at3443 ∷ᵃ lem-tP ∷ᵃ lem-tP-at0110 ∷ᵃ lem-tP-at0210243143 ∷ᵃ lem-tP-at0214213043 ∷ᵃ lem-tP-at0310243142 ∷ᵃ lem-tP-at0314203142 ∷ᵃ lem-tP-at0330 ∷ᵃ lem-tP-at043043 ∷ᵃ lem-tP-at1221 ∷ᵃ lem-tP-at122331 ∷ᵃ lem-tP-at122441 ∷ᵃ lem-tP-at132132 ∷ᵃ lem-tP-at13213442 ∷ᵃ lem-tP-at1331 ∷ᵃ lem-tP-at2332 ∷ᵃ lem-tP-at243243 ∷ᵃ lem-tP-at3443 ∷ᵃ nil
 lem-VPQ : _
 lem-VPQ = D009.lem-VPQ sD009
 lem-t-cP : _
@@ -1081,7 +1753,7 @@ lem-CXcb-box-at0214203143 = D009.lem-CXcb-box-at0214203143 sD009
 lem-P-box-at0214213043 : _
 lem-P-box-at0214213043 = D009.lem-P-box-at0214213043 sD009
 sD010 : SD010
-sD010 = lem-CXbc-box-at0213243140 ∷ᵃ lem-CXcb-box-at0213243140 ∷ᵃ lem-VPQ-at0210213443 ∷ᵃ lem-VPQ-at0220 ∷ᵃ lem-VPQ-at032032 ∷ᵃ lem-VPQ-at14233241 ∷ᵃ lem-box-tQ-at0210233441 ∷ᵃ lem-box-tQ-at0210243143 ∷ᵃ lem-box-tQ-at0214203143 ∷ᵃ lem-box-tQ-at0214213043 ∷ᵃ lem-box-tQ-at022330 ∷ᵃ lem-box-tQ-at0312213440 ∷ᵃ lem-box-tQ-at0312243140 ∷ᵃ lem-box-tQ-at0314203142 ∷ᵃ lem-box-tQ-at0314213042 ∷ᵃ lem-box-tQ-at122331 ∷ᵃ lem-box-tQ-at12233441 ∷ᵃ lem-box-tQ-at122441 ∷ᵃ lem-box-tQ-at132132 ∷ᵃ lem-box-tQ-at1331 ∷ᵃ lem-box-tQ-at14213243 ∷ᵃ lem-box-tQ-at143143 ∷ᵃ lem-box-tQ-at1441 ∷ᵃ lem-box-tQ-at2332 ∷ᵃ lem-box-tQ-at243243 ∷ᵃ lem-tP-at0210233441 ∷ᵃ lem-tP-at0210243143 ∷ᵃ lem-tP-at0213203441 ∷ᵃ lem-tP-at0214213043 ∷ᵃ lem-tP-at0312243140 ∷ᵃ lem-tP-at0314213042 ∷ᵃ lem-tP-at12213443 ∷ᵃ lem-tP-at12233441 ∷ᵃ lem-tP-at122441 ∷ᵃ lem-tP-at143143 ∷ᵃ lem-tP-at233442 ∷ᵃ lem-tP-at243243 ∷ᵃ lem-CXbc-box-at0220 ∷ᵃ lem-CXbc-box-at03102132 ∷ᵃ lem-CXcb-box-at0220 ∷ᵃ lem-CXcb-box-at03102132 ∷ᵃ lem-VPQ-at0213243140 ∷ᵃ lem-box-tQ-at0213213440 ∷ᵃ lem-box-tQ-at02233440 ∷ᵃ lem-box-tQ-at022440 ∷ᵃ lem-tP-at0214203143 ∷ᵃ lem-tP-at022330 ∷ᵃ lem-tP-at022440 ∷ᵃ lem-tP-at14213243 ∷ᵃ nil
+sD010 = (λ c → lem-comm-CS13-TOFF024 (lit c)) ∷ᵃ (λ c → lem-comm-CS14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CSd04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-TOFF034 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-TOFF024 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-TOFF014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CX04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CX13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CX21-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CX31-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX32-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX42-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CZ04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CZ14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CSd24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF014-CSd23 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF024-CSd13 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF204-CSd13 (lit c)) ∷ᵃ (λ c → lem-comm-CS02-TOFF314 (lit c)) ∷ᵃ (λ c → lem-comm-CS03-TOFF214 (lit c)) ∷ᵃ (λ c → lem-comm-CS04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CS04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CS04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CS12-TOFF304 (lit c)) ∷ᵃ (λ c → lem-comm-CS13-TOFF204 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-TOFF014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd02-TOFF314 (lit c)) ∷ᵃ (λ c → lem-comm-CSd03-TOFF214 (lit c)) ∷ᵃ (λ c → lem-comm-CSd04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CSd04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-TOFF304 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-TOFF204 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-TOFF203 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-TOFF302 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-TOFF301 (lit c)) ∷ᵃ (λ c → lem-comm-CX40-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CX41-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CZ13-TOFF024 (lit c)) ∷ᵃ (λ c → lem-comm-CZ13-TOFF204 (lit c)) ∷ᵃ (λ c → lem-comm-CZ14-TOFF203 (lit c)) ∷ᵃ (λ c → lem-comm-CZ14-TOFF302 (lit c)) ∷ᵃ (λ c → lem-comm-CZ23-TOFF014 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CSd04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF214-CSd03 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF314-CSd02 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CSd14 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF203-CSd14 (lit c)) ∷ᵃ lem-CXbc-box-at0213243140 ∷ᵃ lem-CXcb-box-at0213243140 ∷ᵃ lem-VPQ-at0210213443 ∷ᵃ lem-VPQ-at0220 ∷ᵃ lem-VPQ-at032032 ∷ᵃ lem-VPQ-at14233241 ∷ᵃ lem-box-tQ-at0210233441 ∷ᵃ lem-box-tQ-at0210243143 ∷ᵃ lem-box-tQ-at0214203143 ∷ᵃ lem-box-tQ-at0214213043 ∷ᵃ lem-box-tQ-at022330 ∷ᵃ lem-box-tQ-at0312213440 ∷ᵃ lem-box-tQ-at0312243140 ∷ᵃ lem-box-tQ-at0314203142 ∷ᵃ lem-box-tQ-at0314213042 ∷ᵃ lem-box-tQ-at122331 ∷ᵃ lem-box-tQ-at12233441 ∷ᵃ lem-box-tQ-at122441 ∷ᵃ lem-box-tQ-at132132 ∷ᵃ lem-box-tQ-at1331 ∷ᵃ lem-box-tQ-at14213243 ∷ᵃ lem-box-tQ-at143143 ∷ᵃ lem-box-tQ-at1441 ∷ᵃ lem-box-tQ-at2332 ∷ᵃ lem-box-tQ-at243243 ∷ᵃ lem-tP-at0210233441 ∷ᵃ lem-tP-at0210243143 ∷ᵃ lem-tP-at0213203441 ∷ᵃ lem-tP-at0214213043 ∷ᵃ lem-tP-at0312243140 ∷ᵃ lem-tP-at0314213042 ∷ᵃ lem-tP-at12213443 ∷ᵃ lem-tP-at12233441 ∷ᵃ lem-tP-at122441 ∷ᵃ lem-tP-at143143 ∷ᵃ lem-tP-at233442 ∷ᵃ lem-tP-at243243 ∷ᵃ lem-CXbc-box-at0220 ∷ᵃ lem-CXbc-box-at03102132 ∷ᵃ lem-CXcb-box-at0220 ∷ᵃ lem-CXcb-box-at03102132 ∷ᵃ lem-VPQ-at0213243140 ∷ᵃ lem-box-tQ-at0213213440 ∷ᵃ lem-box-tQ-at02233440 ∷ᵃ lem-box-tQ-at022440 ∷ᵃ lem-tP-at0214203143 ∷ᵃ lem-tP-at022330 ∷ᵃ lem-tP-at022440 ∷ᵃ lem-tP-at14213243 ∷ᵃ nil
 lem-VPQ-at0214213043 : _
 lem-VPQ-at0214213043 = D010.lem-VPQ-at0214213043 sD010
 lem-VPQ-at0210233441 : _
@@ -1223,7 +1895,7 @@ lem-VPQ-at022440 = D010.lem-VPQ-at022440 sD010
 lem-CXbc-box-at022440 : _
 lem-CXbc-box-at022440 = D010.lem-CXbc-box-at022440 sD010
 sD011 : SD011
-sD011 = lem-box-tQ ∷ᵃ lem-box-tQ-at0210233441 ∷ᵃ lem-box-tQ-at0310243142 ∷ᵃ lem-box-tQ-at0314203142 ∷ᵃ lem-box-tQ-at0314213042 ∷ᵃ lem-box-tQ-at033440 ∷ᵃ lem-box-tQ-at12213443 ∷ᵃ lem-box-tQ-at143143 ∷ᵃ lem-box-tQ-at1441 ∷ᵃ lem-box-tQ-at233442 ∷ᵃ lem-box-tQ-at2442 ∷ᵃ lem-box-tQ-at3443 ∷ᵃ lem-tP-at0310243142 ∷ᵃ lem-tP-at0314203142 ∷ᵃ lem-tP-at0314213042 ∷ᵃ lem-tP-at12213443 ∷ᵃ lem-tP-at233442 ∷ᵃ lem-CXbc-box-at0310213442 ∷ᵃ lem-CXbc-box-at14233241 ∷ᵃ lem-CXcb-box-at0310213442 ∷ᵃ lem-CXcb-box-at14233241 ∷ᵃ lem-box-tQ-at02102441 ∷ᵃ lem-box-tQ-at02142041 ∷ᵃ lem-box-tQ-at02233440 ∷ᵃ lem-box-tQ-at022440 ∷ᵃ lem-box-tQ-at0310243241 ∷ᵃ lem-box-tQ-at031031 ∷ᵃ lem-box-tQ-at03103441 ∷ᵃ lem-box-tQ-at0312203441 ∷ᵃ lem-box-tQ-at0312243041 ∷ᵃ lem-box-tQ-at0314213240 ∷ᵃ lem-box-tQ-at03143041 ∷ᵃ lem-box-tQ-at03143140 ∷ᵃ lem-box-tQ-at03243240 ∷ᵃ lem-tP-at02102441 ∷ᵃ lem-tP-at02233440 ∷ᵃ lem-tP-at0310243241 ∷ᵃ lem-tP-at031031 ∷ᵃ lem-tP-at03103441 ∷ᵃ lem-tP-at0312203441 ∷ᵃ lem-tP-at0312243041 ∷ᵃ lem-tP-at0314213240 ∷ᵃ lem-tP-at03143140 ∷ᵃ lem-tP-at03243240 ∷ᵃ lem-tP-at033440 ∷ᵃ lem-tP-at12243143 ∷ᵃ lem-tP-at1441 ∷ᵃ lem-tP-at2442 ∷ᵃ nil
+sD011 = (λ c → lem-comm-CS13-TOFF024 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CSd04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-TOFF024 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-TOFF014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CX02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CX04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CX12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CX21-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CX42-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CZ04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CZ04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CZ24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF014-CSd23 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF024-CSd13 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF204-CSd13 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF312-CSd04 (lit c)) ∷ᵃ (λ c → lem-comm-CS02-TOFF314 (lit c)) ∷ᵃ (λ c → lem-comm-CS03-TOFF214 (lit c)) ∷ᵃ (λ c → lem-comm-CS04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CS12-TOFF304 (lit c)) ∷ᵃ (λ c → lem-comm-CS13-TOFF204 (lit c)) ∷ᵃ (λ c → lem-comm-CS14-TOFF203 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-TOFF014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd02-TOFF314 (lit c)) ∷ᵃ (λ c → lem-comm-CSd03-TOFF214 (lit c)) ∷ᵃ (λ c → lem-comm-CSd04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-TOFF304 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-TOFF204 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-TOFF203 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-TOFF302 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-TOFF301 (lit c)) ∷ᵃ (λ c → lem-comm-CX03-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CX40-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CX41-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CZ02-TOFF314 (lit c)) ∷ᵃ (λ c → lem-comm-CZ12-TOFF304 (lit c)) ∷ᵃ (λ c → lem-comm-CZ13-TOFF024 (lit c)) ∷ᵃ (λ c → lem-comm-CZ14-TOFF302 (lit c)) ∷ᵃ (λ c → lem-comm-CZ24-TOFF301 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CSd04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF304-CSd12 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF314-CSd02 (lit c)) ∷ᵃ (λ c → lem-comm-CS14-TOFF302 (lit c)) ∷ᵃ (λ c → lem-comm-CX20-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF302-CSd14 (lit c)) ∷ᵃ lem-box-tQ ∷ᵃ lem-box-tQ-at0210233441 ∷ᵃ lem-box-tQ-at0310243142 ∷ᵃ lem-box-tQ-at0314203142 ∷ᵃ lem-box-tQ-at0314213042 ∷ᵃ lem-box-tQ-at033440 ∷ᵃ lem-box-tQ-at12213443 ∷ᵃ lem-box-tQ-at143143 ∷ᵃ lem-box-tQ-at1441 ∷ᵃ lem-box-tQ-at233442 ∷ᵃ lem-box-tQ-at2442 ∷ᵃ lem-box-tQ-at3443 ∷ᵃ lem-tP-at0310243142 ∷ᵃ lem-tP-at0314203142 ∷ᵃ lem-tP-at0314213042 ∷ᵃ lem-tP-at12213443 ∷ᵃ lem-tP-at233442 ∷ᵃ lem-CXbc-box-at0310213442 ∷ᵃ lem-CXbc-box-at14233241 ∷ᵃ lem-CXcb-box-at0310213442 ∷ᵃ lem-CXcb-box-at14233241 ∷ᵃ lem-box-tQ-at02102441 ∷ᵃ lem-box-tQ-at02142041 ∷ᵃ lem-box-tQ-at02233440 ∷ᵃ lem-box-tQ-at022440 ∷ᵃ lem-box-tQ-at0310243241 ∷ᵃ lem-box-tQ-at031031 ∷ᵃ lem-box-tQ-at03103441 ∷ᵃ lem-box-tQ-at0312203441 ∷ᵃ lem-box-tQ-at0312243041 ∷ᵃ lem-box-tQ-at0314213240 ∷ᵃ lem-box-tQ-at03143041 ∷ᵃ lem-box-tQ-at03143140 ∷ᵃ lem-box-tQ-at03243240 ∷ᵃ lem-tP-at02102441 ∷ᵃ lem-tP-at02233440 ∷ᵃ lem-tP-at0310243241 ∷ᵃ lem-tP-at031031 ∷ᵃ lem-tP-at03103441 ∷ᵃ lem-tP-at0312203441 ∷ᵃ lem-tP-at0312243041 ∷ᵃ lem-tP-at0314213240 ∷ᵃ lem-tP-at03143140 ∷ᵃ lem-tP-at03243240 ∷ᵃ lem-tP-at033440 ∷ᵃ lem-tP-at12243143 ∷ᵃ lem-tP-at1441 ∷ᵃ lem-tP-at2442 ∷ᵃ nil
 lem-CXcb-box-at022440 : _
 lem-CXcb-box-at022440 = D011.lem-CXcb-box-at022440 sD011
 lem-P-box-at02233440 : _
@@ -1361,7 +2033,7 @@ lem-CXcb-box-at03143041 = D011.lem-CXcb-box-at03143041 sD011
 lem-CXbc-box-at02142041 : _
 lem-CXbc-box-at02142041 = D011.lem-CXbc-box-at02142041 sD011
 sD008 : SD008
-sD008 = lem-box-tQ-at0410213243 ∷ᵃ lem-box-tQ-at04203243 ∷ᵃ lem-tP-at0410213243 ∷ᵃ lem-tP-at04203243 ∷ᵃ lem-cQ-at02142140 ∷ᵃ lem-cQ-at0410233142 ∷ᵃ lem-cQ-at0410233241 ∷ᵃ lem-cQ-at041041 ∷ᵃ lem-cQ-at0412213043 ∷ᵃ lem-cQ-at04122140 ∷ᵃ lem-cQ-at0412233041 ∷ᵃ lem-cQ-at0412233140 ∷ᵃ lem-cQ-at0413203142 ∷ᵃ lem-cQ-at0413203241 ∷ᵃ lem-cQ-at0413213042 ∷ᵃ lem-cQ-at0413213240 ∷ᵃ lem-cQ-at04133140 ∷ᵃ lem-cQ-at04233240 ∷ᵃ lem-cQ-at0440 ∷ᵃ lem-tP-at0310213442 ∷ᵃ nil
+sD008 = (λ c → lem-comm-CZ12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CZ13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CZ23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CZ03-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CZ02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CZ23-TOFF401 (lit c)) ∷ᵃ lem-box-tQ-at0410213243 ∷ᵃ lem-box-tQ-at04203243 ∷ᵃ lem-tP-at0410213243 ∷ᵃ lem-tP-at04203243 ∷ᵃ lem-cQ-at02142140 ∷ᵃ lem-cQ-at0410233142 ∷ᵃ lem-cQ-at0410233241 ∷ᵃ lem-cQ-at041041 ∷ᵃ lem-cQ-at0412213043 ∷ᵃ lem-cQ-at04122140 ∷ᵃ lem-cQ-at0412233041 ∷ᵃ lem-cQ-at0412233140 ∷ᵃ lem-cQ-at0413203142 ∷ᵃ lem-cQ-at0413203241 ∷ᵃ lem-cQ-at0413213042 ∷ᵃ lem-cQ-at0413213240 ∷ᵃ lem-cQ-at04133140 ∷ᵃ lem-cQ-at04233240 ∷ᵃ lem-cQ-at0440 ∷ᵃ lem-tP-at0310213442 ∷ᵃ nil
 lem-P-box-at0410213243 : _
 lem-P-box-at0410213243 = D008.lem-P-box-at0410213243 sD008
 lem-box-tQ-at0412233041 : _
@@ -1421,7 +2093,7 @@ lem-Su-box-at04203243 = D008.lem-Su-box-at04203243 sD008
 lem-box-tQ-at04133140 : _
 lem-box-tQ-at04133140 = D008.lem-box-tQ-at04133140 sD008
 sD012 : SD012
-sD012 = lem-box-tQ-at033440 ∷ᵃ lem-box-tQ-at2442 ∷ᵃ lem-CXbc-box-at021021 ∷ᵃ lem-CXbc-box-at0210213443 ∷ᵃ lem-CXbc-box-at0214233041 ∷ᵃ lem-CXbc-box-at0410213243 ∷ᵃ lem-CXcb-box-at021021 ∷ᵃ lem-CXcb-box-at0210213443 ∷ᵃ lem-CXcb-box-at0214233041 ∷ᵃ lem-CXcb-box-at0410213243 ∷ᵃ lem-VPQ-at0213243041 ∷ᵃ lem-VPQ-at0214233041 ∷ᵃ lem-VPQ-at0310213442 ∷ᵃ lem-box-tQ-at02102331 ∷ᵃ lem-box-tQ-at02102441 ∷ᵃ lem-box-tQ-at02132031 ∷ᵃ lem-box-tQ-at02132130 ∷ᵃ lem-box-tQ-at02142041 ∷ᵃ lem-box-tQ-at0310243241 ∷ᵃ lem-box-tQ-at031031 ∷ᵃ lem-box-tQ-at03122031 ∷ᵃ lem-box-tQ-at03122130 ∷ᵃ lem-box-tQ-at0312243041 ∷ᵃ lem-box-tQ-at0314203241 ∷ᵃ lem-box-tQ-at03143041 ∷ᵃ lem-box-tQ-at03243042 ∷ᵃ lem-box-tQ-at04103143 ∷ᵃ lem-box-tQ-at04122041 ∷ᵃ lem-box-tQ-at142142 ∷ᵃ lem-tP-at02102331 ∷ᵃ lem-tP-at02102441 ∷ᵃ lem-tP-at02132031 ∷ᵃ lem-tP-at02132130 ∷ᵃ lem-tP-at0214203143 ∷ᵃ lem-tP-at02142041 ∷ᵃ lem-tP-at0310243241 ∷ᵃ lem-tP-at031031 ∷ᵃ lem-tP-at03122031 ∷ᵃ lem-tP-at03122130 ∷ᵃ lem-tP-at0312243041 ∷ᵃ lem-tP-at0314203241 ∷ᵃ lem-tP-at03143041 ∷ᵃ lem-tP-at03243042 ∷ᵃ lem-tP-at033440 ∷ᵃ lem-tP-at04103143 ∷ᵃ lem-tP-at04122041 ∷ᵃ lem-tP-at0412233041 ∷ᵃ lem-tP-at04233042 ∷ᵃ lem-tP-at142142 ∷ᵃ lem-tP-at2442 ∷ᵃ lem-box-tQ-at0410233241 ∷ᵃ lem-box-tQ-at041041 ∷ᵃ lem-box-tQ-at0412233041 ∷ᵃ lem-box-tQ-at0413203142 ∷ᵃ lem-box-tQ-at0413213042 ∷ᵃ lem-box-tQ-at04233240 ∷ᵃ lem-box-tQ-at0440 ∷ᵃ lem-tP-at02142140 ∷ᵃ lem-tP-at0410233241 ∷ᵃ lem-tP-at0412213043 ∷ᵃ lem-tP-at0413203142 ∷ᵃ lem-tP-at0440 ∷ᵃ nil
+sD012 = (λ c → lem-comm-CS03-TOFF412 (lit c)) ∷ᵃ (λ c → lem-comm-CSd03-TOFF412 (lit c)) ∷ᵃ (λ c → lem-comm-CSd04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-TOFF403 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-TOFF014 (lit c)) ∷ᵃ (λ c → lem-comm-CX02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CX12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX21-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX31-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CZ03-TOFF412 (lit c)) ∷ᵃ (λ c → lem-comm-CZ04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CZ04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CZ14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF014-CSd23 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF204-CSd13 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF312-CSd04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF412-CSd03 (lit c)) ∷ᵃ (λ c → lem-comm-CS04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CS04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CS12-TOFF304 (lit c)) ∷ᵃ (λ c → lem-comm-CS13-TOFF204 (lit c)) ∷ᵃ (λ c → lem-comm-CS14-TOFF203 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-TOFF014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd02-TOFF314 (lit c)) ∷ᵃ (λ c → lem-comm-CSd03-TOFF214 (lit c)) ∷ᵃ (λ c → lem-comm-CSd04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-TOFF304 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-TOFF204 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-TOFF203 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-TOFF302 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-TOFF401 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-TOFF301 (lit c)) ∷ᵃ (λ c → lem-comm-CX03-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CX30-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CX40-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CX41-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CZ02-TOFF314 (lit c)) ∷ᵃ (λ c → lem-comm-CZ12-TOFF304 (lit c)) ∷ᵃ (λ c → lem-comm-CZ12-TOFF403 (lit c)) ∷ᵃ (λ c → lem-comm-CZ13-TOFF204 (lit c)) ∷ᵃ (λ c → lem-comm-CZ14-TOFF302 (lit c)) ∷ᵃ (λ c → lem-comm-CZ23-TOFF014 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CSd04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF214-CSd03 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF304-CSd12 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF314-CSd02 (lit c)) ∷ᵃ (λ c → lem-comm-CK40-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CS13-TOFF402 (lit c)) ∷ᵃ (λ c → lem-comm-CS14-TOFF302 (lit c)) ∷ᵃ (λ c → lem-comm-CSd02-TOFF413 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-TOFF402 (lit c)) ∷ᵃ (λ c → lem-comm-CX20-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CZ13-TOFF402 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF402-CSd13 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF413-CSd02 (lit c)) ∷ᵃ (λ c → lem-comm-CS02-TOFF413 (lit c)) ∷ᵃ (λ c → lem-comm-CS12-TOFF403 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF403-CSd12 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF203-CSd14 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF302-CSd14 (lit c)) ∷ᵃ lem-box-tQ-at033440 ∷ᵃ lem-box-tQ-at2442 ∷ᵃ lem-CXbc-box-at021021 ∷ᵃ lem-CXbc-box-at0210213443 ∷ᵃ lem-CXbc-box-at0214233041 ∷ᵃ lem-CXbc-box-at0410213243 ∷ᵃ lem-CXcb-box-at021021 ∷ᵃ lem-CXcb-box-at0210213443 ∷ᵃ lem-CXcb-box-at0214233041 ∷ᵃ lem-CXcb-box-at0410213243 ∷ᵃ lem-VPQ-at0213243041 ∷ᵃ lem-VPQ-at0214233041 ∷ᵃ lem-VPQ-at0310213442 ∷ᵃ lem-box-tQ-at02102331 ∷ᵃ lem-box-tQ-at02102441 ∷ᵃ lem-box-tQ-at02132031 ∷ᵃ lem-box-tQ-at02132130 ∷ᵃ lem-box-tQ-at02142041 ∷ᵃ lem-box-tQ-at0310243241 ∷ᵃ lem-box-tQ-at031031 ∷ᵃ lem-box-tQ-at03122031 ∷ᵃ lem-box-tQ-at03122130 ∷ᵃ lem-box-tQ-at0312243041 ∷ᵃ lem-box-tQ-at0314203241 ∷ᵃ lem-box-tQ-at03143041 ∷ᵃ lem-box-tQ-at03243042 ∷ᵃ lem-box-tQ-at04103143 ∷ᵃ lem-box-tQ-at04122041 ∷ᵃ lem-box-tQ-at142142 ∷ᵃ lem-tP-at02102331 ∷ᵃ lem-tP-at02102441 ∷ᵃ lem-tP-at02132031 ∷ᵃ lem-tP-at02132130 ∷ᵃ lem-tP-at0214203143 ∷ᵃ lem-tP-at02142041 ∷ᵃ lem-tP-at0310243241 ∷ᵃ lem-tP-at031031 ∷ᵃ lem-tP-at03122031 ∷ᵃ lem-tP-at03122130 ∷ᵃ lem-tP-at0312243041 ∷ᵃ lem-tP-at0314203241 ∷ᵃ lem-tP-at03143041 ∷ᵃ lem-tP-at03243042 ∷ᵃ lem-tP-at033440 ∷ᵃ lem-tP-at04103143 ∷ᵃ lem-tP-at04122041 ∷ᵃ lem-tP-at0412233041 ∷ᵃ lem-tP-at04233042 ∷ᵃ lem-tP-at142142 ∷ᵃ lem-tP-at2442 ∷ᵃ lem-box-tQ-at0410233241 ∷ᵃ lem-box-tQ-at041041 ∷ᵃ lem-box-tQ-at0412233041 ∷ᵃ lem-box-tQ-at0413203142 ∷ᵃ lem-box-tQ-at0413213042 ∷ᵃ lem-box-tQ-at04233240 ∷ᵃ lem-box-tQ-at0440 ∷ᵃ lem-tP-at02142140 ∷ᵃ lem-tP-at0410233241 ∷ᵃ lem-tP-at0412213043 ∷ᵃ lem-tP-at0413203142 ∷ᵃ lem-tP-at0440 ∷ᵃ nil
 lem-CXcb-box-at02142041 : _
 lem-CXcb-box-at02142041 = D012.lem-CXcb-box-at02142041 sD012
 lem-QVQ-at0214233041 : _
@@ -1789,7 +2461,7 @@ lem-SWbc-box-at03143041 = D014.lem-SWbc-box-at03143041 sD014
 lem-SWbc-box-at02142041 : _
 lem-SWbc-box-at02142041 = D014.lem-SWbc-box-at02142041 sD014
 sD013 : SD013
-sD013 = lem-box-tQ-at0214203143 ∷ᵃ lem-box-tQ-at043043 ∷ᵃ lem-tP-at043043 ∷ᵃ lem-box-tQ-at02132031 ∷ᵃ lem-box-tQ-at022440 ∷ᵃ lem-box-tQ-at03122031 ∷ᵃ lem-box-tQ-at04122041 ∷ᵃ lem-tP-at02132031 ∷ᵃ lem-tP-at022440 ∷ᵃ lem-tP-at03122031 ∷ᵃ lem-tP-at04122041 ∷ᵃ lem-CSdu-box-2-at04203243 ∷ᵃ lem-Su-box-at04203243 ∷ᵃ lem-box-tQ-at0410233142 ∷ᵃ lem-box-tQ-at04122140 ∷ᵃ lem-box-tQ-at0412233140 ∷ᵃ lem-box-tQ-at0413203241 ∷ᵃ lem-box-tQ-at0413213240 ∷ᵃ lem-box-tQ-at04133140 ∷ᵃ lem-tP-at0410233142 ∷ᵃ lem-tP-at04122140 ∷ᵃ lem-tP-at0412233140 ∷ᵃ lem-tP-at0413203241 ∷ᵃ lem-tP-at0413213240 ∷ᵃ lem-tP-at0440 ∷ᵃ nil
+sD013 = (λ c → lem-comm-CS03-TOFF412 (lit c)) ∷ᵃ (λ c → lem-comm-CSd03-TOFF412 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-TOFF403 (lit c)) ∷ᵃ (λ c → lem-comm-CX21-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX31-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX32-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CZ03-TOFF412 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF412-CSd03 (lit c)) ∷ᵃ (λ c → lem-comm-CS02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CS04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CSd02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CSd04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-TOFF401 (lit c)) ∷ᵃ (λ c → lem-comm-CZ03-TOFF214 (lit c)) ∷ᵃ (λ c → lem-comm-CZ12-TOFF403 (lit c)) ∷ᵃ (λ c → lem-comm-CZ14-TOFF203 (lit c)) ∷ᵃ (λ c → lem-comm-CZ14-TOFF302 (lit c)) ∷ᵃ (λ c → lem-comm-CSd02-TOFF413 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-TOFF402 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF413-CSd02 (lit c)) ∷ᵃ (λ c → lem-comm-CS02-TOFF413 (lit c)) ∷ᵃ (λ c → lem-comm-CZ02-TOFF413 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF403-CSd12 (lit c)) ∷ᵃ lem-box-tQ-at0214203143 ∷ᵃ lem-box-tQ-at043043 ∷ᵃ lem-tP-at043043 ∷ᵃ lem-box-tQ-at02132031 ∷ᵃ lem-box-tQ-at022440 ∷ᵃ lem-box-tQ-at03122031 ∷ᵃ lem-box-tQ-at04122041 ∷ᵃ lem-tP-at02132031 ∷ᵃ lem-tP-at022440 ∷ᵃ lem-tP-at03122031 ∷ᵃ lem-tP-at04122041 ∷ᵃ lem-CSdu-box-2-at04203243 ∷ᵃ lem-Su-box-at04203243 ∷ᵃ lem-box-tQ-at0410233142 ∷ᵃ lem-box-tQ-at04122140 ∷ᵃ lem-box-tQ-at0412233140 ∷ᵃ lem-box-tQ-at0413203241 ∷ᵃ lem-box-tQ-at0413213240 ∷ᵃ lem-box-tQ-at04133140 ∷ᵃ lem-tP-at0410233142 ∷ᵃ lem-tP-at04122140 ∷ᵃ lem-tP-at0412233140 ∷ᵃ lem-tP-at0413203241 ∷ᵃ lem-tP-at0413213240 ∷ᵃ lem-tP-at0440 ∷ᵃ nil
 lem-VPQ-at0413213240 : _
 lem-VPQ-at0413213240 = D013.lem-VPQ-at0413213240 sD013
 lem-CXbc-box-at0412233140 : _
@@ -1923,7 +2595,7 @@ lem-SWbc-box-at04133140 = D015.lem-SWbc-box-at04133140 sD015
 lem-SWbc-box-at0413213240 : _
 lem-SWbc-box-at0413213240 = D015.lem-SWbc-box-at0413213240 sD015
 sD016 : SD016
-sD016 = lem-nat-SWbc-at0214203143 ∷ᵃ lem-nat-SWbc-at0214213043 ∷ᵃ lem-nat-SWbc-at0314203142 ∷ᵃ lem-nat-SWbc-at0314213042 ∷ᵃ lem-nat-SWbc-at122441 ∷ᵃ lem-nat-SWbc-at132132 ∷ᵃ lem-nat-SWbc-at1331 ∷ᵃ lem-nat-SWbc-at14213243 ∷ᵃ lem-sym-ab-at03102132 ∷ᵃ lem-sym-ab-at0410213243 ∷ᵃ lem-nat-SWbc-at0210233441 ∷ᵃ lem-nat-SWbc-at02102441 ∷ᵃ lem-nat-SWbc-at02132031 ∷ᵃ lem-nat-SWbc-at02132130 ∷ᵃ lem-nat-SWbc-at02233440 ∷ᵃ lem-nat-SWbc-at022440 ∷ᵃ lem-nat-SWbc-at0310243241 ∷ᵃ lem-nat-SWbc-at03103441 ∷ᵃ lem-nat-SWbc-at03122031 ∷ᵃ lem-nat-SWbc-at03122130 ∷ᵃ lem-nat-SWbc-at03243240 ∷ᵃ lem-nat-SWbc-at033440 ∷ᵃ lem-nat-SWbc-at12233441 ∷ᵃ lem-nat-SWbc-at143143 ∷ᵃ lem-nat-SWbc-at233442 ∷ᵃ lem-nat-SWbc-at2442 ∷ᵃ lem-sym-ab-at0213243041 ∷ᵃ lem-box-tQ-at0210213443 ∷ᵃ lem-box-tQ-at0213243140 ∷ᵃ lem-box-tQ-at0220 ∷ᵃ lem-nat-SWbc ∷ᵃ lem-nat-SWbc-at0210243143 ∷ᵃ lem-nat-SWbc-at0213213440 ∷ᵃ lem-nat-SWbc-at0312213440 ∷ᵃ lem-nat-SWbc-at0312243140 ∷ᵃ lem-nat-SWbc-at0330 ∷ᵃ lem-nat-SWbc-at043043 ∷ᵃ lem-nat-SWbc-at1221 ∷ᵃ lem-nat-SWbc-at122331 ∷ᵃ lem-nat-SWbc-at12243143 ∷ᵃ lem-nat-SWbc-at13213442 ∷ᵃ lem-nat-SWbc-at133441 ∷ᵃ lem-nat-SWbc-at1441 ∷ᵃ lem-nat-SWbc-at2332 ∷ᵃ lem-nat-SWbc-at243243 ∷ᵃ lem-box-tQ-at021021 ∷ᵃ lem-box-tQ-at0213243041 ∷ᵃ lem-box-tQ-at0214233041 ∷ᵃ lem-nat-SWbc-at0310243142 ∷ᵃ lem-nat-SWbc-at031031 ∷ᵃ lem-nat-SWbc-at0312203441 ∷ᵃ lem-nat-SWbc-at0312243041 ∷ᵃ lem-nat-SWbc-at0314203241 ∷ᵃ lem-nat-SWbc-at0314213240 ∷ᵃ lem-nat-SWbc-at03143041 ∷ᵃ lem-nat-SWbc-at03143140 ∷ᵃ lem-nat-SWbc-at12213443 ∷ᵃ lem-nat-SWbc-at3443 ∷ᵃ lem-P-box-at0220 ∷ᵃ lem-P-box-at032032 ∷ᵃ lem-P-box-at13243142 ∷ᵃ lem-P-box-at13243241 ∷ᵃ lem-P-box-at14233142 ∷ᵃ lem-P-box-at14233241 ∷ᵃ lem-box-tQ ∷ᵃ lem-box-tQ-at0312243140 ∷ᵃ lem-box-tQ-at1221 ∷ᵃ lem-box-tQ-at12213443 ∷ᵃ lem-box-tQ-at3443 ∷ᵃ lem-nat-SWbc-at022330 ∷ᵃ lem-tP ∷ᵃ lem-tP-at0110 ∷ᵃ lem-tP-at0210233441 ∷ᵃ lem-tP-at0210243143 ∷ᵃ lem-tP-at0213203441 ∷ᵃ lem-tP-at0214213043 ∷ᵃ lem-tP-at0310243142 ∷ᵃ lem-tP-at0312243140 ∷ᵃ lem-tP-at0314203142 ∷ᵃ lem-tP-at0314213042 ∷ᵃ lem-tP-at0330 ∷ᵃ lem-tP-at043043 ∷ᵃ lem-tP-at1221 ∷ᵃ lem-tP-at12213443 ∷ᵃ lem-tP-at122331 ∷ᵃ lem-tP-at12233441 ∷ᵃ lem-tP-at122441 ∷ᵃ lem-tP-at132132 ∷ᵃ lem-tP-at13213442 ∷ᵃ lem-tP-at1331 ∷ᵃ lem-tP-at143143 ∷ᵃ lem-tP-at2332 ∷ᵃ lem-tP-at233442 ∷ᵃ lem-tP-at243243 ∷ᵃ lem-tP-at3443 ∷ᵃ lem-P-box-at021021 ∷ᵃ lem-P-box-at0210213443 ∷ᵃ lem-P-box-at0213243041 ∷ᵃ lem-P-box-at0213243140 ∷ᵃ lem-P-box-at0214233041 ∷ᵃ lem-P-box-at03102132 ∷ᵃ lem-P-box-at0310213442 ∷ᵃ lem-box-tQ-at0312243041 ∷ᵃ lem-box-tQ-at03143041 ∷ᵃ lem-nat-SWbc-at02142041 ∷ᵃ lem-tP-at02102441 ∷ᵃ lem-tP-at02132031 ∷ᵃ lem-tP-at02132130 ∷ᵃ lem-tP-at0214203143 ∷ᵃ lem-tP-at022330 ∷ᵃ lem-tP-at02233440 ∷ᵃ lem-tP-at022440 ∷ᵃ lem-tP-at0310243241 ∷ᵃ lem-tP-at031031 ∷ᵃ lem-tP-at03103441 ∷ᵃ lem-tP-at03122031 ∷ᵃ lem-tP-at0312203441 ∷ᵃ lem-tP-at03122130 ∷ᵃ lem-tP-at0312243041 ∷ᵃ lem-tP-at0314213240 ∷ᵃ lem-tP-at03143041 ∷ᵃ lem-tP-at03143140 ∷ᵃ lem-tP-at03243240 ∷ᵃ lem-tP-at033440 ∷ᵃ lem-tP-at12243143 ∷ᵃ lem-tP-at14213243 ∷ᵃ lem-tP-at1441 ∷ᵃ lem-tP-at2442 ∷ᵃ lem-QVQ ∷ᵃ lem-QVQ-at0110 ∷ᵃ lem-QVQ-at0210233441 ∷ᵃ lem-QVQ-at0210243143 ∷ᵃ lem-QVQ-at02102441 ∷ᵃ lem-QVQ-at0213203441 ∷ᵃ lem-QVQ-at0214203143 ∷ᵃ lem-QVQ-at0214213043 ∷ᵃ lem-QVQ-at022330 ∷ᵃ lem-QVQ-at02233440 ∷ᵃ lem-QVQ-at022440 ∷ᵃ lem-QVQ-at0310243142 ∷ᵃ lem-QVQ-at0310243241 ∷ᵃ lem-QVQ-at031031 ∷ᵃ lem-QVQ-at03103441 ∷ᵃ lem-QVQ-at0312203441 ∷ᵃ lem-QVQ-at0312243041 ∷ᵃ lem-QVQ-at0312243140 ∷ᵃ lem-QVQ-at0314203142 ∷ᵃ lem-QVQ-at0314213042 ∷ᵃ lem-QVQ-at0314213240 ∷ᵃ lem-QVQ-at03143140 ∷ᵃ lem-QVQ-at03243240 ∷ᵃ lem-QVQ-at0330 ∷ᵃ lem-QVQ-at033440 ∷ᵃ lem-QVQ-at043043 ∷ᵃ lem-QVQ-at1221 ∷ᵃ lem-QVQ-at12213443 ∷ᵃ lem-QVQ-at122331 ∷ᵃ lem-QVQ-at12233441 ∷ᵃ lem-QVQ-at12243143 ∷ᵃ lem-QVQ-at122441 ∷ᵃ lem-QVQ-at132132 ∷ᵃ lem-QVQ-at13213442 ∷ᵃ lem-QVQ-at1331 ∷ᵃ lem-QVQ-at14213243 ∷ᵃ lem-QVQ-at143143 ∷ᵃ lem-QVQ-at1441 ∷ᵃ lem-QVQ-at2332 ∷ᵃ lem-QVQ-at233442 ∷ᵃ lem-QVQ-at243243 ∷ᵃ lem-QVQ-at2442 ∷ᵃ lem-QVQ-at3443 ∷ᵃ lem-SWbc-box ∷ᵃ lem-SWbc-box-at0210233441 ∷ᵃ lem-SWbc-box-at0210243143 ∷ᵃ lem-SWbc-box-at02102441 ∷ᵃ lem-SWbc-box-at0213213440 ∷ᵃ lem-SWbc-box-at0214203143 ∷ᵃ lem-SWbc-box-at02142041 ∷ᵃ lem-SWbc-box-at0214213043 ∷ᵃ lem-SWbc-box-at022330 ∷ᵃ lem-SWbc-box-at02233440 ∷ᵃ lem-SWbc-box-at022440 ∷ᵃ lem-SWbc-box-at0310243142 ∷ᵃ lem-SWbc-box-at0310243241 ∷ᵃ lem-SWbc-box-at031031 ∷ᵃ lem-SWbc-box-at03103441 ∷ᵃ lem-SWbc-box-at0312203441 ∷ᵃ lem-SWbc-box-at0312213440 ∷ᵃ lem-SWbc-box-at0312243041 ∷ᵃ lem-SWbc-box-at0312243140 ∷ᵃ lem-SWbc-box-at0314203142 ∷ᵃ lem-SWbc-box-at0314213042 ∷ᵃ lem-SWbc-box-at0314213240 ∷ᵃ lem-SWbc-box-at03143041 ∷ᵃ lem-SWbc-box-at03143140 ∷ᵃ lem-SWbc-box-at03243240 ∷ᵃ lem-SWbc-box-at0330 ∷ᵃ lem-SWbc-box-at033440 ∷ᵃ lem-SWbc-box-at043043 ∷ᵃ lem-SWbc-box-at1221 ∷ᵃ lem-SWbc-box-at12213443 ∷ᵃ lem-SWbc-box-at122331 ∷ᵃ lem-SWbc-box-at12233441 ∷ᵃ lem-SWbc-box-at12243143 ∷ᵃ lem-SWbc-box-at122441 ∷ᵃ lem-SWbc-box-at132132 ∷ᵃ lem-SWbc-box-at13213442 ∷ᵃ lem-SWbc-box-at1331 ∷ᵃ lem-SWbc-box-at133441 ∷ᵃ lem-SWbc-box-at14213243 ∷ᵃ lem-SWbc-box-at143143 ∷ᵃ lem-SWbc-box-at1441 ∷ᵃ lem-SWbc-box-at2332 ∷ᵃ lem-SWbc-box-at233442 ∷ᵃ lem-SWbc-box-at243243 ∷ᵃ lem-SWbc-box-at2442 ∷ᵃ lem-SWbc-box-at3443 ∷ᵃ lem-XCSX-box-2-at0210243143 ∷ᵃ lem-XCSX-box-2-at122441 ∷ᵃ lem-XCSX-box-2-at243243 ∷ᵃ lem-box-cP-at021021 ∷ᵃ lem-box-cP-at0210213443 ∷ᵃ lem-box-cP-at0213243140 ∷ᵃ lem-box-cP-at0220 ∷ᵃ lem-box-cP-at03102132 ∷ᵃ lem-box-cP-at032032 ∷ᵃ lem-box-cP-at0410213243 ∷ᵃ lem-box-cP-at13243142 ∷ᵃ lem-box-cP-at13243241 ∷ᵃ lem-box-cP-at14233142 ∷ᵃ lem-box-cP-at14233241 ∷ᵃ lem-sym-bc-at03102132 ∷ᵃ lem-sym-bc-at0310213442 ∷ᵃ lem-sym-bc-at032032 ∷ᵃ lem-sym-bc-at04203243 ∷ᵃ lem-sym-bc-at13243142 ∷ᵃ lem-QVQ-at02132031 ∷ᵃ lem-QVQ-at02132130 ∷ᵃ lem-QVQ-at03122031 ∷ᵃ lem-QVQ-at03122130 ∷ᵃ lem-QVQ-at03143041 ∷ᵃ lem-SWbc-box-at02132031 ∷ᵃ lem-SWbc-box-at02132130 ∷ᵃ lem-SWbc-box-at03122031 ∷ᵃ lem-SWbc-box-at03122130 ∷ᵃ lem-SWbc-box-at0314203241 ∷ᵃ lem-box-cP-at0213243041 ∷ᵃ lem-box-cP-at0214233041 ∷ᵃ lem-box-cP-at0310213442 ∷ᵃ lem-sym-bc-at0214233041 ∷ᵃ nil
+sD016 = (λ c → lem-comm-CS12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX12-CCZ034 (lit c)) ∷ᵃ lem-nat-SWbc-at0214203143 ∷ᵃ lem-nat-SWbc-at0214213043 ∷ᵃ lem-nat-SWbc-at0314203142 ∷ᵃ lem-nat-SWbc-at0314213042 ∷ᵃ lem-nat-SWbc-at122441 ∷ᵃ lem-nat-SWbc-at132132 ∷ᵃ lem-nat-SWbc-at1331 ∷ᵃ lem-nat-SWbc-at14213243 ∷ᵃ lem-sym-ab-at03102132 ∷ᵃ lem-sym-ab-at0410213243 ∷ᵃ lem-nat-SWbc-at0210233441 ∷ᵃ lem-nat-SWbc-at02102441 ∷ᵃ lem-nat-SWbc-at02132031 ∷ᵃ lem-nat-SWbc-at02132130 ∷ᵃ lem-nat-SWbc-at02233440 ∷ᵃ lem-nat-SWbc-at022440 ∷ᵃ lem-nat-SWbc-at0310243241 ∷ᵃ lem-nat-SWbc-at03103441 ∷ᵃ lem-nat-SWbc-at03122031 ∷ᵃ lem-nat-SWbc-at03122130 ∷ᵃ lem-nat-SWbc-at03243240 ∷ᵃ lem-nat-SWbc-at033440 ∷ᵃ lem-nat-SWbc-at12233441 ∷ᵃ lem-nat-SWbc-at143143 ∷ᵃ lem-nat-SWbc-at233442 ∷ᵃ lem-nat-SWbc-at2442 ∷ᵃ lem-sym-ab-at0213243041 ∷ᵃ lem-box-tQ-at0210213443 ∷ᵃ lem-box-tQ-at0213243140 ∷ᵃ lem-box-tQ-at0220 ∷ᵃ lem-nat-SWbc ∷ᵃ lem-nat-SWbc-at0210243143 ∷ᵃ lem-nat-SWbc-at0213213440 ∷ᵃ lem-nat-SWbc-at0312213440 ∷ᵃ lem-nat-SWbc-at0312243140 ∷ᵃ lem-nat-SWbc-at0330 ∷ᵃ lem-nat-SWbc-at043043 ∷ᵃ lem-nat-SWbc-at1221 ∷ᵃ lem-nat-SWbc-at122331 ∷ᵃ lem-nat-SWbc-at12243143 ∷ᵃ lem-nat-SWbc-at13213442 ∷ᵃ lem-nat-SWbc-at133441 ∷ᵃ lem-nat-SWbc-at1441 ∷ᵃ lem-nat-SWbc-at2332 ∷ᵃ lem-nat-SWbc-at243243 ∷ᵃ lem-box-tQ-at021021 ∷ᵃ lem-box-tQ-at0213243041 ∷ᵃ lem-box-tQ-at0214233041 ∷ᵃ lem-nat-SWbc-at0310243142 ∷ᵃ lem-nat-SWbc-at031031 ∷ᵃ lem-nat-SWbc-at0312203441 ∷ᵃ lem-nat-SWbc-at0312243041 ∷ᵃ lem-nat-SWbc-at0314203241 ∷ᵃ lem-nat-SWbc-at0314213240 ∷ᵃ lem-nat-SWbc-at03143041 ∷ᵃ lem-nat-SWbc-at03143140 ∷ᵃ lem-nat-SWbc-at12213443 ∷ᵃ lem-nat-SWbc-at3443 ∷ᵃ lem-P-box-at0220 ∷ᵃ lem-P-box-at032032 ∷ᵃ lem-P-box-at13243142 ∷ᵃ lem-P-box-at13243241 ∷ᵃ lem-P-box-at14233142 ∷ᵃ lem-P-box-at14233241 ∷ᵃ lem-box-tQ ∷ᵃ lem-box-tQ-at0312243140 ∷ᵃ lem-box-tQ-at1221 ∷ᵃ lem-box-tQ-at12213443 ∷ᵃ lem-box-tQ-at3443 ∷ᵃ lem-nat-SWbc-at022330 ∷ᵃ lem-tP ∷ᵃ lem-tP-at0110 ∷ᵃ lem-tP-at0210233441 ∷ᵃ lem-tP-at0210243143 ∷ᵃ lem-tP-at0213203441 ∷ᵃ lem-tP-at0214213043 ∷ᵃ lem-tP-at0310243142 ∷ᵃ lem-tP-at0312243140 ∷ᵃ lem-tP-at0314203142 ∷ᵃ lem-tP-at0314213042 ∷ᵃ lem-tP-at0330 ∷ᵃ lem-tP-at043043 ∷ᵃ lem-tP-at1221 ∷ᵃ lem-tP-at12213443 ∷ᵃ lem-tP-at122331 ∷ᵃ lem-tP-at12233441 ∷ᵃ lem-tP-at122441 ∷ᵃ lem-tP-at132132 ∷ᵃ lem-tP-at13213442 ∷ᵃ lem-tP-at1331 ∷ᵃ lem-tP-at143143 ∷ᵃ lem-tP-at2332 ∷ᵃ lem-tP-at233442 ∷ᵃ lem-tP-at243243 ∷ᵃ lem-tP-at3443 ∷ᵃ lem-P-box-at021021 ∷ᵃ lem-P-box-at0210213443 ∷ᵃ lem-P-box-at0213243041 ∷ᵃ lem-P-box-at0213243140 ∷ᵃ lem-P-box-at0214233041 ∷ᵃ lem-P-box-at03102132 ∷ᵃ lem-P-box-at0310213442 ∷ᵃ lem-box-tQ-at0312243041 ∷ᵃ lem-box-tQ-at03143041 ∷ᵃ lem-nat-SWbc-at02142041 ∷ᵃ lem-tP-at02102441 ∷ᵃ lem-tP-at02132031 ∷ᵃ lem-tP-at02132130 ∷ᵃ lem-tP-at0214203143 ∷ᵃ lem-tP-at022330 ∷ᵃ lem-tP-at02233440 ∷ᵃ lem-tP-at022440 ∷ᵃ lem-tP-at0310243241 ∷ᵃ lem-tP-at031031 ∷ᵃ lem-tP-at03103441 ∷ᵃ lem-tP-at03122031 ∷ᵃ lem-tP-at0312203441 ∷ᵃ lem-tP-at03122130 ∷ᵃ lem-tP-at0312243041 ∷ᵃ lem-tP-at0314213240 ∷ᵃ lem-tP-at03143041 ∷ᵃ lem-tP-at03143140 ∷ᵃ lem-tP-at03243240 ∷ᵃ lem-tP-at033440 ∷ᵃ lem-tP-at12243143 ∷ᵃ lem-tP-at14213243 ∷ᵃ lem-tP-at1441 ∷ᵃ lem-tP-at2442 ∷ᵃ lem-QVQ ∷ᵃ lem-QVQ-at0110 ∷ᵃ lem-QVQ-at0210233441 ∷ᵃ lem-QVQ-at0210243143 ∷ᵃ lem-QVQ-at02102441 ∷ᵃ lem-QVQ-at0213203441 ∷ᵃ lem-QVQ-at0214203143 ∷ᵃ lem-QVQ-at0214213043 ∷ᵃ lem-QVQ-at022330 ∷ᵃ lem-QVQ-at02233440 ∷ᵃ lem-QVQ-at022440 ∷ᵃ lem-QVQ-at0310243142 ∷ᵃ lem-QVQ-at0310243241 ∷ᵃ lem-QVQ-at031031 ∷ᵃ lem-QVQ-at03103441 ∷ᵃ lem-QVQ-at0312203441 ∷ᵃ lem-QVQ-at0312243041 ∷ᵃ lem-QVQ-at0312243140 ∷ᵃ lem-QVQ-at0314203142 ∷ᵃ lem-QVQ-at0314213042 ∷ᵃ lem-QVQ-at0314213240 ∷ᵃ lem-QVQ-at03143140 ∷ᵃ lem-QVQ-at03243240 ∷ᵃ lem-QVQ-at0330 ∷ᵃ lem-QVQ-at033440 ∷ᵃ lem-QVQ-at043043 ∷ᵃ lem-QVQ-at1221 ∷ᵃ lem-QVQ-at12213443 ∷ᵃ lem-QVQ-at122331 ∷ᵃ lem-QVQ-at12233441 ∷ᵃ lem-QVQ-at12243143 ∷ᵃ lem-QVQ-at122441 ∷ᵃ lem-QVQ-at132132 ∷ᵃ lem-QVQ-at13213442 ∷ᵃ lem-QVQ-at1331 ∷ᵃ lem-QVQ-at14213243 ∷ᵃ lem-QVQ-at143143 ∷ᵃ lem-QVQ-at1441 ∷ᵃ lem-QVQ-at2332 ∷ᵃ lem-QVQ-at233442 ∷ᵃ lem-QVQ-at243243 ∷ᵃ lem-QVQ-at2442 ∷ᵃ lem-QVQ-at3443 ∷ᵃ lem-SWbc-box ∷ᵃ lem-SWbc-box-at0210233441 ∷ᵃ lem-SWbc-box-at0210243143 ∷ᵃ lem-SWbc-box-at02102441 ∷ᵃ lem-SWbc-box-at0213213440 ∷ᵃ lem-SWbc-box-at0214203143 ∷ᵃ lem-SWbc-box-at02142041 ∷ᵃ lem-SWbc-box-at0214213043 ∷ᵃ lem-SWbc-box-at022330 ∷ᵃ lem-SWbc-box-at02233440 ∷ᵃ lem-SWbc-box-at022440 ∷ᵃ lem-SWbc-box-at0310243142 ∷ᵃ lem-SWbc-box-at0310243241 ∷ᵃ lem-SWbc-box-at031031 ∷ᵃ lem-SWbc-box-at03103441 ∷ᵃ lem-SWbc-box-at0312203441 ∷ᵃ lem-SWbc-box-at0312213440 ∷ᵃ lem-SWbc-box-at0312243041 ∷ᵃ lem-SWbc-box-at0312243140 ∷ᵃ lem-SWbc-box-at0314203142 ∷ᵃ lem-SWbc-box-at0314213042 ∷ᵃ lem-SWbc-box-at0314213240 ∷ᵃ lem-SWbc-box-at03143041 ∷ᵃ lem-SWbc-box-at03143140 ∷ᵃ lem-SWbc-box-at03243240 ∷ᵃ lem-SWbc-box-at0330 ∷ᵃ lem-SWbc-box-at033440 ∷ᵃ lem-SWbc-box-at043043 ∷ᵃ lem-SWbc-box-at1221 ∷ᵃ lem-SWbc-box-at12213443 ∷ᵃ lem-SWbc-box-at122331 ∷ᵃ lem-SWbc-box-at12233441 ∷ᵃ lem-SWbc-box-at12243143 ∷ᵃ lem-SWbc-box-at122441 ∷ᵃ lem-SWbc-box-at132132 ∷ᵃ lem-SWbc-box-at13213442 ∷ᵃ lem-SWbc-box-at1331 ∷ᵃ lem-SWbc-box-at133441 ∷ᵃ lem-SWbc-box-at14213243 ∷ᵃ lem-SWbc-box-at143143 ∷ᵃ lem-SWbc-box-at1441 ∷ᵃ lem-SWbc-box-at2332 ∷ᵃ lem-SWbc-box-at233442 ∷ᵃ lem-SWbc-box-at243243 ∷ᵃ lem-SWbc-box-at2442 ∷ᵃ lem-SWbc-box-at3443 ∷ᵃ lem-XCSX-box-2-at0210243143 ∷ᵃ lem-XCSX-box-2-at122441 ∷ᵃ lem-XCSX-box-2-at243243 ∷ᵃ lem-box-cP-at021021 ∷ᵃ lem-box-cP-at0210213443 ∷ᵃ lem-box-cP-at0213243140 ∷ᵃ lem-box-cP-at0220 ∷ᵃ lem-box-cP-at03102132 ∷ᵃ lem-box-cP-at032032 ∷ᵃ lem-box-cP-at0410213243 ∷ᵃ lem-box-cP-at13243142 ∷ᵃ lem-box-cP-at13243241 ∷ᵃ lem-box-cP-at14233142 ∷ᵃ lem-box-cP-at14233241 ∷ᵃ lem-sym-bc-at03102132 ∷ᵃ lem-sym-bc-at0310213442 ∷ᵃ lem-sym-bc-at032032 ∷ᵃ lem-sym-bc-at04203243 ∷ᵃ lem-sym-bc-at13243142 ∷ᵃ lem-QVQ-at02132031 ∷ᵃ lem-QVQ-at02132130 ∷ᵃ lem-QVQ-at03122031 ∷ᵃ lem-QVQ-at03122130 ∷ᵃ lem-QVQ-at03143041 ∷ᵃ lem-SWbc-box-at02132031 ∷ᵃ lem-SWbc-box-at02132130 ∷ᵃ lem-SWbc-box-at03122031 ∷ᵃ lem-SWbc-box-at03122130 ∷ᵃ lem-SWbc-box-at0314203241 ∷ᵃ lem-box-cP-at0213243041 ∷ᵃ lem-box-cP-at0214233041 ∷ᵃ lem-box-cP-at0310213442 ∷ᵃ lem-sym-bc-at0214233041 ∷ᵃ nil
 lem-box-cP : _
 lem-box-cP = D016.lem-box-cP sD016
 lem-box-cP-at0210243143 : _
@@ -2165,7 +2837,7 @@ lem-sym-bc-at03122031 = D016.lem-sym-bc-at03122031 sD016
 lem-box-cP-at03122130 : _
 lem-box-cP-at03122130 = D016.lem-box-cP-at03122130 sD016
 sD018 : SD018
-sD018 = lem-sym-ab ∷ᵃ lem-sym-ab-at032032 ∷ᵃ lem-sym-ab-at04203243 ∷ᵃ lem-sym-ab-at1221 ∷ᵃ lem-sym-ab-at122331 ∷ᵃ lem-sym-ab-at12233441 ∷ᵃ lem-sym-ab-at122441 ∷ᵃ lem-sym-ab-at2332 ∷ᵃ lem-sym-ab-at233442 ∷ᵃ lem-box-tQ-at0410213243 ∷ᵃ lem-box-tQ-at13243142 ∷ᵃ lem-box-tQ-at13243241 ∷ᵃ lem-box-tQ-at14233142 ∷ᵃ lem-box-tQ ∷ᵃ lem-box-tQ-at0210233441 ∷ᵃ lem-box-tQ-at0210243143 ∷ᵃ lem-box-tQ-at0310243142 ∷ᵃ lem-box-tQ-at0330 ∷ᵃ lem-box-tQ-at043043 ∷ᵃ lem-box-tQ-at12243143 ∷ᵃ lem-box-tQ-at122441 ∷ᵃ lem-box-tQ-at1441 ∷ᵃ lem-box-tQ-at233442 ∷ᵃ lem-box-tQ-at243243 ∷ᵃ lem-box-tQ-at2442 ∷ᵃ lem-P-box ∷ᵃ lem-P-box-at0214213043 ∷ᵃ lem-P-box-at0310243142 ∷ᵃ lem-P-box-at0330 ∷ᵃ lem-P-box-at1221 ∷ᵃ lem-P-box-at122331 ∷ᵃ lem-P-box-at132132 ∷ᵃ lem-P-box-at13213442 ∷ᵃ lem-P-box-at1331 ∷ᵃ lem-P-box-at2332 ∷ᵃ lem-P-box-at3443 ∷ᵃ lem-t-cP ∷ᵃ lem-t-cP-at0210243143 ∷ᵃ lem-t-cP-at043043 ∷ᵃ lem-t-cP-at122441 ∷ᵃ lem-t-cP-at243243 ∷ᵃ lem-P-box-at143143 ∷ᵃ lem-CXu-box-4-at03102132 ∷ᵃ lem-box-cP ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at0214213043 ∷ᵃ lem-box-cP-at0310243142 ∷ᵃ lem-box-cP-at0314203142 ∷ᵃ lem-box-cP-at0330 ∷ᵃ lem-box-cP-at043043 ∷ᵃ lem-box-cP-at1221 ∷ᵃ lem-box-cP-at122331 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at132132 ∷ᵃ lem-box-cP-at13213442 ∷ᵃ lem-box-cP-at1331 ∷ᵃ lem-box-cP-at143143 ∷ᵃ lem-box-cP-at2332 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-cP-at3443 ∷ᵃ lem-pairs-at13243142 ∷ᵃ lem-pairs-at13243241 ∷ᵃ lem-pairs-at14233241 ∷ᵃ lem-sym-bc ∷ᵃ lem-sym-bc-at0210243143 ∷ᵃ lem-sym-bc-at0330 ∷ᵃ lem-sym-bc-at043043 ∷ᵃ lem-sym-bc-at1221 ∷ᵃ lem-sym-bc-at122441 ∷ᵃ lem-sym-bc-at13213442 ∷ᵃ lem-sym-bc-at133441 ∷ᵃ lem-sym-bc-at1441 ∷ᵃ lem-sym-bc-at243243 ∷ᵃ nil
+sD018 = (λ c → lem-comm-CS03-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CS12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CS13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CS14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CSd03-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CSd04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CX12-TOFF034 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CSd24 (lit c)) ∷ᵃ (λ c → lem-comm-CK40-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CK41-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CK42-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CS04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CX40-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CK40 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CSd04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF312-CS04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CK41 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CSd14 (lit c)) ∷ᵃ lem-sym-ab ∷ᵃ lem-sym-ab-at032032 ∷ᵃ lem-sym-ab-at04203243 ∷ᵃ lem-sym-ab-at1221 ∷ᵃ lem-sym-ab-at122331 ∷ᵃ lem-sym-ab-at12233441 ∷ᵃ lem-sym-ab-at122441 ∷ᵃ lem-sym-ab-at2332 ∷ᵃ lem-sym-ab-at233442 ∷ᵃ lem-box-tQ-at0410213243 ∷ᵃ lem-box-tQ-at13243142 ∷ᵃ lem-box-tQ-at13243241 ∷ᵃ lem-box-tQ-at14233142 ∷ᵃ lem-box-tQ ∷ᵃ lem-box-tQ-at0210233441 ∷ᵃ lem-box-tQ-at0210243143 ∷ᵃ lem-box-tQ-at0310243142 ∷ᵃ lem-box-tQ-at0330 ∷ᵃ lem-box-tQ-at043043 ∷ᵃ lem-box-tQ-at12243143 ∷ᵃ lem-box-tQ-at122441 ∷ᵃ lem-box-tQ-at1441 ∷ᵃ lem-box-tQ-at233442 ∷ᵃ lem-box-tQ-at243243 ∷ᵃ lem-box-tQ-at2442 ∷ᵃ lem-P-box ∷ᵃ lem-P-box-at0214213043 ∷ᵃ lem-P-box-at0310243142 ∷ᵃ lem-P-box-at0330 ∷ᵃ lem-P-box-at1221 ∷ᵃ lem-P-box-at122331 ∷ᵃ lem-P-box-at132132 ∷ᵃ lem-P-box-at13213442 ∷ᵃ lem-P-box-at1331 ∷ᵃ lem-P-box-at2332 ∷ᵃ lem-P-box-at3443 ∷ᵃ lem-t-cP ∷ᵃ lem-t-cP-at0210243143 ∷ᵃ lem-t-cP-at043043 ∷ᵃ lem-t-cP-at122441 ∷ᵃ lem-t-cP-at243243 ∷ᵃ lem-P-box-at143143 ∷ᵃ lem-CXu-box-4-at03102132 ∷ᵃ lem-box-cP ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at0214213043 ∷ᵃ lem-box-cP-at0310243142 ∷ᵃ lem-box-cP-at0314203142 ∷ᵃ lem-box-cP-at0330 ∷ᵃ lem-box-cP-at043043 ∷ᵃ lem-box-cP-at1221 ∷ᵃ lem-box-cP-at122331 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at132132 ∷ᵃ lem-box-cP-at13213442 ∷ᵃ lem-box-cP-at1331 ∷ᵃ lem-box-cP-at143143 ∷ᵃ lem-box-cP-at2332 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-cP-at3443 ∷ᵃ lem-pairs-at13243142 ∷ᵃ lem-pairs-at13243241 ∷ᵃ lem-pairs-at14233241 ∷ᵃ lem-sym-bc ∷ᵃ lem-sym-bc-at0210243143 ∷ᵃ lem-sym-bc-at0330 ∷ᵃ lem-sym-bc-at043043 ∷ᵃ lem-sym-bc-at1221 ∷ᵃ lem-sym-bc-at122441 ∷ᵃ lem-sym-bc-at13213442 ∷ᵃ lem-sym-bc-at133441 ∷ᵃ lem-sym-bc-at1441 ∷ᵃ lem-sym-bc-at243243 ∷ᵃ nil
 lem-box2 : _
 lem-box2 = D018.lem-box2 sD018
 lem-Xb-box-at0210243143 : _
@@ -2259,7 +2931,7 @@ lem-box-perm-1324-at243243 = D018.lem-box-perm-1324-at243243 sD018
 lem-box-perm-1423-at122441 : _
 lem-box-perm-1423-at122441 = D018.lem-box-perm-1423-at122441 sD018
 sD020 : SD020
-sD020 = lem-sym-ab-at132132 ∷ᵃ lem-box-tQ-at12233441 ∷ᵃ lem-box-tQ-at132132 ∷ᵃ lem-box-tQ-at14213243 ∷ᵃ lem-P-box-at12233441 ∷ᵃ lem-P-box-at122441 ∷ᵃ lem-P-box-at14213243 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at12233441 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at14213243 ∷ᵃ lem-box-cP-at2332 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-1324-at03102132 ∷ᵃ lem-sym-bc-at0330 ∷ᵃ lem-sym-bc-at2332 ∷ᵃ nil
+sD020 = (λ c → lem-comm-CS13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CX13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CX23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ014-CX23 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX13 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX31 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CX24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CX04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CX14 (lit c)) ∷ᵃ lem-sym-ab-at132132 ∷ᵃ lem-box-tQ-at12233441 ∷ᵃ lem-box-tQ-at132132 ∷ᵃ lem-box-tQ-at14213243 ∷ᵃ lem-P-box-at12233441 ∷ᵃ lem-P-box-at122441 ∷ᵃ lem-P-box-at14213243 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at12233441 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at14213243 ∷ᵃ lem-box-cP-at2332 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-1324-at03102132 ∷ᵃ lem-sym-bc-at0330 ∷ᵃ lem-sym-bc-at2332 ∷ᵃ nil
 lem-pairs-at14213243 : _
 lem-pairs-at14213243 = D020.lem-pairs-at14213243 sD020
 lem-pairs-at12233441 : _
@@ -2281,7 +2953,7 @@ lem-nf-comm-CS-S0at0 = D020.lem-nf-comm-CS-S0at0 sD020
 lem-nf-comm-CS-S0at1 : _
 lem-nf-comm-CS-S0at1 = D020.lem-nf-comm-CS-S0at1 sD020
 sD017 : SD017
-sD017 = lem-sym-ab-at0210243143 ∷ᵃ lem-sym-ab-at0310243142 ∷ᵃ lem-sym-ab-at032032 ∷ᵃ lem-sym-ab-at13243142 ∷ᵃ lem-sym-ab-at022330 ∷ᵃ lem-sym-ab-at0330 ∷ᵃ lem-nat-SWbc-at041041 ∷ᵃ lem-nat-SWbc-at0413203142 ∷ᵃ lem-nat-SWbc-at0413213042 ∷ᵃ lem-nat-SWbc-at04233240 ∷ᵃ lem-nat-SWbc-at0440 ∷ᵃ lem-sym-ab-at02102331 ∷ᵃ lem-sym-ab-at031031 ∷ᵃ lem-box-tQ-at03102132 ∷ᵃ lem-box-tQ-at032032 ∷ᵃ lem-box-tQ-at04203243 ∷ᵃ lem-box-tQ-at0310213442 ∷ᵃ lem-nat-SWbc-at02102331 ∷ᵃ lem-nat-SWbc-at04122041 ∷ᵃ lem-nat-SWbc-at04122140 ∷ᵃ lem-nat-SWbc-at0412233041 ∷ᵃ lem-nat-SWbc-at0412233140 ∷ᵃ lem-nat-SWbc-at0413213240 ∷ᵃ lem-nat-SWbc-at04133140 ∷ᵃ lem-nat-SWbc-at142142 ∷ᵃ lem-box-tQ-at0314203142 ∷ᵃ lem-t-cP-at03102132 ∷ᵃ lem-t-cP-at032032 ∷ᵃ lem-tP-at02102331 ∷ᵃ lem-tP-at02142041 ∷ᵃ lem-tP-at0314203241 ∷ᵃ lem-tP-at03243042 ∷ᵃ lem-tP-at04103143 ∷ᵃ lem-tP-at04122041 ∷ᵃ lem-tP-at0412233041 ∷ᵃ lem-tP-at04233042 ∷ᵃ lem-tP-at142142 ∷ᵃ lem-P-box-at0410213243 ∷ᵃ lem-P-box-at04203243 ∷ᵃ lem-box-tQ-at0412233041 ∷ᵃ lem-box-tQ-at0412233140 ∷ᵃ lem-t-cP-at0310213442 ∷ᵃ lem-t-cP-at04203243 ∷ᵃ lem-tP-at02142140 ∷ᵃ lem-tP-at0410233142 ∷ᵃ lem-tP-at0410233241 ∷ᵃ lem-tP-at0412213043 ∷ᵃ lem-tP-at04122140 ∷ᵃ lem-tP-at0412233140 ∷ᵃ lem-tP-at0413203142 ∷ᵃ lem-tP-at0413203241 ∷ᵃ lem-tP-at0413213240 ∷ᵃ lem-tP-at0440 ∷ᵃ lem-box-cP-at03102132 ∷ᵃ lem-box-cP-at032032 ∷ᵃ lem-box-cP-at0410213243 ∷ᵃ lem-box-cP-at04203243 ∷ᵃ lem-sym-bc-at0220 ∷ᵃ lem-sym-bc-at03102132 ∷ᵃ lem-sym-bc-at0310213442 ∷ᵃ lem-sym-bc-at032032 ∷ᵃ lem-sym-bc-at04203243 ∷ᵃ lem-sym-bc-at14233142 ∷ᵃ lem-QVQ-at02102331 ∷ᵃ lem-QVQ-at02142041 ∷ᵃ lem-QVQ-at02142140 ∷ᵃ lem-QVQ-at0314203241 ∷ᵃ lem-QVQ-at03243042 ∷ᵃ lem-QVQ-at0410233142 ∷ᵃ lem-QVQ-at0410233241 ∷ᵃ lem-QVQ-at04103143 ∷ᵃ lem-QVQ-at04122041 ∷ᵃ lem-QVQ-at0412213043 ∷ᵃ lem-QVQ-at04122140 ∷ᵃ lem-QVQ-at0412233041 ∷ᵃ lem-QVQ-at0412233140 ∷ᵃ lem-QVQ-at0413203142 ∷ᵃ lem-QVQ-at0413203241 ∷ᵃ lem-QVQ-at0413213240 ∷ᵃ lem-QVQ-at04233042 ∷ᵃ lem-QVQ-at0440 ∷ᵃ lem-QVQ-at142142 ∷ᵃ lem-SWbc-box-at02102331 ∷ᵃ lem-SWbc-box-at041041 ∷ᵃ lem-SWbc-box-at04122041 ∷ᵃ lem-SWbc-box-at04122140 ∷ᵃ lem-SWbc-box-at0412233041 ∷ᵃ lem-SWbc-box-at0412233140 ∷ᵃ lem-SWbc-box-at0413203142 ∷ᵃ lem-SWbc-box-at0413213042 ∷ᵃ lem-SWbc-box-at0413213240 ∷ᵃ lem-SWbc-box-at04133140 ∷ᵃ lem-SWbc-box-at04233240 ∷ᵃ lem-SWbc-box-at0440 ∷ᵃ lem-SWbc-box-at142142 ∷ᵃ lem-XCSX-box-2-at04122041 ∷ᵃ lem-box-cP-at0213243041 ∷ᵃ lem-box-cP-at0310213442 ∷ᵃ lem-sym-bc-at021021 ∷ᵃ lem-sym-bc-at0210213443 ∷ᵃ nil
+sD017 = (λ c → lem-comm-CS23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CX23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ014-CX23 (lit c)) ∷ᵃ (λ c → lem-comm-CX40-CCZ123 (lit c)) ∷ᵃ lem-sym-ab-at0210243143 ∷ᵃ lem-sym-ab-at0310243142 ∷ᵃ lem-sym-ab-at032032 ∷ᵃ lem-sym-ab-at13243142 ∷ᵃ lem-sym-ab-at022330 ∷ᵃ lem-sym-ab-at0330 ∷ᵃ lem-nat-SWbc-at041041 ∷ᵃ lem-nat-SWbc-at0413203142 ∷ᵃ lem-nat-SWbc-at0413213042 ∷ᵃ lem-nat-SWbc-at04233240 ∷ᵃ lem-nat-SWbc-at0440 ∷ᵃ lem-sym-ab-at02102331 ∷ᵃ lem-sym-ab-at031031 ∷ᵃ lem-box-tQ-at03102132 ∷ᵃ lem-box-tQ-at032032 ∷ᵃ lem-box-tQ-at04203243 ∷ᵃ lem-box-tQ-at0310213442 ∷ᵃ lem-nat-SWbc-at02102331 ∷ᵃ lem-nat-SWbc-at04122041 ∷ᵃ lem-nat-SWbc-at04122140 ∷ᵃ lem-nat-SWbc-at0412233041 ∷ᵃ lem-nat-SWbc-at0412233140 ∷ᵃ lem-nat-SWbc-at0413213240 ∷ᵃ lem-nat-SWbc-at04133140 ∷ᵃ lem-nat-SWbc-at142142 ∷ᵃ lem-box-tQ-at0314203142 ∷ᵃ lem-t-cP-at03102132 ∷ᵃ lem-t-cP-at032032 ∷ᵃ lem-tP-at02102331 ∷ᵃ lem-tP-at02142041 ∷ᵃ lem-tP-at0314203241 ∷ᵃ lem-tP-at03243042 ∷ᵃ lem-tP-at04103143 ∷ᵃ lem-tP-at04122041 ∷ᵃ lem-tP-at0412233041 ∷ᵃ lem-tP-at04233042 ∷ᵃ lem-tP-at142142 ∷ᵃ lem-P-box-at0410213243 ∷ᵃ lem-P-box-at04203243 ∷ᵃ lem-box-tQ-at0412233041 ∷ᵃ lem-box-tQ-at0412233140 ∷ᵃ lem-t-cP-at0310213442 ∷ᵃ lem-t-cP-at04203243 ∷ᵃ lem-tP-at02142140 ∷ᵃ lem-tP-at0410233142 ∷ᵃ lem-tP-at0410233241 ∷ᵃ lem-tP-at0412213043 ∷ᵃ lem-tP-at04122140 ∷ᵃ lem-tP-at0412233140 ∷ᵃ lem-tP-at0413203142 ∷ᵃ lem-tP-at0413203241 ∷ᵃ lem-tP-at0413213240 ∷ᵃ lem-tP-at0440 ∷ᵃ lem-box-cP-at03102132 ∷ᵃ lem-box-cP-at032032 ∷ᵃ lem-box-cP-at0410213243 ∷ᵃ lem-box-cP-at04203243 ∷ᵃ lem-sym-bc-at0220 ∷ᵃ lem-sym-bc-at03102132 ∷ᵃ lem-sym-bc-at0310213442 ∷ᵃ lem-sym-bc-at032032 ∷ᵃ lem-sym-bc-at04203243 ∷ᵃ lem-sym-bc-at14233142 ∷ᵃ lem-QVQ-at02102331 ∷ᵃ lem-QVQ-at02142041 ∷ᵃ lem-QVQ-at02142140 ∷ᵃ lem-QVQ-at0314203241 ∷ᵃ lem-QVQ-at03243042 ∷ᵃ lem-QVQ-at0410233142 ∷ᵃ lem-QVQ-at0410233241 ∷ᵃ lem-QVQ-at04103143 ∷ᵃ lem-QVQ-at04122041 ∷ᵃ lem-QVQ-at0412213043 ∷ᵃ lem-QVQ-at04122140 ∷ᵃ lem-QVQ-at0412233041 ∷ᵃ lem-QVQ-at0412233140 ∷ᵃ lem-QVQ-at0413203142 ∷ᵃ lem-QVQ-at0413203241 ∷ᵃ lem-QVQ-at0413213240 ∷ᵃ lem-QVQ-at04233042 ∷ᵃ lem-QVQ-at0440 ∷ᵃ lem-QVQ-at142142 ∷ᵃ lem-SWbc-box-at02102331 ∷ᵃ lem-SWbc-box-at041041 ∷ᵃ lem-SWbc-box-at04122041 ∷ᵃ lem-SWbc-box-at04122140 ∷ᵃ lem-SWbc-box-at0412233041 ∷ᵃ lem-SWbc-box-at0412233140 ∷ᵃ lem-SWbc-box-at0413203142 ∷ᵃ lem-SWbc-box-at0413213042 ∷ᵃ lem-SWbc-box-at0413213240 ∷ᵃ lem-SWbc-box-at04133140 ∷ᵃ lem-SWbc-box-at04233240 ∷ᵃ lem-SWbc-box-at0440 ∷ᵃ lem-SWbc-box-at142142 ∷ᵃ lem-XCSX-box-2-at04122041 ∷ᵃ lem-box-cP-at0213243041 ∷ᵃ lem-box-cP-at0310213442 ∷ᵃ lem-sym-bc-at021021 ∷ᵃ lem-sym-bc-at0210213443 ∷ᵃ nil
 lem-box-cP-at02142041 : _
 lem-box-cP-at02142041 = D017.lem-box-cP-at02142041 sD017
 lem-box-cP-at0314203241 : _
@@ -2295,7 +2967,7 @@ lem-sym-bc-at02102331 = D017.lem-sym-bc-at02102331 sD017
 lem-box-cP-at142142 : _
 lem-box-cP-at142142 = D017.lem-box-cP-at142142 sD017
 sD021 : SD021
-sD021 = lem-sym-ab-at0210243143 ∷ᵃ lem-sym-ab-at0214203143 ∷ᵃ lem-sym-ab-at03102132 ∷ᵃ lem-sym-ab-at0314203142 ∷ᵃ lem-sym-ab-at13243142 ∷ᵃ lem-sym-ab-at14233142 ∷ᵃ lem-sym-ab-at243243 ∷ᵃ lem-sym-ab-at0213243041 ∷ᵃ lem-sym-ab-at0214233041 ∷ᵃ lem-sym-ab-at03122031 ∷ᵃ lem-sym-ab-at03122130 ∷ᵃ lem-sym-ab-at0312243041 ∷ᵃ lem-sym-ab-at0314213240 ∷ᵃ lem-sym-ab-at03143041 ∷ᵃ lem-sym-ab-at03243240 ∷ᵃ lem-sym-ab-at14213243 ∷ᵃ lem-sym-ab-at02132031 ∷ᵃ lem-sym-ab-at02132130 ∷ᵃ lem-box-tQ-at03102132 ∷ᵃ lem-box-tQ-at14233241 ∷ᵃ lem-box-tQ-at0310213442 ∷ᵃ lem-box-tQ-at0214203143 ∷ᵃ lem-box-tQ-at0310243142 ∷ᵃ lem-box-tQ-at0314203142 ∷ᵃ lem-box-tQ-at0314213042 ∷ᵃ lem-box-tQ-at033440 ∷ᵃ lem-box-tQ-at13213442 ∷ᵃ lem-box-tQ-at1331 ∷ᵃ lem-box-tQ-at143143 ∷ᵃ lem-box-tQ-at02102441 ∷ᵃ lem-box-tQ-at02132130 ∷ᵃ lem-box-tQ-at02142041 ∷ᵃ lem-box-tQ-at02233440 ∷ᵃ lem-box-tQ-at0310243241 ∷ᵃ lem-box-tQ-at031031 ∷ᵃ lem-box-tQ-at03103441 ∷ᵃ lem-box-tQ-at03122031 ∷ᵃ lem-box-tQ-at0312203441 ∷ᵃ lem-box-tQ-at03122130 ∷ᵃ lem-box-tQ-at0314203241 ∷ᵃ lem-box-tQ-at0314213240 ∷ᵃ lem-box-tQ-at03143140 ∷ᵃ lem-box-tQ-at03243042 ∷ᵃ lem-box-tQ-at03243240 ∷ᵃ lem-box-tQ-at142142 ∷ᵃ lem-P-box-at0214203143 ∷ᵃ lem-P-box-at02233440 ∷ᵃ lem-P-box-at03103441 ∷ᵃ lem-P-box-at0312203441 ∷ᵃ lem-P-box-at0314203142 ∷ᵃ lem-P-box-at0314213042 ∷ᵃ lem-P-box-at0314213240 ∷ᵃ lem-P-box-at03243240 ∷ᵃ lem-P-box-at033440 ∷ᵃ lem-P-box-at12213443 ∷ᵃ lem-P-box-at1441 ∷ᵃ lem-P-box-at233442 ∷ᵃ lem-t-cP-at0310243142 ∷ᵃ lem-t-cP-at03143140 ∷ᵃ lem-t-cP-at03243240 ∷ᵃ lem-P-box-at02102441 ∷ᵃ lem-P-box-at02132130 ∷ᵃ lem-P-box-at0310243241 ∷ᵃ lem-P-box-at031031 ∷ᵃ lem-P-box-at03122130 ∷ᵃ lem-P-box-at0312243041 ∷ᵃ lem-P-box-at03143041 ∷ᵃ lem-P-box-at03243042 ∷ᵃ lem-P-box-at2442 ∷ᵃ lem-t-cP-at02142041 ∷ᵃ lem-t-cP-at0314203241 ∷ᵃ lem-t-cP-at033440 ∷ᵃ lem-t-cP-at142142 ∷ᵃ lem-sym-bc-at0210213443 ∷ᵃ lem-sym-bc-at0214233041 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at02102441 ∷ᵃ lem-box-cP-at02132130 ∷ᵃ lem-box-cP-at0214203143 ∷ᵃ lem-box-cP-at02233440 ∷ᵃ lem-box-cP-at022440 ∷ᵃ lem-box-cP-at0310243142 ∷ᵃ lem-box-cP-at0310243241 ∷ᵃ lem-box-cP-at031031 ∷ᵃ lem-box-cP-at03103441 ∷ᵃ lem-box-cP-at0312203441 ∷ᵃ lem-box-cP-at03122130 ∷ᵃ lem-box-cP-at0312243041 ∷ᵃ lem-box-cP-at0314203142 ∷ᵃ lem-box-cP-at0314213042 ∷ᵃ lem-box-cP-at0314213240 ∷ᵃ lem-box-cP-at03143041 ∷ᵃ lem-box-cP-at03143140 ∷ᵃ lem-box-cP-at03243240 ∷ᵃ lem-box-cP-at033440 ∷ᵃ lem-box-cP-at12213443 ∷ᵃ lem-box-cP-at12243143 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at13213442 ∷ᵃ lem-box-cP-at1441 ∷ᵃ lem-box-cP-at233442 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-cP-at2442 ∷ᵃ lem-pairs-at021021 ∷ᵃ lem-pairs-at0210213443 ∷ᵃ lem-pairs-at0213243041 ∷ᵃ lem-pairs-at0214233041 ∷ᵃ lem-pairs-at03102132 ∷ᵃ lem-pairs-at0310213442 ∷ᵃ lem-pairs-at13243142 ∷ᵃ lem-pairs-at14233142 ∷ᵃ lem-sym-bc-at0210233441 ∷ᵃ lem-sym-bc-at0210243143 ∷ᵃ lem-sym-bc-at02102441 ∷ᵃ lem-sym-bc-at02142041 ∷ᵃ lem-sym-bc-at022330 ∷ᵃ lem-sym-bc-at02233440 ∷ᵃ lem-sym-bc-at022440 ∷ᵃ lem-sym-bc-at0310243142 ∷ᵃ lem-sym-bc-at0310243241 ∷ᵃ lem-sym-bc-at031031 ∷ᵃ lem-sym-bc-at03103441 ∷ᵃ lem-sym-bc-at0312203441 ∷ᵃ lem-sym-bc-at0312243041 ∷ᵃ lem-sym-bc-at0314203241 ∷ᵃ lem-sym-bc-at0314213240 ∷ᵃ lem-sym-bc-at03143041 ∷ᵃ lem-sym-bc-at03143140 ∷ᵃ lem-sym-bc-at03243240 ∷ᵃ lem-sym-bc-at0330 ∷ᵃ lem-sym-bc-at033440 ∷ᵃ lem-sym-bc-at12213443 ∷ᵃ lem-sym-bc-at12233441 ∷ᵃ lem-sym-bc-at12243143 ∷ᵃ lem-sym-bc-at13213442 ∷ᵃ lem-sym-bc-at14213243 ∷ᵃ lem-sym-bc-at143143 ∷ᵃ lem-sym-bc-at233442 ∷ᵃ lem-sym-bc-at2442 ∷ᵃ lem-sym-bc-at3443 ∷ᵃ lem-box-cP-at02142041 ∷ᵃ lem-box-cP-at0314203241 ∷ᵃ lem-box-cP-at03243042 ∷ᵃ lem-box-cP-at142142 ∷ᵃ lem-sym-bc-at02102331 ∷ᵃ lem-sym-bc-at142142 ∷ᵃ nil
+sD021 = (λ c → lem-comm-CS03-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CS12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CS13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CSd03-CCZ124 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ014-CX23 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX13 (lit c)) ∷ᵃ (λ c → lem-comm-CS02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CSd02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CX31-TOFF024 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CX24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CX04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CX14 (lit c)) ∷ᵃ lem-sym-ab-at0210243143 ∷ᵃ lem-sym-ab-at0214203143 ∷ᵃ lem-sym-ab-at03102132 ∷ᵃ lem-sym-ab-at0314203142 ∷ᵃ lem-sym-ab-at13243142 ∷ᵃ lem-sym-ab-at14233142 ∷ᵃ lem-sym-ab-at243243 ∷ᵃ lem-sym-ab-at0213243041 ∷ᵃ lem-sym-ab-at0214233041 ∷ᵃ lem-sym-ab-at03122031 ∷ᵃ lem-sym-ab-at03122130 ∷ᵃ lem-sym-ab-at0312243041 ∷ᵃ lem-sym-ab-at0314213240 ∷ᵃ lem-sym-ab-at03143041 ∷ᵃ lem-sym-ab-at03243240 ∷ᵃ lem-sym-ab-at14213243 ∷ᵃ lem-sym-ab-at02132031 ∷ᵃ lem-sym-ab-at02132130 ∷ᵃ lem-box-tQ-at03102132 ∷ᵃ lem-box-tQ-at14233241 ∷ᵃ lem-box-tQ-at0310213442 ∷ᵃ lem-box-tQ-at0214203143 ∷ᵃ lem-box-tQ-at0310243142 ∷ᵃ lem-box-tQ-at0314203142 ∷ᵃ lem-box-tQ-at0314213042 ∷ᵃ lem-box-tQ-at033440 ∷ᵃ lem-box-tQ-at13213442 ∷ᵃ lem-box-tQ-at1331 ∷ᵃ lem-box-tQ-at143143 ∷ᵃ lem-box-tQ-at02102441 ∷ᵃ lem-box-tQ-at02132130 ∷ᵃ lem-box-tQ-at02142041 ∷ᵃ lem-box-tQ-at02233440 ∷ᵃ lem-box-tQ-at0310243241 ∷ᵃ lem-box-tQ-at031031 ∷ᵃ lem-box-tQ-at03103441 ∷ᵃ lem-box-tQ-at03122031 ∷ᵃ lem-box-tQ-at0312203441 ∷ᵃ lem-box-tQ-at03122130 ∷ᵃ lem-box-tQ-at0314203241 ∷ᵃ lem-box-tQ-at0314213240 ∷ᵃ lem-box-tQ-at03143140 ∷ᵃ lem-box-tQ-at03243042 ∷ᵃ lem-box-tQ-at03243240 ∷ᵃ lem-box-tQ-at142142 ∷ᵃ lem-P-box-at0214203143 ∷ᵃ lem-P-box-at02233440 ∷ᵃ lem-P-box-at03103441 ∷ᵃ lem-P-box-at0312203441 ∷ᵃ lem-P-box-at0314203142 ∷ᵃ lem-P-box-at0314213042 ∷ᵃ lem-P-box-at0314213240 ∷ᵃ lem-P-box-at03243240 ∷ᵃ lem-P-box-at033440 ∷ᵃ lem-P-box-at12213443 ∷ᵃ lem-P-box-at1441 ∷ᵃ lem-P-box-at233442 ∷ᵃ lem-t-cP-at0310243142 ∷ᵃ lem-t-cP-at03143140 ∷ᵃ lem-t-cP-at03243240 ∷ᵃ lem-P-box-at02102441 ∷ᵃ lem-P-box-at02132130 ∷ᵃ lem-P-box-at0310243241 ∷ᵃ lem-P-box-at031031 ∷ᵃ lem-P-box-at03122130 ∷ᵃ lem-P-box-at0312243041 ∷ᵃ lem-P-box-at03143041 ∷ᵃ lem-P-box-at03243042 ∷ᵃ lem-P-box-at2442 ∷ᵃ lem-t-cP-at02142041 ∷ᵃ lem-t-cP-at0314203241 ∷ᵃ lem-t-cP-at033440 ∷ᵃ lem-t-cP-at142142 ∷ᵃ lem-sym-bc-at0210213443 ∷ᵃ lem-sym-bc-at0214233041 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at02102441 ∷ᵃ lem-box-cP-at02132130 ∷ᵃ lem-box-cP-at0214203143 ∷ᵃ lem-box-cP-at02233440 ∷ᵃ lem-box-cP-at022440 ∷ᵃ lem-box-cP-at0310243142 ∷ᵃ lem-box-cP-at0310243241 ∷ᵃ lem-box-cP-at031031 ∷ᵃ lem-box-cP-at03103441 ∷ᵃ lem-box-cP-at0312203441 ∷ᵃ lem-box-cP-at03122130 ∷ᵃ lem-box-cP-at0312243041 ∷ᵃ lem-box-cP-at0314203142 ∷ᵃ lem-box-cP-at0314213042 ∷ᵃ lem-box-cP-at0314213240 ∷ᵃ lem-box-cP-at03143041 ∷ᵃ lem-box-cP-at03143140 ∷ᵃ lem-box-cP-at03243240 ∷ᵃ lem-box-cP-at033440 ∷ᵃ lem-box-cP-at12213443 ∷ᵃ lem-box-cP-at12243143 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at13213442 ∷ᵃ lem-box-cP-at1441 ∷ᵃ lem-box-cP-at233442 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-cP-at2442 ∷ᵃ lem-pairs-at021021 ∷ᵃ lem-pairs-at0210213443 ∷ᵃ lem-pairs-at0213243041 ∷ᵃ lem-pairs-at0214233041 ∷ᵃ lem-pairs-at03102132 ∷ᵃ lem-pairs-at0310213442 ∷ᵃ lem-pairs-at13243142 ∷ᵃ lem-pairs-at14233142 ∷ᵃ lem-sym-bc-at0210233441 ∷ᵃ lem-sym-bc-at0210243143 ∷ᵃ lem-sym-bc-at02102441 ∷ᵃ lem-sym-bc-at02142041 ∷ᵃ lem-sym-bc-at022330 ∷ᵃ lem-sym-bc-at02233440 ∷ᵃ lem-sym-bc-at022440 ∷ᵃ lem-sym-bc-at0310243142 ∷ᵃ lem-sym-bc-at0310243241 ∷ᵃ lem-sym-bc-at031031 ∷ᵃ lem-sym-bc-at03103441 ∷ᵃ lem-sym-bc-at0312203441 ∷ᵃ lem-sym-bc-at0312243041 ∷ᵃ lem-sym-bc-at0314203241 ∷ᵃ lem-sym-bc-at0314213240 ∷ᵃ lem-sym-bc-at03143041 ∷ᵃ lem-sym-bc-at03143140 ∷ᵃ lem-sym-bc-at03243240 ∷ᵃ lem-sym-bc-at0330 ∷ᵃ lem-sym-bc-at033440 ∷ᵃ lem-sym-bc-at12213443 ∷ᵃ lem-sym-bc-at12233441 ∷ᵃ lem-sym-bc-at12243143 ∷ᵃ lem-sym-bc-at13213442 ∷ᵃ lem-sym-bc-at14213243 ∷ᵃ lem-sym-bc-at143143 ∷ᵃ lem-sym-bc-at233442 ∷ᵃ lem-sym-bc-at2442 ∷ᵃ lem-sym-bc-at3443 ∷ᵃ lem-box-cP-at02142041 ∷ᵃ lem-box-cP-at0314203241 ∷ᵃ lem-box-cP-at03243042 ∷ᵃ lem-box-cP-at142142 ∷ᵃ lem-sym-bc-at02102331 ∷ᵃ lem-sym-bc-at142142 ∷ᵃ nil
 lem-nf-comm-CS-S0at2 : _
 lem-nf-comm-CS-S0at2 = D021.lem-nf-comm-CS-S0at2 sD021
 lem-nf-comm-CS-S1at0 : _
@@ -2437,7 +3109,7 @@ lem-box-perm-1243-at0210213443 = D021.lem-box-perm-1243-at0210213443 sD021
 lem-pairs-at03122130 : _
 lem-pairs-at03122130 = D021.lem-pairs-at03122130 sD021
 sD026 : SD026
-sD026 = lem-box-tQ-at0210213443 ∷ᵃ lem-box-tQ ∷ᵃ lem-box-tQ-at3443 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-1324 ∷ᵃ lem-box-perm-1324-at0210243143 ∷ᵃ lem-box-perm-1324-at243243 ∷ᵃ lem-box2-at0210243143 ∷ᵃ lem-box2-at122441 ∷ᵃ lem-box2-at243243 ∷ᵃ lem-CSu-box-4-at122441 ∷ᵃ lem-Xb-box-at2332 ∷ᵃ lem-box-perm-1324-at2332 ∷ᵃ lem-nf-comm-CS-S0at0 ∷ᵃ lem-nf-comm-CS-S0at1 ∷ᵃ lem-nf-comm-CS-S0at2 ∷ᵃ lem-nf-comm-CS-S1at0 ∷ᵃ lem-nf-comm-CS-S1at1 ∷ᵃ nil
+sD026 = (λ c → lem-comm-CX04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CX12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CX23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ014-CX23 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX13 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ034-CX12 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CS24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CX24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CS04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CX04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CS14 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CX14 (lit c)) ∷ᵃ lem-box-tQ-at0210213443 ∷ᵃ lem-box-tQ ∷ᵃ lem-box-tQ-at3443 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-1324 ∷ᵃ lem-box-perm-1324-at0210243143 ∷ᵃ lem-box-perm-1324-at243243 ∷ᵃ lem-box2-at0210243143 ∷ᵃ lem-box2-at122441 ∷ᵃ lem-box2-at243243 ∷ᵃ lem-CSu-box-4-at122441 ∷ᵃ lem-Xb-box-at2332 ∷ᵃ lem-box-perm-1324-at2332 ∷ᵃ lem-nf-comm-CS-S0at0 ∷ᵃ lem-nf-comm-CS-S0at1 ∷ᵃ lem-nf-comm-CS-S0at2 ∷ᵃ lem-nf-comm-CS-S1at0 ∷ᵃ lem-nf-comm-CS-S1at1 ∷ᵃ nil
 lem-AX-S23 : _
 lem-AX-S23 = D026.lem-AX-S23 sD026
 lem-CKc-box : _
@@ -2453,7 +3125,7 @@ lem-S2-SBOX⟨0·2·43·1⟩ = D026.lem-S2-SBOX⟨0·2·43·1⟩ sD026
 lem-F1-comm-CS-S0at2 : _
 lem-F1-comm-CS-S0at2 = D026.lem-F1-comm-CS-S0at2 sD026
 sD019 : SD019
-sD019 = lem-sym-ab-at0210243143 ∷ᵃ lem-sym-ab-at0214203143 ∷ᵃ lem-sym-ab-at03102132 ∷ᵃ lem-sym-ab-at0310243142 ∷ᵃ lem-sym-ab-at0312213440 ∷ᵃ lem-sym-ab-at0314203142 ∷ᵃ lem-sym-ab-at122441 ∷ᵃ lem-sym-ab-at021021 ∷ᵃ lem-sym-ab-at0213213440 ∷ᵃ lem-sym-ab-at0220 ∷ᵃ lem-sym-ab-at02233440 ∷ᵃ lem-sym-ab-at14233241 ∷ᵃ lem-box-tQ-at032032 ∷ᵃ lem-box-tQ-at0210243143 ∷ᵃ lem-box-tQ-at0214213043 ∷ᵃ lem-box-tQ-at022330 ∷ᵃ lem-box-tQ-at0310243142 ∷ᵃ lem-box-tQ-at0314213042 ∷ᵃ lem-box-tQ-at122331 ∷ᵃ lem-P-box-at0210233441 ∷ᵃ lem-P-box-at0210243143 ∷ᵃ lem-P-box-at022330 ∷ᵃ lem-P-box-at0312243140 ∷ᵃ lem-P-box-at243243 ∷ᵃ lem-t-cP-at0314213042 ∷ᵃ lem-sym-bc-at0213243140 ∷ᵃ lem-box-cP-at0210233441 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at0213203441 ∷ᵃ lem-box-cP-at022330 ∷ᵃ lem-box-cP-at0310243142 ∷ᵃ lem-box-cP-at0312243140 ∷ᵃ lem-box-cP-at0314213042 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-pairs-at0213243140 ∷ᵃ lem-pairs-at0220 ∷ᵃ lem-pairs-at032032 ∷ᵃ lem-pairs-at13243241 ∷ᵃ lem-sym-bc-at0213213440 ∷ᵃ lem-sym-bc-at0214203143 ∷ᵃ lem-sym-bc-at0214213043 ∷ᵃ lem-sym-bc-at0312243140 ∷ᵃ lem-sym-bc-at0314203142 ∷ᵃ lem-sym-bc-at0314213042 ∷ᵃ lem-sym-bc-at1441 ∷ᵃ nil
+sD019 = (λ c → lem-comm-CS12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CS13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX04-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CX04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CX13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX13 (lit c)) ∷ᵃ (λ c → lem-comm-CS02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CS14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CSd02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CX04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CX30-TOFF214 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CK42 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CX04 (lit c)) ∷ᵃ lem-sym-ab-at0210243143 ∷ᵃ lem-sym-ab-at0214203143 ∷ᵃ lem-sym-ab-at03102132 ∷ᵃ lem-sym-ab-at0310243142 ∷ᵃ lem-sym-ab-at0312213440 ∷ᵃ lem-sym-ab-at0314203142 ∷ᵃ lem-sym-ab-at122441 ∷ᵃ lem-sym-ab-at021021 ∷ᵃ lem-sym-ab-at0213213440 ∷ᵃ lem-sym-ab-at0220 ∷ᵃ lem-sym-ab-at02233440 ∷ᵃ lem-sym-ab-at14233241 ∷ᵃ lem-box-tQ-at032032 ∷ᵃ lem-box-tQ-at0210243143 ∷ᵃ lem-box-tQ-at0214213043 ∷ᵃ lem-box-tQ-at022330 ∷ᵃ lem-box-tQ-at0310243142 ∷ᵃ lem-box-tQ-at0314213042 ∷ᵃ lem-box-tQ-at122331 ∷ᵃ lem-P-box-at0210233441 ∷ᵃ lem-P-box-at0210243143 ∷ᵃ lem-P-box-at022330 ∷ᵃ lem-P-box-at0312243140 ∷ᵃ lem-P-box-at243243 ∷ᵃ lem-t-cP-at0314213042 ∷ᵃ lem-sym-bc-at0213243140 ∷ᵃ lem-box-cP-at0210233441 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at0213203441 ∷ᵃ lem-box-cP-at022330 ∷ᵃ lem-box-cP-at0310243142 ∷ᵃ lem-box-cP-at0312243140 ∷ᵃ lem-box-cP-at0314213042 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-pairs-at0213243140 ∷ᵃ lem-pairs-at0220 ∷ᵃ lem-pairs-at032032 ∷ᵃ lem-pairs-at13243241 ∷ᵃ lem-sym-bc-at0213213440 ∷ᵃ lem-sym-bc-at0214203143 ∷ᵃ lem-sym-bc-at0214213043 ∷ᵃ lem-sym-bc-at0312243140 ∷ᵃ lem-sym-bc-at0314203142 ∷ᵃ lem-sym-bc-at0314213042 ∷ᵃ lem-sym-bc-at1441 ∷ᵃ nil
 lem-box-perm-2314-at0210243143 : _
 lem-box-perm-2314-at0210243143 = D019.lem-box-perm-2314-at0210243143 sD019
 lem-box-perm-1324-at0314213042 : _
@@ -2501,7 +3173,7 @@ lem-CSu-box-3-at0210243143 = D019.lem-CSu-box-3-at0210243143 sD019
 lem-CSdu-box-3-at0210243143 : _
 lem-CSdu-box-3-at0210243143 = D019.lem-CSdu-box-3-at0210243143 sD019
 sD027 : SD027
-sD027 = lem-sym-ab-at0210243143 ∷ᵃ lem-sym-ab-at0214203143 ∷ᵃ lem-sym-ab-at0310243142 ∷ᵃ lem-sym-ab-at0314203142 ∷ᵃ lem-sym-ab-at122441 ∷ᵃ lem-sym-ab-at13213442 ∷ᵃ lem-sym-ab-at233442 ∷ᵃ lem-sym-ab-at243243 ∷ᵃ lem-sym-ab-at0314213240 ∷ᵃ lem-sym-ab-at03243240 ∷ᵃ lem-sym-ab-at14213243 ∷ᵃ lem-sym-ab-at1441 ∷ᵃ lem-box-tQ-at0310213442 ∷ᵃ lem-box-tQ-at0210233441 ∷ᵃ lem-box-tQ-at033440 ∷ᵃ lem-box-tQ-at12213443 ∷ᵃ lem-box-tQ-at12233441 ∷ᵃ lem-box-tQ-at13213442 ∷ᵃ lem-box-tQ-at233442 ∷ᵃ lem-box-tQ-at02233440 ∷ᵃ lem-box-tQ-at03103441 ∷ᵃ lem-box-tQ-at0312203441 ∷ᵃ lem-box-tQ-at03143140 ∷ᵃ lem-sym-bc-at14233241 ∷ᵃ lem-Xb-box-at13243142 ∷ᵃ lem-box-cP-at0310243142 ∷ᵃ lem-box-cP-at03243240 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-perm-1324-at0310213442 ∷ᵃ lem-box-perm-1324-at13243142 ∷ᵃ lem-sym-bc-at0214213043 ∷ᵃ lem-sym-bc-at0314203142 ∷ᵃ lem-sym-bc-at0314213042 ∷ᵃ lem-sym-bc-at03243240 ∷ᵃ lem-sym-bc-at033440 ∷ᵃ lem-sym-bc-at143143 ∷ᵃ lem-Xb-box-at122441 ∷ᵃ lem-box-perm-1324-at122441 ∷ᵃ lem-pairs-at13213442 ∷ᵃ lem-pairs-at143143 ∷ᵃ lem-pairs-at0210233441 ∷ᵃ lem-pairs-at12233441 ∷ᵃ lem-pairs-at14213243 ∷ᵃ lem-CSdu-box-3-at03143140 ∷ᵃ lem-CXu-box-4-at243243 ∷ᵃ lem-Xb-box-at02102441 ∷ᵃ lem-Xb-box-at022440 ∷ᵃ lem-Xb-box-at0310243142 ∷ᵃ lem-Xb-box-at0310243241 ∷ᵃ lem-Xb-box-at0312243041 ∷ᵃ lem-Xb-box-at03243240 ∷ᵃ lem-Xb-box-at12243143 ∷ᵃ lem-Xb-box-at2442 ∷ᵃ lem-box-perm-1324-at0210233441 ∷ᵃ lem-box-perm-1324-at02102441 ∷ᵃ lem-box-perm-1324-at02233440 ∷ᵃ lem-box-perm-1324-at022440 ∷ᵃ lem-box-perm-1324-at0310243142 ∷ᵃ lem-box-perm-1324-at0310243241 ∷ᵃ lem-box-perm-1324-at03103441 ∷ᵃ lem-box-perm-1324-at0312203441 ∷ᵃ lem-box-perm-1324-at0312243041 ∷ᵃ lem-box-perm-1324-at03243240 ∷ᵃ lem-box-perm-1324-at033440 ∷ᵃ lem-box-perm-1324-at12213443 ∷ᵃ lem-box-perm-1324-at12233441 ∷ᵃ lem-box-perm-1324-at12243143 ∷ᵃ lem-box-perm-1324-at13213442 ∷ᵃ lem-box-perm-1324-at233442 ∷ᵃ lem-box-perm-1324-at2442 ∷ᵃ lem-box2-at0310243142 ∷ᵃ lem-box2-at03243240 ∷ᵃ lem-nf-comm-CS-S1at2 ∷ᵃ lem-pairs-at0214203143 ∷ᵃ lem-pairs-at02233440 ∷ᵃ lem-pairs-at03103441 ∷ᵃ lem-pairs-at0312203441 ∷ᵃ lem-pairs-at0314203142 ∷ᵃ lem-pairs-at0314213042 ∷ᵃ lem-pairs-at0314213240 ∷ᵃ lem-pairs-at033440 ∷ᵃ lem-pairs-at12213443 ∷ᵃ lem-pairs-at1441 ∷ᵃ lem-pairs-at233442 ∷ᵃ nil
+sD027 = (λ c → lem-comm-CX02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CX12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ014-CX23 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX13 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX31 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ034-CX12 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ034-CX21 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ124-CX03 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ134-CX02 (lit c)) ∷ᵃ (λ c → lem-comm-CX04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-TOFF302 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CK42 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CX24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF024-CS13 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CK40 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ134-CX20 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF301-CK42 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF312-CK40 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CK41 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF203-CK41 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF302-CK41 (lit c)) ∷ᵃ lem-sym-ab-at0210243143 ∷ᵃ lem-sym-ab-at0214203143 ∷ᵃ lem-sym-ab-at0310243142 ∷ᵃ lem-sym-ab-at0314203142 ∷ᵃ lem-sym-ab-at122441 ∷ᵃ lem-sym-ab-at13213442 ∷ᵃ lem-sym-ab-at233442 ∷ᵃ lem-sym-ab-at243243 ∷ᵃ lem-sym-ab-at0314213240 ∷ᵃ lem-sym-ab-at03243240 ∷ᵃ lem-sym-ab-at14213243 ∷ᵃ lem-sym-ab-at1441 ∷ᵃ lem-box-tQ-at0310213442 ∷ᵃ lem-box-tQ-at0210233441 ∷ᵃ lem-box-tQ-at033440 ∷ᵃ lem-box-tQ-at12213443 ∷ᵃ lem-box-tQ-at12233441 ∷ᵃ lem-box-tQ-at13213442 ∷ᵃ lem-box-tQ-at233442 ∷ᵃ lem-box-tQ-at02233440 ∷ᵃ lem-box-tQ-at03103441 ∷ᵃ lem-box-tQ-at0312203441 ∷ᵃ lem-box-tQ-at03143140 ∷ᵃ lem-sym-bc-at14233241 ∷ᵃ lem-Xb-box-at13243142 ∷ᵃ lem-box-cP-at0310243142 ∷ᵃ lem-box-cP-at03243240 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-perm-1324-at0310213442 ∷ᵃ lem-box-perm-1324-at13243142 ∷ᵃ lem-sym-bc-at0214213043 ∷ᵃ lem-sym-bc-at0314203142 ∷ᵃ lem-sym-bc-at0314213042 ∷ᵃ lem-sym-bc-at03243240 ∷ᵃ lem-sym-bc-at033440 ∷ᵃ lem-sym-bc-at143143 ∷ᵃ lem-Xb-box-at122441 ∷ᵃ lem-box-perm-1324-at122441 ∷ᵃ lem-pairs-at13213442 ∷ᵃ lem-pairs-at143143 ∷ᵃ lem-pairs-at0210233441 ∷ᵃ lem-pairs-at12233441 ∷ᵃ lem-pairs-at14213243 ∷ᵃ lem-CSdu-box-3-at03143140 ∷ᵃ lem-CXu-box-4-at243243 ∷ᵃ lem-Xb-box-at02102441 ∷ᵃ lem-Xb-box-at022440 ∷ᵃ lem-Xb-box-at0310243142 ∷ᵃ lem-Xb-box-at0310243241 ∷ᵃ lem-Xb-box-at0312243041 ∷ᵃ lem-Xb-box-at03243240 ∷ᵃ lem-Xb-box-at12243143 ∷ᵃ lem-Xb-box-at2442 ∷ᵃ lem-box-perm-1324-at0210233441 ∷ᵃ lem-box-perm-1324-at02102441 ∷ᵃ lem-box-perm-1324-at02233440 ∷ᵃ lem-box-perm-1324-at022440 ∷ᵃ lem-box-perm-1324-at0310243142 ∷ᵃ lem-box-perm-1324-at0310243241 ∷ᵃ lem-box-perm-1324-at03103441 ∷ᵃ lem-box-perm-1324-at0312203441 ∷ᵃ lem-box-perm-1324-at0312243041 ∷ᵃ lem-box-perm-1324-at03243240 ∷ᵃ lem-box-perm-1324-at033440 ∷ᵃ lem-box-perm-1324-at12213443 ∷ᵃ lem-box-perm-1324-at12233441 ∷ᵃ lem-box-perm-1324-at12243143 ∷ᵃ lem-box-perm-1324-at13213442 ∷ᵃ lem-box-perm-1324-at233442 ∷ᵃ lem-box-perm-1324-at2442 ∷ᵃ lem-box2-at0310243142 ∷ᵃ lem-box2-at03243240 ∷ᵃ lem-nf-comm-CS-S1at2 ∷ᵃ lem-pairs-at0214203143 ∷ᵃ lem-pairs-at02233440 ∷ᵃ lem-pairs-at03103441 ∷ᵃ lem-pairs-at0312203441 ∷ᵃ lem-pairs-at0314203142 ∷ᵃ lem-pairs-at0314213042 ∷ᵃ lem-pairs-at0314213240 ∷ᵃ lem-pairs-at033440 ∷ᵃ lem-pairs-at12213443 ∷ᵃ lem-pairs-at1441 ∷ᵃ lem-pairs-at233442 ∷ᵃ nil
 lem-F1-comm-CS-S1at2 : _
 lem-F1-comm-CS-S1at2 = D027.lem-F1-comm-CS-S1at2 sD027
 lem-box-perm-3421-at0210243143 : _
@@ -2541,7 +3213,7 @@ lem-box-perm-3421-at13213442 = D027.lem-box-perm-3421-at13213442 sD027
 lem-F0-R-at01143043 : _
 lem-F0-R-at01143043 = D027.lem-F0-R-at01143043 sD027
 sD025 : SD025
-sD025 = lem-sym-ab ∷ᵃ lem-sym-ab-at0210233441 ∷ᵃ lem-sym-ab-at0210243143 ∷ᵃ lem-sym-ab-at0213203441 ∷ᵃ lem-sym-ab-at03102132 ∷ᵃ lem-sym-ab-at0310243142 ∷ᵃ lem-sym-ab-at0314203142 ∷ᵃ lem-sym-ab-at032032 ∷ᵃ lem-sym-ab-at033440 ∷ᵃ lem-sym-ab-at1221 ∷ᵃ lem-sym-ab-at122331 ∷ᵃ lem-sym-ab-at12243143 ∷ᵃ lem-sym-ab-at13213442 ∷ᵃ lem-sym-ab-at13243142 ∷ᵃ lem-sym-ab-at13243241 ∷ᵃ lem-sym-ab-at133441 ∷ᵃ lem-sym-ab-at14233142 ∷ᵃ lem-sym-ab-at2332 ∷ᵃ lem-sym-ab-at243243 ∷ᵃ lem-sym-ab-at021021 ∷ᵃ lem-sym-ab-at0220 ∷ᵃ lem-sym-ab-at132132 ∷ᵃ lem-sym-ab-at1331 ∷ᵃ lem-sym-ab-at14213243 ∷ᵃ lem-box-tQ-at0314213042 ∷ᵃ lem-box-tQ-at043043 ∷ᵃ lem-box-tQ-at12233441 ∷ᵃ lem-box-tQ-at02233440 ∷ᵃ lem-CSdu-box-1 ∷ᵃ lem-CSdu-box-2 ∷ᵃ lem-CSdu-box-2-at0210243143 ∷ᵃ lem-CSdu-box-2-at122441 ∷ᵃ lem-CSdu-box-2-at243243 ∷ᵃ lem-CSu-box-1 ∷ᵃ lem-CSu-box-2 ∷ᵃ lem-CSu-box-2-at122441 ∷ᵃ lem-CSu-box-2-at243243 ∷ᵃ lem-Sdu-box ∷ᵃ lem-Su-box ∷ᵃ lem-CSu-box-2-at0210243143 ∷ᵃ lem-box-cP-at0210213443 ∷ᵃ lem-sym-bc-at0220 ∷ᵃ lem-sym-bc-at032032 ∷ᵃ lem-sym-bc-at13243142 ∷ᵃ lem-sym-bc-at13243241 ∷ᵃ lem-sym-bc-at14233142 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at1221 ∷ᵃ lem-box-cP-at12213443 ∷ᵃ lem-box-cP-at12233441 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-cP-at3443 ∷ᵃ lem-pairs-at13243142 ∷ᵃ lem-pairs-at14233142 ∷ᵃ lem-sym-bc ∷ᵃ lem-sym-bc-at0214203143 ∷ᵃ lem-sym-bc-at022330 ∷ᵃ lem-sym-bc-at0312213440 ∷ᵃ lem-sym-bc-at0330 ∷ᵃ lem-sym-bc-at1221 ∷ᵃ lem-sym-bc-at122331 ∷ᵃ lem-sym-bc-at12233441 ∷ᵃ lem-sym-bc-at12243143 ∷ᵃ lem-sym-bc-at122441 ∷ᵃ lem-sym-bc-at132132 ∷ᵃ lem-sym-bc-at1331 ∷ᵃ lem-sym-bc-at14213243 ∷ᵃ lem-sym-bc-at2332 ∷ᵃ lem-CSdu-box-3 ∷ᵃ lem-CSdu-box-3-at043043 ∷ᵃ lem-CSdu-box-4 ∷ᵃ lem-CSu-box-3 ∷ᵃ lem-CSu-box-4 ∷ᵃ lem-Kdu-box ∷ᵃ lem-Kdu-box-at0210243143 ∷ᵃ lem-Kdu-box-at122441 ∷ᵃ lem-Kdu-box-at243243 ∷ᵃ lem-Ku-box ∷ᵃ lem-Ku-box-at0210243143 ∷ᵃ lem-Ku-box-at122441 ∷ᵃ lem-Ku-box-at243243 ∷ᵃ lem-Xb-box-at0210243143 ∷ᵃ lem-Xb-box-at122441 ∷ᵃ lem-Xb-box-at243243 ∷ᵃ lem-box-perm-1324-at0210243143 ∷ᵃ lem-box-perm-1324-at122441 ∷ᵃ lem-box-perm-1324-at243243 ∷ᵃ lem-box-perm-1423-at122441 ∷ᵃ lem-box2-at0210243143 ∷ᵃ lem-box2-at122441 ∷ᵃ lem-box2-at243243 ∷ᵃ lem-pairs ∷ᵃ lem-pairs-at0214213043 ∷ᵃ lem-pairs-at0310243142 ∷ᵃ lem-pairs-at0330 ∷ᵃ lem-pairs-at1221 ∷ᵃ lem-pairs-at122331 ∷ᵃ lem-pairs-at132132 ∷ᵃ lem-pairs-at13213442 ∷ᵃ lem-pairs-at1331 ∷ᵃ lem-pairs-at143143 ∷ᵃ lem-pairs-at2332 ∷ᵃ lem-pairs-at3443 ∷ᵃ lem-CSdu-box-3-at0314213042 ∷ᵃ lem-CXu-box-4-at0210243143 ∷ᵃ lem-box-perm-2341-at021021 ∷ᵃ lem-box-perm-4123-at02233440 ∷ᵃ lem-pairs-at0210233441 ∷ᵃ lem-pairs-at0210243143 ∷ᵃ lem-pairs-at022330 ∷ᵃ lem-pairs-at0312243140 ∷ᵃ lem-pairs-at243243 ∷ᵃ lem-pairs-at12233441 ∷ᵃ lem-pairs-at122441 ∷ᵃ lem-pairs-at14213243 ∷ᵃ nil
+sD025 = (λ c → lem-comm-CS03-TOFF412 (lit c)) ∷ᵃ (λ c → lem-comm-CS13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CX13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CX23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CX24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CK41-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CK41-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CS02-TOFF314 (lit c)) ∷ᵃ (λ c → lem-comm-CX21-TOFF034 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF214-CS03 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ023-CK41 (lit c)) ∷ᵃ lem-sym-ab ∷ᵃ lem-sym-ab-at0210233441 ∷ᵃ lem-sym-ab-at0210243143 ∷ᵃ lem-sym-ab-at0213203441 ∷ᵃ lem-sym-ab-at03102132 ∷ᵃ lem-sym-ab-at0310243142 ∷ᵃ lem-sym-ab-at0314203142 ∷ᵃ lem-sym-ab-at032032 ∷ᵃ lem-sym-ab-at033440 ∷ᵃ lem-sym-ab-at1221 ∷ᵃ lem-sym-ab-at122331 ∷ᵃ lem-sym-ab-at12243143 ∷ᵃ lem-sym-ab-at13213442 ∷ᵃ lem-sym-ab-at13243142 ∷ᵃ lem-sym-ab-at13243241 ∷ᵃ lem-sym-ab-at133441 ∷ᵃ lem-sym-ab-at14233142 ∷ᵃ lem-sym-ab-at2332 ∷ᵃ lem-sym-ab-at243243 ∷ᵃ lem-sym-ab-at021021 ∷ᵃ lem-sym-ab-at0220 ∷ᵃ lem-sym-ab-at132132 ∷ᵃ lem-sym-ab-at1331 ∷ᵃ lem-sym-ab-at14213243 ∷ᵃ lem-box-tQ-at0314213042 ∷ᵃ lem-box-tQ-at043043 ∷ᵃ lem-box-tQ-at12233441 ∷ᵃ lem-box-tQ-at02233440 ∷ᵃ lem-CSdu-box-1 ∷ᵃ lem-CSdu-box-2 ∷ᵃ lem-CSdu-box-2-at0210243143 ∷ᵃ lem-CSdu-box-2-at122441 ∷ᵃ lem-CSdu-box-2-at243243 ∷ᵃ lem-CSu-box-1 ∷ᵃ lem-CSu-box-2 ∷ᵃ lem-CSu-box-2-at122441 ∷ᵃ lem-CSu-box-2-at243243 ∷ᵃ lem-Sdu-box ∷ᵃ lem-Su-box ∷ᵃ lem-CSu-box-2-at0210243143 ∷ᵃ lem-box-cP-at0210213443 ∷ᵃ lem-sym-bc-at0220 ∷ᵃ lem-sym-bc-at032032 ∷ᵃ lem-sym-bc-at13243142 ∷ᵃ lem-sym-bc-at13243241 ∷ᵃ lem-sym-bc-at14233142 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at1221 ∷ᵃ lem-box-cP-at12213443 ∷ᵃ lem-box-cP-at12233441 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-cP-at3443 ∷ᵃ lem-pairs-at13243142 ∷ᵃ lem-pairs-at14233142 ∷ᵃ lem-sym-bc ∷ᵃ lem-sym-bc-at0214203143 ∷ᵃ lem-sym-bc-at022330 ∷ᵃ lem-sym-bc-at0312213440 ∷ᵃ lem-sym-bc-at0330 ∷ᵃ lem-sym-bc-at1221 ∷ᵃ lem-sym-bc-at122331 ∷ᵃ lem-sym-bc-at12233441 ∷ᵃ lem-sym-bc-at12243143 ∷ᵃ lem-sym-bc-at122441 ∷ᵃ lem-sym-bc-at132132 ∷ᵃ lem-sym-bc-at1331 ∷ᵃ lem-sym-bc-at14213243 ∷ᵃ lem-sym-bc-at2332 ∷ᵃ lem-CSdu-box-3 ∷ᵃ lem-CSdu-box-3-at043043 ∷ᵃ lem-CSdu-box-4 ∷ᵃ lem-CSu-box-3 ∷ᵃ lem-CSu-box-4 ∷ᵃ lem-Kdu-box ∷ᵃ lem-Kdu-box-at0210243143 ∷ᵃ lem-Kdu-box-at122441 ∷ᵃ lem-Kdu-box-at243243 ∷ᵃ lem-Ku-box ∷ᵃ lem-Ku-box-at0210243143 ∷ᵃ lem-Ku-box-at122441 ∷ᵃ lem-Ku-box-at243243 ∷ᵃ lem-Xb-box-at0210243143 ∷ᵃ lem-Xb-box-at122441 ∷ᵃ lem-Xb-box-at243243 ∷ᵃ lem-box-perm-1324-at0210243143 ∷ᵃ lem-box-perm-1324-at122441 ∷ᵃ lem-box-perm-1324-at243243 ∷ᵃ lem-box-perm-1423-at122441 ∷ᵃ lem-box2-at0210243143 ∷ᵃ lem-box2-at122441 ∷ᵃ lem-box2-at243243 ∷ᵃ lem-pairs ∷ᵃ lem-pairs-at0214213043 ∷ᵃ lem-pairs-at0310243142 ∷ᵃ lem-pairs-at0330 ∷ᵃ lem-pairs-at1221 ∷ᵃ lem-pairs-at122331 ∷ᵃ lem-pairs-at132132 ∷ᵃ lem-pairs-at13213442 ∷ᵃ lem-pairs-at1331 ∷ᵃ lem-pairs-at143143 ∷ᵃ lem-pairs-at2332 ∷ᵃ lem-pairs-at3443 ∷ᵃ lem-CSdu-box-3-at0314213042 ∷ᵃ lem-CXu-box-4-at0210243143 ∷ᵃ lem-box-perm-2341-at021021 ∷ᵃ lem-box-perm-4123-at02233440 ∷ᵃ lem-pairs-at0210233441 ∷ᵃ lem-pairs-at0210243143 ∷ᵃ lem-pairs-at022330 ∷ᵃ lem-pairs-at0312243140 ∷ᵃ lem-pairs-at243243 ∷ᵃ lem-pairs-at12233441 ∷ᵃ lem-pairs-at122441 ∷ᵃ lem-pairs-at14213243 ∷ᵃ nil
 lem-F5-01 : _
 lem-F5-01 = D025.lem-F5-01 sD025
 lem-box-perm-2431 : _
@@ -2615,13 +3287,13 @@ lem-box-perm-4213-at122441 = D025.lem-box-perm-4213-at122441 sD025
 lem-box-perm-4132-at122441 : _
 lem-box-perm-4132-at122441 = D025.lem-box-perm-4132-at122441 sD025
 sD038 : SD038
-sD038 = lem-nf-order-CSat0 ∷ᵃ lem-nf-order-CSat1 ∷ᵃ lem-nf-order-CSat2 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at12233441 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-1324-at122441 ∷ᵃ lem-box2 ∷ᵃ lem-CSdu-box-3-at0210243143 ∷ᵃ lem-CSdu-box-3-at122441 ∷ᵃ lem-CSu-box-3-at0210243143 ∷ᵃ lem-CSu-box-3-at122441 ∷ᵃ lem-box-perm-1432-at122441 ∷ᵃ lem-CKu-box-2-at0210243143 ∷ᵃ lem-CKu-box-2-at122441 ∷ᵃ lem-CKu-box-2-at243243 ∷ᵃ lem-box-box-1-at021021 ∷ᵃ lem-box-perm-1342-at0210243143 ∷ᵃ lem-box-perm-1423-at021021 ∷ᵃ lem-box-perm-1432-at1221 ∷ᵃ lem-box-perm-3241-at243243 ∷ᵃ lem-box-perm-4213-at122441 ∷ᵃ lem-CKc-box ∷ᵃ lem-CKdc-box ∷ᵃ lem-S2-SBOX⟨0·1·42·3⟩ ∷ᵃ lem-S2-SBOX⟨0·2·43·1⟩ ∷ᵃ lem-S2-SBOX⟨2·0·41·3⟩ ∷ᵃ nil
+sD038 = (λ c → lem-comm-CS13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-TOFF013 (lit c)) ∷ᵃ (λ c → lem-comm-CX13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-TOFF023 (lit c)) ∷ᵃ (λ c → lem-comm-CX23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CZ13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CS13 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CSd13 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX13 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX31 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ124-CS03 (lit c)) ∷ᵃ (λ c → lem-comm-CX23-TOFF014 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF014-CX23 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CX04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CX14 (lit c)) ∷ᵃ lem-nf-order-CSat0 ∷ᵃ lem-nf-order-CSat1 ∷ᵃ lem-nf-order-CSat2 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at12233441 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-1324-at122441 ∷ᵃ lem-box2 ∷ᵃ lem-CSdu-box-3-at0210243143 ∷ᵃ lem-CSdu-box-3-at122441 ∷ᵃ lem-CSu-box-3-at0210243143 ∷ᵃ lem-CSu-box-3-at122441 ∷ᵃ lem-box-perm-1432-at122441 ∷ᵃ lem-CKu-box-2-at0210243143 ∷ᵃ lem-CKu-box-2-at122441 ∷ᵃ lem-CKu-box-2-at243243 ∷ᵃ lem-box-box-1-at021021 ∷ᵃ lem-box-perm-1342-at0210243143 ∷ᵃ lem-box-perm-1423-at021021 ∷ᵃ lem-box-perm-1432-at1221 ∷ᵃ lem-box-perm-3241-at243243 ∷ᵃ lem-box-perm-4213-at122441 ∷ᵃ lem-CKc-box ∷ᵃ lem-CKdc-box ∷ᵃ lem-S2-SBOX⟨0·1·42·3⟩ ∷ᵃ lem-S2-SBOX⟨0·2·43·1⟩ ∷ᵃ lem-S2-SBOX⟨2·0·41·3⟩ ∷ᵃ nil
 lem-F4-CS0-CS2 : _
 lem-F4-CS0-CS2 = D038.lem-F4-CS0-CS2 sD038
 lem-F1-order-CSat2 : _
 lem-F1-order-CSat2 = D038.lem-F1-order-CSat2 sD038
 sD037 : SD037
-sD037 = lem-box-tQ-at0214213043 ∷ᵃ lem-box-tQ-at0314213042 ∷ᵃ lem-box-tQ-at0330 ∷ᵃ lem-box-tQ-at033440 ∷ᵃ lem-box-tQ-at043043 ∷ᵃ lem-box-tQ-at12233441 ∷ᵃ lem-box-tQ-at233442 ∷ᵃ lem-box-tQ-at3443 ∷ᵃ lem-box-cP-at021021 ∷ᵃ lem-box-cP-at03102132 ∷ᵃ lem-box-cP-at04203243 ∷ᵃ lem-box-cP-at0110 ∷ᵃ lem-box-cP-at0210233441 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at0314203142 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at132132 ∷ᵃ lem-box-cP-at233442 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-2314-at0410213243 ∷ᵃ lem-Kdu-box ∷ᵃ lem-Ku-box ∷ᵃ lem-Ku-box-at0210243143 ∷ᵃ lem-Ku-box-at122441 ∷ᵃ lem-Ku-box-at243243 ∷ᵃ lem-box-box-4-at0410213243 ∷ᵃ lem-box-perm-1324-at043043 ∷ᵃ lem-box-perm-1423-at233442 ∷ᵃ lem-box-perm-3124-at043043 ∷ᵃ lem-box-perm-4123-at12233441 ∷ᵃ lem-box-box-4-at0310243142 ∷ᵃ lem-box-perm-1324-at0314213042 ∷ᵃ lem-box-perm-2314-at0310243142 ∷ᵃ lem-box-perm-2341-at03102132 ∷ᵃ lem-box-perm-3124-at0314213042 ∷ᵃ lem-CKdu-box-1 ∷ᵃ lem-CKdu-box-2 ∷ᵃ lem-CKdu-box-2-at0210243143 ∷ᵃ lem-CKdu-box-2-at122441 ∷ᵃ lem-CKdu-box-2-at243243 ∷ᵃ lem-CKdu-box-3 ∷ᵃ lem-CKdu-box-4 ∷ᵃ lem-CKu-box-1 ∷ᵃ lem-CKu-box-2 ∷ᵃ lem-CKu-box-2-at0210243143 ∷ᵃ lem-CKu-box-2-at122441 ∷ᵃ lem-CKu-box-2-at243243 ∷ᵃ lem-CKu-box-3 ∷ᵃ lem-CKu-box-4 ∷ᵃ lem-box-perm-1243 ∷ᵃ lem-box-perm-1243-at3443 ∷ᵃ lem-box-perm-1342 ∷ᵃ lem-box-perm-1423-at0210243143 ∷ᵃ lem-box-perm-1423-at243243 ∷ᵃ lem-box-perm-2341 ∷ᵃ lem-box-perm-3421-at0213203441 ∷ᵃ lem-box-perm-3421-at0314203142 ∷ᵃ lem-box-perm-4123-at033440 ∷ᵃ lem-box-perm-4312-at0214213043 ∷ᵃ lem-box-perm-4312-at0330 ∷ᵃ nil
+sD037 = (λ c → lem-comm-CS12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CS23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CSd12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CSd23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CX02-TOFF134 (lit c)) ∷ᵃ (λ c → lem-comm-CX12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CX23-CCZ014 (lit c)) ∷ᵃ (λ c → lem-comm-CZ03-TOFF412 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ013-CK42 (lit c)) ∷ᵃ (λ c → lem-comm-CK41-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CK42-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CS14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CX04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-CX31-TOFF024 (lit c)) ∷ᵃ (λ c → lem-comm-CZ02-TOFF314 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ023-CK41 (lit c)) ∷ᵃ lem-box-tQ-at0214213043 ∷ᵃ lem-box-tQ-at0314213042 ∷ᵃ lem-box-tQ-at0330 ∷ᵃ lem-box-tQ-at033440 ∷ᵃ lem-box-tQ-at043043 ∷ᵃ lem-box-tQ-at12233441 ∷ᵃ lem-box-tQ-at233442 ∷ᵃ lem-box-tQ-at3443 ∷ᵃ lem-box-cP-at021021 ∷ᵃ lem-box-cP-at03102132 ∷ᵃ lem-box-cP-at04203243 ∷ᵃ lem-box-cP-at0110 ∷ᵃ lem-box-cP-at0210233441 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at0314203142 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at132132 ∷ᵃ lem-box-cP-at233442 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-2314-at0410213243 ∷ᵃ lem-Kdu-box ∷ᵃ lem-Ku-box ∷ᵃ lem-Ku-box-at0210243143 ∷ᵃ lem-Ku-box-at122441 ∷ᵃ lem-Ku-box-at243243 ∷ᵃ lem-box-box-4-at0410213243 ∷ᵃ lem-box-perm-1324-at043043 ∷ᵃ lem-box-perm-1423-at233442 ∷ᵃ lem-box-perm-3124-at043043 ∷ᵃ lem-box-perm-4123-at12233441 ∷ᵃ lem-box-box-4-at0310243142 ∷ᵃ lem-box-perm-1324-at0314213042 ∷ᵃ lem-box-perm-2314-at0310243142 ∷ᵃ lem-box-perm-2341-at03102132 ∷ᵃ lem-box-perm-3124-at0314213042 ∷ᵃ lem-CKdu-box-1 ∷ᵃ lem-CKdu-box-2 ∷ᵃ lem-CKdu-box-2-at0210243143 ∷ᵃ lem-CKdu-box-2-at122441 ∷ᵃ lem-CKdu-box-2-at243243 ∷ᵃ lem-CKdu-box-3 ∷ᵃ lem-CKdu-box-4 ∷ᵃ lem-CKu-box-1 ∷ᵃ lem-CKu-box-2 ∷ᵃ lem-CKu-box-2-at0210243143 ∷ᵃ lem-CKu-box-2-at122441 ∷ᵃ lem-CKu-box-2-at243243 ∷ᵃ lem-CKu-box-3 ∷ᵃ lem-CKu-box-4 ∷ᵃ lem-box-perm-1243 ∷ᵃ lem-box-perm-1243-at3443 ∷ᵃ lem-box-perm-1342 ∷ᵃ lem-box-perm-1423-at0210243143 ∷ᵃ lem-box-perm-1423-at243243 ∷ᵃ lem-box-perm-2341 ∷ᵃ lem-box-perm-3421-at0213203441 ∷ᵃ lem-box-perm-3421-at0314203142 ∷ᵃ lem-box-perm-4123-at033440 ∷ᵃ lem-box-perm-4312-at0214213043 ∷ᵃ lem-box-perm-4312-at0330 ∷ᵃ nil
 lem-box-box-2 : _
 lem-box-box-2 = D037.lem-box-box-2 sD037
 lem-F0-B : _
@@ -2637,7 +3309,7 @@ lem-F0-B-at14213243 = D037.lem-F0-B-at14213243 sD037
 lem-box-box-1-at03102132 : _
 lem-box-box-1-at03102132 = D037.lem-box-box-1-at03102132 sD037
 sD039 : SD039
-sD039 = lem-box-tQ-at143143 ∷ᵃ lem-box-tQ-at03143140 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at0314213240 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-1423-at122441 ∷ᵃ lem-box-box-4-at03243240 ∷ᵃ lem-box-perm-1324-at03143140 ∷ᵃ lem-box-perm-2314-at03243240 ∷ᵃ lem-box-perm-3124-at03143140 ∷ᵃ lem-box-perm-1423-at0210243143 ∷ᵃ lem-box-perm-1423-at243243 ∷ᵃ lem-S2-SBOX⟨0·1·42·3⟩ ∷ᵃ lem-S2-SBOX⟨0·2·43·1⟩ ∷ᵃ lem-S2-SBOX⟨2·0·41·3⟩ ∷ᵃ lem-CKc-box-at0210233441 ∷ᵃ lem-CKc-box-at02233440 ∷ᵃ lem-CKc-box-at12213443 ∷ᵃ lem-CKc-box-at12233441 ∷ᵃ lem-CKc-box-at13213442 ∷ᵃ lem-CKc-box-at233442 ∷ᵃ lem-box-perm-1342-at0210233441 ∷ᵃ lem-box-perm-1342-at12213443 ∷ᵃ lem-box-perm-1342-at233442 ∷ᵃ lem-box-perm-3421-at0210243143 ∷ᵃ lem-box-perm-3421-at122441 ∷ᵃ lem-box-perm-3421-at13213442 ∷ᵃ lem-box-perm-3421-at243243 ∷ᵃ lem-box-perm-4312-at02233440 ∷ᵃ lem-box-perm-4312-at12233441 ∷ᵃ lem-box-perm-4312-at13213442 ∷ᵃ lem-box-perm-4312-at143143 ∷ᵃ nil
+sD039 = (λ c → lem-comm-CS24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ014-CX23 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX13 (lit c)) ∷ᵃ (λ c → lem-comm-CS02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CSd02-CCZ134 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-TOFF302 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CS24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CX24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CS04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CX04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CS14 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CX14 (lit c)) ∷ᵃ lem-box-tQ-at143143 ∷ᵃ lem-box-tQ-at03143140 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at0314213240 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-1423-at122441 ∷ᵃ lem-box-box-4-at03243240 ∷ᵃ lem-box-perm-1324-at03143140 ∷ᵃ lem-box-perm-2314-at03243240 ∷ᵃ lem-box-perm-3124-at03143140 ∷ᵃ lem-box-perm-1423-at0210243143 ∷ᵃ lem-box-perm-1423-at243243 ∷ᵃ lem-S2-SBOX⟨0·1·42·3⟩ ∷ᵃ lem-S2-SBOX⟨0·2·43·1⟩ ∷ᵃ lem-S2-SBOX⟨2·0·41·3⟩ ∷ᵃ lem-CKc-box-at0210233441 ∷ᵃ lem-CKc-box-at02233440 ∷ᵃ lem-CKc-box-at12213443 ∷ᵃ lem-CKc-box-at12233441 ∷ᵃ lem-CKc-box-at13213442 ∷ᵃ lem-CKc-box-at233442 ∷ᵃ lem-box-perm-1342-at0210233441 ∷ᵃ lem-box-perm-1342-at12213443 ∷ᵃ lem-box-perm-1342-at233442 ∷ᵃ lem-box-perm-3421-at0210243143 ∷ᵃ lem-box-perm-3421-at122441 ∷ᵃ lem-box-perm-3421-at13213442 ∷ᵃ lem-box-perm-3421-at243243 ∷ᵃ lem-box-perm-4312-at02233440 ∷ᵃ lem-box-perm-4312-at12233441 ∷ᵃ lem-box-perm-4312-at13213442 ∷ᵃ lem-box-perm-4312-at143143 ∷ᵃ nil
 lem-nf-X-CS0at0 : _
 lem-nf-X-CS0at0 = D039.lem-nf-X-CS0at0 sD039
 lem-nf-X-CS0at1 : _
@@ -2653,15 +3325,15 @@ lem-nf-X-CS1at2 = D039.lem-nf-X-CS1at2 sD039
 lem-F0-B-at01143043 : _
 lem-F0-B-at01143043 = D039.lem-F0-B-at01143043 sD039
 sD067 : SD067
-sD067 = lem-inv-SBOX⟨2·0·41·3⟩ ∷ᵃ lem-invr-SBOX⟨2·0·41·3⟩ ∷ᵃ lem-box-tQ ∷ᵃ lem-box-tQ-at0330 ∷ᵃ lem-box-cP-at032032 ∷ᵃ lem-box-cP-at04203243 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at0314203142 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-2314-at03102132 ∷ᵃ lem-CSdu-box-3-at043043 ∷ᵃ lem-CSu-box-3-at043043 ∷ᵃ lem-box-perm-1324-at043043 ∷ᵃ lem-box-perm-3124 ∷ᵃ lem-box-perm-3124-at0330 ∷ᵃ lem-box2-at043043 ∷ᵃ lem-CSdu-box-3-at0210243143 ∷ᵃ lem-CSdu-box-3-at0314213042 ∷ᵃ lem-CSdu-box-3-at122441 ∷ᵃ lem-CSu-box-3-at0210243143 ∷ᵃ lem-CSu-box-3-at0314213042 ∷ᵃ lem-CSu-box-3-at122441 ∷ᵃ lem-box-perm-1324-at0314213042 ∷ᵃ lem-box-perm-2314-at0210243143 ∷ᵃ lem-box-perm-3124-at0214213043 ∷ᵃ lem-box2-at0314213042 ∷ᵃ lem-box-perm-1324-at0330 ∷ᵃ lem-box-perm-2314-at132132 ∷ᵃ lem-F0-R ∷ᵃ lem-F0-R-at14213243 ∷ᵃ lem-F5-01 ∷ᵃ lem-box-perm-1342-at0210243143 ∷ᵃ lem-box-perm-1423-at021021 ∷ᵃ lem-box-perm-2431 ∷ᵃ lem-box-perm-4132-at122441 ∷ᵃ lem-AX-S23 ∷ᵃ lem-F0-B ∷ᵃ lem-F0-B-at14213243 ∷ᵃ lem-XCKX-box-2-at0210243143 ∷ᵃ lem-XCKX-box-2-at122441 ∷ᵃ lem-XCKX-box-2-at243243 ∷ᵃ lem-box-box-1-at03102132 ∷ᵃ lem-box-box-2 ∷ᵃ lem-F4-CS0-CS2 ∷ᵃ lem-nf-X-CS0at0 ∷ᵃ lem-nf-X-CS0at1 ∷ᵃ lem-nf-X-CS0at2 ∷ᵃ lem-nf-X-CS1at0 ∷ᵃ lem-nf-X-CS1at1 ∷ᵃ nil
+sD067 = (λ c → lem-comm-CS13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CS24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CSd13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CSd24-CCZ013 (lit c)) ∷ᵃ (λ c → lem-comm-CX04-TOFF213 (lit c)) ∷ᵃ (λ c → lem-comm-CX12-CCZ034 (lit c)) ∷ᵃ (λ c → lem-comm-CX13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-CZ13-CCZ024 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CSd24 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ014-CX23 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX13 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ034-CS12 (lit c)) ∷ᵃ (λ c → lem-comm-CX04-TOFF312 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CS24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CX24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF213-CX04 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CX14 (lit c)) ∷ᵃ lem-inv-SBOX⟨2·0·41·3⟩ ∷ᵃ lem-invr-SBOX⟨2·0·41·3⟩ ∷ᵃ lem-box-tQ ∷ᵃ lem-box-tQ-at0330 ∷ᵃ lem-box-cP-at032032 ∷ᵃ lem-box-cP-at04203243 ∷ᵃ lem-box-cP-at0210243143 ∷ᵃ lem-box-cP-at0314203142 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-2314-at03102132 ∷ᵃ lem-CSdu-box-3-at043043 ∷ᵃ lem-CSu-box-3-at043043 ∷ᵃ lem-box-perm-1324-at043043 ∷ᵃ lem-box-perm-3124 ∷ᵃ lem-box-perm-3124-at0330 ∷ᵃ lem-box2-at043043 ∷ᵃ lem-CSdu-box-3-at0210243143 ∷ᵃ lem-CSdu-box-3-at0314213042 ∷ᵃ lem-CSdu-box-3-at122441 ∷ᵃ lem-CSu-box-3-at0210243143 ∷ᵃ lem-CSu-box-3-at0314213042 ∷ᵃ lem-CSu-box-3-at122441 ∷ᵃ lem-box-perm-1324-at0314213042 ∷ᵃ lem-box-perm-2314-at0210243143 ∷ᵃ lem-box-perm-3124-at0214213043 ∷ᵃ lem-box2-at0314213042 ∷ᵃ lem-box-perm-1324-at0330 ∷ᵃ lem-box-perm-2314-at132132 ∷ᵃ lem-F0-R ∷ᵃ lem-F0-R-at14213243 ∷ᵃ lem-F5-01 ∷ᵃ lem-box-perm-1342-at0210243143 ∷ᵃ lem-box-perm-1423-at021021 ∷ᵃ lem-box-perm-2431 ∷ᵃ lem-box-perm-4132-at122441 ∷ᵃ lem-AX-S23 ∷ᵃ lem-F0-B ∷ᵃ lem-F0-B-at14213243 ∷ᵃ lem-XCKX-box-2-at0210243143 ∷ᵃ lem-XCKX-box-2-at122441 ∷ᵃ lem-XCKX-box-2-at243243 ∷ᵃ lem-box-box-1-at03102132 ∷ᵃ lem-box-box-2 ∷ᵃ lem-F4-CS0-CS2 ∷ᵃ lem-nf-X-CS0at0 ∷ᵃ lem-nf-X-CS0at1 ∷ᵃ lem-nf-X-CS0at2 ∷ᵃ lem-nf-X-CS1at0 ∷ᵃ lem-nf-X-CS1at1 ∷ᵃ nil
 lem-F1-X-CS0at2 : _
 lem-F1-X-CS0at2 = D067.lem-F1-X-CS0at2 sD067
 sD028 : SD028
-sD028 = lem-sym-ab-at03122031 ∷ᵃ lem-box-tQ-at3443 ∷ᵃ lem-sym-bc-at031031 ∷ᵃ lem-Xb-box-at243243 ∷ᵃ lem-box-perm-1324-at243243 ∷ᵃ lem-box-perm-1324-at3443 ∷ᵃ lem-pairs-at03243240 ∷ᵃ nil
+sD028 = (λ c → lem-comm-CCZ034-CX12 (lit c)) ∷ᵃ lem-sym-ab-at03122031 ∷ᵃ lem-box-tQ-at3443 ∷ᵃ lem-sym-bc-at031031 ∷ᵃ lem-Xb-box-at243243 ∷ᵃ lem-box-perm-1324-at243243 ∷ᵃ lem-box-perm-1324-at3443 ∷ᵃ lem-pairs-at03243240 ∷ᵃ nil
 lem-CKc-box-at3443 : _
 lem-CKc-box-at3443 = D028.lem-CKc-box-at3443 sD028
 sD040 : SD040
-sD040 = lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-1324-at243243 ∷ᵃ lem-box2-at122441 ∷ᵃ lem-box-perm-1324-at3443 ∷ᵃ lem-box-perm-1423-at243243 ∷ᵃ lem-box-perm-3241-at243243 ∷ᵃ lem-S2-SBOX⟨0·1·42·3⟩ ∷ᵃ lem-S2-SBOX⟨0·2·43·1⟩ ∷ᵃ lem-CKc-box-at233442 ∷ᵃ lem-box-perm-1342-at233442 ∷ᵃ lem-CKc-box-at3443 ∷ᵃ nil
+sD040 = (λ c → lem-comm-CCZ014-CX23 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX13 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CX24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CX14 (lit c)) ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-1324-at243243 ∷ᵃ lem-box2-at122441 ∷ᵃ lem-box-perm-1324-at3443 ∷ᵃ lem-box-perm-1423-at243243 ∷ᵃ lem-box-perm-3241-at243243 ∷ᵃ lem-S2-SBOX⟨0·1·42·3⟩ ∷ᵃ lem-S2-SBOX⟨0·2·43·1⟩ ∷ᵃ lem-CKc-box-at233442 ∷ᵃ lem-box-perm-1342-at233442 ∷ᵃ lem-CKc-box-at3443 ∷ᵃ nil
 lem-nf-comm-CSu-CSat1 : _
 lem-nf-comm-CSu-CSat1 = D040.lem-nf-comm-CSu-CSat1 sD040
 lem-nf-rel-266at1 : _
@@ -2669,17 +3341,17 @@ lem-nf-rel-266at1 = D040.lem-nf-rel-266at1 sD040
 lem-nf-rel-267at1 : _
 lem-nf-rel-267at1 = D040.lem-nf-rel-267at1 sD040
 sD068 : SD068
-sD068 = lem-box-cP-at0314213240 ∷ᵃ lem-box-cP-at12233441 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-1324-at122441 ∷ᵃ lem-box2-at243243 ∷ᵃ lem-CSdu-box-3-at03143140 ∷ᵃ lem-CSu-box-3-at03143140 ∷ᵃ lem-box-perm-1324-at03143140 ∷ᵃ lem-box-perm-1324-at12233441 ∷ᵃ lem-box-perm-2314-at243243 ∷ᵃ lem-box-perm-3124-at143143 ∷ᵃ lem-box2-at03143140 ∷ᵃ lem-box-perm-4213-at122441 ∷ᵃ lem-S2-SBOX⟨0·1·42·3⟩ ∷ᵃ lem-S2-SBOX⟨0·2·43·1⟩ ∷ᵃ lem-CKc-box-at12233441 ∷ᵃ lem-CKc-box-at13213442 ∷ᵃ lem-F0-R-at01143043 ∷ᵃ lem-box-perm-3421-at122441 ∷ᵃ lem-box-perm-4312-at13213442 ∷ᵃ lem-F0-B-at01143043 ∷ᵃ lem-nf-X-CS1at2 ∷ᵃ lem-nf-comm-CSu-CSat1 ∷ᵃ lem-nf-rel-266at1 ∷ᵃ lem-nf-rel-267at1 ∷ᵃ nil
+sD068 = (λ c → lem-comm-TOFF013-CSd24 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ014-CX23 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CS13 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CSd13 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ024-CX13 (lit c)) ∷ᵃ (λ c → lem-comm-CX14-TOFF302 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CS24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CX24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF014-CX23 (lit c)) ∷ᵃ (λ c → lem-comm-CCZ023-CX14 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF023-CX14 (lit c)) ∷ᵃ lem-box-cP-at0314213240 ∷ᵃ lem-box-cP-at12233441 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-cP-at243243 ∷ᵃ lem-box-perm-1324-at122441 ∷ᵃ lem-box2-at243243 ∷ᵃ lem-CSdu-box-3-at03143140 ∷ᵃ lem-CSu-box-3-at03143140 ∷ᵃ lem-box-perm-1324-at03143140 ∷ᵃ lem-box-perm-1324-at12233441 ∷ᵃ lem-box-perm-2314-at243243 ∷ᵃ lem-box-perm-3124-at143143 ∷ᵃ lem-box2-at03143140 ∷ᵃ lem-box-perm-4213-at122441 ∷ᵃ lem-S2-SBOX⟨0·1·42·3⟩ ∷ᵃ lem-S2-SBOX⟨0·2·43·1⟩ ∷ᵃ lem-CKc-box-at12233441 ∷ᵃ lem-CKc-box-at13213442 ∷ᵃ lem-F0-R-at01143043 ∷ᵃ lem-box-perm-3421-at122441 ∷ᵃ lem-box-perm-4312-at13213442 ∷ᵃ lem-F0-B-at01143043 ∷ᵃ lem-nf-X-CS1at2 ∷ᵃ lem-nf-comm-CSu-CSat1 ∷ᵃ lem-nf-rel-266at1 ∷ᵃ lem-nf-rel-267at1 ∷ᵃ nil
 lem-F1-X-CS1at2 : _
 lem-F1-X-CS1at2 = D068.lem-F1-X-CS1at2 sD068
 sD042 : SD042
-sD042 = lem-box-cP-at122441 ∷ᵃ lem-box-perm-1423-at122441 ∷ᵃ lem-box2-at122441 ∷ᵃ lem-S2-SBOX⟨0·1·42·3⟩ ∷ᵃ lem-S2-SBOX⟨2·0·41·3⟩ ∷ᵃ lem-CKc-box-at12213443 ∷ᵃ lem-CKc-box-at13213442 ∷ᵃ lem-box-perm-1342-at12213443 ∷ᵃ lem-box-perm-3421-at122441 ∷ᵃ lem-box-perm-4312-at13213442 ∷ᵃ nil
+sD042 = (λ c → lem-comm-CCZ024-CX13 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CX24 (lit c)) ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-perm-1423-at122441 ∷ᵃ lem-box2-at122441 ∷ᵃ lem-S2-SBOX⟨0·1·42·3⟩ ∷ᵃ lem-S2-SBOX⟨2·0·41·3⟩ ∷ᵃ lem-CKc-box-at12213443 ∷ᵃ lem-CKc-box-at13213442 ∷ᵃ lem-box-perm-1342-at12213443 ∷ᵃ lem-box-perm-3421-at122441 ∷ᵃ lem-box-perm-4312-at13213442 ∷ᵃ nil
 lem-nf-CS-K0at2 : _
 lem-nf-CS-K0at2 = D042.lem-nf-CS-K0at2 sD042
 lem-nf-CS-K1at2 : _
 lem-nf-CS-K1at2 = D042.lem-nf-CS-K1at2 sD042
 sD030 : SD030
-sD030 = lem-sym-ab-at0310243142 ∷ᵃ lem-sym-ab-at02102441 ∷ᵃ lem-sym-ab-at02142041 ∷ᵃ lem-sym-ab-at0310243241 ∷ᵃ lem-sym-ab-at0312243041 ∷ᵃ lem-sym-ab-at0314203241 ∷ᵃ lem-sym-ab-at03143041 ∷ᵃ lem-box-tQ-at0210213443 ∷ᵃ lem-box-tQ-at0214203143 ∷ᵃ lem-sym-bc-at0310213442 ∷ᵃ lem-box-cP-at03122031 ∷ᵃ lem-box-cP-at0312243041 ∷ᵃ lem-pairs-at03102132 ∷ᵃ lem-pairs-at0310213442 ∷ᵃ lem-sym-bc-at02132031 ∷ᵃ lem-sym-bc-at02132130 ∷ᵃ lem-sym-bc-at03122031 ∷ᵃ lem-sym-bc-at03122130 ∷ᵃ lem-sym-bc-at0314203241 ∷ᵃ lem-box-perm-1243-at021021 ∷ᵃ lem-box-perm-1243-at0210213443 ∷ᵃ lem-box-perm-2341-at0213243041 ∷ᵃ lem-box-perm-4123-at0214203143 ∷ᵃ lem-pairs-at02102441 ∷ᵃ lem-pairs-at02132130 ∷ᵃ lem-pairs-at0310243241 ∷ᵃ lem-pairs-at03122130 ∷ᵃ lem-pairs-at0312243041 ∷ᵃ lem-pairs-at03143041 ∷ᵃ nil
+sD030 = (λ c → lem-comm-CS14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CX40-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CX20-TOFF314 (lit c)) ∷ᵃ (λ c → lem-comm-CX24-TOFF301 (lit c)) ∷ᵃ lem-sym-ab-at0310243142 ∷ᵃ lem-sym-ab-at02102441 ∷ᵃ lem-sym-ab-at02142041 ∷ᵃ lem-sym-ab-at0310243241 ∷ᵃ lem-sym-ab-at0312243041 ∷ᵃ lem-sym-ab-at0314203241 ∷ᵃ lem-sym-ab-at03143041 ∷ᵃ lem-box-tQ-at0210213443 ∷ᵃ lem-box-tQ-at0214203143 ∷ᵃ lem-sym-bc-at0310213442 ∷ᵃ lem-box-cP-at03122031 ∷ᵃ lem-box-cP-at0312243041 ∷ᵃ lem-pairs-at03102132 ∷ᵃ lem-pairs-at0310213442 ∷ᵃ lem-sym-bc-at02132031 ∷ᵃ lem-sym-bc-at02132130 ∷ᵃ lem-sym-bc-at03122031 ∷ᵃ lem-sym-bc-at03122130 ∷ᵃ lem-sym-bc-at0314203241 ∷ᵃ lem-box-perm-1243-at021021 ∷ᵃ lem-box-perm-1243-at0210213443 ∷ᵃ lem-box-perm-2341-at0213243041 ∷ᵃ lem-box-perm-4123-at0214203143 ∷ᵃ lem-pairs-at02102441 ∷ᵃ lem-pairs-at02132130 ∷ᵃ lem-pairs-at0310243241 ∷ᵃ lem-pairs-at03122130 ∷ᵃ lem-pairs-at0312243041 ∷ᵃ lem-pairs-at03143041 ∷ᵃ nil
 lem-box-box-1-at0213243041 : _
 lem-box-box-1-at0213243041 = D030.lem-box-box-1-at0213243041 sD030
 lem-box-perm-1243-at03102132 : _
@@ -2689,11 +3361,11 @@ lem-box-perm-1243-at0310213442 = D030.lem-box-perm-1243-at0310213442 sD030
 lem-box-perm-2341-at0312243041 : _
 lem-box-perm-2341-at0312243041 = D030.lem-box-perm-2341-at0312243041 sD030
 sD044 : SD044
-sD044 = lem-box-tQ-at0310213442 ∷ᵃ lem-box-tQ-at0314203142 ∷ᵃ lem-box-tQ-at02142041 ∷ᵃ lem-box-tQ-at0314203241 ∷ᵃ lem-box-cP-at0213243041 ∷ᵃ lem-box-cP-at0214233041 ∷ᵃ lem-box-cP-at02132031 ∷ᵃ lem-box-perm-2314-at0213243041 ∷ᵃ lem-box-perm-1324-at02142041 ∷ᵃ lem-box-perm-2314-at0312243041 ∷ᵃ lem-box-perm-3124-at02142041 ∷ᵃ lem-box-perm-3124-at0314203241 ∷ᵃ lem-box-perm-4123-at0314203142 ∷ᵃ lem-box-box-1-at0213243041 ∷ᵃ lem-box-perm-1243-at03102132 ∷ᵃ lem-box-perm-1243-at0310213442 ∷ᵃ lem-box-perm-2341-at0312243041 ∷ᵃ nil
+sD044 = (λ c → lem-comm-CS14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CSd14-CCZ023 (lit c)) ∷ᵃ (λ c → lem-comm-CX30-TOFF214 (lit c)) ∷ᵃ (λ c → lem-comm-CX40-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-CX31-TOFF204 (lit c)) ∷ᵃ lem-box-tQ-at0310213442 ∷ᵃ lem-box-tQ-at0314203142 ∷ᵃ lem-box-tQ-at02142041 ∷ᵃ lem-box-tQ-at0314203241 ∷ᵃ lem-box-cP-at0213243041 ∷ᵃ lem-box-cP-at0214233041 ∷ᵃ lem-box-cP-at02132031 ∷ᵃ lem-box-perm-2314-at0213243041 ∷ᵃ lem-box-perm-1324-at02142041 ∷ᵃ lem-box-perm-2314-at0312243041 ∷ᵃ lem-box-perm-3124-at02142041 ∷ᵃ lem-box-perm-3124-at0314203241 ∷ᵃ lem-box-perm-4123-at0314203142 ∷ᵃ lem-box-box-1-at0213243041 ∷ᵃ lem-box-perm-1243-at03102132 ∷ᵃ lem-box-perm-1243-at0310213442 ∷ᵃ lem-box-perm-2341-at0312243041 ∷ᵃ nil
 lem-box-box-1-at0312243041 : _
 lem-box-box-1-at0312243041 = D044.lem-box-box-1-at0312243041 sD044
 sD070 : SD070
-sD070 = lem-box-tQ-at02142041 ∷ᵃ lem-box-tQ-at0314203241 ∷ᵃ lem-box-cP-at03143041 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-perm-2314-at0213243041 ∷ᵃ lem-box-perm-1423-at122441 ∷ᵃ lem-box2-at122441 ∷ᵃ lem-box-perm-1324-at0314203241 ∷ᵃ lem-box-perm-2314-at0312243041 ∷ᵃ lem-box-perm-3124-at02142041 ∷ᵃ lem-box-perm-3124-at0314203241 ∷ᵃ lem-CKc-box-at12213443 ∷ᵃ lem-CKc-box-at13213442 ∷ᵃ lem-box-perm-1342-at12213443 ∷ᵃ lem-box-perm-3421-at122441 ∷ᵃ lem-box-perm-4312-at13213442 ∷ᵃ lem-nf-CS-K0at2 ∷ᵃ lem-nf-CS-K1at2 ∷ᵃ lem-box-box-1-at0312243041 ∷ᵃ nil
+sD070 = (λ c → lem-comm-CCZ024-CX13 (lit c)) ∷ᵃ (λ c → lem-comm-CX40-CCZ123 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CS24 (lit c)) ∷ᵃ (λ c → lem-comm-TOFF013-CX24 (lit c)) ∷ᵃ (λ c → lem-comm-CX21-TOFF304 (lit c)) ∷ᵃ (λ c → lem-comm-CX24-TOFF301 (lit c)) ∷ᵃ lem-box-tQ-at02142041 ∷ᵃ lem-box-tQ-at0314203241 ∷ᵃ lem-box-cP-at03143041 ∷ᵃ lem-box-cP-at122441 ∷ᵃ lem-box-perm-2314-at0213243041 ∷ᵃ lem-box-perm-1423-at122441 ∷ᵃ lem-box2-at122441 ∷ᵃ lem-box-perm-1324-at0314203241 ∷ᵃ lem-box-perm-2314-at0312243041 ∷ᵃ lem-box-perm-3124-at02142041 ∷ᵃ lem-box-perm-3124-at0314203241 ∷ᵃ lem-CKc-box-at12213443 ∷ᵃ lem-CKc-box-at13213442 ∷ᵃ lem-box-perm-1342-at12213443 ∷ᵃ lem-box-perm-3421-at122441 ∷ᵃ lem-box-perm-4312-at13213442 ∷ᵃ lem-nf-CS-K0at2 ∷ᵃ lem-nf-CS-K1at2 ∷ᵃ lem-box-box-1-at0312243041 ∷ᵃ nil
 lem-F1-CS-K0at2 : _
 lem-F1-CS-K0at2 = D070.lem-F1-CS-K0at2 sD070
 lem-F1-CS-K1at2 : _

@@ -19,110 +19,110 @@ open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw�
 
 -- The lemmas of other derivation modules (DSig).
 private
-  lem-F4-I-I-at0440 : Ws → St 1452
+  lem-F4-I-I-at0440 : Ws → St 1683
   lem-F4-I-I-at0440 = pickᴰ 0 Sᴰ
-  lem-F4-I-K1-at0440 : Ws → St 1453
+  lem-F4-I-K1-at0440 : Ws → St 1684
   lem-F4-I-K1-at0440 = pickᴰ 1 Sᴰ
-  lem-F4-I-K2-at0440 : Ws → St 1454
+  lem-F4-I-K2-at0440 : Ws → St 1685
   lem-F4-I-K2-at0440 = pickᴰ 2 Sᴰ
-  lem-F4-I-K3-at0440 : Ws → St 1455
+  lem-F4-I-K3-at0440 : Ws → St 1686
   lem-F4-I-K3-at0440 = pickᴰ 3 Sᴰ
-  lem-F4-K2-I-at0440 : Ws → St 1615
+  lem-F4-K2-I-at0440 : Ws → St 1862
   lem-F4-K2-I-at0440 = pickᴰ 4 Sᴰ
-  lem-F4-K2-K1-at0440 : Ws → St 1602
+  lem-F4-K2-K1-at0440 : Ws → St 1849
   lem-F4-K2-K1-at0440 = pickᴰ 5 Sᴰ
-  lem-F4-K2-K2-at0440 : Ws → St 1603
+  lem-F4-K2-K2-at0440 : Ws → St 1850
   lem-F4-K2-K2-at0440 = pickᴰ 6 Sᴰ
-  lem-F4-K2-K3-at0440 : Ws → St 1623
+  lem-F4-K2-K3-at0440 : Ws → St 1870
   lem-F4-K2-K3-at0440 = pickᴰ 7 Sᴰ
-  lem-F4-K3-I-at0440 : Ws → St 1617
+  lem-F4-K3-I-at0440 : Ws → St 1864
   lem-F4-K3-I-at0440 = pickᴰ 8 Sᴰ
-  lem-F4-K3-K1-at0440 : Ws → St 1618
+  lem-F4-K3-K1-at0440 : Ws → St 1865
   lem-F4-K3-K1-at0440 = pickᴰ 9 Sᴰ
-  lem-F4-K3-K2-at0440 : Ws → St 1619
+  lem-F4-K3-K2-at0440 : Ws → St 1866
   lem-F4-K3-K2-at0440 = pickᴰ 10 Sᴰ
-  lem-F4-K3-K3-at0440 : Ws → St 1624
+  lem-F4-K3-K3-at0440 : Ws → St 1871
   lem-F4-K3-K3-at0440 = pickᴰ 11 Sᴰ
-  lem-F4-I-CS1-at0440 : Ws → St 1460
+  lem-F4-I-CS1-at0440 : Ws → St 1691
   lem-F4-I-CS1-at0440 = pickᴰ 12 Sᴰ
-  lem-F4-CS2-CS2-at0440 : Ws → St 1606
+  lem-F4-CS2-CS2-at0440 : Ws → St 1853
   lem-F4-CS2-CS2-at0440 = pickᴰ 13 Sᴰ
-  lem-F4-CS2-I-at0440 : Ws → St 1607
+  lem-F4-CS2-I-at0440 : Ws → St 1854
   lem-F4-CS2-I-at0440 = pickᴰ 14 Sᴰ
-  lem-F4-CS2-K2-at0440 : Ws → St 1608
+  lem-F4-CS2-K2-at0440 : Ws → St 1855
   lem-F4-CS2-K2-at0440 = pickᴰ 15 Sᴰ
-  lem-F4-I-CS2-at0440 : Ws → St 1462
+  lem-F4-I-CS2-at0440 : Ws → St 1693
   lem-F4-I-CS2-at0440 = pickᴰ 16 Sᴰ
-  lem-F4-K2-CS2-at0440 : Ws → St 1609
+  lem-F4-K2-CS2-at0440 : Ws → St 1856
   lem-F4-K2-CS2-at0440 = pickᴰ 17 Sᴰ
-  lem-F4-K3-CS1-at0440 : Ws → St 1620
+  lem-F4-K3-CS1-at0440 : Ws → St 1867
   lem-F4-K3-CS1-at0440 = pickᴰ 18 Sᴰ
-  lem-F4-CS2-K1-at0440 : Ws → St 1610
+  lem-F4-CS2-K1-at0440 : Ws → St 1857
   lem-F4-CS2-K1-at0440 = pickᴰ 19 Sᴰ
-  lem-F4-CS2-CS1-at0440 : Ws → St 1613
+  lem-F4-CS2-CS1-at0440 : Ws → St 1860
   lem-F4-CS2-CS1-at0440 = pickᴰ 20 Sᴰ
-  lem-F4-CS2-K3-at0440 : Ws → St 1621
+  lem-F4-CS2-K3-at0440 : Ws → St 1868
   lem-F4-CS2-K3-at0440 = pickᴰ 21 Sᴰ
-  lem-F4-K2-CS1-at0440 : Ws → St 1614
+  lem-F4-K2-CS1-at0440 : Ws → St 1861
   lem-F4-K2-CS1-at0440 = pickᴰ 22 Sᴰ
-  lem-F4-K3-CS2-at0440 : Ws → St 1622
+  lem-F4-K3-CS2-at0440 : Ws → St 1869
   lem-F4-K3-CS2-at0440 = pickᴰ 23 Sᴰ
 
 private
   q1 : Ws → Eqn
-  q1 c4 = sE 1621 (lem-F4-CS2-K3-at0440 c4)
+  q1 c4 = sE 1868 (lem-F4-CS2-K3-at0440 c4)
   q2 : Ws → Eqn
-  q2 c4 = sE 1606 (lem-F4-CS2-CS2-at0440 c4)
+  q2 c4 = sE 1853 (lem-F4-CS2-CS2-at0440 c4)
   q3 : Ws → Eqn
-  q3 c4 = sE 1607 (lem-F4-CS2-I-at0440 c4)
+  q3 c4 = sE 1854 (lem-F4-CS2-I-at0440 c4)
   q4 : Ws → Eqn
-  q4 c4 = sE 1608 (lem-F4-CS2-K2-at0440 c4)
+  q4 c4 = sE 1855 (lem-F4-CS2-K2-at0440 c4)
   q5 : Ws → Eqn
-  q5 c4 = sE 1613 (lem-F4-CS2-CS1-at0440 c4)
+  q5 c4 = sE 1860 (lem-F4-CS2-CS1-at0440 c4)
   q6 : Ws → Eqn
-  q6 c4 = sE 1610 (lem-F4-CS2-K1-at0440 c4)
+  q6 c4 = sE 1857 (lem-F4-CS2-K1-at0440 c4)
   q7 : Ws → Eqn
   q7 c4 = wlE 1715 (lit c4)
   q8 : Ws → Eqn
-  q8 c4 = sE 1609 (lem-F4-K2-CS2-at0440 c4)
+  q8 c4 = sE 1856 (lem-F4-K2-CS2-at0440 c4)
   q9 : Ws → Eqn
-  q9 c4 = sE 1603 (lem-F4-K2-K2-at0440 c4)
+  q9 c4 = sE 1850 (lem-F4-K2-K2-at0440 c4)
   q10 : Ws → Eqn
-  q10 c4 = sE 1615 (lem-F4-K2-I-at0440 c4)
+  q10 c4 = sE 1862 (lem-F4-K2-I-at0440 c4)
   q11 : Ws → Eqn
-  q11 c4 = sE 1623 (lem-F4-K2-K3-at0440 c4)
+  q11 c4 = sE 1870 (lem-F4-K2-K3-at0440 c4)
   q12 : Ws → Eqn
-  q12 c4 = sE 1614 (lem-F4-K2-CS1-at0440 c4)
+  q12 c4 = sE 1861 (lem-F4-K2-CS1-at0440 c4)
   q13 : Ws → Eqn
-  q13 c4 = sE 1602 (lem-F4-K2-K1-at0440 c4)
+  q13 c4 = sE 1849 (lem-F4-K2-K1-at0440 c4)
   q14 : Ws → Eqn
   q14 c4 = wlE 1461 (lit c4)
   q15 : Ws → Eqn
-  q15 c4 = sE 1454 (lem-F4-I-K2-at0440 c4)
+  q15 c4 = sE 1685 (lem-F4-I-K2-at0440 c4)
   q16 : Ws → Eqn
-  q16 c4 = sE 1462 (lem-F4-I-CS2-at0440 c4)
+  q16 c4 = sE 1693 (lem-F4-I-CS2-at0440 c4)
   q17 : Ws → Eqn
-  q17 c4 = sE 1452 (lem-F4-I-I-at0440 c4)
+  q17 c4 = sE 1683 (lem-F4-I-I-at0440 c4)
   q18 : Ws → Eqn
-  q18 c4 = sE 1455 (lem-F4-I-K3-at0440 c4)
+  q18 c4 = sE 1686 (lem-F4-I-K3-at0440 c4)
   q19 : Ws → Eqn
-  q19 c4 = sE 1460 (lem-F4-I-CS1-at0440 c4)
+  q19 c4 = sE 1691 (lem-F4-I-CS1-at0440 c4)
   q20 : Ws → Eqn
-  q20 c4 = sE 1453 (lem-F4-I-K1-at0440 c4)
+  q20 c4 = sE 1684 (lem-F4-I-K1-at0440 c4)
   q21 : Ws → Eqn
   q21 c4 = wlE 1716 (lit c4)
   q22 : Ws → Eqn
-  q22 c4 = sE 1617 (lem-F4-K3-I-at0440 c4)
+  q22 c4 = sE 1864 (lem-F4-K3-I-at0440 c4)
   q23 : Ws → Eqn
-  q23 c4 = sE 1619 (lem-F4-K3-K2-at0440 c4)
+  q23 c4 = sE 1866 (lem-F4-K3-K2-at0440 c4)
   q24 : Ws → Eqn
-  q24 c4 = sE 1622 (lem-F4-K3-CS2-at0440 c4)
+  q24 c4 = sE 1869 (lem-F4-K3-CS2-at0440 c4)
   q25 : Ws → Eqn
-  q25 c4 = sE 1624 (lem-F4-K3-K3-at0440 c4)
+  q25 c4 = sE 1871 (lem-F4-K3-K3-at0440 c4)
   q26 : Ws → Eqn
-  q26 c4 = sE 1620 (lem-F4-K3-CS1-at0440 c4)
+  q26 c4 = sE 1867 (lem-F4-K3-CS1-at0440 c4)
   q27 : Ws → Eqn
-  q27 c4 = sE 1618 (lem-F4-K3-K1-at0440 c4)
+  q27 c4 = sE 1865 (lem-F4-K3-K1-at0440 c4)
   q28 : Ws → Eqn
   q28 c4 = wlE 18 (lit c4)
 

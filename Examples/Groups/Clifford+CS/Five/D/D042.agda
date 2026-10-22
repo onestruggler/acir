@@ -16,34 +16,37 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-CCZ024-CX13 ; lem-comm-TOFF013-CX24)
 
 -- The lemmas of other derivation modules (DSig).
 private
-  lem-box-cP-at122441 : Ws → St 850
-  lem-box-cP-at122441 = pickᴰ 0 Sᴰ
-  lem-box-perm-1423-at122441 : Ws → St 1080
-  lem-box-perm-1423-at122441 = pickᴰ 1 Sᴰ
-  lem-box2-at122441 : Ws → St 1082
-  lem-box2-at122441 = pickᴰ 2 Sᴰ
-  lem-S2-SBOX⟨0·1·42·3⟩ : Ws → St 1313
-  lem-S2-SBOX⟨0·1·42·3⟩ = pickᴰ 3 Sᴰ
-  lem-S2-SBOX⟨2·0·41·3⟩ : Ws → St 1315
-  lem-S2-SBOX⟨2·0·41·3⟩ = pickᴰ 4 Sᴰ
-  lem-CKc-box-at12213443 : Ws → St 1322
-  lem-CKc-box-at12213443 = pickᴰ 5 Sᴰ
-  lem-CKc-box-at13213442 : Ws → St 1324
-  lem-CKc-box-at13213442 = pickᴰ 6 Sᴰ
-  lem-box-perm-1342-at12213443 : Ws → St 1327
-  lem-box-perm-1342-at12213443 = pickᴰ 7 Sᴰ
-  lem-box-perm-3421-at122441 : Ws → St 1330
-  lem-box-perm-3421-at122441 = pickᴰ 8 Sᴰ
-  lem-box-perm-4312-at13213442 : Ws → St 1335
-  lem-box-perm-4312-at13213442 = pickᴰ 9 Sᴰ
+  lem-comm-CCZ024-CX13 : Ws → St 1024
+  lem-comm-CCZ024-CX13 = pickᴰ 0 Sᴰ
+  lem-comm-TOFF013-CX24 : Ws → St 1059
+  lem-comm-TOFF013-CX24 = pickᴰ 1 Sᴰ
+  lem-box-cP-at122441 : Ws → St 1002
+  lem-box-cP-at122441 = pickᴰ 2 Sᴰ
+  lem-box-perm-1423-at122441 : Ws → St 1257
+  lem-box-perm-1423-at122441 = pickᴰ 3 Sᴰ
+  lem-box2-at122441 : Ws → St 1259
+  lem-box2-at122441 = pickᴰ 4 Sᴰ
+  lem-S2-SBOX⟨0·1·42·3⟩ : Ws → St 1523
+  lem-S2-SBOX⟨0·1·42·3⟩ = pickᴰ 5 Sᴰ
+  lem-S2-SBOX⟨2·0·41·3⟩ : Ws → St 1525
+  lem-S2-SBOX⟨2·0·41·3⟩ = pickᴰ 6 Sᴰ
+  lem-CKc-box-at12213443 : Ws → St 1532
+  lem-CKc-box-at12213443 = pickᴰ 7 Sᴰ
+  lem-CKc-box-at13213442 : Ws → St 1534
+  lem-CKc-box-at13213442 = pickᴰ 8 Sᴰ
+  lem-box-perm-1342-at12213443 : Ws → St 1537
+  lem-box-perm-1342-at12213443 = pickᴰ 9 Sᴰ
+  lem-box-perm-3421-at122441 : Ws → St 1540
+  lem-box-perm-3421-at122441 = pickᴰ 10 Sᴰ
+  lem-box-perm-4312-at13213442 : Ws → St 1545
+  lem-box-perm-4312-at13213442 = pickᴰ 11 Sᴰ
 
 private
   q1 : Ws → Eqn
-  q1 c4 = sE 850 (lem-box-cP-at122441 c4)
+  q1 c4 = sE 1002 (lem-box-cP-at122441 c4)
   q2 : Ws → Eqn
   q2 c4 = wpE 843 c4
   q3 : Ws → Eqn
@@ -55,7 +58,7 @@ private
   q6 : Ws → Eqn
   q6 c4 = wpE 36 c4
   q7 : Ws → Eqn
-  q7 c4 = eqn (CCZ024 ∷ CX13 ∷ []) (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4))
+  q7 c4 = sE 1024 (lem-comm-CCZ024-CX13 c4)
   q8 : Ws → Eqn
   q8 c4 = wpE 35 c4
   q9 : Ws → Eqn
@@ -69,7 +72,7 @@ private
   q13 : Ws → Eqn
   q13 c4 = wpE 95 c4
   q14 : Ws → Eqn
-  q14 c4 = eqn (Toff013 ∷ CX24 ∷ []) (CX24 ∷ Toff013 ∷ []) (lem-comm-TOFF013-CX24 (lit c4))
+  q14 c4 = sE 1059 (lem-comm-TOFF013-CX24 c4)
   q15 : Ws → Eqn
   q15 c4 = wpE 94 c4
   q16 : Ws → Eqn
@@ -87,13 +90,13 @@ private
   q22 : Ws → Eqn
   q22 c4 = wpE 87 c4
   q23 : Ws → Eqn
-  q23 c4 = sE 1330 (lem-box-perm-3421-at122441 c4)
+  q23 c4 = sE 1540 (lem-box-perm-3421-at122441 c4)
   q24 : Ws → Eqn
-  q24 c4 = sE 1324 (lem-CKc-box-at13213442 c4)
+  q24 c4 = sE 1534 (lem-CKc-box-at13213442 c4)
   q25 : Ws → Eqn
-  q25 c4 = sE 1335 (lem-box-perm-4312-at13213442 c4)
+  q25 c4 = sE 1545 (lem-box-perm-4312-at13213442 c4)
   q26 : Ws → Eqn
-  q26 c4 = sE 1082 (lem-box2-at122441 c4)
+  q26 c4 = sE 1259 (lem-box2-at122441 c4)
   q27 : Ws → Eqn
   q27 c4 = wlE 1037 (lit c4)
   q28 : Ws → Eqn
@@ -389,11 +392,11 @@ lem-nf-CS-K0at2 c4 = derive (CS24 ∷ CK42 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-2-43-
 
 private
   q29 : Ws → Eqn
-  q29 c4 = sE 1080 (lem-box-perm-1423-at122441 c4)
+  q29 c4 = sE 1257 (lem-box-perm-1423-at122441 c4)
   q30 : Ws → Eqn
-  q30 c4 = sE 1322 (lem-CKc-box-at12213443 c4)
+  q30 c4 = sE 1532 (lem-CKc-box-at12213443 c4)
   q31 : Ws → Eqn
-  q31 c4 = sE 1327 (lem-box-perm-1342-at12213443 c4)
+  q31 c4 = sE 1537 (lem-box-perm-1342-at12213443 c4)
 
 -- nf-CS-K1@2: 284 steps
 lem-nf-CS-K1at2 : Ws → ⟪ (CS34 ∷ CK43 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (CS34 ∷ CK43 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ CCZ123 ∷ CK43 ∷ CCZ123 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ []) ⟫ʷ
@@ -685,7 +688,7 @@ lem-nf-CS-K1at2 c4 = derive (CS34 ∷ CK43 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-
 
 private
   q32 : Ws → Eqn
-  q32 c4 = sE 1315 (lem-S2-SBOX⟨2·0·41·3⟩ c4)
+  q32 c4 = sE 1525 (lem-S2-SBOX⟨2·0·41·3⟩ c4)
   q33 : Ws → Eqn
   q33 c4 = wpE 1127 c4
 
@@ -697,7 +700,7 @@ lem-L-CX01-0 c4 = derive (CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷
 
 private
   q34 : Ws → Eqn
-  q34 c4 = sE 1313 (lem-S2-SBOX⟨0·1·42·3⟩ c4)
+  q34 c4 = sE 1523 (lem-S2-SBOX⟨0·1·42·3⟩ c4)
   q35 : Ws → Eqn
   q35 c4 = wlE 1301 (lit c4)
 

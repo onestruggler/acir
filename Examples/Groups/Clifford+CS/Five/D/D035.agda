@@ -16,36 +16,47 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-CCZ024-CS13 ; lem-comm-CCZ024-CSd13 ; lem-comm-CCZ024-CX13)
-open import Examples.Groups.Clifford+CS.Five.D.R003 using (lem-comm-TOFF401-CX23 ; lem-comm-TOFF413-CSd02)
-open import Examples.Groups.Clifford+CS.Five.D.R004 using (lem-comm-TOFF413-CS02 ; lem-comm-TOFF413-CX20)
 
 -- The lemmas of other derivation modules (DSig).
 private
-  lem-box-cP-at04122041 : Ws → St 1019
-  lem-box-cP-at04122041 = pickᴰ 0 Sᴰ
-  lem-box-cP-at0412233041 : Ws → St 1020
-  lem-box-cP-at0412233041 = pickᴰ 1 Sᴰ
-  lem-box-perm-1324-at04122041 : Ws → St 1234
-  lem-box-perm-1324-at04122041 = pickᴰ 2 Sᴰ
+  lem-comm-CCZ024-CS13 : Ws → St 1382
+  lem-comm-CCZ024-CS13 = pickᴰ 0 Sᴰ
+  lem-comm-CCZ024-CSd13 : Ws → St 1383
+  lem-comm-CCZ024-CSd13 = pickᴰ 1 Sᴰ
+  lem-comm-CCZ024-CX13 : Ws → St 1024
+  lem-comm-CCZ024-CX13 = pickᴰ 2 Sᴰ
+  lem-comm-TOFF401-CX23 : Ws → St 1454
+  lem-comm-TOFF401-CX23 = pickᴰ 3 Sᴰ
+  lem-comm-TOFF413-CSd02 : Ws → St 380
+  lem-comm-TOFF413-CSd02 = pickᴰ 4 Sᴰ
+  lem-comm-TOFF413-CS02 : Ws → St 1455
+  lem-comm-TOFF413-CS02 = pickᴰ 5 Sᴰ
+  lem-comm-TOFF413-CX20 : Ws → St 1179
+  lem-comm-TOFF413-CX20 = pickᴰ 6 Sᴰ
+  lem-box-cP-at04122041 : Ws → St 1192
+  lem-box-cP-at04122041 = pickᴰ 7 Sᴰ
+  lem-box-cP-at0412233041 : Ws → St 1193
+  lem-box-cP-at0412233041 = pickᴰ 8 Sᴰ
+  lem-box-perm-1324-at04122041 : Ws → St 1437
+  lem-box-perm-1324-at04122041 = pickᴰ 9 Sᴰ
 
 private
   q1 : Ws → Eqn
   q1 c4 = wpE 1346 c4
   q2 : Ws → Eqn
-  q2 c4 = sE 1020 (lem-box-cP-at0412233041 c4)
+  q2 c4 = sE 1193 (lem-box-cP-at0412233041 c4)
   q3 : Ws → Eqn
-  q3 c4 = sE 1234 (lem-box-perm-1324-at04122041 c4)
+  q3 c4 = sE 1437 (lem-box-perm-1324-at04122041 c4)
   q4 : Ws → Eqn
-  q4 c4 = sE 1019 (lem-box-cP-at04122041 c4)
+  q4 c4 = sE 1192 (lem-box-cP-at04122041 c4)
   q5 : Ws → Eqn
   q5 c4 = wlE 155 (lit c4)
   q6 : Ws → Eqn
-  q6 c4 = eqn (Toff413 ∷ CS02 ∷ []) (CS02 ∷ Toff413 ∷ []) (lem-comm-TOFF413-CS02 (lit c4))
+  q6 c4 = sE 1455 (lem-comm-TOFF413-CS02 c4)
   q7 : Ws → Eqn
   q7 c4 = wlE 1588 (lit c4)
   q8 : Ws → Eqn
-  q8 c4 = eqn (Toff413 ∷ CS02⁻ ∷ []) (CS02⁻ ∷ Toff413 ∷ []) (lem-comm-TOFF413-CSd02 (lit c4))
+  q8 c4 = sE 380 (lem-comm-TOFF413-CSd02 c4)
   q9 : Ws → Eqn
   q9 c4 = wpE 1398 c4
   q10 : Ws → Eqn
@@ -57,7 +68,7 @@ private
   q13 : Ws → Eqn
   q13 c4 = wpE 1376 c4
   q14 : Ws → Eqn
-  q14 c4 = eqn (Toff413 ∷ CX20 ∷ []) (CX20 ∷ Toff413 ∷ []) (lem-comm-TOFF413-CX20 (lit c4))
+  q14 c4 = sE 1179 (lem-comm-TOFF413-CX20 c4)
   q15 : Ws → Eqn
   q15 c4 = wpE 1375 c4
   q16 : Ws → Eqn
@@ -75,7 +86,7 @@ private
   q22 : Ws → Eqn
   q22 c4 = wpE 21 c4
   q23 : Ws → Eqn
-  q23 c4 = eqn (CCZ024 ∷ CX13 ∷ []) (CX13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CX13 (lit c4))
+  q23 c4 = sE 1024 (lem-comm-CCZ024-CX13 c4)
   q24 : Ws → Eqn
   q24 c4 = wpE 32 c4
   q25 : Ws → Eqn
@@ -91,7 +102,7 @@ private
   q30 : Ws → Eqn
   q30 c4 = wpE 1328 c4
   q31 : Ws → Eqn
-  q31 c4 = eqn (Toff401 ∷ CX23 ∷ []) (CX23 ∷ Toff401 ∷ []) (lem-comm-TOFF401-CX23 (lit c4))
+  q31 c4 = sE 1454 (lem-comm-TOFF401-CX23 c4)
   q32 : Ws → Eqn
   q32 c4 = wpE 1344 c4
   q33 : Ws → Eqn
@@ -117,11 +128,11 @@ private
   q43 : Ws → Eqn
   q43 c4 = wlE 1502 (lit c4)
   q44 : Ws → Eqn
-  q44 c4 = eqn (CCZ024 ∷ CS13 ∷ []) (CS13 ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CS13 (lit c4))
+  q44 c4 = sE 1382 (lem-comm-CCZ024-CS13 c4)
   q45 : Ws → Eqn
   q45 c4 = wlE 1500 (lit c4)
   q46 : Ws → Eqn
-  q46 c4 = eqn (CCZ024 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ CCZ024 ∷ []) (lem-comm-CCZ024-CSd13 (lit c4))
+  q46 c4 = sE 1383 (lem-comm-CCZ024-CSd13 c4)
   q47 : Ws → Eqn
   q47 c4 = wlE 1549 (lit c4)
   q48 : Ws → Eqn

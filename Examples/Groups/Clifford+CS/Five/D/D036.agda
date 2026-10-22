@@ -16,78 +16,79 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.R004 using (lem-comm-CCZ124-CK03)
 
 -- The lemmas of other derivation modules (DSig).
 private
-  lem-sym-ab-at022330 : Ws → St 756
-  lem-sym-ab-at022330 = pickᴰ 0 Sᴰ
-  lem-sym-ab-at03122130 : Ws → St 910
-  lem-sym-ab-at03122130 = pickᴰ 1 Sᴰ
-  lem-sym-ab-at0314213240 : Ws → St 912
-  lem-sym-ab-at0314213240 = pickᴰ 2 Sᴰ
-  lem-sym-ab-at03243240 : Ws → St 914
-  lem-sym-ab-at03243240 = pickᴰ 3 Sᴰ
-  lem-sym-ab-at0330 : Ws → St 757
-  lem-sym-ab-at0330 = pickᴰ 4 Sᴰ
-  lem-sym-ab-at02132130 : Ws → St 917
-  lem-sym-ab-at02132130 = pickᴰ 5 Sᴰ
-  lem-sym-ab-at02142140 : Ws → St 1209
-  lem-sym-ab-at02142140 = pickᴰ 6 Sᴰ
-  lem-sym-ab-at022440 : Ws → St 1210
-  lem-sym-ab-at022440 = pickᴰ 7 Sᴰ
-  lem-sym-ab-at0410233241 : Ws → St 1251
-  lem-sym-ab-at0410233241 = pickᴰ 8 Sᴰ
-  lem-sym-ab-at04122041 : Ws → St 1212
-  lem-sym-ab-at04122041 = pickᴰ 9 Sᴰ
-  lem-sym-ab-at04122140 : Ws → St 1028
-  lem-sym-ab-at04122140 = pickᴰ 10 Sᴰ
-  lem-sym-ab-at04133140 : Ws → St 1252
-  lem-sym-ab-at04133140 = pickᴰ 11 Sᴰ
-  lem-sym-ab-at04233240 : Ws → St 1217
-  lem-sym-ab-at04233240 = pickᴰ 12 Sᴰ
-  lem-CSdu-box-2-at0214203143 : Ws → St 1253
-  lem-CSdu-box-2-at0214203143 = pickᴰ 13 Sᴰ
-  lem-box-cP-at0214233041 : Ws → St 751
-  lem-box-cP-at0214233041 = pickᴰ 14 Sᴰ
-  lem-box-cP-at0214213043 : Ws → St 843
-  lem-box-cP-at0214213043 = pickᴰ 15 Sᴰ
-  lem-sym-bc-at02132031 : Ws → St 1169
-  lem-sym-bc-at02132031 = pickᴰ 16 Sᴰ
-  lem-sym-bc-at02132130 : Ws → St 1170
-  lem-sym-bc-at02132130 = pickᴰ 17 Sᴰ
-  lem-sym-bc-at03122031 : Ws → St 1171
-  lem-sym-bc-at03122031 = pickᴰ 18 Sᴰ
-  lem-sym-bc-at03122130 : Ws → St 1172
-  lem-sym-bc-at03122130 = pickᴰ 19 Sᴰ
-  lem-sym-bc-at041041 : Ws → St 1223
-  lem-sym-bc-at041041 = pickᴰ 20 Sᴰ
-  lem-sym-bc-at0413213240 : Ws → St 1254
-  lem-sym-bc-at0413213240 = pickᴰ 21 Sᴰ
-  lem-sym-bc-at0440 : Ws → St 1228
-  lem-sym-bc-at0440 = pickᴰ 22 Sᴰ
-  lem-pairs-at03243240 : Ws → St 1164
-  lem-pairs-at03243240 = pickᴰ 23 Sᴰ
-  lem-Kdu-box-at0214203143 : Ws → St 1232
-  lem-Kdu-box-at0214203143 = pickᴰ 24 Sᴰ
-  lem-Ku-box-at0214203143 : Ws → St 1233
-  lem-Ku-box-at0214203143 = pickᴰ 25 Sᴰ
-  lem-box-perm-1423-at0214203143 : Ws → St 1205
-  lem-box-perm-1423-at0214203143 = pickᴰ 26 Sᴰ
-  lem-pairs-at0413213240 : Ws → St 1243
-  lem-pairs-at0413213240 = pickᴰ 27 Sᴰ
-  lem-box-perm-1324-at0214203143 : Ws → St 1246
-  lem-box-perm-1324-at0214203143 = pickᴰ 28 Sᴰ
-  lem-pairs-at02132031 : Ws → St 1255
-  lem-pairs-at02132031 = pickᴰ 29 Sᴰ
-  lem-pairs-at022440 : Ws → St 1256
-  lem-pairs-at022440 = pickᴰ 30 Sᴰ
-  lem-pairs-at03122031 : Ws → St 1257
-  lem-pairs-at03122031 = pickᴰ 31 Sᴰ
-  lem-pairs-at0412233140 : Ws → St 1248
-  lem-pairs-at0412233140 = pickᴰ 32 Sᴰ
-  lem-pairs-at0413203241 : Ws → St 1258
-  lem-pairs-at0413203241 = pickᴰ 33 Sᴰ
+  lem-comm-CCZ124-CK03 : Ws → St 1176
+  lem-comm-CCZ124-CK03 = pickᴰ 0 Sᴰ
+  lem-sym-ab-at022330 : Ws → St 896
+  lem-sym-ab-at022330 = pickᴰ 1 Sᴰ
+  lem-sym-ab-at03122130 : Ws → St 1074
+  lem-sym-ab-at03122130 = pickᴰ 2 Sᴰ
+  lem-sym-ab-at0314213240 : Ws → St 1076
+  lem-sym-ab-at0314213240 = pickᴰ 3 Sᴰ
+  lem-sym-ab-at03243240 : Ws → St 1078
+  lem-sym-ab-at03243240 = pickᴰ 4 Sᴰ
+  lem-sym-ab-at0330 : Ws → St 897
+  lem-sym-ab-at0330 = pickᴰ 5 Sᴰ
+  lem-sym-ab-at02132130 : Ws → St 1081
+  lem-sym-ab-at02132130 = pickᴰ 6 Sᴰ
+  lem-sym-ab-at02142140 : Ws → St 1412
+  lem-sym-ab-at02142140 = pickᴰ 7 Sᴰ
+  lem-sym-ab-at022440 : Ws → St 1413
+  lem-sym-ab-at022440 = pickᴰ 8 Sᴰ
+  lem-sym-ab-at0410233241 : Ws → St 1456
+  lem-sym-ab-at0410233241 = pickᴰ 9 Sᴰ
+  lem-sym-ab-at04122041 : Ws → St 1415
+  lem-sym-ab-at04122041 = pickᴰ 10 Sᴰ
+  lem-sym-ab-at04122140 : Ws → St 1201
+  lem-sym-ab-at04122140 = pickᴰ 11 Sᴰ
+  lem-sym-ab-at04133140 : Ws → St 1457
+  lem-sym-ab-at04133140 = pickᴰ 12 Sᴰ
+  lem-sym-ab-at04233240 : Ws → St 1420
+  lem-sym-ab-at04233240 = pickᴰ 13 Sᴰ
+  lem-CSdu-box-2-at0214203143 : Ws → St 1458
+  lem-CSdu-box-2-at0214203143 = pickᴰ 14 Sᴰ
+  lem-box-cP-at0214233041 : Ws → St 890
+  lem-box-cP-at0214233041 = pickᴰ 15 Sᴰ
+  lem-box-cP-at0214213043 : Ws → St 995
+  lem-box-cP-at0214213043 = pickᴰ 16 Sᴰ
+  lem-sym-bc-at02132031 : Ws → St 1368
+  lem-sym-bc-at02132031 = pickᴰ 17 Sᴰ
+  lem-sym-bc-at02132130 : Ws → St 1369
+  lem-sym-bc-at02132130 = pickᴰ 18 Sᴰ
+  lem-sym-bc-at03122031 : Ws → St 1370
+  lem-sym-bc-at03122031 = pickᴰ 19 Sᴰ
+  lem-sym-bc-at03122130 : Ws → St 1371
+  lem-sym-bc-at03122130 = pickᴰ 20 Sᴰ
+  lem-sym-bc-at041041 : Ws → St 1426
+  lem-sym-bc-at041041 = pickᴰ 21 Sᴰ
+  lem-sym-bc-at0413213240 : Ws → St 1459
+  lem-sym-bc-at0413213240 = pickᴰ 22 Sᴰ
+  lem-sym-bc-at0440 : Ws → St 1431
+  lem-sym-bc-at0440 = pickᴰ 23 Sᴰ
+  lem-pairs-at03243240 : Ws → St 1355
+  lem-pairs-at03243240 = pickᴰ 24 Sᴰ
+  lem-Kdu-box-at0214203143 : Ws → St 1435
+  lem-Kdu-box-at0214203143 = pickᴰ 25 Sᴰ
+  lem-Ku-box-at0214203143 : Ws → St 1436
+  lem-Ku-box-at0214203143 = pickᴰ 26 Sᴰ
+  lem-box-perm-1423-at0214203143 : Ws → St 1408
+  lem-box-perm-1423-at0214203143 = pickᴰ 27 Sᴰ
+  lem-pairs-at0413213240 : Ws → St 1446
+  lem-pairs-at0413213240 = pickᴰ 28 Sᴰ
+  lem-box-perm-1324-at0214203143 : Ws → St 1449
+  lem-box-perm-1324-at0214203143 = pickᴰ 29 Sᴰ
+  lem-pairs-at02132031 : Ws → St 1460
+  lem-pairs-at02132031 = pickᴰ 30 Sᴰ
+  lem-pairs-at022440 : Ws → St 1461
+  lem-pairs-at022440 = pickᴰ 31 Sᴰ
+  lem-pairs-at03122031 : Ws → St 1462
+  lem-pairs-at03122031 = pickᴰ 32 Sᴰ
+  lem-pairs-at0412233140 : Ws → St 1451
+  lem-pairs-at0412233140 = pickᴰ 33 Sᴰ
+  lem-pairs-at0413203241 : Ws → St 1463
+  lem-pairs-at0413203241 = pickᴰ 34 Sᴰ
 
 private
   q1 : Ws → Eqn
@@ -95,9 +96,9 @@ private
   q2 : Ws → Eqn
   q2 c4 = wpE 1294 c4
   q3 : Ws → Eqn
-  q3 c4 = sE 1205 (lem-box-perm-1423-at0214203143 c4)
+  q3 c4 = sE 1408 (lem-box-perm-1423-at0214203143 c4)
   q4 : Ws → Eqn
-  q4 c4 = sE 751 (lem-box-cP-at0214233041 c4)
+  q4 c4 = sE 890 (lem-box-cP-at0214233041 c4)
   q5 : Ws → Eqn
   q5 c4 = wlE 1442 (lit c4)
   q6 : Ws → Eqn
@@ -136,13 +137,13 @@ lem-F4-CS0-K1-at0440 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ CK01 ∷ []) (CK0
 
 private
   q10 : Ws → Eqn
-  q10 c4 = sE 1212 (lem-sym-ab-at04122041 c4)
+  q10 c4 = sE 1415 (lem-sym-ab-at04122041 c4)
   q11 : Ws → Eqn
-  q11 c4 = sE 1223 (lem-sym-bc-at041041 c4)
+  q11 c4 = sE 1426 (lem-sym-bc-at041041 c4)
   q12 : Ws → Eqn
-  q12 c4 = sE 1251 (lem-sym-ab-at0410233241 c4)
+  q12 c4 = sE 1456 (lem-sym-ab-at0410233241 c4)
   q13 : Ws → Eqn
-  q13 c4 = sE 1258 (lem-pairs-at0413203241 c4)
+  q13 c4 = sE 1463 (lem-pairs-at0413203241 c4)
 
 -- box-perm-1432 @04122041: 4 steps
 lem-box-perm-1432-at04122041 : Ws → ⟪ (Bx4-2031 ∷ []) ⟫ʷ ≈ ⟪ (Bx4-2130 ∷ []) ⟫ʷ
@@ -154,13 +155,13 @@ lem-box-perm-1432-at04122041 c4 = derive (Bx4-2031 ∷ []) (Bx4-2130 ∷ [])
 
 private
   q14 : Ws → Eqn
-  q14 c4 = sE 1209 (lem-sym-ab-at02142140 c4)
+  q14 c4 = sE 1412 (lem-sym-ab-at02142140 c4)
   q15 : Ws → Eqn
-  q15 c4 = sE 1256 (lem-pairs-at022440 c4)
+  q15 c4 = sE 1461 (lem-pairs-at022440 c4)
   q16 : Ws → Eqn
-  q16 c4 = sE 1169 (lem-sym-bc-at02132031 c4)
+  q16 c4 = sE 1368 (lem-sym-bc-at02132031 c4)
   q17 : Ws → Eqn
-  q17 c4 = sE 917 (lem-sym-ab-at02132130 c4)
+  q17 c4 = sE 1081 (lem-sym-ab-at02132130 c4)
 
 -- box-perm-2341 @02142140: 4 steps
 lem-box-perm-2341-at02142140 : Ws → ⟪ (Bx2-4130 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-1304 ∷ []) ⟫ʷ
@@ -172,13 +173,13 @@ lem-box-perm-2341-at02142140 c4 = derive (Bx2-4130 ∷ []) (Bx2-1304 ∷ [])
 
 private
   q18 : Ws → Eqn
-  q18 c4 = sE 756 (lem-sym-ab-at022330 c4)
+  q18 c4 = sE 896 (lem-sym-ab-at022330 c4)
   q19 : Ws → Eqn
-  q19 c4 = sE 1170 (lem-sym-bc-at02132130 c4)
+  q19 c4 = sE 1369 (lem-sym-bc-at02132130 c4)
   q20 : Ws → Eqn
-  q20 c4 = sE 1255 (lem-pairs-at02132031 c4)
+  q20 c4 = sE 1460 (lem-pairs-at02132031 c4)
   q21 : Ws → Eqn
-  q21 c4 = sE 1210 (lem-sym-ab-at022440 c4)
+  q21 c4 = sE 1413 (lem-sym-ab-at022440 c4)
 
 -- box-perm-4123 @022330: 4 steps
 lem-box-perm-4123-at022330 : Ws → ⟪ (Bx2-1304 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-4130 ∷ []) ⟫ʷ
@@ -190,13 +191,13 @@ lem-box-perm-4123-at022330 c4 = derive (Bx2-1304 ∷ []) (Bx2-4130 ∷ [])
 
 private
   q22 : Ws → Eqn
-  q22 c4 = sE 1028 (lem-sym-ab-at04122140 c4)
+  q22 c4 = sE 1201 (lem-sym-ab-at04122140 c4)
   q23 : Ws → Eqn
-  q23 c4 = sE 1228 (lem-sym-bc-at0440 c4)
+  q23 c4 = sE 1431 (lem-sym-bc-at0440 c4)
   q24 : Ws → Eqn
-  q24 c4 = sE 1217 (lem-sym-ab-at04233240 c4)
+  q24 c4 = sE 1420 (lem-sym-ab-at04233240 c4)
   q25 : Ws → Eqn
-  q25 c4 = sE 1243 (lem-pairs-at0413213240 c4)
+  q25 c4 = sE 1446 (lem-pairs-at0413213240 c4)
 
 -- box-perm-1432 @04122140: 4 steps
 lem-box-perm-1432-at04122140 : Ws → ⟪ (Bx4-2130 ∷ []) ⟫ʷ ≈ ⟪ (Bx4-2031 ∷ []) ⟫ʷ
@@ -210,11 +211,11 @@ private
   q26 : Ws → Eqn
   q26 c4 = wlE 1723 (lit c4)
   q27 : Ws → Eqn
-  q27 c4 = sE 1253 (lem-CSdu-box-2-at0214203143 c4)
+  q27 c4 = sE 1458 (lem-CSdu-box-2-at0214203143 c4)
   q28 : Ws → Eqn
-  q28 c4 = sE 1233 (lem-Ku-box-at0214203143 c4)
+  q28 c4 = sE 1436 (lem-Ku-box-at0214203143 c4)
   q29 : Ws → Eqn
-  q29 c4 = sE 1232 (lem-Kdu-box-at0214203143 c4)
+  q29 c4 = sE 1435 (lem-Kdu-box-at0214203143 c4)
 
 -- CKu-box-2 @0214203143: 7 steps
 lem-CKu-box-2-at0214203143 : Ws → ⟪ (CK02 ∷ Bx2-4013 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-4013 ∷ CK02 ∷ []) ⟫ʷ
@@ -229,13 +230,13 @@ lem-CKu-box-2-at0214203143 c4 = derive (CK02 ∷ Bx2-4013 ∷ []) (Bx2-4013 ∷ 
 
 private
   q30 : Ws → Eqn
-  q30 c4 = sE 912 (lem-sym-ab-at0314213240 c4)
+  q30 c4 = sE 1076 (lem-sym-ab-at0314213240 c4)
   q31 : Ws → Eqn
-  q31 c4 = sE 1164 (lem-pairs-at03243240 c4)
+  q31 c4 = sE 1355 (lem-pairs-at03243240 c4)
   q32 : Ws → Eqn
-  q32 c4 = sE 1171 (lem-sym-bc-at03122031 c4)
+  q32 c4 = sE 1370 (lem-sym-bc-at03122031 c4)
   q33 : Ws → Eqn
-  q33 c4 = sE 910 (lem-sym-ab-at03122130 c4)
+  q33 c4 = sE 1074 (lem-sym-ab-at03122130 c4)
 
 -- box-perm-2341 @0314213240: 4 steps
 lem-box-perm-2341-at0314213240 : Ws → ⟪ (Bx3-4120 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-1204 ∷ []) ⟫ʷ
@@ -247,13 +248,13 @@ lem-box-perm-2341-at0314213240 c4 = derive (Bx3-4120 ∷ []) (Bx3-1204 ∷ [])
 
 private
   q34 : Ws → Eqn
-  q34 c4 = sE 757 (lem-sym-ab-at0330 c4)
+  q34 c4 = sE 897 (lem-sym-ab-at0330 c4)
   q35 : Ws → Eqn
-  q35 c4 = sE 1172 (lem-sym-bc-at03122130 c4)
+  q35 c4 = sE 1371 (lem-sym-bc-at03122130 c4)
   q36 : Ws → Eqn
-  q36 c4 = sE 1257 (lem-pairs-at03122031 c4)
+  q36 c4 = sE 1462 (lem-pairs-at03122031 c4)
   q37 : Ws → Eqn
-  q37 c4 = sE 914 (lem-sym-ab-at03243240 c4)
+  q37 c4 = sE 1078 (lem-sym-ab-at03243240 c4)
 
 -- box-perm-4123 @0330: 4 steps
 lem-box-perm-4123-at0330 : Ws → ⟪ (Bx3-1204 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4120 ∷ []) ⟫ʷ
@@ -265,11 +266,11 @@ lem-box-perm-4123-at0330 c4 = derive (Bx3-1204 ∷ []) (Bx3-4120 ∷ [])
 
 private
   q38 : Ws → Eqn
-  q38 c4 = sE 1254 (lem-sym-bc-at0413213240 c4)
+  q38 c4 = sE 1459 (lem-sym-bc-at0413213240 c4)
   q39 : Ws → Eqn
-  q39 c4 = sE 1252 (lem-sym-ab-at04133140 c4)
+  q39 c4 = sE 1457 (lem-sym-ab-at04133140 c4)
   q40 : Ws → Eqn
-  q40 c4 = sE 1248 (lem-pairs-at0412233140 c4)
+  q40 c4 = sE 1451 (lem-pairs-at0412233140 c4)
 
 -- box-perm-2431 @0413213240: 3 steps
 lem-box-perm-2431-at0413213240 : Ws → ⟪ (Bx4-3120 ∷ []) ⟫ʷ ≈ ⟪ (Bx4-1023 ∷ []) ⟫ʷ
@@ -284,15 +285,15 @@ private
   q42 : Ws → Eqn
   q42 c4 = wpE 1519 c4
   q43 : Ws → Eqn
-  q43 c4 = sE 1246 (lem-box-perm-1324-at0214203143 c4)
+  q43 c4 = sE 1449 (lem-box-perm-1324-at0214203143 c4)
   q44 : Ws → Eqn
-  q44 c4 = sE 843 (lem-box-cP-at0214213043 c4)
+  q44 c4 = sE 995 (lem-box-cP-at0214213043 c4)
   q45 : Ws → Eqn
   q45 c4 = wlE 1739 (lit c4)
   q46 : Ws → Eqn
   q46 c4 = wlE 1576 (lit c4)
   q47 : Ws → Eqn
-  q47 c4 = eqn (CCZ124 ∷ CK03 ∷ []) (CK03 ∷ CCZ124 ∷ []) (lem-comm-CCZ124-CK03 (lit c4))
+  q47 c4 = sE 1176 (lem-comm-CCZ124-CK03 c4)
   q48 : Ws → Eqn
   q48 c4 = eqn (S0 ∷ CCZ124 ∷ []) (CCZ124 ∷ S0 ∷ []) (c₁ (S) (Swap ↑ ↑ • CCZ • Swap ↑ ↑))
   q49 : Ws → Eqn

@@ -19,94 +19,94 @@ open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw�
 
 -- The lemmas of other derivation modules (DSig).
 private
-  lem-F4-I-I : Ws → St 1183
+  lem-F4-I-I : Ws → St 1386
   lem-F4-I-I = pickᴰ 0 Sᴰ
-  lem-F4-I-S2 : Ws → St 1382
+  lem-F4-I-S2 : Ws → St 1595
   lem-F4-I-S2 = pickᴰ 1 Sᴰ
-  lem-F4-I-S3 : Ws → St 1351
+  lem-F4-I-S3 : Ws → St 1564
   lem-F4-I-S3 = pickᴰ 2 Sᴰ
-  lem-F4-K3-I : Ws → St 1405
+  lem-F4-K3-I : Ws → St 1618
   lem-F4-K3-I = pickᴰ 3 Sᴰ
-  lem-F4-K3-S2 : Ws → St 1406
+  lem-F4-K3-S2 : Ws → St 1619
   lem-F4-K3-S2 = pickᴰ 4 Sᴰ
-  lem-F4-K3-S3 : Ws → St 1532
+  lem-F4-K3-S3 : Ws → St 1768
   lem-F4-K3-S3 = pickᴰ 5 Sᴰ
-  lem-F4-S2-I : Ws → St 1384
+  lem-F4-S2-I : Ws → St 1597
   lem-F4-S2-I = pickᴰ 6 Sᴰ
-  lem-F4-S2-S2 : Ws → St 1386
+  lem-F4-S2-S2 : Ws → St 1599
   lem-F4-S2-S2 = pickᴰ 7 Sᴰ
-  lem-F4-S2-S3 : Ws → St 1533
+  lem-F4-S2-S3 : Ws → St 1769
   lem-F4-S2-S3 = pickᴰ 8 Sᴰ
-  lem-F4-I-K3-at132132 : Ws → St 1552
+  lem-F4-I-K3-at132132 : Ws → St 1788
   lem-F4-I-K3-at132132 = pickᴰ 9 Sᴰ
-  lem-F4-I-S2-at132132 : Ws → St 1536
+  lem-F4-I-S2-at132132 : Ws → St 1772
   lem-F4-I-S2-at132132 = pickᴰ 10 Sᴰ
-  lem-F4-K3-K3-at132132 : Ws → St 1554
+  lem-F4-K3-K3-at132132 : Ws → St 1790
   lem-F4-K3-K3-at132132 = pickᴰ 11 Sᴰ
-  lem-F4-S2-I-at132132 : Ws → St 1556
+  lem-F4-S2-I-at132132 : Ws → St 1792
   lem-F4-S2-I-at132132 = pickᴰ 12 Sᴰ
-  lem-F4-S2-K3-at132132 : Ws → St 1558
+  lem-F4-S2-K3-at132132 : Ws → St 1794
   lem-F4-S2-K3-at132132 = pickᴰ 13 Sᴰ
-  lem-F4-S2-S2-at132132 : Ws → St 1560
+  lem-F4-S2-S2-at132132 : Ws → St 1796
   lem-F4-S2-S2-at132132 = pickᴰ 14 Sᴰ
-  lem-F4-CS2-I : Ws → St 1363
+  lem-F4-CS2-I : Ws → St 1576
   lem-F4-CS2-I = pickᴰ 15 Sᴰ
-  lem-F4-CS2-S2 : Ws → St 1393
+  lem-F4-CS2-S2 : Ws → St 1606
   lem-F4-CS2-S2 = pickᴰ 16 Sᴰ
-  lem-F4-CS2-S3 : Ws → St 1364
+  lem-F4-CS2-S3 : Ws → St 1577
   lem-F4-CS2-S3 = pickᴰ 17 Sᴰ
-  lem-F4-CS2-CS2-at132132 : Ws → St 1395
+  lem-F4-CS2-CS2-at132132 : Ws → St 1608
   lem-F4-CS2-CS2-at132132 = pickᴰ 18 Sᴰ
-  lem-F4-I-CS2-at132132 : Ws → St 1399
+  lem-F4-I-CS2-at132132 : Ws → St 1612
   lem-F4-I-CS2-at132132 = pickᴰ 19 Sᴰ
-  lem-F4-S2-CS2-at132132 : Ws → St 1562
+  lem-F4-S2-CS2-at132132 : Ws → St 1798
   lem-F4-S2-CS2-at132132 = pickᴰ 20 Sᴰ
-  lem-F5-23-at132132 : Ws → St 1404
+  lem-F5-23-at132132 : Ws → St 1617
   lem-F5-23-at132132 = pickᴰ 21 Sᴰ
-  lem-F4-CS2-K3-at132132 : Ws → St 1564
+  lem-F4-CS2-K3-at132132 : Ws → St 1800
   lem-F4-CS2-K3-at132132 = pickᴰ 22 Sᴰ
-  lem-F4-K3-CS2-at132132 : Ws → St 1566
+  lem-F4-K3-CS2-at132132 : Ws → St 1802
   lem-F4-K3-CS2-at132132 = pickᴰ 23 Sᴰ
-  lem-deb-AD-split-a : Ws → St 1567
+  lem-deb-AD-split-a : Ws → St 1803
   lem-deb-AD-split-a = pickᴰ 24 Sᴰ
-  lem-deb-AD-split-b : Ws → St 1568
+  lem-deb-AD-split-b : Ws → St 1804
   lem-deb-AD-split-b = pickᴰ 25 Sᴰ
-  lem-deb-CKS-split-a : Ws → St 1569
+  lem-deb-CKS-split-a : Ws → St 1805
   lem-deb-CKS-split-a = pickᴰ 26 Sᴰ
-  lem-deb-CKS-split-b : Ws → St 1570
+  lem-deb-CKS-split-b : Ws → St 1806
   lem-deb-CKS-split-b = pickᴰ 27 Sᴰ
 
 private
   q1 : Ws → Eqn
-  q1 c4 = sE 1404 (lem-F5-23-at132132 c4)
+  q1 c4 = sE 1617 (lem-F5-23-at132132 c4)
   q2 : Ws → Eqn
   q2 c4 = wlE 1409 (lit c4)
   q3 : Ws → Eqn
-  q3 c4 = sE 1566 (lem-F4-K3-CS2-at132132 c4)
+  q3 c4 = sE 1802 (lem-F4-K3-CS2-at132132 c4)
   q4 : Ws → Eqn
-  q4 c4 = sE 1564 (lem-F4-CS2-K3-at132132 c4)
+  q4 c4 = sE 1800 (lem-F4-CS2-K3-at132132 c4)
   q5 : Ws → Eqn
-  q5 c4 = sE 1395 (lem-F4-CS2-CS2-at132132 c4)
+  q5 c4 = sE 1608 (lem-F4-CS2-CS2-at132132 c4)
   q6 : Ws → Eqn
-  q6 c4 = sE 1554 (lem-F4-K3-K3-at132132 c4)
+  q6 c4 = sE 1790 (lem-F4-K3-K3-at132132 c4)
   q7 : Ws → Eqn
   q7 c4 = wlE 1412 (lit c4)
   q8 : Ws → Eqn
-  q8 c4 = sE 1562 (lem-F4-S2-CS2-at132132 c4)
+  q8 c4 = sE 1798 (lem-F4-S2-CS2-at132132 c4)
   q9 : Ws → Eqn
-  q9 c4 = sE 1558 (lem-F4-S2-K3-at132132 c4)
+  q9 c4 = sE 1794 (lem-F4-S2-K3-at132132 c4)
   q10 : Ws → Eqn
-  q10 c4 = sE 1560 (lem-F4-S2-S2-at132132 c4)
+  q10 c4 = sE 1796 (lem-F4-S2-S2-at132132 c4)
   q11 : Ws → Eqn
   q11 c4 = wlE 1411 (lit c4)
   q12 : Ws → Eqn
-  q12 c4 = sE 1536 (lem-F4-I-S2-at132132 c4)
+  q12 c4 = sE 1772 (lem-F4-I-S2-at132132 c4)
   q13 : Ws → Eqn
-  q13 c4 = sE 1399 (lem-F4-I-CS2-at132132 c4)
+  q13 c4 = sE 1612 (lem-F4-I-CS2-at132132 c4)
   q14 : Ws → Eqn
-  q14 c4 = sE 1552 (lem-F4-I-K3-at132132 c4)
+  q14 c4 = sE 1788 (lem-F4-I-K3-at132132 c4)
   q15 : Ws → Eqn
-  q15 c4 = sE 1556 (lem-F4-S2-I-at132132 c4)
+  q15 c4 = sE 1792 (lem-F4-S2-I-at132132 c4)
 
 -- deb-Q-lo-split-a @132132: 55 steps
 lem-deb-Q-lo-split-a-at132132 : Ws → ⟪ (CS12 ∷ K2 ∷ CS12 ∷ K2 ∷ CS12 ∷ S1 ∷ S1 ∷ S1 ∷ ι ∷ S1 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ X4 ∷ CK42 ∷ X4 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ X4 ∷ CK42 ∷ X4 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ X4 ∷ CS14 ∷ X4 ∷ X4 ∷ CS14 ∷ X4 ∷ X4 ∷ CS14 ∷ X4 ∷ X4 ∷ S4 ∷ X4 ∷ X4 ∷ CS14 ∷ X4 ∷ Sb0-1-42-3 ∷ CK42 ∷ Sb0-1-42-3 ∷ CK42 ∷ Sb0-1-42-3 ∷ CS14 ∷ CS14 ∷ CS14 ∷ S4 ∷ CS14 ∷ []) ⟫ʷ
@@ -218,17 +218,17 @@ lem-deb-Q-lo-split-b-at132132 c4 = derive (CS12 ∷ K2 ∷ CS12 ∷ K2 ∷ CS12 
 
 private
   q16 : Ws → Eqn
-  q16 c4 = sE 1364 (lem-F4-CS2-S3 c4)
+  q16 c4 = sE 1577 (lem-F4-CS2-S3 c4)
   q17 : Ws → Eqn
-  q17 c4 = sE 1351 (lem-F4-I-S3 c4)
+  q17 c4 = sE 1564 (lem-F4-I-S3 c4)
   q18 : Ws → Eqn
-  q18 c4 = sE 1533 (lem-F4-S2-S3 c4)
+  q18 c4 = sE 1769 (lem-F4-S2-S3 c4)
   q19 : Ws → Eqn
-  q19 c4 = sE 1532 (lem-F4-K3-S3 c4)
+  q19 c4 = sE 1768 (lem-F4-K3-S3 c4)
   q20 : Ws → Eqn
-  q20 c4 = sE 1567 (lem-deb-AD-split-a c4)
+  q20 c4 = sE 1803 (lem-deb-AD-split-a c4)
   q21 : Ws → Eqn
-  q21 c4 = sE 1568 (lem-deb-AD-split-b c4)
+  q21 c4 = sE 1804 (lem-deb-AD-split-b c4)
 
 -- deb-AD part1: 35 steps
 lem-deb-AD-part1 : Ws → ⟪ (CK43 ∷ CS34 ∷ CCZ234 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ S4 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CS24 ∷ CS24 ∷ CS24 ∷ S4 ∷ CS24 ∷ CS34 ∷ CS34 ∷ CS34 ∷ CS34 ∷ CS34 ∷ CS34 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ S4 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CS34 ∷ CS34 ∷ CS34 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CS24 ∷ CS24 ∷ CS24 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CS34 ∷ CS34 ∷ CS34 ∷ []) ⟫ʷ ≈ ⟪ (CK43 ∷ CS34 ∷ CCZ234 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ K3 ∷ CS23 ∷ K3 ∷ CS23 ∷ S2 ∷ S2 ∷ S2 ∷ ι ∷ S2 ∷ CS34 ∷ CS34 ∷ CS34 ∷ CS34 ∷ CS34 ∷ CS34 ∷ CS34 ∷ CS34 ∷ CS34 ∷ CS23 ∷ K3 ∷ CS23 ∷ K3 ∷ CS23 ∷ S2 ∷ S2 ∷ S2 ∷ ι ∷ CS23 ∷ CS23 ∷ CS34 ∷ CS34 ∷ CS34 ∷ []) ⟫ʷ
@@ -271,25 +271,25 @@ lem-deb-AD-part1 c4 = derive (CK43 ∷ CS34 ∷ CCZ234 ∷ X4 ∷ Sb0-2-43-1 ∷
 
 private
   q22 : Ws → Eqn
-  q22 c4 = sE 1386 (lem-F4-S2-S2 c4)
+  q22 c4 = sE 1599 (lem-F4-S2-S2 c4)
   q23 : Ws → Eqn
-  q23 c4 = sE 1393 (lem-F4-CS2-S2 c4)
+  q23 c4 = sE 1606 (lem-F4-CS2-S2 c4)
   q24 : Ws → Eqn
-  q24 c4 = sE 1406 (lem-F4-K3-S2 c4)
+  q24 c4 = sE 1619 (lem-F4-K3-S2 c4)
   q25 : Ws → Eqn
-  q25 c4 = sE 1382 (lem-F4-I-S2 c4)
+  q25 c4 = sE 1595 (lem-F4-I-S2 c4)
   q26 : Ws → Eqn
-  q26 c4 = sE 1183 (lem-F4-I-I c4)
+  q26 c4 = sE 1386 (lem-F4-I-I c4)
   q27 : Ws → Eqn
-  q27 c4 = sE 1384 (lem-F4-S2-I c4)
+  q27 c4 = sE 1597 (lem-F4-S2-I c4)
   q28 : Ws → Eqn
-  q28 c4 = sE 1363 (lem-F4-CS2-I c4)
+  q28 c4 = sE 1576 (lem-F4-CS2-I c4)
   q29 : Ws → Eqn
-  q29 c4 = sE 1405 (lem-F4-K3-I c4)
+  q29 c4 = sE 1618 (lem-F4-K3-I c4)
   q30 : Ws → Eqn
-  q30 c4 = sE 1569 (lem-deb-CKS-split-a c4)
+  q30 c4 = sE 1805 (lem-deb-CKS-split-a c4)
   q31 : Ws → Eqn
-  q31 c4 = sE 1570 (lem-deb-CKS-split-b c4)
+  q31 c4 = sE 1806 (lem-deb-CKS-split-b c4)
 
 -- deb-CKS part2: 151 steps
 lem-deb-CKS-part2 : Ws → ⟪ (CCZ234 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ S4 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ S4 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CS24 ∷ CS24 ∷ CS24 ∷ S4 ∷ CS24 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ S4 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CK43 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ CS24 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ CS24 ∷ X4 ∷ X4 ∷ S4 ∷ X4 ∷ CS24 ∷ CS24 ∷ S4 ∷ CS24 ∷ CS34 ∷ CS34 ∷ CS34 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CS24 ∷ CS24 ∷ CS24 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ CS24 ∷ CS24 ∷ CS24 ∷ S4 ∷ CS34 ∷ []) ⟫ʷ ≈ ⟪ (CCZ234 ∷ CS23 ∷ K3 ∷ CS23 ∷ K3 ∷ CS23 ∷ S2 ∷ S2 ∷ S2 ∷ ι ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ K3 ∷ CS23 ∷ K3 ∷ CS23 ∷ S2 ∷ S2 ∷ S2 ∷ ι ∷ S2 ∷ CS34 ∷ CS34 ∷ CS34 ∷ CS23 ∷ K3 ∷ CS23 ∷ K3 ∷ CS23 ∷ S2 ∷ S2 ∷ S2 ∷ ι ∷ CS23 ∷ CS23 ∷ K3 ∷ CS23 ∷ K3 ∷ CS23 ∷ S2 ∷ S2 ∷ S2 ∷ ι ∷ CS34 ∷ []) ⟫ʷ

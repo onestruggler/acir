@@ -16,34 +16,39 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-comm-CCZ014-CX23)
-open import Examples.Groups.Clifford+CS.Five.D.R003 using (lem-comm-CCZ014-CS23 ; lem-comm-CCZ014-CSd23)
-open import Examples.Groups.Clifford+CS.Five.D.R009 using (lem-comm-TOFF023-CX14)
 
 -- The lemmas of other derivation modules (DSig).
 private
-  lem-box-cP-at243243 : Ws → St 856
-  lem-box-cP-at243243 = pickᴰ 0 Sᴰ
-  lem-box2-at243243 : Ws → St 1083
-  lem-box2-at243243 = pickᴰ 1 Sᴰ
-  lem-box-perm-1423-at243243 : Ws → St 1289
-  lem-box-perm-1423-at243243 = pickᴰ 2 Sᴰ
-  lem-S2-SBOX⟨0·1·42·3⟩ : Ws → St 1313
-  lem-S2-SBOX⟨0·1·42·3⟩ = pickᴰ 3 Sᴰ
-  lem-S2-SBOX⟨0·2·43·1⟩ : Ws → St 1314
-  lem-S2-SBOX⟨0·2·43·1⟩ = pickᴰ 4 Sᴰ
-  lem-CKc-box-at233442 : Ws → St 1325
-  lem-CKc-box-at233442 = pickᴰ 5 Sᴰ
-  lem-box-perm-1342-at233442 : Ws → St 1328
-  lem-box-perm-1342-at233442 = pickᴰ 6 Sᴰ
+  lem-comm-CCZ014-CX23 : Ws → St 893
+  lem-comm-CCZ014-CX23 = pickᴰ 0 Sᴰ
+  lem-comm-CCZ014-CS23 : Ws → St 1548
+  lem-comm-CCZ014-CS23 = pickᴰ 1 Sᴰ
+  lem-comm-CCZ014-CSd23 : Ws → St 1549
+  lem-comm-CCZ014-CSd23 = pickᴰ 2 Sᴰ
+  lem-comm-TOFF023-CX14 : Ws → St 1060
+  lem-comm-TOFF023-CX14 = pickᴰ 3 Sᴰ
+  lem-box-cP-at243243 : Ws → St 1008
+  lem-box-cP-at243243 = pickᴰ 4 Sᴰ
+  lem-box2-at243243 : Ws → St 1260
+  lem-box2-at243243 = pickᴰ 5 Sᴰ
+  lem-box-perm-1423-at243243 : Ws → St 1497
+  lem-box-perm-1423-at243243 = pickᴰ 6 Sᴰ
+  lem-S2-SBOX⟨0·1·42·3⟩ : Ws → St 1523
+  lem-S2-SBOX⟨0·1·42·3⟩ = pickᴰ 7 Sᴰ
+  lem-S2-SBOX⟨0·2·43·1⟩ : Ws → St 1524
+  lem-S2-SBOX⟨0·2·43·1⟩ = pickᴰ 8 Sᴰ
+  lem-CKc-box-at233442 : Ws → St 1535
+  lem-CKc-box-at233442 = pickᴰ 9 Sᴰ
+  lem-box-perm-1342-at233442 : Ws → St 1538
+  lem-box-perm-1342-at233442 = pickᴰ 10 Sᴰ
 
 private
   q1 : Ws → Eqn
-  q1 c4 = sE 1314 (lem-S2-SBOX⟨0·2·43·1⟩ c4)
+  q1 c4 = sE 1524 (lem-S2-SBOX⟨0·2·43·1⟩ c4)
   q2 : Ws → Eqn
-  q2 c4 = sE 1313 (lem-S2-SBOX⟨0·1·42·3⟩ c4)
+  q2 c4 = sE 1523 (lem-S2-SBOX⟨0·1·42·3⟩ c4)
   q3 : Ws → Eqn
-  q3 c4 = sE 856 (lem-box-cP-at243243 c4)
+  q3 c4 = sE 1008 (lem-box-cP-at243243 c4)
   q4 : Ws → Eqn
   q4 c4 = wpE 805 c4
   q5 : Ws → Eqn
@@ -55,7 +60,7 @@ private
   q8 : Ws → Eqn
   q8 c4 = wpE 64 c4
   q9 : Ws → Eqn
-  q9 c4 = eqn (CCZ014 ∷ CX23 ∷ []) (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4))
+  q9 c4 = sE 893 (lem-comm-CCZ014-CX23 c4)
   q10 : Ws → Eqn
   q10 c4 = wpE 63 c4
   q11 : Ws → Eqn
@@ -69,7 +74,7 @@ private
   q15 : Ws → Eqn
   q15 c4 = wpE 70 c4
   q16 : Ws → Eqn
-  q16 c4 = eqn (Toff023 ∷ CX14 ∷ []) (CX14 ∷ Toff023 ∷ []) (lem-comm-TOFF023-CX14 (lit c4))
+  q16 c4 = sE 1060 (lem-comm-TOFF023-CX14 c4)
   q17 : Ws → Eqn
   q17 c4 = wpE 69 c4
   q18 : Ws → Eqn
@@ -87,11 +92,11 @@ private
   q24 : Ws → Eqn
   q24 c4 = wpE 60 c4
   q25 : Ws → Eqn
-  q25 c4 = sE 1289 (lem-box-perm-1423-at243243 c4)
+  q25 c4 = sE 1497 (lem-box-perm-1423-at243243 c4)
   q26 : Ws → Eqn
-  q26 c4 = sE 1325 (lem-CKc-box-at233442 c4)
+  q26 c4 = sE 1535 (lem-CKc-box-at233442 c4)
   q27 : Ws → Eqn
-  q27 c4 = sE 1328 (lem-box-perm-1342-at233442 c4)
+  q27 c4 = sE 1538 (lem-box-perm-1342-at233442 c4)
   q28 : Ws → Eqn
   q28 c4 = wpE 278 c4
   q29 : Ws → Eqn
@@ -105,13 +110,13 @@ private
   q33 : Ws → Eqn
   q33 c4 = wlE 207 (lit c4)
   q34 : Ws → Eqn
-  q34 c4 = eqn (CCZ014 ∷ CS23 ∷ []) (CS23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CS23 (lit c4))
+  q34 c4 = sE 1548 (lem-comm-CCZ014-CS23 c4)
   q35 : Ws → Eqn
   q35 c4 = wpE 54 c4
   q36 : Ws → Eqn
-  q36 c4 = eqn (CCZ014 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CSd23 (lit c4))
+  q36 c4 = sE 1549 (lem-comm-CCZ014-CSd23 c4)
   q37 : Ws → Eqn
-  q37 c4 = sE 1083 (lem-box2-at243243 c4)
+  q37 c4 = sE 1260 (lem-box2-at243243 c4)
   q38 : Ws → Eqn
   q38 c4 = wlE 1000 (lit c4)
   q39 : Ws → Eqn

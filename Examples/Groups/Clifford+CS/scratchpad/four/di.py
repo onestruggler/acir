@@ -27,8 +27,15 @@ What did not work, measured:
  * the statements' tree beside the signatures: the positivity checker
    walks every definition of the module (26 s for 40 records).
 
-The respelling modules R001-R011 of Five/D import only each other and
-are left as they are (Five.Resps imports them directly).
+The respelling modules R001-R011 of Five/D are derivation modules of
+the same kind, over the literal windows (`c4 : WsL`, their lists
+`All WsL ns`), and Five.Resps is one more consumer: they used to form a
+chain five deep that Resps, the placed windows and every module of
+Five/D waited for.  A module of Five/D takes a respelling lemma at `Ws`
+(`lem-x c4` where it applied it to `lit c4`; the assembly passes
+`λ c → lem-x (lit c)`).  The lemmas of Five.TR2 are taken the same way,
+so that the modules using them need not wait for TR2 and the chain
+F2 → Transport → TR2 below it; only Five.DAll.F1 imports TR2.
 
 Idempotent: the pass reads a module's imports back off its private
 block, so it can be rerun after a derivation module is regenerated
@@ -48,25 +55,35 @@ DSTMT = PFX + TREE + '.DStmt'
 DEQN = PFX + TREE + '.DEqn'
 DALL = PFX + TREE + '.DAll'
 SIGF = os.path.join(BASE, TREE, 'DSig.agda')
-WS = '' if FOUR else 'Ws → '
 
 CONSUMERS = {
     'Four': ['Four/Bridge.agda', 'Four/Facts/Bridges.agda', 'Four/Facts/Classes.agda',
              'Four/Facts/H1.agda', 'Four/Facts/HBridges.agda', 'Four/Facts/HClasses.agda',
              'Four/Facts/I2.agda', 'Four/Facts/I3.agda', 'Four/Facts/I4.agda',
              'Four/TransportTables.agda', 'Lemma87/Four.agda'],
-    'Five': ['Five/F1.agda', 'Five/F1Low.agda', 'Five/F2.agda', 'Five/F4.agda', 'Five/F5.agda'],
+    'Five': ['Five/F1.agda', 'Five/F1Low.agda', 'Five/F2.agda', 'Five/F4.agda', 'Five/F5.agda',
+             'Five/Resps.agda'],
 }[TREE]
 
-# An import of a derivation module (not of a respelling module R…).
-IMP = re.compile(r'^open import ' + re.escape(MODP) + r'(D\d+)(?: W)? using \(([^)]*)\)\n', re.M)
+# An import of a derivation module (D…, or a respelling module R…).
+IMP = re.compile(r'^open import ' + re.escape(MODP) + r'([DR]\d+)(?: W)? using \(([^)]*)\)\n', re.M)
+# Modules outside the tree whose lemmas are taken the same way.
+EXT = {} if FOUR else {'TR2': PFX + 'Five.TR2'}
+EXTIMP = {e: re.compile(r'^open import ' + re.escape(p) + r' using \(([^)]*)\)\n', re.M)
+          for e, p in EXT.items()}
 SIG = re.compile(r'^(lem-\S+) : (.*)$', re.M)
-HDR = re.compile(r'^module ' + re.escape(MODP) + r'(D\d+)(.*?)where\n', re.M | re.S)
+HDR = re.compile(r'^module ' + re.escape(MODP) + r'([DR]\d+)(.*?)where\n', re.M | re.S)
 PRM = re.compile(r'^  \((lem-\S+) : (.*)\)$', re.M)
 OPN = re.compile(r'^open SD\d+ S\n', re.M)
 MARK = '-- The lemmas of other derivation modules (DSig).'
 BLOCK = re.compile(r'^' + re.escape(MARK) + r'\nprivate\n((?:  .*\n)*)\n?', re.M)
-STMT = re.compile(r'^(?:Ws → )?⟪ (.*) ⟫ʷ ≈ ⟪ (.*) ⟫ʷ$')
+STMT = re.compile(r'^(?:WsL? → )?⟪ (.*) ⟫ʷ ≈ ⟪ (.*) ⟫ʷ$')
+
+
+def argof(m):
+    # what a module's lemmas take: nothing (Four), the windows (Ws), or
+    # the literal windows alone (WsL, the respelling modules)
+    return '' if FOUR else ('WsL' if m.startswith('R') else 'Ws')
 
 PRE = {
     'Four': ['open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)'],
@@ -92,7 +109,7 @@ if os.path.exists(SIGF):
         if mm and cur:
             old_rec[cur].append(mm.group(1))
 
-mods = sorted(f[:-5] for f in os.listdir(DDIR) if re.match(r'D\d+\.agda$', f))
+mods = sorted(f[:-5] for f in os.listdir(DDIR) if re.match(r'[DR]\d+\.agda$', f))
 src, sig, owner, deps = {}, {}, {}, {}
 for m in mods:
     s = open(os.path.join(DDIR, m + '.agda'), encoding='utf-8').read()
@@ -100,16 +117,25 @@ for m in mods:
     for name, ty in SIG.findall(s):
         sig[name] = ty
         owner[name] = m
+for e, p in EXT.items():
+    s = open(os.path.join(REPO, *p.split('.')) + '.agda', encoding='utf-8').read()
+    for name, ty in SIG.findall(s):
+        sig[name] = ty
+        owner[name] = e
 for m in mods:
     s = src[m]
     used = collections.OrderedDict()
     for mod, ns in IMP.findall(s):
         for x in names(ns):
             used[x] = mod
+    for e, rx in EXTIMP.items():
+        for ns in rx.findall(s):
+            for x in names(ns):
+                used[x] = e
     h = HDR.search(s)
     for x, ty in PRM.findall(h.group(2)):
         used[x] = owner[x]
-    if re.search(r'\(Sᴰ? : SD\d+\)', h.group(2)):
+    if re.search(r'\(Sᴰ? : S[DR]\d+\)', h.group(2)):
         b = BLOCK.search(s)
         if b:
             for x in re.findall(r'^  (lem-\S+) : ', b.group(1), re.M):
@@ -132,7 +158,14 @@ def render(m):
     s = src[m]
     used = deps[m]
     s = IMP.sub('', s)
+    for rx in EXTIMP.values():
+        s = rx.sub('', s)
     s = OPN.sub('', s)
+    # a respelling lemma taken at Ws: applied to the windows, not lit c4
+    if argof(m) == 'Ws':
+        for x in used:
+            if argof(owner[x]) == 'WsL':
+                s = s.replace(f'({x} (lit c4))', f'({x} c4)')
     s = BLOCK.sub('', s)
     h = HDR.search(s)
     head = ('module ' + MODP + m + (' (W : Ws)' if FOUR else '') +
@@ -146,7 +179,7 @@ def render(m):
             last = body_start + mm.end()
         block = [MARK, 'private']
         for k, x in enumerate(used):
-            block.append(f'  {x} : {WS}St {idx[x]}')
+            block.append(f'  {x} : ' + (argof(m) + ' → ' if argof(m) else '') + f'St {idx[x]}')
             block.append(f'  {x} = pickᴰ {k} Sᴰ')
         s = s[:last].rstrip(NL) + NL + NL + NL.join(block) + NL + NL + s[last:].lstrip(NL)
     # The table entries read off the trees: a window's, or an injected
@@ -164,17 +197,23 @@ def render(m):
         w = re.fullmatch(r'\(wl (\d+) \(lit c4\)\)', prf)
         if w:
             return f'{head} wlE {w.group(1)} (lit c4)'
+        w = re.fullmatch(r'\(wl (\d+) c4\)', prf)
+        if w:
+            return f'{head} wlE {w.group(1)} c4'
         w = re.fullmatch(r'\(?(lem-\S+?)( c4)?\)?', prf)
         if w and w.group(1) in used and bool(w.group(2)) == (not FOUR):
             x = w.group(1)
             return f'{head} sE {idx[x]} ' + (x if FOUR else f'({x} c4)')
         return mm.group(0)
     s = re.sub(r'^(  q\d+(?: c4)? =) eqn (?:\([^()]*\)|\[\]) (?:\([^()]*\)|\[\]) (.+)$', entry, s, flags=re.M)
+    # an entry rewritten by an earlier run: its statement's number now
+    s = re.sub(r'^(  q\d+(?: c4)? = sE )\d+ (\(?(lem-\S+?)(?: c4\))?)$',
+               lambda mm: f'{mm.group(1)}{idx[mm.group(3)]} {mm.group(2)}', s, flags=re.M)
     pre_end = s.index('module ' + MODP + m)
     pre = s[:pre_end]
     lines = [l for l in pre.split(NL) if l.strip()]
     rest = [l for l in lines if not l.startswith('open import')]
-    imps = list(PRE) + [f'open import {DEQN} using ({"wE" if FOUR else "wpE ; wlE"})'] + (
+    imps = list(PRE) + [f'open import {DEQN} using ({"wE" if FOUR else "wlE" if argof(m) == "WsL" else "wpE ; wlE"})'] + (
         [f'open import {DSTMT} using (St)', f'open import {DSIG} using (S{m} ; pickᴰ ; sE)'] if used else [])
     pre = NL.join(rest) + NL + NL + (NL.join(imps) + NL + NL if imps else '')
     return re.sub(r'\n{3,}', NL + NL, pre + s[pre_end:])
@@ -239,30 +278,43 @@ out = HEAD + [
     'open import Data.Nat.Base using (ℕ ; zero ; suc)',
     'open import Data.Unit.Base using (⊤ ; tt)']
 if not FOUR:
-    out.append('open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws)')
+    out.append('open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; WsL)')
 out += ['open import ' + DSTMT + ' using (St ; lemmas)',
         'open import Examples.Groups.Clifford+CS.' + TREE + '.Reflect using (Eqn)',
         'open import ' + DEQN + ' using (getE)', '',
         '-- A lemma as an equation, its lists read off its statement.',
         'sE : (n : ℕ) → St n → Eqn',
         'sE n p = getE lemmas n p', '',
-        'infixr 5 _∷ᵃ_',
-        'data All : List ℕ → Set where',
-        '  nil  : All []',
-        f'  _∷ᵃ_ : ∀ {{n ns}} → ({WS}St n) → All ns → All (n ∷ ns)', '',
-        '-- The k-th statement of a list, and its proof.',
-        'nth : List ℕ → ℕ → Set',
-        'nth []       _       = ⊤',
-        f'nth (n ∷ ns) zero    = {WS}St n',
-        'nth (n ∷ ns) (suc k) = nth ns k', '',
-        'pickᴰ : ∀ {ns} (k : ℕ) → All ns → nth ns k',
-        'pickᴰ k       nil       = tt',
+        'infixr 5 _∷ᵃ_']
+if FOUR:
+    out += ['data All : List ℕ → Set where',
+            '  nil  : All []',
+            '  _∷ᵃ_ : ∀ {n ns} → (St n) → All ns → All (n ∷ ns)', '',
+            '-- The k-th statement of a list, and its proof.',
+            'nth : List ℕ → ℕ → Set',
+            'nth []       _       = ⊤',
+            'nth (n ∷ ns) zero    = St n',
+            'nth (n ∷ ns) (suc k) = nth ns k', '',
+            'pickᴰ : ∀ {ns} (k : ℕ) → All ns → nth ns k']
+else:
+    out += ['-- A is what the lemmas take: the windows (Ws), or for the respelling',
+            '-- modules the literal ones (WsL).',
+            'data All (A : Set) : List ℕ → Set where',
+            '  nil  : All A []',
+            '  _∷ᵃ_ : ∀ {n ns} → (A → St n) → All A ns → All A (n ∷ ns)', '',
+            '-- The k-th statement of a list, and its proof.',
+            'nth : Set → List ℕ → ℕ → Set',
+            'nth A []       _       = ⊤',
+            'nth A (n ∷ ns) zero    = A → St n',
+            'nth A (n ∷ ns) (suc k) = nth A ns k', '',
+            'pickᴰ : ∀ {A ns} (k : ℕ) → All A ns → nth A ns k']
+out += ['pickᴰ k       nil       = tt',
         'pickᴰ zero    (p ∷ᵃ ps) = p',
         'pickᴰ (suc k) (p ∷ᵃ ps) = pickᴰ k ps', '']
 for m in mods:
     if deps[m]:
         out.append(f'S{m} : Set')
-        out.append(f'S{m} = All (' + ' ∷ '.join(str(idx[x]) for x in deps[m]) + ' ∷ [])')
+        out.append(f'S{m} = All ' + (argof(m) + ' ' if argof(m) else '') + '(' + ' ∷ '.join(str(idx[x]) for x in deps[m]) + ' ∷ [])')
 open(SIGF, 'w', encoding='utf-8').write(NL.join(out) + NL)
 
 TT, TL, TN, WIN = ('Tree', 'leaf', 'node', 'Win') if FOUR else ('WTree', 'wleaf', 'wnode', 'WinT')
@@ -300,18 +352,18 @@ open(os.path.join(BASE, TREE, 'DEqn.agda'), 'w', encoding='utf-8').write(NL.join
 
 # The consumers, and the assemblies they import: Four's one, DAll;
 # Five's one per consumer (DAll.F1, ...), each the closure of what its
-# consumer uses: some modules of Five/D import Five.TR2, which reaches
-# Five.F2 through Five.Transport, so that one assembly of everything
-# would be a cycle.  The closure of what a consumer used is what it
-# imported before, and that was not a cycle.
+# consumer uses: some modules of Five/D take lemmas of Five.TR2, which
+# reaches Five.F2 through Five.Transport, so that one assembly of
+# everything would be a cycle.  The closure of what a consumer used is
+# what it imported before, and that was not a cycle.
 GROUPS = ([('DAll', CONSUMERS)] if FOUR else
           [('DAll.' + os.path.basename(c)[:-5], [c]) for c in CONSUMERS])
-CIMP = re.compile(r'^open import ' + re.escape(MODP) + r'(D\d+)( WI\.ws| W)? using \(([^)]*)\)\n', re.M)
+CIMP = re.compile(r'^open import ' + re.escape(MODP) + r'([DR]\d+)( WI\.ws| W)? using \(([^)]*)\)\n', re.M)
 DIMP = re.compile(r'^open import ' + re.escape(DALL) + r'(?:\.\w+)?(?: WI\.ws)? using \(([^)]*)\)\n', re.M)
 
 
 def visit_into(m, order, seen):
-    if m in seen:
+    if m in seen or m in EXT:
         return
     seen.add(m)
     for x, mod in deps[m].items():
@@ -367,14 +419,26 @@ for gname, cons in GROUPS:
     else:
         out.append('module ' + gmod + ' where')
     out += ['', 'open import ' + DSIG]
+    lifted = any(argof(m) == 'Ws' and argof(owner[x]) == 'WsL' for m in order for x in deps[m])
+    if lifted:
+        out.append('open import Examples.Groups.Clifford+CS.Five.WinSig using (lit)')
+    for e, p in EXT.items():
+        xs = [x for x in sig if owner[x] == e and x in need]
+        if xs:
+            out.append(f'open import {p} using (' + ' ; '.join(xs) + ')')
     for m in order:
         out.append(f'import {MODP}{m} as {m}')
     out.append('')
+
+    def item(m, x):
+        if argof(m) == 'Ws' and argof(owner[x]) == 'WsL':
+            return f'(λ c → {x} (lit c))'
+        return x
     for m in order:
         args = (' W' if FOUR else '')
         if deps[m]:
             out.append(f's{m} : S{m}')
-            out.append(f's{m} = ' + ' ∷ᵃ '.join(deps[m]) + ' ∷ᵃ nil')
+            out.append(f's{m} = ' + ' ∷ᵃ '.join(item(m, x) for x in deps[m]) + ' ∷ᵃ nil')
             args += f' s{m}'
         for x in [y for y in sig if owner[y] == m and y in need]:
             out.append(f'{x} : _')

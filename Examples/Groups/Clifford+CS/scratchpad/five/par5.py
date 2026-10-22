@@ -54,9 +54,12 @@ was most of a from-scratch run, 3200 of 5200 s), PAR5_COSTS
 unknown, 20 s; only logs of the same layout -- after repack.py a name
 like Four/D/D724 is another module, and a stale cost of a heavy one ran
 light modules alone, too many of them at once), PAR5_HEAVY (60: a module known to take longer runs
-alone), PAR5_TARGET (150: a batch stops at that many seconds of known
+alone), PAR5_TARGET (40: a batch stops at that many seconds of known
 time), PAR5_OVERHEAD (5: a job's fixed cost in the critical-path height
-by which ready modules are taken, highest first), DONE (comma-separated
+by which ready modules are taken, highest first), PAR5_SLACK (60: a
+ready module within that many seconds of the highest height is critical;
+while at most JOBS are, each runs in a job of its own with the critical
+modules that wait only on it), DONE (comma-separated
 logs of an earlier run whose passes count as checked).  Each module's
 own time is read off --profile=modules and logged (own=…ms), so that a
 run's log serves the next as PAR5_COSTS: list the newest log last, its

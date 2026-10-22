@@ -16,19 +16,21 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
-open import Examples.Groups.Clifford+CS.Five.D.R001 using (lem-comm-CX13-CCZ024)
-open import Examples.Groups.Clifford+CS.Five.D.R004 using (lem-comm-CX20-TOFF413)
 
 -- The lemmas of other derivation modules (DSig).
 private
-  lem-box-cP-at04122041 : Ws → St 1019
-  lem-box-cP-at04122041 = pickᴰ 0 Sᴰ
-  lem-box2-at04122041 : Ws → St 1250
-  lem-box2-at04122041 = pickᴰ 1 Sᴰ
+  lem-comm-CX13-CCZ024 : Ws → St 3
+  lem-comm-CX13-CCZ024 = pickᴰ 0 Sᴰ
+  lem-comm-CX20-TOFF413 : Ws → St 1178
+  lem-comm-CX20-TOFF413 = pickᴰ 1 Sᴰ
+  lem-box-cP-at04122041 : Ws → St 1192
+  lem-box-cP-at04122041 = pickᴰ 2 Sᴰ
+  lem-box2-at04122041 : Ws → St 1453
+  lem-box2-at04122041 = pickᴰ 3 Sᴰ
 
 private
   q1 : Ws → Eqn
-  q1 c4 = sE 1019 (lem-box-cP-at04122041 c4)
+  q1 c4 = sE 1192 (lem-box-cP-at04122041 c4)
   q2 : Ws → Eqn
   q2 c4 = wpE 87 c4
   q3 : Ws → Eqn
@@ -40,7 +42,7 @@ private
   q6 : Ws → Eqn
   q6 c4 = wpE 39 c4
   q7 : Ws → Eqn
-  q7 c4 = eqn (CX13 ∷ CCZ024 ∷ []) (CCZ024 ∷ CX13 ∷ []) (lem-comm-CX13-CCZ024 (lit c4))
+  q7 c4 = sE 3 (lem-comm-CX13-CCZ024 c4)
   q8 : Ws → Eqn
   q8 c4 = wpE 32 c4
   q9 : Ws → Eqn
@@ -56,7 +58,7 @@ private
   q14 : Ws → Eqn
   q14 c4 = wlE 1546 (lit c4)
   q15 : Ws → Eqn
-  q15 c4 = eqn (CX20 ∷ Toff413 ∷ []) (Toff413 ∷ CX20 ∷ []) (lem-comm-CX20-TOFF413 (lit c4))
+  q15 c4 = sE 1178 (lem-comm-CX20-TOFF413 c4)
   q16 : Ws → Eqn
   q16 c4 = wpE 1375 c4
   q17 : Ws → Eqn
@@ -70,7 +72,7 @@ private
   q21 : Ws → Eqn
   q21 c4 = wlE 1547 (lit c4)
   q22 : Ws → Eqn
-  q22 c4 = sE 1250 (lem-box2-at04122041 c4)
+  q22 c4 = sE 1453 (lem-box2-at04122041 c4)
   q23 : Ws → Eqn
   q23 c4 = wlE 1549 (lit c4)
   q24 : Ws → Eqn
