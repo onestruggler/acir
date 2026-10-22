@@ -25,7 +25,8 @@ check() {
     return 1
   fi
 }
-# These four roots reach every module of the directory.  Theorems
+# These four roots reach every module of the directory but Circuits/,
+# which the fifth reaches.  Theorems
 # reaches the transport, the decoding, dyadic completeness, the Hadamard
 # relations and the presentation, in one process; checking their parts
 # as roots of their own only loaded the same interfaces again, a
@@ -34,4 +35,6 @@ check "$development/CircuitLemmas.agda"
 check "$development/MissingK.agda"
 check "$development/Theorems.agda"
 check "$development/StrictMatrix.agda"
+# The presentation as circuits over Circuit.Base, on top of Theorems'.
+check "$development/Circuits/Presentation.agda"
 check MainTheorems.agda

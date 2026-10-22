@@ -59,6 +59,26 @@ and `repaired-presentation`. The relation includes the controlled-K
 definition described below; completeness of the original 72 equations
 alone is not asserted.
 
+### Circuits over `Circuit.Base`
+
+`Circuits/` restates the presentation over the repository's circuit
+syntax (`Circuit.Base`): the gates X and H on one wire, CX (control on
+the upper wire) and K = H ⊗ H on two, CCX (target on the top wire),
+NK = K_[0,1,2,3] and CCZ on three, placed on their wires by the shift
+_↑, with qubit 2 on wire 0 and qubit 0 on wire 2. Each of the paper's
+letters is a circuit of the same name, the ones Figure 4 defines by
+their definitions, so that the other relations, and the definition of
+K, are rules word for word; the four commutations of gates on disjoint
+wires among them ((26), (27), (102), (103)) are the structural rules
+of `Circuit.Base`, and one rule places H on wire 1 (the paper's H₁ =
+K₁₂ H₂). `Circuits/Iso.agda` reads a gate as the paper's letter and
+proves the reading a group isomorphism on three wires — the
+commutations of gates on disjoint wires that the paper does not state
+come from its completeness — and `Circuits/Presentation.agda`
+concludes that the circuits present L₈. `tools/gen_circuits.py`
+writes `Circuits/Syntactics.agda` and `Circuits/Iso.agda` from
+`Syntactics.agda`.
+
 ## Corrections and the retained K definition
 
 `Errata.agda` contains exact matrix counterexamples to these printed
@@ -142,8 +162,9 @@ agda Examples/Groups/CCX+HH-3qubit/Repaired/Presentation.agda
 ```
 
 `bash Examples/Groups/CCX+HH-3qubit/tools/check.sh` checks the four
-roots that reach every module of the directory — `CircuitLemmas`,
-`MissingK`, `Theorems` and `StrictMatrix` — sequentially with a
+roots that reach every module of the directory but `Circuits/` —
+`CircuitLemmas`, `MissingK`, `Theorems` and `StrictMatrix` — and
+`Circuits/Presentation`, which reaches those, sequentially with a
 compacting 8 GB heap, followed by `MainTheorems.agda`: about three
 minutes from scratch, `Theorems` 94 s of them. (It was about
 twelve minutes, `Theorems` eleven with a peak of 6.2 GB, while the
@@ -190,7 +211,8 @@ the matrix meanings of encoding and decoding;
 `generate_hadamard_transport.py` emits the nine even-parity proofs
 and their exhaustive dispatcher;
 `generate_missing_k.py` and `generate_k_check.py` emit the two matrix
-checks for the retained K equation.
+checks for the retained K equation; `gen_circuits.py` writes the
+circuit presentation (`Circuits/`).
 
 Run `bundle.py` after the generators: they write one module per
 certificate, and `bundle.py` merges them into chunk modules (below). On Windows set
