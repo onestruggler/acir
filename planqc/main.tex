@@ -35,6 +35,7 @@
 \usepackage{tabularx}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \usepackage{agda-style}
+\usepackage{cleveref}
 
 \citestyle{acmauthoryear}
 
@@ -131,8 +132,14 @@ approach is a \emph{scaffold}: code that people write and check once,
 and that fixes the form of every theorem built on it, so that the
 per-paper check is short and the rest is left to Agda.
 
-We built such a scaffold for completeness theorems, and on it
-formalized sixteen papers (Table~\ref{tab:corpus}). Our contributions,
+This work grew out of our formalization of the completeness theorem
+for qudit Clifford circuits~\cite{bian2026qupit}. There we first set up
+a framework by hand, and brought in LLM coding agents only at the last
+stage, to finish the proof. That experience convinced us that all
+completeness results for quantum circuits could, and should, be
+formalized within one framework. This paper does so: we built such a
+scaffold for completeness theorems, and on it formalized sixteen papers
+(Table~\ref{tab:corpus}). Our contributions,
 which the talk will present, are:
 \begin{itemize}
 \item a scaffold for completeness theorems in Agda: an earlier
@@ -211,13 +218,6 @@ dimension (Greylyn's for $n\le4$, as in the thesis), and the circuit
 theories for every number of wires, except where the paper fixes it.
 
 \begin{table}
-\caption{The sixteen sources and our developments: the object
-presented, the result (a presentation of the whole group, or of the
-group that the gates generate), the number of modules, and the
-typechecking time from scratch in seconds, the sum of the modules' own
-times with the developments they build on already checked (Agda~2.8,
-Intel Core i5-14400).}
-\label{tab:corpus}
 \small
 \setlength{\tabcolsep}{4pt}
 \begin{tabularx}{\linewidth}{@{}l Y l r r@{}}
@@ -249,6 +249,14 @@ Source & Object & Result & Mod. & Time \\
 All & & & 1{,}476 & 2{,}332 \\
 \bottomrule
 \end{tabularx}
+\captionsetup{position=bottom}
+\caption{The sixteen sources and our developments: the object
+presented, the result (a presentation of the whole group, or of the
+group that the gates generate), the number of modules, and the
+typechecking time from scratch in seconds, the sum of the modules' own
+times with the developments they build on already checked (Agda~2.8,
+Intel Core i5-14400).}
+\label{tab:corpus}
 \end{table}
 
 The papers use few proof methods, and in Agda each becomes a route
@@ -374,9 +382,9 @@ evaluating exact matrices, derivations are generated and checked by a
 rewriter, and the whole corpus typechecks in about 40 minutes. Third,
 it paves the way for number-theoretic exact synthesis: its rings, their
 unitary and orthogonal groups and the route from a Main Lemma to
-completeness are formalized once, so a new synthesis algorithm can be
-verified efficiently, including its Main Lemma, where the gap in
-Hadamard-$\Pi$ lay.
+completeness (\Cref{sec:corpus}) are formalized once, so a new
+synthesis algorithm can be verified efficiently, including its Main
+Lemma, where the gap in Hadamard-$\Pi$ lay (\Cref{sec:findings}).
 
 \paragraph{Future work.} We are porting the developments to Lean, which
 has a much larger community and whose library Mathlib covers far more
