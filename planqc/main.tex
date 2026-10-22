@@ -92,8 +92,7 @@ written by people that fixes the form of every theorem, so that a
 reader checks only the relations, the gate matrices and one line per
 paper. The formalization found a gap in the completeness proof of
 Hadamard-$\Pi$ (POPL 2026), which we close, and a relation missing from
-a presentation of Toffoli--Hadamard circuits, without which it is not
-complete.
+a Toffoli--Hadamard presentation, without which it is not complete.
 \end{abstract}
 
 \maketitle
@@ -104,12 +103,12 @@ A set of equations between quantum circuits is \emph{sound} if both
 sides of each equation denote the same matrix, and \emph{complete} if
 every equation between circuits with the same matrix follows from it.
 Completeness is what equational reasoning about quantum programs
-needs: a complete set of rules decides the equality of circuits, an
+needs: a complete set of rules decides circuit equality, an
 optimizer built on it misses no equation, and a calculus such as
 Hadamard-$\Pi$~\cite{fang2026hadamard} rests on one. For Clifford
 circuits, Selinger's fifteen relations are complete for every number
-of qubits~\cite{selinger2015clifford}, and since then complete theories
-have been given for many fragments, in qubits and in prime dimensions.
+of qubits~\cite{selinger2015clifford}, and complete theories have since
+appeared for many fragments, in qubits and prime dimensions.
 
 The proofs are long. The extended version of Hadamard-$\Pi$ has 116
 pages, Makary, Ross and Selinger support their real stabilizer theorem
@@ -118,24 +117,23 @@ theorem for real Clifford+$CH$ circuits has an appendix of 264
 pages~\cite{clement2026realcliffordch}. The core of each is a case
 analysis: a normal form and a rule for every gate and every shape of
 normal form, or the Main Lemma of an exact synthesis algorithm, or the
-auxiliary equations of an encoding into a theory already known to be
-complete.
+auxiliary equations of an encoding into a known complete theory.
 
 Language models can now write formal proofs of this size; a proof of
 Fermat's Last Theorem in Lean, of 13 million lines, was written in 11
 days~\cite{anthropic2026flt}. What still needs a person is the
 statement: a formal proof proves what its statement says, and someone
 has to check that the statement, and the definitions under it, mean
-what was intended~\cite{hales2026reliability}. Generated formalizations
-are not written to be read, so we want that check to stay small. Our
-approach is a \emph{scaffold}: code that people write and check once,
-and that fixes the form of every theorem built on it, so that the
-per-paper check is short and the rest is left to Agda.
+what was intended~\cite{hales2026reliability}. Generated proofs are
+not written to be read, so that check should stay small. Our approach
+is a \emph{scaffold}: code that people write and check once, which
+fixes the form of every theorem built on it, so the per-paper check is
+short and the rest is left to Agda.
 
 This work grew out of our formalization of the completeness theorem
-for qudit Clifford circuits~\cite{bian2026qupit}. There we first set up
-a framework by hand, and brought in LLM coding agents only at the last
-stage, to finish the proof. That experience convinced us that all
+for qudit Clifford circuits~\cite{bian2026qupit}. There we spent three
+months setting up a framework by hand, and brought in LLM coding agents
+only at the last stage, to finish the proof. That experience convinced us that all
 completeness results for quantum circuits could, and should, be
 formalized within one framework. This paper does so: we built such a
 scaffold for completeness theorems, and on it formalized sixteen papers
@@ -205,9 +203,8 @@ transcribed from the paper; the group, which comes from the layer and
 is checked once for all papers; the interpretation of each gate as a
 matrix; and the one line that gives the record that interpretation.
 For the real stabilizer development these come to under 500 of its
-12{,}010 lines. A single root module states the sixteen main theorems
-in this form, one section per paper, and is the place to start
-reading.
+12{,}010 lines. A single root module, the place to start reading,
+states all sixteen main theorems in this form.
 
 \section{Sixteen Formalizations}\label{sec:corpus}
 
@@ -250,12 +247,11 @@ All & & & 1{,}476 & 2{,}332 \\
 \bottomrule
 \end{tabularx}
 \captionsetup{position=bottom}
-\caption{The sixteen sources and our developments: the object
-presented, the result (a presentation of the whole group, or of the
-group that the gates generate), the number of modules, and the
-typechecking time from scratch in seconds, the sum of the modules' own
-times with the developments they build on already checked (Agda~2.8,
-Intel Core i5-14400).}
+\caption{The object presented, the result (a presentation of the
+whole group or of the group the gates generate), the number of modules,
+and typechecking time from scratch in seconds, the sum of the modules'
+own times given the developments they build on (Agda~2.8, Core
+i5-14400).}
 \label{tab:corpus}
 \end{table}
 
@@ -279,14 +275,13 @@ Clifford group, built from the Pauli and symplectic groups with a
 phase; the others are stated against matrices.
 
 Much of each development is generated. The derivations that a paper
-gives as computations, such as the 105 pages of Selinger's supplement
-or the box relations of the qutrit normal form, are produced by scripts
-that follow the paper line by line or search for the steps, and are
-checked by a rewriter in Agda; soundness is decided by evaluating the
-matrices. What a paper gives as an idea, the Main Lemma or the
-uniqueness of a normal form, is written. For the real stabilizer
-development, half of the lines are generated and a fifth are the
-paper's mathematics.
+gives as computations, such as Selinger's 105-page supplement or the
+box relations of the qutrit normal form, come from scripts that follow
+the paper or search for the steps, and are checked by a rewriter in
+Agda; soundness is decided by evaluating matrices.
+What a paper gives as an idea, the Main Lemma or the uniqueness of a
+normal form, is written. In the real stabilizer development, half the
+lines are generated and a fifth are the paper's mathematics.
 
 \section{What We Found}\label{sec:findings}
 
@@ -334,29 +329,26 @@ derivation failed at the step that used it.
 
 \section{How the Proofs Were Produced}\label{sec:method}
 
-The qudit Clifford development was written mainly by hand, alongside
-its paper, over three months. LLM coding agents wrote the other
-fifteen under our direction, within four weeks, most of them in less
-than a day each. Three habits made this possible. Every claim is
+Besides the qudit Clifford development, LLM coding agents wrote the
+other fifteen under our direction, within four weeks, most of them in
+less than a day each. Three habits made this possible. Every claim is
 checked numerically before it is formalized, with exact matrices in a
 short script, which caught most misprints before any Agda was written.
-Long derivations are not written by hand but generated, by scripts
-that follow the paper's own steps, so that a failing step points at a
-line of the paper. And the scaffold leaves the agent no choice about
+Long derivations are generated, by scripts that follow the paper's own
+steps, so that a failing step points at a line of the paper. And the scaffold leaves the agent no choice about
 the statement: the relation, the group and the record are fixed, and
-what remains is to fill in the proof.
+only the proof remains.
 
 The main cost was Agda's, not the agent's. The conversion checker
 compares terms by unfolding them, so two readings of a long product of
 matrices that are not syntactically equal can take exponential time;
 readings of circuits are therefore abstract, and equations between
-matrices are decided as one boolean computed by row operations, which
-is a hundred to four hundred times faster than comparing the matrices
-entry by entry. Everything is constructive, with no excluded middle,
+matrices are decided as one boolean computed by row operations, a
+hundred to four hundred times faster than comparing entry by entry. Everything is constructive, with no excluded middle,
 choice or real numbers, so every case split is a decision procedure
 and every proof is a program: with soundness, completeness and
-decidable equality of matrices, the word problem of each theory is
-decided by running the proof.
+decidable matrix equality, each theory's word problem is decided by
+running the proof.
 
 % \section{The Talk}
 
@@ -369,17 +361,16 @@ decided by running the proof.
 
 \section{Conclusion and Future Work}\label{sec:conclusion}
 
-All sixteen developments are built on a single framework, and this
-matters beyond the individual theorems in three ways. First, every theory, whatever its gate set or proof method, is stated
-with the same circuits, presentation records and matrix groups over
-the same rings: a common language in which rewrite rules for different
-families of circuits can be related, as when we proved Cl\'ement's
+All sixteen developments share one framework, and this matters in
+three ways. First, every theory, whatever its gate set or proof
+method, is stated with the same circuits, presentation records and
+matrix groups over the same rings: a common language in which rewrite
+rules for different circuit families can be related, as when we proved Cl\'ement's
 relations and Hadamard-$\Pi$'s equivalent. Second, it lays the
 foundation for completeness in higher-dimensional systems, whose case
-analyses outgrow what a reader can check (the qutrit Clifford theorem
-already rests on hundreds of box relations): soundness is decided by
-evaluating exact matrices, derivations are generated and checked by a
-rewriter, and the whole corpus typechecks in about 40 minutes. Third,
+analyses outgrow what a reader can check (the qutrit theorem rests on
+hundreds of box relations): soundness is decided by evaluating exact
+matrices, derivations are generated and machine-checked, and the corpus typechecks in about 40 minutes. Third,
 it paves the way for number-theoretic exact synthesis: its rings, their
 unitary and orthogonal groups and the route from a Main Lemma to
 completeness (\Cref{sec:corpus}) are formalized once, so a new
