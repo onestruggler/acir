@@ -34,9 +34,9 @@
 
 module Examples.Groups.Clifford+CS.MultiControlled where
 
-open import Data.Bool using (Bool ; true ; false ; if_then_else_)
-open import Data.Nat using (ℕ ; zero ; suc)
-open import Data.Vec using (Vec ; [] ; _∷_)
+open import Data.Bool.Base using (Bool ; true ; false ; if_then_else_)
+open import Data.Nat.Base using (ℕ ; zero ; suc)
+open import Data.Vec.Base using (Vec ; [] ; _∷_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; wmap)
 
 open import Notations using (₀ ; ₁ ; ₁₊ ; ₂₊ ; ₃₊ ; ₄₊)

@@ -20,8 +20,7 @@ open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 module Examples.Groups.Clifford+CS.Five.Lines
   (W : ℕ) (Mac : Set) (⟪_⟫ : Mac → Circuit W) where
 
-open import Data.List using (List ; [] ; _∷_ ; _++_ ; take ; drop)
-open import Data.List.Properties using (take++drop≡id)
+open import Data.List.Base using (List ; [] ; _∷_ ; _++_ ; take ; drop)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (ε ; _•_)
 
@@ -30,6 +29,14 @@ open import Examples.Groups.Clifford+CS.Five.Rules using (_XVRel,_===_)
 
 private
   open module T = Tools (_XVRel,_===_ W)
+
+-- The stdlib's take++drop≡id, here so as not to load Data.List.Properties
+-- in every derivation (umbrella modules of the stdlib are slow to load).
+private
+  take++drop≡id : ∀ {A : Set} (n : ℕ) (xs : List A) → take n xs ++ drop n xs ≡ xs
+  take++drop≡id zero    xs       = Eq.refl
+  take++drop≡id (suc n) []       = Eq.refl
+  take++drop≡id (suc n) (x ∷ xs) = Eq.cong (x ∷_) (take++drop≡id n xs)
 
 ------------------------------------------------------------------------
 -- Lines

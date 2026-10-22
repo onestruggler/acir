@@ -21,8 +21,7 @@
 
 module Examples.Groups.Clifford+CS.Four.Chain where
 
-open import Data.List using (List ; [] ; _∷_ ; _++_ ; take ; drop)
-open import Data.List.Properties using (take++drop≡id)
+open import Data.List.Base using (List ; [] ; _∷_ ; _++_ ; take ; drop)
 open import Data.Nat using (ℕ ; zero ; suc ; _+_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
@@ -31,6 +30,14 @@ open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Tools using (module Tools)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm)
 open import Examples.Groups.Clifford+CS.Four.Letters public
+
+-- The stdlib's take++drop≡id, here so as not to load Data.List.Properties
+-- in every derivation (umbrella modules of the stdlib are slow to load).
+private
+  take++drop≡id : ∀ {A : Set} (n : ℕ) (xs : List A) → take n xs ++ drop n xs ≡ xs
+  take++drop≡id zero    xs       = Eq.refl
+  take++drop≡id (suc n) []       = Eq.refl
+  take++drop≡id (suc n) (x ∷ xs) = Eq.cong (x ∷_) (take++drop≡id n xs)
 
 open Tools (_VRel,_===_ 4) public
 

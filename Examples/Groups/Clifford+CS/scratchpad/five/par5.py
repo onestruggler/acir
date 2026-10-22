@@ -45,7 +45,7 @@ Settings by environment: PAR5_REPO (the repository, default the one this
 script is in), AGDA, PAR5_OUT (each job's output, default /tmp/par5_out),
 PAR5_LOCK (default ~/.agda-job.lock, held for the whole run),
 PAR5_HEAP / PAR5_BIG (7G / 12G), PAR5_BUDGET_GB (11), PAR5_RESERVE_GB
-(2.5), PAR5_BATCH (16; 1 checks one module per process), PAR5_MINB (1:
+(2.5), PAR5_BATCH (48; 1 checks one module per process), PAR5_MINB (16:
 with many modules ready, a batch takes at least this many rather than
 spreading them over the idle slots -- each batch loads its imports once,
 and with the jobs bounded by memory rather than by slots that loading
@@ -55,9 +55,18 @@ unknown, 20 s; only logs of the same layout -- after repack.py a name
 like Four/D/D724 is another module, and a stale cost of a heavy one ran
 light modules alone, too many of them at once), PAR5_HEAVY (60: a module known to take longer runs
 alone), PAR5_TARGET (150: a batch stops at that many seconds of known
-time), DONE (comma-separated logs of an earlier run whose passes count
-as checked).  Each module's own time is read off --profile=modules and
-logged (own=…ms), so that a run's log serves the next as PAR5_COSTS.
+time), PAR5_OVERHEAD (5: a job's fixed cost in the critical-path height
+by which ready modules are taken, highest first), DONE (comma-separated
+logs of an earlier run whose passes count as checked).  Each module's
+own time is read off --profile=modules and logged (own=…ms), so that a
+run's log serves the next as PAR5_COSTS: list the newest log last, its
+times win.
+
+From scratch, the whole of Clifford+CS (1271 modules, 6 jobs within
+15 GB): 1560 s with batches of at most 16 spread over the idle slots and
+taken in topological order, 1367 s with PAR5_MINB 16, PAR5_BATCH 48 and
+the critical path first (job time 5223 -> 3333 s, most of the saving
+loading).
 """
 import fcntl, os, re, subprocess, sys, time, zlib
 
@@ -70,8 +79,8 @@ AGDA = os.environ.get('AGDA', 'agda')
 HEAP, BIG = os.environ.get('PAR5_HEAP', '7G'), os.environ.get('PAR5_BIG', '12G')
 BUDGET = float(os.environ.get('PAR5_BUDGET_GB', '11')) * 1e6     # kB
 RESERVE = float(os.environ.get('PAR5_RESERVE_GB', '2.5')) * 1e6  # kB
-BATCH = int(os.environ.get('PAR5_BATCH', '16'))
-MINB = int(os.environ.get('PAR5_MINB', '1'))
+BATCH = int(os.environ.get('PAR5_BATCH', '48'))
+MINB = int(os.environ.get('PAR5_MINB', '16'))
 DEFAULT = 3.5e6                                                  # kB
 BIGSRC = int(os.environ.get('PAR5_BIGSRC', '0'))                # 0: none
 os.makedirs(OUT, exist_ok=True)
@@ -263,6 +272,22 @@ def cost(p):
 def alone_p(p): return p in solo or big(p) or cost(p) > HEAVY
 
 
+# The critical path: a module's height is its cost, plus a job's fixed
+# overhead (PAR5_OVERHEAD, 5 s: loading), plus the largest height among
+# the modules that import it.  Ready modules are taken highest first, so
+# that the long chains (Four/D's 20 levels, Five/D's 18) start as soon
+# as they can; in topological order they ran last, alone, for the final
+# 500 s of a from-scratch run.
+OVERHEAD = float(os.environ.get('PAR5_OVERHEAD', '5'))
+rdeps = {p: set() for p in deps}
+for p in deps:
+    for d in deps[p]:
+        if d in rdeps: rdeps[d].add(p)
+height = {}
+for p in reversed(topo):
+    height[p] = cost(p) + OVERHEAD + max((height[q] for q in rdeps[p]), default=0.0)
+
+
 lock = open(os.path.expanduser(os.environ.get('PAR5_LOCK', '~/.agda-job.lock')), 'w')
 fcntl.flock(lock, fcntl.LOCK_EX)
 log(f'par5: {len(mods)} modules ({len(TARGETS)} targets), {JOBS} jobs, batches of {BATCH}, '
@@ -385,7 +410,8 @@ while True:
         if target.startswith('Par5Batch/'):
             for f in (os.path.join(REPO, target), os.path.join(BUILD, target[:-5] + '.agdai')):
                 if os.path.exists(f): os.remove(f)
-    pending = [p for p in topo if p not in done and p not in failed and p not in busy]
+    pending = sorted((p for p in topo if p not in done and p not in failed and p not in busy),
+                     key=lambda p: -height[p])
     if not pending and not running: break
     for p in pending:
         if any(d in failed for d in deps[p]) and p not in failed:

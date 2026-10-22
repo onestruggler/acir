@@ -19,10 +19,10 @@
 
 module Examples.Groups.Clifford+CS.Five.WinSig where
 
-open import Data.Bool using (Bool ; true ; false ; if_then_else_)
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Nat using (ℕ ; zero ; suc ; _/_ ; _%_ ; _≡ᵇ_)
-open import Data.Unit using (⊤ ; tt)
+open import Data.Bool.Base using (Bool ; true ; false ; if_then_else_)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Nat.Base using (ℕ ; zero ; suc ; _/_ ; _%_ ; _≡ᵇ_)
+open import Data.Unit.Base using (⊤ ; tt)
 
 open import Examples.Groups.Clifford+CS.Five.Chain using (Mac ; ⟪_⟫ʷ ; _≈_)
 open import Examples.Groups.Clifford+CS.Five.Letters
