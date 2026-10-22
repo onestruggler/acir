@@ -13,6 +13,21 @@ formalised on this repository's `Word` and `Presentation` framework.
   Section 5.5 uses, holds of the matrices but does not follow from Figures 4
   and 7, so R₁ alone is not complete.
 
+`Circuits/` restates both presentations over the repository's circuit syntax
+(`Circuit.Base`): the gates X, CX (control on the upper wire), K = H ⊗ H, CCX
+(target on the top wire), and NK, CCZ from level 1 and H from level 2,
+placed on their wires by the shift `_↑`, with qubit 2 on wire 0. Each of the
+paper's words is a circuit of the same name — the letters Figure 4 defines by
+their definitions — so the relations are rules word for word, but for those
+definitions and the four commutations of gates on disjoint wires ((26), (27),
+(102), (103)), which are the structural rules of `Circuit.Base`; at level 2
+one rule places H on wire 1 (H₁ = K₁₂ H₂). `Circuits/Iso1.agda` and
+`Circuits/Iso2.agda` (written by `gen/gen_circuits.py`) read a gate as the
+paper's letter and prove the reading a group isomorphism on three wires, the
+commutations of gates on disjoint wires that the paper does not state coming
+from its completeness and one matrix check each; `Circuits/Presentation.agda`
+states `theorem-5-2` and `theorem-6-3` for the circuits.
+
 Gates are numbered with qubit 0 the most significant (basis state
 `4 x₀ + 2 x₁ + x₂`), and words are in operator order. The misprints of the
 paper are corrected; [`ERRATA.md`](ERRATA.md) (typeset as
@@ -55,8 +70,9 @@ proves complete:
 ## Checking
 
 Agda 2.8.0, standard-library 2.4, and EucDomain registered. Check
-`Theorems.agda`, `GateMatrices.agda` and `Errata.agda`; together they reach
-all 31 modules of the development (and `CCX+HH-TwoLevel`, `Symmetric`). Given
+`Theorems.agda`, `GateMatrices.agda`, `Errata.agda` and
+`Circuits/Presentation.agda`; together they reach all 37 modules of the
+development (and `CCX+HH-TwoLevel`, `Symmetric`). Given
 the interfaces of those, `Theorems.agda` takes about 4.5 minutes from scratch
 in one process, with a peak of 3.1 GB (`+RTS -M4G`), and the other two half a
 minute each.

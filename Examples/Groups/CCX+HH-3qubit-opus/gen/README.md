@@ -9,12 +9,14 @@ Python 3 (no dependencies) and a C++17 compiler. Run from this directory.
 | `mk_derived.py` | `../Derived.agda` |
 | `mk_push.py` | `../Push.agda`, `../PushMatrices.agda` |
 | `mk_indep.py` | `../Independence.agda` |
+| `gen_circuits.py` | `../Circuits/Syntactics.agda`, `../Circuits/Iso1.agda`, `../Circuits/Iso2.agda`, from `../Syntactics.agda` |
 | `errata.py` | nothing: it checks every claim of `../ERRATA.md` on the matrices |
 
 ```sh
 g++ -O2 -std=c++17 -o fbfs fbfs.cpp
 python3 search_all.py
 python3 mk_all.py && python3 mk_derived.py && python3 mk_push.py && python3 mk_indep.py
+python3 gen_circuits.py
 ```
 
 With `derivations.json` as committed, the four `mk_*` scripts reproduce the
