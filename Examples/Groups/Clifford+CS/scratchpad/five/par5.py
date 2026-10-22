@@ -71,7 +71,12 @@ From scratch, the whole of Clifford+CS (1271 modules, 6 jobs within
 15 GB): 1560 s with batches of at most 16 spread over the idle slots and
 taken in topological order, 1367 s with PAR5_MINB 16, PAR5_BATCH 48 and
 the critical path first (job time 5223 -> 3333 s, most of the saving
-loading).
+loading).  With the derivation modules taking their lemmas as
+parameters (1483 modules, 22 GB): 1143 s; 1094 s with chain heads run
+alone in a wide critical front; 960 s with the heights counting loading
+(and the window libraries no longer under the completeness chain), job
+time 4180 s of which 2200 s checking -- about 4.4 jobs at a time, the
+memory bounding them.
 """
 import fcntl, os, re, subprocess, sys, time, zlib
 
@@ -305,6 +310,11 @@ for p in reversed(topo):
     height[p] = own_h(p) + max((height[q] for q in rdeps[p]), default=0.0)
 
 
+if os.environ.get('PAR5_HEIGHTS'):   # a file to write the heights to, then stop
+    with open(os.environ['PAR5_HEIGHTS'], 'w') as f:
+        for p in sorted(height, key=lambda q: -height[q]):
+            f.write(f'{height[p]:8.1f} {own_h(p):7.1f} {p}\n')
+    sys.exit(0)
 lock = open(os.path.expanduser(os.environ.get('PAR5_LOCK', '~/.agda-job.lock')), 'w')
 fcntl.flock(lock, fcntl.LOCK_EX)
 log(f'par5: {len(mods)} modules ({len(TARGETS)} targets), {JOBS} jobs, batches of {BATCH}, '
@@ -368,10 +378,27 @@ def form_batch(ready_set, pending, idle):
     top = max(height[p] for p in pending if p in ready_set)
     front = sum(1 for p in pending if p in ready_set and height[p] >= top - SLACK)
 
+    def partners(p):
+        # the other ready modules that, with p, complete a critical
+        # dependent of p (Windows waits on SemanticSteps and Place, both
+        # ready together: neither alone headed a chain, and both waited
+        # 170 s behind Four/D); None if there is none
+        lim = height[p] - own_h(p) - SLACK
+        for q in sorted(rdeps[p], key=lambda x: -height[x]):
+            if q in done or q in busy or alone_p(q) or height[q] < lim: continue
+            others = [d for d in deps[q] if d not in done and d != p]
+            # a few: Four/DAll waits on 788 modules ready at once
+            if len(others) <= 3 and all(d in ready_set and d not in busy and not alone_p(d) for d in others):
+                return others
+        return None
+
     def chain_after(head):
         # the critical modules that wait only on the job (each lower by
         # the work before it)
         job, spent = [head], own_h(head)
+        for d in partners(head) or []:
+            job.append(d)
+            spent += own_h(d)
         for p in pending:
             if len(job) >= BATCH or sum(map(cost, job)) >= TARGET: break
             if p in job or p in ready_set or alone_p(p): continue
@@ -390,9 +417,7 @@ def form_batch(ready_set, pending, idle):
     # of 50-105 s, and those two chains were the critical path of a
     # 1143 s run.
     def heads_chain(p):
-        lim = height[p] - own_h(p) - SLACK
-        return any(q not in done and q not in busy and not alone_p(q) and height[q] >= lim
-                   and all(d in done or d == p for d in deps[q]) for q in rdeps[p])
+        return partners(p) is not None
     if height[rs[0]] >= top - SLACK:
         if front <= JOBS:
             return chain_after(rs[0])
