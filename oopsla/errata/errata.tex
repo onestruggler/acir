@@ -1,5 +1,5 @@
 %% errata.tex -- supplementary material: the errata that the
-%% formalization found in the fourteen sources, one by one, with the
+%% formalization found in the sixteen sources, one by one, with the
 %% Agda module in which each corrected statement is checked.
 %%
 %% Build: latexmk -pdf errata.tex
@@ -330,5 +330,50 @@ sides carry three $CNOT$s and two swaps against two $CNOT$s
 independence claim survives: a derivation between two-wire circuits
 uses no three-wire rule, the paper's Remark~14, which is proved as
 \aid{Prop.truncate} and applied to every bounded separator.
+
+\section{Toffoli--Hadamard circuits (Amy, Ross and Wesley, QPL 2024)}
+
+References are to arXiv:2407.11152v3. Qubit~0 is the most significant
+bit, products are matrix products, and $N = K_{[0,1,2,3]}$, the gate
+$H\otimes H$ on qubits~1 and~2 when qubit~0 is~0. Every correction is
+checked on the matrices in \path{CCX+HH-3qubit/Errata}, and
+\path{CCX+HH-3qubit/ERRATA.md} gives each with its matrix witness.
+
+\paragraph{The omitted relation $r_K$.} Section~5.5 introduces the
+circuit generators with $K_{1,2} = K_{[4,5,6,7]}\,X_0\,K_{[4,5,6,7]}\,X_0$,
+equivalently $K_{1,2} = N X_0 N X_0$, but Section~5.6 defines the
+relations $R_1$ of Theorem~5.2 by Figures~4 and~7 only, which omit it.
+It does not follow from them. Let $J$ be the all-ones $8\times8$
+matrix and $R = I - J/4$; then $R^2 = I$ and $R$ commutes with every
+permutation matrix. Reading each Toffoli-K generator $g$ as $RgR$, and
+$N$ and $CCZ$ as themselves, satisfies the corrected Figures~4 and~7,
+but the two sides of $r_K$ differ at entry $(0,0)$: $-\frac14$ against
+$\frac12$. So $R_1$ is not complete for $O_8(\Z[\frac12])$; the
+development keeps $r_K$ (\path{CCX+HH-3qubit/Repaired/Syntactics}) and
+checks the countermodel over $\Z/17\Z$
+(\path{CCX+HH-3qubit/MissingK}). Whether $r_K$ follows once Figure~8 is
+added is open.
+
+\paragraph{Five false formulas.} (33) ends with $\sigma_{1,2}$, not
+$\sigma_{0,2}$. In (97), and (63), (78), (125), the exchange on the
+right is $X_{[1,3]}$, resp.\ $X_{[b,d]}$. The commutation (100), and
+(66), (81), (128), is false; the relation is
+$K_{[0,1,2,3]}K_{[1,3,4,5]} = K_{[2,3,4,5]}K_{[0,1,2,4]}$ (Li, Ross and
+Selinger's (5a)). The alias of $(-1)_{[0]}$ in Section~5.6 omits $X_2$:
+it is $X_0X_1X_2\,CCZ\,X_2X_1X_0$. And Section~5.5 has
+$CCX_{1,2}=X_{[6,7]}$ for $CCX_{0,1}=X_{[6,7]}$.
+
+\paragraph{Control states.} Section~5.5 reverses the control states of
+$N$ and $X_0 N X_0$: their controls are on~0 and~1 respectively. The
+relation $r_K$ itself is a true matrix identity.
+
+\section{Qutrit Clifford circuits (Li, Mosca, Ross, van de Wetering and Zhao, QPL 2025)}
+
+References are to arXiv:2508.14670. The third row of Figure~25, which
+moves a $CZ$ through the boxes $A_{02}$ and $B_{02}$, has a single $CZ$
+in its residual, not two; with two it is unsound. Every relation of
+Appendix~C is checked against the matrices as it is transcribed
+(\path{Qutrit-Clifford/Tables}), and derived from the eighteen rules
+(\path{Qutrit-Clifford/Box1}, \path{Box2}, \path{Box3}).
 
 \end{document}

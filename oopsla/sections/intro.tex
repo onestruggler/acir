@@ -77,7 +77,7 @@ of it. A person who knows the form reads every statement the same way,
 and checks per paper only what the scaffold cannot fix: the relations
 as transcribed, the matrices of the gates, and the one line that states
 the theorem. For the real stabilizer development these come to under
-500 of its 11{,}799 lines. Agda checks the rest.
+500 of its 12{,}010 lines. Agda checks the rest.
 
 The scaffold also fixes what the author of a new theory has to do,
 which is the other half of the cost. The author writes the same two
@@ -96,18 +96,19 @@ What a paper gives as an idea is still written. For the real
 stabilizer development half of the lines are generated and a fifth are
 the paper's mathematics (Section~\ref{sec:example}).
 
-We did this for thirteen completeness proofs, written between 2014 and
-2026, and for the minimality theorem of a fourteenth paper.
+We did this for fifteen completeness proofs, written between 2014 and
+2026, and for the minimality theorem of a sixteenth paper.
 Table~\ref{tab:corpus} lists them. Each development states its result
 against a semantics: the relations present the group of matrices that
 the generators generate, or they present a submonoid of a matrix group,
 at every width or dimension. The one exception is the qudit Clifford
 group of \citet{bian2026qupit}, whose relations are shown to present an
 algebraic model of that group (Section~\ref{sec:qupit}). A development
-has about 22{,}000 lines on average, and all of them together about
-1{,}100 modules and 300{,}000 lines, on a library of 16{,}000 lines,
+has about 26{,}000 lines on average, and all of them together about
+1{,}500 modules and 420{,}000 lines, on a library of 17{,}500 lines,
 about a third of it added for this work. They typecheck in safe
-Agda~2.8 with no postulates.
+Agda~2.8 with no postulates, in about 40 minutes
+(Table~\ref{tab:costs}), and one module states the sixteen theorems.
 
 Safe Agda is also constructive: no excluded middle, no choice, no
 extensionality, and no real numbers in the standard library. Lean's
@@ -130,14 +131,17 @@ relation sets equivalent, formalized his argument for the missing
 case, and later his whole proof. Cl\'ement's 2026 paper on real
 Clifford+$CH$ circuits imports Theorem~4.14 as its Theorem~4.4, so its
 main theorem rested on this gap too; our formalization of that paper
-discharges the import. The other papers are correct in what we
-formalized, up to misprints, some of them in statements that proofs
+discharges the import. One more statement is false as printed: the
+relations of Amy, Ross and Wesley's theorem on Toffoli--Hadamard
+circuits~\cite{amy2024toffoli} omit one that their proof uses, and
+without it they are not complete. The other papers are correct in what
+we formalized, up to misprints, some of them in statements that proofs
 use (Section~\ref{sec:findings}, Appendix~\ref{sec:appendix-errata}).
 
 The qudit Clifford development was written mainly by a person, over
-three months. An LLM coding agent wrote the other thirteen, and the
-scripts that generated their long derivations, within 24 days, most of
-them in less than a day each, because almost every claim in these
+three months. LLM coding agents wrote the other fifteen, and the
+scripts that generated their long derivations, within four weeks, most
+of them in less than a day each, because almost every claim in these
 papers can be checked by a computation before it is formalized, and
 Agda checks the result after (Section~\ref{sec:method}). We think that
 scaffolds made by people, on which the models build, are one way of
@@ -153,7 +157,7 @@ mathematics that a route asks for, and the machine checks the rest.
   rules. With it every completeness or minimality theorem has the form
   of Section~\ref{sec:theorem-form}, and a reader checks a short
   statement per paper (Section~\ref{sec:scaffold}).
-\item Machine-checked proofs of thirteen completeness theorems for
+\item Machine-checked proofs of fifteen completeness theorems for
   quantum circuits and two-level matrix groups, and of one minimality
   theorem, each stated against a matrix semantics or, for qudit
   Clifford circuits, an algebraic model (Section~\ref{sec:corpus}).

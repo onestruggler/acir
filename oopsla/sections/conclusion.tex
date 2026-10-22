@@ -10,9 +10,10 @@ there, which the paper takes from~\cite{amy2020numbertheoretic}, is
 not formalized. The qudit Clifford theorems are stated against an
 algebraic model of the Clifford group (Section~\ref{sec:qupit}), the
 Weyl representation being left out. Blake's simpler
-presentations~\cite{blake2026simpler} are formalized for soundness,
-minimality and necessity, and for completeness in the Clifford and
-CNOT-dihedral fragments only. For Hadamard-$\Pi$ we
+presentations~\cite{blake2026simpler} are formalized in the ranges of
+wires its theorems state; beyond them its minimality is open, as in the
+paper. Whether the Toffoli--Hadamard relations present $L_8$ without
+the omitted $r_K$ is open. For Hadamard-$\Pi$ we
 replaced the case that uses Lemma~A.19 by Cl\'ement's argument;
 whether its diagrams can be fixed in place is open. And some semantic
 statements are proved over abstract rings with stated properties,
@@ -34,11 +35,11 @@ inside Hadamard-$\Pi$'s orthogonal group, the ports against the
 two-level presentations, and real Clifford+$CH$ against
 Hadamard-$\Pi$.
 
-We checked fourteen papers on the completeness and minimality of
+We checked sixteen papers on the completeness and minimality of
 equations for quantum circuits and related matrix groups. One proof
-had a gap, which we closed with an argument from another source, and
-so discharged the import of the later paper that relied on it; the
-others were correct up to misprints. Most of the work was engineering:
+had a gap, which we closed with an argument from another source; one
+relation set omits a relation that its proof uses; the others were
+correct up to misprints. Most of the work was engineering:
 turning case analyses and derivations into data that Agda can check,
 and keeping Agda within time and memory. An agent wrote most of the
 code under our direction, and Agda checked it. What was left for people

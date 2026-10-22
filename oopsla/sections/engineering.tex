@@ -8,26 +8,35 @@ Haskell library for exact synthesis. We ran Agda with a 3\,GB heap on a
 shared machine for routine checking, which shaped several of the
 decisions below; the larger figures in this section are what a module
 needed when it did not fit, measured with a larger heap.
-Table~\ref{tab:costs} gives typechecking times.
+Table~\ref{tab:costs} gives the typechecking time of each
+formalization. All sixteen take about 39 minutes, and no module more
+than 22 seconds; a root module that states the sixteen main theorems,
+one per paper, then typechecks in 10 seconds.
 
 \begin{table}
-\caption{Approximate typechecking times from scratch, with the
-interfaces of the shared library and EucDomain already built.}
+\caption{Typechecking time of each formalization from scratch, in
+seconds: the sum of its modules' own times (Agda's
+\texttt{-{}-profile=modules}, imports excluded), with the library,
+EucDomain and the developments it builds on already checked, and its
+slowest module. Agda~2.8.0 on an Intel Core i5-14400, 22 October
+2026.}
 \label{tab:costs}
-\small
-\begin{tabular}{@{}l l@{}}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}l r r r@{\hspace{12pt}}l r r r@{}}
 \toprule
-Development & Time \\
+Formalization & Mod. & Time & Slowest & Formalization & Mod. & Time & Slowest \\
 \midrule
-CNOT-dihedral & 1--2 min \\
-Real stabilizer, Clifford & 1--2 min each \\
-Phase-affine (four levels) & about 9 min \\
-Hadamard-$\Pi$; Cl\'ement's thesis & under 2 min per module \\
-$O_n(\Z[\frac12])$ and $L_n$ & about 6 min, peak heap 1.2\,GB \\
-Two-level bases of the Bian--Selinger ports & about 10 min each \\
-Three-qubit Clifford+$CS$ & about 5 min, peak heap 2.2\,GB \\
-Real Clifford+$CH$ & about 25 min in one process, under an 8\,GB limit \\
-Qudit Clifford & over 30 min, module by module; four modules need 4.5\,GB \\
+\citet{greylyn2014} & 31 & 42 & 6.1 & \citet{makary2021real} & 30 & 35 & 11.8 \\
+\citet{bian2021un} & 37 & 62 & 14.7 & \citet{amy2018cnotdihedral} & 30 & 24 & 3.3 \\
+\citet{li2021on} & 68 & 79 & 7.9 & \citet{blake2026phaseaffine} & 56 & 61 & 4.9 \\
+\citet{fang2026hadamard} & 44 & 44 & 8.6 & \citet{bian2023cliffordt2} & 62 & 118 & 13.1 \\
+\citet{clement2019thesis} & 40 & 64 & 15.5 & \citet{bian2023cliffordcs3} & 123 & 250 & 9.3 \\
+\citet{selinger2015clifford} & 31 & 34 & 7.3 & \citet{clement2026realcliffordch} & 346 & 405 & 14.5 \\
+\citet{bian2026qupit} & 215 & 546 & 19.8 & \citet{amy2024toffoli} & 201 & 102 & 3.0 \\
+\citet{blake2026simpler} & 73 & 183 & 19.2 & \citet{li2025qutrit} & 89 & 282 & 21.5 \\
+\midrule
+ & & & & All & 1{,}476 & 2{,}332 & \\
 \bottomrule
 \end{tabular}
 \end{table}

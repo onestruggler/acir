@@ -2,7 +2,7 @@
 
 This folder is a draft OOPSLA paper on the formalization work done in
 this repository since the POPL paper on the library (branch
-`popl-revision1`, folder `paper/`). It covers the fourteen developments
+`popl-revision1`, folder `paper/`). It covers the sixteen developments
 under `Examples/Groups/` (and `Examples/Independence/`) that came after
 it: the two-level groups, the circuit theories, the qudit Clifford
 chain of the `qupit` branch (Symplectic, ProjectivePauli,
@@ -16,7 +16,7 @@ repair.
 
 runs `latexmk -pdf` on `main.tex`. In this setup TeX lives in WSL:
 
-    wsl --exec bash -lc 'cd /mnt/d/dwork/acir/oopsla && make'
+    wsl --exec bash -lc 'cd /mnt/d/work/acir/oopsla && make'
 
 The WSL TeX Live here lacks `binhex.tex`, which `newtxmath` (loaded by
 `acmart`) inputs but does not use. A full TeX Live has it. Otherwise
@@ -41,8 +41,13 @@ sequence".
 - The acknowledgements say that the formalization and this draft were
   written with Claude Code. Check that this matches the venue's policy
   on AI disclosure, and adjust the wording to what we did.
-- The numbers (modules, lines, times, dates) were measured on the
-  `v-office` branch on 13 October 2026. Re-measure them if the
+- The numbers of the corpus table and the typechecking table (modules,
+  lines, times), the totals in the abstract and introduction, and the
+  dates and commits of the method section were measured on the
+  `ten-completeness` branch on 22 October 2026, the times by per-module
+  profiling (`--profile=modules`) of a from-scratch check; the
+  generated lines of the appendix table, but for three rows, on the
+  `v-office` branch on 13 October. Re-measure them if the
   developments change.
 - The errata are cited as supplementary material (Section 5.1). They
   are `errata/errata.tex`, a standalone document listing every error
@@ -50,5 +55,5 @@ sequence".
   correction; build it with `latexmk -pdf errata.tex` in that folder.
   Update it when the findings change.
 - The body must end by page 23 (OOPSLA 2027 limit, excluding
-  references and appendices). On 13 October 2026 the conclusion ends
+  references and appendices). On 22 October 2026 the conclusion ends
   on page 23 and the references start on page 24.

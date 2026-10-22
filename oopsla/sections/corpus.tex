@@ -1,6 +1,6 @@
 \section{What We Formalized}\label{sec:corpus}
 
-Table~\ref{tab:corpus} lists the fourteen sources. For each it gives the
+Table~\ref{tab:corpus} lists the sixteen sources. For each it gives the
 object, the method of the completeness proof, the size of our
 development, and the form of the theorem we proved. A
 \emph{presentation} means that the relations present the whole matrix
@@ -15,8 +15,8 @@ the qudit Clifford ones with a model in place of the matrix group.
 \caption{The sources and our developments. Modules and lines are those
 of the development's own folder, which includes the modules of the
 matrix layer that first appeared there; the library proper is not
-counted. The Hadamard-$\Pi$ theorem takes its hard case from the row
-below it (Section~\ref{sec:gap}).}
+counted. Measured on 22 October 2026. The Hadamard-$\Pi$ theorem takes
+its hard case from the row below it (Section~\ref{sec:gap}).}
 \label{tab:corpus}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -28,21 +28,23 @@ Source & Object & Method & Mod. & Lines & Result \\
 \citet{greylyn2014} & $U_4(\Z[\frac1{\sqrt2},i])$ & synthesis & 31 & 8{,}490 & presentation, $n\le4$ \\
 \citet{bian2021un} & $U_n(\Z[\frac12,i])$ & synthesis & 37 & 9{,}006 & presentation, every $n$ \\
 \citet{li2021on} & $O_n(\Z[\frac12])$, $L_n$ & synthesis & 68 & 15{,}528 & presentations, every $n$ \\
-\citet{fang2026hadamard} & $O_n(\Z[\frac1{\sqrt2}])$ & synthesis & 44 & 11{,}198 & presentation, every $n$ \\
-\citet{clement2019thesis} & $O_n(\Z[\frac1{\sqrt2}])$ & synthesis & 40 & 10{,}406 & presentation, every $n$ \\
+\citet{fang2026hadamard} & $O_n(\Z[\frac1{\sqrt2}])$ & synthesis & 44 & 11{,}205 & presentation, every $n$ \\
+\citet{clement2019thesis} & $O_n(\Z[\frac1{\sqrt2}])$ & synthesis & 40 & 10{,}427 & presentation, every $n$ \\
 \midrule
 \multicolumn{6}{@{}l}{\emph{Circuits}}\\
-\citet{selinger2015clifford} & Clifford & normal forms & 29 & 11{,}349 & sub-presentation, every $n$ \\
-\citet{bian2026qupit} & Clifford, odd prime $p$ & coset tower & 203 & 67{,}340 & presentation of a model, every $n$ \\
-\citet{makary2021real} & real stabilizer & normal forms & 28 & 11{,}799 & sub-presentation, every $n$ \\
-\citet{amy2018cnotdihedral} & CNOT-dihedral & width induction & 29 & 5{,}809 & sub-presentation, every $n$ \\
-\citet{blake2026phaseaffine} & phase-affine, prime $d$ & width induction & 55 & 12{,}219 & sub-presentations, every $n$ \\
-\citet{bian2023cliffordt2} & 2-qubit Clifford+$T$ & Reid.--Schreier & 56 & 11{,}684 & sub-presentation in $U_4$ \\
-\citet{bian2023cliffordcs3} & 3-qubit Clifford+$CS$ & Reid.--Schreier & 107 & 50{,}972 & sub-presentation in $U_8$ \\
-\citet{clement2026realcliffordch} & real Clifford+$CH$ & encoding & 348 & 73{,}097 & sub-presentation, every $n$ \\
+\citet{selinger2015clifford} & Clifford & normal forms & 31 & 11{,}555 & sub-presentation, every $n$ \\
+\citet{bian2026qupit} & Clifford, odd prime $p$ & coset tower & 215 & 70{,}088 & presentation of a model, every $n$ \\
+\citet{makary2021real} & real stabilizer & normal forms & 30 & 12{,}010 & sub-presentation, every $n$ \\
+\citet{amy2018cnotdihedral} & CNOT-dihedral & width induction & 30 & 5{,}984 & sub-presentation, every $n$ \\
+\citet{blake2026phaseaffine} & phase-affine, prime $d$ & width induction & 56 & 12{,}748 & sub-presentations, every $n$ \\
+\citet{bian2023cliffordt2} & 2-qubit Clifford+$T$ & Reid.--Schreier & 62 & 12{,}371 & sub-presentation in $U_4$ \\
+\citet{bian2023cliffordcs3} & 3-qubit Clifford+$CS$ & Reid.--Schreier & 123 & 57{,}744 & sub-presentation in $U_8$ \\
+\citet{clement2026realcliffordch} & real Clifford+$CH$ & encoding & 346 & 74{,}422 & sub-presentation, every $n$ \\
+\citet{amy2024toffoli} & 3-qubit Toffoli--Hadamard & encoding & 201 & 29{,}249 & presentation of $L_8$ \\
+\citet{li2025qutrit} & qutrit Clifford & normal forms & 89 & 55{,}517 & presentation, every $n$ \\
 \midrule
 \multicolumn{6}{@{}l}{\emph{Minimality}}\\
-\citet{blake2026simpler} & six fragments & models & 44 & 7{,}593 & soundness, minimality, necessity \\
+\citet{blake2026simpler} & six fragments & models & 73 & 25{,}306 & minimality, completeness \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -64,15 +66,10 @@ $L_n$ of scaled dyadic orthogonal matrices, which adds $I\otimes H$; we
 formalized both, with normal syllables that carry one sign where theirs
 carry four (Section~\ref{sec:beyond}).
 Hadamard-$\Pi$~\cite{fang2026hadamard} presents $O_n(\Z[\frac1{\sqrt2}])$
-by the generators $Z_{[a]}$, $X_{[a,b]}$ and $H_{[a,b]}$ and the
-relations (a1)--(d4) of its Figure~6; we formalized generation,
-Algorithm~1 and its correctness, soundness, and the Main Lemma up to
-the one case that the paper's proof does not cover, which the theorem
-takes as a hypothesis. Cl\'ement's thesis of
-2019~\cite{clement2019thesis} presents the same group with relations
-(1)--(21); we proved the two relation sets equivalent in every
-dimension, proved the missing case after his Case~3.4, and then
-formalized his whole proof over his own version of the algorithm
+by $Z_{[a]}$, $X_{[a,b]}$, $H_{[a,b]}$ and the relations (a1)--(d4) of
+its Figure~6, and Cl\'ement's thesis of 2019~\cite{clement2019thesis}
+the same group by relations (1)--(21); we formalized both theorems, the
+first with the case its proof misses taken from the second
 (Section~\ref{sec:gap}).
 
 \subsection{Circuits}
@@ -111,31 +108,40 @@ Reidemeister--Schreier method (its Theorem~4.10); its equations run to
 induction on the width with completeness one width down as a black
 box. All of it is formalized (Section~\ref{sec:encoding}).
 
+Two later developments complete the circuits.
+\citet{amy2024toffoli} present the three-qubit Toffoli--Hadamard
+circuits by the relations of their Figures~4, 7 and~8, through the
+two-level presentations of \citet{li2021on}. We proved that these
+relations, corrected and with one that the figures omit, present $L_8$,
+the $8\times8$ scaled dyadic orthogonal matrices, by an encoding into
+two-level words and back; without the omitted relation they do not
+present $O_8(\Z[\frac12])$ (Section~\ref{sec:findings}).
+\citet{li2025qutrit} give eighteen rules, C1--C18, for qutrit Clifford
+circuits over $-\omega$, $H$, $S$ and $CZ$, complete by a normal form
+of boxes. We proved that they present the $n$-qutrit Clifford group,
+exact matrices over $\Z[\zeta_{12}]$, at every width, and that it has
+order $6\prod_{k=1}^n 3(9^k-1)9^k$; the box relations that the normal
+form needs are derived from the rules by generated derivations. The
+Bian--Selinger and Toffoli--Hadamard theorems are also stated for
+circuits in the library's circuit syntax.
+
 \subsection{Qudit Clifford circuits}\label{sec:qupit}
 
 \citet{bian2026qupit} give sixteen rules, C0--C15 of their Figure~1,
-for Clifford circuits on qudits of odd prime dimension $p$, over the
-generators $-\omega$, $H$, $S$ and $CZ$. Their theorem was formalized
-in Agda alongside the paper, with the same library, mainly by hand and
-over about three months, and we include that development here. It goes
-up in layers, each a presentation theorem: $Sp(2n,\Z_p)$, presented by
-a normal form computed by a coset tower one level per wire, with a
-simplified rule set stated relative to a primitive root $g$ of $\Z_p$;
-its semidirect product with the Pauli group, the Clifford group modulo
-scalars, assembled by a generic construction
-(Section~\ref{sec:products}) and presented by the circuits read modulo
-scalars under five rule sets over $H$, $S$ and $CZ$, related by
-isomorphisms of rule sets along which the theorem transports; and the
-scalars, a central extension by $\langle\omega\rangle\cong\Z_p$ given
-by the Weyl cocycle, in which only $(SH)^3$ holds up to a nontrivial
-power, $\omega^{(p^2-1)/8}$, and then a direct factor
-$\langle -1\rangle$, the paper's group being generated by $-\omega$.
-The groups on the right are
-algebraic models, a Pauli and a symplectic matrix over $\Z_p$ with a
-phase and a sign; that the model is the group of unitary matrices the
-circuits generate is the Weyl representation, standard but not
-formalized, so this development says that the rules derive every
-equation that holds in the model.
+for Clifford circuits on qudits of odd prime dimension $p$, over
+$-\omega$, $H$, $S$ and $CZ$. Their theorem was formalized alongside the
+paper, with the same library, mainly by hand over about three months.
+It goes up in layers, each a presentation theorem: $Sp(2n,\Z_p)$, by a
+normal form computed by a coset tower; its semidirect product with the
+Pauli group, the Clifford group modulo scalars
+(Section~\ref{sec:products}); and the scalars, a central extension by
+$\langle\omega\rangle\cong\Z_p$ given by the Weyl cocycle, and a direct
+factor $\langle -1\rangle$. The group on the right is an algebraic
+model, a Pauli and a symplectic matrix over $\Z_p$ with a phase and a
+sign; that it is the group of unitary matrices the circuits generate
+is the Weyl representation, standard but not formalized, so this
+development says that the rules derive every equation that holds in the
+model.
 
 \subsection{Minimality and independence}\label{sec:structural}
 
@@ -151,8 +157,11 @@ completeness, its own two sides being an equation that the semantics
 validates and the other rules do not derive; the paper's Section~5.1
 says so, and we state it for every fragment in the ranges of its
 Theorem~37. The completeness part of that paper, a translation from
-the earlier presentations, is formalized for the CNOT-dihedral and
-Clifford fragments, from the presentations of Amy, Chen and Ross and
-of Selinger, with the derivations of its Appendix~A generated by
-search, so that their smaller rule sets are minimal complete
-presentations; the other four transfers are not formalized.
+the earlier presentations, is formalized for all six fragments in the
+ranges of its Theorem~22: at every width for the Clifford, real
+Clifford, qutrit Clifford and CNOT-dihedral fragments, up to two wires
+for Clifford+$T$ and three for Clifford+$CS$, from the presentations
+above, with the derivations of its appendices generated by scripts.
+So each rule set is a minimal complete presentation in those ranges;
+and the Clifford+$CS$ rules, which derive the Clifford ones, are
+complete for Clifford circuits at every width.
