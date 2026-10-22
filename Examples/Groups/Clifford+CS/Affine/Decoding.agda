@@ -17,7 +17,7 @@
 
 open import Data.Nat using (ℕ)
 open import Word.Base using (WRel)
-open import Examples.Groups.Clifford+CS.Completeness using (Complete)
+open import Examples.Groups.Clifford+CS.SemanticSteps using (Complete)
 open import Examples.Groups.Clifford+CS.Syntactics using (Gen ; Circuit ; _⊢_≈_)
 open import Notations using (₄₊)
 import Presentation.Base as PB

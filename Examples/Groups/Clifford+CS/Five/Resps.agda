@@ -22,7 +22,7 @@ open import Word.Base using (_•_)
 
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
-open import Examples.Groups.Clifford+CS.Completeness using (Complete)
+open import Examples.Groups.Clifford+CS.Windows using (Base)
 open import Examples.Groups.Clifford+CS.Five.WinSig using (WsL)
 open import Examples.Groups.Clifford+CS.Five.Chain
 open import Examples.Groups.Clifford+CS.Five.Flat using (by-flat)
@@ -32,7 +32,7 @@ open import Examples.Groups.Clifford+CS.Five.DAll.Resps using (lem-resp-CCZ013-a
 resp0 : WsL → (g : Mac) → Maybe (W0.Resp g)
 resp0 L g = Maybe.map W0.fromLit (lit0 g)
 
-pw0 : (c4 : Complete 4) (L : WsL) → _
+pw0 : (c4 : Base 4) (L : WsL) → _
 pw0 c4 L = W0.pwin (resp0 L) c4
 
 resp1 : WsL → (g : Mac) → Maybe (W1.Resp g)
@@ -72,7 +72,7 @@ resp1 L Toff402 = just (W1.resp (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) (tra
 resp1 L Toff403 = just (W1.resp (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) (trans (lem-resp-TOFF403-at-1 L) (by-flat Eq.refl)))
 resp1 L g = Maybe.map W1.fromLit (lit1 g)
 
-pw1 : (c4 : Complete 4) (L : WsL) → _
+pw1 : (c4 : Base 4) (L : WsL) → _
 pw1 c4 L = W1.pwin (resp1 L) c4
 
 resp2 : WsL → (g : Mac) → Maybe (W2.Resp g)
@@ -120,7 +120,7 @@ resp2 L Toff403 = just (W2.resp (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap
 resp2 L Toff413 = just (W2.resp (Toffᵗ ↑) (trans (lem-resp-TOFF413-at-2 L) (by-flat Eq.refl)))
 resp2 L g = Maybe.map W2.fromLit (lit2 g)
 
-pw2 : (c4 : Complete 4) (L : WsL) → _
+pw2 : (c4 : Base 4) (L : WsL) → _
 pw2 c4 L = W2.pwin (resp2 L) c4
 
 resp3 : WsL → (g : Mac) → Maybe (W3.Resp g)
@@ -158,11 +158,11 @@ resp3 L Toff402 = just (W3.resp (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap
 resp3 L Toff412 = just (W3.resp (Toffᵗ ↑) (trans (lem-resp-TOFF412-at-3 L) (by-flat Eq.refl)))
 resp3 L g = Maybe.map W3.fromLit (lit3 g)
 
-pw3 : (c4 : Complete 4) (L : WsL) → _
+pw3 : (c4 : Base 4) (L : WsL) → _
 pw3 c4 L = W3.pwin (resp3 L) c4
 
 resp4 : WsL → (g : Mac) → Maybe (W4.Resp g)
 resp4 L g = Maybe.map W4.fromLit (lit4 g)
 
-pw4 : (c4 : Complete 4) (L : WsL) → _
+pw4 : (c4 : Base 4) (L : WsL) → _
 pw4 c4 L = W4.pwin (resp4 L) c4

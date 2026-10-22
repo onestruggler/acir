@@ -16,7 +16,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Data.Nat using (ℕ)
-open import Examples.Groups.Clifford+CS.Completeness using (Complete)
+open import Examples.Groups.Clifford+CS.SemanticSteps using (Complete)
 
 module Examples.Groups.Clifford+CS.Affine.Widen (m : ℕ) (c4 : Complete 4) where
 

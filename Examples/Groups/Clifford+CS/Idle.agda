@@ -26,8 +26,9 @@ open import Examples.Groups.Clifford+CS.Semantics using (_~_)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧)
 open import Examples.Groups.Clifford+CS.Tools using (module Tools)
-open import Examples.Groups.Clifford+CS.Swaps using (swap-X ; swap-X′)
+open import Examples.Groups.Clifford+CS.Swaps using (swap-X ; swap-X′ ; facts)
 open import Examples.Groups.Clifford+CS.Place
+open Laws facts
 
 private
   variable

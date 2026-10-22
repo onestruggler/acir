@@ -11,7 +11,9 @@
 
 module Examples.Groups.Clifford+CS.Five.WinInst where
 
-open import Examples.Groups.Clifford+CS.Completeness using (Complete)
+open import Examples.Groups.Clifford+CS.SemanticSteps using (Complete)
+open import Examples.Groups.Clifford+CS.Windows using (Base)
+open import Examples.Groups.Clifford+CS.Swaps using (facts)
 open import Examples.Groups.Clifford+CS.Five.Chain using (refl)
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; WsL ; pleaf ; pnode)
 open import Examples.Groups.Clifford+CS.Five.WinInstL using (wsL)
@@ -25,7 +27,7 @@ import Examples.Groups.Clifford+CS.Five.Wins.WP07 as WP07
 import Examples.Groups.Clifford+CS.Five.Wins.WP08 as WP08
 
 ws : Complete 4 → Ws
-ws c4 = record
+ws c = record
   { lit = L
   ; pl  =
       (pnode
@@ -6110,4 +6112,7 @@ ws c4 = record
         )
       )
   }
-  where L = wsL c4
+  where
+  c4 : Base 4
+  c4 = record { facts = facts ; complete = c }
+  L = wsL c

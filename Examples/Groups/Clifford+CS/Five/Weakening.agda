@@ -23,7 +23,9 @@ open import Notations using (₁₊)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Tools using (module Tools)
 open import Examples.Groups.Clifford+CS.MultiControlled using (top)
-open import Examples.Groups.Clifford+CS.TopWeakening using (σ ; σ⁻¹ ; σ⁻¹σ ; nat ; topᵏ)
+open import Examples.Groups.Clifford+CS.TopWeakening using (σ ; σ⁻¹ ; topᵏ ; module Laws)
+open import Examples.Groups.Clifford+CS.Swaps using (facts)
+open Laws facts using (σ⁻¹σ ; nat)
 open import Examples.Groups.Clifford+CS.Five.Rules
 
 private

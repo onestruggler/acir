@@ -66,6 +66,15 @@ record Evaluated {k : ℕ} (u v : Circuit k) : Set where
     same : Same u v
 
 ------------------------------------------------------------------------
+-- Completeness at a width
+
+-- The statement only (Completeness proves it on up to three wires and
+-- re-exports it): the window libraries and the five-wire developments
+-- take completeness as an argument, and need not wait for its proof.
+Complete : ℕ → Set
+Complete n = ∀ {w v : Circuit n} → ⟦ w ⟧ ~ ⟦ v ⟧ → n ⊢ w ≈ v
+
+------------------------------------------------------------------------
 -- Steps, given completeness at the width
 
 module Below (k : ℕ) (complete : ∀ {u v : Circuit k} → ⟦ u ⟧ ~ ⟦ v ⟧ → k ⊢ u ≈ v) where

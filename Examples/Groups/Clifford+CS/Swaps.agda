@@ -21,6 +21,7 @@ open import Notations using (₂₊ ; ₃₊)
 
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.SemanticSteps using (module Below)
+open import Examples.Groups.Clifford+CS.SwapFacts using (SwapFacts)
 import Examples.Groups.Clifford+CS.TwoQubit as TwoQubit
 import Examples.Groups.Clifford+CS.TwoQubit.Decoding as Decoding
 import Examples.Groups.Clifford+CS.ThreeQubit as ThreeQubit
@@ -61,3 +62,7 @@ swap₁ K-gate = swap-K
 
 swap₂ : ∀ (h : Gate 2) → (₃₊ n) ⊢ [ gate₂ h ]ʷ ↑ • Swap • Swap ↑ ≈ Swap • Swap ↑ • [ gate₂ h ]ʷ
 swap₂ CS-gate = swap-CS
+
+-- What the placements take (SwapFacts).
+facts : SwapFacts
+facts = record { Swap² = Swap² ; swap₁ = swap₁ ; swap₂ = swap₂ }

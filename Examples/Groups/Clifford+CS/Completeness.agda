@@ -65,8 +65,7 @@ import Examples.Groups.Clifford+CS.Weakening as Weakening
 ------------------------------------------------------------------------
 -- Completeness at a width
 
-Complete : ℕ → Set
-Complete n = ∀ {w v : Circuit n} → ⟦ w ⟧ ~ ⟦ v ⟧ → n ⊢ w ≈ v
+open import Examples.Groups.Clifford+CS.SemanticSteps using (Complete) public
 
 -- The widths proved.
 complete₀ : Complete 0

@@ -35,7 +35,9 @@ import Examples.Groups.Symmetric.Syntactics as S
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Tools using (module Tools)
 open import Examples.Groups.Clifford+CS.MultiControlled using (top ; CK₁₀)
-open import Examples.Groups.Clifford+CS.TopWeakening using (σ ; σ⁻¹ ; σσ⁻¹ ; nat ; top-cong)
+open import Examples.Groups.Clifford+CS.TopWeakening using (σ ; σ⁻¹ ; module Laws)
+open import Examples.Groups.Clifford+CS.Swaps using (facts)
+open Laws facts using (σσ⁻¹ ; nat ; top-cong)
 open import Examples.Groups.Clifford+CS.PermCalc using (net ; net-↑ ; perm ; revS ; revS-↑ ; perm-inv)
 open import Examples.Groups.Clifford+CS.LocalPlace using (pl ; pl-pl ; place-eq)
 open import Examples.Groups.Clifford+CS.Networks using (perm-↑0 ; perm-↑s ; bring₁ ; bring₂ ; bring₅)

@@ -246,20 +246,68 @@ def tree(items):
 HEAD = ['{-# OPTIONS --without-K --safe #-}', '', '-' * 72, '-- Presentations of groups', '--']
 TAIL = ['-' * 72, '']
 
+# The tree's subtrees at depth PDEPTH are modules of their own
+# (DStmt/P0, ...), checked side by side: elaborating the statements'
+# letter lists was 37-44 s of Four/DStmt, under every derivation module.
+PDEPTH = 3
+TTYPE = 'Tree' if FOUR else 'WTree'
+TIMPORT = ('open import Examples.Groups.Clifford+CS.Four.WinSig using (Tree ; leaf ; node ; Win)' if FOUR else
+           'open import Examples.Groups.Clifford+CS.Five.WinSig using (WTree ; wleaf ; wnode ; WinT)')
+parts = []
+
+
+def tree_split(items, depth):
+    if not items:
+        return TLEAF
+    if depth == PDEPTH:
+        parts.append(items)
+        return f'P{len(parts) - 1}.t'
+    left = [items[i] for i in range(1, len(items)) if i % 2 == 1]
+    right = [items[i] for i in range(2, len(items)) if i % 2 == 0]
+    l, r = items[0]
+    lt = tree_split(left, depth + 1)
+    rt = tree_split(right, depth + 1)
+    return f'({TNODE} {lt} {l} {r} {rt})'
+
+
+top = tree_split([sides(x) for x in taken], 0)
+pdir = os.path.join(BASE, TREE, 'DStmt')
+os.makedirs(pdir, exist_ok=True)
+for f in os.listdir(pdir):
+    if re.fullmatch(r'P\d+\.agda', f) and int(f[1:-5]) >= len(parts):
+        os.remove(os.path.join(pdir, f))
+for k, items in enumerate(parts):
+    out = HEAD + [
+        f'-- Part {k} of the statements of DStmt (a subtree of `lemmas`)',
+        '--',
+        '-- Written by `scratchpad/four/di.py`.'] + TAIL + [
+        f'module {DSTMT}.P{k} where', '',
+        'open import Data.List.Base using ([] ; _∷_)', '',
+        TIMPORT,
+        'open import Examples.Groups.Clifford+CS.' + TREE + '.Letters', '',
+        f't : {TTYPE}',
+        't = ' + tree(items)]
+    p = os.path.join(pdir, f'P{k}.agda')
+    new = NL.join(out) + NL
+    if not os.path.exists(p) or open(p, encoding='utf-8').read() != new:
+        open(p, 'w', encoding='utf-8').write(new)
+
 out = HEAD + [
     '-- The statements of the lemmas the derivation modules of ' + TREE + '/D take',
     '--',
     "-- As a balanced tree (`lemmas`, `St n` the n-th), WinSig's.  In a",
     '-- module of its own: the positivity checker of a module walks every',
-    '-- definition in it.  Written by `scratchpad/four/di.py`.'] + TAIL + [
+    '-- definition in it; and its subtrees in modules of their own',
+    '-- (DStmt/P0, ...), checked side by side.  Written by',
+    '-- `scratchpad/four/di.py`.'] + TAIL + [
     'module ' + DSTMT + ' where', '',
     'open import Data.List.Base using ([] ; _∷_)',
     'open import Data.Nat.Base using (ℕ)',
-    ('open import Examples.Groups.Clifford+CS.Four.WinSig using (Tree ; leaf ; node ; Win)' if FOUR else
-     'open import Examples.Groups.Clifford+CS.Five.WinSig using (WTree ; wleaf ; wnode ; WinT)'),
-    'open import Examples.Groups.Clifford+CS.' + TREE + '.Letters', '',
-    'lemmas : ' + ('Tree' if FOUR else 'WTree'),
-    'lemmas = ' + tree([sides(x) for x in taken]), '',
+    TIMPORT,
+    'open import Examples.Groups.Clifford+CS.' + TREE + '.Letters'] + [
+    f'import {DSTMT}.P{k} as P{k}' for k in range(len(parts))] + ['',
+    'lemmas : ' + TTYPE,
+    'lemmas = ' + top, '',
     'St : ℕ → Set',
     'St n = ' + ('Win' if FOUR else 'WinT') + ' lemmas n']
 open(os.path.join(BASE, TREE, 'DStmt.agda'), 'w', encoding='utf-8').write(NL.join(out) + NL)

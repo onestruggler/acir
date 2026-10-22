@@ -26,8 +26,7 @@ import Examples.Groups.Symmetric.Syntactics as S
 
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.MultiControlled using (_↧ ; top)
-open import Examples.Groups.Clifford+CS.Completeness using (Complete)
-open import Examples.Groups.Clifford+CS.SemanticSteps using (Same ; same-sem)
+open import Examples.Groups.Clifford+CS.SemanticSteps using (Complete ; Same ; same-sem)
 open import Examples.Groups.Clifford+CS.LocalPlace using (pl)
 open import Examples.Groups.Clifford+CS.Five.Rules using (_⊢ₓ_≈_ ; embed)
 open import Examples.Groups.Clifford+CS.Five.Weakening using (top-congₓ)

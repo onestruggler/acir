@@ -56,7 +56,9 @@ like Four/D/D724 is another module, and a stale cost of a heavy one ran
 light modules alone, too many of them at once), PAR5_HEAVY (60: a module known to take longer runs
 alone), PAR5_TARGET (40: a batch stops at that many seconds of known
 time), PAR5_OVERHEAD (5: a job's fixed cost in the critical-path height
-by which ready modules are taken, highest first), PAR5_SLACK (60: a
+by which ready modules are taken, highest first), PAR5_LOADRATE (1.5:
+seconds of loading per MB of source a module imports, in that height),
+PAR5_SLACK (60: a
 ready module within that many seconds of the highest height is critical;
 while at most JOBS are, each runs in a job of its own with the critical
 modules that wait only on it), DONE (comma-separated
@@ -276,13 +278,21 @@ def cost(p):
 def alone_p(p): return p in solo or big(p) or cost(p) > HEAVY
 
 
-# The critical path: a module's height is its cost, plus a job's fixed
-# overhead (PAR5_OVERHEAD, 5 s: loading), plus the largest height among
-# the modules that import it.  Ready modules are taken highest first, so
-# that the long chains (Four/D's 20 levels, Five/D's 18) start as soon
-# as they can; in topological order they ran last, alone, for the final
-# 500 s of a from-scratch run.
+# The critical path: a module's height is its cost, plus what a job
+# spends loading it (PAR5_OVERHEAD, 5 s, plus PAR5_LOADRATE, 1.5 s per MB
+# of source in the repository that it imports, directly or not), plus
+# the largest height among the modules that import it.  Ready modules
+# are taken highest first, so that the long chains (Four/D's 20 levels,
+# Five/D's 18) start as soon as they can; in topological order they ran
+# last, alone, for the final 500 s of a from-scratch run.  The loading
+# term is measured (Lemma87/Four, 32 MB: 51 s beyond its own time; a
+# Four/D module, 1-3 MB: about 6 s): with a fixed 5 s, the light modules
+# near the end that load all of Four/D (Lemma87/Parts, Sem/S02) looked
+# cheap, waited 180 s after they were ready, and then took 78 s.
 OVERHEAD = float(os.environ.get('PAR5_OVERHEAD', '5'))
+LOADRATE = float(os.environ.get('PAR5_LOADRATE', '1.5'))
+srcmb = {p: sum(size(d) for d in clos(p) if os.path.exists(os.path.join(REPO, d))) / 1e6 for p in deps}
+def own_h(p): return cost(p) + OVERHEAD + LOADRATE * srcmb[p]
 rdeps = {p: set() for p in deps}
 for p in deps:
     for d in deps[p]:
@@ -292,7 +302,7 @@ for p in reversed(topo):
     missing = [q for q in rdeps[p] if q not in height]
     if missing:   # only an import cycle leaves a dependent unvisited
         sys.exit(f'par5: import cycle through {p} and {missing[0]}')
-    height[p] = cost(p) + OVERHEAD + max((height[q] for q in rdeps[p]), default=0.0)
+    height[p] = own_h(p) + max((height[q] for q in rdeps[p]), default=0.0)
 
 
 lock = open(os.path.expanduser(os.environ.get('PAR5_LOCK', '~/.agda-job.lock')), 'w')
@@ -357,20 +367,39 @@ def form_batch(ready_set, pending, idle):
     if not rs: return []
     top = max(height[p] for p in pending if p in ready_set)
     front = sum(1 for p in pending if p in ready_set and height[p] >= top - SLACK)
-    # only a narrow critical front: when many modules are equally critical
-    # (all of Four/D, on which everything after it waits) they are batched
-    # as the others are; one job each made a run 1960 s rather than 1350
-    if height[rs[0]] >= top - SLACK and front <= JOBS:
-        # the critical module, and what is critical among the modules that
-        # wait only on the job (each lower by the work before it)
-        job, spent = [rs[0]], cost(rs[0]) + OVERHEAD
+
+    def chain_after(head):
+        # the critical modules that wait only on the job (each lower by
+        # the work before it)
+        job, spent = [head], own_h(head)
         for p in pending:
             if len(job) >= BATCH or sum(map(cost, job)) >= TARGET: break
             if p in job or p in ready_set or alone_p(p): continue
-            if height[p] >= height[rs[0]] - spent - SLACK and all(d in done or d in job for d in deps[p]):
+            if height[p] >= height[head] - spent - SLACK and all(d in done or d in job for d in deps[p]):
                 job.append(p)
-                spent += cost(p) + OVERHEAD
+                spent += own_h(p)
         return job
+    # The critical module runs in a job of its own, with the chain after
+    # it, when the critical front is narrow or when a chain does continue
+    # through it.  When many modules are equally critical and none heads
+    # a chain (all of Four/D, whose one importer waits on all of them)
+    # they are batched as the others are: one job each made a run 1960 s
+    # rather than 1350.  But a chain head in a wide front had been batched
+    # with 47 of them: Swaps, TopWeakening, Place, Windows and the seven
+    # Lemma88/Hybrid modules, a few seconds each, each waited for a batch
+    # of 50-105 s, and those two chains were the critical path of a
+    # 1143 s run.
+    def heads_chain(p):
+        lim = height[p] - own_h(p) - SLACK
+        return any(q not in done and q not in busy and not alone_p(q) and height[q] >= lim
+                   and all(d in done or d == p for d in deps[q]) for q in rdeps[p])
+    if height[rs[0]] >= top - SLACK:
+        if front <= JOBS:
+            return chain_after(rs[0])
+        for p in rs:
+            if height[p] < top - SLACK: break
+            if heads_chain(p):
+                return chain_after(p)
     if len(rs) >= idle:
         cap, job = max(1, min(BATCH, max(MINB, -(-len(rs) // idle)))), []
         for p in rs:
