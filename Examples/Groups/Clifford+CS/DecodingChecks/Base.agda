@@ -28,7 +28,7 @@ open import Notations
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_)
 open import Examples.Groups.Clifford+CS.Interpretation using (len)
 open import Examples.Groups.Clifford+CS.Semantics.Decide using (eqM)
-open import Examples.Groups.Clifford+CS.FastEval using (⟦_⟧Q ; nK)
+open import Examples.Groups.Clifford+CS.MacroEval using (⟦_⟧F ; nKF)
 open import Examples.Groups.Clifford+CS.BridgeGray 4 using (⟦_⟧ʸ ; ⟦_⟧Y)
 open import Examples.Groups.Clifford+CS.Decoding 0 using (d)
 open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; asG ; pp ; px ; dx ; ki)
@@ -42,7 +42,7 @@ import Examples.Groups.Clifford+CS-TwoLevel.Syntactics as TL
 
 -- The decoded letter has the letter's matrix.
 chk : GenP 16 → Set
-chk p = eqM (scaleM (γ^ proj₁ ⟦ asG p ⟧Y) ⟦ d p ⟧Q) (scaleM (γ^ nK (d p)) ⟦ asG p ⟧GM) ≡ true
+chk p = eqM (scaleM (γ^ proj₁ ⟦ asG p ⟧Y) ⟦ d p ⟧F) (scaleM (γ^ nKF (d p)) ⟦ asG p ⟧GM) ≡ true
 
 -- An order of two literal indices.
 lt : ∀ (a b : Fin 16) {p : T (toℕ a <ᵇ toℕ b)} → Data.Fin._<_ a b

@@ -7,8 +7,8 @@
 -- on fewer qubits as a black box, and so does the development from
 -- four wires on here: a step is an equation between two circuits on
 -- k ≤ 3 wires with the same matrix, decided by one boolean on their
--- row-operation readings (`Same u v`, by `Eq.refl`; FastEval's, which
--- charges γ to K alone), turned into a
+-- row-operation readings (`Same u v`, by `Eq.refl`; MacroEval's, which
+-- charges γ to K alone and applies the shortcuts whole), turned into a
 -- derivation by completeness on k wires (Completeness.complete≤₃, the
 -- parameter of `Below`) and
 -- carried to the bottom k wires of a wider circuit by Weakening, or to
@@ -29,21 +29,23 @@ open import Notations using (₁₊)
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧ ; ⟦_⟧M ; ⟦⟧-ix ; len)
-open import Examples.Groups.Clifford+CS.FastEval using (SameQ ; sameQ-sem)
+open import Examples.Groups.Clifford+CS.MacroEval using (SameF ; sameF-sem)
 open import Examples.Groups.Clifford+CS.Weakening using (weaken)
 
 ------------------------------------------------------------------------
 -- Two circuits with the same matrix
 
 -- Decided by one boolean on the fast row-operation readings, each scaled
--- by the other's power of γ (FastEval: the readings charge γ to K alone,
--- three times faster than Evaluation's on long words).
+-- by the other's power of γ (MacroEval: the readings charge γ to K alone,
+-- as FastEval's do, and apply a Swap, CNOT, Toffoli, CZ, CCZ or
+-- controlled K as one row operation; five times faster than FastEval's
+-- on the windows of Four/ and Five/).
 Same : ∀ {k} → Circuit k → Circuit k → Set
-Same u v = SameQ u v
+Same u v = SameF u v
 
 -- Hence the same semantics.
 same-sem : ∀ {k} (u v : Circuit k) → Same u v → ⟦ u ⟧ ~ ⟦ v ⟧
-same-sem = sameQ-sem
+same-sem = sameF-sem
 
 same-≡ : ∀ {k} (u v : Circuit k) → Same u v →
          scaleM (γ^ len v) ⟦ u ⟧M ≡ scaleM (γ^ len u) ⟦ v ⟧M
