@@ -45,6 +45,20 @@
 -- a derivation between two-wire circuits uses no three-wire axiom
 -- (Prop.truncate, Remark 14), which is how every bounded separator is
 -- applied here.
+--
+-- What is not proved here is what the paper leaves open.  Five axioms
+-- have no separator (the "none" rows of Figure 8): the three-qutrit (I)
+-- of Cliff₃, which the paper conjectures independent (arg det₂, which
+-- separates the qubit (I), takes the same value on its two sides, the
+-- qutrit CNOT being an even permutation and the two swaps cancelling);
+-- (CSH), (HT²) and (HTH) of CliffT₂; and (SH₀)–(SH₃) of CliffCS₂.  A
+-- separator would make the rule set minimal at that arity, a derivation
+-- from the other axioms would show it is not.  And completeness reaches
+-- as far as the sources do: CliffT₂ on three or more wires and CliffCS₂
+-- on four or more (but on Clifford circuits) have no presentation to be
+-- transferred from, and rules of bounded arity may not be complete
+-- there (Clément's complete theory of Real-Clifford+CH has a rule on
+-- any number of wires, its schema (19)).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
