@@ -1,166 +1,193 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Index of the main results of the qupit development
+-- Index of the paper formalizations: the main theorem of each paper
 --
--- This module collects, in one place, the results this branch is for:
--- that each of six rule sets presents the group it is meant to, and
--- that the symplectic coset tower's normal form is unique.  Every result
--- is re-stated with a full type signature and proved by reference to its
--- home module, so this file also serves as a reading guide: the banner
--- of each section names the file where the proof lives.
+-- One section per source, in the order of the corpus table of the
+-- OOPSLA draft (oopsla/sections/corpus.tex): groups of two-level
+-- matrices, then circuits, then minimality.  Each section re-states the
+-- paper's final result with its full type, the relation set and the
+-- group it presents imported openly from the development, and proves it
+-- by reference to the module named in the banner, so this file is also
+-- a reading guide.  A presentation (_IsPresentationOf_) says that the
+-- relations present the whole group; a sub-presentation
+-- (_IsSubPresentationOf_) that they present the subgroup the
+-- generators generate, which for circuits is the group the paper is
+-- about.  The intermediate results of each development — normal forms,
+-- auxiliary equations, the layers of the qudit Clifford chain — are in
+-- its own folder and its README; nothing here rests on a postulate.
 --
--- The chain runs bottom-up.  The symplectic normal form is what makes
--- the simplified symplectic rules present Sp(2n, ℤ/pℤ); that, with the
--- Pauli group, is what the semidirect construction assembles into
--- Pauli n ⋊ Sp(2n, ℤ/pℤ); the V1 Clifford rules present that; and the
--- paper's Figure 1 rules, read modulo scalars, present it in turn, by
--- transport along an isomorphism of rule sets.  The scalars then come
--- back in two steps: a central extension by ⟨ω⟩, and a direct factor
--- ⟨-1⟩, whose rule set the paper's Figure 1 rules — scalars and all —
--- are isomorphic to.
---
--- This is the qupit branch, so the root states only that chain.  The
--- library's other developments — the symmetric, trivial and cyclic
--- groups, the Pauli group on its own, the wreath product, and the
--- Clifford+T and U₃(ℤ[½,i]) amalgamations — are still in the tree, but
--- nothing here reaches them, so they must be typechecked separately.
+-- The root reaches every paper formalization, about 1,600 modules, so
+-- from scratch it is checked module by module (CLAUDE.md).  The
+-- library's other contents — the symmetric, trivial and cyclic groups,
+-- the wreath product, the amalgamations, Circuit.Independence — are
+-- reached only where a development uses them.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module MainTheorems where
 
-open import Data.Fin using (toℕ)
-open import Data.Nat using (ℕ ; 2+)
+open import Algebra.Bundles using (Group)
+open import Algebra.Structures using (IsCommutativeRing)
+open import Data.Fin using (Fin ; toℕ)
+open import Data.Nat using (ℕ ; 2+ ; _≤_ ; _^_ ; suc)
+import Data.Nat as ℕ
 open import Data.Nat.Primality using (Prime)
-open import Data.Product using (_,_ ; ∃)
-import Relation.Binary.PropositionalEquality as Eq
+open import Data.Product using (_×_ ; _,_ ; ∃)
+open import Function.Bundles using (Inverse)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Relation.Nullary.Negation using (¬_)
 
-open import Notations using (₁₊)
-open import Word.Base using ([_]ʷ ; _•_)
+open import Instances using (Ring ; Adjoint ; adj ; _+_ ; _*_ ; -_ ; 0# ; 1#)
+open import Notations using (₁₊ ; ₂₊)
 open import ForStdlib.Data.Fin.Mod using (ℤ ; ℤ* ; _^′_)
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat using (module PrimeModulus')
-import Presentation.Base as PB
-open import Presentation.Definitions using (_IsPresentationOf_)
-
-import Circuit.Base as CB
-import Circuit.Independence as CI
-import Examples.Groups.Symplectic.Semantics as SympSem
-import Examples.Groups.Symplectic.Normalization.Section as SympSec
-import Examples.Groups.Symplectic.Normalization.Uniqueness as SympUnq
-import Examples.Groups.Symplectic.Simplified.Syntactics as SympSimSyn
-import Examples.Groups.Symplectic.Simplified.Presentation as SympSimPres
-import Examples.Groups.ProjectiveClifford.Qupit.SemiDirect.Presentation
-  as QupitSD
-import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.Syntactics
-  as SimV1Syn
-import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.Presentation
-  as SimV1Pres
-import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Syntactics
-  as PapV1Syn
-import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Presentation
-  as PapV1Pres
-import Examples.Groups.Qupit-Clifford.Presentation as QupitExact
-import Examples.Groups.Clifford+MinusOne.Qupit.Syntactics as Qupit±Syn
-import Examples.Groups.Clifford+MinusOne.Qupit.Semantics as Qupit±Sem
-import Examples.Groups.Clifford+MinusOne.Qupit.Presentation as Qupit±Pres
-import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Syntactics
-  as Fig1Syn
-import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Presentation
-  as Fig1Pres
-import Examples.Groups.Clifford+MinusOne.Qupit.Figure1-MS.Syntactics
-  as Fig1MSSyn
-import Examples.Groups.Clifford+MinusOne.Qupit.Figure1-MS.Presentation
-  as Fig1MSPres
-import Examples.Groups.Clifford+MinusOne.Qupit.Figure1-MS.FF-Iso
-  as Fig1FFIso
+open import Quantum.Synthesis.Ring.Properties.Hom using (IsInvolutiveRingEndo)
+import Examples.Groups.Qupit-Phase-Affine.Field as Field
+open import Presentation.Definitions
+  using (_IsPresentationOf_ ; _IsSubPresentationOf_)
 
 ------------------------------------------------------------------------
--- The symplectic normal form is unique
---
--- Home: Examples.Groups.Symplectic.Normalization.Uniqueness.  The engine
--- is the Reidemeister–Schreier coset tower of Symplectic.Normalization,
--- whose well-definedness is proved by induction on the width: each
--- level's obligation needs only faithfulness one level down.
---
--- Uniqueness is the completeness crux — normal forms with equal
--- denotations are equal — and it is what promotes soundness of the
--- interpretation into a presentation theorem.  It is proved outright, so
--- like everything else here it rests on no postulate.
-
-module Symplectic-Theorems (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
-
-  private
-    module Sem = SympSem p-2 p-prime
-    module Sec = SympSec p-2 p-prime
-    module Unq = SympUnq p-2 p-prime
-
-  open Sem using (_≈ˢ_)
-  open Sem.Interpretation using (⟦_⟧)
-  open Sec using (NF ; [_])
-
-  unique-nf : ∀ n {u v : NF n} → ⟦ [ u ] ⟧ ≈ˢ ⟦ [ v ] ⟧ → u Eq.≡ v
-  unique-nf = Unq.⟦[]⟧-injective
+-- Groups of two-level matrices
+------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
--- Concrete presentations: the symplectic groups, from the simplified
--- rules
+-- Greylyn (2014): U₄(ℤ[1/√2, i]), the two-qubit Clifford+T operators
 --
--- Home: Examples.Groups.Symplectic.Simplified.Presentation.  The
--- simplified rules replace the M-matrices of the full symplectic rules
--- by powers of a single metaplectic generator Mg, so they are stated
--- relative to a primitive root g of ℤ/pℤ, which is what names it.  They
--- present the same group, by transport along the isomorphism of the two
--- rule sets.
+-- Home: Examples.Groups.Clifford+T-2qubit-TwoLevel.Presentation.  The
+-- two-level generators ω_[a], H_[a,b], X_[a,b] and Greylyn's relations
+-- present Uₙ(ℤ[1/√2, i]) for n ≤ 4, by the main lemma of the exact
+-- synthesis algorithm, as the thesis does.
 
-module Symplectic-Simplified-Theorems
-  (p-2 : ℕ) (p-prime : Prime (2+ p-2))
-  (let open PrimeModulus' p-2 p-prime)
-  (g*@(g , g≠0) : ℤ* ₚ)
-  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ λ (k : ℤ ₚ-₁) → x Eq.≡ g ^′ toℕ k)
-  where
+module Greylyn where
 
-  private
-    module Syn  = SympSimSyn  p-2 p-prime g* g-gen
-    module Pres = SympSimPres p-2 p-prime g* g-gen
+  open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Syntactics using (_===_)
+  open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics using (U)
+  import Examples.Groups.Clifford+T-2qubit-TwoLevel.Presentation as P
 
-  open Syn.Simplified-Relations using (_QRel,_===_)
-  open SympSem p-2 p-prime using (Sp-group)
-
-  -- The simplified rules present Sp(2n, ℤ/pℤ).
-  simplified-presentation :
-    ∀ n → (n QRel,_===_) IsPresentationOf (Sp-group n)
-  simplified-presentation n = Pres.presentation {n}
+  presentation : ∀ {n} → n ≤ 4 → (_===_ {n}) IsPresentationOf (U n)
+  presentation n≤4 = P.presentation n≤4
 
 ------------------------------------------------------------------------
--- Concrete presentations: the projective qupit Clifford group
+-- Bian and Selinger (2021): Uₙ(ℤ[½, i])
 --
--- Homes: Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.
--- Presentation and .Paper-V1.Presentation.  For an odd prime p, the
--- qupit Clifford circuits read **modulo scalars** present the semidirect
--- product of the n-qupit Pauli group and Sp(2n, ℤ/pℤ), which is the
--- projective Clifford group.  Both rule sets below present it, over the
--- same alphabet (Symplectic's H, S, CZ), and like the simplified
--- symplectic rules above both are stated relative to a primitive root g,
--- which their multiplier rules name.
---
--- Pauli⋊Sp itself is built in SemiDirect.Presentation, which feeds the
--- generic semidirect-product machinery its two factors — the simplified
--- symplectic rules above for one, the Pauli rules for the other.
---
---   * V1 is where the work is: the Pauli calculus, the Ex-conjugation
---     rules, and an isomorphism onto the semidirect relation.
---   * Paper-V1 is the paper's Figure 1, with the multiplier spelled over
---     S as SHS' x⁻¹ x.  It has 15 group-specific rules where the R-spelled
---     Paper-V0 has 16: (S • H) ^ 3 = ε is a theorem here rather than an
---     axiom, since under that spelling M₁ *is* that word.  Its theorem is
---     the composite of an isomorphism of rule sets — the identity on
---     words, both being relations over the same alphabet — with
---     Paper-V0's presentation theorem.
+-- Home: Examples.Groups.Clifford+CS-TwoLevel.Presentation.  The
+-- two-level generators and the relations of their Figure 1 present
+-- Uₙ(ℤ[½, i]) in every dimension.
 
-module Qupit-Clifford-Theorems
+module Bian-Selinger-Un where
+
+  open import Examples.Groups.Clifford+CS-TwoLevel.Syntactics using (_===_)
+  open import Examples.Groups.Clifford+CS-TwoLevel.Semantics using (U)
+  import Examples.Groups.Clifford+CS-TwoLevel.Presentation as P
+
+  presentation : ∀ {n} → (_===_ {n}) IsPresentationOf (U n)
+  presentation = P.presentation
+
+------------------------------------------------------------------------
+-- Li, Ross and Selinger (2021): Oₙ(ℤ[½]) and Lₙ
+--
+-- Homes: Examples.Groups.CCX+HH-TwoLevel.Presentation and .Scaled.
+-- Presentation.  (−1)_[a], X_[a,b], K_[a,b,c,d] and Table 1 present
+-- Oₙ(ℤ[½]) in every dimension (Theorem 4.10), and with I ⊗ H and Table
+-- 2 the scaled dyadic orthogonal matrices Lₙ, for n = 2(k + 1)
+-- (Theorem 5.7).
+
+module Li-Ross-Selinger where
+
+  open import Examples.Groups.CCX+HH-TwoLevel.Syntactics using (_===_)
+  open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (O)
+  open import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics using (_===ᴸ_)
+  import Examples.Groups.CCX+HH-TwoLevel.Presentation as P
+  import Examples.Groups.CCX+HH-TwoLevel.Scaled.Presentation as PL
+
+  presentation : ∀ {n} → (_===_ {n}) IsPresentationOf (O n)
+  presentation = P.presentation
+
+  presentationᴸ : ∀ k → (_===ᴸ_ {suc k ℕ.* 2}) IsPresentationOf (PL.L k)
+  presentationᴸ k = PL.presentation k
+
+------------------------------------------------------------------------
+-- Fang, Heunen and Kaarsgaard (2026), Hadamard-Π: Oₙ(ℤ[1/√2])
+--
+-- Homes: Examples.Groups.Real-Clifford+CH-TwoLevel.Presentation and
+-- Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Presentation.
+-- Z_[a], X_[a,b], H_[a,b] and the relations (a1)–(d4) of Figure 6
+-- present Oₙ(ℤ[1/√2]) in every dimension.  The paper's proof does not
+-- cover one case of its Main Lemma (its Lemmas A.16 and A.17 are
+-- false); the development proves the theorem from that case, Hard, and
+-- the case itself after Clément's thesis (below).
+
+module Hadamard-Pi where
+
+  open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (_===_)
+  open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics using (O)
+  import Examples.Groups.Real-Clifford+CH-TwoLevel.MainLemma as ML
+  import Examples.Groups.Real-Clifford+CH-TwoLevel.Presentation as P
+  import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Presentation as C
+
+  -- The paper's proof, given the case it misses ...
+  presentation-given : ∀ {n} → ML.Hard {n} → (_===_ {n}) IsPresentationOf (O n)
+  presentation-given = P.presentation
+
+  -- ... and the theorem.
+  presentation : ∀ {n} → (_===_ {n}) IsPresentationOf (O n)
+  presentation = C.presentation
+
+------------------------------------------------------------------------
+-- Clément (2019, thesis): Oₙ(ℤ[1/√2]) by relations (1)–(21)
+--
+-- Home: Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.
+-- Presentation.  Clément's own proof, over his version of the
+-- synthesis algorithm: his relations, and Figure 6, present Oₙ(ℤ[1/√2])
+-- in every dimension.
+
+module Clement-Thesis where
+
+  open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (_===_)
+  open import Examples.Groups.Real-Clifford+CH-TwoLevel.Clement using (_===ᶜ_)
+  open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics using (O)
+  import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Presentation as T
+
+  presentationᶜ : ∀ {n} → (_===ᶜ_ {n}) IsPresentationOf (O n)
+  presentationᶜ = T.presentationᶜ
+
+  presentation : ∀ {n} → (_===_ {n}) IsPresentationOf (O n)
+  presentation = T.presentation
+
+------------------------------------------------------------------------
+-- Circuits
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- Selinger (2015): n-qubit Clifford circuits
+--
+-- Home: Examples.Groups.Qubit-Clifford.Presentation.DOmega.  The gates
+-- ω, H, S, CZ and the relations C1–C15 of Figure 8 present the group
+-- the circuits on n wires generate in U_{2ⁿ}(𝔻[ω]), at every width.
+
+module Selinger-Clifford where
+
+  open import Examples.Groups.Qubit-Clifford.Syntactics using (_VRel,_===_)
+  open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics using (U)
+  import Examples.Groups.Qubit-Clifford.Presentation.DOmega as P
+
+  presentation : ∀ {n} → (n VRel,_===_) IsSubPresentationOf U (2 ^ n)
+  presentation = P.presentation
+
+------------------------------------------------------------------------
+-- Bian et al. (2026): qudit Clifford circuits, odd prime p
+--
+-- Homes: Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Presentation
+-- and its sources (the symplectic normal form, the projective chain of
+-- ProjectiveClifford.Qupit, Qupit-Clifford).  The gates −ω, H, S, CZ
+-- and the rules C0–C15 of Figure 1 present the qudit Clifford group at
+-- every width: the paper's Theorem 4.10, against the algebraic model,
+-- the central extension of Pauli ⋊ Sp(2n, ℤ/pℤ) by ⟨ω⟩ (the Weyl
+-- cocycle) times ⟨−1⟩.  The rules name a primitive root g of ℤ/pℤ.
+
+module Qudit-Clifford
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (2+ p-2))
@@ -169,161 +196,293 @@ module Qupit-Clifford-Theorems
   (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ λ (k : ℤ ₚ-₁) → x Eq.≡ g ^′ toℕ k)
   where
 
-  private
-    module SD      = QupitSD   p-3 p-prime g* g-gen
-    module SimSyn  = SimV1Syn  p-3 p-prime g* g-gen
-    module SimPres = SimV1Pres p-3 p-prime g* g-gen
-    module PapSyn  = PapV1Syn  p-3 p-prime g* g-gen
-    module PapPres = PapV1Pres p-3 p-prime g* g-gen
+  open import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Syntactics p-3 p-prime g* g-gen
+    using (_F,_===_)
+  open import Examples.Groups.Clifford+MinusOne.Qupit.Semantics p-3 p-prime g* g-gen
+    using (Clifford±)
+  import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Presentation p-3 p-prime g* g-gen as P
 
-  open SD.Semidirect using (Pauli⋊Sp)
-
-  -- The V1 Clifford rules present Pauli n ⋊ Sp(2n, ℤ/pℤ).
-  v1-presentation :
-    ∀ n → (SimSyn.Clifford-Relations._QRel,_===_ n)
-            IsPresentationOf (Pauli⋊Sp n)
-  v1-presentation n = SimPres.presentation {n}
-
-  -- …and so do the paper's Figure 1 rules, read modulo scalars.
-  clifford-presentation :
-    ∀ n → (PapSyn.Clifford-Relations._QRel,_===_ n)
-            IsPresentationOf (Pauli⋊Sp n)
-  clifford-presentation = PapPres.presentation
-
-------------------------------------------------------------------------
--- Concrete presentations: the qupit Clifford group, scalars included
---
--- Homes: Examples.Groups.Qupit-Clifford.Presentation (the exact group),
--- Examples.Groups.Clifford+MinusOne.Qupit.Presentation (-1 adjoined)
--- and Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Presentation
--- (Figure 1 itself), with its variant in Figure1-MS.Presentation.
--- The theorems above read the circuits modulo
--- scalars; these put the scalars back, in two steps.
---
--- The exact rule set adds the scalar ω, of order p and central, and
--- twists each Paper-V0 relation by the power of ω it holds up to; only
--- (S • H) ^ 3 = ω^((p²-1)/8) carries one.  It presents the central
--- extension of Pauli n ⋊ Sp(2n, ℤ/pℤ) by ⟨ω⟩ ≅ ℤ/pℤ that the Weyl
--- cocycle builds.  That group cannot contain -1, its scalars having odd
--- order p; the paper's Clifford group, generated by -ω, H, S and CZ, is
--- its direct product with ⟨-1⟩ ≅ ℤ/2ℤ, which the exact rules with -1
--- adjoined as a central involution present.
---
--- The paper's own rules — C0–C15 of its Figure 1, over -ω, H, S, CZ —
--- present that same group: the paper's Theorem 4.10, against the
--- abstract group rather than matrices.  The proof composes the
--- presentation with -1 and the isomorphism of Clifford+MinusOne.Qupit.
--- Iso between the two rule sets, which reads -ω as -1 • ω and is the
--- identity on gates.
--- Figure1-MS replaces C4 by Paper-V1's semi-MR with its sides swapped
--- and presents the same group, with all other axioms unchanged.
-
-module Qupit-Clifford-Scalar-Theorems
-  (p-3 : ℕ)
-  (let p-2 = ₁₊ p-3)
-  (p-prime : Prime (2+ p-2))
-  (let open PrimeModulus' p-2 p-prime)
-  (g*@(g , g≠0) : ℤ* ₚ)
-  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ λ (k : ℤ ₚ-₁) → x Eq.≡ g ^′ toℕ k)
-  where
-
-  private
-    module Exact = QupitExact p-3 p-prime g* g-gen
-    module Syn±  = Qupit±Syn  p-3 p-prime g* g-gen
-    module Sem±  = Qupit±Sem  p-3 p-prime g* g-gen
-    module Pres± = Qupit±Pres p-3 p-prime g* g-gen
-    module Syn₁  = Fig1Syn    p-3 p-prime g* g-gen
-    module Pres₁ = Fig1Pres   p-3 p-prime g* g-gen
-    module SynMS = Fig1MSSyn  p-3 p-prime g* g-gen
-    module PresMS = Fig1MSPres p-3 p-prime g* g-gen
-    module FF = Fig1FFIso p-3 p-prime g* g-gen
-
-  open Syn± using (_Exact,_===_ ; _Exact±,_===_)
-  open Syn₁ using (_F,_===_)
-  open SynMS using () renaming (_F,_===_ to _F′,_===_)
-  open Sem± using (Exact-group ; Clifford±)
-
-  -- The exact rule set presents the central extension by ⟨ω⟩.
-  exact-clifford-presentation :
-    ∀ n → (n Exact,_===_) IsPresentationOf (Exact-group n)
-  exact-clifford-presentation = Exact.presentation-exact
-
-  -- With -1 adjoined, it presents Exact-group n × ⟨-1⟩.
-  clifford±-presentation :
-    ∀ n → (n Exact±,_===_) IsPresentationOf (Clifford± n)
-  clifford±-presentation = Pres±.presentation±
-
-  -- Figure 1 presents the same group.
   figure1-presentation : ∀ n → (n F,_===_) IsPresentationOf (Clifford± n)
-  figure1-presentation = Pres₁.presentation-Figure1
-
-  -- Figure1-MS presents the same group with the replacement C4.
-  figure1-MS-presentation :
-    ∀ n → (n F′,_===_) IsPresentationOf (Clifford± n)
-  figure1-MS-presentation = PresMS.presentation-Figure1
-
-  -- Direct equivalence: only the two C4 rules need to be derived.
-  open FF public using () renaming
-    ( Theorem-Figure1-equivalent-Figure1-MS to figure1-figure1-MS-equivalence
-    ; Theorem-Figure1-iso-Figure1-MS to figure1-figure1-MS-iso )
+  figure1-presentation = P.presentation-Figure1
 
 ------------------------------------------------------------------------
--- The structural rules are independent
+-- Makary, Ross and Selinger (2021): real stabilizer circuits
 --
--- Home: Circuit.Independence, on the support of Presentation.
--- Independence.  Every circuit theory in the framework gets the same
--- structural rules from Lift-Relation — cong↑, comm₁ and comm₂ over
--- the qupit alphabet, which has no scalar gate, plus comm₃ where there
--- is a three-wire gate and ω↑=ω where there is a scalar one — and none
--- of them is a consequence of the others.  The argument is the
--- classical one: a model in which the other rules hold and the rule in
--- question fails.  The models read a letter by its depth, into (ℕ, +)
--- or into a free monoid of depths, and are stated for the pure
--- structural theory, the lift of the empty relation, so they hold over
--- every gate family.  A scalar's centrality is not a rule but
--- Circuit.Base's theorem comm₀, derived from these five once scalars
--- commute with one another; the last result says that hypothesis is
--- needed.
+-- Homes: Examples.Groups.Real-Clifford.Presentation.DOmega and
+-- .DRootTwo.  The gates −1, H, Z, CZ and the relations R1–R16 of Figure
+-- 1 present the group the circuits generate, at every width, in
+-- U_{2ⁿ}(𝔻[ω]) and in O_{2ⁿ}(ℤ[1/√2]).
 
-module Structural-Theorems (Gate : ℕ → Set) where
+module Makary-Ross-Selinger where
 
-  private
-    module Pure = CI.Pure Gate
+  open import Examples.Groups.Real-Clifford.Syntactics using (_VRel,_===_)
+  open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics using (U)
+  open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics using (O)
+  import Examples.Groups.Real-Clifford.Presentation.DOmega as PU
+  import Examples.Groups.Real-Clifford.Presentation.DRootTwo as PO
 
-  open CB Gate using (gate₀ ; gate₁ ; gate₂ ; gate₃)
-  open Pure
-    using ( _IndependentOf_ ; _VRel,_===_ ; cong↑ ; comm₁ ; comm₂ ; comm₃
-          ; ω↑=ω )
+  presentation : ∀ {n} → (n VRel,_===_) IsSubPresentationOf U (2 ^ n)
+  presentation = PU.presentation
 
-  -- A one-wire gate commuting with its own shift does not follow from
-  -- the other rules once shifted up a wire ...
-  cong↑-independent : ∀ {n} (h : Gate 1) →
-    cong↑ (comm₁ h (gate₁ {n} h)) IndependentOf cong↑
-  cong↑-independent = Pure.cong↑-independent₁
+  presentationᴼ : ∀ {n} → (n VRel,_===_) IsSubPresentationOf O (2 ^ n)
+  presentationᴼ = PO.presentation
 
-  -- ... nor unshifted, nor its two- and three-wire counterparts.
-  comm₁-independent : ∀ {n} (h : Gate 1) →
-    comm₁ h (gate₁ {n} h) IndependentOf comm₁
-  comm₁-independent = Pure.comm₁-independent
+------------------------------------------------------------------------
+-- Amy, Chen and Ross (2018): CNOT-dihedral circuits
+--
+-- Home: Examples.Groups.CNOT+Dihedral.Presentation.  The gates ω, X, T,
+-- CNOT and the relations R₁–R₁₃ of Figure 1, with the swap rules,
+-- present the group the circuits generate in U_{2ⁿ}(𝔻[ω]), at every
+-- width.
 
-  comm₂-independent : ∀ {n} (h : Gate 2) →
-    comm₂ h (gate₂ {n} h) IndependentOf comm₂
-  comm₂-independent = Pure.comm₂-independent
+module Amy-Chen-Ross where
 
-  comm₃-independent : ∀ {n} (h : Gate 3) →
-    comm₃ h (gate₃ {n} h) IndependentOf comm₃
-  comm₃-independent = Pure.comm₃-independent
+  open import Examples.Groups.CNOT+Dihedral.Syntactics using (_VRel,_===_)
+  open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics using (U)
+  import Examples.Groups.CNOT+Dihedral.Presentation as P
 
-  -- A scalar need not be its own shift.
-  ω↑=ω-independent : ∀ {n} (ω : Gate 0) →
-    ω↑=ω {n} ω IndependentOf ω↑=ω
-  ω↑=ω-independent = Pure.ω↑=ω-independent
+  presentation : ∀ {n} → (n VRel,_===_) IsSubPresentationOf U (2 ^ n)
+  presentation = P.presentation
 
-  -- Two distinct scalars need not commute: the five rules alone do not
-  -- make a scalar central, which is why Circuit.Base's comm₀ asks that
-  -- scalars commute with one another (and asks nothing when there is
-  -- one).
-  scalars-comm-needed : ∀ {n} (ω ω' : Gate 0) → ω Eq.≢ ω' →
-    ¬ PB._≈_ (n VRel,_===_) ([ gate₀ ω' ]ʷ • [ gate₀ ω ]ʷ)
-                            ([ gate₀ ω ]ʷ • [ gate₀ ω' ]ʷ)
-  scalars-comm-needed = Pure.scalars-comm-needed
+------------------------------------------------------------------------
+-- Blake (2026): phase-affine circuits in prime dimension p
+--
+-- Homes: Examples.Groups.Qupit-Phase-Affine.Presentation.Aff, .Lin,
+-- .Quad and .Cube.  The four levels — affine circuits, then phases,
+-- then S (p odd), then T (p > 3) — each present the group their
+-- circuits generate in U_{pⁿ}, over any commutative ring with an
+-- involution and an injective character of 𝔽_p: Theorem 1 and its
+-- three extensions.
+
+module Blake-Phase-Affine
+  (p-2 : ℕ) (p-prime : Prime (₂₊ p-2))
+  {A : Set} {{RA : Ring A}} {{AA : Adjoint A}}
+  (isCR : IsCommutativeRing (_≡_ {A = A}) _+_ _*_ -_ 0# 1#)
+  (adjI : IsInvolutiveRingEndo {A} adj)
+  (phase : Field.F p-2 p-prime → A)
+  (phase-+ : ∀ a b → phase (Field._+_ p-2 p-prime a b) ≡ phase a * phase b)
+  (phase-unit : ∀ a → adj (phase a) * phase a ≡ 1#)
+  (phase-injective : ∀ a b → phase a ≡ phase b → a ≡ b)
+  where
+
+  open import Examples.Groups.Qupit-Phase-Affine.Semantics p-2 p-prime using (p)
+  open import Examples.Groups.Qupit-Phase-Affine.Matrix p-2 p-prime isCR adjI phase phase-+ phase-unit phase-injective
+    using (U)
+  import Examples.Groups.Qupit-Phase-Affine.Syntactics p-2 p-prime 0 as S₀
+  import Examples.Groups.Qupit-Phase-Affine.Syntactics p-2 p-prime 1 as S₁
+  import Examples.Groups.Qupit-Phase-Affine.Syntactics p-2 p-prime 2 as S₂
+  import Examples.Groups.Qupit-Phase-Affine.Syntactics p-2 p-prime 3 as S₃
+  import Examples.Groups.Qupit-Phase-Affine.Presentation.Aff p-2 p-prime isCR adjI phase phase-+ phase-unit phase-injective as Aff
+  import Examples.Groups.Qupit-Phase-Affine.Presentation.Lin p-2 p-prime isCR adjI phase phase-+ phase-unit phase-injective as Lin
+
+  affine-presentation : ∀ {n} → S₀._VRel,_===_ n IsSubPresentationOf U (p ^ n)
+  affine-presentation = Aff.presentation
+
+  linear-phase-presentation : ∀ {n} → S₁._VRel,_===_ n IsSubPresentationOf U (p ^ n)
+  linear-phase-presentation = Lin.presentation
+
+  module Quadratic (odd : 1 ≤ p-2) where
+
+    import Examples.Groups.Qupit-Phase-Affine.Presentation.Quad p-2 p-prime odd isCR adjI phase phase-+ phase-unit phase-injective as Quad
+
+    quadratic-phase-presentation : ∀ {n} → S₂._VRel,_===_ n IsSubPresentationOf U (p ^ n)
+    quadratic-phase-presentation = Quad.presentation
+
+  module Cubic (gt3 : 2 ≤ p-2) where
+
+    import Examples.Groups.Qupit-Phase-Affine.Presentation.Cube p-2 p-prime gt3 isCR adjI phase phase-+ phase-unit phase-injective as Cube
+
+    cubic-phase-presentation : ∀ {n} → S₃._VRel,_===_ n IsSubPresentationOf U (p ^ n)
+    cubic-phase-presentation = Cube.presentation
+
+------------------------------------------------------------------------
+-- Bian and Selinger (2023): two-qubit Clifford+T circuits
+--
+-- Homes: Examples.Groups.Clifford+T-2qubit.Presentation and
+-- .Circuits.Presentation.  The relations of Figure 1 present the
+-- two-qubit Clifford+T group in U₄(ℤ[1/√2, i]), over the paper's
+-- alphabet and as circuits over Circuit.Base on two wires.
+
+module Bian-Selinger-Clifford+T where
+
+  open import Examples.Groups.Clifford+T-2qubit.Generator using (module Clifford+T)
+  open Clifford+T using (Rel)
+  import Examples.Groups.Clifford+T-2qubit.Circuits.Syntactics as C
+  open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics using (U)
+  import Examples.Groups.Clifford+T-2qubit.Presentation as P
+  import Examples.Groups.Clifford+T-2qubit.Circuits.Presentation as PC
+
+  presentation : Rel IsSubPresentationOf U 4
+  presentation = P.presentation
+
+  circuit-presentation : C._VRel,_===_ 2 IsSubPresentationOf U 4
+  circuit-presentation = PC.presentation
+
+------------------------------------------------------------------------
+-- Bian and Selinger (2023): three-qubit Clifford+CS circuits
+--
+-- Homes: Examples.Groups.Clifford+CS-3qubit.Presentation and
+-- .Circuits.Presentation.  The relations of Figure 2 present the
+-- three-qubit Clifford+CS group in U₈(ℤ[½, i]), over the paper's
+-- alphabet and as circuits over Circuit.Base on three wires.
+
+module Bian-Selinger-Clifford+CS where
+
+  open import Examples.Groups.Clifford+CS-3qubit.Theorem using (module CliffordCS)
+  open CliffordCS using (Rel)
+  import Examples.Groups.Clifford+CS-3qubit.Circuits.Syntactics as C
+  open import Examples.Groups.Clifford+CS-TwoLevel.Semantics using (U)
+  import Examples.Groups.Clifford+CS-3qubit.Presentation as P
+  import Examples.Groups.Clifford+CS-3qubit.Circuits.Presentation as PC
+
+  presentation : Rel IsSubPresentationOf U 8
+  presentation = P.presentation
+
+  circuit-presentation : C._VRel,_===_ 3 IsSubPresentationOf U 8
+  circuit-presentation = PC.presentation
+
+------------------------------------------------------------------------
+-- Clément (2026): real Clifford+CH circuits
+--
+-- Home: Examples.Groups.Real-Clifford+CH.Presentation.  The gates H, Z,
+-- CZ, CH and the relations of Figure 4 present the group the circuits
+-- on n wires generate in O_{2ⁿ}(ℤ[1/√2]), at every width: Theorem 8.9,
+-- with Theorem 4.4, which the paper imports from Hadamard-Π, proved
+-- from Clément's thesis.
+
+module Clement-Real-Clifford+CH where
+
+  open import Examples.Groups.Real-Clifford+CH.Syntactics using (_VRel,_===_)
+  open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics using (O)
+  import Examples.Groups.Real-Clifford+CH.Presentation as P
+
+  presentation : ∀ n → (n VRel,_===_) IsSubPresentationOf O (2 ^ n)
+  presentation = P.subpresentationᴼ
+
+------------------------------------------------------------------------
+-- Amy, Ross and Wesley (2024): three-qubit Toffoli-Hadamard circuits
+--
+-- Homes: Examples.Groups.CCX+HH-3qubit.Repaired.Presentation and
+-- .Circuits.Presentation.  The relations of Figures 4, 7 and 8,
+-- corrected and with the definition of K that Section 5.5 uses but the
+-- figures omit, present L₈, the group of 3-qubit Toffoli-Hadamard
+-- operators (scaled dyadic orthogonal 8 × 8 matrices), over the paper's
+-- alphabet and as circuits over Circuit.Base on three wires.
+
+module Amy-Ross-Wesley where
+
+  open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics using (_===_)
+  import Examples.Groups.CCX+HH-3qubit.Circuits.Syntactics as C
+  open import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation using (ToffoliHadamard)
+  import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation as P
+  import Examples.Groups.CCX+HH-3qubit.Circuits.Presentation as PC
+
+  presentation : _===_ IsPresentationOf ToffoliHadamard
+  presentation = P.presentation
+
+  circuit-presentation : C._VRel,_===_ 3 IsPresentationOf ToffoliHadamard
+  circuit-presentation = PC.presentation
+
+------------------------------------------------------------------------
+-- Li, Mosca, Ross, van de Wetering and Zhao (2025): qutrit Clifford
+-- circuits
+--
+-- Home: Examples.Groups.Qutrit-Clifford.Presentation.  The gates −ω, H,
+-- S, CZ and the rules C1–C18 of Figure 1 present the n-qutrit Clifford
+-- group — the values the circuits denote, exact scaled matrices over
+-- ℤ[ζ₁₂] — at every width, and that group has order 6 · ∏ₖ₌₁ⁿ
+-- 3 (9ᵏ − 1) 9ᵏ.
+
+module Li-Mosca-Ross-vandeWetering-Zhao where
+
+  open import Examples.Groups.Qutrit-Clifford.Syntactics using (_VRel,_===_)
+  open import Examples.Groups.Qutrit-Clifford.Presentation using (Clifford)
+  open import Examples.Groups.Qutrit-Clifford.Count using (order)
+  import Examples.Groups.Qutrit-Clifford.Presentation as P
+
+  presentation : ∀ n → (n VRel,_===_) IsPresentationOf Clifford n
+  presentation = P.presentationᴳ
+
+  clifford-order : ∀ n → Inverse (Group.setoid (Clifford n)) (Eq.setoid (Fin (order n)))
+  clifford-order = P.clifford-group-order
+
+------------------------------------------------------------------------
+-- Minimality
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- Blake (2026): simpler presentations for six fragments
+--
+-- Home: Examples.Independence.Theorems.  For each fragment — qubit
+-- Clifford (Cliff₂), real Clifford (RCliff₂), qutrit Clifford (Cliff₃),
+-- Clifford+T (CliffT₂), Clifford+CS (CliffCS₂), CNOT-dihedral
+-- (CNOTdihe₂) — the rule set is complete (Theorem 22, by transfer from
+-- the presentations above, in the paper's ranges of widths) and no rule
+-- follows from the others (Theorem 37, by separating models), so each
+-- rule is necessary for completeness: a minimal complete presentation
+-- of the matrix semantics.  CliffCS₂ is moreover complete for Clifford
+-- circuits at every width, deriving Cliff₂.
+
+module Blake-Minimality where
+
+  import Examples.Independence.Clifford.Syntactics       as Cliff
+  import Examples.Independence.Real-Clifford.Syntactics  as RCliff
+  import Examples.Independence.Qutrit-Clifford.Syntactics as Cliff3
+  import Examples.Independence.Clifford+T.Syntactics     as CliffT
+  import Examples.Independence.Clifford+CS.Syntactics    as CliffCS
+  import Examples.Independence.CNOT-Dihedral.Syntactics  as CNOTdihe
+  import Examples.Independence.Clifford.Semantics        as Cliff-Sem
+  import Examples.Independence.Real-Clifford.Semantics   as RCliff-Sem
+  import Examples.Independence.Qutrit-Clifford.Semantics as Cliff3-Sem
+  import Examples.Independence.Clifford+T.Semantics      as CliffT-Sem
+  import Examples.Independence.Clifford+CS.Semantics     as CliffCS-Sem
+  import Examples.Independence.CNOT-Dihedral.Semantics   as CNOTdihe-Sem
+  open import Examples.Independence.Clifford+CS.CliffordCircuits using () renaming (Φ to Cliff→CliffCS)
+  import Examples.Independence.Theorems as T
+
+  Cliff₂-minimal-complete :
+    (∀ {n} {w v : Cliff.Circuit n} →
+       Cliff-Sem.⟦ w ⟧ Cliff-Sem.≈ Cliff-Sem.⟦ v ⟧ → n Cliff.⊢ w ≈ v) ×
+    (∀ {n} {w v : Cliff.Circuit n} (ρ : Cliff._SRel,_===_ n w v) →
+       ¬ T.Cliff-M.Complete-without ρ n)
+  Cliff₂-minimal-complete = T.Cliff₂-minimal-complete
+
+  RCliff₂-minimal-complete :
+    (∀ {n} {w v : RCliff.Circuit n} →
+       RCliff-Sem.⟦ w ⟧ RCliff-Sem.≈ RCliff-Sem.⟦ v ⟧ → n RCliff.⊢ w ≈ v) ×
+    (∀ {n} {w v : RCliff.Circuit n} (ρ : RCliff._SRel,_===_ n w v) →
+       ¬ T.RCliff-M.Complete-without ρ n)
+  RCliff₂-minimal-complete = T.RCliff₂-minimal-complete
+
+  Cliff₃-minimal-complete-upto-2 :
+    (∀ {n} {w v : Cliff3.Circuit n} →
+       Cliff3-Sem.⟦ w ⟧ Cliff3-Sem.≈ Cliff3-Sem.⟦ v ⟧ → n Cliff3.⊢ w ≈ v) ×
+    (∀ {n} {w v : Cliff3.Circuit n} (ρ : Cliff3._SRel,_===_ n w v) →
+       n ≤ 2 → ¬ T.Cliff3-M.Complete-without ρ n)
+  Cliff₃-minimal-complete-upto-2 = T.Cliff₃-minimal-complete-upto-2
+
+  CliffT₂-minimal-complete-upto-1 :
+    (∀ {n} {w v : CliffT.Circuit n} → n ≤ 2 →
+       CliffT-Sem.⟦ w ⟧ CliffT-Sem.≈ CliffT-Sem.⟦ v ⟧ → n CliffT.⊢ w ≈ v) ×
+    (∀ {n} {w v : CliffT.Circuit n} (ρ : CliffT._SRel,_===_ n w v) →
+       n ≤ 1 → ¬ T.CliffT-M.Complete-without ρ n)
+  CliffT₂-minimal-complete-upto-1 = T.CliffT₂-minimal-complete-upto-1
+
+  CliffCS₂-minimal-complete-upto-2 :
+    (∀ {n} {w v : CliffCS.Circuit n} → n ≤ 3 →
+       CliffCS-Sem.⟦ w ⟧ CliffCS-Sem.≈ CliffCS-Sem.⟦ v ⟧ → n CliffCS.⊢ w ≈ v) ×
+    (∀ {n} {w v : CliffCS.Circuit n} (ρ : CliffCS._SRel,_===_ n w v) →
+       n ≤ 2 → ¬ T.CliffCS-M.Complete-without ρ n)
+  CliffCS₂-minimal-complete-upto-2 = T.CliffCS₂-minimal-complete-upto-2
+
+  CNOTdihe₂-minimal-complete :
+    (∀ {n} {w v : CNOTdihe.Circuit n} →
+       CNOTdihe-Sem.⟦ w ⟧ CNOTdihe-Sem.≈ CNOTdihe-Sem.⟦ v ⟧ → n CNOTdihe.⊢ w ≈ v) ×
+    (∀ {n} {w v : CNOTdihe.Circuit n} (ρ : CNOTdihe._SRel,_===_ n w v) →
+       ¬ T.CNOTdihe-M.Complete-without ρ n)
+  CNOTdihe₂-minimal-complete = T.CNOTdihe₂-minimal-complete
+
+  CliffCS₂-clifford-complete : ∀ {n} {w v : Cliff.Circuit n} →
+    Cliff-Sem.⟦ w ⟧ Cliff-Sem.≈ Cliff-Sem.⟦ v ⟧ →
+    n CliffCS.⊢ Cliff→CliffCS w ≈ Cliff→CliffCS v
+  CliffCS₂-clifford-complete {w = w} {v} = T.CliffCS₂-clifford-complete {w = w} {v}
