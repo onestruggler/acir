@@ -12,6 +12,25 @@
 \setcopyright{none}
 \renewcommand\footnotetextcopyrightpermission[1]{}
 
+%% The contact footnote lists names and e-mail addresses only; the
+%% affiliations stay under the names in the title block.
+\makeatletter
+\def\@mkauthorsaddresses{%
+  Authors' Contact Information:
+  \bgroup
+  \def\position##1{\unskip\ignorespaces}%
+  \def\institution##1{\unskip\ignorespaces}%
+  \def\city##1{\unskip\ignorespaces}%
+  \def\state##1{\unskip\ignorespaces}%
+  \renewcommand\department[2][0]{\unskip\ignorespaces}%
+  \def\country##1{\unskip\ignorespaces}%
+  \def\and{\unskip; }%
+  \def\@author##1{##1}%
+  \def\email##1##2{\unskip, \nolinkurl{##2}}%
+  \addresses
+  \egroup}
+\makeatother
+
 \usepackage{booktabs}
 \usepackage{tabularx}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
@@ -26,9 +45,7 @@
 
 \begin{document}
 
-\title[Human-Made Scaffolds for Machine-Written Proofs]{Human-Made
-Scaffolds for Machine-Written Proofs: Sixteen Completeness Theorems for
-Quantum Circuits in Agda}
+\title[Human-Made Scaffolds for Machine-Written Proofs of Completeness]{Sixteen Completeness Theorems for Quantum Circuits in Agda: Human-Guided, Machine-Written Proofs}
 \subtitle{Extended Abstract}
 
 %% Affiliations and e-mail addresses as in ../vqupit/main.tex; Yuan
@@ -333,15 +350,40 @@ and every proof is a program: with soundness, completeness and
 decidable equality of matrices, the word problem of each theory is
 decided by running the proof.
 
-\section{The Talk}
+% \section{The Talk}
 
-The talk will show the form of a theorem and what a reader checks, one
-development from its gate set to its theorem, the gap in
-Hadamard-$\Pi$ and how it was found, and what working with coding
-agents on a human-made scaffold changes for proofs of this kind: the
-cost moves from writing proofs to checking statements, and a scaffold
-keeps that check small. We are working on a longer version of this
-work, with the details of each development.
+% The talk will show the form of a theorem and what a reader checks, one
+% development from its gate set to its theorem, the gap in
+% Hadamard-$\Pi$ and how it was found, and what working with coding
+% agents on a human-made scaffold changes for proofs of this kind: the
+% cost moves from writing proofs to checking statements, and a scaffold
+% keeps that check small.
+
+\section{Conclusion and Future Work}\label{sec:conclusion}
+
+All sixteen developments are built on a single framework, and this
+matters beyond the individual theorems in three ways. First, every theory, whatever its gate set or proof method, is stated
+with the same circuits, presentation records and matrix groups over
+the same rings: a common language in which rewrite rules for different
+families of circuits can be related, as when we proved Cl\'ement's
+relations and Hadamard-$\Pi$'s equivalent. Second, it lays the
+foundation for completeness in higher-dimensional systems, whose case
+analyses outgrow what a reader can check (the qutrit Clifford theorem
+already rests on hundreds of box relations): soundness is decided by
+evaluating exact matrices, derivations are generated and checked by a
+rewriter, and the whole corpus typechecks in about 40 minutes. Third,
+it paves the way for number-theoretic exact synthesis: its rings, their
+unitary and orthogonal groups and the route from a Main Lemma to
+completeness are formalized once, so a new synthesis algorithm can be
+verified efficiently, including its Main Lemma, where the gap in
+Hadamard-$\Pi$ lay.
+
+\paragraph{Future work.} We are porting the developments to Lean, which
+has a much larger community and whose library Mathlib covers far more
+of mathematics, so that our theorems can be used alongside it. Going
+forward, we will use this framework to solve new problems in circuit
+completeness and exact synthesis, such as the Clifford completeness in all dimensions and optimising T-count inmulti-qubit Clifford+T exact synthesis.
+%We are also working on a longer version of this work, with the details of each development.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{refs}
