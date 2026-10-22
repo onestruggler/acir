@@ -638,18 +638,22 @@ len-F : (w : Circuit k) → len w ≡ nKF w +ℕ gF w
 len-F w = len-V (view w)
 
 -- At its own width.
+V-ix : ∀ {k} {w : Circuit k} (vw : View w) → ∀ (x y : Bits k) → ⟦ w ⟧ₒ x y ≡ γ^ gV vw * ix (matV vw) x y
+V-ix {k} {w} vw x y = Eq.trans (⟦⟧R-ix w x y) (runV-ok k vw (entries (idM {k})) x y)
+
 F-ix : (w : Circuit k) → ∀ (x y : Bits k) → ⟦ w ⟧ₒ x y ≡ γ^ gF w * ix ⟦ w ⟧F x y
-F-ix {k} w x y = Eq.trans (⟦⟧R-ix w x y) (runV-ok k (view w) (entries (idM {k})) x y)
+F-ix w = V-ix (view w)
 
 private
   -- (a b) (c q) = (b c) (a q)
   sw : ∀ a b d q → (a * b) * (d * q) ≡ (b * d) * (a * q)
   sw a b d q = Eq.trans (Eq.cong (_* (d * q)) (*-comm a b)) (*-cross b a d q)
 
-sameF-sem : (u v : Circuit k) → SameF u v → ⟦ u ⟧ ~ ⟦ v ⟧
-sameF-sem u v e x y = begin
+-- Two views with the same reading, up to their K's: the same semantics.
+sameV-sem : ∀ {k} {u v : Circuit k} (vu : View u) (vv : View v) → sameV vu vv ≡ true → ⟦ u ⟧ ~ ⟦ v ⟧
+sameV-sem {u = u} {v} vu vv e x y = begin
   γ^ len v * ⟦ u ⟧ₒ x y
-    ≡⟨ Eq.cong₂ _*_ (Eq.trans (Eq.cong γ^_ (len-F v)) (γ^-+ (nKF v) (gF v))) (F-ix u x y) ⟩
+    ≡⟨ Eq.cong₂ _*_ (Eq.trans (Eq.cong γ^_ (len-V vv)) (γ^-+ (kV vv) (gV vv))) (V-ix vu x y) ⟩
   (A * B) * (C * Fu)
     ≡⟨ sw A B C Fu ⟩
   (B * C) * (A * Fu)
@@ -659,21 +663,24 @@ sameF-sem u v e x y = begin
   (C * B) * (D * Fv)
     ≡⟨ Eq.sym (sw D C B Fv) ⟩
   (D * C) * (B * Fv)
-    ≡⟨ Eq.sym (Eq.cong₂ _*_ (Eq.trans (Eq.cong γ^_ (len-F u)) (γ^-+ (nKF u) (gF u))) (F-ix v x y)) ⟩
+    ≡⟨ Eq.sym (Eq.cong₂ _*_ (Eq.trans (Eq.cong γ^_ (len-V vu)) (γ^-+ (kV vu) (gV vu))) (V-ix vv x y)) ⟩
   γ^ len u * ⟦ v ⟧ₒ x y ∎
   where
   open Eq.≡-Reasoning
-  A = γ^ nKF v
-  B = γ^ gF v
-  C = γ^ gF u
-  D = γ^ nKF u
-  Fu = ix ⟦ u ⟧F x y
-  Fv = ix ⟦ v ⟧F x y
-  e′ : eqM (scaleM A ⟦ u ⟧F) (scaleM D ⟦ v ⟧F) ≡ true
+  A = γ^ kV vv
+  B = γ^ gV vv
+  C = γ^ gV vu
+  D = γ^ kV vu
+  Fu = ix (matV vu) x y
+  Fv = ix (matV vv) x y
+  e′ : eqM (scaleM A (matV vu)) (scaleM D (matV vv)) ≡ true
   e′ = e
   E : A * Fu ≡ D * Fv
-  E = Eq.trans (Eq.sym (ix-scaleM A ⟦ u ⟧F x y))
-        (Eq.trans (ix-≡ (eqM-sound (scaleM A ⟦ u ⟧F) (scaleM D ⟦ v ⟧F) e′) x y) (ix-scaleM D ⟦ v ⟧F x y))
+  E = Eq.trans (Eq.sym (ix-scaleM A (matV vu) x y))
+        (Eq.trans (ix-≡ (eqM-sound (scaleM A (matV vu)) (scaleM D (matV vv)) e′) x y) (ix-scaleM D (matV vv) x y))
+
+sameF-sem : (u v : Circuit k) → SameF u v → ⟦ u ⟧ ~ ⟦ v ⟧
+sameF-sem u v = sameV-sem (view u) (view v)
 
 private
   lcomm : ∀ a b d → a * (b * d) ≡ b * (a * d)
