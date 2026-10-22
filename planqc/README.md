@@ -32,21 +32,17 @@ runs `latexmk -pdf` on `main.tex` (`acmart` with
     wsl --exec bash -lc 'export PATH=/home/bonest/texlive/bin/x86_64-linux:$PATH; cd /mnt/d/work/acir/planqc && make'
 
 `agda-style.sty` and `refs.bib` are copies of those in `../oopsla`; keep
-them in step if either changes. Every Unicode character in an Agda
+them in step if either changes. They differ in one entry: the POPL paper
+on the library is `anonymous2027popl` there, with its authors withheld
+for review, and `bian2027popl` here, by Xiaoning Bian and Yuan Feng. Every Unicode character in an Agda
 snippet needs an entry in the `literate` table of `agda-style.sty`.
 
 ## Before submission
 
 - The authors are Xiaoning Bian, Yuan Feng, Sarah Meng Li and John van
-  de Wetering; their affiliations are still `TODO` in `main.tex`. The
-  call does not ask for anonymous submissions, but the OOPSLA version of
-  this work is under double-blind review: check the OOPSLA rules on
-  talks and public abstracts during review, and the wording of the last
-  sentence ("A longer version ... is under review"), which a reader
-  could now link to the OOPSLA submission.
-- The bibliography entry `anonymous2027popl` is our POPL paper on the
-  library, with its authors withheld as in the OOPSLA draft; with the
-  abstract no longer anonymous, fill them in.
+  de Wetering, with the affiliations and e-mail addresses of
+  `../vqupit/main.tex`. Yuan Feng's address there is marked as a guess
+  (`../vqupit/README.md`); confirm it.
 - The numbers (modules, lines, typechecking times, the four weeks) are
   those of the OOPSLA draft, measured on 22 October 2026 on the
   `ten-completeness` branch. Re-measure them if the developments change.

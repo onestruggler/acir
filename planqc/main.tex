@@ -31,24 +31,32 @@ Scaffolds for Machine-Written Proofs: Sixteen Completeness Theorems for
 Quantum Circuits in Agda}
 \subtitle{Extended Abstract}
 
-%% TODO before submission: the affiliations.  The OOPSLA version of
-%% this work is under double-blind review; see README.md.
+%% Affiliations and e-mail addresses as in ../vqupit/main.tex; Yuan
+%% Feng's address is to be confirmed (see README.md).
 \author{Xiaoning Bian}
 \affiliation{%
-  \institution{TODO institution}
-  \country{TODO country}}
+  \institution{Tsinghua University}
+  \city{Beijing}
+  \country{China}}
+\email{bian@dal.ca}
 \author{Yuan Feng}
 \affiliation{%
-  \institution{TODO institution}
-  \country{TODO country}}
+  \institution{Tsinghua University}
+  \city{Beijing}
+  \country{China}}
+\email{yuan\_feng@tsinghua.edu.cn}
 \author{Sarah Meng Li}
 \affiliation{%
-  \institution{TODO institution}
-  \country{TODO country}}
+  \institution{University of Amsterdam and QuSoft}
+  \city{Amsterdam}
+  \country{The Netherlands}}
+\email{sarah.li@uva.nl}
 \author{John van de Wetering}
 \affiliation{%
-  \institution{TODO institution}
-  \country{TODO country}}
+  \institution{University of Amsterdam and QuSoft}
+  \city{Amsterdam}
+  \country{The Netherlands}}
+\email{john@vdwetering.name}
 
 \begin{abstract}
 A complete equational theory for a family of quantum circuits derives
@@ -111,7 +119,7 @@ formalized sixteen papers (Table~\ref{tab:corpus}). Our contributions,
 which the talk will present, are:
 \begin{itemize}
 \item a scaffold for completeness theorems in Agda: an earlier
-  library of words, circuits and presentations~\cite{anonymous2027popl},
+  library of words, circuits and presentations~\cite{bian2027popl},
   extended with a layer of matrix semantics over the rings of exact
   synthesis and a framework for the independence of rules, so that every
   theorem has one form with two parameters (Section~\ref{sec:form});
@@ -140,7 +148,7 @@ $\llbracket - \rrbracket$, and if every element of $M$ is an image, it
 presents $M$. For circuits, $M$ is a group of matrices, and the image
 is the group that the gates generate.
 
-The library~\cite{anonymous2027popl} fixes this vocabulary: a
+The library~\cite{bian2027popl} fixes this vocabulary: a
 presentation theorem is a record, $\Gamma$ \aid{IsSubPresentationOf} $G$,
 holding an interpretation of words in a group $G$ with proofs that it
 is a group homomorphism on words modulo $\approx$ and injective, and
@@ -332,8 +340,8 @@ development from its gate set to its theorem, the gap in
 Hadamard-$\Pi$ and how it was found, and what working with coding
 agents on a human-made scaffold changes for proofs of this kind: the
 cost moves from writing proofs to checking statements, and a scaffold
-keeps that check small. A longer version of this work, with the
-details of each development, is under review.
+keeps that check small. We are working on a longer version of this
+work, with the details of each development.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{refs}
