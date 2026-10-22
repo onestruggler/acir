@@ -1,7 +1,8 @@
 {-# OPTIONS --without-K --safe #-}
 
+open import Examples.Groups.Clifford+CS.Five.DEqn using (wpE ; wlE)
 open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
-open import Examples.Groups.Clifford+CS.Five.DSig using (SD041 ; pickᴰ)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD041 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D041 (Sᴰ : SD041) where
 
@@ -38,91 +39,91 @@ private
 
 private
   q1 : Ws → Eqn
-  q1 c4 = eqn (Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ []) (CCZ234 ∷ []) (lem-S2-SBOX⟨0·2·43·1⟩ c4)
+  q1 c4 = sE 1314 (lem-S2-SBOX⟨0·2·43·1⟩ c4)
   q2 : Ws → Eqn
-  q2 c4 = eqn (Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ []) (CCZ124 ∷ []) (lem-S2-SBOX⟨0·1·42·3⟩ c4)
+  q2 c4 = sE 1313 (lem-S2-SBOX⟨0·1·42·3⟩ c4)
   q3 : Ws → Eqn
-  q3 c4 = eqn (Bx0-1423 ∷ []) (CCZ014 ∷ Toff023 ∷ CCZ014 ∷ Toff023 ∷ []) (lem-box-cP-at243243 c4)
+  q3 c4 = sE 856 (lem-box-cP-at243243 c4)
   q4 : Ws → Eqn
-  q4 c4 = eqn (Toff023 ∷ Toff324 ∷ []) (Toff024 ∷ Toff324 ∷ Toff023 ∷ []) (wp 805 c4)
+  q4 c4 = wpE 805 c4
   q5 : Ws → Eqn
-  q5 c4 = eqn (CCZ014 ∷ Toff024 ∷ []) (Toff024 ∷ CCZ124 ∷ CCZ014 ∷ []) (wp 806 c4)
+  q5 c4 = wpE 806 c4
   q6 : Ws → Eqn
-  q6 c4 = eqn (K3 ∷ CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ K3⁻ ∷ []) (Toff324 ∷ []) (wl 217 (lit c4))
+  q6 c4 = wlE 217 (lit c4)
   q7 : Ws → Eqn
-  q7 c4 = eqn (CCZ014 ∷ K3 ∷ []) (K3 ∷ CCZ014 ∷ []) (wp 65 c4)
+  q7 c4 = wpE 65 c4
   q8 : Ws → Eqn
-  q8 c4 = eqn (CCZ014 ∷ CS34 ∷ []) (CS34 ∷ CCZ014 ∷ []) (wp 64 c4)
+  q8 c4 = wpE 64 c4
   q9 : Ws → Eqn
   q9 c4 = eqn (CCZ014 ∷ CX23 ∷ []) (CX23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CX23 (lit c4))
   q10 : Ws → Eqn
-  q10 c4 = eqn (CCZ014 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ014 ∷ []) (wp 63 c4)
+  q10 c4 = wpE 63 c4
   q11 : Ws → Eqn
-  q11 c4 = eqn (CCZ014 ∷ CS24 ∷ []) (CS24 ∷ CCZ014 ∷ []) (wp 62 c4)
+  q11 c4 = wpE 62 c4
   q12 : Ws → Eqn
-  q12 c4 = eqn (CCZ014 ∷ K3⁻ ∷ []) (K3⁻ ∷ CCZ014 ∷ []) (wp 61 c4)
+  q12 c4 = wpE 61 c4
   q13 : Ws → Eqn
-  q13 c4 = eqn (Toff023 ∷ Toff024 ∷ []) (Toff024 ∷ Toff023 ∷ []) (wp 72 c4)
+  q13 c4 = wpE 72 c4
   q14 : Ws → Eqn
-  q14 c4 = eqn (CCZ124 ∷ []) (CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ []) (wl 220 (lit c4))
+  q14 c4 = wlE 220 (lit c4)
   q15 : Ws → Eqn
-  q15 c4 = eqn (CS24 ∷ Toff023 ∷ []) (Toff023 ∷ CS24 ∷ []) (wp 70 c4)
+  q15 c4 = wpE 70 c4
   q16 : Ws → Eqn
   q16 c4 = eqn (Toff023 ∷ CX14 ∷ []) (CX14 ∷ Toff023 ∷ []) (lem-comm-TOFF023-CX14 (lit c4))
   q17 : Ws → Eqn
-  q17 c4 = eqn (CS24⁻ ∷ Toff023 ∷ []) (Toff023 ∷ CS24⁻ ∷ []) (wp 69 c4)
+  q17 c4 = wpE 69 c4
   q18 : Ws → Eqn
-  q18 c4 = eqn (CS12 ∷ Toff023 ∷ []) (Toff023 ∷ CS12 ∷ []) (wl 221 (lit c4))
+  q18 c4 = wlE 221 (lit c4)
   q19 : Ws → Eqn
-  q19 c4 = eqn (CCZ124 ∷ []) (Toff024 ∷ CCZ124 ∷ Toff024 ∷ []) (wp 74 c4)
+  q19 c4 = wpE 74 c4
   q20 : Ws → Eqn
-  q20 c4 = eqn (CCZ014 ∷ CCZ124 ∷ []) (CCZ124 ∷ CCZ014 ∷ []) (wp 66 c4)
+  q20 c4 = wpE 66 c4
   q21 : Ws → Eqn
-  q21 c4 = eqn (CS13 ∷ Toff023 ∷ []) (Toff023 ∷ CS13 ∷ []) (wl 222 (lit c4))
+  q21 c4 = wlE 222 (lit c4)
   q22 : Ws → Eqn
-  q22 c4 = eqn (CCZ014 ∷ CS13 ∷ []) (CS13 ∷ CCZ014 ∷ []) (wp 53 c4)
+  q22 c4 = wpE 53 c4
   q23 : Ws → Eqn
-  q23 c4 = eqn (CS13⁻ ∷ Toff023 ∷ []) (Toff023 ∷ CS13⁻ ∷ []) (wl 219 (lit c4))
+  q23 c4 = wlE 219 (lit c4)
   q24 : Ws → Eqn
-  q24 c4 = eqn (CCZ014 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ CCZ014 ∷ []) (wp 60 c4)
+  q24 c4 = wpE 60 c4
   q25 : Ws → Eqn
-  q25 c4 = eqn (Bx0-1423 ∷ []) (Bx0-1342 ∷ []) (lem-box-perm-1423-at243243 c4)
+  q25 c4 = sE 1289 (lem-box-perm-1423-at243243 c4)
   q26 : Ws → Eqn
-  q26 c4 = eqn (Bx0-1342 ∷ CK42 ∷ []) (CCZ123 ∷ CK42 ∷ CCZ123 ∷ Bx0-1342 ∷ []) (lem-CKc-box-at233442 c4)
+  q26 c4 = sE 1325 (lem-CKc-box-at233442 c4)
   q27 : Ws → Eqn
-  q27 c4 = eqn (Bx0-1342 ∷ []) (Bx0-1423 ∷ []) (lem-box-perm-1342-at233442 c4)
+  q27 c4 = sE 1328 (lem-box-perm-1342-at233442 c4)
   q28 : Ws → Eqn
-  q28 c4 = eqn (CCZ234 ∷ Toff023 ∷ []) (Toff023 ∷ CCZ234 ∷ []) (wp 278 c4)
+  q28 c4 = wpE 278 c4
   q29 : Ws → Eqn
-  q29 c4 = eqn (CCZ234 ∷ []) (CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ []) (wl 274 (lit c4))
+  q29 c4 = wlE 274 (lit c4)
   q30 : Ws → Eqn
-  q30 c4 = eqn (S4 ∷ Toff023 ∷ []) (Toff023 ∷ S4 ∷ []) (wp 632 c4)
+  q30 c4 = wpE 632 c4
   q31 : Ws → Eqn
-  q31 c4 = eqn (CCZ014 ∷ S4 ∷ []) (S4 ∷ CCZ014 ∷ []) (wp 633 c4)
+  q31 c4 = wpE 633 c4
   q32 : Ws → Eqn
-  q32 c4 = eqn (CCZ123 ∷ Toff023 ∷ []) (Toff023 ∷ CCZ123 ∷ []) (wl 209 (lit c4))
+  q32 c4 = wlE 209 (lit c4)
   q33 : Ws → Eqn
-  q33 c4 = eqn (CCZ123 ∷ []) (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (wl 207 (lit c4))
+  q33 c4 = wlE 207 (lit c4)
   q34 : Ws → Eqn
   q34 c4 = eqn (CCZ014 ∷ CS23 ∷ []) (CS23 ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CS23 (lit c4))
   q35 : Ws → Eqn
-  q35 c4 = eqn (CCZ014 ∷ CX12 ∷ []) (CX12 ∷ CCZ014 ∷ []) (wp 54 c4)
+  q35 c4 = wpE 54 c4
   q36 : Ws → Eqn
   q36 c4 = eqn (CCZ014 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CCZ014 ∷ []) (lem-comm-CCZ014-CSd23 (lit c4))
   q37 : Ws → Eqn
-  q37 c4 = eqn (Bx0-1423 ∷ Bx0-1423 ∷ []) [] (lem-box2-at243243 c4)
+  q37 c4 = sE 1083 (lem-box2-at243243 c4)
   q38 : Ws → Eqn
-  q38 c4 = eqn (CCZ124 ∷ Toff324 ∷ CS13 ∷ []) (Toff324 ∷ CS13 ∷ CCZ124 ∷ []) (wl 1000 (lit c4))
+  q38 c4 = wlE 1000 (lit c4)
   q39 : Ws → Eqn
-  q39 c4 = eqn (CCZ124 ∷ CCZ124 ∷ []) [] (wl 263 (lit c4))
+  q39 c4 = wlE 263 (lit c4)
   q40 : Ws → Eqn
-  q40 c4 = eqn (CCZ123 ∷ CK42 ∷ CCZ123 ∷ CCZ234 ∷ CCZ123 ∷ CK42 ∷ CCZ123 ∷ S4 ∷ CCZ124 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ123 ∷ CCZ123 ∷ CK42 ∷ CCZ123 ∷ CCZ123 ∷ CCZ234 ∷ CCZ123 ∷ CCZ123 ∷ CK42 ∷ []) (CK42 ∷ CCZ123 ∷ CCZ234 ∷ CCZ123 ∷ CK42 ∷ CCZ123 ∷ S4 ∷ CCZ124 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ123 ∷ CCZ123 ∷ CK42 ∷ CCZ123 ∷ CCZ123 ∷ CCZ234 ∷ CCZ123 ∷ CCZ123 ∷ CK42 ∷ CCZ123 ∷ []) (wl 1292 (lit c4))
+  q40 c4 = wlE 1292 (lit c4)
   q41 : Ws → Eqn
-  q41 c4 = eqn (CCZ123 ∷ CCZ123 ∷ []) [] (wl 181 (lit c4))
+  q41 c4 = wlE 181 (lit c4)
   q42 : Ws → Eqn
-  q42 c4 = eqn (CCZ123 ∷ CCZ234 ∷ []) (CCZ234 ∷ CCZ123 ∷ []) (wl 508 (lit c4))
+  q42 c4 = wlE 508 (lit c4)
   q43 : Ws → Eqn
-  q43 c4 = eqn (CCZ123 ∷ S4 ∷ CCZ124 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ []) (S4 ∷ CCZ124 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ123 ∷ []) (wl 1293 (lit c4))
+  q43 c4 = wlE 1293 (lit c4)
 
 -- nf-rel-268@1: 473 steps
 lem-nf-rel-268at1 : Ws → ⟪ (Sb0-1-42-3 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ CK42 ∷ CCZ234 ∷ CK42 ∷ S4 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ123 ∷ CK42 ∷ CCZ234 ∷ CK42 ∷ CCZ123 ∷ S4 ∷ []) ⟫ʷ

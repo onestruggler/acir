@@ -256,7 +256,8 @@ def estimate(job):
 # seconds: a module's own time where the log has it, else its wall time.
 HEAVY = float(os.environ.get('PAR5_HEAVY', '60'))
 YOUNG = float(os.environ.get('PAR5_YOUNG', '90'))
-TARGET = float(os.environ.get('PAR5_TARGET', '150'))
+TARGET = float(os.environ.get('PAR5_TARGET', '40'))
+SLACK = float(os.environ.get('PAR5_SLACK', '60'))
 costs = {}
 for f in filter(None, os.environ.get('PAR5_COSTS', '').split(',')):
     for line in open(f, errors='replace'):
@@ -285,6 +286,9 @@ for p in deps:
         if d in rdeps: rdeps[d].add(p)
 height = {}
 for p in reversed(topo):
+    missing = [q for q in rdeps[p] if q not in height]
+    if missing:   # only an import cycle leaves a dependent unvisited
+        sys.exit(f'par5: import cycle through {p} and {missing[0]}')
     height[p] = cost(p) + OVERHEAD + max((height[q] for q in rdeps[p]), default=0.0)
 
 
@@ -334,16 +338,36 @@ def own_times(txt):
 
 
 def form_batch(ready_set, pending, idle):
-    # Many ready modules: spread them over the idle slots (independent work
-    # in one process would be serialised: the window libraries took 25 min
-    # as one batch).  Fewer ready modules than idle slots: one of them and
-    # the modules that wait only on it and on each other (Four/D is mostly
-    # a chain, D070 importing D069), up to BATCH.
-    # A batch also stops at about TARGET seconds of known checking time, and
-    # a module known to take over HEAVY seconds runs alone (cost, from the
-    # own times of earlier logs: the window libraries take 40-270 s each).
+    # The ready module on the critical path (within SLACK of the highest
+    # height) runs in a job of its own, extended by the critical modules
+    # that wait only on it and on each other (a chain checks in one
+    # process, loading once): batched with forty others, the modules of the
+    # base chain (Evaluation, MacroEval, TwoQubit, Swaps, Place, Windows ...)
+    # each waited for a batch of 50-180 s, and a from-scratch run took
+    # 1400 s of which they were 1000.  The others: many ready modules are
+    # spread over the idle slots, at least MINB to a batch; fewer, one of
+    # them and the modules that wait only on it.  A batch stops at about
+    # TARGET seconds of known checking time (cost, from the own times of
+    # earlier logs), and a module known to take over HEAVY seconds runs
+    # alone.
     rs = [p for p in pending if p in ready_set and not alone_p(p)]
     if not rs: return []
+    top = max(height[p] for p in pending if p in ready_set)
+    front = sum(1 for p in pending if p in ready_set and height[p] >= top - SLACK)
+    # only a narrow critical front: when many modules are equally critical
+    # (all of Four/D, on which everything after it waits) they are batched
+    # as the others are; one job each made a run 1960 s rather than 1350
+    if height[rs[0]] >= top - SLACK and front <= JOBS:
+        # the critical module, and what is critical among the modules that
+        # wait only on the job (each lower by the work before it)
+        job, spent = [rs[0]], cost(rs[0]) + OVERHEAD
+        for p in pending:
+            if len(job) >= BATCH or sum(map(cost, job)) >= TARGET: break
+            if p in job or p in ready_set or alone_p(p): continue
+            if height[p] >= height[rs[0]] - spent - SLACK and all(d in done or d in job for d in deps[p]):
+                job.append(p)
+                spent += cost(p) + OVERHEAD
+        return job
     if len(rs) >= idle:
         cap, job = max(1, min(BATCH, max(MINB, -(-len(rs) // idle)))), []
         for p in rs:

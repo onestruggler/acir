@@ -22,9 +22,8 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_)
 open import Examples.Groups.Clifford+CS.Semantics.Control
-open import Examples.Groups.Clifford+CS.Semantics.Decide using (eqM ; eqM-sound)
 open import Examples.Groups.Clifford+CS.Syntactics
-open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧ ; ⟦_⟧ₒ ; len)
+open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧)
 open import Examples.Groups.Clifford+CS.MacroEval using (ChkOp ; F-op)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CK₁₀)
 open import Examples.Groups.Clifford+CS.Five.Letters

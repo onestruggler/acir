@@ -1,8 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DEqn using (wE)
 open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
-open import Examples.Groups.Clifford+CS.Four.DSig using (SD784 ; pickᴰ)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD784 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Four.D.D784 (W : Ws) (Sᴰ : SD784) where
 
@@ -24,75 +25,75 @@ private
 
 private
   q1 : Eqn
-  q1 = eqn [] (X3 ∷ X3 ∷ []) (wn 225 W)
+  q1 = wE 225 W
   q2 : Eqn
-  q2 = eqn [] (X2 ∷ X2 ∷ []) (wn 871 W)
+  q2 = wE 871 W
   q3 : Eqn
-  q3 = eqn [] (S1⁻ ∷ S1 ∷ []) (wn 2580 W)
+  q3 = wE 2580 W
   q4 : Eqn
-  q4 = eqn [] (K1⁻ ∷ K1 ∷ []) (wn 1510 W)
+  q4 = wE 1510 W
   q5 : Eqn
-  q5 = eqn [] (S1 ∷ S1⁻ ∷ []) (wn 2578 W)
+  q5 = wE 2578 W
   q6 : Eqn
-  q6 = eqn [] (Toff102 ∷ Toff102 ∷ []) (wn 1377 W)
+  q6 = wE 1377 W
   q7 : Eqn
-  q7 = eqn [] (CS13 ∷ CS13⁻ ∷ []) (wn 1376 W)
+  q7 = wE 1376 W
   q8 : Eqn
-  q8 = eqn [] (CS13⁻ ∷ CS13 ∷ []) (wn 1378 W)
+  q8 = wE 1378 W
   q9 : Eqn
-  q9 = eqn [] (K1 ∷ K1⁻ ∷ []) (wn 2579 W)
+  q9 = wE 2579 W
   q10 : Eqn
-  q10 = eqn [] (S0 ∷ S0⁻ ∷ []) (wn 1732 W)
+  q10 = wE 1732 W
   q11 : Eqn
-  q11 = eqn [] (K0 ∷ K0⁻ ∷ []) (wn 116 W)
+  q11 = wE 116 W
   q12 : Eqn
-  q12 = eqn [] (Toff012 ∷ Toff012 ∷ []) (wn 45 W)
+  q12 = wE 45 W
   q13 : Eqn
-  q13 = eqn [] (Sw23 ∷ Sw23 ∷ []) (wn 1 W)
+  q13 = wE 1 W
   q14 : Eqn
-  q14 = eqn [] (CS02 ∷ CS02⁻ ∷ []) (wn 1357 W)
+  q14 = wE 1357 W
   q15 : Eqn
-  q15 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wn 3 W)
+  q15 = wE 3 W
   q16 : Eqn
-  q16 = eqn [] (CS02⁻ ∷ CS02 ∷ []) (wn 231 W)
+  q16 = wE 231 W
   q17 : Eqn
-  q17 = eqn [] (K0⁻ ∷ K0 ∷ []) (wn 54 W)
+  q17 = wE 54 W
   q18 : Eqn
-  q18 = eqn [] (S0⁻ ∷ S0 ∷ []) (wn 1726 W)
+  q18 = wE 1726 W
   q19 : Eqn
-  q19 = eqn (X0 ∷ CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CK30 ∷ S3 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CK30 ∷ CS03 ∷ CK20 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ S3 ∷ S3 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S1 ∷ CK10 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S2 ∷ CK20 ∷ X0 ∷ X3 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X2 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X2 ∷ X2 ∷ X3 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X2 ∷ X3 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X2 ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X2 ∷ X3 ∷ []) (X3 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X2 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X2 ∷ X2 ∷ X3 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X2 ∷ X3 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X2 ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X2 ∷ X3 ∷ X0 ∷ CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CK30 ∷ S3 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CK30 ∷ CS03 ∷ CK20 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ S3 ∷ S3 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S1 ∷ CK10 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S2 ∷ CK20 ∷ X0 ∷ []) lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS
+  q19 = sE 3482 lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS
   q20 : Eqn
-  q20 = eqn (X3 ∷ X3 ∷ []) [] (wn 390 W)
+  q20 = wE 390 W
   q21 : Eqn
-  q21 = eqn (X2 ∷ X2 ∷ []) [] (wn 389 W)
+  q21 = wE 389 W
   q22 : Eqn
-  q22 = eqn (S1 ∷ S1⁻ ∷ []) [] (wn 2583 W)
+  q22 = wE 2583 W
   q23 : Eqn
-  q23 = eqn (K1 ∷ K1⁻ ∷ []) [] (wn 2582 W)
+  q23 = wE 2582 W
   q24 : Eqn
-  q24 = eqn (S1⁻ ∷ S1 ∷ []) [] (wn 2581 W)
+  q24 = wE 2581 W
   q25 : Eqn
-  q25 = eqn (Toff102 ∷ Toff102 ∷ []) [] (wn 1380 W)
+  q25 = wE 1380 W
   q26 : Eqn
-  q26 = eqn (CS13⁻ ∷ CS13 ∷ []) [] (wn 1379 W)
+  q26 = wE 1379 W
   q27 : Eqn
-  q27 = eqn (CS13 ∷ CS13⁻ ∷ []) [] (wn 1381 W)
+  q27 = wE 1381 W
   q28 : Eqn
-  q28 = eqn (K1⁻ ∷ K1 ∷ []) [] (wn 1509 W)
+  q28 = wE 1509 W
   q29 : Eqn
-  q29 = eqn (S0⁻ ∷ S0 ∷ []) [] (wn 2487 W)
+  q29 = wE 2487 W
   q30 : Eqn
-  q30 = eqn (K0⁻ ∷ K0 ∷ []) [] (wn 1339 W)
+  q30 = wE 1339 W
   q31 : Eqn
-  q31 = eqn (Toff012 ∷ Toff012 ∷ []) [] (wn 227 W)
+  q31 = wE 227 W
   q32 : Eqn
-  q32 = eqn (CS02⁻ ∷ CS02 ∷ []) [] (wn 1358 W)
+  q32 = wE 1358 W
   q33 : Eqn
-  q33 = eqn (CS02 ∷ CS02⁻ ∷ []) [] (wn 1342 W)
+  q33 = wE 1342 W
   q34 : Eqn
-  q34 = eqn (K0 ∷ K0⁻ ∷ []) [] (wn 1846 W)
+  q34 = wE 1846 W
   q35 : Eqn
-  q35 = eqn (S0 ∷ S0⁻ ∷ []) [] (wn 1728 W)
+  q35 = wE 1728 W
 
 -- Hc passes copies X0 CS01 CS01 CK10 CS01 CX13 CS ^inv: 225 steps
 lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv : ⟪ (X0 ∷ CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CK30 ∷ S3 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CK30 ∷ CS03 ∷ CK20 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ S3 ∷ S3 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S1 ∷ CK10 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S2 ∷ CK20 ∷ X0 ∷ X3 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X3 ∷ X2 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X2 ∷ X2 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X2 ∷ X3 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X3 ∷ X2 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X2 ∷ X2 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X2 ∷ X3 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X0 ∷ CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CK30 ∷ S3 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CK30 ∷ CS03 ∷ CK20 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ S3 ∷ S3 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S1 ∷ CK10 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S2 ∷ CK20 ∷ X0 ∷ []) ⟫ʷ

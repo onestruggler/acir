@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DEqn using (wE)
 
 module Examples.Groups.Clifford+CS.Four.D.D306 (W : Ws) where
 
@@ -17,11 +18,11 @@ open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw�
 
 private
   q1 : Eqn
-  q1 = eqn [] (Sw23 ∷ Sw23 ∷ []) (wn 1 W)
+  q1 = wE 1 W
   q2 : Eqn
   q2 = eqn (X1 ∷ Sw23 ∷ []) (Sw23 ∷ X1 ∷ []) (low-comm ((X ↑)) (Swap))
   q3 : Eqn
-  q3 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wn 3 W)
+  q3 = wE 3 W
   q4 : Eqn
   q4 = eqn (CS01 ∷ Sw23 ∷ []) (Sw23 ∷ CS01 ∷ []) (low-comm (CS) (Swap))
   q5 : Eqn
@@ -29,7 +30,7 @@ private
   q6 : Eqn
   q6 = eqn (CS01⁻ ∷ Sw23 ∷ []) (Sw23 ∷ CS01⁻ ∷ []) (low-comm ((CS • CS • CS)) (Swap))
   q7 : Eqn
-  q7 = eqn (CS01⁻ ∷ CK10⁻ ∷ CS01 ∷ CS01 ∷ X1 ∷ CK12 ∷ X1 ∷ []) (X1 ∷ CK12 ∷ X1 ∷ CS01⁻ ∷ CK10⁻ ∷ CS01 ∷ CS01 ∷ []) (wn 922 W)
+  q7 = wE 922 W
   q8 : Eqn
   q8 = eqn (CS01 ∷ CZ23 ∷ []) (CZ23 ∷ CS01 ∷ []) (low-comm (CS) (CZ))
   q9 : Eqn
@@ -37,7 +38,7 @@ private
   q10 : Eqn
   q10 = eqn (CS01⁻ ∷ CZ23 ∷ []) (CZ23 ∷ CS01⁻ ∷ []) (low-comm ((CS • CS • CS)) (CZ))
   q11 : Eqn
-  q11 = eqn (CS01⁻ ∷ CK10⁻ ∷ CS01 ∷ CS01 ∷ CS12 ∷ []) (CS12 ∷ CS01⁻ ∷ CK10⁻ ∷ CS01 ∷ CS01 ∷ []) (wn 923 W)
+  q11 = wE 923 W
   q12 : Eqn
   q12 = eqn (CS01 ∷ CX23 ∷ []) (CX23 ∷ CS01 ∷ []) (low-comm (CS) (CX₀₁))
   q13 : Eqn
@@ -45,9 +46,9 @@ private
   q14 : Eqn
   q14 = eqn (CS01⁻ ∷ CX23 ∷ []) (CX23 ∷ CS01⁻ ∷ []) (low-comm ((CS • CS • CS)) (CX₀₁))
   q15 : Eqn
-  q15 = eqn (CS01⁻ ∷ CK10⁻ ∷ CS01 ∷ CS01 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CS01⁻ ∷ CK10⁻ ∷ CS01 ∷ CS01 ∷ []) (wn 924 W)
+  q15 = wE 924 W
   q16 : Eqn
-  q16 = eqn (CS01⁻ ∷ CK10⁻ ∷ CS01 ∷ CS01 ∷ X1 ∷ CK12⁻ ∷ X1 ∷ []) (X1 ∷ CK12⁻ ∷ X1 ∷ CS01⁻ ∷ CK10⁻ ∷ CS01 ∷ CS01 ∷ []) (wn 925 W)
+  q16 = wE 925 W
 
 -- groups [CSd01 CKd10 CS01 CS01] [X1 CK13 X1 CZ23 CS12 CS13 CX23 CSd13 CX23 X1 CKd13 X1]: 81 steps
 lem-groups-CSd01-CKd10-CS01-CS01-vs-X1-CK13-X1-CZ23-CS12-CS13-CX23-CSd13-CX23-X1-CKd13-X1 : ⟪ (CS01⁻ ∷ CK10⁻ ∷ CS01 ∷ CS01 ∷ X1 ∷ CK13 ∷ X1 ∷ CZ23 ∷ CS12 ∷ CS13 ∷ CX23 ∷ CS13⁻ ∷ CX23 ∷ X1 ∷ CK13⁻ ∷ X1 ∷ []) ⟫ʷ ≈ ⟪ (X1 ∷ CK13 ∷ X1 ∷ CZ23 ∷ CS12 ∷ CS13 ∷ CX23 ∷ CS13⁻ ∷ CX23 ∷ X1 ∷ CK13⁻ ∷ X1 ∷ CS01⁻ ∷ CK10⁻ ∷ CS01 ∷ CS01 ∷ []) ⟫ʷ
@@ -136,7 +137,7 @@ lem-groups-CSd01-CKd10-CS01-CS01-vs-X1-CK13-X1-CZ23-CS12-CS13-CX23-CSd13-CX23-X1
 
 private
   q17 : Eqn
-  q17 = eqn (Toff312 ∷ X1 ∷ Toff312 ∷ X1 ∷ []) (X1 ∷ Toff312 ∷ X1 ∷ Toff312 ∷ []) (wn 926 W)
+  q17 = wE 926 W
 
 -- pass [TOFF312] [X1 TOFF312 X1]: 1 steps
 lem-pass-TOFF312-vs-X1-TOFF312-X1 : ⟪ (Toff312 ∷ X1 ∷ Toff312 ∷ X1 ∷ []) ⟫ʷ ≈ ⟪ (X1 ∷ Toff312 ∷ X1 ∷ Toff312 ∷ []) ⟫ʷ
@@ -145,7 +146,7 @@ lem-pass-TOFF312-vs-X1-TOFF312-X1 = derive (Toff312 ∷ X1 ∷ Toff312 ∷ X1 �
 
 private
   q18 : Eqn
-  q18 = eqn (CX13 ∷ X1 ∷ Toff312 ∷ X1 ∷ []) (X1 ∷ Toff312 ∷ X1 ∷ CX13 ∷ []) (wn 927 W)
+  q18 = wE 927 W
 
 -- groups [CX13] [X1 TOFF312 X1]: 1 steps
 lem-groups-CX13-vs-X1-TOFF312-X1 : ⟪ (CX13 ∷ X1 ∷ Toff312 ∷ X1 ∷ []) ⟫ʷ ≈ ⟪ (X1 ∷ Toff312 ∷ X1 ∷ CX13 ∷ []) ⟫ʷ

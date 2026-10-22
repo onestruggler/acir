@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DEqn using (wE)
 
 module Examples.Groups.Clifford+CS.Four.D.D418 (W : Ws) where
 
@@ -19,37 +20,37 @@ private
   q1 : Eqn
   q1 = eqn (Sw01 ∷ Sw23 ∷ []) (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap))
   q2 : Eqn
-  q2 = eqn (Sw01 ∷ CS12 ∷ []) (CS02 ∷ Sw01 ∷ []) (wn 27 W)
+  q2 = wE 27 W
   q3 : Eqn
-  q3 = eqn (Sw01 ∷ Sw01 ∷ []) [] (wn 31 W)
+  q3 = wE 31 W
   q4 : Eqn
-  q4 = eqn [] (Sw23 ∷ Sw23 ∷ []) (wn 1 W)
+  q4 = wE 1 W
   q5 : Eqn
-  q5 = eqn (Sw12 ∷ CS13⁻ ∷ []) (CS23⁻ ∷ Sw12 ∷ []) (wn 21 W)
+  q5 = wE 21 W
   q6 : Eqn
   q6 = eqn (CS01 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CS01 ∷ []) (low-comm (CS) ((CS • CS • CS)))
   q7 : Eqn
-  q7 = eqn (Sw12 ∷ CS23⁻ ∷ []) (CS13⁻ ∷ Sw12 ∷ []) (wn 51 W)
+  q7 = wE 51 W
   q8 : Eqn
-  q8 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wn 3 W)
+  q8 = wE 3 W
   q9 : Eqn
-  q9 = eqn [] (Sw01 ∷ Sw01 ∷ []) (wn 5 W)
+  q9 = wE 5 W
   q10 : Eqn
   q10 = eqn (Sw01 ∷ X2 ∷ []) (X2 ∷ Sw01 ∷ []) (low-comm (Swap) (X))
   q11 : Eqn
-  q11 = eqn (CS02 ∷ Sw01 ∷ []) (Sw01 ∷ CS12 ∷ []) (wn 7 W)
+  q11 = wE 7 W
   q12 : Eqn
-  q12 = eqn (CS13 ∷ X2 ∷ []) (X2 ∷ CS13 ∷ []) (wn 629 W)
+  q12 = wE 629 W
   q13 : Eqn
   q13 = eqn (X2 ∷ S3 ∷ []) (S3 ∷ X2 ∷ []) (low₃-comm ((X ↑ ↑)) (S))
   q14 : Eqn
   q14 = eqn (CS12⁻ ∷ S3 ∷ []) (S3 ∷ CS12⁻ ∷ []) (low₃-comm (((CS • CS • CS) ↑)) (S))
   q15 : Eqn
-  q15 = eqn (CK20 ∷ Sw01 ∷ []) (Sw01 ∷ CK21 ∷ []) (wn 140 W)
+  q15 = wE 140 W
   q16 : Eqn
-  q16 = eqn (CK31 ∷ X2 ∷ []) (X2 ∷ CK31 ∷ []) (wn 630 W)
+  q16 = wE 630 W
   q17 : Eqn
-  q17 = eqn (Sw01 ∷ CK21 ∷ []) (CK20 ∷ Sw01 ∷ []) (wn 142 W)
+  q17 = wE 142 W
   q18 : Eqn
   q18 = eqn (CK10 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CK10 ∷ []) (low-comm (CK₁₀) ((CS • CS • CS)))
 

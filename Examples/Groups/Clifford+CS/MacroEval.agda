@@ -21,8 +21,10 @@
 -- operation (`permK`); that the recipe is the shortcut's matrix, up to
 -- a power of γ, is one evaluation at the shortcut's own width
 -- (`by-rows`), carried to every placement by Interpretation.localise
--- (`mac-gen`).  `runV-ok` relates the reading to Evaluation's, and
--- `SameF`/`sameF-sem` are FastEval's SameQ/sameQ-sem for it.
+-- (`mac-gen`).  `runV-ok` relates the reading to Evaluation's; `SameF`
+-- compares two readings, each scaled by the other's count of K's, and
+-- `sameF-sem` gives the same semantics; `F-sem`, `F-≡` and `F-op`
+-- decide a circuit against an operator or a stored matrix.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

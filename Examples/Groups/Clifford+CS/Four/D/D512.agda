@@ -1,8 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DEqn using (wE)
 open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
-open import Examples.Groups.Clifford+CS.Four.DSig using (SD512 ; pickᴰ)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD512 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Four.D.D512 (W : Ws) (Sᴰ : SD512) where
 
@@ -30,9 +31,9 @@ private
 
 private
   q1 : Eqn
-  q1 = eqn [] (Sw23 ∷ Sw23 ∷ []) (wn 1 W)
+  q1 = wE 1 W
   q2 : Eqn
-  q2 = eqn (X3 ∷ Sw23 ∷ []) (Sw23 ∷ X2 ∷ []) (wn 173 W)
+  q2 = wE 173 W
   q3 : Eqn
   q3 = eqn (K0 ∷ Sw23 ∷ []) (Sw23 ∷ K0 ∷ []) (low₁-comm (K) ((Swap ↑)))
   q4 : Eqn
@@ -40,39 +41,39 @@ private
   q5 : Eqn
   q5 = eqn (ι ∷ Sw23 ∷ []) (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑)))
   q6 : Eqn
-  q6 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wn 3 W)
+  q6 = wE 3 W
   q7 : Eqn
-  q7 = eqn (K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0 ∷ ι ∷ []) (K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0 ∷ ι ∷ []) (wn 56 W)
+  q7 = wE 56 W
   q8 : Eqn
-  q8 = eqn (X2 ∷ Toff012 ∷ X2 ∷ []) (CX10 ∷ Toff012 ∷ []) (wn 1362 W)
+  q8 = wE 1362 W
   q9 : Eqn
   q9 = eqn (CX10 ∷ Sw23 ∷ []) (Sw23 ∷ CX10 ∷ []) (low-comm (CX₁₀) (Swap))
   q10 : Eqn
-  q10 = eqn (CS02 ∷ CX10 ∷ []) (CX10 ∷ CS02 ∷ CS12 ∷ CCZ012 ∷ []) (wn 1363 W)
+  q10 = wE 1363 W
   q11 : Eqn
-  q11 = eqn (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (wn 43 W)
+  q11 = wE 43 W
   q12 : Eqn
-  q12 = eqn (CCZ012 ∷ Toff012 ∷ []) (Toff012 ∷ CZ12 ∷ CCZ012 ∷ []) (wn 466 W)
+  q12 = wE 466 W
   q13 : Eqn
-  q13 = eqn (CS12 ∷ Toff012 ∷ []) (Toff012 ∷ CS12 ∷ []) (wn 90 W)
+  q13 = wE 90 W
   q14 : Eqn
-  q14 = eqn (CS02 ∷ Toff012 ∷ []) (Toff012 ∷ CS02 ∷ CS12 ∷ CCZ012 ∷ []) (wn 469 W)
+  q14 = wE 469 W
   q15 : Eqn
-  q15 = eqn (CX10 ∷ Toff012 ∷ []) (X2 ∷ Toff012 ∷ X2 ∷ []) (wn 1364 W)
+  q15 = wE 1364 W
   q16 : Eqn
-  q16 = eqn (Sw23 ∷ X2 ∷ []) (X3 ∷ Sw23 ∷ []) (wn 175 W)
+  q16 = wE 175 W
   q17 : Eqn
-  q17 = eqn (CCZ013 ∷ CS13 ∷ []) (CS13 ∷ CCZ013 ∷ []) (lem-pass-CCZ013-vs-CS13)
+  q17 = sE 61 lem-pass-CCZ013-vs-CS13
   q18 : Eqn
-  q18 = eqn (CCZ013 ∷ CZ13 ∷ []) (CZ13 ∷ CCZ013 ∷ []) (lem-pass-CCZ013-vs-CZ13)
+  q18 = sE 58 lem-pass-CCZ013-vs-CZ13
   q19 : Eqn
-  q19 = eqn (CS13 ∷ CS13 ∷ CZ13 ∷ []) [] (wn 1365 W)
+  q19 = wE 1365 W
   q20 : Eqn
-  q20 = eqn (CCZ012 ∷ CCZ012 ∷ []) [] (wn 32 W)
+  q20 = wE 32 W
   q21 : Eqn
-  q21 = eqn (CS02 ∷ CS03 ∷ []) (CS03 ∷ CS02 ∷ []) lem-pass-CS02-vs-CS03
+  q21 = sE 59 lem-pass-CS02-vs-CS03
   q22 : Eqn
-  q22 = eqn (CS02⁻ ∷ CS03 ∷ []) (CS03 ∷ CS02⁻ ∷ []) lem-pass-CSd02-vs-CS03
+  q22 = sE 60 lem-pass-CSd02-vs-CS03
 
 -- pass [CS03] [X3 TOFF013 X3 CS02 X3 TOFF013 X3 CSd02]: 894 steps
 lem-pass-CS03-vs-X3-TOFF013-X3-CS02-X3-TOFF013-X3-CSd02 : ⟪ (CS03 ∷ X3 ∷ Toff013 ∷ X3 ∷ CS02 ∷ X3 ∷ Toff013 ∷ X3 ∷ CS02⁻ ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ Toff013 ∷ X3 ∷ CS02 ∷ X3 ∷ Toff013 ∷ X3 ∷ CS02⁻ ∷ CS03 ∷ []) ⟫ʷ

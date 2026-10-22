@@ -1,19 +1,18 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- A faster row-operation reading, charging γ to K alone
+-- The gates as row operations, charging γ to K alone
 --
--- Every gate is γ⁻¹ times a matrix over ℤ[i], and `Evaluation.⟦_⟧R`
+-- Every gate is γ⁻¹ times a matrix over ℤ[i], and `Evaluation.run`
 -- applies each as that matrix: S, CS and the scalar scale every row by
 -- γ or γ i, so a word of n gates multiplies every entry by γ n times and
 -- its entries grow to about n/2 bits.  But only K needs γ: the scalar is
--- i, S is diag(1, i) and CS diag(1, 1, 1, i), exactly.  `⟦_⟧Q` applies
+-- i, S is diag(1, i) and CS diag(1, 1, 1, i), exactly.  `applyQ` applies
 -- them so — a diagonal gate multiplies a half or a quarter of the rows
--- by i and leaves the rest alone, K adds and subtracts — and is γ^(nk w)
--- times smaller than `⟦_⟧R`, nk w the number of gates other than K
--- (`run-Q`).  `SameQ` compares two readings scaled by the other's number
--- of K gates, and `sameQ-sem` gives the same semantics; `Q-sem` and
--- `Q-≡` decide a circuit against any operator or stored matrix.
+-- by i and leaves the rest alone, K adds and subtracts — and `run-Q`
+-- says that Evaluation's reading of a word is γ^(nN w) times this one,
+-- nN w the number of its gates other than K.  MacroEval reads circuits
+-- this way, the shortcuts applied whole; its `Same` decides the steps.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -36,10 +35,9 @@ open import Notations using (₀ ; ₁₊ ; ₂₊)
 
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_)
 open import Examples.Groups.Clifford+CS.Syntactics
-open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧ ; ⟦_⟧ₒ ; ⟦_⟧M ; ⟦⟧-ix ; len)
+open import Examples.Groups.Clifford+CS.Interpretation using (len)
 open import Examples.Groups.Clifford+CS.Evaluation
-  using (Rows ; rix ; mapT ; get-map ; add ; sub ; sc ; rix-add ; rix-sub ; rix-sc ; applyL ; run ; ⟦⟧R-ix)
-open import Examples.Groups.Clifford+CS.Semantics.Decide using (eqM ; eqM-sound)
+  using (Rows ; rix ; mapT ; get-map ; add ; sub ; sc ; rix-add ; rix-sub ; rix-sc ; applyL ; run)
 
 open RingProps (CommutativeRing.ring +-*-commutativeRing) using (-‿distribʳ-*)
 
@@ -70,9 +68,6 @@ runQ c [ g ]ʷ  R = applyQ c g R
 runQ c ε       R = R
 runQ c (w • v) R = runQ c w (runQ c v R)
 
-⟦_⟧Q : Circuit k → Mat k
-⟦_⟧Q {k} w = mat (runQ k w (entries (idM {k})))
-
 -- The number of K gates.
 kgen : Gen k → ℕ
 kgen K-gen  = 1
@@ -94,10 +89,6 @@ nN : Circuit k → ℕ
 nN [ g ]ʷ  = ngen g
 nN ε       = 0
 nN (w • v) = nN w +ℕ nN v
-
--- Two circuits with the same matrix, decided on the fast readings.
-SameQ : Circuit k → Circuit k → Set
-SameQ u v = eqM (scaleM (γ^ nK v) ⟦ u ⟧Q) (scaleM (γ^ nK u) ⟦ v ⟧Q) ≡ true
 
 ------------------------------------------------------------------------
 -- Arithmetic
@@ -217,7 +208,7 @@ run-Q c (w • v) R x y =
                 (Eq.cong (_* rix (runQ c w (runQ c v R)) x y) (Eq.sym (γ^-+ (nN w) (nN v))))))
 
 ------------------------------------------------------------------------
--- The same semantics
+-- Lengths: the K gates and the others
 
 len-split : (w : Circuit k) → len w ≡ nK w +ℕ nN w
 len-split [ I-gen ]ʷ  = Eq.refl
@@ -235,71 +226,3 @@ len-split (w • v)     =
       (Eq.trans (Eq.cong (a +ℕ_) (Eq.trans (Eq.sym (ℕP.+-assoc b c d))
                                    (Eq.trans (Eq.cong (_+ℕ d) (ℕP.+-comm b c)) (ℕP.+-assoc c b d))))
                 (Eq.sym (ℕP.+-assoc a c (b +ℕ d))))
-
-private
-  -- (a b) (c q) = (b c) (a q)
-  sw : ∀ a b c q → (a * b) * (c * q) ≡ (b * c) * (a * q)
-  sw a b c q = Eq.trans (Eq.cong (_* (c * q)) (*-comm a b)) (*-cross b a c q)
-
-  lcomm : ∀ a b c → a * (b * c) ≡ b * (a * c)
-  lcomm a b c = Eq.trans (Eq.sym (*-assoc a b c)) (Eq.trans (Eq.cong (_* c) (*-comm a b)) (*-assoc b a c))
-
--- The fast reading at its own width.
-Q-ix : (w : Circuit k) → ∀ (x y : Bits k) → ⟦ w ⟧ₒ x y ≡ γ^ nN w * ix ⟦ w ⟧Q x y
-Q-ix {k} w x y = Eq.trans (⟦⟧R-ix w x y) (run-Q {k} k w (entries (idM {k})) x y)
-
--- A circuit against any operator: γ^ l ⟦ w ⟧Q is γ^ (nK w) T.
-Q-sem : (w : Circuit k) (l : ℕ) (T : Op k) →
-        (∀ (x y : Bits k) → γ^ l * ix ⟦ w ⟧Q x y ≡ γ^ nK w * T x y) → ⟦ w ⟧ ~ (l , T)
-Q-sem w l T h x y = begin
-  γ^ l * ⟦ w ⟧ₒ x y            ≡⟨ Eq.cong (γ^ l *_) (Q-ix w x y) ⟩
-  γ^ l * (γ^ nN w * Qw)         ≡⟨ lcomm (γ^ l) (γ^ nN w) Qw ⟩
-  γ^ nN w * (γ^ l * Qw)         ≡⟨ Eq.cong (γ^ nN w *_) (h x y) ⟩
-  γ^ nN w * (γ^ nK w * T x y)   ≡⟨ lcomm (γ^ nN w) (γ^ nK w) (T x y) ⟩
-  γ^ nK w * (γ^ nN w * T x y)   ≡⟨ Eq.sym (*-assoc (γ^ nK w) (γ^ nN w) (T x y)) ⟩
-  (γ^ nK w * γ^ nN w) * T x y   ≡⟨ Eq.cong (_* T x y) (Eq.sym (Eq.trans (Eq.cong γ^_ (len-split w))
-                                                                  (γ^-+ (nK w) (nN w)))) ⟩
-  γ^ len w * T x y ∎
-  where
-  open Eq.≡-Reasoning
-  Qw = ix ⟦ w ⟧Q x y
-
--- The same against a stored matrix, as the stored reading's equation.
-Q-≡ : (w : Circuit k) (l : ℕ) (M : Mat k) →
-      eqM (scaleM (γ^ l) ⟦ w ⟧Q) (scaleM (γ^ nK w) M) ≡ true →
-      scaleM (γ^ l) ⟦ w ⟧M ≡ scaleM (γ^ len w) M
-Q-≡ w l M e = mat-ext (λ x y →
-  Eq.trans (ix-scaleM (γ^ l) ⟦ w ⟧M x y)
-    (Eq.trans (Eq.cong (γ^ l *_) (Eq.sym (⟦⟧-ix w x y)))
-      (Eq.trans (Q-sem w l (ix M) h x y) (Eq.sym (ix-scaleM (γ^ len w) M x y)))))
-  where
-  h : ∀ x y → γ^ l * ix ⟦ w ⟧Q x y ≡ γ^ nK w * ix M x y
-  h x y = Eq.trans (Eq.sym (ix-scaleM (γ^ l) ⟦ w ⟧Q x y))
-            (Eq.trans (ix-≡ (eqM-sound _ _ e) x y) (ix-scaleM (γ^ nK w) M x y))
-
-sameQ-sem : (u v : Circuit k) → SameQ u v → ⟦ u ⟧ ~ ⟦ v ⟧
-sameQ-sem u v e x y = begin
-  γ^ len v * ⟦ u ⟧ₒ x y
-    ≡⟨ Eq.cong₂ _*_ (Eq.trans (Eq.cong γ^_ (len-split v)) (γ^-+ (nK v) (nN v))) (Q-ix u x y) ⟩
-  (A * B) * (C * Qu)
-    ≡⟨ sw A B C Qu ⟩
-  (B * C) * (A * Qu)
-    ≡⟨ Eq.cong ((B * C) *_) E ⟩
-  (B * C) * (D * Qv)
-    ≡⟨ Eq.cong (_* (D * Qv)) (*-comm B C) ⟩
-  (C * B) * (D * Qv)
-    ≡⟨ Eq.sym (sw D C B Qv) ⟩
-  (D * C) * (B * Qv)
-    ≡⟨ Eq.sym (Eq.cong₂ _*_ (Eq.trans (Eq.cong γ^_ (len-split u)) (γ^-+ (nK u) (nN u))) (Q-ix v x y)) ⟩
-  γ^ len u * ⟦ v ⟧ₒ x y ∎
-  where
-  open Eq.≡-Reasoning
-  A = γ^ nK v
-  B = γ^ nN v
-  C = γ^ nN u
-  D = γ^ nK u
-  Qu = ix ⟦ u ⟧Q x y
-  Qv = ix ⟦ v ⟧Q x y
-  E : A * Qu ≡ D * Qv
-  E = Eq.trans (Eq.sym (ix-scaleM A ⟦ u ⟧Q x y))
-        (Eq.trans (ix-≡ (eqM-sound _ _ e) x y) (ix-scaleM D ⟦ v ⟧Q x y))

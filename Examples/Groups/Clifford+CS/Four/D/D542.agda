@@ -1,8 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DEqn using (wE)
 open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
-open import Examples.Groups.Clifford+CS.Four.DSig using (SD542 ; pickᴰ)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD542 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Four.D.D542 (W : Ws) (Sᴰ : SD542) where
 
@@ -64,23 +65,23 @@ private
 
 private
   q1 : Eqn
-  q1 = eqn [] (Sw01 ∷ Sw01 ∷ []) (wn 5 W)
+  q1 = wE 5 W
   q2 : Eqn
   q2 = eqn (Sw01 ∷ X3 ∷ []) (X3 ∷ Sw01 ∷ []) (low-comm (Swap) ((X ↑)))
   q3 : Eqn
   q3 = eqn (Sw01 ∷ X2 ∷ []) (X2 ∷ Sw01 ∷ []) (low-comm (Swap) (X))
   q4 : Eqn
-  q4 = eqn (CK20 ∷ Sw01 ∷ []) (Sw01 ∷ CK21 ∷ []) (wn 140 W)
+  q4 = wE 140 W
   q5 : Eqn
-  q5 = eqn (X2 ∷ CK21 ∷ X2 ∷ X3 ∷ []) (X3 ∷ X2 ∷ CK21 ∷ X2 ∷ []) (wn 1495 W)
+  q5 = wE 1495 W
   q6 : Eqn
-  q6 = eqn (Sw01 ∷ CK21 ∷ []) (CK20 ∷ Sw01 ∷ []) (wn 142 W)
+  q6 = wE 142 W
   q7 : Eqn
-  q7 = eqn (Sw01 ∷ Sw01 ∷ []) [] (wn 31 W)
+  q7 = wE 31 W
   q8 : Eqn
-  q8 = eqn (X2 ∷ CK20 ∷ X2 ∷ []) (X2 ∷ CK20 ∷ X2 ∷ []) (wn 1413 W)
+  q8 = wE 1413 W
   q9 : Eqn
-  q9 = eqn (X2 ∷ CK20 ∷ X2 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ []) (Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ X2 ∷ CK20 ∷ X2 ∷ []) (lem-pass-X2-CK20-X2-vs-TOFF102-CS13-TOFF102-CSd13)
+  q9 = sE 849 lem-pass-X2-CK20-X2-vs-TOFF102-CS13-TOFF102-CSd13
 
 -- pass [X2 CK20 X2] [X3 TOFF102 CS13 TOFF102 CSd13 X3]: 25 steps
 lem-pass-X2-CK20-X2-vs-X3-TOFF102-CS13-TOFF102-CSd13-X3 : ⟪ (X2 ∷ CK20 ∷ X2 ∷ X3 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ X3 ∷ X2 ∷ CK20 ∷ X2 ∷ []) ⟫ʷ
@@ -113,15 +114,15 @@ lem-pass-X2-CK20-X2-vs-X3-TOFF102-CS13-TOFF102-CSd13-X3 = derive (X2 ∷ CK20 �
 
 private
   q10 : Eqn
-  q10 = eqn (CK20⁻ ∷ Sw01 ∷ []) (Sw01 ∷ CK21⁻ ∷ []) (wn 137 W)
+  q10 = wE 137 W
   q11 : Eqn
-  q11 = eqn (X2 ∷ CK21⁻ ∷ X2 ∷ X3 ∷ []) (X3 ∷ X2 ∷ CK21⁻ ∷ X2 ∷ []) (wn 1497 W)
+  q11 = wE 1497 W
   q12 : Eqn
-  q12 = eqn (Sw01 ∷ CK21⁻ ∷ []) (CK20⁻ ∷ Sw01 ∷ []) (wn 139 W)
+  q12 = wE 139 W
   q13 : Eqn
-  q13 = eqn (X2 ∷ CK20⁻ ∷ X2 ∷ []) (X2 ∷ CK20⁻ ∷ X2 ∷ []) (wn 1485 W)
+  q13 = wE 1485 W
   q14 : Eqn
-  q14 = eqn (X2 ∷ CK20⁻ ∷ X2 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ []) (Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ X2 ∷ CK20⁻ ∷ X2 ∷ []) (lem-pass-X2-CKd20-X2-vs-TOFF102-CS13-TOFF102-CSd13)
+  q14 = sE 850 lem-pass-X2-CKd20-X2-vs-TOFF102-CS13-TOFF102-CSd13
 
 -- pass [X2 CKd20 X2] [X3 TOFF102 CS13 TOFF102 CSd13 X3]: 25 steps
 lem-pass-X2-CKd20-X2-vs-X3-TOFF102-CS13-TOFF102-CSd13-X3 : ⟪ (X2 ∷ CK20⁻ ∷ X2 ∷ X3 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ X3 ∷ X2 ∷ CK20⁻ ∷ X2 ∷ []) ⟫ʷ
@@ -154,15 +155,15 @@ lem-pass-X2-CKd20-X2-vs-X3-TOFF102-CS13-TOFF102-CSd13-X3 = derive (X2 ∷ CK20�
 
 private
   q15 : Eqn
-  q15 = eqn (CS02⁻ ∷ Sw01 ∷ []) (Sw01 ∷ CS12⁻ ∷ []) (wn 76 W)
+  q15 = wE 76 W
   q16 : Eqn
-  q16 = eqn (X2 ∷ CS12⁻ ∷ X2 ∷ X3 ∷ []) (X3 ∷ X2 ∷ CS12⁻ ∷ X2 ∷ []) (wn 1499 W)
+  q16 = wE 1499 W
   q17 : Eqn
-  q17 = eqn (Sw01 ∷ CS12⁻ ∷ []) (CS02⁻ ∷ Sw01 ∷ []) (wn 29 W)
+  q17 = wE 29 W
   q18 : Eqn
-  q18 = eqn (X2 ∷ CS02⁻ ∷ X2 ∷ []) (X2 ∷ CS02⁻ ∷ X2 ∷ []) (wn 1482 W)
+  q18 = wE 1482 W
   q19 : Eqn
-  q19 = eqn (X2 ∷ CS02⁻ ∷ X2 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ []) (Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ X2 ∷ CS02⁻ ∷ X2 ∷ []) (lem-pass-X2-CSd20-X2-vs-TOFF102-CS13-TOFF102-CSd13)
+  q19 = sE 853 lem-pass-X2-CSd20-X2-vs-TOFF102-CS13-TOFF102-CSd13
 
 -- pass [X2 CSd20 X2] [X3 TOFF102 CS13 TOFF102 CSd13 X3]: 25 steps
 lem-pass-X2-CSd20-X2-vs-X3-TOFF102-CS13-TOFF102-CSd13-X3 : ⟪ (X2 ∷ CS02⁻ ∷ X2 ∷ X3 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ X3 ∷ X2 ∷ CS02⁻ ∷ X2 ∷ []) ⟫ʷ
@@ -195,23 +196,23 @@ lem-pass-X2-CSd20-X2-vs-X3-TOFF102-CS13-TOFF102-CSd13-X3 = derive (X2 ∷ CS02�
 
 private
   q20 : Eqn
-  q20 = eqn [] (Sw23 ∷ Sw23 ∷ []) (wn 1 W)
+  q20 = wE 1 W
   q21 : Eqn
-  q21 = eqn [] (CS02 ∷ CS02⁻ ∷ []) (wn 1357 W)
+  q21 = wE 1357 W
   q22 : Eqn
-  q22 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wn 3 W)
+  q22 = wE 3 W
   q23 : Eqn
-  q23 = eqn [] (Toff012 ∷ Toff012 ∷ []) (wn 45 W)
+  q23 = wE 45 W
   q24 : Eqn
-  q24 = eqn [] (CS02⁻ ∷ CS02 ∷ []) (wn 231 W)
+  q24 = wE 231 W
   q25 : Eqn
-  q25 = eqn (X1 ∷ CS01 ∷ X1 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ X1 ∷ CS01 ∷ X1 ∷ []) lem-pass-X1-CS10-X1-vs-TOFF012-CS03-TOFF012-CSd03
+  q25 = sE 879 lem-pass-X1-CS10-X1-vs-TOFF012-CS03-TOFF012-CSd03
   q26 : Eqn
-  q26 = eqn (CS02⁻ ∷ CS02 ∷ []) [] (wn 1358 W)
+  q26 = wE 1358 W
   q27 : Eqn
-  q27 = eqn (Toff012 ∷ Toff012 ∷ []) [] (wn 227 W)
+  q27 = wE 227 W
   q28 : Eqn
-  q28 = eqn (CS02 ∷ CS02⁻ ∷ []) [] (wn 1342 W)
+  q28 = wE 1342 W
 
 -- pass [X1 CS10 X1] [CS03 TOFF012 CSd03 TOFF012]: 33 steps
 lem-pass-X1-CS10-X1-vs-CS03-TOFF012-CSd03-TOFF012 : ⟪ (X1 ∷ CS01 ∷ X1 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ []) ⟫ʷ ≈ ⟪ (CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ X1 ∷ CS01 ∷ X1 ∷ []) ⟫ʷ
@@ -252,11 +253,11 @@ lem-pass-X1-CS10-X1-vs-CS03-TOFF012-CSd03-TOFF012 = derive (X1 ∷ CS01 ∷ X1 �
 
 private
   q29 : Eqn
-  q29 = eqn (X2 ∷ CS12⁻ ∷ X2 ∷ S0 ∷ K0 ∷ []) (S0 ∷ K0 ∷ X2 ∷ CS12⁻ ∷ X2 ∷ []) (wn 1501 W)
+  q29 = wE 1501 W
   q30 : Eqn
-  q30 = eqn (X2 ∷ CS12⁻ ∷ X2 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ []) (CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ X2 ∷ CS12⁻ ∷ X2 ∷ []) (lem-pass-X2-CSd21-X2-vs-CS03-TOFF012-CSd03-TOFF012)
+  q30 = sE 871 lem-pass-X2-CSd21-X2-vs-CS03-TOFF012-CSd03-TOFF012
   q31 : Eqn
-  q31 = eqn (X2 ∷ CS12⁻ ∷ X2 ∷ K0⁻ ∷ S0⁻ ∷ []) (K0⁻ ∷ S0⁻ ∷ X2 ∷ CS12⁻ ∷ X2 ∷ []) (wn 1502 W)
+  q31 = wE 1502 W
 
 -- pass [X2 CSd21 X2] [X3 S0 K0 CS03 TOFF012 CSd03 TOFF012 Kd0 Sd0 X3]: 5 steps
 lem-pass-X2-CSd21-X2-vs-X3-S0-K0-CS03-TOFF012-CSd03-TOFF012-Kd0-Sd0-X3 : ⟪ (X2 ∷ CS12⁻ ∷ X2 ∷ X3 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X2 ∷ CS12⁻ ∷ X2 ∷ []) ⟫ʷ
@@ -269,11 +270,11 @@ lem-pass-X2-CSd21-X2-vs-X3-S0-K0-CS03-TOFF012-CSd03-TOFF012-Kd0-Sd0-X3 = derive 
 
 private
   q32 : Eqn
-  q32 = eqn (X2 ∷ CK21⁻ ∷ X2 ∷ S0 ∷ K0 ∷ []) (S0 ∷ K0 ∷ X2 ∷ CK21⁻ ∷ X2 ∷ []) (wn 1503 W)
+  q32 = wE 1503 W
   q33 : Eqn
-  q33 = eqn (X2 ∷ CK21⁻ ∷ X2 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ []) (CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ X2 ∷ CK21⁻ ∷ X2 ∷ []) (lem-pass-X2-CKd21-X2-vs-CS03-TOFF012-CSd03-TOFF012)
+  q33 = sE 867 lem-pass-X2-CKd21-X2-vs-CS03-TOFF012-CSd03-TOFF012
   q34 : Eqn
-  q34 = eqn (X2 ∷ CK21⁻ ∷ X2 ∷ K0⁻ ∷ S0⁻ ∷ []) (K0⁻ ∷ S0⁻ ∷ X2 ∷ CK21⁻ ∷ X2 ∷ []) (wn 1504 W)
+  q34 = wE 1504 W
 
 -- pass [X2 CKd21 X2] [X3 S0 K0 CS03 TOFF012 CSd03 TOFF012 Kd0 Sd0 X3]: 5 steps
 lem-pass-X2-CKd21-X2-vs-X3-S0-K0-CS03-TOFF012-CSd03-TOFF012-Kd0-Sd0-X3 : ⟪ (X2 ∷ CK21⁻ ∷ X2 ∷ X3 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X2 ∷ CK21⁻ ∷ X2 ∷ []) ⟫ʷ
@@ -286,11 +287,11 @@ lem-pass-X2-CKd21-X2-vs-X3-S0-K0-CS03-TOFF012-CSd03-TOFF012-Kd0-Sd0-X3 = derive 
 
 private
   q35 : Eqn
-  q35 = eqn (X2 ∷ CK21 ∷ X2 ∷ S0 ∷ K0 ∷ []) (S0 ∷ K0 ∷ X2 ∷ CK21 ∷ X2 ∷ []) (wn 1505 W)
+  q35 = wE 1505 W
   q36 : Eqn
-  q36 = eqn (X2 ∷ CK21 ∷ X2 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ []) (CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ X2 ∷ CK21 ∷ X2 ∷ []) (lem-pass-X2-CK21-X2-vs-CS03-TOFF012-CSd03-TOFF012)
+  q36 = sE 866 lem-pass-X2-CK21-X2-vs-CS03-TOFF012-CSd03-TOFF012
   q37 : Eqn
-  q37 = eqn (X2 ∷ CK21 ∷ X2 ∷ K0⁻ ∷ S0⁻ ∷ []) (K0⁻ ∷ S0⁻ ∷ X2 ∷ CK21 ∷ X2 ∷ []) (wn 1506 W)
+  q37 = wE 1506 W
 
 -- pass [X2 CK21 X2] [X3 S0 K0 CS03 TOFF012 CSd03 TOFF012 Kd0 Sd0 X3]: 5 steps
 lem-pass-X2-CK21-X2-vs-X3-S0-K0-CS03-TOFF012-CSd03-TOFF012-Kd0-Sd0-X3 : ⟪ (X2 ∷ CK21 ∷ X2 ∷ X3 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X2 ∷ CK21 ∷ X2 ∷ []) ⟫ʷ
@@ -303,13 +304,13 @@ lem-pass-X2-CK21-X2-vs-X3-S0-K0-CS03-TOFF012-CSd03-TOFF012-Kd0-Sd0-X3 = derive (
 
 private
   q38 : Eqn
-  q38 = eqn (X2 ∷ CS12 ∷ X2 ∷ X3 ∷ []) (X3 ∷ X2 ∷ CS12 ∷ X2 ∷ []) (wn 1493 W)
+  q38 = wE 1493 W
   q39 : Eqn
-  q39 = eqn (X2 ∷ CS12 ∷ X2 ∷ S0 ∷ K0 ∷ []) (S0 ∷ K0 ∷ X2 ∷ CS12 ∷ X2 ∷ []) (wn 1507 W)
+  q39 = wE 1507 W
   q40 : Eqn
-  q40 = eqn (X2 ∷ CS12 ∷ X2 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ []) (CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ X2 ∷ CS12 ∷ X2 ∷ []) (lem-pass-X2-CS21-X2-vs-CS03-TOFF012-CSd03-TOFF012)
+  q40 = sE 868 lem-pass-X2-CS21-X2-vs-CS03-TOFF012-CSd03-TOFF012
   q41 : Eqn
-  q41 = eqn (X2 ∷ CS12 ∷ X2 ∷ K0⁻ ∷ S0⁻ ∷ []) (K0⁻ ∷ S0⁻ ∷ X2 ∷ CS12 ∷ X2 ∷ []) (wn 1508 W)
+  q41 = wE 1508 W
 
 -- pass [X2 CS21 X2] [X3 S0 K0 CS03 TOFF012 CSd03 TOFF012 Kd0 Sd0 X3]: 5 steps
 lem-pass-X2-CS21-X2-vs-X3-S0-K0-CS03-TOFF012-CSd03-TOFF012-Kd0-Sd0-X3 : ⟪ (X2 ∷ CS12 ∷ X2 ∷ X3 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X2 ∷ CS12 ∷ X2 ∷ []) ⟫ʷ
@@ -322,7 +323,7 @@ lem-pass-X2-CS21-X2-vs-X3-S0-K0-CS03-TOFF012-CSd03-TOFF012-Kd0-Sd0-X3 = derive (
 
 private
   q42 : Eqn
-  q42 = eqn (Toff102 ∷ []) (K1 ∷ CCZ012 ∷ K1⁻ ∷ []) (wn 1347 W)
+  q42 = wE 1347 W
   q43 : Eqn
   q43 = eqn (K1 ∷ Sw23 ∷ []) (Sw23 ∷ K1 ∷ []) (low-comm ((K ↑)) (Swap))
   q44 : Eqn
@@ -330,19 +331,19 @@ private
   q45 : Eqn
   q45 = eqn (ι ∷ Sw23 ∷ []) (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑)))
   q46 : Eqn
-  q46 = eqn (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) (wn 196 W)
+  q46 = wE 196 W
   q47 : Eqn
-  q47 = eqn (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (wn 43 W)
+  q47 = wE 43 W
   q48 : Eqn
   q48 = eqn (K1⁻ ∷ Sw23 ∷ []) (Sw23 ∷ K1⁻ ∷ []) (low-comm (((K • iI) ↑)) (Swap))
   q49 : Eqn
-  q49 = eqn (K1⁻ ∷ K1 ∷ []) [] (wn 1509 W)
+  q49 = wE 1509 W
   q50 : Eqn
-  q50 = eqn (CCZ013 ∷ CCZ012 ∷ []) (CCZ012 ∷ CCZ013 ∷ []) (lem-pass-CCZ013-vs-CCZ012)
+  q50 = sE 823 lem-pass-CCZ013-vs-CCZ012
   q51 : Eqn
-  q51 = eqn [] (K1⁻ ∷ K1 ∷ []) (wn 1510 W)
+  q51 = wE 1510 W
   q52 : Eqn
-  q52 = eqn (K1 ∷ CCZ012 ∷ K1⁻ ∷ []) (Toff102 ∷ []) (wn 1450 W)
+  q52 = wE 1450 W
 
 -- pass [TOFF103] [TOFF102]: 111 steps
 lem-pass-TOFF103-vs-TOFF102 : ⟪ (Toff103 ∷ Toff102 ∷ []) ⟫ʷ ≈ ⟪ (Toff102 ∷ Toff103 ∷ []) ⟫ʷ
@@ -461,7 +462,7 @@ lem-pass-TOFF103-vs-TOFF102 = derive (Toff103 ∷ Toff102 ∷ []) (Toff102 ∷ T
 
 private
   q53 : Eqn
-  q53 = eqn (CCZ012 ∷ CCZ123 ∷ []) (CCZ123 ∷ CCZ012 ∷ []) lem-pass-CCZ012-vs-CCZ123
+  q53 = sE 846 lem-pass-CCZ012-vs-CCZ123
 
 -- pass [CCZ123] [CCZ012]: 1 steps
 lem-pass-CCZ123-vs-CCZ012 : ⟪ (CCZ123 ∷ CCZ012 ∷ []) ⟫ʷ ≈ ⟪ (CCZ012 ∷ CCZ123 ∷ []) ⟫ʷ
@@ -470,27 +471,27 @@ lem-pass-CCZ123-vs-CCZ012 = derive (CCZ123 ∷ CCZ012 ∷ []) (CCZ012 ∷ CCZ123
 
 private
   q54 : Eqn
-  q54 = eqn (CS12 ∷ Toff102 ∷ []) (Toff102 ∷ CS02 ∷ CS12 ∷ CCZ012 ∷ []) (wn 1511 W)
+  q54 = wE 1511 W
   q55 : Eqn
-  q55 = eqn (CCZ012 ∷ CS13 ∷ []) (CS13 ∷ CCZ012 ∷ []) (lem-pass-CCZ012-vs-CS13)
+  q55 = sE 829 lem-pass-CCZ012-vs-CS13
   q56 : Eqn
-  q56 = eqn (CS12 ∷ CS13 ∷ []) (CS13 ∷ CS12 ∷ []) (lem-pass-CS12-vs-CS13)
+  q56 = sE 873 lem-pass-CS12-vs-CS13
   q57 : Eqn
-  q57 = eqn (CS13 ∷ CS02 ∷ []) (CS02 ∷ CS13 ∷ []) lem-pass-CS13-vs-CS02
+  q57 = sE 27 lem-pass-CS13-vs-CS02
   q58 : Eqn
-  q58 = eqn (CCZ012 ∷ Toff102 ∷ []) (Toff102 ∷ CZ02 ∷ CCZ012 ∷ []) (wn 1512 W)
+  q58 = wE 1512 W
   q59 : Eqn
-  q59 = eqn (CS02 ∷ Toff102 ∷ []) (Toff102 ∷ CS02 ∷ []) (wn 1351 W)
+  q59 = wE 1351 W
   q60 : Eqn
-  q60 = eqn (CCZ012 ∷ CZ02 ∷ []) (CZ02 ∷ CCZ012 ∷ []) (lem-pass-CCZ012-vs-CZ02)
+  q60 = sE 872 lem-pass-CCZ012-vs-CZ02
   q61 : Eqn
-  q61 = eqn (CS12 ∷ CZ02 ∷ []) (CZ02 ∷ CS12 ∷ []) (lem-pass-CS12-vs-CZ02)
+  q61 = sE 875 lem-pass-CS12-vs-CZ02
   q62 : Eqn
-  q62 = eqn (CS02 ∷ CS02 ∷ CZ02 ∷ []) [] (wn 1513 W)
+  q62 = wE 1513 W
   q63 : Eqn
-  q63 = eqn (CCZ012 ∷ CCZ012 ∷ []) [] (wn 32 W)
+  q63 = wE 32 W
   q64 : Eqn
-  q64 = eqn (CS12 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ CS12 ∷ []) (lem-pass-CS12-vs-CSd13)
+  q64 = sE 874 lem-pass-CS12-vs-CSd13
 
 -- pass [CS12] [TOFF102 CS13 TOFF102 CSd13]: 12 steps
 lem-pass-CS12-vs-TOFF102-CS13-TOFF102-CSd13 : ⟪ (CS12 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ CS12 ∷ []) ⟫ʷ
@@ -510,19 +511,19 @@ lem-pass-CS12-vs-TOFF102-CS13-TOFF102-CSd13 = derive (CS12 ∷ Toff102 ∷ CS13 
 
 private
   q65 : Eqn
-  q65 = eqn (CS12⁻ ∷ Toff102 ∷ []) (Toff102 ∷ CS02⁻ ∷ CS12⁻ ∷ CCZ012 ∷ []) (wn 1514 W)
+  q65 = wE 1514 W
   q66 : Eqn
-  q66 = eqn (CS12⁻ ∷ CS13 ∷ []) (CS13 ∷ CS12⁻ ∷ []) (lem-pass-CSd12-vs-CS13)
+  q66 = sE 876 lem-pass-CSd12-vs-CS13
   q67 : Eqn
-  q67 = eqn (CS02⁻ ∷ CS13 ∷ []) (CS13 ∷ CS02⁻ ∷ []) (lem-pass-CSd02-vs-CS13)
+  q67 = sE 28 lem-pass-CSd02-vs-CS13
   q68 : Eqn
-  q68 = eqn (CS02⁻ ∷ Toff102 ∷ []) (Toff102 ∷ CS02⁻ ∷ []) (wn 1352 W)
+  q68 = wE 1352 W
   q69 : Eqn
-  q69 = eqn (CS12⁻ ∷ CZ02 ∷ []) (CZ02 ∷ CS12⁻ ∷ []) (lem-pass-CSd12-vs-CZ02)
+  q69 = sE 878 lem-pass-CSd12-vs-CZ02
   q70 : Eqn
-  q70 = eqn (CS02⁻ ∷ CS02⁻ ∷ CZ02 ∷ []) [] (wn 1515 W)
+  q70 = wE 1515 W
   q71 : Eqn
-  q71 = eqn (CS12⁻ ∷ CS13⁻ ∷ []) (CS13⁻ ∷ CS12⁻ ∷ []) (lem-pass-CSd12-vs-CSd13)
+  q71 = sE 877 lem-pass-CSd12-vs-CSd13
 
 -- pass [CSd12] [TOFF102 CS13 TOFF102 CSd13]: 12 steps
 lem-pass-CSd12-vs-TOFF102-CS13-TOFF102-CSd13 : ⟪ (CS12⁻ ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ CS12⁻ ∷ []) ⟫ʷ
@@ -542,11 +543,11 @@ lem-pass-CSd12-vs-TOFF102-CS13-TOFF102-CSd13 = derive (CS12⁻ ∷ Toff102 ∷ C
 
 private
   q72 : Eqn
-  q72 = eqn (X2 ∷ Toff102 ∷ X2 ∷ []) (K1 ∷ CZ01 ∷ CCZ012 ∷ K1⁻ ∷ []) (wn 1516 W)
+  q72 = wE 1516 W
   q73 : Eqn
-  q73 = eqn (CCZ013 ∷ CZ01 ∷ []) (CZ01 ∷ CCZ013 ∷ []) (lem-pass-CCZ013-vs-CZ01)
+  q73 = sE 815 lem-pass-CCZ013-vs-CZ01
   q74 : Eqn
-  q74 = eqn (K1 ∷ CZ01 ∷ CCZ012 ∷ K1⁻ ∷ []) (X2 ∷ Toff102 ∷ X2 ∷ []) (wn 1517 W)
+  q74 = wE 1517 W
 
 -- pass [TOFF103] [X2 TOFF102 X2]: 112 steps
 lem-pass-TOFF103-vs-X2-TOFF102-X2 : ⟪ (Toff103 ∷ X2 ∷ Toff102 ∷ X2 ∷ []) ⟫ʷ ≈ ⟪ (X2 ∷ Toff102 ∷ X2 ∷ Toff103 ∷ []) ⟫ʷ

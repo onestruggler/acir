@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DEqn using (wE)
 
 module Examples.Groups.Clifford+CS.Four.D.D446 (W : Ws) where
 
@@ -17,35 +18,35 @@ open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw�
 
 private
   q1 : Eqn
-  q1 = eqn [] (Sw23 ∷ Sw23 ∷ []) (wn 1 W)
+  q1 = wE 1 W
   q2 : Eqn
-  q2 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wn 3 W)
+  q2 = wE 3 W
   q3 : Eqn
-  q3 = eqn (CK20⁻ ∷ CS12 ∷ []) (CS12 ∷ CK20⁻ ∷ []) (wn 1189 W)
+  q3 = wE 1189 W
   q4 : Eqn
-  q4 = eqn [] (Sw01 ∷ Sw01 ∷ []) (wn 5 W)
+  q4 = wE 5 W
   q5 : Eqn
   q5 = eqn (Sw01 ∷ CS23 ∷ []) (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS))
   q6 : Eqn
   q6 = eqn (Sw01 ∷ Sw23 ∷ []) (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap))
   q7 : Eqn
-  q7 = eqn (CK20⁻ ∷ Sw01 ∷ []) (Sw01 ∷ CK21⁻ ∷ []) (wn 137 W)
+  q7 = wE 137 W
   q8 : Eqn
-  q8 = eqn (CK31⁻ ∷ CS23 ∷ []) (CS23 ∷ CK31⁻ ∷ []) (wn 1190 W)
+  q8 = wE 1190 W
   q9 : Eqn
-  q9 = eqn (Sw01 ∷ CK21⁻ ∷ []) (CK20⁻ ∷ Sw01 ∷ []) (wn 139 W)
+  q9 = wE 139 W
   q10 : Eqn
-  q10 = eqn (Sw01 ∷ Sw01 ∷ []) [] (wn 31 W)
+  q10 = wE 31 W
   q11 : Eqn
-  q11 = eqn (Sw12 ∷ CX13 ∷ []) (CX23 ∷ Sw12 ∷ []) (wn 157 W)
+  q11 = wE 157 W
   q12 : Eqn
   q12 = eqn (CK10⁻ ∷ CX23 ∷ []) (CX23 ∷ CK10⁻ ∷ []) (low-comm ((S ↑ • CK₁₀)) (CX₀₁))
   q13 : Eqn
-  q13 = eqn (Sw12 ∷ CX23 ∷ []) (CX13 ∷ Sw12 ∷ []) (wn 158 W)
+  q13 = wE 158 W
   q14 : Eqn
   q14 = eqn (Sw01 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS)))
   q15 : Eqn
-  q15 = eqn (CK31⁻ ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CK31⁻ ∷ []) (wn 1191 W)
+  q15 = wE 1191 W
 
 -- groups [CKd30] [CS13 CS23 CX12 CSd23 CX12]: 59 steps
 lem-groups-CKd30-vs-CS13-CS23-CX12-CSd23-CX12 : ⟪ (CK30⁻ ∷ CS13 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ []) ⟫ʷ ≈ ⟪ (CS13 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CK30⁻ ∷ []) ⟫ʷ
@@ -131,13 +132,13 @@ lem-groups-CKd30-vs-CSd23 = derive (CK30⁻ ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CK3
 
 private
   q16 : Eqn
-  q16 = eqn (CK10 ∷ CS02 ∷ CK20 ∷ CS02⁻ ∷ CK10⁻ ∷ CS02 ∷ CK20⁻ ∷ CS02⁻ ∷ CS12 ∷ []) (CS12 ∷ CK10 ∷ CS02 ∷ CK20 ∷ CS02⁻ ∷ CK10⁻ ∷ CS02 ∷ CK20⁻ ∷ CS02⁻ ∷ []) (wn 1192 W)
+  q16 = wE 1192 W
   q17 : Eqn
-  q17 = eqn (Sw12 ∷ CS13 ∷ []) (CS23 ∷ Sw12 ∷ []) (wn 20 W)
+  q17 = wE 20 W
   q18 : Eqn
   q18 = eqn (CS01⁻ ∷ CS23 ∷ []) (CS23 ∷ CS01⁻ ∷ []) (low-comm ((CS • CS • CS)) (CS))
   q19 : Eqn
-  q19 = eqn (Sw12 ∷ CS23 ∷ []) (CS13 ∷ Sw12 ∷ []) (wn 49 W)
+  q19 = wE 49 W
   q20 : Eqn
   q20 = eqn (CK10⁻ ∷ CS23 ∷ []) (CS23 ∷ CK10⁻ ∷ []) (low-comm ((S ↑ • CK₁₀)) (CS))
   q21 : Eqn
@@ -145,53 +146,53 @@ private
   q22 : Eqn
   q22 = eqn (CK10⁻ ∷ Sw23 ∷ []) (Sw23 ∷ CK10⁻ ∷ []) (low-comm ((S ↑ • CK₁₀)) (Swap))
   q23 : Eqn
-  q23 = eqn (CK10⁻ ∷ CS12 ∷ []) (CS12 ∷ CK10⁻ ∷ []) (wn 1140 W)
+  q23 = wE 1140 W
   q24 : Eqn
   q24 = eqn (CK10 ∷ CS23 ∷ []) (CS23 ∷ CK10 ∷ []) (low-comm (CK₁₀) (CS))
   q25 : Eqn
   q25 = eqn (CK10 ∷ Sw23 ∷ []) (Sw23 ∷ CK10 ∷ []) (low-comm (CK₁₀) (Swap))
   q26 : Eqn
-  q26 = eqn (CK10 ∷ CS12 ∷ []) (CS12 ∷ CK10 ∷ []) (wn 607 W)
+  q26 = wE 607 W
   q27 : Eqn
   q27 = eqn (Sw01 ∷ CX23 ∷ []) (CX23 ∷ Sw01 ∷ []) (low-comm (Swap) (CX₀₁))
   q28 : Eqn
-  q28 = eqn (CS02⁻ ∷ Sw01 ∷ []) (Sw01 ∷ CS12⁻ ∷ []) (wn 76 W)
+  q28 = wE 76 W
   q29 : Eqn
-  q29 = eqn (CS12⁻ ∷ CX23 ∷ []) (CX23 ∷ CS12⁻ ∷ []) (wn 1170 W)
+  q29 = wE 1170 W
   q30 : Eqn
-  q30 = eqn (Sw01 ∷ CS12⁻ ∷ []) (CS02⁻ ∷ Sw01 ∷ []) (wn 29 W)
+  q30 = wE 29 W
   q31 : Eqn
-  q31 = eqn (CK21⁻ ∷ CX23 ∷ []) (CX23 ∷ CK21⁻ ∷ []) (wn 1193 W)
+  q31 = wE 1193 W
   q32 : Eqn
-  q32 = eqn (CS02 ∷ Sw01 ∷ []) (Sw01 ∷ CS12 ∷ []) (wn 7 W)
+  q32 = wE 7 W
   q33 : Eqn
-  q33 = eqn (CS12 ∷ CX23 ∷ []) (CX23 ∷ CS12 ∷ []) (wn 915 W)
+  q33 = wE 915 W
   q34 : Eqn
-  q34 = eqn (Sw01 ∷ CS12 ∷ []) (CS02 ∷ Sw01 ∷ []) (wn 27 W)
+  q34 = wE 27 W
   q35 : Eqn
-  q35 = eqn (CK20 ∷ Sw01 ∷ []) (Sw01 ∷ CK21 ∷ []) (wn 140 W)
+  q35 = wE 140 W
   q36 : Eqn
-  q36 = eqn (CK21 ∷ CX23 ∷ []) (CX23 ∷ CK21 ∷ []) (wn 917 W)
+  q36 = wE 917 W
   q37 : Eqn
-  q37 = eqn (Sw01 ∷ CK21 ∷ []) (CK20 ∷ Sw01 ∷ []) (wn 142 W)
+  q37 = wE 142 W
   q38 : Eqn
   q38 = eqn (CK10 ∷ CX23 ∷ []) (CX23 ∷ CK10 ∷ []) (low-comm (CK₁₀) (CX₀₁))
   q39 : Eqn
-  q39 = eqn (Sw12 ∷ CS13⁻ ∷ []) (CS23⁻ ∷ Sw12 ∷ []) (wn 21 W)
+  q39 = wE 21 W
   q40 : Eqn
   q40 = eqn (CS01⁻ ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CS01⁻ ∷ []) (low-comm ((CS • CS • CS)) ((CS • CS • CS)))
   q41 : Eqn
-  q41 = eqn (Sw12 ∷ CS23⁻ ∷ []) (CS13⁻ ∷ Sw12 ∷ []) (wn 51 W)
+  q41 = wE 51 W
   q42 : Eqn
   q42 = eqn (CK10⁻ ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CK10⁻ ∷ []) (low-comm ((S ↑ • CK₁₀)) ((CS • CS • CS)))
   q43 : Eqn
   q43 = eqn (CS01 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CS01 ∷ []) (low-comm (CS) ((CS • CS • CS)))
   q44 : Eqn
-  q44 = eqn (CK10⁻ ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CK10⁻ ∷ []) (wn 1142 W)
+  q44 = wE 1142 W
   q45 : Eqn
   q45 = eqn (CK10 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CK10 ∷ []) (low-comm (CK₁₀) ((CS • CS • CS)))
   q46 : Eqn
-  q46 = eqn (CK10 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CK10 ∷ []) (wn 609 W)
+  q46 = wE 609 W
 
 -- groups [CK10 CS02 CK20 CSd02 CKd10 CS02 CKd20 CSd02] [CS12 CS13 CX23 CSd13 CX23]: 305 steps
 lem-groups-CK10-CS02-CK20-CSd02-CKd10-CS02-CKd20-CSd02-vs-CS12-CS13-CX23-CSd13-CX23 : ⟪ (CK10 ∷ CS02 ∷ CK20 ∷ CS02⁻ ∷ CK10⁻ ∷ CS02 ∷ CK20⁻ ∷ CS02⁻ ∷ CS12 ∷ CS13 ∷ CX23 ∷ CS13⁻ ∷ CX23 ∷ []) ⟫ʷ ≈ ⟪ (CS12 ∷ CS13 ∷ CX23 ∷ CS13⁻ ∷ CX23 ∷ CK10 ∷ CS02 ∷ CK20 ∷ CS02⁻ ∷ CK10⁻ ∷ CS02 ∷ CK20⁻ ∷ CS02⁻ ∷ []) ⟫ʷ
@@ -506,13 +507,13 @@ private
   q47 : Eqn
   q47 = eqn (S1 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ S1 ∷ []) (low-comm ((S ↑)) ((CS • CS • CS)))
   q48 : Eqn
-  q48 = eqn (CX21 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CX21 ∷ []) (wn 457 W)
+  q48 = wE 457 W
   q49 : Eqn
-  q49 = eqn (CS12 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CS12 ∷ []) (wn 416 W)
+  q49 = wE 416 W
   q50 : Eqn
-  q50 = eqn (S2 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ S2 ∷ []) (wn 445 W)
+  q50 = wE 445 W
   q51 : Eqn
-  q51 = eqn (CK21 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CK21 ∷ []) (wn 626 W)
+  q51 = wE 626 W
 
 -- groups [CS02 CS02 CS02 CK20 S2 CS02 CS02 CS02 CS02 CS02 CS02 CX21 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 S1 S1 S1 CK10 S1 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CS01 CX21 CS01 CS01 CS01 CK10 S1 CS01 CS01 CS01 CS01 CS01 CS01] [CSd23]: 116 steps
 lem-groups-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX21-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-S1-S1-S1-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-vs-CSd23 : ⟪ (CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CX21 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S1 ∷ S1 ∷ S1 ∷ CK10 ∷ S1 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX21 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK10 ∷ S1 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS23⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS23⁻ ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CX21 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S1 ∷ S1 ∷ S1 ∷ CK10 ∷ S1 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX21 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK10 ∷ S1 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ []) ⟫ʷ
@@ -636,11 +637,11 @@ lem-groups-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX21-CS01-CS01-C
 
 private
   q52 : Eqn
-  q52 = eqn (CK20 ∷ CS12 ∷ []) (CS12 ∷ CK20 ∷ []) (wn 523 W)
+  q52 = wE 523 W
   q53 : Eqn
-  q53 = eqn (CK31 ∷ CS23 ∷ []) (CS23 ∷ CK31 ∷ []) (wn 588 W)
+  q53 = wE 588 W
   q54 : Eqn
-  q54 = eqn (CK31 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CK31 ∷ []) (wn 593 W)
+  q54 = wE 593 W
 
 -- groups [CK30] [CS13 CS23 CX12 CSd23 CX12]: 59 steps
 lem-groups-CK30-vs-CS13-CS23-CX12-CSd23-CX12 : ⟪ (CK30 ∷ CS13 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ []) ⟫ʷ ≈ ⟪ (CS13 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CK30 ∷ []) ⟫ʷ

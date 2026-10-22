@@ -18,7 +18,13 @@ module Examples.Groups.Clifford+CS.Four.DSig where
 open import Data.List.Base using (List ; [] ; _∷_)
 open import Data.Nat.Base using (ℕ ; zero ; suc)
 open import Data.Unit.Base using (⊤ ; tt)
-open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Four.DStmt using (St ; lemmas)
+open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn)
+open import Examples.Groups.Clifford+CS.Four.DEqn using (getE)
+
+-- A lemma as an equation, its lists read off its statement.
+sE : (n : ℕ) → St n → Eqn
+sE n p = getE lemmas n p
 
 infixr 5 _∷ᵃ_
 data All : List ℕ → Set where

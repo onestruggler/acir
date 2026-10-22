@@ -45,6 +45,7 @@ MODP = PFX + TREE + '.D.'
 FOUR = TREE == 'Four'
 DSIG = PFX + TREE + '.DSig'
 DSTMT = PFX + TREE + '.DStmt'
+DEQN = PFX + TREE + '.DEqn'
 DALL = PFX + TREE + '.DAll'
 SIGF = os.path.join(BASE, TREE, 'DSig.agda')
 WS = '' if FOUR else 'Ws → '
@@ -148,12 +149,33 @@ def render(m):
             block.append(f'  {x} : {WS}St {idx[x]}')
             block.append(f'  {x} = pickᴰ {k} Sᴰ')
         s = s[:last].rstrip(NL) + NL + NL + NL.join(block) + NL + NL + s[last:].lstrip(NL)
+    # The table entries read off the trees: a window's, or an injected
+    # lemma's, lists are its statement's (DEqn, DSig.sE), so that only
+    # the entries for the module's own lemmas and the respelling ones
+    # spell their lists.  Halved what a module costs besides loading.
+    def entry(mm):
+        head, prf = mm.group(1), mm.group(2)
+        w = re.fullmatch(r'\(wn (\d+) W\)', prf)
+        if w:
+            return f'{head} wE {w.group(1)} W'
+        w = re.fullmatch(r'\(wp (\d+) c4\)', prf)
+        if w:
+            return f'{head} wpE {w.group(1)} c4'
+        w = re.fullmatch(r'\(wl (\d+) \(lit c4\)\)', prf)
+        if w:
+            return f'{head} wlE {w.group(1)} (lit c4)'
+        w = re.fullmatch(r'\(?(lem-\S+?)( c4)?\)?', prf)
+        if w and w.group(1) in used and bool(w.group(2)) == (not FOUR):
+            x = w.group(1)
+            return f'{head} sE {idx[x]} ' + (x if FOUR else f'({x} c4)')
+        return mm.group(0)
+    s = re.sub(r'^(  q\d+(?: c4)? =) eqn (?:\([^()]*\)|\[\]) (?:\([^()]*\)|\[\]) (.+)$', entry, s, flags=re.M)
     pre_end = s.index('module ' + MODP + m)
     pre = s[:pre_end]
     lines = [l for l in pre.split(NL) if l.strip()]
     rest = [l for l in lines if not l.startswith('open import')]
-    imps = list(PRE) + ([f'open import {DSTMT} using (St)', f'open import {DSIG} using (S{m} ; pickᴰ)']
-                        if used else [])
+    imps = list(PRE) + [f'open import {DEQN} using ({"wE" if FOUR else "wpE ; wlE"})'] + (
+        [f'open import {DSTMT} using (St)', f'open import {DSIG} using (S{m} ; pickᴰ ; sE)'] if used else [])
     pre = NL.join(rest) + NL + NL + (NL.join(imps) + NL + NL if imps else '')
     return re.sub(r'\n{3,}', NL + NL, pre + s[pre_end:])
 
@@ -218,7 +240,12 @@ out = HEAD + [
     'open import Data.Unit.Base using (⊤ ; tt)']
 if not FOUR:
     out.append('open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws)')
-out += ['open import ' + DSTMT + ' using (St)', '',
+out += ['open import ' + DSTMT + ' using (St ; lemmas)',
+        'open import Examples.Groups.Clifford+CS.' + TREE + '.Reflect using (Eqn)',
+        'open import ' + DEQN + ' using (getE)', '',
+        '-- A lemma as an equation, its lists read off its statement.',
+        'sE : (n : ℕ) → St n → Eqn',
+        'sE n p = getE lemmas n p', '',
         'infixr 5 _∷ᵃ_',
         'data All : List ℕ → Set where',
         '  nil  : All []',
@@ -237,6 +264,39 @@ for m in mods:
         out.append(f'S{m} : Set')
         out.append(f'S{m} = All (' + ' ∷ '.join(str(idx[x]) for x in deps[m]) + ' ∷ [])')
 open(SIGF, 'w', encoding='utf-8').write(NL.join(out) + NL)
+
+TT, TL, TN, WIN = ('Tree', 'leaf', 'node', 'Win') if FOUR else ('WTree', 'wleaf', 'wnode', 'WinT')
+out = HEAD + [
+    '-- The windows of ' + TREE + '/D as equations',
+    '--',
+    "-- The n-th statement of a tree of statements (WinSig's) with its proof,",
+    '-- as the equation the derivation engine rewrites with, its lists read',
+    '-- off the tree alone (not off the proof, which is a variable where it',
+    '-- is used): so a table entry of a derivation module need not spell',
+    '-- the lists of its window or lemma, which was half of what a module',
+    '-- cost besides loading.  Written by `scratchpad/four/di.py`.'] + TAIL + [
+    'module ' + DEQN + ' where', '',
+    'open import Data.Bool.Base using (Bool ; true ; false ; if_then_else_)',
+    'open import Data.List.Base using ([] ; _∷_)',
+    'open import Data.Nat.Base using (ℕ ; zero ; suc ; _/_ ; _%_ ; _≡ᵇ_)', '',
+    'open import Examples.Groups.Clifford+CS.' + TREE + '.Chain using (refl)',
+    ('open import Examples.Groups.Clifford+CS.Four.WinSig using (Tree ; leaf ; node ; Win ; Ws ; windows ; wn)' if FOUR else
+     'open import Examples.Groups.Clifford+CS.Five.WinSig\n  using (WTree ; wleaf ; wnode ; WinT ; Ws ; WsL ; windowsL ; windowsP ; wl ; wp)'),
+    'open import Examples.Groups.Clifford+CS.' + TREE + '.Reflect using (Eqn ; eqn)', '',
+    f'getE : (t : {TT}) (n : ℕ) → {WIN} t n → Eqn',
+    f'getE {TL}           n       _ = eqn [] [] refl',
+    f'getE ({TN} a l r b) zero    p = eqn l r p',
+    f'getE ({TN} a l r b) (suc n) p = sel (n % 2 ≡ᵇ 0) p',
+    '  where',
+    f'  sel : (c : Bool) → (if c then {WIN} a (n / 2) else {WIN} b (n / 2)) → Eqn',
+    '  sel true  q = getE a (n / 2) q',
+    '  sel false q = getE b (n / 2) q', '']
+if FOUR:
+    out += ['wE : ℕ → Ws → Eqn', 'wE n W = getE windows n (wn n W)']
+else:
+    out += ['wpE : ℕ → Ws → Eqn', 'wpE n c4 = getE windowsP n (wp n c4)', '',
+            'wlE : ℕ → WsL → Eqn', 'wlE n L = getE windowsL n (wl n L)']
+open(os.path.join(BASE, TREE, 'DEqn.agda'), 'w', encoding='utf-8').write(NL.join(out) + NL)
 
 # The consumers, and the assemblies they import: Four's one, DAll;
 # Five's one per consumer (DAll.F1, ...), each the closure of what its

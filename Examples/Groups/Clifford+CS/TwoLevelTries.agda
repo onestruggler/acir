@@ -28,7 +28,6 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧ ; len ; ⟦_⟧M ; ⟦⟧-ix)
-open import Examples.Groups.Clifford+CS.Semantics.Decide using (eqM ; eqM-sound)
 open import Examples.Groups.Clifford+CS.MacroEval using (ChkF ; F-≡)
 import Examples.Groups.Clifford+CS-TwoLevel.Syntactics as TL
 import Examples.Groups.Clifford+CS.Bridge as Bridge

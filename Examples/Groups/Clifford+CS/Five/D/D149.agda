@@ -1,7 +1,8 @@
 {-# OPTIONS --without-K --safe #-}
 
+open import Examples.Groups.Clifford+CS.Five.DEqn using (wpE ; wlE)
 open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
-open import Examples.Groups.Clifford+CS.Five.DSig using (SD149 ; pickᴰ)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SD149 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D149 (Sᴰ : SD149) where
 
@@ -147,19 +148,19 @@ private
 
 private
   q1 : Ws → Eqn
-  q1 c4 = eqn (X4 ∷ X4 ∷ []) [] (wl 1083 (lit c4))
+  q1 c4 = wlE 1083 (lit c4)
   q2 : Ws → Eqn
-  q2 c4 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wl 3 (lit c4))
+  q2 c4 = wlE 3 (lit c4)
   q3 : Ws → Eqn
   q3 c4 = eqn (Sw23 ∷ S4 ∷ []) (S4 ∷ Sw23 ∷ []) (c₄ (Swap ↑ ↑) (S))
   q4 : Ws → Eqn
-  q4 c4 = eqn (CS24 ∷ Sw23 ∷ []) (Sw23 ∷ CS34 ∷ []) (wl 11 (lit c4))
+  q4 c4 = wlE 11 (lit c4)
   q5 : Ws → Eqn
   q5 c4 = eqn (Sb0-1-42-3 ∷ Sw23 ∷ []) (Sw23 ∷ Sb0-1-43-2 ∷ []) (lem-comm-push-SBOX⟨0·1·42·3⟩-sw2-L (lit c4))
   q6 : Ws → Eqn
-  q6 c4 = eqn (CK41 ∷ Sw23 ∷ []) (Sw23 ∷ CK41 ∷ []) (wl 99 (lit c4))
+  q6 c4 = wlE 99 (lit c4)
   q7 : Ws → Eqn
-  q7 c4 = eqn (Sw12 ∷ Sw12 ∷ []) [] (wl 6 (lit c4))
+  q7 c4 = wlE 6 (lit c4)
   q8 : Ws → Eqn
   q8 c4 = eqn (Sw12 ∷ S4 ∷ []) (S4 ∷ Sw12 ∷ []) (c₃ (Swap ↑) (S ↑))
   q9 : Ws → Eqn
@@ -167,7 +168,7 @@ private
   q10 : Ws → Eqn
   q10 c4 = eqn (Sb0-1-43-2 ∷ Sw12 ∷ []) (Sw12 ∷ Sb0-2-43-1 ∷ []) (lem-comm-push-SBOX⟨0·1·43·2⟩-sw1-L (lit c4))
   q11 : Ws → Eqn
-  q11 c4 = eqn (CK41 ∷ Sw12 ∷ []) (Sw12 ∷ CK42 ∷ []) (wl 87 (lit c4))
+  q11 c4 = wlE 87 (lit c4)
   q12 : Ws → Eqn
   q12 c4 = eqn (Sb0-2-43-1 ∷ CK42 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-2-43-1 ∷ CS34 ∷ CS34 ∷ CS34 ∷ S4 ∷ CS34 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-2-43-1 ∷ CS34 ∷ CS34 ∷ CS34 ∷ S4 ∷ []) [] (lem-TR2-fed8f7c9 c4)
 
@@ -239,11 +240,11 @@ lem-deb-Q-hi-eps-at132132 c4 = derive (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ X4 ∷ CK41 
 
 private
   q13 : Ws → Eqn
-  q13 c4 = eqn (CS14 ∷ Sw23 ∷ []) (Sw23 ∷ CS14 ∷ []) (wl 17 (lit c4))
+  q13 c4 = wlE 17 (lit c4)
   q14 : Ws → Eqn
-  q14 c4 = eqn (CK42 ∷ Sw23 ∷ []) (Sw23 ∷ CK43 ∷ []) (wl 90 (lit c4))
+  q14 c4 = wlE 90 (lit c4)
   q15 : Ws → Eqn
-  q15 c4 = eqn (CS14 ∷ Sw12 ∷ []) (Sw12 ∷ CS24 ∷ []) (wl 13 (lit c4))
+  q15 c4 = wlE 13 (lit c4)
   q16 : Ws → Eqn
   q16 c4 = eqn (Sw12 ∷ CK43 ∷ []) (CK43 ∷ Sw12 ∷ []) (c₃ (Swap ↑) (CK₁₀))
   q17 : Ws → Eqn

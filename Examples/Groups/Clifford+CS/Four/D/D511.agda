@@ -1,8 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+open import Examples.Groups.Clifford+CS.Four.DEqn using (wE)
 open import Examples.Groups.Clifford+CS.Four.DStmt using (St)
-open import Examples.Groups.Clifford+CS.Four.DSig using (SD511 ; pickᴰ)
+open import Examples.Groups.Clifford+CS.Four.DSig using (SD511 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Four.D.D511 (W : Ws) (Sᴰ : SD511) where
 
@@ -34,9 +35,9 @@ private
 
 private
   q1 : Eqn
-  q1 = eqn [] (Sw23 ∷ Sw23 ∷ []) (wn 1 W)
+  q1 = wE 1 W
   q2 : Eqn
-  q2 = eqn (X3 ∷ Sw23 ∷ []) (Sw23 ∷ X2 ∷ []) (wn 173 W)
+  q2 = wE 173 W
   q3 : Eqn
   q3 = eqn (K1 ∷ Sw23 ∷ []) (Sw23 ∷ K1 ∷ []) (low-comm ((K ↑)) (Swap))
   q4 : Eqn
@@ -44,23 +45,23 @@ private
   q5 : Eqn
   q5 = eqn (ι ∷ Sw23 ∷ []) (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑)))
   q6 : Eqn
-  q6 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wn 3 W)
+  q6 = wE 3 W
   q7 : Eqn
-  q7 = eqn (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) (wn 196 W)
+  q7 = wE 196 W
   q8 : Eqn
-  q8 = eqn (X2 ∷ Toff102 ∷ X2 ∷ []) (CX01 ∷ Toff102 ∷ []) (wn 1359 W)
+  q8 = wE 1359 W
   q9 : Eqn
-  q9 = eqn (CS02 ∷ CX01 ∷ []) (CX01 ∷ CS02 ∷ []) (wn 1360 W)
+  q9 = wE 1360 W
   q10 : Eqn
-  q10 = eqn (CS02 ∷ Toff102 ∷ []) (Toff102 ∷ CS02 ∷ []) (wn 1351 W)
+  q10 = wE 1351 W
   q11 : Eqn
-  q11 = eqn (CX01 ∷ Toff102 ∷ []) (X2 ∷ Toff102 ∷ X2 ∷ []) (wn 1361 W)
+  q11 = wE 1361 W
   q12 : Eqn
-  q12 = eqn (Sw23 ∷ X2 ∷ []) (X3 ∷ Sw23 ∷ []) (wn 175 W)
+  q12 = wE 175 W
   q13 : Eqn
-  q13 = eqn (CS12 ∷ CS03 ∷ []) (CS03 ∷ CS12 ∷ []) lem-pass-CS12-vs-CS03
+  q13 = sE 21 lem-pass-CS12-vs-CS03
   q14 : Eqn
-  q14 = eqn (CS12⁻ ∷ CS03 ∷ []) (CS03 ∷ CS12⁻ ∷ []) lem-pass-CSd12-vs-CS03
+  q14 = sE 55 lem-pass-CSd12-vs-CS03
 
 -- pass [CS03] [X3 TOFF103 X3 CS12 X3 TOFF103 X3 CSd12]: 382 steps
 lem-pass-CS03-vs-X3-TOFF103-X3-CS12-X3-TOFF103-X3-CSd12 : ⟪ (CS03 ∷ X3 ∷ Toff103 ∷ X3 ∷ CS12 ∷ X3 ∷ Toff103 ∷ X3 ∷ CS12⁻ ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ Toff103 ∷ X3 ∷ CS12 ∷ X3 ∷ Toff103 ∷ X3 ∷ CS12⁻ ∷ CS03 ∷ []) ⟫ʷ
@@ -450,7 +451,7 @@ lem-pass-CS03-vs-X3-TOFF103-X3-CS12-X3-TOFF103-X3-CSd12 = derive (CS03 ∷ X3 �
 
 private
   q15 : Eqn
-  q15 = eqn (CCZ123 ∷ CS03 ∷ []) (CS03 ∷ CCZ123 ∷ []) (lem-comm-CCZ123-CS03)
+  q15 = sE 54 lem-comm-CCZ123-CS03
 
 -- pass [CCZ123] [CS03]: 1 steps
 lem-pass-CCZ123-vs-CS03 : ⟪ (CCZ123 ∷ CS03 ∷ []) ⟫ʷ ≈ ⟪ (CS03 ∷ CCZ123 ∷ []) ⟫ʷ
@@ -459,7 +460,7 @@ lem-pass-CCZ123-vs-CS03 = derive (CCZ123 ∷ CS03 ∷ []) (CS03 ∷ CCZ123 ∷ [
 
 private
   q16 : Eqn
-  q16 = eqn (CCZ013 ∷ CS02⁻ ∷ []) (CS02⁻ ∷ CCZ013 ∷ []) (lem-comm-CCZ013-CSd02)
+  q16 = sE 57 lem-comm-CCZ013-CSd02
 
 -- pass [CCZ013] [CSd02]: 1 steps
 lem-pass-CCZ013-vs-CSd02 : ⟪ (CCZ013 ∷ CS02⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS02⁻ ∷ CCZ013 ∷ []) ⟫ʷ
@@ -468,11 +469,11 @@ lem-pass-CCZ013-vs-CSd02 = derive (CCZ013 ∷ CS02⁻ ∷ []) (CS02⁻ ∷ CCZ01
 
 private
   q17 : Eqn
-  q17 = eqn (CS12 ∷ Toff012 ∷ []) (Toff012 ∷ CS12 ∷ []) (wn 90 W)
+  q17 = wE 90 W
   q18 : Eqn
-  q18 = eqn (CS12 ∷ CS03 ∷ []) (CS03 ∷ CS12 ∷ []) (lem-pass-CS12-vs-CS03)
+  q18 = sE 21 lem-pass-CS12-vs-CS03
   q19 : Eqn
-  q19 = eqn (CS12 ∷ CS03⁻ ∷ []) (CS03⁻ ∷ CS12 ∷ []) (lem-pass-CS12-vs-CSd03)
+  q19 = sE 34 lem-pass-CS12-vs-CSd03
 
 -- pass [CS12] [TOFF012 CS03 TOFF012 CSd03]: 4 steps
 lem-pass-CS12-vs-TOFF012-CS03-TOFF012-CSd03 : ⟪ (CS12 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ CS12 ∷ []) ⟫ʷ
@@ -484,11 +485,11 @@ lem-pass-CS12-vs-TOFF012-CS03-TOFF012-CSd03 = derive (CS12 ∷ Toff012 ∷ CS03 
 
 private
   q20 : Eqn
-  q20 = eqn (CS12⁻ ∷ Toff012 ∷ []) (Toff012 ∷ CS12⁻ ∷ []) (wn 468 W)
+  q20 = wE 468 W
   q21 : Eqn
-  q21 = eqn (CS12⁻ ∷ CS03 ∷ []) (CS03 ∷ CS12⁻ ∷ []) (lem-pass-CSd12-vs-CS03)
+  q21 = sE 55 lem-pass-CSd12-vs-CS03
   q22 : Eqn
-  q22 = eqn (CS12⁻ ∷ CS03⁻ ∷ []) (CS03⁻ ∷ CS12⁻ ∷ []) (lem-pass-CSd12-vs-CSd03)
+  q22 = sE 56 lem-pass-CSd12-vs-CSd03
 
 -- pass [CSd12] [TOFF012 CS03 TOFF012 CSd03]: 4 steps
 lem-pass-CSd12-vs-TOFF012-CS03-TOFF012-CSd03 : ⟪ (CS12⁻ ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ CS12⁻ ∷ []) ⟫ʷ

@@ -25,7 +25,6 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_)
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧ ; ⟦_⟧M ; ⟦⟧-ix ; len)
-open import Examples.Groups.Clifford+CS.Semantics.Decide using (eqM ; eqM-sound)
 open import Examples.Groups.Clifford+CS.MacroEval using (ChkF ; F-≡)
 open import Examples.Groups.Clifford+CS.BridgeGray 4 using (⟦_⟧ʸ ; ⟦_⟧Y ; ⟦_⟧PY)
 open import Examples.Groups.Clifford+CS.Decoding 0 using (d)
