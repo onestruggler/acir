@@ -25,7 +25,7 @@ open import Examples.Groups.Clifford+CS.Semantics.Control
 open import Examples.Groups.Clifford+CS.Semantics.Decide using (eqM ; eqM-sound)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧ ; ⟦_⟧ₒ ; len)
-open import Examples.Groups.Clifford+CS.MacroEval using (⟦_⟧F ; nKF ; F-sem)
+open import Examples.Groups.Clifford+CS.MacroEval using (ChkOp ; F-op)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CK₁₀)
 open import Examples.Groups.Clifford+CS.Five.Letters
   using (b-Sb2-0-41-3 ; b-Sb0-1-42-3 ; b-Sb0-2-43-1)
@@ -33,11 +33,8 @@ open import Examples.Groups.Clifford+CS.Five.Letters
 ------------------------------------------------------------------------
 -- Deciding a circuit's semantics against an operator
 
-check : ∀ {k} (w : Circuit k) (l : ℕ) (T : Op k) →
-        eqM (scaleM (γ^ l) ⟦ w ⟧F) (matOf (γ^ nKF w · T)) ≡ true → ⟦ w ⟧ ~ (l , T)
-check w l T e = F-sem w l T (λ x y →
-  Eq.trans (Eq.sym (ix-scaleM (γ^ l) ⟦ w ⟧F x y))
-    (Eq.trans (Eq.cong (λ A → ix A x y) (eqM-sound _ _ e)) (ix-matOf (γ^ nKF w · T) x y)))
+check : ∀ {k} (w : Circuit k) (l : ℕ) (T : Op k) → ChkOp w l T → ⟦ w ⟧ ~ (l , T)
+check = F-op
 
 ------------------------------------------------------------------------
 -- One and two wires

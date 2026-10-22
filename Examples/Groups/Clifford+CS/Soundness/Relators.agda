@@ -8,7 +8,9 @@
 -- have different numbers of letters, hence different powers of γ⁻¹, so
 -- each side is scaled by the other's power of γ before comparison
 -- (Interpretation.by-matrix).  Every check is `refl` on one boolean
--- (`Same`), computed on the row-operation reading (Evaluation).
+-- (`Same`), computed on the row-operation reading that applies the
+-- shortcuts whole (MacroEval: 175 s on Evaluation's reading, which the
+-- four-wire relators made the slowest step of the development).
 --
 -- The relators are named rather than inlined so that these checks and
 -- the soundness proof that uses them cannot drift apart.
@@ -27,8 +29,7 @@ open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Interpretation
-open import Examples.Groups.Clifford+CS.Semantics.Decide using (eqM ; eqM-sound ; ≡-eqM)
-open import Examples.Groups.Clifford+CS.Evaluation using (⟦_⟧R ; ⟦⟧R≡⟦⟧M)
+open import Examples.Groups.Clifford+CS.MacroEval using (SameF ; sameF-sem)
 
 ------------------------------------------------------------------------
 -- The relators, at the width each is written for
@@ -106,22 +107,18 @@ rHYBʳ = HYB.Yr
 -- The identities
 
 -- Both sides denote the same matrix over ℤ[½,i], decided by one boolean
--- (Semantics.Decide) on the row-operation reading (Evaluation).
+-- (Semantics.Decide) on the row-operation reading (MacroEval).
 Same : ∀ {k} → Circuit k → Circuit k → Set
-Same u v = eqM (scaleM (γ^ len v) ⟦ u ⟧R) (scaleM (γ^ len u) ⟦ v ⟧R) ≡ true
+Same u v = SameF u v
 
--- The equation of stored matrices it decides, and back.  The words are
--- explicit: `Same` is a function, so they cannot be read back off its
--- type.
+-- The equation of stored matrices it decides.  The words are explicit:
+-- `Same` is a function, so they cannot be read back off its type.
 same-≡ : ∀ {k} (u v : Circuit k) → Same u v → scaleM (γ^ len v) ⟦ u ⟧M ≡ scaleM (γ^ len u) ⟦ v ⟧M
 same-≡ u v e =
-  Eq.subst₂ (λ A B → scaleM (γ^ len v) A ≡ scaleM (γ^ len u) B) (⟦⟧R≡⟦⟧M u) (⟦⟧R≡⟦⟧M v)
-            (eqM-sound _ _ e)
-
-≡-same : ∀ {k} (u v : Circuit k) → scaleM (γ^ len v) ⟦ u ⟧M ≡ scaleM (γ^ len u) ⟦ v ⟧M → Same u v
-≡-same u v e =
-  ≡-eqM (Eq.subst₂ (λ A B → scaleM (γ^ len v) A ≡ scaleM (γ^ len u) B)
-                   (Eq.sym (⟦⟧R≡⟦⟧M u)) (Eq.sym (⟦⟧R≡⟦⟧M v)) e)
+  mat-ext (≐-trans (ix-scaleM (γ^ len v) ⟦ u ⟧M)
+    (≐-trans (·-cong Eq.refl (≐-sym (⟦⟧-ix u)))
+      (≐-trans (sameF-sem u v e)
+        (≐-trans (·-cong Eq.refl (⟦⟧-ix v)) (≐-sym (ix-scaleM (γ^ len u) ⟦ v ⟧M))))))
 
 mI : Same rIˡ rIʳ
 mI = Eq.refl

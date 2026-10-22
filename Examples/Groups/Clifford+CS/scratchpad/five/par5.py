@@ -45,7 +45,11 @@ Settings by environment: PAR5_REPO (the repository, default the one this
 script is in), AGDA, PAR5_OUT (each job's output, default /tmp/par5_out),
 PAR5_LOCK (default ~/.agda-job.lock, held for the whole run),
 PAR5_HEAP / PAR5_BIG (7G / 12G), PAR5_BUDGET_GB (11), PAR5_RESERVE_GB
-(2.5), PAR5_BATCH (16; 1 checks one module per process), PAR5_COSTS
+(2.5), PAR5_BATCH (16; 1 checks one module per process), PAR5_MINB (1:
+with many modules ready, a batch takes at least this many rather than
+spreading them over the idle slots -- each batch loads its imports once,
+and with the jobs bounded by memory rather than by slots that loading
+was most of a from-scratch run, 3200 of 5200 s), PAR5_COSTS
 (comma-separated logs of earlier runs: a module's checking time there;
 unknown, 20 s; only logs of the same layout -- after repack.py a name
 like Four/D/D724 is another module, and a stale cost of a heavy one ran
@@ -67,6 +71,7 @@ HEAP, BIG = os.environ.get('PAR5_HEAP', '7G'), os.environ.get('PAR5_BIG', '12G')
 BUDGET = float(os.environ.get('PAR5_BUDGET_GB', '11')) * 1e6     # kB
 RESERVE = float(os.environ.get('PAR5_RESERVE_GB', '2.5')) * 1e6  # kB
 BATCH = int(os.environ.get('PAR5_BATCH', '16'))
+MINB = int(os.environ.get('PAR5_MINB', '1'))
 DEFAULT = 3.5e6                                                  # kB
 BIGSRC = int(os.environ.get('PAR5_BIGSRC', '0'))                # 0: none
 os.makedirs(OUT, exist_ok=True)
@@ -315,7 +320,7 @@ def form_batch(ready_set, pending, idle):
     rs = [p for p in pending if p in ready_set and not alone_p(p)]
     if not rs: return []
     if len(rs) >= idle:
-        cap, job = max(1, min(BATCH, -(-len(rs) // idle))), []
+        cap, job = max(1, min(BATCH, max(MINB, -(-len(rs) // idle)))), []
         for p in rs:
             if len(job) >= cap or (job and sum(map(cost, job)) + cost(p) > TARGET): break
             job.append(p)

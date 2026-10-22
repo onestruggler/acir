@@ -26,7 +26,7 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_)
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧ ; ⟦_⟧M ; ⟦⟧-ix ; len)
 open import Examples.Groups.Clifford+CS.Semantics.Decide using (eqM ; eqM-sound)
-open import Examples.Groups.Clifford+CS.MacroEval using (⟦_⟧F ; nKF ; F-≡)
+open import Examples.Groups.Clifford+CS.MacroEval using (ChkF ; F-≡)
 open import Examples.Groups.Clifford+CS.BridgeGray 4 using (⟦_⟧ʸ ; ⟦_⟧Y ; ⟦_⟧PY)
 open import Examples.Groups.Clifford+CS.Decoding 0 using (d)
 open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; asG)
@@ -45,7 +45,7 @@ GM-ix (u • t) = ≐-trans (⊙-cong (GM-ix u) (GM-ix t)) (≐-sym (ix-mul ⟦ 
 
 -- The check.
 Chk : GenP 16 → Set
-Chk x = eqM (scaleM (γ^ proj₁ ⟦ asG x ⟧Y) ⟦ d x ⟧F) (scaleM (γ^ nKF (d x)) ⟦ asG x ⟧GM) ≡ true
+Chk x = ChkF (d x) (proj₁ ⟦ asG x ⟧Y) ⟦ asG x ⟧GM
 
 -- A successful check: the decoded letter has the letter's matrix.
 chk-sem : ∀ (x : GenP 16) → Chk x → ⟦ d x ⟧ ~ ⟦ [ x ]ʷ ⟧PY

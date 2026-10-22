@@ -8,23 +8,24 @@
 -- forty-five, each a pass over every entry of the trie of rows.  But a
 -- Swap, a CNOT, a Toffoli or an X only permutes the rows, a CZ or a CCZ
 -- negates some, and a controlled K adds and subtracts half of them.
--- `runF` reads a word as FastEval does except that it recognises those
--- shortcuts, by comparing a subword with the shortcut's own spelling
--- (`match`), and applies each as one operation on the rows (`fastOp`);
--- a subword whose gates all sit one wire up is read on the two halves
--- of the rows (`unlift`), so that a shortcut is recognised wherever it
--- is placed.  About five times faster on the windows of Four/ and Five/.
+-- `view` reads a word as FastEval does except that it recognises those
+-- shortcuts, lifted any number of wires, by comparing a subword with the
+-- shortcut's own spelling — the candidates chosen by the subword's first
+-- gate (`match`) — and `runV` applies each as one operation on the rows
+-- (`fastL`).  A word is viewed once, and its view shared between the
+-- reading and its count of K's (`sameB`).  About ten times faster than
+-- FastEval's on the windows of Four/ and Five/.
 --
 -- A shortcut's operation is given row by row by a recipe (a row,
 -- scaled, or the sum or difference of two), applied by one generic
 -- operation (`permK`); that the recipe is the shortcut's matrix, up to
 -- a power of γ, is one evaluation at the shortcut's own width
 -- (`by-rows`), carried to every placement by Interpretation.localise
--- (`mac-gen`).  `runF-ok` relates the reading to Evaluation's, and
+-- (`mac-gen`).  `runV-ok` relates the reading to Evaluation's, and
 -- `SameF`/`sameF-sem` are FastEval's SameQ/sameQ-sem for it.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Clifford+CS.MacroEval where
 
@@ -35,7 +36,7 @@ open import Data.Maybe using (Maybe ; just ; nothing)
 import Data.Maybe as Maybe
 open import Data.Nat using (ℕ ; zero ; suc) renaming (_+_ to _+ℕ_)
 import Data.Nat.Properties as ℕP
-open import Data.Product using (_,_ ; proj₁ ; proj₂)
+open import Data.Product using (Σ ; _,_ ; proj₁ ; proj₂)
 open import Data.Vec using ([] ; _∷_ ; _++_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using ([_]ʷ ; ε ; _•_)
@@ -83,27 +84,6 @@ eqW ε         ε         = just Eq.refl
 eqW (w • w′)  (v • v′)  = both _•_ (eqW w v) (eqW w′ v′)
 eqW _         _         = nothing
 
--- A word whose gates all sit one wire up.
-data Unl : ∀ {n} → Circuit n → Set where
-  unl : ∀ {k} {w : Circuit (₁₊ k)} (v : Circuit k) → w ≡ v ↑ → Unl w
-
-unlift : ∀ {n} (w : Circuit n) → Maybe (Unl w)
-unlift [ g ↥ ]ʷ      = just (unl [ g ]ʷ Eq.refl)
-unlift [ gate₀ _ ]ʷ  = nothing
-unlift [ gate₁ _ ]ʷ  = nothing
-unlift [ gate₂ _ ]ʷ  = nothing
-unlift {₀}    ε      = nothing
-unlift {₁₊ k} ε      = just (unl ε Eq.refl)
-unlift (w • v)       = go (unlift w)
-  where
-  go : Maybe (Unl w) → Maybe (Unl (w • v))
-  go nothing            = nothing
-  go (just (unl w′ p))  = go′ (unlift v)
-    where
-    go′ : Maybe (Unl v) → Maybe (Unl (w • v))
-    go′ nothing           = nothing
-    go′ (just (unl v′ q)) = just (unl (w′ • v′) (Eq.cong₂ _•_ p q))
-
 ------------------------------------------------------------------------
 -- The shortcuts
 
@@ -134,19 +114,94 @@ private
   nothing <|> m = m
   infixr 4 _<|>_
 
-match₃ : (w : Circuit (₃₊ k)) → Maybe (Mac w)
-match₃ w = try mToff₀ (eqW w Toff) <|> try mToff₂ (eqW w Toffᵗ) <|>
-           try mToff₁ (eqW w Toff₁) <|> try mCCZ (eqW w CCZ)
+-- A shortcut, or one lifted.
+data MacL : ∀ {n} → Circuit n → Set where
+  atM : ∀ {n} {w : Circuit n} → Mac w → MacL w
+  upM : ∀ {n} {w : Circuit n} → MacL w → MacL (w ↑)
 
-match₂ : (w : Circuit (₂₊ k)) → Maybe (Mac w)
-match₂ w = try mCX₀₁ (eqW w CX₀₁) <|> try mCX₁₀ (eqW w CX₁₀) <|> try mSwap (eqW w Swap) <|>
-           try mCZ (eqW w CZ) <|> try mCK₀₁ (eqW w CK) <|> try mCK₁₀ (eqW w CK₁₀)
+data Kind : Set where
+  kX kCX₀₁ kCX₁₀ kSwap kCZ kCK₀₁ kCK₁₀ kCCZ kToff₀ kToff₁ kToff₂ : Kind
 
-match : ∀ {n} (w : Circuit n) → Maybe (Mac w)
-match {₀}    w = nothing
-match {₁₊ ₀} w = try mX (eqW w X)
-match {₂₊ ₀} w = try mX (eqW w X) <|> match₂ w
-match {₃₊ k} w = try mX (eqW w X) <|> match₂ w <|> match₃ w
+-- The shortcut of a kind at width n, if n is wide enough.
+at₀ : Kind → ∀ {n} → Maybe (Σ (Circuit n) MacL)
+at₀ kX     {₁₊ k} = just (X , atM mX)
+at₀ kCX₀₁  {₂₊ k} = just (CX₀₁ , atM mCX₀₁)
+at₀ kCX₁₀  {₂₊ k} = just (CX₁₀ , atM mCX₁₀)
+at₀ kSwap  {₂₊ k} = just (Swap , atM mSwap)
+at₀ kCZ    {₂₊ k} = just (CZ , atM mCZ)
+at₀ kCK₀₁  {₂₊ k} = just (CK , atM mCK₀₁)
+at₀ kCK₁₀  {₂₊ k} = just (CK₁₀ , atM mCK₁₀)
+at₀ kCCZ   {₃₊ k} = just (CCZ , atM mCCZ)
+at₀ kToff₀ {₃₊ k} = just (Toff , atM mToff₀)
+at₀ kToff₁ {₃₊ k} = just (Toff₁ , atM mToff₁)
+at₀ kToff₂ {₃₊ k} = just (Toffᵗ , atM mToff₂)
+at₀ _             = nothing
+
+-- Lifted j wires.
+atL : Kind → ℕ → ∀ {n} → Maybe (Σ (Circuit n) MacL)
+atL κ zero         = at₀ κ
+atL κ (suc j) {₀}    = nothing
+atL κ (suc j) {₁₊ n} = lift (atL κ j {n})
+  where
+  lift : Maybe (Σ (Circuit n) MacL) → Maybe (Σ (Circuit (₁₊ n)) MacL)
+  lift nothing        = nothing
+  lift (just (e , m)) = just (e ↑ , upM m)
+
+private
+  tryL : ∀ {n} {w e : Circuit n} → MacL e → Maybe (w ≡ e) → Maybe (MacL w)
+  tryL m (just Eq.refl) = just m
+  tryL m nothing        = nothing
+
+  check : ∀ {n} (w : Circuit n) → Maybe (Σ (Circuit n) MacL) → Maybe (MacL w)
+  check w nothing        = nothing
+  check w (just (e , m)) = tryL m (eqW w e)
+
+tryK : ∀ {n} → Kind → ℕ → (w : Circuit n) → Maybe (MacL w)
+tryK κ j w = check w (atL κ j)
+
+-- The first gate, its depth and the gate it lifts.
+first : ∀ {n} → Circuit n → Maybe (Gen n)
+first [ g ]ʷ  = just g
+first ε       = nothing
+first (w • v) = first w
+
+depth : Gen k → ℕ
+depth (g ↥) = suc (depth g)
+depth _     = 0
+
+data Base : Set where
+  bK bCS bO : Base
+
+baseOf : Gen k → Base
+baseOf (gate₁ K-gate)  = bK
+baseOf (gate₂ CS-gate) = bCS
+baseOf (g ↥)           = baseOf g
+baseOf _               = bO
+
+-- The shortcuts that start with K or CS d wires up: a K is the first
+-- gate of an X, CX₁₀ or Toffoli on its wire, of a CX₀₁, Swap or Toff₁
+-- one wire down, and of a Toffᵗ two down; a CS of a CZ or controlled K
+-- on its wires and of a CCZ one wire down.
+private
+  candsK₂ candsK₁ candsCS₁ : ∀ {n} (w : Circuit n) → ℕ → Maybe (MacL w)
+  candsK₂ w zero    = nothing
+  candsK₂ w (suc d) = tryK kToff₂ d w
+  candsK₁ w zero    = nothing
+  candsK₁ w (suc d) = tryK kCX₀₁ d w <|> tryK kSwap d w <|> tryK kToff₁ d w <|> candsK₂ w d
+  candsCS₁ w zero    = nothing
+  candsCS₁ w (suc d) = tryK kCCZ d w
+
+  cands : ∀ {n} (w : Circuit n) → Base → ℕ → Maybe (MacL w)
+  cands w bK  d = tryK kX d w <|> tryK kCX₁₀ d w <|> tryK kToff₀ d w <|> candsK₁ w d
+  cands w bCS d = tryK kCZ d w <|> tryK kCK₀₁ d w <|> tryK kCK₁₀ d w <|> candsCS₁ w d
+  cands w bO  d = nothing
+
+  disp : ∀ {n} (w : Circuit n) → Maybe (Gen n) → Maybe (MacL w)
+  disp w nothing  = nothing
+  disp w (just g) = cands w (baseOf g) (depth g)
+
+match : ∀ {n} (w : Circuit n) → Maybe (MacL w)
+match w = disp w (first w)
 
 ------------------------------------------------------------------------
 -- Recipes: a row of a shortcut's operator
@@ -265,23 +320,41 @@ kMac _     = 0
 ------------------------------------------------------------------------
 -- The reading
 
+fastL : ∀ {n} c {w : Circuit n} → MacL w → Rows n c → Rows n c
+fastL c (atM m) R = fastOp c m R
+fastL c (upM m)   R = fastL c m (proj₁ R) , fastL c m (proj₂ R)
+
+gL kL : ∀ {n} {w : Circuit n} → MacL w → ℕ
+gL (atM m) = gMac m
+gL (upM m)   = gL m
+kL (atM m) = kMac m
+kL (upM m)   = kL m
+
+-- A word as shortcuts, gates and products.
+data View : ∀ {n} → Circuit n → Set where
+  vmac  : ∀ {n} {w : Circuit n} → MacL w → View w
+  vseq  : ∀ {n} {w v : Circuit n} → View w → View v → View (w • v)
+  vgate : ∀ {n} (g : Gen n) → View [ g ]ʷ
+  veps  : ∀ {n} → View (ε {X = Gen n})
+
 mutual
-  runF : ∀ {n} c → Circuit n → Rows n c → Rows n c
-  runF {₀}    c w R = runQ c w R
-  runF {₁₊ k} c w R = runU c w R (unlift w)
+  view : ∀ {n} (w : Circuit n) → View w
+  view w = viewM w (match w)
 
-  runU : ∀ {n} c (w : Circuit n) → Rows n c → Maybe (Unl w) → Rows n c
-  runU c w R (just (unl v _)) = runF c v (proj₁ R) , runF c v (proj₂ R)
-  runU c w R nothing          = runM c w R (match w)
+  viewM : ∀ {n} (w : Circuit n) → Maybe (MacL w) → View w
+  viewM w       (just m) = vmac m
+  viewM [ g ]ʷ  nothing  = vgate g
+  viewM ε       nothing  = veps
+  viewM (w • v) nothing  = vseq (view w) (view v)
 
-  runM : ∀ {n} c (w : Circuit n) → Rows n c → Maybe (Mac w) → Rows n c
-  runM c w        R (just m) = fastOp c m R
-  runM c [ g ]ʷ   R nothing  = applyQ c g R
-  runM c ε        R nothing  = R
-  runM c (w • v)  R nothing  = runF c w (runF c v R)
+runV : ∀ {n} c {w : Circuit n} → View w → Rows n c → Rows n c
+runV c (vmac m)   R = fastL c m R
+runV c (vseq a b) R = runV c a (runV c b R)
+runV c (vgate g)  R = applyQ c g R
+runV c veps       R = R
 
-⟦_⟧F : Circuit k → Mat k
-⟦_⟧F {k} w = mat (runF k w (entries (idM {k})))
+matV : ∀ {n} {w : Circuit n} → View w → Mat n
+matV {n} vw = mat (runV n vw (entries (idM {n})))
 
 -- The K gates the reading applies as K.
 kgenF : Gen k → ℕ
@@ -289,40 +362,48 @@ kgenF (gate₁ K-gate) = 1
 kgenF (g ↥)          = kgenF g
 kgenF _              = 0
 
-mutual
-  nKF : ∀ {n} → Circuit n → ℕ
-  nKF {₀}    w = nK w
-  nKF {₁₊ k} w = nKU w (unlift w)
+-- The K's the reading leaves, and the power of γ between Evaluation's
+-- reading and this one.
+kV gV : ∀ {n} {w : Circuit n} → View w → ℕ
+kV (vmac m)   = kL m
+kV (vseq a b) = kV a +ℕ kV b
+kV (vgate g)  = kgenF g
+kV veps       = 0
+gV (vmac m)   = gL m
+gV (vseq a b) = gV a +ℕ gV b
+gV (vgate g)  = ngen g
+gV veps       = 0
 
-  nKU : ∀ {n} (w : Circuit n) → Maybe (Unl w) → ℕ
-  nKU w (just (unl v _)) = nKF v
-  nKU w nothing          = nKM w (match w)
+⟦_⟧F : Circuit k → Mat k
+⟦ w ⟧F = matV (view w)
 
-  nKM : ∀ {n} (w : Circuit n) → Maybe (Mac w) → ℕ
-  nKM w       (just m) = kMac m
-  nKM [ g ]ʷ  nothing  = kgenF g
-  nKM ε       nothing  = 0
-  nKM (w • v) nothing  = nKF w +ℕ nKF v
+nKF gF : Circuit k → ℕ
+nKF w = kV (view w)
+gF w = gV (view w)
 
--- The power of γ between Evaluation's reading and this one.
-mutual
-  gF : ∀ {n} → Circuit n → ℕ
-  gF {₀}    w = nN w
-  gF {₁₊ k} w = gU w (unlift w)
+-- Two circuits with the same matrix, decided on these readings: each
+-- word viewed once, its view shared by its reading and its count.
+sameV : ∀ {n} {u v : Circuit n} → View u → View v → Bool
+sameV vu vv = eqM (scaleM (γ^ kV vv) (matV vu)) (scaleM (γ^ kV vu) (matV vv))
 
-  gU : ∀ {n} (w : Circuit n) → Maybe (Unl w) → ℕ
-  gU w (just (unl v _)) = gF v
-  gU w nothing          = gM w (match w)
+sameB : Circuit k → Circuit k → Bool
+sameB u v = sameV (view u) (view v)
 
-  gM : ∀ {n} (w : Circuit n) → Maybe (Mac w) → ℕ
-  gM w       (just m) = gMac m
-  gM [ g ]ʷ  nothing  = ngen g
-  gM ε       nothing  = 0
-  gM (w • v) nothing  = gF w +ℕ gF v
-
--- Two circuits with the same matrix, decided on these readings.
 SameF : Circuit k → Circuit k → Set
-SameF u v = eqM (scaleM (γ^ nKF v) ⟦ u ⟧F) (scaleM (γ^ nKF u) ⟦ v ⟧F) ≡ true
+SameF u v = sameB u v ≡ true
+
+-- A circuit against a stored matrix, and against an operator.
+chkV : ∀ {n} {w : Circuit n} → View w → ℕ → Mat n → Bool
+chkV vw l M = eqM (scaleM (γ^ l) (matV vw)) (scaleM (γ^ kV vw) M)
+
+ChkF : Circuit k → ℕ → Mat k → Set
+ChkF w l M = chkV (view w) l M ≡ true
+
+chkOpV : ∀ {n} {w : Circuit n} → View w → ℕ → Op n → Bool
+chkOpV vw l T = eqM (scaleM (γ^ l) (matV vw)) (matOf (γ^ kV vw · T))
+
+ChkOp : Circuit k → ℕ → Op k → Set
+ChkOp w l T = chkOpV (view w) l T ≡ true
 
 ------------------------------------------------------------------------
 -- Recipes are right
@@ -492,33 +573,23 @@ private
   gg m n a = Eq.trans (Eq.sym (*-assoc (γ^ n) (γ^ m) a))
                (Eq.cong (_* a) (Eq.trans (*-comm (γ^ n) (γ^ m)) (Eq.sym (γ^-+ m n))))
 
-mutual
-  runF-ok : ∀ {n} c (w : Circuit n) (R : Rows n c) x y →
-            rix {n} {c} (run c w R) x y ≡ γ^ (gF w) * rix {n} {c} (runF c w R) x y
-  runF-ok {₀}    c w R x y = run-Q c w R x y
-  runF-ok {₁₊ k} c w R x y = runU-ok c w R (unlift w) x y
+macL-ok : ∀ {n} c {w : Circuit n} (m : MacL w) (R : Rows n c) x y →
+          rix {n} {c} (run c w R) x y ≡ γ^ (gL m) * rix {n} {c} (fastL c m R) x y
+macL-ok c (atM m) R x y = mac-ok c m R x y
+macL-ok c (upM {n} {w} m) (l , r) (false ∷ x) y =
+  Eq.trans (Eq.cong (λ T → rix {₁₊ n} {c} T (false ∷ x) y) (run-↑ c w l r)) (macL-ok c m l x y)
+macL-ok c (upM {n} {w} m) (l , r) (true ∷ x) y =
+  Eq.trans (Eq.cong (λ T → rix {₁₊ n} {c} T (true ∷ x) y) (run-↑ c w l r)) (macL-ok c m r x y)
 
-  runU-ok : ∀ {n} c (w : Circuit n) (R : Rows n c) (o : Maybe (Unl w)) x y →
-            rix {n} {c} (run c w R) x y ≡ γ^ (gU w o) * rix {n} {c} (runU c w R o) x y
-  runU-ok c w R (just (unl v p)) x y = unl-ok c v w p R x y
-  runU-ok c w R nothing          x y = runM-ok c w R (match w) x y
-
-  unl-ok : ∀ {k} c (v : Circuit k) (w : Circuit (₁₊ k)) (p : w ≡ v ↑) (R : Rows (₁₊ k) c) x y →
-           rix {₁₊ k} {c} (run c w R) x y ≡ γ^ (gF v) * rix {₁₊ k} {c} (runF c v (proj₁ R) , runF c v (proj₂ R)) x y
-  unl-ok {k} c v _ Eq.refl (l , r) (false ∷ x) y =
-    Eq.trans (Eq.cong (λ T → rix {₁₊ k} {c} T (false ∷ x) y) (run-↑ c v l r)) (runF-ok c v l x y)
-  unl-ok {k} c v _ Eq.refl (l , r) (true ∷ x) y =
-    Eq.trans (Eq.cong (λ T → rix {₁₊ k} {c} T (true ∷ x) y) (run-↑ c v l r)) (runF-ok c v r x y)
-
-  runM-ok : ∀ {n} c (w : Circuit n) (R : Rows n c) (o : Maybe (Mac w)) x y →
-            rix {n} {c} (run c w R) x y ≡ γ^ (gM w o) * rix {n} {c} (runM c w R o) x y
-  runM-ok c w       R (just m) x y = mac-ok c m R x y
-  runM-ok c [ g ]ʷ  R nothing  x y = applyQ-ok c g R x y
-  runM-ok {n} c ε   R nothing  x y = g0 (rix {n} {c} R x y)
-  runM-ok {n} c (w • v) R nothing  x y =
-    Eq.trans (run-lin c w (γ^ gF v) (run c v R) (runF c v R) (runF-ok c v R) x y)
-      (Eq.trans (Eq.cong (γ^ gF v *_) (runF-ok c w (runF c v R) x y))
-                (gg (gF w) (gF v) (rix {n} {c} (runF c w (runF c v R)) x y)))
+runV-ok : ∀ {n} c {w : Circuit n} (vw : View w) (R : Rows n c) x y →
+          rix {n} {c} (run c w R) x y ≡ γ^ (gV vw) * rix {n} {c} (runV c vw R) x y
+runV-ok c (vmac m) R x y = macL-ok c m R x y
+runV-ok {n} c (vseq {w = w} {v} a b) R x y =
+  Eq.trans (run-lin c w (γ^ gV b) (run c v R) (runV c b R) (runV-ok c b R) x y)
+    (Eq.trans (Eq.cong (γ^ gV b *_) (runV-ok c a (runV c b R) x y))
+              (gg (gV a) (gV b) (rix {n} {c} (runV c a (runV c b R)) x y)))
+runV-ok c (vgate g) R x y = applyQ-ok c g R x y
+runV-ok {n} c veps R x y = g0 (rix {n} {c} R x y)
 
 ------------------------------------------------------------------------
 -- The same semantics
@@ -551,28 +622,22 @@ private
   len-mac mToff₁ = Eq.refl
   len-mac mToff₂ = Eq.refl
 
-mutual
-  len-F : ∀ {n} (w : Circuit n) → len w ≡ nKF w +ℕ gF w
-  len-F {₀}    w = len-split w
-  len-F {₁₊ k} w = len-U w (unlift w)
+len-L : ∀ {n} {w : Circuit n} (m : MacL w) → len w ≡ kL m +ℕ gL m
+len-L (atM m)       = len-mac m
+len-L (upM {w = w} m) = Eq.trans (len-↑ w) (len-L m)
 
-  len-U : ∀ {n} (w : Circuit n) (o : Maybe (Unl w)) → len w ≡ nKU w o +ℕ gU w o
-  len-U w (just (unl v p)) = len-unl v w p
-  len-U w nothing          = len-M w (match w)
+len-V : ∀ {n} {w : Circuit n} (vw : View w) → len w ≡ kV vw +ℕ gV vw
+len-V (vmac m)   = len-L m
+len-V (vseq a b) = Eq.trans (Eq.cong₂ _+ℕ_ (len-V a) (len-V b)) (shuffle (kV a) (gV a) (kV b) (gV b))
+len-V (vgate g)  = len-gen g
+len-V veps       = Eq.refl
 
-  len-unl : ∀ {k} (v : Circuit k) (w : Circuit (₁₊ k)) (p : w ≡ v ↑) → len w ≡ nKF v +ℕ gF v
-  len-unl v _ Eq.refl = Eq.trans (len-↑ v) (len-F v)
-
-  len-M : ∀ {n} (w : Circuit n) (o : Maybe (Mac w)) → len w ≡ nKM w o +ℕ gM w o
-  len-M w       (just m) = len-mac m
-  len-M [ g ]ʷ  nothing  = len-gen g
-  len-M ε       nothing  = Eq.refl
-  len-M (w • v) nothing  =
-    Eq.trans (Eq.cong₂ _+ℕ_ (len-F w) (len-F v)) (shuffle (nKF w) (gF w) (nKF v) (gF v))
+len-F : (w : Circuit k) → len w ≡ nKF w +ℕ gF w
+len-F w = len-V (view w)
 
 -- At its own width.
 F-ix : (w : Circuit k) → ∀ (x y : Bits k) → ⟦ w ⟧ₒ x y ≡ γ^ gF w * ix ⟦ w ⟧F x y
-F-ix {k} w x y = Eq.trans (⟦⟧R-ix w x y) (runF-ok k w (entries (idM {k})) x y)
+F-ix {k} w x y = Eq.trans (⟦⟧R-ix w x y) (runV-ok k (view w) (entries (idM {k})) x y)
 
 private
   -- (a b) (c q) = (b c) (a q)
@@ -602,9 +667,11 @@ sameF-sem u v e x y = begin
   D = γ^ nKF u
   Fu = ix ⟦ u ⟧F x y
   Fv = ix ⟦ v ⟧F x y
+  e′ : eqM (scaleM A ⟦ u ⟧F) (scaleM D ⟦ v ⟧F) ≡ true
+  e′ = e
   E : A * Fu ≡ D * Fv
   E = Eq.trans (Eq.sym (ix-scaleM A ⟦ u ⟧F x y))
-        (Eq.trans (ix-≡ (eqM-sound _ _ e) x y) (ix-scaleM D ⟦ v ⟧F x y))
+        (Eq.trans (ix-≡ (eqM-sound (scaleM A ⟦ u ⟧F) (scaleM D ⟦ v ⟧F) e′) x y) (ix-scaleM D ⟦ v ⟧F x y))
 
 private
   lcomm : ∀ a b d → a * (b * d) ≡ b * (a * d)
@@ -627,8 +694,7 @@ F-sem w l T h x y = begin
   Fw = ix ⟦ w ⟧F x y
 
 -- The same against a stored matrix, as the stored reading's equation.
-F-≡ : (w : Circuit k) (l : ℕ) (M : Mat k) →
-      eqM (scaleM (γ^ l) ⟦ w ⟧F) (scaleM (γ^ nKF w) M) ≡ true →
+F-≡ : (w : Circuit k) (l : ℕ) (M : Mat k) → ChkF w l M →
       scaleM (γ^ l) ⟦ w ⟧M ≡ scaleM (γ^ len w) M
 F-≡ w l M e = mat-ext (λ x y →
   Eq.trans (ix-scaleM (γ^ l) ⟦ w ⟧M x y)
@@ -636,5 +702,18 @@ F-≡ w l M e = mat-ext (λ x y →
       (Eq.trans (F-sem w l (ix M) h x y) (Eq.sym (ix-scaleM (γ^ len w) M x y)))))
   where
   h : ∀ x y → γ^ l * ix ⟦ w ⟧F x y ≡ γ^ nKF w * ix M x y
+  e′ : eqM (scaleM (γ^ l) ⟦ w ⟧F) (scaleM (γ^ nKF w) M) ≡ true
+  e′ = e
   h x y = Eq.trans (Eq.sym (ix-scaleM (γ^ l) ⟦ w ⟧F x y))
-            (Eq.trans (ix-≡ (eqM-sound _ _ e) x y) (ix-scaleM (γ^ nKF w) M x y))
+            (Eq.trans (ix-≡ (eqM-sound (scaleM (γ^ l) ⟦ w ⟧F) (scaleM (γ^ nKF w) M) e′) x y)
+                      (ix-scaleM (γ^ nKF w) M x y))
+
+-- Against an operator.
+F-op : (w : Circuit k) (l : ℕ) (T : Op k) → ChkOp w l T → ⟦ w ⟧ ~ (l , T)
+F-op w l T e = F-sem w l T (λ x y →
+  Eq.trans (Eq.sym (ix-scaleM (γ^ l) ⟦ w ⟧F x y))
+    (Eq.trans (Eq.cong (λ A → ix A x y) (eqM-sound (scaleM (γ^ l) ⟦ w ⟧F) (matOf (γ^ nKF w · T)) e′))
+              (ix-matOf (γ^ nKF w · T) x y)))
+  where
+  e′ : eqM (scaleM (γ^ l) ⟦ w ⟧F) (matOf (γ^ nKF w · T)) ≡ true
+  e′ = e
