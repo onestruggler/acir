@@ -37,15 +37,16 @@ snippet needs an entry in the `literate` table of `agda-style.sty`.
 
 ## Before submission
 
-- The author block is a placeholder (`Anonymous Author(s)`). The call
-  does not ask for anonymous submissions, but the OOPSLA version of this
-  work is under double-blind review: check the OOPSLA rules on talks and
-  public abstracts during review before naming the authors, and the
-  wording of the last sentence ("A longer version ... is under review"),
-  which a reader could link to the OOPSLA submission.
+- The authors are Xiaoning Bian, Yuan Feng, Sarah Meng Li and John van
+  de Wetering; their affiliations are still `TODO` in `main.tex`. The
+  call does not ask for anonymous submissions, but the OOPSLA version of
+  this work is under double-blind review: check the OOPSLA rules on
+  talks and public abstracts during review, and the wording of the last
+  sentence ("A longer version ... is under review"), which a reader
+  could now link to the OOPSLA submission.
 - The bibliography entry `anonymous2027popl` is our POPL paper on the
-  library, with its authors withheld as in the OOPSLA draft; fill them
-  in if the abstract is not anonymous.
+  library, with its authors withheld as in the OOPSLA draft; with the
+  abstract no longer anonymous, fill them in.
 - The numbers (modules, lines, typechecking times, the four weeks) are
   those of the OOPSLA draft, measured on 22 October 2026 on the
   `ten-completeness` branch. Re-measure them if the developments change.
