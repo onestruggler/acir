@@ -12,11 +12,11 @@
 \setcopyright{none}
 \renewcommand\footnotetextcopyrightpermission[1]{}
 
-%% The contact footnote lists names and e-mail addresses only; the
-%% affiliations stay under the names in the title block.
+%% The contact footnote lists the e-mail addresses only; the names and
+%% affiliations stay in the title block.
 \makeatletter
 \def\@mkauthorsaddresses{%
-  Authors' Contact Information:
+  Contact:
   \bgroup
   \def\position##1{\unskip\ignorespaces}%
   \def\institution##1{\unskip\ignorespaces}%
@@ -24,11 +24,13 @@
   \def\state##1{\unskip\ignorespaces}%
   \renewcommand\department[2][0]{\unskip\ignorespaces}%
   \def\country##1{\unskip\ignorespaces}%
-  \def\and{\unskip; }%
-  \def\@author##1{##1}%
-  \def\email##1##2{\unskip, \nolinkurl{##2}}%
+  \def\and{\unskip, }%
+  \def\@author##1{\ignorespaces}%
+  \def\email##1##2{\unskip\ \mbox{\nolinkurl{##2}}}%
   \addresses
   \egroup}
+%% No final period, which would read as part of the last address.
+\def\@setauthorsaddresses{\@authorsaddresses\unskip}
 \makeatother
 
 \usepackage{booktabs}
@@ -46,8 +48,12 @@
 
 \begin{document}
 
-\title[Human-Made Scaffolds for Machine-Written Proofs of Completeness]{Sixteen Completeness Theorems for Quantum Circuits in Agda: Human-Guided, Machine-Written Proofs}
+\title[QCert: Verifying Sixteen Quantum Circuit Completeness Results in One Agda Framework]{QCert: Verifying Sixteen Quantum Circuit Completeness Results in One Agda Framework}
 \subtitle{Extended Abstract}
+
+
+%Human-Made Scaffolds for Machine-Written Proofs of Completeness
+%Sixteen Completeness Theorems for Quantum Circuits in Agda: Human-Guided, Machine-Written Proofs
 
 %% Affiliations and e-mail addresses as in ../vqupit/main.tex; Yuan
 %% Feng's address is to be confirmed (see README.md).
@@ -77,22 +83,26 @@
 \email{john@vdwetering.name}
 
 \begin{abstract}
-A complete equational theory for a family of quantum circuits derives
-every equation between circuits that denote the same matrix. Proofs of
-completeness are long case analyses, with appendices of dozens or
-hundreds of pages that are rarely checked in full. We report on
-machine-checked proofs, in safe and constructive Agda, of the
-completeness theorems of fifteen papers from 2014 to 2026 and of the
-minimality theorem of a sixteenth, covering Clifford, real stabilizer,
-CNOT-dihedral, phase-affine, Clifford+$T$, Clifford+$CS$, real
-Clifford+$CH$, Toffoli--Hadamard, qudit and qutrit Clifford circuits,
-and the groups of two-level matrices behind them. LLM coding agents
-wrote fifteen of the sixteen developments in four weeks, on a scaffold
-written by people that fixes the form of every theorem, so that a
-reader checks only the relations, the gate matrices and one line per
-paper. The formalization found a gap in the completeness proof of
-Hadamard-$\Pi$ (POPL 2026), which we close, and a relation missing from
-a Toffoli--Hadamard presentation, without which it is not complete.
+% An equational theory for a family of quantum circuits is a set of rewrite rules. The theory 
+
+A set of circuit equations is complete if any two circuits denoting the same linear map can be derived from each other using these equations, and minimal if no equation can be derived from the others. Establishing these properties takes long case analyses spanning hundreds of pages, making the details hard to check by hand. To this end, we extend the previous formalization framework to QCert, and use it to formalize the main circuit completeness theorems to date. This includes sixteen results, fifteen on completeness and one on minimality, over finite gate sets such as Clifford, CNOT-dihedral, Clifford+T, Clifford+CS, real Clifford+CH, and Toffoli--Hadamard, on qubits and on qudits of every odd prime dimension. QCert divides the work between humans and LLM coding agents. We first built its framework by specifying the syntax, semantics, and group presentations. Then, each paper's main theorem can be expressed uniformly in this framework. Next, an agent took over and formalized the proofs in Agda, following the papers' arguments. Agda checked every proof, so a human need only check the relation table, the gate semantics, and the theorem statement for each paper. Overall, QCert confirms the main results of each work and identifies gaps in two of the existing proofs. Its ability to do verification at scale makes QCert well suited to verifying quantum circuit completeness in higher dimensions.
+%properties of quantum circuits in higher dimensions.
+
+%Its scalability makes QCert well suited to verifying properties of quantum circuits in higher dimensions.
+
+
+% Thus, QCert demonstrates its verification ability for quantum circuit characterisation in higher dimensional systems.
+
+% It thus ensures the reliability of these completeness and minimality results, significantly reducing the human effort required for verification. 
+
+%covering most complete equational theories for circuits 
+
+
+% A set of circuit equations 
+% Besides confirming these results, the formalization uncovered two flaws
+% in published work: a gap in the completeness proof of Hadamard-$\Pi$
+% (POPL 2026), which we repair, and a rule missing from an equational
+% theory for Toffoli--Hadamard circuits, which is incomplete without it.
 \end{abstract}
 
 \maketitle
@@ -113,7 +123,7 @@ appeared for many fragments, in qubits and prime dimensions.
 The proofs are long. The extended version of Hadamard-$\Pi$ has 116
 pages, Makary, Ross and Selinger support their real stabilizer theorem
 with 76 pages of derivations~\cite{makary2021real}, and Cl\'ement's
-theorem for real Clifford+$CH$ circuits has an appendix of 264
+theorem for real Clifford+CH circuits has an appendix of 264
 pages~\cite{clement2026realcliffordch}. The core of each is a case
 analysis: a normal form and a rule for every gate and every shape of
 normal form, or the Main Lemma of an exact synthesis algorithm, or the
@@ -123,16 +133,15 @@ Language models can now write formal proofs of this size; a proof of
 Fermat's Last Theorem in Lean, of 13 million lines, was written in 11
 days~\cite{anthropic2026flt}. What still needs a person is the
 statement: a formal proof proves what its statement says, and someone
-has to check that the statement, and the definitions under it, mean
+must check that the statement, and the definitions under it, mean
 what was intended~\cite{hales2026reliability}. Generated proofs are
-not written to be read, so that check should stay small. Our approach
+not written to be read, so that check must stay small. Our approach
 is a \emph{scaffold}: code that people write and check once, which
 fixes the form of every theorem built on it, so the per-paper check is
-short and the rest is left to Agda.
+short and the rest left to Agda.
 
 This work grew out of our formalization of the completeness theorem
-for qudit Clifford circuits~\cite{bian2026qupit}. There we spent three
-months setting up a framework by hand, and brought in LLM coding agents
+for qudit Clifford circuits~\cite{bian2026qupit}. There we set up a framework by hand, and brought in LLM coding agents
 only at the last stage, to finish the proof. That experience convinced us that all
 completeness results for quantum circuits could, and should, be
 formalized within one framework. This paper does so: we built such a
@@ -234,9 +243,9 @@ Source & Object & Result & Mod. & Time \\
 \citet{makary2021real} & real stabilizer & sub-presentation & 30 & 35 \\
 \citet{amy2018cnotdihedral} & CNOT-dihedral & sub-presentation & 30 & 24 \\
 \citet{blake2026phaseaffine} & phase-affine, prime $d$ & sub-presentations & 56 & 61 \\
-\citet{bian2023cliffordt2} & two-qubit Clifford+$T$ & sub-presentation in $U_4$ & 62 & 118 \\
-\citet{bian2023cliffordcs3} & three-qubit Clifford+$CS$ & sub-presentation in $U_8$ & 123 & 250 \\
-\citet{clement2026realcliffordch} & real Clifford+$CH$ & sub-presentation & 346 & 405 \\
+\citet{bian2023cliffordt2} & two-qubit Clifford+T & sub-presentation in $U_4$ & 62 & 118 \\
+\citet{bian2023cliffordcs3} & three-qubit Clifford+CS & sub-presentation in $U_8$ & 123 & 250 \\
+\citet{clement2026realcliffordch} & real Clifford+CH & sub-presentation & 346 & 405 \\
 \citet{amy2024toffoli} & three-qubit Toffoli--Hadamard & presentation of $L_8$ & 201 & 102 \\
 \citet{li2025qutrit} & qutrit Clifford & presentation & 89 & 282 \\
 \midrule
@@ -301,20 +310,20 @@ still true. An unpublished thesis of Cl\'ement from
 relations, with a case that covers exactly this edge; we proved the two
 relation sets equivalent in every dimension, formalized his case as a
 decision tree that Agda checks by evaluation, and then his whole proof.
-Cl\'ement's 2026 theorem on real Clifford+$CH$
+Cl\'ement's 2026 theorem on real Clifford+CH
 circuits~\cite{clement2026realcliffordch} imports Theorem~4.14, so it
 rested on the same gap; our formalization of it discharges the import.
 
 \paragraph{An omitted relation.} Amy, Ross and
 Wesley~\cite{amy2024toffoli} present three-qubit Toffoli--Hadamard
 circuits in two steps, first $O_8(\Z[\frac12])$ by the Toffoli and
-$K = H\otimes H$ gates, then the scaled dyadic orthogonal group $L_8$.
-Their Section~5.5 uses a relation $r_K$ that defines $K_{1,2}$ by a
-controlled $K$, but the figures that define the relations of their
+$\mathrm{K} = \mathrm{H}\otimes\mathrm{H}$ gates, then the scaled dyadic orthogonal group $L_8$.
+Their Section~5.5 uses a relation $r_{\mathrm{K}}$ that defines $\mathrm{K}_{1,2}$ by a
+controlled K, but the figures that define the relations of their
 Theorem~5.2 omit it, and it does not follow from them: reading each
 Toffoli-K gate $g$ as $RgR$, with $R = I - J/4$ for the all-ones
-matrix $J$, satisfies every other relation and not $r_K$. So the
-relations as printed are not complete; with $r_K$ restored, we prove
+matrix $J$, satisfies every other relation and not $r_{\mathrm{K}}$. So the
+relations as printed are not complete; with $r_{\mathrm{K}}$ restored, we prove
 that they present $L_8$.
 
 \paragraph{Misprints.} The other papers are correct in what we
