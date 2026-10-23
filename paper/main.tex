@@ -135,13 +135,35 @@ Clifford group, Reidemeister--Schreier, Agda, formal verification}
 \input{sections/discussion}
 \input{sections/conclusion}
 
-%% Acknowledgements are automatically suppressed in anonymous mode.
-\begin{acks}
+%% These statements must remain visible in the review revision.
+\section*{Acknowledgments}
+This research was partially supported by the Quantum Science
+and Technology-National Science and Technology Major Project under Grant No. 2024ZD0300500,
+the National Natural Science Foundation of China under Grant 92465202.
+
+\section*{Disclosure of Use of AI in Research}
 We have used Claude to help with refactoring the accompanying code
 base~\cite{qupit-code} to its current form. We have used Claude to write this
 paper according to our paper outline~\cite{paper-outline} (later checked and
 revised by us).
-\end{acks}
+
+\section*{Data Availability Statement}
+The artifact accompanying this paper is publicly available on Zenodo at
+\url{https://doi.org/10.5281/zenodo.23187965}
+(version \texttt{popl-revision1}). It contains the Agda source code for
+the formalized definitions, constructions, and proofs, together with
+instructions for typechecking the development using Agda~2.8 and
+Agda standard library~2.4. After extracting
+\texttt{acir-popl-revision1.zip}, readers should consult the top-level
+\texttt{README.md}; \texttt{MainTheorems.agda} restates the headline
+theorems. The software and its accompanying software documentation are
+available under the MIT License, subject to the scope and existing
+notices described in the record's \texttt{LICENSE.txt}.
+The artifact has the limitations discussed in \S\ref{sec:threats}:
+in particular, the amalgamation case studies formalize the syntactic
+presentations and their isomorphisms, while their identification with
+the concrete matrix monoids relies on results from the literature
+and is not formalized in this artifact.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{refs}
