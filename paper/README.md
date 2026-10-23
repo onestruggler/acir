@@ -8,9 +8,9 @@ and `notes/` are the working notes the first draft was written from.
 
 - `main.tex` — acmart driver (`acmsmall,review,anonymous`; PACMPL/POPL
   metadata; CCS concepts; the `\aid{…}` inline-code macro). The review
-  revision includes visible, unnumbered Acknowledgments, Disclosure of
-  Use of AI in Research, and Data Availability Statement sections before
-  the references.
+  revision includes visible, unnumbered Disclosure of Use of AI in Research
+  and Data Availability Statement sections before the references. Funding
+  acknowledgments are retained in `acks` and hidden in anonymous mode.
 - `sections/*.tex` — plain LaTeX sections, `\input` from `main.tex`:
   `abstract`, `intro`, `preliminaries`, `related`, `discussion`,
   `conclusion`.
@@ -79,8 +79,9 @@ Checklist before camera-ready:
    with "Unicode character … not set up" otherwise).
 3. Page budget: 31 pages in review mode; check the target limit and trim
    `related.tex` or the size table in `discussion.tex` first if over.
-4. Anonymity: the `anonymous` option suppresses authors; the end statements
-   are intentionally visible in this review revision. Prior
+4. Anonymity: the `anonymous` option suppresses authors and funding
+   acknowledgments; the AI disclosure and data availability statement
+   remain visible in this review revision. Prior
    work by the authors is cited in the third person; the two web tools
    in §7.5 are cited under the author's name — drop or anonymise those
    citations if the paper goes through another anonymous round.
