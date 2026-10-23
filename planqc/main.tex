@@ -92,17 +92,22 @@ A set of circuit equations is complete if any two circuits denoting the same lin
 \maketitle
 
 \section{Introduction}
-
-A set of equations between quantum circuits is \emph{sound} if both
-sides of each equation denote the same matrix, and \emph{complete} if
-every equation between circuits with the same matrix follows from it.
-Completeness is what equational reasoning about quantum programs
-needs: a complete set of rules decides circuit equality, an
-optimizer built on it misses no equation, and a calculus such as
-Hadamard-$\Pi$~\cite{fang2026hadamard} rests on one. For Clifford
-circuits, Selinger's fifteen relations are complete for every number
-of qubits~\cite{selinger2015clifford}, and complete theories have since
-appeared for many fragments, in qubits and prime dimensions.
+An equational theory for quantum circuits is a set of equations
+between circuits, used as rewrite rules: replacing a subcircuit by an
+equal one transforms a circuit into an equivalent one. Such a theory
+should be \emph{sound}: every rewrite preserves the linear map a
+circuit denotes. Ideally it is also \emph{complete}, deriving every
+equivalence between circuits, and \emph{minimal}, with no redundant
+rule. Such theories underlie much of quantum software: optimizers
+such as VOQC~\cite{hietala2021voqc} simplify circuits by rewriting,
+and calculi such as \mbox{Hadamard-$\Pi$}~\cite{fang2026hadamard}
+reason about programs equationally. Completeness is what makes
+such reasoning sufficient: a complete theory characterizes circuit
+equivalence exactly, and an optimizer built on it can in principle
+reach every equivalent circuit. Complete theories now exist for
+many families, from Clifford circuits~\cite{selinger2015clifford} to
+all quantum circuits~\cite{clement2023complete} and qudits of every odd prime
+dimension~\cite{bian2026qupit}.
 
 The proofs are long. The extended version of Hadamard-$\Pi$ has 116
 pages, Makary, Ross and Selinger support their real stabilizer theorem
@@ -122,7 +127,8 @@ what was intended~\cite{hales2026reliability}. Generated proofs are
 not written to be read, so that check must stay small. Our approach
 is a \emph{scaffold}: code that people write and check once, which
 fixes the form of every theorem built on it, so the per-paper check is
-short and the rest left to Agda.
+short and the rest left to Agda. Its first layer is an Agda library of
+circuits and their presentations~\cite{bian2027popl}.
 
 This work grew out of our formalization of the completeness theorem
 for qudit Clifford circuits~\cite{bian2026qupit}. There we set up a framework by hand, and brought in LLM coding agents
@@ -130,25 +136,20 @@ only at the last stage, to finish the proof. That experience convinced us that a
 completeness results for quantum circuits could, and should, be
 formalized within one framework. This paper does so: we built such a
 scaffold for completeness theorems, and on it formalized sixteen papers
-(Table~\ref{tab:corpus}). Our contributions,
-which the talk will present, are:
+(Table~\ref{tab:corpus}). Our contributions are threefold.
 \begin{itemize}
-\item a scaffold for completeness theorems in Agda: an earlier
-  library of words, circuits and presentations~\cite{bian2027popl},
-  extended with a layer of matrix semantics over the rings of exact
-  synthesis and a framework for the independence of rules, so that every
-  theorem has one form with two parameters (Section~\ref{sec:form});
-\item machine-checked proofs of fifteen completeness theorems and one
-  minimality theorem, about 1{,}500 modules and 420{,}000 lines of
-  Agda with no postulates, typechecking in about 40 minutes
-  (Section~\ref{sec:corpus});
-\item a gap in the completeness proof of Hadamard-$\Pi$, with explicit
-  counterexamples, and its repair from an unpublished thesis; a relation
-  omitted from a Toffoli--Hadamard presentation; and the misprints of
-  the other papers (Section~\ref{sec:findings});
-\item a way of working in which people write the scaffold and the
-  mathematics of a proof route, and LLM coding agents write the
-  formalization, checked numerically before and by Agda after
+\item QCert: an earlier library of words, circuits and
+  presentations~\cite{bian2027popl}, extended with matrix semantics over
+  the rings of exact synthesis and a framework for the independence of
+  rules, giving every theorem the same form (Section~\ref{sec:form});
+\item machine-checked proofs of the sixteen theorems: about 1{,}500
+  modules and 420{,}000 lines of Agda with no postulates, checked in
+  about 40 minutes (Section~\ref{sec:corpus});
+\item a gap in the completeness proof of Hadamard-$\Pi$ and its repair,
+  a rule omitted from a Toffoli--Hadamard theory, and misprints in the
+  other papers (Section~\ref{sec:findings});
+\item a method in which people build the framework and state the
+  theorems, LLM coding agents write the proofs, and Agda checks them
   (Section~\ref{sec:method}).
 \end{itemize}
 
