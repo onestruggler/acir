@@ -39,7 +39,9 @@
 \usepackage{agda-style}
 \usepackage{cleveref}
 
-\citestyle{acmauthoryear}
+\citestyle{acmnumeric}
+%% Table 1 keeps author-year citations: ``Greylyn [2014]''.
+\newcommand{\tabcite}[1]{\citeauthor{#1}~[\citeyear{#1}]}
 
 %% Inline Agda identifiers, in a sans-serif face.
 \newcommand{\aid}[1]{\mbox{\textsf{\small #1}}}
@@ -98,10 +100,14 @@ equal one transforms a circuit into an equivalent one. Such a theory
 should be \emph{sound}: every rewrite preserves the linear map a
 circuit denotes. Ideally it is also \emph{complete}, deriving every
 equivalence between circuits, and \emph{minimal}, with no redundant
-rule. Such theories underlie much of quantum software: optimizers
-such as VOQC~\cite{hietala2021voqc} simplify circuits by rewriting,
-and calculi such as \mbox{Hadamard-$\Pi$}~\cite{fang2026hadamard}
-reason about programs equationally. Completeness is what makes
+rule. Equational rewriting supports circuit
+optimization~\cite{hietala2021voqc,nam2018automated,duncan2020graph,xu2022quartz},
+sometimes modulo global phase. Related diagrammatic rewrites support
+equivalence checking~\cite{peham2022equivalence} and classical
+simulation~\cite{kissinger2022simulation}.
+Calculi such as
+\mbox{Hadamard-$\Pi$}~\cite{fang2026hadamard} reason about programs
+equationally. Completeness is what makes
 such reasoning sufficient: a complete theory characterizes circuit
 equivalence exactly, and an optimizer built on it can in principle
 reach every equivalent circuit. Complete theories now exist for
@@ -164,7 +170,7 @@ $\llbracket - \rrbracket$, and if every element of $M$ is an image, it
 presents $M$. For circuits, $M$ is a group of matrices, and the image
 is the group that the gates generate.
 
-The library~\cite{bian2027popl} fixes this vocabulary: a
+The earlier library~\cite{bian2027popl} fixes this vocabulary: a
 presentation theorem is a record, $\Gamma$ \aid{IsSubPresentationOf} $G$,
 holding an interpretation of words in a group $G$ with proofs that it
 is a group homomorphism on words modulo $\approx$ and injective, and
@@ -216,26 +222,26 @@ theories for every number of wires, except where the paper fixes it.
 Source & Object & Result & Mod. & Time \\
 \midrule
 \multicolumn{5}{@{}l}{\emph{Groups of two-level matrices}}\\
-\citet{greylyn2014} & $U_n(\Z[\frac1{\sqrt2},i])$ & presentation, $n\le4$ & 31 & 42 \\
-\citet{bian2021un} & $U_n(\Z[\frac12,i])$ & presentation & 37 & 62 \\
-\citet{li2021on} & $O_n(\Z[\frac12])$, $L_n$ & presentations & 68 & 79 \\
-\citet{fang2026hadamard} & $O_n(\Z[\frac1{\sqrt2}])$ & presentation & 44 & 44 \\
-\citet{clement2019thesis} & $O_n(\Z[\frac1{\sqrt2}])$ & presentation & 40 & 64 \\
+\tabcite{greylyn2014} & $U_n(\Z[\frac1{\sqrt2},i])$ & presentation, $n\le4$ & 31 & 42 \\
+\tabcite{bian2021un} & $U_n(\Z[\frac12,i])$ & presentation & 37 & 62 \\
+\tabcite{li2021on} & $O_n(\Z[\frac12])$, $L_n$ & presentations & 68 & 79 \\
+\tabcite{fang2026hadamard} & $O_n(\Z[\frac1{\sqrt2}])$ & presentation & 44 & 44 \\
+\tabcite{clement2019thesis} & $O_n(\Z[\frac1{\sqrt2}])$ & presentation & 40 & 64 \\
 \midrule
 \multicolumn{5}{@{}l}{\emph{Circuits}}\\
-\citet{selinger2015clifford} & Clifford & sub-presentation & 31 & 34 \\
-\citet{bian2026qupit} & Clifford, odd prime $p$ & presentation of a model & 215 & 546 \\
-\citet{makary2021real} & real stabilizer & sub-presentation & 30 & 35 \\
-\citet{amy2018cnotdihedral} & CNOT-dihedral & sub-presentation & 30 & 24 \\
-\citet{blake2026phaseaffine} & phase-affine, prime $d$ & sub-presentations & 56 & 61 \\
-\citet{bian2023cliffordt2} & two-qubit Clifford+T & sub-presentation in $U_4$ & 62 & 118 \\
-\citet{bian2023cliffordcs3} & three-qubit Clifford+CS & sub-presentation in $U_8$ & 123 & 250 \\
-\citet{clement2026realcliffordch} & real Clifford+CH & sub-presentation & 346 & 405 \\
-\citet{amy2024toffoli} & three-qubit Toffoli--Hadamard & presentation of $L_8$ & 201 & 102 \\
-\citet{li2025qutrit} & qutrit Clifford & presentation & 89 & 282 \\
+\tabcite{selinger2015clifford} & Clifford & sub-presentation & 31 & 34 \\
+\tabcite{bian2026qupit} & Clifford, odd prime $p$ & presentation of a model & 215 & 546 \\
+\tabcite{makary2021real} & real stabilizer & sub-presentation & 30 & 35 \\
+\tabcite{amy2018cnotdihedral} & CNOT-dihedral & sub-presentation & 30 & 24 \\
+\tabcite{blake2026phaseaffine} & phase-affine, prime $d$ & sub-presentations & 56 & 61 \\
+\tabcite{bian2023cliffordt2} & two-qubit Clifford+T & sub-presentation in $U_4$ & 62 & 118 \\
+\tabcite{bian2023cliffordcs3} & three-qubit Clifford+CS & sub-presentation in $U_8$ & 123 & 250 \\
+\tabcite{clement2026realcliffordch} & real Clifford+CH & sub-presentation & 346 & 405 \\
+\tabcite{amy2024toffoli} & three-qubit Toffoli--Hadamard & presentation of $L_8$ & 201 & 102 \\
+\tabcite{li2025qutrit} & qutrit Clifford & presentation & 89 & 282 \\
 \midrule
 \multicolumn{5}{@{}l}{\emph{Minimality}}\\
-\citet{blake2026simpler} & six fragments & minimal, complete & 73 & 183 \\
+\tabcite{blake2026simpler} & six fragments & minimal, complete & 73 & 183 \\
 \midrule
 All & & & 1{,}476 & 2{,}332 \\
 \bottomrule
