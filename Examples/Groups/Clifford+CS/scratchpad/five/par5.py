@@ -77,8 +77,12 @@ loading).  With the derivation modules taking their lemmas as
 parameters (1483 modules, 22 GB): 1143 s; 1094 s with chain heads run
 alone in a wide critical front; 960 s with the heights counting loading
 (and the window libraries no longer under the completeness chain), job
-time 4180 s of which 2200 s checking -- about 4.4 jobs at a time, the
-memory bounding them.
+time 4180 s of which 2200 s checking; 824 s with a chain head's
+partners; 727 s with Four's consumers taking their lemmas as a
+parameter; 618 s with -A256m (job time 2525 s); and 552 s on eight jobs
+with the memory estimates from what a job loads (job time 3670 s, 7-8
+jobs at a time; -A64m 614 s, -A512m 544 s).  So: python3 par5.py 8 LOG
+on this machine (16 cores, 26 GB, PAR5_BUDGET_GB=22).
 """
 import fcntl, os, re, subprocess, sys, time, zlib
 
