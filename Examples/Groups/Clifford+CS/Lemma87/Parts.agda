@@ -14,7 +14,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Lemma87.Parts where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; Win ; get)
+open import Examples.Groups.Clifford+CS.Four.CStmt using (clemmas)
+
+module Examples.Groups.Clifford+CS.Lemma87.Parts (C : Proofs clemmas) where
 
 open import Data.List using (List ; [] ; _∷_ ; map)
 open import Word.Base using (Word ; ε ; _•_)
@@ -22,7 +25,7 @@ open import Word.Base using (Word ; ε ; _•_)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP)
 open import Examples.Groups.Clifford+CS.Four.Chain using (⟪_⟫ʷ ; sym)
-open import Examples.Groups.Clifford+CS.Four.Transport using (Blk ; flatB ; flat ; ++≈)
+open import Examples.Groups.Clifford+CS.Four.Transport C using (Blk ; flatB ; flat ; ++≈)
 open import Examples.Groups.Clifford+CS.Lemma87.Decodes 0 public
 
 -- A part: a word over P′ decoding to a block.

@@ -11,7 +11,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Four.Facts.HClasses where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; Win ; get)
+open import Examples.Groups.Clifford+CS.Four.CStmt using (clemmas)
+
+module Examples.Groups.Clifford+CS.Four.Facts.HClasses (C : Proofs clemmas) where
 
 open import Data.Bool using (Bool ; true ; false ; not)
 open import Data.List using (List ; [] ; _∷_ ; _++_ ; map)
@@ -22,10 +25,65 @@ open import Word.Base using (ε ; _•_ ; _^_)
 
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Four.Chain
-open import Examples.Groups.Clifford+CS.Four.TransportTables
-open import Examples.Groups.Clifford+CS.Four.Transport
-import Examples.Groups.Clifford+CS.Four.WinInst as WI
-open import Examples.Groups.Clifford+CS.Four.DAll WI.ws using (lem-top-ki-sq ; lem-top-ki-yb ; lem-kk-CS03-CS03-CK30-CS03-CX31-CS01-··-X0-X3-CS03-CS03-CK30-CS03-CX31-CS01-CS01··-sep-3 ; lem-kk-CS01-CS01-CK10-CS01-CX12-CS02-··-X0-X1-X2-X3-CS01-CS01-CK10-CS01-CX12-CS0··-sep-1 ; lem-kk-CS02-CS02-CK20-CS02-CX23-CS03-··-X2-X3-CS02-CS02-CK20-CS02-CX23-CS03-CS03··-sep-2 ; lem-top-kᵖ3 ; lem-kk-CS01-CS01-CK10-CS01-CX13-CS03-··-X3-CS13-CS13-CK31-CS13-CX30-CS01-CS01-CS··-sep-3 ; lem-kk-CS01-CS01-CK10-CS01-CX12-CS02-··-X1-X2-X3-CS01-CS01-CK01-CS01-CX02-CS12-C··-sep-2 ; lem-kk-CS02-CS02-CK20-CS02-CX23-CS03-··-X0-X2-X3-CS02-CS02-CK02-CS02-CX03-CS23-C··-sep-3 ; lem-far-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01-··-0011PP1-sep-2 ; lem-far-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01-··-0001PP0-sep-3 ; lem-far-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03-··-1001PP1-sep-3 ; lem-far-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02-··-0011PP2-sep-3 ; lem-far-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-··-0111PP0-sep-1 ; lem-far-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02-··-0011R2-sep-3 ; lem-far-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03-··-1001R1-sep-3 ; lem-far-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01-··-0011R1-sep-2 ; lem-far-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01-··-0001R0-sep-3 ; lem-far-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-··-1111PP1-sep-2 ; lem-far-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-··-1011PP0-sep-2 ; lem-top-k-p-≡-p-h-k ; lem-top-k-z-≡-z-k ; lem-far-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-··-0111R0-sep-1 ; lem-far-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-··-1111R1-sep-2 ; lem-far-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-··-1011R0-sep-2 ; lem-shift-0000R0-0100R1-X0-CS01-CS01-CK10-CS01-CX13-CS ; lem-shift-0000R0-0100R1-X0-CS03-CS03-CK30-CS03-CX32-CS)
+open import Examples.Groups.Clifford+CS.Four.TransportTables C
+open import Examples.Groups.Clifford+CS.Four.Transport C
+
+-- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+private
+  lem-top-ki-sq : Win clemmas 501
+  lem-top-ki-sq = get clemmas C 501
+  lem-top-ki-yb : Win clemmas 502
+  lem-top-ki-yb = get clemmas C 502
+  lem-kk-CS03-CS03-CK30-CS03-CX31-CS01-··-X0-X3-CS03-CS03-CK30-CS03-CX31-CS01-CS01··-sep-3 : Win clemmas 503
+  lem-kk-CS03-CS03-CK30-CS03-CX31-CS01-··-X0-X3-CS03-CS03-CK30-CS03-CX31-CS01-CS01··-sep-3 = get clemmas C 503
+  lem-kk-CS01-CS01-CK10-CS01-CX12-CS02-··-X0-X1-X2-X3-CS01-CS01-CK10-CS01-CX12-CS0··-sep-1 : Win clemmas 504
+  lem-kk-CS01-CS01-CK10-CS01-CX12-CS02-··-X0-X1-X2-X3-CS01-CS01-CK10-CS01-CX12-CS0··-sep-1 = get clemmas C 504
+  lem-kk-CS02-CS02-CK20-CS02-CX23-CS03-··-X2-X3-CS02-CS02-CK20-CS02-CX23-CS03-CS03··-sep-2 : Win clemmas 505
+  lem-kk-CS02-CS02-CK20-CS02-CX23-CS03-··-X2-X3-CS02-CS02-CK20-CS02-CX23-CS03-CS03··-sep-2 = get clemmas C 505
+  lem-top-kᵖ3 : Win clemmas 506
+  lem-top-kᵖ3 = get clemmas C 506
+  lem-kk-CS01-CS01-CK10-CS01-CX13-CS03-··-X3-CS13-CS13-CK31-CS13-CX30-CS01-CS01-CS··-sep-3 : Win clemmas 507
+  lem-kk-CS01-CS01-CK10-CS01-CX13-CS03-··-X3-CS13-CS13-CK31-CS13-CX30-CS01-CS01-CS··-sep-3 = get clemmas C 507
+  lem-kk-CS01-CS01-CK10-CS01-CX12-CS02-··-X1-X2-X3-CS01-CS01-CK01-CS01-CX02-CS12-C··-sep-2 : Win clemmas 508
+  lem-kk-CS01-CS01-CK10-CS01-CX12-CS02-··-X1-X2-X3-CS01-CS01-CK01-CS01-CX02-CS12-C··-sep-2 = get clemmas C 508
+  lem-kk-CS02-CS02-CK20-CS02-CX23-CS03-··-X0-X2-X3-CS02-CS02-CK02-CS02-CX03-CS23-C··-sep-3 : Win clemmas 509
+  lem-kk-CS02-CS02-CK20-CS02-CX23-CS03-··-X0-X2-X3-CS02-CS02-CK02-CS02-CX03-CS23-C··-sep-3 = get clemmas C 509
+  lem-far-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01-··-0011PP1-sep-2 : Win clemmas 510
+  lem-far-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01-··-0011PP1-sep-2 = get clemmas C 510
+  lem-far-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01-··-0001PP0-sep-3 : Win clemmas 511
+  lem-far-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01-··-0001PP0-sep-3 = get clemmas C 511
+  lem-far-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03-··-1001PP1-sep-3 : Win clemmas 512
+  lem-far-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03-··-1001PP1-sep-3 = get clemmas C 512
+  lem-far-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02-··-0011PP2-sep-3 : Win clemmas 513
+  lem-far-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02-··-0011PP2-sep-3 = get clemmas C 513
+  lem-far-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-··-0111PP0-sep-1 : Win clemmas 514
+  lem-far-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-··-0111PP0-sep-1 = get clemmas C 514
+  lem-far-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02-··-0011R2-sep-3 : Win clemmas 515
+  lem-far-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02-··-0011R2-sep-3 = get clemmas C 515
+  lem-far-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03-··-1001R1-sep-3 : Win clemmas 516
+  lem-far-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03-··-1001R1-sep-3 = get clemmas C 516
+  lem-far-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01-··-0011R1-sep-2 : Win clemmas 517
+  lem-far-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01-··-0011R1-sep-2 = get clemmas C 517
+  lem-far-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01-··-0001R0-sep-3 : Win clemmas 518
+  lem-far-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01-··-0001R0-sep-3 = get clemmas C 518
+  lem-far-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-··-1111PP1-sep-2 : Win clemmas 519
+  lem-far-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-··-1111PP1-sep-2 = get clemmas C 519
+  lem-far-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-··-1011PP0-sep-2 : Win clemmas 520
+  lem-far-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-··-1011PP0-sep-2 = get clemmas C 520
+  lem-top-k-p-≡-p-h-k : Win clemmas 521
+  lem-top-k-p-≡-p-h-k = get clemmas C 521
+  lem-top-k-z-≡-z-k : Win clemmas 522
+  lem-top-k-z-≡-z-k = get clemmas C 522
+  lem-far-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-··-0111R0-sep-1 : Win clemmas 523
+  lem-far-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-··-0111R0-sep-1 = get clemmas C 523
+  lem-far-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-··-1111R1-sep-2 : Win clemmas 524
+  lem-far-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-··-1111R1-sep-2 = get clemmas C 524
+  lem-far-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-··-1011R0-sep-2 : Win clemmas 525
+  lem-far-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-··-1011R0-sep-2 = get clemmas C 525
+  lem-shift-0000R0-0100R1-X0-CS01-CS01-CK10-CS01-CX13-CS : Win clemmas 526
+  lem-shift-0000R0-0100R1-X0-CS01-CS01-CK10-CS01-CX13-CS = get clemmas C 526
+  lem-shift-0000R0-0100R1-X0-CS03-CS03-CK30-CS03-CX32-CS : Win clemmas 527
+  lem-shift-0000R0-0100R1-X0-CS03-CS03-CK30-CS03-CX32-CS = get clemmas C 527
 
 HC0-0 : Blk
 HC0-0 = blk (xb false false false false) (CS03 ∷ CS03 ∷ CK30 ∷ CS03 ∷ CX31 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK10 ∷ S1 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX31 ∷ CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CK20 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S1 ∷ CK10 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX31 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S1 ∷ S1 ∷ S1 ∷ S1 ∷ CK10 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX31 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S2 ∷ CK20 ∷ [])

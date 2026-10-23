@@ -13,7 +13,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Four.Bridge where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; Win ; get)
+open import Examples.Groups.Clifford+CS.Four.CStmt using (clemmas)
+
+module Examples.Groups.Clifford+CS.Four.Bridge (C : Proofs clemmas) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Relation.Binary.PropositionalEquality as Eq using ()
@@ -21,8 +24,11 @@ open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.MultiControlled using (G-pp)
 open import Examples.Groups.Clifford+CS.Four.Chain
-import Examples.Groups.Clifford+CS.Four.WinInst as WI
-open import Examples.Groups.Clifford+CS.Four.DAll WI.ws using (lem-bridge-G-pp)
+
+-- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+private
+  lem-bridge-G-pp : Win clemmas 477
+  lem-bridge-G-pp = get clemmas C 477
 
 -- The phase gadget L₁₂₃(iZ₀) of the decoding, as the derivations spell it.
 G-pp-≈ : G-pp 1 ≈ ⟪ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ [] ⟫ʷ

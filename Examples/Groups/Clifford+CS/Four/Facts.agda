@@ -12,7 +12,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Four.Facts where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; Win ; get)
+open import Examples.Groups.Clifford+CS.Four.CStmt using (clemmas)
+
+module Examples.Groups.Clifford+CS.Four.Facts (C : Proofs clemmas) where
 
 open import Word.Base using (_ʷ)
 
@@ -21,10 +24,10 @@ open import Examples.Groups.Clifford+CS.Numbering 4 using (N)
 open import Examples.Groups.Clifford+CS.Auxiliary.Fragment using (_F,_===_)
 open import Examples.Groups.Clifford+CS.Decoding 0 using (d)
 open import Examples.Groups.Clifford+CS.Lemma88.KFree 0 using (Facts ; k-free)
-open import Examples.Groups.Clifford+CS.Four.Facts.I1
-open import Examples.Groups.Clifford+CS.Four.Facts.I2
-open import Examples.Groups.Clifford+CS.Four.Facts.I3
-open import Examples.Groups.Clifford+CS.Four.Facts.I4
+open import Examples.Groups.Clifford+CS.Four.Facts.I1 C
+open import Examples.Groups.Clifford+CS.Four.Facts.I2 C
+open import Examples.Groups.Clifford+CS.Four.Facts.I3 C
+open import Examples.Groups.Clifford+CS.Four.Facts.I4 C
 
 -- The consecutive facts at four wires.
 facts : Facts

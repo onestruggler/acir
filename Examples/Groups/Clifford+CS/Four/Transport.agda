@@ -16,7 +16,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Four.Transport where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; Win ; get)
+open import Examples.Groups.Clifford+CS.Four.CStmt using (clemmas)
+
+module Examples.Groups.Clifford+CS.Four.Transport (C : Proofs clemmas) where
 
 open import Data.Bool using (Bool ; true ; false ; T ; _∧_)
 open import Data.Empty using (⊥-elim)
@@ -28,7 +31,7 @@ open import Word.Base using (ε ; _•_)
 
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Four.Chain
-open import Examples.Groups.Clifford+CS.Four.TransportTables
+open import Examples.Groups.Clifford+CS.Four.TransportTables C
 
 ------------------------------------------------------------------------
 -- Lines

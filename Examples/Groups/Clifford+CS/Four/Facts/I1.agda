@@ -10,7 +10,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Four.Facts.I1 where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; Win ; get)
+open import Examples.Groups.Clifford+CS.Four.CStmt using (clemmas)
+
+module Examples.Groups.Clifford+CS.Four.Facts.I1 (C : Proofs clemmas) where
 
 open import Data.Bool using (Bool ; true ; false ; not)
 open import Data.List using (List ; [] ; _∷_ ; _++_ ; map)
@@ -21,12 +24,11 @@ open import Word.Base using (ε ; _•_ ; _^_)
 
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Four.Chain
-open import Examples.Groups.Clifford+CS.Four.TransportTables
-open import Examples.Groups.Clifford+CS.Four.Transport
+open import Examples.Groups.Clifford+CS.Four.TransportTables C
+open import Examples.Groups.Clifford+CS.Four.Transport C
 open import Examples.Groups.Clifford+CS.Decoding 0 using (dPP₁ ; dPP₁′ ; lo₁ ; hi₁)
-open import Examples.Groups.Clifford+CS.Four.Facts.Bridges
-open import Examples.Groups.Clifford+CS.Four.Facts.Classes
-
+open import Examples.Groups.Clifford+CS.Four.Facts.Bridges C
+open import Examples.Groups.Clifford+CS.Four.Facts.Classes C
 
 i-p-inv-0 : dPP₁ 0 • dPP₁′ 0 ≈ ε
 i-p-inv-0 = trans (trans (cong br-p-0 br-p′-0) (sym (++≈ (flatB B-p-0) (flat (B-p′-0 ∷ [])))))

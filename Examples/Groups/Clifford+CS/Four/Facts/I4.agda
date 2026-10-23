@@ -10,7 +10,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Four.Facts.I4 where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; Win ; get)
+open import Examples.Groups.Clifford+CS.Four.CStmt using (clemmas)
+
+module Examples.Groups.Clifford+CS.Four.Facts.I4 (C : Proofs clemmas) where
 
 open import Data.Bool using (Bool ; true ; false ; not)
 open import Data.List using (List ; [] ; _∷_ ; _++_ ; map)
@@ -21,13 +24,26 @@ open import Word.Base using (ε ; _•_ ; _^_)
 
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Four.Chain
-open import Examples.Groups.Clifford+CS.Four.TransportTables
-open import Examples.Groups.Clifford+CS.Four.Transport
+open import Examples.Groups.Clifford+CS.Four.TransportTables C
+open import Examples.Groups.Clifford+CS.Four.Transport C
 open import Examples.Groups.Clifford+CS.Decoding 0 using (dPP₁ ; dPP₁′ ; lo₁ ; hi₁)
-open import Examples.Groups.Clifford+CS.Four.Facts.Bridges
-open import Examples.Groups.Clifford+CS.Four.Facts.Classes
-import Examples.Groups.Clifford+CS.Four.WinInst as WI
-open import Examples.Groups.Clifford+CS.Four.DAll WI.ws using (lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 ; lem-resp-S0-K0-CS01-TOFF023-CSd01-TOFF023-Kd0-Sd0 ; lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1 ; lem-resp-S1-K1-CS12-TOFF103-CSd12-TOFF103-Kd1-Sd1 ; lem-resp-S2-K2-CS02-TOFF213-CSd02-TOFF213-Kd2-Sd2 ; lem-resp-S2-K2-CS12-TOFF203-CSd12-TOFF203-Kd2-Sd2)
+open import Examples.Groups.Clifford+CS.Four.Facts.Bridges C
+open import Examples.Groups.Clifford+CS.Four.Facts.Classes C
+
+-- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+private
+  lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 : Win clemmas 533
+  lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 = get clemmas C 533
+  lem-resp-S0-K0-CS01-TOFF023-CSd01-TOFF023-Kd0-Sd0 : Win clemmas 530
+  lem-resp-S0-K0-CS01-TOFF023-CSd01-TOFF023-Kd0-Sd0 = get clemmas C 530
+  lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1 : Win clemmas 531
+  lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1 = get clemmas C 531
+  lem-resp-S1-K1-CS12-TOFF103-CSd12-TOFF103-Kd1-Sd1 : Win clemmas 534
+  lem-resp-S1-K1-CS12-TOFF103-CSd12-TOFF103-Kd1-Sd1 = get clemmas C 534
+  lem-resp-S2-K2-CS02-TOFF213-CSd02-TOFF213-Kd2-Sd2 : Win clemmas 535
+  lem-resp-S2-K2-CS02-TOFF213-CSd02-TOFF213-Kd2-Sd2 = get clemmas C 535
+  lem-resp-S2-K2-CS12-TOFF203-CSd12-TOFF203-Kd2-Sd2 : Win clemmas 536
+  lem-resp-S2-K2-CS12-TOFF203-CSd12-TOFF203-Kd2-Sd2 = get clemmas C 536
 
 i-far-ll-0-2 : lo₁ 0 • lo₁ 2 ≈ lo₁ 2 • lo₁ 0
 i-far-ll-0-2 = trans (trans (cong br-l-0 br-l-2) (sym (++≈ (flatB B-l-0) (flat (B-l-2 ∷ [])))))

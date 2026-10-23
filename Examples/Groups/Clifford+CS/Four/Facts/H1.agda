@@ -11,7 +11,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Four.Facts.H1 where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; Win ; get)
+open import Examples.Groups.Clifford+CS.Four.CStmt using (clemmas)
+
+module Examples.Groups.Clifford+CS.Four.Facts.H1 (C : Proofs clemmas) where
 
 open import Data.Bool using (Bool ; true ; false ; not)
 open import Data.List using (List ; [] ; _∷_ ; _++_ ; map)
@@ -22,15 +25,70 @@ open import Word.Base using (ε ; _•_ ; _^_)
 
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Four.Chain
-open import Examples.Groups.Clifford+CS.Four.TransportTables
-open import Examples.Groups.Clifford+CS.Four.Transport
+open import Examples.Groups.Clifford+CS.Four.TransportTables C
+open import Examples.Groups.Clifford+CS.Four.Transport C
 open import Examples.Groups.Clifford+CS.Decoding 0 using (dPP₁ ; dPP₁′ ; lo₁ ; hi₁ ; dKI₁)
-open import Examples.Groups.Clifford+CS.Four.Facts.Bridges
-open import Examples.Groups.Clifford+CS.Four.Facts.HBridges
-open import Examples.Groups.Clifford+CS.Four.Facts.Classes using (Resp ; []ʳ ; same ; re ; resp)
-open import Examples.Groups.Clifford+CS.Four.Facts.HClasses
-import Examples.Groups.Clifford+CS.Four.WinInst as WI
-open import Examples.Groups.Clifford+CS.Four.DAll WI.ws using (lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01- ; lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02- ; lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12- ; lem-respell-hyb-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03---⟶-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01- ; lem-respell-hyb-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03---⟶-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02- ; lem-respell-hyb-CS01-CS01-CK01-CS01-CX03-CS13-CS13-CS13---⟶-CS13-CS13-CK31-CS13-CX30-CS01-CS01-CS01- ; lem-respell-hyb-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03- ; lem-respell-hyb-CS23-CS23-CK32-CS23-CX30-CS02-CS02-CS02---⟶-CS02-CS02-CK02-CS02-CX03-CS23-CS23-CS23- ; lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01- ; lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03- ; lem-resp-TOFF013-CS02-TOFF013-CSd02 ; lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02- ; lem-respell-hyb-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12---⟶-CS13-CS13-CK31-CS13-CX30-CS01-CS01-CS01- ; lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03- ; lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03- ; lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX03-CS13-CS13-CS13- ; lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 ; lem-resp-TOFF023-CS01-TOFF023-CSd01 ; lem-respell-hyb-CS13-CS13-CK31-CS13-CX32-CS12-CS12-CS12---⟶-CS01-CS01-CK01-CS01-CX03-CS13-CS13-CS13- ; lem-respell-hyb-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03---⟶-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03- ; lem-resp-TOFF103-CS12-TOFF103-CSd12 ; lem-resp-TOFF203-CS12-TOFF203-CSd12 ; lem-respell-hyb-CS12-CS12-CK12-CS12-CX13-CS23-CS23-CS23---⟶-CS02-CS02-CK02-CS02-CX03-CS23-CS23-CS23- ; lem-resp-S0-K0-CS01-TOFF023-CSd01-TOFF023-Kd0-Sd0 ; lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1 ; lem-resp-S1-K1-CS12-TOFF103-CSd12-TOFF103-Kd1-Sd1 ; lem-resp-S2-K2-CS12-TOFF203-CSd12-TOFF203-Kd2-Sd2)
+open import Examples.Groups.Clifford+CS.Four.Facts.Bridges C
+open import Examples.Groups.Clifford+CS.Four.Facts.HBridges C
+open import Examples.Groups.Clifford+CS.Four.Facts.Classes C using (Resp ; []ʳ ; same ; re ; resp)
+open import Examples.Groups.Clifford+CS.Four.Facts.HClasses C
+
+-- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+private
+  lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01- : Win clemmas 537
+  lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01- = get clemmas C 537
+  lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02- : Win clemmas 538
+  lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02- = get clemmas C 538
+  lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12- : Win clemmas 539
+  lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12- = get clemmas C 539
+  lem-respell-hyb-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03---⟶-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01- : Win clemmas 540
+  lem-respell-hyb-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03---⟶-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01- = get clemmas C 540
+  lem-respell-hyb-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03---⟶-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02- : Win clemmas 541
+  lem-respell-hyb-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03---⟶-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02- = get clemmas C 541
+  lem-respell-hyb-CS01-CS01-CK01-CS01-CX03-CS13-CS13-CS13---⟶-CS13-CS13-CK31-CS13-CX30-CS01-CS01-CS01- : Win clemmas 542
+  lem-respell-hyb-CS01-CS01-CK01-CS01-CX03-CS13-CS13-CS13---⟶-CS13-CS13-CK31-CS13-CX30-CS01-CS01-CS01- = get clemmas C 542
+  lem-respell-hyb-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03- : Win clemmas 543
+  lem-respell-hyb-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03- = get clemmas C 543
+  lem-respell-hyb-CS23-CS23-CK32-CS23-CX30-CS02-CS02-CS02---⟶-CS02-CS02-CK02-CS02-CX03-CS23-CS23-CS23- : Win clemmas 544
+  lem-respell-hyb-CS23-CS23-CK32-CS23-CX30-CS02-CS02-CS02---⟶-CS02-CS02-CK02-CS02-CX03-CS23-CS23-CS23- = get clemmas C 544
+  lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01- : Win clemmas 545
+  lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01- = get clemmas C 545
+  lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03- : Win clemmas 546
+  lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03- = get clemmas C 546
+  lem-resp-TOFF013-CS02-TOFF013-CSd02 : Win clemmas 532
+  lem-resp-TOFF013-CS02-TOFF013-CSd02 = get clemmas C 532
+  lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02- : Win clemmas 547
+  lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02- = get clemmas C 547
+  lem-respell-hyb-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12---⟶-CS13-CS13-CK31-CS13-CX30-CS01-CS01-CS01- : Win clemmas 548
+  lem-respell-hyb-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12---⟶-CS13-CS13-CK31-CS13-CX30-CS01-CS01-CS01- = get clemmas C 548
+  lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03- : Win clemmas 549
+  lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03- = get clemmas C 549
+  lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03- : Win clemmas 550
+  lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03- = get clemmas C 550
+  lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX03-CS13-CS13-CS13- : Win clemmas 551
+  lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX03-CS13-CS13-CS13- = get clemmas C 551
+  lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 : Win clemmas 533
+  lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 = get clemmas C 533
+  lem-resp-TOFF023-CS01-TOFF023-CSd01 : Win clemmas 528
+  lem-resp-TOFF023-CS01-TOFF023-CSd01 = get clemmas C 528
+  lem-respell-hyb-CS13-CS13-CK31-CS13-CX32-CS12-CS12-CS12---⟶-CS01-CS01-CK01-CS01-CX03-CS13-CS13-CS13- : Win clemmas 552
+  lem-respell-hyb-CS13-CS13-CK31-CS13-CX32-CS12-CS12-CS12---⟶-CS01-CS01-CK01-CS01-CX03-CS13-CS13-CS13- = get clemmas C 552
+  lem-respell-hyb-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03---⟶-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03- : Win clemmas 553
+  lem-respell-hyb-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03---⟶-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03- = get clemmas C 553
+  lem-resp-TOFF103-CS12-TOFF103-CSd12 : Win clemmas 554
+  lem-resp-TOFF103-CS12-TOFF103-CSd12 = get clemmas C 554
+  lem-resp-TOFF203-CS12-TOFF203-CSd12 : Win clemmas 555
+  lem-resp-TOFF203-CS12-TOFF203-CSd12 = get clemmas C 555
+  lem-respell-hyb-CS12-CS12-CK12-CS12-CX13-CS23-CS23-CS23---⟶-CS02-CS02-CK02-CS02-CX03-CS23-CS23-CS23- : Win clemmas 556
+  lem-respell-hyb-CS12-CS12-CK12-CS12-CX13-CS23-CS23-CS23---⟶-CS02-CS02-CK02-CS02-CX03-CS23-CS23-CS23- = get clemmas C 556
+  lem-resp-S0-K0-CS01-TOFF023-CSd01-TOFF023-Kd0-Sd0 : Win clemmas 530
+  lem-resp-S0-K0-CS01-TOFF023-CSd01-TOFF023-Kd0-Sd0 = get clemmas C 530
+  lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1 : Win clemmas 531
+  lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1 = get clemmas C 531
+  lem-resp-S1-K1-CS12-TOFF103-CSd12-TOFF103-Kd1-Sd1 : Win clemmas 534
+  lem-resp-S1-K1-CS12-TOFF103-CSd12-TOFF103-Kd1-Sd1 = get clemmas C 534
+  lem-resp-S2-K2-CS12-TOFF203-CSd12-TOFF203-Kd2-Sd2 : Win clemmas 536
+  lem-resp-S2-K2-CS12-TOFF203-CSd12-TOFF203-Kd2-Sd2 = get clemmas C 536
 
 i-far-p-0 : dKI₁ 14 • dPP₁ 0 ≈ dPP₁ 0 • dKI₁ 14
 i-far-p-0 = trans (trans (cong br-k-14 br-p-0) (sym (++≈ (flatB B-k-14) (flat (B-p-0 ∷ [])))))

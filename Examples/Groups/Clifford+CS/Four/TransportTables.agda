@@ -10,15 +10,973 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Four.TransportTables where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; Win ; get)
+open import Examples.Groups.Clifford+CS.Four.CStmt using (clemmas)
+
+module Examples.Groups.Clifford+CS.Four.TransportTables (C : Proofs clemmas) where
 
 open import Data.Bool using (Bool ; true ; false ; T ; if_then_else_ ; not)
 open import Data.List using (List ; [] ; _∷_ ; _++_ ; map)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Examples.Groups.Clifford+CS.Four.Chain
-import Examples.Groups.Clifford+CS.Four.WinInst as WI
-open import Examples.Groups.Clifford+CS.Four.DAll WI.ws using (lem-sw0-CCZ012 ; lem-sw0-CCZ013 ; lem-sw0-CCZ023 ; lem-sw0-CCZ123 ; lem-sw0-CK01 ; lem-sw0-CK02 ; lem-sw0-CK03 ; lem-sw0-CK10 ; lem-sw0-CK12 ; lem-sw0-CK13 ; lem-sw0-CK20 ; lem-sw0-CK21 ; lem-sw0-CK23 ; lem-sw0-CK30 ; lem-sw0-CK31 ; lem-sw0-CK32 ; lem-sw0-CKd01 ; lem-sw0-CKd02 ; lem-sw0-CKd03 ; lem-sw0-CKd10 ; lem-sw0-CKd12 ; lem-sw0-CKd13 ; lem-sw0-CKd20 ; lem-sw0-CKd21 ; lem-sw0-CKd23 ; lem-sw0-CKd30 ; lem-sw0-CKd31 ; lem-sw0-CKd32 ; lem-sw0-CS01 ; lem-sw0-CS02 ; lem-sw0-CS03 ; lem-sw0-CS12 ; lem-sw0-CS13 ; lem-sw0-CS23 ; lem-sw0-CSd01 ; lem-sw0-CSd02 ; lem-sw0-CSd03 ; lem-sw0-CSd12 ; lem-sw0-CSd13 ; lem-sw0-CSd23 ; lem-sw0-CX01 ; lem-sw0-CX02 ; lem-sw0-CX03 ; lem-sw0-CX10 ; lem-sw0-CX12 ; lem-sw0-CX13 ; lem-sw0-CX20 ; lem-sw0-CX21 ; lem-sw0-CX23 ; lem-sw0-CX30 ; lem-sw0-CX31 ; lem-sw0-CX32 ; lem-sw0-CZ01 ; lem-sw0-CZ02 ; lem-sw0-CZ03 ; lem-sw0-CZ12 ; lem-sw0-CZ13 ; lem-sw0-CZ23 ; lem-sw0-K0 ; lem-sw0-K1 ; lem-sw0-K2 ; lem-sw0-K3 ; lem-sw0-Kd0 ; lem-sw0-Kd1 ; lem-sw0-Kd2 ; lem-sw0-Kd3 ; lem-sw0-S0 ; lem-sw0-S1 ; lem-sw0-S2 ; lem-sw0-S3 ; lem-sw0-Sd0 ; lem-sw0-Sd1 ; lem-sw0-Sd2 ; lem-sw0-Sd3 ; lem-sw0-TOFF012 ; lem-sw0-TOFF013 ; lem-sw0-X0 ; lem-sw0-X1 ; lem-sw0-X2 ; lem-sw0-X3 ; lem-sw0-Z0 ; lem-sw0-Z1 ; lem-sw0-Z2 ; lem-sw0-Z3 ; lem-sw0-TOFF023 ; lem-sw0-TOFF102 ; lem-sw0-TOFF103 ; lem-sw0-TOFF123 ; lem-sw0-TOFF201 ; lem-sw0-TOFF203 ; lem-sw0-TOFF213 ; lem-sw0-TOFF301 ; lem-sw0-TOFF302 ; lem-sw0-TOFF312 ; lem-sw1-CCZ012 ; lem-sw1-CCZ013 ; lem-sw1-CCZ023 ; lem-sw1-CCZ123 ; lem-sw1-CK01 ; lem-sw1-CK02 ; lem-sw1-CK03 ; lem-sw1-CK10 ; lem-sw1-CK12 ; lem-sw1-CK13 ; lem-sw1-CK20 ; lem-sw1-CK21 ; lem-sw1-CK23 ; lem-sw1-CK30 ; lem-sw1-CK31 ; lem-sw1-CK32 ; lem-sw1-CKd01 ; lem-sw1-CKd02 ; lem-sw1-CKd03 ; lem-sw1-CKd10 ; lem-sw1-CKd12 ; lem-sw1-CKd13 ; lem-sw1-CKd20 ; lem-sw1-CKd21 ; lem-sw1-CKd23 ; lem-sw1-CKd30 ; lem-sw1-CKd31 ; lem-sw1-CKd32 ; lem-sw1-CS01 ; lem-sw1-CS02 ; lem-sw1-CS03 ; lem-sw1-CS12 ; lem-sw1-CS13 ; lem-sw1-CS23 ; lem-sw1-CSd01 ; lem-sw1-CSd02 ; lem-sw1-CSd03 ; lem-sw1-CSd12 ; lem-sw1-CSd13 ; lem-sw1-CSd23 ; lem-sw1-CX01 ; lem-sw1-CX02 ; lem-sw1-CX03 ; lem-sw1-CX10 ; lem-sw1-CX12 ; lem-sw1-CX13 ; lem-sw1-CX20 ; lem-sw1-CX21 ; lem-sw1-CX23 ; lem-sw1-CX30 ; lem-sw1-CX31 ; lem-sw1-CX32 ; lem-sw1-CZ01 ; lem-sw1-CZ02 ; lem-sw1-CZ03 ; lem-sw1-CZ12 ; lem-sw1-CZ13 ; lem-sw1-CZ23 ; lem-sw1-K0 ; lem-sw1-K1 ; lem-sw1-K2 ; lem-sw1-K3 ; lem-sw1-Kd0 ; lem-sw1-Kd1 ; lem-sw1-Kd2 ; lem-sw1-Kd3 ; lem-sw1-S0 ; lem-sw1-S1 ; lem-sw1-S2 ; lem-sw1-S3 ; lem-sw1-Sd0 ; lem-sw1-Sd1 ; lem-sw1-Sd2 ; lem-sw1-Sd3 ; lem-sw1-TOFF012 ; lem-sw1-TOFF013 ; lem-sw1-TOFF023 ; lem-sw1-TOFF102 ; lem-sw1-X0 ; lem-sw1-X1 ; lem-sw1-X2 ; lem-sw1-X3 ; lem-sw1-Z0 ; lem-sw1-Z1 ; lem-sw1-Z2 ; lem-sw1-Z3 ; lem-sw1-TOFF103 ; lem-sw1-TOFF123 ; lem-sw1-TOFF201 ; lem-sw1-TOFF203 ; lem-sw1-TOFF213 ; lem-sw1-TOFF301 ; lem-sw1-TOFF302 ; lem-sw1-TOFF312 ; lem-sw2-CCZ012 ; lem-sw2-CCZ013 ; lem-sw2-CCZ023 ; lem-sw2-CCZ123 ; lem-sw2-CK01 ; lem-sw2-CK02 ; lem-sw2-CK03 ; lem-sw2-CK10 ; lem-sw2-CK12 ; lem-sw2-CK13 ; lem-sw2-CK20 ; lem-sw2-CK21 ; lem-sw2-CK23 ; lem-sw2-CK30 ; lem-sw2-CK31 ; lem-sw2-CK32 ; lem-sw2-CKd01 ; lem-sw2-CKd02 ; lem-sw2-CKd03 ; lem-sw2-CKd10 ; lem-sw2-CKd12 ; lem-sw2-CKd13 ; lem-sw2-CKd20 ; lem-sw2-CKd21 ; lem-sw2-CKd23 ; lem-sw2-CKd30 ; lem-sw2-CKd31 ; lem-sw2-CKd32 ; lem-sw2-CS01 ; lem-sw2-CS02 ; lem-sw2-CS03 ; lem-sw2-CS12 ; lem-sw2-CS13 ; lem-sw2-CS23 ; lem-sw2-CSd01 ; lem-sw2-CSd02 ; lem-sw2-CSd03 ; lem-sw2-CSd12 ; lem-sw2-CSd13 ; lem-sw2-CSd23 ; lem-sw2-CX01 ; lem-sw2-CX02 ; lem-sw2-CX03 ; lem-sw2-CX10 ; lem-sw2-CX12 ; lem-sw2-CX13 ; lem-sw2-CX20 ; lem-sw2-CX21 ; lem-sw2-CX23 ; lem-sw2-CX30 ; lem-sw2-CX31 ; lem-sw2-CX32 ; lem-sw2-CZ01 ; lem-sw2-CZ02 ; lem-sw2-CZ03 ; lem-sw2-CZ12 ; lem-sw2-CZ13 ; lem-sw2-CZ23 ; lem-sw2-K0 ; lem-sw2-K1 ; lem-sw2-K2 ; lem-sw2-K3 ; lem-sw2-Kd0 ; lem-sw2-Kd1 ; lem-sw2-Kd2 ; lem-sw2-Kd3 ; lem-sw2-S0 ; lem-sw2-S1 ; lem-sw2-S2 ; lem-sw2-S3 ; lem-sw2-Sd0 ; lem-sw2-Sd1 ; lem-sw2-Sd2 ; lem-sw2-Sd3 ; lem-sw2-TOFF012 ; lem-sw2-TOFF013 ; lem-sw2-TOFF023 ; lem-sw2-TOFF102 ; lem-sw2-TOFF103 ; lem-sw2-TOFF123 ; lem-sw2-TOFF201 ; lem-sw2-TOFF203 ; lem-sw2-X0 ; lem-sw2-X1 ; lem-sw2-X2 ; lem-sw2-X3 ; lem-sw2-Z0 ; lem-sw2-Z1 ; lem-sw2-Z2 ; lem-sw2-Z3 ; lem-sw2-TOFF213 ; lem-sw2-TOFF301 ; lem-sw2-TOFF302 ; lem-sw2-TOFF312 ; lem-swsw0 ; lem-swsw1 ; lem-swsw2 ; lem-xc01 ; lem-xc02 ; lem-xc03 ; lem-xc10 ; lem-xc12 ; lem-xc13 ; lem-xc20 ; lem-xc21 ; lem-xc23 ; lem-xc30 ; lem-xc31 ; lem-xc32 ; lem-xr0-0000 ; lem-xr0-0001 ; lem-xr0-0010 ; lem-xr0-0011 ; lem-xr0-0100 ; lem-xr0-0101 ; lem-xr0-0110 ; lem-xr0-0111 ; lem-xr0-1000 ; lem-xr0-1001 ; lem-xr0-1010 ; lem-xr0-1011 ; lem-xr0-1100 ; lem-xr0-1101 ; lem-xr0-1110 ; lem-xr0-1111 ; lem-xr1-0000 ; lem-xr1-0001 ; lem-xr1-0010 ; lem-xr1-0011 ; lem-xr1-0100 ; lem-xr1-0101 ; lem-xr1-0110 ; lem-xr1-0111 ; lem-xr1-1000 ; lem-xr1-1001 ; lem-xr1-1010 ; lem-xr1-1011 ; lem-xr1-1100 ; lem-xr1-1101 ; lem-xr1-1110 ; lem-xr1-1111 ; lem-xr2-0000 ; lem-xr2-0001 ; lem-xr2-0010 ; lem-xr2-0011 ; lem-xr2-0100 ; lem-xr2-0101 ; lem-xr2-0110 ; lem-xr2-0111 ; lem-xr2-1000 ; lem-xr2-1001 ; lem-xr2-1010 ; lem-xr2-1011 ; lem-xr2-1100 ; lem-xr2-1101 ; lem-xr2-1110 ; lem-xr2-1111 ; lem-xs0-0000 ; lem-xs0-0001 ; lem-xs0-0010 ; lem-xs0-0011 ; lem-xs0-0100 ; lem-xs0-0101 ; lem-xs0-0110 ; lem-xs0-0111 ; lem-xs0-1000 ; lem-xs0-1001 ; lem-xs0-1010 ; lem-xs0-1011 ; lem-xs0-1100 ; lem-xs0-1101 ; lem-xs0-1110 ; lem-xs0-1111 ; lem-xs1-0000 ; lem-xs1-0001 ; lem-xs1-0010 ; lem-xs1-0011 ; lem-xs1-0100 ; lem-xs1-0101 ; lem-xs1-0110 ; lem-xs1-0111 ; lem-xs1-1000 ; lem-xs1-1001 ; lem-xs1-1010 ; lem-xs1-1011 ; lem-xs1-1100 ; lem-xs1-1101 ; lem-xs1-1110 ; lem-xs1-1111 ; lem-xs2-0000 ; lem-xs2-0001 ; lem-xs2-0010 ; lem-xs2-0011 ; lem-xs2-0100 ; lem-xs2-0101 ; lem-xs2-0110 ; lem-xs2-0111 ; lem-xs2-1000 ; lem-xs2-1001 ; lem-xs2-1010 ; lem-xs2-1011 ; lem-xs2-1100 ; lem-xs2-1101 ; lem-xs2-1110 ; lem-xs2-1111 ; lem-xs3-0000 ; lem-xs3-0001 ; lem-xs3-0010 ; lem-xs3-0011 ; lem-xs3-0100 ; lem-xs3-0101 ; lem-xs3-0110 ; lem-xs3-0111 ; lem-xs3-1000 ; lem-xs3-1001 ; lem-xs3-1010 ; lem-xs3-1011 ; lem-xs3-1100 ; lem-xs3-1101 ; lem-xs3-1110 ; lem-xs3-1111 ; lem-xt0-0000 ; lem-xt0-0001 ; lem-xt0-0010 ; lem-xt0-0011 ; lem-xt0-0100 ; lem-xt0-0101 ; lem-xt0-0110 ; lem-xt0-0111 ; lem-xt0-1000 ; lem-xt0-1001 ; lem-xt0-1010 ; lem-xt0-1011 ; lem-xt0-1100 ; lem-xt0-1101 ; lem-xt0-1110 ; lem-xt0-1111 ; lem-xt1-0000 ; lem-xt1-0001 ; lem-xt1-0010 ; lem-xt1-0011 ; lem-xt1-0100 ; lem-xt1-0101 ; lem-xt1-0110 ; lem-xt1-0111 ; lem-xt1-1000 ; lem-xt1-1001 ; lem-xt1-1010 ; lem-xt1-1011 ; lem-xt1-1100 ; lem-xt1-1101 ; lem-xt1-1110 ; lem-xt1-1111 ; lem-xt2-0000 ; lem-xt2-0001 ; lem-xt2-0010 ; lem-xt2-0011 ; lem-xt2-0100 ; lem-xt2-0101 ; lem-xt2-0110 ; lem-xt2-0111 ; lem-xt2-1000 ; lem-xt2-1001 ; lem-xt2-1010 ; lem-xt2-1011 ; lem-xt2-1100 ; lem-xt2-1101 ; lem-xt2-1110 ; lem-xt2-1111 ; lem-xt3-0000 ; lem-xt3-0001 ; lem-xt3-0010 ; lem-xt3-0011 ; lem-xt3-0100 ; lem-xt3-0101 ; lem-xt3-0110 ; lem-xt3-0111 ; lem-xt3-1000 ; lem-xt3-1001 ; lem-xt3-1010 ; lem-xt3-1011 ; lem-xt3-1100 ; lem-xt3-1101 ; lem-xt3-1110 ; lem-xt3-1111 ; lem-xx0 ; lem-xx1 ; lem-xx2 ; lem-xx3)
+
+-- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+private
+  lem-sw0-CCZ012 : Win clemmas 0
+  lem-sw0-CCZ012 = get clemmas C 0
+  lem-sw0-CCZ013 : Win clemmas 1
+  lem-sw0-CCZ013 = get clemmas C 1
+  lem-sw0-CCZ023 : Win clemmas 2
+  lem-sw0-CCZ023 = get clemmas C 2
+  lem-sw0-CCZ123 : Win clemmas 3
+  lem-sw0-CCZ123 = get clemmas C 3
+  lem-sw0-CK01 : Win clemmas 4
+  lem-sw0-CK01 = get clemmas C 4
+  lem-sw0-CK02 : Win clemmas 5
+  lem-sw0-CK02 = get clemmas C 5
+  lem-sw0-CK03 : Win clemmas 6
+  lem-sw0-CK03 = get clemmas C 6
+  lem-sw0-CK10 : Win clemmas 7
+  lem-sw0-CK10 = get clemmas C 7
+  lem-sw0-CK12 : Win clemmas 8
+  lem-sw0-CK12 = get clemmas C 8
+  lem-sw0-CK13 : Win clemmas 9
+  lem-sw0-CK13 = get clemmas C 9
+  lem-sw0-CK20 : Win clemmas 10
+  lem-sw0-CK20 = get clemmas C 10
+  lem-sw0-CK21 : Win clemmas 11
+  lem-sw0-CK21 = get clemmas C 11
+  lem-sw0-CK23 : Win clemmas 12
+  lem-sw0-CK23 = get clemmas C 12
+  lem-sw0-CK30 : Win clemmas 13
+  lem-sw0-CK30 = get clemmas C 13
+  lem-sw0-CK31 : Win clemmas 14
+  lem-sw0-CK31 = get clemmas C 14
+  lem-sw0-CK32 : Win clemmas 15
+  lem-sw0-CK32 = get clemmas C 15
+  lem-sw0-CKd01 : Win clemmas 16
+  lem-sw0-CKd01 = get clemmas C 16
+  lem-sw0-CKd02 : Win clemmas 17
+  lem-sw0-CKd02 = get clemmas C 17
+  lem-sw0-CKd03 : Win clemmas 18
+  lem-sw0-CKd03 = get clemmas C 18
+  lem-sw0-CKd10 : Win clemmas 19
+  lem-sw0-CKd10 = get clemmas C 19
+  lem-sw0-CKd12 : Win clemmas 20
+  lem-sw0-CKd12 = get clemmas C 20
+  lem-sw0-CKd13 : Win clemmas 21
+  lem-sw0-CKd13 = get clemmas C 21
+  lem-sw0-CKd20 : Win clemmas 22
+  lem-sw0-CKd20 = get clemmas C 22
+  lem-sw0-CKd21 : Win clemmas 23
+  lem-sw0-CKd21 = get clemmas C 23
+  lem-sw0-CKd23 : Win clemmas 24
+  lem-sw0-CKd23 = get clemmas C 24
+  lem-sw0-CKd30 : Win clemmas 25
+  lem-sw0-CKd30 = get clemmas C 25
+  lem-sw0-CKd31 : Win clemmas 26
+  lem-sw0-CKd31 = get clemmas C 26
+  lem-sw0-CKd32 : Win clemmas 27
+  lem-sw0-CKd32 = get clemmas C 27
+  lem-sw0-CS01 : Win clemmas 28
+  lem-sw0-CS01 = get clemmas C 28
+  lem-sw0-CS02 : Win clemmas 29
+  lem-sw0-CS02 = get clemmas C 29
+  lem-sw0-CS03 : Win clemmas 30
+  lem-sw0-CS03 = get clemmas C 30
+  lem-sw0-CS12 : Win clemmas 31
+  lem-sw0-CS12 = get clemmas C 31
+  lem-sw0-CS13 : Win clemmas 32
+  lem-sw0-CS13 = get clemmas C 32
+  lem-sw0-CS23 : Win clemmas 33
+  lem-sw0-CS23 = get clemmas C 33
+  lem-sw0-CSd01 : Win clemmas 34
+  lem-sw0-CSd01 = get clemmas C 34
+  lem-sw0-CSd02 : Win clemmas 35
+  lem-sw0-CSd02 = get clemmas C 35
+  lem-sw0-CSd03 : Win clemmas 36
+  lem-sw0-CSd03 = get clemmas C 36
+  lem-sw0-CSd12 : Win clemmas 37
+  lem-sw0-CSd12 = get clemmas C 37
+  lem-sw0-CSd13 : Win clemmas 38
+  lem-sw0-CSd13 = get clemmas C 38
+  lem-sw0-CSd23 : Win clemmas 39
+  lem-sw0-CSd23 = get clemmas C 39
+  lem-sw0-CX01 : Win clemmas 40
+  lem-sw0-CX01 = get clemmas C 40
+  lem-sw0-CX02 : Win clemmas 41
+  lem-sw0-CX02 = get clemmas C 41
+  lem-sw0-CX03 : Win clemmas 42
+  lem-sw0-CX03 = get clemmas C 42
+  lem-sw0-CX10 : Win clemmas 43
+  lem-sw0-CX10 = get clemmas C 43
+  lem-sw0-CX12 : Win clemmas 44
+  lem-sw0-CX12 = get clemmas C 44
+  lem-sw0-CX13 : Win clemmas 45
+  lem-sw0-CX13 = get clemmas C 45
+  lem-sw0-CX20 : Win clemmas 46
+  lem-sw0-CX20 = get clemmas C 46
+  lem-sw0-CX21 : Win clemmas 47
+  lem-sw0-CX21 = get clemmas C 47
+  lem-sw0-CX23 : Win clemmas 48
+  lem-sw0-CX23 = get clemmas C 48
+  lem-sw0-CX30 : Win clemmas 49
+  lem-sw0-CX30 = get clemmas C 49
+  lem-sw0-CX31 : Win clemmas 50
+  lem-sw0-CX31 = get clemmas C 50
+  lem-sw0-CX32 : Win clemmas 51
+  lem-sw0-CX32 = get clemmas C 51
+  lem-sw0-CZ01 : Win clemmas 52
+  lem-sw0-CZ01 = get clemmas C 52
+  lem-sw0-CZ02 : Win clemmas 53
+  lem-sw0-CZ02 = get clemmas C 53
+  lem-sw0-CZ03 : Win clemmas 54
+  lem-sw0-CZ03 = get clemmas C 54
+  lem-sw0-CZ12 : Win clemmas 55
+  lem-sw0-CZ12 = get clemmas C 55
+  lem-sw0-CZ13 : Win clemmas 56
+  lem-sw0-CZ13 = get clemmas C 56
+  lem-sw0-CZ23 : Win clemmas 57
+  lem-sw0-CZ23 = get clemmas C 57
+  lem-sw0-K0 : Win clemmas 58
+  lem-sw0-K0 = get clemmas C 58
+  lem-sw0-K1 : Win clemmas 59
+  lem-sw0-K1 = get clemmas C 59
+  lem-sw0-K2 : Win clemmas 60
+  lem-sw0-K2 = get clemmas C 60
+  lem-sw0-K3 : Win clemmas 61
+  lem-sw0-K3 = get clemmas C 61
+  lem-sw0-Kd0 : Win clemmas 62
+  lem-sw0-Kd0 = get clemmas C 62
+  lem-sw0-Kd1 : Win clemmas 63
+  lem-sw0-Kd1 = get clemmas C 63
+  lem-sw0-Kd2 : Win clemmas 64
+  lem-sw0-Kd2 = get clemmas C 64
+  lem-sw0-Kd3 : Win clemmas 65
+  lem-sw0-Kd3 = get clemmas C 65
+  lem-sw0-S0 : Win clemmas 66
+  lem-sw0-S0 = get clemmas C 66
+  lem-sw0-S1 : Win clemmas 67
+  lem-sw0-S1 = get clemmas C 67
+  lem-sw0-S2 : Win clemmas 68
+  lem-sw0-S2 = get clemmas C 68
+  lem-sw0-S3 : Win clemmas 69
+  lem-sw0-S3 = get clemmas C 69
+  lem-sw0-Sd0 : Win clemmas 70
+  lem-sw0-Sd0 = get clemmas C 70
+  lem-sw0-Sd1 : Win clemmas 71
+  lem-sw0-Sd1 = get clemmas C 71
+  lem-sw0-Sd2 : Win clemmas 72
+  lem-sw0-Sd2 = get clemmas C 72
+  lem-sw0-Sd3 : Win clemmas 73
+  lem-sw0-Sd3 = get clemmas C 73
+  lem-sw0-TOFF012 : Win clemmas 74
+  lem-sw0-TOFF012 = get clemmas C 74
+  lem-sw0-TOFF013 : Win clemmas 75
+  lem-sw0-TOFF013 = get clemmas C 75
+  lem-sw0-X0 : Win clemmas 76
+  lem-sw0-X0 = get clemmas C 76
+  lem-sw0-X1 : Win clemmas 77
+  lem-sw0-X1 = get clemmas C 77
+  lem-sw0-X2 : Win clemmas 78
+  lem-sw0-X2 = get clemmas C 78
+  lem-sw0-X3 : Win clemmas 79
+  lem-sw0-X3 = get clemmas C 79
+  lem-sw0-Z0 : Win clemmas 80
+  lem-sw0-Z0 = get clemmas C 80
+  lem-sw0-Z1 : Win clemmas 81
+  lem-sw0-Z1 = get clemmas C 81
+  lem-sw0-Z2 : Win clemmas 82
+  lem-sw0-Z2 = get clemmas C 82
+  lem-sw0-Z3 : Win clemmas 83
+  lem-sw0-Z3 = get clemmas C 83
+  lem-sw0-TOFF023 : Win clemmas 84
+  lem-sw0-TOFF023 = get clemmas C 84
+  lem-sw0-TOFF102 : Win clemmas 85
+  lem-sw0-TOFF102 = get clemmas C 85
+  lem-sw0-TOFF103 : Win clemmas 86
+  lem-sw0-TOFF103 = get clemmas C 86
+  lem-sw0-TOFF123 : Win clemmas 87
+  lem-sw0-TOFF123 = get clemmas C 87
+  lem-sw0-TOFF201 : Win clemmas 88
+  lem-sw0-TOFF201 = get clemmas C 88
+  lem-sw0-TOFF203 : Win clemmas 89
+  lem-sw0-TOFF203 = get clemmas C 89
+  lem-sw0-TOFF213 : Win clemmas 90
+  lem-sw0-TOFF213 = get clemmas C 90
+  lem-sw0-TOFF301 : Win clemmas 91
+  lem-sw0-TOFF301 = get clemmas C 91
+  lem-sw0-TOFF302 : Win clemmas 92
+  lem-sw0-TOFF302 = get clemmas C 92
+  lem-sw0-TOFF312 : Win clemmas 93
+  lem-sw0-TOFF312 = get clemmas C 93
+  lem-sw1-CCZ012 : Win clemmas 94
+  lem-sw1-CCZ012 = get clemmas C 94
+  lem-sw1-CCZ013 : Win clemmas 95
+  lem-sw1-CCZ013 = get clemmas C 95
+  lem-sw1-CCZ023 : Win clemmas 96
+  lem-sw1-CCZ023 = get clemmas C 96
+  lem-sw1-CCZ123 : Win clemmas 97
+  lem-sw1-CCZ123 = get clemmas C 97
+  lem-sw1-CK01 : Win clemmas 98
+  lem-sw1-CK01 = get clemmas C 98
+  lem-sw1-CK02 : Win clemmas 99
+  lem-sw1-CK02 = get clemmas C 99
+  lem-sw1-CK03 : Win clemmas 100
+  lem-sw1-CK03 = get clemmas C 100
+  lem-sw1-CK10 : Win clemmas 101
+  lem-sw1-CK10 = get clemmas C 101
+  lem-sw1-CK12 : Win clemmas 102
+  lem-sw1-CK12 = get clemmas C 102
+  lem-sw1-CK13 : Win clemmas 103
+  lem-sw1-CK13 = get clemmas C 103
+  lem-sw1-CK20 : Win clemmas 104
+  lem-sw1-CK20 = get clemmas C 104
+  lem-sw1-CK21 : Win clemmas 105
+  lem-sw1-CK21 = get clemmas C 105
+  lem-sw1-CK23 : Win clemmas 106
+  lem-sw1-CK23 = get clemmas C 106
+  lem-sw1-CK30 : Win clemmas 107
+  lem-sw1-CK30 = get clemmas C 107
+  lem-sw1-CK31 : Win clemmas 108
+  lem-sw1-CK31 = get clemmas C 108
+  lem-sw1-CK32 : Win clemmas 109
+  lem-sw1-CK32 = get clemmas C 109
+  lem-sw1-CKd01 : Win clemmas 110
+  lem-sw1-CKd01 = get clemmas C 110
+  lem-sw1-CKd02 : Win clemmas 111
+  lem-sw1-CKd02 = get clemmas C 111
+  lem-sw1-CKd03 : Win clemmas 112
+  lem-sw1-CKd03 = get clemmas C 112
+  lem-sw1-CKd10 : Win clemmas 113
+  lem-sw1-CKd10 = get clemmas C 113
+  lem-sw1-CKd12 : Win clemmas 114
+  lem-sw1-CKd12 = get clemmas C 114
+  lem-sw1-CKd13 : Win clemmas 115
+  lem-sw1-CKd13 = get clemmas C 115
+  lem-sw1-CKd20 : Win clemmas 116
+  lem-sw1-CKd20 = get clemmas C 116
+  lem-sw1-CKd21 : Win clemmas 117
+  lem-sw1-CKd21 = get clemmas C 117
+  lem-sw1-CKd23 : Win clemmas 118
+  lem-sw1-CKd23 = get clemmas C 118
+  lem-sw1-CKd30 : Win clemmas 119
+  lem-sw1-CKd30 = get clemmas C 119
+  lem-sw1-CKd31 : Win clemmas 120
+  lem-sw1-CKd31 = get clemmas C 120
+  lem-sw1-CKd32 : Win clemmas 121
+  lem-sw1-CKd32 = get clemmas C 121
+  lem-sw1-CS01 : Win clemmas 122
+  lem-sw1-CS01 = get clemmas C 122
+  lem-sw1-CS02 : Win clemmas 123
+  lem-sw1-CS02 = get clemmas C 123
+  lem-sw1-CS03 : Win clemmas 124
+  lem-sw1-CS03 = get clemmas C 124
+  lem-sw1-CS12 : Win clemmas 125
+  lem-sw1-CS12 = get clemmas C 125
+  lem-sw1-CS13 : Win clemmas 126
+  lem-sw1-CS13 = get clemmas C 126
+  lem-sw1-CS23 : Win clemmas 127
+  lem-sw1-CS23 = get clemmas C 127
+  lem-sw1-CSd01 : Win clemmas 128
+  lem-sw1-CSd01 = get clemmas C 128
+  lem-sw1-CSd02 : Win clemmas 129
+  lem-sw1-CSd02 = get clemmas C 129
+  lem-sw1-CSd03 : Win clemmas 130
+  lem-sw1-CSd03 = get clemmas C 130
+  lem-sw1-CSd12 : Win clemmas 131
+  lem-sw1-CSd12 = get clemmas C 131
+  lem-sw1-CSd13 : Win clemmas 132
+  lem-sw1-CSd13 = get clemmas C 132
+  lem-sw1-CSd23 : Win clemmas 133
+  lem-sw1-CSd23 = get clemmas C 133
+  lem-sw1-CX01 : Win clemmas 134
+  lem-sw1-CX01 = get clemmas C 134
+  lem-sw1-CX02 : Win clemmas 135
+  lem-sw1-CX02 = get clemmas C 135
+  lem-sw1-CX03 : Win clemmas 136
+  lem-sw1-CX03 = get clemmas C 136
+  lem-sw1-CX10 : Win clemmas 137
+  lem-sw1-CX10 = get clemmas C 137
+  lem-sw1-CX12 : Win clemmas 138
+  lem-sw1-CX12 = get clemmas C 138
+  lem-sw1-CX13 : Win clemmas 139
+  lem-sw1-CX13 = get clemmas C 139
+  lem-sw1-CX20 : Win clemmas 140
+  lem-sw1-CX20 = get clemmas C 140
+  lem-sw1-CX21 : Win clemmas 141
+  lem-sw1-CX21 = get clemmas C 141
+  lem-sw1-CX23 : Win clemmas 142
+  lem-sw1-CX23 = get clemmas C 142
+  lem-sw1-CX30 : Win clemmas 143
+  lem-sw1-CX30 = get clemmas C 143
+  lem-sw1-CX31 : Win clemmas 144
+  lem-sw1-CX31 = get clemmas C 144
+  lem-sw1-CX32 : Win clemmas 145
+  lem-sw1-CX32 = get clemmas C 145
+  lem-sw1-CZ01 : Win clemmas 146
+  lem-sw1-CZ01 = get clemmas C 146
+  lem-sw1-CZ02 : Win clemmas 147
+  lem-sw1-CZ02 = get clemmas C 147
+  lem-sw1-CZ03 : Win clemmas 148
+  lem-sw1-CZ03 = get clemmas C 148
+  lem-sw1-CZ12 : Win clemmas 149
+  lem-sw1-CZ12 = get clemmas C 149
+  lem-sw1-CZ13 : Win clemmas 150
+  lem-sw1-CZ13 = get clemmas C 150
+  lem-sw1-CZ23 : Win clemmas 151
+  lem-sw1-CZ23 = get clemmas C 151
+  lem-sw1-K0 : Win clemmas 152
+  lem-sw1-K0 = get clemmas C 152
+  lem-sw1-K1 : Win clemmas 153
+  lem-sw1-K1 = get clemmas C 153
+  lem-sw1-K2 : Win clemmas 154
+  lem-sw1-K2 = get clemmas C 154
+  lem-sw1-K3 : Win clemmas 155
+  lem-sw1-K3 = get clemmas C 155
+  lem-sw1-Kd0 : Win clemmas 156
+  lem-sw1-Kd0 = get clemmas C 156
+  lem-sw1-Kd1 : Win clemmas 157
+  lem-sw1-Kd1 = get clemmas C 157
+  lem-sw1-Kd2 : Win clemmas 158
+  lem-sw1-Kd2 = get clemmas C 158
+  lem-sw1-Kd3 : Win clemmas 159
+  lem-sw1-Kd3 = get clemmas C 159
+  lem-sw1-S0 : Win clemmas 160
+  lem-sw1-S0 = get clemmas C 160
+  lem-sw1-S1 : Win clemmas 161
+  lem-sw1-S1 = get clemmas C 161
+  lem-sw1-S2 : Win clemmas 162
+  lem-sw1-S2 = get clemmas C 162
+  lem-sw1-S3 : Win clemmas 163
+  lem-sw1-S3 = get clemmas C 163
+  lem-sw1-Sd0 : Win clemmas 164
+  lem-sw1-Sd0 = get clemmas C 164
+  lem-sw1-Sd1 : Win clemmas 165
+  lem-sw1-Sd1 = get clemmas C 165
+  lem-sw1-Sd2 : Win clemmas 166
+  lem-sw1-Sd2 = get clemmas C 166
+  lem-sw1-Sd3 : Win clemmas 167
+  lem-sw1-Sd3 = get clemmas C 167
+  lem-sw1-TOFF012 : Win clemmas 168
+  lem-sw1-TOFF012 = get clemmas C 168
+  lem-sw1-TOFF013 : Win clemmas 169
+  lem-sw1-TOFF013 = get clemmas C 169
+  lem-sw1-TOFF023 : Win clemmas 170
+  lem-sw1-TOFF023 = get clemmas C 170
+  lem-sw1-TOFF102 : Win clemmas 171
+  lem-sw1-TOFF102 = get clemmas C 171
+  lem-sw1-X0 : Win clemmas 172
+  lem-sw1-X0 = get clemmas C 172
+  lem-sw1-X1 : Win clemmas 173
+  lem-sw1-X1 = get clemmas C 173
+  lem-sw1-X2 : Win clemmas 174
+  lem-sw1-X2 = get clemmas C 174
+  lem-sw1-X3 : Win clemmas 175
+  lem-sw1-X3 = get clemmas C 175
+  lem-sw1-Z0 : Win clemmas 176
+  lem-sw1-Z0 = get clemmas C 176
+  lem-sw1-Z1 : Win clemmas 177
+  lem-sw1-Z1 = get clemmas C 177
+  lem-sw1-Z2 : Win clemmas 178
+  lem-sw1-Z2 = get clemmas C 178
+  lem-sw1-Z3 : Win clemmas 179
+  lem-sw1-Z3 = get clemmas C 179
+  lem-sw1-TOFF103 : Win clemmas 180
+  lem-sw1-TOFF103 = get clemmas C 180
+  lem-sw1-TOFF123 : Win clemmas 181
+  lem-sw1-TOFF123 = get clemmas C 181
+  lem-sw1-TOFF201 : Win clemmas 182
+  lem-sw1-TOFF201 = get clemmas C 182
+  lem-sw1-TOFF203 : Win clemmas 183
+  lem-sw1-TOFF203 = get clemmas C 183
+  lem-sw1-TOFF213 : Win clemmas 184
+  lem-sw1-TOFF213 = get clemmas C 184
+  lem-sw1-TOFF301 : Win clemmas 185
+  lem-sw1-TOFF301 = get clemmas C 185
+  lem-sw1-TOFF302 : Win clemmas 186
+  lem-sw1-TOFF302 = get clemmas C 186
+  lem-sw1-TOFF312 : Win clemmas 187
+  lem-sw1-TOFF312 = get clemmas C 187
+  lem-sw2-CCZ012 : Win clemmas 188
+  lem-sw2-CCZ012 = get clemmas C 188
+  lem-sw2-CCZ013 : Win clemmas 189
+  lem-sw2-CCZ013 = get clemmas C 189
+  lem-sw2-CCZ023 : Win clemmas 190
+  lem-sw2-CCZ023 = get clemmas C 190
+  lem-sw2-CCZ123 : Win clemmas 191
+  lem-sw2-CCZ123 = get clemmas C 191
+  lem-sw2-CK01 : Win clemmas 192
+  lem-sw2-CK01 = get clemmas C 192
+  lem-sw2-CK02 : Win clemmas 193
+  lem-sw2-CK02 = get clemmas C 193
+  lem-sw2-CK03 : Win clemmas 194
+  lem-sw2-CK03 = get clemmas C 194
+  lem-sw2-CK10 : Win clemmas 195
+  lem-sw2-CK10 = get clemmas C 195
+  lem-sw2-CK12 : Win clemmas 196
+  lem-sw2-CK12 = get clemmas C 196
+  lem-sw2-CK13 : Win clemmas 197
+  lem-sw2-CK13 = get clemmas C 197
+  lem-sw2-CK20 : Win clemmas 198
+  lem-sw2-CK20 = get clemmas C 198
+  lem-sw2-CK21 : Win clemmas 199
+  lem-sw2-CK21 = get clemmas C 199
+  lem-sw2-CK23 : Win clemmas 200
+  lem-sw2-CK23 = get clemmas C 200
+  lem-sw2-CK30 : Win clemmas 201
+  lem-sw2-CK30 = get clemmas C 201
+  lem-sw2-CK31 : Win clemmas 202
+  lem-sw2-CK31 = get clemmas C 202
+  lem-sw2-CK32 : Win clemmas 203
+  lem-sw2-CK32 = get clemmas C 203
+  lem-sw2-CKd01 : Win clemmas 204
+  lem-sw2-CKd01 = get clemmas C 204
+  lem-sw2-CKd02 : Win clemmas 205
+  lem-sw2-CKd02 = get clemmas C 205
+  lem-sw2-CKd03 : Win clemmas 206
+  lem-sw2-CKd03 = get clemmas C 206
+  lem-sw2-CKd10 : Win clemmas 207
+  lem-sw2-CKd10 = get clemmas C 207
+  lem-sw2-CKd12 : Win clemmas 208
+  lem-sw2-CKd12 = get clemmas C 208
+  lem-sw2-CKd13 : Win clemmas 209
+  lem-sw2-CKd13 = get clemmas C 209
+  lem-sw2-CKd20 : Win clemmas 210
+  lem-sw2-CKd20 = get clemmas C 210
+  lem-sw2-CKd21 : Win clemmas 211
+  lem-sw2-CKd21 = get clemmas C 211
+  lem-sw2-CKd23 : Win clemmas 212
+  lem-sw2-CKd23 = get clemmas C 212
+  lem-sw2-CKd30 : Win clemmas 213
+  lem-sw2-CKd30 = get clemmas C 213
+  lem-sw2-CKd31 : Win clemmas 214
+  lem-sw2-CKd31 = get clemmas C 214
+  lem-sw2-CKd32 : Win clemmas 215
+  lem-sw2-CKd32 = get clemmas C 215
+  lem-sw2-CS01 : Win clemmas 216
+  lem-sw2-CS01 = get clemmas C 216
+  lem-sw2-CS02 : Win clemmas 217
+  lem-sw2-CS02 = get clemmas C 217
+  lem-sw2-CS03 : Win clemmas 218
+  lem-sw2-CS03 = get clemmas C 218
+  lem-sw2-CS12 : Win clemmas 219
+  lem-sw2-CS12 = get clemmas C 219
+  lem-sw2-CS13 : Win clemmas 220
+  lem-sw2-CS13 = get clemmas C 220
+  lem-sw2-CS23 : Win clemmas 221
+  lem-sw2-CS23 = get clemmas C 221
+  lem-sw2-CSd01 : Win clemmas 222
+  lem-sw2-CSd01 = get clemmas C 222
+  lem-sw2-CSd02 : Win clemmas 223
+  lem-sw2-CSd02 = get clemmas C 223
+  lem-sw2-CSd03 : Win clemmas 224
+  lem-sw2-CSd03 = get clemmas C 224
+  lem-sw2-CSd12 : Win clemmas 225
+  lem-sw2-CSd12 = get clemmas C 225
+  lem-sw2-CSd13 : Win clemmas 226
+  lem-sw2-CSd13 = get clemmas C 226
+  lem-sw2-CSd23 : Win clemmas 227
+  lem-sw2-CSd23 = get clemmas C 227
+  lem-sw2-CX01 : Win clemmas 228
+  lem-sw2-CX01 = get clemmas C 228
+  lem-sw2-CX02 : Win clemmas 229
+  lem-sw2-CX02 = get clemmas C 229
+  lem-sw2-CX03 : Win clemmas 230
+  lem-sw2-CX03 = get clemmas C 230
+  lem-sw2-CX10 : Win clemmas 231
+  lem-sw2-CX10 = get clemmas C 231
+  lem-sw2-CX12 : Win clemmas 232
+  lem-sw2-CX12 = get clemmas C 232
+  lem-sw2-CX13 : Win clemmas 233
+  lem-sw2-CX13 = get clemmas C 233
+  lem-sw2-CX20 : Win clemmas 234
+  lem-sw2-CX20 = get clemmas C 234
+  lem-sw2-CX21 : Win clemmas 235
+  lem-sw2-CX21 = get clemmas C 235
+  lem-sw2-CX23 : Win clemmas 236
+  lem-sw2-CX23 = get clemmas C 236
+  lem-sw2-CX30 : Win clemmas 237
+  lem-sw2-CX30 = get clemmas C 237
+  lem-sw2-CX31 : Win clemmas 238
+  lem-sw2-CX31 = get clemmas C 238
+  lem-sw2-CX32 : Win clemmas 239
+  lem-sw2-CX32 = get clemmas C 239
+  lem-sw2-CZ01 : Win clemmas 240
+  lem-sw2-CZ01 = get clemmas C 240
+  lem-sw2-CZ02 : Win clemmas 241
+  lem-sw2-CZ02 = get clemmas C 241
+  lem-sw2-CZ03 : Win clemmas 242
+  lem-sw2-CZ03 = get clemmas C 242
+  lem-sw2-CZ12 : Win clemmas 243
+  lem-sw2-CZ12 = get clemmas C 243
+  lem-sw2-CZ13 : Win clemmas 244
+  lem-sw2-CZ13 = get clemmas C 244
+  lem-sw2-CZ23 : Win clemmas 245
+  lem-sw2-CZ23 = get clemmas C 245
+  lem-sw2-K0 : Win clemmas 246
+  lem-sw2-K0 = get clemmas C 246
+  lem-sw2-K1 : Win clemmas 247
+  lem-sw2-K1 = get clemmas C 247
+  lem-sw2-K2 : Win clemmas 248
+  lem-sw2-K2 = get clemmas C 248
+  lem-sw2-K3 : Win clemmas 249
+  lem-sw2-K3 = get clemmas C 249
+  lem-sw2-Kd0 : Win clemmas 250
+  lem-sw2-Kd0 = get clemmas C 250
+  lem-sw2-Kd1 : Win clemmas 251
+  lem-sw2-Kd1 = get clemmas C 251
+  lem-sw2-Kd2 : Win clemmas 252
+  lem-sw2-Kd2 = get clemmas C 252
+  lem-sw2-Kd3 : Win clemmas 253
+  lem-sw2-Kd3 = get clemmas C 253
+  lem-sw2-S0 : Win clemmas 254
+  lem-sw2-S0 = get clemmas C 254
+  lem-sw2-S1 : Win clemmas 255
+  lem-sw2-S1 = get clemmas C 255
+  lem-sw2-S2 : Win clemmas 256
+  lem-sw2-S2 = get clemmas C 256
+  lem-sw2-S3 : Win clemmas 257
+  lem-sw2-S3 = get clemmas C 257
+  lem-sw2-Sd0 : Win clemmas 258
+  lem-sw2-Sd0 = get clemmas C 258
+  lem-sw2-Sd1 : Win clemmas 259
+  lem-sw2-Sd1 = get clemmas C 259
+  lem-sw2-Sd2 : Win clemmas 260
+  lem-sw2-Sd2 = get clemmas C 260
+  lem-sw2-Sd3 : Win clemmas 261
+  lem-sw2-Sd3 = get clemmas C 261
+  lem-sw2-TOFF012 : Win clemmas 262
+  lem-sw2-TOFF012 = get clemmas C 262
+  lem-sw2-TOFF013 : Win clemmas 263
+  lem-sw2-TOFF013 = get clemmas C 263
+  lem-sw2-TOFF023 : Win clemmas 264
+  lem-sw2-TOFF023 = get clemmas C 264
+  lem-sw2-TOFF102 : Win clemmas 265
+  lem-sw2-TOFF102 = get clemmas C 265
+  lem-sw2-TOFF103 : Win clemmas 266
+  lem-sw2-TOFF103 = get clemmas C 266
+  lem-sw2-TOFF123 : Win clemmas 267
+  lem-sw2-TOFF123 = get clemmas C 267
+  lem-sw2-TOFF201 : Win clemmas 268
+  lem-sw2-TOFF201 = get clemmas C 268
+  lem-sw2-TOFF203 : Win clemmas 269
+  lem-sw2-TOFF203 = get clemmas C 269
+  lem-sw2-X0 : Win clemmas 270
+  lem-sw2-X0 = get clemmas C 270
+  lem-sw2-X1 : Win clemmas 271
+  lem-sw2-X1 = get clemmas C 271
+  lem-sw2-X2 : Win clemmas 272
+  lem-sw2-X2 = get clemmas C 272
+  lem-sw2-X3 : Win clemmas 273
+  lem-sw2-X3 = get clemmas C 273
+  lem-sw2-Z0 : Win clemmas 274
+  lem-sw2-Z0 = get clemmas C 274
+  lem-sw2-Z1 : Win clemmas 275
+  lem-sw2-Z1 = get clemmas C 275
+  lem-sw2-Z2 : Win clemmas 276
+  lem-sw2-Z2 = get clemmas C 276
+  lem-sw2-Z3 : Win clemmas 277
+  lem-sw2-Z3 = get clemmas C 277
+  lem-sw2-TOFF213 : Win clemmas 278
+  lem-sw2-TOFF213 = get clemmas C 278
+  lem-sw2-TOFF301 : Win clemmas 279
+  lem-sw2-TOFF301 = get clemmas C 279
+  lem-sw2-TOFF302 : Win clemmas 280
+  lem-sw2-TOFF302 = get clemmas C 280
+  lem-sw2-TOFF312 : Win clemmas 281
+  lem-sw2-TOFF312 = get clemmas C 281
+  lem-swsw0 : Win clemmas 282
+  lem-swsw0 = get clemmas C 282
+  lem-swsw1 : Win clemmas 283
+  lem-swsw1 = get clemmas C 283
+  lem-swsw2 : Win clemmas 284
+  lem-swsw2 = get clemmas C 284
+  lem-xc01 : Win clemmas 285
+  lem-xc01 = get clemmas C 285
+  lem-xc02 : Win clemmas 286
+  lem-xc02 = get clemmas C 286
+  lem-xc03 : Win clemmas 287
+  lem-xc03 = get clemmas C 287
+  lem-xc10 : Win clemmas 288
+  lem-xc10 = get clemmas C 288
+  lem-xc12 : Win clemmas 289
+  lem-xc12 = get clemmas C 289
+  lem-xc13 : Win clemmas 290
+  lem-xc13 = get clemmas C 290
+  lem-xc20 : Win clemmas 291
+  lem-xc20 = get clemmas C 291
+  lem-xc21 : Win clemmas 292
+  lem-xc21 = get clemmas C 292
+  lem-xc23 : Win clemmas 293
+  lem-xc23 = get clemmas C 293
+  lem-xc30 : Win clemmas 294
+  lem-xc30 = get clemmas C 294
+  lem-xc31 : Win clemmas 295
+  lem-xc31 = get clemmas C 295
+  lem-xc32 : Win clemmas 296
+  lem-xc32 = get clemmas C 296
+  lem-xr0-0000 : Win clemmas 297
+  lem-xr0-0000 = get clemmas C 297
+  lem-xr0-0001 : Win clemmas 298
+  lem-xr0-0001 = get clemmas C 298
+  lem-xr0-0010 : Win clemmas 299
+  lem-xr0-0010 = get clemmas C 299
+  lem-xr0-0011 : Win clemmas 300
+  lem-xr0-0011 = get clemmas C 300
+  lem-xr0-0100 : Win clemmas 301
+  lem-xr0-0100 = get clemmas C 301
+  lem-xr0-0101 : Win clemmas 302
+  lem-xr0-0101 = get clemmas C 302
+  lem-xr0-0110 : Win clemmas 303
+  lem-xr0-0110 = get clemmas C 303
+  lem-xr0-0111 : Win clemmas 304
+  lem-xr0-0111 = get clemmas C 304
+  lem-xr0-1000 : Win clemmas 305
+  lem-xr0-1000 = get clemmas C 305
+  lem-xr0-1001 : Win clemmas 306
+  lem-xr0-1001 = get clemmas C 306
+  lem-xr0-1010 : Win clemmas 307
+  lem-xr0-1010 = get clemmas C 307
+  lem-xr0-1011 : Win clemmas 308
+  lem-xr0-1011 = get clemmas C 308
+  lem-xr0-1100 : Win clemmas 309
+  lem-xr0-1100 = get clemmas C 309
+  lem-xr0-1101 : Win clemmas 310
+  lem-xr0-1101 = get clemmas C 310
+  lem-xr0-1110 : Win clemmas 311
+  lem-xr0-1110 = get clemmas C 311
+  lem-xr0-1111 : Win clemmas 312
+  lem-xr0-1111 = get clemmas C 312
+  lem-xr1-0000 : Win clemmas 313
+  lem-xr1-0000 = get clemmas C 313
+  lem-xr1-0001 : Win clemmas 314
+  lem-xr1-0001 = get clemmas C 314
+  lem-xr1-0010 : Win clemmas 315
+  lem-xr1-0010 = get clemmas C 315
+  lem-xr1-0011 : Win clemmas 316
+  lem-xr1-0011 = get clemmas C 316
+  lem-xr1-0100 : Win clemmas 317
+  lem-xr1-0100 = get clemmas C 317
+  lem-xr1-0101 : Win clemmas 318
+  lem-xr1-0101 = get clemmas C 318
+  lem-xr1-0110 : Win clemmas 319
+  lem-xr1-0110 = get clemmas C 319
+  lem-xr1-0111 : Win clemmas 320
+  lem-xr1-0111 = get clemmas C 320
+  lem-xr1-1000 : Win clemmas 321
+  lem-xr1-1000 = get clemmas C 321
+  lem-xr1-1001 : Win clemmas 322
+  lem-xr1-1001 = get clemmas C 322
+  lem-xr1-1010 : Win clemmas 323
+  lem-xr1-1010 = get clemmas C 323
+  lem-xr1-1011 : Win clemmas 324
+  lem-xr1-1011 = get clemmas C 324
+  lem-xr1-1100 : Win clemmas 325
+  lem-xr1-1100 = get clemmas C 325
+  lem-xr1-1101 : Win clemmas 326
+  lem-xr1-1101 = get clemmas C 326
+  lem-xr1-1110 : Win clemmas 327
+  lem-xr1-1110 = get clemmas C 327
+  lem-xr1-1111 : Win clemmas 328
+  lem-xr1-1111 = get clemmas C 328
+  lem-xr2-0000 : Win clemmas 329
+  lem-xr2-0000 = get clemmas C 329
+  lem-xr2-0001 : Win clemmas 330
+  lem-xr2-0001 = get clemmas C 330
+  lem-xr2-0010 : Win clemmas 331
+  lem-xr2-0010 = get clemmas C 331
+  lem-xr2-0011 : Win clemmas 332
+  lem-xr2-0011 = get clemmas C 332
+  lem-xr2-0100 : Win clemmas 333
+  lem-xr2-0100 = get clemmas C 333
+  lem-xr2-0101 : Win clemmas 334
+  lem-xr2-0101 = get clemmas C 334
+  lem-xr2-0110 : Win clemmas 335
+  lem-xr2-0110 = get clemmas C 335
+  lem-xr2-0111 : Win clemmas 336
+  lem-xr2-0111 = get clemmas C 336
+  lem-xr2-1000 : Win clemmas 337
+  lem-xr2-1000 = get clemmas C 337
+  lem-xr2-1001 : Win clemmas 338
+  lem-xr2-1001 = get clemmas C 338
+  lem-xr2-1010 : Win clemmas 339
+  lem-xr2-1010 = get clemmas C 339
+  lem-xr2-1011 : Win clemmas 340
+  lem-xr2-1011 = get clemmas C 340
+  lem-xr2-1100 : Win clemmas 341
+  lem-xr2-1100 = get clemmas C 341
+  lem-xr2-1101 : Win clemmas 342
+  lem-xr2-1101 = get clemmas C 342
+  lem-xr2-1110 : Win clemmas 343
+  lem-xr2-1110 = get clemmas C 343
+  lem-xr2-1111 : Win clemmas 344
+  lem-xr2-1111 = get clemmas C 344
+  lem-xs0-0000 : Win clemmas 345
+  lem-xs0-0000 = get clemmas C 345
+  lem-xs0-0001 : Win clemmas 346
+  lem-xs0-0001 = get clemmas C 346
+  lem-xs0-0010 : Win clemmas 347
+  lem-xs0-0010 = get clemmas C 347
+  lem-xs0-0011 : Win clemmas 348
+  lem-xs0-0011 = get clemmas C 348
+  lem-xs0-0100 : Win clemmas 349
+  lem-xs0-0100 = get clemmas C 349
+  lem-xs0-0101 : Win clemmas 350
+  lem-xs0-0101 = get clemmas C 350
+  lem-xs0-0110 : Win clemmas 351
+  lem-xs0-0110 = get clemmas C 351
+  lem-xs0-0111 : Win clemmas 352
+  lem-xs0-0111 = get clemmas C 352
+  lem-xs0-1000 : Win clemmas 353
+  lem-xs0-1000 = get clemmas C 353
+  lem-xs0-1001 : Win clemmas 354
+  lem-xs0-1001 = get clemmas C 354
+  lem-xs0-1010 : Win clemmas 355
+  lem-xs0-1010 = get clemmas C 355
+  lem-xs0-1011 : Win clemmas 356
+  lem-xs0-1011 = get clemmas C 356
+  lem-xs0-1100 : Win clemmas 357
+  lem-xs0-1100 = get clemmas C 357
+  lem-xs0-1101 : Win clemmas 358
+  lem-xs0-1101 = get clemmas C 358
+  lem-xs0-1110 : Win clemmas 359
+  lem-xs0-1110 = get clemmas C 359
+  lem-xs0-1111 : Win clemmas 360
+  lem-xs0-1111 = get clemmas C 360
+  lem-xs1-0000 : Win clemmas 361
+  lem-xs1-0000 = get clemmas C 361
+  lem-xs1-0001 : Win clemmas 362
+  lem-xs1-0001 = get clemmas C 362
+  lem-xs1-0010 : Win clemmas 363
+  lem-xs1-0010 = get clemmas C 363
+  lem-xs1-0011 : Win clemmas 364
+  lem-xs1-0011 = get clemmas C 364
+  lem-xs1-0100 : Win clemmas 365
+  lem-xs1-0100 = get clemmas C 365
+  lem-xs1-0101 : Win clemmas 366
+  lem-xs1-0101 = get clemmas C 366
+  lem-xs1-0110 : Win clemmas 367
+  lem-xs1-0110 = get clemmas C 367
+  lem-xs1-0111 : Win clemmas 368
+  lem-xs1-0111 = get clemmas C 368
+  lem-xs1-1000 : Win clemmas 369
+  lem-xs1-1000 = get clemmas C 369
+  lem-xs1-1001 : Win clemmas 370
+  lem-xs1-1001 = get clemmas C 370
+  lem-xs1-1010 : Win clemmas 371
+  lem-xs1-1010 = get clemmas C 371
+  lem-xs1-1011 : Win clemmas 372
+  lem-xs1-1011 = get clemmas C 372
+  lem-xs1-1100 : Win clemmas 373
+  lem-xs1-1100 = get clemmas C 373
+  lem-xs1-1101 : Win clemmas 374
+  lem-xs1-1101 = get clemmas C 374
+  lem-xs1-1110 : Win clemmas 375
+  lem-xs1-1110 = get clemmas C 375
+  lem-xs1-1111 : Win clemmas 376
+  lem-xs1-1111 = get clemmas C 376
+  lem-xs2-0000 : Win clemmas 377
+  lem-xs2-0000 = get clemmas C 377
+  lem-xs2-0001 : Win clemmas 378
+  lem-xs2-0001 = get clemmas C 378
+  lem-xs2-0010 : Win clemmas 379
+  lem-xs2-0010 = get clemmas C 379
+  lem-xs2-0011 : Win clemmas 380
+  lem-xs2-0011 = get clemmas C 380
+  lem-xs2-0100 : Win clemmas 381
+  lem-xs2-0100 = get clemmas C 381
+  lem-xs2-0101 : Win clemmas 382
+  lem-xs2-0101 = get clemmas C 382
+  lem-xs2-0110 : Win clemmas 383
+  lem-xs2-0110 = get clemmas C 383
+  lem-xs2-0111 : Win clemmas 384
+  lem-xs2-0111 = get clemmas C 384
+  lem-xs2-1000 : Win clemmas 385
+  lem-xs2-1000 = get clemmas C 385
+  lem-xs2-1001 : Win clemmas 386
+  lem-xs2-1001 = get clemmas C 386
+  lem-xs2-1010 : Win clemmas 387
+  lem-xs2-1010 = get clemmas C 387
+  lem-xs2-1011 : Win clemmas 388
+  lem-xs2-1011 = get clemmas C 388
+  lem-xs2-1100 : Win clemmas 389
+  lem-xs2-1100 = get clemmas C 389
+  lem-xs2-1101 : Win clemmas 390
+  lem-xs2-1101 = get clemmas C 390
+  lem-xs2-1110 : Win clemmas 391
+  lem-xs2-1110 = get clemmas C 391
+  lem-xs2-1111 : Win clemmas 392
+  lem-xs2-1111 = get clemmas C 392
+  lem-xs3-0000 : Win clemmas 393
+  lem-xs3-0000 = get clemmas C 393
+  lem-xs3-0001 : Win clemmas 394
+  lem-xs3-0001 = get clemmas C 394
+  lem-xs3-0010 : Win clemmas 395
+  lem-xs3-0010 = get clemmas C 395
+  lem-xs3-0011 : Win clemmas 396
+  lem-xs3-0011 = get clemmas C 396
+  lem-xs3-0100 : Win clemmas 397
+  lem-xs3-0100 = get clemmas C 397
+  lem-xs3-0101 : Win clemmas 398
+  lem-xs3-0101 = get clemmas C 398
+  lem-xs3-0110 : Win clemmas 399
+  lem-xs3-0110 = get clemmas C 399
+  lem-xs3-0111 : Win clemmas 400
+  lem-xs3-0111 = get clemmas C 400
+  lem-xs3-1000 : Win clemmas 401
+  lem-xs3-1000 = get clemmas C 401
+  lem-xs3-1001 : Win clemmas 402
+  lem-xs3-1001 = get clemmas C 402
+  lem-xs3-1010 : Win clemmas 403
+  lem-xs3-1010 = get clemmas C 403
+  lem-xs3-1011 : Win clemmas 404
+  lem-xs3-1011 = get clemmas C 404
+  lem-xs3-1100 : Win clemmas 405
+  lem-xs3-1100 = get clemmas C 405
+  lem-xs3-1101 : Win clemmas 406
+  lem-xs3-1101 = get clemmas C 406
+  lem-xs3-1110 : Win clemmas 407
+  lem-xs3-1110 = get clemmas C 407
+  lem-xs3-1111 : Win clemmas 408
+  lem-xs3-1111 = get clemmas C 408
+  lem-xt0-0000 : Win clemmas 409
+  lem-xt0-0000 = get clemmas C 409
+  lem-xt0-0001 : Win clemmas 410
+  lem-xt0-0001 = get clemmas C 410
+  lem-xt0-0010 : Win clemmas 411
+  lem-xt0-0010 = get clemmas C 411
+  lem-xt0-0011 : Win clemmas 412
+  lem-xt0-0011 = get clemmas C 412
+  lem-xt0-0100 : Win clemmas 413
+  lem-xt0-0100 = get clemmas C 413
+  lem-xt0-0101 : Win clemmas 414
+  lem-xt0-0101 = get clemmas C 414
+  lem-xt0-0110 : Win clemmas 415
+  lem-xt0-0110 = get clemmas C 415
+  lem-xt0-0111 : Win clemmas 416
+  lem-xt0-0111 = get clemmas C 416
+  lem-xt0-1000 : Win clemmas 417
+  lem-xt0-1000 = get clemmas C 417
+  lem-xt0-1001 : Win clemmas 418
+  lem-xt0-1001 = get clemmas C 418
+  lem-xt0-1010 : Win clemmas 419
+  lem-xt0-1010 = get clemmas C 419
+  lem-xt0-1011 : Win clemmas 420
+  lem-xt0-1011 = get clemmas C 420
+  lem-xt0-1100 : Win clemmas 421
+  lem-xt0-1100 = get clemmas C 421
+  lem-xt0-1101 : Win clemmas 422
+  lem-xt0-1101 = get clemmas C 422
+  lem-xt0-1110 : Win clemmas 423
+  lem-xt0-1110 = get clemmas C 423
+  lem-xt0-1111 : Win clemmas 424
+  lem-xt0-1111 = get clemmas C 424
+  lem-xt1-0000 : Win clemmas 425
+  lem-xt1-0000 = get clemmas C 425
+  lem-xt1-0001 : Win clemmas 426
+  lem-xt1-0001 = get clemmas C 426
+  lem-xt1-0010 : Win clemmas 427
+  lem-xt1-0010 = get clemmas C 427
+  lem-xt1-0011 : Win clemmas 428
+  lem-xt1-0011 = get clemmas C 428
+  lem-xt1-0100 : Win clemmas 429
+  lem-xt1-0100 = get clemmas C 429
+  lem-xt1-0101 : Win clemmas 430
+  lem-xt1-0101 = get clemmas C 430
+  lem-xt1-0110 : Win clemmas 431
+  lem-xt1-0110 = get clemmas C 431
+  lem-xt1-0111 : Win clemmas 432
+  lem-xt1-0111 = get clemmas C 432
+  lem-xt1-1000 : Win clemmas 433
+  lem-xt1-1000 = get clemmas C 433
+  lem-xt1-1001 : Win clemmas 434
+  lem-xt1-1001 = get clemmas C 434
+  lem-xt1-1010 : Win clemmas 435
+  lem-xt1-1010 = get clemmas C 435
+  lem-xt1-1011 : Win clemmas 436
+  lem-xt1-1011 = get clemmas C 436
+  lem-xt1-1100 : Win clemmas 437
+  lem-xt1-1100 = get clemmas C 437
+  lem-xt1-1101 : Win clemmas 438
+  lem-xt1-1101 = get clemmas C 438
+  lem-xt1-1110 : Win clemmas 439
+  lem-xt1-1110 = get clemmas C 439
+  lem-xt1-1111 : Win clemmas 440
+  lem-xt1-1111 = get clemmas C 440
+  lem-xt2-0000 : Win clemmas 441
+  lem-xt2-0000 = get clemmas C 441
+  lem-xt2-0001 : Win clemmas 442
+  lem-xt2-0001 = get clemmas C 442
+  lem-xt2-0010 : Win clemmas 443
+  lem-xt2-0010 = get clemmas C 443
+  lem-xt2-0011 : Win clemmas 444
+  lem-xt2-0011 = get clemmas C 444
+  lem-xt2-0100 : Win clemmas 445
+  lem-xt2-0100 = get clemmas C 445
+  lem-xt2-0101 : Win clemmas 446
+  lem-xt2-0101 = get clemmas C 446
+  lem-xt2-0110 : Win clemmas 447
+  lem-xt2-0110 = get clemmas C 447
+  lem-xt2-0111 : Win clemmas 448
+  lem-xt2-0111 = get clemmas C 448
+  lem-xt2-1000 : Win clemmas 449
+  lem-xt2-1000 = get clemmas C 449
+  lem-xt2-1001 : Win clemmas 450
+  lem-xt2-1001 = get clemmas C 450
+  lem-xt2-1010 : Win clemmas 451
+  lem-xt2-1010 = get clemmas C 451
+  lem-xt2-1011 : Win clemmas 452
+  lem-xt2-1011 = get clemmas C 452
+  lem-xt2-1100 : Win clemmas 453
+  lem-xt2-1100 = get clemmas C 453
+  lem-xt2-1101 : Win clemmas 454
+  lem-xt2-1101 = get clemmas C 454
+  lem-xt2-1110 : Win clemmas 455
+  lem-xt2-1110 = get clemmas C 455
+  lem-xt2-1111 : Win clemmas 456
+  lem-xt2-1111 = get clemmas C 456
+  lem-xt3-0000 : Win clemmas 457
+  lem-xt3-0000 = get clemmas C 457
+  lem-xt3-0001 : Win clemmas 458
+  lem-xt3-0001 = get clemmas C 458
+  lem-xt3-0010 : Win clemmas 459
+  lem-xt3-0010 = get clemmas C 459
+  lem-xt3-0011 : Win clemmas 460
+  lem-xt3-0011 = get clemmas C 460
+  lem-xt3-0100 : Win clemmas 461
+  lem-xt3-0100 = get clemmas C 461
+  lem-xt3-0101 : Win clemmas 462
+  lem-xt3-0101 = get clemmas C 462
+  lem-xt3-0110 : Win clemmas 463
+  lem-xt3-0110 = get clemmas C 463
+  lem-xt3-0111 : Win clemmas 464
+  lem-xt3-0111 = get clemmas C 464
+  lem-xt3-1000 : Win clemmas 465
+  lem-xt3-1000 = get clemmas C 465
+  lem-xt3-1001 : Win clemmas 466
+  lem-xt3-1001 = get clemmas C 466
+  lem-xt3-1010 : Win clemmas 467
+  lem-xt3-1010 = get clemmas C 467
+  lem-xt3-1011 : Win clemmas 468
+  lem-xt3-1011 = get clemmas C 468
+  lem-xt3-1100 : Win clemmas 469
+  lem-xt3-1100 = get clemmas C 469
+  lem-xt3-1101 : Win clemmas 470
+  lem-xt3-1101 = get clemmas C 470
+  lem-xt3-1110 : Win clemmas 471
+  lem-xt3-1110 = get clemmas C 471
+  lem-xt3-1111 : Win clemmas 472
+  lem-xt3-1111 = get clemmas C 472
+  lem-xx0 : Win clemmas 473
+  lem-xx0 = get clemmas C 473
+  lem-xx1 : Win clemmas 474
+  lem-xx1 = get clemmas C 474
+  lem-xx2 : Win clemmas 475
+  lem-xx2 = get clemmas C 475
+  lem-xx3 : Win clemmas 476
+  lem-xx3 = get clemmas C 476
 
 ------------------------------------------------------------------------
 -- Swaps, wires and sets of X letters

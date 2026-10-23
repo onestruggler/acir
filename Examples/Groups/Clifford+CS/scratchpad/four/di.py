@@ -398,6 +398,128 @@ else:
             'wlE : ℕ → WsL → Eqn', 'wlE n L = getE windowsL n (wl n L)']
 open(os.path.join(BASE, TREE, 'DEqn.agda'), 'w', encoding='utf-8').write(NL.join(out) + NL)
 
+# Four's consumers take their lemmas as a parameter too.  They form a
+# tree (TransportTables → Transport → Facts/* → Facts → Hybrid, and
+# Lemma87/Parts → Lemma87/Four), and each imported Four.DAll WI.ws,
+# so that every one of them loaded all of Four/D -- 17 s of
+# deserialisation a job, eleven jobs -- and waited for the window
+# proofs.  Now every module of the tree takes the proofs of the
+# statements its members use, `(C : Proofs clemmas)` (Four.CStmt; WinSig's
+# trees of statements and of proofs), names them in a private block
+# (`lem-x = get clemmas C k`) and opens its siblings at C; Four.ConsInst
+# builds C from Four.DAll and Four.WinInst, and Four.Complete applies
+# the tree to it.  Read back off the private blocks on a rerun.
+if FOUR:
+    CTREE = ['Four/TransportTables.agda', 'Four/Transport.agda', 'Four/Bridge.agda',
+             'Four/Facts/Bridges.agda', 'Four/Facts/HBridges.agda', 'Four/Facts/Classes.agda',
+             'Four/Facts/HClasses.agda', 'Four/Facts/I1.agda', 'Four/Facts/I2.agda',
+             'Four/Facts/I3.agda', 'Four/Facts/I4.agda', 'Four/Facts/H1.agda', 'Four/Facts.agda',
+             'Four/Hybrid.agda', 'Lemma87/Parts.agda', 'Lemma87/Four.agda']
+    CTOP = 'Four/Complete.agda'
+    CMODS = sorted((PFX + c[:-5].replace('/', '.') for c in CTREE), key=len, reverse=True)
+    CALT = '|'.join(re.escape(m) for m in CMODS)
+    CSTMT = PFX + 'Four.CStmt'
+    CINST = PFX + 'Four.ConsInst'
+    CMARK = '-- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).'
+    CBLOCK = re.compile(r'^' + re.escape(CMARK) + r'\nprivate\n((?:  .*\n)*)\n?', re.M)
+    WIIMP = 'import ' + PFX + 'Four.WinInst as WI\n'
+    DAIMP = re.compile(r'^open import ' + re.escape(DALL) + r' WI\.ws using \(([^)]*)\)\n', re.M)
+    CPRE = ['open import ' + PFX + 'Four.WinSig using (Proofs ; Win ; get)',
+            f'open import {CSTMT} using (clemmas)']
+
+    def cread(c):
+        return open(os.path.join(BASE, c), encoding='utf-8').read()
+
+    cuse, cnames = {}, []
+    for c in CTREE:
+        s = cread(c)
+        used = []
+        for xs in DAIMP.findall(s):
+            used += names(xs)
+        b = CBLOCK.search(s)
+        if b:
+            used += re.findall(r'^  (lem-\S+) : ', b.group(1), re.M)
+        cuse[c] = list(dict.fromkeys(used))
+        for x in cuse[c]:
+            if x not in cnames:
+                cnames.append(x)
+    cidx = {x: i for i, x in enumerate(cnames)}
+
+    out = HEAD + [
+        '-- The statements of the lemmas of Four/D that its consumers use',
+        '--',
+        '-- As a balanced tree (WinSig\'s), `clemmas`: the consumers of Four/D',
+        '-- (Four.TransportTables ... Lemma87.Four) take their proofs as one',
+        '-- parameter (C : Proofs clemmas), which Four.ConsInst builds, so that',
+        '-- they do not load Four/D.  Written by `scratchpad/four/di.py`.'] + TAIL + [
+        'module ' + CSTMT + ' where', '',
+        'open import Data.List.Base using ([] ; _∷_)', '',
+        'open import Examples.Groups.Clifford+CS.Four.WinSig using (Tree ; leaf ; node)',
+        'open import Examples.Groups.Clifford+CS.Four.Letters', '',
+        'clemmas : Tree',
+        'clemmas = ' + tree([sides(x) for x in cnames])]
+    open(os.path.join(BASE, 'Four', 'CStmt.agda'), 'w', encoding='utf-8').write(NL.join(out) + NL)
+
+    def crender(c, s):
+        s = s.replace(WIIMP, '')
+        s = DAIMP.sub('', s)
+        s = CBLOCK.sub('', s)
+        for line in CPRE:
+            s = s.replace(line + NL, '')
+        # the siblings, at C
+        s = re.sub(r'^open import (' + CALT + r')(?=[ \n])(?! C[ \n])', r'open import \1 C', s, flags=re.M)
+        h = re.search(r'^module (' + re.escape(PFX) + r'\S+)(?: \(C : Proofs clemmas\))? where\n', s, re.M)
+        s = s[:h.start()] + NL.join(CPRE) + NL + NL + f'module {h.group(1)} (C : Proofs clemmas) where' + NL + s[h.end():]
+        h = re.search(r'^module \S+ \(C : Proofs clemmas\) where\n', s, re.M)
+        if cuse[c]:
+            last = h.end()
+            for mm in re.finditer(r'^(?:open import|import) .*\n(?:[ \t]+\S.*\n)*', s[h.end():], re.M):
+                last = h.end() + mm.end()
+            block = [CMARK, 'private']
+            for x in cuse[c]:
+                block.append(f'  {x} : Win clemmas {cidx[x]}')
+                block.append(f'  {x} = get clemmas C {cidx[x]}')
+            s = s[:last].rstrip(NL) + NL + NL + NL.join(block) + NL + NL + s[last:].lstrip(NL)
+        return re.sub(r'\n{3,}', NL + NL, s)
+
+    for c in CTREE:
+        s = cread(c)
+        new = crender(c, s)
+        if new != s:
+            open(os.path.join(BASE, c), 'w', encoding='utf-8').write(new)
+
+    # the top applies the tree to the proofs
+    s = cread(CTOP)
+    new = re.sub(r'^open import (' + CALT + r')(?=[ \n])(?! CI\.C[ \n])', r'open import \1 CI.C', s, flags=re.M)
+    if f'import {CINST} as CI\n' not in new:
+        new = re.sub(r'^(open import (?:' + CALT + r') CI\.C)', f'import {CINST} as CI' + NL + r'\1', new, count=1, flags=re.M)
+    if new != s:
+        open(os.path.join(BASE, CTOP), 'w', encoding='utf-8').write(new)
+
+    def ptree(items):
+        if not items:
+            return 'leaf'
+        left = [items[i] for i in range(1, len(items)) if i % 2 == 1]
+        right = [items[i] for i in range(2, len(items)) if i % 2 == 0]
+        return f'(node {ptree(left)} {items[0]} {ptree(right)})'
+
+    out = HEAD + [
+        '-- The proofs of the lemmas of Four/D that its consumers use',
+        '--',
+        '-- The parameter of Four.TransportTables ... Lemma87.Four (Four.CStmt):',
+        '-- the lemmas of Four.DAll at the windows of Four.WinInst.  Written by',
+        '-- `scratchpad/four/di.py`.'] + TAIL + [
+        'module ' + CINST + ' where', '',
+        'open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; leaf ; node)',
+        f'open import {CSTMT} using (clemmas)',
+        WIIMP.rstrip(NL),
+        f'open import {DALL} WI.ws using (' + ' ; '.join(cnames) + ')', '',
+        'C : Proofs clemmas',
+        'C = ' + ptree(cnames)]
+    open(os.path.join(BASE, 'Four', 'ConsInst.agda'), 'w', encoding='utf-8').write(NL.join(out) + NL)
+    CONSUMERS = ['Four/ConsInst.agda']
+    print('  consumers', len(CTREE), 'statements', len(cnames))
+
 # The consumers, and the assemblies they import: Four's one, DAll;
 # Five's one per consumer (DAll.F1, ...), each the closure of what its
 # consumer uses: some modules of Five/D take lemmas of Five.TR2, which

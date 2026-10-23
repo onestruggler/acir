@@ -17,6 +17,9 @@ module Examples.Groups.Clifford+CS.Four.DAll (W : Ws) where
 
 open import Examples.Groups.Clifford+CS.Four.DSig
 import Examples.Groups.Clifford+CS.Four.D.D016 as D016
+import Examples.Groups.Clifford+CS.Four.D.D017 as D017
+import Examples.Groups.Clifford+CS.Four.D.D018 as D018
+import Examples.Groups.Clifford+CS.Four.D.D019 as D019
 import Examples.Groups.Clifford+CS.Four.D.D186 as D186
 import Examples.Groups.Clifford+CS.Four.D.D201 as D201
 import Examples.Groups.Clifford+CS.Four.D.D171 as D171
@@ -169,7 +172,6 @@ import Examples.Groups.Clifford+CS.Four.D.D012 as D012
 import Examples.Groups.Clifford+CS.Four.D.D013 as D013
 import Examples.Groups.Clifford+CS.Four.D.D014 as D014
 import Examples.Groups.Clifford+CS.Four.D.D015 as D015
-import Examples.Groups.Clifford+CS.Four.D.D019 as D019
 import Examples.Groups.Clifford+CS.Four.D.D020 as D020
 import Examples.Groups.Clifford+CS.Four.D.D021 as D021
 import Examples.Groups.Clifford+CS.Four.D.D513 as D513
@@ -564,6 +566,7 @@ import Examples.Groups.Clifford+CS.Four.D.D704 as D704
 import Examples.Groups.Clifford+CS.Four.D.D716 as D716
 import Examples.Groups.Clifford+CS.Four.D.D717 as D717
 import Examples.Groups.Clifford+CS.Four.D.D735 as D735
+import Examples.Groups.Clifford+CS.Four.D.D447 as D447
 import Examples.Groups.Clifford+CS.Four.D.D712 as D712
 import Examples.Groups.Clifford+CS.Four.D.D713 as D713
 import Examples.Groups.Clifford+CS.Four.D.D714 as D714
@@ -645,7 +648,6 @@ import Examples.Groups.Clifford+CS.Four.D.D442 as D442
 import Examples.Groups.Clifford+CS.Four.D.D443 as D443
 import Examples.Groups.Clifford+CS.Four.D.D444 as D444
 import Examples.Groups.Clifford+CS.Four.D.D446 as D446
-import Examples.Groups.Clifford+CS.Four.D.D447 as D447
 import Examples.Groups.Clifford+CS.Four.D.D455 as D455
 import Examples.Groups.Clifford+CS.Four.D.D456 as D456
 import Examples.Groups.Clifford+CS.Four.D.D457 as D457
@@ -727,6 +729,16 @@ import Examples.Groups.Clifford+CS.Four.D.D776 as D776
 import Examples.Groups.Clifford+CS.Four.D.D781 as D781
 import Examples.Groups.Clifford+CS.Four.D.D783 as D783
 import Examples.Groups.Clifford+CS.Four.D.D786 as D786
+import Examples.Groups.Clifford+CS.Four.D.D571 as D571
+import Examples.Groups.Clifford+CS.Four.D.D577 as D577
+import Examples.Groups.Clifford+CS.Four.D.D694 as D694
+import Examples.Groups.Clifford+CS.Four.D.D718 as D718
+import Examples.Groups.Clifford+CS.Four.D.D719 as D719
+import Examples.Groups.Clifford+CS.Four.D.D736 as D736
+import Examples.Groups.Clifford+CS.Four.D.D784 as D784
+import Examples.Groups.Clifford+CS.Four.D.D787 as D787
+import Examples.Groups.Clifford+CS.Four.D.D785 as D785
+import Examples.Groups.Clifford+CS.Four.D.D788 as D788
 import Examples.Groups.Clifford+CS.Four.D.D450 as D450
 import Examples.Groups.Clifford+CS.Four.D.D451 as D451
 import Examples.Groups.Clifford+CS.Four.D.D452 as D452
@@ -743,18 +755,6 @@ import Examples.Groups.Clifford+CS.Four.D.D672 as D672
 import Examples.Groups.Clifford+CS.Four.D.D700 as D700
 import Examples.Groups.Clifford+CS.Four.D.D709 as D709
 import Examples.Groups.Clifford+CS.Four.D.D710 as D710
-import Examples.Groups.Clifford+CS.Four.D.D571 as D571
-import Examples.Groups.Clifford+CS.Four.D.D577 as D577
-import Examples.Groups.Clifford+CS.Four.D.D694 as D694
-import Examples.Groups.Clifford+CS.Four.D.D718 as D718
-import Examples.Groups.Clifford+CS.Four.D.D719 as D719
-import Examples.Groups.Clifford+CS.Four.D.D736 as D736
-import Examples.Groups.Clifford+CS.Four.D.D784 as D784
-import Examples.Groups.Clifford+CS.Four.D.D787 as D787
-import Examples.Groups.Clifford+CS.Four.D.D785 as D785
-import Examples.Groups.Clifford+CS.Four.D.D788 as D788
-import Examples.Groups.Clifford+CS.Four.D.D017 as D017
-import Examples.Groups.Clifford+CS.Four.D.D018 as D018
 import Examples.Groups.Clifford+CS.Four.D.D509 as D509
 import Examples.Groups.Clifford+CS.Four.D.D593 as D593
 import Examples.Groups.Clifford+CS.Four.D.D617 as D617
@@ -1029,6 +1029,802 @@ lem-sw0-TOFF012 : _
 lem-sw0-TOFF012 = D016.lem-sw0-TOFF012 W
 lem-sw0-TOFF013 : _
 lem-sw0-TOFF013 = D016.lem-sw0-TOFF013 W
+lem-sw0-TOFF023 : _
+lem-sw0-TOFF023 = D017.lem-sw0-TOFF023 W
+lem-sw0-TOFF102 : _
+lem-sw0-TOFF102 = D017.lem-sw0-TOFF102 W
+lem-sw0-TOFF103 : _
+lem-sw0-TOFF103 = D017.lem-sw0-TOFF103 W
+lem-sw0-TOFF123 : _
+lem-sw0-TOFF123 = D017.lem-sw0-TOFF123 W
+lem-sw0-TOFF201 : _
+lem-sw0-TOFF201 = D017.lem-sw0-TOFF201 W
+lem-sw0-TOFF203 : _
+lem-sw0-TOFF203 = D017.lem-sw0-TOFF203 W
+lem-sw0-TOFF213 : _
+lem-sw0-TOFF213 = D017.lem-sw0-TOFF213 W
+lem-sw0-TOFF301 : _
+lem-sw0-TOFF301 = D017.lem-sw0-TOFF301 W
+lem-sw0-TOFF302 : _
+lem-sw0-TOFF302 = D017.lem-sw0-TOFF302 W
+lem-sw0-TOFF312 : _
+lem-sw0-TOFF312 = D017.lem-sw0-TOFF312 W
+lem-sw1-S0 : _
+lem-sw1-S0 = D017.lem-sw1-S0 W
+lem-sw1-Sd0 : _
+lem-sw1-Sd0 = D017.lem-sw1-Sd0 W
+lem-sw1-K0 : _
+lem-sw1-K0 = D017.lem-sw1-K0 W
+lem-sw1-Kd0 : _
+lem-sw1-Kd0 = D017.lem-sw1-Kd0 W
+lem-sw1-X0 : _
+lem-sw1-X0 = D017.lem-sw1-X0 W
+lem-sw1-Z0 : _
+lem-sw1-Z0 = D017.lem-sw1-Z0 W
+lem-sw1-S1 : _
+lem-sw1-S1 = D017.lem-sw1-S1 W
+lem-sw1-Sd1 : _
+lem-sw1-Sd1 = D017.lem-sw1-Sd1 W
+lem-sw1-K1 : _
+lem-sw1-K1 = D017.lem-sw1-K1 W
+lem-sw1-Kd1 : _
+lem-sw1-Kd1 = D017.lem-sw1-Kd1 W
+lem-sw1-X1 : _
+lem-sw1-X1 = D017.lem-sw1-X1 W
+lem-sw1-Z1 : _
+lem-sw1-Z1 = D017.lem-sw1-Z1 W
+lem-sw1-S2 : _
+lem-sw1-S2 = D017.lem-sw1-S2 W
+lem-sw1-Sd2 : _
+lem-sw1-Sd2 = D017.lem-sw1-Sd2 W
+lem-sw1-K2 : _
+lem-sw1-K2 = D017.lem-sw1-K2 W
+lem-sw1-Kd2 : _
+lem-sw1-Kd2 = D017.lem-sw1-Kd2 W
+lem-sw1-X2 : _
+lem-sw1-X2 = D017.lem-sw1-X2 W
+lem-sw1-Z2 : _
+lem-sw1-Z2 = D017.lem-sw1-Z2 W
+lem-sw1-S3 : _
+lem-sw1-S3 = D017.lem-sw1-S3 W
+lem-sw1-Sd3 : _
+lem-sw1-Sd3 = D017.lem-sw1-Sd3 W
+lem-sw1-K3 : _
+lem-sw1-K3 = D017.lem-sw1-K3 W
+lem-sw1-Kd3 : _
+lem-sw1-Kd3 = D017.lem-sw1-Kd3 W
+lem-sw1-X3 : _
+lem-sw1-X3 = D017.lem-sw1-X3 W
+lem-sw1-Z3 : _
+lem-sw1-Z3 = D017.lem-sw1-Z3 W
+lem-sw1-CS01 : _
+lem-sw1-CS01 = D017.lem-sw1-CS01 W
+lem-sw1-CSd01 : _
+lem-sw1-CSd01 = D017.lem-sw1-CSd01 W
+lem-sw1-CZ01 : _
+lem-sw1-CZ01 = D017.lem-sw1-CZ01 W
+lem-sw1-CX01 : _
+lem-sw1-CX01 = D017.lem-sw1-CX01 W
+lem-sw1-CK01 : _
+lem-sw1-CK01 = D017.lem-sw1-CK01 W
+lem-sw1-CKd01 : _
+lem-sw1-CKd01 = D017.lem-sw1-CKd01 W
+lem-sw1-CS02 : _
+lem-sw1-CS02 = D017.lem-sw1-CS02 W
+lem-sw1-CSd02 : _
+lem-sw1-CSd02 = D017.lem-sw1-CSd02 W
+lem-sw1-CZ02 : _
+lem-sw1-CZ02 = D017.lem-sw1-CZ02 W
+lem-sw1-CX02 : _
+lem-sw1-CX02 = D017.lem-sw1-CX02 W
+lem-sw1-CK02 : _
+lem-sw1-CK02 = D017.lem-sw1-CK02 W
+lem-sw1-CKd02 : _
+lem-sw1-CKd02 = D017.lem-sw1-CKd02 W
+lem-sw1-CS03 : _
+lem-sw1-CS03 = D017.lem-sw1-CS03 W
+lem-sw1-CSd03 : _
+lem-sw1-CSd03 = D017.lem-sw1-CSd03 W
+lem-sw1-CZ03 : _
+lem-sw1-CZ03 = D017.lem-sw1-CZ03 W
+lem-sw1-CX03 : _
+lem-sw1-CX03 = D017.lem-sw1-CX03 W
+lem-sw1-CK03 : _
+lem-sw1-CK03 = D017.lem-sw1-CK03 W
+lem-sw1-CKd03 : _
+lem-sw1-CKd03 = D017.lem-sw1-CKd03 W
+lem-sw1-CX10 : _
+lem-sw1-CX10 = D017.lem-sw1-CX10 W
+lem-sw1-CK10 : _
+lem-sw1-CK10 = D017.lem-sw1-CK10 W
+lem-sw1-CKd10 : _
+lem-sw1-CKd10 = D017.lem-sw1-CKd10 W
+lem-sw1-CS12 : _
+lem-sw1-CS12 = D017.lem-sw1-CS12 W
+lem-sw1-CSd12 : _
+lem-sw1-CSd12 = D017.lem-sw1-CSd12 W
+lem-sw1-CZ12 : _
+lem-sw1-CZ12 = D017.lem-sw1-CZ12 W
+lem-sw1-CX12 : _
+lem-sw1-CX12 = D017.lem-sw1-CX12 W
+lem-sw1-CK12 : _
+lem-sw1-CK12 = D017.lem-sw1-CK12 W
+lem-sw1-CKd12 : _
+lem-sw1-CKd12 = D017.lem-sw1-CKd12 W
+lem-sw1-CS13 : _
+lem-sw1-CS13 = D017.lem-sw1-CS13 W
+lem-sw1-CSd13 : _
+lem-sw1-CSd13 = D017.lem-sw1-CSd13 W
+lem-sw1-CZ13 : _
+lem-sw1-CZ13 = D017.lem-sw1-CZ13 W
+lem-sw1-CX13 : _
+lem-sw1-CX13 = D017.lem-sw1-CX13 W
+lem-sw1-CK13 : _
+lem-sw1-CK13 = D017.lem-sw1-CK13 W
+lem-sw1-CKd13 : _
+lem-sw1-CKd13 = D017.lem-sw1-CKd13 W
+lem-sw1-CX20 : _
+lem-sw1-CX20 = D017.lem-sw1-CX20 W
+lem-sw1-CK20 : _
+lem-sw1-CK20 = D017.lem-sw1-CK20 W
+lem-sw1-CKd20 : _
+lem-sw1-CKd20 = D017.lem-sw1-CKd20 W
+lem-sw1-CX21 : _
+lem-sw1-CX21 = D017.lem-sw1-CX21 W
+lem-sw1-CK21 : _
+lem-sw1-CK21 = D017.lem-sw1-CK21 W
+lem-sw1-CKd21 : _
+lem-sw1-CKd21 = D017.lem-sw1-CKd21 W
+lem-sw1-CS23 : _
+lem-sw1-CS23 = D017.lem-sw1-CS23 W
+lem-sw1-CSd23 : _
+lem-sw1-CSd23 = D017.lem-sw1-CSd23 W
+lem-sw1-CZ23 : _
+lem-sw1-CZ23 = D017.lem-sw1-CZ23 W
+lem-sw1-CX23 : _
+lem-sw1-CX23 = D017.lem-sw1-CX23 W
+lem-sw1-CK23 : _
+lem-sw1-CK23 = D017.lem-sw1-CK23 W
+lem-sw1-CKd23 : _
+lem-sw1-CKd23 = D017.lem-sw1-CKd23 W
+lem-sw1-CX30 : _
+lem-sw1-CX30 = D017.lem-sw1-CX30 W
+lem-sw1-CK30 : _
+lem-sw1-CK30 = D017.lem-sw1-CK30 W
+lem-sw1-CKd30 : _
+lem-sw1-CKd30 = D017.lem-sw1-CKd30 W
+lem-sw1-CX31 : _
+lem-sw1-CX31 = D017.lem-sw1-CX31 W
+lem-sw1-CK31 : _
+lem-sw1-CK31 = D017.lem-sw1-CK31 W
+lem-sw1-CKd31 : _
+lem-sw1-CKd31 = D017.lem-sw1-CKd31 W
+lem-sw1-CX32 : _
+lem-sw1-CX32 = D017.lem-sw1-CX32 W
+lem-sw1-CK32 : _
+lem-sw1-CK32 = D017.lem-sw1-CK32 W
+lem-sw1-CKd32 : _
+lem-sw1-CKd32 = D017.lem-sw1-CKd32 W
+lem-sw1-CCZ012 : _
+lem-sw1-CCZ012 = D017.lem-sw1-CCZ012 W
+lem-sw1-CCZ013 : _
+lem-sw1-CCZ013 = D017.lem-sw1-CCZ013 W
+lem-sw1-CCZ023 : _
+lem-sw1-CCZ023 = D017.lem-sw1-CCZ023 W
+lem-sw1-CCZ123 : _
+lem-sw1-CCZ123 = D017.lem-sw1-CCZ123 W
+lem-sw1-TOFF012 : _
+lem-sw1-TOFF012 = D017.lem-sw1-TOFF012 W
+lem-sw1-TOFF013 : _
+lem-sw1-TOFF013 = D017.lem-sw1-TOFF013 W
+lem-sw1-TOFF023 : _
+lem-sw1-TOFF023 = D017.lem-sw1-TOFF023 W
+lem-sw1-TOFF102 : _
+lem-sw1-TOFF102 = D017.lem-sw1-TOFF102 W
+lem-sw1-TOFF103 : _
+lem-sw1-TOFF103 = D018.lem-sw1-TOFF103 W
+lem-sw1-TOFF123 : _
+lem-sw1-TOFF123 = D018.lem-sw1-TOFF123 W
+lem-sw1-TOFF201 : _
+lem-sw1-TOFF201 = D018.lem-sw1-TOFF201 W
+lem-sw1-TOFF203 : _
+lem-sw1-TOFF203 = D018.lem-sw1-TOFF203 W
+lem-sw1-TOFF213 : _
+lem-sw1-TOFF213 = D018.lem-sw1-TOFF213 W
+lem-sw1-TOFF301 : _
+lem-sw1-TOFF301 = D018.lem-sw1-TOFF301 W
+lem-sw1-TOFF302 : _
+lem-sw1-TOFF302 = D018.lem-sw1-TOFF302 W
+lem-sw1-TOFF312 : _
+lem-sw1-TOFF312 = D018.lem-sw1-TOFF312 W
+lem-sw2-S0 : _
+lem-sw2-S0 = D018.lem-sw2-S0 W
+lem-sw2-Sd0 : _
+lem-sw2-Sd0 = D018.lem-sw2-Sd0 W
+lem-sw2-K0 : _
+lem-sw2-K0 = D018.lem-sw2-K0 W
+lem-sw2-Kd0 : _
+lem-sw2-Kd0 = D018.lem-sw2-Kd0 W
+lem-sw2-X0 : _
+lem-sw2-X0 = D018.lem-sw2-X0 W
+lem-sw2-Z0 : _
+lem-sw2-Z0 = D018.lem-sw2-Z0 W
+lem-sw2-S1 : _
+lem-sw2-S1 = D018.lem-sw2-S1 W
+lem-sw2-Sd1 : _
+lem-sw2-Sd1 = D018.lem-sw2-Sd1 W
+lem-sw2-K1 : _
+lem-sw2-K1 = D018.lem-sw2-K1 W
+lem-sw2-Kd1 : _
+lem-sw2-Kd1 = D018.lem-sw2-Kd1 W
+lem-sw2-X1 : _
+lem-sw2-X1 = D018.lem-sw2-X1 W
+lem-sw2-Z1 : _
+lem-sw2-Z1 = D018.lem-sw2-Z1 W
+lem-sw2-S2 : _
+lem-sw2-S2 = D018.lem-sw2-S2 W
+lem-sw2-Sd2 : _
+lem-sw2-Sd2 = D018.lem-sw2-Sd2 W
+lem-sw2-K2 : _
+lem-sw2-K2 = D018.lem-sw2-K2 W
+lem-sw2-Kd2 : _
+lem-sw2-Kd2 = D018.lem-sw2-Kd2 W
+lem-sw2-X2 : _
+lem-sw2-X2 = D018.lem-sw2-X2 W
+lem-sw2-Z2 : _
+lem-sw2-Z2 = D018.lem-sw2-Z2 W
+lem-sw2-S3 : _
+lem-sw2-S3 = D018.lem-sw2-S3 W
+lem-sw2-Sd3 : _
+lem-sw2-Sd3 = D018.lem-sw2-Sd3 W
+lem-sw2-K3 : _
+lem-sw2-K3 = D018.lem-sw2-K3 W
+lem-sw2-Kd3 : _
+lem-sw2-Kd3 = D018.lem-sw2-Kd3 W
+lem-sw2-X3 : _
+lem-sw2-X3 = D018.lem-sw2-X3 W
+lem-sw2-Z3 : _
+lem-sw2-Z3 = D018.lem-sw2-Z3 W
+lem-sw2-CS01 : _
+lem-sw2-CS01 = D018.lem-sw2-CS01 W
+lem-sw2-CSd01 : _
+lem-sw2-CSd01 = D018.lem-sw2-CSd01 W
+lem-sw2-CZ01 : _
+lem-sw2-CZ01 = D018.lem-sw2-CZ01 W
+lem-sw2-CX01 : _
+lem-sw2-CX01 = D018.lem-sw2-CX01 W
+lem-sw2-CK01 : _
+lem-sw2-CK01 = D018.lem-sw2-CK01 W
+lem-sw2-CKd01 : _
+lem-sw2-CKd01 = D018.lem-sw2-CKd01 W
+lem-sw2-CS02 : _
+lem-sw2-CS02 = D018.lem-sw2-CS02 W
+lem-sw2-CSd02 : _
+lem-sw2-CSd02 = D018.lem-sw2-CSd02 W
+lem-sw2-CZ02 : _
+lem-sw2-CZ02 = D018.lem-sw2-CZ02 W
+lem-sw2-CX02 : _
+lem-sw2-CX02 = D018.lem-sw2-CX02 W
+lem-sw2-CK02 : _
+lem-sw2-CK02 = D018.lem-sw2-CK02 W
+lem-sw2-CKd02 : _
+lem-sw2-CKd02 = D018.lem-sw2-CKd02 W
+lem-sw2-CS03 : _
+lem-sw2-CS03 = D018.lem-sw2-CS03 W
+lem-sw2-CSd03 : _
+lem-sw2-CSd03 = D018.lem-sw2-CSd03 W
+lem-sw2-CZ03 : _
+lem-sw2-CZ03 = D018.lem-sw2-CZ03 W
+lem-sw2-CX03 : _
+lem-sw2-CX03 = D018.lem-sw2-CX03 W
+lem-sw2-CK03 : _
+lem-sw2-CK03 = D018.lem-sw2-CK03 W
+lem-sw2-CKd03 : _
+lem-sw2-CKd03 = D018.lem-sw2-CKd03 W
+lem-sw2-CX10 : _
+lem-sw2-CX10 = D018.lem-sw2-CX10 W
+lem-sw2-CK10 : _
+lem-sw2-CK10 = D018.lem-sw2-CK10 W
+lem-sw2-CKd10 : _
+lem-sw2-CKd10 = D018.lem-sw2-CKd10 W
+lem-sw2-CS12 : _
+lem-sw2-CS12 = D018.lem-sw2-CS12 W
+lem-sw2-CSd12 : _
+lem-sw2-CSd12 = D018.lem-sw2-CSd12 W
+lem-sw2-CZ12 : _
+lem-sw2-CZ12 = D018.lem-sw2-CZ12 W
+lem-sw2-CX12 : _
+lem-sw2-CX12 = D018.lem-sw2-CX12 W
+lem-sw2-CK12 : _
+lem-sw2-CK12 = D018.lem-sw2-CK12 W
+lem-sw2-CKd12 : _
+lem-sw2-CKd12 = D018.lem-sw2-CKd12 W
+lem-sw2-CS13 : _
+lem-sw2-CS13 = D018.lem-sw2-CS13 W
+lem-sw2-CSd13 : _
+lem-sw2-CSd13 = D018.lem-sw2-CSd13 W
+lem-sw2-CZ13 : _
+lem-sw2-CZ13 = D018.lem-sw2-CZ13 W
+lem-sw2-CX13 : _
+lem-sw2-CX13 = D018.lem-sw2-CX13 W
+lem-sw2-CK13 : _
+lem-sw2-CK13 = D018.lem-sw2-CK13 W
+lem-sw2-CKd13 : _
+lem-sw2-CKd13 = D018.lem-sw2-CKd13 W
+lem-sw2-CX20 : _
+lem-sw2-CX20 = D018.lem-sw2-CX20 W
+lem-sw2-CK20 : _
+lem-sw2-CK20 = D018.lem-sw2-CK20 W
+lem-sw2-CKd20 : _
+lem-sw2-CKd20 = D018.lem-sw2-CKd20 W
+lem-sw2-CX21 : _
+lem-sw2-CX21 = D018.lem-sw2-CX21 W
+lem-sw2-CK21 : _
+lem-sw2-CK21 = D018.lem-sw2-CK21 W
+lem-sw2-CKd21 : _
+lem-sw2-CKd21 = D018.lem-sw2-CKd21 W
+lem-sw2-CS23 : _
+lem-sw2-CS23 = D018.lem-sw2-CS23 W
+lem-sw2-CSd23 : _
+lem-sw2-CSd23 = D018.lem-sw2-CSd23 W
+lem-sw2-CZ23 : _
+lem-sw2-CZ23 = D018.lem-sw2-CZ23 W
+lem-sw2-CX23 : _
+lem-sw2-CX23 = D018.lem-sw2-CX23 W
+lem-sw2-CK23 : _
+lem-sw2-CK23 = D018.lem-sw2-CK23 W
+lem-sw2-CKd23 : _
+lem-sw2-CKd23 = D018.lem-sw2-CKd23 W
+lem-sw2-CX30 : _
+lem-sw2-CX30 = D018.lem-sw2-CX30 W
+lem-sw2-CK30 : _
+lem-sw2-CK30 = D018.lem-sw2-CK30 W
+lem-sw2-CKd30 : _
+lem-sw2-CKd30 = D018.lem-sw2-CKd30 W
+lem-sw2-CX31 : _
+lem-sw2-CX31 = D018.lem-sw2-CX31 W
+lem-sw2-CK31 : _
+lem-sw2-CK31 = D018.lem-sw2-CK31 W
+lem-sw2-CKd31 : _
+lem-sw2-CKd31 = D018.lem-sw2-CKd31 W
+lem-sw2-CX32 : _
+lem-sw2-CX32 = D018.lem-sw2-CX32 W
+lem-sw2-CK32 : _
+lem-sw2-CK32 = D018.lem-sw2-CK32 W
+lem-sw2-CKd32 : _
+lem-sw2-CKd32 = D018.lem-sw2-CKd32 W
+lem-sw2-CCZ012 : _
+lem-sw2-CCZ012 = D018.lem-sw2-CCZ012 W
+lem-sw2-CCZ013 : _
+lem-sw2-CCZ013 = D018.lem-sw2-CCZ013 W
+lem-sw2-CCZ023 : _
+lem-sw2-CCZ023 = D018.lem-sw2-CCZ023 W
+lem-sw2-CCZ123 : _
+lem-sw2-CCZ123 = D018.lem-sw2-CCZ123 W
+lem-sw2-TOFF012 : _
+lem-sw2-TOFF012 = D018.lem-sw2-TOFF012 W
+lem-sw2-TOFF013 : _
+lem-sw2-TOFF013 = D018.lem-sw2-TOFF013 W
+lem-sw2-TOFF023 : _
+lem-sw2-TOFF023 = D018.lem-sw2-TOFF023 W
+lem-sw2-TOFF102 : _
+lem-sw2-TOFF102 = D018.lem-sw2-TOFF102 W
+lem-sw2-TOFF103 : _
+lem-sw2-TOFF103 = D018.lem-sw2-TOFF103 W
+lem-sw2-TOFF123 : _
+lem-sw2-TOFF123 = D018.lem-sw2-TOFF123 W
+lem-sw2-TOFF201 : _
+lem-sw2-TOFF201 = D018.lem-sw2-TOFF201 W
+lem-sw2-TOFF203 : _
+lem-sw2-TOFF203 = D018.lem-sw2-TOFF203 W
+lem-sw2-TOFF213 : _
+lem-sw2-TOFF213 = D019.lem-sw2-TOFF213 W
+lem-sw2-TOFF301 : _
+lem-sw2-TOFF301 = D019.lem-sw2-TOFF301 W
+lem-sw2-TOFF302 : _
+lem-sw2-TOFF302 = D019.lem-sw2-TOFF302 W
+lem-sw2-TOFF312 : _
+lem-sw2-TOFF312 = D019.lem-sw2-TOFF312 W
+lem-xx0 : _
+lem-xx0 = D019.lem-xx0 W
+lem-xc01 : _
+lem-xc01 = D019.lem-xc01 W
+lem-xc02 : _
+lem-xc02 = D019.lem-xc02 W
+lem-xc03 : _
+lem-xc03 = D019.lem-xc03 W
+lem-xx1 : _
+lem-xx1 = D019.lem-xx1 W
+lem-xc10 : _
+lem-xc10 = D019.lem-xc10 W
+lem-xc12 : _
+lem-xc12 = D019.lem-xc12 W
+lem-xc13 : _
+lem-xc13 = D019.lem-xc13 W
+lem-xx2 : _
+lem-xx2 = D019.lem-xx2 W
+lem-xc20 : _
+lem-xc20 = D019.lem-xc20 W
+lem-xc21 : _
+lem-xc21 = D019.lem-xc21 W
+lem-xc23 : _
+lem-xc23 = D019.lem-xc23 W
+lem-xx3 : _
+lem-xx3 = D019.lem-xx3 W
+lem-xc30 : _
+lem-xc30 = D019.lem-xc30 W
+lem-xc31 : _
+lem-xc31 = D019.lem-xc31 W
+lem-xc32 : _
+lem-xc32 = D019.lem-xc32 W
+lem-swsw0 : _
+lem-swsw0 = D019.lem-swsw0 W
+lem-swsw1 : _
+lem-swsw1 = D019.lem-swsw1 W
+lem-swsw2 : _
+lem-swsw2 = D019.lem-swsw2 W
+lem-xt0-0000 : _
+lem-xt0-0000 = D019.lem-xt0-0000 W
+lem-xs0-0000 : _
+lem-xs0-0000 = D019.lem-xs0-0000 W
+lem-xt0-1000 : _
+lem-xt0-1000 = D019.lem-xt0-1000 W
+lem-xs0-1000 : _
+lem-xs0-1000 = D019.lem-xs0-1000 W
+lem-xt0-0100 : _
+lem-xt0-0100 = D019.lem-xt0-0100 W
+lem-xs0-0100 : _
+lem-xs0-0100 = D019.lem-xs0-0100 W
+lem-xt0-1100 : _
+lem-xt0-1100 = D019.lem-xt0-1100 W
+lem-xs0-1100 : _
+lem-xs0-1100 = D019.lem-xs0-1100 W
+lem-xt0-0010 : _
+lem-xt0-0010 = D019.lem-xt0-0010 W
+lem-xs0-0010 : _
+lem-xs0-0010 = D019.lem-xs0-0010 W
+lem-xt0-1010 : _
+lem-xt0-1010 = D019.lem-xt0-1010 W
+lem-xs0-1010 : _
+lem-xs0-1010 = D019.lem-xs0-1010 W
+lem-xt0-0110 : _
+lem-xt0-0110 = D019.lem-xt0-0110 W
+lem-xs0-0110 : _
+lem-xs0-0110 = D019.lem-xs0-0110 W
+lem-xt0-1110 : _
+lem-xt0-1110 = D019.lem-xt0-1110 W
+lem-xs0-1110 : _
+lem-xs0-1110 = D019.lem-xs0-1110 W
+lem-xt0-0001 : _
+lem-xt0-0001 = D019.lem-xt0-0001 W
+lem-xs0-0001 : _
+lem-xs0-0001 = D019.lem-xs0-0001 W
+lem-xt0-1001 : _
+lem-xt0-1001 = D019.lem-xt0-1001 W
+lem-xs0-1001 : _
+lem-xs0-1001 = D019.lem-xs0-1001 W
+lem-xt0-0101 : _
+lem-xt0-0101 = D019.lem-xt0-0101 W
+lem-xs0-0101 : _
+lem-xs0-0101 = D019.lem-xs0-0101 W
+lem-xt0-1101 : _
+lem-xt0-1101 = D019.lem-xt0-1101 W
+lem-xs0-1101 : _
+lem-xs0-1101 = D019.lem-xs0-1101 W
+lem-xt0-0011 : _
+lem-xt0-0011 = D019.lem-xt0-0011 W
+lem-xs0-0011 : _
+lem-xs0-0011 = D019.lem-xs0-0011 W
+lem-xt0-1011 : _
+lem-xt0-1011 = D019.lem-xt0-1011 W
+lem-xs0-1011 : _
+lem-xs0-1011 = D019.lem-xs0-1011 W
+lem-xt0-0111 : _
+lem-xt0-0111 = D019.lem-xt0-0111 W
+lem-xs0-0111 : _
+lem-xs0-0111 = D019.lem-xs0-0111 W
+lem-xt0-1111 : _
+lem-xt0-1111 = D019.lem-xt0-1111 W
+lem-xs0-1111 : _
+lem-xs0-1111 = D019.lem-xs0-1111 W
+lem-xt1-0000 : _
+lem-xt1-0000 = D019.lem-xt1-0000 W
+lem-xs1-0000 : _
+lem-xs1-0000 = D019.lem-xs1-0000 W
+lem-xt1-1000 : _
+lem-xt1-1000 = D019.lem-xt1-1000 W
+lem-xs1-1000 : _
+lem-xs1-1000 = D019.lem-xs1-1000 W
+lem-xt1-0100 : _
+lem-xt1-0100 = D019.lem-xt1-0100 W
+lem-xs1-0100 : _
+lem-xs1-0100 = D019.lem-xs1-0100 W
+lem-xt1-1100 : _
+lem-xt1-1100 = D019.lem-xt1-1100 W
+lem-xs1-1100 : _
+lem-xs1-1100 = D019.lem-xs1-1100 W
+lem-xt1-0010 : _
+lem-xt1-0010 = D019.lem-xt1-0010 W
+lem-xs1-0010 : _
+lem-xs1-0010 = D019.lem-xs1-0010 W
+lem-xt1-1010 : _
+lem-xt1-1010 = D019.lem-xt1-1010 W
+lem-xs1-1010 : _
+lem-xs1-1010 = D019.lem-xs1-1010 W
+lem-xt1-0110 : _
+lem-xt1-0110 = D019.lem-xt1-0110 W
+lem-xs1-0110 : _
+lem-xs1-0110 = D019.lem-xs1-0110 W
+lem-xt1-1110 : _
+lem-xt1-1110 = D019.lem-xt1-1110 W
+lem-xs1-1110 : _
+lem-xs1-1110 = D019.lem-xs1-1110 W
+lem-xt1-0001 : _
+lem-xt1-0001 = D019.lem-xt1-0001 W
+lem-xs1-0001 : _
+lem-xs1-0001 = D019.lem-xs1-0001 W
+lem-xt1-1001 : _
+lem-xt1-1001 = D019.lem-xt1-1001 W
+lem-xs1-1001 : _
+lem-xs1-1001 = D019.lem-xs1-1001 W
+lem-xt1-0101 : _
+lem-xt1-0101 = D019.lem-xt1-0101 W
+lem-xs1-0101 : _
+lem-xs1-0101 = D019.lem-xs1-0101 W
+lem-xt1-1101 : _
+lem-xt1-1101 = D019.lem-xt1-1101 W
+lem-xs1-1101 : _
+lem-xs1-1101 = D019.lem-xs1-1101 W
+lem-xt1-0011 : _
+lem-xt1-0011 = D019.lem-xt1-0011 W
+lem-xs1-0011 : _
+lem-xs1-0011 = D019.lem-xs1-0011 W
+lem-xt1-1011 : _
+lem-xt1-1011 = D019.lem-xt1-1011 W
+lem-xs1-1011 : _
+lem-xs1-1011 = D019.lem-xs1-1011 W
+lem-xt1-0111 : _
+lem-xt1-0111 = D019.lem-xt1-0111 W
+lem-xs1-0111 : _
+lem-xs1-0111 = D019.lem-xs1-0111 W
+lem-xt1-1111 : _
+lem-xt1-1111 = D019.lem-xt1-1111 W
+lem-xs1-1111 : _
+lem-xs1-1111 = D019.lem-xs1-1111 W
+lem-xt2-0000 : _
+lem-xt2-0000 = D019.lem-xt2-0000 W
+lem-xs2-0000 : _
+lem-xs2-0000 = D019.lem-xs2-0000 W
+lem-xt2-1000 : _
+lem-xt2-1000 = D019.lem-xt2-1000 W
+lem-xs2-1000 : _
+lem-xs2-1000 = D019.lem-xs2-1000 W
+lem-xt2-0100 : _
+lem-xt2-0100 = D019.lem-xt2-0100 W
+lem-xs2-0100 : _
+lem-xs2-0100 = D019.lem-xs2-0100 W
+lem-xt2-1100 : _
+lem-xt2-1100 = D019.lem-xt2-1100 W
+lem-xs2-1100 : _
+lem-xs2-1100 = D019.lem-xs2-1100 W
+lem-xt2-0010 : _
+lem-xt2-0010 = D019.lem-xt2-0010 W
+lem-xs2-0010 : _
+lem-xs2-0010 = D019.lem-xs2-0010 W
+lem-xt2-1010 : _
+lem-xt2-1010 = D019.lem-xt2-1010 W
+lem-xs2-1010 : _
+lem-xs2-1010 = D019.lem-xs2-1010 W
+lem-xt2-0110 : _
+lem-xt2-0110 = D019.lem-xt2-0110 W
+lem-xs2-0110 : _
+lem-xs2-0110 = D019.lem-xs2-0110 W
+lem-xt2-1110 : _
+lem-xt2-1110 = D019.lem-xt2-1110 W
+lem-xs2-1110 : _
+lem-xs2-1110 = D019.lem-xs2-1110 W
+lem-xt2-0001 : _
+lem-xt2-0001 = D019.lem-xt2-0001 W
+lem-xs2-0001 : _
+lem-xs2-0001 = D019.lem-xs2-0001 W
+lem-xt2-1001 : _
+lem-xt2-1001 = D019.lem-xt2-1001 W
+lem-xs2-1001 : _
+lem-xs2-1001 = D019.lem-xs2-1001 W
+lem-xt2-0101 : _
+lem-xt2-0101 = D019.lem-xt2-0101 W
+lem-xs2-0101 : _
+lem-xs2-0101 = D019.lem-xs2-0101 W
+lem-xt2-1101 : _
+lem-xt2-1101 = D019.lem-xt2-1101 W
+lem-xs2-1101 : _
+lem-xs2-1101 = D019.lem-xs2-1101 W
+lem-xt2-0011 : _
+lem-xt2-0011 = D019.lem-xt2-0011 W
+lem-xs2-0011 : _
+lem-xs2-0011 = D019.lem-xs2-0011 W
+lem-xt2-1011 : _
+lem-xt2-1011 = D019.lem-xt2-1011 W
+lem-xs2-1011 : _
+lem-xs2-1011 = D019.lem-xs2-1011 W
+lem-xt2-0111 : _
+lem-xt2-0111 = D019.lem-xt2-0111 W
+lem-xs2-0111 : _
+lem-xs2-0111 = D019.lem-xs2-0111 W
+lem-xt2-1111 : _
+lem-xt2-1111 = D019.lem-xt2-1111 W
+lem-xs2-1111 : _
+lem-xs2-1111 = D019.lem-xs2-1111 W
+lem-xt3-0000 : _
+lem-xt3-0000 = D019.lem-xt3-0000 W
+lem-xs3-0000 : _
+lem-xs3-0000 = D019.lem-xs3-0000 W
+lem-xt3-1000 : _
+lem-xt3-1000 = D019.lem-xt3-1000 W
+lem-xs3-1000 : _
+lem-xs3-1000 = D019.lem-xs3-1000 W
+lem-xt3-0100 : _
+lem-xt3-0100 = D019.lem-xt3-0100 W
+lem-xs3-0100 : _
+lem-xs3-0100 = D019.lem-xs3-0100 W
+lem-xt3-1100 : _
+lem-xt3-1100 = D019.lem-xt3-1100 W
+lem-xs3-1100 : _
+lem-xs3-1100 = D019.lem-xs3-1100 W
+lem-xt3-0010 : _
+lem-xt3-0010 = D019.lem-xt3-0010 W
+lem-xs3-0010 : _
+lem-xs3-0010 = D019.lem-xs3-0010 W
+lem-xt3-1010 : _
+lem-xt3-1010 = D019.lem-xt3-1010 W
+lem-xs3-1010 : _
+lem-xs3-1010 = D019.lem-xs3-1010 W
+lem-xt3-0110 : _
+lem-xt3-0110 = D019.lem-xt3-0110 W
+lem-xs3-0110 : _
+lem-xs3-0110 = D019.lem-xs3-0110 W
+lem-xt3-1110 : _
+lem-xt3-1110 = D019.lem-xt3-1110 W
+lem-xs3-1110 : _
+lem-xs3-1110 = D019.lem-xs3-1110 W
+lem-xt3-0001 : _
+lem-xt3-0001 = D019.lem-xt3-0001 W
+lem-xs3-0001 : _
+lem-xs3-0001 = D019.lem-xs3-0001 W
+lem-xt3-1001 : _
+lem-xt3-1001 = D019.lem-xt3-1001 W
+lem-xs3-1001 : _
+lem-xs3-1001 = D019.lem-xs3-1001 W
+lem-xt3-0101 : _
+lem-xt3-0101 = D019.lem-xt3-0101 W
+lem-xs3-0101 : _
+lem-xs3-0101 = D019.lem-xs3-0101 W
+lem-xt3-1101 : _
+lem-xt3-1101 = D019.lem-xt3-1101 W
+lem-xs3-1101 : _
+lem-xs3-1101 = D019.lem-xs3-1101 W
+lem-xt3-0011 : _
+lem-xt3-0011 = D019.lem-xt3-0011 W
+lem-xs3-0011 : _
+lem-xs3-0011 = D019.lem-xs3-0011 W
+lem-xt3-1011 : _
+lem-xt3-1011 = D019.lem-xt3-1011 W
+lem-xs3-1011 : _
+lem-xs3-1011 = D019.lem-xs3-1011 W
+lem-xt3-0111 : _
+lem-xt3-0111 = D019.lem-xt3-0111 W
+lem-xs3-0111 : _
+lem-xs3-0111 = D019.lem-xs3-0111 W
+lem-xt3-1111 : _
+lem-xt3-1111 = D019.lem-xt3-1111 W
+lem-xs3-1111 : _
+lem-xs3-1111 = D019.lem-xs3-1111 W
+lem-xr0-0000 : _
+lem-xr0-0000 = D019.lem-xr0-0000 W
+lem-xr0-1000 : _
+lem-xr0-1000 = D019.lem-xr0-1000 W
+lem-xr0-0100 : _
+lem-xr0-0100 = D019.lem-xr0-0100 W
+lem-xr0-1100 : _
+lem-xr0-1100 = D019.lem-xr0-1100 W
+lem-xr0-0010 : _
+lem-xr0-0010 = D019.lem-xr0-0010 W
+lem-xr0-1010 : _
+lem-xr0-1010 = D019.lem-xr0-1010 W
+lem-xr0-0110 : _
+lem-xr0-0110 = D019.lem-xr0-0110 W
+lem-xr0-1110 : _
+lem-xr0-1110 = D019.lem-xr0-1110 W
+lem-xr0-0001 : _
+lem-xr0-0001 = D019.lem-xr0-0001 W
+lem-xr0-1001 : _
+lem-xr0-1001 = D019.lem-xr0-1001 W
+lem-xr0-0101 : _
+lem-xr0-0101 = D019.lem-xr0-0101 W
+lem-xr0-1101 : _
+lem-xr0-1101 = D019.lem-xr0-1101 W
+lem-xr0-0011 : _
+lem-xr0-0011 = D019.lem-xr0-0011 W
+lem-xr0-1011 : _
+lem-xr0-1011 = D019.lem-xr0-1011 W
+lem-xr0-0111 : _
+lem-xr0-0111 = D019.lem-xr0-0111 W
+lem-xr0-1111 : _
+lem-xr0-1111 = D019.lem-xr0-1111 W
+lem-xr1-0000 : _
+lem-xr1-0000 = D019.lem-xr1-0000 W
+lem-xr1-1000 : _
+lem-xr1-1000 = D019.lem-xr1-1000 W
+lem-xr1-0100 : _
+lem-xr1-0100 = D019.lem-xr1-0100 W
+lem-xr1-1100 : _
+lem-xr1-1100 = D019.lem-xr1-1100 W
+lem-xr1-0010 : _
+lem-xr1-0010 = D019.lem-xr1-0010 W
+lem-xr1-1010 : _
+lem-xr1-1010 = D019.lem-xr1-1010 W
+lem-xr1-0110 : _
+lem-xr1-0110 = D019.lem-xr1-0110 W
+lem-xr1-1110 : _
+lem-xr1-1110 = D019.lem-xr1-1110 W
+lem-xr1-0001 : _
+lem-xr1-0001 = D019.lem-xr1-0001 W
+lem-xr1-1001 : _
+lem-xr1-1001 = D019.lem-xr1-1001 W
+lem-xr1-0101 : _
+lem-xr1-0101 = D019.lem-xr1-0101 W
+lem-xr1-1101 : _
+lem-xr1-1101 = D019.lem-xr1-1101 W
+lem-xr1-0011 : _
+lem-xr1-0011 = D019.lem-xr1-0011 W
+lem-xr1-1011 : _
+lem-xr1-1011 = D019.lem-xr1-1011 W
+lem-xr1-0111 : _
+lem-xr1-0111 = D019.lem-xr1-0111 W
+lem-xr1-1111 : _
+lem-xr1-1111 = D019.lem-xr1-1111 W
+lem-xr2-0000 : _
+lem-xr2-0000 = D019.lem-xr2-0000 W
+lem-xr2-1000 : _
+lem-xr2-1000 = D019.lem-xr2-1000 W
+lem-xr2-0100 : _
+lem-xr2-0100 = D019.lem-xr2-0100 W
+lem-xr2-1100 : _
+lem-xr2-1100 = D019.lem-xr2-1100 W
+lem-xr2-0010 : _
+lem-xr2-0010 = D019.lem-xr2-0010 W
+lem-xr2-1010 : _
+lem-xr2-1010 = D019.lem-xr2-1010 W
+lem-xr2-0110 : _
+lem-xr2-0110 = D019.lem-xr2-0110 W
+lem-xr2-1110 : _
+lem-xr2-1110 = D019.lem-xr2-1110 W
+lem-xr2-0001 : _
+lem-xr2-0001 = D019.lem-xr2-0001 W
+lem-xr2-1001 : _
+lem-xr2-1001 = D019.lem-xr2-1001 W
+lem-xr2-0101 : _
+lem-xr2-0101 = D019.lem-xr2-0101 W
+lem-xr2-1101 : _
+lem-xr2-1101 = D019.lem-xr2-1101 W
+lem-xr2-0011 : _
+lem-xr2-0011 = D019.lem-xr2-0011 W
+lem-xr2-1011 : _
+lem-xr2-1011 = D019.lem-xr2-1011 W
+lem-xr2-0111 : _
+lem-xr2-0111 = D019.lem-xr2-0111 W
+lem-xr2-1111 : _
+lem-xr2-1111 = D019.lem-xr2-1111 W
+lem-b2g-1001R0 : _
+lem-b2g-1001R0 = D019.lem-b2g-1001R0 W
+lem-b2g-0011R2 : _
+lem-b2g-0011R2 = D019.lem-b2g-0011R2 W
+lem-pass-X3-CS32-X3-vs-TOFF203 : _
+lem-pass-X3-CS32-X3-vs-TOFF203 = D019.lem-pass-X3-CS32-X3-vs-TOFF203 W
+lem-pass-X3-CS32-X3-vs-CS12 : _
+lem-pass-X3-CS32-X3-vs-CS12 = D019.lem-pass-X3-CS32-X3-vs-CS12 W
+lem-pass-X3-CS32-X3-vs-CSd12 : _
+lem-pass-X3-CS32-X3-vs-CSd12 = D019.lem-pass-X3-CS32-X3-vs-CSd12 W
 lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X3-TOFF103-X3 : _
 lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X3-TOFF103-X3 = D186.lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X3-TOFF103-X3 W
 lem-groups-CK32-CS23-CS23-CKd32-vs-X3-TOFF123-X3 : _
@@ -1961,414 +2757,6 @@ lem-pass-S0-vs-CSd12 : _
 lem-pass-S0-vs-CSd12 = D015.lem-pass-S0-vs-CSd12 W
 lem-pass-X1-CS10-X1-vs-TOFF012 : _
 lem-pass-X1-CS10-X1-vs-TOFF012 = D015.lem-pass-X1-CS10-X1-vs-TOFF012 W
-lem-sw2-TOFF213 : _
-lem-sw2-TOFF213 = D019.lem-sw2-TOFF213 W
-lem-sw2-TOFF301 : _
-lem-sw2-TOFF301 = D019.lem-sw2-TOFF301 W
-lem-sw2-TOFF302 : _
-lem-sw2-TOFF302 = D019.lem-sw2-TOFF302 W
-lem-sw2-TOFF312 : _
-lem-sw2-TOFF312 = D019.lem-sw2-TOFF312 W
-lem-xx0 : _
-lem-xx0 = D019.lem-xx0 W
-lem-xc01 : _
-lem-xc01 = D019.lem-xc01 W
-lem-xc02 : _
-lem-xc02 = D019.lem-xc02 W
-lem-xc03 : _
-lem-xc03 = D019.lem-xc03 W
-lem-xx1 : _
-lem-xx1 = D019.lem-xx1 W
-lem-xc10 : _
-lem-xc10 = D019.lem-xc10 W
-lem-xc12 : _
-lem-xc12 = D019.lem-xc12 W
-lem-xc13 : _
-lem-xc13 = D019.lem-xc13 W
-lem-xx2 : _
-lem-xx2 = D019.lem-xx2 W
-lem-xc20 : _
-lem-xc20 = D019.lem-xc20 W
-lem-xc21 : _
-lem-xc21 = D019.lem-xc21 W
-lem-xc23 : _
-lem-xc23 = D019.lem-xc23 W
-lem-xx3 : _
-lem-xx3 = D019.lem-xx3 W
-lem-xc30 : _
-lem-xc30 = D019.lem-xc30 W
-lem-xc31 : _
-lem-xc31 = D019.lem-xc31 W
-lem-xc32 : _
-lem-xc32 = D019.lem-xc32 W
-lem-swsw0 : _
-lem-swsw0 = D019.lem-swsw0 W
-lem-swsw1 : _
-lem-swsw1 = D019.lem-swsw1 W
-lem-swsw2 : _
-lem-swsw2 = D019.lem-swsw2 W
-lem-xt0-0000 : _
-lem-xt0-0000 = D019.lem-xt0-0000 W
-lem-xs0-0000 : _
-lem-xs0-0000 = D019.lem-xs0-0000 W
-lem-xt0-1000 : _
-lem-xt0-1000 = D019.lem-xt0-1000 W
-lem-xs0-1000 : _
-lem-xs0-1000 = D019.lem-xs0-1000 W
-lem-xt0-0100 : _
-lem-xt0-0100 = D019.lem-xt0-0100 W
-lem-xs0-0100 : _
-lem-xs0-0100 = D019.lem-xs0-0100 W
-lem-xt0-1100 : _
-lem-xt0-1100 = D019.lem-xt0-1100 W
-lem-xs0-1100 : _
-lem-xs0-1100 = D019.lem-xs0-1100 W
-lem-xt0-0010 : _
-lem-xt0-0010 = D019.lem-xt0-0010 W
-lem-xs0-0010 : _
-lem-xs0-0010 = D019.lem-xs0-0010 W
-lem-xt0-1010 : _
-lem-xt0-1010 = D019.lem-xt0-1010 W
-lem-xs0-1010 : _
-lem-xs0-1010 = D019.lem-xs0-1010 W
-lem-xt0-0110 : _
-lem-xt0-0110 = D019.lem-xt0-0110 W
-lem-xs0-0110 : _
-lem-xs0-0110 = D019.lem-xs0-0110 W
-lem-xt0-1110 : _
-lem-xt0-1110 = D019.lem-xt0-1110 W
-lem-xs0-1110 : _
-lem-xs0-1110 = D019.lem-xs0-1110 W
-lem-xt0-0001 : _
-lem-xt0-0001 = D019.lem-xt0-0001 W
-lem-xs0-0001 : _
-lem-xs0-0001 = D019.lem-xs0-0001 W
-lem-xt0-1001 : _
-lem-xt0-1001 = D019.lem-xt0-1001 W
-lem-xs0-1001 : _
-lem-xs0-1001 = D019.lem-xs0-1001 W
-lem-xt0-0101 : _
-lem-xt0-0101 = D019.lem-xt0-0101 W
-lem-xs0-0101 : _
-lem-xs0-0101 = D019.lem-xs0-0101 W
-lem-xt0-1101 : _
-lem-xt0-1101 = D019.lem-xt0-1101 W
-lem-xs0-1101 : _
-lem-xs0-1101 = D019.lem-xs0-1101 W
-lem-xt0-0011 : _
-lem-xt0-0011 = D019.lem-xt0-0011 W
-lem-xs0-0011 : _
-lem-xs0-0011 = D019.lem-xs0-0011 W
-lem-xt0-1011 : _
-lem-xt0-1011 = D019.lem-xt0-1011 W
-lem-xs0-1011 : _
-lem-xs0-1011 = D019.lem-xs0-1011 W
-lem-xt0-0111 : _
-lem-xt0-0111 = D019.lem-xt0-0111 W
-lem-xs0-0111 : _
-lem-xs0-0111 = D019.lem-xs0-0111 W
-lem-xt0-1111 : _
-lem-xt0-1111 = D019.lem-xt0-1111 W
-lem-xs0-1111 : _
-lem-xs0-1111 = D019.lem-xs0-1111 W
-lem-xt1-0000 : _
-lem-xt1-0000 = D019.lem-xt1-0000 W
-lem-xs1-0000 : _
-lem-xs1-0000 = D019.lem-xs1-0000 W
-lem-xt1-1000 : _
-lem-xt1-1000 = D019.lem-xt1-1000 W
-lem-xs1-1000 : _
-lem-xs1-1000 = D019.lem-xs1-1000 W
-lem-xt1-0100 : _
-lem-xt1-0100 = D019.lem-xt1-0100 W
-lem-xs1-0100 : _
-lem-xs1-0100 = D019.lem-xs1-0100 W
-lem-xt1-1100 : _
-lem-xt1-1100 = D019.lem-xt1-1100 W
-lem-xs1-1100 : _
-lem-xs1-1100 = D019.lem-xs1-1100 W
-lem-xt1-0010 : _
-lem-xt1-0010 = D019.lem-xt1-0010 W
-lem-xs1-0010 : _
-lem-xs1-0010 = D019.lem-xs1-0010 W
-lem-xt1-1010 : _
-lem-xt1-1010 = D019.lem-xt1-1010 W
-lem-xs1-1010 : _
-lem-xs1-1010 = D019.lem-xs1-1010 W
-lem-xt1-0110 : _
-lem-xt1-0110 = D019.lem-xt1-0110 W
-lem-xs1-0110 : _
-lem-xs1-0110 = D019.lem-xs1-0110 W
-lem-xt1-1110 : _
-lem-xt1-1110 = D019.lem-xt1-1110 W
-lem-xs1-1110 : _
-lem-xs1-1110 = D019.lem-xs1-1110 W
-lem-xt1-0001 : _
-lem-xt1-0001 = D019.lem-xt1-0001 W
-lem-xs1-0001 : _
-lem-xs1-0001 = D019.lem-xs1-0001 W
-lem-xt1-1001 : _
-lem-xt1-1001 = D019.lem-xt1-1001 W
-lem-xs1-1001 : _
-lem-xs1-1001 = D019.lem-xs1-1001 W
-lem-xt1-0101 : _
-lem-xt1-0101 = D019.lem-xt1-0101 W
-lem-xs1-0101 : _
-lem-xs1-0101 = D019.lem-xs1-0101 W
-lem-xt1-1101 : _
-lem-xt1-1101 = D019.lem-xt1-1101 W
-lem-xs1-1101 : _
-lem-xs1-1101 = D019.lem-xs1-1101 W
-lem-xt1-0011 : _
-lem-xt1-0011 = D019.lem-xt1-0011 W
-lem-xs1-0011 : _
-lem-xs1-0011 = D019.lem-xs1-0011 W
-lem-xt1-1011 : _
-lem-xt1-1011 = D019.lem-xt1-1011 W
-lem-xs1-1011 : _
-lem-xs1-1011 = D019.lem-xs1-1011 W
-lem-xt1-0111 : _
-lem-xt1-0111 = D019.lem-xt1-0111 W
-lem-xs1-0111 : _
-lem-xs1-0111 = D019.lem-xs1-0111 W
-lem-xt1-1111 : _
-lem-xt1-1111 = D019.lem-xt1-1111 W
-lem-xs1-1111 : _
-lem-xs1-1111 = D019.lem-xs1-1111 W
-lem-xt2-0000 : _
-lem-xt2-0000 = D019.lem-xt2-0000 W
-lem-xs2-0000 : _
-lem-xs2-0000 = D019.lem-xs2-0000 W
-lem-xt2-1000 : _
-lem-xt2-1000 = D019.lem-xt2-1000 W
-lem-xs2-1000 : _
-lem-xs2-1000 = D019.lem-xs2-1000 W
-lem-xt2-0100 : _
-lem-xt2-0100 = D019.lem-xt2-0100 W
-lem-xs2-0100 : _
-lem-xs2-0100 = D019.lem-xs2-0100 W
-lem-xt2-1100 : _
-lem-xt2-1100 = D019.lem-xt2-1100 W
-lem-xs2-1100 : _
-lem-xs2-1100 = D019.lem-xs2-1100 W
-lem-xt2-0010 : _
-lem-xt2-0010 = D019.lem-xt2-0010 W
-lem-xs2-0010 : _
-lem-xs2-0010 = D019.lem-xs2-0010 W
-lem-xt2-1010 : _
-lem-xt2-1010 = D019.lem-xt2-1010 W
-lem-xs2-1010 : _
-lem-xs2-1010 = D019.lem-xs2-1010 W
-lem-xt2-0110 : _
-lem-xt2-0110 = D019.lem-xt2-0110 W
-lem-xs2-0110 : _
-lem-xs2-0110 = D019.lem-xs2-0110 W
-lem-xt2-1110 : _
-lem-xt2-1110 = D019.lem-xt2-1110 W
-lem-xs2-1110 : _
-lem-xs2-1110 = D019.lem-xs2-1110 W
-lem-xt2-0001 : _
-lem-xt2-0001 = D019.lem-xt2-0001 W
-lem-xs2-0001 : _
-lem-xs2-0001 = D019.lem-xs2-0001 W
-lem-xt2-1001 : _
-lem-xt2-1001 = D019.lem-xt2-1001 W
-lem-xs2-1001 : _
-lem-xs2-1001 = D019.lem-xs2-1001 W
-lem-xt2-0101 : _
-lem-xt2-0101 = D019.lem-xt2-0101 W
-lem-xs2-0101 : _
-lem-xs2-0101 = D019.lem-xs2-0101 W
-lem-xt2-1101 : _
-lem-xt2-1101 = D019.lem-xt2-1101 W
-lem-xs2-1101 : _
-lem-xs2-1101 = D019.lem-xs2-1101 W
-lem-xt2-0011 : _
-lem-xt2-0011 = D019.lem-xt2-0011 W
-lem-xs2-0011 : _
-lem-xs2-0011 = D019.lem-xs2-0011 W
-lem-xt2-1011 : _
-lem-xt2-1011 = D019.lem-xt2-1011 W
-lem-xs2-1011 : _
-lem-xs2-1011 = D019.lem-xs2-1011 W
-lem-xt2-0111 : _
-lem-xt2-0111 = D019.lem-xt2-0111 W
-lem-xs2-0111 : _
-lem-xs2-0111 = D019.lem-xs2-0111 W
-lem-xt2-1111 : _
-lem-xt2-1111 = D019.lem-xt2-1111 W
-lem-xs2-1111 : _
-lem-xs2-1111 = D019.lem-xs2-1111 W
-lem-xt3-0000 : _
-lem-xt3-0000 = D019.lem-xt3-0000 W
-lem-xs3-0000 : _
-lem-xs3-0000 = D019.lem-xs3-0000 W
-lem-xt3-1000 : _
-lem-xt3-1000 = D019.lem-xt3-1000 W
-lem-xs3-1000 : _
-lem-xs3-1000 = D019.lem-xs3-1000 W
-lem-xt3-0100 : _
-lem-xt3-0100 = D019.lem-xt3-0100 W
-lem-xs3-0100 : _
-lem-xs3-0100 = D019.lem-xs3-0100 W
-lem-xt3-1100 : _
-lem-xt3-1100 = D019.lem-xt3-1100 W
-lem-xs3-1100 : _
-lem-xs3-1100 = D019.lem-xs3-1100 W
-lem-xt3-0010 : _
-lem-xt3-0010 = D019.lem-xt3-0010 W
-lem-xs3-0010 : _
-lem-xs3-0010 = D019.lem-xs3-0010 W
-lem-xt3-1010 : _
-lem-xt3-1010 = D019.lem-xt3-1010 W
-lem-xs3-1010 : _
-lem-xs3-1010 = D019.lem-xs3-1010 W
-lem-xt3-0110 : _
-lem-xt3-0110 = D019.lem-xt3-0110 W
-lem-xs3-0110 : _
-lem-xs3-0110 = D019.lem-xs3-0110 W
-lem-xt3-1110 : _
-lem-xt3-1110 = D019.lem-xt3-1110 W
-lem-xs3-1110 : _
-lem-xs3-1110 = D019.lem-xs3-1110 W
-lem-xt3-0001 : _
-lem-xt3-0001 = D019.lem-xt3-0001 W
-lem-xs3-0001 : _
-lem-xs3-0001 = D019.lem-xs3-0001 W
-lem-xt3-1001 : _
-lem-xt3-1001 = D019.lem-xt3-1001 W
-lem-xs3-1001 : _
-lem-xs3-1001 = D019.lem-xs3-1001 W
-lem-xt3-0101 : _
-lem-xt3-0101 = D019.lem-xt3-0101 W
-lem-xs3-0101 : _
-lem-xs3-0101 = D019.lem-xs3-0101 W
-lem-xt3-1101 : _
-lem-xt3-1101 = D019.lem-xt3-1101 W
-lem-xs3-1101 : _
-lem-xs3-1101 = D019.lem-xs3-1101 W
-lem-xt3-0011 : _
-lem-xt3-0011 = D019.lem-xt3-0011 W
-lem-xs3-0011 : _
-lem-xs3-0011 = D019.lem-xs3-0011 W
-lem-xt3-1011 : _
-lem-xt3-1011 = D019.lem-xt3-1011 W
-lem-xs3-1011 : _
-lem-xs3-1011 = D019.lem-xs3-1011 W
-lem-xt3-0111 : _
-lem-xt3-0111 = D019.lem-xt3-0111 W
-lem-xs3-0111 : _
-lem-xs3-0111 = D019.lem-xs3-0111 W
-lem-xt3-1111 : _
-lem-xt3-1111 = D019.lem-xt3-1111 W
-lem-xs3-1111 : _
-lem-xs3-1111 = D019.lem-xs3-1111 W
-lem-xr0-0000 : _
-lem-xr0-0000 = D019.lem-xr0-0000 W
-lem-xr0-1000 : _
-lem-xr0-1000 = D019.lem-xr0-1000 W
-lem-xr0-0100 : _
-lem-xr0-0100 = D019.lem-xr0-0100 W
-lem-xr0-1100 : _
-lem-xr0-1100 = D019.lem-xr0-1100 W
-lem-xr0-0010 : _
-lem-xr0-0010 = D019.lem-xr0-0010 W
-lem-xr0-1010 : _
-lem-xr0-1010 = D019.lem-xr0-1010 W
-lem-xr0-0110 : _
-lem-xr0-0110 = D019.lem-xr0-0110 W
-lem-xr0-1110 : _
-lem-xr0-1110 = D019.lem-xr0-1110 W
-lem-xr0-0001 : _
-lem-xr0-0001 = D019.lem-xr0-0001 W
-lem-xr0-1001 : _
-lem-xr0-1001 = D019.lem-xr0-1001 W
-lem-xr0-0101 : _
-lem-xr0-0101 = D019.lem-xr0-0101 W
-lem-xr0-1101 : _
-lem-xr0-1101 = D019.lem-xr0-1101 W
-lem-xr0-0011 : _
-lem-xr0-0011 = D019.lem-xr0-0011 W
-lem-xr0-1011 : _
-lem-xr0-1011 = D019.lem-xr0-1011 W
-lem-xr0-0111 : _
-lem-xr0-0111 = D019.lem-xr0-0111 W
-lem-xr0-1111 : _
-lem-xr0-1111 = D019.lem-xr0-1111 W
-lem-xr1-0000 : _
-lem-xr1-0000 = D019.lem-xr1-0000 W
-lem-xr1-1000 : _
-lem-xr1-1000 = D019.lem-xr1-1000 W
-lem-xr1-0100 : _
-lem-xr1-0100 = D019.lem-xr1-0100 W
-lem-xr1-1100 : _
-lem-xr1-1100 = D019.lem-xr1-1100 W
-lem-xr1-0010 : _
-lem-xr1-0010 = D019.lem-xr1-0010 W
-lem-xr1-1010 : _
-lem-xr1-1010 = D019.lem-xr1-1010 W
-lem-xr1-0110 : _
-lem-xr1-0110 = D019.lem-xr1-0110 W
-lem-xr1-1110 : _
-lem-xr1-1110 = D019.lem-xr1-1110 W
-lem-xr1-0001 : _
-lem-xr1-0001 = D019.lem-xr1-0001 W
-lem-xr1-1001 : _
-lem-xr1-1001 = D019.lem-xr1-1001 W
-lem-xr1-0101 : _
-lem-xr1-0101 = D019.lem-xr1-0101 W
-lem-xr1-1101 : _
-lem-xr1-1101 = D019.lem-xr1-1101 W
-lem-xr1-0011 : _
-lem-xr1-0011 = D019.lem-xr1-0011 W
-lem-xr1-1011 : _
-lem-xr1-1011 = D019.lem-xr1-1011 W
-lem-xr1-0111 : _
-lem-xr1-0111 = D019.lem-xr1-0111 W
-lem-xr1-1111 : _
-lem-xr1-1111 = D019.lem-xr1-1111 W
-lem-xr2-0000 : _
-lem-xr2-0000 = D019.lem-xr2-0000 W
-lem-xr2-1000 : _
-lem-xr2-1000 = D019.lem-xr2-1000 W
-lem-xr2-0100 : _
-lem-xr2-0100 = D019.lem-xr2-0100 W
-lem-xr2-1100 : _
-lem-xr2-1100 = D019.lem-xr2-1100 W
-lem-xr2-0010 : _
-lem-xr2-0010 = D019.lem-xr2-0010 W
-lem-xr2-1010 : _
-lem-xr2-1010 = D019.lem-xr2-1010 W
-lem-xr2-0110 : _
-lem-xr2-0110 = D019.lem-xr2-0110 W
-lem-xr2-1110 : _
-lem-xr2-1110 = D019.lem-xr2-1110 W
-lem-xr2-0001 : _
-lem-xr2-0001 = D019.lem-xr2-0001 W
-lem-xr2-1001 : _
-lem-xr2-1001 = D019.lem-xr2-1001 W
-lem-xr2-0101 : _
-lem-xr2-0101 = D019.lem-xr2-0101 W
-lem-xr2-1101 : _
-lem-xr2-1101 = D019.lem-xr2-1101 W
-lem-xr2-0011 : _
-lem-xr2-0011 = D019.lem-xr2-0011 W
-lem-xr2-1011 : _
-lem-xr2-1011 = D019.lem-xr2-1011 W
-lem-xr2-0111 : _
-lem-xr2-0111 = D019.lem-xr2-0111 W
-lem-xr2-1111 : _
-lem-xr2-1111 = D019.lem-xr2-1111 W
-lem-b2g-1001R0 : _
-lem-b2g-1001R0 = D019.lem-b2g-1001R0 W
-lem-b2g-0011R2 : _
-lem-b2g-0011R2 = D019.lem-b2g-0011R2 W
-lem-pass-X3-CS32-X3-vs-TOFF203 : _
-lem-pass-X3-CS32-X3-vs-TOFF203 = D019.lem-pass-X3-CS32-X3-vs-TOFF203 W
-lem-pass-X3-CS32-X3-vs-CS12 : _
-lem-pass-X3-CS32-X3-vs-CS12 = D019.lem-pass-X3-CS32-X3-vs-CS12 W
-lem-pass-X3-CS32-X3-vs-CSd12 : _
-lem-pass-X3-CS32-X3-vs-CSd12 = D019.lem-pass-X3-CS32-X3-vs-CSd12 W
 lem-pass-X3-CK32-X3-vs-TOFF201-CS23-TOFF201-CSd23 : _
 lem-pass-X3-CK32-X3-vs-TOFF201-CS23-TOFF201-CSd23 = D020.lem-pass-X3-CK32-X3-vs-TOFF201-CS23-TOFF201-CSd23 W
 lem-pass-X3-CSd32-X3-vs-TOFF203 : _
@@ -5837,6 +6225,22 @@ lem-pass-X2-CK21-X2-vs-X3-CS13-TOFF102-CSd13-TOFF102-X3 : _
 lem-pass-X2-CK21-X2-vs-X3-CS13-TOFF102-CSd13-TOFF102-X3 = D735.lem-pass-X2-CK21-X2-vs-X3-CS13-TOFF102-CSd13-TOFF102-X3 W sD735
 lem-bridge-G-rot : _
 lem-bridge-G-rot = D735.lem-bridge-G-rot W sD735
+lem-groups-CS01-CK10-CSd01-CK20-CS01-CKd10-CSd01-CKd20-vs-CS12-CS13-CX23-CSd13-CX23 : _
+lem-groups-CS01-CK10-CSd01-CK20-CS01-CKd10-CSd01-CKd20-vs-CS12-CS13-CX23-CSd13-CX23 = D447.lem-groups-CS01-CK10-CSd01-CK20-CS01-CKd10-CSd01-CKd20-vs-CS12-CS13-CX23-CSd13-CX23 W
+lem-groups-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-vs-CSd23 : _
+lem-groups-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-vs-CSd23 = D447.lem-groups-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-vs-CSd23 W
+lem-bridge-G-ki : _
+lem-bridge-G-ki = D447.lem-bridge-G-ki W
+lem-top-ki-sq : _
+lem-top-ki-sq = D447.lem-top-ki-sq W
+lem-top-ki-yb : _
+lem-top-ki-yb = D447.lem-top-ki-yb W
+lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02- : _
+lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02- = D447.lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02- W
+lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12- : _
+lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12- = D447.lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12- W
+lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01- : _
+lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01- = D447.lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01- W
 sD712 : SD712
 sD712 = lem-pass-X2-CS20-X2-vs-CS03-TOFF012-CSd03-TOFF012 ∷ᵃ lem-pass-CCZ013-vs-TOFF012-CS03-TOFF012-CSd03 ∷ᵃ lem-pass-CS03-TOFF012-CSd03-TOFF012-vs-X2-X3-TOFF102-CS13-TOFF102-CSd13-X2-X3 ∷ᵃ lem-pass-CSd03-vs-TOFF012-CS03-TOFF012-CSd03 ∷ᵃ lem-pass-TOFF012-CS03-TOFF012-CSd03-vs-X3-TOFF103-X3-CS12-X3-TOFF103-X3-CSd12 ∷ᵃ lem-pass-X2-CK20-X2-vs-CS03-TOFF012-CSd03-TOFF012 ∷ᵃ lem-pass-X3-CK30-X3-vs-S0-K0-TOFF012-CS03-TOFF012-CSd03-Kd0-Sd0 ∷ᵃ lem-pass-X3-CK30-X3-vs-TOFF102-CS13-TOFF102-CSd13 ∷ᵃ lem-pass-X3-CKd30-X3-vs-TOFF102-CS13-TOFF102-CSd13 ∷ᵃ lem-pass-X3-CS30-X3-vs-CS03-TOFF012-CSd03-TOFF012 ∷ᵃ lem-pass-X3-CS30-X3-vs-TOFF102-CS13-TOFF102-CSd13 ∷ᵃ lem-pass-X3-CSd30-X3-vs-K0-TOFF012-CS03-TOFF012-CSd03-Kd0 ∷ᵃ lem-pass-X3-CSd30-X3-vs-Sd0-Kd0-Sd0-TOFF012-CS03-TOFF012-CSd03-S0-K0-S0 ∷ᵃ lem-pass-X3-CSd30-X3-vs-TOFF102-CS13-TOFF102-CSd13 ∷ᵃ lem-pass-X3-TOFF012-CS03-TOFF012-CSd03-X3-vs-TOFF012-CS03-TOFF012-CSd03 ∷ᵃ nil
 lem-CA-CS30-Gad⟨t≡0-W≡⟨⟩-d≡K-e≡1⟩ : _
@@ -7277,22 +7681,6 @@ lem-groups-CK30-vs-CS13-CS23-CX12-CSd23-CX12 : _
 lem-groups-CK30-vs-CS13-CS23-CX12-CSd23-CX12 = D446.lem-groups-CK30-vs-CS13-CS23-CX12-CSd23-CX12 W
 lem-groups-CK30-vs-CSd23 : _
 lem-groups-CK30-vs-CSd23 = D446.lem-groups-CK30-vs-CSd23 W
-lem-groups-CS01-CK10-CSd01-CK20-CS01-CKd10-CSd01-CKd20-vs-CS12-CS13-CX23-CSd13-CX23 : _
-lem-groups-CS01-CK10-CSd01-CK20-CS01-CKd10-CSd01-CKd20-vs-CS12-CS13-CX23-CSd13-CX23 = D447.lem-groups-CS01-CK10-CSd01-CK20-CS01-CKd10-CSd01-CKd20-vs-CS12-CS13-CX23-CSd13-CX23 W
-lem-groups-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-vs-CSd23 : _
-lem-groups-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-vs-CSd23 = D447.lem-groups-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-vs-CSd23 W
-lem-bridge-G-ki : _
-lem-bridge-G-ki = D447.lem-bridge-G-ki W
-lem-top-ki-sq : _
-lem-top-ki-sq = D447.lem-top-ki-sq W
-lem-top-ki-yb : _
-lem-top-ki-yb = D447.lem-top-ki-yb W
-lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02- : _
-lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02- = D447.lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02- W
-lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12- : _
-lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12- = D447.lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12- W
-lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01- : _
-lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01- = D447.lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01- W
 lem-Bar⟨SSKSKK13-⟶0⟩-passes-groups-of-WBar⟨SSKSKK~12-⟶0⟩-part0 : _
 lem-Bar⟨SSKSKK13-⟶0⟩-passes-groups-of-WBar⟨SSKSKK~12-⟶0⟩-part0 = D455.lem-Bar⟨SSKSKK13-⟶0⟩-passes-groups-of-WBar⟨SSKSKK~12-⟶0⟩-part0 W
 lem-Bar⟨SSKSKK13-⟶0⟩-passes-groups-of-WBar⟨SSKSKK~12-⟶0⟩-part1 : _
@@ -8765,6 +9153,48 @@ lem-cls-1000PP0-0000PP1-0100R1-≡-0100R1-1000PP0 : _
 lem-cls-1000PP0-0000PP1-0100R1-≡-0100R1-1000PP0 = D786.lem-cls-1000PP0-0000PP1-0100R1-≡-0100R1-1000PP0 W sD786
 lem-cls-0000R0-0100R1-0000R0-≡-0100R1-0000R0-0100R1 : _
 lem-cls-0000R0-0100R1-0000R0-≡-0100R1-0000R0-0100R1 = D786.lem-cls-0000R0-0100R1-0000R0-≡-0100R1-0000R0-0100R1 W sD786
+sD571 : SD571
+sD571 = lem-AXIOM-LF-at0321 ∷ᵃ nil
+lem-LF-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK10-CS03-CS03-CS03-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-S3-S3-S3-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS02-CS02-CS02-S2-CK20-CS02-CS02-CS02-CS02-CS02-CS02-S1-CK10-at-3 : _
+lem-LF-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK10-CS03-CS03-CS03-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-S3-S3-S3-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS02-CS02-CS02-S2-CK20-CS02-CS02-CS02-CS02-CS02-CS02-S1-CK10-at-3 = D571.lem-LF-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK10-CS03-CS03-CS03-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-S3-S3-S3-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS02-CS02-CS02-S2-CK20-CS02-CS02-CS02-CS02-CS02-CS02-S1-CK10-at-3 W sD571
+sD577 : SD577
+sD577 = lem-Bar⟨SSKSKK32-⟶0⟩-passes-factors-of-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ nil
+lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 : _
+lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 = D577.lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 W sD577
+sD694 : SD694
+sD694 = lem-pass-X0-X2-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-vs-X3-TOFF123-X3 ∷ᵃ nil
+lem-pass-TOFF123-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 : _
+lem-pass-TOFF123-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 = D694.lem-pass-TOFF123-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 W sD694
+sD718 : SD718
+sD718 = lem-Bar⟨SSKSKK31-⟶0⟩-passes-factors-of-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ nil
+lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 : _
+lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 = D718.lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 W sD718
+sD719 : SD719
+sD719 = lem-Bar⟨SSSKSS31-⟶0⟩-passes-factors-of-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ nil
+lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 : _
+lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 = D719.lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 W sD719
+sD736 : SD736
+sD736 = lem-AXIOM-LF-at0213 ∷ᵃ lem-LF-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CK20-CS02-CK30-CS02-CS02-CS02-S2-CK20-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-S2-S2-S2-S2-CK20-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS01-CS01-CS01-S1-CK10-CS01-CS01-CS01-CS01-CS01-CS01-S3-CK30-at-2 ∷ᵃ lem-kk-pieces-X0-X1-X2-X3-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01-CK01-S0--at-2 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-X3-TOFF302-X2-X3 ∷ᵃ lem-kk-pieces-X1-X2-X3-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12-CK21-S2-CS1-at-2 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX21-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-CK10-CK10-vs-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X1-X2 ∷ᵃ lem-pass-CS02-CS02-CS02-CK20-CS02-CS02-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CK30-CS03-CS03-vs-X2-X3-TOFF302-X2-X3 ∷ᵃ lem-LF-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK10-CS03-CS03-CS03-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-S3-S3-S3-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS02-CS02-CS02-S2-CK20-CS02-CS02-CS02-CS02-CS02-CS02-S1-CK10-at-3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X3-TOFF103-X0-X3 ∷ᵃ lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X0-X3-TOFF103-X0-X3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX21-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X0-X1-X2 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X0-X2-X3-TOFF302-X0-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CS02-CK20-CS02-CS02-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CK30-CS03-CS03-vs-X0-X2-X3-TOFF302-X0-X2-X3 ∷ᵃ lem-pass-TOFF123-vs-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX31-CK12-S1-CK12-S1-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CK12-CS12-CK12-CK12-X2-X3 ∷ᵃ lem-pass-TOFF123-vs-X2-X3-CS23-CS23-CS23-CK32-CS23-CS23-CX31-CS12-CS12-CS12-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CS12-CK12-CS12-CS12-X2-X3 ∷ᵃ lem-pass-TOFF312-vs-X1-X2-X3-CS12-CS12-CK21-CS12-CK21-CK21-CX23-CK31-S3-CK31-S3-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CK31-CS13-CK31-CK31-X1-X2-X3 ∷ᵃ lem-pass-TOFF312-vs-X1-X2-X3-CS12-CS12-CS12-CK21-CS12-CS12-CX23-CS13-CS13-CS13-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CS13-CK31-CS13-CS13-X1-X2-X3 ∷ᵃ lem-kk-pieces-X0-X2-X3-CS02-CS02-CK02-CS02-CX03-CS23-CS23-CS23-CK32-S3-CS2-at-3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X2-X3-CS23-CS23-CS23-CK32-CS23-CS23-CX31-CS12-CS12-CS12-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CS12-CK12-CS12-CS12-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X1-X2-X3-CS12-CS12-CK21-CS12-CK21-CK21-CX23-CK31-S3-CK31-S3-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CK31-CS13-CK31-CK31-X1-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X1-X2-X3-CS12-CS12-CS12-CK21-CS12-CS12-CX23-CS13-CS13-CS13-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CS13-CK31-CS13-CS13-X1-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX31-CK12-S1-CK12-S1-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CK12-CS12-CK12-CK12-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX31-CK12-S1-CK12-S1-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CK12-CS12-CK12-CK12-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X2-X3-CS23-CS23-CS23-CK32-CS23-CS23-CX31-CS12-CS12-CS12-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CS12-CK12-CS12-CS12-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CS02-CK20-CS02-CS02-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CK30-CS03-CS03-vs-X1-X2-X3-CS12-CS12-CK21-CS12-CK21-CK21-CX23-CK31-S3-CK31-S3-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CK31-CS13-CK31-CK31-X1-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CS02-CK20-CS02-CS02-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CK30-CS03-CS03-vs-X1-X2-X3-CS12-CS12-CS12-CK21-CS12-CS12-CX23-CS13-CS13-CS13-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CS13-CK31-CS13-CS13-X1-X2-X3 ∷ᵃ lem-pass-TOFF123-vs-X0-X3-TOFF103-X0-X3 ∷ᵃ lem-pass-TOFF312-vs-X2-X3-TOFF302-X2-X3 ∷ᵃ lem-pass-TOFF312-vs-X0-X2-X3-TOFF302-X0-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX21-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-CK10-CK10-vs-X2-X3-TOFF302-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX21-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-CK10-CK10-vs-X1-X2-X3-CS12-CS12-CK21-CS12-CK21-CK21-CX23-CK31-S3-CK31-S3-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CK31-CS13-CK31-CK31-X1-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX21-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-CK10-CK10-vs-X1-X2-X3-CS12-CS12-CS12-CK21-CS12-CS12-CX23-CS13-CS13-CS13-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CS13-CK31-CS13-CS13-X1-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX31-CK12-S1-CK12-S1-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CK12-CS12-CK12-CK12-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X2-X3-CS23-CS23-CS23-CK32-CS23-CS23-CX31-CS12-CS12-CS12-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CS12-CK12-CS12-CS12-X2-X3 ∷ᵃ lem-pass-TOFF312-vs-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X1-X2 ∷ᵃ lem-pass-TOFF123-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX21-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X2-X3-TOFF302-X0-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X0-X3-TOFF103-X0-X3 ∷ᵃ lem-pass-TOFF312-vs-X0-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X0-X1-X2 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X1-X2 ∷ᵃ lem-pass-CS02-CS02-CS02-CK20-CS02-CS02-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CK30-CS03-CS03-vs-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X1-X2 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X0-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X0-X1-X2 ∷ᵃ lem-pass-CS02-CS02-CS02-CK20-CS02-CS02-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CK30-CS03-CS03-vs-X0-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X0-X1-X2 ∷ᵃ nil
+lem-kk-CS01-CS01-CK10-CS01-CX12-CS02-··-X1-X2-X3-CS01-CS01-CK01-CS01-CX02-CS12-C··-sep-2 : _
+lem-kk-CS01-CS01-CK10-CS01-CX12-CS02-··-X1-X2-X3-CS01-CS01-CK01-CS01-CX02-CS12-C··-sep-2 = D736.lem-kk-CS01-CS01-CK10-CS01-CX12-CS02-··-X1-X2-X3-CS01-CS01-CK01-CS01-CX02-CS12-C··-sep-2 W sD736
+lem-kk-CS02-CS02-CK20-CS02-CX23-CS03-··-X0-X2-X3-CS02-CS02-CK02-CS02-CX03-CS23-C··-sep-3 : _
+lem-kk-CS02-CS02-CK20-CS02-CX23-CS03-··-X0-X2-X3-CS02-CS02-CK02-CS02-CX03-CS23-C··-sep-3 = D736.lem-kk-CS02-CS02-CK20-CS02-CX23-CS03-··-X0-X2-X3-CS02-CS02-CK02-CS02-CX03-CS23-C··-sep-3 W sD736
+sD784 : SD784
+sD784 = lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS ∷ᵃ nil
+lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv : _
+lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv = D784.lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv W sD784
+sD787 : SD787
+sD787 = lem-b2g-0100R1 ∷ᵃ lem-conjF-X0-CS01-CS01-CK10-CS01-CX13-CS ∷ᵃ lem-Pm-Gad⟨t≡0-W≡⟨⟩-d≡SK-e≡-1⟩-Gad⟨t≡1-W≡⟨⟩-d≡SdKdSS-e≡-1⟩ ∷ᵃ lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv ∷ᵃ nil
+lem-shift-0000R0-0100R1-X0-CS01-CS01-CK10-CS01-CX13-CS : _
+lem-shift-0000R0-0100R1-X0-CS01-CS01-CK10-CS01-CX13-CS = D787.lem-shift-0000R0-0100R1-X0-CS01-CS01-CK10-CS01-CX13-CS W sD787
+sD785 : SD785
+sD785 = lem-Hc-passes-copies-X0-CS03-CS03-CK30-CS03-CX32-CS ∷ᵃ nil
+lem-Hc-passes-copies-X0-CS03-CS03-CK30-CS03-CX32-CS-ᵖinv : _
+lem-Hc-passes-copies-X0-CS03-CS03-CK30-CS03-CX32-CS-ᵖinv = D785.lem-Hc-passes-copies-X0-CS03-CS03-CK30-CS03-CX32-CS-ᵖinv W sD785
+sD788 : SD788
+sD788 = lem-b2g-0100R1 ∷ᵃ lem-conjF-X0-CS03-CS03-CK30-CS03-CX32-CS ∷ᵃ lem-Pm-Gad⟨t≡0-W≡⟨⟩-d≡SK-e≡-1⟩-Gad⟨t≡1-W≡⟨⟩-d≡SdKdSS-e≡-1⟩ ∷ᵃ lem-Hc-passes-copies-X0-CS03-CS03-CK30-CS03-CX32-CS-ᵖinv ∷ᵃ nil
+lem-shift-0000R0-0100R1-X0-CS03-CS03-CK30-CS03-CX32-CS : _
+lem-shift-0000R0-0100R1-X0-CS03-CS03-CK30-CS03-CX32-CS = D788.lem-shift-0000R0-0100R1-X0-CS03-CS03-CK30-CS03-CX32-CS W sD788
 lem-respell-hyb-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03---⟶-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01- : _
 lem-respell-hyb-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03---⟶-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01- = D450.lem-respell-hyb-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03---⟶-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01- W
 lem-respell-hyb-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03---⟶-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02- : _
@@ -8827,436 +9257,6 @@ lem-resp-TOFF203-CS12-TOFF203-CSd12 : _
 lem-resp-TOFF203-CS12-TOFF203-CSd12 = D710.lem-resp-TOFF203-CS12-TOFF203-CSd12 W sD710
 lem-resp-TOFF103-CS12-TOFF103-CSd12 : _
 lem-resp-TOFF103-CS12-TOFF103-CSd12 = D710.lem-resp-TOFF103-CS12-TOFF103-CSd12 W sD710
-sD571 : SD571
-sD571 = lem-AXIOM-LF-at0321 ∷ᵃ nil
-lem-LF-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK10-CS03-CS03-CS03-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-S3-S3-S3-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS02-CS02-CS02-S2-CK20-CS02-CS02-CS02-CS02-CS02-CS02-S1-CK10-at-3 : _
-lem-LF-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK10-CS03-CS03-CS03-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-S3-S3-S3-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS02-CS02-CS02-S2-CK20-CS02-CS02-CS02-CS02-CS02-CS02-S1-CK10-at-3 = D571.lem-LF-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK10-CS03-CS03-CS03-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-S3-S3-S3-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS02-CS02-CS02-S2-CK20-CS02-CS02-CS02-CS02-CS02-CS02-S1-CK10-at-3 W sD571
-sD577 : SD577
-sD577 = lem-Bar⟨SSKSKK32-⟶0⟩-passes-factors-of-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ nil
-lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 : _
-lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 = D577.lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 W sD577
-sD694 : SD694
-sD694 = lem-pass-X0-X2-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-vs-X3-TOFF123-X3 ∷ᵃ nil
-lem-pass-TOFF123-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 : _
-lem-pass-TOFF123-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 = D694.lem-pass-TOFF123-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 W sD694
-sD718 : SD718
-sD718 = lem-Bar⟨SSKSKK31-⟶0⟩-passes-factors-of-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ nil
-lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 : _
-lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 = D718.lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 W sD718
-sD719 : SD719
-sD719 = lem-Bar⟨SSSKSS31-⟶0⟩-passes-factors-of-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ nil
-lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 : _
-lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 = D719.lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 W sD719
-sD736 : SD736
-sD736 = lem-AXIOM-LF-at0213 ∷ᵃ lem-LF-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CK20-CS02-CK30-CS02-CS02-CS02-S2-CK20-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-S2-S2-S2-S2-CK20-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CS02-CX12-CS01-CS01-CS01-S1-CK10-CS01-CS01-CS01-CS01-CS01-CS01-S3-CK30-at-2 ∷ᵃ lem-kk-pieces-X0-X1-X2-X3-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01-CK01-S0--at-2 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X2-X3-TOFF302-X2-X3 ∷ᵃ lem-kk-pieces-X1-X2-X3-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12-CK21-S2-CS1-at-2 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX21-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-CK10-CK10-vs-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X1-X2 ∷ᵃ lem-pass-CS02-CS02-CS02-CK20-CS02-CS02-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CK30-CS03-CS03-vs-X2-X3-TOFF302-X2-X3 ∷ᵃ lem-LF-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK10-CS03-CS03-CS03-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-S3-S3-S3-S3-CK30-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS02-CS02-CS02-S2-CK20-CS02-CS02-CS02-CS02-CS02-CS02-S1-CK10-at-3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X3-TOFF103-X0-X3 ∷ᵃ lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X0-X3-TOFF103-X0-X3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX21-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X0-X1-X2 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X0-X2-X3-TOFF302-X0-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CS02-CK20-CS02-CS02-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CK30-CS03-CS03-vs-X0-X2-X3-TOFF302-X0-X2-X3 ∷ᵃ lem-pass-TOFF123-vs-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX31-CK12-S1-CK12-S1-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CK12-CS12-CK12-CK12-X2-X3 ∷ᵃ lem-pass-TOFF123-vs-X2-X3-CS23-CS23-CS23-CK32-CS23-CS23-CX31-CS12-CS12-CS12-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CS12-CK12-CS12-CS12-X2-X3 ∷ᵃ lem-pass-TOFF312-vs-X1-X2-X3-CS12-CS12-CK21-CS12-CK21-CK21-CX23-CK31-S3-CK31-S3-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CK31-CS13-CK31-CK31-X1-X2-X3 ∷ᵃ lem-pass-TOFF312-vs-X1-X2-X3-CS12-CS12-CS12-CK21-CS12-CS12-CX23-CS13-CS13-CS13-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CS13-CK31-CS13-CS13-X1-X2-X3 ∷ᵃ lem-kk-pieces-X0-X2-X3-CS02-CS02-CK02-CS02-CX03-CS23-CS23-CS23-CK32-S3-CS2-at-3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X2-X3-CS23-CS23-CS23-CK32-CS23-CS23-CX31-CS12-CS12-CS12-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CS12-CK12-CS12-CS12-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X1-X2-X3-CS12-CS12-CK21-CS12-CK21-CK21-CX23-CK31-S3-CK31-S3-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CK31-CS13-CK31-CK31-X1-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X1-X2-X3-CS12-CS12-CS12-CK21-CS12-CS12-CX23-CS13-CS13-CS13-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CS13-CK31-CS13-CS13-X1-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX31-CK12-S1-CK12-S1-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CK12-CS12-CK12-CK12-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX31-CK12-S1-CK12-S1-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CK12-CS12-CK12-CK12-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X2-X3-CS23-CS23-CS23-CK32-CS23-CS23-CX31-CS12-CS12-CS12-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CS12-CK12-CS12-CS12-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CS02-CK20-CS02-CS02-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CK30-CS03-CS03-vs-X1-X2-X3-CS12-CS12-CK21-CS12-CK21-CK21-CX23-CK31-S3-CK31-S3-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CK31-CS13-CK31-CK31-X1-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CS02-CK20-CS02-CS02-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CK30-CS03-CS03-vs-X1-X2-X3-CS12-CS12-CS12-CK21-CS12-CS12-CX23-CS13-CS13-CS13-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CS13-CK31-CS13-CS13-X1-X2-X3 ∷ᵃ lem-pass-TOFF123-vs-X0-X3-TOFF103-X0-X3 ∷ᵃ lem-pass-TOFF312-vs-X2-X3-TOFF302-X2-X3 ∷ᵃ lem-pass-TOFF312-vs-X0-X2-X3-TOFF302-X0-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX21-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-CK10-CK10-vs-X2-X3-TOFF302-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX21-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-CK10-CK10-vs-X1-X2-X3-CS12-CS12-CK21-CS12-CK21-CK21-CX23-CK31-S3-CK31-S3-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CK31-CS13-CK31-CK31-X1-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX21-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-CK10-CK10-vs-X1-X2-X3-CS12-CS12-CS12-CK21-CS12-CS12-CX23-CS13-CS13-CS13-CS13-CS13-CS13-CK31-S3-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CS13-CX23-CS13-CS13-CS13-CK31-CS13-CS13-X1-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX31-CK12-S1-CK12-S1-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CK12-CS12-CK12-CK12-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X2-X3-CS23-CS23-CS23-CK32-CS23-CS23-CX31-CS12-CS12-CS12-CS12-CS12-CS12-CK12-S1-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CS12-CX31-CS12-CS12-CS12-CK12-CS12-CS12-X2-X3 ∷ᵃ lem-pass-TOFF312-vs-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X1-X2 ∷ᵃ lem-pass-TOFF123-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX21-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX21-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X2-X3-TOFF302-X0-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX32-CK20-S2-CK20-S2-CS02-CS02-CS02-CK20-S2-CS02-CS02-CS02-CS02-CS02-CS02-CX32-CS02-CS02-CK20-CS02-CK20-CK20-vs-X0-X3-TOFF103-X0-X3 ∷ᵃ lem-pass-TOFF312-vs-X0-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X0-X1-X2 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X1-X2 ∷ᵃ lem-pass-CS02-CS02-CS02-CK20-CS02-CS02-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CK30-CS03-CS03-vs-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X1-X2 ∷ᵃ lem-pass-CS03-CS03-CK30-CS03-CK30-CK30-CX31-CK10-S1-CK10-S1-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CK10-CS01-CK10-CK10-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ lem-pass-CS03-CS03-CS03-CK30-CS03-CS03-CX31-CS01-CS01-CS01-CS01-CS01-CS01-CK10-S1-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CS01-CX31-CS01-CS01-CS01-CK10-CS01-CS01-vs-X0-X2-X3-CS23-CS23-CK32-CS23-CK32-CK32-CX30-CK02-S0-CK02-S0-CS02-CS02-CS02-CK02-S0-CS02-CS02-CS02-CS02-CS02-CS02-CX30-CS02-CS02-CK02-CS02-CK02-CK02-X0-X2-X3 ∷ᵃ lem-pass-CS02-CS02-CK20-CS02-CK20-CK20-CX23-CK30-S3-CK30-S3-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CK30-CS03-CK30-CK30-vs-X0-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X0-X1-X2 ∷ᵃ lem-pass-CS02-CS02-CS02-CK20-CS02-CS02-CX23-CS03-CS03-CS03-CS03-CS03-CS03-CK30-S3-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CS03-CX23-CS03-CS03-CS03-CK30-CS03-CS03-vs-X0-X1-X2-CS12-CS12-CK21-CS12-CK21-CK21-CX20-CK01-S0-CK01-S0-CS01-CS01-CS01-CK01-S0-CS01-CS01-CS01-CS01-CS01-CS01-CX20-CS01-CS01-CK01-CS01-CK01-CK01-X0-X1-X2 ∷ᵃ nil
-lem-kk-CS01-CS01-CK10-CS01-CX12-CS02-··-X1-X2-X3-CS01-CS01-CK01-CS01-CX02-CS12-C··-sep-2 : _
-lem-kk-CS01-CS01-CK10-CS01-CX12-CS02-··-X1-X2-X3-CS01-CS01-CK01-CS01-CX02-CS12-C··-sep-2 = D736.lem-kk-CS01-CS01-CK10-CS01-CX12-CS02-··-X1-X2-X3-CS01-CS01-CK01-CS01-CX02-CS12-C··-sep-2 W sD736
-lem-kk-CS02-CS02-CK20-CS02-CX23-CS03-··-X0-X2-X3-CS02-CS02-CK02-CS02-CX03-CS23-C··-sep-3 : _
-lem-kk-CS02-CS02-CK20-CS02-CX23-CS03-··-X0-X2-X3-CS02-CS02-CK02-CS02-CX03-CS23-C··-sep-3 = D736.lem-kk-CS02-CS02-CK20-CS02-CX23-CS03-··-X0-X2-X3-CS02-CS02-CK02-CS02-CX03-CS23-C··-sep-3 W sD736
-sD784 : SD784
-sD784 = lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS ∷ᵃ nil
-lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv : _
-lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv = D784.lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv W sD784
-sD787 : SD787
-sD787 = lem-b2g-0100R1 ∷ᵃ lem-conjF-X0-CS01-CS01-CK10-CS01-CX13-CS ∷ᵃ lem-Pm-Gad⟨t≡0-W≡⟨⟩-d≡SK-e≡-1⟩-Gad⟨t≡1-W≡⟨⟩-d≡SdKdSS-e≡-1⟩ ∷ᵃ lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv ∷ᵃ nil
-lem-shift-0000R0-0100R1-X0-CS01-CS01-CK10-CS01-CX13-CS : _
-lem-shift-0000R0-0100R1-X0-CS01-CS01-CK10-CS01-CX13-CS = D787.lem-shift-0000R0-0100R1-X0-CS01-CS01-CK10-CS01-CX13-CS W sD787
-sD785 : SD785
-sD785 = lem-Hc-passes-copies-X0-CS03-CS03-CK30-CS03-CX32-CS ∷ᵃ nil
-lem-Hc-passes-copies-X0-CS03-CS03-CK30-CS03-CX32-CS-ᵖinv : _
-lem-Hc-passes-copies-X0-CS03-CS03-CK30-CS03-CX32-CS-ᵖinv = D785.lem-Hc-passes-copies-X0-CS03-CS03-CK30-CS03-CX32-CS-ᵖinv W sD785
-sD788 : SD788
-sD788 = lem-b2g-0100R1 ∷ᵃ lem-conjF-X0-CS03-CS03-CK30-CS03-CX32-CS ∷ᵃ lem-Pm-Gad⟨t≡0-W≡⟨⟩-d≡SK-e≡-1⟩-Gad⟨t≡1-W≡⟨⟩-d≡SdKdSS-e≡-1⟩ ∷ᵃ lem-Hc-passes-copies-X0-CS03-CS03-CK30-CS03-CX32-CS-ᵖinv ∷ᵃ nil
-lem-shift-0000R0-0100R1-X0-CS03-CS03-CK30-CS03-CX32-CS : _
-lem-shift-0000R0-0100R1-X0-CS03-CS03-CK30-CS03-CX32-CS = D788.lem-shift-0000R0-0100R1-X0-CS03-CS03-CK30-CS03-CX32-CS W sD788
-lem-sw0-TOFF023 : _
-lem-sw0-TOFF023 = D017.lem-sw0-TOFF023 W
-lem-sw0-TOFF102 : _
-lem-sw0-TOFF102 = D017.lem-sw0-TOFF102 W
-lem-sw0-TOFF103 : _
-lem-sw0-TOFF103 = D017.lem-sw0-TOFF103 W
-lem-sw0-TOFF123 : _
-lem-sw0-TOFF123 = D017.lem-sw0-TOFF123 W
-lem-sw0-TOFF201 : _
-lem-sw0-TOFF201 = D017.lem-sw0-TOFF201 W
-lem-sw0-TOFF203 : _
-lem-sw0-TOFF203 = D017.lem-sw0-TOFF203 W
-lem-sw0-TOFF213 : _
-lem-sw0-TOFF213 = D017.lem-sw0-TOFF213 W
-lem-sw0-TOFF301 : _
-lem-sw0-TOFF301 = D017.lem-sw0-TOFF301 W
-lem-sw0-TOFF302 : _
-lem-sw0-TOFF302 = D017.lem-sw0-TOFF302 W
-lem-sw0-TOFF312 : _
-lem-sw0-TOFF312 = D017.lem-sw0-TOFF312 W
-lem-sw1-S0 : _
-lem-sw1-S0 = D017.lem-sw1-S0 W
-lem-sw1-Sd0 : _
-lem-sw1-Sd0 = D017.lem-sw1-Sd0 W
-lem-sw1-K0 : _
-lem-sw1-K0 = D017.lem-sw1-K0 W
-lem-sw1-Kd0 : _
-lem-sw1-Kd0 = D017.lem-sw1-Kd0 W
-lem-sw1-X0 : _
-lem-sw1-X0 = D017.lem-sw1-X0 W
-lem-sw1-Z0 : _
-lem-sw1-Z0 = D017.lem-sw1-Z0 W
-lem-sw1-S1 : _
-lem-sw1-S1 = D017.lem-sw1-S1 W
-lem-sw1-Sd1 : _
-lem-sw1-Sd1 = D017.lem-sw1-Sd1 W
-lem-sw1-K1 : _
-lem-sw1-K1 = D017.lem-sw1-K1 W
-lem-sw1-Kd1 : _
-lem-sw1-Kd1 = D017.lem-sw1-Kd1 W
-lem-sw1-X1 : _
-lem-sw1-X1 = D017.lem-sw1-X1 W
-lem-sw1-Z1 : _
-lem-sw1-Z1 = D017.lem-sw1-Z1 W
-lem-sw1-S2 : _
-lem-sw1-S2 = D017.lem-sw1-S2 W
-lem-sw1-Sd2 : _
-lem-sw1-Sd2 = D017.lem-sw1-Sd2 W
-lem-sw1-K2 : _
-lem-sw1-K2 = D017.lem-sw1-K2 W
-lem-sw1-Kd2 : _
-lem-sw1-Kd2 = D017.lem-sw1-Kd2 W
-lem-sw1-X2 : _
-lem-sw1-X2 = D017.lem-sw1-X2 W
-lem-sw1-Z2 : _
-lem-sw1-Z2 = D017.lem-sw1-Z2 W
-lem-sw1-S3 : _
-lem-sw1-S3 = D017.lem-sw1-S3 W
-lem-sw1-Sd3 : _
-lem-sw1-Sd3 = D017.lem-sw1-Sd3 W
-lem-sw1-K3 : _
-lem-sw1-K3 = D017.lem-sw1-K3 W
-lem-sw1-Kd3 : _
-lem-sw1-Kd3 = D017.lem-sw1-Kd3 W
-lem-sw1-X3 : _
-lem-sw1-X3 = D017.lem-sw1-X3 W
-lem-sw1-Z3 : _
-lem-sw1-Z3 = D017.lem-sw1-Z3 W
-lem-sw1-CS01 : _
-lem-sw1-CS01 = D017.lem-sw1-CS01 W
-lem-sw1-CSd01 : _
-lem-sw1-CSd01 = D017.lem-sw1-CSd01 W
-lem-sw1-CZ01 : _
-lem-sw1-CZ01 = D017.lem-sw1-CZ01 W
-lem-sw1-CX01 : _
-lem-sw1-CX01 = D017.lem-sw1-CX01 W
-lem-sw1-CK01 : _
-lem-sw1-CK01 = D017.lem-sw1-CK01 W
-lem-sw1-CKd01 : _
-lem-sw1-CKd01 = D017.lem-sw1-CKd01 W
-lem-sw1-CS02 : _
-lem-sw1-CS02 = D017.lem-sw1-CS02 W
-lem-sw1-CSd02 : _
-lem-sw1-CSd02 = D017.lem-sw1-CSd02 W
-lem-sw1-CZ02 : _
-lem-sw1-CZ02 = D017.lem-sw1-CZ02 W
-lem-sw1-CX02 : _
-lem-sw1-CX02 = D017.lem-sw1-CX02 W
-lem-sw1-CK02 : _
-lem-sw1-CK02 = D017.lem-sw1-CK02 W
-lem-sw1-CKd02 : _
-lem-sw1-CKd02 = D017.lem-sw1-CKd02 W
-lem-sw1-CS03 : _
-lem-sw1-CS03 = D017.lem-sw1-CS03 W
-lem-sw1-CSd03 : _
-lem-sw1-CSd03 = D017.lem-sw1-CSd03 W
-lem-sw1-CZ03 : _
-lem-sw1-CZ03 = D017.lem-sw1-CZ03 W
-lem-sw1-CX03 : _
-lem-sw1-CX03 = D017.lem-sw1-CX03 W
-lem-sw1-CK03 : _
-lem-sw1-CK03 = D017.lem-sw1-CK03 W
-lem-sw1-CKd03 : _
-lem-sw1-CKd03 = D017.lem-sw1-CKd03 W
-lem-sw1-CX10 : _
-lem-sw1-CX10 = D017.lem-sw1-CX10 W
-lem-sw1-CK10 : _
-lem-sw1-CK10 = D017.lem-sw1-CK10 W
-lem-sw1-CKd10 : _
-lem-sw1-CKd10 = D017.lem-sw1-CKd10 W
-lem-sw1-CS12 : _
-lem-sw1-CS12 = D017.lem-sw1-CS12 W
-lem-sw1-CSd12 : _
-lem-sw1-CSd12 = D017.lem-sw1-CSd12 W
-lem-sw1-CZ12 : _
-lem-sw1-CZ12 = D017.lem-sw1-CZ12 W
-lem-sw1-CX12 : _
-lem-sw1-CX12 = D017.lem-sw1-CX12 W
-lem-sw1-CK12 : _
-lem-sw1-CK12 = D017.lem-sw1-CK12 W
-lem-sw1-CKd12 : _
-lem-sw1-CKd12 = D017.lem-sw1-CKd12 W
-lem-sw1-CS13 : _
-lem-sw1-CS13 = D017.lem-sw1-CS13 W
-lem-sw1-CSd13 : _
-lem-sw1-CSd13 = D017.lem-sw1-CSd13 W
-lem-sw1-CZ13 : _
-lem-sw1-CZ13 = D017.lem-sw1-CZ13 W
-lem-sw1-CX13 : _
-lem-sw1-CX13 = D017.lem-sw1-CX13 W
-lem-sw1-CK13 : _
-lem-sw1-CK13 = D017.lem-sw1-CK13 W
-lem-sw1-CKd13 : _
-lem-sw1-CKd13 = D017.lem-sw1-CKd13 W
-lem-sw1-CX20 : _
-lem-sw1-CX20 = D017.lem-sw1-CX20 W
-lem-sw1-CK20 : _
-lem-sw1-CK20 = D017.lem-sw1-CK20 W
-lem-sw1-CKd20 : _
-lem-sw1-CKd20 = D017.lem-sw1-CKd20 W
-lem-sw1-CX21 : _
-lem-sw1-CX21 = D017.lem-sw1-CX21 W
-lem-sw1-CK21 : _
-lem-sw1-CK21 = D017.lem-sw1-CK21 W
-lem-sw1-CKd21 : _
-lem-sw1-CKd21 = D017.lem-sw1-CKd21 W
-lem-sw1-CS23 : _
-lem-sw1-CS23 = D017.lem-sw1-CS23 W
-lem-sw1-CSd23 : _
-lem-sw1-CSd23 = D017.lem-sw1-CSd23 W
-lem-sw1-CZ23 : _
-lem-sw1-CZ23 = D017.lem-sw1-CZ23 W
-lem-sw1-CX23 : _
-lem-sw1-CX23 = D017.lem-sw1-CX23 W
-lem-sw1-CK23 : _
-lem-sw1-CK23 = D017.lem-sw1-CK23 W
-lem-sw1-CKd23 : _
-lem-sw1-CKd23 = D017.lem-sw1-CKd23 W
-lem-sw1-CX30 : _
-lem-sw1-CX30 = D017.lem-sw1-CX30 W
-lem-sw1-CK30 : _
-lem-sw1-CK30 = D017.lem-sw1-CK30 W
-lem-sw1-CKd30 : _
-lem-sw1-CKd30 = D017.lem-sw1-CKd30 W
-lem-sw1-CX31 : _
-lem-sw1-CX31 = D017.lem-sw1-CX31 W
-lem-sw1-CK31 : _
-lem-sw1-CK31 = D017.lem-sw1-CK31 W
-lem-sw1-CKd31 : _
-lem-sw1-CKd31 = D017.lem-sw1-CKd31 W
-lem-sw1-CX32 : _
-lem-sw1-CX32 = D017.lem-sw1-CX32 W
-lem-sw1-CK32 : _
-lem-sw1-CK32 = D017.lem-sw1-CK32 W
-lem-sw1-CKd32 : _
-lem-sw1-CKd32 = D017.lem-sw1-CKd32 W
-lem-sw1-CCZ012 : _
-lem-sw1-CCZ012 = D017.lem-sw1-CCZ012 W
-lem-sw1-CCZ013 : _
-lem-sw1-CCZ013 = D017.lem-sw1-CCZ013 W
-lem-sw1-CCZ023 : _
-lem-sw1-CCZ023 = D017.lem-sw1-CCZ023 W
-lem-sw1-CCZ123 : _
-lem-sw1-CCZ123 = D017.lem-sw1-CCZ123 W
-lem-sw1-TOFF012 : _
-lem-sw1-TOFF012 = D017.lem-sw1-TOFF012 W
-lem-sw1-TOFF013 : _
-lem-sw1-TOFF013 = D017.lem-sw1-TOFF013 W
-lem-sw1-TOFF023 : _
-lem-sw1-TOFF023 = D017.lem-sw1-TOFF023 W
-lem-sw1-TOFF102 : _
-lem-sw1-TOFF102 = D017.lem-sw1-TOFF102 W
-lem-sw1-TOFF103 : _
-lem-sw1-TOFF103 = D018.lem-sw1-TOFF103 W
-lem-sw1-TOFF123 : _
-lem-sw1-TOFF123 = D018.lem-sw1-TOFF123 W
-lem-sw1-TOFF201 : _
-lem-sw1-TOFF201 = D018.lem-sw1-TOFF201 W
-lem-sw1-TOFF203 : _
-lem-sw1-TOFF203 = D018.lem-sw1-TOFF203 W
-lem-sw1-TOFF213 : _
-lem-sw1-TOFF213 = D018.lem-sw1-TOFF213 W
-lem-sw1-TOFF301 : _
-lem-sw1-TOFF301 = D018.lem-sw1-TOFF301 W
-lem-sw1-TOFF302 : _
-lem-sw1-TOFF302 = D018.lem-sw1-TOFF302 W
-lem-sw1-TOFF312 : _
-lem-sw1-TOFF312 = D018.lem-sw1-TOFF312 W
-lem-sw2-S0 : _
-lem-sw2-S0 = D018.lem-sw2-S0 W
-lem-sw2-Sd0 : _
-lem-sw2-Sd0 = D018.lem-sw2-Sd0 W
-lem-sw2-K0 : _
-lem-sw2-K0 = D018.lem-sw2-K0 W
-lem-sw2-Kd0 : _
-lem-sw2-Kd0 = D018.lem-sw2-Kd0 W
-lem-sw2-X0 : _
-lem-sw2-X0 = D018.lem-sw2-X0 W
-lem-sw2-Z0 : _
-lem-sw2-Z0 = D018.lem-sw2-Z0 W
-lem-sw2-S1 : _
-lem-sw2-S1 = D018.lem-sw2-S1 W
-lem-sw2-Sd1 : _
-lem-sw2-Sd1 = D018.lem-sw2-Sd1 W
-lem-sw2-K1 : _
-lem-sw2-K1 = D018.lem-sw2-K1 W
-lem-sw2-Kd1 : _
-lem-sw2-Kd1 = D018.lem-sw2-Kd1 W
-lem-sw2-X1 : _
-lem-sw2-X1 = D018.lem-sw2-X1 W
-lem-sw2-Z1 : _
-lem-sw2-Z1 = D018.lem-sw2-Z1 W
-lem-sw2-S2 : _
-lem-sw2-S2 = D018.lem-sw2-S2 W
-lem-sw2-Sd2 : _
-lem-sw2-Sd2 = D018.lem-sw2-Sd2 W
-lem-sw2-K2 : _
-lem-sw2-K2 = D018.lem-sw2-K2 W
-lem-sw2-Kd2 : _
-lem-sw2-Kd2 = D018.lem-sw2-Kd2 W
-lem-sw2-X2 : _
-lem-sw2-X2 = D018.lem-sw2-X2 W
-lem-sw2-Z2 : _
-lem-sw2-Z2 = D018.lem-sw2-Z2 W
-lem-sw2-S3 : _
-lem-sw2-S3 = D018.lem-sw2-S3 W
-lem-sw2-Sd3 : _
-lem-sw2-Sd3 = D018.lem-sw2-Sd3 W
-lem-sw2-K3 : _
-lem-sw2-K3 = D018.lem-sw2-K3 W
-lem-sw2-Kd3 : _
-lem-sw2-Kd3 = D018.lem-sw2-Kd3 W
-lem-sw2-X3 : _
-lem-sw2-X3 = D018.lem-sw2-X3 W
-lem-sw2-Z3 : _
-lem-sw2-Z3 = D018.lem-sw2-Z3 W
-lem-sw2-CS01 : _
-lem-sw2-CS01 = D018.lem-sw2-CS01 W
-lem-sw2-CSd01 : _
-lem-sw2-CSd01 = D018.lem-sw2-CSd01 W
-lem-sw2-CZ01 : _
-lem-sw2-CZ01 = D018.lem-sw2-CZ01 W
-lem-sw2-CX01 : _
-lem-sw2-CX01 = D018.lem-sw2-CX01 W
-lem-sw2-CK01 : _
-lem-sw2-CK01 = D018.lem-sw2-CK01 W
-lem-sw2-CKd01 : _
-lem-sw2-CKd01 = D018.lem-sw2-CKd01 W
-lem-sw2-CS02 : _
-lem-sw2-CS02 = D018.lem-sw2-CS02 W
-lem-sw2-CSd02 : _
-lem-sw2-CSd02 = D018.lem-sw2-CSd02 W
-lem-sw2-CZ02 : _
-lem-sw2-CZ02 = D018.lem-sw2-CZ02 W
-lem-sw2-CX02 : _
-lem-sw2-CX02 = D018.lem-sw2-CX02 W
-lem-sw2-CK02 : _
-lem-sw2-CK02 = D018.lem-sw2-CK02 W
-lem-sw2-CKd02 : _
-lem-sw2-CKd02 = D018.lem-sw2-CKd02 W
-lem-sw2-CS03 : _
-lem-sw2-CS03 = D018.lem-sw2-CS03 W
-lem-sw2-CSd03 : _
-lem-sw2-CSd03 = D018.lem-sw2-CSd03 W
-lem-sw2-CZ03 : _
-lem-sw2-CZ03 = D018.lem-sw2-CZ03 W
-lem-sw2-CX03 : _
-lem-sw2-CX03 = D018.lem-sw2-CX03 W
-lem-sw2-CK03 : _
-lem-sw2-CK03 = D018.lem-sw2-CK03 W
-lem-sw2-CKd03 : _
-lem-sw2-CKd03 = D018.lem-sw2-CKd03 W
-lem-sw2-CX10 : _
-lem-sw2-CX10 = D018.lem-sw2-CX10 W
-lem-sw2-CK10 : _
-lem-sw2-CK10 = D018.lem-sw2-CK10 W
-lem-sw2-CKd10 : _
-lem-sw2-CKd10 = D018.lem-sw2-CKd10 W
-lem-sw2-CS12 : _
-lem-sw2-CS12 = D018.lem-sw2-CS12 W
-lem-sw2-CSd12 : _
-lem-sw2-CSd12 = D018.lem-sw2-CSd12 W
-lem-sw2-CZ12 : _
-lem-sw2-CZ12 = D018.lem-sw2-CZ12 W
-lem-sw2-CX12 : _
-lem-sw2-CX12 = D018.lem-sw2-CX12 W
-lem-sw2-CK12 : _
-lem-sw2-CK12 = D018.lem-sw2-CK12 W
-lem-sw2-CKd12 : _
-lem-sw2-CKd12 = D018.lem-sw2-CKd12 W
-lem-sw2-CS13 : _
-lem-sw2-CS13 = D018.lem-sw2-CS13 W
-lem-sw2-CSd13 : _
-lem-sw2-CSd13 = D018.lem-sw2-CSd13 W
-lem-sw2-CZ13 : _
-lem-sw2-CZ13 = D018.lem-sw2-CZ13 W
-lem-sw2-CX13 : _
-lem-sw2-CX13 = D018.lem-sw2-CX13 W
-lem-sw2-CK13 : _
-lem-sw2-CK13 = D018.lem-sw2-CK13 W
-lem-sw2-CKd13 : _
-lem-sw2-CKd13 = D018.lem-sw2-CKd13 W
-lem-sw2-CX20 : _
-lem-sw2-CX20 = D018.lem-sw2-CX20 W
-lem-sw2-CK20 : _
-lem-sw2-CK20 = D018.lem-sw2-CK20 W
-lem-sw2-CKd20 : _
-lem-sw2-CKd20 = D018.lem-sw2-CKd20 W
-lem-sw2-CX21 : _
-lem-sw2-CX21 = D018.lem-sw2-CX21 W
-lem-sw2-CK21 : _
-lem-sw2-CK21 = D018.lem-sw2-CK21 W
-lem-sw2-CKd21 : _
-lem-sw2-CKd21 = D018.lem-sw2-CKd21 W
-lem-sw2-CS23 : _
-lem-sw2-CS23 = D018.lem-sw2-CS23 W
-lem-sw2-CSd23 : _
-lem-sw2-CSd23 = D018.lem-sw2-CSd23 W
-lem-sw2-CZ23 : _
-lem-sw2-CZ23 = D018.lem-sw2-CZ23 W
-lem-sw2-CX23 : _
-lem-sw2-CX23 = D018.lem-sw2-CX23 W
-lem-sw2-CK23 : _
-lem-sw2-CK23 = D018.lem-sw2-CK23 W
-lem-sw2-CKd23 : _
-lem-sw2-CKd23 = D018.lem-sw2-CKd23 W
-lem-sw2-CX30 : _
-lem-sw2-CX30 = D018.lem-sw2-CX30 W
-lem-sw2-CK30 : _
-lem-sw2-CK30 = D018.lem-sw2-CK30 W
-lem-sw2-CKd30 : _
-lem-sw2-CKd30 = D018.lem-sw2-CKd30 W
-lem-sw2-CX31 : _
-lem-sw2-CX31 = D018.lem-sw2-CX31 W
-lem-sw2-CK31 : _
-lem-sw2-CK31 = D018.lem-sw2-CK31 W
-lem-sw2-CKd31 : _
-lem-sw2-CKd31 = D018.lem-sw2-CKd31 W
-lem-sw2-CX32 : _
-lem-sw2-CX32 = D018.lem-sw2-CX32 W
-lem-sw2-CK32 : _
-lem-sw2-CK32 = D018.lem-sw2-CK32 W
-lem-sw2-CKd32 : _
-lem-sw2-CKd32 = D018.lem-sw2-CKd32 W
-lem-sw2-CCZ012 : _
-lem-sw2-CCZ012 = D018.lem-sw2-CCZ012 W
-lem-sw2-CCZ013 : _
-lem-sw2-CCZ013 = D018.lem-sw2-CCZ013 W
-lem-sw2-CCZ023 : _
-lem-sw2-CCZ023 = D018.lem-sw2-CCZ023 W
-lem-sw2-CCZ123 : _
-lem-sw2-CCZ123 = D018.lem-sw2-CCZ123 W
-lem-sw2-TOFF012 : _
-lem-sw2-TOFF012 = D018.lem-sw2-TOFF012 W
-lem-sw2-TOFF013 : _
-lem-sw2-TOFF013 = D018.lem-sw2-TOFF013 W
-lem-sw2-TOFF023 : _
-lem-sw2-TOFF023 = D018.lem-sw2-TOFF023 W
-lem-sw2-TOFF102 : _
-lem-sw2-TOFF102 = D018.lem-sw2-TOFF102 W
-lem-sw2-TOFF103 : _
-lem-sw2-TOFF103 = D018.lem-sw2-TOFF103 W
-lem-sw2-TOFF123 : _
-lem-sw2-TOFF123 = D018.lem-sw2-TOFF123 W
-lem-sw2-TOFF201 : _
-lem-sw2-TOFF201 = D018.lem-sw2-TOFF201 W
-lem-sw2-TOFF203 : _
-lem-sw2-TOFF203 = D018.lem-sw2-TOFF203 W
 lem-pass-CS03-CS03-CS03-CK03-CS03-CS03-CX02-CS23-CS23-CS23-CS23-CS23-CS23-CK23-S2-CS23-CS23-CS23-CS23-CS23-CS23-CS23-CS23-CS23-CX02-CS23-CS23-CS23-CK23-CS23-CS23-vs-CSd01 : _
 lem-pass-CS03-CS03-CS03-CK03-CS03-CS03-CX02-CS23-CS23-CS23-CS23-CS23-CS23-CK23-S2-CS23-CS23-CS23-CS23-CS23-CS23-CS23-CS23-CS23-CX02-CS23-CS23-CS23-CK23-CS23-CS23-vs-CSd01 = D509.lem-pass-CS03-CS03-CS03-CK03-CS03-CS03-CX02-CS23-CS23-CS23-CS23-CS23-CS23-CK23-S2-CS23-CS23-CS23-CS23-CS23-CS23-CS23-CS23-CS23-CX02-CS23-CS23-CS23-CK23-CS23-CS23-vs-CSd01 W
 lem-pass-CS03-CS03-CS03-CK03-CS03-CS03-CX02-CS23-CS23-CS23-CS23-CS23-CS23-CK23-S2-CS23-CS23-CS23-CS23-CS23-CS23-CS23-CS23-CS23-CX02-CS23-CS23-CS23-CK23-CS23-CS23-vs-X0-CKd02-X0 : _

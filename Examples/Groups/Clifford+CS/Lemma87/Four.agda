@@ -15,7 +15,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Lemma87.Four where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; Win ; get)
+open import Examples.Groups.Clifford+CS.Four.CStmt using (clemmas)
+
+module Examples.Groups.Clifford+CS.Lemma87.Four (C : Proofs clemmas) where
 
 open import Data.Bool using (true ; false)
 open import Data.Fin using (#_)
@@ -27,15 +30,13 @@ open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Auxiliary.P using (pp ; px ; ki)
 open import Examples.Groups.Clifford+CS.CompletenessInduction using (D∘E)
 open import Examples.Groups.Clifford+CS.Four.Chain
-open import Examples.Groups.Clifford+CS.Four.TransportTables using (xb)
-open import Examples.Groups.Clifford+CS.Four.Transport using (blk)
-open import Examples.Groups.Clifford+CS.Four.Facts.Bridges
-open import Examples.Groups.Clifford+CS.Four.Facts.HBridges
-open import Examples.Groups.Clifford+CS.Four.Hybrid using (dwd₄)
+open import Examples.Groups.Clifford+CS.Four.TransportTables C using (xb)
+open import Examples.Groups.Clifford+CS.Four.Transport C using (blk)
+open import Examples.Groups.Clifford+CS.Four.Facts.Bridges C
+open import Examples.Groups.Clifford+CS.Four.Facts.HBridges C
+open import Examples.Groups.Clifford+CS.Four.Hybrid C using (dwd₄)
 open import Examples.Groups.Clifford+CS.Lemma87.Chk using (lt)
-open import Examples.Groups.Clifford+CS.Lemma87.Parts
-import Examples.Groups.Clifford+CS.Four.WinInst as WI
-open import Examples.Groups.Clifford+CS.Four.DAll WI.ws using (lem-L87-iI ; lem-L87-K0 ; lem-L87-K1 ; lem-L87-K2 ; lem-L87-K3 ; lem-L87-CS0 ; lem-L87-CS1 ; lem-L87-CS2 ; lem-L87-S0 ; lem-L87-S1 ; lem-L87-S2 ; lem-L87-S3 ; lem-L87-X0 ; lem-L87-X1 ; lem-L87-X2 ; lem-L87-X3)
+open import Examples.Groups.Clifford+CS.Lemma87.Parts C
 open import Examples.Groups.Clifford+CS.Lemma87.Sem.S01 using (s-k-0 ; s-k-1)
 open import Examples.Groups.Clifford+CS.Lemma87.Sem.S02 using (s-k-3 ; s-k-7)
 open import Examples.Groups.Clifford+CS.Lemma87.Sem.S03 using (s-p′-13 ; s-p-1 ; s-p′-12 ; s-p-2)
@@ -47,6 +48,41 @@ open import Examples.Groups.Clifford+CS.Lemma87.Sem.S08 using (s-h-12 ; s-l-2 ; 
 open import Examples.Groups.Clifford+CS.Lemma87.Sem.S09 using (s-h-8 ; s-l-6 ; s-l-13 ; s-h-1)
 open import Examples.Groups.Clifford+CS.Lemma87.Sem.S10 using (s-h-9 ; s-l-5 ; s-l-11 ; s-h-3)
 open import Examples.Groups.Clifford+CS.Lemma87.Sem.S11 using (s-h-7)
+
+-- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+private
+  lem-L87-iI : Win clemmas 557
+  lem-L87-iI = get clemmas C 557
+  lem-L87-K0 : Win clemmas 558
+  lem-L87-K0 = get clemmas C 558
+  lem-L87-K1 : Win clemmas 559
+  lem-L87-K1 = get clemmas C 559
+  lem-L87-K2 : Win clemmas 560
+  lem-L87-K2 = get clemmas C 560
+  lem-L87-K3 : Win clemmas 561
+  lem-L87-K3 = get clemmas C 561
+  lem-L87-CS0 : Win clemmas 562
+  lem-L87-CS0 = get clemmas C 562
+  lem-L87-CS1 : Win clemmas 563
+  lem-L87-CS1 = get clemmas C 563
+  lem-L87-CS2 : Win clemmas 564
+  lem-L87-CS2 = get clemmas C 564
+  lem-L87-S0 : Win clemmas 565
+  lem-L87-S0 = get clemmas C 565
+  lem-L87-S1 : Win clemmas 566
+  lem-L87-S1 = get clemmas C 566
+  lem-L87-S2 : Win clemmas 567
+  lem-L87-S2 = get clemmas C 567
+  lem-L87-S3 : Win clemmas 568
+  lem-L87-S3 = get clemmas C 568
+  lem-L87-X0 : Win clemmas 569
+  lem-L87-X0 = get clemmas C 569
+  lem-L87-X1 : Win clemmas 570
+  lem-L87-X1 = get clemmas C 570
+  lem-L87-X2 : Win clemmas 571
+  lem-L87-X2 = get clemmas C 571
+  lem-L87-X3 : Win clemmas 572
+  lem-L87-X3 = get clemmas C 572
 
 ------------------------------------------------------------------------
 -- The consecutive letters as parts

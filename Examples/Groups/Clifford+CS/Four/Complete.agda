@@ -20,8 +20,9 @@ open import Examples.Groups.Clifford+CS.Completeness
   using (Complete ; complete₀ ; complete₁ ; complete₂ ; complete₃)
 open import Examples.Groups.Clifford+CS.Decoding 0 using (d)
 import Examples.Groups.Clifford+CS.Section8 as Section8
-open import Examples.Groups.Clifford+CS.Four.Hybrid using (dwd₄)
-open import Examples.Groups.Clifford+CS.Lemma87.Four using (d∘e₄)
+import Examples.Groups.Clifford+CS.Four.ConsInst as CI
+open import Examples.Groups.Clifford+CS.Four.Hybrid CI.C using (dwd₄)
+open import Examples.Groups.Clifford+CS.Lemma87.Four CI.C using (d∘e₄)
 
 complete₄ : Complete 4
 complete₄ = Section8.Complete′.complete 0 d dwd₄ d∘e₄

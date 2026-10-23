@@ -12,7 +12,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Four.Facts.Bridges where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; Win ; get)
+open import Examples.Groups.Clifford+CS.Four.CStmt using (clemmas)
+
+module Examples.Groups.Clifford+CS.Four.Facts.Bridges (C : Proofs clemmas) where
 
 open import Data.Bool using (Bool ; true ; false ; not)
 open import Data.List using (List ; [] ; _∷_ ; _++_ ; map)
@@ -24,13 +27,16 @@ open import Word.Base using (ε ; _•_ ; _^_)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Four.Chain
 open import Examples.Groups.Clifford+CS.Four.Flat using (by-flat)
-open import Examples.Groups.Clifford+CS.Four.TransportTables
-open import Examples.Groups.Clifford+CS.Four.Transport
+open import Examples.Groups.Clifford+CS.Four.TransportTables C
+open import Examples.Groups.Clifford+CS.Four.Transport C
 open import Examples.Groups.Clifford+CS.MultiControlled using (Layout ; mc ; G-pp ; G-rot)
 open import Examples.Groups.Clifford+CS.Decoding 0 using (layout□ ; dPP₁ ; dPP₁′ ; lo₁ ; hi₁)
-open import Examples.Groups.Clifford+CS.Four.Bridge using (G-pp-≈)
-import Examples.Groups.Clifford+CS.Four.WinInst as WI
-open import Examples.Groups.Clifford+CS.Four.DAll WI.ws using (lem-bridge-G-rot)
+open import Examples.Groups.Clifford+CS.Four.Bridge C using (G-pp-≈)
+
+-- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+private
+  lem-bridge-G-rot : Win clemmas 478
+  lem-bridge-G-rot = get clemmas C 478
 
 ------------------------------------------------------------------------
 -- Generic lemmas

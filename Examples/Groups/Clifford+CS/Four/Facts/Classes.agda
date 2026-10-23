@@ -10,7 +10,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Four.Facts.Classes where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; Win ; get)
+open import Examples.Groups.Clifford+CS.Four.CStmt using (clemmas)
+
+module Examples.Groups.Clifford+CS.Four.Facts.Classes (C : Proofs clemmas) where
 
 open import Data.Bool using (Bool ; true ; false ; not)
 open import Data.List using (List ; [] ; _∷_ ; _++_ ; map)
@@ -21,10 +24,53 @@ open import Word.Base using (ε ; _•_ ; _^_)
 
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Four.Chain
-open import Examples.Groups.Clifford+CS.Four.TransportTables
-open import Examples.Groups.Clifford+CS.Four.Transport
-import Examples.Groups.Clifford+CS.Four.WinInst as WI
-open import Examples.Groups.Clifford+CS.Four.DAll WI.ws using (lem-cls-0000PP0-1000PP0-≡-e ; lem-cls-0000PP0-0000PP0-0000PP0-0000PP0-≡-e ; lem-cls-0000PP0-0000PP0-≡-0000R0-0000R0 ; lem-cls-0000PP0-1001R0-≡-1001R0-0000PP0 ; lem-cls-0000R0-1000R0-≡-e ; lem-cls-0000R0-0011R0-≡-0011R0-0000R0 ; lem-cls-0000R0-1001R0-≡-1001R0-0000R0 ; lem-cls-0000PP0-0011R2-≡-0011R2-0000PP0 ; lem-cls-0000PP0-1001R1-≡-1001R1-0000PP0 ; lem-cls-0000R0-0011R1-≡-0011R1-0000R0 ; lem-cls-0000PP0-0000R0-≡-0000R0-1000PP0 ; lem-cls-0000PP1-1000PP0-≡-1000PP0-0000PP1 ; lem-cls-0000R0-0111R1-≡-0111R1-0000R0 ; lem-cls-0000R0-1111R0-≡-1111R0-0000R0 ; lem-cls-0000R0-1111R1-≡-1111R1-0000R0 ; lem-cls-0000R0-0001R1-≡-0001R1-0000R0 ; lem-cls-0000R0-0011R2-≡-0011R2-0000R0 ; lem-cls-0000R0-1011R2-≡-1011R2-0000R0 ; lem-cls-0100PP1-0000R0-≡-0000R0-0000PP0-0100PP1 ; lem-cls-0000R0-0100R1-0000R0-≡-0100R1-0000R0-0100R1 ; lem-cls-1000PP0-0000PP1-0100R1-≡-0100R1-1000PP0)
+open import Examples.Groups.Clifford+CS.Four.TransportTables C
+open import Examples.Groups.Clifford+CS.Four.Transport C
+
+-- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+private
+  lem-cls-0000PP0-1000PP0-≡-e : Win clemmas 480
+  lem-cls-0000PP0-1000PP0-≡-e = get clemmas C 480
+  lem-cls-0000PP0-0000PP0-0000PP0-0000PP0-≡-e : Win clemmas 481
+  lem-cls-0000PP0-0000PP0-0000PP0-0000PP0-≡-e = get clemmas C 481
+  lem-cls-0000PP0-0000PP0-≡-0000R0-0000R0 : Win clemmas 482
+  lem-cls-0000PP0-0000PP0-≡-0000R0-0000R0 = get clemmas C 482
+  lem-cls-0000PP0-1001R0-≡-1001R0-0000PP0 : Win clemmas 483
+  lem-cls-0000PP0-1001R0-≡-1001R0-0000PP0 = get clemmas C 483
+  lem-cls-0000R0-1000R0-≡-e : Win clemmas 484
+  lem-cls-0000R0-1000R0-≡-e = get clemmas C 484
+  lem-cls-0000R0-0011R0-≡-0011R0-0000R0 : Win clemmas 485
+  lem-cls-0000R0-0011R0-≡-0011R0-0000R0 = get clemmas C 485
+  lem-cls-0000R0-1001R0-≡-1001R0-0000R0 : Win clemmas 486
+  lem-cls-0000R0-1001R0-≡-1001R0-0000R0 = get clemmas C 486
+  lem-cls-0000PP0-0011R2-≡-0011R2-0000PP0 : Win clemmas 487
+  lem-cls-0000PP0-0011R2-≡-0011R2-0000PP0 = get clemmas C 487
+  lem-cls-0000PP0-1001R1-≡-1001R1-0000PP0 : Win clemmas 488
+  lem-cls-0000PP0-1001R1-≡-1001R1-0000PP0 = get clemmas C 488
+  lem-cls-0000R0-0011R1-≡-0011R1-0000R0 : Win clemmas 489
+  lem-cls-0000R0-0011R1-≡-0011R1-0000R0 = get clemmas C 489
+  lem-cls-0000PP0-0000R0-≡-0000R0-1000PP0 : Win clemmas 490
+  lem-cls-0000PP0-0000R0-≡-0000R0-1000PP0 = get clemmas C 490
+  lem-cls-0000PP1-1000PP0-≡-1000PP0-0000PP1 : Win clemmas 491
+  lem-cls-0000PP1-1000PP0-≡-1000PP0-0000PP1 = get clemmas C 491
+  lem-cls-0000R0-0111R1-≡-0111R1-0000R0 : Win clemmas 492
+  lem-cls-0000R0-0111R1-≡-0111R1-0000R0 = get clemmas C 492
+  lem-cls-0000R0-1111R0-≡-1111R0-0000R0 : Win clemmas 493
+  lem-cls-0000R0-1111R0-≡-1111R0-0000R0 = get clemmas C 493
+  lem-cls-0000R0-1111R1-≡-1111R1-0000R0 : Win clemmas 494
+  lem-cls-0000R0-1111R1-≡-1111R1-0000R0 = get clemmas C 494
+  lem-cls-0000R0-0001R1-≡-0001R1-0000R0 : Win clemmas 495
+  lem-cls-0000R0-0001R1-≡-0001R1-0000R0 = get clemmas C 495
+  lem-cls-0000R0-0011R2-≡-0011R2-0000R0 : Win clemmas 496
+  lem-cls-0000R0-0011R2-≡-0011R2-0000R0 = get clemmas C 496
+  lem-cls-0000R0-1011R2-≡-1011R2-0000R0 : Win clemmas 497
+  lem-cls-0000R0-1011R2-≡-1011R2-0000R0 = get clemmas C 497
+  lem-cls-0100PP1-0000R0-≡-0000R0-0000PP0-0100PP1 : Win clemmas 498
+  lem-cls-0100PP1-0000R0-≡-0000R0-0000PP0-0100PP1 = get clemmas C 498
+  lem-cls-0000R0-0100R1-0000R0-≡-0100R1-0000R0-0100R1 : Win clemmas 499
+  lem-cls-0000R0-0100R1-0000R0-≡-0100R1-0000R0-0100R1 = get clemmas C 499
+  lem-cls-1000PP0-0000PP1-0100R1-≡-0100R1-1000PP0 : Win clemmas 500
+  lem-cls-1000PP0-0000PP1-0100R1-≡-0100R1-1000PP0 = get clemmas C 500
 
 C-0000PP0 : Blk
 C-0000PP0 = blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ [])
