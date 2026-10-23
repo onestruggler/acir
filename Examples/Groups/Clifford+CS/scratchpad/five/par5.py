@@ -44,7 +44,8 @@ unsynced writes.
 Settings by environment: PAR5_REPO (the repository, default the one this
 script is in), AGDA, PAR5_OUT (each job's output, default /tmp/par5_out),
 PAR5_LOCK (default ~/.agda-job.lock, held for the whole run),
-PAR5_HEAP / PAR5_BIG (7G / 12G), PAR5_BUDGET_GB (11), PAR5_RESERVE_GB
+PAR5_HEAP / PAR5_BIG (7G / 12G), PAR5_RTS (further RTS options, default
+-c -A256m), PAR5_BUDGET_GB (11), PAR5_RESERVE_GB
 (2.5), PAR5_BATCH (48; 1 checks one module per process), PAR5_MINB (16:
 with many modules ready, a batch takes at least this many rather than
 spreading them over the idle slots -- each batch loads its imports once,
@@ -87,6 +88,12 @@ TARGETS = sys.argv[3:] or [FIVE + 'Main.agda', FIVE + 'Soundness.agda']
 OUT = os.environ.get('PAR5_OUT', '/tmp/par5_out')
 AGDA = os.environ.get('AGDA', 'agda')
 HEAP, BIG = os.environ.get('PAR5_HEAP', '7G'), os.environ.get('PAR5_BIG', '12G')
+# Further RTS options.  A 256 MB allocation area (GHC's default is 4 MB)
+# cut the garbage collector's share of a job: a batch of twenty Four/D
+# modules 13.3 → 12.1 s, four window libraries 23.0 → 20.5 s, and
+# Four.ConsInst, which loads all of Four/D, 38.3 → 30.8 s (GC 15.8 →
+# 2.7 s) with a lower peak (4.8 → 3.9 GB).
+RTS = os.environ.get('PAR5_RTS', '-c -A256m').split()
 BUDGET = float(os.environ.get('PAR5_BUDGET_GB', '11')) * 1e6     # kB
 RESERVE = float(os.environ.get('PAR5_RESERVE_GB', '2.5')) * 1e6  # kB
 BATCH = int(os.environ.get('PAR5_BATCH', '48'))
@@ -346,7 +353,7 @@ def start(job, heap):
             f.write(f'module Par5Batch.{name} where\n\n' + ''.join(f'import {modname(p)}\n' for p in job))
     out = open(f'{OUT}/{tag}.out', 'w')
     proc = subprocess.Popen(['/usr/bin/time', '-f', 'maxrss=%MkB', 'timeout', '3600', AGDA,
-                             '--profile=modules', '+RTS', f'-M{heap}', '-c', '-RTS', target],
+                             '--profile=modules', '+RTS', f'-M{heap}', *RTS, '-RTS', target],
                             cwd=REPO, stdout=out, stderr=subprocess.STDOUT)
     running[tag] = (proc, time.time(), heap, out, job, target)
     busy.update(job)
