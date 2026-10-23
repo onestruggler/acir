@@ -34,10 +34,11 @@ Memory: at most JOBS jobs; a job starts only if the estimated peaks of the
 running jobs and its own fit PAR5_BUDGET_GB, and its estimate, with those
 of jobs started in the last PAR5_YOUNG seconds (90: not grown yet), fits
 the memory the system reports available less PAR5_RESERVE_GB -- other
-sessions share the machine.  A job's estimate is the larger of 2.5 GB
-plus 7 times the size of the interfaces it loads (everything its
-modules import in the repository) and the peak measured for modules of
-its kind (DEFAULT before the first) plus a little per batch member.
+sessions share the machine.  A job's estimate is the larger of
+PAR5_FLOOR_GB (1.2) plus PAR5_MEMRATE (15) times the size of the
+interfaces it loads (everything its modules import in the repository)
+and the peak measured for single modules of its kind, plus a little per
+batch member.
 Every finished job is synced to disk: a restart of the WSL VM loses
 unsynced writes.
 
@@ -98,7 +99,20 @@ BUDGET = float(os.environ.get('PAR5_BUDGET_GB', '11')) * 1e6     # kB
 RESERVE = float(os.environ.get('PAR5_RESERVE_GB', '2.5')) * 1e6  # kB
 BATCH = int(os.environ.get('PAR5_BATCH', '48'))
 MINB = int(os.environ.get('PAR5_MINB', '16'))
-DEFAULT = 3.5e6                                                  # kB
+# The fixed part of a job's estimated peak (PAR5_FLOOR_GB): 2.5 GB when a
+# Four/D module loading 87 MB peaked at 2.7 GB; since the derivation
+# modules take their lemmas as parameters, and with -A256m, 114 of the
+# 150 jobs of a from-scratch run peak under 1.5 GB.
+FLOOR = float(os.environ.get('PAR5_FLOOR_GB', '1.2')) * 1e6
+# The peak per kB of interfaces loaded (PAR5_MEMRATE): measured with
+# -A256m, Four/DAll 3.5 GB loading 178 MB, Four.ConsInst with
+# Four.Complete 5.1 GB loading 307 MB, Five.F1 4.2 GB loading 184 MB, a
+# window library 1.0 GB loading 10 MB.  A kind of module with no single
+# job measured yet counts nothing beyond this (a default of 3.5 GB had been
+# every batch's estimate, so that six of them filled the budget and the
+# jobs started in the last 90 s held back the rest: 4.1 jobs at a time
+# on average, whatever JOBS was).
+MEMRATE = float(os.environ.get('PAR5_MEMRATE', '15'))
 BIGSRC = int(os.environ.get('PAR5_BIGSRC', '0'))                # 0: none
 os.makedirs(OUT, exist_ok=True)
 
@@ -235,7 +249,7 @@ def peak(p):
     if p in force: return force[p]
     if big(p): return 12e6
     xs = measured.get(kind(p))
-    return sum(xs) / len(xs) if xs else DEFAULT
+    return sum(xs) / len(xs) if xs else 0
 
 
 # What a job loads: the interfaces of everything its modules import, in
@@ -266,7 +280,7 @@ def loads(job):
 def estimate(job):
     # measured: a batch of ten peaks at about its largest member (3.1-3.3 GB)
     by_kind = max(peak(p) for p in job) + 0.03e6 * (len(job) - 1)
-    return min(max(by_kind, 2.5e6 + 7.0 * loads(job)), 14e6)
+    return min(max(by_kind, FLOOR + MEMRATE * loads(job)), 14e6)
 
 
 # Checking times of earlier runs (PAR5_COSTS: comma-separated logs), in
