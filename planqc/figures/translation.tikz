@@ -1,0 +1,22 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=term] (0) at (-3, 1.75) {$C_1$};
+		\node [style=term] (1) at (3, 1.75) {$C_1'$};
+		\node [style=term] (2) at (-3, -1.5) {$C_2$};
+		\node [style=term] (3) at (3, -1.5) {$C_2'$};
+		\node [style=rule label] (4) at (0, 2.3) {Translate};
+		\node [style=rule label] (5) at (0, -2.05) {Translate};
+		\node [style=rule label] (6) at (-4.5, 0) {Rewrite\\Rules};
+		\node [style=rule label] (7) at (5.35, 0) {Complete\\Equational\\Theory};
+		\node [style=none] (8) at (2.3, 0) {};
+		\node [style=none] (9) at (-2.3, 0) {};
+		\node [style=rule label] (10) at (0, 0.5) {Translate back};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=translate] (0) to (1);
+		\draw [style=translate] (2) to (3);
+		\draw [style=equal] (0) to (2);
+		\draw [style=equal] (1) to (3);
+		\draw [style=translate back] (8.center) to (9.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

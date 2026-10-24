@@ -12,32 +12,48 @@
 \setcopyright{none}
 \renewcommand\footnotetextcopyrightpermission[1]{}
 
-%% The contact footnote lists the e-mail addresses only; the names and
-%% affiliations stay in the title block.
+%% The authors' names share one line in the title block, each marked
+%% by a superscript; the affiliations and e-mail addresses are in the
+%% first-page footnote (\authorsaddresses below), under the same marks.
+%% The marks stay out of the PDF metadata.
+\newcommand{\affmark}[1]{\texorpdfstring{\textsuperscript{#1}}{}}
 \makeatletter
-\def\@mkauthorsaddresses{%
-  Contact:
-  \bgroup
-  \def\position##1{\unskip\ignorespaces}%
-  \def\institution##1{\unskip\ignorespaces}%
-  \def\city##1{\unskip\ignorespaces}%
-  \def\state##1{\unskip\ignorespaces}%
-  \renewcommand\department[2][0]{\unskip\ignorespaces}%
-  \def\country##1{\unskip\ignorespaces}%
-  \def\and{\unskip, }%
-  \def\@author##1{\ignorespaces}%
-  \def\email##1##2{\unskip\ \mbox{\nolinkurl{##2}}}%
-  \addresses
-  \egroup}
 %% No final period, which would read as part of the last address.
 \def\@setauthorsaddresses{\@authorsaddresses\unskip}
+%% Names as written, not in the capitals acmsmall sets them in.
+\let\planqc@mkauthors\@mkauthors
+\def\@mkauthors{\begingroup\let\MakeUppercase\@firstofone
+  \planqc@mkauthors\endgroup}
 \makeatother
+
+%% Narrower top and bottom margins than acmsmall's 58pt and 44pt.
+\geometry{top=20pt, bottom=24pt}
 
 \usepackage{booktabs}
 \usepackage{tabularx}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \usepackage{agda-style}
+\usepackage{subcaption}
 \usepackage{cleveref}
+%% Footnotes below bottom floats, so that the addresses stay at the
+%% foot of the first page, under Figure 1.
+\usepackage{fnpos}
+\makeFNbottom
+\makeFNbelow
+
+%% TikZiT figures. A subset of tikzit.sty (the layer stack, the blank
+%% node style and \tikzfig), which would load enumitem, which clashes
+%% with acmart. proofs.tikzstyles has the styles of figures/*.tikz.
+\usepackage{tikz}
+\usetikzlibrary{backgrounds,arrows,shapes,shapes.geometric,shapes.misc}
+\pgfdeclarelayer{edgelayer}
+\pgfdeclarelayer{nodelayer}
+\pgfsetlayers{background,edgelayer,nodelayer,main}
+\tikzset{tikzit fill/.initial=0,tikzit draw/.initial=0,tikzit shape/.initial=0,tikzit category/.initial=0}
+\tikzstyle{none}=[inner sep=0mm]
+\tikzstyle{tikzfig}=[baseline=-0.25em,scale=0.7]
+\newcommand{\tikzfig}[1]{{\tikzstyle{every picture}=[tikzfig]\input{#1.tikz}}}
+\input{proofs.tikzstyles}
 
 \citestyle{acmnumeric}
 %% Table 1 keeps author-year citations: ``Greylyn [2014]''.
@@ -51,7 +67,7 @@
 \begin{document}
 
 \title[QCert: Verifying Sixteen Quantum Circuit Completeness Results in One Agda Framework]{QCert: Verifying Sixteen Quantum Circuit Completeness Results in One Agda Framework}
-\subtitle{Extended Abstract}
+% \subtitle{Extended Abstract}
 
 
 %Human-Made Scaffolds for Machine-Written Proofs of Completeness
@@ -59,30 +75,16 @@
 
 %% Affiliations and e-mail addresses as in ../vqupit/main.tex; Yuan
 %% Feng's address is to be confirmed (see README.md).
-\author{Xiaoning Bian}
-\affiliation{%
-  \institution{Tsinghua University}
-  \city{Beijing}
-  \country{China}}
-\email{bian@dal.ca}
-\author{Yuan Feng}
-\affiliation{%
-  \institution{Tsinghua University}
-  \city{Beijing}
-  \country{China}}
-\email{yuan\_feng@tsinghua.edu.cn}
-\author{Sarah Meng Li}
-\affiliation{%
-  \institution{University of Amsterdam and QuSoft}
-  \city{Amsterdam}
-  \country{The Netherlands}}
-\email{sarah.li@uva.nl}
-\author{John van de Wetering}
-\affiliation{%
-  \institution{University of Amsterdam and QuSoft}
-  \city{Amsterdam}
-  \country{The Netherlands}}
-\email{john@vdwetering.name}
+\author[Xiaoning Bian]{Xiaoning Bian\affmark{1}}
+\author[Yuan Feng]{Yuan Feng\affmark{1}}
+\author[Sarah Meng Li]{Sarah Meng Li\affmark{2}}
+\author[John van de Wetering]{John van de Wetering\affmark{2}}
+\authorsaddresses{%
+  \textsuperscript{1}Tsinghua University, Beijing, China,
+  \nolinkurl{bian@dal.ca}, \nolinkurl{yuan_feng@tsinghua.edu.cn}\newline
+  \textsuperscript{2}University of Amsterdam and QuSoft, Amsterdam,
+  The Netherlands, \nolinkurl{sarah.li@uva.nl},
+  \nolinkurl{john@vdwetering.name}}
 
 % \begin{abstract}
 % % An equational theory for a family of quantum circuits is a set of rewrite rules. The theory 
@@ -91,29 +93,55 @@
 % \end{abstract}
 
 \maketitle
+\vspace{-.4 cm}
 
 \section{Introduction}
 An equational theory for a family of quantum circuits is a set of equations between circuits used as rewrite rules. By applying these rules to local subcircuits, we can transform a circuit into an equivalent one. Such a theory should be \emph{sound} because every rewrite preserves the underlying linear map. It should also be \emph{complete} so that any equivalence between circuits can be derived. Additionally, we want it to be \emph{minimal}, with no redundant rules. Equational rewriting supports circuit optimization~\cite{hietala2021voqc,nam2018automated,maslov2008simplification,xu2022quartz}, equivalence checking~\cite{yamashita2010fast}, and hardware mapping~\cite{sivarajah2020tket}. Completeness ensures that every circuit equivalence can be derived within the theory, making it a powerful tool for reasoning about quantum programs. For example,
 \mbox{Hadamard-$\Pi$}~\cite{fang2026hadamard} provides a complete
 equational framework for reasoning about reversible quantum programs. Since 2014, completeness results have been established for a wide range of circuit families such as Clifford~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, CNOT-dihedral~\cite{amy2018cnotdihedral,blake2026phaseaffine}, two-qubit Clifford+T~\cite{bian2023cliffordt2}, three-qubit Clifford+CS~\cite{bian2023cliffordcs3}, Toffoli--Hadamard~\cite{amy2024toffoli} and real Clifford+CH~\cite{clement2026realcliffordch} circuits, and with continuous parameters, all quantum circuits~\cite{clement2023complete}. Completeness has also been obtained for the group of two-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimal theories have been given for six of these circuit fragments~\cite{blake2026simpler} and for all quantum circuits~\cite{clement2024minimal}.
 
-%, qutrits~\cite{li2025qutrit} and qudits of every odd prime dimension~\cite{bian2026qupit}; real stabilizer~\cite{makary2021real}, 
+
+Completeness proofs use two main strategies. \Cref{fig:normalform} outlines the first one. It specifies a unique normal form for each linear map~\cite{selinger2015clifford,bian2026qupit,makary2021real,amy2018cnotdihedral,blake2026phaseaffine,li2025qutrit}, often through giving an exact synthesis algorithm~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Completeness follows by proving that every circuit can be transformed into its normal form using the rewrite rules. \Cref{fig:translation} illustrates the second strategy, which leverages the complete equational theory of another gate set. Completeness carries over if every rule of that theory, translated back, can be derived from the new rules. The new rules must also prove that each gate is equal to its round-trip translation~\cite{bian2023cliffordt2,bian2023cliffordcs3,clement2026realcliffordch,amy2024toffoli,blake2026simpler,clement2023complete}. Sometimes the two methods are combined, as in the scaled dyadic extension of~\citet{li2021on}. 
+%It pairs a normal form with reduction to an already complete subgroup. 
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.42\linewidth}
+  \centering
+  \scalebox{.8}{\tikzfig{figures/normalform}}
+  \caption{$C_1$ and $C_2$ can be rewritten to the same normal form.}
+  \label{fig:normalform}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.52\linewidth}
+  \centering
+  \scalebox{.8}{\tikzfig{figures/translation}}
+  \caption{The complete theory of $\mathcal{G}'$ proves $C_1' = C_2'$. Translating the proof back proves $C_1 = C_2$ over $\mathcal{G}$.}
+  \label{fig:translation}
+\end{subfigure}
+\caption{Two strategies for proving the rewrite rules of a gate set $\mathcal{G}$ are complete. $C_1$ and $C_2$ are any two circuits over $\mathcal{G}$ with the same linear map. In (b), each $C_i$ is translated into a circuit $C_i'$ over another gate set $\mathcal{G}'$ that already has a complete equational theory. The translation preserves the linear map.}
+\label{fig:strategies}
+\end{figure}
+
+Starting from a complete rule set, we can remove a redundant rule by deriving it from those other rules, thereby preserving
+completeness. To show that the resulting set is minimal, we need to give, for each remaining rule, an interpretation of circuits that every other rule preserves except that rule. Any derivation using the other rules preserves this interpretation, so the rule cannot be derived from them~\cite{clement2024minimal,blake2026simpler}.
 
 
 
-% Completeness results exist for
-% many families, from Clifford circuits~\cite{selinger2015clifford} to
-% all quantum circuits~\cite{clement2023complete} and qudits of every odd prime
-% dimension~\cite{li2025qutrit,bian2026qupit}.
+Completeness and minimality proofs can require long case distinctions
+over gates, relations and normal forms, with supporting derivations
+sometimes running to hundreds of
+pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}.
+Long reductions of relation sets can also hide circular reasoning,
+where a derivation used to eliminate a relation depends indirectly
+on that same relation. Such dependencies are hard to detect by hand.
+An unnoticed gap can also undermine later proofs that rely on the
+result: Section~\ref{sec:findings} reports a gap in a published proof
+that a later theorem had imported. A machine check verifies the
+individual cases and guards against circular arguments. To check
+results that build on one another, it must be done in one framework,
+which defines circuits, their semantics and completeness once, so that
+a theorem proved in one development can be used in another.
 
-Completeness proofs often involve long case distinctions that are
-difficult to check by hand. A common strategy is to choose a unique
-normal form for each linear map and prove that the rules normalize
-every circuit. Equivalent circuits then have the same normal form and
-can be derived from one another. Proving normalization requires
-handling each gate and every shape of normal form, often over hundreds
-of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}.
-Redundant rules can then be removed without affecting completeness.
 
 Language models can now write formal proofs of this size; a proof of
 Fermat's Last Theorem in Lean, of 13 million lines, was written in 11
