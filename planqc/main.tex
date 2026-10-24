@@ -94,35 +94,27 @@ A set of circuit equations is complete if any two circuits denoting the same lin
 \maketitle
 
 \section{Introduction}
-An equational theory for quantum circuits is a set of equations
-between circuits, used as rewrite rules: replacing a subcircuit by an
-equal one transforms a circuit into an equivalent one. Such a theory
-should be \emph{sound}: every rewrite preserves the linear map a
-circuit denotes. Ideally it is also \emph{complete}, deriving every
-equivalence between circuits, and \emph{minimal}, with no redundant
-rule. Equational rewriting supports circuit
-optimization~\cite{hietala2021voqc,nam2018automated,maslov2008simplification,xu2022quartz},
-sometimes modulo global phase. Circuit rewrites also support
-equivalence checking~\cite{yamashita2010fast} and hardware
-mapping~\cite{sivarajah2020tket}.
-Calculi such as
-\mbox{Hadamard-$\Pi$}~\cite{fang2026hadamard} reason about programs
-equationally. Completeness is what makes
-such reasoning sufficient: a complete theory characterizes circuit
-equivalence exactly, and an optimizer built on it can in principle
-reach every equivalent circuit. Complete theories now exist for
-many families, from Clifford circuits~\cite{selinger2015clifford} to
-all quantum circuits~\cite{clement2023complete} and qudits of every odd prime
-dimension~\cite{bian2026qupit}.
+An equational theory for a family of quantum circuits is a set of equations between circuits used as rewrite rules. By applying these rules to local subcircuits, we can transform a circuit into an equivalent one. Such a theory should be \emph{sound} because every rewrite preserves the underlying linear map. It should also be \emph{complete} so that any equivalence between circuits can be derived. Additionally, we want it to be \emph{minimal}, with no redundant rules. Equational rewriting supports circuit optimization~\cite{hietala2021voqc,nam2018automated,maslov2008simplification,xu2022quartz}, equivalence checking~\cite{yamashita2010fast}, and hardware mapping~\cite{sivarajah2020tket}. Completeness ensures that every circuit equivalence can be derived within the theory, making it a powerful tool for reasoning about quantum programs. For example,
+\mbox{Hadamard-$\Pi$}~\cite{fang2026hadamard} provides a complete
+equational framework for reasoning about reversible quantum programs. Since 2014, completeness results have been established for a wide range of circuit families such as Clifford~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, CNOT-dihedral~\cite{amy2018cnotdihedral,blake2026phaseaffine}, two-qubit Clifford+T~\cite{bian2023cliffordt2}, three-qubit Clifford+CS~\cite{bian2023cliffordcs3}, Toffoli--Hadamard~\cite{amy2024toffoli} and real Clifford+CH~\cite{clement2026realcliffordch} circuits, and with continuous parameters, all quantum circuits~\cite{clement2023complete}. Completeness has also been obtained for the group of two-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimal theories have been given for six of these circuit fragments~\cite{blake2026simpler} and for all quantum circuits~\cite{clement2024minimal}.
 
-The proofs are long. The extended version of Hadamard-$\Pi$ has 116
-pages, Makary, Ross and Selinger support their real stabilizer theorem
-with 76 pages of derivations~\cite{makary2021real}, and Cl\'ement's
-theorem for real Clifford+CH circuits has an appendix of 264
-pages~\cite{clement2026realcliffordch}. The core of each is a case
-analysis: a normal form and a rule for every gate and every shape of
-normal form, or the Main Lemma of an exact synthesis algorithm, or the
-auxiliary equations of an encoding into a known complete theory.
+%, qutrits~\cite{li2025qutrit} and qudits of every odd prime dimension~\cite{bian2026qupit}; real stabilizer~\cite{makary2021real}, 
+
+
+
+% Completeness results exist for
+% many families, from Clifford circuits~\cite{selinger2015clifford} to
+% all quantum circuits~\cite{clement2023complete} and qudits of every odd prime
+% dimension~\cite{li2025qutrit,bian2026qupit}.
+
+Completeness proofs often involve long case distinctions that are
+difficult to check by hand. A common strategy is to choose a unique
+normal form for each linear map and prove that the rules normalize
+every circuit. Equivalent circuits then have the same normal form and
+can be derived from one another. Proving normalization requires
+handling each gate and every shape of normal form, often over hundreds
+of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}.
+Redundant rules can then be removed without affecting completeness.
 
 Language models can now write formal proofs of this size; a proof of
 Fermat's Last Theorem in Lean, of 13 million lines, was written in 11
