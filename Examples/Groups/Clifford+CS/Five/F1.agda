@@ -15,7 +15,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Five.F1 where
+open import Examples.Groups.Clifford+CS.Five.DStmt using (St)
+open import Examples.Groups.Clifford+CS.Five.DSig using (SF1 ; pickᴰ)
+
+module Examples.Groups.Clifford+CS.Five.F1 (Sᴰ : SF1) where
 
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Data.Nat using (ℕ)
@@ -31,7 +34,81 @@ open import Examples.Groups.Clifford+CS.Five.Transport using (F1)
 import Examples.Groups.Clifford+CS.Five.F1Low as F1Low
 open import Examples.Groups.Clifford+CS.Five.Chain
 open import Examples.Groups.Clifford+CS.Five.Flat using (by-flat)
-open import Examples.Groups.Clifford+CS.Five.DAll.F1 using (lem-F1-order-Iat0 ; lem-F1-order-Kat0 ; lem-F1-order-Kat1 ; lem-F1-order-SKat0 ; lem-F1-order-SKat1 ; lem-F1-order-Sat0 ; lem-F1-order-Sat1 ; lem-F1-comm-CS-S0at0 ; lem-F1-comm-CS-S0at1 ; lem-F1-comm-CS-S1at0 ; lem-F1-comm-CS-S1at1 ; lem-F1-order-CSat0 ; lem-F1-order-CSat1 ; lem-F1-X-CS0at0 ; lem-F1-X-CS0at1 ; lem-F1-X-CS1at0 ; lem-F1-X-CS1at1 ; lem-F1-comm-CSu-CSat1 ; lem-F1-rel-266at1 ; lem-F1-rel-267at1 ; lem-F1-rel-268at1 ; lem-F1-comm-CSu-CSat0 ; lem-F1-rel-266at0 ; lem-F1-rel-267at0 ; lem-F1-CS-K0at0 ; lem-F1-CS-K0at1 ; lem-F1-CS-K1at0 ; lem-F1-CS-K1at1 ; lem-F1-rel-268at0 ; lem-F1-rel-272at1 ; lem-F1-rel-269at0 ; lem-F1-rel-269at1 ; lem-F1-rel-272at0 ; lem-F1-cx-cczat0 ; lem-F1-toff-cczat0 ; lem-F1-ck-tctat0)
+
+-- The lemmas of Five/D it uses (DSig; its assembly in Five.DAll gives them).
+private
+  lem-F1-order-Iat0 : Ws → St 1885
+  lem-F1-order-Iat0 = pickᴰ 0 Sᴰ
+  lem-F1-order-Kat0 : Ws → St 2565
+  lem-F1-order-Kat0 = pickᴰ 1 Sᴰ
+  lem-F1-order-Kat1 : Ws → St 2566
+  lem-F1-order-Kat1 = pickᴰ 2 Sᴰ
+  lem-F1-order-SKat0 : Ws → St 2567
+  lem-F1-order-SKat0 = pickᴰ 3 Sᴰ
+  lem-F1-order-SKat1 : Ws → St 2568
+  lem-F1-order-SKat1 = pickᴰ 4 Sᴰ
+  lem-F1-order-Sat0 : Ws → St 2569
+  lem-F1-order-Sat0 = pickᴰ 5 Sᴰ
+  lem-F1-order-Sat1 : Ws → St 2570
+  lem-F1-order-Sat1 = pickᴰ 6 Sᴰ
+  lem-F1-comm-CS-S0at0 : Ws → St 2571
+  lem-F1-comm-CS-S0at0 = pickᴰ 7 Sᴰ
+  lem-F1-comm-CS-S0at1 : Ws → St 2572
+  lem-F1-comm-CS-S0at1 = pickᴰ 8 Sᴰ
+  lem-F1-comm-CS-S1at0 : Ws → St 2573
+  lem-F1-comm-CS-S1at0 = pickᴰ 9 Sᴰ
+  lem-F1-comm-CS-S1at1 : Ws → St 2574
+  lem-F1-comm-CS-S1at1 = pickᴰ 10 Sᴰ
+  lem-F1-order-CSat0 : Ws → St 2575
+  lem-F1-order-CSat0 = pickᴰ 11 Sᴰ
+  lem-F1-order-CSat1 : Ws → St 2576
+  lem-F1-order-CSat1 = pickᴰ 12 Sᴰ
+  lem-F1-X-CS0at0 : Ws → St 2577
+  lem-F1-X-CS0at0 = pickᴰ 13 Sᴰ
+  lem-F1-X-CS0at1 : Ws → St 2578
+  lem-F1-X-CS0at1 = pickᴰ 14 Sᴰ
+  lem-F1-X-CS1at0 : Ws → St 2579
+  lem-F1-X-CS1at0 = pickᴰ 15 Sᴰ
+  lem-F1-X-CS1at1 : Ws → St 2580
+  lem-F1-X-CS1at1 = pickᴰ 16 Sᴰ
+  lem-F1-comm-CSu-CSat1 : Ws → St 2152
+  lem-F1-comm-CSu-CSat1 = pickᴰ 17 Sᴰ
+  lem-F1-rel-266at1 : Ws → St 2581
+  lem-F1-rel-266at1 = pickᴰ 18 Sᴰ
+  lem-F1-rel-267at1 : Ws → St 2582
+  lem-F1-rel-267at1 = pickᴰ 19 Sᴰ
+  lem-F1-rel-268at1 : Ws → St 2583
+  lem-F1-rel-268at1 = pickᴰ 20 Sᴰ
+  lem-F1-comm-CSu-CSat0 : Ws → St 2256
+  lem-F1-comm-CSu-CSat0 = pickᴰ 21 Sᴰ
+  lem-F1-rel-266at0 : Ws → St 2584
+  lem-F1-rel-266at0 = pickᴰ 22 Sᴰ
+  lem-F1-rel-267at0 : Ws → St 2585
+  lem-F1-rel-267at0 = pickᴰ 23 Sᴰ
+  lem-F1-CS-K0at0 : Ws → St 2586
+  lem-F1-CS-K0at0 = pickᴰ 24 Sᴰ
+  lem-F1-CS-K0at1 : Ws → St 2587
+  lem-F1-CS-K0at1 = pickᴰ 25 Sᴰ
+  lem-F1-CS-K1at0 : Ws → St 2588
+  lem-F1-CS-K1at0 = pickᴰ 26 Sᴰ
+  lem-F1-CS-K1at1 : Ws → St 2589
+  lem-F1-CS-K1at1 = pickᴰ 27 Sᴰ
+  lem-F1-rel-268at0 : Ws → St 2590
+  lem-F1-rel-268at0 = pickᴰ 28 Sᴰ
+  lem-F1-rel-272at1 : Ws → St 2591
+  lem-F1-rel-272at1 = pickᴰ 29 Sᴰ
+  lem-F1-rel-269at0 : Ws → St 2592
+  lem-F1-rel-269at0 = pickᴰ 30 Sᴰ
+  lem-F1-rel-269at1 : Ws → St 2593
+  lem-F1-rel-269at1 = pickᴰ 31 Sᴰ
+  lem-F1-rel-272at0 : Ws → St 2594
+  lem-F1-rel-272at0 = pickᴰ 32 Sᴰ
+  lem-F1-cx-cczat0 : Ws → St 2595
+  lem-F1-cx-cczat0 = pickᴰ 33 Sᴰ
+  lem-F1-toff-cczat0 : Ws → St 2596
+  lem-F1-toff-cczat0 = pickᴰ 34 Sᴰ
+  lem-F1-ck-tctat0 : Ws → St 2597
+  lem-F1-ck-tctat0 = pickᴰ 35 Sᴰ
 
 private
   variable

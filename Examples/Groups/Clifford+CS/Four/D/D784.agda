@@ -7,8 +7,8 @@ open import Examples.Groups.Clifford+CS.Four.DSig using (SD784 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Four.D.D784 (W : Ws) (Sᴰ : SD784) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 open import Examples.Groups.Clifford+CS.Syntactics
@@ -17,6 +17,7 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Four.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -96,8 +97,8 @@ private
   q35 = wE 1728 W
 
 -- Hc passes copies X0 CS01 CS01 CK10 CS01 CX13 CS ^inv: 225 steps
-lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv : ⟪ (X0 ∷ CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CK30 ∷ S3 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CK30 ∷ CS03 ∷ CK20 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ S3 ∷ S3 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S1 ∷ CK10 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S2 ∷ CK20 ∷ X0 ∷ X3 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X3 ∷ X2 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X2 ∷ X2 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X2 ∷ X3 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X3 ∷ X2 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X2 ∷ X2 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X2 ∷ X3 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X0 ∷ CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CK30 ∷ S3 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CK30 ∷ CS03 ∷ CK20 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ S3 ∷ S3 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S1 ∷ CK10 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S2 ∷ CK20 ∷ X0 ∷ []) ⟫ʷ
-lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv = derive (X0 ∷ CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CK30 ∷ S3 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CK30 ∷ CS03 ∷ CK20 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ S3 ∷ S3 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S1 ∷ CK10 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S2 ∷ CK20 ∷ X0 ∷ X3 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X3 ∷ X2 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X2 ∷ X2 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X2 ∷ X3 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ []) (X3 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ X2 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X3 ∷ X2 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X2 ∷ X2 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X2 ∷ X3 ∷ S0 ∷ K0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ K0⁻ ∷ S0⁻ ∷ X3 ∷ X0 ∷ CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CK30 ∷ S3 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CK30 ∷ CS03 ∷ CK20 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ S3 ∷ S3 ∷ S3 ∷ S3 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CS03 ∷ CX13 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S1 ∷ CK10 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ S2 ∷ CK20 ∷ X0 ∷ [])
+lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv : ⟪ (ℓ "丌丠丠临丠乀中中中乑业中中中中中中乀中中乑中乄中中中业乑中中中中中中乀中中中中中中中中中中中中中中中中中中业业业业乑中中中中中中中中中乀丠丠丠与临丠丠丠丠丠丠且乄丌丞丘丏丑与与习丽习举丏丏丐与丞丘丘丏丑与与习丽习举丏丏丐与丘丞丏丑与与习丽习举丏丏丐与丞丞丘丈上九中九丮下三丞丘丘丈上九中九丮下三丘丞丈上九中九丮下三丞") ⟫ʷ ≈ ⟪ (ℓ "丞丘丏丑与与习丽习举丏丏丐与丞丘丘丏丑与与习丽习举丏丏丐与丘丞丏丑与与习丽习举丏丏丐与丞丞丘丈上九中九丮下三丞丘丘丈上九中九丮下三丘丞丈上九中九丮下三丞丌丠丠临丠乀中中中乑业中中中中中中乀中中乑中乄中中中业乑中中中中中中乀中中中中中中中中中中中中中中中中中中业业业业乑中中中中中中中中中乀丠丠丠与临丠丠丠丠丠丠且乄丌") ⟫ʷ
+lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv = derive (ℓ "丌丠丠临丠乀中中中乑业中中中中中中乀中中乑中乄中中中业乑中中中中中中乀中中中中中中中中中中中中中中中中中中业业业业乑中中中中中中中中中乀丠丠丠与临丠丠丠丠丠丠且乄丌丞丘丏丑与与习丽习举丏丏丐与丞丘丘丏丑与与习丽习举丏丏丐与丘丞丏丑与与习丽习举丏丏丐与丞丞丘丈上九中九丮下三丞丘丘丈上九中九丮下三丘丞丈上九中九丮下三丞") (ℓ "丞丘丏丑与与习丽习举丏丏丐与丞丘丘丏丑与与习丽习举丏丏丐与丘丞丏丑与与习丽习举丏丏丐与丞丞丘丈上九中九丮下三丞丘丘丈上九中九丮下三丘丞丈上九中九丮下三丞丌丠丠临丠乀中中中乑业中中中中中中乀中中乑中乄中中中业乑中中中中中中乀中中中中中中中中中中中中中中中中中中业业业业乑中中中中中中中中中乀丠丠丠与临丠丠丠丠丠丠且乄丌")
   (rw 0 q1 ∷
    rw 1 q2 ∷
    rw 2 q3 ∷
@@ -150,17 +151,17 @@ lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv = derive (X0 ∷ CS01
    rw 49 q13 ∷
    rw 50 q14 ∷
    rw 51 q13 ∷
-   re 49 3 (CS03 ∷ []) ∷
+   re 49 3 (ℓ "中") ∷
    rw 52 q13 ∷
-   re 50 3 (CS03⁻ ∷ []) ∷
+   re 50 3 (ℓ "丮") ∷
    rw 51 q15 ∷
    rw 50 q12 ∷
    rw 51 q13 ∷
    rw 52 q16 ∷
    rw 53 q13 ∷
-   re 51 3 (CS03⁻ ∷ []) ∷
+   re 51 3 (ℓ "丮") ∷
    rw 54 q13 ∷
-   re 52 3 (CS03 ∷ []) ∷
+   re 52 3 (ℓ "中") ∷
    rw 53 q15 ∷
    rw 52 q17 ∷
    rw 53 q18 ∷
@@ -173,17 +174,17 @@ lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv = derive (X0 ∷ CS01
    rw 60 q13 ∷
    rw 61 q14 ∷
    rw 62 q13 ∷
-   re 60 3 (CS03 ∷ []) ∷
+   re 60 3 (ℓ "中") ∷
    rw 63 q13 ∷
-   re 61 3 (CS03⁻ ∷ []) ∷
+   re 61 3 (ℓ "丮") ∷
    rw 62 q15 ∷
    rw 61 q12 ∷
    rw 62 q13 ∷
    rw 63 q16 ∷
    rw 64 q13 ∷
-   re 62 3 (CS03⁻ ∷ []) ∷
+   re 62 3 (ℓ "丮") ∷
    rw 65 q13 ∷
-   re 63 3 (CS03 ∷ []) ∷
+   re 63 3 (ℓ "中") ∷
    rw 64 q15 ∷
    rw 63 q17 ∷
    rw 64 q18 ∷
@@ -195,17 +196,17 @@ lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv = derive (X0 ∷ CS01
    rw 70 q13 ∷
    rw 71 q14 ∷
    rw 72 q13 ∷
-   re 70 3 (CS03 ∷ []) ∷
+   re 70 3 (ℓ "中") ∷
    rw 73 q13 ∷
-   re 71 3 (CS03⁻ ∷ []) ∷
+   re 71 3 (ℓ "丮") ∷
    rw 72 q15 ∷
    rw 71 q12 ∷
    rw 72 q13 ∷
    rw 73 q16 ∷
    rw 74 q13 ∷
-   re 72 3 (CS03⁻ ∷ []) ∷
+   re 72 3 (ℓ "丮") ∷
    rw 75 q13 ∷
-   re 73 3 (CS03 ∷ []) ∷
+   re 73 3 (ℓ "中") ∷
    rw 74 q15 ∷
    rw 73 q17 ∷
    rw 74 q18 ∷
@@ -261,17 +262,17 @@ lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv = derive (X0 ∷ CS01
    rw 186 q30 ∷
    rw 185 q31 ∷
    rw 186 q13 ∷
-   re 185 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 185 1 (ℓ "乏丧乏") ∷
    rw 187 q15 ∷
-   re 184 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) ∷
+   re 184 1 (ℓ "乏丨乏") ∷
    rw 186 q15 ∷
    rw 185 q32 ∷
    rw 184 q15 ∷
    rw 183 q31 ∷
    rw 184 q13 ∷
-   re 183 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) ∷
+   re 183 1 (ℓ "乏丨乏") ∷
    rw 185 q15 ∷
-   re 182 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 182 1 (ℓ "乏丧乏") ∷
    rw 184 q15 ∷
    rw 183 q33 ∷
    rw 182 q15 ∷
@@ -284,17 +285,17 @@ lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv = derive (X0 ∷ CS01
    rw 175 q30 ∷
    rw 174 q31 ∷
    rw 175 q13 ∷
-   re 174 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 174 1 (ℓ "乏丧乏") ∷
    rw 176 q15 ∷
-   re 173 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) ∷
+   re 173 1 (ℓ "乏丨乏") ∷
    rw 175 q15 ∷
    rw 174 q32 ∷
    rw 173 q15 ∷
    rw 172 q31 ∷
    rw 173 q13 ∷
-   re 172 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) ∷
+   re 172 1 (ℓ "乏丨乏") ∷
    rw 174 q15 ∷
-   re 171 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 171 1 (ℓ "乏丧乏") ∷
    rw 173 q15 ∷
    rw 172 q33 ∷
    rw 171 q15 ∷
@@ -306,17 +307,17 @@ lem-Hc-passes-copies-X0-CS01-CS01-CK10-CS01-CX13-CS-ᵖinv = derive (X0 ∷ CS01
    rw 165 q30 ∷
    rw 164 q31 ∷
    rw 165 q13 ∷
-   re 164 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 164 1 (ℓ "乏丧乏") ∷
    rw 166 q15 ∷
-   re 163 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) ∷
+   re 163 1 (ℓ "乏丨乏") ∷
    rw 165 q15 ∷
    rw 164 q32 ∷
    rw 163 q15 ∷
    rw 162 q31 ∷
    rw 163 q13 ∷
-   re 162 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) ∷
+   re 162 1 (ℓ "乏丨乏") ∷
    rw 164 q15 ∷
-   re 161 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 161 1 (ℓ "乏丧乏") ∷
    rw 163 q15 ∷
    rw 162 q33 ∷
    rw 161 q15 ∷

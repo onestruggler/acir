@@ -256,6 +256,7 @@ import Examples.Groups.Clifford+CS.Five.D.D213 as D213
 import Examples.Groups.Clifford+CS.Five.D.D227 as D227
 import Examples.Groups.Clifford+CS.Five.D.D228 as D228
 import Examples.Groups.Clifford+CS.Five.D.D229 as D229
+import Examples.Groups.Clifford+CS.Five.F1 as F1M
 
 lem-sym-ab-at1331 : _
 lem-sym-ab-at1331 = D002.lem-sym-ab-at1331
@@ -5891,3 +5892,10 @@ sD229 : SD229
 sD229 = lem-F1-ck-tctat0-part1 ∷ᵃ lem-F1-ck-tctat0-part2 ∷ᵃ lem-F1-ck-tctat0-part0 ∷ᵃ lem-F1-ck-tctat0-part3 ∷ᵃ nil
 lem-F1-ck-tctat0 : _
 lem-F1-ck-tctat0 = D229.lem-F1-ck-tctat0 sD229
+
+-- F1, at its lemmas.
+sF1 : SF1
+sF1 = lem-F1-order-Iat0 ∷ᵃ lem-F1-order-Kat0 ∷ᵃ lem-F1-order-Kat1 ∷ᵃ lem-F1-order-SKat0 ∷ᵃ lem-F1-order-SKat1 ∷ᵃ lem-F1-order-Sat0 ∷ᵃ lem-F1-order-Sat1 ∷ᵃ lem-F1-comm-CS-S0at0 ∷ᵃ lem-F1-comm-CS-S0at1 ∷ᵃ lem-F1-comm-CS-S1at0 ∷ᵃ lem-F1-comm-CS-S1at1 ∷ᵃ lem-F1-order-CSat0 ∷ᵃ lem-F1-order-CSat1 ∷ᵃ lem-F1-X-CS0at0 ∷ᵃ lem-F1-X-CS0at1 ∷ᵃ lem-F1-X-CS1at0 ∷ᵃ lem-F1-X-CS1at1 ∷ᵃ lem-F1-comm-CSu-CSat1 ∷ᵃ lem-F1-rel-266at1 ∷ᵃ lem-F1-rel-267at1 ∷ᵃ lem-F1-rel-268at1 ∷ᵃ lem-F1-comm-CSu-CSat0 ∷ᵃ lem-F1-rel-266at0 ∷ᵃ lem-F1-rel-267at0 ∷ᵃ lem-F1-CS-K0at0 ∷ᵃ lem-F1-CS-K0at1 ∷ᵃ lem-F1-CS-K1at0 ∷ᵃ lem-F1-CS-K1at1 ∷ᵃ lem-F1-rel-268at0 ∷ᵃ lem-F1-rel-272at1 ∷ᵃ lem-F1-rel-269at0 ∷ᵃ lem-F1-rel-269at1 ∷ᵃ lem-F1-rel-272at0 ∷ᵃ lem-F1-cx-cczat0 ∷ᵃ lem-F1-toff-cczat0 ∷ᵃ lem-F1-ck-tctat0 ∷ᵃ nil
+
+module F1I = F1M sF1
+open F1I public using (f1)

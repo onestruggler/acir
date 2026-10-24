@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD041 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D041 (Sᴰ : SD041) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -131,17 +132,17 @@ private
   q43 c4 = wlE 1293 (lit c4)
 
 -- nf-rel-268@1: 473 steps
-lem-nf-rel-268at1 : Ws → ⟪ (Sb0-1-42-3 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ CK42 ∷ CCZ234 ∷ CK42 ∷ S4 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ123 ∷ CK42 ∷ CCZ234 ∷ CK42 ∷ CCZ123 ∷ S4 ∷ []) ⟫ʷ
-lem-nf-rel-268at1 c4 = derive (Sb0-1-42-3 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ []) (Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ CK42 ∷ CCZ234 ∷ CK42 ∷ S4 ∷ Toff324 ∷ CS13 ∷ CCZ124 ∷ Toff324 ∷ CS13⁻ ∷ CCZ123 ∷ CK42 ∷ CCZ234 ∷ CK42 ∷ CCZ123 ∷ S4 ∷ [])
+lem-nf-rel-268at1 : Ws → ⟪ (ℓ "侧亇侬侬亇丢侧侧侧亇侬侬亇丢") ⟫ʷ ≈ ⟪ (ℓ "亲乎亲乏亇亰亇丢亲乎亨亲乏交亇亰亇交丢") ⟫ʷ
+lem-nf-rel-268at1 c4 = derive (ℓ "侧亇侬侬亇丢侧侧侧亇侬侬亇丢") (ℓ "亲乎亲乏亇亰亇丢亲乎亨亲乏交亇亰亇交丢")
   (rw 2 (q1 c4) ∷
    rw 5 (q2 c4) ∷
    rw 8 (q1 c4) ∷
-   re 0 1 (Bx0-1423 ∷ Toff324 ∷ Sb0-1-3-2 ∷ Toff324 ∷ Sb⁻0-1-3-2 ∷ []) ∷
-   re 2 1 (CS13 ∷ []) ∷
-   re 4 1 (CS13⁻ ∷ []) ∷
-   re 10 1 (Bx0-1423 ∷ Toff324 ∷ Sb0-1-3-2 ∷ Toff324 ∷ Sb⁻0-1-3-2 ∷ []) ∷
-   re 12 1 (CS13 ∷ []) ∷
-   re 14 1 (CS13⁻ ∷ []) ∷
+   re 0 1 (ℓ "仄亲侥亲侦") ∷
+   re 2 1 (ℓ "乎") ∷
+   re 4 1 (ℓ "乏") ∷
+   re 10 1 (ℓ "仄亲侥亲侦") ∷
+   re 12 1 (ℓ "乎") ∷
+   re 14 1 (ℓ "乏") ∷
    rw 10 (q3 c4) ∷
    rw 13 (q4 c4) ∷
    rw 12 (q5 c4) ∷

@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD197 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D197 (Sᴰ : SD197) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -218,9 +219,9 @@ private
   q8 : Ws → Eqn
   q8 c4 = sE 2010 (lem-comm-push-SBOX⟨0·2·43·1⟩-sw1-R c4)
   q9 : Ws → Eqn
-  q9 c4 = eqn (Sw12 ∷ CS34 ∷ []) (CS34 ∷ Sw12 ∷ []) (c₃ (Swap ↑) (CS))
+  q9 c4 = eqn (ℓ "乊乹") (ℓ "乹乊") (c₃ (Swap ↑) (CS))
   q10 : Ws → Eqn
-  q10 c4 = eqn (Sw12 ∷ S4 ∷ []) (S4 ∷ Sw12 ∷ []) (c₃ (Swap ↑) (S ↑))
+  q10 c4 = eqn (ℓ "乊丢") (ℓ "丢乊") (c₃ (Swap ↑) (S ↑))
   q11 : Ws → Eqn
   q11 c4 = wlE 13 (lit c4)
   q12 : Ws → Eqn
@@ -228,7 +229,7 @@ private
   q13 : Ws → Eqn
   q13 c4 = wlE 11 (lit c4)
   q14 : Ws → Eqn
-  q14 c4 = eqn (Sw23 ∷ S4 ∷ []) (S4 ∷ Sw23 ∷ []) (c₄ (Swap ↑ ↑) (S))
+  q14 c4 = eqn (ℓ "乥丢") (ℓ "丢乥") (c₄ (Swap ↑ ↑) (S))
   q15 : Ws → Eqn
   q15 c4 = wlE 17 (lit c4)
   q16 : Ws → Eqn
@@ -279,8 +280,8 @@ private
   q38 c4 = sE 2038 (lem-deb-Q-hi-split-b-at132132 c4)
 
 -- deb-Q-hi @132132: 253 steps
-lem-deb-Q-hi-at132132 : Ws → ⟪ (Sb0-1-42-3 ∷ CK41 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ CS12 ∷ K1 ∷ CS12 ∷ K1 ∷ CS12 ∷ S2 ∷ S2 ∷ S2 ∷ ι ∷ S2 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS12 ∷ K1 ∷ CS12 ∷ K1 ∷ CS12 ∷ S2 ∷ S2 ∷ S2 ∷ ι ∷ CS14 ∷ CS14 ∷ CS14 ∷ []) ⟫ʷ
-lem-deb-Q-hi-at132132 c4 = derive (Sb0-1-42-3 ∷ CK41 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ []) (CK41 ∷ CS12 ∷ K1 ∷ CS12 ∷ K1 ∷ CS12 ∷ S2 ∷ S2 ∷ S2 ∷ ι ∷ S2 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS12 ∷ K1 ∷ CS12 ∷ K1 ∷ CS12 ∷ S2 ∷ S2 ∷ S2 ∷ ι ∷ CS14 ∷ CS14 ∷ CS14 ∷ [])
+lem-deb-Q-hi-at132132 : Ws → ⟪ (ℓ "侧亄侧侧侧") ⟫ʷ ≈ ⟪ (ℓ "亄乇丒乇丒乇世世世一世乕乕乕乕乕乕乕乕乕乇丒乇丒乇世世世一乕乕乕") ⟫ʷ
+lem-deb-Q-hi-at132132 c4 = derive (ℓ "侧亄侧侧侧") (ℓ "亄乇丒乇丒乇世世世一世乕乕乕乕乕乕乕乕乕乇丒乇丒乇世世世一乕乕乕")
   (rw⁻ 5 (q1 c4) ∷
    rw 4 (q2 c4) ∷
    rw 3 (q2 c4) ∷

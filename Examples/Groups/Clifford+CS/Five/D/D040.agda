@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD040 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D040 (Sᴰ : SD040) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -183,14 +184,14 @@ private
   q64 c4 = wlE 305 (lit c4)
 
 -- nf-comm-CSu-CS@1: 282 steps
-lem-nf-comm-CSu-CSat1 : Ws → ⟪ (Sb0-1-42-3 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ []) ⟫ʷ
-lem-nf-comm-CSu-CSat1 c4 = derive (Sb0-1-42-3 ∷ Sb0-2-43-1 ∷ []) (Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ [])
-  (re 0 1 (Bx0-1423 ∷ Toff324 ∷ Sb0-1-3-2 ∷ Toff324 ∷ Sb⁻0-1-3-2 ∷ []) ∷
-   re 2 1 (CS13 ∷ []) ∷
-   re 4 1 (CS13⁻ ∷ []) ∷
-   re 5 1 (Bx0-2431 ∷ Toff134 ∷ Sb0-2-1-3 ∷ Toff134 ∷ Sb⁻0-2-1-3 ∷ []) ∷
-   re 7 1 (CS12 ∷ []) ∷
-   re 9 1 (CS12⁻ ∷ []) ∷
+lem-nf-comm-CSu-CSat1 : Ws → ⟪ (ℓ "侧侬") ⟫ʷ ≈ ⟪ (ℓ "亲乎亲乏亭乇亭么") ⟫ʷ
+lem-nf-comm-CSu-CSat1 c4 = derive (ℓ "侧侬") (ℓ "亲乎亲乏亭乇亭么")
+  (re 0 1 (ℓ "仄亲侥亲侦") ∷
+   re 2 1 (ℓ "乎") ∷
+   re 4 1 (ℓ "乏") ∷
+   re 5 1 (ℓ "仞亭侪亭侫") ∷
+   re 7 1 (ℓ "乇") ∷
+   re 9 1 (ℓ "么") ∷
    rw 5 (q1 c4) ∷
    rw 8 (q2 c4) ∷
    rw 7 (q3 c4) ∷
@@ -497,15 +498,15 @@ private
   q77 c4 = wlE 1286 (lit c4)
 
 -- nf-rel-266@1: 154 steps
-lem-nf-rel-266at1 : Ws → ⟪ (CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ Sb0-1-42-3 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ Toff234 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ CCZ123 ∷ CK42 ∷ CCZ234 ∷ CK42 ∷ S4 ∷ CK43 ∷ CCZ234 ∷ CK43 ∷ CCZ123 ∷ S4 ∷ Bx0-1423 ∷ []) ⟫ʷ
-lem-nf-rel-266at1 c4 = derive (CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ Sb0-1-42-3 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ []) (Toff324 ∷ Toff234 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ CCZ123 ∷ CK42 ∷ CCZ234 ∷ CK42 ∷ S4 ∷ CK43 ∷ CCZ234 ∷ CK43 ∷ CCZ123 ∷ S4 ∷ Bx0-1423 ∷ [])
+lem-nf-rel-266at1 : Ws → ⟪ (ℓ "亊侬侬亊丢亇侬侬亇丢侧亇侬侬亇丢亊侬侬亊丢") ⟫ʷ ≈ ⟪ (ℓ "亲亱亲乎亲乏交亇亰亇丢亊亰亊交丢仄") ⟫ʷ
+lem-nf-rel-266at1 c4 = derive (ℓ "亊侬侬亊丢亇侬侬亇丢侧亇侬侬亇丢亊侬侬亊丢") (ℓ "亲亱亲乎亲乏交亇亰亇丢亊亰亊交丢仄")
   (rw 1 (q65 c4) ∷
    rw 5 (q65 c4) ∷
    rw 10 (q65 c4) ∷
    rw 14 (q65 c4) ∷
-   re 8 1 (Bx0-1423 ∷ Toff324 ∷ Sb0-1-3-2 ∷ Toff324 ∷ Sb⁻0-1-3-2 ∷ []) ∷
-   re 10 1 (CS13 ∷ []) ∷
-   re 12 1 (CS13⁻ ∷ []) ∷
+   re 8 1 (ℓ "仄亲侥亲侦") ∷
+   re 10 1 (ℓ "乎") ∷
+   re 12 1 (ℓ "乏") ∷
    rw 0 (q66 c4) ∷
    rw 2 (q23 c4) ∷
    rw 5 (q24 c4) ∷
@@ -661,8 +662,8 @@ private
   q79 c4 = wlE 1289 (lit c4)
 
 -- nf-rel-267@1: 5 steps
-lem-nf-rel-267at1 : Ws → ⟪ (CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (CCZ134 ∷ []) ⟫ʷ
-lem-nf-rel-267at1 c4 = derive (CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ []) (CCZ134 ∷ [])
+lem-nf-rel-267at1 : Ws → ⟪ (ℓ "亇侧侧亇丢侬侬亇侧侧亇丢侬侬") ⟫ʷ ≈ ⟪ (ℓ "京") ⟫ʷ
+lem-nf-rel-267at1 c4 = derive (ℓ "亇侧侧亇丢侬侬亇侧侧亇丢侬侬") (ℓ "京")
   (rw 1 (q78 c4) ∷
    rw 4 (q65 c4) ∷
    rw 6 (q78 c4) ∷

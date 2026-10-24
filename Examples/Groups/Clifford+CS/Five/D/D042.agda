@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD042 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D042 (Sᴰ : SD042) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -103,14 +104,14 @@ private
   q28 c4 = wlE 305 (lit c4)
 
 -- nf-CS-K0@2: 284 steps
-lem-nf-CS-K0at2 : Ws → ⟪ (CS24 ∷ CK42 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (CS24 ∷ CK42 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ CCZ123 ∷ CK42 ∷ CCZ123 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ []) ⟫ʷ
-lem-nf-CS-K0at2 c4 = derive (CS24 ∷ CK42 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-2-43-1 ∷ []) (CS24 ∷ CK42 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ CCZ123 ∷ CK42 ∷ CCZ123 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ [])
-  (re 2 1 (Bx0-2431 ∷ Toff134 ∷ Sb0-2-1-3 ∷ Toff134 ∷ Sb⁻0-2-1-3 ∷ []) ∷
-   re 4 1 (CS12 ∷ []) ∷
-   re 6 1 (CS12⁻ ∷ []) ∷
-   re 8 1 (Bx0-2431 ∷ Toff134 ∷ Sb0-2-1-3 ∷ Toff134 ∷ Sb⁻0-2-1-3 ∷ []) ∷
-   re 10 1 (CS12 ∷ []) ∷
-   re 12 1 (CS12⁻ ∷ []) ∷
+lem-nf-CS-K0at2 : Ws → ⟪ (ℓ "乩亇侬亇侬") ⟫ʷ ≈ ⟪ (ℓ "乩亇亭乇亭么交亇交亭乇亭么") ⟫ʷ
+lem-nf-CS-K0at2 c4 = derive (ℓ "乩亇侬亇侬") (ℓ "乩亇亭乇亭么交亇交亭乇亭么")
+  (re 2 1 (ℓ "仞亭侪亭侫") ∷
+   re 4 1 (ℓ "乇") ∷
+   re 6 1 (ℓ "么") ∷
+   re 8 1 (ℓ "仞亭侪亭侫") ∷
+   re 10 1 (ℓ "乇") ∷
+   re 12 1 (ℓ "么") ∷
    rw 8 (q1 c4) ∷
    rw 11 (q2 c4) ∷
    rw 10 (q3 c4) ∷
@@ -399,14 +400,14 @@ private
   q31 c4 = sE 1537 (lem-box-perm-1342-at12213443 c4)
 
 -- nf-CS-K1@2: 284 steps
-lem-nf-CS-K1at2 : Ws → ⟪ (CS34 ∷ CK43 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (CS34 ∷ CK43 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ CCZ123 ∷ CK43 ∷ CCZ123 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ []) ⟫ʷ
-lem-nf-CS-K1at2 c4 = derive (CS34 ∷ CK43 ∷ Sb0-2-43-1 ∷ CK43 ∷ Sb0-2-43-1 ∷ []) (CS34 ∷ CK43 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ CCZ123 ∷ CK43 ∷ CCZ123 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ [])
-  (re 2 1 (Bx0-2431 ∷ Toff134 ∷ Sb0-2-1-3 ∷ Toff134 ∷ Sb⁻0-2-1-3 ∷ []) ∷
-   re 4 1 (CS12 ∷ []) ∷
-   re 6 1 (CS12⁻ ∷ []) ∷
-   re 8 1 (Bx0-2431 ∷ Toff134 ∷ Sb0-2-1-3 ∷ Toff134 ∷ Sb⁻0-2-1-3 ∷ []) ∷
-   re 10 1 (CS12 ∷ []) ∷
-   re 12 1 (CS12⁻ ∷ []) ∷
+lem-nf-CS-K1at2 : Ws → ⟪ (ℓ "乹亊侬亊侬") ⟫ʷ ≈ ⟪ (ℓ "乹亊亭乇亭么交亊交亭乇亭么") ⟫ʷ
+lem-nf-CS-K1at2 c4 = derive (ℓ "乹亊侬亊侬") (ℓ "乹亊亭乇亭么交亊交亭乇亭么")
+  (re 2 1 (ℓ "仞亭侪亭侫") ∷
+   re 4 1 (ℓ "乇") ∷
+   re 6 1 (ℓ "么") ∷
+   re 8 1 (ℓ "仞亭侪亭侫") ∷
+   re 10 1 (ℓ "乇") ∷
+   re 12 1 (ℓ "么") ∷
    rw 8 (q1 c4) ∷
    rw 11 (q2 c4) ∷
    rw 10 (q3 c4) ∷
@@ -693,8 +694,8 @@ private
   q33 c4 = wpE 1127 c4
 
 -- L-CX01-0: 2 steps
-lem-L-CX01-0 : Ws → ⟪ (CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (Toff104 ∷ []) ⟫ʷ
-lem-L-CX01-0 c4 = derive (CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ []) (Toff104 ∷ [])
+lem-L-CX01-0 : Ws → ⟪ (ℓ "亄俄俄亄丢") ⟫ʷ ≈ ⟪ (ℓ "亖") ⟫ʷ
+lem-L-CX01-0 c4 = derive (ℓ "亄俄俄亄丢") (ℓ "亖")
   (rw 1 (q32 c4) ∷
    rw 0 (q33 c4) ∷ []) Eq.refl
 
@@ -705,8 +706,8 @@ private
   q35 c4 = wlE 1301 (lit c4)
 
 -- L-CX01-1: 2 steps
-lem-L-CX01-1 : Ws → ⟪ (CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (Toff214 ∷ []) ⟫ʷ
-lem-L-CX01-1 c4 = derive (CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ []) (Toff214 ∷ [])
+lem-L-CX01-1 : Ws → ⟪ (ℓ "亇侧侧亇丢") ⟫ʷ ≈ ⟪ (ℓ "亪") ⟫ʷ
+lem-L-CX01-1 c4 = derive (ℓ "亇侧侧亇丢") (ℓ "亪")
   (rw 1 (q34 c4) ∷
    rw 0 (q35 c4) ∷ []) Eq.refl
 
@@ -715,7 +716,7 @@ private
   q36 c4 = wlE 1302 (lit c4)
 
 -- L-CX10-1: 2 steps
-lem-L-CX10-1 : Ws → ⟪ (CK41 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK41 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (Toff124 ∷ []) ⟫ʷ
-lem-L-CX10-1 c4 = derive (CK41 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK41 ∷ S4 ∷ []) (Toff124 ∷ [])
+lem-L-CX10-1 : Ws → ⟪ (ℓ "亄侧侧亄丢") ⟫ʷ ≈ ⟪ (ℓ "亩") ⟫ʷ
+lem-L-CX10-1 c4 = derive (ℓ "亄侧侧亄丢") (ℓ "亩")
   (rw 1 (q34 c4) ∷
    rw 0 (q36 c4) ∷ []) Eq.refl

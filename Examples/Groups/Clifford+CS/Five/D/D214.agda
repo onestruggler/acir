@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD214 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D214 (Sᴰ : SD214) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -132,7 +133,7 @@ private
   q27 : Ws → Eqn
   q27 c4 = wpE 1026 c4
   q28 : Ws → Eqn
-  q28 c4 = eqn (K0 ∷ CCZ134 ∷ []) (CCZ134 ∷ K0 ∷ []) (c₁ (K) (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑))
+  q28 c4 = eqn (ℓ "丌京") (ℓ "京丌") (c₁ (K) (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑))
   q29 : Ws → Eqn
   q29 c4 = wlE 1220 (lit c4)
   q30 : Ws → Eqn
@@ -142,7 +143,7 @@ private
   q32 : Ws → Eqn
   q32 c4 = wpE 1003 c4
   q33 : Ws → Eqn
-  q33 c4 = eqn (K0⁻ ∷ CCZ134 ∷ []) (CCZ134 ∷ K0⁻ ∷ []) (c₁ (K • iI) (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑))
+  q33 c4 = eqn (ℓ "不京") (ℓ "京不") (c₁ (K • iI) (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑))
   q34 : Ws → Eqn
   q34 c4 = wlE 1206 (lit c4)
   q35 : Ws → Eqn
@@ -237,16 +238,16 @@ private
   q79 c4 = sE 2146 (lem-nf-comm-CSu-CSat0 c4)
 
 -- F1-comm-CSu-CS@0: 288 steps
-lem-F1-comm-CSu-CSat0 : Ws → ⟪ (Sb0-1-42-3 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-0-41-3 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ
-lem-F1-comm-CSu-CSat0 c4 = derive (Sb0-1-42-3 ∷ Sb2-0-41-3 ∷ []) (Sb2-0-41-3 ∷ Sb0-1-42-3 ∷ [])
+lem-F1-comm-CSu-CSat0 : Ws → ⟪ (ℓ "侧俄") ⟫ʷ ≈ ⟪ (ℓ "俄侧") ⟫ʷ
+lem-F1-comm-CSu-CSat0 c4 = derive (ℓ "侧俄") (ℓ "俄侧")
   (rw 0 (q1 c4) ∷
    rw 1 (q2 c4) ∷
-   re 0 1 (Bx3-1420 ∷ Toff024 ∷ Sb3-1-0-2 ∷ Toff024 ∷ Sb⁻3-1-0-2 ∷ []) ∷
-   re 2 1 (CS01 ∷ []) ∷
-   re 4 1 (CS01⁻ ∷ []) ∷
-   re 5 1 (Bx3-0412 ∷ Toff214 ∷ Sb3-0-2-1 ∷ Toff214 ∷ Sb⁻3-0-2-1 ∷ []) ∷
-   re 7 1 (CS02 ∷ []) ∷
-   re 9 1 (CS02⁻ ∷ []) ∷
+   re 0 1 (ℓ "佯亝俗亝俛") ∷
+   re 2 1 (ℓ "丨") ∷
+   re 4 1 (ℓ "丩") ∷
+   re 5 1 (ℓ "佨亪俑亪俕") ∷
+   re 7 1 (ℓ "丯") ∷
+   re 9 1 (ℓ "丰") ∷
    rw 5 (q3 c4) ∷
    rw⁻ 8 (q4 c4) ∷
    rw⁻ 8 (q5 c4) ∷
@@ -559,8 +560,8 @@ private
   q93 c4 = sE 2147 (lem-nf-rel-266at0 c4)
 
 -- F1-rel-266@0: 166 steps
-lem-F1-rel-266at0 : Ws → ⟪ (CK40 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK40 ∷ S4 ∷ CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ Sb0-1-42-3 ∷ CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ CK40 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK40 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ CK41 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK41 ∷ S4 ∷ Sb2-0-41-3 ∷ CK41 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK41 ∷ S4 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ []) ⟫ʷ
-lem-F1-rel-266at0 c4 = derive (CK40 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK40 ∷ S4 ∷ CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ Sb0-1-42-3 ∷ CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ CK40 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK40 ∷ S4 ∷ []) (CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ CK41 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK41 ∷ S4 ∷ Sb2-0-41-3 ∷ CK41 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK41 ∷ S4 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ [])
+lem-F1-rel-266at0 : Ws → ⟪ (ℓ "亁俄俄亁丢亄俄俄亄丢侧亄俄俄亄丢亁俄俄亁丢") ⟫ʷ ≈ ⟪ (ℓ "亇侧侧亇丢亄侧侧亄丢俄亄侧侧亄丢亇侧侧亇丢") ⟫ʷ
+lem-F1-rel-266at0 c4 = derive (ℓ "亁俄俄亁丢亄俄俄亄丢侧亄俄俄亄丢亁俄俄亁丢") (ℓ "亇侧侧亇丢亄侧侧亄丢俄亄侧侧亄丢亇侧侧亇丢")
   (rw 1 (q2 c4) ∷
    rw 2 (q2 c4) ∷
    rw 6 (q2 c4) ∷
@@ -574,9 +575,9 @@ lem-F1-rel-266at0 c4 = derive (CK40 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK40 ∷ S
    rw 5 (q80 c4) ∷
    rw 10 (q80 c4) ∷
    rw 14 (q80 c4) ∷
-   re 8 1 (Bx3-1420 ∷ Toff024 ∷ Sb3-1-0-2 ∷ Toff024 ∷ Sb⁻3-1-0-2 ∷ []) ∷
-   re 10 1 (CS01 ∷ []) ∷
-   re 12 1 (CS01⁻ ∷ []) ∷
+   re 8 1 (ℓ "佯亝俗亝俛") ∷
+   re 10 1 (ℓ "丨") ∷
+   re 12 1 (ℓ "丩") ∷
    rw 0 (q81 c4) ∷
    rw 2 (q25 c4) ∷
    rw⁻ 5 (q26 c4) ∷
@@ -739,8 +740,8 @@ private
   q97 c4 = sE 2148 (lem-nf-rel-267at0 c4)
 
 -- F1-rel-267@0: 18 steps
-lem-F1-rel-267at0 : Ws → ⟪ (CK40 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK40 ∷ S4 ∷ CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ CK40 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK40 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ
-lem-F1-rel-267at0 c4 = derive (CK40 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK40 ∷ S4 ∷ CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ CK40 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK40 ∷ S4 ∷ []) (CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK41 ∷ Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ CK41 ∷ S4 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ [])
+lem-F1-rel-267at0 : Ws → ⟪ (ℓ "亁俄俄亁丢亄俄俄亄丢侧侧亄俄俄亄丢亁俄俄亁丢") ⟫ʷ ≈ ⟪ (ℓ "亄俄俄亄丢侧侧亄俄俄亄丢侧侧") ⟫ʷ
+lem-F1-rel-267at0 c4 = derive (ℓ "亁俄俄亁丢亄俄俄亄丢侧侧亄俄俄亄丢亁俄俄亁丢") (ℓ "亄俄俄亄丢侧侧亄俄俄亄丢侧侧")
   (rw 1 (q2 c4) ∷
    rw 2 (q2 c4) ∷
    rw 6 (q2 c4) ∷

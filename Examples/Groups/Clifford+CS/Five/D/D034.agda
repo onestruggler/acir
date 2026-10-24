@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD034 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D034 (Sᴰ : SD034) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -81,14 +82,14 @@ private
   q25 c4 = wlE 1705 (lit c4)
 
 -- S2-SBOX(0;2;43;1) @0440: 86 steps
-lem-S2-SBOX⟨0·2·43·1⟩-at0440 : Ws → ⟪ (Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ []) ⟫ʷ ≈ ⟪ (CCZ023 ∷ []) ⟫ʷ
-lem-S2-SBOX⟨0·2·43·1⟩-at0440 c4 = derive (Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ []) (CCZ023 ∷ [])
-  (re 1 1 (Bx4-2031 ∷ Toff103 ∷ Sb4-2-1-3 ∷ Toff103 ∷ Sb⁻4-2-1-3 ∷ []) ∷
-   re 3 1 (CS12 ∷ []) ∷
-   re 5 1 (CS12⁻ ∷ []) ∷
-   re 0 1 (Bx4-2031 ∷ Toff103 ∷ Sb4-2-1-3 ∷ Toff103 ∷ Sb⁻4-2-1-3 ∷ []) ∷
-   re 2 1 (CS12 ∷ []) ∷
-   re 4 1 (CS12⁻ ∷ []) ∷
+lem-S2-SBOX⟨0·2·43·1⟩-at0440 : Ws → ⟪ (ℓ "俵俵") ⟫ʷ ≈ ⟪ (ℓ "亘") ⟫ʷ
+lem-S2-SBOX⟨0·2·43·1⟩-at0440 c4 = derive (ℓ "俵俵") (ℓ "亘")
+  (re 1 1 (ℓ "侗互俳互俴") ∷
+   re 3 1 (ℓ "乇") ∷
+   re 5 1 (ℓ "么") ∷
+   re 0 1 (ℓ "侗互俳互俴") ∷
+   re 2 1 (ℓ "乇") ∷
+   re 4 1 (ℓ "么") ∷
    rw 5 (q1 c4) ∷
    rw⁻ 4 (q2 c4) ∷
    rw 5 (q3 c4) ∷

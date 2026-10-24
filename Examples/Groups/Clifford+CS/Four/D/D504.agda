@@ -5,8 +5,8 @@ open import Examples.Groups.Clifford+CS.Four.DEqn using (wE)
 
 module Examples.Groups.Clifford+CS.Four.D.D504 (W : Ws) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 open import Examples.Groups.Clifford+CS.Syntactics
@@ -15,20 +15,21 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Four.Str using (ℓ)
 
 private
   q1 : Eqn
-  q1 = eqn (CS01 ∷ CK23 ∷ []) (CK23 ∷ CS01 ∷ []) (low-comm (CS) (CK₀₁))
+  q1 = eqn (ℓ "丠乍") (ℓ "乍丠") (low-comm (CS) (CK₀₁))
   q2 : Eqn
-  q2 = eqn (CS01 ∷ CS23 ∷ []) (CS23 ∷ CS01 ∷ []) (low-comm (CS) (CS))
+  q2 = eqn (ℓ "丠义") (ℓ "义丠") (low-comm (CS) (CS))
   q3 : Eqn
   q3 = wE 1288 W
   q4 : Eqn
-  q4 = eqn (CS01 ∷ S2 ∷ []) (S2 ∷ CS01 ∷ []) (low-comm (CS) (S))
+  q4 = eqn (ℓ "丠且") (ℓ "且丠") (low-comm (CS) (S))
   q5 : Eqn
   q5 = wE 1 W
   q6 : Eqn
-  q6 = eqn (CS01 ∷ Sw23 ∷ []) (Sw23 ∷ CS01 ∷ []) (low-comm (CS) (Swap))
+  q6 = eqn (ℓ "丠乏") (ℓ "乏丠") (low-comm (CS) (Swap))
   q7 : Eqn
   q7 = wE 3 W
   q8 : Eqn
@@ -37,8 +38,8 @@ private
   q9 = wE 245 W
 
 -- pass [CS03 CS03 CK03 CS03 CK03 CK03 CX02 CK23 S2 CK23 S2 CS23 CS23 CS23 CK23 S2 CS23 CS23 CS23 CS23 CS23 CS23 CX02 CS23 CS23 CK23 CS23 CK23 CK23] [CS01]: 77 steps
-lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-S2-CS23-CS23-CS23-CS23-CS23-CS23-CX02-CS23-CS23-CK23-CS23-CK23-CK23-vs-CS01 : ⟪ (CS03 ∷ CS03 ∷ CK03 ∷ CS03 ∷ CK03 ∷ CK03 ∷ CX02 ∷ CK23 ∷ S2 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CX02 ∷ CS23 ∷ CS23 ∷ CK23 ∷ CS23 ∷ CK23 ∷ CK23 ∷ CS01 ∷ []) ⟫ʷ ≈ ⟪ (CS01 ∷ CS03 ∷ CS03 ∷ CK03 ∷ CS03 ∷ CK03 ∷ CK03 ∷ CX02 ∷ CK23 ∷ S2 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CX02 ∷ CS23 ∷ CS23 ∷ CK23 ∷ CS23 ∷ CK23 ∷ CK23 ∷ []) ⟫ʷ
-lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-S2-CS23-CS23-CS23-CS23-CS23-CS23-CX02-CS23-CS23-CK23-CS23-CK23-CK23-vs-CS01 = derive (CS03 ∷ CS03 ∷ CK03 ∷ CS03 ∷ CK03 ∷ CK03 ∷ CX02 ∷ CK23 ∷ S2 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CX02 ∷ CS23 ∷ CS23 ∷ CK23 ∷ CS23 ∷ CK23 ∷ CK23 ∷ CS01 ∷ []) (CS01 ∷ CS03 ∷ CS03 ∷ CK03 ∷ CS03 ∷ CK03 ∷ CK03 ∷ CX02 ∷ CK23 ∷ S2 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CX02 ∷ CS23 ∷ CS23 ∷ CK23 ∷ CS23 ∷ CK23 ∷ CK23 ∷ [])
+lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-S2-CS23-CS23-CS23-CS23-CS23-CS23-CX02-CS23-CS23-CK23-CS23-CK23-CK23-vs-CS01 : ⟪ (ℓ "中中丱中丱丱个乍且乍且义义义乍且义义义义义义个义义乍义乍乍丠") ⟫ʷ ≈ ⟪ (ℓ "丠中中丱中丱丱个乍且乍且义义义乍且义义义义义义个义义乍义乍乍") ⟫ʷ
+lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-S2-CS23-CS23-CS23-CS23-CS23-CS23-CX02-CS23-CS23-CK23-CS23-CK23-CK23-vs-CS01 = derive (ℓ "中中丱中丱丱个乍且乍且义义义乍且义义义义义义个义义乍义乍乍丠") (ℓ "丠中中丱中丱丱个乍且乍且义义义乍且义义义义义义个义义乍义乍乍")
   (rw⁻ 28 q1 ∷
    rw⁻ 27 q1 ∷
    rw⁻ 26 q2 ∷
@@ -64,72 +65,72 @@ lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-
    rw 6 q3 ∷
    rw 7 q5 ∷
    rw 6 q6 ∷
-   re 5 1 (Sw23 ∷ CK02 ∷ Sw23 ∷ []) ∷
+   re 5 1 (ℓ "乏丫乏") ∷
    rw 7 q7 ∷
    rw 6 q8 ∷
    rw⁻ 5 q6 ∷
    rw 8 q5 ∷
-   re 6 3 (CK03 ∷ []) ∷
+   re 6 3 (ℓ "丱") ∷
    rw 7 q7 ∷
    rw 6 q5 ∷
    rw 5 q6 ∷
-   re 4 1 (Sw23 ∷ CK02 ∷ Sw23 ∷ []) ∷
+   re 4 1 (ℓ "乏丫乏") ∷
    rw 6 q7 ∷
    rw 5 q8 ∷
    rw⁻ 4 q6 ∷
    rw 7 q5 ∷
-   re 5 3 (CK03 ∷ []) ∷
+   re 5 3 (ℓ "丱") ∷
    rw 6 q7 ∷
    rw 5 q5 ∷
    rw 4 q6 ∷
-   re 3 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 3 1 (ℓ "乏丧乏") ∷
    rw 5 q7 ∷
    rw 4 q9 ∷
    rw⁻ 3 q6 ∷
    rw 6 q5 ∷
-   re 4 3 (CS03 ∷ []) ∷
+   re 4 3 (ℓ "中") ∷
    rw 5 q7 ∷
    rw 4 q5 ∷
    rw 3 q6 ∷
-   re 2 1 (Sw23 ∷ CK02 ∷ Sw23 ∷ []) ∷
+   re 2 1 (ℓ "乏丫乏") ∷
    rw 4 q7 ∷
    rw 3 q8 ∷
    rw⁻ 2 q6 ∷
    rw 5 q5 ∷
-   re 3 3 (CK03 ∷ []) ∷
+   re 3 3 (ℓ "丱") ∷
    rw 4 q7 ∷
    rw 3 q5 ∷
    rw 2 q6 ∷
-   re 1 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 1 1 (ℓ "乏丧乏") ∷
    rw 3 q7 ∷
    rw 2 q9 ∷
    rw⁻ 1 q6 ∷
    rw 4 q5 ∷
-   re 2 3 (CS03 ∷ []) ∷
+   re 2 3 (ℓ "中") ∷
    rw 3 q7 ∷
    rw 2 q5 ∷
    rw 1 q6 ∷
-   re 0 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 0 1 (ℓ "乏丧乏") ∷
    rw 2 q7 ∷
    rw 1 q9 ∷
    rw⁻ 0 q6 ∷
    rw 3 q5 ∷
-   re 1 3 (CS03 ∷ []) ∷
+   re 1 3 (ℓ "中") ∷
    rw 2 q7 ∷ []) Eq.refl
 
 private
   q10 : Eqn
   q10 = wE 5 W
   q11 : Eqn
-  q11 = eqn (Sw01 ∷ CK23 ∷ []) (CK23 ∷ Sw01 ∷ []) (low-comm (Swap) (CK₀₁))
+  q11 = eqn (ℓ "並乍") (ℓ "乍並") (low-comm (Swap) (CK₀₁))
   q12 : Eqn
-  q12 = eqn (Sw01 ∷ CS23 ∷ []) (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS))
+  q12 = eqn (ℓ "並义") (ℓ "义並") (low-comm (Swap) (CS))
   q13 : Eqn
   q13 = wE 74 W
   q14 : Eqn
-  q14 = eqn (Sw01 ∷ S2 ∷ []) (S2 ∷ Sw01 ∷ []) (low-comm (Swap) (S))
+  q14 = eqn (ℓ "並且") (ℓ "且並") (low-comm (Swap) (S))
   q15 : Eqn
-  q15 = eqn (Sw01 ∷ Sw23 ∷ []) (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap))
+  q15 = eqn (ℓ "並乏") (ℓ "乏並") (low-comm (Swap) (Swap))
   q16 : Eqn
   q16 = wE 772 W
   q17 : Eqn
@@ -149,15 +150,15 @@ private
   q24 : Eqn
   q24 = wE 113 W
   q25 : Eqn
-  q25 = eqn (CK01 ∷ CX32 ∷ []) (CX32 ∷ CK01 ∷ []) (low-comm (CK₀₁) (CX₁₀))
+  q25 = eqn (ℓ "两乖") (ℓ "乖两") (low-comm (CK₀₁) (CX₁₀))
   q26 : Eqn
   q26 = wE 114 W
   q27 : Eqn
-  q27 = eqn (CS01 ∷ CX32 ∷ []) (CX32 ∷ CS01 ∷ []) (low-comm (CS) (CX₁₀))
+  q27 = eqn (ℓ "丠乖") (ℓ "乖丠") (low-comm (CS) (CX₁₀))
   q28 : Eqn
   q28 = wE 112 W
   q29 : Eqn
-  q29 = eqn (S0 ∷ CX21 ∷ []) (CX21 ∷ S0 ∷ []) (low₁-comm (S) (CX₁₀))
+  q29 = eqn (ℓ "丈乆") (ℓ "乆丈") (low₁-comm (S) (CX₁₀))
   q30 : Eqn
   q30 = wE 1326 W
   q31 : Eqn
@@ -172,8 +173,8 @@ private
   q35 = wE 30 W
 
 -- pass [CS03 CS03 CK03 CS03 CK03 CK03 CX02 CK23 S2 CK23 S2 CS23 CS23 CS23 CK23 S2 CS23 CS23 CS23 CS23 CS23 CS23 CX02 CS23 CS23 CK23 CS23 CK23 CK23] [CX21]: 487 steps
-lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-S2-CS23-CS23-CS23-CS23-CS23-CS23-CX02-CS23-CS23-CK23-CS23-CK23-CK23-vs-CX21 : ⟪ (CS03 ∷ CS03 ∷ CK03 ∷ CS03 ∷ CK03 ∷ CK03 ∷ CX02 ∷ CK23 ∷ S2 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CX02 ∷ CS23 ∷ CS23 ∷ CK23 ∷ CS23 ∷ CK23 ∷ CK23 ∷ CX21 ∷ []) ⟫ʷ ≈ ⟪ (CX21 ∷ CS03 ∷ CS03 ∷ CK03 ∷ CS03 ∷ CK03 ∷ CK03 ∷ CX02 ∷ CK23 ∷ S2 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CX02 ∷ CS23 ∷ CS23 ∷ CK23 ∷ CS23 ∷ CK23 ∷ CK23 ∷ []) ⟫ʷ
-lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-S2-CS23-CS23-CS23-CS23-CS23-CS23-CX02-CS23-CS23-CK23-CS23-CK23-CK23-vs-CX21 = derive (CS03 ∷ CS03 ∷ CK03 ∷ CS03 ∷ CK03 ∷ CK03 ∷ CX02 ∷ CK23 ∷ S2 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CX02 ∷ CS23 ∷ CS23 ∷ CK23 ∷ CS23 ∷ CK23 ∷ CK23 ∷ CX21 ∷ []) (CX21 ∷ CS03 ∷ CS03 ∷ CK03 ∷ CS03 ∷ CK03 ∷ CK03 ∷ CX02 ∷ CK23 ∷ S2 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CK23 ∷ S2 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CS23 ∷ CX02 ∷ CS23 ∷ CS23 ∷ CK23 ∷ CS23 ∷ CK23 ∷ CK23 ∷ [])
+lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-S2-CS23-CS23-CS23-CS23-CS23-CS23-CX02-CS23-CS23-CK23-CS23-CK23-CK23-vs-CX21 : ⟪ (ℓ "中中丱中丱丱个乍且乍且义义义乍且义义义义义义个义义乍义乍乍乆") ⟫ʷ ≈ ⟪ (ℓ "乆中中丱中丱丱个乍且乍且义义义乍且义义义义义义个义义乍义乍乍") ⟫ʷ
+lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-S2-CS23-CS23-CS23-CS23-CS23-CS23-CX02-CS23-CS23-CK23-CS23-CK23-CK23-vs-CX21 = derive (ℓ "中中丱中丱丱个乍且乍且义义义乍且义义义义义义个义义乍义乍乍乆") (ℓ "乆中中丱中丱丱个乍且乍且义义义乍且义义义义义义个义义乍义乍乍")
   (rw 29 q10 ∷
    rw⁻ 28 q11 ∷
    rw⁻ 27 q11 ∷
@@ -198,36 +199,36 @@ lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-
    rw⁻ 8 q14 ∷
    rw⁻ 7 q11 ∷
    rw 6 q13 ∷
-   re 5 1 (Sw23 ∷ CK02 ∷ Sw23 ∷ []) ∷
+   re 5 1 (ℓ "乏丫乏") ∷
    rw⁻ 7 q15 ∷
    rw 6 q16 ∷
    rw⁻ 5 q15 ∷
-   re 6 3 (CK13 ∷ []) ∷
-   re 4 1 (Sw23 ∷ CK02 ∷ Sw23 ∷ []) ∷
+   re 6 3 (ℓ "乁") ∷
+   re 4 1 (ℓ "乏丫乏") ∷
    rw⁻ 6 q15 ∷
    rw 5 q16 ∷
    rw⁻ 4 q15 ∷
-   re 5 3 (CK13 ∷ []) ∷
-   re 3 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 5 3 (ℓ "乁") ∷
+   re 3 1 (ℓ "乏丧乏") ∷
    rw⁻ 5 q15 ∷
    rw 4 q17 ∷
    rw⁻ 3 q15 ∷
-   re 4 3 (CS13 ∷ []) ∷
-   re 2 1 (Sw23 ∷ CK02 ∷ Sw23 ∷ []) ∷
+   re 4 3 (ℓ "丽") ∷
+   re 2 1 (ℓ "乏丫乏") ∷
    rw⁻ 4 q15 ∷
    rw 3 q16 ∷
    rw⁻ 2 q15 ∷
-   re 3 3 (CK13 ∷ []) ∷
-   re 1 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 3 3 (ℓ "乁") ∷
+   re 1 1 (ℓ "乏丧乏") ∷
    rw⁻ 3 q15 ∷
    rw 2 q17 ∷
    rw⁻ 1 q15 ∷
-   re 2 3 (CS13 ∷ []) ∷
-   re 0 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 2 3 (ℓ "丽") ∷
+   re 0 1 (ℓ "乏丧乏") ∷
    rw⁻ 2 q15 ∷
    rw 1 q17 ∷
    rw⁻ 0 q15 ∷
-   re 1 3 (CS13 ∷ []) ∷
+   re 1 3 (ℓ "丽") ∷
    rw 1 q18 ∷
    rw 0 q12 ∷
    rw 1 q12 ∷
@@ -236,267 +237,267 @@ lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-
    rw 4 q11 ∷
    rw 5 q11 ∷
    rw 6 q19 ∷
-   re 8 1 (Sw23 ∷ CK12 ∷ Sw23 ∷ []) ∷
+   re 8 1 (ℓ "乏为乏") ∷
    rw 7 q15 ∷
    rw 8 q20 ∷
    rw 9 q15 ∷
-   re 7 3 (CK03 ∷ []) ∷
+   re 7 3 (ℓ "丱") ∷
    rw 8 q21 ∷
-   re 10 1 (Sw23 ∷ CK12 ∷ Sw23 ∷ []) ∷
+   re 10 1 (ℓ "乏为乏") ∷
    rw 9 q15 ∷
    rw 10 q20 ∷
    rw 11 q15 ∷
-   re 9 3 (CK03 ∷ []) ∷
+   re 9 3 (ℓ "丱") ∷
    rw 10 q21 ∷
-   re 12 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 12 1 (ℓ "乏丶乏") ∷
    rw 11 q15 ∷
    rw 12 q22 ∷
    rw 13 q15 ∷
-   re 11 3 (CS03 ∷ []) ∷
-   re 13 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 11 3 (ℓ "中") ∷
+   re 13 1 (ℓ "乏丶乏") ∷
    rw 12 q15 ∷
    rw 13 q22 ∷
    rw 14 q15 ∷
-   re 12 3 (CS03 ∷ []) ∷
-   re 14 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 12 3 (ℓ "中") ∷
+   re 14 1 (ℓ "乏丶乏") ∷
    rw 13 q15 ∷
    rw 14 q22 ∷
    rw 15 q15 ∷
-   re 13 3 (CS03 ∷ []) ∷
-   re 15 1 (Sw23 ∷ CK12 ∷ Sw23 ∷ []) ∷
+   re 13 3 (ℓ "中") ∷
+   re 15 1 (ℓ "乏为乏") ∷
    rw 14 q15 ∷
    rw 15 q20 ∷
    rw 16 q15 ∷
-   re 14 3 (CK03 ∷ []) ∷
+   re 14 3 (ℓ "丱") ∷
    rw 15 q21 ∷
-   re 17 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 17 1 (ℓ "乏丶乏") ∷
    rw 16 q15 ∷
    rw 17 q22 ∷
    rw 18 q15 ∷
-   re 16 3 (CS03 ∷ []) ∷
-   re 18 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 16 3 (ℓ "中") ∷
+   re 18 1 (ℓ "乏丶乏") ∷
    rw 17 q15 ∷
    rw 18 q22 ∷
    rw 19 q15 ∷
-   re 17 3 (CS03 ∷ []) ∷
-   re 19 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 17 3 (ℓ "中") ∷
+   re 19 1 (ℓ "乏丶乏") ∷
    rw 18 q15 ∷
    rw 19 q22 ∷
    rw 20 q15 ∷
-   re 18 3 (CS03 ∷ []) ∷
-   re 20 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 18 3 (ℓ "中") ∷
+   re 20 1 (ℓ "乏丶乏") ∷
    rw 19 q15 ∷
    rw 20 q22 ∷
    rw 21 q15 ∷
-   re 19 3 (CS03 ∷ []) ∷
-   re 21 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 19 3 (ℓ "中") ∷
+   re 21 1 (ℓ "乏丶乏") ∷
    rw 20 q15 ∷
    rw 21 q22 ∷
    rw 22 q15 ∷
-   re 20 3 (CS03 ∷ []) ∷
-   re 22 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 20 3 (ℓ "中") ∷
+   re 22 1 (ℓ "乏丶乏") ∷
    rw 21 q15 ∷
    rw 22 q22 ∷
    rw 23 q15 ∷
-   re 21 3 (CS03 ∷ []) ∷
+   re 21 3 (ℓ "中") ∷
    rw 22 q19 ∷
-   re 24 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 24 1 (ℓ "乏丶乏") ∷
    rw 23 q15 ∷
    rw 24 q22 ∷
    rw 25 q15 ∷
-   re 23 3 (CS03 ∷ []) ∷
-   re 25 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 23 3 (ℓ "中") ∷
+   re 25 1 (ℓ "乏丶乏") ∷
    rw 24 q15 ∷
    rw 25 q22 ∷
    rw 26 q15 ∷
-   re 24 3 (CS03 ∷ []) ∷
-   re 26 1 (Sw23 ∷ CK12 ∷ Sw23 ∷ []) ∷
+   re 24 3 (ℓ "中") ∷
+   re 26 1 (ℓ "乏为乏") ∷
    rw 25 q15 ∷
    rw 26 q20 ∷
    rw 27 q15 ∷
-   re 25 3 (CK03 ∷ []) ∷
-   re 27 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 25 3 (ℓ "丱") ∷
+   re 27 1 (ℓ "乏丶乏") ∷
    rw 26 q15 ∷
    rw 27 q22 ∷
    rw 28 q15 ∷
-   re 26 3 (CS03 ∷ []) ∷
-   re 28 1 (Sw23 ∷ CK12 ∷ Sw23 ∷ []) ∷
+   re 26 3 (ℓ "中") ∷
+   re 28 1 (ℓ "乏为乏") ∷
    rw 27 q15 ∷
    rw 28 q20 ∷
    rw 29 q15 ∷
-   re 27 3 (CK03 ∷ []) ∷
-   re 29 1 (Sw23 ∷ CK12 ∷ Sw23 ∷ []) ∷
+   re 27 3 (ℓ "丱") ∷
+   re 29 1 (ℓ "乏为乏") ∷
    rw 28 q15 ∷
    rw 29 q20 ∷
    rw 30 q15 ∷
-   re 28 3 (CK03 ∷ []) ∷
+   re 28 3 (ℓ "丱") ∷
    rw 29 q23 ∷
-   re 28 1 (Sw23 ∷ Sw12 ∷ CK01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 28 1 (ℓ "乏丼两丼乏") ∷
    rw 34 q5 ∷
-   re 32 3 (CX31 ∷ []) ∷
+   re 32 3 (ℓ "乓") ∷
    rw 31 q24 ∷
    rw 30 q25 ∷
    rw 29 q26 ∷
-   re 29 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 29 1 (ℓ "乏乆乏") ∷
    rw 28 q7 ∷
-   re 29 5 (CK03 ∷ []) ∷
-   re 27 1 (Sw23 ∷ Sw12 ∷ CK01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 29 5 (ℓ "丱") ∷
+   re 27 1 (ℓ "乏丼两丼乏") ∷
    rw 33 q5 ∷
-   re 31 3 (CX31 ∷ []) ∷
+   re 31 3 (ℓ "乓") ∷
    rw 30 q24 ∷
    rw 29 q25 ∷
    rw 28 q26 ∷
-   re 28 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 28 1 (ℓ "乏乆乏") ∷
    rw 27 q7 ∷
-   re 28 5 (CK03 ∷ []) ∷
-   re 26 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 28 5 (ℓ "丱") ∷
+   re 26 1 (ℓ "乏丼丠丼乏") ∷
    rw 32 q5 ∷
-   re 30 3 (CX31 ∷ []) ∷
+   re 30 3 (ℓ "乓") ∷
    rw 29 q24 ∷
    rw 28 q27 ∷
    rw 27 q26 ∷
-   re 27 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 27 1 (ℓ "乏乆乏") ∷
    rw 26 q7 ∷
-   re 27 5 (CS03 ∷ []) ∷
-   re 25 1 (Sw23 ∷ Sw12 ∷ CK01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 27 5 (ℓ "中") ∷
+   re 25 1 (ℓ "乏丼两丼乏") ∷
    rw 31 q5 ∷
-   re 29 3 (CX31 ∷ []) ∷
+   re 29 3 (ℓ "乓") ∷
    rw 28 q24 ∷
    rw 27 q25 ∷
    rw 26 q26 ∷
-   re 26 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 26 1 (ℓ "乏乆乏") ∷
    rw 25 q7 ∷
-   re 26 5 (CK03 ∷ []) ∷
-   re 24 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 26 5 (ℓ "丱") ∷
+   re 24 1 (ℓ "乏丼丠丼乏") ∷
    rw 30 q5 ∷
-   re 28 3 (CX31 ∷ []) ∷
+   re 28 3 (ℓ "乓") ∷
    rw 27 q24 ∷
    rw 26 q27 ∷
    rw 25 q26 ∷
-   re 25 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 25 1 (ℓ "乏乆乏") ∷
    rw 24 q7 ∷
-   re 25 5 (CS03 ∷ []) ∷
-   re 23 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 25 5 (ℓ "中") ∷
+   re 23 1 (ℓ "乏丼丠丼乏") ∷
    rw 29 q5 ∷
-   re 27 3 (CX31 ∷ []) ∷
+   re 27 3 (ℓ "乓") ∷
    rw 26 q24 ∷
    rw 25 q27 ∷
    rw 24 q26 ∷
-   re 24 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 24 1 (ℓ "乏乆乏") ∷
    rw 23 q7 ∷
-   re 24 5 (CS03 ∷ []) ∷
+   re 24 5 (ℓ "中") ∷
    rw 22 q28 ∷
-   re 21 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 21 1 (ℓ "乏丼丠丼乏") ∷
    rw 27 q5 ∷
-   re 25 3 (CX31 ∷ []) ∷
+   re 25 3 (ℓ "乓") ∷
    rw 24 q24 ∷
    rw 23 q27 ∷
    rw 22 q26 ∷
-   re 22 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 22 1 (ℓ "乏乆乏") ∷
    rw 21 q7 ∷
-   re 22 5 (CS03 ∷ []) ∷
-   re 20 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 22 5 (ℓ "中") ∷
+   re 20 1 (ℓ "乏丼丠丼乏") ∷
    rw 26 q5 ∷
-   re 24 3 (CX31 ∷ []) ∷
+   re 24 3 (ℓ "乓") ∷
    rw 23 q24 ∷
    rw 22 q27 ∷
    rw 21 q26 ∷
-   re 21 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 21 1 (ℓ "乏乆乏") ∷
    rw 20 q7 ∷
-   re 21 5 (CS03 ∷ []) ∷
-   re 19 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 21 5 (ℓ "中") ∷
+   re 19 1 (ℓ "乏丼丠丼乏") ∷
    rw 25 q5 ∷
-   re 23 3 (CX31 ∷ []) ∷
+   re 23 3 (ℓ "乓") ∷
    rw 22 q24 ∷
    rw 21 q27 ∷
    rw 20 q26 ∷
-   re 20 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 20 1 (ℓ "乏乆乏") ∷
    rw 19 q7 ∷
-   re 20 5 (CS03 ∷ []) ∷
-   re 18 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 20 5 (ℓ "中") ∷
+   re 18 1 (ℓ "乏丼丠丼乏") ∷
    rw 24 q5 ∷
-   re 22 3 (CX31 ∷ []) ∷
+   re 22 3 (ℓ "乓") ∷
    rw 21 q24 ∷
    rw 20 q27 ∷
    rw 19 q26 ∷
-   re 19 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 19 1 (ℓ "乏乆乏") ∷
    rw 18 q7 ∷
-   re 19 5 (CS03 ∷ []) ∷
-   re 17 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 19 5 (ℓ "中") ∷
+   re 17 1 (ℓ "乏丼丠丼乏") ∷
    rw 23 q5 ∷
-   re 21 3 (CX31 ∷ []) ∷
+   re 21 3 (ℓ "乓") ∷
    rw 20 q24 ∷
    rw 19 q27 ∷
    rw 18 q26 ∷
-   re 18 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 18 1 (ℓ "乏乆乏") ∷
    rw 17 q7 ∷
-   re 18 5 (CS03 ∷ []) ∷
-   re 16 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 18 5 (ℓ "中") ∷
+   re 16 1 (ℓ "乏丼丠丼乏") ∷
    rw 22 q5 ∷
-   re 20 3 (CX31 ∷ []) ∷
+   re 20 3 (ℓ "乓") ∷
    rw 19 q24 ∷
    rw 18 q27 ∷
    rw 17 q26 ∷
-   re 17 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 17 1 (ℓ "乏乆乏") ∷
    rw 16 q7 ∷
-   re 17 5 (CS03 ∷ []) ∷
+   re 17 5 (ℓ "中") ∷
    rw 15 q29 ∷
-   re 14 1 (Sw23 ∷ Sw12 ∷ CK01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 14 1 (ℓ "乏丼两丼乏") ∷
    rw 20 q5 ∷
-   re 18 3 (CX31 ∷ []) ∷
+   re 18 3 (ℓ "乓") ∷
    rw 17 q24 ∷
    rw 16 q25 ∷
    rw 15 q26 ∷
-   re 15 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 15 1 (ℓ "乏乆乏") ∷
    rw 14 q7 ∷
-   re 15 5 (CK03 ∷ []) ∷
-   re 13 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 15 5 (ℓ "丱") ∷
+   re 13 1 (ℓ "乏丼丠丼乏") ∷
    rw 19 q5 ∷
-   re 17 3 (CX31 ∷ []) ∷
+   re 17 3 (ℓ "乓") ∷
    rw 16 q24 ∷
    rw 15 q27 ∷
    rw 14 q26 ∷
-   re 14 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 14 1 (ℓ "乏乆乏") ∷
    rw 13 q7 ∷
-   re 14 5 (CS03 ∷ []) ∷
-   re 12 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 14 5 (ℓ "中") ∷
+   re 12 1 (ℓ "乏丼丠丼乏") ∷
    rw 18 q5 ∷
-   re 16 3 (CX31 ∷ []) ∷
+   re 16 3 (ℓ "乓") ∷
    rw 15 q24 ∷
    rw 14 q27 ∷
    rw 13 q26 ∷
-   re 13 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 13 1 (ℓ "乏乆乏") ∷
    rw 12 q7 ∷
-   re 13 5 (CS03 ∷ []) ∷
-   re 11 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 13 5 (ℓ "中") ∷
+   re 11 1 (ℓ "乏丼丠丼乏") ∷
    rw 17 q5 ∷
-   re 15 3 (CX31 ∷ []) ∷
+   re 15 3 (ℓ "乓") ∷
    rw 14 q24 ∷
    rw 13 q27 ∷
    rw 12 q26 ∷
-   re 12 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 12 1 (ℓ "乏乆乏") ∷
    rw 11 q7 ∷
-   re 12 5 (CS03 ∷ []) ∷
+   re 12 5 (ℓ "中") ∷
    rw 10 q29 ∷
-   re 9 1 (Sw23 ∷ Sw12 ∷ CK01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 9 1 (ℓ "乏丼两丼乏") ∷
    rw 15 q5 ∷
-   re 13 3 (CX31 ∷ []) ∷
+   re 13 3 (ℓ "乓") ∷
    rw 12 q24 ∷
    rw 11 q25 ∷
    rw 10 q26 ∷
-   re 10 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 10 1 (ℓ "乏乆乏") ∷
    rw 9 q7 ∷
-   re 10 5 (CK03 ∷ []) ∷
+   re 10 5 (ℓ "丱") ∷
    rw 8 q29 ∷
-   re 7 1 (Sw23 ∷ Sw12 ∷ CK01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   re 7 1 (ℓ "乏丼两丼乏") ∷
    rw 13 q5 ∷
-   re 11 3 (CX31 ∷ []) ∷
+   re 11 3 (ℓ "乓") ∷
    rw 10 q24 ∷
    rw 9 q25 ∷
    rw 8 q26 ∷
-   re 8 1 (Sw23 ∷ CX21 ∷ Sw23 ∷ []) ∷
+   re 8 1 (ℓ "乏乆乏") ∷
    rw 7 q7 ∷
-   re 8 5 (CK03 ∷ []) ∷
+   re 8 5 (ℓ "丱") ∷
    rw 6 q28 ∷
    rw 5 q30 ∷
    rw 4 q30 ∷
@@ -505,100 +506,100 @@ lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-
    rw 1 q31 ∷
    rw 0 q31 ∷
    rw 30 q10 ∷
-   re 29 1 (Sw23 ∷ CK02 ∷ Sw23 ∷ []) ∷
+   re 29 1 (ℓ "乏丫乏") ∷
    rw⁻ 31 q15 ∷
    rw 30 q16 ∷
    rw⁻ 29 q15 ∷
-   re 30 3 (CK13 ∷ []) ∷
-   re 28 1 (Sw23 ∷ CK02 ∷ Sw23 ∷ []) ∷
+   re 30 3 (ℓ "乁") ∷
+   re 28 1 (ℓ "乏丫乏") ∷
    rw⁻ 30 q15 ∷
    rw 29 q16 ∷
    rw⁻ 28 q15 ∷
-   re 29 3 (CK13 ∷ []) ∷
-   re 27 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 29 3 (ℓ "乁") ∷
+   re 27 1 (ℓ "乏丧乏") ∷
    rw⁻ 29 q15 ∷
    rw 28 q17 ∷
    rw⁻ 27 q15 ∷
-   re 28 3 (CS13 ∷ []) ∷
-   re 26 1 (Sw23 ∷ CK02 ∷ Sw23 ∷ []) ∷
+   re 28 3 (ℓ "丽") ∷
+   re 26 1 (ℓ "乏丫乏") ∷
    rw⁻ 28 q15 ∷
    rw 27 q16 ∷
    rw⁻ 26 q15 ∷
-   re 27 3 (CK13 ∷ []) ∷
-   re 25 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 27 3 (ℓ "乁") ∷
+   re 25 1 (ℓ "乏丧乏") ∷
    rw⁻ 27 q15 ∷
    rw 26 q17 ∷
    rw⁻ 25 q15 ∷
-   re 26 3 (CS13 ∷ []) ∷
-   re 24 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 26 3 (ℓ "丽") ∷
+   re 24 1 (ℓ "乏丧乏") ∷
    rw⁻ 26 q15 ∷
    rw 25 q17 ∷
    rw⁻ 24 q15 ∷
-   re 25 3 (CS13 ∷ []) ∷
+   re 25 3 (ℓ "丽") ∷
    rw 23 q32 ∷
-   re 22 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 22 1 (ℓ "乏丧乏") ∷
    rw⁻ 24 q15 ∷
    rw 23 q17 ∷
    rw⁻ 22 q15 ∷
-   re 23 3 (CS13 ∷ []) ∷
-   re 21 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 23 3 (ℓ "丽") ∷
+   re 21 1 (ℓ "乏丧乏") ∷
    rw⁻ 23 q15 ∷
    rw 22 q17 ∷
    rw⁻ 21 q15 ∷
-   re 22 3 (CS13 ∷ []) ∷
-   re 20 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 22 3 (ℓ "丽") ∷
+   re 20 1 (ℓ "乏丧乏") ∷
    rw⁻ 22 q15 ∷
    rw 21 q17 ∷
    rw⁻ 20 q15 ∷
-   re 21 3 (CS13 ∷ []) ∷
-   re 19 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 21 3 (ℓ "丽") ∷
+   re 19 1 (ℓ "乏丧乏") ∷
    rw⁻ 21 q15 ∷
    rw 20 q17 ∷
    rw⁻ 19 q15 ∷
-   re 20 3 (CS13 ∷ []) ∷
-   re 18 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 20 3 (ℓ "丽") ∷
+   re 18 1 (ℓ "乏丧乏") ∷
    rw⁻ 20 q15 ∷
    rw 19 q17 ∷
    rw⁻ 18 q15 ∷
-   re 19 3 (CS13 ∷ []) ∷
-   re 17 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 19 3 (ℓ "丽") ∷
+   re 17 1 (ℓ "乏丧乏") ∷
    rw⁻ 19 q15 ∷
    rw 18 q17 ∷
    rw⁻ 17 q15 ∷
-   re 18 3 (CS13 ∷ []) ∷
+   re 18 3 (ℓ "丽") ∷
    rw 16 q33 ∷
-   re 15 1 (Sw23 ∷ CK02 ∷ Sw23 ∷ []) ∷
+   re 15 1 (ℓ "乏丫乏") ∷
    rw⁻ 17 q15 ∷
    rw 16 q16 ∷
    rw⁻ 15 q15 ∷
-   re 16 3 (CK13 ∷ []) ∷
-   re 14 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 16 3 (ℓ "乁") ∷
+   re 14 1 (ℓ "乏丧乏") ∷
    rw⁻ 16 q15 ∷
    rw 15 q17 ∷
    rw⁻ 14 q15 ∷
-   re 15 3 (CS13 ∷ []) ∷
-   re 13 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 15 3 (ℓ "丽") ∷
+   re 13 1 (ℓ "乏丧乏") ∷
    rw⁻ 15 q15 ∷
    rw 14 q17 ∷
    rw⁻ 13 q15 ∷
-   re 14 3 (CS13 ∷ []) ∷
-   re 12 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 14 3 (ℓ "丽") ∷
+   re 12 1 (ℓ "乏丧乏") ∷
    rw⁻ 14 q15 ∷
    rw 13 q17 ∷
    rw⁻ 12 q15 ∷
-   re 13 3 (CS13 ∷ []) ∷
+   re 13 3 (ℓ "丽") ∷
    rw 11 q33 ∷
-   re 10 1 (Sw23 ∷ CK02 ∷ Sw23 ∷ []) ∷
+   re 10 1 (ℓ "乏丫乏") ∷
    rw⁻ 12 q15 ∷
    rw 11 q16 ∷
    rw⁻ 10 q15 ∷
-   re 11 3 (CK13 ∷ []) ∷
+   re 11 3 (ℓ "乁") ∷
    rw 9 q33 ∷
-   re 8 1 (Sw23 ∷ CK02 ∷ Sw23 ∷ []) ∷
+   re 8 1 (ℓ "乏丫乏") ∷
    rw⁻ 10 q15 ∷
    rw 9 q16 ∷
    rw⁻ 8 q15 ∷
-   re 9 3 (CK13 ∷ []) ∷
+   re 9 3 (ℓ "乁") ∷
    rw 7 q32 ∷
    rw⁻ 6 q11 ∷
    rw⁻ 5 q11 ∷
@@ -607,36 +608,36 @@ lem-pass-CS03-CS03-CK03-CS03-CK03-CK03-CX02-CK23-S2-CK23-S2-CS23-CS23-CS23-CK23-
    rw⁻ 2 q12 ∷
    rw⁻ 1 q12 ∷
    rw 2 q34 ∷
-   re 2 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 2 1 (ℓ "乏丶乏") ∷
    rw 1 q15 ∷
    rw 2 q22 ∷
    rw 3 q15 ∷
-   re 1 3 (CS03 ∷ []) ∷
-   re 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 1 3 (ℓ "中") ∷
+   re 3 1 (ℓ "乏丶乏") ∷
    rw 2 q15 ∷
    rw 3 q22 ∷
    rw 4 q15 ∷
-   re 2 3 (CS03 ∷ []) ∷
-   re 4 1 (Sw23 ∷ CK12 ∷ Sw23 ∷ []) ∷
+   re 2 3 (ℓ "中") ∷
+   re 4 1 (ℓ "乏为乏") ∷
    rw 3 q15 ∷
    rw 4 q20 ∷
    rw 5 q15 ∷
-   re 3 3 (CK03 ∷ []) ∷
-   re 5 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 3 3 (ℓ "丱") ∷
+   re 5 1 (ℓ "乏丶乏") ∷
    rw 4 q15 ∷
    rw 5 q22 ∷
    rw 6 q15 ∷
-   re 4 3 (CS03 ∷ []) ∷
-   re 6 1 (Sw23 ∷ CK12 ∷ Sw23 ∷ []) ∷
+   re 4 3 (ℓ "中") ∷
+   re 6 1 (ℓ "乏为乏") ∷
    rw 5 q15 ∷
    rw 6 q20 ∷
    rw 7 q15 ∷
-   re 5 3 (CK03 ∷ []) ∷
-   re 7 1 (Sw23 ∷ CK12 ∷ Sw23 ∷ []) ∷
+   re 5 3 (ℓ "丱") ∷
+   re 7 1 (ℓ "乏为乏") ∷
    rw 6 q15 ∷
    rw 7 q20 ∷
    rw 8 q15 ∷
-   re 6 3 (CK03 ∷ []) ∷
+   re 6 3 (ℓ "丱") ∷
    rw 7 q35 ∷
    rw 8 q11 ∷
    rw 9 q14 ∷

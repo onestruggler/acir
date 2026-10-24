@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD021 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D021 (Sᴰ : SD021) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -403,11 +404,11 @@ private
   q24 c4 = wlE 305 (lit c4)
 
 -- nf-comm-CS-S0@2: 83 steps
-lem-nf-comm-CS-S0at2 : Ws → ⟪ (CS24 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (CS24 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Bx0-2431 ∷ []) ⟫ʷ
-lem-nf-comm-CS-S0at2 c4 = derive (CS24 ∷ Sb0-2-43-1 ∷ []) (CS24 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Bx0-2431 ∷ [])
-  (re 1 1 (Bx0-2431 ∷ Toff134 ∷ Sb0-2-1-3 ∷ Toff134 ∷ Sb⁻0-2-1-3 ∷ []) ∷
-   re 3 1 (CS12 ∷ []) ∷
-   re 5 1 (CS12⁻ ∷ []) ∷
+lem-nf-comm-CS-S0at2 : Ws → ⟪ (ℓ "乩侬") ⟫ʷ ≈ ⟪ (ℓ "乩亭乇亭么仞") ⟫ʷ
+lem-nf-comm-CS-S0at2 c4 = derive (ℓ "乩侬") (ℓ "乩亭乇亭么仞")
+  (re 1 1 (ℓ "仞亭侪亭侫") ∷
+   re 3 1 (ℓ "乇") ∷
+   re 5 1 (ℓ "么") ∷
    rw 1 (q1 c4) ∷
    rw 4 (q2 c4) ∷
    rw 3 (q3 c4) ∷
@@ -532,11 +533,11 @@ private
   q44 c4 = wpE 161 c4
 
 -- nf-comm-CS-S1@0: 83 steps
-lem-nf-comm-CS-S1at0 : Ws → ⟪ (CS14 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (CS14 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ Bx2-0413 ∷ []) ⟫ʷ
-lem-nf-comm-CS-S1at0 c4 = derive (CS14 ∷ Sb2-0-41-3 ∷ []) (CS14 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ Bx2-0413 ∷ [])
-  (re 1 1 (Bx2-0413 ∷ Toff314 ∷ Sb2-0-3-1 ∷ Toff314 ∷ Sb⁻2-0-3-1 ∷ []) ∷
-   re 3 1 (CS03 ∷ []) ∷
-   re 5 1 (CS03⁻ ∷ []) ∷
+lem-nf-comm-CS-S1at0 : Ws → ⟪ (ℓ "乕俄") ⟫ʷ ≈ ⟪ (ℓ "乕亮丶亮丷伱") ⟫ʷ
+lem-nf-comm-CS-S1at0 c4 = derive (ℓ "乕俄") (ℓ "乕亮丶亮丷伱")
+  (re 1 1 (ℓ "伱亮係亮促") ∷
+   re 3 1 (ℓ "丶") ∷
+   re 5 1 (ℓ "丷") ∷
    rw 1 (q25 c4) ∷
    rw 4 (q26 c4) ∷
    rw 3 (q27 c4) ∷
@@ -669,11 +670,11 @@ private
   q68 c4 = wlE 263 (lit c4)
 
 -- nf-comm-CS-S1@1: 83 steps
-lem-nf-comm-CS-S1at1 : Ws → ⟪ (CS24 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (CS24 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ Bx0-1423 ∷ []) ⟫ʷ
-lem-nf-comm-CS-S1at1 c4 = derive (CS24 ∷ Sb0-1-42-3 ∷ []) (CS24 ∷ Toff324 ∷ CS13 ∷ Toff324 ∷ CS13⁻ ∷ Bx0-1423 ∷ [])
-  (re 1 1 (Bx0-1423 ∷ Toff324 ∷ Sb0-1-3-2 ∷ Toff324 ∷ Sb⁻0-1-3-2 ∷ []) ∷
-   re 3 1 (CS13 ∷ []) ∷
-   re 5 1 (CS13⁻ ∷ []) ∷
+lem-nf-comm-CS-S1at1 : Ws → ⟪ (ℓ "乩侧") ⟫ʷ ≈ ⟪ (ℓ "乩亲乎亲乏仄") ⟫ʷ
+lem-nf-comm-CS-S1at1 c4 = derive (ℓ "乩侧") (ℓ "乩亲乎亲乏仄")
+  (re 1 1 (ℓ "仄亲侥亲侦") ∷
+   re 3 1 (ℓ "乎") ∷
+   re 5 1 (ℓ "乏") ∷
    rw 1 (q45 c4) ∷
    rw 4 (q46 c4) ∷
    rw 3 (q47 c4) ∷
@@ -756,11 +757,11 @@ lem-nf-comm-CS-S1at1 c4 = derive (CS24 ∷ Sb0-1-42-3 ∷ []) (CS24 ∷ Toff324 
    rw 3 (q68 c4) ∷ []) Eq.refl
 
 -- nf-comm-CS-S1@2: 83 steps
-lem-nf-comm-CS-S1at2 : Ws → ⟪ (CS34 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (CS34 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Bx0-2431 ∷ []) ⟫ʷ
-lem-nf-comm-CS-S1at2 c4 = derive (CS34 ∷ Sb0-2-43-1 ∷ []) (CS34 ∷ Toff134 ∷ CS12 ∷ Toff134 ∷ CS12⁻ ∷ Bx0-2431 ∷ [])
-  (re 1 1 (Bx0-2431 ∷ Toff134 ∷ Sb0-2-1-3 ∷ Toff134 ∷ Sb⁻0-2-1-3 ∷ []) ∷
-   re 3 1 (CS12 ∷ []) ∷
-   re 5 1 (CS12⁻ ∷ []) ∷
+lem-nf-comm-CS-S1at2 : Ws → ⟪ (ℓ "乹侬") ⟫ʷ ≈ ⟪ (ℓ "乹亭乇亭么仞") ⟫ʷ
+lem-nf-comm-CS-S1at2 c4 = derive (ℓ "乹侬") (ℓ "乹亭乇亭么仞")
+  (re 1 1 (ℓ "仞亭侪亭侫") ∷
+   re 3 1 (ℓ "乇") ∷
+   re 5 1 (ℓ "么") ∷
    rw 1 (q1 c4) ∷
    rw 4 (q2 c4) ∷
    rw 3 (q3 c4) ∷
@@ -853,8 +854,8 @@ private
   q72 c4 = sE 330 (lem-box-tQ-at02233440 c4)
 
 -- pairs @0214203143: 4 steps
-lem-pairs-at0214203143 : Ws → ⟪ (Bx2-4013 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-1340 ∷ []) ⟫ʷ
-lem-pairs-at0214203143 c4 = derive (Bx2-4013 ∷ []) (Bx2-1340 ∷ [])
+lem-pairs-at0214203143 : Ws → ⟪ (ℓ "佔") ⟫ʷ ≈ ⟪ (ℓ "伵") ⟫ʷ
+lem-pairs-at0214203143 c4 = derive (ℓ "佔") (ℓ "伵")
   (rw⁻ 0 (q69 c4) ∷
    rw 1 (q70 c4) ∷
    rw 4 (q71 c4) ∷
@@ -865,8 +866,8 @@ private
   q73 c4 = sE 1142 (lem-sym-bc-at02233440 c4)
 
 -- box-perm-1324 @02233440: 1 steps
-lem-box-perm-1324-at02233440 : Ws → ⟪ (Bx2-1340 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-1430 ∷ []) ⟫ʷ
-lem-box-perm-1324-at02233440 c4 = derive (Bx2-1340 ∷ []) (Bx2-1430 ∷ [])
+lem-box-perm-1324-at02233440 : Ws → ⟪ (ℓ "伵") ⟫ʷ ≈ ⟪ (ℓ "伶") ⟫ʷ
+lem-box-perm-1324-at02233440 c4 = derive (ℓ "伵") (ℓ "伶")
   (rw 0 (q73 c4) ∷ []) Eq.refl
 
 private
@@ -877,7 +878,7 @@ private
   q76 : Ws → Eqn
   q76 c4 = wlE 1128 (lit c4)
   q77 : Ws → Eqn
-  q77 c4 = eqn (Toff203 ∷ X4 ∷ []) (X4 ∷ Toff203 ∷ []) (c₄ (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) (X))
+  q77 c4 = eqn (ℓ "亚並") (ℓ "並亚") (c₄ (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) (X))
   q78 : Ws → Eqn
   q78 c4 = wlE 289 (lit c4)
   q79 : Ws → Eqn
@@ -898,8 +899,8 @@ private
   q86 c4 = wpE 24 c4
 
 -- Xb-box @022440: 18 steps
-lem-Xb-box-at022440 : Ws → ⟪ (X4 ∷ Bx2-1430 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-1430 ∷ CCZ013 ∷ []) ⟫ʷ
-lem-Xb-box-at022440 c4 = derive (X4 ∷ Bx2-1430 ∷ X4 ∷ []) (Bx2-1430 ∷ CCZ013 ∷ [])
+lem-Xb-box-at022440 : Ws → ⟪ (ℓ "並伶並") ⟫ʷ ≈ ⟪ (ℓ "伶亐") ⟫ʷ
+lem-Xb-box-at022440 c4 = derive (ℓ "並伶並") (ℓ "伶亐")
   (rw 1 (q74 c4) ∷
    rw⁻ 0 (q75 c4) ∷
    rw 2 (q76 c4) ∷
@@ -924,8 +925,8 @@ private
   q87 c4 = sE 1143 (lem-sym-bc-at022440 c4)
 
 -- box-perm-1324 @022440: 1 steps
-lem-box-perm-1324-at022440 : Ws → ⟪ (Bx2-1430 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-1340 ∷ []) ⟫ʷ
-lem-box-perm-1324-at022440 c4 = derive (Bx2-1430 ∷ []) (Bx2-1340 ∷ [])
+lem-box-perm-1324-at022440 : Ws → ⟪ (ℓ "伶") ⟫ʷ ≈ ⟪ (ℓ "伵") ⟫ʷ
+lem-box-perm-1324-at022440 c4 = derive (ℓ "伶") (ℓ "伵")
   (rw 0 (q87 c4) ∷ []) Eq.refl
 
 private
@@ -939,8 +940,8 @@ private
   q91 c4 = sE 249 (lem-box-tQ-at0214203143 c4)
 
 -- pairs @02233440: 4 steps
-lem-pairs-at02233440 : Ws → ⟪ (Bx2-1340 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-4013 ∷ []) ⟫ʷ
-lem-pairs-at02233440 c4 = derive (Bx2-1340 ∷ []) (Bx2-4013 ∷ [])
+lem-pairs-at02233440 : Ws → ⟪ (ℓ "伵") ⟫ʷ ≈ ⟪ (ℓ "佔") ⟫ʷ
+lem-pairs-at02233440 c4 = derive (ℓ "伵") (ℓ "佔")
   (rw⁻ 0 (q88 c4) ∷
    rw 1 (q89 c4) ∷
    rw 4 (q90 c4) ∷
@@ -951,8 +952,8 @@ private
   q92 c4 = sE 1157 (lem-sym-bc-at12233441 c4)
 
 -- box-perm-1324 @12233441: 1 steps
-lem-box-perm-1324-at12233441 : Ws → ⟪ (Bx0-2341 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2431 ∷ []) ⟫ʷ
-lem-box-perm-1324-at12233441 c4 = derive (Bx0-2341 ∷ []) (Bx0-2431 ∷ [])
+lem-box-perm-1324-at12233441 : Ws → ⟪ (ℓ "付") ⟫ʷ ≈ ⟪ (ℓ "仞") ⟫ʷ
+lem-box-perm-1324-at12233441 c4 = derive (ℓ "付") (ℓ "仞")
   (rw 0 (q92 c4) ∷ []) Eq.refl
 
 private
@@ -966,8 +967,8 @@ private
   q96 c4 = sE 259 (lem-box-tQ-at13213442 c4)
 
 -- pairs @1441: 4 steps
-lem-pairs-at1441 : Ws → ⟪ (Bx0-4231 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-3142 ∷ []) ⟫ʷ
-lem-pairs-at1441 c4 = derive (Bx0-4231 ∷ []) (Bx0-3142 ∷ [])
+lem-pairs-at1441 : Ws → ⟪ (ℓ "伈") ⟫ʷ ≈ ⟪ (ℓ "仩") ⟫ʷ
+lem-pairs-at1441 c4 = derive (ℓ "伈") (ℓ "仩")
   (rw⁻ 0 (q93 c4) ∷
    rw 1 (q94 c4) ∷
    rw 4 (q95 c4) ∷
@@ -978,8 +979,8 @@ private
   q97 c4 = sE 1019 (lem-sym-bc-at13213442 c4)
 
 -- box-perm-1324 @13213442: 1 steps
-lem-box-perm-1324-at13213442 : Ws → ⟪ (Bx0-3142 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-3412 ∷ []) ⟫ʷ
-lem-box-perm-1324-at13213442 c4 = derive (Bx0-3142 ∷ []) (Bx0-3412 ∷ [])
+lem-box-perm-1324-at13213442 : Ws → ⟪ (ℓ "仩") ⟫ʷ ≈ ⟪ (ℓ "仳") ⟫ʷ
+lem-box-perm-1324-at13213442 c4 = derive (ℓ "仩") (ℓ "仳")
   (rw 0 (q97 c4) ∷ []) Eq.refl
 
 private
@@ -987,8 +988,8 @@ private
   q98 c4 = sE 1138 (lem-sym-bc-at0210233441 c4)
 
 -- box-perm-1324 @0210233441: 1 steps
-lem-box-perm-1324-at0210233441 : Ws → ⟪ (Bx2-0341 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-0431 ∷ []) ⟫ʷ
-lem-box-perm-1324-at0210233441 c4 = derive (Bx2-0341 ∷ []) (Bx2-0431 ∷ [])
+lem-box-perm-1324-at0210233441 : Ws → ⟪ (ℓ "估") ⟫ʷ ≈ ⟪ (ℓ "伲") ⟫ʷ
+lem-box-perm-1324-at0210233441 c4 = derive (ℓ "估") (ℓ "伲")
   (rw 0 (q98 c4) ∷ []) Eq.refl
 
 private
@@ -999,7 +1000,7 @@ private
   q101 : Ws → Eqn
   q101 c4 = wlE 183 (lit c4)
   q102 : Ws → Eqn
-  q102 c4 = eqn (Toff213 ∷ X4 ∷ []) (X4 ∷ Toff213 ∷ []) (c₄ ((K ↑ • CCZ • K ↑ • iI) ↑) (X))
+  q102 c4 = eqn (ℓ "亦並") (ℓ "並亦") (c₄ ((K ↑ • CCZ • K ↑ • iI) ↑) (X))
   q103 : Ws → Eqn
   q103 c4 = wlE 905 (lit c4)
   q104 : Ws → Eqn
@@ -1018,8 +1019,8 @@ private
   q110 c4 = wlE 186 (lit c4)
 
 -- Xb-box @02102441: 18 steps
-lem-Xb-box-at02102441 : Ws → ⟪ (X4 ∷ Bx2-0431 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-0431 ∷ CCZ013 ∷ []) ⟫ʷ
-lem-Xb-box-at02102441 c4 = derive (X4 ∷ Bx2-0431 ∷ X4 ∷ []) (Bx2-0431 ∷ CCZ013 ∷ [])
+lem-Xb-box-at02102441 : Ws → ⟪ (ℓ "並伲並") ⟫ʷ ≈ ⟪ (ℓ "伲亐") ⟫ʷ
+lem-Xb-box-at02102441 c4 = derive (ℓ "並伲並") (ℓ "伲亐")
   (rw 1 (q99 c4) ∷
    rw⁻ 0 (q100 c4) ∷
    rw 2 (q101 c4) ∷
@@ -1044,8 +1045,8 @@ private
   q111 c4 = sE 1139 (lem-sym-bc-at02102441 c4)
 
 -- box-perm-1324 @02102441: 1 steps
-lem-box-perm-1324-at02102441 : Ws → ⟪ (Bx2-0431 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-0341 ∷ []) ⟫ʷ
-lem-box-perm-1324-at02102441 c4 = derive (Bx2-0431 ∷ []) (Bx2-0341 ∷ [])
+lem-box-perm-1324-at02102441 : Ws → ⟪ (ℓ "伲") ⟫ʷ ≈ ⟪ (ℓ "估") ⟫ʷ
+lem-box-perm-1324-at02102441 c4 = derive (ℓ "伲") (ℓ "估")
   (rw 0 (q111 c4) ∷ []) Eq.refl
 
 private
@@ -1053,8 +1054,8 @@ private
   q112 c4 = sE 1161 (lem-sym-bc-at233442 c4)
 
 -- box-perm-1324 @233442: 1 steps
-lem-box-perm-1324-at233442 : Ws → ⟪ (Bx0-1342 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1432 ∷ []) ⟫ʷ
-lem-box-perm-1324-at233442 c4 = derive (Bx0-1342 ∷ []) (Bx0-1432 ∷ [])
+lem-box-perm-1324-at233442 : Ws → ⟪ (ℓ "仂") ⟫ʷ ≈ ⟪ (ℓ "仆") ⟫ʷ
+lem-box-perm-1324-at233442 c4 = derive (ℓ "仂") (ℓ "仆")
   (rw 0 (q112 c4) ∷ []) Eq.refl
 
 private
@@ -1065,7 +1066,7 @@ private
   q115 : Ws → Eqn
   q115 c4 = wlE 206 (lit c4)
   q116 : Ws → Eqn
-  q116 c4 = eqn (Toff023 ∷ X4 ∷ []) (X4 ∷ Toff023 ∷ []) (c₄ (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) (X))
+  q116 c4 = eqn (ℓ "亙並") (ℓ "並亙") (c₄ (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) (X))
   q117 : Ws → Eqn
   q117 c4 = wlE 242 (lit c4)
   q118 : Ws → Eqn
@@ -1086,8 +1087,8 @@ private
   q125 c4 = wlE 210 (lit c4)
 
 -- Xb-box @2442: 18 steps
-lem-Xb-box-at2442 : Ws → ⟪ (X4 ∷ Bx0-1432 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1432 ∷ CCZ123 ∷ []) ⟫ʷ
-lem-Xb-box-at2442 c4 = derive (X4 ∷ Bx0-1432 ∷ X4 ∷ []) (Bx0-1432 ∷ CCZ123 ∷ [])
+lem-Xb-box-at2442 : Ws → ⟪ (ℓ "並仆並") ⟫ʷ ≈ ⟪ (ℓ "仆交") ⟫ʷ
+lem-Xb-box-at2442 c4 = derive (ℓ "並仆並") (ℓ "仆交")
   (rw 1 (q113 c4) ∷
    rw⁻ 0 (q114 c4) ∷
    rw 2 (q115 c4) ∷
@@ -1112,8 +1113,8 @@ private
   q126 c4 = sE 1162 (lem-sym-bc-at2442 c4)
 
 -- box-perm-1324 @2442: 1 steps
-lem-box-perm-1324-at2442 : Ws → ⟪ (Bx0-1432 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1342 ∷ []) ⟫ʷ
-lem-box-perm-1324-at2442 c4 = derive (Bx0-1432 ∷ []) (Bx0-1342 ∷ [])
+lem-box-perm-1324-at2442 : Ws → ⟪ (ℓ "仆") ⟫ʷ ≈ ⟪ (ℓ "仂") ⟫ʷ
+lem-box-perm-1324-at2442 c4 = derive (ℓ "仆") (ℓ "仂")
   (rw 0 (q126 c4) ∷ []) Eq.refl
 
 private
@@ -1127,8 +1128,8 @@ private
   q130 c4 = sE 314 (lem-box-tQ-at143143 c4)
 
 -- pairs @233442: 4 steps
-lem-pairs-at233442 : Ws → ⟪ (Bx0-1342 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-4213 ∷ []) ⟫ʷ
-lem-pairs-at233442 c4 = derive (Bx0-1342 ∷ []) (Bx0-4213 ∷ [])
+lem-pairs-at233442 : Ws → ⟪ (ℓ "仂") ⟫ʷ ≈ ⟪ (ℓ "伅") ⟫ʷ
+lem-pairs-at233442 c4 = derive (ℓ "仂") (ℓ "伅")
   (rw⁻ 0 (q127 c4) ∷
    rw 1 (q128 c4) ∷
    rw 4 (q129 c4) ∷
@@ -1139,8 +1140,8 @@ private
   q131 c4 = sE 1156 (lem-sym-bc-at12213443 c4)
 
 -- box-perm-1324 @12213443: 1 steps
-lem-box-perm-1324-at12213443 : Ws → ⟪ (Bx0-2143 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2413 ∷ []) ⟫ʷ
-lem-box-perm-1324-at12213443 c4 = derive (Bx0-2143 ∷ []) (Bx0-2413 ∷ [])
+lem-box-perm-1324-at12213443 : Ws → ⟪ (ℓ "仑") ⟫ʷ ≈ ⟪ (ℓ "仛") ⟫ʷ
+lem-box-perm-1324-at12213443 c4 = derive (ℓ "仑") (ℓ "仛")
   (rw 0 (q131 c4) ∷ []) Eq.refl
 
 private
@@ -1149,7 +1150,7 @@ private
   q133 : Ws → Eqn
   q133 c4 = wlE 232 (lit c4)
   q134 : Ws → Eqn
-  q134 c4 = eqn (Toff013 ∷ X4 ∷ []) (X4 ∷ Toff013 ∷ []) (c₄ (Swap ↑ ↑ • Toff • Swap ↑ ↑) (X))
+  q134 c4 = eqn (ℓ "云並") (ℓ "並云") (c₄ (Swap ↑ ↑ • Toff • Swap ↑ ↑) (X))
   q135 : Ws → Eqn
   q135 c4 = wlE 326 (lit c4)
   q136 : Ws → Eqn
@@ -1160,8 +1161,8 @@ private
   q138 c4 = wlE 234 (lit c4)
 
 -- Xb-box @12243143: 18 steps
-lem-Xb-box-at12243143 : Ws → ⟪ (X4 ∷ Bx0-2413 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2413 ∷ CCZ123 ∷ []) ⟫ʷ
-lem-Xb-box-at12243143 c4 = derive (X4 ∷ Bx0-2413 ∷ X4 ∷ []) (Bx0-2413 ∷ CCZ123 ∷ [])
+lem-Xb-box-at12243143 : Ws → ⟪ (ℓ "並仛並") ⟫ʷ ≈ ⟪ (ℓ "仛交") ⟫ʷ
+lem-Xb-box-at12243143 c4 = derive (ℓ "並仛並") (ℓ "仛交")
   (rw 1 (q132 c4) ∷
    rw⁻ 0 (q100 c4) ∷
    rw 2 (q133 c4) ∷
@@ -1186,8 +1187,8 @@ private
   q139 c4 = sE 1158 (lem-sym-bc-at12243143 c4)
 
 -- box-perm-1324 @12243143: 1 steps
-lem-box-perm-1324-at12243143 : Ws → ⟪ (Bx0-2413 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2143 ∷ []) ⟫ʷ
-lem-box-perm-1324-at12243143 c4 = derive (Bx0-2413 ∷ []) (Bx0-2143 ∷ [])
+lem-box-perm-1324-at12243143 : Ws → ⟪ (ℓ "仛") ⟫ʷ ≈ ⟪ (ℓ "仑") ⟫ʷ
+lem-box-perm-1324-at12243143 c4 = derive (ℓ "仛") (ℓ "仑")
   (rw 0 (q139 c4) ∷ []) Eq.refl
 
 private
@@ -1201,8 +1202,8 @@ private
   q143 c4 = sE 88 (lem-box-tQ-at14233241 c4)
 
 -- pairs @12213443: 4 steps
-lem-pairs-at12213443 : Ws → ⟪ (Bx0-2143 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-4321 ∷ []) ⟫ʷ
-lem-pairs-at12213443 c4 = derive (Bx0-2143 ∷ []) (Bx0-4321 ∷ [])
+lem-pairs-at12213443 : Ws → ⟪ (ℓ "仑") ⟫ʷ ≈ ⟪ (ℓ "伍") ⟫ʷ
+lem-pairs-at12213443 c4 = derive (ℓ "仑") (ℓ "伍")
   (rw⁻ 0 (q140 c4) ∷
    rw 1 (q141 c4) ∷
    rw 4 (q142 c4) ∷
@@ -1215,8 +1216,8 @@ private
   q145 c4 = sE 1159 (lem-sym-bc-at14213243 c4)
 
 -- box-perm-2314 @243243: 2 steps
-lem-box-perm-2314-at243243 : Ws → ⟪ (Bx0-1423 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-4213 ∷ []) ⟫ʷ
-lem-box-perm-2314-at243243 c4 = derive (Bx0-1423 ∷ []) (Bx0-4213 ∷ [])
+lem-box-perm-2314-at243243 : Ws → ⟪ (ℓ "仄") ⟫ʷ ≈ ⟪ (ℓ "伅") ⟫ʷ
+lem-box-perm-2314-at243243 c4 = derive (ℓ "仄") (ℓ "伅")
   (rw 0 (q144 c4) ∷
    rw 0 (q145 c4) ∷ []) Eq.refl
 
@@ -1225,8 +1226,8 @@ private
   q146 c4 = sE 1153 (lem-sym-bc-at03143140 c4)
 
 -- box-perm-1324 @03143140: 1 steps
-lem-box-perm-1324-at03143140 : Ws → ⟪ (Bx3-4210 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4120 ∷ []) ⟫ʷ
-lem-box-perm-1324-at03143140 c4 = derive (Bx3-4210 ∷ []) (Bx3-4120 ∷ [])
+lem-box-perm-1324-at03143140 : Ws → ⟪ (ℓ "侌") ⟫ʷ ≈ ⟪ (ℓ "侅") ⟫ʷ
+lem-box-perm-1324-at03143140 c4 = derive (ℓ "侌") (ℓ "侅")
   (rw 0 (q146 c4) ∷ []) Eq.refl
 
 private
@@ -1234,8 +1235,8 @@ private
   q147 c4 = sE 1076 (lem-sym-ab-at0314213240 c4)
 
 -- box-perm-3124 @03143140: 2 steps
-lem-box-perm-3124-at03143140 : Ws → ⟪ (Bx3-4210 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-1420 ∷ []) ⟫ʷ
-lem-box-perm-3124-at03143140 c4 = derive (Bx3-4210 ∷ []) (Bx3-1420 ∷ [])
+lem-box-perm-3124-at03143140 : Ws → ⟪ (ℓ "侌") ⟫ʷ ≈ ⟪ (ℓ "佯") ⟫ʷ
+lem-box-perm-3124-at03143140 c4 = derive (ℓ "侌") (ℓ "佯")
   (rw 0 (q146 c4) ∷
    rw 0 (q147 c4) ∷ []) Eq.refl
 
@@ -1298,8 +1299,8 @@ private
   q175 c4 = wlE 974 (lit c4)
 
 -- box-box-4 @03243240: 103 steps
-lem-box-box-4-at03243240 : Ws → ⟪ (Bx3-1420 ∷ Bx0-3142 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-3142 ∷ Bx3-1420 ∷ []) ⟫ʷ
-lem-box-box-4-at03243240 c4 = derive (Bx3-1420 ∷ Bx0-3142 ∷ []) (Bx0-3142 ∷ Bx3-1420 ∷ [])
+lem-box-box-4-at03243240 : Ws → ⟪ (ℓ "佯仩") ⟫ʷ ≈ ⟪ (ℓ "仩佯") ⟫ʷ
+lem-box-box-4-at03243240 c4 = derive (ℓ "佯仩") (ℓ "仩佯")
   (rw 0 (q148 c4) ∷
    rw 4 (q149 c4) ∷
    rw⁻ 3 (q150 c4) ∷
@@ -1411,8 +1412,8 @@ private
   q177 c4 = sE 1151 (lem-sym-bc-at0314213240 c4)
 
 -- box-perm-2314 @03243240: 2 steps
-lem-box-perm-2314-at03243240 : Ws → ⟪ (Bx3-1420 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4210 ∷ []) ⟫ʷ
-lem-box-perm-2314-at03243240 c4 = derive (Bx3-1420 ∷ []) (Bx3-4210 ∷ [])
+lem-box-perm-2314-at03243240 : Ws → ⟪ (ℓ "佯") ⟫ʷ ≈ ⟪ (ℓ "侌") ⟫ʷ
+lem-box-perm-2314-at03243240 c4 = derive (ℓ "佯") (ℓ "侌")
   (rw 0 (q176 c4) ∷
    rw 0 (q177 c4) ∷ []) Eq.refl
 
@@ -1430,9 +1431,9 @@ private
   q183 : Ws → Eqn
   q183 c4 = wlE 336 (lit c4)
   q184 : Ws → Eqn
-  q184 c4 = eqn (CS01⁻ ∷ CCZ234 ∷ []) (CCZ234 ∷ CS01⁻ ∷ []) (c₂ (CS • CS • CS) (CCZ))
+  q184 c4 = eqn (ℓ "丩亰") (ℓ "亰丩") (c₂ (CS • CS • CS) (CCZ))
   q185 : Ws → Eqn
-  q185 c4 = eqn (CS01 ∷ CCZ234 ∷ []) (CCZ234 ∷ CS01 ∷ []) (c₂ (CS) (CCZ))
+  q185 c4 = eqn (ℓ "丨亰") (ℓ "亰丨") (c₂ (CS) (CCZ))
   q186 : Ws → Eqn
   q186 c4 = wlE 1192 (lit c4)
   q187 : Ws → Eqn
@@ -1441,8 +1442,8 @@ private
   q188 c4 = wlE 1194 (lit c4)
 
 -- CSdu-box-3 @03143140: 17 steps
-lem-CSdu-box-3-at03143140 : Ws → ⟪ (CS13⁻ ∷ Bx3-4210 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4210 ∷ CS13⁻ ∷ []) ⟫ʷ
-lem-CSdu-box-3-at03143140 c4 = derive (CS13⁻ ∷ Bx3-4210 ∷ []) (Bx3-4210 ∷ CS13⁻ ∷ [])
+lem-CSdu-box-3-at03143140 : Ws → ⟪ (ℓ "乏侌") ⟫ʷ ≈ ⟪ (ℓ "侌乏") ⟫ʷ
+lem-CSdu-box-3-at03143140 c4 = derive (ℓ "乏侌") (ℓ "侌乏")
   (rw 1 (q178 c4) ∷
    rw⁻ 0 (q179 c4) ∷
    rw 1 (q180 c4) ∷
@@ -1472,8 +1473,8 @@ private
   q192 c4 = wlE 1202 (lit c4)
 
 -- CSu-box-3 @03143140: 17 steps
-lem-CSu-box-3-at03143140 : Ws → ⟪ (CS13 ∷ Bx3-4210 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4210 ∷ CS13 ∷ []) ⟫ʷ
-lem-CSu-box-3-at03143140 c4 = derive (CS13 ∷ Bx3-4210 ∷ []) (Bx3-4210 ∷ CS13 ∷ [])
+lem-CSu-box-3-at03143140 : Ws → ⟪ (ℓ "乎侌") ⟫ʷ ≈ ⟪ (ℓ "侌乎") ⟫ʷ
+lem-CSu-box-3-at03143140 c4 = derive (ℓ "乎侌") (ℓ "侌乎")
   (rw 1 (q178 c4) ∷
    rw⁻ 0 (q189 c4) ∷
    rw 1 (q190 c4) ∷
@@ -1503,8 +1504,8 @@ private
   q196 c4 = wlE 230 (lit c4)
 
 -- box2 @03143140: 11 steps
-lem-box2-at03143140 : Ws → ⟪ (Bx3-4210 ∷ Bx3-4210 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-lem-box2-at03143140 c4 = derive (Bx3-4210 ∷ Bx3-4210 ∷ []) []
+lem-box2-at03143140 : Ws → ⟪ (ℓ "侌侌") ⟫ʷ ≈ ⟪ [] ⟫ʷ
+lem-box2-at03143140 c4 = derive (ℓ "侌侌") []
   (rw 0 (q193 c4) ∷
    rw 4 (q178 c4) ∷
    rw⁻ 4 (q194 c4) ∷
@@ -1524,8 +1525,8 @@ private
   q198 c4 = sE 1079 (lem-sym-ab-at14213243 c4)
 
 -- box-perm-3124 @143143: 2 steps
-lem-box-perm-3124-at143143 : Ws → ⟪ (Bx0-4213 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1423 ∷ []) ⟫ʷ
-lem-box-perm-3124-at143143 c4 = derive (Bx0-4213 ∷ []) (Bx0-1423 ∷ [])
+lem-box-perm-3124-at143143 : Ws → ⟪ (ℓ "伅") ⟫ʷ ≈ ⟪ (ℓ "仄") ⟫ʷ
+lem-box-perm-3124-at143143 c4 = derive (ℓ "伅") (ℓ "仄")
   (rw 0 (q197 c4) ∷
    rw 0 (q198 c4) ∷ []) Eq.refl
 
@@ -1548,8 +1549,8 @@ private
   q206 c4 = wpE 1011 c4
 
 -- CXu-box-4 @243243: 15 steps
-lem-CXu-box-4-at243243 : Ws → ⟪ (CX30 ∷ Bx0-1423 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1423 ∷ CX30 ∷ []) ⟫ʷ
-lem-CXu-box-4-at243243 c4 = derive (CX30 ∷ Bx0-1423 ∷ []) (Bx0-1423 ∷ CX30 ∷ [])
+lem-CXu-box-4-at243243 : Ws → ⟪ (ℓ "买仄") ⟫ʷ ≈ ⟪ (ℓ "仄买") ⟫ʷ
+lem-CXu-box-4-at243243 c4 = derive (ℓ "买仄") (ℓ "仄买")
   (rw 1 (q45 c4) ∷
    rw⁻ 0 (q199 c4) ∷
    rw 2 (q200 c4) ∷
@@ -1577,8 +1578,8 @@ private
   q210 c4 = sE 340 (lem-box-tQ-at033440 c4)
 
 -- pairs @0314203142: 4 steps
-lem-pairs-at0314203142 : Ws → ⟪ (Bx3-4012 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-1240 ∷ []) ⟫ʷ
-lem-pairs-at0314203142 c4 = derive (Bx3-4012 ∷ []) (Bx3-1240 ∷ [])
+lem-pairs-at0314203142 : Ws → ⟪ (ℓ "佹") ⟫ʷ ≈ ⟪ (ℓ "佭") ⟫ʷ
+lem-pairs-at0314203142 c4 = derive (ℓ "佹") (ℓ "佭")
   (rw⁻ 0 (q207 c4) ∷
    rw 1 (q208 c4) ∷
    rw 4 (q209 c4) ∷
@@ -1595,8 +1596,8 @@ private
   q214 c4 = wlE 204 (lit c4)
 
 -- box2 @03243240: 11 steps
-lem-box2-at03243240 : Ws → ⟪ (Bx3-1420 ∷ Bx3-1420 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-lem-box2-at03243240 c4 = derive (Bx3-1420 ∷ Bx3-1420 ∷ []) []
+lem-box2-at03243240 : Ws → ⟪ (ℓ "佯佯") ⟫ʷ ≈ ⟪ [] ⟫ʷ
+lem-box2-at03243240 c4 = derive (ℓ "佯佯") []
   (rw 0 (q148 c4) ∷
    rw 4 (q211 c4) ∷
    rw⁻ 4 (q212 c4) ∷
@@ -1614,8 +1615,8 @@ private
   q215 c4 = sE 1154 (lem-sym-bc-at03243240 c4)
 
 -- box-perm-1324 @03243240: 1 steps
-lem-box-perm-1324-at03243240 : Ws → ⟪ (Bx3-1420 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-1240 ∷ []) ⟫ʷ
-lem-box-perm-1324-at03243240 c4 = derive (Bx3-1420 ∷ []) (Bx3-1240 ∷ [])
+lem-box-perm-1324-at03243240 : Ws → ⟪ (ℓ "佯") ⟫ʷ ≈ ⟪ (ℓ "佭") ⟫ʷ
+lem-box-perm-1324-at03243240 c4 = derive (ℓ "佯") (ℓ "佭")
   (rw 0 (q215 c4) ∷ []) Eq.refl
 
 private
@@ -1629,8 +1630,8 @@ private
   q219 c4 = sE 310 (lem-box-tQ-at0314203142 c4)
 
 -- pairs @033440: 4 steps
-lem-pairs-at033440 : Ws → ⟪ (Bx3-1240 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4012 ∷ []) ⟫ʷ
-lem-pairs-at033440 c4 = derive (Bx3-1240 ∷ []) (Bx3-4012 ∷ [])
+lem-pairs-at033440 : Ws → ⟪ (ℓ "佭") ⟫ʷ ≈ ⟪ (ℓ "佹") ⟫ʷ
+lem-pairs-at033440 c4 = derive (ℓ "佭") (ℓ "佹")
   (rw⁻ 0 (q216 c4) ∷
    rw 1 (q217 c4) ∷
    rw 4 (q218 c4) ∷
@@ -1647,8 +1648,8 @@ private
   q223 c4 = wlE 181 (lit c4)
 
 -- box2 @0310243142: 11 steps
-lem-box2-at0310243142 : Ws → ⟪ (Bx3-0412 ∷ Bx3-0412 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-lem-box2-at0310243142 c4 = derive (Bx3-0412 ∷ Bx3-0412 ∷ []) []
+lem-box2-at0310243142 : Ws → ⟪ (ℓ "佨佨") ⟫ʷ ≈ ⟪ [] ⟫ʷ
+lem-box2-at0310243142 c4 = derive (ℓ "佨佨") []
   (rw 0 (q220 c4) ∷
    rw 4 (q221 c4) ∷
    rw⁻ 4 (q218 c4) ∷
@@ -1672,8 +1673,8 @@ private
   q227 c4 = sE 352 (lem-box-tQ-at03103441 c4)
 
 -- pairs @0314213042: 4 steps
-lem-pairs-at0314213042 : Ws → ⟪ (Bx3-4102 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0241 ∷ []) ⟫ʷ
-lem-pairs-at0314213042 c4 = derive (Bx3-4102 ∷ []) (Bx3-0241 ∷ [])
+lem-pairs-at0314213042 : Ws → ⟪ (ℓ "侂") ⟫ʷ ≈ ⟪ (ℓ "佧") ⟫ʷ
+lem-pairs-at0314213042 c4 = derive (ℓ "侂") (ℓ "佧")
   (rw⁻ 0 (q224 c4) ∷
    rw 1 (q225 c4) ∷
    rw 4 (q226 c4) ∷
@@ -1684,8 +1685,8 @@ private
   q228 c4 = sE 1147 (lem-sym-bc-at03103441 c4)
 
 -- box-perm-1324 @03103441: 1 steps
-lem-box-perm-1324-at03103441 : Ws → ⟪ (Bx3-0241 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0421 ∷ []) ⟫ʷ
-lem-box-perm-1324-at03103441 c4 = derive (Bx3-0241 ∷ []) (Bx3-0421 ∷ [])
+lem-box-perm-1324-at03103441 : Ws → ⟪ (ℓ "佧") ⟫ʷ ≈ ⟪ (ℓ "佩") ⟫ʷ
+lem-box-perm-1324-at03103441 c4 = derive (ℓ "佧") (ℓ "佩")
   (rw 0 (q228 c4) ∷ []) Eq.refl
 
 private
@@ -1696,7 +1697,7 @@ private
   q231 : Ws → Eqn
   q231 c4 = wlE 512 (lit c4)
   q232 : Ws → Eqn
-  q232 c4 = eqn (Toff312 ∷ X4 ∷ []) (X4 ∷ Toff312 ∷ []) (c₄ (Toffᵗ ↑) (X))
+  q232 c4 = eqn (ℓ "产並") (ℓ "並产") (c₄ (Toffᵗ ↑) (X))
   q233 : Ws → Eqn
   q233 c4 = wlE 391 (lit c4)
   q234 : Ws → Eqn
@@ -1717,8 +1718,8 @@ private
   q241 c4 = wlE 1243 (lit c4)
 
 -- Xb-box @0310243241: 18 steps
-lem-Xb-box-at0310243241 : Ws → ⟪ (X4 ∷ Bx3-0421 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0421 ∷ CCZ012 ∷ []) ⟫ʷ
-lem-Xb-box-at0310243241 c4 = derive (X4 ∷ Bx3-0421 ∷ X4 ∷ []) (Bx3-0421 ∷ CCZ012 ∷ [])
+lem-Xb-box-at0310243241 : Ws → ⟪ (ℓ "並佩並") ⟫ʷ ≈ ⟪ (ℓ "佩二") ⟫ʷ
+lem-Xb-box-at0310243241 c4 = derive (ℓ "並佩並") (ℓ "佩二")
   (rw 1 (q229 c4) ∷
    rw⁻ 0 (q230 c4) ∷
    rw 2 (q231 c4) ∷
@@ -1743,8 +1744,8 @@ private
   q242 c4 = sE 1145 (lem-sym-bc-at0310243241 c4)
 
 -- box-perm-1324 @0310243241: 1 steps
-lem-box-perm-1324-at0310243241 : Ws → ⟪ (Bx3-0421 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0241 ∷ []) ⟫ʷ
-lem-box-perm-1324-at0310243241 c4 = derive (Bx3-0421 ∷ []) (Bx3-0241 ∷ [])
+lem-box-perm-1324-at0310243241 : Ws → ⟪ (ℓ "佩") ⟫ʷ ≈ ⟪ (ℓ "佧") ⟫ʷ
+lem-box-perm-1324-at0310243241 c4 = derive (ℓ "佩") (ℓ "佧")
   (rw 0 (q242 c4) ∷ []) Eq.refl
 
 private
@@ -1756,8 +1757,8 @@ private
   q245 c4 = sE 311 (lem-box-tQ-at0314213042 c4)
 
 -- pairs @03103441: 4 steps
-lem-pairs-at03103441 : Ws → ⟪ (Bx3-0241 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4102 ∷ []) ⟫ʷ
-lem-pairs-at03103441 c4 = derive (Bx3-0241 ∷ []) (Bx3-4102 ∷ [])
+lem-pairs-at03103441 : Ws → ⟪ (ℓ "佧") ⟫ʷ ≈ ⟪ (ℓ "侂") ⟫ʷ
+lem-pairs-at03103441 c4 = derive (ℓ "佧") (ℓ "侂")
   (rw⁻ 0 (q243 c4) ∷
    rw 1 (q244 c4) ∷
    rw 4 (q212 c4) ∷
@@ -1768,8 +1769,8 @@ private
   q246 c4 = sE 1144 (lem-sym-bc-at0310243142 c4)
 
 -- box-perm-1324 @0310243142: 1 steps
-lem-box-perm-1324-at0310243142 : Ws → ⟪ (Bx3-0412 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0142 ∷ []) ⟫ʷ
-lem-box-perm-1324-at0310243142 c4 = derive (Bx3-0412 ∷ []) (Bx3-0142 ∷ [])
+lem-box-perm-1324-at0310243142 : Ws → ⟪ (ℓ "佨") ⟫ʷ ≈ ⟪ (ℓ "佥") ⟫ʷ
+lem-box-perm-1324-at0310243142 c4 = derive (ℓ "佨") (ℓ "佥")
   (rw 0 (q246 c4) ∷ []) Eq.refl
 
 private
@@ -1781,8 +1782,8 @@ private
   q249 c4 = wpE 221 c4
 
 -- Xb-box @0310243142: 18 steps
-lem-Xb-box-at0310243142 : Ws → ⟪ (X4 ∷ Bx3-0412 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0412 ∷ CCZ012 ∷ []) ⟫ʷ
-lem-Xb-box-at0310243142 c4 = derive (X4 ∷ Bx3-0412 ∷ X4 ∷ []) (Bx3-0412 ∷ CCZ012 ∷ [])
+lem-Xb-box-at0310243142 : Ws → ⟪ (ℓ "並佨並") ⟫ʷ ≈ ⟪ (ℓ "佨二") ⟫ʷ
+lem-Xb-box-at0310243142 c4 = derive (ℓ "並佨並") (ℓ "佨二")
   (rw 1 (q221 c4) ∷
    rw⁻ 0 (q230 c4) ∷
    rw 2 (q231 c4) ∷
@@ -1811,8 +1812,8 @@ private
   q252 c4 = sE 353 (lem-box-tQ-at0312203441 c4)
 
 -- pairs @0314213240: 4 steps
-lem-pairs-at0314213240 : Ws → ⟪ (Bx3-4120 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-2041 ∷ []) ⟫ʷ
-lem-pairs-at0314213240 c4 = derive (Bx3-4120 ∷ []) (Bx3-2041 ∷ [])
+lem-pairs-at0314213240 : Ws → ⟪ (ℓ "侅") ⟫ʷ ≈ ⟪ (ℓ "佱") ⟫ʷ
+lem-pairs-at0314213240 c4 = derive (ℓ "侅") (ℓ "佱")
   (rw⁻ 0 (q250 c4) ∷
    rw 1 (q251 c4) ∷
    rw 4 (q226 c4) ∷
@@ -1823,8 +1824,8 @@ private
   q253 c4 = sE 1148 (lem-sym-bc-at0312203441 c4)
 
 -- box-perm-1324 @0312203441: 1 steps
-lem-box-perm-1324-at0312203441 : Ws → ⟪ (Bx3-2041 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-2401 ∷ []) ⟫ʷ
-lem-box-perm-1324-at0312203441 c4 = derive (Bx3-2041 ∷ []) (Bx3-2401 ∷ [])
+lem-box-perm-1324-at0312203441 : Ws → ⟪ (ℓ "佱") ⟫ʷ ≈ ⟪ (ℓ "佴") ⟫ʷ
+lem-box-perm-1324-at0312203441 c4 = derive (ℓ "佱") (ℓ "佴")
   (rw 0 (q253 c4) ∷ []) Eq.refl
 
 private
@@ -1835,7 +1836,7 @@ private
   q256 : Ws → Eqn
   q256 c4 = wlE 1275 (lit c4)
   q257 : Ws → Eqn
-  q257 c4 = eqn (Toff301 ∷ X4 ∷ []) (X4 ∷ Toff301 ∷ []) (c₄ (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) (X))
+  q257 c4 = eqn (ℓ "亓並") (ℓ "並亓") (c₄ (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) (X))
   q258 : Ws → Eqn
   q258 c4 = wlE 1273 (lit c4)
   q259 : Ws → Eqn
@@ -1850,8 +1851,8 @@ private
   q263 c4 = wlE 1265 (lit c4)
 
 -- Xb-box @0312243041: 18 steps
-lem-Xb-box-at0312243041 : Ws → ⟪ (X4 ∷ Bx3-2401 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-2401 ∷ CCZ012 ∷ []) ⟫ʷ
-lem-Xb-box-at0312243041 c4 = derive (X4 ∷ Bx3-2401 ∷ X4 ∷ []) (Bx3-2401 ∷ CCZ012 ∷ [])
+lem-Xb-box-at0312243041 : Ws → ⟪ (ℓ "並佴並") ⟫ʷ ≈ ⟪ (ℓ "佴二") ⟫ʷ
+lem-Xb-box-at0312243041 c4 = derive (ℓ "並佴並") (ℓ "佴二")
   (rw 1 (q254 c4) ∷
    rw⁻ 0 (q255 c4) ∷
    rw 2 (q256 c4) ∷
@@ -1876,8 +1877,8 @@ private
   q264 c4 = sE 1149 (lem-sym-bc-at0312243041 c4)
 
 -- box-perm-1324 @0312243041: 1 steps
-lem-box-perm-1324-at0312243041 : Ws → ⟪ (Bx3-2401 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-2041 ∷ []) ⟫ʷ
-lem-box-perm-1324-at0312243041 c4 = derive (Bx3-2401 ∷ []) (Bx3-2041 ∷ [])
+lem-box-perm-1324-at0312243041 : Ws → ⟪ (ℓ "佴") ⟫ʷ ≈ ⟪ (ℓ "佱") ⟫ʷ
+lem-box-perm-1324-at0312243041 c4 = derive (ℓ "佴") (ℓ "佱")
   (rw 0 (q264 c4) ∷ []) Eq.refl
 
 private
@@ -1889,8 +1890,8 @@ private
   q267 c4 = sE 355 (lem-box-tQ-at0314213240 c4)
 
 -- pairs @0312203441: 4 steps
-lem-pairs-at0312203441 : Ws → ⟪ (Bx3-2041 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4120 ∷ []) ⟫ʷ
-lem-pairs-at0312203441 c4 = derive (Bx3-2041 ∷ []) (Bx3-4120 ∷ [])
+lem-pairs-at0312203441 : Ws → ⟪ (ℓ "佱") ⟫ʷ ≈ ⟪ (ℓ "侅") ⟫ʷ
+lem-pairs-at0312203441 c4 = derive (ℓ "佱") (ℓ "侅")
   (rw⁻ 0 (q265 c4) ∷
    rw 1 (q266 c4) ∷
    rw 4 (q212 c4) ∷
@@ -1901,8 +1902,8 @@ private
   q268 c4 = sE 1155 (lem-sym-bc-at033440 c4)
 
 -- box-perm-1324 @033440: 1 steps
-lem-box-perm-1324-at033440 : Ws → ⟪ (Bx3-1240 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-1420 ∷ []) ⟫ʷ
-lem-box-perm-1324-at033440 c4 = derive (Bx3-1240 ∷ []) (Bx3-1420 ∷ [])
+lem-box-perm-1324-at033440 : Ws → ⟪ (ℓ "佭") ⟫ʷ ≈ ⟪ (ℓ "佯") ⟫ʷ
+lem-box-perm-1324-at033440 c4 = derive (ℓ "佭") (ℓ "佯")
   (rw 0 (q268 c4) ∷ []) Eq.refl
 
 private
@@ -1911,7 +1912,7 @@ private
   q270 : Ws → Eqn
   q270 c4 = wlE 1280 (lit c4)
   q271 : Ws → Eqn
-  q271 c4 = eqn (Toff302 ∷ X4 ∷ []) (X4 ∷ Toff302 ∷ []) (c₄ (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) (X))
+  q271 c4 = eqn (ℓ "些並") (ℓ "並些") (c₄ (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) (X))
   q272 : Ws → Eqn
   q272 c4 = wlE 155 (lit c4)
   q273 : Ws → Eqn
@@ -1930,8 +1931,8 @@ private
   q279 c4 = wlE 1251 (lit c4)
 
 -- Xb-box @03243240: 18 steps
-lem-Xb-box-at03243240 : Ws → ⟪ (X4 ∷ Bx3-1420 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-1420 ∷ CCZ012 ∷ []) ⟫ʷ
-lem-Xb-box-at03243240 c4 = derive (X4 ∷ Bx3-1420 ∷ X4 ∷ []) (Bx3-1420 ∷ CCZ012 ∷ [])
+lem-Xb-box-at03243240 : Ws → ⟪ (ℓ "並佯並") ⟫ʷ ≈ ⟪ (ℓ "佯二") ⟫ʷ
+lem-Xb-box-at03243240 c4 = derive (ℓ "並佯並") (ℓ "佯二")
   (rw 1 (q211 c4) ∷
    rw⁻ 0 (q269 c4) ∷
    rw 2 (q270 c4) ∷
@@ -1956,8 +1957,8 @@ private
   q280 c4 = sE 1163 (lem-sym-bc-at3443 c4)
 
 -- box-perm-1324 @3443: 1 steps
-lem-box-perm-1324-at3443 : Ws → ⟪ (Bx0-1243 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1423 ∷ []) ⟫ʷ
-lem-box-perm-1324-at3443 c4 = derive (Bx0-1243 ∷ []) (Bx0-1423 ∷ [])
+lem-box-perm-1324-at3443 : Ws → ⟪ (ℓ "亼") ⟫ʷ ≈ ⟪ (ℓ "仄") ⟫ʷ
+lem-box-perm-1324-at3443 c4 = derive (ℓ "亼") (ℓ "仄")
   (rw 0 (q280 c4) ∷ []) Eq.refl
 
 private
@@ -1967,8 +1968,8 @@ private
   q282 c4 = sE 398 (lem-box-tQ-at03122031 c4)
 
 -- pairs @03243240: 4 steps
-lem-pairs-at03243240 : Ws → ⟪ (Bx3-1420 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-2014 ∷ []) ⟫ʷ
-lem-pairs-at03243240 c4 = derive (Bx3-1420 ∷ []) (Bx3-2014 ∷ [])
+lem-pairs-at03243240 : Ws → ⟪ (ℓ "佯") ⟫ʷ ≈ ⟪ (ℓ "佰") ⟫ʷ
+lem-pairs-at03243240 c4 = derive (ℓ "佯") (ℓ "佰")
   (rw⁻ 0 (q281 c4) ∷
    rw 1 (q211 c4) ∷
    rw 4 (q226 c4) ∷
@@ -1983,8 +1984,8 @@ private
   q285 c4 = sE 1152 (lem-sym-bc-at03143041 c4)
 
 -- box-perm-4132 @03102132: 3 steps
-lem-box-perm-4132-at03102132 : Ws → ⟪ (Bx3-0124 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4021 ∷ []) ⟫ʷ
-lem-box-perm-4132-at03102132 c4 = derive (Bx3-0124 ∷ []) (Bx3-4021 ∷ [])
+lem-box-perm-4132-at03102132 : Ws → ⟪ (ℓ "佤") ⟫ʷ ≈ ⟪ (ℓ "佾") ⟫ʷ
+lem-box-perm-4132-at03102132 c4 = derive (ℓ "佤") (ℓ "佾")
   (rw 0 (q283 c4) ∷
    rw 0 (q284 c4) ∷
    rw 0 (q285 c4) ∷ []) Eq.refl
@@ -1994,8 +1995,8 @@ private
   q286 c4 = sE 1140 (lem-sym-bc-at02142041 c4)
 
 -- box-perm-1324 @02142041: 1 steps
-lem-box-perm-1324-at02142041 : Ws → ⟪ (Bx2-4031 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-4301 ∷ []) ⟫ʷ
-lem-box-perm-1324-at02142041 c4 = derive (Bx2-4031 ∷ []) (Bx2-4301 ∷ [])
+lem-box-perm-1324-at02142041 : Ws → ⟪ (ℓ "余") ⟫ʷ ≈ ⟪ (ℓ "佢") ⟫ʷ
+lem-box-perm-1324-at02142041 c4 = derive (ℓ "余") (ℓ "佢")
   (rw 0 (q286 c4) ∷ []) Eq.refl
 
 private
@@ -2003,8 +2004,8 @@ private
   q287 c4 = sE 1072 (lem-sym-ab-at0214233041 c4)
 
 -- box-perm-3124 @02142041: 2 steps
-lem-box-perm-3124-at02142041 : Ws → ⟪ (Bx2-4031 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-3401 ∷ []) ⟫ʷ
-lem-box-perm-3124-at02142041 c4 = derive (Bx2-4031 ∷ []) (Bx2-3401 ∷ [])
+lem-box-perm-3124-at02142041 : Ws → ⟪ (ℓ "余") ⟫ʷ ≈ ⟪ (ℓ "佋") ⟫ʷ
+lem-box-perm-3124-at02142041 c4 = derive (ℓ "余") (ℓ "佋")
   (rw 0 (q286 c4) ∷
    rw 0 (q287 c4) ∷ []) Eq.refl
 
@@ -2015,8 +2016,8 @@ private
   q289 c4 = sE 1077 (lem-sym-ab-at03143041 c4)
 
 -- box-perm-3124 @0314203241: 2 steps
-lem-box-perm-3124-at0314203241 : Ws → ⟪ (Bx3-4021 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-2401 ∷ []) ⟫ʷ
-lem-box-perm-3124-at0314203241 c4 = derive (Bx3-4021 ∷ []) (Bx3-2401 ∷ [])
+lem-box-perm-3124-at0314203241 : Ws → ⟪ (ℓ "佾") ⟫ʷ ≈ ⟪ (ℓ "佴") ⟫ʷ
+lem-box-perm-3124-at0314203241 c4 = derive (ℓ "佾") (ℓ "佴")
   (rw 0 (q288 c4) ∷
    rw 0 (q289 c4) ∷ []) Eq.refl
 
@@ -2031,8 +2032,8 @@ private
   q293 c4 = sE 53 (lem-sym-ab-at0210243143 c4)
 
 -- box-perm-2341 @0213243041: 4 steps
-lem-box-perm-2341-at0213243041 : Ws → ⟪ (Bx2-3401 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-4013 ∷ []) ⟫ʷ
-lem-box-perm-2341-at0213243041 c4 = derive (Bx2-3401 ∷ []) (Bx2-4013 ∷ [])
+lem-box-perm-2341-at0213243041 : Ws → ⟪ (ℓ "佋") ⟫ʷ ≈ ⟪ (ℓ "佔") ⟫ʷ
+lem-box-perm-2341-at0213243041 c4 = derive (ℓ "佋") (ℓ "佔")
   (rw 0 (q290 c4) ∷
    rw 0 (q291 c4) ∷
    rw 0 (q292 c4) ∷
@@ -2047,16 +2048,16 @@ private
   q296 c4 = sE 1132 (lem-pairs-at0210213443 c4)
 
 -- box-perm-4123 @0214203143: 4 steps
-lem-box-perm-4123-at0214203143 : Ws → ⟪ (Bx2-4013 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-3401 ∷ []) ⟫ʷ
-lem-box-perm-4123-at0214203143 c4 = derive (Bx2-4013 ∷ []) (Bx2-3401 ∷ [])
+lem-box-perm-4123-at0214203143 : Ws → ⟪ (ℓ "佔") ⟫ʷ ≈ ⟪ (ℓ "佋") ⟫ʷ
+lem-box-perm-4123-at0214203143 c4 = derive (ℓ "佔") (ℓ "佋")
   (rw 0 (q294 c4) ∷
    rw 0 (q295 c4) ∷
    rw 0 (q296 c4) ∷
    rw 0 (q287 c4) ∷ []) Eq.refl
 
 -- box-perm-2314 @0312243041: 2 steps
-lem-box-perm-2314-at0312243041 : Ws → ⟪ (Bx3-2401 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4021 ∷ []) ⟫ʷ
-lem-box-perm-2314-at0312243041 c4 = derive (Bx3-2401 ∷ []) (Bx3-4021 ∷ [])
+lem-box-perm-2314-at0312243041 : Ws → ⟪ (ℓ "佴") ⟫ʷ ≈ ⟪ (ℓ "佾") ⟫ʷ
+lem-box-perm-2314-at0312243041 c4 = derive (ℓ "佴") (ℓ "佾")
   (rw 0 (q284 c4) ∷
    rw 0 (q285 c4) ∷ []) Eq.refl
 
@@ -2069,8 +2070,8 @@ private
   q299 c4 = sE 138 (lem-box-tQ-at03102132 c4)
 
 -- pairs @0312243041: 4 steps
-lem-pairs-at0312243041 : Ws → ⟪ (Bx3-2401 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0124 ∷ []) ⟫ʷ
-lem-pairs-at0312243041 c4 = derive (Bx3-2401 ∷ []) (Bx3-0124 ∷ [])
+lem-pairs-at0312243041 : Ws → ⟪ (ℓ "佴") ⟫ʷ ≈ ⟪ (ℓ "佤") ⟫ʷ
+lem-pairs-at0312243041 c4 = derive (ℓ "佴") (ℓ "佤")
   (rw⁻ 0 (q297 c4) ∷
    rw 1 (q254 c4) ∷
    rw 4 (q298 c4) ∷
@@ -2083,8 +2084,8 @@ private
   q301 c4 = sE 397 (lem-box-tQ-at02132130 c4)
 
 -- pairs @02102441: 4 steps
-lem-pairs-at02102441 : Ws → ⟪ (Bx2-0431 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-3104 ∷ []) ⟫ʷ
-lem-pairs-at02102441 c4 = derive (Bx2-0431 ∷ []) (Bx2-3104 ∷ [])
+lem-pairs-at02102441 : Ws → ⟪ (ℓ "伲") ⟫ʷ ≈ ⟪ (ℓ "佅") ⟫ʷ
+lem-pairs-at02102441 c4 = derive (ℓ "伲") (ℓ "佅")
   (rw⁻ 0 (q300 c4) ∷
    rw 1 (q99 c4) ∷
    rw 4 (q71 c4) ∷
@@ -2099,8 +2100,8 @@ private
   q304 c4 = sE 149 (lem-box-tQ-at0310213442 c4)
 
 -- pairs @03143041: 4 steps
-lem-pairs-at03143041 : Ws → ⟪ (Bx3-4201 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0142 ∷ []) ⟫ʷ
-lem-pairs-at03143041 c4 = derive (Bx3-4201 ∷ []) (Bx3-0142 ∷ [])
+lem-pairs-at03143041 : Ws → ⟪ (ℓ "侈") ⟫ʷ ≈ ⟪ (ℓ "佥") ⟫ʷ
+lem-pairs-at03143041 c4 = derive (ℓ "侈") (ℓ "佥")
   (rw⁻ 0 (q302 c4) ∷
    rw 1 (q303 c4) ∷
    rw 4 (q298 c4) ∷
@@ -2115,16 +2116,16 @@ private
   q307 c4 = sE 348 (lem-box-tQ-at02102441 c4)
 
 -- pairs @02132130: 4 steps
-lem-pairs-at02132130 : Ws → ⟪ (Bx2-3104 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-0431 ∷ []) ⟫ʷ
-lem-pairs-at02132130 c4 = derive (Bx2-3104 ∷ []) (Bx2-0431 ∷ [])
+lem-pairs-at02132130 : Ws → ⟪ (ℓ "佅") ⟫ʷ ≈ ⟪ (ℓ "伲") ⟫ʷ
+lem-pairs-at02132130 c4 = derive (ℓ "佅") (ℓ "伲")
   (rw⁻ 0 (q305 c4) ∷
    rw 1 (q306 c4) ∷
    rw 4 (q90 c4) ∷
    rw⁻ 0 (q307 c4) ∷ []) Eq.refl
 
 -- box-perm-1324 @0314203241: 1 steps
-lem-box-perm-1324-at0314203241 : Ws → ⟪ (Bx3-4021 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4201 ∷ []) ⟫ʷ
-lem-box-perm-1324-at0314203241 c4 = derive (Bx3-4021 ∷ []) (Bx3-4201 ∷ [])
+lem-box-perm-1324-at0314203241 : Ws → ⟪ (ℓ "佾") ⟫ʷ ≈ ⟪ (ℓ "侈") ⟫ʷ
+lem-box-perm-1324-at0314203241 c4 = derive (ℓ "佾") (ℓ "侈")
   (rw 0 (q288 c4) ∷ []) Eq.refl
 
 private
@@ -2134,8 +2135,8 @@ private
   q309 c4 = sE 1136 (lem-pairs-at0310213442 c4)
 
 -- box-perm-4123 @0314203142: 4 steps
-lem-box-perm-4123-at0314203142 : Ws → ⟪ (Bx3-4012 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-2401 ∷ []) ⟫ʷ
-lem-box-perm-4123-at0314203142 c4 = derive (Bx3-4012 ∷ []) (Bx3-2401 ∷ [])
+lem-box-perm-4123-at0314203142 : Ws → ⟪ (ℓ "佹") ⟫ʷ ≈ ⟪ (ℓ "佴") ⟫ʷ
+lem-box-perm-4123-at0314203142 c4 = derive (ℓ "佹") (ℓ "佴")
   (rw 0 (q308 c4) ∷
    rw 0 (q246 c4) ∷
    rw 0 (q309 c4) ∷
@@ -2146,8 +2147,8 @@ private
   q310 c4 = sE 1133 (lem-pairs-at0213243041 c4)
 
 -- box-perm-2431 @02142041: 3 steps
-lem-box-perm-2431-at02142041 : Ws → ⟪ (Bx2-4031 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-0134 ∷ []) ⟫ʷ
-lem-box-perm-2431-at02142041 c4 = derive (Bx2-4031 ∷ []) (Bx2-0134 ∷ [])
+lem-box-perm-2431-at02142041 : Ws → ⟪ (ℓ "余") ⟫ʷ ≈ ⟪ (ℓ "伭") ⟫ʷ
+lem-box-perm-2431-at02142041 c4 = derive (ℓ "余") (ℓ "伭")
   (rw 0 (q286 c4) ∷
    rw 0 (q287 c4) ∷
    rw 0 (q310 c4) ∷ []) Eq.refl
@@ -2159,8 +2160,8 @@ private
   q312 c4 = sE 399 (lem-box-tQ-at03122130 c4)
 
 -- pairs @0310243241: 4 steps
-lem-pairs-at0310243241 : Ws → ⟪ (Bx3-0421 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-2104 ∷ []) ⟫ʷ
-lem-pairs-at0310243241 c4 = derive (Bx3-0421 ∷ []) (Bx3-2104 ∷ [])
+lem-pairs-at0310243241 : Ws → ⟪ (ℓ "佩") ⟫ʷ ≈ ⟪ (ℓ "佲") ⟫ʷ
+lem-pairs-at0310243241 c4 = derive (ℓ "佩") (ℓ "佲")
   (rw⁻ 0 (q311 c4) ∷
    rw 1 (q229 c4) ∷
    rw 4 (q209 c4) ∷
@@ -2171,15 +2172,15 @@ private
   q313 c4 = sE 1131 (lem-pairs-at021021 c4)
 
 -- box-perm-1243 @021021: 3 steps
-lem-box-perm-1243-at021021 : Ws → ⟪ (Bx2-0134 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-0143 ∷ []) ⟫ʷ
-lem-box-perm-1243-at021021 c4 = derive (Bx2-0134 ∷ []) (Bx2-0143 ∷ [])
+lem-box-perm-1243-at021021 : Ws → ⟪ (ℓ "伭") ⟫ʷ ≈ ⟪ (ℓ "伮") ⟫ʷ
+lem-box-perm-1243-at021021 c4 = derive (ℓ "伭") (ℓ "伮")
   (rw 0 (q313 c4) ∷
    rw 0 (q290 c4) ∷
    rw 0 (q291 c4) ∷ []) Eq.refl
 
 -- box-perm-1243 @0210213443: 3 steps
-lem-box-perm-1243-at0210213443 : Ws → ⟪ (Bx2-0143 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-0134 ∷ []) ⟫ʷ
-lem-box-perm-1243-at0210213443 c4 = derive (Bx2-0143 ∷ []) (Bx2-0134 ∷ [])
+lem-box-perm-1243-at0210213443 : Ws → ⟪ (ℓ "伮") ⟫ʷ ≈ ⟪ (ℓ "伭") ⟫ʷ
+lem-box-perm-1243-at0210213443 c4 = derive (ℓ "伮") (ℓ "伭")
   (rw 0 (q296 c4) ∷
    rw 0 (q287 c4) ∷
    rw 0 (q310 c4) ∷ []) Eq.refl
@@ -2193,8 +2194,8 @@ private
   q316 c4 = sE 350 (lem-box-tQ-at0310243241 c4)
 
 -- pairs @03122130: 4 steps
-lem-pairs-at03122130 : Ws → ⟪ (Bx3-2104 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0421 ∷ []) ⟫ʷ
-lem-pairs-at03122130 c4 = derive (Bx3-2104 ∷ []) (Bx3-0421 ∷ [])
+lem-pairs-at03122130 : Ws → ⟪ (ℓ "佲") ⟫ʷ ≈ ⟪ (ℓ "佩") ⟫ʷ
+lem-pairs-at03122130 c4 = derive (ℓ "佲") (ℓ "佩")
   (rw⁻ 0 (q314 c4) ∷
    rw 1 (q315 c4) ∷
    rw 4 (q218 c4) ∷
@@ -2205,8 +2206,8 @@ private
   q317 c4 = sE 892 (lem-sym-bc-at0214233041 c4)
 
 -- box-perm-4132 @021021: 3 steps
-lem-box-perm-4132-at021021 : Ws → ⟪ (Bx2-0134 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-4031 ∷ []) ⟫ʷ
-lem-box-perm-4132-at021021 c4 = derive (Bx2-0134 ∷ []) (Bx2-4031 ∷ [])
+lem-box-perm-4132-at021021 : Ws → ⟪ (ℓ "伭") ⟫ʷ ≈ ⟪ (ℓ "余") ⟫ʷ
+lem-box-perm-4132-at021021 c4 = derive (ℓ "伭") (ℓ "余")
   (rw 0 (q313 c4) ∷
    rw 0 (q290 c4) ∷
    rw 0 (q317 c4) ∷ []) Eq.refl
@@ -2220,8 +2221,8 @@ private
   q320 c4 = sE 1106 (lem-t-cP-at02142041 c4)
 
 -- box2 @02142041: 11 steps
-lem-box2-at02142041 : Ws → ⟪ (Bx2-4031 ∷ Bx2-4031 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-lem-box2-at02142041 c4 = derive (Bx2-4031 ∷ Bx2-4031 ∷ []) []
+lem-box2-at02142041 : Ws → ⟪ (ℓ "余余") ⟫ʷ ≈ ⟪ [] ⟫ʷ
+lem-box2-at02142041 c4 = derive (ℓ "余余") []
   (rw 0 (q318 c4) ∷
    rw 4 (q319 c4) ∷
    rw⁻ 4 (q90 c4) ∷
@@ -2243,8 +2244,8 @@ private
   q323 c4 = sE 1107 (lem-t-cP-at0314203241 c4)
 
 -- box2 @0314203241: 11 steps
-lem-box2-at0314203241 : Ws → ⟪ (Bx3-4021 ∷ Bx3-4021 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-lem-box2-at0314203241 c4 = derive (Bx3-4021 ∷ Bx3-4021 ∷ []) []
+lem-box2-at0314203241 : Ws → ⟪ (ℓ "佾佾") ⟫ʷ ≈ ⟪ [] ⟫ʷ
+lem-box2-at0314203241 c4 = derive (ℓ "佾佾") []
   (rw 0 (q321 c4) ∷
    rw 4 (q322 c4) ∷
    rw⁻ 4 (q218 c4) ∷
@@ -2264,8 +2265,8 @@ private
   q325 c4 = sE 1141 (lem-sym-bc-at022330 c4)
 
 -- box-perm-2314 @02132130: 2 steps
-lem-box-perm-2314-at02132130 : Ws → ⟪ (Bx2-3104 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-1034 ∷ []) ⟫ʷ
-lem-box-perm-2314-at02132130 c4 = derive (Bx2-3104 ∷ []) (Bx2-1034 ∷ [])
+lem-box-perm-2314-at02132130 : Ws → ⟪ (ℓ "佅") ⟫ʷ ≈ ⟪ (ℓ "伳") ⟫ʷ
+lem-box-perm-2314-at02132130 c4 = derive (ℓ "佅") (ℓ "伳")
   (rw 0 (q324 c4) ∷
    rw 0 (q325 c4) ∷ []) Eq.refl
 
@@ -2276,8 +2277,8 @@ private
   q327 c4 = sE 1015 (lem-sym-bc-at0330 c4)
 
 -- box-perm-2314 @03122130: 2 steps
-lem-box-perm-2314-at03122130 : Ws → ⟪ (Bx3-2104 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-1024 ∷ []) ⟫ʷ
-lem-box-perm-2314-at03122130 c4 = derive (Bx3-2104 ∷ []) (Bx3-1024 ∷ [])
+lem-box-perm-2314-at03122130 : Ws → ⟪ (ℓ "佲") ⟫ʷ ≈ ⟪ (ℓ "佪") ⟫ʷ
+lem-box-perm-2314-at03122130 c4 = derive (ℓ "佲") (ℓ "佪")
   (rw 0 (q326 c4) ∷
    rw 0 (q327 c4) ∷ []) Eq.refl
 
@@ -2290,8 +2291,8 @@ private
   q330 c4 = sE 40 (lem-sym-ab-at03102132 c4)
 
 -- box-perm-3214 @03122031: 3 steps
-lem-box-perm-3214-at03122031 : Ws → ⟪ (Bx3-2014 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-1024 ∷ []) ⟫ʷ
-lem-box-perm-3214-at03122031 c4 = derive (Bx3-2014 ∷ []) (Bx3-1024 ∷ [])
+lem-box-perm-3214-at03122031 : Ws → ⟪ (ℓ "佰") ⟫ʷ ≈ ⟪ (ℓ "佪") ⟫ʷ
+lem-box-perm-3214-at03122031 c4 = derive (ℓ "佰") (ℓ "佪")
   (rw 0 (q328 c4) ∷
    rw 0 (q329 c4) ∷
    rw 0 (q330 c4) ∷ []) Eq.refl
@@ -2305,8 +2306,8 @@ private
   q333 c4 = sE 401 (lem-box-tQ-at03243042 c4)
 
 -- pairs @031031: 4 steps
-lem-pairs-at031031 : Ws → ⟪ (Bx3-0214 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-1402 ∷ []) ⟫ʷ
-lem-pairs-at031031 c4 = derive (Bx3-0214 ∷ []) (Bx3-1402 ∷ [])
+lem-pairs-at031031 : Ws → ⟪ (ℓ "佦") ⟫ʷ ≈ ⟪ (ℓ "佮") ⟫ʷ
+lem-pairs-at031031 c4 = derive (ℓ "佦") (ℓ "佮")
   (rw⁻ 0 (q331 c4) ∷
    rw 1 (q332 c4) ∷
    rw 4 (q212 c4) ∷
@@ -2317,8 +2318,8 @@ private
   q334 c4 = sE 1169 (lem-sym-bc-at142142 c4)
 
 -- box-perm-1324 @142142: 1 steps
-lem-box-perm-1324-at142142 : Ws → ⟪ (Bx0-4132 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-4312 ∷ []) ⟫ʷ
-lem-box-perm-1324-at142142 c4 = derive (Bx0-4132 ∷ []) (Bx0-4312 ∷ [])
+lem-box-perm-1324-at142142 : Ws → ⟪ (ℓ "企") ⟫ʷ ≈ ⟪ (ℓ "伋") ⟫ʷ
+lem-box-perm-1324-at142142 c4 = derive (ℓ "企") (ℓ "伋")
   (rw 0 (q334 c4) ∷ []) Eq.refl
 
 private
@@ -2326,8 +2327,8 @@ private
   q335 c4 = sE 1070 (lem-sym-ab-at14233142 c4)
 
 -- box-perm-3124 @142142: 2 steps
-lem-box-perm-3124-at142142 : Ws → ⟪ (Bx0-4132 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-3412 ∷ []) ⟫ʷ
-lem-box-perm-3124-at142142 c4 = derive (Bx0-4132 ∷ []) (Bx0-3412 ∷ [])
+lem-box-perm-3124-at142142 : Ws → ⟪ (ℓ "企") ⟫ʷ ≈ ⟪ (ℓ "仳") ⟫ʷ
+lem-box-perm-3124-at142142 c4 = derive (ℓ "企") (ℓ "仳")
   (rw 0 (q334 c4) ∷
    rw 0 (q335 c4) ∷ []) Eq.refl
 
@@ -2338,8 +2339,8 @@ private
   q337 c4 = sE 1137 (lem-pairs-at14233142 c4)
 
 -- box-perm-2341 @13243142: 4 steps
-lem-box-perm-2341-at13243142 : Ws → ⟪ (Bx0-3412 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-4123 ∷ []) ⟫ʷ
-lem-box-perm-2341-at13243142 c4 = derive (Bx0-3412 ∷ []) (Bx0-4123 ∷ [])
+lem-box-perm-2341-at13243142 : Ws → ⟪ (ℓ "仳") ⟫ʷ ≈ ⟪ (ℓ "仼") ⟫ʷ
+lem-box-perm-2341-at13243142 c4 = derive (ℓ "仳") (ℓ "仼")
   (rw 0 (q336 c4) ∷
    rw 0 (q337 c4) ∷
    rw 0 (q280 c4) ∷
@@ -2354,8 +2355,8 @@ private
   q340 c4 = sE 351 (lem-box-tQ-at031031 c4)
 
 -- pairs @03243042: 4 steps
-lem-pairs-at03243042 : Ws → ⟪ (Bx3-1402 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0214 ∷ []) ⟫ʷ
-lem-pairs-at03243042 c4 = derive (Bx3-1402 ∷ []) (Bx3-0214 ∷ [])
+lem-pairs-at03243042 : Ws → ⟪ (ℓ "佮") ⟫ʷ ≈ ⟪ (ℓ "佦") ⟫ʷ
+lem-pairs-at03243042 c4 = derive (ℓ "佮") (ℓ "佦")
   (rw⁻ 0 (q338 c4) ∷
    rw 1 (q339 c4) ∷
    rw 4 (q226 c4) ∷
@@ -2370,8 +2371,8 @@ private
   q343 c4 = sE 260 (lem-box-tQ-at1331 c4)
 
 -- pairs @2442: 4 steps
-lem-pairs-at2442 : Ws → ⟪ (Bx0-1432 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-3214 ∷ []) ⟫ʷ
-lem-pairs-at2442 c4 = derive (Bx0-1432 ∷ []) (Bx0-3214 ∷ [])
+lem-pairs-at2442 : Ws → ⟪ (ℓ "仆") ⟫ʷ ≈ ⟪ (ℓ "仭") ⟫ʷ
+lem-pairs-at2442 c4 = derive (ℓ "仆") (ℓ "仭")
   (rw⁻ 0 (q341 c4) ∷
    rw 1 (q113 c4) ∷
    rw 4 (q342 c4) ∷
@@ -2384,8 +2385,8 @@ private
   q345 c4 = sE 1168 (lem-sym-bc-at02102331 c4)
 
 -- box-perm-2314 @02132031: 2 steps
-lem-box-perm-2314-at02132031 : Ws → ⟪ (Bx2-3014 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-0134 ∷ []) ⟫ʷ
-lem-box-perm-2314-at02132031 c4 = derive (Bx2-3014 ∷ []) (Bx2-0134 ∷ [])
+lem-box-perm-2314-at02132031 : Ws → ⟪ (ℓ "似") ⟫ʷ ≈ ⟪ (ℓ "伭") ⟫ʷ
+lem-box-perm-2314-at02132031 c4 = derive (ℓ "似") (ℓ "伭")
   (rw 0 (q344 c4) ∷
    rw 0 (q345 c4) ∷ []) Eq.refl
 
@@ -2400,8 +2401,8 @@ private
   q349 c4 = sE 1109 (lem-t-cP-at142142 c4)
 
 -- box2 @142142: 11 steps
-lem-box2-at142142 : Ws → ⟪ (Bx0-4132 ∷ Bx0-4132 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-lem-box2-at142142 c4 = derive (Bx0-4132 ∷ Bx0-4132 ∷ []) []
+lem-box2-at142142 : Ws → ⟪ (ℓ "企企") ⟫ʷ ≈ ⟪ [] ⟫ʷ
+lem-box2-at142142 c4 = derive (ℓ "企企") []
   (rw 0 (q346 c4) ∷
    rw 4 (q347 c4) ∷
    rw⁻ 4 (q348 c4) ∷
@@ -2419,8 +2420,8 @@ private
   q350 c4 = sE 1010 (lem-pairs-at13243142 c4)
 
 -- box-perm-2431 @142142: 3 steps
-lem-box-perm-2431-at142142 : Ws → ⟪ (Bx0-4132 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1234 ∷ []) ⟫ʷ
-lem-box-perm-2431-at142142 c4 = derive (Bx0-4132 ∷ []) (Bx0-1234 ∷ [])
+lem-box-perm-2431-at142142 : Ws → ⟪ (ℓ "企") ⟫ʷ ≈ ⟪ (ℓ "亹") ⟫ʷ
+lem-box-perm-2431-at142142 c4 = derive (ℓ "企") (ℓ "亹")
   (rw 0 (q334 c4) ∷
    rw 0 (q335 c4) ∷
    rw 0 (q350 c4) ∷ []) Eq.refl
@@ -2432,8 +2433,8 @@ private
   q352 c4 = wpE 7 c4
 
 -- box2 @033440: 11 steps
-lem-box2-at033440 : Ws → ⟪ (Bx3-1240 ∷ Bx3-1240 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-lem-box2-at033440 c4 = derive (Bx3-1240 ∷ Bx3-1240 ∷ []) []
+lem-box2-at033440 : Ws → ⟪ (ℓ "佭佭") ⟫ʷ ≈ ⟪ [] ⟫ʷ
+lem-box2-at033440 c4 = derive (ℓ "佭佭") []
   (rw 0 (q210 c4) ∷
    rw 4 (q217 c4) ∷
    rw⁻ 4 (q209 c4) ∷

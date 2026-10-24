@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD203 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D203 (Sᴰ : SD203) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -103,8 +104,8 @@ private
   q4 c4 = wlE 1464 (lit c4)
 
 -- ckt-TT: 5 steps
-lem-ckt-TT : Ws → ⟪ (CK41 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ Sb0-1-42-3 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK41 ∷ S4 ∷ CK41 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ Sb0-1-42-3 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK41 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-lem-ckt-TT c4 = derive (CK41 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ Sb0-1-42-3 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK41 ∷ S4 ∷ CK41 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ Sb0-1-42-3 ∷ Sb0-1-42-3 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ Sb0-1-42-3 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ CK41 ∷ S4 ∷ []) []
+lem-ckt-TT : Ws → ⟪ (ℓ "亄侬亇侧侧亇丢侬侬侬亇侧侧亇丢亊侬侬亊丢亇侬侬亇丢亊侬侬亊丢侧亊侬侬亊丢亇侬侬亇丢亊侬侬亊丢亄丢亄侬亇侧侧亇丢侬侬侬亇侧侧亇丢亊侬侬亊丢亇侬侬亇丢亊侬侬亊丢侧亊侬侬亊丢亇侬侬亇丢亊侬侬亊丢亄丢") ⟫ʷ ≈ ⟪ [] ⟫ʷ
+lem-ckt-TT c4 = derive (ℓ "亄侬亇侧侧亇丢侬侬侬亇侧侧亇丢亊侬侬亊丢亇侬侬亇丢亊侬侬亊丢侧亊侬侬亊丢亇侬侬亇丢亊侬侬亊丢亄丢亄侬亇侧侧亇丢侬侬侬亇侧侧亇丢亊侬侬亊丢亇侬侬亇丢亊侬侬亊丢侧亊侬侬亊丢亇侬侬亇丢亊侬侬亊丢亄丢") []
   (rw 1 (q1 c4) ∷
    rw 5 (q1 c4) ∷
    rw 2 (q2 c4) ∷
@@ -121,7 +122,7 @@ private
   q8 : Ws → Eqn
   q8 c4 = wlE 1689 (lit c4)
   q9 : Ws → Eqn
-  q9 c4 = eqn (X0 ∷ Toff312 ∷ []) (Toff312 ∷ X0 ∷ []) (c₁ (X) (Toffᵗ))
+  q9 c4 = eqn (ℓ "与产") (ℓ "产与") (c₁ (X) (Toffᵗ))
   q10 : Ws → Eqn
   q10 c4 = wlE 334 (lit c4)
   q11 : Ws → Eqn
@@ -256,12 +257,12 @@ private
   q75 c4 = sE 2054 (lem-CSdu-box-3-at04203243 c4)
 
 -- F4-CS1-CS0 @0440: 214 steps
-lem-F4-CS1-CS0-at0440 : Ws → ⟪ (X0 ∷ Sb4-1-02-3 ∷ X0 ∷ Sb2-4-01-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-4-01-3 ∷ X0 ∷ Sb4-1-02-3 ∷ X0 ∷ []) ⟫ʷ
-lem-F4-CS1-CS0-at0440 c4 = derive (X0 ∷ Sb4-1-02-3 ∷ X0 ∷ Sb2-4-01-3 ∷ []) (Sb2-4-01-3 ∷ X0 ∷ Sb4-1-02-3 ∷ X0 ∷ [])
+lem-F4-CS1-CS0-at0440 : Ws → ⟪ (ℓ "与俭与俊") ⟫ʷ ≈ ⟪ (ℓ "俊与俭与") ⟫ʷ
+lem-F4-CS1-CS0-at0440 c4 = derive (ℓ "与俭与俊") (ℓ "俊与俭与")
   (rw 3 (q5 c4) ∷
-   re 3 1 (Bx3-4012 ∷ Toff201 ∷ Sb3-4-2-1 ∷ Toff201 ∷ Sb⁻3-4-2-1 ∷ []) ∷
-   re 5 1 (CS24 ∷ []) ∷
-   re 7 1 (CS24⁻ ∷ []) ∷
+   re 3 1 (ℓ "佹亏保亏俞") ∷
+   re 5 1 (ℓ "乩") ∷
+   re 7 1 (ℓ "乪") ∷
    rw 3 (q6 c4) ∷
    rw⁻ 2 (q7 c4) ∷
    rw 4 (q8 c4) ∷
@@ -279,8 +280,8 @@ lem-F4-CS1-CS0-at0440 c4 = derive (X0 ∷ Sb4-1-02-3 ∷ X0 ∷ Sb2-4-01-3 ∷ [
    rw 6 (q17 c4) ∷
    rw 5 (q9 c4) ∷
    rw⁻ 2 (q6 c4) ∷
-   re 1 1 (Bx4-1023 ∷ Toff302 ∷ Sb4-1-3-2 ∷ Toff302 ∷ Sb⁻4-1-3-2 ∷ []) ∷
-   re 5 1 (CS13⁻ ∷ []) ∷
+   re 1 1 (ℓ "侒些俫些俬") ∷
+   re 5 1 (ℓ "乏") ∷
    rw 5 (q18 c4) ∷
    rw 5 (q6 c4) ∷
    rw⁻ 4 (q19 c4) ∷
@@ -295,7 +296,7 @@ lem-F4-CS1-CS0-at0440 c4 = derive (X0 ∷ Sb4-1-02-3 ∷ X0 ∷ Sb2-4-01-3 ∷ [
    rw⁻ 6 (q26 c4) ∷
    rw 7 (q25 c4) ∷
    rw⁻ 4 (q6 c4) ∷
-   re 3 1 (CS13 ∷ []) ∷
+   re 3 1 (ℓ "乎") ∷
    rw 3 (q27 c4) ∷
    rw 3 (q6 c4) ∷
    rw⁻ 2 (q19 c4) ∷
@@ -363,13 +364,13 @@ lem-F4-CS1-CS0-at0440 c4 = derive (X0 ∷ Sb4-1-02-3 ∷ X0 ∷ Sb2-4-01-3 ∷ [
    rw 6 (q47 c4) ∷
    rw 7 (q48 c4) ∷
    rw 8 (q49 c4) ∷
-   re 4 1 (Sb4-1-3-2 ∷ []) ∷
-   re 6 1 (Sb⁻4-1-3-2 ∷ []) ∷
-   re 2 5 (Sb4-1-02-3 ∷ []) ∷
+   re 4 1 (ℓ "俫") ∷
+   re 6 1 (ℓ "俬") ∷
+   re 2 5 (ℓ "俭") ∷
    rw⁻ 3 (q50 c4) ∷
-   re 2 1 (Bx4-1023 ∷ Toff302 ∷ Sb4-1-3-2 ∷ Toff302 ∷ Sb⁻4-1-3-2 ∷ []) ∷
-   re 4 1 (CS13 ∷ []) ∷
-   re 6 1 (CS13⁻ ∷ []) ∷
+   re 2 1 (ℓ "侒些俫些俬") ∷
+   re 4 1 (ℓ "乎") ∷
+   re 6 1 (ℓ "乏") ∷
    rw⁻ 3 (q51 c4) ∷
    rw 2 (q52 c4) ∷
    rw 2 (q53 c4) ∷
@@ -400,27 +401,27 @@ lem-F4-CS1-CS0-at0440 c4 = derive (X0 ∷ Sb4-1-02-3 ∷ X0 ∷ Sb2-4-01-3 ∷ [
    rw 2 (q65 c4) ∷
    rw⁻ 4 (q53 c4) ∷
    rw⁻ 4 (q52 c4) ∷
-   re 6 1 (Sb4-1-3-2 ∷ []) ∷
-   re 8 1 (Sb⁻4-1-3-2 ∷ []) ∷
-   re 4 5 (Sb4-1-02-3 ∷ []) ∷
+   re 6 1 (ℓ "俫") ∷
+   re 8 1 (ℓ "俬") ∷
+   re 4 5 (ℓ "俭") ∷
    rw⁻ 1 (q66 c4) ∷
    rw⁻ 4 (q67 c4) ∷
-   re 3 1 (Bx4-1023 ∷ Toff302 ∷ Sb4-1-3-2 ∷ Toff302 ∷ Sb⁻4-1-3-2 ∷ []) ∷
-   re 5 1 (CS13 ∷ []) ∷
-   re 7 1 (CS13⁻ ∷ []) ∷
+   re 3 1 (ℓ "侒些俫些俬") ∷
+   re 5 1 (ℓ "乎") ∷
+   re 7 1 (ℓ "乏") ∷
    rw 7 (q68 c4) ∷
    rw⁻ 6 (q42 c4) ∷
    rw 5 (q69 c4) ∷
    rw⁻ 4 (q42 c4) ∷
    rw⁻ 3 (q70 c4) ∷
-   re 6 1 (Sb4-1-3-2 ∷ []) ∷
-   re 8 1 (Sb⁻4-1-3-2 ∷ []) ∷
-   re 4 5 (Sb4-1-02-3 ∷ []) ∷
+   re 6 1 (ℓ "俫") ∷
+   re 8 1 (ℓ "俬") ∷
+   re 4 5 (ℓ "俭") ∷
    rw⁻ 2 (q67 c4) ∷
    rw⁻ 5 (q50 c4) ∷
-   re 4 1 (Bx4-1023 ∷ Toff302 ∷ Sb4-1-3-2 ∷ Toff302 ∷ Sb⁻4-1-3-2 ∷ []) ∷
-   re 6 1 (CS13 ∷ []) ∷
-   re 8 1 (CS13⁻ ∷ []) ∷
+   re 4 1 (ℓ "侒些俫些俬") ∷
+   re 6 1 (ℓ "乎") ∷
+   re 8 1 (ℓ "乏") ∷
    rw⁻ 5 (q51 c4) ∷
    rw 4 (q52 c4) ∷
    rw 4 (q53 c4) ∷
@@ -451,26 +452,26 @@ lem-F4-CS1-CS0-at0440 c4 = derive (X0 ∷ Sb4-1-02-3 ∷ X0 ∷ Sb2-4-01-3 ∷ [
    rw 4 (q65 c4) ∷
    rw⁻ 6 (q53 c4) ∷
    rw⁻ 6 (q52 c4) ∷
-   re 8 1 (Sb4-1-3-2 ∷ []) ∷
-   re 10 1 (Sb⁻4-1-3-2 ∷ []) ∷
-   re 6 5 (Sb4-1-02-3 ∷ []) ∷
+   re 8 1 (ℓ "俫") ∷
+   re 10 1 (ℓ "俬") ∷
+   re 6 5 (ℓ "俭") ∷
    rw⁻ 3 (q66 c4) ∷
    rw⁻ 6 (q71 c4) ∷
-   re 5 1 (Bx4-1023 ∷ Toff302 ∷ Sb4-1-3-2 ∷ Toff302 ∷ Sb⁻4-1-3-2 ∷ []) ∷
-   re 7 1 (CS13 ∷ []) ∷
-   re 9 1 (CS13⁻ ∷ []) ∷
+   re 5 1 (ℓ "侒些俫些俬") ∷
+   re 7 1 (ℓ "乎") ∷
+   re 9 1 (ℓ "乏") ∷
    rw 9 (q72 c4) ∷
    rw⁻ 8 (q73 c4) ∷
    rw 7 (q74 c4) ∷
    rw⁻ 6 (q73 c4) ∷
    rw⁻ 5 (q75 c4) ∷
-   re 8 1 (Sb4-1-3-2 ∷ []) ∷
-   re 10 1 (Sb⁻4-1-3-2 ∷ []) ∷
-   re 6 5 (Sb4-1-02-3 ∷ []) ∷
+   re 8 1 (ℓ "俫") ∷
+   re 10 1 (ℓ "俬") ∷
+   re 6 5 (ℓ "俭") ∷
    rw⁻ 4 (q71 c4) ∷
-   re 2 1 (Sb3-4-2-1 ∷ []) ∷
-   re 4 1 (Sb⁻3-4-2-1 ∷ []) ∷
-   re 0 5 (Sb3-4-01-2 ∷ []) ∷
+   re 2 1 (ℓ "保") ∷
+   re 4 1 (ℓ "俞") ∷
+   re 0 5 (ℓ "俟") ∷
    rw⁻ 0 (q5 c4) ∷ []) Eq.refl
 
 private
@@ -484,8 +485,8 @@ private
   q79 c4 = wlE 1714 (lit c4)
 
 -- ckt-TT @0440: 5 steps
-lem-ckt-TT-at0440 : Ws → ⟪ (CK01 ∷ Sb4-2-03-1 ∷ CK02 ∷ Sb4-1-02-3 ∷ Sb4-1-02-3 ∷ CK02 ∷ S0 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK02 ∷ Sb4-1-02-3 ∷ Sb4-1-02-3 ∷ CK02 ∷ S0 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ CK02 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK02 ∷ S0 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ Sb4-1-02-3 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ CK02 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK02 ∷ S0 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ CK01 ∷ S0 ∷ CK01 ∷ Sb4-2-03-1 ∷ CK02 ∷ Sb4-1-02-3 ∷ Sb4-1-02-3 ∷ CK02 ∷ S0 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK02 ∷ Sb4-1-02-3 ∷ Sb4-1-02-3 ∷ CK02 ∷ S0 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ CK02 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK02 ∷ S0 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ Sb4-1-02-3 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ CK02 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK02 ∷ S0 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ CK01 ∷ S0 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-lem-ckt-TT-at0440 c4 = derive (CK01 ∷ Sb4-2-03-1 ∷ CK02 ∷ Sb4-1-02-3 ∷ Sb4-1-02-3 ∷ CK02 ∷ S0 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK02 ∷ Sb4-1-02-3 ∷ Sb4-1-02-3 ∷ CK02 ∷ S0 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ CK02 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK02 ∷ S0 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ Sb4-1-02-3 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ CK02 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK02 ∷ S0 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ CK01 ∷ S0 ∷ CK01 ∷ Sb4-2-03-1 ∷ CK02 ∷ Sb4-1-02-3 ∷ Sb4-1-02-3 ∷ CK02 ∷ S0 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK02 ∷ Sb4-1-02-3 ∷ Sb4-1-02-3 ∷ CK02 ∷ S0 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ CK02 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK02 ∷ S0 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ Sb4-1-02-3 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ CK02 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK02 ∷ S0 ∷ CK03 ∷ Sb4-2-03-1 ∷ Sb4-2-03-1 ∷ CK03 ∷ S0 ∷ CK01 ∷ S0 ∷ []) []
+lem-ckt-TT-at0440 : Ws → ⟪ (ℓ "中俵临俭俭临上俵俵俵临俭俭临上主俵俵主上临俵俵临上主俵俵主上俭主俵俵主上临俵俵临上主俵俵主上中上中俵临俭俭临上俵俵俵临俭俭临上主俵俵主上临俵俵临上主俵俵主上俭主俵俵主上临俵俵临上主俵俵主上中上") ⟫ʷ ≈ ⟪ [] ⟫ʷ
+lem-ckt-TT-at0440 c4 = derive (ℓ "中俵临俭俭临上俵俵俵临俭俭临上主俵俵主上临俵俵临上主俵俵主上俭主俵俵主上临俵俵临上主俵俵主上中上中俵临俭俭临上俵俵俵临俭俭临上主俵俵主上临俵俵临上主俵俵主上俭主俵俵主上临俵俵临上主俵俵主上中上") []
   (rw 1 (q76 c4) ∷
    rw 5 (q76 c4) ∷
    rw 2 (q77 c4) ∷
@@ -498,7 +499,7 @@ private
   q81 : Ws → Eqn
   q81 c4 = wlE 1516 (lit c4)
   q82 : Ws → Eqn
-  q82 c4 = eqn (X0 ∷ Toff423 ∷ []) (Toff423 ∷ X0 ∷ []) (c₁ (X) (Toffᵗ ↑))
+  q82 c4 = eqn (ℓ "与亳") (ℓ "亳与") (c₁ (X) (Toffᵗ ↑))
   q83 : Ws → Eqn
   q83 c4 = wpE 1352 c4
   q84 : Ws → Eqn
@@ -587,12 +588,12 @@ private
   q125 c4 = wlE 1738 (lit c4)
 
 -- F4-CS0-CS1 @0440: 232 steps
-lem-F4-CS0-CS1-at0440 : Ws → ⟪ (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ Sb4-1-02-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb4-1-02-3 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ []) ⟫ʷ
-lem-F4-CS0-CS1-at0440 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ Sb4-1-02-3 ∷ []) (Sb4-1-02-3 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ [])
+lem-F4-CS0-CS1-at0440 : Ws → ⟪ (ℓ "与俊与俭") ⟫ʷ ≈ ⟪ (ℓ "俭与俊与") ⟫ʷ
+lem-F4-CS0-CS1-at0440 c4 = derive (ℓ "与俊与俭") (ℓ "俭与俊与")
   (rw 1 (q5 c4) ∷
-   re 3 1 (Bx4-1023 ∷ Toff302 ∷ Sb4-1-3-2 ∷ Toff302 ∷ Sb⁻4-1-3-2 ∷ []) ∷
-   re 5 1 (CS13 ∷ []) ∷
-   re 7 1 (CS13⁻ ∷ []) ∷
+   re 3 1 (ℓ "侒些俫些俬") ∷
+   re 5 1 (ℓ "乎") ∷
+   re 7 1 (ℓ "乏") ∷
    rw 3 (q33 c4) ∷
    rw⁻ 2 (q80 c4) ∷
    rw 4 (q81 c4) ∷
@@ -610,8 +611,8 @@ lem-F4-CS0-CS1-at0440 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ Sb4-1-02-3 ∷ [
    rw 6 (q85 c4) ∷
    rw 5 (q82 c4) ∷
    rw⁻ 2 (q33 c4) ∷
-   re 1 1 (Bx3-4012 ∷ Toff201 ∷ Sb3-4-2-1 ∷ Toff201 ∷ Sb⁻3-4-2-1 ∷ []) ∷
-   re 5 1 (CS24⁻ ∷ []) ∷
+   re 1 1 (ℓ "佹亏保亏俞") ∷
+   re 5 1 (ℓ "乪") ∷
    rw 5 (q75 c4) ∷
    rw 5 (q52 c4) ∷
    rw 5 (q53 c4) ∷
@@ -648,7 +649,7 @@ lem-F4-CS0-CS1-at0440 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ Sb4-1-02-3 ∷ [
    rw 8 (q55 c4) ∷
    rw⁻ 4 (q53 c4) ∷
    rw⁻ 4 (q52 c4) ∷
-   re 3 1 (CS24 ∷ []) ∷
+   re 3 1 (ℓ "乩") ∷
    rw 3 (q70 c4) ∷
    rw 3 (q52 c4) ∷
    rw 3 (q53 c4) ∷
@@ -736,13 +737,13 @@ lem-F4-CS0-CS1-at0440 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ Sb4-1-02-3 ∷ [
    rw 4 (q107 c4) ∷
    rw 5 (q113 c4) ∷
    rw 6 (q114 c4) ∷
-   re 4 1 (Sb3-4-2-1 ∷ []) ∷
-   re 6 1 (Sb⁻3-4-2-1 ∷ []) ∷
-   re 2 5 (Sb3-4-01-2 ∷ []) ∷
+   re 4 1 (ℓ "保") ∷
+   re 6 1 (ℓ "俞") ∷
+   re 2 5 (ℓ "俟") ∷
    rw⁻ 3 (q115 c4) ∷
-   re 2 1 (Bx3-4012 ∷ Toff201 ∷ Sb3-4-2-1 ∷ Toff201 ∷ Sb⁻3-4-2-1 ∷ []) ∷
-   re 4 1 (CS24 ∷ []) ∷
-   re 6 1 (CS24⁻ ∷ []) ∷
+   re 2 1 (ℓ "佹亏保亏俞") ∷
+   re 4 1 (ℓ "乩") ∷
+   re 6 1 (ℓ "乪") ∷
    rw 6 (q116 c4) ∷
    rw⁻ 5 (q117 c4) ∷
    rw 4 (q118 c4) ∷
@@ -761,27 +762,27 @@ lem-F4-CS0-CS1-at0440 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ Sb4-1-02-3 ∷ [
    rw⁻ 5 (q20 c4) ∷
    rw 3 (q19 c4) ∷
    rw⁻ 4 (q6 c4) ∷
-   re 6 1 (Sb3-4-2-1 ∷ []) ∷
-   re 8 1 (Sb⁻3-4-2-1 ∷ []) ∷
-   re 4 5 (Sb3-4-01-2 ∷ []) ∷
+   re 6 1 (ℓ "保") ∷
+   re 8 1 (ℓ "俞") ∷
+   re 4 5 (ℓ "俟") ∷
    rw⁻ 1 (q121 c4) ∷
    rw⁻ 4 (q122 c4) ∷
-   re 3 1 (Bx3-4012 ∷ Toff201 ∷ Sb3-4-2-1 ∷ Toff201 ∷ Sb⁻3-4-2-1 ∷ []) ∷
-   re 5 1 (CS24 ∷ []) ∷
-   re 7 1 (CS24⁻ ∷ []) ∷
+   re 3 1 (ℓ "佹亏保亏俞") ∷
+   re 5 1 (ℓ "乩") ∷
+   re 7 1 (ℓ "乪") ∷
    rw⁻ 7 (q74 c4) ∷
    rw⁻ 6 (q123 c4) ∷
    rw⁻ 5 (q69 c4) ∷
    rw⁻ 4 (q123 c4) ∷
    rw⁻ 3 (q27 c4) ∷
-   re 6 1 (Sb3-4-2-1 ∷ []) ∷
-   re 8 1 (Sb⁻3-4-2-1 ∷ []) ∷
-   re 4 5 (Sb3-4-01-2 ∷ []) ∷
+   re 6 1 (ℓ "保") ∷
+   re 8 1 (ℓ "俞") ∷
+   re 4 5 (ℓ "俟") ∷
    rw⁻ 2 (q122 c4) ∷
    rw⁻ 5 (q115 c4) ∷
-   re 4 1 (Bx3-4012 ∷ Toff201 ∷ Sb3-4-2-1 ∷ Toff201 ∷ Sb⁻3-4-2-1 ∷ []) ∷
-   re 6 1 (CS24 ∷ []) ∷
-   re 8 1 (CS24⁻ ∷ []) ∷
+   re 4 1 (ℓ "佹亏保亏俞") ∷
+   re 6 1 (ℓ "乩") ∷
+   re 8 1 (ℓ "乪") ∷
    rw 8 (q116 c4) ∷
    rw⁻ 7 (q117 c4) ∷
    rw 6 (q118 c4) ∷
@@ -800,24 +801,24 @@ lem-F4-CS0-CS1-at0440 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ Sb4-1-02-3 ∷ [
    rw⁻ 7 (q20 c4) ∷
    rw 5 (q19 c4) ∷
    rw⁻ 6 (q6 c4) ∷
-   re 8 1 (Sb3-4-2-1 ∷ []) ∷
-   re 10 1 (Sb⁻3-4-2-1 ∷ []) ∷
-   re 6 5 (Sb3-4-01-2 ∷ []) ∷
+   re 8 1 (ℓ "保") ∷
+   re 10 1 (ℓ "俞") ∷
+   re 6 5 (ℓ "俟") ∷
    rw⁻ 3 (q121 c4) ∷
    rw⁻ 6 (q124 c4) ∷
-   re 5 1 (Bx3-4012 ∷ Toff201 ∷ Sb3-4-2-1 ∷ Toff201 ∷ Sb⁻3-4-2-1 ∷ []) ∷
-   re 7 1 (CS24 ∷ []) ∷
-   re 9 1 (CS24⁻ ∷ []) ∷
+   re 5 1 (ℓ "佹亏保亏俞") ∷
+   re 7 1 (ℓ "乩") ∷
+   re 9 1 (ℓ "乪") ∷
    rw⁻ 9 (q72 c4) ∷
    rw⁻ 8 (q125 c4) ∷
    rw⁻ 7 (q68 c4) ∷
    rw⁻ 6 (q125 c4) ∷
    rw⁻ 5 (q18 c4) ∷
-   re 8 1 (Sb3-4-2-1 ∷ []) ∷
-   re 10 1 (Sb⁻3-4-2-1 ∷ []) ∷
-   re 6 5 (Sb3-4-01-2 ∷ []) ∷
+   re 8 1 (ℓ "保") ∷
+   re 10 1 (ℓ "俞") ∷
+   re 6 5 (ℓ "俟") ∷
    rw⁻ 4 (q124 c4) ∷
-   re 2 1 (Sb4-1-3-2 ∷ []) ∷
-   re 4 1 (Sb⁻4-1-3-2 ∷ []) ∷
-   re 0 5 (Sb4-1-02-3 ∷ []) ∷
+   re 2 1 (ℓ "俫") ∷
+   re 4 1 (ℓ "俬") ∷
+   re 0 5 (ℓ "俭") ∷
    rw⁻ 2 (q5 c4) ∷ []) Eq.refl

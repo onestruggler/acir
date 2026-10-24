@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD052 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D052 (Sᴰ : SD052) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -96,7 +97,7 @@ private
   q11 : Ws → Eqn
   q11 c4 = sE 1590 (lem-F5-23 c4)
   q12 : Ws → Eqn
-  q12 c4 = eqn (Sw23 ∷ X4 ∷ []) (X4 ∷ Sw23 ∷ []) (c₄ (Swap ↑ ↑) (X))
+  q12 c4 = eqn (ℓ "乥並") (ℓ "並乥") (c₄ (Swap ↑ ↑) (X))
   q13 : Ws → Eqn
   q13 c4 = sE 1624 (lem-comm-push-SBOX⟨0·2·43·1⟩-sw2-R c4)
   q14 : Ws → Eqn
@@ -104,7 +105,7 @@ private
   q15 : Ws → Eqn
   q15 c4 = sE 1626 (lem-comm-push-SBOX⟨0·3·42·1⟩-sw3-R c4)
   q16 : Ws → Eqn
-  q16 c4 = eqn (Sw12 ∷ X3 ∷ []) (X3 ∷ Sw12 ∷ []) (c₃ (Swap ↑) (X))
+  q16 c4 = eqn (ℓ "乊丠") (ℓ "丠乊") (c₃ (Swap ↑) (X))
   q17 : Ws → Eqn
   q17 c4 = sE 1625 (lem-comm-push-SBOX⟨0·4·32·1⟩-sw1-R c4)
   q18 : Ws → Eqn
@@ -112,7 +113,7 @@ private
   q19 : Ws → Eqn
   q19 c4 = sE 1628 (lem-comm-push-SBOX⟨0·4·31·2⟩-sw2-R c4)
   q20 : Ws → Eqn
-  q20 c4 = eqn (Sw01 ∷ X2 ∷ []) (X2 ∷ Sw01 ∷ []) (c₂ (Swap) (X))
+  q20 c4 = eqn (ℓ "丫业") (ℓ "业丫") (c₂ (Swap) (X))
   q21 : Ws → Eqn
   q21 c4 = sE 1627 (lem-comm-push-SBOX⟨0·4·21·3⟩-sw0-R c4)
   q22 : Ws → Eqn
@@ -161,8 +162,8 @@ private
   q43 c4 = sE 1632 (lem-F4-K3-I-at0213243140 c4)
 
 -- deb-CKS-split-a @0213243140 part0: 500 steps
-lem-deb-CKS-split-a-at0213243140-part0 : Ws → ⟪ (CS14 ∷ K1 ∷ CS14 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ S4 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ K1 ∷ CS14 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS04 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sw01 ∷ Sw12 ∷ Sw01 ∷ Sw23 ∷ X3 ∷ Sb0-4-31-2 ∷ X3 ∷ Sb0-4-31-2 ∷ Sw12 ∷ Sw12 ∷ Sw23 ∷ Sw01 ∷ Sw12 ∷ Sw01 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ S4 ∷ []) ⟫ʷ
-lem-deb-CKS-split-a-at0213243140-part0 c4 = derive (CS14 ∷ K1 ∷ CS14 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ S4 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ K1 ∷ CS14 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ S4 ∷ []) (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS04 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sw01 ∷ Sw12 ∷ Sw01 ∷ Sw23 ∷ X3 ∷ Sb0-4-31-2 ∷ X3 ∷ Sb0-4-31-2 ∷ Sw12 ∷ Sw12 ∷ Sw23 ∷ Sw01 ∷ Sw12 ∷ Sw01 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ S4 ∷ [])
+lem-deb-CKS-split-a-at0213243140-part0 : Ws → ⟪ (ℓ "乕丒乕丒乕丢丢丢一丢乕乕乕乕丒乕丒乕丢丢丢一丢") ⟫ʷ ≈ ⟪ (ℓ "与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与与丽与与俊与与俊与与俊与与俊与与中与俊中俊中俊丽丽丽上丽俊俊俊俊中丫乊丫乥丠侶丠侶乊乊乥丫乊丫丒乕丢丢丢一丢") ⟫ʷ
+lem-deb-CKS-split-a-at0213243140-part0 c4 = derive (ℓ "乕丒乕丒乕丢丢丢一丢乕乕乕乕丒乕丒乕丢丢丢一丢") (ℓ "与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与与丽与与俊与与俊与与俊与与俊与与中与俊中俊中俊丽丽丽上丽俊俊俊俊中丫乊丫乥丠侶丠侶乊乊乥丫乊丫丒乕丢丢丢一丢")
   (rw⁻ 1 (q1 c4) ∷
    rw 0 (q2 c4) ∷
    rw⁻ 2 (q3 c4) ∷
@@ -174,7 +175,7 @@ lem-deb-CKS-split-a-at0213243140-part0 c4 = derive (CS14 ∷ K1 ∷ CS14 ∷ K1 
    rw⁻ 5 (q3 c4) ∷
    rw 4 (q8 c4) ∷
    rw⁻ 6 (q9 c4) ∷
-   re 5 1 (Sw34 ∷ CS23 ∷ Sw34 ∷ []) ∷
+   re 5 1 (ℓ "乼乢乼") ∷
    rw 7 (q9 c4) ∷
    rw⁻ 7 (q6 c4) ∷
    rw 6 (q10 c4) ∷
@@ -227,7 +228,7 @@ lem-deb-CKS-split-a-at0213243140-part0 c4 = derive (CS14 ∷ K1 ∷ CS14 ∷ K1 
    rw⁻ 13 (q3 c4) ∷
    rw 12 (q8 c4) ∷
    rw⁻ 14 (q9 c4) ∷
-   re 13 1 (Sw34 ∷ CS23 ∷ Sw34 ∷ []) ∷
+   re 13 1 (ℓ "乼乢乼") ∷
    rw 15 (q9 c4) ∷
    rw⁻ 15 (q6 c4) ∷
    rw 14 (q10 c4) ∷
@@ -284,7 +285,7 @@ lem-deb-CKS-split-a-at0213243140-part0 c4 = derive (CS14 ∷ K1 ∷ CS14 ∷ K1 
    rw⁻ 21 (q3 c4) ∷
    rw 20 (q8 c4) ∷
    rw⁻ 22 (q9 c4) ∷
-   re 21 1 (Sw34 ∷ CS23 ∷ Sw34 ∷ []) ∷
+   re 21 1 (ℓ "乼乢乼") ∷
    rw 23 (q9 c4) ∷
    rw⁻ 23 (q6 c4) ∷
    rw 22 (q10 c4) ∷
@@ -379,7 +380,7 @@ lem-deb-CKS-split-a-at0213243140-part0 c4 = derive (CS14 ∷ K1 ∷ CS14 ∷ K1 
    rw⁻ 45 (q3 c4) ∷
    rw 44 (q8 c4) ∷
    rw⁻ 46 (q9 c4) ∷
-   re 45 1 (Sw34 ∷ CS23 ∷ Sw34 ∷ []) ∷
+   re 45 1 (ℓ "乼乢乼") ∷
    rw 47 (q9 c4) ∷
    rw⁻ 47 (q6 c4) ∷
    rw 46 (q10 c4) ∷
@@ -440,7 +441,7 @@ lem-deb-CKS-split-a-at0213243140-part0 c4 = derive (CS14 ∷ K1 ∷ CS14 ∷ K1 
    rw⁻ 49 (q3 c4) ∷
    rw 48 (q8 c4) ∷
    rw⁻ 50 (q9 c4) ∷
-   re 49 1 (Sw34 ∷ CS23 ∷ Sw34 ∷ []) ∷
+   re 49 1 (ℓ "乼乢乼") ∷
    rw 51 (q9 c4) ∷
    rw⁻ 51 (q6 c4) ∷
    rw 50 (q10 c4) ∷
@@ -502,7 +503,7 @@ lem-deb-CKS-split-a-at0213243140-part0 c4 = derive (CS14 ∷ K1 ∷ CS14 ∷ K1 
    rw⁻ 53 (q3 c4) ∷
    rw 52 (q8 c4) ∷
    rw⁻ 54 (q9 c4) ∷
-   re 53 1 (Sw34 ∷ CS23 ∷ Sw34 ∷ []) ∷
+   re 53 1 (ℓ "乼乢乼") ∷
    rw 55 (q9 c4) ∷
    rw⁻ 55 (q6 c4) ∷
    rw 54 (q10 c4) ∷
@@ -565,7 +566,7 @@ lem-deb-CKS-split-a-at0213243140-part0 c4 = derive (CS14 ∷ K1 ∷ CS14 ∷ K1 
    rw⁻ 57 (q3 c4) ∷
    rw 56 (q8 c4) ∷
    rw⁻ 58 (q9 c4) ∷
-   re 57 1 (Sw34 ∷ CS23 ∷ Sw34 ∷ []) ∷
+   re 57 1 (ℓ "乼乢乼") ∷
    rw 59 (q9 c4) ∷
    rw⁻ 59 (q6 c4) ∷
    rw 58 (q10 c4) ∷
@@ -644,7 +645,7 @@ lem-deb-CKS-split-a-at0213243140-part0 c4 = derive (CS14 ∷ K1 ∷ CS14 ∷ K1 
    rw⁻ 65 (q3 c4) ∷
    rw 64 (q8 c4) ∷
    rw⁻ 66 (q9 c4) ∷
-   re 65 1 (Sw34 ∷ CS23 ∷ Sw34 ∷ []) ∷
+   re 65 1 (ℓ "乼乢乼") ∷
    rw 67 (q9 c4) ∷
    rw⁻ 67 (q6 c4) ∷
    rw 66 (q10 c4) ∷

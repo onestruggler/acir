@@ -5,8 +5,8 @@ open import Examples.Groups.Clifford+CS.Four.DEqn using (wE)
 
 module Examples.Groups.Clifford+CS.Four.D.D029 (W : Ws) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 open import Examples.Groups.Clifford+CS.Syntactics
@@ -15,26 +15,27 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Four.Str using (ℓ)
 
 private
   q1 : Eqn
-  q1 = eqn (Sw01 ∷ Sw23 ∷ []) (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap))
+  q1 = eqn (ℓ "並乏") (ℓ "乏並") (low-comm (Swap) (Swap))
   q2 : Eqn
   q2 = wE 275 W
   q3 : Eqn
   q3 = wE 25 W
   q4 : Eqn
-  q4 = eqn (Sw01 ∷ CX32 ∷ []) (CX32 ∷ Sw01 ∷ []) (low-comm (Swap) (CX₁₀))
+  q4 = eqn (ℓ "並乖") (ℓ "乖並") (low-comm (Swap) (CX₁₀))
   q5 : Eqn
-  q5 = eqn (Sw01 ∷ S2 ∷ []) (S2 ∷ Sw01 ∷ []) (low-comm (Swap) (S))
+  q5 = eqn (ℓ "並且") (ℓ "且並") (low-comm (Swap) (S))
   q6 : Eqn
-  q6 = eqn (Sw01 ∷ K2 ∷ []) (K2 ∷ Sw01 ∷ []) (low-comm (Swap) (K))
+  q6 = eqn (ℓ "並世") (ℓ "世並") (low-comm (Swap) (K))
   q7 : Eqn
-  q7 = eqn (Sw01 ∷ CS23 ∷ []) (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS))
+  q7 = eqn (ℓ "並义") (ℓ "义並") (low-comm (Swap) (CS))
   q8 : Eqn
   q8 = wE 30 W
   q9 : Eqn
-  q9 = eqn (Sw01 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS)))
+  q9 = eqn (ℓ "並乊") (ℓ "乊並") (low-comm (Swap) ((CS • CS • CS)))
   q10 : Eqn
   q10 = wE 27 W
   q11 : Eqn
@@ -51,24 +52,24 @@ private
   q16 = wE 31 W
 
 -- AXIOM LF @1302 part2: 124 steps
-lem-AXIOM-LF-at1302-part2 : ⟪ (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX30 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX30 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ Toff203 ∷ CS13 ∷ CS13 ∷ Sw23 ∷ CS12 ∷ Sw23 ∷ Sw01 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CX32 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CX32 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ Toff213 ∷ CS03 ∷ CS03 ∷ CK30 ∷ CS03 ∷ CK30 ∷ CK30 ∷ CX32 ∷ CK20 ∷ S2 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CX32 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CK20 ∷ CK20 ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX30 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX30 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ Toff203 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CS13 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CS12 ∷ Toff203 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX32 ∷ CK21 ∷ S2 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ []) ⟫ʷ
-lem-AXIOM-LF-at1302-part2 = derive (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX30 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX30 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ Toff203 ∷ CS13 ∷ CS13 ∷ Sw23 ∷ CS12 ∷ Sw23 ∷ Sw01 ∷ CK30 ∷ CS03 ∷ CS03 ∷ CX32 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CX32 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ Toff213 ∷ CS03 ∷ CS03 ∷ CK30 ∷ CS03 ∷ CK30 ∷ CK30 ∷ CX32 ∷ CK20 ∷ S2 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CX32 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CK20 ∷ CK20 ∷ Sw01 ∷ []) (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX30 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX30 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ Toff203 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CS13 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CS12 ∷ Toff203 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX32 ∷ CK21 ∷ S2 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ [])
-  (re 32 3 (CS13 ∷ []) ∷
-   re 34 1 (Sw23 ∷ CK20 ∷ Sw23 ∷ []) ∷
+lem-AXIOM-LF-at1302-part2 : ⟪ (ℓ "丽丽乔丽乔乔乐两丈两丈丠丠丠两丈丠丠丠丠丠丠乐丠丠两丠两两乤丽丽乏丶乏並乑中中乖丧丧丧丧丧丧乄且丧丧丧丧丧丧丧丧丧乖丧丧丧乄丧丧乥中中乑中乑乑乖乄且乄且丧丧丧乄且丧丧丧丧丧丧乖丧丧乄丧乄乄並") ⟫ʷ ≈ ⟪ (ℓ "丽丽乔丽乔乔乐两丈两丈丠丠丠两丈丠丠丠丠丠丠乐丠丠两丠两两乤丽丽丽乔丽丽乖丶丶丶丶丶丶乇且丶丶丶丶丶丶丶丶丶乖丶丶丶乇丶丶乤丽丽乔丽乔乔乖乇且乇且丶丶丶乇且丶丶丶丶丶丶乖丶丶乇丶乇乇") ⟫ʷ
+lem-AXIOM-LF-at1302-part2 = derive (ℓ "丽丽乔丽乔乔乐两丈两丈丠丠丠两丈丠丠丠丠丠丠乐丠丠两丠两两乤丽丽乏丶乏並乑中中乖丧丧丧丧丧丧乄且丧丧丧丧丧丧丧丧丧乖丧丧丧乄丧丧乥中中乑中乑乑乖乄且乄且丧丧丧乄且丧丧丧丧丧丧乖丧丧乄丧乄乄並") (ℓ "丽丽乔丽乔乔乐两丈两丈丠丠丠两丈丠丠丠丠丠丠乐丠丠两丠两两乤丽丽丽乔丽丽乖丶丶丶丶丶丶乇且丶丶丶丶丶丶丶丶丶乖丶丶丶乇丶丶乤丽丽乔丽乔乔乖乇且乇且丶丶丶乇且丶丶丶丶丶丶乖丶丶乇丶乇乇")
+  (re 32 3 (ℓ "丽") ∷
+   re 34 1 (ℓ "乏乄乏") ∷
    rw 33 q1 ∷
    rw 34 q2 ∷
    rw 35 q1 ∷
-   re 33 3 (CK31 ∷ []) ∷
-   re 35 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 33 3 (ℓ "乔") ∷
+   re 35 1 (ℓ "乏丧乏") ∷
    rw 34 q1 ∷
    rw 35 q3 ∷
    rw 36 q1 ∷
-   re 34 3 (CS13 ∷ []) ∷
-   re 36 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 34 3 (ℓ "丽") ∷
+   re 36 1 (ℓ "乏丧乏") ∷
    rw 35 q1 ∷
    rw 36 q3 ∷
    rw 37 q1 ∷
-   re 35 3 (CS13 ∷ []) ∷
+   re 35 3 (ℓ "丽") ∷
    rw 36 q4 ∷
    rw 37 q3 ∷
    rw 38 q3 ∷
@@ -94,17 +95,17 @@ lem-AXIOM-LF-at1302-part2 = derive (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷
    rw 58 q2 ∷
    rw 59 q3 ∷
    rw 60 q3 ∷
-   re 62 1 (K2 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ K2 ∷ ι1 ∷ []) ∷
+   re 62 1 (ℓ "世义丹乊丹丽世丁") ∷
    rw 61 q6 ∷
    rw 62 q7 ∷
    rw 63 q8 ∷
    rw 64 q9 ∷
    rw 65 q8 ∷
-   re 67 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 67 1 (ℓ "乏丶乏") ∷
    rw 66 q1 ∷
    rw 67 q10 ∷
    rw 68 q1 ∷
-   re 66 3 (CS03 ∷ []) ∷
+   re 66 3 (ℓ "中") ∷
    rw 67 q6 ∷
    rw 68 q11 ∷
    rw 61 q12 ∷
@@ -113,46 +114,46 @@ lem-AXIOM-LF-at1302-part2 = derive (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷
    rw 64 q13 ∷
    rw 65 q9 ∷
    rw 66 q13 ∷
-   re 68 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 68 1 (ℓ "乏丧乏") ∷
    rw 67 q1 ∷
    rw 68 q3 ∷
    rw 69 q1 ∷
-   re 67 3 (CS13 ∷ []) ∷
+   re 67 3 (ℓ "丽") ∷
    rw 68 q6 ∷
    rw 69 q14 ∷
    rw 62 q15 ∷
-   re 62 8 (Toff213 ∷ []) ∷
-   re 61 3 (Toff203 ∷ []) ∷
-   re 63 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 62 8 (ℓ "乥") ∷
+   re 61 3 (ℓ "乤") ∷
+   re 63 1 (ℓ "乏丧乏") ∷
    rw 62 q1 ∷
    rw 63 q3 ∷
    rw 64 q1 ∷
-   re 62 3 (CS13 ∷ []) ∷
-   re 64 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 62 3 (ℓ "丽") ∷
+   re 64 1 (ℓ "乏丧乏") ∷
    rw 63 q1 ∷
    rw 64 q3 ∷
    rw 65 q1 ∷
-   re 63 3 (CS13 ∷ []) ∷
-   re 65 1 (Sw23 ∷ CK20 ∷ Sw23 ∷ []) ∷
+   re 63 3 (ℓ "丽") ∷
+   re 65 1 (ℓ "乏乄乏") ∷
    rw 64 q1 ∷
    rw 65 q2 ∷
    rw 66 q1 ∷
-   re 64 3 (CK31 ∷ []) ∷
-   re 66 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 64 3 (ℓ "乔") ∷
+   re 66 1 (ℓ "乏丧乏") ∷
    rw 65 q1 ∷
    rw 66 q3 ∷
    rw 67 q1 ∷
-   re 65 3 (CS13 ∷ []) ∷
-   re 67 1 (Sw23 ∷ CK20 ∷ Sw23 ∷ []) ∷
+   re 65 3 (ℓ "丽") ∷
+   re 67 1 (ℓ "乏乄乏") ∷
    rw 66 q1 ∷
    rw 67 q2 ∷
    rw 68 q1 ∷
-   re 66 3 (CK31 ∷ []) ∷
-   re 68 1 (Sw23 ∷ CK20 ∷ Sw23 ∷ []) ∷
+   re 66 3 (ℓ "乔") ∷
+   re 68 1 (ℓ "乏乄乏") ∷
    rw 67 q1 ∷
    rw 68 q2 ∷
    rw 69 q1 ∷
-   re 67 3 (CK31 ∷ []) ∷
+   re 67 3 (ℓ "乔") ∷
    rw 68 q4 ∷
    rw 69 q2 ∷
    rw 70 q5 ∷

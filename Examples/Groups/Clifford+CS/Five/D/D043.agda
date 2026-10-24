@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD043 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D043 (Sᴰ : SD043) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -146,9 +147,9 @@ private
   q48 : Ws → Eqn
   q48 c4 = wpE 1026 c4
   q49 : Ws → Eqn
-  q49 c4 = eqn (K0 ∷ CCZ134 ∷ []) (CCZ134 ∷ K0 ∷ []) (c₁ (K) (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑))
+  q49 c4 = eqn (ℓ "丌京") (ℓ "京丌") (c₁ (K) (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑))
   q50 : Ws → Eqn
-  q50 c4 = eqn (K0⁻ ∷ CCZ134 ∷ []) (CCZ134 ∷ K0⁻ ∷ []) (c₁ (K • iI) (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑))
+  q50 c4 = eqn (ℓ "不京") (ℓ "京不") (c₁ (K • iI) (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑))
   q51 : Ws → Eqn
   q51 c4 = wlE 1206 (lit c4)
   q52 : Ws → Eqn
@@ -179,8 +180,8 @@ private
   q64 c4 = wpE 1135 c4
 
 -- L-CCZ-0 part1: 500 steps
-lem-L-CCZ-0-part1 : Ws → ⟪ (Bx3-1420 ∷ Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ Toff104 ∷ CCZ124 ∷ Toff024 ∷ CCZ124 ∷ CS01 ∷ Toff024 ∷ CCZ124 ∷ CS01⁻ ∷ Toff104 ∷ CCZ024 ∷ Toff214 ∷ CCZ014 ∷ Toff124 ∷ CCZ024 ∷ Toff214 ∷ CCZ014 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ123 ∷ Toff304 ∷ CCZ123 ∷ Toff304 ∷ CCZ014 ∷ CS02⁻ ∷ Toff214 ∷ CCZ014 ∷ Toff124 ∷ CCZ024 ∷ Toff214 ∷ CCZ014 ∷ Bx3-0412 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ CCZ124 ∷ CS01 ∷ Toff024 ∷ CCZ124 ∷ CS01⁻ ∷ Toff104 ∷ CCZ024 ∷ CCZ124 ∷ Toff024 ∷ CCZ124 ∷ CCZ124 ∷ CS01 ∷ Toff024 ∷ CCZ124 ∷ CCZ124 ∷ CS01⁻ ∷ Toff104 ∷ CCZ024 ∷ CCZ024 ∷ Toff214 ∷ CCZ134 ∷ CS14 ∷ CX04 ∷ CCZ123 ∷ CS14⁻ ∷ CX04 ∷ CS01 ∷ CCZ134 ∷ Toff304 ∷ CCZ123 ∷ Toff304 ∷ CCZ014 ∷ Toff124 ∷ CCZ024 ∷ Toff214 ∷ CCZ014 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02⁻ ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ Toff124 ∷ CCZ024 ∷ CCZ024 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ []) ⟫ʷ
-lem-L-CCZ-0-part1 c4 = derive (Bx3-1420 ∷ Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ Toff104 ∷ CCZ124 ∷ Toff024 ∷ CCZ124 ∷ CS01 ∷ Toff024 ∷ CCZ124 ∷ CS01⁻ ∷ Toff104 ∷ CCZ024 ∷ Toff214 ∷ CCZ014 ∷ Toff124 ∷ CCZ024 ∷ Toff214 ∷ CCZ014 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ123 ∷ Toff304 ∷ CCZ123 ∷ Toff304 ∷ CCZ014 ∷ CS02⁻ ∷ Toff214 ∷ CCZ014 ∷ Toff124 ∷ CCZ024 ∷ Toff214 ∷ CCZ014 ∷ Bx3-0412 ∷ []) (Toff024 ∷ CCZ124 ∷ CS01 ∷ Toff024 ∷ CCZ124 ∷ CS01⁻ ∷ Toff104 ∷ CCZ024 ∷ CCZ124 ∷ Toff024 ∷ CCZ124 ∷ CCZ124 ∷ CS01 ∷ Toff024 ∷ CCZ124 ∷ CCZ124 ∷ CS01⁻ ∷ Toff104 ∷ CCZ024 ∷ CCZ024 ∷ Toff214 ∷ CCZ134 ∷ CS14 ∷ CX04 ∷ CCZ123 ∷ CS14⁻ ∷ CX04 ∷ CS01 ∷ CCZ134 ∷ Toff304 ∷ CCZ123 ∷ Toff304 ∷ CCZ014 ∷ Toff124 ∷ CCZ024 ∷ Toff214 ∷ CCZ014 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02⁻ ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ Toff124 ∷ CCZ024 ∷ CCZ024 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ [])
+lem-L-CCZ-0-part1 : Ws → ⟪ (ℓ "佯亝丨亝丩亖亨亝亨丨亝亨丩亖亜亪五亩亜亪五亪五五丯亪五交亢交亢五丰亪五亩亜亪五佨") ⟫ʷ ≈ ⟪ (ℓ "亝亨丨亝亨丩亖亜亨亝亨亨丨亝亨亨丩亖亜亜亪京乕乁交乖乁丨京亢交亢五亩亜亪五亪五五丯亪五五丰亪五五亩亜亜亪五五") ⟫ʷ
+lem-L-CCZ-0-part1 c4 = derive (ℓ "佯亝丨亝丩亖亨亝亨丨亝亨丩亖亜亪五亩亜亪五亪五五丯亪五交亢交亢五丰亪五亩亜亪五佨") (ℓ "亝亨丨亝亨丩亖亜亨亝亨亨丨亝亨亨丩亖亜亜亪京乕乁交乖乁丨京亢交亢五亩亜亪五亪五五丯亪五五丰亪五五亩亜亜亪五五")
   (rw⁻ 27 (q1 c4) ∷
    rw⁻ 27 (q2 c4) ∷
    rw 27 (q3 c4) ∷
@@ -695,8 +696,8 @@ private
   q69 c4 = sE 1551 (lem-box-perm-4132-at03243240 c4)
 
 -- L-CCZ-0 part3: 8 steps
-lem-L-CCZ-0-part3 : Ws → ⟪ (Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ Toff104 ∷ Toff024 ∷ CS01 ∷ Toff024 ∷ CCZ124 ∷ CS01⁻ ∷ Toff104 ∷ CCZ024 ∷ Toff214 ∷ Toff124 ∷ Toff214 ∷ Toff214 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CCZ014 ∷ CS02⁻ ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CCZ014 ∷ Toff124 ∷ CCZ024 ∷ CCZ024 ∷ CCZ024 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CCZ014 ∷ Bx3-1420 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0124 ∷ []) ⟫ʷ
-lem-L-CCZ-0-part3 c4 = derive (Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ Toff104 ∷ Toff024 ∷ CS01 ∷ Toff024 ∷ CCZ124 ∷ CS01⁻ ∷ Toff104 ∷ CCZ024 ∷ Toff214 ∷ Toff124 ∷ Toff214 ∷ Toff214 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CCZ014 ∷ CS02⁻ ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CCZ014 ∷ Toff124 ∷ CCZ024 ∷ CCZ024 ∷ CCZ024 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CCZ014 ∷ Bx3-1420 ∷ []) (Bx3-0124 ∷ [])
+lem-L-CCZ-0-part3 : Ws → ⟪ (ℓ "亝丨亝丩亖亝丨亝亨丩亖亜亪亩亪亪五丯亪五五五丰亪五五五亩亜亜亜亪五五五佯") ⟫ʷ ≈ ⟪ (ℓ "佤") ⟫ʷ
+lem-L-CCZ-0-part3 c4 = derive (ℓ "亝丨亝丩亖亝丨亝亨丩亖亜亪亩亪亪五丯亪五五五丰亪五五五亩亜亜亜亪五五五佯") (ℓ "佤")
   (rw 16 (q65 c4) ∷
    rw 18 (q66 c4) ∷
    rw 18 (q66 c4) ∷
@@ -713,8 +714,8 @@ private
   q71 c4 = wlE 1315 (lit c4)
 
 -- L-CX01-2: 2 steps
-lem-L-CX01-2 : Ws → ⟪ (CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ []) ⟫ʷ
-lem-L-CX01-2 c4 = derive (CK43 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK43 ∷ S4 ∷ []) (Toff324 ∷ [])
+lem-L-CX01-2 : Ws → ⟪ (ℓ "亊侬侬亊丢") ⟫ʷ ≈ ⟪ (ℓ "亲") ⟫ʷ
+lem-L-CX01-2 c4 = derive (ℓ "亊侬侬亊丢") (ℓ "亲")
   (rw 1 (q70 c4) ∷
    rw 0 (q71 c4) ∷ []) Eq.refl
 
@@ -723,7 +724,7 @@ private
   q72 c4 = wlE 1316 (lit c4)
 
 -- L-CX10-2: 2 steps
-lem-L-CX10-2 : Ws → ⟪ (CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (Toff234 ∷ []) ⟫ʷ
-lem-L-CX10-2 c4 = derive (CK42 ∷ Sb0-2-43-1 ∷ Sb0-2-43-1 ∷ CK42 ∷ S4 ∷ []) (Toff234 ∷ [])
+lem-L-CX10-2 : Ws → ⟪ (ℓ "亇侬侬亇丢") ⟫ʷ ≈ ⟪ (ℓ "亱") ⟫ʷ
+lem-L-CX10-2 c4 = derive (ℓ "亇侬侬亇丢") (ℓ "亱")
   (rw 1 (q70 c4) ∷
    rw 0 (q72 c4) ∷ []) Eq.refl

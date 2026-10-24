@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD150 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D150 (Sᴰ : SD150) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -184,9 +185,9 @@ private
   q10 : Ws → Eqn
   q10 c4 = sE 1968 (lem-comm-push-SBOX⟨2·4·10·3⟩-sw1-L c4)
   q11 : Ws → Eqn
-  q11 c4 = eqn (Sw01 ∷ S2 ∷ []) (S2 ∷ Sw01 ∷ []) (c₂ (Swap) (S))
+  q11 c4 = eqn (ℓ "丫世") (ℓ "世丫") (c₂ (Swap) (S))
   q12 : Ws → Eqn
-  q12 c4 = eqn (Sw01 ∷ CS24 ∷ []) (CS24 ∷ Sw01 ∷ []) (c₂ (Swap) (Swap ↑ • CS • Swap ↑))
+  q12 c4 = eqn (ℓ "丫乩") (ℓ "乩丫") (c₂ (Swap) (Swap ↑ • CS • Swap ↑))
   q13 : Ws → Eqn
   q13 c4 = sE 1973 (lem-comm-push-SBOX⟨1·4·20·3⟩-sw0-L c4)
   q14 : Ws → Eqn
@@ -200,9 +201,9 @@ private
   q18 : Ws → Eqn
   q18 c4 = sE 1971 (lem-comm-push-SBOX⟨0·4·21·3⟩-sw2-L c4)
   q19 : Ws → Eqn
-  q19 c4 = eqn (Sw12 ∷ S3 ∷ []) (S3 ∷ Sw12 ∷ []) (c₃ (Swap ↑) (S))
+  q19 c4 = eqn (ℓ "乊东") (ℓ "东乊") (c₃ (Swap ↑) (S))
   q20 : Ws → Eqn
-  q20 c4 = eqn (Sw12 ∷ CS34 ∷ []) (CS34 ∷ Sw12 ∷ []) (c₃ (Swap ↑) (CS))
+  q20 c4 = eqn (ℓ "乊乹") (ℓ "乹乊") (c₃ (Swap ↑) (CS))
   q21 : Ws → Eqn
   q21 c4 = sE 1970 (lem-comm-push-SBOX⟨0·4·31·2⟩-sw1-L c4)
   q22 : Ws → Eqn
@@ -216,7 +217,7 @@ private
   q26 : Ws → Eqn
   q26 c4 = sE 1972 (lem-comm-push-SBOX⟨0·4·32·1⟩-sw3-L c4)
   q27 : Ws → Eqn
-  q27 c4 = eqn (Sw23 ∷ S4 ∷ []) (S4 ∷ Sw23 ∷ []) (c₄ (Swap ↑ ↑) (S))
+  q27 c4 = eqn (ℓ "乥丢") (ℓ "丢乥") (c₄ (Swap ↑ ↑) (S))
   q28 : Ws → Eqn
   q28 c4 = wlE 8 (lit c4)
   q29 : Ws → Eqn
@@ -227,8 +228,8 @@ private
   q31 c4 = sE 1967 (lem-TR2-8fc9546c c4)
 
 -- deb-CKS-eps @0213243140: 375 steps
-lem-deb-CKS-eps-at0213243140 : Ws → ⟪ (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ []) []
+lem-deb-CKS-eps-at0213243140 : Ws → ⟪ (ℓ "与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与与丽与与俊与与俊与与俊与与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与与丽与与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与与俊与与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与") ⟫ʷ ≈ ⟪ [] ⟫ʷ
+lem-deb-CKS-eps-at0213243140 c4 = derive (ℓ "与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与与丽与与俊与与俊与与俊与与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与与丽与与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与与俊与与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与") []
   (rw 2 (q1 c4) ∷
    rw 3 (q1 c4) ∷
    rw 4 (q1 c4) ∷
@@ -320,10 +321,10 @@ lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK
    rw 40 (q9 c4) ∷
    rw 39 (q10 c4) ∷
    rw⁻ 38 (q7 c4) ∷
-   re 39 3 (CK20 ∷ []) ∷
+   re 39 3 (ℓ "九") ∷
    rw 37 (q10 c4) ∷
    rw⁻ 36 (q7 c4) ∷
-   re 37 3 (CK20 ∷ []) ∷
+   re 37 3 (ℓ "九") ∷
    rw 35 (q10 c4) ∷
    rw 34 (q10 c4) ∷
    rw 33 (q8 c4) ∷
@@ -332,10 +333,10 @@ lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK
    rw 30 (q9 c4) ∷
    rw 29 (q10 c4) ∷
    rw⁻ 28 (q7 c4) ∷
-   re 29 3 (CK20 ∷ []) ∷
+   re 29 3 (ℓ "九") ∷
    rw 27 (q10 c4) ∷
    rw⁻ 26 (q7 c4) ∷
-   re 27 3 (CK20 ∷ []) ∷
+   re 27 3 (ℓ "九") ∷
    rw 25 (q10 c4) ∷
    rw 24 (q9 c4) ∷
    rw 23 (q8 c4) ∷
@@ -344,10 +345,10 @@ lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK
    rw 20 (q9 c4) ∷
    rw 19 (q10 c4) ∷
    rw⁻ 18 (q7 c4) ∷
-   re 19 3 (CK20 ∷ []) ∷
+   re 19 3 (ℓ "九") ∷
    rw 17 (q10 c4) ∷
    rw⁻ 16 (q7 c4) ∷
-   re 17 3 (CK20 ∷ []) ∷
+   re 17 3 (ℓ "九") ∷
    rw 15 (q10 c4) ∷
    rw 14 (q10 c4) ∷
    rw 13 (q10 c4) ∷
@@ -359,10 +360,10 @@ lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK
    rw 7 (q9 c4) ∷
    rw 6 (q10 c4) ∷
    rw⁻ 5 (q7 c4) ∷
-   re 6 3 (CK20 ∷ []) ∷
+   re 6 3 (ℓ "九") ∷
    rw 4 (q10 c4) ∷
    rw⁻ 3 (q7 c4) ∷
-   re 4 3 (CK20 ∷ []) ∷
+   re 4 3 (ℓ "九") ∷
    rw 2 (q10 c4) ∷
    rw⁻ 45 (q2 c4) ∷
    rw⁻ 44 (q11 c4) ∷
@@ -414,10 +415,10 @@ lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK
    rw 42 (q17 c4) ∷
    rw 41 (q18 c4) ∷
    rw⁻ 40 (q15 c4) ∷
-   re 41 3 (CK31 ∷ []) ∷
+   re 41 3 (ℓ "乴") ∷
    rw 39 (q18 c4) ∷
    rw⁻ 38 (q15 c4) ∷
-   re 39 3 (CK31 ∷ []) ∷
+   re 39 3 (ℓ "乴") ∷
    rw 37 (q18 c4) ∷
    rw 36 (q18 c4) ∷
    rw 35 (q16 c4) ∷
@@ -426,10 +427,10 @@ lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK
    rw 32 (q17 c4) ∷
    rw 31 (q18 c4) ∷
    rw⁻ 30 (q15 c4) ∷
-   re 31 3 (CK31 ∷ []) ∷
+   re 31 3 (ℓ "乴") ∷
    rw 29 (q18 c4) ∷
    rw⁻ 28 (q15 c4) ∷
-   re 29 3 (CK31 ∷ []) ∷
+   re 29 3 (ℓ "乴") ∷
    rw 27 (q18 c4) ∷
    rw 26 (q17 c4) ∷
    rw 25 (q16 c4) ∷
@@ -438,10 +439,10 @@ lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK
    rw 22 (q17 c4) ∷
    rw 21 (q18 c4) ∷
    rw⁻ 20 (q15 c4) ∷
-   re 21 3 (CK31 ∷ []) ∷
+   re 21 3 (ℓ "乴") ∷
    rw 19 (q18 c4) ∷
    rw⁻ 18 (q15 c4) ∷
-   re 19 3 (CK31 ∷ []) ∷
+   re 19 3 (ℓ "乴") ∷
    rw 17 (q18 c4) ∷
    rw 16 (q18 c4) ∷
    rw 15 (q18 c4) ∷
@@ -453,10 +454,10 @@ lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK
    rw 9 (q17 c4) ∷
    rw 8 (q18 c4) ∷
    rw⁻ 7 (q15 c4) ∷
-   re 8 3 (CK31 ∷ []) ∷
+   re 8 3 (ℓ "乴") ∷
    rw 6 (q18 c4) ∷
    rw⁻ 5 (q15 c4) ∷
-   re 6 3 (CK31 ∷ []) ∷
+   re 6 3 (ℓ "乴") ∷
    rw 4 (q18 c4) ∷
    rw⁻ 47 (q7 c4) ∷
    rw⁻ 46 (q19 c4) ∷
@@ -508,10 +509,10 @@ lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK
    rw 44 (q25 c4) ∷
    rw 43 (q26 c4) ∷
    rw⁻ 42 (q23 c4) ∷
-   re 43 3 (CK42 ∷ []) ∷
+   re 43 3 (ℓ "亇") ∷
    rw 41 (q26 c4) ∷
    rw⁻ 40 (q23 c4) ∷
-   re 41 3 (CK42 ∷ []) ∷
+   re 41 3 (ℓ "亇") ∷
    rw 39 (q26 c4) ∷
    rw 38 (q26 c4) ∷
    rw 37 (q24 c4) ∷
@@ -520,10 +521,10 @@ lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK
    rw 34 (q25 c4) ∷
    rw 33 (q26 c4) ∷
    rw⁻ 32 (q23 c4) ∷
-   re 33 3 (CK42 ∷ []) ∷
+   re 33 3 (ℓ "亇") ∷
    rw 31 (q26 c4) ∷
    rw⁻ 30 (q23 c4) ∷
-   re 31 3 (CK42 ∷ []) ∷
+   re 31 3 (ℓ "亇") ∷
    rw 29 (q26 c4) ∷
    rw 28 (q25 c4) ∷
    rw 27 (q24 c4) ∷
@@ -532,10 +533,10 @@ lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK
    rw 24 (q25 c4) ∷
    rw 23 (q26 c4) ∷
    rw⁻ 22 (q23 c4) ∷
-   re 23 3 (CK42 ∷ []) ∷
+   re 23 3 (ℓ "亇") ∷
    rw 21 (q26 c4) ∷
    rw⁻ 20 (q23 c4) ∷
-   re 21 3 (CK42 ∷ []) ∷
+   re 21 3 (ℓ "亇") ∷
    rw 19 (q26 c4) ∷
    rw 18 (q26 c4) ∷
    rw 17 (q26 c4) ∷
@@ -547,10 +548,10 @@ lem-deb-CKS-eps-at0213243140 c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK
    rw 11 (q25 c4) ∷
    rw 10 (q26 c4) ∷
    rw⁻ 9 (q23 c4) ∷
-   re 10 3 (CK42 ∷ []) ∷
+   re 10 3 (ℓ "亇") ∷
    rw 8 (q26 c4) ∷
    rw⁻ 7 (q23 c4) ∷
-   re 8 3 (CK42 ∷ []) ∷
+   re 8 3 (ℓ "亇") ∷
    rw 6 (q26 c4) ∷
    rw⁻ 49 (q15 c4) ∷
    rw⁻ 48 (q27 c4) ∷

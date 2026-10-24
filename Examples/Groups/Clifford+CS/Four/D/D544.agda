@@ -7,8 +7,8 @@ open import Examples.Groups.Clifford+CS.Four.DSig using (SD544 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Four.D.D544 (W : Ws) (Sᴰ : SD544) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 open import Examples.Groups.Clifford+CS.Syntactics
@@ -17,6 +17,7 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Four.Str using (ℓ)
 open import Examples.Groups.Clifford+CS.Canonical using (can-≈)
 
 -- The lemmas of other derivation modules (DSig).
@@ -125,8 +126,8 @@ private
   q11 = sE 889 lem-pass-Sd1-vs-CSd13
 
 -- pass [Sd1] [TOFF102 CS13 TOFF102 CSd13]: 12 steps
-lem-pass-Sd1-vs-TOFF102-CS13-TOFF102-CSd13 : ⟪ (S1⁻ ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ []) ⟫ʷ
-lem-pass-Sd1-vs-TOFF102-CS13-TOFF102-CSd13 = derive (S1⁻ ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ []) (Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ S1⁻ ∷ [])
+lem-pass-Sd1-vs-TOFF102-CS13-TOFF102-CSd13 : ⟪ (ℓ "丏习丽习举") ⟫ʷ ≈ ⟪ (ℓ "习丽习举丏") ⟫ʷ
+lem-pass-Sd1-vs-TOFF102-CS13-TOFF102-CSd13 = derive (ℓ "丏习丽习举") (ℓ "习丽习举丏")
   (rw 0 q1 ∷
    rw 3 q2 ∷
    rw 2 q3 ∷
@@ -157,8 +158,8 @@ private
   q18 = wE 1525 W
 
 -- pass [X3 CKd32 X3] [CS23 TOFF201 CSd23 TOFF201]: 9 steps
-lem-pass-X3-CKd32-X3-vs-CS23-TOFF201-CSd23-TOFF201 : ⟪ (X3 ∷ CK32⁻ ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ []) ⟫ʷ ≈ ⟪ (CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X3 ∷ CK32⁻ ∷ X3 ∷ []) ⟫ʷ
-lem-pass-X3-CKd32-X3-vs-CS23-TOFF201-CSd23-TOFF201 = derive (X3 ∷ CK32⁻ ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ []) (CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X3 ∷ CK32⁻ ∷ X3 ∷ [])
+lem-pass-X3-CKd32-X3-vs-CS23-TOFF201-CSd23-TOFF201 : ⟪ (ℓ "丞乘丞义乣乊乣") ⟫ʷ ≈ ⟪ (ℓ "义乣乊乣丞乘丞") ⟫ʷ
+lem-pass-X3-CKd32-X3-vs-CS23-TOFF201-CSd23-TOFF201 = derive (ℓ "丞乘丞义乣乊乣") (ℓ "义乣乊乣丞乘丞")
   (rw 0 q12 ∷
    rw 1 q13 ∷
    rw 2 q14 ∷
@@ -173,17 +174,17 @@ private
   q19 : Eqn
   q19 = wE 53 W
   q20 : Eqn
-  q20 = eqn (K0⁻ ∷ CS23 ∷ []) (CS23 ∷ K0⁻ ∷ []) (low₁-comm ((K • iI)) ((CS ↑)))
+  q20 = eqn (ℓ "下义") (ℓ "义下") (low₁-comm ((K • iI)) ((CS ↑)))
   q21 : Eqn
   q21 = sE 902 lem-pass-CCZ012-vs-CS23
   q22 : Eqn
-  q22 = eqn (K0 ∷ CS23 ∷ []) (CS23 ∷ K0 ∷ []) (low₁-comm (K) ((CS ↑)))
+  q22 = eqn (ℓ "上义") (ℓ "义上") (low₁-comm (K) ((CS ↑)))
   q23 : Eqn
   q23 = wE 55 W
 
 -- pass [TOFF012] [CS23]: 5 steps
-lem-pass-TOFF012-vs-CS23 : ⟪ (Toff012 ∷ CS23 ∷ []) ⟫ʷ ≈ ⟪ (CS23 ∷ Toff012 ∷ []) ⟫ʷ
-lem-pass-TOFF012-vs-CS23 = derive (Toff012 ∷ CS23 ∷ []) (CS23 ∷ Toff012 ∷ [])
+lem-pass-TOFF012-vs-CS23 : ⟪ (ℓ "九义") ⟫ʷ ≈ ⟪ (ℓ "义九") ⟫ʷ
+lem-pass-TOFF012-vs-CS23 = derive (ℓ "九义") (ℓ "义九")
   (rw 0 q19 ∷
    rw 2 q20 ∷
    rw 1 q21 ∷
@@ -194,11 +195,11 @@ private
   q24 : Eqn
   q24 = wE 1 W
   q25 : Eqn
-  q25 = eqn (K0 ∷ Sw23 ∷ []) (Sw23 ∷ K0 ∷ []) (low₁-comm (K) ((Swap ↑)))
+  q25 = eqn (ℓ "上乏") (ℓ "乏上") (low₁-comm (K) ((Swap ↑)))
   q26 : Eqn
-  q26 = eqn (CX01 ∷ Sw23 ∷ []) (Sw23 ∷ CX01 ∷ []) (low-comm (CX₀₁) (Swap))
+  q26 = eqn (ℓ "丣乏") (ℓ "乏丣") (low-comm (CX₀₁) (Swap))
   q27 : Eqn
-  q27 = eqn (ι ∷ Sw23 ∷ []) (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑)))
+  q27 = eqn (ℓ "一乏") (ℓ "乏一") (low₁-comm (iI) ((Swap ↑)))
   q28 : Eqn
   q28 = wE 3 W
   q29 : Eqn
@@ -206,64 +207,64 @@ private
   q30 : Eqn
   q30 = wE 43 W
   q31 : Eqn
-  q31 = eqn (K0⁻ ∷ Sw23 ∷ []) (Sw23 ∷ K0⁻ ∷ []) (low₁-comm ((K • iI)) ((Swap ↑)))
+  q31 = eqn (ℓ "下乏") (ℓ "乏下") (low₁-comm ((K • iI)) ((Swap ↑)))
   q32 : Eqn
   q32 = sE 903 lem-pass-CCZ013-vs-CS23
 
 -- pass [TOFF013] [CS23]: 109 steps
-lem-pass-TOFF013-vs-CS23 : ⟪ (Toff013 ∷ CS23 ∷ []) ⟫ʷ ≈ ⟪ (CS23 ∷ Toff013 ∷ []) ⟫ʷ
-lem-pass-TOFF013-vs-CS23 = derive (Toff013 ∷ CS23 ∷ []) (CS23 ∷ Toff013 ∷ [])
+lem-pass-TOFF013-vs-CS23 : ⟪ (ℓ "乞义") ⟫ʷ ≈ ⟪ (ℓ "义乞") ⟫ʷ
+lem-pass-TOFF013-vs-CS23 = derive (ℓ "乞义") (ℓ "义乞")
   (rw 1 q24 ∷
-   re 0 1 (Sw23 ∷ Toff012 ∷ Sw23 ∷ []) ∷
-   re 1 1 (K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0 ∷ ι ∷ []) ∷
+   re 0 1 (ℓ "乏九乏") ∷
+   re 1 1 (ℓ "上丶丣丷丣丧上一") ∷
    rw⁻ 0 q25 ∷
    rw 3 q24 ∷
-   re 1 3 (CS13 ∷ []) ∷
+   re 1 3 (ℓ "丽") ∷
    rw⁻ 2 q26 ∷
    rw 5 q24 ∷
-   re 3 3 (CS13⁻ ∷ []) ∷
+   re 3 3 (ℓ "举") ∷
    rw⁻ 4 q26 ∷
    rw 7 q24 ∷
-   re 5 3 (CS03 ∷ []) ∷
+   re 5 3 (ℓ "中") ∷
    rw⁻ 6 q25 ∷
    rw⁻ 7 q27 ∷
    rw 8 q28 ∷
    rw 7 q27 ∷
    rw 6 q25 ∷
-   re 5 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 5 1 (ℓ "乏丧乏") ∷
    rw 7 q28 ∷
    rw 4 q26 ∷
-   re 3 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   re 3 1 (ℓ "乏丷乏") ∷
    rw 5 q28 ∷
    rw 2 q26 ∷
-   re 1 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 1 1 (ℓ "乏丶乏") ∷
    rw 3 q28 ∷
    rw 0 q25 ∷
    rw 1 q29 ∷
-   re 1 8 (Toff012 ∷ []) ∷
+   re 1 8 (ℓ "九") ∷
    rw 1 q19 ∷
    rw⁻ 0 q25 ∷
-   re 2 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   re 2 1 (ℓ "丶丣丷丣丧") ∷
    rw 3 q24 ∷
-   re 1 3 (CS13 ∷ []) ∷
+   re 1 3 (ℓ "丽") ∷
    rw⁻ 2 q26 ∷
    rw 5 q24 ∷
-   re 3 3 (CS13⁻ ∷ []) ∷
+   re 3 3 (ℓ "举") ∷
    rw⁻ 4 q26 ∷
    rw 7 q24 ∷
-   re 5 3 (CS03 ∷ []) ∷
+   re 5 3 (ℓ "中") ∷
    rw 1 q24 ∷
-   re 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 3 1 (ℓ "乏丶乏") ∷
    rw 2 q28 ∷
    rw⁻ 3 q26 ∷
-   re 5 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   re 5 1 (ℓ "乏丷乏") ∷
    rw 4 q28 ∷
    rw⁻ 5 q26 ∷
-   re 7 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 7 1 (ℓ "乏丧乏") ∷
    rw 6 q28 ∷
    rw 2 q30 ∷
-   re 2 5 (CCZ012 ∷ []) ∷
-   re 1 3 (CCZ013 ∷ []) ∷
+   re 2 5 (ℓ "乙") ∷
+   re 1 3 (ℓ "乚") ∷
    rw⁻ 2 q31 ∷
    rw 3 q28 ∷
    rw 2 q20 ∷
@@ -271,120 +272,120 @@ lem-pass-TOFF013-vs-CS23 = derive (Toff013 ∷ CS23 ∷ []) (CS23 ∷ Toff013 �
    rw 0 q22 ∷
    rw 4 q24 ∷
    rw 3 q31 ∷
-   re 2 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) ∷
-   re 3 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   re 2 1 (ℓ "乏乙乏") ∷
+   re 3 1 (ℓ "丶丣丷丣丧") ∷
    rw 4 q24 ∷
-   re 2 3 (CS13 ∷ []) ∷
+   re 2 3 (ℓ "丽") ∷
    rw⁻ 3 q26 ∷
    rw 6 q24 ∷
-   re 4 3 (CS13⁻ ∷ []) ∷
+   re 4 3 (ℓ "举") ∷
    rw⁻ 5 q26 ∷
    rw 8 q24 ∷
-   re 6 3 (CS03 ∷ []) ∷
+   re 6 3 (ℓ "中") ∷
    rw 7 q28 ∷
-   re 6 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 6 1 (ℓ "乏丧乏") ∷
    rw 8 q28 ∷
    rw 5 q26 ∷
-   re 4 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   re 4 1 (ℓ "乏丷乏") ∷
    rw 6 q28 ∷
    rw 3 q26 ∷
-   re 2 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 2 1 (ℓ "乏丶乏") ∷
    rw 4 q28 ∷
    rw 3 q30 ∷
-   re 3 5 (CCZ012 ∷ []) ∷
+   re 3 5 (ℓ "乙") ∷
    rw 1 q25 ∷
    rw 2 q23 ∷
-   re 2 1 (K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0 ∷ ι ∷ []) ∷
+   re 2 1 (ℓ "上丶丣丷丣丧上一") ∷
    rw⁻ 1 q25 ∷
    rw 4 q24 ∷
-   re 2 3 (CS13 ∷ []) ∷
+   re 2 3 (ℓ "丽") ∷
    rw⁻ 3 q26 ∷
    rw 6 q24 ∷
-   re 4 3 (CS13⁻ ∷ []) ∷
+   re 4 3 (ℓ "举") ∷
    rw⁻ 5 q26 ∷
    rw 8 q24 ∷
-   re 6 3 (CS03 ∷ []) ∷
+   re 6 3 (ℓ "中") ∷
    rw⁻ 7 q25 ∷
    rw⁻ 8 q27 ∷
    rw 1 q24 ∷
    rw⁻ 2 q25 ∷
-   re 4 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 4 1 (ℓ "乏丶乏") ∷
    rw 3 q28 ∷
    rw⁻ 4 q26 ∷
-   re 6 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   re 6 1 (ℓ "乏丷乏") ∷
    rw 5 q28 ∷
    rw⁻ 6 q26 ∷
-   re 8 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 8 1 (ℓ "乏丧乏") ∷
    rw 7 q28 ∷
    rw⁻ 8 q25 ∷
    rw⁻ 9 q27 ∷
    rw 2 q29 ∷
-   re 2 8 (Toff012 ∷ []) ∷
-   re 1 3 (Toff013 ∷ []) ∷
+   re 2 8 (ℓ "九") ∷
+   re 1 3 (ℓ "乞") ∷
    rw 2 q28 ∷ []) Eq.refl
 
 private
   q33 : Eqn
-  q33 = eqn (K0⁻ ∷ CCZ123 ∷ []) (CCZ123 ∷ K0⁻ ∷ []) (low₁-comm ((K • iI)) (CCZ))
+  q33 = eqn (ℓ "下乜") (ℓ "乜下") (low₁-comm ((K • iI)) (CCZ))
   q34 : Eqn
   q34 = sE 906 lem-pass-CCZ013-vs-CCZ123
   q35 : Eqn
-  q35 = eqn (K0 ∷ CCZ123 ∷ []) (CCZ123 ∷ K0 ∷ []) (low₁-comm (K) (CCZ))
+  q35 = eqn (ℓ "上乜") (ℓ "乜上") (low₁-comm (K) (CCZ))
 
 -- pass [TOFF013] [CCZ123]: 109 steps
-lem-pass-TOFF013-vs-CCZ123 : ⟪ (Toff013 ∷ CCZ123 ∷ []) ⟫ʷ ≈ ⟪ (CCZ123 ∷ Toff013 ∷ []) ⟫ʷ
-lem-pass-TOFF013-vs-CCZ123 = derive (Toff013 ∷ CCZ123 ∷ []) (CCZ123 ∷ Toff013 ∷ [])
+lem-pass-TOFF013-vs-CCZ123 : ⟪ (ℓ "乞乜") ⟫ʷ ≈ ⟪ (ℓ "乜乞") ⟫ʷ
+lem-pass-TOFF013-vs-CCZ123 = derive (ℓ "乞乜") (ℓ "乜乞")
   (rw 1 q24 ∷
-   re 0 1 (Sw23 ∷ Toff012 ∷ Sw23 ∷ []) ∷
-   re 1 1 (K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0 ∷ ι ∷ []) ∷
+   re 0 1 (ℓ "乏九乏") ∷
+   re 1 1 (ℓ "上丶丣丷丣丧上一") ∷
    rw⁻ 0 q25 ∷
    rw 3 q24 ∷
-   re 1 3 (CS13 ∷ []) ∷
+   re 1 3 (ℓ "丽") ∷
    rw⁻ 2 q26 ∷
    rw 5 q24 ∷
-   re 3 3 (CS13⁻ ∷ []) ∷
+   re 3 3 (ℓ "举") ∷
    rw⁻ 4 q26 ∷
    rw 7 q24 ∷
-   re 5 3 (CS03 ∷ []) ∷
+   re 5 3 (ℓ "中") ∷
    rw⁻ 6 q25 ∷
    rw⁻ 7 q27 ∷
    rw 8 q28 ∷
    rw 7 q27 ∷
    rw 6 q25 ∷
-   re 5 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 5 1 (ℓ "乏丧乏") ∷
    rw 7 q28 ∷
    rw 4 q26 ∷
-   re 3 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   re 3 1 (ℓ "乏丷乏") ∷
    rw 5 q28 ∷
    rw 2 q26 ∷
-   re 1 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 1 1 (ℓ "乏丶乏") ∷
    rw 3 q28 ∷
    rw 0 q25 ∷
    rw 1 q29 ∷
-   re 1 8 (Toff012 ∷ []) ∷
+   re 1 8 (ℓ "九") ∷
    rw 1 q19 ∷
    rw⁻ 0 q25 ∷
-   re 2 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   re 2 1 (ℓ "丶丣丷丣丧") ∷
    rw 3 q24 ∷
-   re 1 3 (CS13 ∷ []) ∷
+   re 1 3 (ℓ "丽") ∷
    rw⁻ 2 q26 ∷
    rw 5 q24 ∷
-   re 3 3 (CS13⁻ ∷ []) ∷
+   re 3 3 (ℓ "举") ∷
    rw⁻ 4 q26 ∷
    rw 7 q24 ∷
-   re 5 3 (CS03 ∷ []) ∷
+   re 5 3 (ℓ "中") ∷
    rw 1 q24 ∷
-   re 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 3 1 (ℓ "乏丶乏") ∷
    rw 2 q28 ∷
    rw⁻ 3 q26 ∷
-   re 5 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   re 5 1 (ℓ "乏丷乏") ∷
    rw 4 q28 ∷
    rw⁻ 5 q26 ∷
-   re 7 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 7 1 (ℓ "乏丧乏") ∷
    rw 6 q28 ∷
    rw 2 q30 ∷
-   re 2 5 (CCZ012 ∷ []) ∷
-   re 1 3 (CCZ013 ∷ []) ∷
+   re 2 5 (ℓ "乙") ∷
+   re 1 3 (ℓ "乚") ∷
    rw⁻ 2 q31 ∷
    rw 3 q28 ∷
    rw 2 q33 ∷
@@ -392,56 +393,56 @@ lem-pass-TOFF013-vs-CCZ123 = derive (Toff013 ∷ CCZ123 ∷ []) (CCZ123 ∷ Toff
    rw 0 q35 ∷
    rw 4 q24 ∷
    rw 3 q31 ∷
-   re 2 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) ∷
-   re 3 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   re 2 1 (ℓ "乏乙乏") ∷
+   re 3 1 (ℓ "丶丣丷丣丧") ∷
    rw 4 q24 ∷
-   re 2 3 (CS13 ∷ []) ∷
+   re 2 3 (ℓ "丽") ∷
    rw⁻ 3 q26 ∷
    rw 6 q24 ∷
-   re 4 3 (CS13⁻ ∷ []) ∷
+   re 4 3 (ℓ "举") ∷
    rw⁻ 5 q26 ∷
    rw 8 q24 ∷
-   re 6 3 (CS03 ∷ []) ∷
+   re 6 3 (ℓ "中") ∷
    rw 7 q28 ∷
-   re 6 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 6 1 (ℓ "乏丧乏") ∷
    rw 8 q28 ∷
    rw 5 q26 ∷
-   re 4 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   re 4 1 (ℓ "乏丷乏") ∷
    rw 6 q28 ∷
    rw 3 q26 ∷
-   re 2 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 2 1 (ℓ "乏丶乏") ∷
    rw 4 q28 ∷
    rw 3 q30 ∷
-   re 3 5 (CCZ012 ∷ []) ∷
+   re 3 5 (ℓ "乙") ∷
    rw 1 q25 ∷
    rw 2 q23 ∷
-   re 2 1 (K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0 ∷ ι ∷ []) ∷
+   re 2 1 (ℓ "上丶丣丷丣丧上一") ∷
    rw⁻ 1 q25 ∷
    rw 4 q24 ∷
-   re 2 3 (CS13 ∷ []) ∷
+   re 2 3 (ℓ "丽") ∷
    rw⁻ 3 q26 ∷
    rw 6 q24 ∷
-   re 4 3 (CS13⁻ ∷ []) ∷
+   re 4 3 (ℓ "举") ∷
    rw⁻ 5 q26 ∷
    rw 8 q24 ∷
-   re 6 3 (CS03 ∷ []) ∷
+   re 6 3 (ℓ "中") ∷
    rw⁻ 7 q25 ∷
    rw⁻ 8 q27 ∷
    rw 1 q24 ∷
    rw⁻ 2 q25 ∷
-   re 4 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 4 1 (ℓ "乏丶乏") ∷
    rw 3 q28 ∷
    rw⁻ 4 q26 ∷
-   re 6 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   re 6 1 (ℓ "乏丷乏") ∷
    rw 5 q28 ∷
    rw⁻ 6 q26 ∷
-   re 8 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 8 1 (ℓ "乏丧乏") ∷
    rw 7 q28 ∷
    rw⁻ 8 q25 ∷
    rw⁻ 9 q27 ∷
    rw 2 q29 ∷
-   re 2 8 (Toff012 ∷ []) ∷
-   re 1 3 (Toff013 ∷ []) ∷
+   re 2 8 (ℓ "九") ∷
+   re 1 3 (ℓ "乞") ∷
    rw 2 q28 ∷ []) Eq.refl
 
 private
@@ -465,8 +466,8 @@ private
   q44 = sE 892 lem-pass-CS02-vs-CSd23
 
 -- pass [CS02] [TOFF201 CS23 TOFF201 CSd23]: 12 steps
-lem-pass-CS02-vs-TOFF201-CS23-TOFF201-CSd23 : ⟪ (CS02 ∷ Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ CS02 ∷ []) ⟫ʷ
-lem-pass-CS02-vs-TOFF201-CS23-TOFF201-CSd23 = derive (CS02 ∷ Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ []) (Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ CS02 ∷ [])
+lem-pass-CS02-vs-TOFF201-CS23-TOFF201-CSd23 : ⟪ (ℓ "丧乣义乣乊") ⟫ʷ ≈ ⟪ (ℓ "乣义乣乊丧") ⟫ʷ
+lem-pass-CS02-vs-TOFF201-CS23-TOFF201-CSd23 = derive (ℓ "丧乣义乣乊") (ℓ "乣义乣乊丧")
   (rw 0 q36 ∷
    rw 3 q21 ∷
    rw⁻ 2 q37 ∷
@@ -497,8 +498,8 @@ private
   q51 = sE 894 lem-pass-CSd02-vs-CSd23
 
 -- pass [CSd02] [TOFF201 CS23 TOFF201 CSd23]: 12 steps
-lem-pass-CSd02-vs-TOFF201-CS23-TOFF201-CSd23 : ⟪ (CS02⁻ ∷ Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ CS02⁻ ∷ []) ⟫ʷ
-lem-pass-CSd02-vs-TOFF201-CS23-TOFF201-CSd23 = derive (CS02⁻ ∷ Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ []) (Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ CS02⁻ ∷ [])
+lem-pass-CSd02-vs-TOFF201-CS23-TOFF201-CSd23 : ⟪ (ℓ "丨乣义乣乊") ⟫ʷ ≈ ⟪ (ℓ "乣义乣乊丨") ⟫ʷ
+lem-pass-CSd02-vs-TOFF201-CS23-TOFF201-CSd23 = derive (ℓ "丨乣义乣乊") (ℓ "乣义乣乊丨")
   (rw 0 q45 ∷
    rw 3 q21 ∷
    rw⁻ 2 q46 ∷
@@ -514,7 +515,7 @@ lem-pass-CSd02-vs-TOFF201-CS23-TOFF201-CSd23 = derive (CS02⁻ ∷ Toff201 ∷ C
 
 private
   q52 : Eqn
-  q52 = eqn (X0 ∷ Sw23 ∷ []) (Sw23 ∷ X0 ∷ []) (low₁-comm (X) ((Swap ↑)))
+  q52 = eqn (ℓ "丌乏") (ℓ "乏丌") (low₁-comm (X) ((Swap ↑)))
   q53 : Eqn
   q53 = wE 173 W
   q54 : Eqn
@@ -527,19 +528,19 @@ private
   q57 = sE 907 lem-pass-X3-CK31-X3-vs-CS13-TOFF102-CSd13-TOFF102
 
 -- pass [X3 CK31 X3] [X0 CS13 TOFF102 CSd13 TOFF102 X0]: 29 steps
-lem-pass-X3-CK31-X3-vs-X0-CS13-TOFF102-CSd13-TOFF102-X0 : ⟪ (X3 ∷ CK31 ∷ X3 ∷ X0 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ X0 ∷ []) ⟫ʷ ≈ ⟪ (X0 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ X0 ∷ X3 ∷ CK31 ∷ X3 ∷ []) ⟫ʷ
-lem-pass-X3-CK31-X3-vs-X0-CS13-TOFF102-CSd13-TOFF102-X0 = derive (X3 ∷ CK31 ∷ X3 ∷ X0 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ X0 ∷ []) (X0 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ X0 ∷ X3 ∷ CK31 ∷ X3 ∷ [])
+lem-pass-X3-CK31-X3-vs-X0-CS13-TOFF102-CSd13-TOFF102-X0 : ⟪ (ℓ "丞乔丞丌丽习举习丌") ⟫ʷ ≈ ⟪ (ℓ "丌丽习举习丌丞乔丞") ⟫ʷ
+lem-pass-X3-CK31-X3-vs-X0-CS13-TOFF102-CSd13-TOFF102-X0 = derive (ℓ "丞乔丞丌丽习举习丌") (ℓ "丌丽习举习丌丞乔丞")
   (rw 4 q24 ∷
    rw 3 q52 ∷
    rw 2 q53 ∷
-   re 1 1 (Sw23 ∷ CK21 ∷ Sw23 ∷ []) ∷
+   re 1 1 (ℓ "乏乇乏") ∷
    rw 3 q28 ∷
    rw 0 q53 ∷
    rw 1 q54 ∷
    rw⁻ 0 q52 ∷
    rw 1 q55 ∷
    rw 4 q24 ∷
-   re 2 3 (CK31 ∷ []) ∷
+   re 2 3 (ℓ "乔") ∷
    rw 3 q55 ∷
    rw 4 q28 ∷
    rw 1 q56 ∷
@@ -548,14 +549,14 @@ lem-pass-X3-CK31-X3-vs-X0-CS13-TOFF102-CSd13-TOFF102-X0 = derive (X3 ∷ CK31 �
    rw 9 q24 ∷
    rw 8 q52 ∷
    rw 7 q53 ∷
-   re 6 1 (Sw23 ∷ CK21 ∷ Sw23 ∷ []) ∷
+   re 6 1 (ℓ "乏乇乏") ∷
    rw 8 q28 ∷
    rw 5 q53 ∷
    rw 6 q54 ∷
    rw⁻ 5 q52 ∷
    rw 6 q55 ∷
    rw 9 q24 ∷
-   re 7 3 (CK31 ∷ []) ∷
+   re 7 3 (ℓ "乔") ∷
    rw 8 q55 ∷
    rw 9 q28 ∷ []) Eq.refl
 
@@ -565,13 +566,13 @@ private
   q59 : Eqn
   q59 = wE 121 W
   q60 : Eqn
-  q60 = eqn (Sw01 ∷ CS23 ∷ []) (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS))
+  q60 = eqn (ℓ "並义") (ℓ "义並") (low-comm (Swap) (CS))
   q61 : Eqn
   q61 = wE 30 W
   q62 : Eqn
-  q62 = eqn (Sw01 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS)))
+  q62 = eqn (ℓ "並乊") (ℓ "乊並") (low-comm (Swap) ((CS • CS • CS)))
   q63 : Eqn
-  q63 = eqn (Sw01 ∷ Sw23 ∷ []) (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap))
+  q63 = eqn (ℓ "並乏") (ℓ "乏並") (low-comm (Swap) (Swap))
   q64 : Eqn
   q64 = wE 27 W
   q65 : Eqn
@@ -599,11 +600,11 @@ private
   q76 : Eqn
   q76 = wE 129 W
   q77 : Eqn
-  q77 = eqn (K0⁻ ∷ CS13 ∷ []) (CS13 ∷ K0⁻ ∷ []) (low₁-comm ((K • iI)) ((Swap ↑ • CS • Swap ↑)))
+  q77 = eqn (ℓ "下丽") (ℓ "丽下") (low₁-comm ((K • iI)) ((Swap ↑ • CS • Swap ↑)))
   q78 : Eqn
   q78 = sE 908 lem-pass-CCZ023-vs-CS13
   q79 : Eqn
-  q79 = eqn (K0 ∷ CS13 ∷ []) (CS13 ∷ K0 ∷ []) (low₁-comm (K) ((Swap ↑ • CS • Swap ↑)))
+  q79 = eqn (ℓ "上丽") (ℓ "丽上") (low₁-comm (K) ((Swap ↑ • CS • Swap ↑)))
   q80 : Eqn
   q80 = wE 119 W
   q81 : Eqn
@@ -614,63 +615,63 @@ private
   q83 = wE 124 W
 
 -- pass [TOFF023] [CS13]: 117 steps
-lem-pass-TOFF023-vs-CS13 : ⟪ (Toff023 ∷ CS13 ∷ []) ⟫ʷ ≈ ⟪ (CS13 ∷ Toff023 ∷ []) ⟫ʷ
-lem-pass-TOFF023-vs-CS13 = derive (Toff023 ∷ CS13 ∷ []) (CS13 ∷ Toff023 ∷ [])
+lem-pass-TOFF023-vs-CS13 : ⟪ (ℓ "也丽") ⟫ʷ ≈ ⟪ (ℓ "丽也") ⟫ʷ
+lem-pass-TOFF023-vs-CS13 = derive (ℓ "也丽") (ℓ "丽也")
   (rw 1 q58 ∷
-   re 0 1 (Sw01 ∷ Toff123 ∷ Sw01 ∷ []) ∷
-   re 1 1 (K1 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ K1 ∷ ι1 ∷ []) ∷
+   re 0 1 (ℓ "並乢並") ∷
+   re 1 1 (ℓ "丐义丹乊丹丽丐丁") ∷
    rw 0 q59 ∷
    rw 1 q60 ∷
    rw 2 q61 ∷
    rw 3 q62 ∷
    rw 4 q61 ∷
-   re 6 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 6 1 (ℓ "乏丶乏") ∷
    rw 5 q63 ∷
    rw 6 q64 ∷
    rw 7 q63 ∷
-   re 5 3 (CS03 ∷ []) ∷
+   re 5 3 (ℓ "中") ∷
    rw 6 q59 ∷
    rw 7 q65 ∷
    rw 8 q66 ∷
    rw 7 q67 ∷
    rw 6 q68 ∷
-   re 5 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 5 1 (ℓ "乏丧乏") ∷
    rw⁻ 7 q63 ∷
    rw 6 q69 ∷
    rw⁻ 5 q63 ∷
-   re 6 3 (CS13 ∷ []) ∷
+   re 6 3 (ℓ "丽") ∷
    rw 4 q70 ∷
    rw⁻ 3 q62 ∷
    rw 2 q70 ∷
    rw⁻ 1 q60 ∷
    rw 0 q68 ∷
    rw 1 q71 ∷
-   re 1 8 (Toff123 ∷ []) ∷
+   re 1 8 (ℓ "乢") ∷
    rw 1 q72 ∷
    rw 0 q59 ∷
-   re 2 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) ∷
+   re 2 1 (ℓ "义丹乊丹丽") ∷
    rw 1 q60 ∷
    rw 2 q61 ∷
    rw 3 q62 ∷
    rw 4 q61 ∷
-   re 6 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 6 1 (ℓ "乏丶乏") ∷
    rw 5 q63 ∷
    rw 6 q64 ∷
    rw 7 q63 ∷
-   re 5 3 (CS03 ∷ []) ∷
+   re 5 3 (ℓ "中") ∷
    rw 1 q58 ∷
    rw 2 q60 ∷
    rw 3 q73 ∷
    rw 4 q62 ∷
    rw 5 q73 ∷
-   re 7 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 7 1 (ℓ "乏丧乏") ∷
    rw 6 q63 ∷
    rw 7 q74 ∷
    rw 8 q63 ∷
-   re 6 3 (CS13 ∷ []) ∷
+   re 6 3 (ℓ "丽") ∷
    rw 2 q75 ∷
-   re 2 5 (CCZ123 ∷ []) ∷
-   re 1 3 (CCZ023 ∷ []) ∷
+   re 2 5 (ℓ "乜") ∷
+   re 1 3 (ℓ "乛") ∷
    rw 2 q76 ∷
    rw 3 q66 ∷
    rw 2 q77 ∷
@@ -678,42 +679,42 @@ lem-pass-TOFF023-vs-CS13 = derive (Toff023 ∷ CS13 ∷ []) (CS13 ∷ Toff023 �
    rw 0 q79 ∷
    rw 4 q58 ∷
    rw 3 q80 ∷
-   re 2 1 (Sw01 ∷ CCZ123 ∷ Sw01 ∷ []) ∷
-   re 3 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) ∷
+   re 2 1 (ℓ "並乜並") ∷
+   re 3 1 (ℓ "义丹乊丹丽") ∷
    rw 2 q60 ∷
    rw 3 q61 ∷
    rw 4 q62 ∷
    rw 5 q61 ∷
-   re 7 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 7 1 (ℓ "乏丶乏") ∷
    rw 6 q63 ∷
    rw 7 q64 ∷
    rw 8 q63 ∷
-   re 6 3 (CS03 ∷ []) ∷
+   re 6 3 (ℓ "中") ∷
    rw 7 q66 ∷
-   re 6 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 6 1 (ℓ "乏丧乏") ∷
    rw⁻ 8 q63 ∷
    rw 7 q69 ∷
    rw⁻ 6 q63 ∷
-   re 7 3 (CS13 ∷ []) ∷
+   re 7 3 (ℓ "丽") ∷
    rw 5 q70 ∷
    rw⁻ 4 q62 ∷
    rw 3 q70 ∷
    rw⁻ 2 q60 ∷
    rw 3 q75 ∷
-   re 3 5 (CCZ123 ∷ []) ∷
+   re 3 5 (ℓ "乜") ∷
    rw 1 q68 ∷
    rw 2 q81 ∷
-   re 2 1 (K1 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ K1 ∷ ι1 ∷ []) ∷
+   re 2 1 (ℓ "丐义丹乊丹丽丐丁") ∷
    rw 1 q59 ∷
    rw 2 q60 ∷
    rw 3 q61 ∷
    rw 4 q62 ∷
    rw 5 q61 ∷
-   re 7 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 7 1 (ℓ "乏丶乏") ∷
    rw 6 q63 ∷
    rw 7 q64 ∷
    rw 8 q63 ∷
-   re 6 3 (CS03 ∷ []) ∷
+   re 6 3 (ℓ "中") ∷
    rw 7 q59 ∷
    rw 8 q65 ∷
    rw 1 q58 ∷
@@ -722,16 +723,16 @@ lem-pass-TOFF023-vs-CS13 = derive (Toff023 ∷ CS13 ∷ []) (CS13 ∷ Toff023 �
    rw 4 q73 ∷
    rw 5 q62 ∷
    rw 6 q73 ∷
-   re 8 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 8 1 (ℓ "乏丧乏") ∷
    rw 7 q63 ∷
    rw 8 q74 ∷
    rw 9 q63 ∷
-   re 7 3 (CS13 ∷ []) ∷
+   re 7 3 (ℓ "丽") ∷
    rw 8 q82 ∷
    rw 9 q83 ∷
    rw 2 q71 ∷
-   re 2 8 (Toff123 ∷ []) ∷
-   re 1 3 (Toff023 ∷ []) ∷
+   re 2 8 (ℓ "乢") ∷
+   re 1 3 (ℓ "也") ∷
    rw 2 q66 ∷ []) Eq.refl
 
 private
@@ -739,8 +740,8 @@ private
   q84 = sE 909 lem-pass-Sd0-vs-CS23-TOFF201-CSd23-TOFF201
 
 -- pass [CS23 TOFF201 CSd23 TOFF201] [Sd0]: 1 steps
-lem-pass-CS23-TOFF201-CSd23-TOFF201-vs-Sd0 : ⟪ (CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ S0⁻ ∷ []) ⟫ʷ ≈ ⟪ (S0⁻ ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ []) ⟫ʷ
-lem-pass-CS23-TOFF201-CSd23-TOFF201-vs-Sd0 = derive (CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ S0⁻ ∷ []) (S0⁻ ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ [])
+lem-pass-CS23-TOFF201-CSd23-TOFF201-vs-Sd0 : ⟪ (ℓ "义乣乊乣三") ⟫ʷ ≈ ⟪ (ℓ "三义乣乊乣") ⟫ʷ
+lem-pass-CS23-TOFF201-CSd23-TOFF201-vs-Sd0 = derive (ℓ "义乣乊乣三") (ℓ "三义乣乊乣")
   (rw⁻ 0 q84 ∷ []) Eq.refl
 
 private
@@ -748,59 +749,59 @@ private
   q85 = sE 910 lem-pass-Sd3-vs-CS23-TOFF201-CSd23-TOFF201
 
 -- pass [CS23 TOFF201 CSd23 TOFF201] [Sd3]: 1 steps
-lem-pass-CS23-TOFF201-CSd23-TOFF201-vs-Sd3 : ⟪ (CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ S3⁻ ∷ []) ⟫ʷ ≈ ⟪ (S3⁻ ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ []) ⟫ʷ
-lem-pass-CS23-TOFF201-CSd23-TOFF201-vs-Sd3 = derive (CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ S3⁻ ∷ []) (S3⁻ ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ [])
+lem-pass-CS23-TOFF201-CSd23-TOFF201-vs-Sd3 : ⟪ (ℓ "义乣乊乣丛") ⟫ʷ ≈ ⟪ (ℓ "丛义乣乊乣") ⟫ʷ
+lem-pass-CS23-TOFF201-CSd23-TOFF201-vs-Sd3 = derive (ℓ "义乣乊乣丛") (ℓ "丛义乣乊乣")
   (rw⁻ 0 q85 ∷ []) Eq.refl
 
 private
   q86 : Eqn
   q86 = wE 1535 W
   q87 : Eqn
-  q87 = eqn (Sw01 ∷ K2⁻ ∷ []) (K2⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((K • iI)))
+  q87 = eqn (ℓ "並丗") (ℓ "丗並") (low-comm (Swap) ((K • iI)))
   q88 : Eqn
   q88 = wE 1536 W
   q89 : Eqn
   q89 = sE 822 lem-pass-CCZ012-vs-CS03
   q90 : Eqn
-  q90 = eqn (Sw01 ∷ K2 ∷ []) (K2 ∷ Sw01 ∷ []) (low-comm (Swap) (K))
+  q90 = eqn (ℓ "並世") (ℓ "世並") (low-comm (Swap) (K))
   q91 : Eqn
   q91 = wE 1537 W
   q92 : Eqn
   q92 = wE 1538 W
 
 -- pass [TOFF201] [CS03]: 33 steps
-lem-pass-TOFF201-vs-CS03 : ⟪ (Toff201 ∷ CS03 ∷ []) ⟫ʷ ≈ ⟪ (CS03 ∷ Toff201 ∷ []) ⟫ʷ
-lem-pass-TOFF201-vs-CS03 = derive (Toff201 ∷ CS03 ∷ []) (CS03 ∷ Toff201 ∷ [])
+lem-pass-TOFF201-vs-CS03 : ⟪ (ℓ "乣中") ⟫ʷ ≈ ⟪ (ℓ "中乣") ⟫ʷ
+lem-pass-TOFF201-vs-CS03 = derive (ℓ "乣中") (ℓ "中乣")
   (rw 0 q86 ∷
    rw 4 q58 ∷
-   re 3 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 3 1 (ℓ "乏丧乏") ∷
    rw⁻ 5 q63 ∷
    rw 4 q69 ∷
    rw⁻ 3 q63 ∷
-   re 4 3 (CS13 ∷ []) ∷
+   re 4 3 (ℓ "丽") ∷
    rw⁻ 2 q87 ∷
    rw 3 q88 ∷
-   re 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 3 1 (ℓ "乏丶乏") ∷
    rw 2 q63 ∷
    rw 3 q64 ∷
    rw 4 q63 ∷
-   re 2 3 (CS03 ∷ []) ∷
+   re 2 3 (ℓ "中") ∷
    rw 3 q87 ∷
    rw 4 q66 ∷
    rw 1 q89 ∷
    rw 2 q58 ∷
-   re 1 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 1 1 (ℓ "乏丧乏") ∷
    rw⁻ 3 q63 ∷
    rw 2 q69 ∷
    rw⁻ 1 q63 ∷
-   re 2 3 (CS13 ∷ []) ∷
+   re 2 3 (ℓ "丽") ∷
    rw⁻ 0 q90 ∷
    rw 1 q91 ∷
-   re 1 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 1 1 (ℓ "乏丶乏") ∷
    rw 0 q63 ∷
    rw 1 q64 ∷
    rw 2 q63 ∷
-   re 0 3 (CS03 ∷ []) ∷
+   re 0 3 (ℓ "中") ∷
    rw 1 q90 ∷
    rw 2 q66 ∷
    rw 1 q92 ∷ []) Eq.refl
@@ -816,8 +817,8 @@ private
   q96 = sE 900 lem-pass-S2-vs-CSd23
 
 -- pass [S2] [TOFF201 CS23 TOFF201 CSd23]: 12 steps
-lem-pass-S2-vs-TOFF201-CS23-TOFF201-CSd23 : ⟪ (S2 ∷ Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ S2 ∷ []) ⟫ʷ
-lem-pass-S2-vs-TOFF201-CS23-TOFF201-CSd23 = derive (S2 ∷ Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ []) (Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ S2 ∷ [])
+lem-pass-S2-vs-TOFF201-CS23-TOFF201-CSd23 : ⟪ (ℓ "且乣义乣乊") ⟫ʷ ≈ ⟪ (ℓ "乣义乣乊且") ⟫ʷ
+lem-pass-S2-vs-TOFF201-CS23-TOFF201-CSd23 = derive (ℓ "且乣义乣乊") (ℓ "乣义乣乊且")
   (rw 0 q93 ∷
    rw 3 q21 ∷
    rw⁻ 2 q38 ∷
@@ -842,8 +843,8 @@ private
   q100 = sE 901 lem-pass-Sd2-vs-CSd23
 
 -- pass [Sd2] [TOFF201 CS23 TOFF201 CSd23]: 12 steps
-lem-pass-Sd2-vs-TOFF201-CS23-TOFF201-CSd23 : ⟪ (S2⁻ ∷ Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ S2⁻ ∷ []) ⟫ʷ
-lem-pass-Sd2-vs-TOFF201-CS23-TOFF201-CSd23 = derive (S2⁻ ∷ Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ []) (Toff201 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ S2⁻ ∷ [])
+lem-pass-Sd2-vs-TOFF201-CS23-TOFF201-CSd23 : ⟪ (ℓ "丕乣义乣乊") ⟫ʷ ≈ ⟪ (ℓ "乣义乣乊丕") ⟫ʷ
+lem-pass-Sd2-vs-TOFF201-CS23-TOFF201-CSd23 = derive (ℓ "丕乣义乣乊") (ℓ "乣义乣乊丕")
   (rw 0 q97 ∷
    rw 3 q21 ∷
    rw⁻ 2 q47 ∷
@@ -864,8 +865,8 @@ private
   q102 = wE 1367 W
 
 -- pass [CK31] [X3 CS13 TOFF102 CSd13 TOFF102 X3]: 3 steps
-lem-pass-CK31-vs-X3-CS13-TOFF102-CSd13-TOFF102-X3 : ⟪ (CK31 ∷ X3 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ X3 ∷ CK31 ∷ []) ⟫ʷ
-lem-pass-CK31-vs-X3-CS13-TOFF102-CSd13-TOFF102-X3 = derive (CK31 ∷ X3 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ X3 ∷ []) (X3 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ X3 ∷ CK31 ∷ [])
+lem-pass-CK31-vs-X3-CS13-TOFF102-CSd13-TOFF102-X3 : ⟪ (ℓ "乔丞丽习举习丞") ⟫ʷ ≈ ⟪ (ℓ "丞丽习举习丞乔") ⟫ʷ
+lem-pass-CK31-vs-X3-CS13-TOFF102-CSd13-TOFF102-X3 = derive (ℓ "乔丞丽习举习丞") (ℓ "丞丽习举习丞乔")
   (rw 0 q101 ∷
    rw 1 q57 ∷
    rw 5 q102 ∷ []) Eq.refl
@@ -875,8 +876,8 @@ private
   q103 = sE 911 lem-pass-S0-vs-CS13-TOFF102-CSd13-TOFF102
 
 -- pass [CS13 TOFF102 CSd13 TOFF102] [S0]: 1 steps
-lem-pass-CS13-TOFF102-CSd13-TOFF102-vs-S0 : ⟪ (CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S0 ∷ []) ⟫ʷ ≈ ⟪ (S0 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ []) ⟫ʷ
-lem-pass-CS13-TOFF102-CSd13-TOFF102-vs-S0 = derive (CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S0 ∷ []) (S0 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ [])
+lem-pass-CS13-TOFF102-CSd13-TOFF102-vs-S0 : ⟪ (ℓ "丽习举习丈") ⟫ʷ ≈ ⟪ (ℓ "丈丽习举习") ⟫ʷ
+lem-pass-CS13-TOFF102-CSd13-TOFF102-vs-S0 = derive (ℓ "丽习举习丈") (ℓ "丈丽习举习")
   (rw⁻ 0 q103 ∷ []) Eq.refl
 
 private
@@ -896,8 +897,8 @@ private
   q110 = wE 1381 W
 
 -- pass [X2 CS21 X2] [CS13 TOFF102 CSd13 TOFF102]: 9 steps
-lem-pass-X2-CS21-X2-vs-CS13-TOFF102-CSd13-TOFF102 : ⟪ (X2 ∷ CS12 ∷ X2 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ []) ⟫ʷ ≈ ⟪ (CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ X2 ∷ CS12 ∷ X2 ∷ []) ⟫ʷ
-lem-pass-X2-CS21-X2-vs-CS13-TOFF102-CSd13-TOFF102 = derive (X2 ∷ CS12 ∷ X2 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ []) (CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ X2 ∷ CS12 ∷ X2 ∷ [])
+lem-pass-X2-CS21-X2-vs-CS13-TOFF102-CSd13-TOFF102 : ⟪ (ℓ "丘丶丘丽习举习") ⟫ʷ ≈ ⟪ (ℓ "丽习举习丘丶丘") ⟫ʷ
+lem-pass-X2-CS21-X2-vs-CS13-TOFF102-CSd13-TOFF102 = derive (ℓ "丘丶丘丽习举习") (ℓ "丽习举习丘丶丘")
   (rw 0 q104 ∷
    rw 1 q105 ∷
    rw 2 q106 ∷
@@ -913,8 +914,8 @@ private
   q111 = sE 904 lem-pass-X2-CSd21-X2-vs-TOFF102-CS13-TOFF102-CSd13
 
 -- pass [X2 CSd21 X2] [CS13 TOFF102 CSd13 TOFF102]: 9 steps
-lem-pass-X2-CSd21-X2-vs-CS13-TOFF102-CSd13-TOFF102 : ⟪ (X2 ∷ CS12⁻ ∷ X2 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ []) ⟫ʷ ≈ ⟪ (CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ X2 ∷ CS12⁻ ∷ X2 ∷ []) ⟫ʷ
-lem-pass-X2-CSd21-X2-vs-CS13-TOFF102-CSd13-TOFF102 = derive (X2 ∷ CS12⁻ ∷ X2 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ []) (CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ X2 ∷ CS12⁻ ∷ X2 ∷ [])
+lem-pass-X2-CSd21-X2-vs-CS13-TOFF102-CSd13-TOFF102 : ⟪ (ℓ "丘丷丘丽习举习") ⟫ʷ ≈ ⟪ (ℓ "丽习举习丘丷丘") ⟫ʷ
+lem-pass-X2-CSd21-X2-vs-CS13-TOFF102-CSd13-TOFF102 = derive (ℓ "丘丷丘丽习举习") (ℓ "丽习举习丘丷丘")
   (rw 0 q104 ∷
    rw 1 q105 ∷
    rw 2 q106 ∷
@@ -927,9 +928,9 @@ lem-pass-X2-CSd21-X2-vs-CS13-TOFF102-CSd13-TOFF102 = derive (X2 ∷ CS12⁻ ∷ 
 
 private
   q112 : Eqn
-  q112 = eqn (Sw01 ∷ X3 ∷ []) (X3 ∷ Sw01 ∷ []) (low-comm (Swap) ((X ↑)))
+  q112 = eqn (ℓ "並丞") (ℓ "丞並") (low-comm (Swap) ((X ↑)))
   q113 : Eqn
-  q113 = eqn (Sw01 ∷ X2 ∷ []) (X2 ∷ Sw01 ∷ []) (low-comm (Swap) (X))
+  q113 = eqn (ℓ "並丘") (ℓ "丘並") (low-comm (Swap) (X))
   q114 : Eqn
   q114 = wE 76 W
   q115 : Eqn
@@ -944,8 +945,8 @@ private
   q119 = wE 1542 W
 
 -- pass [X2 CSd20 X2] [X3 Sd1 Kd1 S1 S1 CS13 TOFF102 CSd13 TOFF102 Sd1 Sd1 K1 S1 X3]: 25 steps
-lem-pass-X2-CSd20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 : ⟪ (X2 ∷ CS02⁻ ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ CS02⁻ ∷ X2 ∷ []) ⟫ʷ
-lem-pass-X2-CSd20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 = derive (X2 ∷ CS02⁻ ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ []) (X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ CS02⁻ ∷ X2 ∷ [])
+lem-pass-X2-CSd20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 : ⟪ (ℓ "丘丨丘丞丏丑与与丽习举习丏丏丐与丞") ⟫ʷ ≈ ⟪ (ℓ "丞丏丑与与丽习举习丏丏丐与丞丘丨丘") ⟫ʷ
+lem-pass-X2-CSd20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 = derive (ℓ "丘丨丘丞丏丑与与丽习举习丏丏丐与丞") (ℓ "丞丏丑与与丽习举习丏丏丐与丞丘丨丘")
   (rw 4 q58 ∷
    rw⁻ 3 q112 ∷
    rw⁻ 2 q113 ∷
@@ -987,8 +988,8 @@ private
   q125 = wE 1544 W
 
 -- pass [X2 CKd20 X2] [X3 Sd1 Kd1 S1 S1 CS13 TOFF102 CSd13 TOFF102 Sd1 Sd1 K1 S1 X3]: 25 steps
-lem-pass-X2-CKd20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 : ⟪ (X2 ∷ CK20⁻ ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ CK20⁻ ∷ X2 ∷ []) ⟫ʷ
-lem-pass-X2-CKd20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 = derive (X2 ∷ CK20⁻ ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ []) (X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ CK20⁻ ∷ X2 ∷ [])
+lem-pass-X2-CKd20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 : ⟪ (ℓ "丘久丘丞丏丑与与丽习举习丏丏丐与丞") ⟫ʷ ≈ ⟪ (ℓ "丞丏丑与与丽习举习丏丏丐与丞丘久丘") ⟫ʷ
+lem-pass-X2-CKd20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 = derive (ℓ "丘久丘丞丏丑与与丽习举习丏丏丐与丞") (ℓ "丞丏丑与与丽习举习丏丏丐与丞丘久丘")
   (rw 4 q58 ∷
    rw⁻ 3 q112 ∷
    rw⁻ 2 q113 ∷
@@ -1030,8 +1031,8 @@ private
   q131 = wE 1546 W
 
 -- pass [X2 CK20 X2] [X3 Sd1 Kd1 S1 S1 CS13 TOFF102 CSd13 TOFF102 Sd1 Sd1 K1 S1 X3]: 25 steps
-lem-pass-X2-CK20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 : ⟪ (X2 ∷ CK20 ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ CK20 ∷ X2 ∷ []) ⟫ʷ
-lem-pass-X2-CK20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 = derive (X2 ∷ CK20 ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ []) (X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ CK20 ∷ X2 ∷ [])
+lem-pass-X2-CK20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 : ⟪ (ℓ "丘乄丘丞丏丑与与丽习举习丏丏丐与丞") ⟫ʷ ≈ ⟪ (ℓ "丞丏丑与与丽习举习丏丏丐与丞丘乄丘") ⟫ʷ
+lem-pass-X2-CK20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 = derive (ℓ "丘乄丘丞丏丑与与丽习举习丏丏丐与丞") (ℓ "丞丏丑与与丽习举习丏丏丐与丞丘乄丘")
   (rw 4 q58 ∷
    rw⁻ 3 q112 ∷
    rw⁻ 2 q113 ∷
@@ -1069,8 +1070,8 @@ private
   q135 = wE 1548 W
 
 -- pass [X2 CS20 X2] [X3 Sd1 Kd1 S1 S1 CS13 TOFF102 CSd13 TOFF102 Sd1 Sd1 K1 S1 X3]: 25 steps
-lem-pass-X2-CS20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 : ⟪ (X2 ∷ CS02 ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ CS02 ∷ X2 ∷ []) ⟫ʷ
-lem-pass-X2-CS20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 = derive (X2 ∷ CS02 ∷ X2 ∷ X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ []) (X3 ∷ S1⁻ ∷ K1⁻ ∷ S1 ∷ S1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ S1⁻ ∷ S1⁻ ∷ K1 ∷ S1 ∷ X3 ∷ X2 ∷ CS02 ∷ X2 ∷ [])
+lem-pass-X2-CS20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 : ⟪ (ℓ "丘丧丘丞丏丑与与丽习举习丏丏丐与丞") ⟫ʷ ≈ ⟪ (ℓ "丞丏丑与与丽习举习丏丏丐与丞丘丧丘") ⟫ʷ
+lem-pass-X2-CS20-X2-vs-X3-Sd1-Kd1-S1-S1-CS13-TOFF102-CSd13-TOFF102-Sd1-Sd1-K1-S1-X3 = derive (ℓ "丘丧丘丞丏丑与与丽习举习丏丏丐与丞") (ℓ "丞丏丑与与丽习举习丏丏丐与丞丘丧丘")
   (rw 4 q58 ∷
    rw⁻ 3 q112 ∷
    rw⁻ 2 q113 ∷
@@ -1114,37 +1115,37 @@ private
   q142 = wE 1342 W
 
 -- pass [X1 CSd10 X1] [CS03 TOFF012 CSd03 TOFF012]: 33 steps
-lem-pass-X1-CSd10-X1-vs-CS03-TOFF012-CSd03-TOFF012 : ⟪ (X1 ∷ CS01⁻ ∷ X1 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ []) ⟫ʷ ≈ ⟪ (CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ X1 ∷ CS01⁻ ∷ X1 ∷ []) ⟫ʷ
-lem-pass-X1-CSd10-X1-vs-CS03-TOFF012-CSd03-TOFF012 = derive (X1 ∷ CS01⁻ ∷ X1 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ []) (CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ X1 ∷ CS01⁻ ∷ X1 ∷ [])
+lem-pass-X1-CSd10-X1-vs-CS03-TOFF012-CSd03-TOFF012 : ⟪ (ℓ "丒両丒中九丮九") ⟫ʷ ≈ ⟪ (ℓ "中九丮九丒両丒") ⟫ʷ
+lem-pass-X1-CSd10-X1-vs-CS03-TOFF012-CSd03-TOFF012 = derive (ℓ "丒両丒中九丮九") (ℓ "中九丮九丒両丒")
   (rw 0 q24 ∷
    rw 1 q136 ∷
    rw 2 q24 ∷
-   re 0 3 (CS03 ∷ []) ∷
+   re 0 3 (ℓ "中") ∷
    rw 3 q24 ∷
-   re 1 3 (CS03⁻ ∷ []) ∷
+   re 1 3 (ℓ "丮") ∷
    rw 2 q28 ∷
    rw 1 q137 ∷
    rw 2 q24 ∷
    rw 3 q138 ∷
    rw 4 q24 ∷
-   re 2 3 (CS03⁻ ∷ []) ∷
+   re 2 3 (ℓ "丮") ∷
    rw 5 q24 ∷
-   re 3 3 (CS03 ∷ []) ∷
+   re 3 3 (ℓ "中") ∷
    rw 4 q28 ∷
    rw 3 q137 ∷
    rw⁻ 4 q139 ∷
    rw 12 q24 ∷
-   re 11 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 11 1 (ℓ "乏丧乏") ∷
    rw 13 q28 ∷
-   re 10 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) ∷
+   re 10 1 (ℓ "乏丨乏") ∷
    rw 12 q28 ∷
    rw 11 q140 ∷
    rw 10 q28 ∷
    rw 9 q141 ∷
    rw 10 q24 ∷
-   re 9 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) ∷
+   re 9 1 (ℓ "乏丨乏") ∷
    rw 11 q28 ∷
-   re 8 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   re 8 1 (ℓ "乏丧乏") ∷
    rw 10 q28 ∷
    rw 9 q142 ∷
    rw 8 q28 ∷
@@ -1152,15 +1153,15 @@ lem-pass-X1-CSd10-X1-vs-CS03-TOFF012-CSd03-TOFF012 = derive (X1 ∷ CS01⁻ ∷ 
 
 private
   q143 : Eqn
-  q143 = eqn (K0⁻ ∷ CS23⁻ ∷ []) (CS23⁻ ∷ K0⁻ ∷ []) (low₁-comm ((K • iI)) (((CS • CS • CS) ↑)))
+  q143 = eqn (ℓ "下乊") (ℓ "乊下") (low₁-comm ((K • iI)) (((CS • CS • CS) ↑)))
   q144 : Eqn
   q144 = sE 912 lem-pass-CCZ012-vs-CSd23
   q145 : Eqn
-  q145 = eqn (K0 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ K0 ∷ []) (low₁-comm (K) (((CS • CS • CS) ↑)))
+  q145 = eqn (ℓ "上乊") (ℓ "乊上") (low₁-comm (K) (((CS • CS • CS) ↑)))
 
 -- pass [TOFF012] [CSd23]: 5 steps
-lem-pass-TOFF012-vs-CSd23 : ⟪ (Toff012 ∷ CS23⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS23⁻ ∷ Toff012 ∷ []) ⟫ʷ
-lem-pass-TOFF012-vs-CSd23 = derive (Toff012 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ Toff012 ∷ [])
+lem-pass-TOFF012-vs-CSd23 : ⟪ (ℓ "九乊") ⟫ʷ ≈ ⟪ (ℓ "乊九") ⟫ʷ
+lem-pass-TOFF012-vs-CSd23 = derive (ℓ "九乊") (ℓ "乊九")
   (rw 0 q19 ∷
    rw 2 q143 ∷
    rw 1 q144 ∷

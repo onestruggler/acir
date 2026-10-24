@@ -18,6 +18,7 @@ open import Data.List.Base using ([] ; _∷_)
 open import Data.Nat.Base using (ℕ)
 open import Examples.Groups.Clifford+CS.Five.WinSig using (WTree ; wleaf ; wnode ; WinT)
 open import Examples.Groups.Clifford+CS.Five.Letters
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 import Examples.Groups.Clifford+CS.Five.DStmt.P0 as P0
 import Examples.Groups.Clifford+CS.Five.DStmt.P1 as P1
 import Examples.Groups.Clifford+CS.Five.DStmt.P2 as P2
@@ -28,7 +29,7 @@ import Examples.Groups.Clifford+CS.Five.DStmt.P6 as P6
 import Examples.Groups.Clifford+CS.Five.DStmt.P7 as P7
 
 lemmas : WTree
-lemmas = (wnode (wnode (wnode P0.t (CX13 ∷ CCZ024 ∷ []) (CCZ024 ∷ CX13 ∷ []) P1.t) (CX04 ∷ CCZ123 ∷ []) (CCZ123 ∷ CX04 ∷ []) (wnode P2.t (CX21 ∷ CCZ034 ∷ []) (CCZ034 ∷ CX21 ∷ []) P3.t)) (CX02 ∷ CCZ134 ∷ []) (CCZ134 ∷ CX02 ∷ []) (wnode (wnode P4.t (CX14 ∷ CCZ023 ∷ []) (CCZ023 ∷ CX14 ∷ []) P5.t) (CX12 ∷ CCZ034 ∷ []) (CCZ034 ∷ CX12 ∷ []) (wnode P6.t (CX23 ∷ CCZ014 ∷ []) (CCZ014 ∷ CX23 ∷ []) P7.t)))
+lemmas = (wnode (wnode (wnode P0.t (ℓ "乒亜") (ℓ "亜乒") P1.t) (ℓ "乁交") (ℓ "交乁") (wnode P2.t (ℓ "也亠") (ℓ "亠也") P3.t)) (ℓ "丳京") (ℓ "京丳") (wnode (wnode P4.t (ℓ "乙亘") (ℓ "亘乙") P5.t) (ℓ "之亠") (ℓ "亠之") (wnode P6.t (ℓ "书五") (ℓ "五书") P7.t)))
 
 St : ℕ → Set
 St n = WinT lemmas n

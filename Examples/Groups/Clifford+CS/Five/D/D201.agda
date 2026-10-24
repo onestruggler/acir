@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD201 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D201 (Sᴰ : SD201) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -220,9 +221,9 @@ private
   q10 : Ws → Eqn
   q10 c4 = sE 1973 (lem-comm-push-SBOX⟨1·4·20·3⟩-sw0-L c4)
   q11 : Ws → Eqn
-  q11 c4 = eqn (Sw01 ∷ S2 ∷ []) (S2 ∷ Sw01 ∷ []) (c₂ (Swap) (S))
+  q11 c4 = eqn (ℓ "丫世") (ℓ "世丫") (c₂ (Swap) (S))
   q12 : Ws → Eqn
-  q12 c4 = eqn (Sw01 ∷ CS24 ∷ []) (CS24 ∷ Sw01 ∷ []) (c₂ (Swap) (Swap ↑ • CS • Swap ↑))
+  q12 c4 = eqn (ℓ "丫乩") (ℓ "乩丫") (c₂ (Swap) (Swap ↑ • CS • Swap ↑))
   q13 : Ws → Eqn
   q13 c4 = wlE 1427 (lit c4)
   q14 : Ws → Eqn
@@ -236,9 +237,9 @@ private
   q18 : Ws → Eqn
   q18 c4 = sE 1970 (lem-comm-push-SBOX⟨0·4·31·2⟩-sw1-L c4)
   q19 : Ws → Eqn
-  q19 c4 = eqn (Sw12 ∷ S3 ∷ []) (S3 ∷ Sw12 ∷ []) (c₃ (Swap ↑) (S))
+  q19 c4 = eqn (ℓ "乊东") (ℓ "东乊") (c₃ (Swap ↑) (S))
   q20 : Ws → Eqn
-  q20 c4 = eqn (Sw12 ∷ CS34 ∷ []) (CS34 ∷ Sw12 ∷ []) (c₃ (Swap ↑) (CS))
+  q20 c4 = eqn (ℓ "乊乹") (ℓ "乹乊") (c₃ (Swap ↑) (CS))
   q21 : Ws → Eqn
   q21 c4 = wlE 95 (lit c4)
   q22 : Ws → Eqn
@@ -252,7 +253,7 @@ private
   q26 : Ws → Eqn
   q26 c4 = sE 1969 (lem-comm-push-SBOX⟨0·3·42·1⟩-sw2-L c4)
   q27 : Ws → Eqn
-  q27 c4 = eqn (Sw23 ∷ S4 ∷ []) (S4 ∷ Sw23 ∷ []) (c₄ (Swap ↑ ↑) (S))
+  q27 c4 = eqn (ℓ "乥丢") (ℓ "丢乥") (c₄ (Swap ↑ ↑) (S))
   q28 : Ws → Eqn
   q28 c4 = wlE 8 (lit c4)
   q29 : Ws → Eqn
@@ -303,8 +304,8 @@ private
   q51 c4 = sE 1633 (lem-F4-K3-K3-at0213243140 c4)
 
 -- deb-CKS @0213243140 part0: 500 steps
-lem-deb-CKS-at0213243140-part0 : Ws → ⟪ (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ Sb2-4-01-3 ∷ []) ⟫ʷ ≈ ⟪ (CCZ014 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ CK01 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS04 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS04 ∷ CS01 ∷ CS01 ∷ CS01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS01 ∷ []) ⟫ʷ
-lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ Sb2-4-01-3 ∷ []) (CCZ014 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ CK01 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS04 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS04 ∷ CS01 ∷ CS01 ∷ CS01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 ∷ CS04 ∷ CS04 ∷ CS04 ∷ S0 ∷ CS01 ∷ [])
+lem-deb-CKS-at0213243140-part0 : Ws → ⟪ (ℓ "俊中俊中俊丽丽丽上俊") ⟫ʷ ≈ ⟪ (ℓ "五与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与与丽与与俊与与俊与与俊与与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与与丽与俊与俊与与中与与俊与中与中与与俊与与丽与与丽与与丽与与上与与俊与与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与俊中俊丽丽丽上丽俊俊俊俊中俊中俊丽丽丽上丽丨丨丨俊中俊中俊丽丽丽上俊俊中俊中俊丽丽丽上丨") ⟫ʷ
+lem-deb-CKS-at0213243140-part0 c4 = derive (ℓ "俊中俊中俊丽丽丽上俊") (ℓ "五与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与与丽与与俊与与俊与与俊与与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与与丽与俊与俊与与中与与俊与中与中与与俊与与丽与与丽与与丽与与上与与俊与与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与俊中俊丽丽丽上丽俊俊俊俊中俊中俊丽丽丽上丽丨丨丨俊中俊中俊丽丽丽上俊俊中俊中俊丽丽丽上丨")
   (rw⁻ 10 (q1 c4) ∷
    rw 9 (q2 c4) ∷
    rw 8 (q3 c4) ∷
@@ -324,10 +325,10 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw 6 (q9 c4) ∷
    rw 5 (q7 c4) ∷
    rw⁻ 4 (q6 c4) ∷
-   re 5 3 (CK20 ∷ []) ∷
+   re 5 3 (ℓ "九") ∷
    rw 3 (q7 c4) ∷
    rw⁻ 2 (q6 c4) ∷
-   re 3 3 (CK20 ∷ []) ∷
+   re 3 3 (ℓ "九") ∷
    rw 1 (q7 c4) ∷
    rw⁻ 12 (q1 c4) ∷
    rw 11 (q10 c4) ∷
@@ -348,10 +349,10 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw 8 (q17 c4) ∷
    rw 7 (q15 c4) ∷
    rw⁻ 6 (q14 c4) ∷
-   re 7 3 (CK31 ∷ []) ∷
+   re 7 3 (ℓ "乴") ∷
    rw 5 (q15 c4) ∷
    rw⁻ 4 (q14 c4) ∷
-   re 5 3 (CK31 ∷ []) ∷
+   re 5 3 (ℓ "乴") ∷
    rw 3 (q15 c4) ∷
    rw⁻ 14 (q6 c4) ∷
    rw 13 (q18 c4) ∷
@@ -372,10 +373,10 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw 10 (q25 c4) ∷
    rw 9 (q23 c4) ∷
    rw⁻ 8 (q22 c4) ∷
-   re 9 3 (CK42 ∷ []) ∷
+   re 9 3 (ℓ "亇") ∷
    rw 7 (q23 c4) ∷
    rw⁻ 6 (q22 c4) ∷
-   re 7 3 (CK42 ∷ []) ∷
+   re 7 3 (ℓ "亇") ∷
    rw 5 (q23 c4) ∷
    rw⁻ 16 (q14 c4) ∷
    rw 15 (q26 c4) ∷
@@ -441,10 +442,10 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw 5 (q32 c4) ∷
    rw 6 (q32 c4) ∷
    rw 7 (q32 c4) ∷
-   re 9 1 (Sw34 ∷ CK32 ∷ Sw34 ∷ []) ∷
+   re 9 1 (ℓ "乼乷乼") ∷
    rw 8 (q22 c4) ∷
    rw 9 (q32 c4) ∷
-   re 11 1 (Sw34 ∷ CK32 ∷ Sw34 ∷ []) ∷
+   re 11 1 (ℓ "乼乷乼") ∷
    rw 10 (q22 c4) ∷
    rw 11 (q32 c4) ∷
    rw⁻ 12 (q25 c4) ∷
@@ -456,10 +457,10 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw 18 (q32 c4) ∷
    rw 19 (q32 c4) ∷
    rw 20 (q32 c4) ∷
-   re 22 1 (Sw34 ∷ CK32 ∷ Sw34 ∷ []) ∷
+   re 22 1 (ℓ "乼乷乼") ∷
    rw 21 (q22 c4) ∷
    rw 22 (q32 c4) ∷
-   re 24 1 (Sw34 ∷ CK32 ∷ Sw34 ∷ []) ∷
+   re 24 1 (ℓ "乼乷乼") ∷
    rw 23 (q22 c4) ∷
    rw 24 (q32 c4) ∷
    rw⁻ 25 (q25 c4) ∷
@@ -467,17 +468,17 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw⁻ 27 (q25 c4) ∷
    rw⁻ 28 (q24 c4) ∷
    rw⁻ 29 (q25 c4) ∷
-   re 31 1 (Sw34 ∷ CS23 ∷ Sw34 ∷ []) ∷
+   re 31 1 (ℓ "乼乢乼") ∷
    rw 30 (q22 c4) ∷
-   re 32 1 (Sw34 ∷ CS23 ∷ Sw34 ∷ []) ∷
+   re 32 1 (ℓ "乼乢乼") ∷
    rw 31 (q22 c4) ∷
-   re 33 1 (Sw34 ∷ CS23 ∷ Sw34 ∷ []) ∷
+   re 33 1 (ℓ "乼乢乼") ∷
    rw 32 (q22 c4) ∷
    rw 33 (q32 c4) ∷
-   re 35 1 (Sw34 ∷ CK32 ∷ Sw34 ∷ []) ∷
+   re 35 1 (ℓ "乼乷乼") ∷
    rw 34 (q22 c4) ∷
    rw 35 (q32 c4) ∷
-   re 37 1 (Sw34 ∷ CK32 ∷ Sw34 ∷ []) ∷
+   re 37 1 (ℓ "乼乷乼") ∷
    rw 36 (q22 c4) ∷
    rw 37 (q32 c4) ∷
    rw⁻ 38 (q25 c4) ∷
@@ -486,17 +487,17 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw⁻ 41 (q24 c4) ∷
    rw 42 (q32 c4) ∷
    rw 43 (q32 c4) ∷
-   re 45 1 (Sw34 ∷ CK32 ∷ Sw34 ∷ []) ∷
+   re 45 1 (ℓ "乼乷乼") ∷
    rw 44 (q22 c4) ∷
    rw 45 (q32 c4) ∷
-   re 47 1 (Sw34 ∷ CK32 ∷ Sw34 ∷ []) ∷
+   re 47 1 (ℓ "乼乷乼") ∷
    rw 46 (q22 c4) ∷
    rw 47 (q32 c4) ∷
    rw⁻ 48 (q25 c4) ∷
    rw⁻ 49 (q25 c4) ∷
    rw⁻ 50 (q25 c4) ∷
    rw⁻ 51 (q24 c4) ∷
-   re 53 1 (Sw34 ∷ CS23 ∷ Sw34 ∷ []) ∷
+   re 53 1 (ℓ "乼乢乼") ∷
    rw 52 (q22 c4) ∷
    rw 53 (q22 c4) ∷
    rw 4 (q33 c4) ∷
@@ -551,10 +552,10 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw 3 (q35 c4) ∷
    rw 4 (q35 c4) ∷
    rw 5 (q35 c4) ∷
-   re 7 1 (Sw23 ∷ CK21 ∷ Sw23 ∷ []) ∷
+   re 7 1 (ℓ "乥习乥") ∷
    rw 6 (q14 c4) ∷
    rw 7 (q35 c4) ∷
-   re 9 1 (Sw23 ∷ CK21 ∷ Sw23 ∷ []) ∷
+   re 9 1 (ℓ "乥习乥") ∷
    rw 8 (q14 c4) ∷
    rw 9 (q35 c4) ∷
    rw⁻ 10 (q17 c4) ∷
@@ -566,10 +567,10 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw 16 (q35 c4) ∷
    rw 17 (q35 c4) ∷
    rw 18 (q35 c4) ∷
-   re 20 1 (Sw23 ∷ CK21 ∷ Sw23 ∷ []) ∷
+   re 20 1 (ℓ "乥习乥") ∷
    rw 19 (q14 c4) ∷
    rw 20 (q35 c4) ∷
-   re 22 1 (Sw23 ∷ CK21 ∷ Sw23 ∷ []) ∷
+   re 22 1 (ℓ "乥习乥") ∷
    rw 21 (q14 c4) ∷
    rw 22 (q35 c4) ∷
    rw⁻ 23 (q17 c4) ∷
@@ -577,17 +578,17 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw⁻ 25 (q17 c4) ∷
    rw⁻ 26 (q16 c4) ∷
    rw⁻ 27 (q17 c4) ∷
-   re 29 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 29 1 (ℓ "乥乇乥") ∷
    rw 28 (q14 c4) ∷
-   re 30 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 30 1 (ℓ "乥乇乥") ∷
    rw 29 (q14 c4) ∷
-   re 31 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 31 1 (ℓ "乥乇乥") ∷
    rw 30 (q14 c4) ∷
    rw 31 (q35 c4) ∷
-   re 33 1 (Sw23 ∷ CK21 ∷ Sw23 ∷ []) ∷
+   re 33 1 (ℓ "乥习乥") ∷
    rw 32 (q14 c4) ∷
    rw 33 (q35 c4) ∷
-   re 35 1 (Sw23 ∷ CK21 ∷ Sw23 ∷ []) ∷
+   re 35 1 (ℓ "乥习乥") ∷
    rw 34 (q14 c4) ∷
    rw 35 (q35 c4) ∷
    rw⁻ 36 (q17 c4) ∷
@@ -596,17 +597,17 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw⁻ 39 (q16 c4) ∷
    rw 40 (q35 c4) ∷
    rw 41 (q35 c4) ∷
-   re 43 1 (Sw23 ∷ CK21 ∷ Sw23 ∷ []) ∷
+   re 43 1 (ℓ "乥习乥") ∷
    rw 42 (q14 c4) ∷
    rw 43 (q35 c4) ∷
-   re 45 1 (Sw23 ∷ CK21 ∷ Sw23 ∷ []) ∷
+   re 45 1 (ℓ "乥习乥") ∷
    rw 44 (q14 c4) ∷
    rw 45 (q35 c4) ∷
    rw⁻ 46 (q17 c4) ∷
    rw⁻ 47 (q17 c4) ∷
    rw⁻ 48 (q17 c4) ∷
    rw⁻ 49 (q16 c4) ∷
-   re 51 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 51 1 (ℓ "乥乇乥") ∷
    rw 50 (q14 c4) ∷
    rw 51 (q14 c4) ∷
    rw 2 (q36 c4) ∷
@@ -661,10 +662,10 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw 1 (q38 c4) ∷
    rw 2 (q38 c4) ∷
    rw 3 (q38 c4) ∷
-   re 5 1 (Sw12 ∷ CK10 ∷ Sw12 ∷ []) ∷
+   re 5 1 (ℓ "乊久乊") ∷
    rw 4 (q6 c4) ∷
    rw 5 (q38 c4) ∷
-   re 7 1 (Sw12 ∷ CK10 ∷ Sw12 ∷ []) ∷
+   re 7 1 (ℓ "乊久乊") ∷
    rw 6 (q6 c4) ∷
    rw 7 (q38 c4) ∷
    rw⁻ 8 (q9 c4) ∷
@@ -676,10 +677,10 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw 14 (q38 c4) ∷
    rw 15 (q38 c4) ∷
    rw 16 (q38 c4) ∷
-   re 18 1 (Sw12 ∷ CK10 ∷ Sw12 ∷ []) ∷
+   re 18 1 (ℓ "乊久乊") ∷
    rw 17 (q6 c4) ∷
    rw 18 (q38 c4) ∷
-   re 20 1 (Sw12 ∷ CK10 ∷ Sw12 ∷ []) ∷
+   re 20 1 (ℓ "乊久乊") ∷
    rw 19 (q6 c4) ∷
    rw 20 (q38 c4) ∷
    rw⁻ 21 (q9 c4) ∷
@@ -687,17 +688,17 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw⁻ 23 (q9 c4) ∷
    rw⁻ 24 (q8 c4) ∷
    rw⁻ 25 (q9 c4) ∷
-   re 27 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) ∷
+   re 27 1 (ℓ "乊丨乊") ∷
    rw 26 (q6 c4) ∷
-   re 28 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) ∷
+   re 28 1 (ℓ "乊丨乊") ∷
    rw 27 (q6 c4) ∷
-   re 29 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) ∷
+   re 29 1 (ℓ "乊丨乊") ∷
    rw 28 (q6 c4) ∷
    rw 29 (q38 c4) ∷
-   re 31 1 (Sw12 ∷ CK10 ∷ Sw12 ∷ []) ∷
+   re 31 1 (ℓ "乊久乊") ∷
    rw 30 (q6 c4) ∷
    rw 31 (q38 c4) ∷
-   re 33 1 (Sw12 ∷ CK10 ∷ Sw12 ∷ []) ∷
+   re 33 1 (ℓ "乊久乊") ∷
    rw 32 (q6 c4) ∷
    rw 33 (q38 c4) ∷
    rw⁻ 34 (q9 c4) ∷
@@ -706,17 +707,17 @@ lem-deb-CKS-at0213243140-part0 c4 = derive (Sb2-4-01-3 ∷ CK01 ∷ Sb2-4-01-3 �
    rw⁻ 37 (q8 c4) ∷
    rw 38 (q38 c4) ∷
    rw 39 (q38 c4) ∷
-   re 41 1 (Sw12 ∷ CK10 ∷ Sw12 ∷ []) ∷
+   re 41 1 (ℓ "乊久乊") ∷
    rw 40 (q6 c4) ∷
    rw 41 (q38 c4) ∷
-   re 43 1 (Sw12 ∷ CK10 ∷ Sw12 ∷ []) ∷
+   re 43 1 (ℓ "乊久乊") ∷
    rw 42 (q6 c4) ∷
    rw 43 (q38 c4) ∷
    rw⁻ 44 (q9 c4) ∷
    rw⁻ 45 (q9 c4) ∷
    rw⁻ 46 (q9 c4) ∷
    rw⁻ 47 (q8 c4) ∷
-   re 49 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) ∷
+   re 49 1 (ℓ "乊丨乊") ∷
    rw 48 (q6 c4) ∷
    rw 49 (q6 c4) ∷
    rw 0 (q39 c4) ∷

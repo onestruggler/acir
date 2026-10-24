@@ -7,8 +7,8 @@ open import Examples.Groups.Clifford+CS.Four.DSig using (SD769 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Four.D.D769 (W : Ws) (Sᴰ : SD769) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 open import Examples.Groups.Clifford+CS.Syntactics
@@ -17,6 +17,7 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Four.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -27,7 +28,7 @@ private
   q1 : Eqn
   q1 = wE 5 W
   q2 : Eqn
-  q2 = eqn (Sw01 ∷ X3 ∷ []) (X3 ∷ Sw01 ∷ []) (low-comm (Swap) ((X ↑)))
+  q2 = eqn (ℓ "並丞") (ℓ "丞並") (low-comm (Swap) ((X ↑)))
   q3 : Eqn
   q3 = wE 2549 W
   q4 : Eqn
@@ -47,7 +48,7 @@ private
   q11 : Eqn
   q11 = wE 272 W
   q12 : Eqn
-  q12 = eqn (Sw01 ∷ Sw23 ∷ []) (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap))
+  q12 = eqn (ℓ "並乏") (ℓ "乏並") (low-comm (Swap) (Swap))
   q13 : Eqn
   q13 = wE 1207 W
   q14 : Eqn
@@ -74,13 +75,13 @@ private
   q24 = wE 31 W
 
 -- merge R0 @1023: 91 steps
-lem-merge-R0-at1023 : ⟪ (S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X3 ∷ S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (CS02⁻ ∷ S1 ∷ Toff102 ∷ S1⁻ ∷ []) ⟫ʷ
-lem-merge-R0-at1023 = derive (S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X3 ∷ S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X3 ∷ []) (CS02⁻ ∷ S1 ∷ Toff102 ∷ S1⁻ ∷ [])
+lem-merge-R0-at1023 : ⟪ (ℓ "与丐丽习举习丑丏丞与丐丽习举习丑丏丞") ⟫ʷ ≈ ⟪ (ℓ "丨与习丏") ⟫ʷ
+lem-merge-R0-at1023 = derive (ℓ "与丐丽习举习丑丏丞与丐丽习举习丑丏丞") (ℓ "丨与习丏")
   (rw 18 q1 ∷
    rw⁻ 17 q2 ∷
    rw 16 q3 ∷
    rw 15 q4 ∷
-   re 14 1 (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) ∷
+   re 14 1 (ℓ "丐丶丣丷丣丧丐一") ∷
    rw 21 q5 ∷
    rw 20 q6 ∷
    rw 19 q7 ∷
@@ -90,13 +91,13 @@ lem-merge-R0-at1023 = derive (S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Tof
    rw 15 q10 ∷
    rw 14 q6 ∷
    rw 15 q11 ∷
-   re 15 8 (Toff012 ∷ []) ∷
-   re 13 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   re 15 8 (ℓ "九") ∷
+   re 13 1 (ℓ "乏丷乏") ∷
    rw⁻ 15 q12 ∷
    rw 14 q9 ∷
    rw⁻ 13 q12 ∷
-   re 14 3 (CS03⁻ ∷ []) ∷
-   re 12 1 (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) ∷
+   re 14 3 (ℓ "丮") ∷
+   re 12 1 (ℓ "丐丶丣丷丣丧丐一") ∷
    rw 19 q5 ∷
    rw 18 q6 ∷
    rw 17 q7 ∷
@@ -106,18 +107,18 @@ lem-merge-R0-at1023 = derive (S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Tof
    rw 13 q10 ∷
    rw 12 q6 ∷
    rw 13 q11 ∷
-   re 13 8 (Toff012 ∷ []) ∷
-   re 11 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 13 8 (ℓ "九") ∷
+   re 11 1 (ℓ "乏丶乏") ∷
    rw⁻ 13 q12 ∷
    rw 12 q10 ∷
    rw⁻ 11 q12 ∷
-   re 12 3 (CS03 ∷ []) ∷
+   re 12 3 (ℓ "中") ∷
    rw 10 q6 ∷
    rw 9 q13 ∷
    rw⁻ 8 q2 ∷
    rw 7 q3 ∷
    rw 6 q4 ∷
-   re 5 1 (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) ∷
+   re 5 1 (ℓ "丐丶丣丷丣丧丐一") ∷
    rw 12 q5 ∷
    rw 11 q6 ∷
    rw 10 q7 ∷
@@ -127,13 +128,13 @@ lem-merge-R0-at1023 = derive (S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Tof
    rw 6 q10 ∷
    rw 5 q6 ∷
    rw 6 q11 ∷
-   re 6 8 (Toff012 ∷ []) ∷
-   re 4 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   re 6 8 (ℓ "九") ∷
+   re 4 1 (ℓ "乏丷乏") ∷
    rw⁻ 6 q12 ∷
    rw 5 q9 ∷
    rw⁻ 4 q12 ∷
-   re 5 3 (CS03⁻ ∷ []) ∷
-   re 3 1 (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) ∷
+   re 5 3 (ℓ "丮") ∷
+   re 3 1 (ℓ "丐丶丣丷丣丧丐一") ∷
    rw 10 q5 ∷
    rw 9 q6 ∷
    rw 8 q7 ∷
@@ -143,18 +144,18 @@ lem-merge-R0-at1023 = derive (S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Tof
    rw 4 q10 ∷
    rw 3 q6 ∷
    rw 4 q11 ∷
-   re 4 8 (Toff012 ∷ []) ∷
-   re 2 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 4 8 (ℓ "九") ∷
+   re 2 1 (ℓ "乏丶乏") ∷
    rw⁻ 4 q12 ∷
    rw 3 q10 ∷
    rw⁻ 2 q12 ∷
-   re 3 3 (CS03 ∷ []) ∷
+   re 3 3 (ℓ "中") ∷
    rw 1 q6 ∷
    rw 0 q13 ∷
    rw 1 q14 ∷
    rw 0 q15 ∷
    rw 1 q16 ∷
-   re 3 1 (K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0 ∷ ι ∷ []) ∷
+   re 3 1 (ℓ "上丶丣丷丣丧上一") ∷
    rw 2 q17 ∷
    rw 3 q18 ∷
    rw 4 q19 ∷
@@ -164,7 +165,7 @@ lem-merge-R0-at1023 = derive (S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Tof
    rw 8 q17 ∷
    rw 9 q21 ∷
    rw 2 q22 ∷
-   re 2 8 (Toff102 ∷ []) ∷
+   re 2 8 (ℓ "习") ∷
    rw 3 q23 ∷
    rw 4 q24 ∷ []) Eq.refl
 
@@ -172,13 +173,13 @@ private
   q25 : Eqn
   q25 = wE 12 W
   q26 : Eqn
-  q26 = eqn (Sw12 ∷ X3 ∷ []) (X3 ∷ Sw12 ∷ []) (low₃-comm ((Swap ↑)) (X))
+  q26 = eqn (ℓ "丼丞") (ℓ "丞丼") (low₃-comm ((Swap ↑)) (X))
   q27 : Eqn
   q27 = wE 2573 W
   q28 : Eqn
   q28 = wE 2574 W
   q29 : Eqn
-  q29 = eqn (ι ∷ Sw12 ∷ []) (Sw12 ∷ ι ∷ []) (low₁-comm (iI) (Swap))
+  q29 = eqn (ℓ "一丼") (ℓ "丼一") (low₁-comm (iI) (Swap))
   q30 : Eqn
   q30 = wE 398 W
   q31 : Eqn
@@ -209,76 +210,76 @@ private
   q43 = wE 339 W
 
 -- merge R0 @2013: 181 steps
-lem-merge-R0-at2013 : ⟪ (S2 ∷ K2 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ K2⁻ ∷ S2⁻ ∷ X3 ∷ S2 ∷ K2 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ K2⁻ ∷ S2⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (CS01⁻ ∷ S2 ∷ Toff201 ∷ S2⁻ ∷ []) ⟫ʷ
-lem-merge-R0-at2013 = derive (S2 ∷ K2 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ K2⁻ ∷ S2⁻ ∷ X3 ∷ S2 ∷ K2 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ K2⁻ ∷ S2⁻ ∷ X3 ∷ []) (CS01⁻ ∷ S2 ∷ Toff201 ∷ S2⁻ ∷ [])
+lem-merge-R0-at2013 : ⟪ (ℓ "且世义乣乊乣丗丕丞且世义乣乊乣丗丕丞") ⟫ʷ ≈ ⟪ (ℓ "両且乣丕") ⟫ʷ
+lem-merge-R0-at2013 = derive (ℓ "且世义乣乊乣丗丕丞且世义乣乊乣丗丕丞") (ℓ "両且乣丕")
   (rw 18 q25 ∷
    rw⁻ 17 q26 ∷
    rw 16 q27 ∷
    rw 15 q28 ∷
-   re 14 1 (K2 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K2 ∷ ι ∷ []) ∷
+   re 14 1 (ℓ "世丶丣丷丣丧世一") ∷
    rw 21 q29 ∷
    rw 20 q30 ∷
-   re 19 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) ∷
+   re 19 1 (ℓ "丼丠丼") ∷
    rw 21 q31 ∷
    rw 18 q25 ∷
-   re 19 3 (CX02 ∷ []) ∷
+   re 19 3 (ℓ "个") ∷
    rw 17 q32 ∷
    rw 16 q25 ∷
-   re 17 3 (CX02 ∷ []) ∷
+   re 17 3 (ℓ "个") ∷
    rw 15 q33 ∷
    rw 14 q30 ∷
    rw 15 q34 ∷
-   re 15 8 (Toff102 ∷ []) ∷
+   re 15 8 (ℓ "习") ∷
    rw 13 q35 ∷
-   re 12 1 (K2 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K2 ∷ ι ∷ []) ∷
+   re 12 1 (ℓ "世丶丣丷丣丧世一") ∷
    rw 19 q29 ∷
    rw 18 q30 ∷
-   re 17 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) ∷
+   re 17 1 (ℓ "丼丠丼") ∷
    rw 19 q31 ∷
    rw 16 q25 ∷
-   re 17 3 (CX02 ∷ []) ∷
+   re 17 3 (ℓ "个") ∷
    rw 15 q32 ∷
    rw 14 q25 ∷
-   re 15 3 (CX02 ∷ []) ∷
+   re 15 3 (ℓ "个") ∷
    rw 13 q33 ∷
    rw 12 q30 ∷
    rw 13 q34 ∷
-   re 13 8 (Toff102 ∷ []) ∷
+   re 13 8 (ℓ "习") ∷
    rw 11 q36 ∷
    rw 10 q30 ∷
    rw 9 q37 ∷
    rw⁻ 8 q26 ∷
    rw 7 q27 ∷
    rw 6 q28 ∷
-   re 5 1 (K2 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K2 ∷ ι ∷ []) ∷
+   re 5 1 (ℓ "世丶丣丷丣丧世一") ∷
    rw 12 q29 ∷
    rw 11 q30 ∷
-   re 10 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) ∷
+   re 10 1 (ℓ "丼丠丼") ∷
    rw 12 q31 ∷
    rw 9 q25 ∷
-   re 10 3 (CX02 ∷ []) ∷
+   re 10 3 (ℓ "个") ∷
    rw 8 q32 ∷
    rw 7 q25 ∷
-   re 8 3 (CX02 ∷ []) ∷
+   re 8 3 (ℓ "个") ∷
    rw 6 q33 ∷
    rw 5 q30 ∷
    rw 6 q34 ∷
-   re 6 8 (Toff102 ∷ []) ∷
+   re 6 8 (ℓ "习") ∷
    rw 4 q35 ∷
-   re 3 1 (K2 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K2 ∷ ι ∷ []) ∷
+   re 3 1 (ℓ "世丶丣丷丣丧世一") ∷
    rw 10 q29 ∷
    rw 9 q30 ∷
-   re 8 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) ∷
+   re 8 1 (ℓ "丼丠丼") ∷
    rw 10 q31 ∷
    rw 7 q25 ∷
-   re 8 3 (CX02 ∷ []) ∷
+   re 8 3 (ℓ "个") ∷
    rw 6 q32 ∷
    rw 5 q25 ∷
-   re 6 3 (CX02 ∷ []) ∷
+   re 6 3 (ℓ "个") ∷
    rw 4 q33 ∷
    rw 3 q30 ∷
    rw 4 q34 ∷
-   re 4 8 (Toff102 ∷ []) ∷
+   re 4 8 (ℓ "习") ∷
    rw 2 q36 ∷
    rw 1 q30 ∷
    rw 0 q37 ∷
@@ -286,7 +287,7 @@ lem-merge-R0-at2013 = derive (S2 ∷ K2 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Tof
    rw⁻ 18 q2 ∷
    rw 17 q3 ∷
    rw 16 q4 ∷
-   re 15 1 (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) ∷
+   re 15 1 (ℓ "丐丶丣丷丣丧丐一") ∷
    rw 22 q5 ∷
    rw 21 q6 ∷
    rw 20 q7 ∷
@@ -296,13 +297,13 @@ lem-merge-R0-at2013 = derive (S2 ∷ K2 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Tof
    rw 16 q10 ∷
    rw 15 q6 ∷
    rw 16 q11 ∷
-   re 16 8 (Toff012 ∷ []) ∷
-   re 14 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   re 16 8 (ℓ "九") ∷
+   re 14 1 (ℓ "乏丷乏") ∷
    rw⁻ 16 q12 ∷
    rw 15 q9 ∷
    rw⁻ 14 q12 ∷
-   re 15 3 (CS03⁻ ∷ []) ∷
-   re 13 1 (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) ∷
+   re 15 3 (ℓ "丮") ∷
+   re 13 1 (ℓ "丐丶丣丷丣丧丐一") ∷
    rw 20 q5 ∷
    rw 19 q6 ∷
    rw 18 q7 ∷
@@ -312,18 +313,18 @@ lem-merge-R0-at2013 = derive (S2 ∷ K2 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Tof
    rw 14 q10 ∷
    rw 13 q6 ∷
    rw 14 q11 ∷
-   re 14 8 (Toff012 ∷ []) ∷
-   re 12 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 14 8 (ℓ "九") ∷
+   re 12 1 (ℓ "乏丶乏") ∷
    rw⁻ 14 q12 ∷
    rw 13 q10 ∷
    rw⁻ 12 q12 ∷
-   re 13 3 (CS03 ∷ []) ∷
+   re 13 3 (ℓ "中") ∷
    rw 11 q6 ∷
    rw 10 q13 ∷
    rw⁻ 9 q2 ∷
    rw 8 q3 ∷
    rw 7 q4 ∷
-   re 6 1 (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) ∷
+   re 6 1 (ℓ "丐丶丣丷丣丧丐一") ∷
    rw 13 q5 ∷
    rw 12 q6 ∷
    rw 11 q7 ∷
@@ -333,13 +334,13 @@ lem-merge-R0-at2013 = derive (S2 ∷ K2 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Tof
    rw 7 q10 ∷
    rw 6 q6 ∷
    rw 7 q11 ∷
-   re 7 8 (Toff012 ∷ []) ∷
-   re 5 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   re 7 8 (ℓ "九") ∷
+   re 5 1 (ℓ "乏丷乏") ∷
    rw⁻ 7 q12 ∷
    rw 6 q9 ∷
    rw⁻ 5 q12 ∷
-   re 6 3 (CS03⁻ ∷ []) ∷
-   re 4 1 (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) ∷
+   re 6 3 (ℓ "丮") ∷
+   re 4 1 (ℓ "丐丶丣丷丣丧丐一") ∷
    rw 11 q5 ∷
    rw 10 q6 ∷
    rw 9 q7 ∷
@@ -349,18 +350,18 @@ lem-merge-R0-at2013 = derive (S2 ∷ K2 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Tof
    rw 5 q10 ∷
    rw 4 q6 ∷
    rw 5 q11 ∷
-   re 5 8 (Toff012 ∷ []) ∷
-   re 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   re 5 8 (ℓ "九") ∷
+   re 3 1 (ℓ "乏丶乏") ∷
    rw⁻ 5 q12 ∷
    rw 4 q10 ∷
    rw⁻ 3 q12 ∷
-   re 4 3 (CS03 ∷ []) ∷
+   re 4 3 (ℓ "中") ∷
    rw 2 q6 ∷
    rw 1 q13 ∷
    rw 2 q14 ∷
    rw 1 q15 ∷
    rw 2 q16 ∷
-   re 4 1 (K0 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K0 ∷ ι ∷ []) ∷
+   re 4 1 (ℓ "上丶丣丷丣丧上一") ∷
    rw 3 q17 ∷
    rw 4 q18 ∷
    rw 5 q19 ∷
@@ -370,25 +371,25 @@ lem-merge-R0-at2013 = derive (S2 ∷ K2 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Tof
    rw 9 q17 ∷
    rw 10 q21 ∷
    rw 3 q22 ∷
-   re 3 8 (Toff102 ∷ []) ∷
+   re 3 8 (ℓ "习") ∷
    rw 4 q23 ∷
    rw 5 q24 ∷
-   re 1 1 (Sw12 ∷ CS01⁻ ∷ Sw12 ∷ []) ∷
+   re 1 1 (ℓ "丼両丼") ∷
    rw 0 q31 ∷
    rw 1 q38 ∷
-   re 3 1 (K1 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ K1 ∷ ι ∷ []) ∷
+   re 3 1 (ℓ "丐丶丣丷丣丧丐一") ∷
    rw 2 q39 ∷
    rw 3 q40 ∷
    rw 6 q25 ∷
-   re 4 3 (CX02 ∷ []) ∷
+   re 4 3 (ℓ "个") ∷
    rw 5 q41 ∷
    rw 8 q25 ∷
-   re 6 3 (CX02 ∷ []) ∷
-   re 8 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) ∷
+   re 6 3 (ℓ "个") ∷
+   re 8 1 (ℓ "丼丠丼") ∷
    rw 7 q31 ∷
    rw 8 q39 ∷
    rw⁻ 9 q29 ∷
    rw 2 q42 ∷
-   re 2 8 (Toff201 ∷ []) ∷
+   re 2 8 (ℓ "乣") ∷
    rw 3 q43 ∷
    rw 4 q31 ∷ []) Eq.refl

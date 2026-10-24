@@ -7,8 +7,8 @@ open import Examples.Groups.Clifford+CS.Four.DSig using (SD786 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Four.D.D786 (W : Ws) (Sᴰ : SD786) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 open import Examples.Groups.Clifford+CS.Syntactics
@@ -17,6 +17,7 @@ open import Examples.Groups.Clifford+CS.Tools using (ax)
 open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
 open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Four.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -38,8 +39,8 @@ private
   q3 = sE 3484 lem-ROT-gad-at1023
 
 -- cls 1000PP0 0000PP1 0100R1 = 0100R1 1000PP0: 3 steps
-lem-cls-1000PP0-0000PP1-0100R1-≡-0100R1-1000PP0 : ⟪ (X0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ X0 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ X1 ∷ S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X1 ∷ []) ⟫ʷ ≈ ⟪ (X1 ∷ S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X1 ∷ X0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ X0 ∷ []) ⟫ʷ
-lem-cls-1000PP0-0000PP1-0100R1-≡-0100R1-1000PP0 = derive (X0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ X0 ∷ Toff102 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ X1 ∷ S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X1 ∷ []) (X1 ∷ S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X1 ∷ X0 ∷ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ X0 ∷ [])
+lem-cls-1000PP0-0000PP1-0100R1-≡-0100R1-1000PP0 : ⟪ (ℓ "丌九中九丮丌习丽习举丒与丐丽习举习丑丏丒") ⟫ʷ ≈ ⟪ (ℓ "丒与丐丽习举习丑丏丒丌九中九丮丌") ⟫ʷ
+lem-cls-1000PP0-0000PP1-0100R1-≡-0100R1-1000PP0 = derive (ℓ "丌九中九丮丌习丽习举丒与丐丽习举习丑丏丒") (ℓ "丒与丐丽习举习丑丏丒丌九中九丮丌")
   (rw⁻ 11 q1 ∷
    rw 0 q2 ∷
    rw 1 q3 ∷ []) Eq.refl
@@ -53,8 +54,8 @@ private
   q6 = sE 2261 lem-ROT-gad
 
 -- cls 0000R0 0100R1 0000R0 = 0100R1 0000R0 0100R1: 7 steps
-lem-cls-0000R0-0100R1-0000R0-≡-0100R1-0000R0-0100R1 : ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X1 ∷ S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X1 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ ≈ ⟪ (X1 ∷ S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X1 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X1 ∷ S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X1 ∷ []) ⟫ʷ
-lem-cls-0000R0-0100R1-0000R0-≡-0100R1-0000R0-0100R1 = derive (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X1 ∷ S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X1 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) (X1 ∷ S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X1 ∷ S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ X1 ∷ S1 ∷ K1 ∷ CS13 ∷ Toff102 ∷ CS13⁻ ∷ Toff102 ∷ K1⁻ ∷ S1⁻ ∷ X1 ∷ [])
+lem-cls-0000R0-0100R1-0000R0-≡-0100R1-0000R0-0100R1 : ⟪ (ℓ "丈上中九丮九下三丒与丐丽习举习丑丏丒丈上中九丮九下三") ⟫ʷ ≈ ⟪ (ℓ "丒与丐丽习举习丑丏丒丈上中九丮九下三丒与丐丽习举习丑丏丒") ⟫ʷ
+lem-cls-0000R0-0100R1-0000R0-≡-0100R1-0000R0-0100R1 = derive (ℓ "丈上中九丮九下三丒与丐丽习举习丑丏丒丈上中九丮九下三") (ℓ "丒与丐丽习举习丑丏丒丈上中九丮九下三丒与丐丽习举习丑丏丒")
   (rw⁻ 0 q4 ∷
    rw⁻ 25 q4 ∷
    rw⁻ 16 q1 ∷

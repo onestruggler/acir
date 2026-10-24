@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD028 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D028 (Sᴰ : SD028) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -46,7 +47,7 @@ private
   q4 : Ws → Eqn
   q4 c4 = wlE 1172 (lit c4)
   q5 : Ws → Eqn
-  q5 c4 = eqn (CCZ123 ∷ X4 ∷ []) (X4 ∷ CCZ123 ∷ []) (c₄ (CCZ ↑) (X))
+  q5 c4 = eqn (ℓ "交並") (ℓ "並交") (c₄ (CCZ ↑) (X))
   q6 : Ws → Eqn
   q6 c4 = wlE 729 (lit c4)
   q7 : Ws → Eqn
@@ -74,17 +75,17 @@ private
   q18 : Ws → Eqn
   q18 c4 = wlE 464 (lit c4)
   q19 : Ws → Eqn
-  q19 c4 = eqn (Toff012 ∷ K3 ∷ []) (K3 ∷ Toff012 ∷ []) (c₃ (Toff) (K))
+  q19 c4 = eqn (ℓ "亍丞") (ℓ "丞亍") (c₃ (Toff) (K))
   q20 : Ws → Eqn
-  q20 c4 = eqn (Toff012 ∷ CK43 ∷ []) (CK43 ∷ Toff012 ∷ []) (c₃ (Toff) (CK₁₀))
+  q20 c4 = eqn (ℓ "亍亊") (ℓ "亊亍") (c₃ (Toff) (CK₁₀))
   q21 : Ws → Eqn
-  q21 c4 = eqn (Toff012 ∷ S4 ∷ []) (S4 ∷ Toff012 ∷ []) (c₃ (Toff) (S ↑))
+  q21 c4 = eqn (ℓ "亍丢") (ℓ "丢亍") (c₃ (Toff) (S ↑))
   q22 : Ws → Eqn
   q22 c4 = wlE 1173 (lit c4)
 
 -- CKc-box @3443: 61 steps
-lem-CKc-box-at3443 : Ws → ⟪ (Bx0-1243 ∷ CK43 ∷ []) ⟫ʷ ≈ ⟪ (CCZ123 ∷ CK43 ∷ CCZ123 ∷ Bx0-1243 ∷ []) ⟫ʷ
-lem-CKc-box-at3443 c4 = derive (Bx0-1243 ∷ CK43 ∷ []) (CCZ123 ∷ CK43 ∷ CCZ123 ∷ Bx0-1243 ∷ [])
+lem-CKc-box-at3443 : Ws → ⟪ (ℓ "亼亊") ⟫ʷ ≈ ⟪ (ℓ "交亊交亼") ⟫ʷ
+lem-CKc-box-at3443 c4 = derive (ℓ "亼亊") (ℓ "交亊交亼")
   (rw⁻ 1 (q1 c4) ∷
    rw 0 (q2 c4) ∷
    rw⁻ 0 (q3 c4) ∷
@@ -156,8 +157,8 @@ private
   q25 c4 = sE 1146 (lem-sym-bc-at031031 c4)
 
 -- box-perm-4132 @03243240: 3 steps
-lem-box-perm-4132-at03243240 : Ws → ⟪ (Bx3-1420 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0124 ∷ []) ⟫ʷ
-lem-box-perm-4132-at03243240 c4 = derive (Bx3-1420 ∷ []) (Bx3-0124 ∷ [])
+lem-box-perm-4132-at03243240 : Ws → ⟪ (ℓ "佯") ⟫ʷ ≈ ⟪ (ℓ "佤") ⟫ʷ
+lem-box-perm-4132-at03243240 c4 = derive (ℓ "佯") (ℓ "佤")
   (rw 0 (q23 c4) ∷
    rw 0 (q24 c4) ∷
    rw 0 (q25 c4) ∷ []) Eq.refl

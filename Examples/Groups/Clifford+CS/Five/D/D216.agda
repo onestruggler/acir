@@ -6,8 +6,8 @@ open import Examples.Groups.Clifford+CS.Five.DSig using (SD216 ; pickᴰ ; sE)
 
 module Examples.Groups.Clifford+CS.Five.D.D216 (Sᴰ : SD216) where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
 
@@ -16,6 +16,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; C
 open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
 -- The lemmas of other derivation modules (DSig).
 private
@@ -202,9 +203,9 @@ private
   q10 : Ws → Eqn
   q10 c4 = sE 1968 (lem-comm-push-SBOX⟨2·4·10·3⟩-sw1-L c4)
   q11 : Ws → Eqn
-  q11 c4 = eqn (Sw01 ∷ S2 ∷ []) (S2 ∷ Sw01 ∷ []) (c₂ (Swap) (S))
+  q11 c4 = eqn (ℓ "丫世") (ℓ "世丫") (c₂ (Swap) (S))
   q12 : Ws → Eqn
-  q12 c4 = eqn (Sw01 ∷ CS24 ∷ []) (CS24 ∷ Sw01 ∷ []) (c₂ (Swap) (Swap ↑ • CS • Swap ↑))
+  q12 c4 = eqn (ℓ "丫乩") (ℓ "乩丫") (c₂ (Swap) (Swap ↑ • CS • Swap ↑))
   q13 : Ws → Eqn
   q13 c4 = sE 1973 (lem-comm-push-SBOX⟨1·4·20·3⟩-sw0-L c4)
   q14 : Ws → Eqn
@@ -218,9 +219,9 @@ private
   q18 : Ws → Eqn
   q18 c4 = sE 1971 (lem-comm-push-SBOX⟨0·4·21·3⟩-sw2-L c4)
   q19 : Ws → Eqn
-  q19 c4 = eqn (Sw12 ∷ S3 ∷ []) (S3 ∷ Sw12 ∷ []) (c₃ (Swap ↑) (S))
+  q19 c4 = eqn (ℓ "乊东") (ℓ "东乊") (c₃ (Swap ↑) (S))
   q20 : Ws → Eqn
-  q20 c4 = eqn (Sw12 ∷ CS34 ∷ []) (CS34 ∷ Sw12 ∷ []) (c₃ (Swap ↑) (CS))
+  q20 c4 = eqn (ℓ "乊乹") (ℓ "乹乊") (c₃ (Swap ↑) (CS))
   q21 : Ws → Eqn
   q21 c4 = sE 1970 (lem-comm-push-SBOX⟨0·4·31·2⟩-sw1-L c4)
   q22 : Ws → Eqn
@@ -234,7 +235,7 @@ private
   q26 : Ws → Eqn
   q26 c4 = sE 1972 (lem-comm-push-SBOX⟨0·4·32·1⟩-sw3-L c4)
   q27 : Ws → Eqn
-  q27 c4 = eqn (Sw23 ∷ S4 ∷ []) (S4 ∷ Sw23 ∷ []) (c₄ (Swap ↑ ↑) (S))
+  q27 c4 = eqn (ℓ "乥丢") (ℓ "丢乥") (c₄ (Swap ↑ ↑) (S))
   q28 : Ws → Eqn
   q28 c4 = wlE 8 (lit c4)
   q29 : Ws → Eqn
@@ -263,8 +264,8 @@ private
   q40 c4 = sE 2162 (lem-deb-CKS-at0213243140 c4)
 
 -- ckt-A-R: 191 steps
-lem-ckt-A-R : Ws → ⟪ (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ []) ⟫ʷ ≈ ⟪ (X0 ∷ CCZ014 ∷ CS14 ∷ K1 ∷ CS14 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ S4 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ K1 ∷ CS14 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ S4 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS14 ∷ K1 ∷ CS14 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ CS14 ∷ CS14 ∷ K1 ∷ CS14 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ CS01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ X0 ∷ []) ⟫ʷ
-lem-ckt-A-R c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ CS04 ∷ X0 ∷ X0 ∷ S0 ∷ X0 ∷ []) (X0 ∷ CCZ014 ∷ CS14 ∷ K1 ∷ CS14 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ S4 ∷ CS14 ∷ CS14 ∷ CS14 ∷ CS14 ∷ K1 ∷ CS14 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ S4 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS14 ∷ K1 ∷ CS14 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ CS14 ∷ CS14 ∷ K1 ∷ CS14 ∷ K1 ∷ CS14 ∷ S4 ∷ S4 ∷ S4 ∷ ι ∷ CS01 ∷ X0 ∷ X0 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ Sb2-4-01-3 ∷ X0 ∷ [])
+lem-ckt-A-R : Ws → ⟪ (ℓ "与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与") ⟫ʷ ≈ ⟪ (ℓ "与五乕丒乕丒乕丢丢丢一丢乕乕乕乕丒乕丒乕丢丢丢一丢丨丨丨乕丒乕丒乕丢丢丢一乕乕丒乕丒乕丢丢丢一丨与与俊俊俊与") ⟫ʷ
+lem-ckt-A-R c4 = derive (ℓ "与俊与与中与与俊与与中与与俊与与丽与与丽与与丽与与上与") (ℓ "与五乕丒乕丒乕丢丢丢一丢乕乕乕乕丒乕丒乕丢丢丢一丢丨丨丨乕丒乕丒乕丢丢丢一乕乕丒乕丒乕丢丢丢一丨与与俊俊俊与")
   (rw 2 (q1 c4) ∷
    rw 3 (q1 c4) ∷
    rw 4 (q1 c4) ∷
@@ -290,10 +291,10 @@ lem-ckt-A-R c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 
    rw 7 (q9 c4) ∷
    rw 6 (q10 c4) ∷
    rw⁻ 5 (q7 c4) ∷
-   re 6 3 (CK20 ∷ []) ∷
+   re 6 3 (ℓ "九") ∷
    rw 4 (q10 c4) ∷
    rw⁻ 3 (q7 c4) ∷
-   re 4 3 (CK20 ∷ []) ∷
+   re 4 3 (ℓ "九") ∷
    rw 2 (q10 c4) ∷
    rw⁻ 12 (q2 c4) ∷
    rw⁻ 11 (q11 c4) ∷
@@ -312,10 +313,10 @@ lem-ckt-A-R c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 
    rw 9 (q17 c4) ∷
    rw 8 (q18 c4) ∷
    rw⁻ 7 (q15 c4) ∷
-   re 8 3 (CK31 ∷ []) ∷
+   re 8 3 (ℓ "乴") ∷
    rw 6 (q18 c4) ∷
    rw⁻ 5 (q15 c4) ∷
-   re 6 3 (CK31 ∷ []) ∷
+   re 6 3 (ℓ "乴") ∷
    rw 4 (q18 c4) ∷
    rw⁻ 14 (q7 c4) ∷
    rw⁻ 13 (q19 c4) ∷
@@ -334,10 +335,10 @@ lem-ckt-A-R c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 
    rw 11 (q25 c4) ∷
    rw 10 (q26 c4) ∷
    rw⁻ 9 (q23 c4) ∷
-   re 10 3 (CK42 ∷ []) ∷
+   re 10 3 (ℓ "亇") ∷
    rw 8 (q26 c4) ∷
    rw⁻ 7 (q23 c4) ∷
-   re 8 3 (CK42 ∷ []) ∷
+   re 8 3 (ℓ "亇") ∷
    rw 6 (q26 c4) ∷
    rw⁻ 16 (q15 c4) ∷
    rw⁻ 15 (q27 c4) ∷
@@ -365,10 +366,10 @@ lem-ckt-A-R c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 
    rw 19 (q32 c4) ∷
    rw 20 (q15 c4) ∷
    rw 6 (q33 c4) ∷
-   re 8 1 (Sw34 ∷ CK32 ∷ Sw34 ∷ []) ∷
+   re 8 1 (ℓ "乼乷乼") ∷
    rw 7 (q23 c4) ∷
    rw 8 (q33 c4) ∷
-   re 10 1 (Sw34 ∷ CK32 ∷ Sw34 ∷ []) ∷
+   re 10 1 (ℓ "乼乷乼") ∷
    rw 9 (q23 c4) ∷
    rw 10 (q33 c4) ∷
    rw⁻ 11 (q25 c4) ∷
@@ -395,10 +396,10 @@ lem-ckt-A-R c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 
    rw 17 (q34 c4) ∷
    rw 18 (q7 c4) ∷
    rw 4 (q35 c4) ∷
-   re 6 1 (Sw23 ∷ CK21 ∷ Sw23 ∷ []) ∷
+   re 6 1 (ℓ "乥习乥") ∷
    rw 5 (q15 c4) ∷
    rw 6 (q35 c4) ∷
-   re 8 1 (Sw23 ∷ CK21 ∷ Sw23 ∷ []) ∷
+   re 8 1 (ℓ "乥习乥") ∷
    rw 7 (q15 c4) ∷
    rw 8 (q35 c4) ∷
    rw⁻ 9 (q17 c4) ∷
@@ -425,10 +426,10 @@ lem-ckt-A-R c4 = derive (X0 ∷ Sb2-4-01-3 ∷ X0 ∷ X0 ∷ CK01 ∷ X0 ∷ X0 
    rw 15 (q36 c4) ∷
    rw 16 (q2 c4) ∷
    rw 2 (q37 c4) ∷
-   re 4 1 (Sw12 ∷ CK10 ∷ Sw12 ∷ []) ∷
+   re 4 1 (ℓ "乊久乊") ∷
    rw 3 (q7 c4) ∷
    rw 4 (q37 c4) ∷
-   re 6 1 (Sw12 ∷ CK10 ∷ Sw12 ∷ []) ∷
+   re 6 1 (ℓ "乊久乊") ∷
    rw 5 (q7 c4) ∷
    rw 6 (q37 c4) ∷
    rw⁻ 7 (q9 c4) ∷

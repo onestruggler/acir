@@ -65,6 +65,17 @@ CONSUMERS = {
              'Five/Resps.agda'],
 }[TREE]
 
+# Consumers that take their lemmas as a parameter, as a derivation module
+# does: Five.F1 imported its assembly, Five.DAll.F1, so that it checked
+# its 32 s (f1₀'s by-flat comparisons of the controlled five-wire words)
+# only after all of Five/D, the last link of a from-scratch run.  It now
+# takes a list of them, `(Sᴰ : SF1)` (DSig, typed by their statements in
+# DStmt), names them in a private block, and checks early; its assembly
+# builds the list, applies it and re-exports what it gives (`f1`).
+PCONS = {} if FOUR else {'Five/F1.agda': ['f1']}
+PMARK = '-- The lemmas of Five/D it uses (DSig; its assembly in Five.DAll gives them).'
+PBLOCK = re.compile(r'^' + re.escape(PMARK) + r'\nprivate\n((?:  .*\n)*)\n?', re.M)
+
 # An import of a derivation module (D…, or a respelling module R…).
 IMP = re.compile(r'^open import ' + re.escape(MODP) + r'([DR]\d+)(?: W)? using \(([^)]*)\)\n', re.M)
 # Modules outside the tree whose lemmas are taken the same way.
@@ -145,10 +156,30 @@ for m in mods:
                 used[x] = owner[x]
     deps[m] = used
 
-# The statements the modules take, numbered.
+# What the parameterised consumers use: off their import of the assembly,
+# or on a rerun off their private block.
+PDIMP = re.compile(r'^open import ' + re.escape(DALL) + r'\.\w+ using \(([^)]*)\)\n', re.M)
+puse = {}
+for c in PCONS:
+    s = open(os.path.join(BASE, c), encoding='utf-8').read()
+    used = []
+    for xs in PDIMP.findall(s):
+        used += names(xs)
+    b = PBLOCK.search(s)
+    if b:
+        used += re.findall(r'^  (lem-\S+) : ', b.group(1), re.M)
+    puse[c] = list(dict.fromkeys(used))
+    assert all(argof(owner[x]) == 'Ws' for x in puse[c]), c
+
+# The statements the modules take, numbered; then those the parameterised
+# consumers take (after, so that the others keep their numbers).
 taken = []
 for m in mods:
     for x in deps[m]:
+        if x not in taken:
+            taken.append(x)
+for c in PCONS:
+    for x in puse[c]:
         if x not in taken:
             taken.append(x)
 idx = {x: i for i, x in enumerate(taken)}
@@ -284,7 +315,8 @@ for k, items in enumerate(parts):
         f'module {DSTMT}.P{k} where', '',
         'open import Data.List.Base using ([] ; _∷_)', '',
         TIMPORT,
-        'open import Examples.Groups.Clifford+CS.' + TREE + '.Letters', '',
+        'open import Examples.Groups.Clifford+CS.' + TREE + '.Letters',
+        'open import Examples.Groups.Clifford+CS.' + TREE + '.Str using (ℓ)', '',
         f't : {TTYPE}',
         't = ' + tree(items)]
     p = os.path.join(pdir, f'P{k}.agda')
@@ -304,7 +336,8 @@ out = HEAD + [
     'open import Data.List.Base using ([] ; _∷_)',
     'open import Data.Nat.Base using (ℕ)',
     TIMPORT,
-    'open import Examples.Groups.Clifford+CS.' + TREE + '.Letters'] + [
+    'open import Examples.Groups.Clifford+CS.' + TREE + '.Letters',
+    'open import Examples.Groups.Clifford+CS.' + TREE + '.Str using (ℓ)'] + [
     f'import {DSTMT}.P{k} as P{k}' for k in range(len(parts))] + ['',
     'lemmas : ' + TTYPE,
     'lemmas = ' + top, '',
@@ -363,7 +396,36 @@ for m in mods:
     if deps[m]:
         out.append(f'S{m} : Set')
         out.append(f'S{m} = All ' + (argof(m) + ' ' if argof(m) else '') + '(' + ' ∷ '.join(str(idx[x]) for x in deps[m]) + ' ∷ [])')
+for c in PCONS:
+    nm = os.path.basename(c)[:-5]
+    out.append(f'S{nm} : Set')
+    out.append(f'S{nm} = All Ws (' + ' ∷ '.join(str(idx[x]) for x in puse[c]) + ' ∷ [])')
 open(SIGF, 'w', encoding='utf-8').write(NL.join(out) + NL)
+
+# The parameterised consumers take their list.
+for c in PCONS:
+    p = os.path.join(BASE, c)
+    s = open(p, encoding='utf-8').read()
+    nm = os.path.basename(c)[:-5]
+    pre = [f'open import {DSTMT} using (St)', f'open import {DSIG} using (S{nm} ; pickᴰ)']
+    s2 = PBLOCK.sub('', PDIMP.sub('', s))
+    for line in pre:
+        s2 = s2.replace(line + NL, '')
+    h = re.search(r'^module (' + re.escape(PFX) + r'\S+)(?: \(Sᴰ : S' + nm + r'\))? where\n', s2, re.M)
+    head = f'module {h.group(1)} (Sᴰ : S{nm}) where' + NL
+    s2 = s2[:h.start()] + NL.join(pre) + NL + NL + head + s2[h.end():]
+    start = s2.index(head) + len(head)
+    last = start
+    for mm in re.finditer(r'^(?:open import|import) .*\n(?:[ \t]+\S.*\n)*', s2[start:], re.M):
+        last = start + mm.end()
+    block = [PMARK, 'private']
+    for k, x in enumerate(puse[c]):
+        block.append(f'  {x} : Ws → St {idx[x]}')
+        block.append(f'  {x} = pickᴰ {k} Sᴰ')
+    s2 = s2[:last].rstrip(NL) + NL + NL + NL.join(block) + NL + NL + s2[last:].lstrip(NL)
+    s2 = re.sub(r'\n{3,}', NL + NL, s2)
+    if s2 != s:
+        open(p, 'w', encoding='utf-8').write(s2)
 
 TT, TL, TN, WIN = ('Tree', 'leaf', 'node', 'Win') if FOUR else ('WTree', 'wleaf', 'wnode', 'WinT')
 out = HEAD + [
@@ -455,7 +517,8 @@ if FOUR:
         'module ' + CSTMT + ' where', '',
         'open import Data.List.Base using ([] ; _∷_)', '',
         'open import Examples.Groups.Clifford+CS.Four.WinSig using (Tree ; leaf ; node)',
-        'open import Examples.Groups.Clifford+CS.Four.Letters', '',
+        'open import Examples.Groups.Clifford+CS.Four.Letters',
+        'open import Examples.Groups.Clifford+CS.Four.Str using (ℓ)', '',
         'clemmas : Tree',
         'clemmas = ' + tree([sides(x) for x in cnames])]
     open(os.path.join(BASE, 'Four', 'CStmt.agda'), 'w', encoding='utf-8').write(NL.join(out) + NL)
@@ -547,6 +610,10 @@ for gname, cons in GROUPS:
     gmod = PFX + TREE + '.' + gname
     cons_used = collections.OrderedDict()
     for c in cons:
+        if c in PCONS:
+            for x in puse[c]:
+                cons_used[x] = owner[x]
+            continue
         p = os.path.join(BASE, c)
         s = open(p, encoding='utf-8').read()
         ns = []
@@ -598,6 +665,9 @@ for gname, cons in GROUPS:
             out.append(f'open import {p} using (' + ' ; '.join(xs) + ')')
     for m in order:
         out.append(f'import {MODP}{m} as {m}')
+    for c in cons:
+        if c in PCONS:
+            out.append(f'import {PFX}{c[:-5].replace("/", ".")} as {os.path.basename(c)[:-5]}M')
     out.append('')
 
     def item(m, x):
@@ -613,6 +683,14 @@ for gname, cons in GROUPS:
         for x in [y for y in sig if owner[y] == m and y in need]:
             out.append(f'{x} : _')
             out.append(f'{x} = {m}.{x}{args}')
+    for c in cons:
+        if c in PCONS:
+            nm = os.path.basename(c)[:-5]
+            out += ['', f'-- {nm}, at its lemmas.',
+                    f's{nm} : S{nm}',
+                    f's{nm} = ' + ' ∷ᵃ '.join(puse[c]) + ' ∷ᵃ nil', '',
+                    f'module {nm}I = {nm}M s{nm}',
+                    f'open {nm}I public using (' + ' ; '.join(PCONS[c]) + ')']
     path = os.path.join(BASE, TREE, *gname.split('.')) + '.agda'
     os.makedirs(os.path.dirname(path), exist_ok=True)
     open(path, 'w', encoding='utf-8').write(NL.join(out) + NL)
