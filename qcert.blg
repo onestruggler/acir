@@ -1,0 +1,84 @@
+This is BibTeX, Version 0.99d (TeX Live 2025)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: qcert.aux
+The style file: ACM-Reference-Format.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: planqc/refs.bib
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=200001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
+Warning--empty publisher in amy2018cnotdihedral
+Warning--empty address in amy2018cnotdihedral
+Warning--empty publisher in amy2024toffoli
+Warning--empty address in amy2024toffoli
+Warning--unusual to have number, but no volume, for bian2027popl
+Warning--page numbers missing in both pages and numpages fields in bian2027popl
+Warning--empty publisher in bian2021un
+Warning--empty address in bian2021un
+Warning--empty publisher in bian2023cliffordt2
+Warning--empty address in bian2023cliffordt2
+Warning--empty publisher in bian2023cliffordcs3
+Warning--empty address in bian2023cliffordcs3
+Warning--empty publisher in blake2026simpler
+Warning--empty address in blake2026simpler
+Warning--page numbers missing in both pages and numpages fields in blake2026simpler
+Warning--empty publisher in clement2024minimal
+Warning--empty address in clement2024minimal
+Warning--page numbers missing in both pages and numpages fields in clement2024minimal
+Warning--empty publisher in clement2023complete
+Warning--empty address in clement2023complete
+Warning--page numbers missing in both pages and numpages fields in clement2023complete
+Warning--empty publisher in li2025qutrit
+Warning--empty address in li2025qutrit
+Warning--empty publisher in li2021on
+Warning--empty address in li2021on
+Warning--empty publisher in makary2021real
+Warning--empty address in makary2021real
+Warning--page numbers missing in both pages and numpages fields in selinger2015clifford
+You've used 27 entries,
+            6056 wiz_defined-function locations,
+            1649 strings with 23712 characters,
+and the built_in function-call counts, 29199 in all, are:
+= -- 3632
+> -- 896
+< -- 0
++ -- 310
+- -- 315
+* -- 2023
+:= -- 2784
+add.period$ -- 147
+call.type$ -- 27
+change.case$ -- 190
+chr.to.int$ -- 25
+cite$ -- 55
+duplicate$ -- 2657
+empty$ -- 1880
+format.name$ -- 390
+if$ -- 7054
+int.to.chr$ -- 4
+int.to.str$ -- 1
+missing$ -- 92
+newline$ -- 284
+num.names$ -- 187
+pop$ -- 1042
+preamble$ -- 1
+purify$ -- 402
+quote$ -- 0
+skip$ -- 981
+stack$ -- 0
+substring$ -- 2127
+swap$ -- 232
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 686
+warning$ -- 28
+while$ -- 172
+width$ -- 0
+write$ -- 575
+(There were 28 warnings)

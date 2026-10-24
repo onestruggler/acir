@@ -1,0 +1,284 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{27}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{} and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showURL}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showURL #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[Amy et~al\mbox{.}(2018)]%
+        {amy2018cnotdihedral}
+\bibfield{author}{\bibinfo{person}{Matthew Amy}, \bibinfo{person}{Jianxin Chen}, {and} \bibinfo{person}{Neil~J. Ross}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{A Finite Presentation of {CNOT}-Dihedral Operators}. In \bibinfo{booktitle}{\emph{Proceedings of the 14th International Conference on Quantum Physics and Logic (QPL 2017)}} \emph{(\bibinfo{series}{Electronic Proceedings in Theoretical Computer Science}, Vol.~\bibinfo{volume}{266})}. \bibinfo{pages}{84--97}.
+\newblock
+
+
+\bibitem[Amy et~al\mbox{.}(2024)]%
+        {amy2024toffoli}
+\bibfield{author}{\bibinfo{person}{Matthew Amy}, \bibinfo{person}{Neil~J. Ross}, {and} \bibinfo{person}{Scott Wesley}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{A Sound and Complete Equational Theory for 3-Qubit {Toffoli}-{Hadamard} Circuits}. In \bibinfo{booktitle}{\emph{Proceedings of the 21st International Conference on Quantum Physics and Logic (QPL 2024)}} \emph{(\bibinfo{series}{Electronic Proceedings in Theoretical Computer Science}, Vol.~\bibinfo{volume}{406})}. \bibinfo{pages}{1--43}.
+\newblock
+\newblock
+\shownote{arXiv:2407.11152}.
+
+
+\bibitem[{Anthropic}(2026)]%
+        {anthropic2026flt}
+\bibfield{author}{\bibinfo{person}{{Anthropic}}.} \bibinfo{year}{2026}\natexlab{}.
+\newblock \bibinfo{title}{Formalizing {Fermat's} Last Theorem}.
+\newblock \bibinfo{howpublished}{\url{https://www.anthropic.com/research/formalizing-fermats-last-theorem}}.
+\newblock
+\newblock
+\shownote{4 September 2026. Lean code at \url{https://github.com/anthropics/fermats-last-theorem}}.
+
+
+\bibitem[Bian and Feng(2027)]%
+        {bian2027popl}
+\bibfield{author}{\bibinfo{person}{Xiaoning Bian} {and} \bibinfo{person}{Yuan Feng}.} \bibinfo{year}{2027}\natexlab{}.
+\newblock \showarticletitle{Normal Forms and Complete Relations for Circuits in {Agda}}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the ACM on Programming Languages}} \bibinfo{number}{POPL} (\bibinfo{year}{2027}).
+\newblock
+\newblock
+\shownote{To appear}.
+
+
+\bibitem[Bian et~al\mbox{.}(2026)]%
+        {bian2026qupit}
+\bibfield{author}{\bibinfo{person}{Xiaoning Bian}, \bibinfo{person}{Sarah~Meng Li}, \bibinfo{person}{Neil~J. Ross}, \bibinfo{person}{John van~de Wetering}, {and} \bibinfo{person}{Yuming Zhao}.} \bibinfo{year}{2026}\natexlab{}.
+\newblock \bibinfo{title}{A Complete and Natural Rule Set for Multi-Qudit {Clifford} Circuits in All Odd Prime Dimensions}.
+\newblock
+\newblock
+\shownote{arXiv:2609.40106}.
+
+
+\bibitem[Bian and Selinger(2021)]%
+        {bian2021un}
+\bibfield{author}{\bibinfo{person}{Xiaoning Bian} {and} \bibinfo{person}{Peter Selinger}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Generators and Relations for $U_n(\mathbb{Z}[1/2,i])$}. In \bibinfo{booktitle}{\emph{Proceedings of the 18th International Conference on Quantum Physics and Logic (QPL 2021)}} \emph{(\bibinfo{series}{Electronic Proceedings in Theoretical Computer Science}, Vol.~\bibinfo{volume}{343})}. \bibinfo{pages}{145--164}.
+\newblock
+\newblock
+\shownote{arXiv:2105.14047}.
+
+
+\bibitem[Bian and Selinger(2023a)]%
+        {bian2023cliffordt2}
+\bibfield{author}{\bibinfo{person}{Xiaoning Bian} {and} \bibinfo{person}{Peter Selinger}.} \bibinfo{year}{2023}\natexlab{a}.
+\newblock \showarticletitle{Generators and Relations for 2-Qubit {Clifford+T} Operators}. In \bibinfo{booktitle}{\emph{Proceedings of the 19th International Conference on Quantum Physics and Logic (QPL 2022)}} \emph{(\bibinfo{series}{Electronic Proceedings in Theoretical Computer Science}, Vol.~\bibinfo{volume}{394})}. \bibinfo{pages}{13--28}.
+\newblock
+\newblock
+\shownote{arXiv:2204.02217}.
+
+
+\bibitem[Bian and Selinger(2023b)]%
+        {bian2023cliffordcs3}
+\bibfield{author}{\bibinfo{person}{Xiaoning Bian} {and} \bibinfo{person}{Peter Selinger}.} \bibinfo{year}{2023}\natexlab{b}.
+\newblock \showarticletitle{Generators and Relations for 3-Qubit {Clifford+CS} Operators}. In \bibinfo{booktitle}{\emph{Proceedings of the 20th International Conference on Quantum Physics and Logic (QPL 2023)}} \emph{(\bibinfo{series}{Electronic Proceedings in Theoretical Computer Science}, Vol.~\bibinfo{volume}{384})}. \bibinfo{pages}{114--126}.
+\newblock
+\newblock
+\shownote{arXiv:2306.08530}.
+
+
+\bibitem[Blake(2026a)]%
+        {blake2026phaseaffine}
+\bibfield{author}{\bibinfo{person}{Colin Blake}.} \bibinfo{year}{2026}\natexlab{a}.
+\newblock \bibinfo{title}{Completeness for Prime-Dimensional Phase-Affine Circuits}.
+\newblock
+\newblock
+\shownote{arXiv:2603.06466}.
+
+
+\bibitem[Blake(2026b)]%
+        {blake2026simpler}
+\bibfield{author}{\bibinfo{person}{Colin Blake}.} \bibinfo{year}{2026}\natexlab{b}.
+\newblock \showarticletitle{Simpler Presentations for Many Fragments of Quantum Circuits}. In \bibinfo{booktitle}{\emph{11th International Conference on Formal Structures for Computation and Deduction (FSCD 2026)}} \emph{(\bibinfo{series}{LIPIcs})}.
+\newblock
+\newblock
+\shownote{To appear. arXiv:2602.09874}.
+
+
+\bibitem[Cl{\'e}ment(2019)]%
+        {clement2019thesis}
+\bibfield{author}{\bibinfo{person}{Alexandre Cl{\'e}ment}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \bibinfo{title}{A complete set of relations for the real {Clifford+T} group}.
+\newblock
+\newblock
+\shownote{Unfinished manuscript, March 2019, supervised by N.~J. Ross and P. Selinger}.
+
+
+\bibitem[Cl{\'e}ment(2026)]%
+        {clement2026realcliffordch}
+\bibfield{author}{\bibinfo{person}{Alexandre Cl{\'e}ment}.} \bibinfo{year}{2026}\natexlab{}.
+\newblock \bibinfo{title}{A Complete Equational Theory for {Real-Clifford+CH} Quantum Circuits}.
+\newblock
+\newblock
+\shownote{arXiv:2602.06644. Main text 13 pages, appendix of 264 pages of equational derivations}.
+
+
+\bibitem[Cl{\'e}ment et~al\mbox{.}(2024)]%
+        {clement2024minimal}
+\bibfield{author}{\bibinfo{person}{Alexandre Cl{\'e}ment}, \bibinfo{person}{No{\'e} Delorme}, {and} \bibinfo{person}{Simon Perdrix}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Minimal Equational Theories for Quantum Circuits}. In \bibinfo{booktitle}{\emph{Proceedings of the 39th Annual ACM/IEEE Symposium on Logic in Computer Science (LICS 2024)}}.
+\newblock
+\newblock
+\shownote{arXiv:2311.07476}.
+
+
+\bibitem[Cl{\'e}ment et~al\mbox{.}(2023)]%
+        {clement2023complete}
+\bibfield{author}{\bibinfo{person}{Alexandre Cl{\'e}ment}, \bibinfo{person}{Nicolas Heurtel}, \bibinfo{person}{Shane Mansfield}, \bibinfo{person}{Simon Perdrix}, {and} \bibinfo{person}{Beno{\^i}t Valiron}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{A Complete Equational Theory for Quantum Circuits}. In \bibinfo{booktitle}{\emph{Proceedings of the 38th Annual ACM/IEEE Symposium on Logic in Computer Science (LICS 2023)}}.
+\newblock
+\newblock
+\shownote{arXiv:2206.10577}.
+
+
+\bibitem[Fang et~al\mbox{.}(2026)]%
+        {fang2026hadamard}
+\bibfield{author}{\bibinfo{person}{Wang Fang}, \bibinfo{person}{Chris Heunen}, {and} \bibinfo{person}{Robin Kaarsgaard}.} \bibinfo{year}{2026}\natexlab{}.
+\newblock \showarticletitle{{Hadamard-$\Pi$}: Equational Quantum Programming}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the ACM on Programming Languages}} \bibinfo{volume}{10}, \bibinfo{number}{POPL} (\bibinfo{year}{2026}), \bibinfo{pages}{5:1--5:31}.
+\newblock
+\newblock
+\shownote{arXiv:2506.06835}.
+
+
+\bibitem[Greylyn(2014)]%
+        {greylyn2014}
+\bibfield{author}{\bibinfo{person}{Seth E.~M. Greylyn}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \bibinfo{title}{Generators and relations for the group $U_4(\mathbb{Z}[1/\sqrt{2},i])$}.
+\newblock
+\newblock
+\shownote{MSc thesis, Dalhousie University. arXiv:1408.6204}.
+
+
+\bibitem[Hales(2026)]%
+        {hales2026reliability}
+\bibfield{author}{\bibinfo{person}{Thomas Hales}.} \bibinfo{year}{2026}\natexlab{}.
+\newblock \bibinfo{title}{What Mathematicians Should Know about the {Lean} Theorem Prover: Questions of Reliability and {AI}}.
+\newblock \bibinfo{howpublished}{Guest post on Terence Tao's blog \emph{What's new}, \url{https://terrytao.wordpress.com/2026/10/09/what-mathematicians-should-know-about-the-lean-theorem-proverquestions-of-reliability-and-ai/}}.
+\newblock
+\newblock
+\shownote{9 October 2026}.
+
+
+\bibitem[Hietala et~al\mbox{.}(2021)]%
+        {hietala2021voqc}
+\bibfield{author}{\bibinfo{person}{Kesha Hietala}, \bibinfo{person}{Robert Rand}, \bibinfo{person}{Shih-Han Hung}, \bibinfo{person}{Xiaodi Wu}, {and} \bibinfo{person}{Michael Hicks}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{A Verified Optimizer for Quantum Circuits}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the ACM on Programming Languages}} \bibinfo{volume}{5}, \bibinfo{number}{POPL} (\bibinfo{year}{2021}), \bibinfo{pages}{37:1--37:29}.
+\newblock
+
+
+\bibitem[Li et~al\mbox{.}(2025)]%
+        {li2025qutrit}
+\bibfield{author}{\bibinfo{person}{Sarah~Meng Li}, \bibinfo{person}{Michele Mosca}, \bibinfo{person}{Neil~J. Ross}, \bibinfo{person}{John van~de Wetering}, {and} \bibinfo{person}{Yuming Zhao}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{A Complete and Natural Rule Set for Multi-Qutrit {Clifford} Circuits}. In \bibinfo{booktitle}{\emph{Proceedings of the 22nd International Conference on Quantum Physics and Logic (QPL 2025)}} \emph{(\bibinfo{series}{Electronic Proceedings in Theoretical Computer Science}, Vol.~\bibinfo{volume}{426})}. \bibinfo{pages}{23--78}.
+\newblock
+\newblock
+\shownote{arXiv:2508.14670}.
+
+
+\bibitem[Li et~al\mbox{.}(2021)]%
+        {li2021on}
+\bibfield{author}{\bibinfo{person}{Sarah~Meng Li}, \bibinfo{person}{Neil~J. Ross}, {and} \bibinfo{person}{Peter Selinger}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Generators and Relations for the Group $O_n(\mathbb{Z}[1/2])$}. In \bibinfo{booktitle}{\emph{Proceedings of the 18th International Conference on Quantum Physics and Logic (QPL 2021)}} \emph{(\bibinfo{series}{Electronic Proceedings in Theoretical Computer Science}, Vol.~\bibinfo{volume}{343})}. \bibinfo{pages}{210--264}.
+\newblock
+\newblock
+\shownote{arXiv:2106.01175}.
+
+
+\bibitem[Makary et~al\mbox{.}(2021)]%
+        {makary2021real}
+\bibfield{author}{\bibinfo{person}{Justin Makary}, \bibinfo{person}{Neil~J. Ross}, {and} \bibinfo{person}{Peter Selinger}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Generators and Relations for Real Stabilizer Operators}. In \bibinfo{booktitle}{\emph{Proceedings of the 18th International Conference on Quantum Physics and Logic (QPL 2021)}} \emph{(\bibinfo{series}{Electronic Proceedings in Theoretical Computer Science}, Vol.~\bibinfo{volume}{343})}. \bibinfo{pages}{14--36}.
+\newblock
+\href{https://doi.org/10.4204/EPTCS.343.2}{doi:\nolinkurl{10.4204/EPTCS.343.2}}
+\newblock
+\shownote{arXiv:2109.05655. Ancillary supplement of 76 pages}.
+
+
+\bibitem[Maslov et~al\mbox{.}(2008)]%
+        {maslov2008simplification}
+\bibfield{author}{\bibinfo{person}{Dmitri Maslov}, \bibinfo{person}{Gerhard~W. Dueck}, \bibinfo{person}{D.~Michael Miller}, {and} \bibinfo{person}{Camille Negrevergne}.} \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{Quantum Circuit Simplification and Level Compaction}.
+\newblock \bibinfo{journal}{\emph{IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems}} \bibinfo{volume}{27}, \bibinfo{number}{3} (\bibinfo{year}{2008}), \bibinfo{pages}{436--444}.
+\newblock
+\href{https://doi.org/10.1109/TCAD.2007.911334}{doi:\nolinkurl{10.1109/TCAD.2007.911334}}
+
+
+\bibitem[Nam et~al\mbox{.}(2018)]%
+        {nam2018automated}
+\bibfield{author}{\bibinfo{person}{Yunseong Nam}, \bibinfo{person}{Neil~J. Ross}, \bibinfo{person}{Yuan Su}, \bibinfo{person}{Andrew~M. Childs}, {and} \bibinfo{person}{Dmitri Maslov}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Automated optimization of large quantum circuits with continuous parameters}.
+\newblock \bibinfo{journal}{\emph{npj Quantum Information}}  \bibinfo{volume}{4} (\bibinfo{year}{2018}), \bibinfo{pages}{23}.
+\newblock
+\href{https://doi.org/10.1038/s41534-018-0072-4}{doi:\nolinkurl{10.1038/s41534-018-0072-4}}
+
+
+\bibitem[Selinger(2015)]%
+        {selinger2015clifford}
+\bibfield{author}{\bibinfo{person}{Peter Selinger}.} \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{Generators and relations for $n$-qubit {Clifford} operators}.
+\newblock \bibinfo{journal}{\emph{Logical Methods in Computer Science}} \bibinfo{volume}{11}, \bibinfo{number}{2:10} (\bibinfo{year}{2015}).
+\newblock
+\newblock
+\shownote{arXiv:1310.6813}.
+
+
+\bibitem[Sivarajah et~al\mbox{.}(2020)]%
+        {sivarajah2020tket}
+\bibfield{author}{\bibinfo{person}{Seyon Sivarajah}, \bibinfo{person}{Silas Dilkes}, \bibinfo{person}{Alexander Cowtan}, \bibinfo{person}{Will Simmons}, \bibinfo{person}{Alec Edgington}, {and} \bibinfo{person}{Ross Duncan}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{{t$|$ket$\rangle$}: A Retargetable Compiler for {NISQ} Devices}.
+\newblock \bibinfo{journal}{\emph{Quantum Science and Technology}} \bibinfo{volume}{6}, \bibinfo{number}{1} (\bibinfo{year}{2020}), \bibinfo{pages}{014003}.
+\newblock
+\href{https://doi.org/10.1088/2058-9565/ab8e92}{doi:\nolinkurl{10.1088/2058-9565/ab8e92}}
+
+
+\bibitem[Xu et~al\mbox{.}(2022)]%
+        {xu2022quartz}
+\bibfield{author}{\bibinfo{person}{Mingkuan Xu}, \bibinfo{person}{Zikun Li}, \bibinfo{person}{Oded Padon}, \bibinfo{person}{Sina Lin}, \bibinfo{person}{Jessica Pointing}, \bibinfo{person}{Auguste Hirth}, \bibinfo{person}{Henry Ma}, \bibinfo{person}{Jens Palsberg}, \bibinfo{person}{Alex Aiken}, \bibinfo{person}{Umut~A. Acar}, {and} \bibinfo{person}{Zhihao Jia}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{{Quartz}: Superoptimization of Quantum Circuits}. In \bibinfo{booktitle}{\emph{Proceedings of the 43rd ACM SIGPLAN International Conference on Programming Language Design and Implementation}} \emph{(\bibinfo{series}{PLDI 2022})}. \bibinfo{publisher}{Association for Computing Machinery}, \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{625--640}.
+\newblock
+\href{https://doi.org/10.1145/3519939.3523433}{doi:\nolinkurl{10.1145/3519939.3523433}}
+
+
+\bibitem[Yamashita and Markov(2010)]%
+        {yamashita2010fast}
+\bibfield{author}{\bibinfo{person}{Shigeru Yamashita} {and} \bibinfo{person}{Igor~L. Markov}.} \bibinfo{year}{2010}\natexlab{}.
+\newblock \showarticletitle{Fast Equivalence-checking for Quantum Circuits}.
+\newblock \bibinfo{journal}{\emph{Quantum Information and Computation}} \bibinfo{volume}{10}, \bibinfo{number}{9--10} (\bibinfo{year}{2010}), \bibinfo{pages}{721--734}.
+\newblock
+\href{https://doi.org/10.26421/QIC10.9-10-1}{doi:\nolinkurl{10.26421/QIC10.9-10-1}}
+
+
+\end{thebibliography}

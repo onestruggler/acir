@@ -84,12 +84,11 @@
   \country{The Netherlands}}
 \email{john@vdwetering.name}
 
-\begin{abstract}
-% An equational theory for a family of quantum circuits is a set of rewrite rules. The theory 
+% \begin{abstract}
+% % An equational theory for a family of quantum circuits is a set of rewrite rules. The theory 
 
-A set of circuit equations is complete if any two circuits denoting the same linear map can be derived from each other using these equations, and minimal if no equation can be derived from the others. Establishing these properties takes long case analyses spanning hundreds of pages, making the details hard to check by hand. To this end, we extend the previous formalization framework to QCert, and use it to formalize the main circuit completeness theorems to date. This includes sixteen results, fifteen on completeness and one on minimality, over finite gate sets such as Clifford, CNOT-dihedral, Clifford+T, Clifford+CS, real Clifford+CH, and Toffoli--Hadamard, on qubits and on qudits of every odd prime dimension. QCert divides the work between humans and LLM coding agents. We first built its framework by specifying the syntax, semantics, and group presentations. Then, each paper's main theorem can be expressed uniformly in this framework. Next, an agent took over and formalized the proofs in Agda, following the papers' arguments. Agda checked every proof, so a human need only check the relation table, the gate semantics, and the theorem statement for each paper. Overall, QCert confirms the main results of each work and identifies gaps in two of the existing proofs. Its ability to do verification at scale makes QCert well suited to verifying quantum circuit completeness in higher dimensions.
-
-\end{abstract}
+% A set of circuit equations is complete if any two circuits denoting the same linear map can be derived from each other using these equations, and minimal if no equation can be derived from the others. Establishing these properties takes long case analyses spanning hundreds of pages, making the details hard to check by hand. To this end, we extend the previous formalization framework to QCert, and use it to formalize the main circuit completeness theorems to date. This includes sixteen results, fifteen on completeness and one on minimality, over finite gate sets such as Clifford, CNOT-dihedral, Clifford+T, Clifford+CS, real Clifford+CH, and Toffoli--Hadamard, on qubits and on qudits of every odd prime dimension. QCert divides the work between humans and LLM coding agents. We first built its framework by specifying the syntax, semantics, and group presentations. Then, each paper's main theorem can be expressed uniformly in this framework. Next, an agent took over and formalized the proofs in Agda, following the papers' arguments. Agda checked every proof, so a human need only check the relation table, the gate semantics, and the theorem statement for each paper. Overall, QCert confirms the main results of each work and identifies gaps in two of the existing proofs. Its ability to do verification at scale makes QCert well suited to verifying quantum circuit completeness in higher dimensions.
+% \end{abstract}
 
 \maketitle
 
