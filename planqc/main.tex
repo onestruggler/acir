@@ -143,95 +143,99 @@ which defines circuits, their semantics and completeness once, so that
 a theorem proved in one development can be used in another.
 
 
-Language models can now write formal proofs of this size; a proof of
-Fermat's Last Theorem in Lean, of 13 million lines, was written in 11
-days~\cite{anthropic2026flt}. What still needs a person is the
-statement: a formal proof proves what its statement says, and someone
-must check that the statement, and the definitions under it, mean
-what was intended~\cite{hales2026reliability}. Generated proofs are
-not written to be read, so that check must stay small. Our approach
-is a \emph{scaffold}: code that people write and check once, which
-fixes the form of every theorem built on it, so the per-paper check is
-short and the rest left to Agda. Its first layer is an Agda library of
-circuits and their presentations~\cite{bian2027popl}.
+Language models can now write large formal proofs. For example, a
+13-million-line proof of Fermat's Last Theorem in Lean was written in
+11 days~\cite{anthropic2026flt}. Human review is still needed to check
+that formal statements and their underlying definitions express the
+intended results~\cite{hales2026reliability}. Generated proofs can be
+too large to inspect in full. We therefore use a \emph{scaffold}: code
+written and checked by people that fixes the form of each theorem.
+This keeps each paper's checks short while Agda verifies the proofs.
+The scaffold builds on an Agda library of circuits and presentations~\cite{bian2027popl}.
 
-This work grew out of our formalization of the completeness theorem
-for qudit Clifford circuits~\cite{bian2026qupit}. There we set up a framework by hand, and brought in LLM coding agents
-only at the last stage, to finish the proof. That experience convinced us that all
-completeness results for quantum circuits could, and should, be
-formalized within one framework. This paper does so: we built such a
-scaffold for completeness theorems, and on it formalized sixteen papers
-(Table~\ref{tab:corpus}). Our contributions are threefold.
+This work builds on our formalization of the completeness theorem for
+qudit Clifford circuits~\cite{bian2026qupit}. There, we developed the
+framework by hand and used LLM coding agents only at the final stage
+to complete the proof. This experience motivated us to formalize
+circuit completeness results within a common framework. We use this
+framework to formalize sixteen papers (Table~\ref{tab:corpus}) and
+make four contributions.
 \begin{itemize}
-\item QCert: an earlier library of words, circuits and
-  presentations~\cite{bian2027popl}, extended with matrix semantics over
-  the rings of exact synthesis and a framework for the independence of
-  rules, giving every theorem the same form (Section~\ref{sec:form});
-\item machine-checked proofs of the sixteen theorems: about 1{,}500
-  modules and 420{,}000 lines of Agda with no postulates, checked in
-  about 40 minutes (Section~\ref{sec:corpus});
-\item a gap in the completeness proof of Hadamard-$\Pi$ and its repair,
-  a rule omitted from a Toffoli--Hadamard theory, and misprints in the
-  other papers (Section~\ref{sec:findings});
-\item a method in which people build the framework and state the
-  theorems, LLM coding agents write the proofs, and Agda checks them
-  (Section~\ref{sec:method}).
+\item QCert extends an earlier library of words, circuits and
+  presentations~\cite{bian2027popl} with matrix semantics over the
+  rings of exact synthesis and a framework for proving independence
+  of rules. Every theorem has the same form (Section~\ref{sec:form}).
+\item We give machine-checked proofs of the sixteen theorems in about
+  1{,}500 modules and 420{,}000 lines of Agda, with no postulates. The
+  corpus typechecks in about 40 minutes (Section~\ref{sec:corpus}).
+\item We identify and repair a gap in the completeness proof of
+  Hadamard-$\Pi$, identify a rule omitted from a Toffoli--Hadamard
+  theory, and report misprints in the other papers
+  (Section~\ref{sec:findings}).
+\item We present a method in which people develop the framework and
+  state the theorems, LLM coding agents write the proofs, and Agda
+  checks them (Section~\ref{sec:method}).
 \end{itemize}
 
-\section{One Form for Every Theorem}\label{sec:form}
+\section{A Common Framework for Completeness Theorems}\label{sec:form}
 
-A relation on an alphabet $X$ generates a congruence $\approx$ on the
-words over $X$, and a semantics is a monoid homomorphism
-$\llbracket - \rrbracket$ from words to a monoid $M$. It is sound if
-related words have equal images and complete if words with equal images
-are related; then the relation presents the image of
-$\llbracket - \rrbracket$, and if every element of $M$ is an image, it
-presents $M$. For circuits, $M$ is a group of matrices, and the image
-is the group that the gates generate.
+Relations between words over an alphabet $X$ generate a congruence
+$\approx$. A semantics is a monoid homomorphism
+$\llbracket - \rrbracket$ from words to a monoid $M$. Soundness means
+that related words have equal images; completeness means that words
+with equal images are related. Together, these properties give a
+presentation of the image of $\llbracket - \rrbracket$. If the map
+is also surjective, the relations present $M$. For circuit families
+with matrix semantics, $M$ is a matrix group, and the image is the
+group generated by the gates.
 
-The earlier library~\cite{bian2027popl} fixes this vocabulary: a
-presentation theorem is a record, $\Gamma$ \aid{IsSubPresentationOf} $G$,
-holding an interpretation of words in a group $G$ with proofs that it
-is a group homomorphism on words modulo $\approx$ and injective, and
-$\Gamma$ \aid{IsPresentationOf} $G$ adds that it is onto. It also fixes the
-syntax of circuits: a gate set is a family indexed by arity, a gate
-sits on the bottom wires of a circuit and a shift moves a circuit up a
-wire, and any relation stated at the width it is drawn on is extended
-by structural rules (an equation holds one wire up, gates on disjoint
-wires commute, a scalar is the same on every wire), which are sound
-once for every gate set. What this work adds is the semantic side: the
-rings of exact synthesis, $\Z[\frac1{\sqrt2},i]$, $\Z[\frac12,i]$,
+The earlier library~\cite{bian2027popl} expresses a presentation
+theorem as a record, $\Gamma$ \aid{IsSubPresentationOf} $G$. This
+contains an interpretation of words in a group $G$ and proofs that the
+induced map on words modulo $\approx$ is an injective group
+homomorphism. The record $\Gamma$ \aid{IsPresentationOf} $G$ also
+requires this map to be surjective.
+
+A gate set is a family indexed by arity. A gate acts on the bottom
+wires of a circuit, and a shift moves a circuit up by one wire.
+Relations stated at the width at which they are drawn are extended by
+structural rules: equations can be shifted up by one wire, gates on
+disjoint wires commute, and scalars can be placed on any wire. The
+library proves these rules sound once for all gate sets. We add matrix
+semantics over the rings of exact synthesis,
+$\Z[\frac1{\sqrt2},i]$, $\Z[\frac12,i]$,
 $\Z[\frac1{\sqrt2}]$ and $\Z[\frac12]$, with their unitary and
-orthogonal groups as groups of Agda's standard library, and operators
-on bit vectors with the Kronecker calculus, so that the matrix of a
-circuit is defined once for every gate set.
+orthogonal groups expressed using the group structures of Agda's
+standard library. Operators on bit vectors
+and the Kronecker calculus allow us to define the matrix interpretation
+of circuits once for all gate sets.
 
-Every development ends in one line of this form. The real stabilizer
-circuits of~\citet{makary2021real}, with the relations R1--R16 of their
-Figure~1 lifted to $n$ wires, conclude
+Every development concludes with a theorem of the same form. For
+example, the real stabilizer circuits of~\citet{makary2021real}, with
+the relations R1--R16 of their Figure~1 lifted to $n$ wires, give
 \begin{agdacode}
 presentation : {n : ℕ} → (n VRel,_===_) IsSubPresentationOf U (2 ^ n)
 \end{agdacode}
-and the two-level matrices of Hadamard-$\Pi$, with the relations of
-its Figure~6,
+For the two-level matrices of Hadamard-$\Pi$, with the relations of
+its Figure~6, we obtain
 \begin{agdacode}
 presentation : {n : ℕ} → (_===_ {n}) IsPresentationOf (O n)
 \end{agdacode}
-To trust such a line a reader checks four things: the relation, as
-transcribed from the paper; the group, which comes from the layer and
-is checked once for all papers; the interpretation of each gate as a
-matrix; and the one line that gives the record that interpretation.
-For the real stabilizer development these come to under 500 of its
-12{,}010 lines. A single root module, the place to start reading,
-states all sixteen main theorems in this form.
+A reader checks four components: the relations transcribed from the
+paper, the target group, the matrix interpretation of each gate, and
+the line assigning this interpretation to the record. The target groups
+are checked once for all papers. For the real stabilizer development,
+these checks involve fewer than 500 of its 12{,}010 lines. A single
+root module states all sixteen main theorems in this form and provides
+a starting point for reading the formalizations.
 
 \section{Sixteen Formalizations}\label{sec:corpus}
 
-Table~\ref{tab:corpus} lists the sources, what we proved, the size of
-each development and its typechecking time. Every theorem is proved
-without hypotheses. The two-level presentations hold in every
-dimension (Greylyn's for $n\le4$, as in the thesis), and the circuit
-theories for every number of wires, except where the paper fixes it.
+Table~\ref{tab:corpus} lists the sources, results, module counts and
+typechecking times. The formalizations contain no postulates. The
+two-level presentations hold in every dimension, except for Greylyn's,
+which holds for $n\le4$ as in the thesis. The circuit theories hold
+for every number of wires unless the source paper fixes it.
 
 \begin{table}
 \small
@@ -262,112 +266,124 @@ Source & Object & Result & Mod. & Time \\
 \multicolumn{5}{@{}l}{\emph{Minimality}}\\
 \tabcite{blake2026simpler} & six fragments & minimal, complete & 73 & 183 \\
 \midrule
-All & & & 1{,}476 & 2{,}332 \\
+Total & & & 1{,}476 & 2{,}332 \\
 \bottomrule
 \end{tabularx}
 \captionsetup{position=bottom}
-\caption{The object presented, the result (a presentation of the
-whole group or of the group the gates generate), the number of modules,
-and typechecking time from scratch in seconds, the sum of the modules'
-own times given the developments they build on (Agda~2.8, Core
-i5-14400).}
+\caption{The object presented, the result (a presentation of the whole
+ group or of the subgroup generated by the gates), the module count,
+ and typechecking time in seconds. Times sum the modules' own
+ typechecking times from scratch, with prerequisite developments
+ already checked (Agda~2.8, Core i5-14400).}
 \label{tab:corpus}
 \end{table}
 
-The papers use few proof methods, and in Agda each becomes a route
-with a fixed shape. \emph{Exact synthesis}: an algorithm writes every
-matrix as a word, and completeness follows by well-founded induction on
-a level from a Main Lemma that closes a square for every state and
-generator; the induction is a module written once, and the author
-supplies the Main Lemma. \emph{Normal forms}: every circuit is pushed
-to a normal form, and the normal form is read back from the matrix.
-\emph{Induction on the width}: a circuit is decomposed into a part one
-wire down and a part on the bottom wire. \emph{Encoding}: circuits are
-translated into a theory already known to be complete and back. And
-two ports reuse Bian and Selinger's own Agda
-proofs~\cite{bian2023cliffordt2,bian2023cliffordcs3}, which relate the
-circuit relations to two-level relations by the Reidemeister--Schreier
-method, and connect them to our two-level presentations, so that they
-end in a statement about matrices. The qudit Clifford theorem
-of~\citet{bian2026qupit} is stated against an algebraic model of the
-Clifford group, built from the Pauli and symplectic groups with a
-phase; the others are stated against matrices.
+The proofs follow a few common methods. For \emph{exact synthesis}, an
+algorithm expresses each matrix as a word in the generators.
+Completeness follows by well-founded induction on a level, using a
+Main Lemma that closes a square for every state and generator. We
+formalize the induction once and prove the Main Lemma for each
+presentation. For \emph{normal forms}, each circuit is rewritten into
+a normal form recoverable from its matrix. For \emph{induction on the
+width}, we decompose a circuit into a circuit on one fewer wire and a
+component on the bottom wire. For \emph{encoding}, we translate
+circuits into a complete theory and back.
 
-Much of each development is generated. The derivations that a paper
-gives as computations, such as Selinger's 105-page supplement or the
-box relations of the qutrit normal form, come from scripts that follow
-the paper or search for the steps, and are checked by a rewriter in
-Agda; soundness is decided by evaluating matrices.
-What a paper gives as an idea, the Main Lemma or the uniqueness of a
-normal form, is written. In the real stabilizer development, half the
-lines are generated and a fifth are the paper's mathematics.
+Two developments reuse Agda proofs by Bian and
+Selinger~\cite{bian2023cliffordt2,bian2023cliffordcs3}. These relate
+circuit relations to two-level relations using the
+Reidemeister--Schreier method. We connect them to our two-level
+presentations to obtain statements about matrices. The qudit Clifford theorem
+of~\citet{bian2026qupit} uses an algebraic model of the Clifford group,
+built from the Pauli and symplectic groups together with a phase. The
+other theorems use matrices.
 
-\section{What We Found}\label{sec:findings}
+Much of each development is generated. Computational derivations,
+such as those in Selinger's 105-page supplement or the qutrit box
+relations, are generated by scripts that follow the paper or search
+for the steps. Agda checks these derivations using a rewriter and
+decides soundness by evaluating matrices. Conceptual arguments, such
+as the Main Lemma or uniqueness of a normal form, are formalized
+directly. In the real stabilizer development, half the lines are
+generated and a fifth formalize the paper's mathematics.
 
-\paragraph{A gap in Hadamard-$\Pi$.} Hadamard-$\Pi$ proves that the
-relations of its Figure~6 present the group
+\section{Findings from the Formalizations}\label{sec:findings}
+
+\paragraph{A gap in Hadamard-$\Pi$.} Theorem~4.14 of Hadamard-$\Pi$
+states that the relations in its Figure~6 present the group
 $O_n(\Z[\frac1{\sqrt2}])$ of orthogonal matrices over
-$\Z[\frac1{\sqrt2}]$ (its Theorem~4.14), by the exact synthesis route.
-One subcase of its Main Lemma relies on Lemmas~A.16 and~A.17, and both
-are false: each fails on a unit column of dimension~6, such as
-$(-1-\sqrt2, 1, -1-\sqrt2, 1, \sqrt2, -2+\sqrt2)/\sqrt2^4$, because the
-proof drops a $+1$ from a bracket that it reduces modulo~2. Following
-the case analysis on random states, we found a state in dimension~9 at
-which every diagram the proof offers rises above the level it must stay
-below, so the proof of the Main Lemma does not cover it. The theorem is
-still true. An unpublished thesis of Cl\'ement from
-2019~\cite{clement2019thesis} presents the same group by other
-relations, with a case that covers exactly this edge; we proved the two
-relation sets equivalent in every dimension, formalized his case as a
-decision tree that Agda checks by evaluation, and then his whole proof.
-Cl\'ement's 2026 theorem on real Clifford+CH
-circuits~\cite{clement2026realcliffordch} imports Theorem~4.14, so it
-rested on the same gap; our formalization of it discharges the import.
+$\Z[\frac1{\sqrt2}]$. The proof uses exact synthesis. One subcase of
+its Main Lemma relies on Lemmas~A.16 and~A.17, both of which are
+false. Each fails on a unit column in dimension~6, such as
+$(-1-\sqrt2, 1, -1-\sqrt2, 1, \sqrt2, -2+\sqrt2)/\sqrt2^4$.
+The underlying calculation omits a $+1$ from an expression that is
+reduced modulo~2.
+By testing the case analysis on random states, we also found a state
+in dimension~9 for which every diagram provided in the proof exceeds
+the required level bound. The proof of the Main Lemma therefore does
+not cover this state.
+
+The theorem itself still holds. Cl\'ement's unpublished
+2019 thesis~\cite{clement2019thesis} presents the same group using a
+different set of relations, and its case analysis covers the missing
+case. We prove that the two sets of relations are equivalent in every
+dimension. We then formalize Cl\'ement's case analysis as a decision
+tree checked by evaluation in Agda, together with the rest of his
+proof. Cl\'ement's 2026 theorem on real Clifford+CH
+circuits~\cite{clement2026realcliffordch} uses Theorem~4.14 and thus
+depends on the same gap. Our formalization supplies the missing proof
+of Theorem~4.14.
 
 \paragraph{An omitted relation.} Amy, Ross and
 Wesley~\cite{amy2024toffoli} present three-qubit Toffoli--Hadamard
-circuits in two steps, first $O_8(\Z[\frac12])$ by the Toffoli and
-$\mathrm{K} = \mathrm{H}\otimes\mathrm{H}$ gates, then the scaled dyadic orthogonal group $L_8$.
-Their Section~5.5 uses a relation $r_{\mathrm{K}}$ that defines $\mathrm{K}_{1,2}$ by a
-controlled K, but the figures that define the relations of their
-Theorem~5.2 omit it, and it does not follow from them: reading each
-Toffoli-K gate $g$ as $RgR$, with $R = I - J/4$ for the all-ones
-matrix $J$, satisfies every other relation and not $r_{\mathrm{K}}$. So the
-relations as printed are not complete; with $r_{\mathrm{K}}$ restored, we prove
-that they present $L_8$.
+circuits in two steps. They first present $O_8(\Z[\frac12])$ using
+the Toffoli and $\mathrm{K} = \mathrm{H}\otimes\mathrm{H}$ gates,
+and then present the scaled dyadic orthogonal group $L_8$.
+Their Section~5.5 uses a relation $r_{\mathrm{K}}$ that defines
+$\mathrm{K}_{1,2}$ in terms of a controlled K gate. However, this
+relation is omitted from the figures specifying the relations of
+Theorem~5.2, and it cannot be derived from the remaining relations.
+To show this, we interpret each Toffoli--K gate $g$ as $RgR$, where
+$R = I - J/4$ and $J$ is the all-ones matrix. This interpretation
+satisfies every other relation but fails to satisfy $r_{\mathrm{K}}$.
+Thus the relations as printed are incomplete. After restoring
+$r_{\mathrm{K}}$, we prove that they present $L_8$.
 
-\paragraph{Misprints.} The other papers are correct in what we
-formalized, up to misprints, several of them in statements that proofs
-use: eleven of the 137 typed relations of~\citet{makary2021real}, one
-relation of the $L_n$ table of~\citet{li2021on}, the scalar of a qutrit
-rule in~\citet{blake2026simpler}, two equations of the encoding
+\paragraph{Misprints.} The other papers are correct in the parts we
+formalize, up to misprints, several of which occur in statements used
+by the proofs. These include eleven of the 137 typed relations
+of~\citet{makary2021real}, one relation in the $L_n$ table
+of~\citet{li2021on}, the scalar of a qutrit rule
+in~\citet{blake2026simpler}, two equations in the encoding
 of~\citet{clement2026realcliffordch}, five formulas
-of~\citet{amy2024toffoli}, and one box relation of~\citet{li2025qutrit}.
-Each was found because the statement failed a numerical check or a
-derivation failed at the step that used it.
+of~\citet{amy2024toffoli}, and one box relation
+of~\citet{li2025qutrit}. In each case, either the statement failed a
+numerical check or a derivation failed at the step that used it.
 
-\section{How the Proofs Were Produced}\label{sec:method}
+\section{Formalization Workflow}\label{sec:method}
 
-Besides the qudit Clifford development, LLM coding agents wrote the
-other fifteen under our direction, within four weeks, most of them in
-less than a day each. Three habits made this possible. Every claim is
-checked numerically before it is formalized, with exact matrices in a
-short script, which caught most misprints before any Agda was written.
-Long derivations are generated, by scripts that follow the paper's own
-steps, so that a failing step points at a line of the paper. And the scaffold leaves the agent no choice about
-the statement: the relation, the group and the record are fixed, and
-only the proof remains.
+LLM coding agents wrote the fifteen developments other than qudit
+Clifford under our direction within four weeks. Most took less than a
+day each. Our workflow has three parts. First, we check claims using
+exact matrices in short scripts before formalizing them. This caught
+most misprints before any Agda code was written. Second, scripts
+generate long derivations following the paper, so a failing step can
+be traced to a specific line. Finally, the framework fixes the
+relation, group and presentation record, leaving the agent to supply
+the proof.
 
-The main cost was Agda's, not the agent's. The conversion checker
-compares terms by unfolding them, so two readings of a long product of
-matrices that are not syntactically equal can take exponential time;
-readings of circuits are therefore abstract, and equations between
-matrices are decided as one boolean computed by row operations, a
-hundred to four hundred times faster than comparing entry by entry. Everything is constructive, with no excluded middle,
-choice or real numbers, so every case split is a decision procedure
-and every proof is a program: with soundness, completeness and
-decidable matrix equality, each theory's word problem is decided by
-running the proof.
+The main computational cost came from Agda's conversion checker,
+which compares terms by unfolding their definitions. For long matrix
+products, comparing syntactically different expressions can take
+exponential time. We therefore keep circuit interpretations
+abstract and decide matrix equality by computing a single Boolean
+using row operations. This is a hundred to four hundred times faster
+than comparing matrices entry by entry. All proofs are constructive:
+they use neither excluded middle nor choice, and do not require real
+numbers. Each case split is a decision procedure, and each proof is a
+program. Together with decidable matrix equality, soundness and
+completeness give an executable decision procedure for each theory's
+word problem.
 
 % \section{The Talk}
 
@@ -380,27 +396,29 @@ running the proof.
 
 \section{Conclusion and Future Work}\label{sec:conclusion}
 
-All sixteen developments share one framework, and this matters in
-three ways. First, every theory, whatever its gate set or proof
-method, is stated with the same circuits, presentation records and
-matrix groups over the same rings: a common language in which rewrite
-rules for different circuit families can be related, as when we proved Cl\'ement's
-relations and Hadamard-$\Pi$'s equivalent. Second, it lays the
-foundation for completeness in higher-dimensional systems, whose case
-analyses outgrow what a reader can check (the qutrit theorem rests on
-hundreds of box relations): soundness is decided by evaluating exact
-matrices, derivations are generated and machine-checked, and the corpus typechecks in about 40 minutes. Third,
-it paves the way for number-theoretic exact synthesis: its rings, their
-unitary and orthogonal groups and the route from a Main Lemma to
-completeness (\Cref{sec:corpus}) are formalized once, so a new
-synthesis algorithm can be verified efficiently, including its Main
-Lemma, where the gap in Hadamard-$\Pi$ lay (\Cref{sec:findings}).
+We formalize sixteen developments within a common framework, with
+shared circuit syntax, presentation records, and libraries for rings
+and their matrix groups. This allows us to relate different
+presentations, as in our proof that Cl\'ement's relations and those of
+Hadamard-$\Pi$ are equivalent.
 
-\paragraph{Future work.} We are porting the developments to Lean, which
-has a much larger community and whose library Mathlib covers far more
-of mathematics, so that our theorems can be used alongside it. Going
-forward, we will use this framework to solve new problems in circuit
-completeness and exact synthesis, such as the Clifford completeness in all dimensions and optimising T-count inmulti-qubit Clifford+T exact synthesis.
+The framework provides a foundation for completeness in
+higher-dimensional systems, where case analyses can become difficult
+to check by hand. The qutrit theorem, for example, relies on hundreds
+of box relations. We decide soundness by evaluating exact matrices,
+generate and check derivations in Agda, and typecheck the corpus in
+about 40 minutes. The rings, matrix groups and induction from a Main
+Lemma to completeness (\Cref{sec:corpus}) also support
+number-theoretic exact synthesis. These components are formalized once
+and can be reused for new algorithms. Each algorithm still requires a
+proof of its Main Lemma, where the gap in Hadamard-$\Pi$ occurs
+(\Cref{sec:findings}).
+
+\paragraph{Future work.} We are porting the developments to Lean to
+make our theorems available to its larger community and use them with
+its broader mathematical library, Mathlib. We also plan to study
+Clifford completeness in all dimensions and T-count optimization for
+multi-qubit Clifford+T exact synthesis.
 %We are also working on a longer version of this work, with the details of each development.
 
 \bibliographystyle{ACM-Reference-Format}
