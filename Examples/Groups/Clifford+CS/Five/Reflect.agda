@@ -10,9 +10,11 @@
 -- letters at k by ys when the two spell the same generators (a
 -- re-bracketing, `by-assoc`).  The line is a list of macro letters
 -- (Five.Letters), so that a step costs a comparison of a few letters;
--- only a re-bracketing compares generators.  `derive l r ss Eq.refl`
--- checks the whole run in one evaluation, its result compared with r
--- inside it, and gives ⟪ l ⟫ʷ ≈ ⟪ r ⟫ʷ.  Written by
+-- only a re-bracketing compares generators (sameG).  The line is a
+-- zipper, so that a step at position k costs its distance from the step
+-- before rather than k.  `derive l r ss Eq.refl` checks the whole run
+-- in one evaluation, its result compared with r inside it, and gives
+-- ⟪ l ⟫ʷ ≈ ⟪ r ⟫ʷ.  Written by
 -- `scratchpad/five/reflect5.py`.
 ------------------------------------------------------------------------
 
@@ -21,12 +23,13 @@
 module Examples.Groups.Clifford+CS.Five.Reflect where
 
 open import Data.Bool.Base using (Bool ; true ; false ; if_then_else_ ; _∧_ ; T)
-open import Data.List.Base using (List ; [] ; _∷_ ; _++_ ; length ; take ; drop)
+open import Data.List.Base using (List ; [] ; _∷_ ; _++_ ; take ; drop ; map)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
-open import Data.Nat.Base using (ℕ ; zero ; suc ; _≡ᵇ_)
+open import Data.Nat.Base using (ℕ ; zero ; suc ; pred ; _∸_ ; _≡ᵇ_ ; _<ᵇ_)
 open import Data.Nat.Properties using (≡ᵇ⇒≡)
 open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Word.Base using (_•_)
 
 open import Presentation.Tactic.AssociativitySolver using (module Assoc)
 
@@ -1700,47 +1703,187 @@ data Step : Set where
 flat : List Mac → List (Gen 5)
 flat ms = to-list ⟪ ms ⟫ʷ
 
-run : List Step → List Mac → Maybe (List Mac)
-run []                xs = just xs
-run (rw k e ∷ ss)     xs =
-  if eqLM (take (length (lhs e)) (drop k xs)) (lhs e)
-  then run ss (next k (length (lhs e)) (rhs e) xs) else nothing
-run (rw⁻ k e ∷ ss)    xs =
-  if eqLM (take (length (rhs e)) (drop k xs)) (rhs e)
-  then run ss (next k (length (rhs e)) (lhs e) xs) else nothing
-run (re k n ys ∷ ss)  xs =
-  if eqLG (flat (take n (drop k xs))) (flat ys)
-  then run ss (next k n ys xs) else nothing
+------------------------------------------------------------------------
+-- Whether two runs of letters spell the same generators
+
+sameG : List Mac → List Mac → Bool
+sameG xs ys = eqLG (flat xs) (flat ys)
+
+sameG-ok : (xs ys : List Mac) → sameG xs ys ≡ true → flat xs ≡ flat ys
+sameG-ok xs ys = eqLG-sound (flat xs) (flat ys)
+
+------------------------------------------------------------------------
+-- The line as a zipper
+
+-- The letters before the focus, last first, and the letters from it on,
+-- with the index of the focus.  A step at position k moves the focus
+-- there, which costs the distance from the step before: two letters on
+-- average in Four/D and Five/D, whose steps are at positions 30 and 47
+-- on average, and the line as a list was walked from its start at every
+-- step (take, drop and next).  The equation's sides and the parts of
+-- the line are handed on as arguments (runZ-rw, runZ-at, runZ-seg), so
+-- that Agda's evaluator computes each once.  The engine is that of
+-- Qutrit-Clifford.Engine on the ten-completeness branch.
+data Zip : Set where
+  zp : ℕ → List Mac → List Mac → Zip
+
+revApp : List Mac → List Mac → List Mac
+revApp []       ys = ys
+revApp (x ∷ xs) ys = revApp xs (x ∷ ys)
+
+plug : Zip → List Mac
+plug (zp _ b a) = revApp b a
+
+goL goR : ℕ → Zip → Maybe Zip
+goL zero    z                = just z
+goL (suc k) (zp c (x ∷ b) a) = goL k (zp (pred c) b (x ∷ a))
+goL (suc k) (zp c [] a)      = nothing
+goR zero    z                = just z
+goR (suc k) (zp c b (x ∷ a)) = goR k (zp (suc c) (x ∷ b) a)
+goR (suc k) (zp c b [])      = nothing
+
+seek : ℕ → Zip → Maybe Zip
+seek i (zp c b a) = if i <ᵇ c then goL (c ∸ i) (zp c b a) else goR (i ∸ c) (zp c b a)
+
+-- What follows l in a, when l begins a.
+strip : List Mac → List Mac → Maybe (List Mac)
+strip []      a       = just a
+strip (x ∷ l) []      = nothing
+strip (x ∷ l) (y ∷ a) = if codeM x ≡ᵇ codeM y then strip l a else nothing
+
+mutual
+  runZ : List Step → Zip → Maybe Zip
+  runZ []               z = just z
+  runZ (rw k e ∷ ss)    z = runZ-rw ss (lhs e) (rhs e) (seek k z)
+  runZ (rw⁻ k e ∷ ss)   z = runZ-rw ss (rhs e) (lhs e) (seek k z)
+  runZ (re k n ys ∷ ss) z = runZ-re ss n ys (seek k z)
+
+  runZ-rw : List Step → (l r : List Mac) → Maybe Zip → Maybe Zip
+  runZ-rw ss l r nothing           = nothing
+  runZ-rw ss l r (just (zp c b a)) = runZ-at ss r c b (strip l a)
+
+  runZ-at : List Step → List Mac → ℕ → List Mac → Maybe (List Mac) → Maybe Zip
+  runZ-at ss r c b nothing     = nothing
+  runZ-at ss r c b (just rest) = runZ ss (zp c b (r ++ rest))
+
+  runZ-re : List Step → ℕ → List Mac → Maybe Zip → Maybe Zip
+  runZ-re ss n ys nothing           = nothing
+  runZ-re ss n ys (just (zp c b a)) = runZ-seg ss ys c b (take n a) (drop n a)
+
+  runZ-seg : List Step → List Mac → ℕ → (b seg rest : List Mac) → Maybe Zip
+  runZ-seg ss ys c b seg rest =
+    if sameG seg ys then runZ ss (zp c b (ys ++ rest)) else nothing
+
+okZ : List Mac → Maybe Zip → Bool
+okZ r (just z) = eqLM (plug z) r
+okZ r nothing  = false
 
 check : List Step → List Mac → List Mac → Bool
-check ss l r with run ss l
-... | just xs = eqLM xs r
-... | nothing = false
+check ss l r = okZ r (runZ ss (zp 0 [] l))
 
 private
   ≡⇒≈ : ∀ {xs ys} → xs ≡ ys → ⟪ xs ⟫ʷ ≈ ⟪ ys ⟫ʷ
   ≡⇒≈ Eq.refl = refl
 
-run-sound : (ss : List Step) (xs ys : List Mac) → run ss xs ≡ just ys → ⟪ xs ⟫ʷ ≈ ⟪ ys ⟫ʷ
-run-sound []               xs ys Eq.refl = refl
-run-sound (rw k e ∷ ss)    xs ys h with eqLM (take (length (lhs e)) (drop k xs)) (lhs e) in c
-run-sound (rw k e ∷ ss)    xs ys h  | true  =
-  trans (step k (length (lhs e)) xs (rhs e) (trans (≡⇒≈ (eqLM-sound (take (length (lhs e)) (drop k xs)) (lhs e) c)) (prf e)))
-        (run-sound ss _ ys h)
-run-sound (rw k e ∷ ss)    xs ys () | false
-run-sound (rw⁻ k e ∷ ss)   xs ys h with eqLM (take (length (rhs e)) (drop k xs)) (rhs e) in c
-run-sound (rw⁻ k e ∷ ss)   xs ys h  | true  =
-  trans (step k (length (rhs e)) xs (lhs e) (trans (≡⇒≈ (eqLM-sound (take (length (rhs e)) (drop k xs)) (rhs e) c)) (sym (prf e))))
-        (run-sound ss _ ys h)
-run-sound (rw⁻ k e ∷ ss)   xs ys () | false
-run-sound (re k n zs ∷ ss) xs ys h with eqLG (flat (take n (drop k xs))) (flat zs) in c
-run-sound (re k n zs ∷ ss) xs ys h  | true  =
-  trans (step k n xs zs (by-assoc {⟪ take n (drop k xs) ⟫ʷ} {⟪ zs ⟫ʷ} (eqLG-sound (flat (take n (drop k xs))) (flat zs) c))) (run-sound ss _ ys h)
-run-sound (re k n zs ∷ ss) xs ys () | false
+  code-eq : ∀ x y → (codeM x ≡ᵇ codeM y) ≡ true → x ≡ y
+  code-eq x y e =
+    Eq.trans (Eq.sym (decode-codeM x))
+      (Eq.trans (Eq.cong decodeM (≡ᵇ-sound (codeM x) (codeM y) e)) (decode-codeM y))
+
+  lc-∷ : ∀ ℓ ls → ⟪ ℓ ∷ ls ⟫ʷ ≈ ⟪ ℓ ⟫ • ⟪ ls ⟫ʷ
+  lc-∷ ℓ []       = sym right-unit
+  lc-∷ ℓ (m ∷ ls) = refl
+
+  lc-++ : ∀ xs ys → ⟪ xs ++ ys ⟫ʷ ≈ ⟪ xs ⟫ʷ • ⟪ ys ⟫ʷ
+  lc-++ []       ys = sym left-unit
+  lc-++ (x ∷ xs) ys =
+    trans (lc-∷ x (xs ++ ys))
+    (trans (back ⟪ x ⟫ (lc-++ xs ys))
+    (trans (sym assoc) (front ⟪ ys ⟫ʷ (sym (lc-∷ x xs)))))
+
+  ++-congˡ : ∀ {x y} s → ⟪ x ⟫ʷ ≈ ⟪ y ⟫ʷ → ⟪ x ++ s ⟫ʷ ≈ ⟪ y ++ s ⟫ʷ
+  ++-congˡ {x} {y} s e = trans (lc-++ x s) (trans (front ⟪ s ⟫ʷ e) (sym (lc-++ y s)))
+
+  revApp-cong : (b : List Mac) {x y : List Mac} → ⟪ x ⟫ʷ ≈ ⟪ y ⟫ʷ → ⟪ revApp b x ⟫ʷ ≈ ⟪ revApp b y ⟫ʷ
+  revApp-cong []      e = e
+  revApp-cong (g ∷ b) {x} {y} e =
+    revApp-cong b (trans (lc-∷ g x) (trans (back ⟪ g ⟫ e) (sym (lc-∷ g y))))
+
+  take++drop : (n : ℕ) (xs : List Mac) → take n xs ++ drop n xs ≡ xs
+  take++drop zero    xs       = Eq.refl
+  take++drop (suc n) []       = Eq.refl
+  take++drop (suc n) (x ∷ xs) = Eq.cong (x ∷_) (take++drop n xs)
+
+  -- Moving the focus keeps the line.
+  goL-un : (k : ℕ) (z z′ : Zip) → goL k z ≡ just z′ → plug z′ ≡ plug z
+  goL-un zero    z                z′ Eq.refl = Eq.refl
+  goL-un (suc k) (zp c (x ∷ b) a) z′ h       = goL-un k (zp (pred c) b (x ∷ a)) z′ h
+  goL-un (suc k) (zp c [] a)      z′ ()
+
+  goR-un : (k : ℕ) (z z′ : Zip) → goR k z ≡ just z′ → plug z′ ≡ plug z
+  goR-un zero    z                z′ Eq.refl = Eq.refl
+  goR-un (suc k) (zp c b (x ∷ a)) z′ h       = goR-un k (zp (suc c) (x ∷ b) a) z′ h
+  goR-un (suc k) (zp c b [])      z′ ()
+
+  seek-un : (i : ℕ) (z z′ : Zip) → seek i z ≡ just z′ → plug z′ ≡ plug z
+  seek-un i (zp c b a) z′ h with i <ᵇ c
+  seek-un i (zp c b a) z′ h | true  = goL-un (c ∸ i) (zp c b a) z′ h
+  seek-un i (zp c b a) z′ h | false = goR-un (i ∸ c) (zp c b a) z′ h
+
+  strip-sound : (l a rest : List Mac) → strip l a ≡ just rest → a ≡ l ++ rest
+  strip-sound []      a       rest Eq.refl = Eq.refl
+  strip-sound (x ∷ l) []      rest ()
+  strip-sound (x ∷ l) (y ∷ a) rest h with codeM x ≡ᵇ codeM y in e
+  strip-sound (x ∷ l) (y ∷ a) rest h  | true  =
+    Eq.cong₂ _∷_ (Eq.sym (code-eq x y e)) (strip-sound l a rest h)
+  strip-sound (x ∷ l) (y ∷ a) rest () | false
+
+  mutual
+    runZ-sound : (ss : List Step) (z z′ : Zip) → runZ ss z ≡ just z′ → ⟪ plug z ⟫ʷ ≈ ⟪ plug z′ ⟫ʷ
+    runZ-sound []               z z′ Eq.refl = refl
+    runZ-sound (rw k e ∷ ss)    z z′ h =
+      runZ-rw-sound ss (lhs e) (rhs e) (prf e) z (seek k z) (seek-un k z) z′ h
+    runZ-sound (rw⁻ k e ∷ ss)   z z′ h =
+      runZ-rw-sound ss (rhs e) (lhs e) (sym (prf e)) z (seek k z) (seek-un k z) z′ h
+    runZ-sound (re k n ys ∷ ss) z z′ h =
+      runZ-re-sound ss n ys z (seek k z) (seek-un k z) z′ h
+
+    runZ-rw-sound : (ss : List Step) (l r : List Mac) → ⟪ l ⟫ʷ ≈ ⟪ r ⟫ʷ → (z : Zip) (m : Maybe Zip) →
+                    (∀ z₁ → m ≡ just z₁ → plug z₁ ≡ plug z) → (z′ : Zip) →
+                    runZ-rw ss l r m ≡ just z′ → ⟪ plug z ⟫ʷ ≈ ⟪ plug z′ ⟫ʷ
+    runZ-rw-sound ss l r p z nothing           u z′ ()
+    runZ-rw-sound ss l r p z (just (zp c b a)) u z′ h =
+      trans (≡⇒≈ (Eq.sym (u (zp c b a) Eq.refl)))
+            (runZ-at-sound ss l r p c b a (strip l a) Eq.refl z′ h)
+
+    runZ-at-sound : (ss : List Step) (l r : List Mac) → ⟪ l ⟫ʷ ≈ ⟪ r ⟫ʷ → (c : ℕ) (b a : List Mac) →
+                    (m : Maybe (List Mac)) → strip l a ≡ m → (z′ : Zip) →
+                    runZ-at ss r c b m ≡ just z′ → ⟪ revApp b a ⟫ʷ ≈ ⟪ plug z′ ⟫ʷ
+    runZ-at-sound ss l r p c b a nothing     s z′ ()
+    runZ-at-sound ss l r p c b a (just rest) s z′ h =
+      trans (revApp-cong b (trans (≡⇒≈ (strip-sound l a rest s)) (++-congˡ {l} {r} rest p)))
+            (runZ-sound ss (zp c b (r ++ rest)) z′ h)
+
+    runZ-re-sound : (ss : List Step) (n : ℕ) (ys : List Mac) (z : Zip) (m : Maybe Zip) →
+                    (∀ z₁ → m ≡ just z₁ → plug z₁ ≡ plug z) → (z′ : Zip) →
+                    runZ-re ss n ys m ≡ just z′ → ⟪ plug z ⟫ʷ ≈ ⟪ plug z′ ⟫ʷ
+    runZ-re-sound ss n ys z nothing           u z′ ()
+    runZ-re-sound ss n ys z (just (zp c b a)) u z′ h =
+      trans (≡⇒≈ (Eq.sym (u (zp c b a) Eq.refl)))
+      (trans (≡⇒≈ (Eq.cong (revApp b) (Eq.sym (take++drop n a))))
+             (runZ-seg-sound ss ys c b (take n a) (drop n a) z′ h))
+
+    runZ-seg-sound : (ss : List Step) (ys : List Mac) (c : ℕ) (b seg rest : List Mac) (z′ : Zip) →
+                     runZ-seg ss ys c b seg rest ≡ just z′ → ⟪ revApp b (seg ++ rest) ⟫ʷ ≈ ⟪ plug z′ ⟫ʷ
+    runZ-seg-sound ss ys c b seg rest z′ h with sameG seg ys in g
+    runZ-seg-sound ss ys c b seg rest z′ h  | true  =
+      trans (revApp-cong b (++-congˡ {seg} {ys} rest (by-assoc {⟪ seg ⟫ʷ} {⟪ ys ⟫ʷ} (sameG-ok seg ys g))))
+            (runZ-sound ss (zp c b (ys ++ rest)) z′ h)
+    runZ-seg-sound ss ys c b seg rest z′ () | false
 
 check-sound : (ss : List Step) (l r : List Mac) → check ss l r ≡ true → ⟪ l ⟫ʷ ≈ ⟪ r ⟫ʷ
-check-sound ss l r h with run ss l in e
-check-sound ss l r h  | just xs = trans (run-sound ss l xs e) (≡⇒≈ (eqLM-sound xs r h))
+check-sound ss l r h with runZ ss (zp 0 [] l) in e
+check-sound ss l r h  | just z  = trans (runZ-sound ss (zp 0 [] l) z e) (≡⇒≈ (eqLM-sound (plug z) r h))
 check-sound ss l r () | nothing
 
 -- The equation of a derivation, checked by running it.
