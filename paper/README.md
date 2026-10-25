@@ -69,7 +69,10 @@ rewordings without a change of content are reverted to the submitted
 text, and the cuts made for length are kept. Measured by `make diff`
 (words marked added / deleted): 6,044 / 4,511 for `popl-revision2`,
 4,920 / 3,270 here. Section 2 (`permutations`) has since been taken
-whole from `popl-revision2`; those counts are from before that. Agda code blocks, figures and the acks are compared
+whole from `popl-revision2`, and a later pass restored more of the
+submitted wording and corrected the claims and citations the
+fact-check of 2026-10-26 found wrong; those counts are from before
+that. Agda code blocks, figures and the acks are compared
 as wholes: `diffcode.py` shows each submitted listing as a deleted block
 (red, with a red bar) and puts a blue bar beside each new code block;
 the circuit diagrams appear in their revised form.

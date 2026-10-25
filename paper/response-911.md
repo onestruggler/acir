@@ -16,7 +16,7 @@ better for it.
   programming-languages problem and a design story (Reviewer B). The
   contribution list is reorganized; the intro now says that every
   claim is verified and that the unformalized ones are collected in
-  §7.3.
+  §7.5.
 - **Section 2** is revised and expanded in detail, since Reviewer A
   found it rushed towards the end; this also partly answers Reviewer
   D's request for expanded examples. Code and circuit diagrams sit
@@ -24,23 +24,25 @@ better for it.
   four rewrites drawn (Figure 1), the soundness law is typeset as
   Agda, the tower and the three theorems are given in words, and the
   proof of completeness is unfolded on the example.
-- **Section 4** opens with five numbered design principles (Reviewer
-  B), drops the "Module X" phrasing and the repeated `Gen` listing,
+- **Section 4** opens with its design brief and the three decisions
+  behind it (Reviewer B), drops the "Module X" phrasing and the
+  repeated `Gen` listing,
   explains the left-biased indices in prose (Reviewer D), numbers the
   five coset-table hypotheses (Reviewer A), respaces the
   presentation-theorem display, and condenses §4.7 (Reviewer D).
-- **Section 5** opens with what each example was chosen to exercise
-  and states the shape of every normal form; the three amalgam normal
-  forms are written as regular expressions and compared with the
-  Matsumoto–Amano and Glaudell–Ross–Taylor forms (Reviewers A, B, D).
+- **Section 5** says what each example exercises and states the
+  shape of every normal form; the three amalgam normal forms are
+  written as regular expressions, and the qubit and qutrit ones are
+  compared with the Matsumoto–Amano and Glaudell–Ross–Taylor forms
+  (Reviewers A, B, D).
 - **Section 6** ("Related Work and Comparison") absorbs the intro's
   related work and the related-tools paragraph, organized along the
   axes of its comparison table (now Table 3); every citation was
   re-checked against its source.
 - **Section 7** has measured typechecking costs, a breakdown of the
-  seven thousand "core" lines, and a limitations subsection stating
+  seven thousand "core" lines, and its threats subsection states
   exactly what is not formalized (Reviewers A, D); the size table is
-  replaced by prose. **Section 8** is shortened to two directions.
+  replaced by prose. **Section 8** is lightly revised.
 - Code is typeset by Agda's LaTeX backend with its natural colours,
   the standard library is cited properly, Coq is now Rocq, "the
   library" is no longer personified, and every listed typo is fixed
@@ -99,16 +101,17 @@ carry `-- 1` … `-- 5` comments and are explained one by one;
 "NormalForma" was a typo. We agree §4 is where the artifact carries
 the detail; it now leads with rationale and quotes less code.
 
-**Sec. 5.** The section opens with what each example exercises;
+**Sec. 5.** Each subsection says what its example exercises;
 "flagship" is justified (smallest universal gate set in common use, the
 first canonical form, whose syllable pattern the later qutrit and
 qudit forms follow).
 
 **Sec. 7 (size).** We share the reaction. §7.1 now says what the seven
 thousand lines under `Presentation` are: about a thousand are the core
-proper, 4,300 are the five product constructions with their
+proper, 4,400 are the five product constructions with their
 normal-form and presentation theorems (the amalgamation alone 1,800),
-and 600 are the solvers. The constructions are proved once and reused
+600 are the solvers, and the rest is the join primitive and two
+presentations over a plain alphabet. The constructions are proved once and reused
 by every case study, so we do not expect them to shrink much; the
 examples are where reuse pays.
 
@@ -119,9 +122,9 @@ explains the approach without formal vocabulary, another states the
 design decision, and a third argues why completeness of circuit
 calculi is a programming-languages question and that the contribution
 is a design validated on large examples. The rationale you found at
-l.488–492 now opens §4 as five numbered principles; the former
-"lessons learned" subsection is folded into them, next to the code it
-explains.
+l.488–492 now opens §4, as its design brief and the three decisions
+behind it; the "lessons learned" subsection (§7.4) is kept, consistent
+with that opening.
 
 **Agda colours.** The code is typeset by Agda's LaTeX backend: the
 three code-quoting sections are literate Agda files scope-checked
@@ -132,7 +135,7 @@ with the font distinctions kept.
 
 **l.178, 192.** Both sentences are gone; the introduction now states
 that unformalized claims are marked where they occur and collected in
-§7.3.
+§7.5.
 
 **MLTT rather than cubical/HoTT.** Foreshadowed in the introduction:
 the library computes with syntax (coset tables and normal-form maps
@@ -158,8 +161,8 @@ verified decision procedure. Thank you for the pointer about
 `--without-K` returning in version 3.0; we will use whichever name the
 released library uses at camera-ready time.
 
-**Section 5 inventory, l.820, l.824.** The section opens with what
-each family was chosen to exercise; "qupit" is defined at first use;
+**Section 5 inventory, l.820, l.824.** Each subsection says what its
+family exercises; "qupit" is defined at first use;
 l.824 now names the three construction theorems whose composition is
 the Pauli presentation, which is all there is to show.
 
@@ -167,7 +170,7 @@ the Pauli presentation, which is all there is to show.
 
 **Your question: `Bijection`, not `Inverse`?** The two are
 interderivable in the standard library, so the choice is stylistic, but
-deliberate, and §4.3 now explains it. What downstream code consumes is
+deliberate, and §4.3 now says so briefly. What downstream code consumes is
 a section `inv-nf` with the single law `inv-nf ∘ nf ≈ id`, i.e. a
 `RightInverse` (our `NormalForm`). The other law, exactness
 `nf ∘ inv-nf ≈ id`, is kept as a separate hypothesis: carriers may
@@ -193,9 +196,9 @@ to appear before its definition.
 shape of its normal form: a residue; the factorial tuple; residues plus
 factorial tuple for wreath products; `n` pairs of exponents for Pauli
 groups; and, for the three amalgamations, the alternating form written
-as a regular expression. For qubit and qutrit Clifford+T the expression
-is compared letter by letter with the Matsumoto–Amano and
-Glaudell–Ross–Taylor forms; for U₃(ℤ[½,i]) it is a new canonical form.
+as a regular expression. For qubit and qutrit Clifford+T the
+expression, read right to left, is identified with the Matsumoto–Amano
+and Glaudell–Ross–Taylor forms.
 The expanded §2 walks through the symmetric-group example in full.
 
 **Unnecessary information.** §4.7 is condensed to a paragraph without
@@ -229,28 +232,29 @@ case studies take 19 s together, and every other module is under 4 s.
 definition, and the camera-ready will link module names into it.
 
 **Compiler integration.** Addressed in §1.1, which says why the
-constructivity matters (every completeness theorem doubles as a
-verified decision procedure, every normal-form witness is an
-extractable normalizer), and in §6.2, which names the concrete target:
+constructivity matters (normal forms and their sections compute, so
+every completeness theorem doubles as a decision procedure for the
+word problem), and in §6.2, which names the concrete target:
 connecting the presented gate groups to the matrix semantics of
 sqir or VyZX would give end-to-end completeness against matrices.
 
-**§7.5 limitations (now §7.3).** Rewritten to state exactly what is not
+**§7.5 limitations.** The subsection now states exactly what is not
 formalized: the amalgamation case studies are syntactic, ending in
 isomorphisms between the gate-set presentation and an amalgamated
 product of presentations, and the identification of those presented
 monoids with the concrete matrix monoids is taken from the literature;
 the subsection also says why (the rings and matrices are absent from
 the standard library, and each paper's completeness proof would have to
-be formalized first). The second point is expanded with the examples
-you asked for: gate sets with continuous parameters, such as the phase
-and rotation gates of Clément et al.'s complete theories, whose normal
-forms carry real angles and have no finite coset structure; and
-subgroup steps of infinite index, such as the lamplighter groups
-ℤ_N ≀ ℤ, where the hypotheses are statable but need induction rather
-than finitely many evaluations. It also notes that amalgamation already
-handles one shape of infinite index, which is why the Clifford+T
-monoids are within reach.
+be formalized first), and lists the other informal readings (the
+wreath products as monomial matrices, the Pauli quotients as Pauli
+groups modulo phases, the amalgam normal forms as the Matsumoto–Amano
+and Glaudell–Ross–Taylor forms). The second point is expanded with the
+examples you asked for: gate sets with continuous parameters, such as
+the phase and rotation gates of Clément et al.'s complete theories,
+whose normal forms carry real angles and have no finite coset
+structure; and subgroup steps of infinite index, such as the
+lamplighter groups ℤ_N ≀ ℤ, where the hypotheses are statable but need
+induction rather than finitely many evaluations.
 
 **Wording.** "Against the standard library", "layered Agda library",
 and "discharges the case analyses" are gone; "circuit theory" and the

@@ -2,10 +2,9 @@
 %% Circuits in Agda".
 %%
 %% RULE: every entry below was verified against a live web source
-%% (arXiv, DBLP, publisher, or project page) on 2026-07-09/10 during
-%% phase P3.  Entries marked %% VERIFY-DETAIL have verified existence/
-%% authors but one detail (page range etc.) taken from standard
-%% knowledge — re-check before camera-ready.
+%% (arXiv, DBLP, publisher, or project page), first on 2026-07-09/10
+%% and again on 2026-10-26, when the details that had been taken from
+%% standard knowledge were resolved.
 
 %% ===================================================================
 %% Generators and relations for quantum gate groups (the paper-maths
@@ -31,7 +30,9 @@
   volume    = {343},
   pages     = {145--164},
   year      = {2021},
-  note      = {arXiv:2105.14047}
+  note      = {arXiv:2105.14047},
+  publisher = {Open Publishing Association},
+  doi       = {10.4204/EPTCS.343.8}
 }
 
 @inproceedings{bian2023cliffordt2,
@@ -43,7 +44,9 @@
   volume    = {394},
   pages     = {13--28},
   year      = {2023},
-  note      = {arXiv:2204.02217}
+  note      = {arXiv:2204.02217},
+  publisher = {Open Publishing Association},
+  doi       = {10.4204/EPTCS.394.2}
 }
 
 @inproceedings{bian2023cliffordcs3,
@@ -55,7 +58,9 @@
   volume    = {384},
   pages     = {114--126},
   year      = {2023},
-  note      = {arXiv:2306.08530}
+  note      = {arXiv:2306.08530},
+  publisher = {Open Publishing Association},
+  doi       = {10.4204/EPTCS.384.7}
 }
 
 @phdthesis{bian2023thesis,
@@ -76,15 +81,18 @@
   volume    = {426},
   pages     = {23--78},
   year      = {2025},
-  note      = {arXiv:2508.14670}
+  note      = {arXiv:2508.14670},
+  publisher = {Open Publishing Association},
+  doi       = {10.4204/EPTCS.426.2}
 }
 
-@misc{greylyn2014,
+@mastersthesis{greylyn2014,
   author = {Greylyn, Seth E. M.},
   title  = {Generators and relations for the group
             $U_4(\mathbb{Z}[1/\sqrt{2},i])$},
+  school = {Dalhousie University},
   year   = {2014},
-  note   = {MSc thesis, Dalhousie University. arXiv:1408.6204}
+  note   = {arXiv:1408.6204}
 }
 
 @inproceedings{li2021on,
@@ -96,7 +104,9 @@
   volume    = {343},
   pages     = {210--264},
   year      = {2021},
-  note      = {arXiv:2106.01175}
+  note      = {arXiv:2106.01175},
+  publisher = {Open Publishing Association},
+  doi       = {10.4204/EPTCS.343.11}
 }
 
 @article{amy2020numbertheoretic,
@@ -106,7 +116,9 @@
   journal = {Quantum},
   volume  = {4},
   pages   = {252},
-  year    = {2020}
+  year    = {2020},
+  doi       = {10.22331/q-2020-04-06-252},
+  note      = {arXiv:1908.06076}
 }
 
 @misc{matsumoto2008representation,
@@ -132,18 +144,21 @@
   volume  = {406},
   pages   = {54--70},
   year    = {2019},
-  note    = {arXiv:1803.05047}
+  note    = {arXiv:1803.05047},
+  doi       = {10.1016/j.aop.2019.04.001}
 }
 
 @article{prakash2018qutrit,
   author  = {Prakash, Shiroman and Jain, Akalank and Kapur, Bhakti and
-             Seth, Shubhangi},
+             Seth, Shubangi},
   title   = {Normal form for single-qutrit {Clifford+T} operators and
              synthesis of single-qutrit gates},
   journal = {Physical Review A},
   volume  = {98},
+  number  = {3},
   pages   = {032304},
-  year    = {2018}
+  year    = {2018},
+  doi     = {10.1103/PhysRevA.98.032304}
 }
 
 @misc{jain2020qudit,
@@ -164,7 +179,10 @@
   title     = {A Complete Equational Theory for Quantum Circuits},
   booktitle = {Proceedings of the 38th Annual ACM/IEEE Symposium on Logic in
                Computer Science (LICS 2023)},
+  publisher = {IEEE},
+  pages     = {1--13},
   year      = {2023},
+  doi       = {10.1109/LICS56636.2023.10175801},
   note      = {arXiv:2206.10577}
 }
 
@@ -174,17 +192,27 @@
   title     = {Minimal Equational Theories for Quantum Circuits},
   booktitle = {Proceedings of the 39th Annual ACM/IEEE Symposium on Logic in
                Computer Science (LICS 2024)},
+  publisher = {ACM},
+  pages     = {27:1--27:14},
   year      = {2024},
+  doi       = {10.1145/3661814.3662088},
   note      = {arXiv:2311.07476}
 }
 
-@misc{clement2026realcliffordch,
-  author = {Cl{\'e}ment, Alexandre},
-  title  = {A Complete Equational Theory for {Real-Clifford+CH} Quantum
-            Circuits},
-  year   = {2026},
-  note   = {arXiv:2602.06644. Main text 13 pages, appendix of 264 pages of
-            equational derivations}
+@inproceedings{clement2026realcliffordch,
+  author    = {Cl{\'e}ment, Alexandre},
+  title     = {A Complete Equational Theory for {Real-Clifford+CH} Quantum
+               Circuits},
+  booktitle = {41st Annual Symposium on Logic in Computer Science
+               (LICS 2026)},
+  series    = {Leibniz International Proceedings in Informatics (LIPIcs)},
+  volume    = {380},
+  pages     = {28:1--28:26},
+  publisher = {Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik},
+  year      = {2026},
+  doi       = {10.4230/LIPIcs.LICS.2026.28},
+  note      = {Full version arXiv:2602.06644: main text 13 pages, appendix
+               of 264 pages of equational derivations}
 }
 
 @article{backens2014zx,
@@ -196,7 +224,6 @@
   year    = {2014},
   note    = {arXiv:1307.7025}
 }
-%% VERIFY-DETAIL: NJP volume/article number
 
 @inproceedings{jeandel2018zx,
   author    = {Jeandel, Emmanuel and Perdrix, Simon and Vilmart, Renaud},
@@ -204,7 +231,8 @@
                {Clifford+T} Quantum Mechanics},
   booktitle = {Proceedings of the 33rd Annual ACM/IEEE Symposium on Logic in
                Computer Science (LICS 2018)},
-  year      = {2018}
+  year      = {2018},
+  publisher = {ACM}
 }
 
 @inproceedings{booth2022qupitzx,
@@ -213,13 +241,14 @@
                Dimensions},
   booktitle = {47th International Symposium on Mathematical Foundations of
                Computer Science (MFCS 2022)},
-  series    = {LIPIcs},
+  series    = {Leibniz International Proceedings in Informatics (LIPIcs)},
   volume    = {241},
   pages     = {24:1--24:15},
+  publisher = {Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik},
   year      = {2022},
+  doi       = {10.4230/LIPIcs.MFCS.2022.24},
   note      = {arXiv:2204.12531}
 }
-%% VERIFY-DETAIL: LIPIcs volume/pages
 
 @inproceedings{poor2023travaganza,
   author    = {Po{\'o}r, Boldizs{\'a}r and Booth, Robert I. and
@@ -228,7 +257,12 @@
                Normal Forms and Graph-Theoretic Simplification},
   booktitle = {Proceedings of the 20th International Conference on Quantum
                Physics and Logic (QPL 2023)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {384},
+  pages     = {220--264},
+  publisher = {Open Publishing Association},
   year      = {2023},
+  doi       = {10.4204/EPTCS.384.13},
   note      = {arXiv:2306.05204}
 }
 
@@ -237,9 +271,13 @@
   title     = {Simpler Presentations for Many Fragments of Quantum Circuits},
   booktitle = {11th International Conference on Formal Structures for
                Computation and Deduction (FSCD 2026)},
-  series    = {LIPIcs},
+  series    = {Leibniz International Proceedings in Informatics (LIPIcs)},
+  volume    = {378},
+  pages     = {6:1--6:20},
+  publisher = {Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik},
   year      = {2026},
-  note      = {To appear. arXiv:2602.09874}
+  doi       = {10.4230/LIPIcs.FSCD.2026.6},
+  note      = {arXiv:2602.09874}
 }
 
 @article{choudhury2022symmetries,
@@ -250,7 +288,8 @@
   volume  = {6},
   number  = {POPL},
   pages   = {6:1--6:32},
-  year    = {2022}
+  year    = {2022},
+  doi       = {10.1145/3498667}
 }
 
 @article{carette2024squareroots,
@@ -260,7 +299,9 @@
   journal = {Proceedings of the ACM on Programming Languages},
   volume  = {8},
   number  = {POPL},
+  pages   = {19:1--19:29},
   year    = {2024},
+  doi     = {10.1145/3632861},
   note    = {arXiv:2310.14056}
 }
 
@@ -270,19 +311,24 @@
   journal = {Proceedings of the ACM on Programming Languages},
   volume  = {10},
   number  = {POPL},
-  pages   = {5:1--5:31},
+  pages   = {5:1--5:27},
   year    = {2026},
+  doi     = {10.1145/3776647},
   note    = {arXiv:2506.06835}
 }
-%% VERIFY-DETAIL: page range of article 5
 
 @inproceedings{heunen2026onerig,
   author    = {Heunen, Chris and Kaarsgaard, Robin and Lemonnier, Louis},
-  title     = {One rig to control them all},
-  booktitle = {Proceedings of the 41st Annual ACM/IEEE Symposium on Logic in
-               Computer Science (LICS 2026)},
+  title     = {One Rig to Control Them All},
+  booktitle = {41st Annual Symposium on Logic in Computer Science
+               (LICS 2026)},
+  series    = {Leibniz International Proceedings in Informatics (LIPIcs)},
+  volume    = {380},
+  pages     = {56:1--56:24},
+  publisher = {Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik},
   year      = {2026},
-  note      = {To appear. arXiv:2510.05032}
+  doi       = {10.4230/LIPIcs.LICS.2026.56},
+  note      = {arXiv:2510.05032}
 }
 
 @article{lafont2003boolean,
@@ -327,7 +373,8 @@
   volume  = {28},
   number  = {2},
   pages   = {155--201},
-  year    = {2018}
+  year    = {2018},
+  doi       = {10.1017/S0960129516000220}
 }
 
 @book{ara2025polygraphs,
@@ -338,7 +385,8 @@
   series    = {London Mathematical Society Lecture Note Series},
   volume    = {495},
   publisher = {Cambridge University Press},
-  year      = {2025}
+  year      = {2025},
+  doi       = {10.1017/9781009498968}
 }
 
 @book{sims1994computation,
@@ -347,14 +395,17 @@
   series    = {Encyclopedia of Mathematics and its Applications},
   volume    = {48},
   publisher = {Cambridge University Press},
-  year      = {1994}
+  year      = {1994},
+  doi       = {10.1017/CBO9780511574702}
 }
 
 @book{holt2005handbook,
   author    = {Holt, Derek F. and Eick, Bettina and O'Brien, Eamonn A.},
   title     = {Handbook of Computational Group Theory},
+  series    = {Discrete Mathematics and Its Applications},
   publisher = {Chapman \& Hall/CRC},
-  year      = {2005}
+  year      = {2005},
+  doi       = {10.1201/9781420035216}
 }
 
 @book{magnus2004combinatorial,
@@ -376,7 +427,8 @@
   booktitle = {Proceedings of the 44th ACM SIGPLAN Symposium on Principles of
                Programming Languages (POPL 2017)},
   pages     = {846--858},
-  year      = {2017}
+  year      = {2017},
+  publisher = {ACM}
 }
 
 @inproceedings{rand2018qwirepractice,
@@ -388,7 +440,9 @@
   series    = {Electronic Proceedings in Theoretical Computer Science},
   volume    = {266},
   pages     = {119--132},
-  year      = {2018}
+  year      = {2018},
+  publisher = {Open Publishing Association},
+  doi       = {10.4204/EPTCS.266.8}
 }
 
 @article{hietala2021voqc,
@@ -399,7 +453,8 @@
   volume  = {5},
   number  = {POPL},
   pages   = {37:1--37:29},
-  year    = {2021}
+  year    = {2021},
+  doi       = {10.1145/3434318}
 }
 
 @inproceedings{hietala2021proving,
@@ -408,10 +463,12 @@
   title     = {Proving Quantum Programs Correct},
   booktitle = {12th International Conference on Interactive Theorem Proving
                (ITP 2021)},
-  series    = {LIPIcs},
+  series    = {Leibniz International Proceedings in Informatics (LIPIcs)},
   volume    = {193},
   pages     = {21:1--21:19},
-  year      = {2021}
+  publisher = {Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik},
+  year      = {2021},
+  doi       = {10.4230/LIPIcs.ITP.2021.21}
 }
 
 @article{lehmann2025vyzx,
@@ -419,7 +476,10 @@
              Spencer, William and Rand, Robert},
   title   = {{VyZX}: Formal Verification of a Graphical Quantum Language},
   journal = {ACM Transactions on Programming Languages and Systems},
+  volume  = {48},
+  number  = {3},
   year    = {2026},
+  doi     = {10.1145/3807780},
   note    = {arXiv:2311.11571}
 }
 
@@ -431,7 +491,8 @@
   volume  = {7},
   number  = {POPL},
   pages   = {29:1--29:33},
-  year    = {2023}
+  year    = {2023},
+  doi       = {10.1145/3571222}
 }
 
 @inproceedings{chareton2021qbricks,
@@ -445,9 +506,10 @@
   series    = {Lecture Notes in Computer Science},
   volume    = {12648},
   pages     = {148--177},
-  year      = {2021}
+  year      = {2021},
+  publisher = {Springer},
+  doi       = {10.1007/978-3-030-72019-3_6}
 }
-%% VERIFY-DETAIL: LNCS volume/pages
 
 @inproceedings{liu2019quantum,
   author    = {Liu, Junyi and Zhan, Bohua and Wang, Shuling and
@@ -461,9 +523,10 @@
   pages     = {187--207},
   year      = {2019},
   note      = {Isabelle/HOL formalization QHLProver in the Archive of Formal
-               Proofs}
+               Proofs},
+  publisher = {Springer},
+  doi       = {10.1007/978-3-030-25543-5_12}
 }
-%% VERIFY-DETAIL: author list order, LNCS volume/pages
 
 @misc{bordg2020dirac,
   author = {Bordg, Anthony and Lachnitt, Hanna and He, Yijun},
@@ -484,7 +547,8 @@
   booktitle = {Proceedings of the 9th ACM SIGPLAN International Conference on
                Certified Programs and Proofs (CPP 2020)},
   pages     = {367--381},
-  year      = {2020}
+  year      = {2020},
+  publisher = {ACM}
 }
 
 @inproceedings{gonthier2013oddorder,
@@ -498,20 +562,24 @@
   series    = {Lecture Notes in Computer Science},
   volume    = {7998},
   pages     = {163--179},
-  year      = {2013}
+  year      = {2013},
+  publisher = {Springer},
+  doi       = {10.1007/978-3-642-39634-2_14}
 }
 
 @inproceedings{kharim2023freegroups,
-  author    = {Kharim, Aabid Seeyal Abdul and Prathamesh, Turga Venkata
-               Hanumantha and Rajiv, Shweta and Vyas, Rishi},
+  author    = {Kharim, Aabid Seeyal Abdul and Prathamesh, T. V. H. and
+               Rajiv, Shweta and Vyas, Rishi},
   title     = {Formalizing Free Groups in {Isabelle/HOL}: The
                {Nielsen-Schreier} Theorem and the Conjugacy Problem},
   booktitle = {Intelligent Computer Mathematics (CICM 2023)},
   series    = {Lecture Notes in Computer Science},
   volume    = {14101},
-  year      = {2023}
+  pages     = {158--173},
+  publisher = {Springer},
+  year      = {2023},
+  doi       = {10.1007/978-3-031-42753-4_11}
 }
-%% VERIFY-DETAIL: author first names (initials verified: Kharim, A.S.A.;
 %% Prathamesh, T.V.H.; Rajiv, S.; Vyas, R.)
 
 @misc{breitner2010freegroups,
@@ -528,10 +596,12 @@
                Completion},
   booktitle = {24th International Conference on Rewriting Techniques and
                Applications (RTA 2013)},
-  series    = {LIPIcs},
+  series    = {Leibniz International Proceedings in Informatics (LIPIcs)},
   volume    = {21},
   pages     = {287--302},
-  year      = {2013}
+  publisher = {Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik},
+  year      = {2013},
+  doi       = {10.4230/LIPIcs.RTA.2013.287}
 }
 
 @article{hirokawa2019abstract,
@@ -540,14 +610,14 @@
   title   = {Abstract Completion, Formalized},
   journal = {Logical Methods in Computer Science},
   volume  = {15},
-  number  = {3},
+  number  = {3:19},
   year    = {2019},
   note    = {arXiv:1802.08437}
 }
 
 @misc{mathlib-doc-presented,
   author = {{The mathlib Community}},
-  title  = {Mathlib documentation: {PresentedGroup}, {CoxeterGroup},
+  title  = {Mathlib documentation: {PresentedGroup}, {CoxeterMatrix.Group},
             and the {Nielsen-Schreier} theorem},
   year   = {2026},
   note   = {\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/GroupTheory/FreeGroup/NielsenSchreier.html}}
@@ -573,9 +643,10 @@
   series    = {Lecture Notes in Computer Science},
   volume    = {5674},
   pages     = {73--78},
-  year      = {2009}
+  year      = {2009},
+  publisher = {Springer},
+  doi       = {10.1007/978-3-642-03359-9_6}
 }
-%% VERIFY-DETAIL: LNCS volume/pages
 
 @article{vezzosi2019cubical,
   author  = {Vezzosi, Andrea and M{\"o}rtberg, Anders and Abel, Andreas},
@@ -585,12 +656,13 @@
   volume  = {3},
   number  = {ICFP},
   pages   = {87:1--87:29},
-  year    = {2019}
+  year    = {2019},
+  doi       = {10.1145/3341691}
 }
 
 @misc{agdastdlib,
   author = {{The Agda Community}},
-  title  = {The {Agda} standard library, version 2.3},
+  title  = {The {Agda} standard library, version 2.4},
   year   = {2026},
   note   = {\url{https://github.com/agda/agda-stdlib}}
 }
@@ -609,7 +681,6 @@
   year   = {2026},
   note   = {\url{https://github.com/UniMath/agda-unimath}}
 }
-%% VERIFY-DETAIL: maintainer list
 
 @misc{mangel2023sign,
   author = {Mangel, {\'E}l{\'e}onore and Rijke, Egbert},
@@ -625,9 +696,9 @@
   volume  = {13},
   number  = {2},
   pages   = {261--293},
-  year    = {2003}
+  year    = {2003},
+  doi       = {10.1017/S0956796802004501}
 }
-%% VERIFY-DETAIL: volume/pages
 
 %% ===================================================================
 %% Companion tools and artifact
@@ -637,16 +708,18 @@
   author = {Bian, Xiaoning},
   title  = {A normalizer to {Lafont} normal form for linear permutation
             circuits},
-  year   = {2026},
-  note   = {Web tool, \url{https://www.mathstat.dal.ca/~xbian/LafontLP/}}
+  year   = {2022},
+  note   = {Web tool, \url{https://www.mathstat.dal.ca/~xbian/LafontLP/},
+            accessed October 2026}
 }
 
 @misc{qupit-tool,
   author = {Bian, Xiaoning},
   title  = {{Selinger}-style normal forms for the symplectic group
             $Sp(2n,\mathbb{Z}_p)$},
-  year   = {2026},
-  note   = {Web tool, \url{https://www.mathstat.dal.ca/~xbian/qupit/index.php}}
+  year   = {2025},
+  note   = {Web tool, \url{https://www.mathstat.dal.ca/~xbian/qupit/index.php},
+            accessed October 2026}
 }
 
 @misc{qupit-code,
@@ -689,7 +762,10 @@
   series    = {Electronic Proceedings in Theoretical Computer Science},
   volume    = {266},
   pages     = {84--97},
-  year      = {2018}
+  year      = {2018},
+  publisher = {Open Publishing Association},
+  doi       = {10.4204/EPTCS.266.5},
+  note      = {arXiv:1701.00140}
 }
 
 @misc{blake2026phaseaffine,

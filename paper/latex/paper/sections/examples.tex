@@ -172,10 +172,10 @@
 \end{code}
 \section{Examples: A Catalogue of Verified Presentations}\label{sec:examples}
 
-This section is the library's harvest.
-
-Table~\ref{tab:presentations} lists
-every concrete \aid{{\_}IsPresentationOf{\_}} theorem in the development;
+This section is the library's harvest.  Table~\ref{tab:presentations} lists
+every concrete presentation theorem in the development
+(\aid{{\_}IsPresentationOf{\_}}, or its monoid version for the order-$0$
+cyclic case);
 Table~\ref{tab:nfs} lists the normal-form and uniqueness witnesses behind
 them.  All of them are restated with full types in the index module
 \texttt{MainTheorems.agda}, which also re-exports the conditional
@@ -206,7 +206,7 @@ $T^{\,0} = \varepsilon$ & the \emph{monoid} $(\mathbb{N}, +, 0)$ & \aid{cyclic-m
 \aid{order}, \aid{yang-baxter} + structural & permutations of $\mathsf{Fin}\;n$ & \aid{symmetric-presentation} \\
 $C_p \aid{⋄} C_p \aid{⋄} \aid{CommRel}$ & $\mathbb{Z}_p \times \mathbb{Z}_p$ & (\aid{H-pres}, Pauli development) \\
 $(C_p \aid{⋄} C_p \aid{⋄} \aid{CommRel})\,\aid{⊕\char94}\,n$ & Pauli quotient $(\mathbb{Z}_p{\times}\mathbb{Z}_p)^n$ & \aid{pauli-presentation} \\
-$(C_N\,\aid{⊕\char94}\,n) \aid{⋄} S_n\text{-circuits} \aid{⋄} \aid{ConjRelʷ}$ & $\mathbb{Z}_N \wr S_n$ (signed permutations) & \aid{wreath-presentation} \\
+$(C_N\,\aid{⊕\char94}\,n) \aid{⋄} S_n\text{-circuits} \aid{⋄} \aid{ConjRelʷ}$ & $\mathbb{Z}_N \wr S_n$ (generalized symmetric groups) & \aid{wreath-presentation} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -227,9 +227,9 @@ Presentation & Carrier & Witnesses & Note \\
 cyclic, order $n{+}1$ & $\mathsf{Fin}\,(n{+}1)$ & NFI, NF, UNF & presents $\mathbb{Z}/(n{+}1)\mathbb{Z}$ \\
 cyclic, order $0$ & $\mathbb{N}$ & NFI, NF, UNF & presents the monoid $(\mathbb{N}, +, 0)$ (\S\ref{sec:cyclic}) \\
 $S_n$ circuits & $\top \times C\,1 \times \dots \times C\,(n{-}1)$ & NFI, NF, UNF$\times 2$ & factorial system, $|{\cdot}| = n!$ \\
-$\Gamma \oplus \Delta$ & $\mathit{NF}_1 \times \mathit{NF}_2$ & NFI, NF, UNF & lifted from factors \\
-$\Gamma \rtimes \Delta \star \mathit{conj}$ & $\mathit{NF}_1 \times \mathit{NF}_2$ & NFI, NF, UNF & twist on the left factor \\
-amalgamated $P_1 \ast P_2$ & $\mathit{NF}_0 \times \aid{amalNFC}\;C\;D$ & NFI, NF, UNF & base NF, then alternating cosets (\S\ref{sec:constructions}) \\
+$\Gamma \aid{⋄} \Delta \aid{⋄} \aid{CommRel}$ & $\mathit{NF}_1 \times \mathit{NF}_2$ & NFI, NF, UNF & lifted from factors \\
+$\Gamma \aid{⋄} \Delta \aid{⋄} \aid{ConjRelʷ}\,\mathit{conj}$ & $\mathit{NF}_1 \times \mathit{NF}_2$ & NFI, NF, UNF & twist on the left factor \\
+$P_1 \mathrel{\aid{*}} P_2 \mathrel{\aid{⋆}} f_1 \mathrel{\aid{⋆}} f_2$ & $\mathit{NF}_0 \times \aid{amalNFC}\;C\;D$ & NFI, NF, UNF & base NF, then alternating cosets (\S\ref{sec:constructions}) \\
 Clifford+$T$ base $\langle \omega \rangle {\times} \langle S \rangle$ & $\mathsf{Fin}\,8 \times \mathsf{Fin}\,4$ & NFI, NF, UNF & radices $8, 4$; unique for $\mathbb{Z}_8 {\times} \mathbb{Z}_4$ \\
 \bottomrule
 \end{tabular}
@@ -245,12 +245,12 @@ residue $k$ to $T^{k}$, and uniqueness for
 $\mathbb{Z}/(n{+}1)\mathbb{Z}$ is immediate.  Order $0$ gets a theorem
 of its own, \aid{cyclic-monoid-presentation}: with carrier $\mathbb{N}$
 (a word count with no wraparound), $T^{\,0} = \varepsilon$
-\aid{IsMonoidPresentationOf} $(\mathbb{N}, +, 0)$ --- the free monoid
-rather than the group $\mathbb{Z}$, since, as \S\ref{sec:presentations}
+\aid{IsMonoidPresentationOf} $(\mathbb{N}, +, 0)$, the free monoid
+rather than the group $\mathbb{Z}$, since, as \S\ref{sec:wordproblem}
 explained, the generator has no inverse there and the \aid{Grouplike}
 upgrade is exactly what fails.  The
-trivial group is presented twice --- empty alphabet with no relations, and
-arbitrary alphabet with the everything-is-$\varepsilon$ relation --- and
+trivial group is presented twice (empty alphabet with no relations, and
+arbitrary alphabet with the everything-is-$\varepsilon$ relation), and
 the two presentations are proved isomorphic.
 
 \subsection{Wreath products: signed permutations and beyond}\label{sec:wreath}
@@ -258,7 +258,7 @@ the two presentations are proved isomorphic.
 The headline compositional result combines almost every construction in
 the library.  Fix a base order $N = m{+}1$ and $n$ wires.  The $n$-fold
 direct power $(C_N)^{\oplus n}$ presents $(\mathbb{Z}_N)^n$; the circuit
-presentation of $S_n$ acts on it by permuting coordinates --- an action
+presentation of $S_n$ acts on it by permuting coordinates, an action
 specified \emph{syntactically} as a word-valued conjugation
 $\mathit{conj} : \aid{Gen}\;n \to (\top \uplus^n) \to
 \aid{Word}\,(\top \uplus^n)$.  Two finite compatibility lemmas (the action
@@ -305,20 +305,19 @@ The lifted normal form is a pair of $n$ residues modulo $N$ and the
 factorial tuple of a permutation, so its section is a word of $T$-powers,
 one per coordinate, followed by the staircases of
 \S\ref{sec:permutations}.  At $N = 2$ this is the group of
-\emph{signed permutations} --- the hyperoctahedral group $B_n$; at
+\emph{signed permutations}, the hyperoctahedral group $B_n$; at
 general $N$ it is the generalized symmetric group $G(N,1,n)$ of monomial
 matrices with $N$-th-root-of-unity entries.  These groups are ubiquitous
 in the qudit setting (Pauli-frame changes, permutation-and-phase
 subgroups of Clifford groups), and the theorem delivers their
-presentations \emph{for all $N$ and $n$ at once} --- a family of
-completeness results parameterized over two naturals, which is where a
-mechanized, compositional treatment clearly outruns the per-instance
-pen-and-paper approach.
+presentations \emph{for all $N$ and $n$ at once}: a family of
+completeness results parameterized over two naturals, obtained
+compositionally rather than by a separate argument per instance.
 
-\subsection{Pauli groups in all prime dimensions}\label{sec:pauli}
+\subsection{Pauli groups modulo phases in all prime dimensions}\label{sec:pauli}
 
-The Pauli development is the purest showcase of compositionality --- there
-is \emph{no} coset enumeration in it at all:
+The Pauli development is the purest showcase of compositionality: there
+is \emph{no} coset table in it at all:
 
 \begin{code}%
 \>[0]\AgdaFunction{pauli-presentation}\AgdaSpace{}%
@@ -355,15 +354,20 @@ is \emph{no} coset enumeration in it at all:
 \AgdaBound{prime}\<%
 \end{code}
 
-For a prime $p = 2 + m$, with \aid{prime} its primality proof --- a
-\emph{qupit} is a qudit whose dimension is a prime --- the single-qupit
-relation set $\aid{Γ-Pauli₁}$ is the direct-product
+For a prime $p = 2 + m$, with \aid{prime} its primality proof (a
+\emph{qupit} is a qudit whose dimension is a prime), the single-qupit
+relation set $\aid{Γ-Pauli₁}$ (\aid{Γ-H} in the index module) is the
+direct-product
 join of two order-$p$ cyclic presentations ($X$- and $Z$-type generators,
 which commute in the quotient of the Pauli group by its phase subgroup),
 and the $n$-qupit relation set is its $n$-fold power.  The semantic group
 $(\mathbb{Z}_p \times \mathbb{Z}_p)^n$ is assembled by the standard
 library's binary direct product and our $n$-fold iteration, and the
-presentation is literally three construction theorems composed.  The
+presentation is literally three construction theorems composed (the
+cyclic presentation, the binary product, and the $n$-fold product).  The
+normal form is a tuple of $n$ pairs of exponents in
+$\mathsf{Fin}\,p \times \mathsf{Fin}\,p$, with section
+$X^{a_1} Z^{b_1} \cdots X^{a_n} Z^{b_n}$.  The
 full Pauli group with phases, and its role beneath the Clifford
 hierarchy, is left to future work.
 
@@ -373,9 +377,9 @@ The first amalgamation case study presents the single-qubit Clifford+$T$
 \emph{monoid}, the flagship example of the completeness literature for
 good reasons: Clifford+$T$ is the smallest universal gate set in common
 use, its single-qubit fragment has the first and best-known canonical
-form --- the Matsumoto--Amano normal
+form (the Matsumoto--Amano normal
 form~\cite{matsumoto2008representation,giles2013remarks}, which underlies
-exact synthesis and $T$-count optimality --- and the later normal forms
+exact synthesis and $T$-count optimality), and the later normal forms
 for single-qutrit and single-qudit
 Clifford+$T$~\cite{glaudell2019qutrit,prakash2018qutrit,jain2020qudit}
 follow its syllable pattern.  The relation set (over generators
@@ -389,8 +393,11 @@ $T, H, S, \omega$, with $X := H S S H$ as an abbreviation) is
   (TX)^2 = \omega,\quad
   \omega\ \text{central},
 \]
-and the verified structure exhibits the monoid as an amalgamated free
-product over the subgroup $M$ generated by $X$, $S$, and $\omega$:
+and the verified structure exhibits the presented monoid, written
+$\mathrm{Clifford}{+}T$ below (its identification with the operator
+monoid is the unformalized step discussed in \S\ref{sec:threats}), as an
+amalgamated free product over the subgroup $M$ generated by $X$, $S$, and
+$\omega$:
 \[
   \mathrm{Clifford}{+}T \;\cong\;
   \langle T, M \rangle \,\ast_{M}\, \langle H, M \rangle,
@@ -418,13 +425,13 @@ left-to-right word order, as the regular expression
 where $\mathcal{M}$ stands for the base normal form of the $M$-part; an
 element of $\aid{amalNFC}\;C\;D$ is an optional leading
 $H$-syllable, a list of alternations, and an optional trailing $T$,
-which is the Matsumoto--Amano normal
+which, read right to left, is the Matsumoto--Amano normal
 form~\cite{matsumoto2008representation,giles2013remarks},
 with its single Clifford factor $\mathcal{C}$ split into a coset
 representative and an element of $M$:
 the alternating normal form of an amalgamated free product, as observed
-for this group in the Bian--Selinger
-line~\cite{bian2023cliffordt2,bian2023thesis}.  The final theorem is the
+for this group by Bian and Selinger~\cite{bian2023cliffordcs3}.  The
+final theorem is the
 syntactic isomorphism assembled by \aid{StarIsomorphism} from
 generator-level translations both ways (with \aid{{\_}==={\_}} the
 gate-set relations, \aid{amalPres} the amalgamated presentation, and
@@ -452,13 +459,13 @@ gate-set relations, \aid{amalPres} the amalgamated presentation, and
 \end{code}
 
 Every well-definedness obligation in the tower (on all axioms at all
-cosets --- 59 cases) is discharged by
+cosets, 59 cases) is discharged by
 \aid{(by-equal-nf Eq.refl) , Eq.refl}: the typechecker runs the table
 on both sides of the axiom from the given coset, the resulting cosets
 coincide, and the residual words have the same normal form one level
 down.
 
-\subsection{Single-qutrit Clifford+$T$}
+\subsection{Single-qutrit Clifford+$T$}\label{sec:qutrit}
 
 The qutrit analogue replaces $\omega$ by a ninth root $\zeta$ and runs a
 longer tower: from the cyclic base $\langle \zeta \rangle$ through
@@ -485,7 +492,7 @@ $X := \zeta^3 (HSH)(HSSH)$ and $Z := \zeta^3 S^2 H^2 S H^2$):
   \zeta\ \text{central},
 \]
 a presentation derived and verified in this development.  The verified
-structure is again an amalgamated free product,
+structure is again an amalgamated free product of the presented monoid,
 \[
   \mathrm{Clifford}{+}T_3 \;\cong\;
   \langle T, M \rangle \,\ast_{M}\, \langle H, M \rangle,
@@ -497,35 +504,38 @@ The alternating normal form reads
   \bigl((T \mid TH^2)(H \mid HS \mid HS^2)\bigr)^{*}\;
   (\varepsilon \mid T \mid TH^2),
 \]
-and right to left it is their $T$-optimal canonical form
+and right to left it is the $T$-optimal canonical form of Glaudell,
+Ross, and Taylor,
 $(\varepsilon \mid T \mid H^2T)\,(HT \mid H^3T \mid SHT \mid SH^3T \mid
 S^2HT \mid S^2H^3T)^{*}\,\mathcal{C}$~\cite{glaudell2019qutrit}
-(obtained independently by Prakash, Jain, Kapur, and
-Seth~\cite{prakash2018qutrit}, and extended to qudits
+(Prakash, Jain, Kapur, and Seth independently found a similar
+form~\cite{prakash2018qutrit}, extended to qudits
 in~\cite{jain2020qudit}), with $\mathcal{C}$ split as in the qubit
 case.  The final theorem has the same shape as
-the qubit one --- \aid{clifford+T-qutrit-isomorphism} in the index ---
-and the same proof economy: the nine-coset level alone imposes
-seventy-two axiom-preservation obligations, every one closed by
-\aid{refl} after evaluation.  We know of no prior machine-checked
-completeness result for a qutrit gate-set presentation.
+the qubit one (\aid{clifford+T-qutrit-isomorphism} in the index)
+and the same proof economy, the nine-coset level's seventy-two
+axiom-preservation obligations all closing by
+\aid{refl} after evaluation (\S\ref{sec:engine}).  We know of no prior
+machine-checked normal form for a qutrit gate-set presentation.
 
 \subsection{\texorpdfstring{$U_3(\mathbb{Z}[\tfrac12,i])$}{U3(Z[1/2,i])}}\label{sec:u3}
 
 The third case study formalizes the case $n = 3$ of the presentation, due
 to Bian and Selinger, of the groups
-$U_n(\mathbb{Z}[\tfrac12,i])$~\cite{bian2021un} --- unitary matrices over
+$U_n(\mathbb{Z}[\tfrac12,i])$~\cite{bian2021un}, the unitary matrices over
 the ring $\mathbb{Z}[\tfrac12,i]$.
 Generators are $i_0$ (a local phase), $K_{01}$ (a scaled $2{\times}2$
 Hadamard-type block), and the two transpositions $X_{01}, X_{12}$;
 derived generators $i_1, i_2, K_{02}, K_{12}$ are conjugates.  The eleven
-relations ($\mathrm{S1}$--$\mathrm{S14}$ in the development, following the
-paper's numbering) include the orders $i_0^4 = X_{01}^2 = X_{12}^2 =
+relations (labelled $\mathrm{S1}$--$\mathrm{S14}$ in the development, a
+numbering with gaps) include the orders $i_0^4 = X_{01}^2 = X_{12}^2 =
 \varepsilon$, braid and commutation laws for the transpositions and
 phases, and the interactions of $K_{01}$ with the
 phases, e.g.
 $K_{01} i_1^2 = X_{01} K_{01}$ and
-$K_{01}^2\, i_0\, i_1 = \varepsilon$.  The verified structure is
+$K_{01}^2\, i_0\, i_1 = \varepsilon$.  The verified structure, with
+$U_3(\mathbb{Z}[\tfrac12,i])$ standing for the presented group
+(\S\ref{sec:threats}), is
 \[
   U_3(\mathbb{Z}[\tfrac12,i]) \;\cong\;
   (\mathbb{Z}_4 \wr S_3) \,\ast_{M}\, \langle M, K_{01} \rangle,
@@ -534,7 +544,9 @@ $K_{01}^2\, i_0\, i_1 = \varepsilon$.  The verified structure is
 The right factor adjoins
 $K_{01}$ to $M$: a six-coset Reidemeister--Schreier level presents
 the $\langle K_{01}, i_0, i_1 \rangle$ subgroup over the product
-of two order-$4$ cyclic groups.  The alternating normal form reads
+of two order-$4$ cyclic groups, a direct product then adjoins
+$\langle i_2 \rangle$, and $X_{01}$ enters as a word in $K_{01}$, $i_0$,
+$i_1$.  The alternating normal form reads
 \[
   \mathcal{M}\;(\varepsilon \mid K_{01} \mid K_{01} i_0)\;
   \bigl((X_{12} \mid X_{12}X_{01})(K_{01} \mid K_{01} i_0)\bigr)^{*}\;
@@ -547,5 +559,5 @@ the flat eleven-relation presentation and the amalgamated-product
 presentation.  At
 $2\,868$ and $1\,394$ source lines, the qutrit and $U_3$ studies are the
 largest verified objects in the library, and both consist mostly of
-finite tables and \aid{refl}-discharged obligations --- the shape of
+finite tables and \aid{refl}-discharged obligations, the shape of
 proof this framework was designed to make routine.

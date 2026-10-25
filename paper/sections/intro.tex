@@ -4,10 +4,10 @@ Equational reasoning is the daily bread of circuit design.  Whether one
 optimizes a quantum circuit, verifies a compiler pass, or normalizes a
 diagram, the justification is always the same: a finite set of local rewrite
 rules, applied to a syntactic object, preserving a semantic interpretation.
-Two questions attach to any such rule set.  \emph{Soundness} --- does every
-rule preserve the semantics? --- is typically easy: it is a finite collection
-of small algebraic identities.  \emph{Completeness} --- can every true
-semantic equation be derived from the rules? --- is a different animal
+Two questions attach to any such rule set.  \emph{Soundness} (does every
+rule preserve the semantics?) is typically easy: it is a finite collection
+of small algebraic identities.  \emph{Completeness} (can every true
+semantic equation be derived from the rules?) is a different animal
 altogether.
 
 Completeness proofs are gigantic computations.  The standard strategy defines
@@ -15,42 +15,49 @@ a \emph{normal form} for circuits, proves that every circuit can be rewritten
 to normal form using the rules, and proves that distinct normal forms denote
 distinct semantic objects.  The middle step is where the explosion happens:
 one must show, for every rule and every way a generator can meet a normal
-form, that the combination reduces again --- a case analysis that is
+form, that the combination reduces again, a case analysis that is
 mechanical, unforgiving, and enormous.  The literature wears the scars
 openly.  Selinger's presentation of the $n$-qubit Clifford group already
-required a substantial rewrite system and normal form
+required a substantial rewrite system and normal-form
 analysis~\cite{selinger2015clifford}.  Its recent qutrit
-analogue by Li, Mosca, Ross, van~de~Wetering, and Zhao --- the first
-completeness result for a fragment of quantum circuits in an odd prime
-dimension --- runs to more than fifty pages of
-proofs~\cite{li2025qutrit}.  The first complete equational theory for full
+analogue by Li, Mosca, Ross, van~de~Wetering, and Zhao, the first
+completeness result for a gate set of quantum circuits in an odd prime
+dimension, runs to more than fifty pages, with a further supplement of
+167 pages of derivations~\cite{li2025qutrit}.  The first complete equational theory for full
 quantum circuits, by Cl\'ement, Heurtel, Mansfield, Perdrix, and
 Valiron~\cite{clement2023complete}, and its minimal
 refinement~\cite{clement2024minimal}, rest on intricate normal-form
 manipulations; and Cl\'ement's complete equational theory for
 Real-Clifford+$CH$ circuits consists of a thirteen-page paper attached to an
 appendix of \emph{264 pages} of equational
-derivations~\cite{clement2026realcliffordch}.  These are not outliers: the
-same tens of pages of mechanical calculation stand behind Selinger's
-normal-form analysis and its qutrit successor cited above, behind the
+derivations~\cite{clement2026realcliffordch}.  These are not outliers:
+tens of pages of mechanical calculation also stand behind the
 rig-categorical completeness theorems for quantum programming
-languages~\cite{carette2024squareroots,fang2026hadamard}, and behind the
+languages~\cite{carette2024squareroots,fang2026hadamard} and behind the
 recent uniform simplification of the rule sets of six near-Clifford circuit
-fragments~\cite{blake2026simpler} --- long, hand-written, hand-checked
-derivations every one of which deserves a machine's scrutiny.  Proofs of
-this shape --- long, regular, and computational --- are precisely the proofs
-that should be machine-checked, and precisely the proofs that a proof assistant with a
-strong evaluator can check largely \emph{by computation}.
+fragments~\cite{blake2026simpler}.  These are long, hand-written,
+hand-checked derivations, every one of which deserves a machine's
+scrutiny.  Proofs of this shape, long, regular, and computational, are
+precisely the proofs that should be machine-checked, and precisely the
+proofs that a proof assistant with a strong evaluator can check largely
+\emph{by computation}.
 
 This paper reports on an Agda library built for exactly this purpose: a
 general, reusable formal framework for \emph{presentations of monoids and
 groups by generators and relations}, for \emph{normal forms}, and for
-\emph{completeness} of finite relation sets, with circuits --- words of
-wire-indexed gates --- as the motivating instance.  The library is written in
-safe, axiom-free Agda~\cite{norell2007thesis,bove2009agda} against the Agda
-standard library~\cite{daggitt2025stdlib,agdastdlib}, is compatible with the
-\texttt{--cubical-compatible} discipline, and is being prepared for
-submission to the standard library; the semantic constructions it needed and
+\emph{completeness} of finite relation sets, with circuits (words of
+wire-indexed gates) as the motivating instance.  In plain terms, a circuit
+is a word of gates and a rule set is a datatype of axioms; a normal form
+is an ordinary function on words, paired with a function back that picks
+a canonical representative, and completeness follows from soundness plus
+one further property, proved once as a generic lemma: normal forms with
+equal denotations are equal.  Normal forms are built one wire at a time,
+by a \emph{coset table} that records how a gate moves past each coset
+representative; Section~\ref{sec:permutations} shows the whole route on
+permutation circuits.  The library is written in
+safe, axiom-free Agda~\cite{norell2007thesis,bove2009agda} on top of the
+Agda standard library~\cite{daggitt2025stdlib,agdastdlib}, and is being
+prepared for submission to it; the semantic constructions it needed and
 the standard library lacked (semidirect products, amalgamated free products
 of monoids, group extensions, epimorphisms, the permutation group bundled as
 a group) are staged in a dedicated \texttt{ForStdlib} hierarchy.
@@ -60,8 +67,8 @@ monoid is a setoid on words, not a quotient type, so the library is
 written in plain Agda rather than in cubical Agda or a HoTT library.  The
 reason is that the library computes with syntax: coset tables and
 normal-form maps pattern-match on concrete words, and its central devices
-are maps \emph{into} the syntax --- sections of normal forms, coset
-representatives, amalgamation tails --- which need concrete
+are maps \emph{into} the syntax (sections of normal forms, coset
+representatives, amalgamation tails), which need concrete
 representatives to land on; \S\ref{sec:setoids} weighs the
 trade.
 
@@ -86,8 +93,8 @@ exercise every part of it.
   standard library's function bundles out of the word setoid, and a single
   generic lemma, \aid{by-normalization}, turns soundness plus a \emph{unique
   normal form} into completeness (\S\ref{sec:nfproperty}).  A verified,
-  monoid-level Reidemeister--Schreier engine constructs normal forms by coset
-  enumeration, one verified coset table per level
+  monoid-level Reidemeister--Schreier engine constructs normal forms from
+  verified coset tables, one per level
   (\S\ref{sec:engine}), and solvers close associativity and
   normal-form goals by evaluation (\S\ref{sec:solvers}).
 
@@ -100,25 +107,29 @@ exercise every part of it.
   obligations reduce to computation, checked by Agda's evaluator.
 
 \item[(2)] \textbf{A catalogue of verified presentations}
-  (\S\ref{sec:examples}): cyclic groups of every order; symmetric groups $S_n$ presented as circuits,
+  (\S\ref{sec:examples}): cyclic groups of every positive order (and
+  $\mathbb{N}$ at order $0$); symmetric groups $S_n$ presented as circuits,
   complete for an endofunction semantics and presented
   for the group of permutations of $\mathsf{Fin}\;n$; wreath products
-  $\mathbb{Z}_N \wr S_n$ --- the groups of \emph{signed permutations};
-  Pauli groups $(\mathbb{Z}_p \times \mathbb{Z}_p)^n$
+  $\mathbb{Z}_N \wr S_n$, the generalized symmetric groups (signed
+  permutations at $N = 2$);
+  Pauli groups modulo phases, $(\mathbb{Z}_p \times \mathbb{Z}_p)^n$
   for every prime $p$, assembled purely compositionally; and, as
   amalgamated free products with verified alternating
-  normal forms, the single-qubit Clifford+$T$ monoid, a single-qutrit
-  Clifford+$T$ monoid, and $U_3(\mathbb{Z}[\tfrac12,i])$.  Every headline theorem is
+  normal forms, the presentations of the single-qubit and single-qutrit
+  Clifford+$T$ monoids and of $U_3(\mathbb{Z}[\tfrac12,i])$.  Every headline theorem is
   restated, with its full type, in a single index module
   \texttt{MainTheorems.agda}.
 
-\item[(3)] \textbf{Monoid-level amalgamation and Reidemeister--Schreier.}
+\item[(3)] \textbf{Monoid-level amalgamation and Reidemeister--Schreier, as
+  reusable modules.}
   Following the methodology that Bian and Selinger introduced for their
   syntactic verifications~\cite{bian2023cliffordt2,bian2023cliffordcs3,
-  bian2023thesis}, we generalize the group-theoretic notions ---
-  coset enumeration, the Reidemeister--Schreier subgroup presentation, and
-  amalgamated free products --- from groups to monoid presentations, where
-  inverses are not primitive (\S\ref{sec:engine}, \S\ref{sec:constructions}).
+  bian2023thesis}, we work with the monoid-level versions of the
+  group-theoretic notions (coset tables, the Reidemeister--Schreier
+  subgroup presentation, and amalgamated free products), where inverses
+  are not primitive, and package them as generic modules with explicit
+  hypothesis records (\S\ref{sec:engine}, \S\ref{sec:constructions}).
 
 \item[(4)] \textbf{Presentation theorems for the product constructions.}
   Beyond the syntactic side, we prove the
@@ -128,7 +139,7 @@ exercise every part of it.
   amalgamated free product, and (given a realizing short exact sequence) an
   arbitrary group extension (\S\ref{sec:constructions}).
 
-\item[(5)] \textbf{New theorems for the standard library}:
+\item[(5)] \textbf{New constructions and theorems for the standard library}:
   semidirect products of monoids and groups via a bundled
   \aid{Action} record; amalgamated free products of monoids as a pushout;
   group extensions
@@ -138,10 +149,13 @@ exercise every part of it.
   \aid{Group} (\S\ref{sec:forstdlib}).
 \end{enumerate}
 
-Everything stated as a theorem in this paper typechecks under
-\texttt{--safe} and \texttt{--cubical-compatible}: there are no
+Everything stated as a theorem in this paper typechecks with the flags
+\texttt{-{}-cubical-compatible} and \texttt{-{}-safe}: there are no
 postulates, no unfinished holes, and no appeals to classical axioms
-anywhere in the development described here.  Wherever a statement in this
+anywhere in the development described here.  The development is also
+constructive in a way that matters: normal forms and their sections
+compute, so every completeness theorem doubles as a decision procedure
+for the word problem of its theory.  Wherever a statement in this
 paper is \emph{not} formalized, the text says so explicitly, and
 \S\ref{sec:threats} collects these places.
 
@@ -152,8 +166,9 @@ Section~\ref{sec:preliminaries} recalls the group theory behind the design:
 normal forms from subgroup chains and transversals, and their mixed-radix
 reading.  Section~\ref{sec:design} presents the library layer by layer:
 words and presentations, the zoo of normal-form witnesses, inductively
-defined circuits, the Reidemeister--Schreier engine, and the product
-constructions with their presentation theorems.  Section~\ref{sec:examples}
+defined circuits, the Reidemeister--Schreier engine, the product
+constructions with their presentation theorems, the semantic constructions
+contributed to the standard library, and the solvers.  Section~\ref{sec:examples}
 is the catalogue of verified results, with pointers into
 \texttt{MainTheorems.agda}.  Section~\ref{sec:related} surveys related work
 and compares with other formalizations.  Section~\ref{sec:discussion}

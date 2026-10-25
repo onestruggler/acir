@@ -116,11 +116,11 @@
 \end{code}
 \section{A Worked Example: Permutation Circuits}\label{sec:permutations}
 
-We begin with the smallest complete case study in the library: circuits
+We begin with the smallest circuit case study in the library: circuits
 built from a single two-wire gate, the swap $\sigma$, which present the
-symmetric groups.  The walkthrough exhibits the pipeline --- gates,
+symmetric groups.  The walkthrough exhibits the pipeline (gates,
 relations, cosets, tower, semantics, uniqueness, completeness,
-presentation --- that every later case study instantiates, concretely
+presentation) that every later case study instantiates, concretely
 enough that \S\ref{sec:design} can be read as ``the same thing, with the
 gates abstracted''.
 
@@ -302,8 +302,8 @@ $1 + n$ and $2 + n$, and $n$ is an implicit argument, so
 $\aid{gate₂}\;\aid{σ-gate}$ is a generator at any width from two upward.
 An $n$-wire \emph{circuit} is a word of generators, $\aid{Circuit}\;n =
 \aid{Word}\;(\aid{Gen}\;n)$ (\S\ref{sec:words}): a single generator
-$[\,g\,]$\aid{ʷ}, the empty circuit \aid{ε} --- $n$ bare wires, the
-identity circuit at that width --- or a sequential composition
+$[\,g\,]$\aid{ʷ}, the empty circuit \aid{ε} ($n$ bare wires, the
+identity circuit at that width), or a sequential composition
 $c \aidop{•} c'$.  We write $\sigma$ for the one-letter circuit
 $[\,\aid{gate₂}\;\aid{σ-gate}\;]$\aid{ʷ} and $c\;{\uparrow}$ for $c$ shifted
 up one wire ($\aid{{\_}↑} = \aid{wmap}\;\aid{{\_}↥}$).  Read
@@ -316,7 +316,8 @@ the same crossing one wire higher, and $\sigma \aidop{•} \sigma\;{\uparrow}
 \subsection{Relations: two axioms, structure for free}
 
 The group-specific relations are an inductive family indexed by the wire
-count.  Each axiom is stated once, with its gates at the bottom of the
+count (a $\aid{WRel}\;X$ is a binary relation on words over $X$).  Each
+axiom is stated once, with its gates at the bottom of the
 wires and the width left open (the implicit $n$), so that one constructor
 covers every width at which the axiom fits; the structural rule
 \aid{cong↑} below moves it to any height.  (Agda names may be mixfix:
@@ -393,15 +394,13 @@ symmetric monoidal category (a PROP), and the monoidal structure leaves
 exactly two traces at fixed width: the shift $c \mapsto c\;{\uparrow}$ is
 ``tensoring with an identity wire'', so equations must be preserved by
 it, and the interchange law says that gates on disjoint wires commute.
-(The version of the library developed since this paper was written also
-admits $0$-ary gates --- global scalars, available at every width --- and
-adds the rule they need: a scalar commutes with every generator and is
-identified with its own shift.)  These are the structural rules every
-circuit theory shares --- what a
+These are the structural rules every circuit theory shares, what a
 pen-and-paper presentation leaves implicit in ``a congruence compatible
-with composition and tensor product'' --- and the circuit layer adds them
+with composition and tensor product'', and the circuit layer adds them
 generically: \aid{Lift-Relation} (\S\ref{sec:circuits}) extends any
-gate-specific family to the full relation set \aid{{\_}VRel,{\_}==={\_}}:
+gate-specific family to the full relation set \aid{{\_}VRel,{\_}==={\_}}
+(here $\aid{CRel}\;n$ abbreviates $\aid{WRel}\;(\aid{Gen}\;n)$, the
+binary relations on $n$-wire circuits):
 
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
@@ -533,10 +532,11 @@ inverse), by induction on generators.
 
 \subsection{Cosets and the staircase normal form}\label{sec:sn-cosets}
 
-The engine behind the normal form is coset enumeration along the chain
+The engine behind the normal form is the Reidemeister--Schreier method
+along the chain
 $S_1 < S_2 < \dots < S_n < S_{n+1}$, where $S_n$ sits inside $S_{n+1}$ as
-the permutations fixing the bottom wire --- syntactically, the circuits
-of the form $c\;{\uparrow}$.  Read as permutations, two circuits lie in the
+the permutations fixing the bottom wire (syntactically, the circuits
+of the form $c\;{\uparrow}$).  Read as permutations, two circuits lie in the
 same right coset of $S_n$ exactly when they bring the same wire to the
 bottom position; there are $n{+}1$ choices, so $S_n$ has index $n{+}1$,
 and a natural representative of each coset is the \emph{descending
@@ -620,20 +620,20 @@ for $n = 2, 1, 0$, matching the index of $S_n$ in $S_{n+1}$.  Why this yields
 a normal form is the classical argument of \S\ref{sec:preliminaries}:
 every $f \in S_{n+1}$ lies in one coset, say with representative $c_n$,
 so $f = f' \cdot c_n$ with $f' \in S_n$, and recursing on $f'$ writes $f$
-uniquely as $c_1 c_2 \cdots c_n$ with $c_k \in \aid{C}\;k$ --- a numeral
+uniquely as $c_1 c_2 \cdots c_n$ with $c_k \in \aid{C}\;k$, a numeral
 in the \emph{factorial number system}, one digit per level, since
 $|S_{n+1}| = (n{+}1) \cdot n \cdots 2$.
 
 \emph{Computing} this factorization is the job of the coset table.
 Given a coset, represented by its staircase, and one generator, the
-table says where their product lands --- the updated coset --- and what
-is left over on the wires above --- the residual circuit --- so that
+table says where their product lands (the updated coset) and what
+is left over on the wires above (the residual circuit), so that
 staircase followed by generator equals residual (shifted up) followed by
 updated staircase.
 Pushing $\sigma$ into a staircase can lengthen it, cancel with it ($\sigma^2 =
-\varepsilon$), or pass it through and shift it up (Yang--Baxter), or
-commute past; for a generator that does not touch the bottom wire we can
-recurse.  The residual is empty or a single swap here, but in richer
+\varepsilon$), or pass it through and shift it up (Yang--Baxter); a
+shifted generator commutes past the empty staircase, and meets a longer
+one by recursing into its tail.  The residual is empty or a single swap here, but in richer
 gate sets it can be a longer circuit, which is why the table returns a
 circuit on one wire fewer rather than a generator
 (Figure~\ref{fig:pushing} draws the four cases):
@@ -691,7 +691,7 @@ circuit on one wire fewer rather than a generator
 \AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
 \AgdaBound{c}%
-\>[36]\AgdaComment{--\ passes\ (Yang-Baxter)}\<%
+\>[36]\AgdaComment{--\ passes\ (Yang–Baxter)}\<%
 \\
 \>[0]\AgdaFunction{ract}\AgdaSpace{}%
 \AgdaInductiveConstructor{ε}\AgdaSpace{}%
@@ -745,6 +745,9 @@ circuit on one wire fewer rather than a generator
 \end{tabular}
 \caption{Pushing a swap through a staircase: the four cases of the coset
 table \aid{ract} as circuit rewrites.}
+\Description{Four circuit rewrites: a swap pushed into a staircase grows
+it, cancels against it, passes through it by Yang--Baxter, or commutes
+past it.}
 \label{fig:pushing}
 \end{figure}
 
@@ -795,13 +798,14 @@ the axioms:
 The stateful word traversal \aid{{\_}ᵗ} (\S\ref{sec:words}) extends
 \aid{ract} to whole circuits, threading the coset from left to right and
 concatenating the residuals; run from the identity coset, it maps an
-$(n{+}2)$-wire circuit to an $(n{+}1)$-wire circuit and a coset --- one
+$(n{+}2)$-wire circuit to an $(n{+}1)$-wire circuit and a coset, one
 level of normalization, the normal-form transport of
 \S\ref{sec:engine}.  \emph{Iterating} this is the coset tower, whose
-carrier grows by one digit per level:
+carrier grows by one digit per level above the one-wire base ($\top$ is
+the unit type, with sole element $\mathsf{tt}$):
 
 \begin{center}
-\begin{minipage}[c]{0.56\linewidth}
+\begin{minipage}[c]{0.66\linewidth}
 \begingroup\setlength{\mathindent}{0pt}
 \begin{code}%
 \>[0]\AgdaFunction{NF}\AgdaSpace{}%
@@ -816,18 +820,25 @@ carrier grows by one digit per level:
 \AgdaRecord{⊤}\<%
 \\
 \>[0]\AgdaFunction{NF}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
-\AgdaBound{k}\AgdaSymbol{)}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaNumber{1}%
+\>[11]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaRecord{⊤}\<%
+\\
+\>[0]\AgdaFunction{NF}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaBound{k}\AgdaSymbol{)}%
+\>[11]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{NF}\AgdaSpace{}%
-\AgdaBound{k}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{k}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
 \AgdaDatatype{C}\AgdaSpace{}%
-\AgdaBound{k}%
-\>[26]\AgdaComment{--\ ⊤\ ×\ C\ 0\ ×\ C\ 1\ ×\ ⋯\ ×\ C\ k}\<%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{k}\AgdaSymbol{)}%
+\>[36]\AgdaComment{--\ ⊤\ ×\ C\ 1\ ×\ ⋯\ ×\ C\ (₁₊\ k)}\<%
 \end{code}
 \endgroup
-\end{minipage}\hspace{2.5em}%
+\end{minipage}\hspace{1.5em}%
 \begin{minipage}[c]{0.16\linewidth}\centering
   \ufig[0.35]{fig3_staircase}
 \end{minipage}
@@ -838,8 +849,8 @@ function $\aid{nf} : \aid{Circuit}\;n \to \aid{NF}\;n$ runs the tables;
 its \emph{section} $\aid{inv-nf} : \aid{NF}\;n \to \aid{Circuit}\;n$
 rebuilds a circuit from its digits by concatenating the staircases,
 suitably shifted, as drawn on the right for $(\mathsf{tt}, c_1, c_2, c_3)
-\in \aid{NF}\;4$ --- one staircase per level, each shifted up to the
-wires of its level: a ``staircase of staircases''.
+\in \aid{NF}\;4$: one staircase per level, each shifted up to the
+wires of its level, a ``staircase of staircases''.
 
 \subsection{Two semantics, uniqueness, and completeness}
 
@@ -850,8 +861,8 @@ $\mathsf{Fin}\;n$ ($\sigma$ swaps the bottom two elements), a monoid that
 is \emph{not} a group; and by a \emph{tight} semantics into
 $\aid{Permutation′-group}\;n$, the standard library's permutations of
 $\mathsf{Fin}\;n$ bundled as a \aid{Group} by our \texttt{ForStdlib}
-layer (\S\ref{sec:forstdlib}).  \emph{Soundness} --- $w \approx v$
-implies $\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ --- is a small case
+layer (\S\ref{sec:forstdlib}).  \emph{Soundness}, that $w \approx v$
+implies $\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$, is a small case
 analysis over the axioms.  The heart of the matter is the \emph{unique
 normal form} property (\S\ref{sec:nfproperty}), that normal forms with
 equal denotations are equal: $\aid{⟦}\;\aid{inv-nf}\;u\,\aid{⟧} \doteq
@@ -867,7 +878,7 @@ step of \aid{nf} is one of the rewrites of Figure~\ref{fig:pushing}, and
 each of those is an instance of \aid{order}, of \aid{yang-baxter}, or of
 the structural rules (the far commutation \aid{comm₂}, lifted to the
 wires above by \aid{cong↑}); so $w \approx \aid{inv-nf}\;(\aid{nf}\;w)$
---- the law of the \aid{NormalForm} witness --- is a derivation from
+(the law of the \aid{NormalForm} witness) is a derivation from
 exactly those rules.  Now suppose $\aid{⟦}w\aid{⟧} \doteq
 \aid{⟦}v\aid{⟧}$.  By soundness the normal forms of $w$ and $v$ have the
 same denotation, so by uniqueness they are equal, and hence $w \approx
