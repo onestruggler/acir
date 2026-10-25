@@ -194,9 +194,9 @@ represented as finite types; MathComp does have a presentation notation:
 $G \mathrel{\backslash\mathtt{isog}}\ \mathtt{Grp}(x_1 \ldots x_n : s_1 =
 t_1, \ldots)$ states that $G$ is isomorphic to the largest finite
 quotient of the presented group, and MathComp uses it to characterize
-the dihedral, semidihedral, and quaternion groups; but the proofs go through the
-finite group theory of the target (orders and counting), and no coset
-enumeration or normal form is involved.  In Isabelle, the AFP has free
+the dihedral, semidihedral, and quaternion groups; but the proofs go
+through the finite group theory of the target (orders and counting), and
+no coset enumeration or normal form is involved.  In Isabelle, the AFP has free
 groups with the ping-pong lemma~\cite{breitner2010freegroups} and a
 recent combinatorial Nielsen--Schreier proof with a decision procedure
 for the conjugacy problem in free groups~\cite{kharim2023freegroups} ---
@@ -212,12 +212,17 @@ On the univalent side, cubical Agda~\cite{vezzosi2019cubical} and its
 library~\cite{cubicallibrary} provide free groups and set quotients as
 higher inductive types;
 agda-unimath develops finite group theory including the symmetric groups
-and the sign homomorphism~\cite{agdaunimath,mangel2023sign}.  A
-HIT-based presented group would turn equational reasoning into
-rewriting, though functions out of it would still owe the eliminator a
-respect proof, and it would cost the sections into the syntax on which
-the design rests; \S\ref{sec:setoids} weighs that trade, and the
-library's standard-library target settles it.
+and the sign homomorphism~\cite{agdaunimath,mangel2023sign}.  A HIT-based
+presented group turns equational reasoning into rewriting, though
+functions out of the quotient still owe the eliminator a respect proof;
+and our central devices are \emph{maps into} the syntax (sections of normal forms,
+Schreier transversals), which quotients complicate: a section
+$\mathit{NF} \to \aid{Word}\;X$ picking canonical representatives is
+setoid-natural and quotient-hostile.  Since the library also targets the
+(non-cubical) standard library and must remain
+\texttt{--cubical-compatible} rather than cubical, the setoid design
+is the pragmatic point in the space; \S\ref{sec:discussion} reflects
+further.
 
 \subsection{Formalized rewriting and completion}\label{sec:rel-rw}
 
