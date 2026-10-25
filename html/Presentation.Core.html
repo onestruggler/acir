@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Presentation.Core</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- Presentations of groups</a>
+<a id="101" class="Comment">--</a>
+<a id="104" class="Comment">-- Core objects of a presentation Γ: the setoid of words modulo the</a>
+<a id="172" class="Comment">-- congruence ≈.</a>
+<a id="189" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="263" class="Symbol">{-#</a> <a id="267" class="Keyword">OPTIONS</a> <a id="275" class="Pragma">--cubical-compatible</a> <a id="296" class="Pragma">--safe</a> <a id="303" class="Symbol">#-}</a>
+
+<a id="308" class="Keyword">open</a> <a id="313" class="Keyword">import</a> <a id="320" href="Word.Base.html" class="Module">Word.Base</a> <a id="330" class="Keyword">using</a> <a id="336" class="Symbol">(</a><a id="337" href="Word.Base.html#4571" class="Function">WRel</a> <a id="342" class="Symbol">;</a> <a id="344" href="Word.Base.html#964" class="Datatype">Word</a><a id="348" class="Symbol">)</a>
+
+<a id="351" class="Keyword">module</a> <a id="358" href="Presentation.Core.html" class="Module">Presentation.Core</a> <a id="376" class="Symbol">{</a><a id="377" href="Presentation.Core.html#377" class="Bound">X</a> <a id="379" class="Symbol">:</a> <a id="381" href="Agda.Primitive.html#388" class="Primitive">Set</a><a id="384" class="Symbol">}</a> <a id="386" class="Symbol">(</a><a id="387" href="Presentation.Core.html#387" class="Bound">Γ</a> <a id="389" class="Symbol">:</a> <a id="391" href="Word.Base.html#4571" class="Function">WRel</a> <a id="396" href="Presentation.Core.html#377" class="Bound">X</a><a id="397" class="Symbol">)</a> <a id="399" class="Keyword">where</a>
+
+<a id="406" class="Keyword">open</a> <a id="411" class="Keyword">import</a> <a id="418" href="Level.html" class="Module">Level</a> <a id="424" class="Keyword">using</a> <a id="430" class="Symbol">(</a><a id="431" href="Level.html#521" class="Function">0ℓ</a><a id="433" class="Symbol">)</a>
+<a id="435" class="Keyword">open</a> <a id="440" class="Keyword">import</a> <a id="447" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="463" class="Keyword">using</a> <a id="469" class="Symbol">(</a><a id="470" href="Relation.Binary.Bundles.html#1235" class="Record">Setoid</a><a id="476" class="Symbol">)</a>
+
+<a id="479" class="Keyword">open</a> <a id="484" class="Keyword">import</a> <a id="491" href="Presentation.Base.html" class="Module">Presentation.Base</a> <a id="509" href="Presentation.Core.html#387" class="Bound">Γ</a>
+
+<a id="512" class="Comment">-- The setoid of words modulo the congruence ≈.</a>
+<a id="word-setoid"></a><a id="560" href="Presentation.Core.html#560" class="Function">word-setoid</a> <a id="572" class="Symbol">:</a> <a id="574" href="Relation.Binary.Bundles.html#1235" class="Record">Setoid</a> <a id="581" href="Level.html#521" class="Function">0ℓ</a> <a id="584" href="Level.html#521" class="Function">0ℓ</a>
+<a id="587" href="Presentation.Core.html#560" class="Function">word-setoid</a> <a id="599" class="Symbol">=</a> <a id="601" class="Keyword">record</a>
+  <a id="610" class="Symbol">{</a> <a id="612" href="Relation.Binary.Bundles.html#1298" class="Field">Carrier</a>       <a id="626" class="Symbol">=</a> <a id="628" href="Word.Base.html#964" class="Datatype">Word</a> <a id="633" href="Presentation.Core.html#377" class="Bound">X</a>
+  <a id="637" class="Symbol">;</a> <a id="639" href="Relation.Binary.Bundles.html#1324" class="Field Operator">_≈_</a>           <a id="653" class="Symbol">=</a> <a id="655" href="Presentation.Base.html#909" class="Datatype Operator">_≈_</a>
+  <a id="661" class="Symbol">;</a> <a id="663" href="Relation.Binary.Bundles.html#1358" class="Field">isEquivalence</a> <a id="677" class="Symbol">=</a> <a id="679" class="Keyword">record</a> <a id="686" class="Symbol">{</a> <a id="688" href="Relation.Binary.Structures.html#1641" class="Field">refl</a> <a id="693" class="Symbol">=</a> <a id="695" href="Presentation.Base.html#930" class="InductiveConstructor">refl</a> <a id="700" class="Symbol">;</a> <a id="702" href="Relation.Binary.Structures.html#1667" class="Field">sym</a> <a id="706" class="Symbol">=</a> <a id="708" href="Presentation.Base.html#946" class="InductiveConstructor">sym</a> <a id="712" class="Symbol">;</a> <a id="714" href="Relation.Binary.Structures.html#1693" class="Field">trans</a> <a id="720" class="Symbol">=</a> <a id="722" href="Presentation.Base.html#970" class="InductiveConstructor">trans</a> <a id="728" class="Symbol">}</a>
+  <a id="732" class="Symbol">}</a>
+</pre></body></html>

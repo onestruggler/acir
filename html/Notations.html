@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Notations</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- Presentations of groups</a>
+<a id="101" class="Comment">--</a>
+<a id="104" class="Comment">-- Shared notations: numeral patterns for ℕ and Fin, and the auto</a>
+<a id="170" class="Comment">-- pattern for proofs that hold by computation</a>
+<a id="217" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="291" class="Symbol">{-#</a> <a id="295" class="Keyword">OPTIONS</a> <a id="303" class="Pragma">--cubical-compatible</a> <a id="324" class="Pragma">--safe</a> <a id="331" class="Symbol">#-}</a>
+
+<a id="336" class="Keyword">module</a> <a id="343" href="Notations.html" class="Module">Notations</a> <a id="353" class="Keyword">where</a>
+
+<a id="360" class="Keyword">open</a> <a id="365" class="Keyword">import</a> <a id="372" href="Data.Fin.html" class="Module">Data.Fin</a> <a id="381" class="Keyword">using</a> <a id="387" class="Symbol">(</a><a id="388" href="Data.Fin.Base.html#1149" class="InductiveConstructor">zero</a> <a id="393" class="Symbol">;</a> <a id="395" href="Data.Fin.Base.html#1170" class="InductiveConstructor">suc</a><a id="398" class="Symbol">)</a>
+<a id="400" class="Keyword">open</a> <a id="405" class="Keyword">import</a> <a id="412" href="Data.Nat.html" class="Module">Data.Nat</a> <a id="421" class="Keyword">using</a> <a id="427" class="Symbol">(</a><a id="428" href="Agda.Builtin.Nat.html#221" class="InductiveConstructor">zero</a> <a id="433" class="Symbol">;</a> <a id="435" href="Agda.Builtin.Nat.html#234" class="InductiveConstructor">suc</a><a id="438" class="Symbol">)</a>
+
+<a id="441" class="Keyword">import</a> <a id="448" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="486" class="Symbol">as</a> <a id="489" class="Module">Eq</a>
+
+<a id="493" class="Comment">-- Pattern for proofs that hold by computation.</a>
+<a id="541" class="Keyword">pattern</a> <a id="auto"></a><a id="549" href="Notations.html#549" class="InductiveConstructor">auto</a> <a id="554" class="Symbol">=</a> <a id="556" href="Agda.Builtin.Equality.html#207" class="InductiveConstructor">Eq.refl</a>
+
+<a id="565" class="Comment">-- Numeral patterns, overloaded over ℕ and Fin via the shared</a>
+<a id="627" class="Comment">-- constructors zero and suc.</a>
+<a id="657" class="Keyword">pattern</a> <a id="₀"></a><a id="665" href="Notations.html#665" class="InductiveConstructor">₀</a> <a id="667" class="Symbol">=</a> <a id="669" class="InductiveConstructor">zero</a>
+<a id="674" class="Keyword">pattern</a> <a id="₁"></a><a id="682" href="Notations.html#682" class="InductiveConstructor">₁</a> <a id="684" class="Symbol">=</a> <a id="686" class="InductiveConstructor">suc</a> <a id="690" href="Notations.html#665" class="InductiveConstructor">₀</a>
+<a id="692" class="Keyword">pattern</a> <a id="₂"></a><a id="700" href="Notations.html#700" class="InductiveConstructor">₂</a> <a id="702" class="Symbol">=</a> <a id="704" class="InductiveConstructor">suc</a> <a id="708" href="Notations.html#682" class="InductiveConstructor">₁</a>
+<a id="710" class="Keyword">pattern</a> <a id="₃"></a><a id="718" href="Notations.html#718" class="InductiveConstructor">₃</a> <a id="720" class="Symbol">=</a> <a id="722" class="InductiveConstructor">suc</a> <a id="726" href="Notations.html#700" class="InductiveConstructor">₂</a>
+<a id="728" class="Keyword">pattern</a> <a id="₄"></a><a id="736" href="Notations.html#736" class="InductiveConstructor">₄</a> <a id="738" class="Symbol">=</a> <a id="740" class="InductiveConstructor">suc</a> <a id="744" href="Notations.html#718" class="InductiveConstructor">₃</a>
+<a id="746" class="Keyword">pattern</a> <a id="₅"></a><a id="754" href="Notations.html#754" class="InductiveConstructor">₅</a> <a id="756" class="Symbol">=</a> <a id="758" class="InductiveConstructor">suc</a> <a id="762" href="Notations.html#736" class="InductiveConstructor">₄</a>
+<a id="764" class="Keyword">pattern</a> <a id="₆"></a><a id="772" href="Notations.html#772" class="InductiveConstructor">₆</a> <a id="774" class="Symbol">=</a> <a id="776" class="InductiveConstructor">suc</a> <a id="780" href="Notations.html#754" class="InductiveConstructor">₅</a>
+<a id="782" class="Keyword">pattern</a> <a id="₇"></a><a id="790" href="Notations.html#790" class="InductiveConstructor">₇</a> <a id="792" class="Symbol">=</a> <a id="794" class="InductiveConstructor">suc</a> <a id="798" href="Notations.html#772" class="InductiveConstructor">₆</a>
+<a id="800" class="Keyword">pattern</a> <a id="₈"></a><a id="808" href="Notations.html#808" class="InductiveConstructor">₈</a> <a id="810" class="Symbol">=</a> <a id="812" class="InductiveConstructor">suc</a> <a id="816" href="Notations.html#790" class="InductiveConstructor">₇</a>
+<a id="818" class="Keyword">pattern</a> <a id="₉"></a><a id="826" href="Notations.html#826" class="InductiveConstructor">₉</a> <a id="828" class="Symbol">=</a> <a id="830" class="InductiveConstructor">suc</a> <a id="834" href="Notations.html#808" class="InductiveConstructor">₈</a>
+<a id="836" class="Keyword">pattern</a> <a id="₁₀"></a><a id="844" href="Notations.html#844" class="InductiveConstructor">₁₀</a> <a id="847" class="Symbol">=</a> <a id="849" class="InductiveConstructor">suc</a> <a id="853" href="Notations.html#826" class="InductiveConstructor">₉</a>
+<a id="855" class="Keyword">pattern</a> <a id="₁₁"></a><a id="863" href="Notations.html#863" class="InductiveConstructor">₁₁</a> <a id="866" class="Symbol">=</a> <a id="868" class="InductiveConstructor">suc</a> <a id="872" href="Notations.html#844" class="InductiveConstructor">₁₀</a>
+<a id="875" class="Keyword">pattern</a> <a id="₁₂"></a><a id="883" href="Notations.html#883" class="InductiveConstructor">₁₂</a> <a id="886" class="Symbol">=</a> <a id="888" class="InductiveConstructor">suc</a> <a id="892" href="Notations.html#863" class="InductiveConstructor">₁₁</a>
+<a id="895" class="Keyword">pattern</a> <a id="₁₃"></a><a id="903" href="Notations.html#903" class="InductiveConstructor">₁₃</a> <a id="906" class="Symbol">=</a> <a id="908" class="InductiveConstructor">suc</a> <a id="912" href="Notations.html#883" class="InductiveConstructor">₁₂</a>
+<a id="915" class="Keyword">pattern</a> <a id="₁₄"></a><a id="923" href="Notations.html#923" class="InductiveConstructor">₁₄</a> <a id="926" class="Symbol">=</a> <a id="928" class="InductiveConstructor">suc</a> <a id="932" href="Notations.html#903" class="InductiveConstructor">₁₃</a>
+<a id="935" class="Keyword">pattern</a> <a id="₁₅"></a><a id="943" href="Notations.html#943" class="InductiveConstructor">₁₅</a> <a id="946" class="Symbol">=</a> <a id="948" class="InductiveConstructor">suc</a> <a id="952" href="Notations.html#923" class="InductiveConstructor">₁₄</a>
+
+<a id="956" class="Comment">-- Successor patterns: ₖ₊ n matches the numeral k added to n.</a>
+<a id="1018" class="Keyword">pattern</a> <a id="₁₊"></a><a id="1026" href="Notations.html#1026" class="InductiveConstructor">₁₊</a> <a id="1029" href="Notations.html#1037" class="Bound">ⱼ</a> <a id="1031" class="Symbol">=</a> <a id="1033" class="InductiveConstructor">suc</a> <a id="1037" href="Notations.html#1037" class="Bound">ⱼ</a>
+<a id="1039" class="Keyword">pattern</a> <a id="₂₊"></a><a id="1047" href="Notations.html#1047" class="InductiveConstructor">₂₊</a> <a id="1050" href="Notations.html#1063" class="Bound">ⱼ</a> <a id="1052" class="Symbol">=</a> <a id="1054" class="InductiveConstructor">suc</a> <a id="1058" class="Symbol">(</a><a id="1059" class="InductiveConstructor">suc</a> <a id="1063" href="Notations.html#1063" class="Bound">ⱼ</a><a id="1064" class="Symbol">)</a>
+<a id="1066" class="Keyword">pattern</a> <a id="₃₊"></a><a id="1074" href="Notations.html#1074" class="InductiveConstructor">₃₊</a> <a id="1077" href="Notations.html#1095" class="Bound">ⱼ</a> <a id="1079" class="Symbol">=</a> <a id="1081" class="InductiveConstructor">suc</a> <a id="1085" class="Symbol">(</a><a id="1086" class="InductiveConstructor">suc</a> <a id="1090" class="Symbol">(</a><a id="1091" class="InductiveConstructor">suc</a> <a id="1095" href="Notations.html#1095" class="Bound">ⱼ</a><a id="1096" class="Symbol">))</a>
+<a id="1099" class="Keyword">pattern</a> <a id="₄₊"></a><a id="1107" href="Notations.html#1107" class="InductiveConstructor">₄₊</a> <a id="1110" href="Notations.html#1133" class="Bound">ⱼ</a> <a id="1112" class="Symbol">=</a> <a id="1114" class="InductiveConstructor">suc</a> <a id="1118" class="Symbol">(</a><a id="1119" class="InductiveConstructor">suc</a> <a id="1123" class="Symbol">(</a><a id="1124" class="InductiveConstructor">suc</a> <a id="1128" class="Symbol">(</a><a id="1129" class="InductiveConstructor">suc</a> <a id="1133" href="Notations.html#1133" class="Bound">ⱼ</a><a id="1134" class="Symbol">)))</a>
+</pre></body></html>
