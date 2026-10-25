@@ -27,36 +27,18 @@ postulate
 \end{code}
 \section{Library Design}\label{sec:design}
 
-This section presents the library bottom-up, with the rationale first.
-Each subsection names its home module in parentheses; code is quoted
-verbatim.  Five decisions shape everything that follows; each is a bet
-about where proof effort should go.
-\begin{enumerate}
-\item \emph{Syntax is unquotiented, and everything out of it is a function
-  on words.}  Words are a plain inductive type and the presented monoid is
-  a setoid on them, so normal forms, coset tables, and sections are
-  structurally recursive programs that Agda's evaluator can run
-  (\S\ref{sec:words}, \S\ref{sec:presentations}).
-\item \emph{Specifications are standard-library bundles.}  ``Normal form''
-  is not a new notion: it is an injection, a right inverse, or a bijection
-  out of the setoid of words (\S\ref{sec:nfproperty}).  No new theory means
-  no new lemmas to maintain.
-\item \emph{Certificates are finite.}  A verified coset table is finite
-  data plus five equations, three quantified over finite types and two
-  over axiom instances (\S\ref{sec:engine}); obligations are therefore
-  case splits --- which must still be made --- whose cases are closed
-  goals, discharged by evaluation where they reduce to a computation and
-  by short equational derivations otherwise.
-\item \emph{Indices are chosen for the unifier.}  Wire counts are built from
-  successors only, so coverage checking succeeds by injectivity of
-  constructors rather than by arithmetic (\S\ref{sec:circuits}).
-\item \emph{Constructions come in pairs.}  Every product construction has a
-  syntactic theorem (normal-form witnesses for the factors combine into
-  one for the product) and a semantic one (the constructed relation set
-  presents the constructed group), and the semantic groups are
-  standard-library bundles (\S\ref{sec:constructions},
-  \S\ref{sec:forstdlib}).
-\end{enumerate}
+This section presents the library bottom-up.  Each subsection names its
+home module in parentheses; code is quoted verbatim.  The design brief
+throughout: stay on the standard library's abstractions (setoids, function
+bundles, algebra bundles), keep everything \texttt{--safe} and
+\texttt{--cubical-compatible}, and arrange definitions so that Agda's
+evaluator does the heavy lifting in concrete instances.  Concretely, words
+stay unquotiented, so that normal forms, coset tables, and sections are
+programs the evaluator can run (\S\ref{sec:words}); a verified coset table
+is finite data plus five equations, so that its obligations are case
+splits whose cases close by evaluation or by short derivations
+(\S\ref{sec:engine}); and wire counts are built from successors only, so
+that coverage checking needs no arithmetic (\S\ref{sec:circuits}).
 
 \subsection{Words: the free monoid}\label{sec:words}
 
