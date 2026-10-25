@@ -672,17 +672,10 @@ $\aid{inv-nf} \circ \aid{nf} \approx \mathrm{id}$; from it we
 derive $\aid{normalize} = \aid{inv-nf} \circ \aid{nf}$, its idempotence,
 and injectivity of \aid{nf} --- so every \aid{NormalForm} is a
 \aid{NormalFormInjective}.  The bijective witness is a \aid{Bijection}
-rather than the standard library's \aid{Inverse}; the two are
-interderivable there, but an \aid{Inverse} would force an explicit
-inverse map and \emph{both} laws on every client, while downstream code
-consumes only the section and $\aid{inv-nf} \circ \aid{nf} \approx
-\mathrm{id}$.  The other law, \emph{exactness}
-($\aid{nf} \circ \aid{inv-nf} \approx \mathrm{id}$), stays a separate
-hypothesis: carriers may contain junk no word reaches, and exactness is
-what \aid{by-completeness} below trades against uniqueness.  A
-\aid{Bijection} suits clients that prove surjectivity as a property and
-read the section off its witness, as the extension construction of
-\S\ref{sec:constructions} does.
+rather than the interderivable \aid{Inverse}, whose second law,
+exactness ($\aid{nf} \circ \aid{inv-nf} \approx \mathrm{id}$), we keep
+as a separate hypothesis, since carriers may contain junk no word
+reaches.
 
 The converse direction is where constructivity bites, a point we were
 careful about.  Classically, any injective $\aid{nf}$ whose image can
