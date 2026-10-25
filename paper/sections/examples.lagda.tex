@@ -31,23 +31,7 @@ open CliffordT1.CliffordT1 using (_===_ ; amalPres ; f)
 \end{code}
 \section{Examples: A Catalogue of Verified Presentations}\label{sec:examples}
 
-This section is the library's harvest, but the inventory is not the point;
-what each entry was chosen to exercise is.  The families below were
-selected so that every layer of \S\ref{sec:design} is load-bearing
-somewhere.  Cyclic groups are the base case of every tower and the
-smallest place where monoid and group presentations come apart.  Symmetric
-groups exercise the circuit layer and a genuinely recursive coset tower.
-The wreath products exercise the direct and semidirect constructions
-with their semantic theorems, and yield a family
-of completeness results parameterized over two naturals.  The Pauli groups
-are the pure-composition test: a presentation with no coset enumeration
-at all.  The three amalgamation studies --- qubit Clifford+$T$, qutrit
-Clifford+$T$, and $U_3(\mathbb{Z}[\tfrac12,i])$ --- are the stress tests:
-longer towers, twisted relations, branching chains, definitional
-extensions, and the largest \aid{refl}-discharged obligation sets in the
-development.  For each family we say what its normal form \emph{is},
-since that is what a reader who wants to reuse the machinery on a new
-gate set needs to see first.
+This section is the library's harvest.
 
 Table~\ref{tab:presentations} lists
 every concrete \aid{{\_}IsPresentationOf{\_}} theorem in the development;
