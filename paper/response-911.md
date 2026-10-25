@@ -15,8 +15,8 @@ better for it.
   reason and a pointer to §7.2, and a paragraph argues why this is a
   programming-languages problem and a design story (Reviewer B). The
   contribution list is reorganized; the intro now says that every
-  claim is verified and that the unformalized ones are collected in
-  §7.5.
+  claim is verified, that the unformalized ones are marked where they
+  occur, and that §7.5 discusses the main one.
 - **Section 2** is revised and expanded in detail, since Reviewer A
   found it rushed towards the end; this also partly answers Reviewer
   D's request for expanded examples. Code and circuit diagrams sit
@@ -134,8 +134,8 @@ with the font distinctions kept.
 **Citation for agda-stdlib.** Added (Daggitt et al., JOSS 2025).
 
 **l.178, 192.** Both sentences are gone; the introduction now states
-that unformalized claims are marked where they occur and collected in
-§7.5.
+that unformalized claims are marked where they occur and that §7.5
+discusses the main one.
 
 **MLTT rather than cubical/HoTT.** Foreshadowed in the introduction:
 the library computes with syntax (coset tables and normal-form maps
@@ -242,13 +242,8 @@ sqir or VyZX would give end-to-end completeness against matrices.
 formalized: the amalgamation case studies are syntactic, ending in
 isomorphisms between the gate-set presentation and an amalgamated
 product of presentations, and the identification of those presented
-monoids with the concrete matrix monoids is taken from the literature;
-the subsection also says why (the rings and matrices are absent from
-the standard library, and each paper's completeness proof would have to
-be formalized first), and lists the other informal readings (the
-wreath products as monomial matrices, the Pauli quotients as Pauli
-groups modulo phases, the amalgam normal forms as the Matsumoto–Amano
-and Glaudell–Ross–Taylor forms). The second point is expanded with the
+monoids with the concrete matrix monoids is taken from the literature.
+The second point is expanded with the
 examples you asked for: gate sets with continuous parameters, such as
 the phase and rotation gates of Clément et al.'s complete theories,
 whose normal forms carry real angles and have no finite coset
