@@ -73,20 +73,23 @@ png: $(MAIN).pdf
 # latexdiff of this revision against the submitted version.  submitted/
 # holds the sources of the PDF the reviewers read (paper/ of the
 # supplementary material).  Agda code blocks, figures and the acks are
-# compared as wholes; latexdiff leaves the old listings (agdacode, a
-# verbatim environment) out of the diff; the bibliography is the
-# current one (main.bbl is moved aside so that it is not flattened).
+# compared as wholes: diffcode.py shows each old listing (agdacode, a
+# verbatim environment latexdiff would leave out) as a deleted block in
+# red and puts a blue bar beside each new code block; the bibliography
+# is the current one (main.bbl is moved aside so that it is not
+# flattened).
 # The three figures the revision replaced are taken from submitted/.
 LDCONFIG := --config="PICTUREENV=(?:picture|DIFnomarkup|code|tikzpicture|acks)[\w\d*@]*" \
             --config="VERBATIMENV=(?:comment|agdacode)"
 
 diff: diff.pdf
 
-diff.tex: $(DEPS) $(AGDATEX) $(wildcard submitted/*.tex submitted/sections/*.tex)
+diff.tex: $(DEPS) $(AGDATEX) diffcode.py $(wildcard submitted/*.tex submitted/sections/*.tex)
 	[ ! -f $(MAIN).bbl ] || mv $(MAIN).bbl $(MAIN).bbl.keep
 	latexdiff --flatten --encoding=utf8 $(LDCONFIG) submitted/$(MAIN).tex $(MAIN).tex > $@; \
 	  s=$$?; [ ! -f $(MAIN).bbl.keep ] || mv $(MAIN).bbl.keep $(MAIN).bbl; exit $$s
 	sed -i -e 's,{figures/fig\(1_sigma\|2_comm2\|2_yb\)},{submitted/figures/fig\1},g' $@
+	python3 diffcode.py $@
 
 diff.pdf: diff.tex
 	$(LATEXMK) -pdf -interaction=nonstopmode diff.tex

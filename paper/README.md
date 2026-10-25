@@ -68,8 +68,10 @@ citations and claims, the new code and the circuit diagrams are kept;
 rewordings without a change of content are reverted to the submitted
 text, and the cuts made for length are kept. Measured by `make diff`
 (words marked added / deleted): 6,044 / 4,511 for `popl-revision2`,
-4,917 / 3,266 here. Agda code blocks, figures and the acks are compared
-as wholes, so the old listings do not appear in the diff.
+4,920 / 3,270 here. Agda code blocks, figures and the acks are compared
+as wholes: `diffcode.py` shows each submitted listing as a deleted block
+(red, with a red bar) and puts a blue bar beside each new code block;
+the circuit diagrams appear in their revised form.
 
 From PowerShell: `wsl bash -lc "make -C /mnt/d/work/acir/paper"`.
 
