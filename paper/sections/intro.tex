@@ -47,14 +47,11 @@ general, reusable formal framework for \emph{presentations of monoids and
 groups by generators and relations}, for \emph{normal forms}, and for
 \emph{completeness} of finite relation sets, with circuits (words of
 wire-indexed gates) as the motivating instance.  In plain terms, a circuit
-is a word of gates and a rule set is a datatype of axioms; a normal form
-is an ordinary function on words, paired with a function back that picks
-a canonical representative, and completeness follows from soundness plus
-one further property, proved once as a generic lemma: normal forms with
-equal denotations are equal.  Normal forms are built one wire at a time,
-by a \emph{coset table} that records how a gate moves past each coset
-representative; Section~\ref{sec:permutations} shows the whole route on
-permutation circuits.  The library is written in
+is a word of gates, a rule set is a datatype of axioms, and a normal form
+is a function on words with a section back; completeness then follows
+from soundness and the uniqueness of normal forms, and
+Section~\ref{sec:permutations} shows the whole route on permutation
+circuits.  The library is written in
 safe, axiom-free Agda~\cite{norell2007thesis,bove2009agda} on top of the
 Agda standard library~\cite{daggitt2025stdlib,agdastdlib}, and is being
 prepared for submission to it; the semantic constructions it needed and
