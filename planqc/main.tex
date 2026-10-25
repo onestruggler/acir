@@ -29,6 +29,7 @@
 %% Narrower top and bottom margins than acmsmall's 58pt and 44pt.
 \geometry{top=20pt, bottom=24pt}
 
+\usepackage{mathtools}
 \usepackage{booktabs}
 \usepackage{tabularx}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
@@ -105,19 +106,9 @@ equational framework for reasoning about reversible quantum programs. Since 2014
 Completeness proofs use two main strategies. \Cref{fig:normalform} outlines the first one. It specifies a unique normal form for each linear map~\cite{selinger2015clifford,bian2026qupit,makary2021real,amy2018cnotdihedral,blake2026phaseaffine,li2025qutrit}, often through giving an exact synthesis algorithm~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Completeness follows by proving that every circuit can be transformed into its normal form using the rewrite rules. \Cref{fig:translation} illustrates the second strategy, which leverages the complete equational theory of another gate set. Completeness carries over if every rule of that theory, translated back, can be derived from the new rules. The new rules must also prove that each gate is equal to its round-trip translation~\cite{bian2023cliffordt2,bian2023cliffordcs3,clement2026realcliffordch,amy2024toffoli,blake2026simpler,clement2023complete}. Sometimes the two methods are combined, as in the scaled dyadic extension of~\citet{li2021on}. 
 %It pairs a normal form with reduction to an already complete subgroup. 
 
-Starting from a complete rule set, we can remove a redundant rule by deriving it from those other rules, thereby preserving
-completeness. To show that the resulting set is minimal, we need to give, for each remaining rule, an interpretation of circuits that every other rule preserves except that rule. Any derivation using the other rules preserves this interpretation, so the rule cannot be derived from them~\cite{clement2024minimal,blake2026simpler}.
+Starting from a complete rule set, we can remove a redundant rule by deriving it from those other rules, thereby preserving completeness. To show that the resulting set is minimal, we need to give, for each remaining rule, an interpretation of circuits that every other rule preserves except that rule. Any derivation using the other rules preserves this interpretation, so the rule cannot be derived from them~\cite{clement2024minimal,blake2026simpler}.
 
-Completeness and minimality proofs can require long case distinctions
-over gates, relations and normal forms, with supporting derivations
-sometimes running to hundreds of
-pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}.
-Long reductions of relation sets can also hide circular reasoning,
-where a derivation used to eliminate a relation depends indirectly
-on that same relation. Such dependencies are hard to detect by hand.
-An unnoticed gap can also undermine later proofs that rely on the
-result: Section~\ref{sec:findings} reports a gap in a published proof
-that a later theorem had imported. A machine check verifies the
+Completeness and minimality proofs typically require long case distinctions over gates, relations and normal forms, whose supporting derivations sometimes run to hundreds of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}. Long reductions of relation sets can also hide circular reasoning, where a derivation used to eliminate a relation depends indirectly on that same relation. Such dependencies are hard to detect by hand. An unnoticed gap can also undermine later proofs that rely on the result: Section~\ref{sec:findings} reports a gap in a published proof that a later theorem had imported. A machine check verifies the
 individual cases and guards against circular arguments. To check
 results that build on one another, it must be done in one framework,
 which defines circuits, their semantics and completeness once, so that
@@ -137,7 +128,7 @@ a theorem proved in one development can be used in another.
   \label{fig:translation}
 \end{subfigure}
 \captionsetup{singlelinecheck=false}
-\caption{Two strategies for proving completeness of $\mathcal{R}$ over a gate set $\mathcal{G}$. Consider any two circuits $C_1$ and $C_2$ over $\mathcal{G}$ that have the same linear map, $C_1\equiv_{u}C_2$. $\;\rewrites{\mathcal{R}}\;$ means applying a finite sequence of rewrites using $\mathcal{R}$ in either direction, where $*$ denotes zero or more steps. In \Cref{fig:translation}, $E$ and $D$ translate circuits gate by gate from $\mathcal{G}$ to $\mathcal{G}'$ and back. Both $E$ and $D$ preserve the underlying linear map. To transfer completeness, we prove that every rule of $\mathcal{R}'$, after applying $D$, is derivable using $\mathcal{R}$, and that $C_j\rewrites{\mathcal{R}}D(C_j')$ for $j\in\{1,2\}$. Decoding the old proof and combining it with these round-trip rewrites then gives $C_1\rewrites{\mathcal{R}}D(C_1')\rewrites{\mathcal{R}}D(C_2')\rewrites{\mathcal{R}}C_2.$}
+\caption{Two strategies for proving completeness of $\mathcal{R}$ over a gate set $\mathcal{G}$. Consider any two circuits $C_1$ and $C_2$ over $\mathcal{G}$ that have the same linear map, $C_1\equiv_{u}C_2$. $\;\rewrites{\mathcal{R}}\;$ means applying a finite sequence of rewrites using $\mathcal{R}$ in either direction, where $*$ denotes zero or more steps. In \Cref{fig:translation}, $E$ and $D$ translate circuits gate by gate from $\mathcal{G}$ to $\mathcal{G}'$ and back. Both $E$ and $D$ preserve circuit composition and the underlying linear map. To transfer completeness, we prove that every rule of $\mathcal{R}'$, after applying $D$, is derivable using $\mathcal{R}$, and that $C_j\rewrites{\mathcal{R}}D(C_j')$ for $j\in\{1,2\}$. Decoding the old proof gives $D(C_1')\rewrites{\mathcal{R}}D(C_2')$. Combining this with the round-trip rewrites $D(E(g))\rewrites{\mathcal{R}}g$ for all $g\in\mathcal{G}$ then gives $C_1\rewrites{\mathcal{R}}D(C_1')\rewrites{\mathcal{R}}D(C_2')\rewrites{\mathcal{R}}C_2$.}
 \label{fig:strategies}
 \end{figure}
 

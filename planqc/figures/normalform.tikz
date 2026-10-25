@@ -1,11 +1,11 @@
 \begin{tikzpicture}
 	\begin{pgfonlayer}{nodelayer}
-		\node [style=term] (0) at (-3, 2) {$C_1$};
-		\node [style=term] (1) at (-3, -2) {$C_2$};
+		\node [style=term] (0) at (-3, 1.75) {$C_1$};
+		\node [style=term] (1) at (-3, -1.75) {$C_2$};
 		\node [style=term] (2) at (1.95, 0) {$N$};
 		\node [style=term] (3) at (-3.8, 0) {$\equiv_{u}$};
-		\node [style=rule label, rotate=-22.43] (8) at (-0.27, 1.65) {$\mathcal{R}^*$};
-		\node [style=rule label, rotate=22.43] (10) at (-0.27, -1.65) {$\mathcal{R}^*$};
+		\node [style=rule label, rotate=-22.43] (8) at (-0.27, 1.4) {$\mathcal{R}^*$};
+		\node [style=rule label, rotate=22.43] (10) at (-0.27, -1.4) {$\mathcal{R}^*$};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [dashed] (0) to (1);
