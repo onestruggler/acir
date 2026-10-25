@@ -40,7 +40,7 @@ better for it.
   axes of its comparison table (now Table 3); every citation was
   re-checked against its source.
 - **Section 7** has measured typechecking costs, a breakdown of the
-  seven thousand "core" lines, and its threats subsection states
+  seven thousand "core" lines, and its limitations subsection states
   exactly what is not formalized (Reviewers A, D); the size table is
   replaced by prose. **Section 8** is lightly revised.
 - Code is typeset by Agda's LaTeX backend with its natural colours,
@@ -243,10 +243,9 @@ formalized: the amalgamation case studies are syntactic, ending in
 isomorphisms between the gate-set presentation and an amalgamated
 product of presentations, and the identification of those presented
 monoids with the concrete matrix monoids is taken from the literature.
-The second point names the
-examples you asked for: gate sets with continuous parameters, whose
-normal forms carry real angles, and subgroup steps of infinite index,
-such as the lamplighter groups ℤ_N ≀ ℤ.
+The second point states the
+finiteness assumption behind the method; of the examples you asked for,
+the lamplighter groups appear in §8 as a first infinite-index target.
 
 **Wording.** "Against the standard library", "layered Agda library",
 and "discharges the case analyses" are gone; "circuit theory" and the
