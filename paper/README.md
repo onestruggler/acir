@@ -118,8 +118,10 @@ Extract the complete archive and open `html/index.html` in a browser to read
 `MainTheorems` and its transitive imports with linked identifiers. The
 package includes dependency pages and can be browsed offline without Agda.
 It was generated with Agda 2.8.0 and standard library 2.4 using
-`agda --html --html-dir=html MainTheorems.agda`; the Agda sources are
-unchanged from the `popl-revision1` release. The top-level `README.md`
+`agda --html --html-dir=html MainTheorems.agda`; the archived Agda sources
+are those of the `popl-revision1` release, and the repository's `html/` has
+since been regenerated from the sources with `--cubical-compatible` on
+every module (commit `245f2315`). The top-level `README.md`
 provides browsing and typechecking instructions.
 
 - Every visible Agda block is quoted from the repository and

@@ -17,13 +17,15 @@ so the rendering works offline. Keep the complete `html/` folder together.
 GitHub displays HTML source; download and extract the archive to browse it.
 
 The rendering covers `MainTheorems.agda` and its transitive imports:
-422 generated module pages, including 61 artifact modules and the required
+419 generated module pages, including 61 artifact modules and the required
 Agda built-ins and standard-library modules. It does not cover every unused
 module in the repository. See [`html/README.txt`](html/README.txt) for details.
 
-The Agda sources are unchanged from the `popl-revision1` release (commit
-`5e28af3f344c11b27096c012c2f7b7be4cc51bf5`). This version combines those
-sources with the HTML rendering and the revised paper sources.
+The archived `popl-revision2` sources are those of the `popl-revision1`
+release (commit `5e28af3f344c11b27096c012c2f7b7be4cc51bf5`). The repository
+has since made every module `--cubical-compatible` (commit `245f2315`, which
+also rewrites the two proofs that used axiom K), and the rendering here was
+regenerated from those sources on 2026-10-26.
 
 To regenerate the rendering with Agda 2.8.0 and standard library 2.4, run
 from the repository root:
