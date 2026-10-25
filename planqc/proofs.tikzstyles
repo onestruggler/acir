@@ -9,5 +9,5 @@
 
 % Edge styles
 \tikzstyle{equal}=[-, double, double distance=1.5pt]
-\tikzstyle{translate}=[->, >=stealth]
-\tikzstyle{translate back}=[->, >=stealth, dashed]
+\tikzstyle{translate}=[|->, >=stealth]
+\tikzstyle{translate back}=[|->, >=stealth]
