@@ -9,7 +9,7 @@
 --   * the n-fold direct product        (Construct.Properties.NDirectProduct).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ ; suc ; 2+)
 open import Data.Nat.Primality using (Prime)

@@ -1,4 +1,4 @@
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 open import Level using (0ℓ)
 open import Relation.Binary using (IsEquivalence ; Setoid ; Rel)
 open import Data.Product using (_,_)

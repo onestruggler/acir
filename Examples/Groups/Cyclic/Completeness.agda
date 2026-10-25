@@ -6,7 +6,7 @@
 -- injective on the syntactic setoid — by normalization.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 import Normalization.NormalForm.Propositional as NFBase
 import Presentation.Properties as PP

@@ -5,7 +5,7 @@
 -- and the cyclic group ℤ/5ℤ, with the generator interpretation ⟦_⟧₀.
 ------------------------------------------------------------------------
 
-{-# OPTIONS  --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Construct.DirectProduct.S3xC5.Semantic where
 

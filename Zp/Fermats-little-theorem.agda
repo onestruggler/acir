@@ -4,7 +4,7 @@
 -- Fermat's little theorem for prime modulus
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --call-by-name #-}
 {-# OPTIONS --termination-depth=5 #-}
 
@@ -200,7 +200,7 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
 
 
   pwet-x : ∀ {n} (i : X n) (v : Vector (ℤ ₚ) (₂₊ n)) → Pointwise _≡_ (v ∘ act (i ₛ) ∘ suc) (v ∘ suc ∘ act i)
-  pwet-x {n} i v x rewrite pwet'' i x = auto
+  pwet-x {n} i v x = cong v (pwet'' i x)
 
 
 

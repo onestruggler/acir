@@ -10,7 +10,7 @@
 -- that Examples.Amalgamations.CliffordT1 does.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Amalgamations.CliffordT1BaseUNF where
 

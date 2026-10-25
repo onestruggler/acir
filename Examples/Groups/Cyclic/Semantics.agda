@@ -5,7 +5,7 @@
 -- integers ℤ at order 0 and ℤ/Nℤ at order N.
 ------------------------------------------------------------------------
 
-{-# OPTIONS  --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Fin using (Fin ; zero ; suc)
 open import Data.Nat using (ℕ ; zero ; suc)

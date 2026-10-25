@@ -5,7 +5,7 @@
 -- normal forms with equal denotations are equal.
 ------------------------------------------------------------------------
 
-{-# OPTIONS  --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Cyclic.Uniqueness where
 

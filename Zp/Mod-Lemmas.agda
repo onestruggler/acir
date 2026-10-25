@@ -4,7 +4,7 @@
 -- Additional algebraic lemmas for ℤ/pℤ
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --termination-depth=2 #-}
 
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)

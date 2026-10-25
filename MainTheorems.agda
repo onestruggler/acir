@@ -13,7 +13,7 @@
 -- of each section names the file where the proof lives.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module MainTheorems where
 

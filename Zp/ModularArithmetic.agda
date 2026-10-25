@@ -4,7 +4,7 @@
 -- Modular arithmetic on ℤ/nℤ (as Fin n) with ring operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 {-# OPTIONS --call-by-name #-}
 
@@ -720,21 +720,12 @@ module PrimeModulus (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
     where
     open Eq.≡-Reasoning
 
+  -- The inverse of a nonzero element depends only on the element: the
+  -- instance nztoℕ reduces to the unit record once the element is a
+  -- successor, whatever proof of nonzero-ness it was built from.
   inv-cong : ∀ k* l* → k* .proj₁ ≡ l* .proj₁ → (k* ⁻¹) .proj₁ ≡ (l* ⁻¹) .proj₁
-  inv-cong k*@(k , nzk) l*@(l , nzl) eq = begin
-    (k* ⁻¹) .proj₁ ≡⟨ auto ⟩
-    _⁻¹' k {{nztoℕ {neq0 = nzk}}}  ≡⟨ HE.≅-to-≡ aux ⟩
-    _⁻¹' l {{nztoℕ {neq0 = nzl}}}  ≡⟨ auto ⟩
-    (l* ⁻¹) .proj₁ ∎
-    where
-    open import Relation.Binary.HeterogeneousEquality as HE
-    nzk=nzl : nzk ≅ nzl
-    nzk=nzl = ≡-subst-removable (\ x → x ≢ ₀) (Eq.sym eq) nzl
-    
-    aux : _⁻¹' k {{nztoℕ {neq0 = nzk}}} ≅ _⁻¹' l {{nztoℕ {neq0 = nzl}}}
-    aux = HE.cong₂ (\ xx yy → _⁻¹' xx {{nztoℕ {neq0 = yy}}}) (reflexive eq) nzk=nzl
-
-    open Eq.≡-Reasoning
+  inv-cong (₀ , nzk) _ _ = ⊥-elim (nzk refl)
+  inv-cong (₁₊ k , nzk) (₁₊ l , nzl) refl = refl
 
 
   aux-inv-xy : ∀ x y → (y ⁻¹ *' x ⁻¹) .proj₁ * (x *' y) .proj₁ ≡ ₁
