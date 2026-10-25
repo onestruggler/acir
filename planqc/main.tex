@@ -128,18 +128,7 @@ a theorem proved in one development can be used in another.
   \label{fig:translation}
 \end{subfigure}
 \captionsetup{singlelinecheck=false}
-\caption{Two strategies for proving completeness of $\mathcal{R}$ over a gate set $\mathcal{G}$. Consider any two circuits $C_1$ and $C_2$ over $\mathcal{G}$ that have the same linear map, $C_1\equiv_{u}C_2$. $\;\rewrites{\mathcal{R}}\;$ means applying a finite sequence of rewrites using $\mathcal{R}$ in either direction, where $*$ denotes zero or more steps. In \Cref{fig:translation}, $E$ and $D$ translate circuits gate by gate from $\mathcal{G}$ to $\mathcal{G}'$ and back. Both $E$ and $D$ preserve circuit composition and the underlying linear map. To transfer completeness, we first show that every rule of
-$\mathcal{R}'$, translated by $D$, can be derived using $\mathcal{R}$.
-We can then replace each step of the old proof between $C_1'$ and
-$C_2'$ by its translated derivation, giving
-$D(C_1')\rewrites{\mathcal{R}}D(C_2')$.
-We also check that each gate $g\in\mathcal{G}$ can be rewritten to its round-trip
-translation: $g\rewrites{\mathcal{R}}D(E(g))$. Applying these rewrites gate by gate gives
-$C_j\rewrites{\mathcal{R}}D(C_j')$ for $j\in\{1,2\}$.
-Combining these paths gives
-$C_1\rewrites{\mathcal{R}}D(C_1')
-\rewrites{\mathcal{R}}D(C_2')
-\rewrites{\mathcal{R}}C_2$.}
+\caption{Two strategies for proving completeness of $\mathcal{R}$ over a gate set $\mathcal{G}$. Consider any two circuits $C_1$ and $C_2$ over $\mathcal{G}$ that have the same linear map, $C_1\equiv_{u}C_2$. $\;\rewrites{\mathcal{R}}\;$ means applying a finite sequence of rewrites using $\mathcal{R}$ in either direction, where $*$ denotes zero or more steps. In \Cref{fig:normalform}, we reverse the path from $C_2$ to $N$ and concatenate it with the path from $C_1$ to $N$, giving $C_1\rewrites{\mathcal{R}}N\rewrites{\mathcal{R}}C_2$. In \Cref{fig:translation}, $E$ and $D$ translate circuits gate by gate from $\mathcal{G}$ to $\mathcal{G}'$ and back. Both $E$ and $D$ preserve circuit composition and the underlying linear map. To transfer completeness, we first show that every rule of $\mathcal{R}'$, translated by $D$, can be derived using $\mathcal{R}$. We can then replace each step of the old proof between $C_1'$ and $C_2'$ by its translated derivation, giving $D(C_1')\rewrites{\mathcal{R}}D(C_2')$. We also check that each gate $g\in\mathcal{G}$ can be rewritten to its round-trip translation: $g\rewrites{\mathcal{R}}D(E(g))$. Applying these rewrites gate by gate gives $C_j\rewrites{\mathcal{R}}D(C_j')$ for $j\in\{1,2\}$. Combining these paths gives $C_1\rewrites{\mathcal{R}}D(C_1')\rewrites{\mathcal{R}}D(C_2')\rewrites{\mathcal{R}}C_2$.}
 \label{fig:strategies}
 \end{figure}
 
