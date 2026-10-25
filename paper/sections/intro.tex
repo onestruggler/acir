@@ -48,21 +48,7 @@ on the design decisions that make it work: a
 general, reusable formal framework for \emph{presentations of monoids and
 groups by generators and relations}, for \emph{normal forms}, and for
 \emph{completeness} of finite relation sets, with circuits --- words of
-wire-indexed gates --- as the motivating instance.  Its approach can be
-stated without formal
-vocabulary.  A circuit is a word of gates and a rule set is a datatype of
-axioms; the equational theory is the congruence they generate, itself an
-inductive datatype.  A normal form is an ordinary function on words,
-paired with a function back that picks a canonical representative;
-completeness then follows from soundness plus one further property, that
-normal forms with equal denotations are equal --- a reduction proved
-once, as a generic lemma.  Normal forms are built one wire at a time: the
-circuits on $n$ wires sit inside those on $n{+}1$ wires as the circuits
-that leave the bottom wire alone, and a \emph{coset table} --- a small
-finite table recording how a gate moves past each coset
-representative --- adds one ``digit'' per wire.
-Section~\ref{sec:permutations} shows the whole route on the smallest
-example, permutation circuits presenting the symmetric groups.
+wire-indexed gates --- as the motivating instance.
 
 One design decision deserves to be announced up front: the library is
 written in plain, setoid-based
