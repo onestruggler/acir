@@ -30,31 +30,25 @@ monoids as setoids over inductive congruences, not as quotient types ---
 deserves a balance sheet now that the case studies are on the table.
 What it cost: every function out of the presented monoid carries a
 congruence proof, and records like \aid{Injection} carry that bookkeeping.
-What it bought: (i) words are a plain inductive type, so normal-form
-maps, coset tables, and sections are
-plain structurally recursive programs, and the hundreds of table
+What it bought: (i) normal-form maps, coset tables, and sections are
+plain structurally recursive programs, so the hundreds of table
 obligations in \S\ref{sec:examples} reduce to \aid{refl} by evaluation;
 (ii) sections --- maps \emph{into} the syntax
 choosing representatives, the load-bearing ingredient of
 \aid{NormalForm}, Schreier transversals, and amalgamation tails --- are
-natural for setoids and awkward for quotients, whose elements carry no
-concrete representative to compute with; (iii) the library remains
-inside plain Agda and the standard library's algebra hierarchy, a
-requirement for upstreaming; and, as a
-secondary benefit, (iv) the congruence $\approx$ is itself an inductive
-family, so its derivations are data: the congruence-lifting and
-transport lemmas of \S\ref{sec:constructions} and the wire-shift lemma
-of \S\ref{sec:circuits} are inductions on them, whereas under a quotient
-derivations become paths, which transport for free but cannot be
-inspected.  The univalent alternative
-\cite{vezzosi2019cubical,cubicallibrary} would replace
-$\approx$ by $\equiv$, so that equational reasoning becomes rewriting
-and the inductions of (iv) become respect proofs for the raw axioms,
-but the quotient's eliminator still demands such a proof for every
-function out of it, and (ii) and (iii) would be forfeited.  For this
-problem domain --- where the whole game is computing canonical
-representatives --- we found the setoid side of the trade clearly
-favourable.
+natural for setoids and awkward for quotients, where they are not in
+general definable; (iii) the library remains inside plain Agda and the
+standard library's algebra hierarchy, a requirement for upstreaming;
+and, secondarily, (iv) derivations of $\approx$ are data, on which the
+congruence-lifting lemmas of \S\ref{sec:constructions} are inductions.
+The univalent alternative \cite{vezzosi2019cubical,cubicallibrary} would
+turn equational reasoning into rewriting, but its eliminator still
+demands a congruence proof for every function out of the quotient, and
+(ii) and (iii) would be forfeited.  For this problem domain --- where
+the whole game is computing canonical representatives --- we found the
+setoid side of the trade clearly favourable; the standard library's
+function bundles meant the ``zoo'' of \S\ref{sec:nfproperty} needed no
+new theory at all.
 
 \subsection{Limitations}\label{sec:threats}
 
