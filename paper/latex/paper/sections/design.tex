@@ -463,8 +463,13 @@ with it, induct on it, and translate it (the congruence-lifting lemmas of
 quotient-based designs (e.g.\ mathlib's \aid{PresentedGroup} as a quotient
 of a free group by a normal
 closure~\cite{mathlib2020,mathlib-doc-presented}, or higher inductive
-types in cubical Agda~\cite{vezzosi2019cubical,cubicallibrary}), this is
-a setoid design (cf.~\cite{barthe2003setoids} for the tradition);
+types in cubical Agda~\cite{vezzosi2019cubical,cubicallibrary}), the
+setoid design pays a congruence obligation per function out of the type,
+but keeps the normal-form maps of \S\ref{sec:nfproperty} \emph{ordinary
+computable functions on words}, with no quotient to eliminate through ---
+crucial for the proof-by-evaluation style of the case studies, and
+compatible with a standard-library-first policy
+(cf.~\cite{barthe2003setoids} for the tradition);
 \S\ref{sec:setoids} weighs that choice.
 \texttt{Presentation.Properties} packages $\approx$ as an equivalence, a
 setoid (the \emph{word setoid}, the domain of every normal form in
