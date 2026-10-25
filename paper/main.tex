@@ -8,8 +8,8 @@
 %% The sections that quote Agda code are literate Agda files; main.tex
 %% \inputs their rendered versions from latex/paper/sections/.
 %%
-%% Submission mode: anonymous double-blind review (PACMPL/POPL).
-\documentclass[acmsmall,review,anonymous]{acmart}
+%% Review revision with author identities and acknowledgments visible.
+\documentclass[acmsmall,review]{acmart}
 
 %% PACMPL journal metadata (placeholders for the review version).
 \acmJournal{PACMPL}
@@ -78,14 +78,19 @@
 
 \title{Normal Forms and Complete Relations for Circuits in Agda}
 
-%% Anonymous submission: author block suppressed by the `anonymous' option,
-%% but acmart still requires one for the copyright/DOI machinery.
-\author{Anonymous Author(s)}
+\author{Xiaoning Bian}
 \affiliation{%
-  \institution{Anonymous Institution}
-  \city{Anonymous City}
-  \country{Anonymous Country}}
-\email{anonymous@example.org}
+  \institution{Tsinghua University}
+  \city{Beijing}
+  \country{China}}
+\email{bian@dal.ca}
+
+\author{Yuan Feng}
+\affiliation{%
+  \institution{Tsinghua University}
+  \city{Beijing}
+  \country{China}}
+\email{yuan\_feng@tsinghua.edu.cn}
 
 \begin{abstract}
 \input{sections/abstract}
@@ -135,7 +140,7 @@ Clifford group, Reidemeister--Schreier, Agda, formal verification}
 \input{sections/discussion}
 \input{sections/conclusion}
 
-%% Funding acknowledgments are hidden while anonymous mode is enabled.
+%% Funding acknowledgments.
 \begin{acks}
 This research was partially supported by the Quantum Science
 and Technology-National Science and Technology Major Project under Grant No. 2024ZD0300500,
