@@ -104,28 +104,8 @@ equational framework for reasoning about reversible quantum programs. Since 2014
 Completeness proofs use two main strategies. \Cref{fig:normalform} outlines the first one. It specifies a unique normal form for each linear map~\cite{selinger2015clifford,bian2026qupit,makary2021real,amy2018cnotdihedral,blake2026phaseaffine,li2025qutrit}, often through giving an exact synthesis algorithm~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Completeness follows by proving that every circuit can be transformed into its normal form using the rewrite rules. \Cref{fig:translation} illustrates the second strategy, which leverages the complete equational theory of another gate set. Completeness carries over if every rule of that theory, translated back, can be derived from the new rules. The new rules must also prove that each gate is equal to its round-trip translation~\cite{bian2023cliffordt2,bian2023cliffordcs3,clement2026realcliffordch,amy2024toffoli,blake2026simpler,clement2023complete}. Sometimes the two methods are combined, as in the scaled dyadic extension of~\citet{li2021on}. 
 %It pairs a normal form with reduction to an already complete subgroup. 
 
-\begin{figure}[H]
-\centering
-\begin{subfigure}[b]{0.42\linewidth}
-  \centering
-  \scalebox{.8}{\tikzfig{figures/normalform}}
-  \caption{$C_1$ and $C_2$ can be rewritten to the same normal form.}
-  \label{fig:normalform}
-\end{subfigure}\hfill
-\begin{subfigure}[b]{0.52\linewidth}
-  \centering
-  \scalebox{.8}{\tikzfig{figures/translation}}
-  \caption{The complete theory of $\mathcal{G}'$ proves $C_1' = C_2'$. Translating the proof back proves $C_1 = C_2$ over $\mathcal{G}$.}
-  \label{fig:translation}
-\end{subfigure}
-\caption{Two strategies for proving the rewrite rules of a gate set $\mathcal{G}$ are complete. $C_1$ and $C_2$ are any two circuits over $\mathcal{G}$ with the same linear map. In (b), each $C_i$ is translated into a circuit $C_i'$ over another gate set $\mathcal{G}'$ that already has a complete equational theory. The translation preserves the linear map.}
-\label{fig:strategies}
-\end{figure}
-
 Starting from a complete rule set, we can remove a redundant rule by deriving it from those other rules, thereby preserving
 completeness. To show that the resulting set is minimal, we need to give, for each remaining rule, an interpretation of circuits that every other rule preserves except that rule. Any derivation using the other rules preserves this interpretation, so the rule cannot be derived from them~\cite{clement2024minimal,blake2026simpler}.
-
-
 
 Completeness and minimality proofs can require long case distinctions
 over gates, relations and normal forms, with supporting derivations
@@ -141,6 +121,30 @@ individual cases and guards against circular arguments. To check
 results that build on one another, it must be done in one framework,
 which defines circuits, their semantics and completeness once, so that
 a theorem proved in one development can be used in another.
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.42\linewidth}
+  \centering
+  \scalebox{.8}{\tikzfig{figures/normalform}}
+  \caption{The rewrites from $C_1$ and $C_2$ to their common normal form $N$ using $\mathcal{R}$ give rewrites from $C_1$ to $C_2$ using $\mathcal{R}$.}
+  \label{fig:normalform}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.52\linewidth}
+  \centering
+  \scalebox{.8}{\tikzfig{figures/translation}}
+  \caption{Completeness of $\mathcal{R}'$ gives rewrites between $C_1'=E(C_1)$ and $C_2'=E(C_2)$. Translating this proof back gives rewrites between $C_1$ and $C_2$ using $\mathcal{R}$.}
+  \label{fig:translation}
+\end{subfigure}
+\captionsetup{singlelinecheck=false}
+\caption{Two strategies for proving completeness of $\mathcal{R}$ over a gate set $\mathcal{G}$. Consider any two circuits $C_1$ and $C_2$ over $\mathcal{G}$ that have the same linear map, $C_1\equiv_{u}C_2$. $\leftrightarrow_{\mathcal{R}}^{*}$ denotes applying a finite sequence of rewrites using $\mathcal{R}$ in either direction, where $*$ means zero or more steps. In \Cref{fig:translation}, $E$ replaces each gate of $\mathcal{G}$ by a circuit over $\mathcal{G}'$, and $D$ replaces each gate of $\mathcal{G}'$ by a circuit over $\mathcal{G}$. Both $E$ and $D$ preserve the underlying linear map. To transfer completeness, we prove that every rule of $\mathcal{R}'$, after applying $D$, is derivable using $\mathcal{R}$, and that $C_j\leftrightarrow_{\mathcal{R}}^{*}D(C_j')$ for $j\in\{1,2\}$. Decoding the old proof and combining it with these round-trip rewrites then gives $C_1\leftrightarrow_{\mathcal{R}}^{*}D(C_1')\leftrightarrow_{\mathcal{R}}^{*}D(C_2')\leftrightarrow_{\mathcal{R}}^{*}C_2.$}
+\label{fig:strategies}
+\end{figure}
+
+
+
+
+
+
 
 
 Language models can now write large formal proofs. For example, a
