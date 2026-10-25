@@ -672,23 +672,17 @@ $\aid{inv-nf} \circ \aid{nf} \approx \mathrm{id}$; from it we
 derive $\aid{normalize} = \aid{inv-nf} \circ \aid{nf}$, its idempotence,
 and injectivity of \aid{nf} --- so every \aid{NormalForm} is a
 \aid{NormalFormInjective}.  The bijective witness is a \aid{Bijection}
-rather than the standard library's \aid{Inverse}, although the two are
-interderivable there, and the choice is one of style with consequences
-downstream.  An \aid{Inverse} carries an explicit inverse map together
-with \emph{both} inverse laws; what our downstream code consumes is a
-section and the single law $\aid{inv-nf} \circ \aid{nf} \approx
-\mathrm{id}$, i.e.\ a \aid{RightInverse}, and the second law ---
-\emph{exactness}, $\aid{nf} \circ \aid{inv-nf} \approx \mathrm{id}$ ---
-is a hypothesis we deliberately keep separate, because carriers are
-allowed to contain junk that no word reaches (a coset type before
-pruning, a product carrier before a quotient) and because exactness is
-what \aid{by-completeness} below trades against uniqueness.
-\aid{BijectiveNormalForm} exists for the cases where surjectivity onto
-the carrier is established as a \emph{property} and the section is then
-derived from it (as the first projection of the surjectivity witness),
-which is how the extension construction of \S\ref{sec:constructions}
-consumes its factor normal forms; an \aid{Inverse} would have forced an
-explicit inverse map and exactness on every such client.
+rather than the standard library's \aid{Inverse}; the two are
+interderivable there, but an \aid{Inverse} would force an explicit
+inverse map and \emph{both} laws on every client, while downstream code
+consumes only the section and $\aid{inv-nf} \circ \aid{nf} \approx
+\mathrm{id}$.  The other law, \emph{exactness}
+($\aid{nf} \circ \aid{inv-nf} \approx \mathrm{id}$), stays a separate
+hypothesis: carriers may contain junk no word reaches, and exactness is
+what \aid{by-completeness} below trades against uniqueness.  A
+\aid{Bijection} suits clients that prove surjectivity as a property and
+read the section off its witness, as the extension construction of
+\S\ref{sec:constructions} does.
 
 The converse direction is where constructivity bites, a point we were
 careful about.  Classically, any injective $\aid{nf}$ whose image can
