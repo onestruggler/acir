@@ -58,6 +58,7 @@
 \citestyle{acmnumeric}
 %% Table 1 keeps author-year citations: ``Greylyn [2014]''.
 \newcommand{\tabcite}[1]{\citeauthor{#1}~[\citeyear{#1}]}
+\newcommand{\rewrites}[1]{\overset{#1^{*}}{\longleftrightarrow}}
 
 %% Inline Agda identifiers, in a sans-serif face.
 \newcommand{\aid}[1]{\mbox{\textsf{\small #1}}}
@@ -136,7 +137,7 @@ a theorem proved in one development can be used in another.
   \label{fig:translation}
 \end{subfigure}
 \captionsetup{singlelinecheck=false}
-\caption{Two strategies for proving completeness of $\mathcal{R}$ over a gate set $\mathcal{G}$. Consider any two circuits $C_1$ and $C_2$ over $\mathcal{G}$ that have the same linear map, $C_1\equiv_{u}C_2$. $\leftrightarrow_{\mathcal{R}}^{*}$ denotes applying a finite sequence of rewrites using $\mathcal{R}$ in either direction, where $*$ means zero or more steps. In \Cref{fig:translation}, $E$ replaces each gate of $\mathcal{G}$ by a circuit over $\mathcal{G}'$, and $D$ replaces each gate of $\mathcal{G}'$ by a circuit over $\mathcal{G}$. Both $E$ and $D$ preserve the underlying linear map. To transfer completeness, we prove that every rule of $\mathcal{R}'$, after applying $D$, is derivable using $\mathcal{R}$, and that $C_j\leftrightarrow_{\mathcal{R}}^{*}D(C_j')$ for $j\in\{1,2\}$. Decoding the old proof and combining it with these round-trip rewrites then gives $C_1\leftrightarrow_{\mathcal{R}}^{*}D(C_1')\leftrightarrow_{\mathcal{R}}^{*}D(C_2')\leftrightarrow_{\mathcal{R}}^{*}C_2.$}
+\caption{Two strategies for proving completeness of $\mathcal{R}$ over a gate set $\mathcal{G}$. Consider any two circuits $C_1$ and $C_2$ over $\mathcal{G}$ that have the same linear map, $C_1\equiv_{u}C_2$. $\;\rewrites{\mathcal{R}}\;$ means applying a finite sequence of rewrites using $\mathcal{R}$ in either direction, where $*$ denotes zero or more steps. In \Cref{fig:translation}, $E$ and $D$ translate circuits gate by gate from $\mathcal{G}$ to $\mathcal{G}'$ and back. Both $E$ and $D$ preserve the underlying linear map. To transfer completeness, we prove that every rule of $\mathcal{R}'$, after applying $D$, is derivable using $\mathcal{R}$, and that $C_j\rewrites{\mathcal{R}}D(C_j')$ for $j\in\{1,2\}$. Decoding the old proof and combining it with these round-trip rewrites then gives $C_1\rewrites{\mathcal{R}}D(C_1')\rewrites{\mathcal{R}}D(C_2')\rewrites{\mathcal{R}}C_2.$}
 \label{fig:strategies}
 \end{figure}
 
