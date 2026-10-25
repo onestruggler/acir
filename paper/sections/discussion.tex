@@ -50,31 +50,63 @@ setoid side of the trade clearly favourable; the standard library's
 function bundles meant the ``zoo'' of \S\ref{sec:nfproperty} needed no
 new theory at all.
 
-\subsection{Limitations}\label{sec:threats}
+\subsection{What the standard library lacked}
 
-Two honest caveats.  First, for the amalgamation case studies the final
-theorems are isomorphisms between the gate-set presentation and an
-amalgamated product of smaller presentations, whose semantic reading as
-the concrete matrix monoids ---
-Clifford+$T$~\cite{giles2013remarks,glaudell2019qutrit} or the
-unitaries over $\mathbb{Z}[\tfrac12,i]$~\cite{bian2021un} ---
+The \texttt{ForStdlib} layer (\S\ref{sec:forstdlib}) is a measure of the
+gap between textbook group theory and what a widely used dependently
+typed standard library currently provides: no semidirect products, no
+amalgamated products or pushouts of monoids, no extensions or exact
+sequences, no epimorphism structures, not even the permutations of
+$\mathsf{Fin}\;n$ bundled as a group.  None of these are hard --- the
+seven modules total 865 lines --- but each was necessary for some
+semantic side of a presentation theorem, and we submit them as
+independently useful.  The deeper omission is thematic: the standard
+library's algebra hierarchy is rich in \emph{structures} but thin in
+\emph{constructions}, and presentation-level results force the
+constructions into existence.
+
+\subsection{Proof engineering lessons}
+
+Four lessons generalize beyond this library.  \emph{Choose indices for
+the unifier.}  The circuit layer's successor-only indexing
+(\S\ref{sec:circuits}) looks like a small stylistic choice; it is the
+difference between coverage checking succeeding by injectivity of
+constructors and stuck arithmetic side conditions contaminating every
+table.  \emph{Make certificates finite.}  The five coset-table
+hypotheses quantify over generators, cosets, and axiom instances only,
+so obligations split into finitely many closed goals --- the
+precondition for \aid{refl}-discharge; hypotheses phrased over all words
+would have demanded inductions in every instance.  \emph{Let evaluation
+prove what it can.}  The single most effective tool in the development
+is \aid{by-equal-nf Eq.refl}: once a normal form for a level exists, all
+equational facts \emph{about that level} that happen to be true become
+free.  This does not remove the case analyses --- the soundness law and
+the uniqueness proof of each level are still proved by hand, case by
+case --- but it shifts the effort to setting up the next normal form,
+after which the obligations that are mere computation cost nothing.
+\emph{Separate search from checking.}  Coset tables were found by
+ordinary computation (and, for the larger studies, by the companion web
+tools of \S\ref{sec:tools}); the library only ever verifies them.
+Nothing in the formal development depends on how a table was produced,
+which kept the trusted story simple and the exploration loop fast.
+
+\subsection{Threats to the interpretation}\label{sec:threats}
+
+Two honest caveats.  First, our completeness theorems are stated against
+semantic groups built compositionally ($\mathbb{Z}_N \wr S_n$, product
+groups, extension groups) or against permutations; for the amalgamation
+case studies the final theorems are isomorphisms between two
+\emph{presentations}, whose semantic reading as the concrete matrix
+monoids (e.g.\ Clifford+$T$~\cite{giles2013remarks,glaudell2019qutrit},
+or the unitaries over
+$\mathbb{Z}[\tfrac12,i]$~\cite{amy2020numbertheoretic,bian2021un})
 additionally uses the paper-mathematics identification of those groups
-with the amalgamated products, which is not formalized.  The reason is
-that the semantic
-side needs objects the standard library does not have --- the rings
-$\mathbb{Z}[\tfrac12,i]$ and $\mathbb{Z}[1/\sqrt2,i]$ and unitary
-matrices over them --- and that, even with a matrix semantics in hand,
-the completeness proof of each paper would have to be formalized
-first.  Both
-are future work.
-
-Second, at every level of a
-tower the cosets form a finite inductive type, so the five hypotheses
-are finite case splits; gate sets whose coset structure is not finitely
-enumerable per level would need genuinely new ideas.  Gate sets with
-continuous parameters --- the
-phase and rotation gates of the complete equational theories for full
-quantum circuits~\cite{clement2023complete,clement2024minimal}, whose
-normal forms carry real angles --- have no finite coset structure at
-all, and the library offers them its presentation vocabulary but not
-its engine.
+with the amalgamated products, which we have not formalized: the
+semantic side needs objects the standard library does not have --- the
+rings $\mathbb{Z}[\tfrac12,i]$ and $\mathbb{Z}[1/\sqrt2,i]$ and unitary
+matrices over them --- and, even with a matrix semantics in hand, the
+completeness proof of each paper would have to be formalized first.
+Second, statistics like ``every well-definedness obligation closed by
+\aid{refl}'' describe our case studies, not a theorem about the method;
+gate sets whose coset structure is not finitely enumerable per level
+would need genuinely new ideas.
