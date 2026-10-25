@@ -12,14 +12,7 @@
 \setcopyright{none}
 \renewcommand\footnotetextcopyrightpermission[1]{}
 
-%% The authors' names share one line in the title block, each marked
-%% by a superscript; the affiliations and e-mail addresses are in the
-%% first-page footnote (\authorsaddresses below), under the same marks.
-%% The marks stay out of the PDF metadata.
-\newcommand{\affmark}[1]{\texorpdfstring{\textsuperscript{#1}}{}}
 \makeatletter
-%% No final period, which would read as part of the last address.
-\def\@setauthorsaddresses{\@authorsaddresses\unskip}
 %% Names as written, not in the capitals acmsmall sets them in.
 \let\planqc@mkauthors\@mkauthors
 \def\@mkauthors{\begingroup\let\MakeUppercase\@firstofone
@@ -36,11 +29,6 @@
 \usepackage{agda-style}
 \usepackage{subcaption}
 \usepackage{cleveref}
-%% Footnotes below bottom floats, so that the addresses stay at the
-%% foot of the first page, under Figure 1.
-\usepackage{fnpos}
-\makeFNbottom
-\makeFNbelow
 
 %% TikZiT figures. A subset of tikzit.sty (the layer stack, the blank
 %% node style and \tikzfig), which would load enumitem, which clashes
@@ -71,22 +59,16 @@
 \title[QCert: Verifying Sixteen Quantum Circuit Completeness Results in One Agda Framework]{QCert: Verifying Sixteen Quantum Circuit Completeness Results in One Agda Framework}
 % \subtitle{Extended Abstract}
 
-
+\vspace{-.2 cm}
 %Human-Made Scaffolds for Machine-Written Proofs of Completeness
 %Sixteen Completeness Theorems for Quantum Circuits in Agda: Human-Guided, Machine-Written Proofs
 
-%% Affiliations and e-mail addresses as in ../vqupit/main.tex; Yuan
-%% Feng's address is to be confirmed (see README.md).
-\author[Xiaoning Bian]{Xiaoning Bian\affmark{1}}
-\author[Yuan Feng]{Yuan Feng\affmark{1}}
-\author[Sarah Meng Li]{Sarah Meng Li\affmark{2}}
-\author[John van de Wetering]{John van de Wetering\affmark{2}}
-\authorsaddresses{%
-  \textsuperscript{1}Tsinghua University, Beijing, China,
-  \nolinkurl{bian@dal.ca}, \nolinkurl{yuan_feng@tsinghua.edu.cn}\newline
-  \textsuperscript{2}University of Amsterdam and QuSoft, Amsterdam,
-  The Netherlands, \nolinkurl{sarah.li@uva.nl},
-  \nolinkurl{john@vdwetering.name}}
+\author[Xiaoning Bian]{Xiaoning Bian}
+\author[Yuan Feng]{Yuan Feng}
+\author[Sarah Meng Li]{Sarah Meng Li}
+\author[John van de Wetering]{John van de Wetering}
+%% No first-page footnote of affiliations and addresses.
+\authorsaddresses{}
 
 % \begin{abstract}
 % % An equational theory for a family of quantum circuits is a set of rewrite rules. The theory 
@@ -95,24 +77,20 @@
 % \end{abstract}
 
 \maketitle
-\vspace{-.4 cm}
+\vspace{-.2 cm}
 
 \section{Introduction}
-An equational theory for a family of quantum circuits is a set of equations between circuits used as rewrite rules. By applying these rules to local subcircuits, we can transform a circuit into an equivalent one. Such a theory should be \emph{sound} because every rewrite preserves the underlying linear map. It should also be \emph{complete} so that any equivalence between circuits can be derived. Additionally, we want it to be \emph{minimal}, with no redundant rules. Equational rewriting supports circuit optimization~\cite{hietala2021voqc,nam2018automated,maslov2008simplification,xu2022quartz}, equivalence checking~\cite{yamashita2010fast}, and hardware mapping~\cite{sivarajah2020tket}. Completeness ensures that every circuit equivalence can be derived within the theory, making it a powerful tool for reasoning about quantum programs. For example,
+An equational theory for a family of quantum circuits is a set of equations between circuits used as rewrite rules. By applying these rules to subcircuits, we can transform a circuit into an equivalent one. Such a theory should be \emph{sound} because every rewrite preserves the underlying linear map. It should also be \emph{complete} so that any equivalence between circuits can be derived. Additionally, we want it to be \emph{minimal}, with no redundant rules. Equational rewriting supports circuit optimization~\cite{hietala2021voqc,nam2018automated,maslov2008simplification,xu2022quartz}, equivalence checking~\cite{yamashita2010fast}, and hardware mapping~\cite{sivarajah2020tket}. Completeness ensures that every circuit equivalence can be derived within the theory, making it a powerful tool for reasoning about quantum programs. For example,
 \mbox{Hadamard-$\Pi$}~\cite{fang2026hadamard} provides a complete
-equational framework for reasoning about reversible quantum programs. Completeness results have been established for a wide range of circuit families, including reversible linear circuits~\cite{lafont2003boolean,sakashita2013cnot}, reversible circuits over multiple-control Toffoli gates~\cite{feng2026complete,feng2026ancillas}, Clifford~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, CNOT-dihedral~\cite{amy2018cnotdihedral,blake2026phaseaffine}, two-qubit Clifford+T~\cite{bian2023cliffordt2}, three-qubit Clifford+CS~\cite{bian2023cliffordcs3}, Toffoli--Hadamard~\cite{amy2024toffoli} and real Clifford+CH~\cite{clement2026realcliffordch} circuits, and with continuous parameters, all quantum circuits~\cite{clement2023complete,clement2024extensions}. Complete theories that treat control as a circuit constructor cover qubit circuits~\cite{delorme2026control,schober2026control} and unitary qudit circuits in every finite dimension~\cite{blake2026qudit}. Completeness has also been obtained for the group of two-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimal theories have been given for six of these circuit fragments~\cite{blake2026simpler} and for all quantum circuits~\cite{clement2024minimal}.
+equational framework for reasoning about reversible quantum programs. Completeness results have been established for a wide range of circuit families, including reversible linear circuits~\cite{lafont2003boolean,sakashita2013cnot}, reversible circuits over multiple-control Toffoli gates~\cite{feng2026complete,feng2026ancillas}, Clifford~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, CNOT-dihedral~\cite{amy2018cnotdihedral,blake2026phaseaffine}, two-qubit Clifford+T~\cite{bian2023cliffordt2}, three-qubit Clifford+CS~\cite{bian2023cliffordcs3}, Toffoli--Hadamard~\cite{amy2024toffoli} and real Clifford+CH~\cite{clement2026realcliffordch} circuits, and with continuous parameters, all quantum circuits~\cite{clement2023complete,clement2024extensions}. Completeness has also been obtained for the group of two-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimal theories have been given for six of these circuit fragments~\cite{blake2026simpler} and for all quantum circuits~\cite{clement2024minimal}.
 
+There are two main strategies for proving completeness of a rule set $\mathcal{R}$ over a gate set $\mathcal{G}$. Consider any two circuits $C_1$ and $C_2$ over $\mathcal{G}$ that have the same linear map, $C_1\equiv_{u}C_2$. We need to show that $C_1$ can be rewritten into $C_2$ using $\mathcal{R}$. \Cref{fig:normalform} outlines the first strategy. It specifies a unique normal form for each linear map~\cite{lafont2003boolean,sakashita2013cnot,feng2026complete,feng2026ancillas,selinger2015clifford,bian2026qupit,makary2021real,amy2018cnotdihedral,blake2026phaseaffine,li2025qutrit}, often through giving an exact synthesis algorithm~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Completeness follows by proving that every circuit can be transformed into its normal form using the rewrite rules. By uniqueness, $C_1$ and $C_2$ have the same normal form $N$. Reversing the path from $C_2$ to $N$ and concatenating it with the path from $C_1$ to $N$ gives
+\[
+C_1\rewrites{\mathcal{R}}N\rewrites{\mathcal{R}}C_2.
+\]
 
-Completeness proofs use two main strategies. \Cref{fig:normalform} outlines the first one. It specifies a unique normal form for each linear map~\cite{lafont2003boolean,sakashita2013cnot,feng2026complete,feng2026ancillas,selinger2015clifford,bian2026qupit,makary2021real,amy2018cnotdihedral,blake2026phaseaffine,li2025qutrit}, often through giving an exact synthesis algorithm~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Completeness follows by proving that every circuit can be transformed into its normal form using the rewrite rules. \Cref{fig:translation} illustrates the second strategy, which uses an already complete equational theory, possibly over another gate set. Completeness carries over if every rule of that theory, translated back, can be derived from the new rules. The new rules must also prove that each gate is equal to its round-trip translation~\cite{bian2023cliffordt2,bian2023cliffordcs3,clement2026realcliffordch,amy2024toffoli,blake2026simpler,clement2023complete,clement2024extensions,delorme2026control,schober2026control,blake2026qudit}. Some encodings also require a separate proof of compatibility with parallel composition~\cite{blake2026qudit}. Sometimes the two methods are combined, as in the scaled dyadic extension of~\citet{li2021on}.
-%It pairs a normal form with reduction to an already complete subgroup. 
+\vspace{-.2 cm}
 
-Starting from a complete rule set, we can remove a redundant rule by deriving it from those other rules, thereby preserving completeness. To show that the resulting set is minimal, we need to give, for each remaining rule, an interpretation of circuits that every other rule preserves except that rule. Any derivation using the other rules preserves this interpretation, so the rule cannot be derived from them~\cite{clement2024minimal,blake2026simpler}.
-
-Completeness and minimality proofs typically require long case distinctions over gates, relations and normal forms, whose supporting derivations sometimes run to hundreds of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}. Long reductions of relation sets can also hide circular reasoning, where a derivation used to eliminate a relation depends indirectly on that same relation. Such dependencies are hard to detect by hand. An unnoticed gap can also undermine later proofs that rely on the result: Section~\ref{sec:findings} reports a gap in a published proof that a later theorem had imported. A machine check verifies the
-individual cases and guards against circular arguments. To check
-results that build on one another, it must be done in one framework,
-which defines circuits, their semantics and completeness once, so that
-a theorem proved in one development can be used in another.
 \begin{figure}[H]
 \centering
 \begin{subfigure}[b]{0.42\linewidth}
@@ -127,51 +105,51 @@ a theorem proved in one development can be used in another.
   \caption{Completeness of $\mathcal{R}'$ gives rewrites between $C_1'=E(C_1)$ and $C_2'=E(C_2)$. Translating this proof back gives rewrites between $C_1$ and $C_2$ using $\mathcal{R}$.}
   \label{fig:translation}
 \end{subfigure}
-\captionsetup{singlelinecheck=false}
-\caption{Two strategies for proving completeness of $\mathcal{R}$ over a gate set $\mathcal{G}$. Consider any two circuits $C_1$ and $C_2$ over $\mathcal{G}$ that have the same linear map, $C_1\equiv_{u}C_2$. $\;\rewrites{\mathcal{R}}\;$ means applying a finite sequence of rewrites using $\mathcal{R}$ in either direction, where $*$ denotes zero or more steps. In \Cref{fig:normalform}, we reverse the path from $C_2$ to $N$ and concatenate it with the path from $C_1$ to $N$, giving $C_1\rewrites{\mathcal{R}}N\rewrites{\mathcal{R}}C_2$. In the gate-by-gate case shown in \Cref{fig:translation}, $E$ and $D$ translate circuits from $\mathcal{G}$ to $\mathcal{G}'$ and back. Both $E$ and $D$ preserve circuit composition and the underlying linear map. To transfer completeness from $\mathcal{R}'$ to $\mathcal{R}$, we first show that every rule of $\mathcal{R}'$, translated by $D$, can be derived using $\mathcal{R}$. We can then replace each step of the old proof between $C_1'$ and $C_2'$ by its translated derivation, giving $D(C_1')\rewrites{\mathcal{R}}D(C_2')$. We also check that each gate $g\in\mathcal{G}$ can be rewritten to its round-trip translation: $g\rewrites{\mathcal{R}}D(E(g))$. Applying these rewrites gate by gate gives $C_j\rewrites{\mathcal{R}}D(C_j')$ for $j\in\{1,2\}$. Combining these paths gives $C_1\rewrites{\mathcal{R}}D(C_1')\rewrites{\mathcal{R}}D(C_2')\rewrites{\mathcal{R}}C_2$.}
+% \captionsetup{singlelinecheck=false}
+\vspace{-.2 cm}
+\caption{Two strategies for proving completeness of $\mathcal{R}$ over a gate set $\mathcal{G}$. $\;\rewrites{\mathcal{R}}\;$ means applying a finite sequence of rewrites using $\mathcal{R}$ in either direction, where $*$ denotes zero or more steps.}
 \label{fig:strategies}
 \end{figure}
 
+\vspace{-.2 cm}
+
+\Cref{fig:translation} illustrates the second strategy, which uses an already complete rule set $\mathcal{R}'$ over a different gate set $\mathcal{G}'$~\cite{bian2023cliffordt2,bian2023cliffordcs3,clement2026realcliffordch,amy2024toffoli,blake2026simpler,clement2023complete,clement2024extensions,delorme2026control,schober2026control,blake2026qudit}. Here, $E$ and $D$ translate circuits from $\mathcal{G}$ to $\mathcal{G}'$ and back, replacing each gate with a circuit over the other gate set. Both $E$ and $D$ preserve circuit composition and the underlying linear map. To transfer completeness from $\mathcal{R}'$ to $\mathcal{R}$, we first show that every rule of $\mathcal{R}'$, translated by $D$, can be derived using $\mathcal{R}$. We can then replace each step of the proof between $C_1'$ and $C_2'$ by its translated derivation, giving $D(C_1')\rewrites{\mathcal{R}}D(C_2')$. We also need to check that each gate $g\in\mathcal{G}$ can be rewritten to its round-trip translation: $g\rewrites{\mathcal{R}}D(E(g))$. Applying these rewrites gate by gate gives $C_j\rewrites{\mathcal{R}}D(C_j')$ for $j\in\{1,2\}$. Combining these paths yields
+\[
+C_1\rewrites{\mathcal{R}}D(C_1')\rewrites{\mathcal{R}}D(C_2')\rewrites{\mathcal{R}}C_2.
+\]
+Sometimes the two methods are combined, as in the scaled dyadic extension of ~\cite{li2021on}.
 
 
+%Two strategies for proving completeness of $\mathcal{R}$ over a gate set $\mathcal{G}$. Consider any two circuits $C_1$ and $C_2$ over $\mathcal{G}$ that have the same linear map, $C_1\equiv_{u}C_2$. $\;\rewrites{\mathcal{R}}\;$ means applying a finite sequence of rewrites using $\mathcal{R}$ in either direction, where $*$ denotes zero or more steps. In \Cref{fig:normalform}, we reverse the path from $C_2$ to $N$ and concatenate it with the path from $C_1$ to $N$, giving $C_1\rewrites{\mathcal{R}}N\rewrites{\mathcal{R}}C_2$. In the gate-by-gate case shown in \Cref{fig:translation}, $E$ and $D$ translate circuits from $\mathcal{G}$ to $\mathcal{G}'$ and back. Both $E$ and $D$ preserve circuit composition and the underlying linear map. To transfer completeness from $\mathcal{R}'$ to $\mathcal{R}$, we first show that every rule of $\mathcal{R}'$, translated by $D$, can be derived using $\mathcal{R}$. We can then replace each step of the old proof between $C_1'$ and $C_2'$ by its translated derivation, giving $D(C_1')\rewrites{\mathcal{R}}D(C_2')$. We also check that each gate $g\in\mathcal{G}$ can be rewritten to its round-trip translation: $g\rewrites{\mathcal{R}}D(E(g))$. Applying these rewrites gate by gate gives $C_j\rewrites{\mathcal{R}}D(C_j')$ for $j\in\{1,2\}$. Combining these paths gives $C_1\rewrites{\mathcal{R}}D(C_1')\rewrites{\mathcal{R}}D(C_2')\rewrites{\mathcal{R}}C_2$.
 
 
+%It pairs a normal form with reduction to an already complete subgroup. 
 
+Starting from a complete rule set, we can remove a redundant rule by deriving it from the other rules, thereby preserving completeness. To show that the resulting rule set is minimal, we need to give, for each remaining rule $R$, an interpretation of circuits that every other rule preserves but $R$ does not. Any derivation using the other rules preserves this interpretation, so $R$ cannot be derived from them~\cite{clement2024minimal,blake2026simpler}.
 
+Completeness and minimality proofs typically require long case distinctions over gates, relations, and normal forms, whose supporting derivations sometimes span hundreds of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}. In particular, relation reductions require intricate circuit manipulations and repeated rewrites, making them prone to human mistakes. For example, circular reasoning can lead us to remove a rule whose derivation still relies on that rule, hidden in a chain of other derivations. Errors can then propagate through dependent derivations, invalidating the entire reduction and making the error source hard to trace by hand. 
 
-Language models can now write large formal proofs. For example, a
-13-million-line proof of Fermat's Last Theorem in Lean was written in
-11 days~\cite{anthropic2026flt}. Human review is still needed to check
-that formal statements and their underlying definitions express the
-intended results~\cite{hales2026reliability}. Generated proofs can be
-too large to inspect in full. We therefore use a \emph{scaffold}: code
-written and checked by people that fixes the form of each theorem.
-This keeps each paper's checks short while Agda verifies the proofs.
-The scaffold builds on an Agda library of circuits and presentations~\cite{bian2027popl}.
+\paragraph{Our contributions.} To make completeness proofs robust and manageable as they extend to new gate sets and higher dimensions, we turn to a machine-checked framework, where a proof assistant like Agda~\cite{norell2007thesis,bove2009agda} carries out these tedious checks, verifying every derivation together with everything it depends on. A human then only needs to check that the framework is set up correctly and that the main theorems are stated as intended. A single framework with consistent definitions of circuits and their matrices also lets us unify and compare different completeness results. Because it checks proofs at scale, such a framework paves the way for verifying circuit completeness in higher dimensions.
 
-This work builds on our formalization of the completeness theorem for
-qudit Clifford circuits~\cite{bian2026qupit}. There, we developed the
-framework by hand and used LLM coding agents only at the final stage
-to complete the proof. This experience motivated us to formalize
-circuit completeness results within a common framework. We use this
-framework to formalize sixteen papers (Table~\ref{tab:corpus}) and
-make four contributions.
-\begin{itemize}
-\item QCert extends an earlier library of words, circuits and
-  presentations~\cite{bian2027popl} with matrix semantics over the
-  rings of exact synthesis and a framework for proving independence
-  of rules. Every theorem has the same form (Section~\ref{sec:form}).
-\item We give machine-checked proofs of the sixteen theorems in about
-  1{,}500 modules and 420{,}000 lines of Agda, with no postulates. The
-  corpus typechecks in about 40 minutes (Section~\ref{sec:corpus}).
-\item We identify and repair a gap in the completeness proof of
-  Hadamard-$\Pi$, identify a rule omitted from a Toffoli--Hadamard
-  theory, and report misprints in the other papers
-  (Section~\ref{sec:findings}).
-\item We present a method in which people develop the framework and
-  state the theorems, LLM coding agents write the proofs, and Agda
-  checks them (Section~\ref{sec:method}).
-\end{itemize}
+This work builds on our formalization of qudit Clifford completeness~\cite{bian2026qupit}, which showed us how powerful a machine-checked framework could be. There, we built the framework and carried out the main verification steps by hand. LLM coding agents came in only at the final stage, to connect these steps into a formal proof of the completeness theorem. Our experience was part of a broader shift where LLMs can now write large formal proofs. Anthropic, for example, reports that LLMs wrote a 13-million-line Lean proof of Fermat's Last Theorem in 11 days~\cite{anthropic2026flt}. This makes it possible to develop a machine-checked framework systematically. In a hybrid approach, humans write and carefully review the definitions and theorem statements~\cite{hales2026reliability}, coding agents write the proofs, and Agda checks them. Using this approach, we extend our previous formalization framework~\cite{bian2027popl} to QCert and use it to formalize completeness and minimality results from sixteen papers, as shown in \Cref{tab:corpus}. The remainder of this extended abstract presents our four contributions as follows.
+% \begin{itemize}
+% \item QCert extends an earlier library of words, circuits and
+%   presentations~\cite{bian2027popl} with matrix semantics over the
+%   rings of exact synthesis and a framework for proving independence
+%   of rules. Every theorem has the same form (Section~\ref{sec:form}).
+% \item We give machine-checked proofs of the sixteen theorems in about
+%   1{,}500 modules and 420{,}000 lines of Agda, with no postulates. The
+%   corpus typechecks in about 40 minutes (Section~\ref{sec:corpus}).
+% \item We identify and repair a gap in the completeness proof of
+%   Hadamard-$\Pi$, identify a rule omitted from a Toffoli--Hadamard
+%   theory, and report misprints in the other papers
+%   (Section~\ref{sec:findings}).
+% \item We present a method in which people develop the framework and
+%   state the theorems, LLM coding agents write the proofs, and Agda
+%   checks them (Section~\ref{sec:method}).
+% \end{itemize}
+
+In Section~\ref{sec:form}, we describe how QCert extends that framework's library of words, circuits and presentations with matrix semantics over the rings of exact synthesis and support for proving independence of rules. In QCert, every theorem has the same form. In Section~\ref{sec:corpus}, we give machine-checked proofs of the sixteen theorems in about 1{,}500 modules and 420{,}000 lines of Agda, with no postulates. The corpus typechecks in about 40 minutes. In Section~\ref{sec:findings}, we identify and repair a gap in the completeness proof of Hadamard-$\Pi$, identify a rule omitted from a Toffoli--Hadamard theory, and report misprints in the other papers. We present our formalization workflow in Section~\ref{sec:method}, where people develop the framework and state the theorems, LLM coding agents write the proofs, and Agda checks them. In Section~\ref{sec:conclusion}, we summarize our results and discuss future directions.
 
 \section{A Common Framework for Completeness Theorems}\label{sec:form}
 
