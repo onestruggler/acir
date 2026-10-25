@@ -61,24 +61,20 @@ a group) are staged in a dedicated \texttt{ForStdlib} hierarchy.
 
 One design decision deserves to be announced up front: a presented
 monoid is a setoid on words, not a quotient type, so the library is
-written in plain Agda rather than in cubical Agda or a HoTT library.  The
-reason is that the library computes with syntax: coset tables and
-normal-form maps pattern-match on concrete words, and its central devices
-are maps \emph{into} the syntax (sections of normal forms, coset
-representatives, amalgamation tails), which need concrete
-representatives to land on; \S\ref{sec:setoids} weighs the
+written in plain rather than cubical Agda.  The reason is that it
+computes with syntax, and its central devices (sections of normal forms,
+coset representatives) are maps \emph{into} the syntax, which need
+concrete representatives to land on; \S\ref{sec:setoids} weighs the
 trade.
 
 \paragraph{Why this is a programming-languages problem.}
-Completeness of a circuit calculus is a program\-ming-lan\-guages question:
-it licenses normal-form decision procedures, tells an optimizer that no
-valid rewrite is missing, and underlies the rig-categorical completeness
-theorems of recent
+Completeness of a circuit calculus licenses normal-form decision
+procedures, tells an optimizer that no valid rewrite is missing, and
+underlies the rig-categorical completeness theorems of recent
 POPLs~\cite{choudhury2022symmetries,carette2024squareroots,fang2026hadamard}.
-Our contribution is a \emph{design}: presentations, normal forms, and
-completeness organized in a dependently typed language so that the same
-objects both compute and prove, validated on examples large enough to
-exercise every part of it.
+Our contribution is a \emph{design} for presentations, normal forms, and
+completeness in a dependently typed language, validated on examples
+large enough to exercise every part of it.
 
 \subsection{Contributions}\label{sec:contributions}
 
