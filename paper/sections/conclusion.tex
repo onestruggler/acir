@@ -5,16 +5,17 @@ normal forms, and completeness of finite relation sets, organized around
 inductively defined circuits and a verified, monoid-level
 Reidemeister--Schreier engine.  Completeness is factored, once and for
 all, into soundness plus a unique-normal-form witness; normal forms are
-built by verified coset tables, one digit per level of a subgroup tower,
-or glued by amalgamation when the tower branches.
+built by verified coset tables, one mixed-radix digit per level of a
+subgroup tower, or glued by amalgamation when the tower branches.
 
 The work continues in two directions.  \emph{More completeness
 results.}  The gate-set rule sets surveyed in \S\ref{sec:rel-paper} are
 finite relation sets with known normal forms, exactly the input the
 library is built to verify, and each still awaits a machine-checked
-proof.  \emph{Upstreaming.}  The \texttt{ForStdlib} constructions are being
-prepared for the Agda standard library, whose conventions the whole
-library already follows.
+proof.  \emph{Upstreaming.}  The \texttt{ForStdlib} constructions are
+being prepared for the Agda standard library, and the
+presentation framework itself is written to its conventions with that
+destination in mind.
 
 Completeness proofs for circuit calculi are growing --- three hundred
 pages of appendix is no longer

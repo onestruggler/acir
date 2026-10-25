@@ -1,0 +1,29 @@
+Proofs that a set of equations between circuits is \emph{complete} --- that it
+derives every true equation --- are among the most computation-heavy proofs in
+the theory of quantum computing: they hinge on normal forms, and on relentless
+case analyses showing that every rule application interacts correctly with
+every normal form.  Recent completeness proofs come with appendices hundreds
+of pages long, produced and checked by hand.  This paper presents an Agda
+library that mechanizes the mathematics these proofs rest on: monoid and group
+presentations by generators and relations, normal forms, and completeness of
+finite relation sets, specialized to wire-indexed circuits.  The library
+represents presented monoids as inductively generated congruences on free
+monoids of words, represents normal forms as the standard-library function
+bundles (injections, right inverses, bijections) out of the word setoid, and
+derives completeness from soundness and a \emph{unique normal form} witness by
+a single generic lemma.  Its engine is a constructive, monoid-level rendition
+of coset enumeration in the style of Reidemeister and Schreier: towers of
+verified coset tables that assemble normal forms level by level, in the manner
+of a mixed-radix number system, together with presentation-level constructions
+--- direct, semidirect, and amalgamated free products, and group extensions ---
+whose semantic counterparts we also contribute, targeting the Agda standard
+library.  We validate the design on a catalogue of verified presentations:
+symmetric groups as circuits (sound and complete for both an endofunction and
+a permutation semantics), cyclic groups, wreath products $\mathbb{Z}_N \wr S_n$
+(signed permutations), Pauli groups in all odd prime dimensions, and, as
+amalgamated free products with verified alternating normal forms, the
+single-qubit and single-qutrit Clifford+$T$ monoids and the matrix group
+$U_3(\mathbb{Z}[\tfrac12,i])$.  All results are collected in a single index
+module; the whole development is safe, axiom-free Agda.  We compare in detail
+with formalizations of group presentations, normal forms, and quantum circuits
+in Agda, Lean, Coq, and Isabelle.

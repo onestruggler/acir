@@ -3,9 +3,9 @@
 We compare along the three axes the library combines --- (i) presentations
 and normal forms of groups and monoids, (ii) completeness of equational
 theories, (iii) circuits --- across Agda, Lean, Rocq, and Isabelle.
-Table~\ref{tab:compare} summarizes the mechanized work; the subsections
-give the details and the precise deltas.  Claims of absence are stated
-to the best of our knowledge.
+Table~\ref{tab:compare} summarizes the mechanized work; the prose gives
+the details and the precise deltas.  Claims of absence are stated to the
+best of our knowledge.
 
 \begin{table}
 \caption{Mechanized work adjacent to this library (citations in the
@@ -45,24 +45,27 @@ The direct ancestors of this library are the Agda developments that Bian
 and Selinger published alongside their presentations of the $2$-qubit
 Clifford+$T$ group~\cite{bian2023cliffordt2} and the $3$-qubit
 Clifford+CS group~\cite{bian2023cliffordcs3}, systematized in Bian's
-thesis~\cite{bian2023thesis}.  They pioneered everything we build on:
-monoid-level presentations without formal inverses, the
-Reidemeister--Schreier theorem applied to derive subgroup presentations
-(from Greylyn's presentation of
-$U_4(\mathbb{Z}[1/\sqrt2,i])$~\cite{greylyn2014} in the $2$-qubit case),
+thesis~\cite{bian2023thesis}.  Methodologically these pioneered
+everything we build on: monoid-level presentations (no formal inverses),
+the Reidemeister--Schreier theorem applied --- to Greylyn's presentation
+of $U_4(\mathbb{Z}[1/\sqrt2,i])$~\cite{greylyn2014} in the $2$-qubit
+case --- to derive subgroup presentations,
 amalgamated products of monoids, and machine-checked simplification of
-``thousands of relations'' down to seventeen.  Their limitation is that
-they work entirely on the \emph{syntactic side}: every theorem relates
-two presentations of a group, and no independent semantic object occurs
-in any statement, so soundness and completeness in the model-theoretic
-sense are not expressible there.  The present library keeps the
-syntactic technology --- our amalgamation case studies end in exactly
-such isomorphisms --- and adds the semantic half: the theorems of
+``thousands of relations'' down to seventeen.  The crucial
+limitation is that these developments
+work entirely on the \emph{syntactic side}: the theorems relate two
+\emph{presentations} of a group, and no independent semantic object
+occurs in any statement.
+Soundness and completeness in the model-theoretic sense are therefore not
+expressible there.  The present library keeps the syntactic technology (our
+amalgamation case studies end in exactly such isomorphisms) and adds the
+semantic half: the \aid{{\_}IsPresentationOf{\_}} records of
 Table~\ref{tab:presentations} target groups built independently of the
-syntax, and \aid{by-normalization} connects the two halves.  A second
-delta is reusability: coset tables, towers, and the product constructions
-are library modules with explicit hypothesis records, where the earlier
-developments were per-paper proofs.  A third is the circuit layer: those
+syntax, and the generic \aid{by-normalization} lemma is what
+connects the two halves.  A second delta is reusability: coset tables,
+towers, and the product constructions are library modules
+with explicit hypothesis records, where the earlier developments were
+per-paper proofs.  A third is the circuit layer: those
 developments study a fixed width --- two qubits, three qubits --- so
 their generators are enumerated by hand and the structural rules are
 hard-wired into each relation set, whereas our inductively defined
@@ -89,9 +92,9 @@ Isabelle-Marries-Dirac verifies textbook algorithms~\cite{bordg2020dirac}.
 None of these address the question this paper is about: whether a
 \emph{finite rule set derives all true equations} --- the completeness of
 the calculus itself, as opposed to the correctness of particular
-transformations in it.  The distinction has practical consequences:
-completeness is what justifies normal-form-based decision procedures and
-tells an optimizer author that no valid rewrite is missing.  We see the two
+transformations in it.  The distinction is not academic: completeness is
+what justifies normal-form-based decision procedures and tells an
+optimizer author that no valid rewrite is missing.  We see the two
 ecosystems as complementary: a natural target is to connect our presented
 gate groups to the matrix semantics of \textsc{sqir} or VyZX, obtaining
 end-to-end completeness against matrices rather than against abstract
@@ -101,71 +104,77 @@ product groups.
 
 Completeness of a finite rule set for a circuit fragment, the property
 the verification ecosystem leaves open, is what the mathematical
-literature proves on paper.  For gate sets the results run from the
-CNOT-dihedral fragment~\cite{amy2018cnotdihedral} and its
-prime-dimensional generalization~\cite{blake2026phaseaffine} through the
-qubit and qutrit Clifford groups~\cite{selinger2015clifford,li2025qutrit}
-to full quantum circuits~\cite{clement2023complete,clement2024minimal,
-clement2026realcliffordch}.  On the graphical side, the completeness
-results for the ZX-calculus, from the qubit stabilizer fragment through
-Clifford+$T$ to the odd-prime-dimensional qupit
-calculi~\cite{backens2014zx,jeandel2018zx,booth2022qupitzx,
-poor2023travaganza}, are likewise pen-and-paper.  Mechanizations have so
-far been confined to the Bian--Selinger line, the Agda developments of
-the rig-categorical school (\S\ref{sec:rel-rig}), and the present work.
-The rule sets themselves are also a moving target: Blake's
-PROP-theoretic treatment uniformly transfers and simplifies the
-presentations of six near-Clifford circuit fragments, among them the
-two-qubit Clifford+$T$, three-qubit Clifford+CS, and qutrit Clifford
-presentations of \S\ref{sec:rel-bs}, and obtains minimal rule sets for
-several of them~\cite{blake2026simpler}.  Each such simplification
-claims that the dropped rules are derivable from those kept, exactly
-the kind of claim our library is designed to verify.  Machine-checking
-these reduced rule sets, and likewise the pen-and-paper completeness
-proofs above, is a natural next step.
+literature proves on paper, for gate sets --- from the CNOT-dihedral
+fragment~\cite{amy2018cnotdihedral} and its prime-dimensional
+generalization~\cite{blake2026phaseaffine} through the qubit and qutrit
+Clifford groups~\cite{selinger2015clifford,li2025qutrit} to full quantum
+circuits~\cite{clement2023complete,clement2024minimal,
+clement2026realcliffordch} --- and likewise for the graphical
+side, where the completeness results for the ZX-calculus, from the qubit
+stabilizer fragment through Clifford+$T$ to the odd-prime-dimensional
+qupit calculi~\cite{backens2014zx,jeandel2018zx,booth2022qupitzx,
+poor2023travaganza}, are all pen-and-paper; mechanizations have so far
+been confined to the Bian--Selinger line, the Agda developments of the
+rig-categorical school (next subsection), and the present work.  The rule sets themselves are
+also a moving target: Blake's recent PROP-theoretic treatment uniformly
+transfers and simplifies the presentations of six near-Clifford circuit
+fragments --- among them the two-qubit Clifford+$T$, three-qubit
+Clifford+CS, and qutrit Clifford presentations discussed above ---
+obtaining minimal rule sets for several of
+them~\cite{blake2026simpler}.  Each such simplification amounts to the
+claim that the dropped rules are derivable from those kept: exactly the
+kind of claim our library is designed to verify, and hence, like the
+pen-and-paper completeness proofs above, a natural next verification
+target for this library.
 
 \subsection{Complete equational theories via rig categories}\label{sec:rel-rig}
 
 A parallel school, rooted in programming-language semantics rather than
-in gate groups, reaches completeness through \emph{categorical}
-structure.  Choudhury, Karwowski, and Sabry present the reversible
-language $\Pi$ as the free symmetric rig groupoid and formalize their
-results in HoTT-Agda (about 7\,500
-lines)~\cite{choudhury2022symmetries}.  This is the mechanization
-nearest in spirit to ours, and it contrasts with ours on every axis:
-their completeness is \emph{full abstraction} of $\Pi$'s syntactic
-groupoid against a univalent subuniverse of finite types, over the
-classical (permutation) fragment, obtained with higher inductive types
-and univalence; ours is completeness of \emph{concrete finite
-relation sets} against independently constructed groups, obtained by
-coset normal forms in axiom-free, setoid-based, standard-library Agda.
-The two meet at one point: their development solves the word problem
-for $S_n$ by a confluent rewriting system on Coxeter words, the same
-problem our coset tower of \S\ref{sec:permutations} solves by the
-factorial normal form.
+gate groups, reaches completeness through \emph{categorical} structure.
+Choudhury, Karwowski, and Sabry present the reversible language $\Pi$ as
+the free symmetric rig groupoid and formalize their results
+in HoTT-Agda (about 7\,500 lines)~\cite{choudhury2022symmetries}.  This is the
+mechanization nearest in spirit to ours, and an instructive contrast on
+every axis: their completeness is \emph{full abstraction} of $\Pi$'s
+syntactic groupoid against a univalent subuniverse of finite types, over
+the classical (permutation) fragment, obtained with higher
+inductive types and univalence; ours is completeness of \emph{concrete
+finite relation sets} against independently constructed groups, obtained
+by coset normal forms in axiom-free, setoid-based, standard-library Agda.
+The two even meet in the middle: their development solves the word
+problem for $S_n$ by a confluent rewriting system on Coxeter words,
+precisely the problem our factorial-carrier normal
+form decides (\S\ref{sec:permutations}).
 
-On the quantum side, Carette, Heunen, Kaarsgaard, and Sabry extend $\Pi$
-by an eighth root $\omega$ of the identity and a square root $\mathsf{V}$
-of negation to the language $\sqrt{\Pi}$, and prove its equational
-theory sound and complete for Clifford circuits, for Clifford+$T$
-circuits on at most two qubits, and for the universal Gaussian
-Clifford+$T$ gate set --- the unitaries over $\mathbb{Z}[\tfrac12,i]$,
-the family $U_n(\mathbb{Z}[\tfrac12,i])$ of \S\ref{sec:u3} --- building
-on Selinger's Clifford presentation and Bian and Selinger's presentation
-of $U_n(\mathbb{Z}[\tfrac12,i])$~\cite{carette2024squareroots}.  The
-development is partially mechanized over agda-categories, and the
-authors report that the weak setting of agda-categories
-forces explicit unit and associativity bookkeeping, tedious without the
-library's combinators --- bookkeeping our strict word syntax and
-\aid{by-assoc} solver are designed to remove (\S\ref{sec:solvers}).  Still pen-and-paper, Fang, Heunen, and
-Kaarsgaard's Hadamard-$\Pi$ derives completeness from a new finite
-presentation of the orthogonal groups over
-$\mathbb{Z}[1/\sqrt2]$~\cite{fang2026hadamard}, of the family Li, Ross,
-and Selinger studied~\cite{li2021on}, and Heunen, Kaarsgaard, and
-Lemonnier axiomatize controlled circuits uniformly from coherence for
-semisimple rig categories~\cite{heunen2026onerig}.  A verified
-presentation of $O_n(\mathbb{Z}[1/\sqrt2])$ would put the completeness
-of Hadamard-$\Pi$ on machine-checked footing.
+On the quantum side of that school, Carette, Heunen, Kaarsgaard, and
+Sabry extend $\Pi$ by an eighth root $\omega$ of the identity and a
+square root $\mathsf{V}$ of negation to the language $\sqrt{\Pi}$, and
+prove the resulting
+equational theory sound and complete for arbitrary Clifford circuits,
+Clifford+$T$ circuits on at most two qubits, and the computationally
+universal Gaussian Clifford+$T$ gate set --- the unitaries over
+$\mathbb{Z}[\tfrac12,i]$, the family $U_n(\mathbb{Z}[\tfrac12,i])$ of
+\S\ref{sec:u3} --- building on Selinger's Clifford presentation and Bian
+and Selinger's presentation of
+$U_n(\mathbb{Z}[\tfrac12,i])$~\cite{carette2024squareroots}.  This
+development, too, is partially mechanized over agda-categories.  The
+authors report that the weak setting of agda-categories forces explicit
+unit and associativity bookkeeping, tedious without the library's
+combinators --- a
+datapoint our \aid{by-assoc} solver and strict word syntax speak to
+directly (\S\ref{sec:solvers}).  Still pen-and-paper are the two most
+recent members of the school: Fang, Heunen, and Kaarsgaard's
+Hadamard-$\Pi$ derives
+completeness from a new finite presentation
+of the orthogonal groups over
+$\mathbb{Z}[1/\sqrt2]$~\cite{fang2026hadamard} --- matrix groups of
+the family whose presentations Li, Ross, and Selinger
+studied~\cite{li2021on}; and Heunen, Kaarsgaard, and Lemonnier derive
+sound and complete axiomatizations of controlled circuits uniformly
+from coherence for
+semisimple rig categories~\cite{heunen2026onerig}.  A verified presentation of
+$O_n(\mathbb{Z}[1/\sqrt2])$ would
+put the completeness of Hadamard-$\Pi$ on machine-checked footing.
 
 \subsection{Group theory in proof assistants: abstract theory versus concrete presentations}\label{sec:rel-gt}
 
@@ -179,11 +188,11 @@ proving that a \emph{given} finite relation set presents a \emph{given}
 concrete group --- no coset enumeration, no verified Schreier
 transversals, no normal-form transports; the Coxeter development, for
 instance, axiomatizes the presentation rather than verifying completeness
-of specific relation sets for specific permutation groups.  The Rocq/MathComp
-school, whose deep results --- most famously the Odd Order
-theorem~\cite{gonthier2013oddorder} --- concern finite groups
-represented as finite types, does have a presentation notation: $G
-\mathrel{\backslash\mathtt{isog}}\ \mathtt{Grp}(x_1 \ldots x_n : s_1 =
+of specific relation sets for specific permutation groups.  Conversely,
+the deep results of the Rocq/MathComp school --- most famously the Odd
+Order theorem~\cite{gonthier2013oddorder} --- concern finite groups
+represented as finite types; MathComp does have a presentation notation:
+$G \mathrel{\backslash\mathtt{isog}}\ \mathtt{Grp}(x_1 \ldots x_n : s_1 =
 t_1, \ldots)$ states that $G$ is isomorphic to the largest finite
 quotient of the presented group, and MathComp uses it to characterize
 the dihedral, semidihedral, and quaternion groups; but the proofs go through the
@@ -202,8 +211,9 @@ five equations) is separated from the search that found it.
 
 On the univalent side, cubical Agda~\cite{vezzosi2019cubical} and its
 library~\cite{cubicallibrary} provide free groups and set quotients as
-higher inductive types, and agda-unimath develops finite group theory including the symmetric
-groups and the sign homomorphism~\cite{agdaunimath,mangel2023sign}.  A
+higher inductive types;
+agda-unimath develops finite group theory including the symmetric groups
+and the sign homomorphism~\cite{agdaunimath,mangel2023sign}.  A
 HIT-based presented group would turn equational reasoning into
 rewriting, though functions out of it would still owe the eliminator a
 respect proof, and it would cost the sections into the syntax on which
@@ -235,8 +245,10 @@ along the lines of this library is an attractive direction.
 
 \subsection{Related tools}\label{sec:tools}
 
-Two unverified web tools compute normal forms of the kind this library
-verifies: one rewrites linear permutation circuits to \emph{Lafont
-normal form}~\cite{lafont2003boolean,lafontlp-tool}, the other rewrites
-words over the generators of $Sp(2n,\mathbb{Z}_p)$ to Selinger-style
-staircase normal forms~\cite{qupit-tool}.
+Two unverified web tools compute normal forms of the kind this
+library is built to prove correct and complete.  A
+normalizer to \emph{Lafont normal form} for linear permutation circuits
+implements the normalization lemmas of Lafont's algebraic theory of Boolean
+circuits~\cite{lafont2003boolean,lafontlp-tool}; and a normalizer for the
+symplectic groups $Sp(2n,\mathbb{Z}_p)$ computes Selinger-style staircase
+normal forms~\cite{qupit-tool}.

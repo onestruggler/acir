@@ -1,0 +1,91 @@
+\begin{tikzpicture}
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (n0y20tl) at (1.0, 4.0) {$$};
+\node [style=none] (n0y20bl) at (1.0, 2.0) {$$};
+\node [style=none] (n0y20br) at (2.5, 2.0) {$$};
+\node [style=none] (n0y20tr) at (2.5, 4.0) {$$};
+\node [style=none] (n0y20ftl) at (1.0, 4.15) {};
+\node [style=none] (n0y20fbr) at (2.5, 1.85) {};
+\node [style=none] (lm0el02) at (0.0, 2.0){};
+\node [style=none] (lm0el12) at (0.0, 4.0){};
+\node [style=none] (lm0el22) at (0.0, 6.0){};
+\node [style=none] (lm0er02) at (3.5, 2.0){};
+\node [style=none] (lm0er12) at (3.5, 4.0){};
+\node [style=none] (lm0er22) at (3.5, 6.0){};
+\node [style=none, label={above:$\sigma$}] (spec) at (1.75, 0.0) {};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm0el02.center) to (lm0er02.center);
+\draw (lm0el12.center) to (lm0er12.center);
+\draw (lm0el22.center) to (lm0er22.center);
+\fill [white] (n0y20ftl.center) rectangle (n0y20fbr.center);
+\draw (n0y20bl.center) to (n0y20tr.center);
+\draw (n0y20tl.center) to (n0y20br.center);
+\end{pgfonlayer}
+\node [style=none] (equiv) at (4.5, 3.0) {$$};
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (n6y20tl) at (6.5, 6.0) {$$};
+\node [style=none] (n6y20bl) at (6.5, 4.0) {$$};
+\node [style=none] (n6y20br) at (8.0, 4.0) {$$};
+\node [style=none] (n6y20tr) at (8.0, 6.0) {$$};
+\node [style=none] (n6y20ftl) at (6.5, 6.15) {};
+\node [style=none] (n6y20fbr) at (8.0, 3.85) {};
+\node [style=none] (lm6el02) at (5.5, 2.0){};
+\node [style=none] (lm6el12) at (5.5, 4.0){};
+\node [style=none] (lm6el22) at (5.5, 6.0){};
+\node [style=none] (lm6er02) at (9.0, 2.0){};
+\node [style=none] (lm6er12) at (9.0, 4.0){};
+\node [style=none] (lm6er22) at (9.0, 6.0){};
+\node [style=none, label={above:$\sigma\!\uparrow$}] (lm6spec) at (7.25, 0.0) {};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm6el02.center) to (lm6er02.center);
+\draw (lm6el12.center) to (lm6er12.center);
+\draw (lm6el22.center) to (lm6er22.center);
+\fill [white] (n6y20ftl.center) rectangle (n6y20fbr.center);
+\draw (n6y20bl.center) to (n6y20tr.center);
+\draw (n6y20tl.center) to (n6y20br.center);
+\end{pgfonlayer}
+\node [style=none] (equiv) at (10.0, 3.0) {$$};
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (n11y20tl) at (12.0, 4.0) {$$};
+\node [style=none] (n11y20bl) at (12.0, 2.0) {$$};
+\node [style=none] (n11y20br) at (13.5, 2.0) {$$};
+\node [style=none] (n11y20tr) at (13.5, 4.0) {$$};
+\node [style=none] (n11y20ftl) at (12.0, 4.15) {};
+\node [style=none] (n11y20fbr) at (13.5, 1.85) {};
+\node [style=none] (n11y21tl) at (14.5, 6.0) {$$};
+\node [style=none] (n11y21bl) at (14.5, 4.0) {$$};
+\node [style=none] (n11y21br) at (16.0, 4.0) {$$};
+\node [style=none] (n11y21tr) at (16.0, 6.0) {$$};
+\node [style=none] (n11y21ftl) at (14.5, 6.15) {};
+\node [style=none] (n11y21fbr) at (16.0, 3.85) {};
+\node [style=none] (n11y22tl) at (17.0, 4.0) {$$};
+\node [style=none] (n11y22bl) at (17.0, 2.0) {$$};
+\node [style=none] (n11y22br) at (18.5, 2.0) {$$};
+\node [style=none] (n11y22tr) at (18.5, 4.0) {$$};
+\node [style=none] (n11y22ftl) at (17.0, 4.15) {};
+\node [style=none] (n11y22fbr) at (18.5, 1.85) {};
+\node [style=none] (lm11el02) at (11.0, 2.0){};
+\node [style=none] (lm11el12) at (11.0, 4.0){};
+\node [style=none] (lm11el22) at (11.0, 6.0){};
+\node [style=none] (lm11er02) at (19.5, 2.0){};
+\node [style=none] (lm11er12) at (19.5, 4.0){};
+\node [style=none] (lm11er22) at (19.5, 6.0){};
+\node [style=none, label={above:$\sigma \cdot \sigma\!\uparrow \cdot \sigma$}] (lm11spec) at (15.25, 0.0) {};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm11el02.center) to (lm11er02.center);
+\draw (lm11el12.center) to (lm11er12.center);
+\draw (lm11el22.center) to (lm11er22.center);
+\fill [white] (n11y20ftl.center) rectangle (n11y20fbr.center);
+\draw (n11y20bl.center) to (n11y20tr.center);
+\draw (n11y20tl.center) to (n11y20br.center);
+\fill [white] (n11y21ftl.center) rectangle (n11y21fbr.center);
+\draw (n11y21bl.center) to (n11y21tr.center);
+\draw (n11y21tl.center) to (n11y21br.center);
+\fill [white] (n11y22ftl.center) rectangle (n11y22fbr.center);
+\draw (n11y22bl.center) to (n11y22tr.center);
+\draw (n11y22tl.center) to (n11y22br.center);
+\end{pgfonlayer}
+\end{tikzpicture}

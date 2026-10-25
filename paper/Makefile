@@ -7,6 +7,7 @@
 #                 # one directory up: the snippets import it)
 #   make lua      # build via lualatex (fallback for Unicode in running text)
 #   make watch    # continuous rebuild on save (latexmk -pvc)
+#   make diff     # latexdiff against the submitted version: diff.tex, diff.pdf
 #   make png      # render every page to png/pNN.png (needs gs) for a quick look
 #   make clean    # remove latexmk auxiliary files (keeps main.pdf)
 #   make cleanall # also remove main.pdf, png/ and the generated latex/
@@ -44,7 +45,7 @@ AGDATEX  := $(patsubst sections/%.lagda.tex,latex/paper/sections/%.tex,$(LAGDA))
 FIGURES  := $(wildcard figures/*.tikz)
 DEPS     := $(MAIN).tex $(SECTIONS) $(FIGURES) refs.bib agda-style.sty agda.sty circuits.tikzstyles
 
-.PHONY: all agda lua watch png clean cleanall
+.PHONY: all agda lua watch png diff clean cleanall
 
 all: $(MAIN).pdf
 
@@ -69,9 +70,31 @@ png: $(MAIN).pdf
 	mkdir -p png
 	gs -q -dNOPAUSE -dBATCH -sDEVICE=png16m -r80 -sOutputFile=png/p%02d.png $(MAIN).pdf
 
+# latexdiff of this revision against the submitted version.  submitted/
+# holds the sources of the PDF the reviewers read (paper/ of the
+# supplementary material).  Agda code blocks, figures and the acks are
+# compared as wholes; latexdiff leaves the old listings (agdacode, a
+# verbatim environment) out of the diff; the bibliography is the
+# current one (main.bbl is moved aside so that it is not flattened).
+# The three figures the revision replaced are taken from submitted/.
+LDCONFIG := --config="PICTUREENV=(?:picture|DIFnomarkup|code|tikzpicture|acks)[\w\d*@]*" \
+            --config="VERBATIMENV=(?:comment|agdacode)"
+
+diff: diff.pdf
+
+diff.tex: $(DEPS) $(AGDATEX) $(wildcard submitted/*.tex submitted/sections/*.tex)
+	[ ! -f $(MAIN).bbl ] || mv $(MAIN).bbl $(MAIN).bbl.keep
+	latexdiff --flatten --encoding=utf8 $(LDCONFIG) submitted/$(MAIN).tex $(MAIN).tex > $@; \
+	  s=$$?; [ ! -f $(MAIN).bbl.keep ] || mv $(MAIN).bbl.keep $(MAIN).bbl; exit $$s
+	sed -i -e 's,{figures/fig\(1_sigma\|2_comm2\|2_yb\)},{submitted/figures/fig\1},g' $@
+
+diff.pdf: diff.tex
+	$(LATEXMK) -pdf -interaction=nonstopmode diff.tex
+
 clean:
 	$(LATEXMK) -c $(MAIN).tex
-	rm -f comment.cut $(MAIN).ptb
+	[ ! -f diff.tex ] || $(LATEXMK) -c diff.tex
+	rm -f comment.cut $(MAIN).ptb diff.ptb
 
 cleanall: clean
-	rm -rf $(MAIN).pdf png latex
+	rm -rf $(MAIN).pdf diff.tex diff.pdf png latex

@@ -36,6 +36,11 @@ and `notes/` are the working notes the first draft was written from.
   by the Cir2Tikz tool; the `c*` (staircase representatives) and
   `ract-*` figures were taken from the vqupit paper on the `qupit`
   branch.
+- `submitted/` — the sources of the submitted version (`paper/` of the
+  supplementary material; its `main.pdf` is the PDF the reviewers read):
+  `main.tex`, `sections/*.tex`, `figures/*.tikz`, `refs.bib`,
+  `agda-style.sty`, `circuits.tikzstyles`. `make diff` compares the
+  revision with them.
 - `refs.bib` — every entry verified against a live source during writing;
   entries marked `%% VERIFY-DETAIL` have one detail (page range, volume)
   taken from standard knowledge — re-check before camera-ready.
@@ -53,7 +58,18 @@ From a WSL shell in this directory:
 make            # agda --latex on sections/*.lagda.tex, then latexmk -pdf
 make agda       # only regenerate latex/paper/sections/*.tex
 make png        # render every page to png/ for a quick look
+make diff       # latexdiff against submitted/: diff.tex, diff.pdf
 ```
+
+On branch `popl-revision2a` the revision keeps the changes of
+`popl-revision2` with the submitted wording wherever the revision only
+rephrased: what the author response promises, the corrections of facts,
+citations and claims, the new code and the circuit diagrams are kept;
+rewordings without a change of content are reverted to the submitted
+text, and the cuts made for length are kept. Measured by `make diff`
+(words marked added / deleted): 6,044 / 4,511 for `popl-revision2`,
+4,917 / 3,266 here. Agda code blocks, figures and the acks are compared
+as wholes, so the old listings do not appear in the diff.
 
 From PowerShell: `wsl bash -lc "make -C /mnt/d/work/acir/paper"`.
 
@@ -77,8 +93,9 @@ Checklist before camera-ready:
 2. If a new Unicode character is used in code or in `\aid`, add it to the
    `\DeclareUnicodeCharacter` block in `agda-style.sty` (pdflatex stops
    with "Unicode character … not set up" otherwise).
-3. Page budget: 31 pages in review mode; check the target limit and trim
-   `related.tex` or the size table in `discussion.tex` first if over.
+3. Page budget: on `popl-revision2a` the text ends at the top of page 25
+   (27 pages in review mode with the references); check the target limit
+   and trim `related.tex` first if over.
 4. Author information: this review revision displays the authors and funding
    acknowledgments, along with the AI disclosure and data availability statement.
    Prior

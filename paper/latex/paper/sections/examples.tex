@@ -190,8 +190,8 @@ development.  For each family we say what its normal form \emph{is},
 since that is what a reader who wants to reuse the machinery on a new
 gate set needs to see first.
 
-Table~\ref{tab:presentations} lists every concrete
-\aid{{\_}IsPresentationOf{\_}} theorem in the development;
+Table~\ref{tab:presentations} lists
+every concrete \aid{{\_}IsPresentationOf{\_}} theorem in the development;
 Table~\ref{tab:nfs} lists the normal-form and uniqueness witnesses behind
 them.  All of them are restated with full types in the index module
 \texttt{MainTheorems.agda}, which also re-exports the conditional
@@ -230,7 +230,7 @@ $(C_N \aidop{⊕\char94} n) \aidop{⋄} S_n\text{-circuits} \aidop{⋄} \aid{Con
 \begin{table}
 \caption{Normal-form and uniqueness witnesses (selection).  NFI =
 \aid{NormalFormInjective}, NF = \aid{NormalForm}, UNF =
-\aid{UniqueNormalForm}; for the constructions, UNF is lifted from the
+\aid{UniqueNormalForm}.  For the constructions, UNF is lifted from the
 factor witnesses.}
 \label{tab:nfs}
 \centering
@@ -259,27 +259,27 @@ for every positive order at once (\aid{cyclic-presentation}): the normal
 form of a word is its letter count modulo $n{+}1$, the section sends the
 residue $k$ to $T^{k}$, and uniqueness for
 $\mathbb{Z}/(n{+}1)\mathbb{Z}$ is immediate.  Order $0$ gets a theorem
-of its own, \aid{cyclic-monoid-presentation}: the carrier is
-$\mathbb{N}$ and counts never wrap, and $T^{\,0} = \varepsilon$
+of its own, \aid{cyclic-monoid-presentation}: with carrier $\mathbb{N}$
+(a word count with no wraparound), $T^{\,0} = \varepsilon$
 \aid{IsMonoidPresentationOf} $(\mathbb{N}, +, 0)$ --- the free monoid
 rather than the group $\mathbb{Z}$, since, as \S\ref{sec:presentations}
 explained, the generator has no inverse there and the \aid{Grouplike}
-upgrade is exactly what fails.  The trivial group is presented twice ---
-over the empty alphabet $\bot$ with no relations, and over any alphabet
-with the everything-is-$\varepsilon$ relation --- and the two presentations are
-proved isomorphic.
+upgrade is exactly what fails.  The
+trivial group is presented twice --- empty alphabet with no relations, and
+arbitrary alphabet with the everything-is-$\varepsilon$ relation --- and
+the two presentations are proved isomorphic.
 
 \subsection{Wreath products: signed permutations and beyond}\label{sec:wreath}
 
 The headline compositional result combines almost every construction in
 the library.  Fix a base order $N = m{+}1$ and $n$ wires.  The $n$-fold
-direct power $C_N \aidop{⊕\char94} n$ presents $(\mathbb{Z}_N)^n$, and the
-circuit presentation of $S_n$ acts on it by permuting coordinates, an
-action specified \emph{syntactically} as a word-valued conjugation
-$\mathit{conj} : \aid{Gen}\;n \to (\top \aidop{⊎\char94} n) \to
-\aid{Word}\;(\top \aidop{⊎\char94} n)$.  Two finite compatibility lemmas
-(the action respects the Coxeter relations and the product relations)
-feed the semidirect-product presentation theorem, giving
+direct power $(C_N)^{\oplus n}$ presents $(\mathbb{Z}_N)^n$; the circuit
+presentation of $S_n$ acts on it by permuting coordinates --- an action
+specified \emph{syntactically} as a word-valued conjugation
+$\mathit{conj} : \aid{Gen}\;n \to (\top \uplus^n) \to
+\aid{Word}\,(\top \uplus^n)$.  Two finite compatibility lemmas (the action
+respects the Coxeter relations pointwise, and respects the product
+relations) feed the semidirect-product presentation theorem, giving
 \begin{code}%
 \>[0]\AgdaFunction{wreath-presentation}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -320,15 +320,16 @@ $(\mathbb{Z}_N)^n \rtimes S_n = \mathbb{Z}_N \wr S_n$ built from the
 The lifted normal form is a pair of $n$ residues modulo $N$ and the
 factorial tuple of a permutation, so its section is a word of $T$-powers,
 one per coordinate, followed by the staircases of
-\S\ref{sec:permutations}.  At $N = 2$ this is the group of \emph{signed
-permutations}, the hyperoctahedral group $B_n$; at general $N$ it is the
-generalized symmetric group $G(N,1,n)$ of monomial matrices with
-$N$-th-root-of-unity entries.  These groups are ubiquitous in the qudit
-setting (Pauli-frame changes, permutation-and-phase subgroups of Clifford
-groups), and the theorem delivers their presentations \emph{for all $N$
-and $n$ at once} --- a family of completeness results parameterized over
-two naturals, where a mechanized, compositional treatment clearly outruns
-the per-instance pen-and-paper approach.
+\S\ref{sec:permutations}.  At $N = 2$ this is the group of
+\emph{signed permutations} --- the hyperoctahedral group $B_n$; at
+general $N$ it is the generalized symmetric group $G(N,1,n)$ of monomial
+matrices with $N$-th-root-of-unity entries.  These groups are ubiquitous
+in the qudit setting (Pauli-frame changes, permutation-and-phase
+subgroups of Clifford groups), and the theorem delivers their
+presentations \emph{for all $N$ and $n$ at once} --- a family of
+completeness results parameterized over two naturals, which is where a
+mechanized, compositional treatment clearly outruns the per-instance
+pen-and-paper approach.
 
 \subsection{Pauli groups in all prime dimensions}\label{sec:pauli}
 
@@ -371,12 +372,11 @@ is \emph{no} coset enumeration in it at all:
 \end{code}
 
 For a prime $p = 2 + m$, with \aid{prime} its primality proof --- a
-\emph{qupit} is a qudit whose dimension is a prime --- the
-single-qupit relation set $\aid{Γ-Pauli₁}$ is the direct-product join of
-two order-$p$ cyclic presentations ($X$- and $Z$-type generators, which
-commute in the
-quotient of the Pauli group by its phase subgroup), and the $n$-qupit
-relation set is its $n$-fold power.  The semantic group
+\emph{qupit} is a qudit whose dimension is a prime --- the single-qupit
+relation set $\aid{Γ-Pauli₁}$ is the direct-product
+join of two order-$p$ cyclic presentations ($X$- and $Z$-type generators,
+which commute in the quotient of the Pauli group by its phase subgroup),
+and the $n$-qupit relation set is its $n$-fold power.  The semantic group
 $(\mathbb{Z}_p \times \mathbb{Z}_p)^n$ is assembled by the standard
 library's binary direct product and our $n$-fold iteration, and the
 presentation is literally three construction theorems composed --- the
@@ -385,9 +385,9 @@ theorem, in three lines of Agda.  The normal form is correspondingly a
 tuple of $n$ pairs of exponents
 $(a_i, b_i) \in \mathsf{Fin}\,p \times \mathsf{Fin}\,p$, one per wire,
 with section $X^{a_1} Z^{b_1} \cdots X^{a_n} Z^{b_n}$; nothing about it
-was proved for the Pauli group specifically.  The full Pauli group with
-phases, and its role beneath the Clifford hierarchy, is left to future
-work.
+was proved for the Pauli group specifically.  The
+full Pauli group with phases, and its role beneath the Clifford
+hierarchy, is left to future work.
 
 \subsection{Single-qubit Clifford+$T$, as an amalgamated free product}\label{sec:cliffordt1}
 
@@ -400,8 +400,8 @@ form~\cite{matsumoto2008representation,giles2013remarks}, which underlies
 exact synthesis and $T$-count optimality --- and the later normal forms
 for single-qutrit and single-qudit
 Clifford+$T$~\cite{glaudell2019qutrit,prakash2018qutrit,jain2020qudit}
-follow its syllable pattern.  The relation set, over
-generators $T, H, S, \omega$ with $X := H S S H$ as an abbreviation, is
+follow its syllable pattern.  The relation set (over generators
+$T, H, S, \omega$, with $X := H S S H$ as an abbreviation) is
 \[
   \omega^8 = \varepsilon,\quad
   T^2 = S,\quad
@@ -418,36 +418,40 @@ product over the subgroup $M$ generated by $X$, $S$, and $\omega$:
   \langle T, M \rangle \,\ast_{M}\, \langle H, M \rangle,
   \qquad M = \langle X, S, \omega \rangle .
 \]
-The tower starts from the direct product $\langle \omega \rangle \times
-\langle S \rangle$ of cyclic groups of orders $8$ and $4$ (normal-form
-radices $8 \cdot 4$), extends it by a two-coset table ($\varepsilon$,
-$X$) to $M$, and then extends \emph{twice from $M$}: by a two-coset
-table ($\varepsilon$, $T$) to the $T$-side factor, and by a three-coset table ($\varepsilon$,
-$H$, $HS$) to the Clifford group on the $H$-side.  The two
-\aid{PackedCosetTable}s over $M$ form an \aid{AmalDataNF}, and the
-amalgamation module produces the alternating normal form.  With $C =
-\{T\}$ the one proper $T$-coset and $D = \{H, HS\}$ the two proper
-$H$-cosets, a normal form is an element of $\mathit{NF}_0 \times
+The development builds a tower whose base is the direct product
+$\langle \omega \rangle \times \langle S \rangle$ of cyclic groups of
+orders $8$ and $4$ (normal-form radices $8 \cdot 4$), extends it by one
+verified coset table to the subgroup $M$ (two cosets:
+$\varepsilon$ and $X$), and then extends \emph{twice from $M$}:
+by a two-coset table (cosets $\varepsilon, T$) to
+$\mathit{TXS\omega} = \langle T, X, S, \omega \rangle$, and by a
+three-coset table (cosets $\varepsilon, H, HS$) to the Clifford group
+$\langle H, X, S, \omega \rangle$.  The two \aid{PackedCosetTable}s over
+the shared $M$ form an \aid{AmalDataNF}, and the
+amalgamation module produces the normal form for the amalgamated
+product.  It is instructive to see what this carrier
+\emph{is}: with a one-element $C$ ($T$-coset) and two-element $D$
+($H, HS$), a normal form is an element of $\mathit{NF}_0 \times
 \aid{amalNFC}\;C\;D$, and its section spells it out, in the library's
 left-to-right word order, as the regular expression
 \[
   \mathcal{M}\;(\varepsilon \mid H \mid HS)\;(TH \mid THS)^{*}\;(\varepsilon \mid T),
 \]
-where $\mathcal{M}$ stands for the base normal form of the $M$-part: a
-Clifford prefix, then alternating syllables, each a $T$ followed by a
-proper $H$-coset representative, then an optional final $T$.  Read
+where $\mathcal{M}$ stands for the base normal form of the $M$-part; an
+element of $\aid{amalNFC}\;C\;D$ is an optional leading
+$H$-syllable, a list of alternations, and an optional trailing $T$.  Read
 right to left, this is
 \[
   (\varepsilon \mid T)\;(HT \mid SHT)^{*}\;(\varepsilon \mid H \mid SH)\;\mathcal{M},
 \]
-which is the Matsumoto--Amano normal form $(\varepsilon \mid T)\,(HT
-\mid SHT)^{*}\,\mathcal{C}$~\cite{matsumoto2008representation,giles2013remarks}
+which is the Matsumoto--Amano normal form
+$(\varepsilon \mid T)\,(HT \mid SHT)^{*}\,\mathcal{C}$ read
+group-theoretically~\cite{matsumoto2008representation,giles2013remarks},
 with its single Clifford factor $\mathcal{C}$ split into a coset
-representative and an element of $M$.  The amalgamated free product
-thus recovers the Matsumoto--Amano syllable structure from the group
-theory alone, an observation already made for this group in the
-Bian--Selinger line~\cite{bian2023cliffordt2,bian2023thesis}.  The final
-theorem is the
+representative and an element of $M$:
+the alternating normal form of an amalgamated free product, as observed
+for this group in the Bian--Selinger
+line~\cite{bian2023cliffordt2,bian2023thesis}.  The final theorem is the
 syntactic isomorphism assembled by \aid{StarIsomorphism} from
 generator-level translations both ways (with \aid{{\_}==={\_}} the
 gate-set relations, \aid{amalPres} the amalgamated presentation, and
@@ -474,8 +478,8 @@ gate-set relations, \aid{amalPres} the amalgamated presentation, and
 \AgdaFunction{CliffordT1.CliffordT1.CliffordT1-isomorphism}\<%
 \end{code}
 
-Every well-definedness obligation of the tower's coset tables --- one
-per axiom and coset, 59 in all --- is discharged by
+Every well-definedness obligation in the tower (on all axioms at all
+cosets --- 59 cases) is discharged by
 \aid{(by-equal-nf Eq.refl) , Eq.refl}: the typechecker runs the table
 on both sides of the axiom from the given coset, the resulting cosets
 coincide, and the residual words have the same normal form one level
@@ -483,10 +487,16 @@ down.
 
 \subsection{Single-qutrit Clifford+$T$}
 
-The qutrit analogue replaces $\omega$ by a ninth root $\zeta$.  The
-gate-set relations (generators $T, H, S, \zeta$; abbreviations
-$X := \zeta^3 (HSH)(HSSH)$ and $Z := \zeta^3 S^2 H^2 S H^2$), derived and
-verified in this development, are
+The qutrit analogue replaces $\omega$ by a ninth root $\zeta$ and runs a
+longer tower: from the cyclic base $\langle \zeta \rangle$ through
+$\langle S, \zeta \rangle$ (three cosets), then a
+\emph{nine}-coset table to $\langle S, X, \zeta \rangle$
+(with the twisted commutation
+$(XS)(SX) = \zeta^6 (SX)(XS)$), then a two-coset table adjoining the
+squared Hadamard $H\!H$, and finally an amalgamation of a $T$-side and an
+$H$-side extension over the common subgroup.  The presented gate-set
+relations (generators $T, H, S, \zeta$; abbreviations
+$X := \zeta^3 (HSH)(HSSH)$ and $Z := \zeta^3 S^2 H^2 S H^2$):
 \[
   \zeta^9 = \varepsilon,\;\;
   S^3 = \zeta^6,\;\;
@@ -501,17 +511,14 @@ verified in this development, are
   TX = \zeta^3 S^2 X\, T,\;\;
   \zeta\ \text{central},
 \]
-and the verified structure is again an amalgamated free product,
+a presentation derived and verified in this development.  The verified
+structure is again an amalgamated free product,
 \[
   \mathrm{Clifford}{+}T_3 \;\cong\;
   \langle T, M \rangle \,\ast_{M}\, \langle H, M \rangle,
-  \qquad M = \langle S, X, \zeta, H^2 \rangle,
+  \qquad M = \langle S, X, \zeta, H^2 \rangle.
 \]
-reached by a longer tower: from $\langle \zeta \rangle$ through
-$\langle S, \zeta \rangle$ (three cosets) and a \emph{nine}-coset table
-to $\langle S, X, \zeta \rangle$ (with the twisted commutation
-$(XS)(SX) = \zeta^6 (SX)(XS)$), then a two-coset table adjoining $H^2$ to
-reach $M$, and finally the two extensions over $M$.  The common subgroup
+The common subgroup
 $M$ is the subgroup $\mathcal{S}\mathcal{M}$ of generalized permutation
 matrices (with the central phase) in the canonical form of Glaudell,
 Ross, and Taylor~\cite{glaudell2019qutrit}.  With $C = \{T, TH^2\}$ and $D = \{H,
@@ -527,27 +534,29 @@ S^2HT \mid S^2H^3T)^{*}\,\mathcal{C}$~\cite{glaudell2019qutrit}
 (obtained independently by Prakash, Jain, Kapur, and
 Seth~\cite{prakash2018qutrit}, and extended to qudits
 in~\cite{jain2020qudit}), with $\mathcal{C}$ split as in the qubit
-case.  The final theorem,
-\aid{clifford+T-qutrit-isomorphism} in the index, has the same shape as
-the qubit one and the same proof economy: the nine-coset level alone
-imposes seventy-two axiom-preservation obligations, every one closed by
+case.  The final theorem has the same shape as
+the qubit one --- \aid{clifford+T-qutrit-isomorphism} in the index ---
+and the same proof economy: the nine-coset level alone imposes
+seventy-two axiom-preservation obligations, every one closed by
 \aid{refl} after evaluation.  We know of no prior machine-checked
 completeness result for a qutrit gate-set presentation.
 
 \subsection{\texorpdfstring{$U_3(\mathbb{Z}[\tfrac12,i])$}{U3(Z[1/2,i])}}\label{sec:u3}
 
-The third case study formalizes the case $n = 3$ of Bian and Selinger's
-presentation of the groups $U_n(\mathbb{Z}[\tfrac12,i])$ of unitary
-matrices over $\mathbb{Z}[\tfrac12,i]$~\cite{bian2021un}.  The
-generators are a phase $i_0$, a scaled $2{\times}2$ Hadamard-type block
-$K_{01}$, and the transpositions $X_{01}, X_{12}$; the phases $i_1, i_2$
-and blocks $K_{02}, K_{12}$ on the other wires are their conjugates.  The
-eleven relations, kept under the paper's labels S1--S14, are the orders
-$i_0^4 = X_{01}^2 = X_{12}^2 = \varepsilon$, the braid relation of the
-transpositions, the commutation of disjoint phases and transpositions,
-and the interactions of $K_{01}$ with the phases, such as
-$K_{01} i_1^2 = X_{01} K_{01}$ and $K_{01}^2\, i_0\, i_1 = \varepsilon$.
-The verified structure is
+The third case study formalizes the case $n = 3$ of the presentation, due
+to Bian and Selinger, of the groups
+$U_n(\mathbb{Z}[\tfrac12,i])$~\cite{bian2021un} --- unitary matrices over
+the ring $\mathbb{Z}[\tfrac12,i]$.
+Generators are $i_0$ (a local phase), $K_{01}$ (a scaled $2{\times}2$
+Hadamard-type block), and the two transpositions $X_{01}, X_{12}$;
+derived generators $i_1, i_2, K_{02}, K_{12}$ are conjugates.  The eleven
+relations ($\mathrm{S1}$--$\mathrm{S14}$ in the development, following the
+paper's numbering) include the orders $i_0^4 = X_{01}^2 = X_{12}^2 =
+\varepsilon$, braid and commutation laws for the transpositions and
+phases, and the interactions of $K_{01}$ with the
+phases, e.g.
+$K_{01} i_1^2 = X_{01} K_{01}$ and
+$K_{01}^2\, i_0\, i_1 = \varepsilon$.  The verified structure is
 \[
   U_3(\mathbb{Z}[\tfrac12,i]) \;\cong\;
   (\mathbb{Z}_4 \wr S_3) \,\ast_{M}\, \langle M, K_{01} \rangle,
@@ -558,8 +567,8 @@ times a phase on wire $2$.  The left factor is the group of all monomial
 matrices, the generalized symmetric group $G(4,1,3)$, taken verbatim from
 the wreath development of \S\ref{sec:wreath}.  The right factor adjoins
 $K_{01}$ to $M$: a six-coset Reidemeister--Schreier level presents
-$\langle K_{01}, i_0, i_1 \rangle$ over $\langle i_0 \rangle \times
-\langle i_1 \rangle$, then a direct product adjoins $\langle i_2 \rangle$
+the $\langle K_{01}, i_0, i_1 \rangle$ subgroup over the product
+of two order-$4$ cyclic groups, then a direct product adjoins $\langle i_2 \rangle$
 and a definitional extension introduces $X_{01}$ as a word in $K_{01}$,
 $i_0$, $i_1$.  Both factors have index $3$ over $M$, with $C = \{X_{12},
 X_{12}X_{01}\}$ the proper cosets on the left and $D = \{K_{01}, K_{01}
@@ -579,10 +588,11 @@ algorithm, defined by matrix reduction rather than by a syllable
 pattern, so the regular expression above is a new canonical form for
 $U_3(\mathbb{Z}[\tfrac12,i])$, with the Matsumoto--Amano-style syllable
 structure, and it comes out of the amalgamation construction for free.
-The final theorem, \aid{U₃-presentation-isomorphism}, is again a monoid
-isomorphism between the flat eleven-relation presentation and the
-amalgamated one.  At $2\,868$ and $1\,394$ source lines, the qutrit and
-$U_3$ studies are the largest verified objects in the library, and both
-consist mostly of finite tables and \aid{refl}-discharged
-obligations --- the shape of proof this framework was designed to make
-routine.
+The final theorem,
+\aid{U₃-presentation-isomorphism}, is again a monoid isomorphism between
+the flat eleven-relation presentation and the amalgamated-product
+presentation.  At
+$2\,868$ and $1\,394$ source lines, the qutrit and $U_3$ studies are the
+largest verified objects in the library, and both consist mostly of
+finite tables and \aid{refl}-discharged obligations --- the shape of
+proof this framework was designed to make routine.

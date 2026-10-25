@@ -17,6 +17,9 @@ paper/*.log
 paper/*.out
 paper/*.ptb
 paper/*.pdf
+paper/diff.tex
+paper/diff.ldlog
+paper/comment.cut
 
 # Haskell / GHC build artifacts (Cir2Tikz tool)
 *.hi
