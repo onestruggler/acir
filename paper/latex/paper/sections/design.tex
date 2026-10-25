@@ -623,16 +623,7 @@ sub-presentation is a presentation, and a grouplike monoid presentation of
 $G$'s underlying monoid is a group presentation
 (\aid{monoid-presentation⇒group-presentation} in the index) --- the
 latter via the \texttt{ForStdlib} fact that monoid homomorphisms between
-groups preserve inverses (\S\ref{sec:forstdlib}).  One design point
-deserves emphasis: since words have no primitive inverses, \emph{every}
-presentation in this library is at bottom a \emph{monoid} presentation,
-and group presentations are the \aid{Grouplike} special case.  The
-distinction is mathematically real, and the smallest cyclic relation
-already exhibits it: read as a group presentation, the trivial relation
-$T^{\,0} = \varepsilon$ presents the cyclic group of order $0$ --- by
-definition $\mathbb{Z}$ --- but the \emph{monoid} it presents is the
-free monoid $(\mathbb{N}, +, 0)$, and grouplikeness is exactly what
-fails at order $0$ (\S\ref{sec:cyclic}).  These upgrades structure every proof in
+groups preserve inverses (\S\ref{sec:forstdlib}).  These upgrades structure every proof in
 the catalogue: one proves soundness, injectivity (by normalization), and
 surjectivity separately, and the records assemble the isomorphism.
 
