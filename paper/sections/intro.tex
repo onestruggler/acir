@@ -66,23 +66,15 @@ set generates is an inductive family, so its derivations are data one
 can induct on; \S\ref{sec:setoids} weighs the trade.
 
 \paragraph{Why this is a programming-languages problem.}
-Circuit calculi are programming languages of a particular kind, and
-completeness of their equational theories is a programming-languages
-question: it is what licenses normal-form-based decision procedures, what
-tells the author of an optimizer that no valid rewrite is missing, and what
-underlies the rig-categorical completeness theorems for reversible and
-quantum languages of recent
+Completeness of a circuit calculus is a programming-languages question:
+it licenses normal-form decision procedures, tells an optimizer that no
+valid rewrite is missing, and underlies the rig-categorical completeness
+theorems of recent
 POPLs~\cite{choudhury2022symmetries,carette2024squareroots,fang2026hadamard}.
-The contribution of this paper is not a single theorem but a \emph{design}:
-a way of organizing presentations, normal forms, and completeness in a
-dependently typed language so that the same objects both compute and
-prove, validated on examples large enough --- the symmetric groups as
-circuits at every width, the qutrit Clifford+$T$ monoid,
-$U_3(\mathbb{Z}[\tfrac12,i])$ --- to exercise every part of it.
-The techniques that carry the design are this community's: inductive
-congruences, specifications as function bundles, index engineering for
-the unifier, and, where an obligation reduces to a computation, proof by
-evaluation.
+Our contribution is a \emph{design}: presentations, normal forms, and
+completeness organized in a dependently typed language so that the same
+objects both compute and prove, validated on examples large enough to
+exercise every part of it.
 
 \subsection{Contributions}\label{sec:contributions}
 
