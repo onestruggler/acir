@@ -243,13 +243,10 @@ formalized: the amalgamation case studies are syntactic, ending in
 isomorphisms between the gate-set presentation and an amalgamated
 product of presentations, and the identification of those presented
 monoids with the concrete matrix monoids is taken from the literature.
-The second point is expanded with the
-examples you asked for: gate sets with continuous parameters, such as
-the phase and rotation gates of Clément et al.'s complete theories,
-whose normal forms carry real angles and have no finite coset
-structure; and subgroup steps of infinite index, such as the
-lamplighter groups ℤ_N ≀ ℤ, where the hypotheses are statable but need
-induction rather than finitely many evaluations.
+The second point names the
+examples you asked for: gate sets with continuous parameters, whose
+normal forms carry real angles, and subgroup steps of infinite index,
+such as the lamplighter groups ℤ_N ≀ ℤ.
 
 **Wording.** "Against the standard library", "layered Agda library",
 and "discharges the case analyses" are gone; "circuit theory" and the
