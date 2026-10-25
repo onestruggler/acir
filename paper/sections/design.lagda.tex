@@ -560,11 +560,7 @@ particular association.  \aid{by-equal-nf} (\S\ref{sec:nfproperty})
 closes any goal whose two sides have the same computed normal form; since
 coset tables and normal-form maps are structurally recursive programs,
 this turns the well-definedness half of table verification into
-evaluation.  All three are used like tactics, but none uses
-metaprogramming: each maps both sides of a goal into a canonical data
-type by a function proved correct once, and then compares the results
-with \aid{refl}, so the evaluator does the work that a reflective tactic
-would do by proof search.  Finally,
+evaluation.  Finally,
 mundane but effective: a shared \texttt{Notations} module of numeral patterns
 (\aid{₀} … \aid{₁₅}, successor patterns \aid{₁₊} … \aid{₄₊} overloaded
 over $\mathbb{N}$ and $\mathsf{Fin}$, and \aid{auto} for \aid{refl})
