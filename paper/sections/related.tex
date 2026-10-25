@@ -126,48 +126,53 @@ target for this library.
 A parallel school, rooted in programming-language semantics rather than
 gate groups, reaches completeness through \emph{categorical} structure.
 Choudhury, Karwowski, and Sabry present the reversible language $\Pi$ as
-the free symmetric rig groupoid and formalize their results
-in HoTT-Agda (about 7\,500 lines)~\cite{choudhury2022symmetries}.  This is the
+the free symmetric rig groupoid and mechanize the syntax and most proofs
+in univalent HoTT-Agda (about 7\,500 lines), using the formalization for
+normalization-by-evaluation, verification, and synthesis of reversible
+Boolean circuits~\cite{choudhury2022symmetries}.  This is the
 mechanization nearest in spirit to ours, and an instructive contrast on
-every axis: their completeness is \emph{full abstraction} of $\Pi$'s
-syntactic groupoid against a univalent subuniverse of finite types, over
-the classical (permutation) fragment, obtained with higher
+every axis: their completeness is \emph{full abstraction} of $\Pi$'s syntactic
+groupoid against a univalent subuniverse of finite types, over the
+classical (permutation) fragment, obtained with higher
 inductive types and univalence; ours is completeness of \emph{concrete
 finite relation sets} against independently constructed groups, obtained
 by coset normal forms in axiom-free, setoid-based, standard-library Agda.
-The two even meet in the middle: their development solves the word
-problem for $S_n$ by a confluent rewriting system on Coxeter words,
-precisely the problem our factorial-carrier normal
+The two even meet in the middle: their development runs into the word
+problem for $S_n$, precisely the problem our factorial-carrier normal
 form decides (\S\ref{sec:permutations}).
 
 On the quantum side of that school, Carette, Heunen, Kaarsgaard, and
-Sabry extend $\Pi$ by an eighth root $\omega$ of the identity and a
-square root $\mathsf{V}$ of negation to the language $\sqrt{\Pi}$, and
-prove the resulting
+Sabry extend rig groupoids with square-root maps and prove the resulting
 equational theory sound and complete for arbitrary Clifford circuits,
 Clifford+$T$ circuits on at most two qubits, and the computationally
-universal Gaussian Clifford+$T$ gate set --- the unitaries over
-$\mathbb{Z}[\tfrac12,i]$, the family $U_n(\mathbb{Z}[\tfrac12,i])$ of
-\S\ref{sec:u3} --- building on Selinger's Clifford presentation and Bian
-and Selinger's presentation of
-$U_n(\mathbb{Z}[\tfrac12,i])$~\cite{carette2024squareroots}.  This
-development, too, is partially mechanized over agda-categories.  The
-authors report that the weak setting of agda-categories forces explicit
-unit and associativity bookkeeping, tedious without the library's
-combinators --- a
+universal Gaussian Clifford+$T$ gate set (their Section~6, which builds
+on the presentations of Selinger and of Bian and
+Selinger)~\cite{carette2024squareroots}.  This development, too, is
+partially mechanized: an Agda library extending agda-categories
+formalises the equational model, the entire completeness proof for the
+two-qubit Clifford fragment (their \S6.1), and lemmas of two of the three
+larger completeness proofs.  The authors report that no errors surfaced
+in the paper proofs, that a missing rig-category coherence was found in
+agda-categories itself, and that the weak setting of
+agda-categories forces explicit unit and associativity bookkeeping,
+tedious without the library's combinators --- a
 datapoint our \aid{by-assoc} solver and strict word syntax speak to
 directly (\S\ref{sec:solvers}).  Still pen-and-paper are the two most
 recent members of the school: Fang, Heunen, and Kaarsgaard's
-Hadamard-$\Pi$ derives
-completeness from a new finite presentation
+Hadamard-$\Pi$ adjoins the Hadamard gate to $\Pi$ and derives
+completeness from a new finite presentation, with a synthesis algorithm,
 of the orthogonal groups over
 $\mathbb{Z}[1/\sqrt2]$~\cite{fang2026hadamard} --- matrix groups of
 the family whose presentations Li, Ross, and Selinger
 studied~\cite{li2021on}; and Heunen, Kaarsgaard, and Lemonnier derive
-sound and complete axiomatizations of controlled circuits uniformly
-from coherence for
-semisimple rig categories~\cite{heunen2026onerig}.  A verified presentation of
-$O_n(\mathbb{Z}[1/\sqrt2])$ would
+sound and complete axiomatizations of controlled circuits uniformly, for
+quantum and Toffoli-style gate sets at once, from coherence for
+semisimple rig categories~\cite{heunen2026onerig}.  Across the school,
+the load-bearing objects --- finite presentations of concrete matrix
+groups and normal forms for them --- are exactly the artifacts this
+library mechanizes.  That makes the rig
+school a natural client: a verified presentation of
+$O_n(\mathbb{Z}[1/\sqrt2])$ in the style of \S\ref{sec:examples} would
 put the completeness of Hadamard-$\Pi$ on machine-checked footing.
 
 \subsection{Group theory in proof assistants: abstract theory versus concrete presentations}\label{sec:rel-gt}
