@@ -158,27 +158,13 @@ code concerning semantics. We used Claude Opus 4.8 to assist with coding,
 literature review, and the writing and editing of the paper.
 
 \section*{Data Availability Statement}
-The artifact accompanying this paper is publicly available on Zenodo at
-\url{https://doi.org/10.5281/zenodo.23636192}
-(version \texttt{popl-revision2}). The single archive
-\texttt{acir-popl-revision2.zip} contains the Agda source code for the
-formalized definitions, constructions, and proofs, together with a
-root-level \texttt{html/} folder containing an \texttt{agda -{}-html}
-rendering with identifiers linked to their definitions. After extracting
-the entire archive, readers should consult the top-level \texttt{README.md}
-for typechecking instructions using Agda~2.8 and Agda standard library~2.4,
-or open \texttt{html/index.html} in a web browser to explore
-\texttt{MainTheorems.agda} and its transitive imports offline without
-installing Agda. This entry point restates the headline theorems; the
-rendering includes its required dependency modules.
-The software and its accompanying software documentation are available
-under the MIT License, subject to the scope and existing notices described
-in the top-level \texttt{LICENSE.txt} and the license files in \texttt{html/}.
-The artifact has the limitations discussed in \S\ref{sec:threats}:
-in particular, the amalgamation case studies formalize the syntactic
-presentations and their isomorphisms, while their identification with
-the concrete matrix monoids relies on results from the literature
-and is not formalized in this artifact.
+The artifact, version \texttt{popl-revision2}, is available on Zenodo at
+\url{https://doi.org/10.5281/zenodo.23636192}.  It contains the Agda
+sources, which typecheck with Agda~2.8 and standard library~2.4 as its
+\texttt{README.md} describes, and a hyperlinked HTML rendering of
+\texttt{MainTheorems.agda} and its imports (\texttt{html/index.html}) for
+browsing without Agda.  It is released under the MIT License, with the
+limitations of \S\ref{sec:threats}.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{refs}
