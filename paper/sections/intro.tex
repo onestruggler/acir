@@ -38,32 +38,32 @@ languages~\cite{carette2024squareroots,fang2026hadamard}, and behind the
 recent uniform simplification of the rule sets of six near-Clifford circuit
 fragments~\cite{blake2026simpler} --- long, hand-written, hand-checked
 derivations every one of which deserves a machine's scrutiny.  Proofs of
-this shape --- long, regular, and mechanical --- are precisely the proofs
-that should be machine-checked: a proof assistant does not tire of case
-splits, and where a case reduces to a computation, its evaluator can
-carry it out.
+this shape --- long, regular, and computational --- are precisely the proofs
+that should be machine-checked, and precisely the proofs that a proof assistant with a
+strong evaluator can check largely \emph{by computation}.
 
-This paper reports on an Agda library built for exactly this purpose, and
-on the design decisions that make it work: a
+This paper reports on an Agda library built for exactly this purpose: a
 general, reusable formal framework for \emph{presentations of monoids and
 groups by generators and relations}, for \emph{normal forms}, and for
 \emph{completeness} of finite relation sets, with circuits --- words of
-wire-indexed gates --- as the motivating instance.
+wire-indexed gates --- as the motivating instance.  The library is written in
+safe, axiom-free Agda~\cite{norell2007thesis,bove2009agda} against the Agda
+standard library~\cite{daggitt2025stdlib,agdastdlib}, is compatible with the
+\texttt{--cubical-compatible} discipline, and is being prepared for
+submission to the standard library; the semantic constructions it needed and
+the standard library lacked (semidirect products, amalgamated free products
+of monoids, group extensions, epimorphisms, the permutation group bundled as
+a group) are staged in a dedicated \texttt{ForStdlib} hierarchy.
 
-One design decision deserves to be announced up front: the library is
-written in plain, setoid-based
-Agda~\cite{norell2007thesis,bove2009agda} on top of the standard
-library~\cite{daggitt2025stdlib,agdastdlib}, not in cubical Agda or a
-HoTT library, so a presented monoid is a setoid on words, not a quotient
-type.  The reason is that the library computes with syntax: words stay
-a plain inductive type, so coset tables and normal-form maps
-pattern-match on concrete representatives and their obligations close
-by evaluation, and our central devices are maps \emph{into} the syntax
---- sections of normal forms, coset representatives, amalgamation tails
---- which need concrete representatives to land on and lose their point
-in a quotient.  A secondary benefit is that the congruence a relation
-set generates is an inductive family, so its derivations are data one
-can induct on; \S\ref{sec:setoids} weighs the trade.
+One design decision deserves to be announced up front: a presented
+monoid is a setoid on words, not a quotient type, so the library is
+written in plain Agda rather than in cubical Agda or a HoTT library.  The
+reason is that the library computes with syntax: coset tables and
+normal-form maps pattern-match on concrete words, and its central devices
+are maps \emph{into} the syntax --- sections of normal forms, coset
+representatives, amalgamation tails --- which need concrete
+representatives to land on; \S\ref{sec:setoids} weighs the
+trade.
 
 \paragraph{Why this is a programming-languages problem.}
 Completeness of a circuit calculus is a programming-languages question:
