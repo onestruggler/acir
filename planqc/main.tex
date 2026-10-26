@@ -272,7 +272,7 @@ Most theorems in \Cref{tab:corpus} are proved from scratch in QCert against a ma
 
 \section{Corrections to the Source Papers}\label{sec:findings}
 
-The formalizations in \Cref{tab:corpus} found two kinds of issues in the source papers. Most are typos, some of them in statements that the proofs rely on. These are easy to fix. The remaining issues need more work. The first one is a gap in a proof and the second is a relation missing from a theorem. We describe how to repair them below. In all cases, the completeness and minimality results still hold.
+The formalizations in \Cref{tab:corpus} identify two kinds of issues in the source papers. Most are typos, and some of them appear in statements that the proofs rely on. These are easy to fix. The other two are harder to repair. One is a gap in a proof, and the other is a relation missing from a theorem. We describe both below.
 
 The gap is in the proof of Theorem~4.14 of Hadamard-$\Pi$~\cite{fang2026hadamard}, which states that the relations in its Figure~6 present the group $O_n\left(\Z\left[1/\sqrt2\right]\right)$. One case of the proof relies on Lemmas~A.16 and~A.17, which have counterexamples in dimension~$6$, and the case analysis built on them misses a matrix in dimension~$9$. The authors have confirmed this gap (personal communication). Cl\'ement's unpublished notes~\cite{clement2019thesis} present the same group with different relations, and his case analysis covers the missing case. We prove that the two sets of relations are equivalent in every dimension and formalize Cl\'ement's proof~\cite{qcert2026clement}. Hence, Theorem~4.14 holds, so does Cl\'ement's completeness result for real Clifford+CH circuits~\cite{clement2026realcliffordch} which builds on it.
 
