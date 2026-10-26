@@ -1,6 +1,6 @@
 \section{Preliminaries: Normal Forms from Subgroup Chains}\label{sec:preliminaries}
 
-The library's normal forms all follow one classical recipe from
+The library's coset-tower normal forms follow one classical recipe from
 computational group theory.  This section recalls it in mathematical
 vocabulary and fixes the intuitions (transversals as digits, towers as
 positional number systems) that the Agda modules of
@@ -70,10 +70,13 @@ in the library this is the \aid{Grouplike} condition of
 inverse up to $\approx$ and derives the group structure from it.
 
 Given $H \le G$ with $G = \langle Y \mid S \rangle$, the
-\emph{Reidemeister--Schreier} method produces a presentation of $H$.
-The data one must supply is
-finite and concrete: the coset table
-$\tau : \text{cosets} \times Y \to \text{cosets}$ recording $H\bar t y = H\tau(t,y)$,
+\emph{Reidemeister--Schreier} method produces a presentation of $H$: its
+generators are the \emph{Schreier generators} $\bar t y\,\overline{\bar t y}^{\,-1}$
+($t$ a coset label, $y \in Y$), and its relations are rewrites of the
+relators of $G$ through the coset table.  For finite index and finite $Y$,
+the data one must supply is finite and concrete --- the coset table
+$\tau : \text{cosets} \times Y \to \text{cosets}$ recording
+$H\bar t y = H\overline{\tau(t,y)}$,
 together with, for each step, the element of $H$ by which $\bar t y$ differs from
 its representative, the residual $h$ with $\bar t\, y = h
 \cdot \overline{\tau(t,y)}$.  These are exactly the two components that
@@ -84,7 +87,7 @@ holt2005handbook}); we instead take a \emph{claimed} coset table
 as input and \emph{verify} it, by exhibiting five equational
 hypotheses relating the table, the section, and the relations
 (\S\ref{sec:engine}).  Verification rather than search is the right
-division of labor in a proof assistant: tables are found offline (by
+division of labour in a proof assistant: tables are found offline (by
 computation, or on paper), and the checked artifact certifies them.
 Bian and Selinger pioneered this monoid-level, verified use of
 Reidemeister--Schreier in Agda for their gate-group
@@ -94,18 +97,19 @@ a record.
 
 \subsection{Specialization to circuits}\label{sec:circuit-chain}
 
-For circuits the chain is not chosen: it is handed to us by the wire
+For circuits a candidate chain is handed to us by the wire
 structure.  Writing $\mathsf{Cir}\,k$ for the group (or monoid) presented
-by $k$-wire circuits, the shift operation
-$c \mapsto c{\uparrow}$ embeds
+by $k$-wire circuits modulo a relation set, the shift operation
+$c \mapsto c{\uparrow}$ is a homomorphism.  Verified coset tables establish
+its injectivity, giving
 $\mathsf{Cir}\,k \le \mathsf{Cir}\,(k{+}1)$
 as ``the circuits that do not touch the bottom wire''.  The digit that a
 normal form for $\mathsf{Cir}\,(k{+}1)$ adds to one for $\mathsf{Cir}\,k$
 then ranges over a transversal of
-this subgroup (for permutations, the staircases of
+this subgroup --- for permutations, the staircases of
 \S\ref{sec:sn-cosets}; for Clifford-style groups, the staircase-shaped
 representatives of Selinger~\cite{selinger2015clifford} and their qutrit
-analogues~\cite{li2025qutrit}), and a normal form for the whole group is
+analogues~\cite{li2025qutrit} --- and a normal form for the whole group is
 a tower of such levels.  The library's \aid{CosetTower}
 (\S\ref{sec:engine}) is precisely this specialization.  Where the subgroup chain branches instead of nesting (two
 subgroups sharing a common base, as for the Clifford+$T$ groups),

@@ -4,10 +4,10 @@ Equational reasoning is the daily bread of circuit design.  Whether one
 optimizes a quantum circuit, verifies a compiler pass, or normalizes a
 diagram, the justification is always the same: a finite set of local rewrite
 rules, applied to a syntactic object, preserving a semantic interpretation.
-Two questions attach to any such rule set.  \emph{Soundness} (does every
-rule preserve the semantics?) is typically easy: it is a finite collection
-of small algebraic identities.  \emph{Completeness} (can every true
-semantic equation be derived from the rules?) is a different animal
+Two questions attach to any such rule set.  \emph{Soundness} --- does every
+rule preserve the semantics? --- is typically easy: it is a finite collection
+of small algebraic identities.  \emph{Completeness} --- can every true
+semantic equation be derived from the rules? --- is a different animal
 altogether.
 
 Completeness proofs are gigantic computations.  The standard strategy defines
@@ -18,7 +18,7 @@ one must show, for every rule and every way a generator can meet a normal
 form, that the combination reduces again, a case analysis that is
 mechanical, unforgiving, and enormous.  The literature wears the scars
 openly.  Selinger's presentation of the $n$-qubit Clifford group already
-required a substantial rewrite system and normal-form
+required a substantial rewrite system and normal form
 analysis~\cite{selinger2015clifford}.  Its recent qutrit
 analogue by Li, Mosca, Ross, van~de~Wetering, and Zhao, the first
 completeness result for a gate set of quantum circuits in an odd prime
@@ -35,9 +35,9 @@ tens of pages of mechanical calculation also stand behind the
 rig-categorical completeness theorems for quantum programming
 languages~\cite{carette2024squareroots,fang2026hadamard} and behind the
 recent uniform simplification of the rule sets of six near-Clifford circuit
-fragments~\cite{blake2026simpler}.  These are long, hand-written,
-hand-checked derivations, every one of which deserves a machine's
-scrutiny.  Proofs of this shape, long, regular, and computational, are
+fragments~\cite{blake2026simpler} --- long, hand-written
+derivations, every one of which deserves a machine's
+scrutiny.  Proofs of this shape --- long, regular, and computational --- are
 precisely the proofs that should be machine-checked, and precisely the
 proofs that a proof assistant with a strong evaluator can check largely
 \emph{by computation}.
@@ -54,7 +54,7 @@ Section~\ref{sec:permutations} shows the whole route on permutation
 circuits.  The library is written in
 safe, axiom-free Agda~\cite{norell2007thesis,bove2009agda} on top of the
 Agda standard library~\cite{daggitt2025stdlib,agdastdlib}, and is being
-prepared for submission to it; the semantic constructions it needed and
+prepared for submission to the standard library; the semantic constructions it needed and
 the standard library lacked (semidirect products, amalgamated free products
 of monoids, group extensions, epimorphisms, the permutation group bundled as
 a group) are staged in a dedicated \texttt{ForStdlib} hierarchy.
@@ -88,21 +88,23 @@ large enough to exercise every part of it.
   normal form} into completeness (\S\ref{sec:nfproperty}).  A verified,
   monoid-level Reidemeister--Schreier engine constructs normal forms from
   verified coset tables, one per level
-  (\S\ref{sec:engine}), and solvers close associativity and
-  normal-form goals by evaluation (\S\ref{sec:solvers}).
+  (\S\ref{sec:engine}).
 
 \item[(1)] \textbf{Inductively defined circuits, for easy normalization and
   completeness proofs.}  A generic circuit layer represents $n$-wire circuits
   as words over wire-indexed generators, and extends any gate-specific
-  relation set with the structural rules shared by every circuit presentation
+  relation set with the structural rules --- shift congruence and
+  far-commutation --- shared by every circuit presentation
   (\S\ref{sec:circuits}).  The indexing discipline is chosen so that
   coset tables can be written by direct pattern matching and, where their
   obligations reduce to computation, checked by Agda's evaluator.
 
 \item[(2)] \textbf{A catalogue of verified presentations}
-  (\S\ref{sec:examples}): cyclic groups of every positive order (and
-  $\mathbb{N}$ at order $0$); symmetric groups $S_n$ presented as circuits,
-  complete for an endofunction semantics and presented
+  (\S\ref{sec:examples}).  Seven nontrivial example families, several of them
+  formalizing presentations from the research literature: cyclic groups
+  of every positive order (and $\mathbb{N}$ at order $0$);
+  symmetric groups $S_n$ presented as circuits, proved sound and
+  complete for a loose endofunction semantics and presented
   for the group of permutations of $\mathsf{Fin}\;n$; wreath products
   $\mathbb{Z}_N \wr S_n$, the groups of \emph{signed permutations} and
   their generalizations;
@@ -110,7 +112,9 @@ large enough to exercise every part of it.
   for every prime $p$, assembled purely compositionally; and, as
   amalgamated free products with verified alternating
   normal forms, the presentations of the single-qubit and single-qutrit
-  Clifford+$T$ monoids and of $U_3(\mathbb{Z}[\tfrac12,i])$.  Every headline theorem is
+  Clifford+$T$ monoids and of $U_3(\mathbb{Z}[\tfrac12,i])$ from Bian
+  and Selinger's presentation of $U_n(\mathbb{Z}[\tfrac12,i])$~\cite{bian2021un}.
+  Every headline theorem is
   restated, with its full type, in a single index module
   \texttt{MainTheorems.agda}.
 
@@ -127,7 +131,8 @@ large enough to exercise every part of it.
   corresponding \emph{semantic} presentation theorems: if $\Gamma$ presents
   $G_1$ and $\Delta$ presents $G_2$, the constructed relation sets present
   the direct product, the semidirect product, the $n$-fold product, the
-  amalgamated free product, and (given a realizing short exact sequence) an
+  amalgamated free product, and (given the normalization and realization data
+  of \S\ref{sec:constructions}) an
   arbitrary group extension (\S\ref{sec:constructions}).
 
 \item[(5)] \textbf{New constructions and theorems for the standard
@@ -147,7 +152,7 @@ Everything stated as a theorem in this paper typechecks with the flags
 postulates, no unfinished holes, and no appeals to classical axioms
 anywhere in the development described here.  The development is also
 constructive in a way that matters: normal forms and their sections
-compute, so every completeness theorem doubles as a decision procedure
+compute, so a normal form with decidable equality gives a decision procedure
 for the word problem of its theory.  Wherever a statement in this
 paper is \emph{not} formalized, the text says so explicitly, and
 \S\ref{sec:threats} discusses the main such gap.

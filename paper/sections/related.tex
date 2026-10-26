@@ -1,11 +1,11 @@
 \section{Related Work and Comparison}\label{sec:related}
 
-We compare along the three axes the library combines, (i) presentations
+We compare along the three axes the library combines --- (i) presentations
 and normal forms of groups and monoids, (ii) completeness of equational
-theories, and (iii) circuits, across Agda, Lean, Rocq, and Isabelle.
-Table~\ref{tab:compare} summarizes the mechanized work; the prose gives
-the details and the precise deltas.  Claims of absence are stated to the
-best of our knowledge.
+theories, (iii) circuits --- across Agda, Lean, Rocq, and Isabelle.
+Table~\ref{tab:compare} summarizes; the prose gives the details and the
+precise deltas.  Claims of absence are stated to the best of our
+knowledge.
 
 \begin{table}
 \caption{Mechanized work adjacent to this library (citations in the
@@ -29,12 +29,12 @@ CoqQ & Rocq & \ding{51} & -- & -- & -- \\
 Qbricks & Why3 & \ding{51} & -- & -- & -- \\
 QHLProver, Isabelle-Marries-Dirac & Isabelle & \ding{51} & -- & -- & -- \\
 $\Pi$ as free rig groupoid & Agda (HoTT) & \ding{51} & categorical & \ding{51} & classical \\
-$\sqrt{\Pi}$ (quantum $\Pi$) & Agda (partial) & \ding{51} & categorical & -- & 2q Clifford \\
-mathlib group theory & Lean & -- & \ding{51} & -- & -- \\
+Quantum $\Pi$ with square roots & Agda (partial) & \ding{51} & categorical & -- & 2q Clifford \\
+mathlib group theory & Lean & -- & \ding{51} & \ding{51} & -- \\
 MathComp / Odd Order & Rocq & -- & partial & -- & -- \\
 Free groups (AFP, CICM~2023) & Isabelle & -- & -- & \ding{51} & -- \\
 IsaFoR completion & Isabelle & -- & -- & \ding{51} & -- \\
-cubical / agda-unimath & Agda & -- & partial & -- & -- \\
+cubical / agda-unimath & Agda & -- & partial & \ding{51} & -- \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -42,38 +42,40 @@ cubical / agda-unimath & Agda & -- & partial & -- & -- \\
 \subsection{The Bian--Selinger verifications: syntax to syntax}\label{sec:rel-bs}
 
 The direct ancestors of this library are the Agda developments that Bian
-and Selinger published alongside their presentations of the two-qubit
-Clifford+$T$ group~\cite{bian2023cliffordt2} and the three-qubit
+and Selinger published alongside their presentations of the $2$-qubit
+Clifford+$T$ group~\cite{bian2023cliffordt2} and the $3$-qubit
 Clifford+CS group~\cite{bian2023cliffordcs3}, systematized in Bian's
 thesis~\cite{bian2023thesis}.  Methodologically these pioneered
 everything we build on: monoid-level presentations (no formal inverses),
-the Reidemeister--Schreier theorem applied to derive subgroup
-presentations (to Greylyn's presentation
-of $U_4(\mathbb{Z}[1/\sqrt2,i])$~\cite{greylyn2014} in the two-qubit
-case),
+the Reidemeister--Schreier theorem applied --- to Greylyn's presentation
+of $U_4(\mathbb{Z}[1/\sqrt2,i])$~\cite{greylyn2014} in the $2$-qubit
+case --- to derive subgroup presentations,
 amalgamated products of monoids, and machine-checked simplification of
-``thousands of relations'' down to seventeen.  The crucial
+``thousands of relations'' down to a small set (seventeen, for
+Clifford+CS).  The crucial
 limitation is that these developments
 work entirely on the \emph{syntactic side}: the theorems relate two
-\emph{presentations} of a group, and no independent semantic object
-occurs in any statement.
+\emph{presentations} of a group --- the isomorphism of two finitely
+presented monoids --- and no independent semantic object (a matrix group,
+a permutation group, a product of groups) occurs in any statement.
 Soundness and completeness in the model-theoretic sense are therefore not
-expressible there.  The present library keeps the syntactic technology (our
+expressible there, only relative completeness of one relation set against
+another.  The present library keeps the syntactic technology (our
 amalgamation case studies end in exactly such isomorphisms) and adds the
-semantic half: the presentation records of
+semantic half: the \aid{{\_}IsPresentationOf{\_}} records of
 Table~\ref{tab:presentations} target groups built independently of the
-syntax, and the generic \aid{by-normalization} lemma is what
+syntax --- stdlib permutations, \texttt{ForStdlib} products and
+extensions --- and the generic \aid{by-normalization} lemma is what
 connects the two halves.  A second delta is reusability: coset tables,
 towers, and the product constructions are library modules
 with explicit hypothesis records, where the earlier developments were
-per-paper proofs.
+structured as per-paper proofs.
 
 \subsection{Quantum circuits in proof assistants: soundness, not completeness}\label{sec:rel-qc}
 
 A rich ecosystem verifies quantum \emph{programs} and \emph{compilers}.
-\textsc{Qwire}~\cite{paykin2017qwire,rand2018qwirepractice} defines a
-circuit language with a denotational semantics, embedded and verified
-in Rocq; \textsc{sqir}/\textsc{voqc}
+\textsc{Qwire}~\cite{paykin2017qwire,rand2018qwirepractice} embeds a circuit language in Rocq
+with a denotational semantics; \textsc{sqir}/\textsc{voqc}
 \cite{hietala2021voqc,hietala2021proving} defines a quantum IR in Rocq and
 verifies an optimizing compiler: every rewrite the optimizer performs
 is proved \emph{sound} against the matrix semantics.
@@ -96,15 +98,11 @@ product groups.
 
 \subsection{Completeness theorems on paper: gate sets and ZX}\label{sec:rel-paper}
 
-Completeness of a finite rule set for a circuit fragment, the property
-the verification ecosystem leaves open, is what the mathematical
-literature proves on paper, for gate sets, from the CNOT-dihedral
-fragment~\cite{amy2018cnotdihedral} and its prime-dimensional
-generalization~\cite{blake2026phaseaffine} through the qubit and qutrit
-Clifford groups~\cite{selinger2015clifford,li2025qutrit} and
-Real-Clifford+$CH$~\cite{clement2026realcliffordch} to full quantum
-circuits~\cite{clement2023complete,clement2024minimal}, and likewise for
-the graphical
+The mathematical literature proves such theorems on
+paper~\cite{selinger2015clifford,clement2023complete,clement2024minimal,
+li2025qutrit,clement2026realcliffordch}.  Further examples include the
+CNOT-dihedral fragment~\cite{amy2018cnotdihedral} and its
+prime-dimensional generalization~\cite{blake2026phaseaffine}.  Likewise for the graphical
 side, where the completeness results for the ZX-calculus, from the qubit
 stabilizer fragment through Clifford+$T$ to the odd-prime-dimensional
 qupit calculi~\cite{backens2014zx,jeandel2018zx,booth2022qupitzx,
@@ -145,7 +143,7 @@ On the quantum side of that school, Carette, Heunen, Kaarsgaard, and
 Sabry extend rig groupoids with square-root maps and prove the resulting
 equational theory sound and complete for arbitrary Clifford circuits,
 Clifford+$T$ circuits on at most two qubits, and the computationally
-universal Gaussian Clifford+$T$ gate set (their \S6, which builds
+universal Gaussian Clifford+$T$ gate set (their Section~6, which builds
 on the presentations of Selinger and of Bian and
 Selinger)~\cite{carette2024squareroots}.  This development, too, is
 partially mechanized: an Agda library extending agda-categories
@@ -179,16 +177,14 @@ put the completeness of Hadamard-$\Pi$ on machine-checked footing.
 \subsection{Group theory in proof assistants: abstract theory versus concrete presentations}\label{sec:rel-gt}
 
 Lean's mathlib~\cite{mathlib2020} defines \aid{FreeGroup} and
-\aid{PresentedGroup} (the quotient of a free group by the normal
-closure of a relator set), and develops Coxeter groups atop
+\aid{PresentedGroup} --- the quotient of a free group by the normal
+closure of a relator set --- and develops Coxeter groups atop
 them~\cite{mathlib-doc-presented}, together with a groupoid-based proof
-of the Nielsen--Schreier theorem.  This is presentation \emph{theory} in
-the abstract: what mathlib does not provide is infrastructure for
-proving that a \emph{given} finite relation set presents a \emph{given}
-concrete group: no verified coset tables, no verified Schreier
-transversals, no normal-form transports; the Coxeter development, for
-instance, axiomatizes the presentation rather than verifying completeness
-of specific relation sets for specific permutation groups.  Conversely,
+of the Nielsen--Schreier theorem.  It also provides reduced-word normal
+forms for free groups and transversal-based normal forms for amalgamated
+products of groups.  These are general constructions; our focus is
+verified coset tables and normal-form transports for concrete circuit
+presentations.  Conversely,
 the deep results of the Rocq/MathComp school (most famously the Odd
 Order theorem~\cite{gonthier2013oddorder}) concern finite groups
 represented as finite types; MathComp does have a presentation notation:
@@ -205,13 +201,14 @@ normal-form reasoning in the free group, adjacent in spirit to our
 \aid{NormalFormInjective}, but again without presentations of concrete
 target groups.  Against this landscape the library's niche is sharp:
 \emph{verified coset tables for concrete presentations}, of the kind
-computational group theory computes unverified~\cite{sims1994computation,
+used in computational group theory~\cite{sims1994computation,
 holt2005handbook}, packaged so that the certificate (tables, sections,
 five equations) is separated from the search that found it.
 
 On the univalent side, cubical Agda~\cite{vezzosi2019cubical} and its
 library~\cite{cubicallibrary} provide free groups and set quotients as
-higher inductive types;
+higher inductive types, including unique normal forms and decidable
+equality for free groups on discrete generators;
 agda-unimath develops finite group theory including the symmetric groups
 and the sign homomorphism~\cite{agdaunimath,mangel2023sign}.  A HIT-based
 presented group would turn equational reasoning into rewriting, but our
@@ -220,8 +217,8 @@ forms, Schreier transversals), which quotients complicate: a section
 $\mathit{NF} \to \aid{Word}\;X$ picking canonical representatives is
 setoid-natural and quotient-hostile.  Since the library also targets the
 (non-cubical) standard library and must stay usable from it, the setoid
-design is the pragmatic point in the space; \S\ref{sec:setoids} weighs
-the trade.
+design is the pragmatic point in the space; \S\ref{sec:setoids} reflects
+further.
 
 \subsection{Formalized rewriting and completion}\label{sec:rel-rw}
 

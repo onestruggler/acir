@@ -80,6 +80,16 @@ their revised versions have blue captions. References to deleted figures
 and tables resolve to those retained blocks. Citations remain breakable,
 and tables and old code lines are fitted to the text width.
 
+A further pass on 2026-10-26 restored accurate submitted wording while
+preserving the rewritten permutation walkthrough, expanded examples,
+and the cover letter's other substantive changes. All 41 literate code
+blocks and all circuit assets and layout definitions were retained
+byte-for-byte from `92aa301a`. Counting text tokens inside latexdiff's
+added/deleted macros (excluding reference and citation arguments), the
+same diff workflow now marks 3,578 added / 2,576 deleted, down from
+3,645 / 2,684 at that commit. These counts use a different measure from
+the older counts above. The clean PDF is 27 pages and the diff 36 pages.
+
 From PowerShell: `wsl bash -lc "make -C /mnt/d/work/acir/paper"`.
 
 Requirements: TeX Live with `latexmk` (pdflatex route; the Makefile puts
@@ -91,10 +101,12 @@ still builds from a checkout that includes the generated
 `latex/paper/sections/*.tex` files, so keep those (and `agda.sty`) in
 any source bundle sent to a publisher.
 
-Status: `make` produces `main.pdf` (31 pages in `acmsmall` review mode)
+Status: `make` produces `main.pdf` (27 pages in `acmsmall` review mode)
 with zero errors, zero undefined citations/references, zero missing
-characters and zero overfull boxes (verified 2026-09-09 with the WSL TeX
-Live and Agda 2.8.0).
+characters and zero overfull boxes (verified 2026-10-26 with the WSL TeX
+Live and Agda 2.8.0). `make diff` also succeeds with no unresolved
+citations/references; three pre-existing overfull boxes remain in the
+marked-up diff.
 
 Checklist before camera-ready:
 
@@ -102,7 +114,7 @@ Checklist before camera-ready:
 2. If a new Unicode character is used in code or in `\aid`, add it to the
    `\DeclareUnicodeCharacter` block in `agda-style.sty` (pdflatex stops
    with "Unicode character … not set up" otherwise).
-3. Page budget: on `popl-revision2a` the text ends at the top of page 25
+3. Page budget: the text ends on page 24
    (27 pages in review mode with the references); check the target limit
    and trim `related.tex` first if over.
 4. Author information: this review revision displays the authors and funding

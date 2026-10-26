@@ -2,12 +2,12 @@
 
 \subsection{Mechanization statistics}\label{sec:stats}
 
-The verified development is about 22\,000 lines of Agda in 74 files
-(September 2026; \texttt{wc -l}, comments included), 61 of which the
-index module reaches; the rest are examples and auxiliary modules
-nothing imports.
-The reusable core (words, presentations, normal forms, the engine, the
-constructions, the circuit layer) is under ten thousand lines, with the
+The repository contains about 22\,000 lines of Agda in 74 files
+(October 2026; \texttt{wc -l}, comments included).  The verified index
+module reaches 61 of these; the remainder includes auxiliary examples
+and unfinished experiments.
+The reusable core --- words, presentations, normal forms, the engine, the
+constructions, the circuit layer --- is under ten thousand lines, with the
 \texttt{ForStdlib} additions and a support library of modular arithmetic
 beside it; the verified examples add
 about the same again, and the largest single objects are two of the three
@@ -19,7 +19,7 @@ and presentation theorems, the amalgamation alone 1\,800; 600 are the
 solvers; and the rest is the join primitive and the $S_n$ and wreath
 presentations over a plain alphabet that the $U_3$ study uses.
 
-Typechecking cost is modest.  Checking the whole development from
+Typechecking cost is modest.  Checking the index module's dependency closure from
 scratch with Agda~2.8.0 (61 modules, the standard library's interfaces
 cached) takes 1\,min\,42\,s and peaks at 3.5\,GB of memory; a third of
 the time is the amalgamated-product construction (31\,s), checked once
@@ -28,11 +28,11 @@ and every other module is under 4\,s.
 
 \subsection{Setoids versus quotients, revisited}\label{sec:setoids}
 
-The deliberate design decision of \S\ref{sec:presentations} (presented
-monoids as setoids over inductive congruences, not as quotient types)
+The deliberate design decision of \S\ref{sec:presentations} --- presented
+monoids as setoids over inductive congruences, not as quotient types ---
 deserves a balance sheet now that the case studies are on the table.
 What it cost: every function out of the presented monoid carries a
-congruence proof, and records like \aid{Injection} carry that bookkeeping.
+congruence proof, and records like \aid{Injection} bundle that bookkeeping.
 What it bought: (i) normal-form maps, coset tables, and sections are
 plain structurally recursive programs, so the hundreds of table
 well-definedness obligations in \S\ref{sec:examples} reduce to \aid{refl}
@@ -48,9 +48,9 @@ congruence-lifting lemmas of \S\ref{sec:constructions} are inductions.
 The univalent alternative \cite{vezzosi2019cubical,cubicallibrary} would
 turn equational reasoning into rewriting, but its eliminator still
 demands a congruence proof for every function out of the quotient, and
-(ii) and (iii) would be forfeited.  For this problem domain, where
-the whole game is computing canonical representatives, we found the
-setoid side of the trade clearly favorable; the standard library's
+(ii) and (iii) would be forfeited.  For this problem domain --- where
+the whole game is computing canonical representatives --- we found the
+setoid side of the trade clearly favourable; the standard library's
 function bundles meant the ``zoo'' of \S\ref{sec:nfproperty} needed no
 new theory at all.
 
@@ -63,7 +63,7 @@ amalgamated products or pushouts of monoids, no extensions or exact
 sequences, no epimorphism structures, not even the permutations of
 $\mathsf{Fin}\;n$ bundled as a group.  None of these are hard (the
 seven modules total 865 lines), but each was necessary for some
-semantic side of a presentation theorem, and we offer them as
+semantic side of a presentation theorem, and we submit them as
 independently useful.  The deeper omission is thematic: the standard
 library's algebra hierarchy is rich in \emph{structures} but thin in
 \emph{constructions}, and presentation-level results force the
@@ -78,7 +78,7 @@ difference between coverage checking succeeding by injectivity of
 constructors and stuck arithmetic side conditions contaminating every
 table.  \emph{Make certificates finite.}  The five coset-table
 hypotheses quantify over generators, cosets, and axiom instances only,
-so obligations split into finitely many closed goals, the
+so in our finite-index case studies obligations split into finitely many closed goals, the
 precondition for \aid{refl}-discharge; hypotheses phrased over all words
 would have demanded inductions in every instance.  \emph{Let evaluation
 prove what it can.}  The single most effective tool in the development

@@ -1,5 +1,5 @@
-Proofs that a set of equations between circuits is \emph{complete}, that is,
-derives every true equation, are among the most computation-heavy proofs in
+Proofs that a set of equations between circuits is \emph{complete} --- that it
+derives every true equation --- are among the most computation-heavy proofs in
 the theory of quantum computing: they hinge on normal forms, and on relentless
 case analyses showing that every rule application interacts correctly with
 every normal form.  Recent completeness proofs come with appendices hundreds
@@ -14,10 +14,10 @@ derives completeness from soundness and a \emph{unique normal form} witness by
 a single generic lemma.  Its engine is a constructive, monoid-level rendition
 of the Reidemeister--Schreier method: towers of
 verified coset tables that assemble normal forms level by level, in the manner
-of a mixed-radix number system.  Presentation-level constructions (direct,
-semidirect, and amalgamated free products, and group extensions) come with
-presentation theorems and with the semantic constructions the Agda standard
-library lacked.  We validate
+of a mixed-radix number system, together with presentation-level constructions
+--- direct, semidirect, and amalgamated free products, and group extensions ---
+whose presentation theorems and semantic counterparts we also contribute,
+targeting the Agda standard library.  We validate
 the design on a catalogue of verified presentations:
 symmetric groups as circuits (sound and complete for both an endofunction and
 a permutation semantics), cyclic groups, wreath products $\mathbb{Z}_N \wr S_n$
@@ -25,7 +25,7 @@ a permutation semantics), cyclic groups, wreath products $\mathbb{Z}_N \wr S_n$
 dimensions, and, as amalgamated free products with verified alternating normal
 forms, the presentations of the single-qubit and single-qutrit Clifford+$T$
 monoids and of $U_3(\mathbb{Z}[\tfrac12,i])$.  All headline results are
-collected in a single index module; the whole development is safe, axiom-free
+collected in a single index module; the verified development is safe, axiom-free
 Agda.  We compare in detail
 with formalizations of group presentations, normal forms, and quantum circuits
 in Agda, Lean, Rocq, and Isabelle.

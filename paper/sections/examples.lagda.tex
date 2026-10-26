@@ -32,25 +32,21 @@ open CliffordT1.CliffordT1 using (_===_ ; amalPres ; f)
 \section{Examples: A Catalogue of Verified Presentations}\label{sec:examples}
 
 This section is the library's harvest.  Table~\ref{tab:presentations} lists
-every concrete presentation theorem in the development
-(\aid{{\_}IsPresentationOf{\_}}, or its monoid version for the order-$0$
-cyclic case);
+every concrete \aid{{\_}IsPresentationOf{\_}} theorem in the catalogue,
+and its monoid version for the order-$0$ cyclic case;
 Table~\ref{tab:nfs} lists the normal-form and uniqueness witnesses behind
-them.  All of them are restated with full types in the index module
+them.  The headline results are restated with full types in the index module
 \texttt{MainTheorems.agda}, which also re-exports the conditional
 construction theorems of \S\ref{sec:constructions} with their premise
 telescopes.  We then discuss each family, ending with the three
 amalgamation case studies, whose final theorems are monoid
 \emph{isomorphisms} between gate-set presentations and amalgamated
-products of presentations.  Throughout, $\bot$ is the empty type and $\top$ the unit
-type, whose sole element is \aid{tt}; used as alphabets they have no
-generator and a single generator respectively, and we write $T$ for the
-one-letter word $[\,\aid{tt}\,]$\aid{ʷ}.
+products of presentations.
 
 \begin{table}
 \caption{Concrete presentation theorems (all verified; names as in
-\texttt{MainTheorems.agda}).  $p$ ranges over primes, $n, m, N$ over
-naturals.}
+\texttt{MainTheorems.agda}, except where noted).  $p$ ranges over primes,
+$n, m$ over naturals, and $N$ over positive naturals.}
 \label{tab:presentations}
 \centering
 \small
@@ -72,9 +68,10 @@ $(C_N\,\aid{⊕\char94}\,n) \aid{⋄} S_n\text{-circuits} \aid{⋄} \aid{ConjRel
 
 \begin{table}
 \caption{Normal-form and uniqueness witnesses (selection).  NFI =
-\aid{NormalFormInjective}, NF = \aid{NormalForm}, UNF =
-\aid{UniqueNormalForm}.  For the constructions, UNF is lifted from the
-factor witnesses.}
+\aid{NormalFormInjective}, NF = \aid{NormalForm} (with section), UNF =
+\aid{UniqueNormalForm}.  For products, UNF is lifted from the factor
+witnesses; amalgamation also requires exact base and coset sections
+(\S\ref{sec:constructions}).}
 \label{tab:nfs}
 \centering
 \footnotesize
@@ -96,7 +93,7 @@ Clifford+$T$ base $\langle \omega \rangle {\times} \langle S \rangle$ & $\mathsf
 
 \subsection{Cyclic groups, and the trivial group twice}\label{sec:cyclic}
 
-The cyclic development presents $\langle\, \top \mid T^{\,n+1} =
+The cyclic development presents $\langle\, T \mid T^{\,n+1} =
 \varepsilon\,\rangle$ with normal-form carrier $\mathsf{Fin}\,(n{+}1)$,
 for every positive order at once (\aid{cyclic-presentation}): the normal
 form of a word is its letter count modulo $n{+}1$, the section sends the
@@ -108,8 +105,8 @@ of its own, \aid{cyclic-monoid-presentation}: with carrier $\mathbb{N}$
 rather than the group $\mathbb{Z}$, since, as \S\ref{sec:wordproblem}
 explained, the generator has no inverse there and the \aid{Grouplike}
 upgrade is exactly what fails.  The
-trivial group is presented twice (empty alphabet with no relations, and
-arbitrary alphabet with the everything-is-$\varepsilon$ relation), and
+trivial group is presented twice --- empty alphabet with no relations, and
+arbitrary alphabet with the everything-is-$\varepsilon$ relation --- and
 the two presentations are proved isomorphic.
 
 \subsection{Wreath products: signed permutations and beyond}\label{sec:wreath}
@@ -117,10 +114,11 @@ the two presentations are proved isomorphic.
 The headline compositional result combines almost every construction in
 the library.  Fix a base order $N = m{+}1$ and $n$ wires.  The $n$-fold
 direct power $(C_N)^{\oplus n}$ presents $(\mathbb{Z}_N)^n$; the circuit
-presentation of $S_n$ acts on it by permuting coordinates, an action
+presentation of $S_n$ acts on it by permuting coordinates --- an action
 specified \emph{syntactically} as a word-valued conjugation
 $\mathit{conj} : \aid{Gen}\;n \to (\top \uplus^n) \to
-\aid{Word}\,(\top \uplus^n)$.  Two finite compatibility lemmas (the action
+\aid{Word}\,(\top \uplus^n)$ sending a generator and a coordinate to the
+permuted coordinate.  Two finite compatibility lemmas (the action
 respects the Coxeter relations pointwise, and respects the product
 relations) feed the semidirect-product presentation theorem, giving
 \begin{code}
@@ -132,23 +130,23 @@ wreath-presentation n m = Wreath.presentation n m
 \end{code}
 where $\aid{wreath-group}\;n\;m$ is the semantic
 $(\mathbb{Z}_N)^n \rtimes S_n = \mathbb{Z}_N \wr S_n$ built from the
-\texttt{ForStdlib} semidirect product.
+\texttt{ForStdlib} semidirect product and the bundled permutation group.
 The lifted normal form is a pair of $n$ residues modulo $N$ and the
 factorial tuple of a permutation, so its section is a word of $T$-powers,
 one per coordinate, followed by the staircases of
 \S\ref{sec:permutations}.  At $N = 2$ this is the group of
-\emph{signed permutations}, the hyperoctahedral group $B_n$; at
+\emph{signed permutations} --- the hyperoctahedral group $B_n$, the
+symmetry group of the hypercube; at
 general $N$ it is the generalized symmetric group $G(N,1,n)$ of monomial
 matrices with $N$-th-root-of-unity entries.  These groups are ubiquitous
 in the qudit setting (Pauli-frame changes, permutation-and-phase
 subgroups of Clifford groups), and the theorem delivers their
-presentations \emph{for all $N$ and $n$ at once}: a family of
-completeness results parameterized over two naturals, obtained
-compositionally rather than by a separate argument per instance.
+presentations \emph{for all $N$ and $n$ at once} --- a family of
+completeness results parameterized over two naturals.
 
 \subsection{Pauli groups modulo phases in all prime dimensions}\label{sec:pauli}
 
-The Pauli development is the purest showcase of compositionality: there
+The Pauli development is the purest showcase of compositionality --- there
 is \emph{no} coset table in it at all:
 
 \begin{code}
@@ -174,7 +172,7 @@ normal form is a tuple of $n$ pairs of exponents in
 $\mathsf{Fin}\,p \times \mathsf{Fin}\,p$, with section
 $X^{a_1} Z^{b_1} \cdots X^{a_n} Z^{b_n}$.  The
 full Pauli group with phases, and its role beneath the Clifford
-hierarchy, is left to future work.
+hierarchy, is left to future work (\S\ref{sec:conclusion}).
 
 \subsection{Single-qubit Clifford+$T$, as an amalgamated free product}\label{sec:cliffordt1}
 
@@ -259,10 +257,11 @@ down.
 \subsection{Single-qutrit Clifford+$T$}\label{sec:qutrit}
 
 The qutrit analogue replaces $\omega$ by a ninth root $\zeta$ and runs a
-longer tower: from the cyclic base $\langle \zeta \rangle$ through
-$\langle S, \zeta \rangle$ (three cosets), then a
+longer tower: from the cyclic base $\langle \zeta \rangle$,
+$\zeta^9 = \varepsilon$, through
+$\langle S, \zeta \rangle$ ($S^3 = \zeta^6$; three cosets), then a
 \emph{nine}-coset table to $\langle S, X, \zeta \rangle$
-(with the twisted commutation
+($X^3 = \varepsilon$, $(SX)^3 = \varepsilon$, and a twisted commutation
 $(XS)(SX) = \zeta^6 (SX)(XS)$), then a two-coset table adjoining the
 squared Hadamard $H\!H$, and finally an amalgamation of a $T$-side and an
 $H$-side extension over the common subgroup.  The presented gate-set
@@ -301,10 +300,10 @@ Ross, and Taylor~\cite{glaudell2019qutrit}
 form~\cite{prakash2018qutrit}, extended to qudits
 in~\cite{jain2020qudit}), with $\mathcal{C}$ split as in the qubit
 case.  The final theorem has the same shape as
-the qubit one (\aid{clifford+T-qutrit-isomorphism} in the index)
-and the same proof economy, the nine-coset level's seventy-two
-axiom-preservation obligations all closing by
-\aid{refl} after evaluation (\S\ref{sec:engine}).  We know of no prior
+the qubit one --- \aid{clifford+T-qutrit-isomorphism} in the index ---
+and the same proof economy: the nine-coset level alone imposes
+seventy-two axiom-preservation obligations (nine cosets against eight
+axiom cases), every one closed by \aid{refl} after evaluation.  We know of no prior
 machine-checked normal form for a qutrit gate-set presentation.
 
 \subsection{\texorpdfstring{$U_3(\mathbb{Z}[\tfrac12,i])$}{U3(Z[1/2,i])}}\label{sec:u3}
@@ -345,8 +344,8 @@ with $\mathcal{M}$ the normal form of $M$.
 The final theorem,
 \aid{U₃-presentation-isomorphism}, is again a monoid isomorphism between
 the flat eleven-relation presentation and the amalgamated-product
-presentation.  At
+presentation, with the alternating normal form on the amalgam side.  At
 $2\,868$ and $1\,394$ source lines, the qutrit and $U_3$ studies are the
 largest verified objects in the library, and both consist mostly of
-finite tables and \aid{refl}-discharged obligations, the shape of
+first-order tables and \aid{refl}-discharged obligations --- the shape of
 proof this framework was designed to make routine.
