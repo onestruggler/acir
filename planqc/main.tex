@@ -272,7 +272,7 @@ Most theorems in \Cref{tab:corpus} are proved from scratch in QCert against a ma
 
 \section{Corrections to the Source Papers}\label{sec:findings}
 
-The formalizations in \Cref{tab:corpus} found two kinds of issues in the source papers. Most are typos, some of them in statements that the proofs rely on. These are easy to fix. The other kind of issue needs more work. We found two such issues, the first being a gap in a proof and the second a relation missing from a theorem. We describe how to repair them below. In all cases, the completeness and minimality results still hold.
+The formalizations in \Cref{tab:corpus} found two kinds of issues in the source papers. Most are typos, some of them in statements that the proofs rely on. These are easy to fix. The remaining issues need more work. The first one is a gap in a proof and the second is a relation missing from a theorem. We describe how to repair them below. In all cases, the completeness and minimality results still hold.
 
 The first concerns Theorem~4.14 of Hadamard-$\Pi$~\cite{fang2026hadamard}, which states that the relations in its Figure~6 present $O_n\left(\Z\left[1/\sqrt2\right]\right)$. One case of its completeness proof relies on Lemmas~A.16 and~A.17, which do not hold in general. Each fails on a unit column in dimension~6, such as $(-1-\sqrt2, 1, -1-\sqrt2, 1, \sqrt2, -2+\sqrt2)/\sqrt2^4$, because a $+1$ is dropped from an expression reduced modulo~2. By testing the case analysis on random states, we also found a state in dimension~9 that the proof does not cover, since every diagram it gives for this state goes beyond what the proof's induction allows. The theorem itself is correct. Cl\'ement's unpublished 2019 thesis~\cite{clement2019thesis} presents the same group with different relations, and its case analysis covers the missing case. We prove that the two sets of relations are equivalent in every dimension and formalize Cl\'ement's proof, with its case analysis as a decision tree checked by evaluation. This also confirms Cl\'ement's 2026 theorem on real Clifford+CH circuits~\cite{clement2026realcliffordch}, which builds on Theorem~4.14 of~\cite{fang2026hadamard}.
 
@@ -298,7 +298,7 @@ The second concerns the three-qubit Toffoli--Hadamard circuits of Amy, Ross and 
 % cost moves from writing proofs to checking statements, and a scaffold
 % keeps that check small.
 
-\section{Discussions and Future Work}\label{sec:conclusion}
+\section{Discussion and Future Work}\label{sec:conclusion}
 
 We formalize the results of sixteen papers in QCert, with shared
 circuit syntax, presentation records, and libraries for rings and
@@ -307,15 +307,17 @@ as in our proof that Cl\'ement's relations and those of Hadamard-$\Pi$
 are equivalent. These libraries, and the induction that turns an exact
 synthesis algorithm into a completeness proof, can also be reused for
 new algorithms. Each new algorithm still needs its own case analysis
-over matrices and generators, and this case analysis is where the gap
-in Hadamard-$\Pi$ occurs.
+over matrices and generators. This case analysis is where the gap in
+Hadamard-$\Pi$ occurs, and where machine checking matters most.
 
 QCert's scope is limited in two ways. First, it supports only discrete gate sets, whose matrices it evaluates exactly, so it does not cover completeness results for circuits with continuous parameters, such as rotations by arbitrary angles~\cite{clement2023complete,clement2024extensions,clement2024minimal}. Second, control is not a circuit constructor in QCert, so it does not cover results that treat control as a primitive operation on circuits~\cite{delorme2026control,schober2026control,blake2026qudit}.
 
-QCert provides a foundation for completeness in higher dimensions,
-where case analyses become hard to check by hand. We plan to study
-Clifford completeness in all dimensions and T-count optimization for
-multi-qubit Clifford+T exact synthesis. We are also porting the
+Even for discrete gate sets, completeness is still open in many
+cases, particularly in higher dimensions, where case analyses become
+hard to check by hand. QCert provides a foundation for such results.
+We plan to study Clifford completeness in all dimensions, and to reuse
+the exact synthesis libraries for T-count optimization of multi-qubit
+Clifford+T circuits. We are also porting the
 formalizations to Lean, to make them available to its larger community
 and to use them with its mathematical library, Mathlib.
 %We are also working on a longer version of this work, with the details of each development.
