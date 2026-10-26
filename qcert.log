@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.6.26)  24 OCT 2026 18:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.6.26)  27 OCT 2026 00:01
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -603,24 +603,52 @@ LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
 Class acmart Info: Suppressing bibformat on input line 11.
 Class acmart Info: Suppressing CCS on input line 11.
 Class acmart Info: Printing folios on input line 11.
- (/usr/local/texlive/2025/texmf-dist/tex/latex/tools/tabularx.sty
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/mathtools/mathtools.sty
+Package: mathtools 2024/10/04 v1.31 mathematical typesetting tools
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2023/07/08 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count321
+\calc@Bcount=\count322
+\calc@Adimen=\dimen194
+\calc@Bdimen=\dimen195
+\calc@Askip=\skip82
+\calc@Bskip=\skip83
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count323
+\calc@Cskip=\skip84
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/mathtools/mhsetup.sty
+Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
+)
+\g_MT_multlinerow_int=\count324
+\l_MT_multwidth_dim=\dimen196
+\origjot=\skip85
+\l_MT_shortvdotswithinadjustabove_dim=\dimen197
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen198
+\l_MT_above_intertext_sep=\dimen199
+\l_MT_below_intertext_sep=\dimen256
+\l_MT_above_shortintertext_sep=\dimen257
+\l_MT_below_shortintertext_sep=\dimen258
+\xmathstrut@box=\box62
+\xmathstrut@dim=\dimen259
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/tools/tabularx.sty
 Package: tabularx 2023/12/11 v2.12a `tabularx' package (DPC)
  (/usr/local/texlive/2025/texmf-dist/tex/latex/tools/array.sty
 Package: array 2024/10/17 v2.6g Tabular extension package (FMi)
-\col@sep=\dimen194
-\ar@mcellbox=\box62
-\extrarowheight=\dimen195
+\col@sep=\dimen260
+\ar@mcellbox=\box63
+\extrarowheight=\dimen261
 \NC@list=\toks41
-\extratabsurround=\skip82
-\backup@length=\skip83
-\ar@cellbox=\box63
+\extratabsurround=\skip86
+\backup@length=\skip87
+\ar@cellbox=\box64
 )
-\TX@col@width=\dimen196
-\TX@old@table=\dimen197
-\TX@old@col=\dimen198
-\TX@target=\dimen199
-\TX@delta=\dimen256
-\TX@cols=\count321
+\TX@col@width=\dimen262
+\TX@old@table=\dimen263
+\TX@old@col=\dimen264
+\TX@target=\dimen265
+\TX@delta=\dimen266
+\TX@cols=\count325
 \TX@ftn=\toks42
 ) (./planqc/agda-style.sty
 
@@ -629,25 +657,25 @@ LaTeX Warning: You have requested package `planqc/agda-style',
 
 Package: agda-style 2026/07/09 Agda listings for the paper
 (/usr/local/texlive/2025/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count322
-\lst@gtempboxa=\box64
+\lst@mode=\count326
+\lst@gtempboxa=\box65
 \lst@token=\toks43
-\lst@length=\count323
-\lst@currlwidth=\dimen257
-\lst@column=\count324
-\lst@pos=\count325
-\lst@lostspace=\dimen258
-\lst@width=\dimen259
-\lst@newlines=\count326
-\lst@lineno=\count327
-\lst@maxwidth=\dimen260
+\lst@length=\count327
+\lst@currlwidth=\dimen267
+\lst@column=\count328
+\lst@pos=\count329
+\lst@lostspace=\dimen268
+\lst@width=\dimen269
+\lst@newlines=\count330
+\lst@lineno=\count331
+\lst@maxwidth=\dimen270
  (/usr/local/texlive/2025/texmf-dist/tex/latex/listings/lstpatch.sty
 File: lstpatch.sty 2024/09/23 1.10c (Carsten Heinz)
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2024/09/23 1.10c (Carsten Heinz)
-\c@lstnumber=\count328
-\lst@skipnumbers=\count329
-\lst@framebox=\box65
+\c@lstnumber=\count332
+\lst@skipnumbers=\count333
+\lst@framebox=\box66
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/listings/listings.cfg
 File: listings.cfg 2024/09/23 1.10c listings configuration
 ))
@@ -762,6 +790,12 @@ Package: listings 2024/09/23 1.10c (Carsten Heinz)
    defining Unicode char U+22A5 (decimal 8869)
    defining Unicode char U+220E (decimal 8718)
    defining Unicode char U+25A1 (decimal 9633)
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
+Package caption Info: New subtype `subfigure' on input line 238.
+\c@subfigure=\count334
+Package caption Info: New subtype `subtable' on input line 238.
+\c@subtable=\count335
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/cleveref/cleveref.sty
 Package: cleveref 2018/03/27 v0.21.4 Intelligent cross-referencing
 Package cleveref Info: `hyperref' support loaded on input line 2370.
@@ -777,147 +811,381 @@ LaTeX Info: Redefining \labelcref on input line 2370.
 LaTeX Info: Redefining \labelcpageref on input line 2370.
 Package cleveref Info: `amsthm' support loaded on input line 3026.
 Package cleveref Info: `listings' support loaded on input line 3131.
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks44
+\pgfutil@tempdima=\dimen271
+\pgfutil@tempdimb=\dimen272
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box67
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
+))
+Package: pgf 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks45
+\pgfkeys@temptoks=\toks46
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.tex
+\pgfkeys@tmptoks=\toks47
+))
+\pgf@x=\dimen273
+\pgf@y=\dimen274
+\pgf@xa=\dimen275
+\pgf@ya=\dimen276
+\pgf@xb=\dimen277
+\pgf@yb=\dimen278
+\pgf@xc=\dimen279
+\pgf@yc=\dimen280
+\pgf@xd=\dimen281
+\pgf@yd=\dimen282
+\w@pgf@writea=\write4
+\r@pgf@reada=\read3
+\c@pgf@counta=\count336
+\c@pgf@countb=\count337
+\c@pgf@countc=\count338
+\c@pgf@countd=\count339
+\t@pgf@toka=\toks48
+\t@pgf@tokb=\toks49
+\t@pgf@tokc=\toks50
+\pgf@sys@id@count=\count340
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 56.
-Package hyperref Info: Option `pdfdisplaydoctitle' set `true' on input line 56.
-\c@theorem=\count330
+Driver file for pgf: pgfsys-pdftex.def
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+File: pgfsys-pdftex.def 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
+File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
+))) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfsyssoftpath@smallbuffer@items=\count341
+\pgfsyssoftpath@bigbuffer@items=\count342
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen283
+\pgfmath@count=\count343
+\pgfmath@box=\box68
+\pgfmath@toks=\toks51
+\pgfmath@stack@operand=\toks52
+\pgfmath@stack@operation=\toks53
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code.tex) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.tex) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics.code.tex) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count344
+)) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfint.code.tex) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
+File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@picminx=\dimen284
+\pgf@picmaxx=\dimen285
+\pgf@picminy=\dimen286
+\pgf@picmaxy=\dimen287
+\pgf@pathminx=\dimen288
+\pgf@pathmaxx=\dimen289
+\pgf@pathminy=\dimen290
+\pgf@pathmaxy=\dimen291
+\pgf@xx=\dimen292
+\pgf@xy=\dimen293
+\pgf@yx=\dimen294
+\pgf@yy=\dimen295
+\pgf@zx=\dimen296
+\pgf@zy=\dimen297
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+File: pgfcorepathconstruct.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@path@lastx=\dimen298
+\pgf@path@lasty=\dimen299
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
+File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@shorten@end@additional=\dimen300
+\pgf@shorten@start@additional=\dimen301
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
+File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfpic=\box69
+\pgf@hbox=\box70
+\pgf@layerbox@main=\box71
+\pgf@picture@serial@count=\count345
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgflinewidth=\dimen302
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.tex
+File: pgfcoretransformations.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@pt@x=\dimen303
+\pgf@pt@y=\dimen304
+\pgf@pt@temp=\dimen305
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+File: pgfcorequick.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
+File: pgfcoreobjects.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.tex
+File: pgfcorepathprocessing.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
+File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfarrowsep=\dimen306
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@max=\dimen307
+\pgf@sys@shading@range@num=\count346
+\pgf@shadingcount=\count347
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
+File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfexternal@startupbox=\box72
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
+File: pgfcorelayers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
+File: pgfcoretransparency.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
+File: pgfcorepatterns.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex
+File: pgfcorerdf.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfnodeparttextbox=\box73
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty
+Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
+\pgf@nodesepstart=\dimen308
+\pgf@nodesepend=\dimen309
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty
+Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
+)) (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/utilities/pgffor.sty (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)) (/usr/local/texlive/2025/texmf-dist/tex/latex/pgf/math/pgfmath.sty (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
+\pgffor@iter=\dimen310
+\pgffor@skip=\dimen311
+\pgffor@stack=\toks54
+\pgffor@toks=\toks55
+)) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+Package: tikz 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex
+File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@plot@mark@count=\count348
+\pgfplotmarksize=\dimen312
+)
+\tikz@lastx=\dimen313
+\tikz@lasty=\dimen314
+\tikz@lastxsaved=\dimen315
+\tikz@lastysaved=\dimen316
+\tikz@lastmovetox=\dimen317
+\tikz@lastmovetoy=\dimen318
+\tikzleveldistance=\dimen319
+\tikzsiblingdistance=\dimen320
+\tikz@figbox=\box74
+\tikz@figbox@bg=\box75
+\tikz@tempbox=\box76
+\tikz@tempbox@bg=\box77
+\tikztreelevel=\count349
+\tikznumberofchildren=\count350
+\tikznumberofcurrentchild=\count351
+\tikz@fig@count=\count352
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfmatrixcurrentrow=\count353
+\pgfmatrixcurrentcolumn=\count354
+\pgf@matrix@numberofcolumns=\count355
+)
+\tikz@expandcount=\count356
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarybackgrounds.code.tex
+File: tikzlibrarybackgrounds.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@layerbox@background=\box78
+\pgf@layerboxsaved@background=\box79
+) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryarrows.code.tex
+File: tikzlibraryarrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex
+File: pgflibraryarrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\arrowsize=\dimen321
+)) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.code.tex
+File: tikzlibraryshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.geometric.code.tex
+File: tikzlibraryshapes.geometric.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geometric.code.tex
+File: pgflibraryshapes.geometric.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.misc.code.tex
+File: tikzlibraryshapes.misc.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.misc.code.tex
+File: pgflibraryshapes.misc.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.symbols.code.tex
+File: tikzlibraryshapes.symbols.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.symbols.code.tex
+File: pgflibraryshapes.symbols.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.arrows.code.tex
+File: tikzlibraryshapes.arrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.arrows.code.tex
+File: pgflibraryshapes.arrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.callouts.code.tex (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.callouts.code.tex)) (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.multipart.code.tex
+File: tikzlibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/local/texlive/2025/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.multipart.code.tex
+File: pgflibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfnodepartlowerbox=\box80
+\pgfnodeparttwobox=\box81
+\pgfnodepartthreebox=\box82
+\pgfnodepartfourbox=\box83
+\pgfnodeparttwentybox=\box84
+\pgfnodepartnineteenbox=\box85
+\pgfnodeparteighteenbox=\box86
+\pgfnodepartseventeenbox=\box87
+\pgfnodepartsixteenbox=\box88
+\pgfnodepartfifteenbox=\box89
+\pgfnodepartfourteenbox=\box90
+\pgfnodepartthirteenbox=\box91
+\pgfnodeparttwelvebox=\box92
+\pgfnodepartelevenbox=\box93
+\pgfnodeparttenbox=\box94
+\pgfnodepartninebox=\box95
+\pgfnodeparteightbox=\box96
+\pgfnodepartsevenbox=\box97
+\pgfnodepartsixbox=\box98
+\pgfnodepartfivebox=\box99
+)))
+\pgf@layerbox@edgelayer=\box100
+\pgf@layerboxsaved@edgelayer=\box101
+\pgf@layerbox@nodelayer=\box102
+\pgf@layerboxsaved@nodelayer=\box103
+ (./planqc/proofs.tikzstyles)
+\c@agdastmt=\count357
+Package hyperref Info: Option `colorlinks' set `true' on input line 86.
+Package hyperref Info: Option `pdfdisplaydoctitle' set `true' on input line 86.
+\c@theorem=\count358
  Include comment 'screenonly' Excluding comment 'printonly' Include comment 'anonsuppress' (/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count331
-\l__pdf_internal_box=\box66
+\l__color_backend_stack_int=\count359
+\l__pdf_internal_box=\box104
 ) (./qcert.aux)
 \openout1 = `qcert.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/nxlmi/m/it on input line 56.
-LaTeX Font Info:    Trying to load font information for OML+nxlmi on input line 56.
+LaTeX Font Info:    Checking defaults for OML/nxlmi/m/it on input line 86.
+LaTeX Font Info:    Trying to load font information for OML+nxlmi on input line 86.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/omlnxlmi.fd
 File: omlnxlmi.fd 2013/11/19 Fontinst v1.933 font definitions for OML/nxlmi.
 )
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for U/ntxexa/m/n on input line 56.
-LaTeX Font Info:    Trying to load font information for U+ntxexa on input line 56.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for U/ntxexa/m/n on input line 86.
+LaTeX Font Info:    Trying to load font information for U+ntxexa on input line 86.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/untxexa.fd
 File: untxexa.fd 2012/04/16 Fontinst v1.933 font definitions for U/ntxexa.
 )
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for LMS/ntxsy/m/n on input line 56.
-LaTeX Font Info:    Trying to load font information for LMS+ntxsy on input line 56.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for LMS/ntxsy/m/n on input line 86.
+LaTeX Font Info:    Trying to load font information for LMS+ntxsy on input line 86.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/lmsntxsy.fd
 File: lmsntxsy.fd 2016/07/02 Fontinst v1.933 font definitions for LMS/ntxsy.
 )
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for LMX/ntxexx/m/n on input line 56.
-LaTeX Font Info:    Trying to load font information for LMX+ntxexx on input line 56.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for LMX/ntxexx/m/n on input line 86.
+LaTeX Font Info:    Trying to load font information for LMX+ntxexx on input line 86.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/lmxntxexx.fd
 File: lmxntxexx.fd 2016/07/03 Fontinst v1.933 font definitions for LMX/ntxexx.
 )
-LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    ... okay on input line 86.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 56.
-LaTeX Font Info:    Trying to load font information for OT1+LinuxLibertineT-TLF on input line 56.
+(Font)              scaled to size 9.0pt on input line 86.
+LaTeX Font Info:    Trying to load font information for OT1+LinuxLibertineT-TLF on input line 86.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/libertine/OT1LinuxLibertineT-TLF.fd
 File: OT1LinuxLibertineT-TLF.fd 2017/03/20 (autoinst) Font definitions for OT1/LinuxLibertineT-TLF.
 )
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 56.
+(Font)              scaled to size 9.0pt on input line 86.
 <<ot1.cmap>>
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 6.6pt on input line 56.
+(Font)              scaled to size 6.6pt on input line 86.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 5.5pt on input line 56.
+(Font)              scaled to size 5.5pt on input line 86.
 LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
-(Font)              scaled to size 9.0pt on input line 56.
+(Font)              scaled to size 9.0pt on input line 86.
 <<oml.cmap>>
 LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
-(Font)              scaled to size 6.6pt on input line 56.
+(Font)              scaled to size 6.6pt on input line 86.
 LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
-(Font)              scaled to size 5.5pt on input line 56.
+(Font)              scaled to size 5.5pt on input line 86.
 LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 9.0pt on input line 56.
+(Font)              scaled to size 9.0pt on input line 86.
 LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 6.6pt on input line 56.
+(Font)              scaled to size 6.6pt on input line 86.
 LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 5.5pt on input line 56.
+(Font)              scaled to size 5.5pt on input line 86.
 LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 9.0pt on input line 56.
+(Font)              scaled to size 9.0pt on input line 86.
 LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 6.6pt on input line 56.
+(Font)              scaled to size 6.6pt on input line 86.
 LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 5.5pt on input line 56.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 56.
+(Font)              scaled to size 5.5pt on input line 86.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 86.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 56.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 86.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+ntxmia on input line 56.
+LaTeX Font Info:    Trying to load font information for U+ntxmia on input line 86.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/untxmia.fd
 File: untxmia.fd 2024/04/09 Fontinst v1.933 font definitions for U/ntxmia.
 )
 LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 9.0pt on input line 56.
+(Font)              scaled to size 9.0pt on input line 86.
 LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 6.6pt on input line 56.
+(Font)              scaled to size 6.6pt on input line 86.
 LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 5.5pt on input line 56.
-LaTeX Font Info:    Trying to load font information for U+ntxsym on input line 56.
+(Font)              scaled to size 5.5pt on input line 86.
+LaTeX Font Info:    Trying to load font information for U+ntxsym on input line 86.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/untxsym.fd
 File: untxsym.fd 2023/08/16 Fontinst v1.933 font definitions for U/ntxsym.
 )
 LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 9.0pt on input line 56.
+(Font)              scaled to size 9.0pt on input line 86.
 LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 6.6pt on input line 56.
+(Font)              scaled to size 6.6pt on input line 86.
 LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 5.5pt on input line 56.
-LaTeX Font Info:    Trying to load font information for U+ntxsyc on input line 56.
+(Font)              scaled to size 5.5pt on input line 86.
+LaTeX Font Info:    Trying to load font information for U+ntxsyc on input line 86.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/newtx/untxsyc.fd
 File: untxsyc.fd 2012/04/12 Fontinst v1.933 font definitions for U/ntxsyc.
 )
 LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 9.0pt on input line 56.
+(Font)              scaled to size 9.0pt on input line 86.
 LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 6.6pt on input line 56.
+(Font)              scaled to size 6.6pt on input line 86.
 LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 5.5pt on input line 56.
+(Font)              scaled to size 5.5pt on input line 86.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 9.0pt on input line 56.
+(Font)              scaled to size 9.0pt on input line 86.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 6.6pt on input line 56.
+(Font)              scaled to size 6.6pt on input line 86.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 5.5pt on input line 56.
-LaTeX Info: Command `\dddot' is already robust on input line 56.
-LaTeX Info: Command `\ddddot' is already robust on input line 56.
-LaTeX Info: Redefining \microtypecontext on input line 56.
-Package microtype Info: Applying patch `item' on input line 56.
-Package microtype Info: Applying patch `toc' on input line 56.
-Package microtype Info: Applying patch `eqnum' on input line 56.
-Package microtype Info: Applying patch `footnote' on input line 56.
-Package microtype Info: Applying patch `verbatim' on input line 56.
-LaTeX Info: Redefining \microtypesetup on input line 56.
+(Font)              scaled to size 5.5pt on input line 86.
+LaTeX Info: Command `\dddot' is already robust on input line 86.
+LaTeX Info: Command `\ddddot' is already robust on input line 86.
+LaTeX Info: Redefining \microtypecontext on input line 86.
+Package microtype Info: Applying patch `item' on input line 86.
+Package microtype Info: Applying patch `toc' on input line 86.
+Package microtype Info: Applying patch `eqnum' on input line 86.
+Package microtype Info: Applying patch `footnote' on input line 86.
+Package microtype Info: Applying patch `verbatim' on input line 86.
+LaTeX Info: Redefining \microtypesetup on input line 86.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 56.
+LaTeX Info: Redefining \showhyphens on input line 86.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -925,24 +1193,24 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LinuxLibertineT-TLF' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-Package hyperref Info: Link coloring ON on input line 56.
+Package hyperref Info: Link coloring ON on input line 86.
  (./qcert.out) (./qcert.out)
-\@outlinefile=\write4
-\openout4 = `qcert.out'.
+\@outlinefile=\write5
+\openout5 = `qcert.out'.
 
  (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count332
-\scratchdimen=\dimen261
-\scratchbox=\box67
-\nofMPsegments=\count333
-\nofMParguments=\count334
-\everyMPshowfont=\toks44
-\MPscratchCnt=\count335
-\MPscratchDim=\dimen262
-\MPnumerator=\count336
-\makeMPintoPDFobject=\count337
-\everyMPtoPDFconversion=\toks45
+\scratchcounter=\count360
+\scratchdimen=\dimen322
+\scratchbox=\box105
+\nofMPsegments=\count361
+\nofMParguments=\count362
+\everyMPshowfont=\toks56
+\MPscratchCnt=\count363
+\MPscratchDim=\dimen323
+\MPnumerator=\count364
+\makeMPintoPDFobject=\count365
+\everyMPtoPDFconversion=\toks57
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
@@ -983,8 +1251,8 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\c@mv@tabular=\count338
-\c@mv@boldtabular=\count339
+\c@mv@tabular=\count366
+\c@mv@boldtabular=\count367
 (/usr/local/texlive/2025/texmf-dist/tex/latex/upquote/upquote.sty
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verbatim
 )
@@ -992,210 +1260,255 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
-\c@lstlisting=\count340
+\c@lstlisting=\count368
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 17.28pt on input line 99.
-LaTeX Font Info:    Trying to load font information for T1+LinuxBiolinumT-TLF on input line 99.
+(Font)              scaled to size 17.28pt on input line 129.
+LaTeX Font Info:    Trying to load font information for T1+LinuxBiolinumT-TLF on input line 129.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/libertine/T1LinuxBiolinumT-TLF.fd
 File: T1LinuxBiolinumT-TLF.fd 2017/03/20 (autoinst) Font definitions for T1/LinuxBiolinumT-TLF.
 )
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 17.28pt on input line 99.
+(Font)              scaled to size 17.28pt on input line 129.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LinuxBiolinumT-TLF' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/b/n' will be
-(Font)              scaled to size 17.28pt on input line 99.
+(Font)              scaled to size 17.28pt on input line 129.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 12.0pt on input line 99.
+(Font)              scaled to size 12.0pt on input line 129.
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 12.0pt on input line 99.
+(Font)              scaled to size 12.0pt on input line 129.
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 10.0pt on input line 99.
+(Font)              scaled to size 10.0pt on input line 129.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 10.0pt on input line 99.
+(Font)              scaled to size 10.0pt on input line 129.
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 10.95pt on input line 101.
+(Font)              scaled to size 10.95pt on input line 131.
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/b/n' will be
-(Font)              scaled to size 10.95pt on input line 101.
+(Font)              scaled to size 10.95pt on input line 131.
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
-(Font)              scaled to size 10.95pt on input line 102.
+(Font)              scaled to size 10.95pt on input line 132.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 10.95pt on input line 103.
+(Font)              scaled to size 10.95pt on input line 133.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LinuxLibertineT-TLF' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 8.0pt on input line 103.
+(Font)              scaled to size 8.0pt on input line 133.
 LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 6.1pt on input line 103.
+(Font)              scaled to size 6.1pt on input line 133.
 LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
-(Font)              scaled to size 10.95pt on input line 103.
+(Font)              scaled to size 10.95pt on input line 133.
 LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
-(Font)              scaled to size 8.0pt on input line 103.
+(Font)              scaled to size 8.0pt on input line 133.
 LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
-(Font)              scaled to size 6.1pt on input line 103.
+(Font)              scaled to size 6.1pt on input line 133.
 LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 10.95pt on input line 103.
+(Font)              scaled to size 10.95pt on input line 133.
 LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 8.0pt on input line 103.
+(Font)              scaled to size 8.0pt on input line 133.
 LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 6.1pt on input line 103.
+(Font)              scaled to size 6.1pt on input line 133.
 LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 10.95pt on input line 103.
+(Font)              scaled to size 10.95pt on input line 133.
 LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 8.0pt on input line 103.
+(Font)              scaled to size 8.0pt on input line 133.
 LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 6.1pt on input line 103.
+(Font)              scaled to size 6.1pt on input line 133.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 10.95pt on input line 103.
+(Font)              scaled to size 10.95pt on input line 133.
 LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 8.0pt on input line 103.
+(Font)              scaled to size 8.0pt on input line 133.
 LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 6.1pt on input line 103.
+(Font)              scaled to size 6.1pt on input line 133.
 LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 10.95pt on input line 103.
+(Font)              scaled to size 10.95pt on input line 133.
 LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 8.0pt on input line 103.
+(Font)              scaled to size 8.0pt on input line 133.
 LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 6.1pt on input line 103.
+(Font)              scaled to size 6.1pt on input line 133.
 LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 10.95pt on input line 103.
+(Font)              scaled to size 10.95pt on input line 133.
 LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 8.0pt on input line 103.
+(Font)              scaled to size 8.0pt on input line 133.
 LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 6.1pt on input line 103.
+(Font)              scaled to size 6.1pt on input line 133.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 10.95pt on input line 103.
+(Font)              scaled to size 10.95pt on input line 133.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 8.0pt on input line 103.
+(Font)              scaled to size 8.0pt on input line 133.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 6.1pt on input line 103.
+(Font)              scaled to size 6.1pt on input line 133.
 
 
 [1.1{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/libertine/lbtn_25tcsq.enc}{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/libertine/lbtn_76gpa5.enc}{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/libertine/lbtn_7grukw.enc}]
 
+Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 141.
+
+(./planqc/figures/normalform.tikz
 LaTeX Font Info:    Font shape `T1/LinuxBiolinumT-TLF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 187.
+(Font)              scaled to size 9.0pt on input line 7.
+)
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 10.0pt on input line 148.
+LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
+(Font)              scaled to size 7.3pt on input line 148.
+LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
+(Font)              scaled to size 10.0pt on input line 148.
+LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
+(Font)              scaled to size 7.3pt on input line 148.
+LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
+(Font)              scaled to size 10.0pt on input line 148.
+LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
+(Font)              scaled to size 7.3pt on input line 148.
+LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
+(Font)              scaled to size 10.0pt on input line 148.
+LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
+(Font)              scaled to size 7.3pt on input line 148.
+LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
+(Font)              scaled to size 10.0pt on input line 148.
+LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
+(Font)              scaled to size 7.3pt on input line 148.
+LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
+(Font)              scaled to size 10.0pt on input line 148.
+LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
+(Font)              scaled to size 7.3pt on input line 148.
+LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
+(Font)              scaled to size 10.0pt on input line 148.
+LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
+(Font)              scaled to size 7.3pt on input line 148.
+LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
+(Font)              scaled to size 10.0pt on input line 148.
+LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
+(Font)              scaled to size 7.3pt on input line 148.
+ (./planqc/figures/translation.tikz)
+
+Class acmart Warning: A possible image without description on input line 161.
+
+
+Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 163.
+
+
+
 [2.2{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/libertine/lbtn_oexx6f.enc}]
 
-Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 190.
+[3.3]
 
-LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 190.
+Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 194.
+
+LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 194.
 (/usr/local/texlive/2025/texmf-dist/tex/latex/inconsolata/t1zi4.fd
 File: t1zi4.fd 2018/01/14 T1/zi4 (Inconsolata)
 )
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 10.0pt on input line 190.
+(Font)              scaled to size 10.0pt on input line 194.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `zi4' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 10.0pt on input line 191.
-LaTeX Font Info:    Font shape `OT1/LinuxLibertineT-TLF/m/n' will be
-(Font)              scaled to size 7.3pt on input line 191.
-LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
-(Font)              scaled to size 10.0pt on input line 191.
-LaTeX Font Info:    Font shape `OML/nxlmi/m/it' will be
-(Font)              scaled to size 7.3pt on input line 191.
-LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 10.0pt on input line 191.
-LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
-(Font)              scaled to size 7.3pt on input line 191.
-LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 10.0pt on input line 191.
-LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
-(Font)              scaled to size 7.3pt on input line 191.
-LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 10.0pt on input line 191.
-LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
-(Font)              scaled to size 7.3pt on input line 191.
-LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 10.0pt on input line 191.
-LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
-(Font)              scaled to size 7.3pt on input line 191.
-LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 10.0pt on input line 191.
-LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
-(Font)              scaled to size 7.3pt on input line 191.
-LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 10.0pt on input line 191.
-LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
-(Font)              scaled to size 7.3pt on input line 191.
-
-
-Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 192.
-
-
-Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 195.
 
 
 Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 197.
 
 
 
-[3.3{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-4.enc}]
+[4.4{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-4.enc}]
 
-[4.4] (./qcert.bbl
-Underfull \vbox (badness 2409) has occurred while \output is active []
+Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 252.
+
+(./planqc/figures/mainlemma.tikz) (./planqc/figures/levelinduction.tikz) (./planqc/figures/lengthinduction.tikz)
+
+Class acmart Warning: A possible image without description on input line 283.
 
 
 
 [5.5]
+
+[6.6] (./qcert.bbl
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
 (Font)              scaled to size 9.0pt on input line 42.
+LaTeX Info: Redefining \tempurl on input line 86.
+LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
+(Font)              scaled to size 9.0pt on input line 90.
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--192
-[]\T1/LinuxLibertineT-TLF/m/n/9 (+20) Thomas Hales. 2026.  What Math-e-mati-cians Should Know about the Lean The-o-rem
+Underfull \hbox (badness 5726) in paragraph at lines 82--91
+[]\T1/LinuxLibertineT-TLF/m/n/9 (+20) Xiaoning Bian, Yuan Feng, Sarah Meng Li, and John van de We-ter-ing. 2026.  QCert:
  []
 
 
-Underfull \hbox (badness 3250) in paragraph at lines 186--192
-\T1/LinuxLibertineT-TLF/m/n/9 (+20) Prover: Ques-tions of Re-li-a-bil-ity and AI.  Guest post on Ter-ence Tao's blog \T1/LinuxLibertineT-TLF/m/it/9 (+20) What's new\T1/LinuxLibertineT-TLF/m/n/9 (+20) ,
+Underfull \hbox (badness 5548) in paragraph at lines 82--91
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) The pre-sen-ta-tions of $\OML/nxlmi/m/it/9 O[]\LMS/ntxsy/m/n/9 π\U/ntxsym/m/n/9 Z\LMS/ntxsy/m/n/9 ª\OT1/LinuxLibertineT-TLF/m/n/9 (+20) 1\LMS/ntxsy/m/n/9 ù[]º∫$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) by Hadamard-$\U/ntxmia/m/it/9 ^^E$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) and by ClÈ-ment, for-mal-ized in Agda.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--192
-[][]$\T1/LinuxLibertineT-TLF/m/n/9 (+20) https : / / terrytao . wordpress . com / 2026 / 10 / 09 / what -[] mathematicians -[] should -[] know -[] about -[] the -[] lean -[]
+Underfull \hbox (badness 10000) in paragraph at lines 82--91
+[][]$\T1/LinuxLibertineT-TLF/m/n/9 (+20) https : / / github . com / onestruggler / acir / tree / 37df238a3e3e43573b3af817c79d47f037026dd4 / Examples /
+ []
+
+LaTeX Info: Redefining \tempurl on input line 99.
+
+Underfull \hbox (badness 10000) in paragraph at lines 95--104
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) acir / tree / 37df238a3e3e43573b3af817c79d47f037026dd4 / Examples / Groups / CCX + HH -[] 3qubit -[] opus$[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 95--104
+\T1/LinuxLibertineT-TLF/m/n/9 (+20) Mod-ules \T1/zi4/m/n/9 CCX+HH-3qubit-opus/Theorems \T1/LinuxLibertineT-TLF/m/n/9 (+20) (the pre-sen-ta-tions of $\OML/nxlmi/m/it/9 O[]\LMS/ntxsy/m/n/9 π\U/ntxsym/m/n/9 Z\LMS/ntxsy/m/n/9 ª\OT1/LinuxLibertineT-TLF/m/n/9 (+20) 1\LMS/ntxsy/m/n/9 ù\OT1/LinuxLibertineT-TLF/m/n/9 (+20) 2\LMS/ntxsy/m/n/9 º∫$ \T1/LinuxLibertineT-TLF/m/n/9 (+20) and $\OML/nxlmi/m/it/9 L[]$\T1/LinuxLibertineT-TLF/m/n/9 (+20) ) and
  []
 
 
 
-[6.6])
+[7.7]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[8.8]
+LaTeX Info: Redefining \tempurl on input line 270.
+LaTeX Info: Redefining \tempurl on input line 370.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[9.9])
+
+Class acmart Warning: Some images may lack descriptions.
+
+
 
 (/usr/local/texlive/2025/texmf-dist/tex/generic/stringenc/se-pdfdoc.def
 File: se-pdfdoc.def 2019/11/29 v1.12 stringenc: PDFDocEncoding
 ) (/usr/local/texlive/2025/texmf-dist/tex/generic/stringenc/se-utf8.def
 File: se-utf8.def 2019/11/29 v1.12 stringenc: UTF-8
-) [7.7] (./qcert.aux)
+) [10.10] (./qcert.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `qcert.out' has not changed.
-(rerunfilecheck)             Checksum: 8C2CD4B2A7E84476869F646A46C9D66D;1191.
+(rerunfilecheck)             Checksum: B328ADE6BC6879A5F0A3C5105AB20BEE;1336.
  ) 
 Here is how much of TeX's memory you used:
- 25011 strings out of 473190
- 409674 string characters out of 5715800
- 882889 words of memory out of 5000000
- 47252 multiletter control sequences out of 15000+600000
- 723318 words of font info for 409 fonts, out of 8000000 for 9000
+ 38770 strings out of 473190
+ 726410 string characters out of 5715800
+ 1170628 words of memory out of 5000000
+ 60647 multiletter control sequences out of 15000+600000
+ 731378 words of font info for 455 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
- 90i,13n,131p,1472b,1440s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/LibertineMathMI7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/LibertineMathRM.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/libertine/LinBiolinumT.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/libertine/LinBiolinumTB.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txsym.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
-Output written on qcert.pdf (7 pages, 378342 bytes).
+ 90i,13n,131p,1472b,1399s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2025/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/LibertineMathMI7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/LibertineMathRM.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/libertine/LinBiolinumT.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/libertine/LinBiolinumTB.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txexs.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txsym.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
+Output written on qcert.pdf (10 pages, 411071 bytes).
 PDF statistics:
- 351 PDF objects out of 1000 (max. 8388607)
- 249 compressed objects within 3 object streams
- 53 named destinations out of 1000 (max. 500000)
- 82513 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 486 PDF objects out of 1000 (max. 8388607)
+ 378 compressed objects within 4 object streams
+ 70 named destinations out of 1000 (max. 500000)
+ 83037 words of extra memory for PDF output out of 89155 (max. 10000000)
 
