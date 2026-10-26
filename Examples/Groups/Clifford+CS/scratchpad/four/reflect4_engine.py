@@ -28,6 +28,10 @@ SYN = ('open import Examples.Groups.Clifford+CS.Syntactics' if TREE == 'Four' el
 # of each letter's codes (codes_Four.txt, written by codes.sh); Five's
 # letters are larger (213,000 codes in all), and a table of them made its
 # derivations no faster, the interface every one loads twice the size.
+# Five's compare atoms first (hook_five below: CCZ and Swap whole, 15,322
+# atoms in all), and generators only where the atoms differ: running
+# D001's derivations 6.9 -> 0.45 s, Five/Reflect 2.3 -> 25.6 s (the
+# per-letter checks of the table).
 CODES = TREE == 'Four'
 if CODES:
     codes_path = REPO + f'/Examples/Groups/Clifford+CS/scratchpad/four/codes_{TREE}.txt'
@@ -131,16 +135,188 @@ sameG-ok : (xs ys : List Mac) → sameG xs ys ≡ true → flat xs ≡ flat ys
 sameG-ok = flat-eq
 
 '''
-HOOK_FIVE = r'''------------------------------------------------------------------------
+# Five's letters as atoms: CCZ and Swap, each lifted, and the gates in
+# between, read off the definitions of TREE/Letters (15,322 atoms for 505
+# letters, against 213,234 generators).  The shortcuts are spelled as in
+# Syntactics and MultiControlled; atomsM-ok checks the table against the
+# letters, so a wrong spelling here fails to typecheck.
+SHORT = {
+    'X': 'K • S • S • K • iI', 'Z': 'S • S',
+    'CX₀₁': 'K ↑ • CS • CS • K ↑ • iI', 'CX₁₀': 'K • CS • CS • K • iI',
+    'Swap': 'CX₀₁ • CX₁₀ • CX₀₁', 'CS₀₂': 'Swap ↑ • CS • Swap ↑',
+    'CCZ': 'CS ↑ • CX₀₁ • CS ↑ • CS ↑ • CS ↑ • CX₀₁ • CS₀₂',
+    'Toff': 'K • CCZ • K • iI', 'CK': 'CS • K ↑ • CS • K ↑ • CS • S • S • S • iI',
+    'CZ': 'CS • CS', 'CK₀₁': 'CK', 'CK₁₀': 'CS • K • CS • K • CS • S ↑ • S ↑ • S ↑ • iI',
+    'Toffᵗ': 'K ↑ ↑ • CCZ • K ↑ ↑ • iI',
+}
+KEEP = ['CCZ', 'Swap']
+GATES = ['iI', 'S', 'K', 'CS']
+TOK = re.compile(r'\s*(\(|\)|•|↑|[^\s()•↑]+)')
+
+
+def parse_word(s):
+    toks = TOK.findall(s)
+    pos = [0]
+
+    def peek():
+        return toks[pos[0]] if pos[0] < len(toks) else None
+
+    def eat(t=None):
+        x = toks[pos[0]]
+        pos[0] += 1
+        assert t is None or x == t, (t, x, s)
+        return x
+
+    def expr():
+        ts = [term()]
+        while peek() == '•':
+            eat('•')
+            ts.append(term())
+        return ('seq', ts)
+
+    def term():
+        f, n = factor(), 0
+        while peek() == '↑':
+            eat('↑')
+            n += 1
+        return ('up', n, f) if n else f
+
+    def factor():
+        if peek() == '(':
+            eat('(')
+            e = expr()
+            eat(')')
+            return e
+        return ('name', eat())
+    e = expr()
+    assert pos[0] == len(toks), s
+    return e
+
+
+def five_atoms():
+    bdefs = dict(re.findall(r'^(b-\S+) = (.*)$', letters, re.M))
+    ldefs = dict(re.findall(r'^⟪ (\S+) ⟫ = (.*)$', letters, re.M))
+
+    def atoms(e, d=0):
+        if e[0] == 'seq':
+            return [a for t in e[1] for a in atoms(t, d)]
+        if e[0] == 'up':
+            return atoms(e[2], d + e[1])
+        n = e[1]
+        if n in GATES or n in KEEP:
+            return [(n, d)]
+        if n in SHORT:
+            return atoms(parse_word(SHORT[n]), d)
+        return atoms(parse_word(bdefs[n]), d)
+    table = {m: atoms(parse_word(ldefs[m])) for m in macs}
+    kinds = sorted({a for v in table.values() for a in v}, key=lambda a: ((KEEP + GATES).index(a[0]), a[1]))
+    return table, kinds
+
+
+def aname(a):
+    return 'a' + a[0] + str(a[1])
+
+
+def hook_five():
+    tab, kinds = five_atoms()
+    names = [aname(a) for a in kinds]
+    w = max(len(x) for x in macs)
+    out = ['------------------------------------------------------------------------',
+           '-- Each letter as atoms',
+           '',
+           '-- A re-bracketing compared the generators its two sides spell, four',
+           '-- hundred a letter on average here: about 14 ms a step, most of the',
+           '-- time of running a long Five/D derivation.  Each letter is also a',
+           '-- list of atoms -- CCZ and Swap, lifted, and the gates in between,',
+           f'-- {sum(len(v) for v in tab.values()):,} for the {len(macs)} letters, a fourteenth of their',
+           '-- generators -- written by reflect4_engine.py from their definitions',
+           '-- and checked once',
+           '-- (atomsM-ok).  Two runs of the same atoms spell the same generators;',
+           '-- only runs whose atoms differ are compared generator by generator.',
+           'data At : Set where']
+    for k in range(0, len(names), 10):
+        out.append('  ' + ' '.join(names[k:k + 10]) + ' : At')
+    out += ['', 'exA : At → Circuit 5']
+    for a, n in zip(kinds, names):
+        out.append(f'exA {n} = {a[0]}' + ' ↑' * a[1])
+    out += ['', table('A', 'At', names).rstrip('\n'), '', 'atomsM : Mac → List At']
+    for m in macs:
+        out.append(f'atomsM ({m}){" " * (w - len(m))} = ' + ''.join(aname(a) + ' ∷ ' for a in tab[m]) + '[]')
+    out += ['',
+            'flatA : List At → List (Gen 5)',
+            'flatA []       = []',
+            'flatA (a ∷ as) = to-list (exA a) ++ flatA as',
+            '',
+            'atomsM-ok : ∀ x → flat (x ∷ []) ≡ flatA (atomsM x)']
+    out += [f'atomsM-ok ({m}){" " * (w - len(m))} = Eq.refl' for m in macs]
+    return '\n'.join(out) + '\n'
+
+
+HOOK_FIVE = r'''
+atomsL : List Mac → List At
+atomsL []       = []
+atomsL (x ∷ xs) = atomsM x ++ atomsL xs
+
+eqLA : List At → List At → Bool
+eqLA []       []       = true
+eqLA []       (y ∷ ys) = false
+eqLA (x ∷ xs) []       = false
+eqLA (x ∷ xs) (y ∷ ys) = (codeA x ≡ᵇ codeA y) ∧ eqLA xs ys
+
+private
+  eqLA-sound : (xs ys : List At) → eqLA xs ys ≡ true → xs ≡ ys
+  eqLA-sound []       []       h = Eq.refl
+  eqLA-sound []       (y ∷ ys) ()
+  eqLA-sound (x ∷ xs) []       ()
+  eqLA-sound (x ∷ xs) (y ∷ ys) h with codeA x ≡ᵇ codeA y in e
+  eqLA-sound (x ∷ xs) (y ∷ ys) h  | true  =
+    Eq.cong₂ _∷_
+      (Eq.trans (Eq.sym (decode-codeA x))
+        (Eq.trans (Eq.cong decodeA (≡ᵇ-sound (codeA x) (codeA y) e)) (decode-codeA y)))
+      (eqLA-sound xs ys h)
+  eqLA-sound (x ∷ xs) (y ∷ ys) () | false
+
+  ++-[] : (xs : List (Gen 5)) → xs ++ [] ≡ xs
+  ++-[] []       = Eq.refl
+  ++-[] (x ∷ xs) = Eq.cong (x ∷_) (++-[] xs)
+
+  ++-assoc : (xs ys zs : List (Gen 5)) → (xs ++ ys) ++ zs ≡ xs ++ (ys ++ zs)
+  ++-assoc []       ys zs = Eq.refl
+  ++-assoc (x ∷ xs) ys zs = Eq.cong (x ∷_) (++-assoc xs ys zs)
+
+  flat-∷ : (x : Mac) (xs : List Mac) → flat (x ∷ xs) ≡ flat (x ∷ []) ++ flat xs
+  flat-∷ x []       = Eq.sym (++-[] (flat (x ∷ [])))
+  flat-∷ x (m ∷ ms) = Eq.refl
+
+  flatA-++ : (as bs : List At) → flatA (as ++ bs) ≡ flatA as ++ flatA bs
+  flatA-++ []       bs = Eq.refl
+  flatA-++ (a ∷ as) bs =
+    Eq.trans (Eq.cong (to-list (exA a) ++_) (flatA-++ as bs))
+      (Eq.sym (++-assoc (to-list (exA a)) (flatA as) (flatA bs)))
+
+  flat-atoms : (xs : List Mac) → flat xs ≡ flatA (atomsL xs)
+  flat-atoms []       = Eq.refl
+  flat-atoms (x ∷ xs) =
+    Eq.trans (flat-∷ x xs)
+      (Eq.trans (Eq.cong₂ _++_ (atomsM-ok x) (flat-atoms xs))
+        (Eq.sym (flatA-++ (atomsM x) (atomsL xs))))
+
+------------------------------------------------------------------------
 -- Whether two runs of letters spell the same generators
 
+-- The same atoms, or else the same generators.
 sameG : List Mac → List Mac → Bool
-sameG xs ys = eqLG (flat xs) (flat ys)
+sameG xs ys = if eqLA (atomsL xs) (atomsL ys) then true else eqLG (flat xs) (flat ys)
 
 sameG-ok : (xs ys : List Mac) → sameG xs ys ≡ true → flat xs ≡ flat ys
-sameG-ok xs ys = eqLG-sound (flat xs) (flat ys)
+sameG-ok xs ys h with eqLA (atomsL xs) (atomsL ys) in e
+sameG-ok xs ys h  | true  =
+  Eq.trans (flat-atoms xs) (Eq.trans (Eq.cong flatA (eqLA-sound (atomsL xs) (atomsL ys) e)) (Eq.sym (flat-atoms ys)))
+sameG-ok xs ys h  | false = eqLG-sound (flat xs) (flat ys) h
 
 '''
+if not CODES:
+    HOOK_FIVE = hook_five() + HOOK_FIVE
 if CODES:
     HOOK_FOUR = HOOK_FOUR.replace('@@CODES@@', codes_table())
 
