@@ -7,6 +7,8 @@
 		\node [style=term] (4) at (-0.75, -2.2) {$w'$};
 		\node [style=rule label] (5) at (-0.4, 0.45) {(b)};
 		\node [style=rule label] (6) at (-0.6, -0.95) {IH};
+		\node [style=term] (7) at (-0.9, 1.9) {$N_M$};
+		\node [style=term] (8) at (0.65, -0.25) {$N_{gM}$};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [style=generator] (1) to (2);

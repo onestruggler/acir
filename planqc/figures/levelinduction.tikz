@@ -8,6 +8,8 @@
 		\node [style=term] (5) at (2.8, 0) {$g$};
 		\node [style=rule label] (6) at (-1, 0) {IH};
 		\node [style=rule label] (7) at (1.25, 0) {Main\\Lemma};
+		\node [style=term] (8) at (-1.75, 1.65) {$N_{M'}$};
+		\node [style=term] (9) at (-1.75, -1.65) {$N_Q$};
 	\end{pgfonlayer}
 	\begin{pgfonlayer}{edgelayer}
 		\draw [style=normal step] (3) to (1);
