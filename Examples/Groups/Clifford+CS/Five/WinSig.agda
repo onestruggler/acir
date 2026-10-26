@@ -10,7 +10,7 @@
 -- `windowsP`, the n-th the statement of wlNNNN, resp. wpNNNN, for
 -- n = NNNN, and `wl n W`, `wp n W` the n-th proofs; records of the
 -- windows, as this module had, made a 5.2 MB interface that took 97 s
--- and 2.4 GB to check.  Five.WinInstL and Five.WinInst build them.
+-- and 2.4 GB to check.  Five.WinInst builds them.
 -- Written by `scratchpad/five/wintree5.py`.
 ------------------------------------------------------------------------
 
