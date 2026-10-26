@@ -22,110 +22,111 @@ open import Examples.Groups.Clifford+CS.Windows using (Base)
 open import Examples.Groups.Clifford+CS.Four.Chain using (⟪_⟫ʷ ; _≈_)
 open import Examples.Groups.Clifford+CS.Four.Letters
 open import Examples.Groups.Clifford+CS.Four.Lits using (lw0 ; lw1 ; lw2 ; lw3)
+open import Examples.Groups.Clifford+CS.Four.Str using (ℓ)
 
-wn00508 : Base 3 → ⟪ (CK20 ∷ S2 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CK10 ∷ CK10 ∷ []) ⟫ʷ ≈ ⟪ (CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CK10 ∷ CK10 ∷ CK20 ∷ S2 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ []) ⟫ʷ
-wn00508 b = lw3 b (CK20 ∷ S2 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CK10 ∷ CK10 ∷ []) (CS01 ∷ CS01 ∷ CK10 ∷ CS01 ∷ CK10 ∷ CK10 ∷ CK20 ∷ S2 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ []) tt tt Eq.refl
-wn00509 : Base 3 → ⟪ (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX32 ∷ CK21 ∷ S2 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ X3 ∷ Toff213 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ Toff213 ∷ X3 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX32 ∷ CK21 ∷ S2 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ []) ⟫ʷ
-wn00509 b = lw0 b (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX32 ∷ CK21 ∷ S2 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ X3 ∷ Toff213 ∷ X3 ∷ []) (X3 ∷ Toff213 ∷ X3 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX32 ∷ CK21 ∷ S2 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ []) tt tt Eq.refl
-wn00510 : Base 3 → ⟪ (CX32 ∷ X3 ∷ CS13 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CS13 ∷ X3 ∷ CX32 ∷ []) ⟫ʷ
-wn00510 b = lw0 b (CX32 ∷ X3 ∷ CS13 ∷ X3 ∷ []) (X3 ∷ CS13 ∷ X3 ∷ CX32 ∷ []) tt tt Eq.refl
-wn00511 : Base 3 → ⟪ (CK20 ∷ X2 ∷ CS12 ∷ X2 ∷ []) ⟫ʷ ≈ ⟪ (X2 ∷ CS12 ∷ X2 ∷ CK20 ∷ []) ⟫ʷ
-wn00511 b = lw3 b (CK20 ∷ X2 ∷ CS12 ∷ X2 ∷ []) (X2 ∷ CS12 ∷ X2 ∷ CK20 ∷ []) tt tt Eq.refl
-wn00512 : Base 3 → ⟪ (CS02 ∷ X2 ∷ CS12 ∷ X2 ∷ []) ⟫ʷ ≈ ⟪ (X2 ∷ CS12 ∷ X2 ∷ CS02 ∷ []) ⟫ʷ
-wn00512 b = lw3 b (CS02 ∷ X2 ∷ CS12 ∷ X2 ∷ []) (X2 ∷ CS12 ∷ X2 ∷ CS02 ∷ []) tt tt Eq.refl
-wn00513 : Base 3 → ⟪ (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX32 ∷ CK21 ∷ S2 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ []) ⟫ʷ ≈ ⟪ (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX23 ∷ CK31 ∷ S3 ∷ CK31 ∷ S3 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ S3 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CX23 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ []) ⟫ʷ
-wn00513 b = lw0 b (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX32 ∷ CK21 ∷ S2 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ []) (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX23 ∷ CK31 ∷ S3 ∷ CK31 ∷ S3 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ S3 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CX23 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ []) tt tt Eq.refl
-wn00514 : Base 3 → ⟪ (CX23 ∷ CK21 ∷ []) ⟫ʷ ≈ ⟪ (CK21 ∷ CX23 ∷ []) ⟫ʷ
-wn00514 b = lw0 b (CX23 ∷ CK21 ∷ []) (CK21 ∷ CX23 ∷ []) tt tt Eq.refl
-wn00515 : Base 3 → ⟪ (CK20 ∷ CK21 ∷ []) ⟫ʷ ≈ ⟪ (CK21 ∷ CK20 ∷ []) ⟫ʷ
-wn00515 b = lw3 b (CK20 ∷ CK21 ∷ []) (CK21 ∷ CK20 ∷ []) tt tt Eq.refl
-wn00516 : Base 3 → ⟪ (CS02 ∷ CK21 ∷ []) ⟫ʷ ≈ ⟪ (CK21 ∷ CS02 ∷ []) ⟫ʷ
-wn00516 b = lw3 b (CS02 ∷ CK21 ∷ []) (CK21 ∷ CS02 ∷ []) tt tt Eq.refl
-wn00517 : Base 3 → ⟪ (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX23 ∷ CK31 ∷ S3 ∷ CK31 ∷ S3 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ S3 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CX23 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ []) ⟫ʷ ≈ ⟪ (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX32 ∷ CK21 ∷ S2 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ []) ⟫ʷ
-wn00517 b = lw0 b (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX23 ∷ CK31 ∷ S3 ∷ CK31 ∷ S3 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ S3 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CX23 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ []) (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CX32 ∷ CK21 ∷ S2 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ []) tt tt Eq.refl
-wn00518 : Base 3 → ⟪ (CK20 ∷ X2 ∷ CS12⁻ ∷ X2 ∷ []) ⟫ʷ ≈ ⟪ (X2 ∷ CS12⁻ ∷ X2 ∷ CK20 ∷ []) ⟫ʷ
-wn00518 b = lw3 b (CK20 ∷ X2 ∷ CS12⁻ ∷ X2 ∷ []) (X2 ∷ CS12⁻ ∷ X2 ∷ CK20 ∷ []) tt tt Eq.refl
-wn00519 : Base 3 → ⟪ (CS02 ∷ X2 ∷ CS12⁻ ∷ X2 ∷ []) ⟫ʷ ≈ ⟪ (X2 ∷ CS12⁻ ∷ X2 ∷ CS02 ∷ []) ⟫ʷ
-wn00519 b = lw3 b (CS02 ∷ X2 ∷ CS12⁻ ∷ X2 ∷ []) (X2 ∷ CS12⁻ ∷ X2 ∷ CS02 ∷ []) tt tt Eq.refl
-wn00520 : Base 3 → ⟪ (CX23 ∷ CK21⁻ ∷ []) ⟫ʷ ≈ ⟪ (CK21⁻ ∷ CX23 ∷ []) ⟫ʷ
-wn00520 b = lw0 b (CX23 ∷ CK21⁻ ∷ []) (CK21⁻ ∷ CX23 ∷ []) tt tt Eq.refl
-wn00521 : Base 3 → ⟪ (CK20 ∷ CK21⁻ ∷ []) ⟫ʷ ≈ ⟪ (CK21⁻ ∷ CK20 ∷ []) ⟫ʷ
-wn00521 b = lw3 b (CK20 ∷ CK21⁻ ∷ []) (CK21⁻ ∷ CK20 ∷ []) tt tt Eq.refl
-wn00522 : Base 3 → ⟪ (CS02 ∷ CK21⁻ ∷ []) ⟫ʷ ≈ ⟪ (CK21⁻ ∷ CS02 ∷ []) ⟫ʷ
-wn00522 b = lw3 b (CS02 ∷ CK21⁻ ∷ []) (CK21⁻ ∷ CS02 ∷ []) tt tt Eq.refl
-wn00523 : Base 3 → ⟪ (CK20 ∷ CS12 ∷ []) ⟫ʷ ≈ ⟪ (CS12 ∷ CK20 ∷ []) ⟫ʷ
-wn00523 b = lw3 b (CK20 ∷ CS12 ∷ []) (CS12 ∷ CK20 ∷ []) tt tt Eq.refl
-wn00524 : Base 3 → ⟪ (CS02 ∷ CS12 ∷ []) ⟫ʷ ≈ ⟪ (CS12 ∷ CS02 ∷ []) ⟫ʷ
-wn00524 b = lw3 b (CS02 ∷ CS12 ∷ []) (CS12 ∷ CS02 ∷ []) tt tt Eq.refl
-wn00525 : Base 3 → ⟪ (CX23 ∷ CS12⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS12⁻ ∷ CX23 ∷ []) ⟫ʷ
-wn00525 b = lw0 b (CX23 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CX23 ∷ []) tt tt Eq.refl
-wn00526 : Base 3 → ⟪ (CK20 ∷ CS12⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS12⁻ ∷ CK20 ∷ []) ⟫ʷ
-wn00526 b = lw3 b (CK20 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CK20 ∷ []) tt tt Eq.refl
-wn00527 : Base 3 → ⟪ (CS02 ∷ CS12⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS12⁻ ∷ CS02 ∷ []) ⟫ʷ
-wn00527 b = lw3 b (CS02 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CS02 ∷ []) tt tt Eq.refl
-wn00528 : Base 3 → ⟪ (CX31 ∷ X3 ∷ CK32 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CK32 ∷ X3 ∷ CX31 ∷ []) ⟫ʷ
-wn00528 b = lw0 b (CX31 ∷ X3 ∷ CK32 ∷ X3 ∷ []) (X3 ∷ CK32 ∷ X3 ∷ CX31 ∷ []) tt tt Eq.refl
-wn00529 : Base 3 → ⟪ (CK31 ∷ X3 ∷ CK32 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CK32 ∷ X3 ∷ CK31 ∷ []) ⟫ʷ
-wn00529 b = lw0 b (CK31 ∷ X3 ∷ CK32 ∷ X3 ∷ []) (X3 ∷ CK32 ∷ X3 ∷ CK31 ∷ []) tt tt Eq.refl
-wn00530 : Base 3 → ⟪ (CS13 ∷ X3 ∷ CK32 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CK32 ∷ X3 ∷ CS13 ∷ []) ⟫ʷ
-wn00530 b = lw0 b (CS13 ∷ X3 ∷ CK32 ∷ X3 ∷ []) (X3 ∷ CK32 ∷ X3 ∷ CS13 ∷ []) tt tt Eq.refl
-wn00531 : Base 3 → ⟪ (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ X2 ∷ CK21 ∷ X2 ∷ []) ⟫ʷ ≈ ⟪ (X2 ∷ CK21 ∷ X2 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) ⟫ʷ
-wn00531 b = lw3 b (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ X2 ∷ CK21 ∷ X2 ∷ []) (X2 ∷ CK21 ∷ X2 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) tt tt Eq.refl
-wn00532 : Base 3 → ⟪ (CX31 ∷ X3 ∷ CS23⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CS23⁻ ∷ X3 ∷ CX31 ∷ []) ⟫ʷ
-wn00532 b = lw0 b (CX31 ∷ X3 ∷ CS23⁻ ∷ X3 ∷ []) (X3 ∷ CS23⁻ ∷ X3 ∷ CX31 ∷ []) tt tt Eq.refl
-wn00533 : Base 3 → ⟪ (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ X3 ∷ CS23⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CS23⁻ ∷ X3 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ []) ⟫ʷ
-wn00533 b = lw0 b (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ X3 ∷ CS23⁻ ∷ X3 ∷ []) (X3 ∷ CS23⁻ ∷ X3 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ []) tt tt Eq.refl
-wn00534 : Base 3 → ⟪ (CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) ⟫ʷ
-wn00534 b = lw3 b (CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) tt tt Eq.refl
-wn00535 : Base 3 → ⟪ (CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ []) ⟫ʷ
-wn00535 b = lw3 b (CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ []) tt tt Eq.refl
-wn00536 : Base 3 → ⟪ (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ []) ⟫ʷ
-wn00536 b = lw0 b (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ []) tt tt Eq.refl
-wn00537 : Base 3 → ⟪ (CX31 ∷ X3 ∷ CX32 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CX32 ∷ X3 ∷ CX31 ∷ []) ⟫ʷ
-wn00537 b = lw0 b (CX31 ∷ X3 ∷ CX32 ∷ X3 ∷ []) (X3 ∷ CX32 ∷ X3 ∷ CX31 ∷ []) tt tt Eq.refl
-wn00538 : Base 3 → ⟪ (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ X3 ∷ CX32 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CX32 ∷ X3 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ []) ⟫ʷ
-wn00538 b = lw0 b (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ X3 ∷ CX32 ∷ X3 ∷ []) (X3 ∷ CX32 ∷ X3 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ []) tt tt Eq.refl
-wn00539 : Base 3 → ⟪ (CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ S2⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ S2⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) ⟫ʷ
-wn00539 b = lw3 b (CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ S2⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ S2⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) tt tt Eq.refl
-wn00540 : Base 3 → ⟪ (CX31 ∷ S2⁻ ∷ []) ⟫ʷ ≈ ⟪ (S2⁻ ∷ CX31 ∷ []) ⟫ʷ
-wn00540 b = lw0 b (CX31 ∷ S2⁻ ∷ []) (S2⁻ ∷ CX31 ∷ []) tt tt Eq.refl
-wn00541 : Base 3 → ⟪ (CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ S2⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ S2⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ []) ⟫ʷ
-wn00541 b = lw3 b (CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ S2⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ S2⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ []) tt tt Eq.refl
-wn00542 : Base 3 → ⟪ (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ S2⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ S2⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ []) ⟫ʷ
-wn00542 b = lw0 b (CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ S2⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ S2⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CK31 ∷ CK31 ∷ []) tt tt Eq.refl
-wn00543 : Base 3 → ⟪ (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ X2 ∷ CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ X2 ∷ []) ⟫ʷ ≈ ⟪ (X2 ∷ CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ X2 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) ⟫ʷ
-wn00543 b = lw3 b (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ X2 ∷ CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ X2 ∷ []) (X2 ∷ CS12⁻ ∷ CK21⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ X2 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) tt tt Eq.refl
-wn00544 : Base 3 → ⟪ (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ X2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ X2 ∷ []) ⟫ʷ ≈ ⟪ (X2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ X2 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) ⟫ʷ
-wn00544 b = lw3 b (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ X2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ X2 ∷ []) (X2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ X2 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) tt tt Eq.refl
-wn00545 : Base 3 → ⟪ (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ X2 ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ X2 ∷ []) ⟫ʷ ≈ ⟪ (X2 ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ X2 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) ⟫ʷ
-wn00545 b = lw3 b (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ X2 ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ X2 ∷ []) (X2 ∷ CS12⁻ ∷ CS12⁻ ∷ CS12⁻ ∷ X2 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) tt tt Eq.refl
-wn00546 : Base 3 → ⟪ (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ X2 ∷ CK21⁻ ∷ X2 ∷ []) ⟫ʷ ≈ ⟪ (X2 ∷ CK21⁻ ∷ X2 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) ⟫ʷ
-wn00546 b = lw3 b (CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ X2 ∷ CK21⁻ ∷ X2 ∷ []) (X2 ∷ CK21⁻ ∷ X2 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CK21 ∷ CK21 ∷ CX20 ∷ CK01 ∷ S0 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CK01 ∷ S0 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CS01 ∷ CX20 ∷ CS01 ∷ CS01 ∷ CK01 ∷ CS01 ∷ CK01 ∷ CK01 ∷ []) tt tt Eq.refl
-wn00547 : Base 3 → ⟪ (CX31 ∷ X3 ∷ CK32⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CK32⁻ ∷ X3 ∷ CX31 ∷ []) ⟫ʷ
-wn00547 b = lw0 b (CX31 ∷ X3 ∷ CK32⁻ ∷ X3 ∷ []) (X3 ∷ CK32⁻ ∷ X3 ∷ CX31 ∷ []) tt tt Eq.refl
-wn00548 : Base 3 → ⟪ (CK31 ∷ X3 ∷ CK32⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CK32⁻ ∷ X3 ∷ CK31 ∷ []) ⟫ʷ
-wn00548 b = lw0 b (CK31 ∷ X3 ∷ CK32⁻ ∷ X3 ∷ []) (X3 ∷ CK32⁻ ∷ X3 ∷ CK31 ∷ []) tt tt Eq.refl
-wn00549 : Base 3 → ⟪ (CS13 ∷ X3 ∷ CK32⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CK32⁻ ∷ X3 ∷ CS13 ∷ []) ⟫ʷ
-wn00549 b = lw0 b (CS13 ∷ X3 ∷ CK32⁻ ∷ X3 ∷ []) (X3 ∷ CK32⁻ ∷ X3 ∷ CS13 ∷ []) tt tt Eq.refl
-wn00550 : Base 3 → ⟪ (CS23 ∷ CZ12 ∷ []) ⟫ʷ ≈ ⟪ (CZ12 ∷ CS23 ∷ []) ⟫ʷ
-wn00550 b = lw0 b (CS23 ∷ CZ12 ∷ []) (CZ12 ∷ CS23 ∷ []) tt tt Eq.refl
-wn00551 : Base 3 → ⟪ (CS02⁻ ∷ CZ12 ∷ []) ⟫ʷ ≈ ⟪ (CZ12 ∷ CS02⁻ ∷ []) ⟫ʷ
-wn00551 b = lw3 b (CS02⁻ ∷ CZ12 ∷ []) (CZ12 ∷ CS02⁻ ∷ []) tt tt Eq.refl
-wn00552 : Base 3 → ⟪ (CS02 ∷ CZ12 ∷ []) ⟫ʷ ≈ ⟪ (CZ12 ∷ CS02 ∷ []) ⟫ʷ
-wn00552 b = lw3 b (CS02 ∷ CZ12 ∷ []) (CZ12 ∷ CS02 ∷ []) tt tt Eq.refl
-wn00553 : Base 3 → ⟪ (CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CS13 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CS12 ∷ X3 ∷ Toff213 ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ Toff213 ∷ X3 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CS13 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CS12 ∷ []) ⟫ʷ
-wn00553 b = lw0 b (CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CS13 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CS12 ∷ X3 ∷ Toff213 ∷ X3 ∷ []) (X3 ∷ Toff213 ∷ X3 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CS13 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CS12 ∷ []) tt tt Eq.refl
-wn00554 : Base 3 → ⟪ (CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ X2 ∷ CS12⁻ ∷ X2 ∷ []) ⟫ʷ ≈ ⟪ (X2 ∷ CS12⁻ ∷ X2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ []) ⟫ʷ
-wn00554 b = lw3 b (CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ X2 ∷ CS12⁻ ∷ X2 ∷ []) (X2 ∷ CS12⁻ ∷ X2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ []) tt tt Eq.refl
-wn00555 : Base 3 → ⟪ (CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ CS01⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS01⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ []) ⟫ʷ
-wn00555 b = lw3 b (CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ CS01⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ []) (CS01⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ []) tt tt Eq.refl
-wn00556 : Base 3 → ⟪ (CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS01⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS01⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ []) ⟫ʷ
-wn00556 b = lw3 b (CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS01⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ []) (CS01⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ []) tt tt Eq.refl
-wn00557 : Base 3 → ⟪ (CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ X2 ∷ CX21 ∷ X2 ∷ []) ⟫ʷ ≈ ⟪ (X2 ∷ CX21 ∷ X2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ []) ⟫ʷ
-wn00557 b = lw3 b (CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ X2 ∷ CX21 ∷ X2 ∷ []) (X2 ∷ CX21 ∷ X2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ []) tt tt Eq.refl
-wn00558 : Base 3 → ⟪ (CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ S1⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ S1⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ []) ⟫ʷ
-wn00558 b = lw3 b (CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ S1⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ []) (CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ S1⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ CS02 ∷ CS02 ∷ []) tt tt Eq.refl
-wn00559 : Base 3 → ⟪ (CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ S1⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ S1⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ []) ⟫ʷ
-wn00559 b = lw3 b (CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ S1⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ []) (CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ S1⁻ ∷ CK10⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS01⁻ ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CK20 ∷ S2 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ CS02 ∷ []) tt tt Eq.refl
-wn00560 : Base 3 → ⟪ (CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CS13 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CS12 ∷ X3 ∷ CS13⁻ ∷ CK31⁻ ∷ CS13⁻ ∷ CS13⁻ ∷ X3 ∷ []) ⟫ʷ ≈ ⟪ (X3 ∷ CS13⁻ ∷ CK31⁻ ∷ CS13⁻ ∷ CS13⁻ ∷ X3 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CS13 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CS12 ∷ []) ⟫ʷ
-wn00560 b = lw0 b (CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CS13 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CS12 ∷ X3 ∷ CS13⁻ ∷ CK31⁻ ∷ CS13⁻ ∷ CS13⁻ ∷ X3 ∷ []) (X3 ∷ CS13⁻ ∷ CK31⁻ ∷ CS13⁻ ∷ CS13⁻ ∷ X3 ∷ CS13 ∷ CS13 ∷ CS13 ∷ CK31 ∷ CS13 ∷ CS13 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ S2 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CX32 ∷ CS12 ∷ CS12 ∷ CS12 ∷ CK21 ∷ CS12 ∷ CS12 ∷ []) tt tt Eq.refl
+wn00508 : Base 3 → ⟪ (ℓ "乄且乄且丧丧丧乄且丧丧丧丧丧丧丠丠临丠临临") ⟫ʷ ≈ ⟪ (ℓ "丠丠临丠临临乄且乄且丧丧丧乄且丧丧丧丧丧丧") ⟫ʷ
+wn00508 b = lw3 b (ℓ "乄且乄且丧丧丧乄且丧丧丧丧丧丧丠丠临丠临临") (ℓ "丠丠临丠临临乄且乄且丧丧丧乄且丧丧丧丧丧丧") tt tt Eq.refl
+wn00509 : Base 3 → ⟪ (ℓ "丽丽乔丽乔乔乖乇且乇且丶丶丶乇且丶丶丶丶丶丶乖丶丶乇丶乇乇丞乥丞") ⟫ʷ ≈ ⟪ (ℓ "丞乥丞丽丽乔丽乔乔乖乇且乇且丶丶丶乇且丶丶丶丶丶丶乖丶丶乇丶乇乇") ⟫ʷ
+wn00509 b = lw0 b (ℓ "丽丽乔丽乔乔乖乇且乇且丶丶丶乇且丶丶丶丶丶丶乖丶丶乇丶乇乇丞乥丞") (ℓ "丞乥丞丽丽乔丽乔乔乖乇且乇且丶丶丶乇且丶丶丶丶丶丶乖丶丶乇丶乇乇") tt tt Eq.refl
+wn00510 : Base 3 → ⟪ (ℓ "乖丞丽丞") ⟫ʷ ≈ ⟪ (ℓ "丞丽丞乖") ⟫ʷ
+wn00510 b = lw0 b (ℓ "乖丞丽丞") (ℓ "丞丽丞乖") tt tt Eq.refl
+wn00511 : Base 3 → ⟪ (ℓ "乄丘丶丘") ⟫ʷ ≈ ⟪ (ℓ "丘丶丘乄") ⟫ʷ
+wn00511 b = lw3 b (ℓ "乄丘丶丘") (ℓ "丘丶丘乄") tt tt Eq.refl
+wn00512 : Base 3 → ⟪ (ℓ "丧丘丶丘") ⟫ʷ ≈ ⟪ (ℓ "丘丶丘丧") ⟫ʷ
+wn00512 b = lw3 b (ℓ "丧丘丶丘") (ℓ "丘丶丘丧") tt tt Eq.refl
+wn00513 : Base 3 → ⟪ (ℓ "丽丽乔丽乔乔乖乇且乇且丶丶丶乇且丶丶丶丶丶丶乖丶丶乇丶乇乇") ⟫ʷ ≈ ⟪ (ℓ "丶丶乇丶乇乇乌乔业乔业丽丽丽乔业丽丽丽丽丽丽乌丽丽乔丽乔乔") ⟫ʷ
+wn00513 b = lw0 b (ℓ "丽丽乔丽乔乔乖乇且乇且丶丶丶乇且丶丶丶丶丶丶乖丶丶乇丶乇乇") (ℓ "丶丶乇丶乇乇乌乔业乔业丽丽丽乔业丽丽丽丽丽丽乌丽丽乔丽乔乔") tt tt Eq.refl
+wn00514 : Base 3 → ⟪ (ℓ "乌乇") ⟫ʷ ≈ ⟪ (ℓ "乇乌") ⟫ʷ
+wn00514 b = lw0 b (ℓ "乌乇") (ℓ "乇乌") tt tt Eq.refl
+wn00515 : Base 3 → ⟪ (ℓ "乄乇") ⟫ʷ ≈ ⟪ (ℓ "乇乄") ⟫ʷ
+wn00515 b = lw3 b (ℓ "乄乇") (ℓ "乇乄") tt tt Eq.refl
+wn00516 : Base 3 → ⟪ (ℓ "丧乇") ⟫ʷ ≈ ⟪ (ℓ "乇丧") ⟫ʷ
+wn00516 b = lw3 b (ℓ "丧乇") (ℓ "乇丧") tt tt Eq.refl
+wn00517 : Base 3 → ⟪ (ℓ "丶丶乇丶乇乇乌乔业乔业丽丽丽乔业丽丽丽丽丽丽乌丽丽乔丽乔乔") ⟫ʷ ≈ ⟪ (ℓ "丽丽乔丽乔乔乖乇且乇且丶丶丶乇且丶丶丶丶丶丶乖丶丶乇丶乇乇") ⟫ʷ
+wn00517 b = lw0 b (ℓ "丶丶乇丶乇乇乌乔业乔业丽丽丽乔业丽丽丽丽丽丽乌丽丽乔丽乔乔") (ℓ "丽丽乔丽乔乔乖乇且乇且丶丶丶乇且丶丶丶丶丶丶乖丶丶乇丶乇乇") tt tt Eq.refl
+wn00518 : Base 3 → ⟪ (ℓ "乄丘丷丘") ⟫ʷ ≈ ⟪ (ℓ "丘丷丘乄") ⟫ʷ
+wn00518 b = lw3 b (ℓ "乄丘丷丘") (ℓ "丘丷丘乄") tt tt Eq.refl
+wn00519 : Base 3 → ⟪ (ℓ "丧丘丷丘") ⟫ʷ ≈ ⟪ (ℓ "丘丷丘丧") ⟫ʷ
+wn00519 b = lw3 b (ℓ "丧丘丷丘") (ℓ "丘丷丘丧") tt tt Eq.refl
+wn00520 : Base 3 → ⟪ (ℓ "乌么") ⟫ʷ ≈ ⟪ (ℓ "么乌") ⟫ʷ
+wn00520 b = lw0 b (ℓ "乌么") (ℓ "么乌") tt tt Eq.refl
+wn00521 : Base 3 → ⟪ (ℓ "乄么") ⟫ʷ ≈ ⟪ (ℓ "么乄") ⟫ʷ
+wn00521 b = lw3 b (ℓ "乄么") (ℓ "么乄") tt tt Eq.refl
+wn00522 : Base 3 → ⟪ (ℓ "丧么") ⟫ʷ ≈ ⟪ (ℓ "么丧") ⟫ʷ
+wn00522 b = lw3 b (ℓ "丧么") (ℓ "么丧") tt tt Eq.refl
+wn00523 : Base 3 → ⟪ (ℓ "乄丶") ⟫ʷ ≈ ⟪ (ℓ "丶乄") ⟫ʷ
+wn00523 b = lw3 b (ℓ "乄丶") (ℓ "丶乄") tt tt Eq.refl
+wn00524 : Base 3 → ⟪ (ℓ "丧丶") ⟫ʷ ≈ ⟪ (ℓ "丶丧") ⟫ʷ
+wn00524 b = lw3 b (ℓ "丧丶") (ℓ "丶丧") tt tt Eq.refl
+wn00525 : Base 3 → ⟪ (ℓ "乌丷") ⟫ʷ ≈ ⟪ (ℓ "丷乌") ⟫ʷ
+wn00525 b = lw0 b (ℓ "乌丷") (ℓ "丷乌") tt tt Eq.refl
+wn00526 : Base 3 → ⟪ (ℓ "乄丷") ⟫ʷ ≈ ⟪ (ℓ "丷乄") ⟫ʷ
+wn00526 b = lw3 b (ℓ "乄丷") (ℓ "丷乄") tt tt Eq.refl
+wn00527 : Base 3 → ⟪ (ℓ "丧丷") ⟫ʷ ≈ ⟪ (ℓ "丷丧") ⟫ʷ
+wn00527 b = lw3 b (ℓ "丧丷") (ℓ "丷丧") tt tt Eq.refl
+wn00528 : Base 3 → ⟪ (ℓ "乓丞乗丞") ⟫ʷ ≈ ⟪ (ℓ "丞乗丞乓") ⟫ʷ
+wn00528 b = lw0 b (ℓ "乓丞乗丞") (ℓ "丞乗丞乓") tt tt Eq.refl
+wn00529 : Base 3 → ⟪ (ℓ "乔丞乗丞") ⟫ʷ ≈ ⟪ (ℓ "丞乗丞乔") ⟫ʷ
+wn00529 b = lw0 b (ℓ "乔丞乗丞") (ℓ "丞乗丞乔") tt tt Eq.refl
+wn00530 : Base 3 → ⟪ (ℓ "丽丞乗丞") ⟫ʷ ≈ ⟪ (ℓ "丞乗丞丽") ⟫ʷ
+wn00530 b = lw0 b (ℓ "丽丞乗丞") (ℓ "丞乗丞丽") tt tt Eq.refl
+wn00531 : Base 3 → ⟪ (ℓ "丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两丘乇丘") ⟫ʷ ≈ ⟪ (ℓ "丘乇丘丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两") ⟫ʷ
+wn00531 b = lw3 b (ℓ "丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两丘乇丘") (ℓ "丘乇丘丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两") tt tt Eq.refl
+wn00532 : Base 3 → ⟪ (ℓ "乓丞乊丞") ⟫ʷ ≈ ⟪ (ℓ "丞乊丞乓") ⟫ʷ
+wn00532 b = lw0 b (ℓ "乓丞乊丞") (ℓ "丞乊丞乓") tt tt Eq.refl
+wn00533 : Base 3 → ⟪ (ℓ "丽丽乔丽乔乔丞乊丞") ⟫ʷ ≈ ⟪ (ℓ "丞乊丞丽丽乔丽乔乔") ⟫ʷ
+wn00533 b = lw0 b (ℓ "丽丽乔丽乔乔丞乊丞") (ℓ "丞乊丞丽丽乔丽乔乔") tt tt Eq.refl
+wn00534 : Base 3 → ⟪ (ℓ "丠丠两丠两两丷么丷丷") ⟫ʷ ≈ ⟪ (ℓ "丷么丷丷丠丠两丠两两") ⟫ʷ
+wn00534 b = lw3 b (ℓ "丠丠两丠两两丷么丷丷") (ℓ "丷么丷丷丠丠两丠两两") tt tt Eq.refl
+wn00535 : Base 3 → ⟪ (ℓ "两丈两丈丠丠丠两丈丠丠丠丠丠丠丷么丷丷") ⟫ʷ ≈ ⟪ (ℓ "丷么丷丷两丈两丈丠丠丠两丈丠丠丠丠丠丠") ⟫ʷ
+wn00535 b = lw3 b (ℓ "两丈两丈丠丠丠两丈丠丠丠丠丠丠丷么丷丷") (ℓ "丷么丷丷两丈两丈丠丠丠两丈丠丠丠丠丠丠") tt tt Eq.refl
+wn00536 : Base 3 → ⟪ (ℓ "丽丽乔丽乔乔丷么丷丷") ⟫ʷ ≈ ⟪ (ℓ "丷么丷丷丽丽乔丽乔乔") ⟫ʷ
+wn00536 b = lw0 b (ℓ "丽丽乔丽乔乔丷么丷丷") (ℓ "丷么丷丷丽丽乔丽乔乔") tt tt Eq.refl
+wn00537 : Base 3 → ⟪ (ℓ "乓丞乖丞") ⟫ʷ ≈ ⟪ (ℓ "丞乖丞乓") ⟫ʷ
+wn00537 b = lw0 b (ℓ "乓丞乖丞") (ℓ "丞乖丞乓") tt tt Eq.refl
+wn00538 : Base 3 → ⟪ (ℓ "丽丽乔丽乔乔丞乖丞") ⟫ʷ ≈ ⟪ (ℓ "丞乖丞丽丽乔丽乔乔") ⟫ʷ
+wn00538 b = lw0 b (ℓ "丽丽乔丽乔乔丞乖丞") (ℓ "丞乖丞丽丽乔丽乔乔") tt tt Eq.refl
+wn00539 : Base 3 → ⟪ (ℓ "丠丠两丠两两丷丷丷丷丷丷丕么丷丷丷") ⟫ʷ ≈ ⟪ (ℓ "丷丷丷丷丷丷丕么丷丷丷丠丠两丠两两") ⟫ʷ
+wn00539 b = lw3 b (ℓ "丠丠两丠两两丷丷丷丷丷丷丕么丷丷丷") (ℓ "丷丷丷丷丷丷丕么丷丷丷丠丠两丠两两") tt tt Eq.refl
+wn00540 : Base 3 → ⟪ (ℓ "乓丕") ⟫ʷ ≈ ⟪ (ℓ "丕乓") ⟫ʷ
+wn00540 b = lw0 b (ℓ "乓丕") (ℓ "丕乓") tt tt Eq.refl
+wn00541 : Base 3 → ⟪ (ℓ "两丈两丈丠丠丠两丈丠丠丠丠丠丠丷丷丷丷丷丷丕么丷丷丷") ⟫ʷ ≈ ⟪ (ℓ "丷丷丷丷丷丷丕么丷丷丷两丈两丈丠丠丠两丈丠丠丠丠丠丠") ⟫ʷ
+wn00541 b = lw3 b (ℓ "两丈两丈丠丠丠两丈丠丠丠丠丠丠丷丷丷丷丷丷丕么丷丷丷") (ℓ "丷丷丷丷丷丷丕么丷丷丷两丈两丈丠丠丠两丈丠丠丠丠丠丠") tt tt Eq.refl
+wn00542 : Base 3 → ⟪ (ℓ "丽丽乔丽乔乔丷丷丷丷丷丷丕么丷丷丷") ⟫ʷ ≈ ⟪ (ℓ "丷丷丷丷丷丷丕么丷丷丷丽丽乔丽乔乔") ⟫ʷ
+wn00542 b = lw0 b (ℓ "丽丽乔丽乔乔丷丷丷丷丷丷丕么丷丷丷") (ℓ "丷丷丷丷丷丷丕么丷丷丷丽丽乔丽乔乔") tt tt Eq.refl
+wn00543 : Base 3 → ⟪ (ℓ "丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两丘丷么丷丷丘") ⟫ʷ ≈ ⟪ (ℓ "丘丷么丷丷丘丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两") ⟫ʷ
+wn00543 b = lw3 b (ℓ "丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两丘丷么丷丷丘") (ℓ "丘丷么丷丷丘丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两") tt tt Eq.refl
+wn00544 : Base 3 → ⟪ (ℓ "丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两丘丶丶丶丘") ⟫ʷ ≈ ⟪ (ℓ "丘丶丶丶丘丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两") ⟫ʷ
+wn00544 b = lw3 b (ℓ "丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两丘丶丶丶丘") (ℓ "丘丶丶丶丘丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两") tt tt Eq.refl
+wn00545 : Base 3 → ⟪ (ℓ "丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两丘丷丷丷丘") ⟫ʷ ≈ ⟪ (ℓ "丘丷丷丷丘丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两") ⟫ʷ
+wn00545 b = lw3 b (ℓ "丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两丘丷丷丷丘") (ℓ "丘丷丷丷丘丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两") tt tt Eq.refl
+wn00546 : Base 3 → ⟪ (ℓ "丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两丘么丘") ⟫ʷ ≈ ⟪ (ℓ "丘么丘丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两") ⟫ʷ
+wn00546 b = lw3 b (ℓ "丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两丘么丘") (ℓ "丘么丘丶丶乇丶乇乇乃两丈两丈丠丠丠两丈丠丠丠丠丠丠乃丠丠两丠两两") tt tt Eq.refl
+wn00547 : Base 3 → ⟪ (ℓ "乓丞乘丞") ⟫ʷ ≈ ⟪ (ℓ "丞乘丞乓") ⟫ʷ
+wn00547 b = lw0 b (ℓ "乓丞乘丞") (ℓ "丞乘丞乓") tt tt Eq.refl
+wn00548 : Base 3 → ⟪ (ℓ "乔丞乘丞") ⟫ʷ ≈ ⟪ (ℓ "丞乘丞乔") ⟫ʷ
+wn00548 b = lw0 b (ℓ "乔丞乘丞") (ℓ "丞乘丞乔") tt tt Eq.refl
+wn00549 : Base 3 → ⟪ (ℓ "丽丞乘丞") ⟫ʷ ≈ ⟪ (ℓ "丞乘丞丽") ⟫ʷ
+wn00549 b = lw0 b (ℓ "丽丞乘丞") (ℓ "丞乘丞丽") tt tt Eq.refl
+wn00550 : Base 3 → ⟪ (ℓ "义丸") ⟫ʷ ≈ ⟪ (ℓ "丸义") ⟫ʷ
+wn00550 b = lw0 b (ℓ "义丸") (ℓ "丸义") tt tt Eq.refl
+wn00551 : Base 3 → ⟪ (ℓ "丨丸") ⟫ʷ ≈ ⟪ (ℓ "丸丨") ⟫ʷ
+wn00551 b = lw3 b (ℓ "丨丸") (ℓ "丸丨") tt tt Eq.refl
+wn00552 : Base 3 → ⟪ (ℓ "丧丸") ⟫ʷ ≈ ⟪ (ℓ "丸丧") ⟫ʷ
+wn00552 b = lw3 b (ℓ "丧丸") (ℓ "丸丧") tt tt Eq.refl
+wn00553 : Base 3 → ⟪ (ℓ "丽丽丽乔丽丽乖丶丶丶丶丶丶乇且丶丶丶丶丶丶丶丶丶乖丶丶丶乇丶丶丞乥丞") ⟫ʷ ≈ ⟪ (ℓ "丞乥丞丽丽丽乔丽丽乖丶丶丶丶丶丶乇且丶丶丶丶丶丶丶丶丶乖丶丶丶乇丶丶") ⟫ʷ
+wn00553 b = lw0 b (ℓ "丽丽丽乔丽丽乖丶丶丶丶丶丶乇且丶丶丶丶丶丶丶丶丶乖丶丶丶乇丶丶丞乥丞") (ℓ "丞乥丞丽丽丽乔丽丽乖丶丶丶丶丶丶乇且丶丶丶丶丶丶丶丶丶乖丶丶丶乇丶丶") tt tt Eq.refl
+wn00554 : Base 3 → ⟪ (ℓ "丧丧丧乄丧丧丘丷丘") ⟫ʷ ≈ ⟪ (ℓ "丘丷丘丧丧丧乄丧丧") ⟫ʷ
+wn00554 b = lw3 b (ℓ "丧丧丧乄丧丧丘丷丘") (ℓ "丘丷丘丧丧丧乄丧丧") tt tt Eq.refl
+wn00555 : Base 3 → ⟪ (ℓ "丧丧丧乄丧丧両丵両両") ⟫ʷ ≈ ⟪ (ℓ "両丵両両丧丧丧乄丧丧") ⟫ʷ
+wn00555 b = lw3 b (ℓ "丧丧丧乄丧丧両丵両両") (ℓ "両丵両両丧丧丧乄丧丧") tt tt Eq.refl
+wn00556 : Base 3 → ⟪ (ℓ "丧丧丧丧丧丧乄且丧丧丧丧丧丧丧丧丧両丵両両") ⟫ʷ ≈ ⟪ (ℓ "両丵両両丧丧丧丧丧丧乄且丧丧丧丧丧丧丧丧丧") ⟫ʷ
+wn00556 b = lw3 b (ℓ "丧丧丧丧丧丧乄且丧丧丧丧丧丧丧丧丧両丵両両") (ℓ "両丵両両丧丧丧丧丧丧乄且丧丧丧丧丧丧丧丧丧") tt tt Eq.refl
+wn00557 : Base 3 → ⟪ (ℓ "丧丧丧乄丧丧丘乆丘") ⟫ʷ ≈ ⟪ (ℓ "丘乆丘丧丧丧乄丧丧") ⟫ʷ
+wn00557 b = lw3 b (ℓ "丧丧丧乄丧丧丘乆丘") (ℓ "丘乆丘丧丧丧乄丧丧") tt tt Eq.refl
+wn00558 : Base 3 → ⟪ (ℓ "丧丧丧乄丧丧両両両両両両丏丵両両両") ⟫ʷ ≈ ⟪ (ℓ "両両両両両両丏丵両両両丧丧丧乄丧丧") ⟫ʷ
+wn00558 b = lw3 b (ℓ "丧丧丧乄丧丧両両両両両両丏丵両両両") (ℓ "両両両両両両丏丵両両両丧丧丧乄丧丧") tt tt Eq.refl
+wn00559 : Base 3 → ⟪ (ℓ "丧丧丧丧丧丧乄且丧丧丧丧丧丧丧丧丧両両両両両両丏丵両両両") ⟫ʷ ≈ ⟪ (ℓ "両両両両両両丏丵両両両丧丧丧丧丧丧乄且丧丧丧丧丧丧丧丧丧") ⟫ʷ
+wn00559 b = lw3 b (ℓ "丧丧丧丧丧丧乄且丧丧丧丧丧丧丧丧丧両両両両両両丏丵両両両") (ℓ "両両両両両両丏丵両両両丧丧丧丧丧丧乄且丧丧丧丧丧丧丧丧丧") tt tt Eq.refl
+wn00560 : Base 3 → ⟪ (ℓ "丽丽丽乔丽丽乖丶丶丶丶丶丶乇且丶丶丶丶丶丶丶丶丶乖丶丶丶乇丶丶丞举乕举举丞") ⟫ʷ ≈ ⟪ (ℓ "丞举乕举举丞丽丽丽乔丽丽乖丶丶丶丶丶丶乇且丶丶丶丶丶丶丶丶丶乖丶丶丶乇丶丶") ⟫ʷ
+wn00560 b = lw0 b (ℓ "丽丽丽乔丽丽乖丶丶丶丶丶丶乇且丶丶丶丶丶丶丶丶丶乖丶丶丶乇丶丶丞举乕举举丞") (ℓ "丞举乕举举丞丽丽丽乔丽丽乖丶丶丶丶丶丶乇且丶丶丶丶丶丶丶丶丶乖丶丶丶乇丶丶") tt tt Eq.refl

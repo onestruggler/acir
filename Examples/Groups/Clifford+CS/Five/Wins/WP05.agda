@@ -11,623 +11,624 @@
 
 module Examples.Groups.Clifford+CS.Five.Wins.WP05 where
 
-open import Data.List using (List ; [] ; _∷_)
-open import Data.Unit using (tt)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 
 open import Examples.Groups.Clifford+CS.Windows using (Base)
 open import Examples.Groups.Clifford+CS.Five.WinSig using (WsL)
 open import Examples.Groups.Clifford+CS.Five.Chain
 open import Examples.Groups.Clifford+CS.Five.Resps using (pw0 ; pw1 ; pw2 ; pw3 ; pw4)
+open import Examples.Groups.Clifford+CS.Five.Str using (ℓ)
 
-wp0919 : Base 4 → WsL → ⟪ (CCZ124 ∷ CS01 ∷ []) ⟫ʷ ≈ ⟪ (CS01 ∷ CCZ124 ∷ []) ⟫ʷ
-wp0919 c4 L = pw3 c4 L (CCZ124 ∷ CS01 ∷ []) (CS01 ∷ CCZ124 ∷ []) tt tt Eq.refl
+wp0919 : Base 4 → WsL → ⟪ (ℓ "亨丨") ⟫ʷ ≈ ⟪ (ℓ "丨亨") ⟫ʷ
+wp0919 c4 L = pw3 c4 L (ℓ "亨丨") (ℓ "丨亨") tt tt Eq.refl
 
-wp0920 : Base 4 → WsL → ⟪ (CCZ023 ∷ CX43 ∷ CCZ024 ∷ []) ⟫ʷ ≈ ⟪ (CX43 ∷ CCZ023 ∷ []) ⟫ʷ
-wp0920 c4 L = pw1 c4 L (CCZ023 ∷ CX43 ∷ CCZ024 ∷ []) (CX43 ∷ CCZ023 ∷ []) tt tt Eq.refl
+wp0920 : Base 4 → WsL → ⟪ (ℓ "亘争亜") ⟫ʷ ≈ ⟪ (ℓ "争亘") ⟫ʷ
+wp0920 c4 L = pw1 c4 L (ℓ "亘争亜") (ℓ "争亘") tt tt Eq.refl
 
-wp0921 : Base 4 → WsL → ⟪ (CCZ024 ∷ Toff214 ∷ []) ⟫ʷ ≈ ⟪ (Toff214 ∷ CCZ024 ∷ CCZ014 ∷ []) ⟫ʷ
-wp0921 c4 L = pw3 c4 L (CCZ024 ∷ Toff214 ∷ []) (Toff214 ∷ CCZ024 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp0921 : Base 4 → WsL → ⟪ (ℓ "亜亪") ⟫ʷ ≈ ⟪ (ℓ "亪亜五") ⟫ʷ
+wp0921 c4 L = pw3 c4 L (ℓ "亜亪") (ℓ "亪亜五") tt tt Eq.refl
 
-wp0922 : Base 4 → WsL → ⟪ (CX43 ∷ CCZ024 ∷ CCZ024 ∷ []) ⟫ʷ ≈ ⟪ (CX43 ∷ []) ⟫ʷ
-wp0922 c4 L = pw1 c4 L (CX43 ∷ CCZ024 ∷ CCZ024 ∷ []) (CX43 ∷ []) tt tt Eq.refl
+wp0922 : Base 4 → WsL → ⟪ (ℓ "争亜亜") ⟫ʷ ≈ ⟪ (ℓ "争") ⟫ʷ
+wp0922 c4 L = pw1 c4 L (ℓ "争亜亜") (ℓ "争") tt tt Eq.refl
 
-wp0923 : Base 4 → WsL → ⟪ (CS01 ∷ Toff214 ∷ []) ⟫ʷ ≈ ⟪ (Toff214 ∷ CS01 ∷ []) ⟫ʷ
-wp0923 c4 L = pw3 c4 L (CS01 ∷ Toff214 ∷ []) (Toff214 ∷ CS01 ∷ []) tt tt Eq.refl
+wp0923 : Base 4 → WsL → ⟪ (ℓ "丨亪") ⟫ʷ ≈ ⟪ (ℓ "亪丨") ⟫ʷ
+wp0923 c4 L = pw3 c4 L (ℓ "丨亪") (ℓ "亪丨") tt tt Eq.refl
 
-wp0924 : Base 4 → WsL → ⟪ (CCZ014 ∷ CCZ013 ∷ CCZ014 ∷ CCZ013 ∷ CCZ014 ∷ []) ⟫ʷ ≈ ⟪ (CCZ014 ∷ []) ⟫ʷ
-wp0924 c4 L = pw2 c4 L (CCZ014 ∷ CCZ013 ∷ CCZ014 ∷ CCZ013 ∷ CCZ014 ∷ []) (CCZ014 ∷ []) tt tt Eq.refl
+wp0924 : Base 4 → WsL → ⟪ (ℓ "五亐五亐五") ⟫ʷ ≈ ⟪ (ℓ "五") ⟫ʷ
+wp0924 c4 L = pw2 c4 L (ℓ "五亐五亐五") (ℓ "五") tt tt Eq.refl
 
-wp0925 : Base 4 → WsL → ⟪ (CCZ013 ∷ CK40 ∷ CCZ013 ∷ CCZ013 ∷ []) ⟫ʷ ≈ ⟪ (CCZ013 ∷ CK40 ∷ []) ⟫ʷ
-wp0925 c4 L = pw2 c4 L (CCZ013 ∷ CK40 ∷ CCZ013 ∷ CCZ013 ∷ []) (CCZ013 ∷ CK40 ∷ []) tt tt Eq.refl
+wp0925 : Base 4 → WsL → ⟪ (ℓ "亐亁亐亐") ⟫ʷ ≈ ⟪ (ℓ "亐亁") ⟫ʷ
+wp0925 c4 L = pw2 c4 L (ℓ "亐亁亐亐") (ℓ "亐亁") tt tt Eq.refl
 
-wp0926 : Base 4 → WsL → ⟪ (CCZ024 ∷ K0 ∷ []) ⟫ʷ ≈ ⟪ (K0 ∷ Toff024 ∷ CCZ024 ∷ CCZ024 ∷ []) ⟫ʷ
-wp0926 c4 L = pw1 c4 L (CCZ024 ∷ K0 ∷ []) (K0 ∷ Toff024 ∷ CCZ024 ∷ CCZ024 ∷ []) tt tt Eq.refl
+wp0926 : Base 4 → WsL → ⟪ (ℓ "亜丌") ⟫ʷ ≈ ⟪ (ℓ "丌亝亜亜") ⟫ʷ
+wp0926 c4 L = pw1 c4 L (ℓ "亜丌") (ℓ "丌亝亜亜") tt tt Eq.refl
 
-wp0927 : Base 4 → WsL → ⟪ (CCZ024 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CZ02 ∷ CK40 ∷ CZ02 ∷ CCZ024 ∷ []) ⟫ʷ
-wp0927 c4 L = pw3 c4 L (CCZ024 ∷ CK40 ∷ []) (CZ02 ∷ CK40 ∷ CZ02 ∷ CCZ024 ∷ []) tt tt Eq.refl
+wp0927 : Base 4 → WsL → ⟪ (ℓ "亜亁") ⟫ʷ ≈ ⟪ (ℓ "丱亁丱亜") ⟫ʷ
+wp0927 c4 L = pw3 c4 L (ℓ "亜亁") (ℓ "丱亁丱亜") tt tt Eq.refl
 
-wp0928 : Base 4 → WsL → ⟪ (K0 ∷ CK40 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (K0 ∷ Toff024 ∷ CCZ024 ∷ CZ02 ∷ CK40 ∷ CZ02 ∷ S4 ∷ []) ⟫ʷ
-wp0928 c4 L = pw3 c4 L (K0 ∷ CK40 ∷ S4 ∷ []) (K0 ∷ Toff024 ∷ CCZ024 ∷ CZ02 ∷ CK40 ∷ CZ02 ∷ S4 ∷ []) tt tt Eq.refl
+wp0928 : Base 4 → WsL → ⟪ (ℓ "丌亁丢") ⟫ʷ ≈ ⟪ (ℓ "丌亝亜丱亁丱丢") ⟫ʷ
+wp0928 c4 L = pw3 c4 L (ℓ "丌亁丢") (ℓ "丌亝亜丱亁丱丢") tt tt Eq.refl
 
-wp0929 : Base 4 → WsL → ⟪ (CCZ013 ∷ CK40 ∷ CCZ013 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CCZ013 ∷ K0 ∷ CK40 ∷ S4 ∷ CCZ013 ∷ []) ⟫ʷ
-wp0929 c4 L = pw2 c4 L (CCZ013 ∷ CK40 ∷ CCZ013 ∷ X4 ∷ []) (X4 ∷ CCZ013 ∷ K0 ∷ CK40 ∷ S4 ∷ CCZ013 ∷ []) tt tt Eq.refl
+wp0929 : Base 4 → WsL → ⟪ (ℓ "亐亁亐並") ⟫ʷ ≈ ⟪ (ℓ "並亐丌亁丢亐") ⟫ʷ
+wp0929 c4 L = pw2 c4 L (ℓ "亐亁亐並") (ℓ "並亐丌亁丢亐") tt tt Eq.refl
 
-wp0930 : Base 4 → WsL → ⟪ (CCZ013 ∷ CS04 ∷ CS04 ∷ []) ⟫ʷ ≈ ⟪ (CS04 ∷ CS04 ∷ CCZ013 ∷ []) ⟫ʷ
-wp0930 c4 L = pw2 c4 L (CCZ013 ∷ CS04 ∷ CS04 ∷ []) (CS04 ∷ CS04 ∷ CCZ013 ∷ []) tt tt Eq.refl
+wp0930 : Base 4 → WsL → ⟪ (ℓ "亐丽丽") ⟫ʷ ≈ ⟪ (ℓ "丽丽亐") ⟫ʷ
+wp0930 c4 L = pw2 c4 L (ℓ "亐丽丽") (ℓ "丽丽亐") tt tt Eq.refl
 
-wp0931 : Base 4 → WsL → ⟪ (CK40 ∷ CS04 ∷ CS04 ∷ CK40 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (CX40 ∷ []) ⟫ʷ
-wp0931 c4 L = pw1 c4 L (CK40 ∷ CS04 ∷ CS04 ∷ CK40 ∷ S4 ∷ []) (CX40 ∷ []) tt tt Eq.refl
+wp0931 : Base 4 → WsL → ⟪ (ℓ "亁丽丽亁丢") ⟫ʷ ≈ ⟪ (ℓ "亀") ⟫ʷ
+wp0931 c4 L = pw1 c4 L (ℓ "亁丽丽亁丢") (ℓ "亀") tt tt Eq.refl
 
-wp0932 : Base 4 → WsL → ⟪ (CX40 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff314 ∷ CS03 ∷ CCZ014 ∷ Toff314 ∷ CS03⁻ ∷ CCZ013 ∷ CK40 ∷ CS04 ∷ CS04 ∷ CK40 ∷ CCZ013 ∷ S4 ∷ CS14 ∷ []) ⟫ʷ
-wp0932 c4 L = pw2 c4 L (CX40 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ []) (Toff314 ∷ CS03 ∷ CCZ014 ∷ Toff314 ∷ CS03⁻ ∷ CCZ013 ∷ CK40 ∷ CS04 ∷ CS04 ∷ CK40 ∷ CCZ013 ∷ S4 ∷ CS14 ∷ []) tt tt Eq.refl
+wp0932 : Base 4 → WsL → ⟪ (ℓ "亀亮丶亮丷") ⟫ʷ ≈ ⟪ (ℓ "亮丶五亮丷亐亁丽丽亁亐丢乕") ⟫ʷ
+wp0932 c4 L = pw2 c4 L (ℓ "亀亮丶亮丷") (ℓ "亮丶五亮丷亐亁丽丽亁亐丢乕") tt tt Eq.refl
 
-wp0933 : Base 4 → WsL → ⟪ (CCZ014 ∷ K1 ∷ []) ⟫ʷ ≈ ⟪ (K1 ∷ Toff104 ∷ CCZ014 ∷ CCZ014 ∷ []) ⟫ʷ
-wp0933 c4 L = pw2 c4 L (CCZ014 ∷ K1 ∷ []) (K1 ∷ Toff104 ∷ CCZ014 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp0933 : Base 4 → WsL → ⟪ (ℓ "五丒") ⟫ʷ ≈ ⟪ (ℓ "丒亖五五") ⟫ʷ
+wp0933 c4 L = pw2 c4 L (ℓ "五丒") (ℓ "丒亖五五") tt tt Eq.refl
 
-wp0934 : Base 4 → WsL → ⟪ (CCZ014 ∷ CK41 ∷ []) ⟫ʷ ≈ ⟪ (CZ01 ∷ CK41 ∷ CZ01 ∷ CCZ014 ∷ []) ⟫ʷ
-wp0934 c4 L = pw2 c4 L (CCZ014 ∷ CK41 ∷ []) (CZ01 ∷ CK41 ∷ CZ01 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp0934 : Base 4 → WsL → ⟪ (ℓ "五亄") ⟫ʷ ≈ ⟪ (ℓ "个亄个五") ⟫ʷ
+wp0934 c4 L = pw2 c4 L (ℓ "五亄") (ℓ "个亄个五") tt tt Eq.refl
 
-wp0935 : Base 4 → WsL → ⟪ (K1 ∷ CK41 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (K1 ∷ Toff104 ∷ CCZ014 ∷ CZ01 ∷ CK41 ∷ CZ01 ∷ S4 ∷ []) ⟫ʷ
-wp0935 c4 L = pw2 c4 L (K1 ∷ CK41 ∷ S4 ∷ []) (K1 ∷ Toff104 ∷ CCZ014 ∷ CZ01 ∷ CK41 ∷ CZ01 ∷ S4 ∷ []) tt tt Eq.refl
+wp0935 : Base 4 → WsL → ⟪ (ℓ "丒亄丢") ⟫ʷ ≈ ⟪ (ℓ "丒亖五个亄个丢") ⟫ʷ
+wp0935 c4 L = pw2 c4 L (ℓ "丒亄丢") (ℓ "丒亖五个亄个丢") tt tt Eq.refl
 
-wp0936 : Base 4 → WsL → ⟪ (CCZ024 ∷ K2 ∷ []) ⟫ʷ ≈ ⟪ (K2 ∷ Toff204 ∷ CCZ024 ∷ CCZ024 ∷ []) ⟫ʷ
-wp0936 c4 L = pw1 c4 L (CCZ024 ∷ K2 ∷ []) (K2 ∷ Toff204 ∷ CCZ024 ∷ CCZ024 ∷ []) tt tt Eq.refl
+wp0936 : Base 4 → WsL → ⟪ (ℓ "亜丘") ⟫ʷ ≈ ⟪ (ℓ "丘亞亜亜") ⟫ʷ
+wp0936 c4 L = pw1 c4 L (ℓ "亜丘") (ℓ "丘亞亜亜") tt tt Eq.refl
 
-wp0937 : Base 4 → WsL → ⟪ (CCZ024 ∷ CK42 ∷ []) ⟫ʷ ≈ ⟪ (CZ02 ∷ CK42 ∷ CZ02 ∷ CCZ024 ∷ []) ⟫ʷ
-wp0937 c4 L = pw1 c4 L (CCZ024 ∷ CK42 ∷ []) (CZ02 ∷ CK42 ∷ CZ02 ∷ CCZ024 ∷ []) tt tt Eq.refl
+wp0937 : Base 4 → WsL → ⟪ (ℓ "亜亇") ⟫ʷ ≈ ⟪ (ℓ "丱亇丱亜") ⟫ʷ
+wp0937 c4 L = pw1 c4 L (ℓ "亜亇") (ℓ "丱亇丱亜") tt tt Eq.refl
 
-wp0938 : Base 4 → WsL → ⟪ (K2 ∷ CK42 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (K2 ∷ Toff204 ∷ CCZ024 ∷ CZ02 ∷ CK42 ∷ CZ02 ∷ S4 ∷ []) ⟫ʷ
-wp0938 c4 L = pw1 c4 L (K2 ∷ CK42 ∷ S4 ∷ []) (K2 ∷ Toff204 ∷ CCZ024 ∷ CZ02 ∷ CK42 ∷ CZ02 ∷ S4 ∷ []) tt tt Eq.refl
+wp0938 : Base 4 → WsL → ⟪ (ℓ "丘亇丢") ⟫ʷ ≈ ⟪ (ℓ "丘亞亜丱亇丱丢") ⟫ʷ
+wp0938 c4 L = pw1 c4 L (ℓ "丘亇丢") (ℓ "丘亞亜丱亇丱丢") tt tt Eq.refl
 
-wp0939 : Base 4 → WsL → ⟪ (CX34 ∷ Toff203 ∷ []) ⟫ʷ ≈ ⟪ (Toff203 ∷ CX34 ∷ []) ⟫ʷ
-wp0939 c4 L = pw1 c4 L (CX34 ∷ Toff203 ∷ []) (Toff203 ∷ CX34 ∷ []) tt tt Eq.refl
+wp0939 : Base 4 → WsL → ⟪ (ℓ "乽亚") ⟫ʷ ≈ ⟪ (ℓ "亚乽") ⟫ʷ
+wp0939 c4 L = pw1 c4 L (ℓ "乽亚") (ℓ "亚乽") tt tt Eq.refl
 
-wp0940 : Base 4 → WsL → ⟪ (CX43 ∷ Toff203 ∷ []) ⟫ʷ ≈ ⟪ (Toff203 ∷ CX43 ∷ Toff204 ∷ []) ⟫ʷ
-wp0940 c4 L = pw1 c4 L (CX43 ∷ Toff203 ∷ []) (Toff203 ∷ CX43 ∷ Toff204 ∷ []) tt tt Eq.refl
+wp0940 : Base 4 → WsL → ⟪ (ℓ "争亚") ⟫ʷ ≈ ⟪ (ℓ "亚争亞") ⟫ʷ
+wp0940 c4 L = pw1 c4 L (ℓ "争亚") (ℓ "亚争亞") tt tt Eq.refl
 
-wp0941 : Base 4 → WsL → ⟪ (CCZ124 ∷ Toff204 ∷ CCZ014 ∷ []) ⟫ʷ ≈ ⟪ (Toff204 ∷ CCZ124 ∷ []) ⟫ʷ
-wp0941 c4 L = pw3 c4 L (CCZ124 ∷ Toff204 ∷ CCZ014 ∷ []) (Toff204 ∷ CCZ124 ∷ []) tt tt Eq.refl
+wp0941 : Base 4 → WsL → ⟪ (ℓ "亨亞五") ⟫ʷ ≈ ⟪ (ℓ "亞亨") ⟫ʷ
+wp0941 c4 L = pw3 c4 L (ℓ "亨亞五") (ℓ "亞亨") tt tt Eq.refl
 
-wp0942 : Base 4 → WsL → ⟪ (CX04 ∷ Toff203 ∷ []) ⟫ʷ ≈ ⟪ (Toff203 ∷ CX04 ∷ []) ⟫ʷ
-wp0942 c4 L = pw1 c4 L (CX04 ∷ Toff203 ∷ []) (Toff203 ∷ CX04 ∷ []) tt tt Eq.refl
+wp0942 : Base 4 → WsL → ⟪ (ℓ "乁亚") ⟫ʷ ≈ ⟪ (ℓ "亚乁") ⟫ʷ
+wp0942 c4 L = pw1 c4 L (ℓ "乁亚") (ℓ "亚乁") tt tt Eq.refl
 
-wp0943 : Base 4 → WsL → ⟪ (Toff203 ∷ Toff204 ∷ []) ⟫ʷ ≈ ⟪ (Toff204 ∷ Toff203 ∷ []) ⟫ʷ
-wp0943 c4 L = pw1 c4 L (Toff203 ∷ Toff204 ∷ []) (Toff204 ∷ Toff203 ∷ []) tt tt Eq.refl
+wp0943 : Base 4 → WsL → ⟪ (ℓ "亚亞") ⟫ʷ ≈ ⟪ (ℓ "亞亚") ⟫ʷ
+wp0943 c4 L = pw1 c4 L (ℓ "亚亞") (ℓ "亞亚") tt tt Eq.refl
 
-wp0944 : Base 4 → WsL → ⟪ (CX43 ∷ Toff204 ∷ Toff204 ∷ []) ⟫ʷ ≈ ⟪ (CX43 ∷ []) ⟫ʷ
-wp0944 c4 L = pw1 c4 L (CX43 ∷ Toff204 ∷ Toff204 ∷ []) (CX43 ∷ []) tt tt Eq.refl
+wp0944 : Base 4 → WsL → ⟪ (ℓ "争亞亞") ⟫ʷ ≈ ⟪ (ℓ "争") ⟫ʷ
+wp0944 c4 L = pw1 c4 L (ℓ "争亞亞") (ℓ "争") tt tt Eq.refl
 
-wp0945 : Base 4 → WsL → ⟪ (CX43 ∷ Toff204 ∷ []) ⟫ʷ ≈ ⟪ (Toff204 ∷ CX43 ∷ []) ⟫ʷ
-wp0945 c4 L = pw1 c4 L (CX43 ∷ Toff204 ∷ []) (Toff204 ∷ CX43 ∷ []) tt tt Eq.refl
+wp0945 : Base 4 → WsL → ⟪ (ℓ "争亞") ⟫ʷ ≈ ⟪ (ℓ "亞争") ⟫ʷ
+wp0945 c4 L = pw1 c4 L (ℓ "争亞") (ℓ "亞争") tt tt Eq.refl
 
-wp0946 : Base 4 → WsL → ⟪ (CCZ124 ∷ Toff204 ∷ []) ⟫ʷ ≈ ⟪ (Toff204 ∷ CCZ124 ∷ CCZ014 ∷ []) ⟫ʷ
-wp0946 c4 L = pw3 c4 L (CCZ124 ∷ Toff204 ∷ []) (Toff204 ∷ CCZ124 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp0946 : Base 4 → WsL → ⟪ (ℓ "亨亞") ⟫ʷ ≈ ⟪ (ℓ "亞亨五") ⟫ʷ
+wp0946 c4 L = pw3 c4 L (ℓ "亨亞") (ℓ "亞亨五") tt tt Eq.refl
 
-wp0947 : Base 4 → WsL → ⟪ (CX34 ∷ Toff204 ∷ []) ⟫ʷ ≈ ⟪ (Toff204 ∷ CX34 ∷ Toff203 ∷ []) ⟫ʷ
-wp0947 c4 L = pw1 c4 L (CX34 ∷ Toff204 ∷ []) (Toff204 ∷ CX34 ∷ Toff203 ∷ []) tt tt Eq.refl
+wp0947 : Base 4 → WsL → ⟪ (ℓ "乽亞") ⟫ʷ ≈ ⟪ (ℓ "亞乽亚") ⟫ʷ
+wp0947 c4 L = pw1 c4 L (ℓ "乽亞") (ℓ "亞乽亚") tt tt Eq.refl
 
-wp0948 : Base 4 → WsL → ⟪ (CS01 ∷ Toff204 ∷ []) ⟫ʷ ≈ ⟪ (Toff204 ∷ CS01 ∷ []) ⟫ʷ
-wp0948 c4 L = pw3 c4 L (CS01 ∷ Toff204 ∷ []) (Toff204 ∷ CS01 ∷ []) tt tt Eq.refl
+wp0948 : Base 4 → WsL → ⟪ (ℓ "丨亞") ⟫ʷ ≈ ⟪ (ℓ "亞丨") ⟫ʷ
+wp0948 c4 L = pw3 c4 L (ℓ "丨亞") (ℓ "亞丨") tt tt Eq.refl
 
-wp0949 : Base 4 → WsL → ⟪ (CX03 ∷ Toff204 ∷ []) ⟫ʷ ≈ ⟪ (Toff204 ∷ CX03 ∷ []) ⟫ʷ
-wp0949 c4 L = pw1 c4 L (CX03 ∷ Toff204 ∷ []) (Toff204 ∷ CX03 ∷ []) tt tt Eq.refl
+wp0949 : Base 4 → WsL → ⟪ (ℓ "为亞") ⟫ʷ ≈ ⟪ (ℓ "亞为") ⟫ʷ
+wp0949 c4 L = pw1 c4 L (ℓ "为亞") (ℓ "亞为") tt tt Eq.refl
 
-wp0950 : Base 4 → WsL → ⟪ (CX34 ∷ Toff203 ∷ Toff203 ∷ []) ⟫ʷ ≈ ⟪ (CX34 ∷ []) ⟫ʷ
-wp0950 c4 L = pw1 c4 L (CX34 ∷ Toff203 ∷ Toff203 ∷ []) (CX34 ∷ []) tt tt Eq.refl
+wp0950 : Base 4 → WsL → ⟪ (ℓ "乽亚亚") ⟫ʷ ≈ ⟪ (ℓ "乽") ⟫ʷ
+wp0950 c4 L = pw1 c4 L (ℓ "乽亚亚") (ℓ "乽") tt tt Eq.refl
 
-wp0951 : Base 4 → WsL → ⟪ (CCZ013 ∷ CK41 ∷ CCZ013 ∷ CCZ013 ∷ []) ⟫ʷ ≈ ⟪ (CCZ013 ∷ CK41 ∷ []) ⟫ʷ
-wp0951 c4 L = pw2 c4 L (CCZ013 ∷ CK41 ∷ CCZ013 ∷ CCZ013 ∷ []) (CCZ013 ∷ CK41 ∷ []) tt tt Eq.refl
+wp0951 : Base 4 → WsL → ⟪ (ℓ "亐亄亐亐") ⟫ʷ ≈ ⟪ (ℓ "亐亄") ⟫ʷ
+wp0951 c4 L = pw2 c4 L (ℓ "亐亄亐亐") (ℓ "亐亄") tt tt Eq.refl
 
-wp0952 : Base 4 → WsL → ⟪ (CCZ013 ∷ CK41 ∷ CCZ013 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CCZ013 ∷ K1 ∷ CK41 ∷ S4 ∷ CCZ013 ∷ []) ⟫ʷ
-wp0952 c4 L = pw2 c4 L (CCZ013 ∷ CK41 ∷ CCZ013 ∷ X4 ∷ []) (X4 ∷ CCZ013 ∷ K1 ∷ CK41 ∷ S4 ∷ CCZ013 ∷ []) tt tt Eq.refl
+wp0952 : Base 4 → WsL → ⟪ (ℓ "亐亄亐並") ⟫ʷ ≈ ⟪ (ℓ "並亐丒亄丢亐") ⟫ʷ
+wp0952 c4 L = pw2 c4 L (ℓ "亐亄亐並") (ℓ "並亐丒亄丢亐") tt tt Eq.refl
 
-wp0953 : Base 4 → WsL → ⟪ (CCZ013 ∷ CS14 ∷ CS14 ∷ []) ⟫ʷ ≈ ⟪ (CS14 ∷ CS14 ∷ CCZ013 ∷ []) ⟫ʷ
-wp0953 c4 L = pw2 c4 L (CCZ013 ∷ CS14 ∷ CS14 ∷ []) (CS14 ∷ CS14 ∷ CCZ013 ∷ []) tt tt Eq.refl
+wp0953 : Base 4 → WsL → ⟪ (ℓ "亐乕乕") ⟫ʷ ≈ ⟪ (ℓ "乕乕亐") ⟫ʷ
+wp0953 c4 L = pw2 c4 L (ℓ "亐乕乕") (ℓ "乕乕亐") tt tt Eq.refl
 
-wp0954 : Base 4 → WsL → ⟪ (CX41 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff314 ∷ CS03 ∷ CCZ014 ∷ Toff314 ∷ CS03⁻ ∷ CCZ013 ∷ CK41 ∷ CS14 ∷ CS14 ∷ CK41 ∷ CCZ013 ∷ S4 ∷ CS04 ∷ []) ⟫ʷ
-wp0954 c4 L = pw2 c4 L (CX41 ∷ Toff314 ∷ CS03 ∷ Toff314 ∷ CS03⁻ ∷ []) (Toff314 ∷ CS03 ∷ CCZ014 ∷ Toff314 ∷ CS03⁻ ∷ CCZ013 ∷ CK41 ∷ CS14 ∷ CS14 ∷ CK41 ∷ CCZ013 ∷ S4 ∷ CS04 ∷ []) tt tt Eq.refl
+wp0954 : Base 4 → WsL → ⟪ (ℓ "亃亮丶亮丷") ⟫ʷ ≈ ⟪ (ℓ "亮丶五亮丷亐亄乕乕亄亐丢丽") ⟫ʷ
+wp0954 c4 L = pw2 c4 L (ℓ "亃亮丶亮丷") (ℓ "亮丶五亮丷亐亄乕乕亄亐丢丽") tt tt Eq.refl
 
-wp0955 : Base 4 → WsL → ⟪ (CX43 ∷ Toff013 ∷ []) ⟫ʷ ≈ ⟪ (Toff013 ∷ CX43 ∷ Toff014 ∷ []) ⟫ʷ
-wp0955 c4 L = pw2 c4 L (CX43 ∷ Toff013 ∷ []) (Toff013 ∷ CX43 ∷ Toff014 ∷ []) tt tt Eq.refl
+wp0955 : Base 4 → WsL → ⟪ (ℓ "争云") ⟫ʷ ≈ ⟪ (ℓ "云争井") ⟫ʷ
+wp0955 c4 L = pw2 c4 L (ℓ "争云") (ℓ "云争井") tt tt Eq.refl
 
-wp0956 : Base 4 → WsL → ⟪ (CX43 ∷ Toff014 ∷ Toff014 ∷ []) ⟫ʷ ≈ ⟪ (CX43 ∷ []) ⟫ʷ
-wp0956 c4 L = pw2 c4 L (CX43 ∷ Toff014 ∷ Toff014 ∷ []) (CX43 ∷ []) tt tt Eq.refl
+wp0956 : Base 4 → WsL → ⟪ (ℓ "争井井") ⟫ʷ ≈ ⟪ (ℓ "争") ⟫ʷ
+wp0956 c4 L = pw2 c4 L (ℓ "争井井") (ℓ "争") tt tt Eq.refl
 
-wp0957 : Base 4 → WsL → ⟪ (Sw34 ∷ Toff013 ∷ []) ⟫ʷ ≈ ⟪ (Toff014 ∷ Sw34 ∷ []) ⟫ʷ
-wp0957 c4 L = pw2 c4 L (Sw34 ∷ Toff013 ∷ []) (Toff014 ∷ Sw34 ∷ []) tt tt Eq.refl
+wp0957 : Base 4 → WsL → ⟪ (ℓ "乼云") ⟫ʷ ≈ ⟪ (ℓ "井乼") ⟫ʷ
+wp0957 c4 L = pw2 c4 L (ℓ "乼云") (ℓ "井乼") tt tt Eq.refl
 
-wp0958 : Base 4 → WsL → ⟪ (CCZ013 ∷ Sw34 ∷ []) ⟫ʷ ≈ ⟪ (Sw34 ∷ CCZ014 ∷ []) ⟫ʷ
-wp0958 c4 L = pw2 c4 L (CCZ013 ∷ Sw34 ∷ []) (Sw34 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp0958 : Base 4 → WsL → ⟪ (ℓ "亐乼") ⟫ʷ ≈ ⟪ (ℓ "乼五") ⟫ʷ
+wp0958 c4 L = pw2 c4 L (ℓ "亐乼") (ℓ "乼五") tt tt Eq.refl
 
-wp0959 : Base 4 → WsL → ⟪ (Sw34 ∷ Toff104 ∷ []) ⟫ʷ ≈ ⟪ (Toff103 ∷ Sw34 ∷ []) ⟫ʷ
-wp0959 c4 L = pw2 c4 L (Sw34 ∷ Toff104 ∷ []) (Toff103 ∷ Sw34 ∷ []) tt tt Eq.refl
+wp0959 : Base 4 → WsL → ⟪ (ℓ "乼亖") ⟫ʷ ≈ ⟪ (ℓ "互乼") ⟫ʷ
+wp0959 c4 L = pw2 c4 L (ℓ "乼亖") (ℓ "互乼") tt tt Eq.refl
 
-wp0960 : Base 4 → WsL → ⟪ (CX43 ∷ Toff014 ∷ []) ⟫ʷ ≈ ⟪ (Toff014 ∷ CX43 ∷ []) ⟫ʷ
-wp0960 c4 L = pw2 c4 L (CX43 ∷ Toff014 ∷ []) (Toff014 ∷ CX43 ∷ []) tt tt Eq.refl
+wp0960 : Base 4 → WsL → ⟪ (ℓ "争井") ⟫ʷ ≈ ⟪ (ℓ "井争") ⟫ʷ
+wp0960 c4 L = pw2 c4 L (ℓ "争井") (ℓ "井争") tt tt Eq.refl
 
-wp0961 : Base 4 → WsL → ⟪ (CX34 ∷ Toff014 ∷ []) ⟫ʷ ≈ ⟪ (Toff014 ∷ CX34 ∷ Toff013 ∷ []) ⟫ʷ
-wp0961 c4 L = pw2 c4 L (CX34 ∷ Toff014 ∷ []) (Toff014 ∷ CX34 ∷ Toff013 ∷ []) tt tt Eq.refl
+wp0961 : Base 4 → WsL → ⟪ (ℓ "乽井") ⟫ʷ ≈ ⟪ (ℓ "井乽云") ⟫ʷ
+wp0961 c4 L = pw2 c4 L (ℓ "乽井") (ℓ "井乽云") tt tt Eq.refl
 
-wp0962 : Base 4 → WsL → ⟪ (CS12 ∷ Toff014 ∷ []) ⟫ʷ ≈ ⟪ (Toff014 ∷ CS12 ∷ []) ⟫ʷ
-wp0962 c4 L = pw3 c4 L (CS12 ∷ Toff014 ∷ []) (Toff014 ∷ CS12 ∷ []) tt tt Eq.refl
+wp0962 : Base 4 → WsL → ⟪ (ℓ "乇井") ⟫ʷ ≈ ⟪ (ℓ "井乇") ⟫ʷ
+wp0962 c4 L = pw3 c4 L (ℓ "乇井") (ℓ "井乇") tt tt Eq.refl
 
-wp0963 : Base 4 → WsL → ⟪ (CX13 ∷ Toff014 ∷ []) ⟫ʷ ≈ ⟪ (Toff014 ∷ CX13 ∷ []) ⟫ʷ
-wp0963 c4 L = pw2 c4 L (CX13 ∷ Toff014 ∷ []) (Toff014 ∷ CX13 ∷ []) tt tt Eq.refl
+wp0963 : Base 4 → WsL → ⟪ (ℓ "乒井") ⟫ʷ ≈ ⟪ (ℓ "井乒") ⟫ʷ
+wp0963 c4 L = pw2 c4 L (ℓ "乒井") (ℓ "井乒") tt tt Eq.refl
 
-wp0964 : Base 4 → WsL → ⟪ (CX34 ∷ Toff013 ∷ Toff013 ∷ []) ⟫ʷ ≈ ⟪ (CX34 ∷ []) ⟫ʷ
-wp0964 c4 L = pw2 c4 L (CX34 ∷ Toff013 ∷ Toff013 ∷ []) (CX34 ∷ []) tt tt Eq.refl
+wp0964 : Base 4 → WsL → ⟪ (ℓ "乽云云") ⟫ʷ ≈ ⟪ (ℓ "乽") ⟫ʷ
+wp0964 c4 L = pw2 c4 L (ℓ "乽云云") (ℓ "乽") tt tt Eq.refl
 
-wp0965 : Base 4 → WsL → ⟪ (Sw34 ∷ Toff014 ∷ []) ⟫ʷ ≈ ⟪ (Toff013 ∷ Sw34 ∷ []) ⟫ʷ
-wp0965 c4 L = pw2 c4 L (Sw34 ∷ Toff014 ∷ []) (Toff013 ∷ Sw34 ∷ []) tt tt Eq.refl
+wp0965 : Base 4 → WsL → ⟪ (ℓ "乼井") ⟫ʷ ≈ ⟪ (ℓ "云乼") ⟫ʷ
+wp0965 c4 L = pw2 c4 L (ℓ "乼井") (ℓ "云乼") tt tt Eq.refl
 
-wp0966 : Base 4 → WsL → ⟪ (Sw34 ∷ Toff103 ∷ []) ⟫ʷ ≈ ⟪ (Toff104 ∷ Sw34 ∷ []) ⟫ʷ
-wp0966 c4 L = pw2 c4 L (Sw34 ∷ Toff103 ∷ []) (Toff104 ∷ Sw34 ∷ []) tt tt Eq.refl
+wp0966 : Base 4 → WsL → ⟪ (ℓ "乼互") ⟫ʷ ≈ ⟪ (ℓ "亖乼") ⟫ʷ
+wp0966 c4 L = pw2 c4 L (ℓ "乼互") (ℓ "亖乼") tt tt Eq.refl
 
-wp0967 : Base 4 → WsL → ⟪ (CCZ023 ∷ Toff024 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ CCZ023 ∷ CCZ234 ∷ []) ⟫ʷ
-wp0967 c4 L = pw1 c4 L (CCZ023 ∷ Toff024 ∷ []) (Toff024 ∷ CCZ023 ∷ CCZ234 ∷ []) tt tt Eq.refl
+wp0967 : Base 4 → WsL → ⟪ (ℓ "亘亝") ⟫ʷ ≈ ⟪ (ℓ "亝亘亰") ⟫ʷ
+wp0967 c4 L = pw1 c4 L (ℓ "亘亝") (ℓ "亝亘亰") tt tt Eq.refl
 
-wp0968 : Base 4 → WsL → ⟪ (CX12 ∷ Toff024 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ CX12 ∷ Toff014 ∷ []) ⟫ʷ
-wp0968 c4 L = pw3 c4 L (CX12 ∷ Toff024 ∷ []) (Toff024 ∷ CX12 ∷ Toff014 ∷ []) tt tt Eq.refl
+wp0968 : Base 4 → WsL → ⟪ (ℓ "之亝") ⟫ʷ ≈ ⟪ (ℓ "亝之井") ⟫ʷ
+wp0968 c4 L = pw3 c4 L (ℓ "之亝") (ℓ "亝之井") tt tt Eq.refl
 
-wp0969 : Base 4 → WsL → ⟪ (CCZ013 ∷ Toff014 ∷ CCZ134 ∷ []) ⟫ʷ ≈ ⟪ (Toff014 ∷ CCZ013 ∷ []) ⟫ʷ
-wp0969 c4 L = pw2 c4 L (CCZ013 ∷ Toff014 ∷ CCZ134 ∷ []) (Toff014 ∷ CCZ013 ∷ []) tt tt Eq.refl
+wp0969 : Base 4 → WsL → ⟪ (ℓ "亐井京") ⟫ʷ ≈ ⟪ (ℓ "井亐") ⟫ʷ
+wp0969 c4 L = pw2 c4 L (ℓ "亐井京") (ℓ "井亐") tt tt Eq.refl
 
-wp0970 : Base 4 → WsL → ⟪ (CS34 ∷ Toff024 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ CS34 ∷ []) ⟫ʷ
-wp0970 c4 L = pw1 c4 L (CS34 ∷ Toff024 ∷ []) (Toff024 ∷ CS34 ∷ []) tt tt Eq.refl
+wp0970 : Base 4 → WsL → ⟪ (ℓ "乹亝") ⟫ʷ ≈ ⟪ (ℓ "亝乹") ⟫ʷ
+wp0970 c4 L = pw1 c4 L (ℓ "乹亝") (ℓ "亝乹") tt tt Eq.refl
 
-wp0971 : Base 4 → WsL → ⟪ (CX12 ∷ Toff014 ∷ Toff014 ∷ []) ⟫ʷ ≈ ⟪ (CX12 ∷ []) ⟫ʷ
-wp0971 c4 L = pw3 c4 L (CX12 ∷ Toff014 ∷ Toff014 ∷ []) (CX12 ∷ []) tt tt Eq.refl
+wp0971 : Base 4 → WsL → ⟪ (ℓ "之井井") ⟫ʷ ≈ ⟪ (ℓ "之") ⟫ʷ
+wp0971 c4 L = pw3 c4 L (ℓ "之井井") (ℓ "之") tt tt Eq.refl
 
-wp0972 : Base 4 → WsL → ⟪ (Sw12 ∷ Toff024 ∷ []) ⟫ʷ ≈ ⟪ (Toff014 ∷ Sw12 ∷ []) ⟫ʷ
-wp0972 c4 L = pw3 c4 L (Sw12 ∷ Toff024 ∷ []) (Toff014 ∷ Sw12 ∷ []) tt tt Eq.refl
+wp0972 : Base 4 → WsL → ⟪ (ℓ "乊亝") ⟫ʷ ≈ ⟪ (ℓ "井乊") ⟫ʷ
+wp0972 c4 L = pw3 c4 L (ℓ "乊亝") (ℓ "井乊") tt tt Eq.refl
 
-wp0973 : Base 4 → WsL → ⟪ (Sw12 ∷ Toff401 ∷ []) ⟫ʷ ≈ ⟪ (Toff402 ∷ Sw12 ∷ []) ⟫ʷ
-wp0973 c4 L = pw3 c4 L (Sw12 ∷ Toff401 ∷ []) (Toff402 ∷ Sw12 ∷ []) tt tt Eq.refl
+wp0973 : Base 4 → WsL → ⟪ (ℓ "乊亗") ⟫ʷ ≈ ⟪ (ℓ "亟乊") ⟫ʷ
+wp0973 c4 L = pw3 c4 L (ℓ "乊亗") (ℓ "亟乊") tt tt Eq.refl
 
-wp0974 : Base 4 → WsL → ⟪ (CX14 ∷ Toff012 ∷ []) ⟫ʷ ≈ ⟪ (Toff012 ∷ CX14 ∷ []) ⟫ʷ
-wp0974 c4 L = pw3 c4 L (CX14 ∷ Toff012 ∷ []) (Toff012 ∷ CX14 ∷ []) tt tt Eq.refl
+wp0974 : Base 4 → WsL → ⟪ (ℓ "乙亍") ⟫ʷ ≈ ⟪ (ℓ "亍乙") ⟫ʷ
+wp0974 c4 L = pw3 c4 L (ℓ "乙亍") (ℓ "亍乙") tt tt Eq.refl
 
-wp0975 : Base 4 → WsL → ⟪ (CX41 ∷ Toff012 ∷ []) ⟫ʷ ≈ ⟪ (Toff012 ∷ CX41 ∷ Toff024 ∷ []) ⟫ʷ
-wp0975 c4 L = pw3 c4 L (CX41 ∷ Toff012 ∷ []) (Toff012 ∷ CX41 ∷ Toff024 ∷ []) tt tt Eq.refl
+wp0975 : Base 4 → WsL → ⟪ (ℓ "亃亍") ⟫ʷ ≈ ⟪ (ℓ "亍亃亝") ⟫ʷ
+wp0975 c4 L = pw3 c4 L (ℓ "亃亍") (ℓ "亍亃亝") tt tt Eq.refl
 
-wp0976 : Base 4 → WsL → ⟪ (CCZ034 ∷ Toff024 ∷ CCZ234 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ CCZ034 ∷ []) ⟫ʷ
-wp0976 c4 L = pw1 c4 L (CCZ034 ∷ Toff024 ∷ CCZ234 ∷ []) (Toff024 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp0976 : Base 4 → WsL → ⟪ (ℓ "亠亝亰") ⟫ʷ ≈ ⟪ (ℓ "亝亠") ⟫ʷ
+wp0976 c4 L = pw1 c4 L (ℓ "亠亝亰") (ℓ "亝亠") tt tt Eq.refl
 
-wp0977 : Base 4 → WsL → ⟪ (CX24 ∷ Toff012 ∷ []) ⟫ʷ ≈ ⟪ (Toff012 ∷ CX24 ∷ []) ⟫ʷ
-wp0977 c4 L = pw3 c4 L (CX24 ∷ Toff012 ∷ []) (Toff012 ∷ CX24 ∷ []) tt tt Eq.refl
+wp0977 : Base 4 → WsL → ⟪ (ℓ "乭亍") ⟫ʷ ≈ ⟪ (ℓ "亍乭") ⟫ʷ
+wp0977 c4 L = pw3 c4 L (ℓ "乭亍") (ℓ "亍乭") tt tt Eq.refl
 
-wp0978 : Base 4 → WsL → ⟪ (CX41 ∷ Toff024 ∷ Toff024 ∷ []) ⟫ʷ ≈ ⟪ (CX41 ∷ []) ⟫ʷ
-wp0978 c4 L = pw3 c4 L (CX41 ∷ Toff024 ∷ Toff024 ∷ []) (CX41 ∷ []) tt tt Eq.refl
+wp0978 : Base 4 → WsL → ⟪ (ℓ "亃亝亝") ⟫ʷ ≈ ⟪ (ℓ "亃") ⟫ʷ
+wp0978 c4 L = pw3 c4 L (ℓ "亃亝亝") (ℓ "亃") tt tt Eq.refl
 
-wp0979 : Base 4 → WsL → ⟪ (CCZ034 ∷ K3 ∷ []) ⟫ʷ ≈ ⟪ (K3 ∷ Toff304 ∷ CCZ034 ∷ CCZ034 ∷ []) ⟫ʷ
-wp0979 c4 L = pw1 c4 L (CCZ034 ∷ K3 ∷ []) (K3 ∷ Toff304 ∷ CCZ034 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp0979 : Base 4 → WsL → ⟪ (ℓ "亠丞") ⟫ʷ ≈ ⟪ (ℓ "丞亢亠亠") ⟫ʷ
+wp0979 c4 L = pw1 c4 L (ℓ "亠丞") (ℓ "丞亢亠亠") tt tt Eq.refl
 
-wp0980 : Base 4 → WsL → ⟪ (CCZ034 ∷ CK43 ∷ []) ⟫ʷ ≈ ⟪ (CZ03 ∷ CK43 ∷ CZ03 ∷ CCZ034 ∷ []) ⟫ʷ
-wp0980 c4 L = pw1 c4 L (CCZ034 ∷ CK43 ∷ []) (CZ03 ∷ CK43 ∷ CZ03 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp0980 : Base 4 → WsL → ⟪ (ℓ "亠亊") ⟫ʷ ≈ ⟪ (ℓ "丸亊丸亠") ⟫ʷ
+wp0980 c4 L = pw1 c4 L (ℓ "亠亊") (ℓ "丸亊丸亠") tt tt Eq.refl
 
-wp0981 : Base 4 → WsL → ⟪ (CCZ034 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (S4 ∷ CCZ034 ∷ []) ⟫ʷ
-wp0981 c4 L = pw1 c4 L (CCZ034 ∷ S4 ∷ []) (S4 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp0981 : Base 4 → WsL → ⟪ (ℓ "亠丢") ⟫ʷ ≈ ⟪ (ℓ "丢亠") ⟫ʷ
+wp0981 c4 L = pw1 c4 L (ℓ "亠丢") (ℓ "丢亠") tt tt Eq.refl
 
-wp0982 : Base 4 → WsL → ⟪ (K3 ∷ CK43 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (K3 ∷ Toff304 ∷ CCZ034 ∷ CZ03 ∷ CK43 ∷ CZ03 ∷ S4 ∷ []) ⟫ʷ
-wp0982 c4 L = pw1 c4 L (K3 ∷ CK43 ∷ S4 ∷ []) (K3 ∷ Toff304 ∷ CCZ034 ∷ CZ03 ∷ CK43 ∷ CZ03 ∷ S4 ∷ []) tt tt Eq.refl
+wp0982 : Base 4 → WsL → ⟪ (ℓ "丞亊丢") ⟫ʷ ≈ ⟪ (ℓ "丞亢亠丸亊丸丢") ⟫ʷ
+wp0982 c4 L = pw1 c4 L (ℓ "丞亊丢") (ℓ "丞亢亠丸亊丸丢") tt tt Eq.refl
 
-wp0983 : Base 4 → WsL → ⟪ (CX23 ∷ Toff034 ∷ []) ⟫ʷ ≈ ⟪ (Toff034 ∷ CX23 ∷ Toff024 ∷ []) ⟫ʷ
-wp0983 c4 L = pw1 c4 L (CX23 ∷ Toff034 ∷ []) (Toff034 ∷ CX23 ∷ Toff024 ∷ []) tt tt Eq.refl
+wp0983 : Base 4 → WsL → ⟪ (ℓ "书亡") ⟫ʷ ≈ ⟪ (ℓ "亡书亝") ⟫ʷ
+wp0983 c4 L = pw1 c4 L (ℓ "书亡") (ℓ "亡书亝") tt tt Eq.refl
 
-wp0984 : Base 4 → WsL → ⟪ (CCZ012 ∷ Toff024 ∷ CCZ124 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ CCZ012 ∷ []) ⟫ʷ
-wp0984 c4 L = pw3 c4 L (CCZ012 ∷ Toff024 ∷ CCZ124 ∷ []) (Toff024 ∷ CCZ012 ∷ []) tt tt Eq.refl
+wp0984 : Base 4 → WsL → ⟪ (ℓ "二亝亨") ⟫ʷ ≈ ⟪ (ℓ "亝二") ⟫ʷ
+wp0984 c4 L = pw3 c4 L (ℓ "二亝亨") (ℓ "亝二") tt tt Eq.refl
 
-wp0985 : Base 4 → WsL → ⟪ (CX23 ∷ Toff024 ∷ Toff024 ∷ []) ⟫ʷ ≈ ⟪ (CX23 ∷ []) ⟫ʷ
-wp0985 c4 L = pw1 c4 L (CX23 ∷ Toff024 ∷ Toff024 ∷ []) (CX23 ∷ []) tt tt Eq.refl
+wp0985 : Base 4 → WsL → ⟪ (ℓ "书亝亝") ⟫ʷ ≈ ⟪ (ℓ "书") ⟫ʷ
+wp0985 c4 L = pw1 c4 L (ℓ "书亝亝") (ℓ "书") tt tt Eq.refl
 
-wp0986 : Base 4 → WsL → ⟪ (Sw23 ∷ Toff034 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ Sw23 ∷ []) ⟫ʷ
-wp0986 c4 L = pw1 c4 L (Sw23 ∷ Toff034 ∷ []) (Toff024 ∷ Sw23 ∷ []) tt tt Eq.refl
+wp0986 : Base 4 → WsL → ⟪ (ℓ "乥亡") ⟫ʷ ≈ ⟪ (ℓ "亝乥") ⟫ʷ
+wp0986 c4 L = pw1 c4 L (ℓ "乥亡") (ℓ "亝乥") tt tt Eq.refl
 
-wp0987 : Base 4 → WsL → ⟪ (Sw23 ∷ Toff402 ∷ []) ⟫ʷ ≈ ⟪ (Toff403 ∷ Sw23 ∷ []) ⟫ʷ
-wp0987 c4 L = pw1 c4 L (Sw23 ∷ Toff402 ∷ []) (Toff403 ∷ Sw23 ∷ []) tt tt Eq.refl
+wp0987 : Base 4 → WsL → ⟪ (ℓ "乥亟") ⟫ʷ ≈ ⟪ (ℓ "亣乥") ⟫ʷ
+wp0987 c4 L = pw1 c4 L (ℓ "乥亟") (ℓ "亣乥") tt tt Eq.refl
 
-wp0988 : Base 4 → WsL → ⟪ (CCZ013 ∷ []) ⟫ʷ ≈ ⟪ (CCZ134 ∷ Toff413 ∷ CZ04 ∷ Toff413 ∷ CCZ134 ∷ CZ04 ∷ []) ⟫ʷ
-wp0988 c4 L = pw2 c4 L (CCZ013 ∷ []) (CCZ134 ∷ Toff413 ∷ CZ04 ∷ Toff413 ∷ CCZ134 ∷ CZ04 ∷ []) tt tt Eq.refl
+wp0988 : Base 4 → WsL → ⟪ (ℓ "亐") ⟫ʷ ≈ ⟪ (ℓ "京亯丿亯京丿") ⟫ʷ
+wp0988 c4 L = pw2 c4 L (ℓ "亐") (ℓ "京亯丿亯京丿") tt tt Eq.refl
 
-wp0989 : Base 4 → WsL → ⟪ (CCZ023 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ CCZ023 ∷ CCZ024 ∷ []) ⟫ʷ
-wp0989 c4 L = pw1 c4 L (CCZ023 ∷ Toff324 ∷ []) (Toff324 ∷ CCZ023 ∷ CCZ024 ∷ []) tt tt Eq.refl
+wp0989 : Base 4 → WsL → ⟪ (ℓ "亘亲") ⟫ʷ ≈ ⟪ (ℓ "亲亘亜") ⟫ʷ
+wp0989 c4 L = pw1 c4 L (ℓ "亘亲") (ℓ "亲亘亜") tt tt Eq.refl
 
-wp0990 : Base 4 → WsL → ⟪ (CCZ013 ∷ Toff314 ∷ CCZ014 ∷ []) ⟫ʷ ≈ ⟪ (Toff314 ∷ CCZ013 ∷ []) ⟫ʷ
-wp0990 c4 L = pw2 c4 L (CCZ013 ∷ Toff314 ∷ CCZ014 ∷ []) (Toff314 ∷ CCZ013 ∷ []) tt tt Eq.refl
+wp0990 : Base 4 → WsL → ⟪ (ℓ "亐亮五") ⟫ʷ ≈ ⟪ (ℓ "亮亐") ⟫ʷ
+wp0990 c4 L = pw2 c4 L (ℓ "亐亮五") (ℓ "亮亐") tt tt Eq.refl
 
-wp0991 : Base 4 → WsL → ⟪ (CCZ024 ∷ CCZ014 ∷ CCZ024 ∷ CCZ014 ∷ CCZ024 ∷ []) ⟫ʷ ≈ ⟪ (CCZ024 ∷ []) ⟫ʷ
-wp0991 c4 L = pw3 c4 L (CCZ024 ∷ CCZ014 ∷ CCZ024 ∷ CCZ014 ∷ CCZ024 ∷ []) (CCZ024 ∷ []) tt tt Eq.refl
+wp0991 : Base 4 → WsL → ⟪ (ℓ "亜五亜五亜") ⟫ʷ ≈ ⟪ (ℓ "亜") ⟫ʷ
+wp0991 c4 L = pw3 c4 L (ℓ "亜五亜五亜") (ℓ "亜") tt tt Eq.refl
 
-wp0992 : Base 4 → WsL → ⟪ (CCZ023 ∷ []) ⟫ʷ ≈ ⟪ (CCZ234 ∷ Toff423 ∷ CZ04 ∷ Toff423 ∷ CCZ234 ∷ CZ04 ∷ []) ⟫ʷ
-wp0992 c4 L = pw1 c4 L (CCZ023 ∷ []) (CCZ234 ∷ Toff423 ∷ CZ04 ∷ Toff423 ∷ CCZ234 ∷ CZ04 ∷ []) tt tt Eq.refl
+wp0992 : Base 4 → WsL → ⟪ (ℓ "亘") ⟫ʷ ≈ ⟪ (ℓ "亰亳丿亳亰丿") ⟫ʷ
+wp0992 c4 L = pw1 c4 L (ℓ "亘") (ℓ "亰亳丿亳亰丿") tt tt Eq.refl
 
-wp0993 : Base 4 → WsL → ⟪ (CCZ023 ∷ Toff024 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ CCZ234 ∷ CCZ023 ∷ []) ⟫ʷ
-wp0993 c4 L = pw1 c4 L (CCZ023 ∷ Toff024 ∷ []) (Toff024 ∷ CCZ234 ∷ CCZ023 ∷ []) tt tt Eq.refl
+wp0993 : Base 4 → WsL → ⟪ (ℓ "亘亝") ⟫ʷ ≈ ⟪ (ℓ "亝亰亘") ⟫ʷ
+wp0993 c4 L = pw1 c4 L (ℓ "亘亝") (ℓ "亝亰亘") tt tt Eq.refl
 
-wp0994 : Base 4 → WsL → ⟪ (CCZ234 ∷ CCZ023 ∷ Toff024 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ CCZ023 ∷ []) ⟫ʷ
-wp0994 c4 L = pw1 c4 L (CCZ234 ∷ CCZ023 ∷ Toff024 ∷ []) (Toff024 ∷ CCZ023 ∷ []) tt tt Eq.refl
+wp0994 : Base 4 → WsL → ⟪ (ℓ "亰亘亝") ⟫ʷ ≈ ⟪ (ℓ "亝亘") ⟫ʷ
+wp0994 c4 L = pw1 c4 L (ℓ "亰亘亝") (ℓ "亝亘") tt tt Eq.refl
 
-wp0995 : Base 4 → WsL → ⟪ (CS14⁻ ∷ Toff024 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ CS14⁻ ∷ []) ⟫ʷ
-wp0995 c4 L = pw3 c4 L (CS14⁻ ∷ Toff024 ∷ []) (Toff024 ∷ CS14⁻ ∷ []) tt tt Eq.refl
+wp0995 : Base 4 → WsL → ⟪ (ℓ "乖亝") ⟫ʷ ≈ ⟪ (ℓ "亝乖") ⟫ʷ
+wp0995 c4 L = pw3 c4 L (ℓ "乖亝") (ℓ "亝乖") tt tt Eq.refl
 
-wp0996 : Base 4 → WsL → ⟪ (CCZ014 ∷ CCZ124 ∷ CCZ014 ∷ []) ⟫ʷ ≈ ⟪ (CCZ124 ∷ []) ⟫ʷ
-wp0996 c4 L = pw3 c4 L (CCZ014 ∷ CCZ124 ∷ CCZ014 ∷ []) (CCZ124 ∷ []) tt tt Eq.refl
+wp0996 : Base 4 → WsL → ⟪ (ℓ "五亨五") ⟫ʷ ≈ ⟪ (ℓ "亨") ⟫ʷ
+wp0996 c4 L = pw3 c4 L (ℓ "五亨五") (ℓ "亨") tt tt Eq.refl
 
-wp0997 : Base 4 → WsL → ⟪ (CCZ013 ∷ Toff314 ∷ []) ⟫ʷ ≈ ⟪ (Toff314 ∷ CCZ013 ∷ CCZ014 ∷ []) ⟫ʷ
-wp0997 c4 L = pw2 c4 L (CCZ013 ∷ Toff314 ∷ []) (Toff314 ∷ CCZ013 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp0997 : Base 4 → WsL → ⟪ (ℓ "亐亮") ⟫ʷ ≈ ⟪ (ℓ "亮亐五") ⟫ʷ
+wp0997 c4 L = pw2 c4 L (ℓ "亐亮") (ℓ "亮亐五") tt tt Eq.refl
 
-wp0998 : Base 4 → WsL → ⟪ (CS04 ∷ Toff314 ∷ []) ⟫ʷ ≈ ⟪ (Toff314 ∷ CS04 ∷ []) ⟫ʷ
-wp0998 c4 L = pw2 c4 L (CS04 ∷ Toff314 ∷ []) (Toff314 ∷ CS04 ∷ []) tt tt Eq.refl
+wp0998 : Base 4 → WsL → ⟪ (ℓ "丽亮") ⟫ʷ ≈ ⟪ (ℓ "亮丽") ⟫ʷ
+wp0998 c4 L = pw2 c4 L (ℓ "丽亮") (ℓ "亮丽") tt tt Eq.refl
 
-wp0999 : Base 4 → WsL → ⟪ (CX03 ∷ Toff024 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ Toff324 ∷ CX03 ∷ []) ⟫ʷ
-wp0999 c4 L = pw1 c4 L (CX03 ∷ Toff024 ∷ []) (Toff024 ∷ Toff324 ∷ CX03 ∷ []) tt tt Eq.refl
+wp0999 : Base 4 → WsL → ⟪ (ℓ "为亝") ⟫ʷ ≈ ⟪ (ℓ "亝亲为") ⟫ʷ
+wp0999 c4 L = pw1 c4 L (ℓ "为亝") (ℓ "亝亲为") tt tt Eq.refl
 
-wp1000 : Base 4 → WsL → ⟪ (CCZ124 ∷ CZ01 ∷ []) ⟫ʷ ≈ ⟪ (CZ01 ∷ CCZ124 ∷ []) ⟫ʷ
-wp1000 c4 L = pw3 c4 L (CCZ124 ∷ CZ01 ∷ []) (CZ01 ∷ CCZ124 ∷ []) tt tt Eq.refl
+wp1000 : Base 4 → WsL → ⟪ (ℓ "亨个") ⟫ʷ ≈ ⟪ (ℓ "个亨") ⟫ʷ
+wp1000 c4 L = pw3 c4 L (ℓ "亨个") (ℓ "个亨") tt tt Eq.refl
 
-wp1001 : Base 4 → WsL → ⟪ (Toff024 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ Toff024 ∷ []) ⟫ʷ
-wp1001 c4 L = pw1 c4 L (Toff024 ∷ Toff324 ∷ []) (Toff324 ∷ Toff024 ∷ []) tt tt Eq.refl
+wp1001 : Base 4 → WsL → ⟪ (ℓ "亝亲") ⟫ʷ ≈ ⟪ (ℓ "亲亝") ⟫ʷ
+wp1001 c4 L = pw1 c4 L (ℓ "亝亲") (ℓ "亲亝") tt tt Eq.refl
 
-wp1002 : Base 4 → WsL → ⟪ (K0 ∷ CS02 ∷ CX42 ∷ CS02⁻ ∷ CX42 ∷ CS04 ∷ K0⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ []) ⟫ʷ
-wp1002 c4 L = pw1 c4 L (K0 ∷ CS02 ∷ CX42 ∷ CS02⁻ ∷ CX42 ∷ CS04 ∷ K0⁻ ∷ []) (Toff024 ∷ []) tt tt Eq.refl
+wp1002 : Base 4 → WsL → ⟪ (ℓ "丌丯了丰了丽不") ⟫ʷ ≈ ⟪ (ℓ "亝") ⟫ʷ
+wp1002 c4 L = pw1 c4 L (ℓ "丌丯了丰了丽不") (ℓ "亝") tt tt Eq.refl
 
-wp1003 : Base 4 → WsL → ⟪ (CCZ134 ∷ CS04 ∷ []) ⟫ʷ ≈ ⟪ (CS04 ∷ CCZ134 ∷ []) ⟫ʷ
-wp1003 c4 L = pw2 c4 L (CCZ134 ∷ CS04 ∷ []) (CS04 ∷ CCZ134 ∷ []) tt tt Eq.refl
+wp1003 : Base 4 → WsL → ⟪ (ℓ "京丽") ⟫ʷ ≈ ⟪ (ℓ "丽京") ⟫ʷ
+wp1003 c4 L = pw2 c4 L (ℓ "京丽") (ℓ "丽京") tt tt Eq.refl
 
-wp1004 : Base 4 → WsL → ⟪ (Toff024 ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (Toff302 ∷ Toff024 ∷ Toff324 ∷ []) ⟫ʷ
-wp1004 c4 L = pw1 c4 L (Toff024 ∷ Toff302 ∷ []) (Toff302 ∷ Toff024 ∷ Toff324 ∷ []) tt tt Eq.refl
+wp1004 : Base 4 → WsL → ⟪ (ℓ "亝些") ⟫ʷ ≈ ⟪ (ℓ "些亝亲") ⟫ʷ
+wp1004 c4 L = pw1 c4 L (ℓ "亝些") (ℓ "些亝亲") tt tt Eq.refl
 
-wp1005 : Base 4 → WsL → ⟪ (CS24⁻ ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (Toff302 ∷ CS24⁻ ∷ []) ⟫ʷ
-wp1005 c4 L = pw1 c4 L (CS24⁻ ∷ Toff302 ∷ []) (Toff302 ∷ CS24⁻ ∷ []) tt tt Eq.refl
+wp1005 : Base 4 → WsL → ⟪ (ℓ "乪些") ⟫ʷ ≈ ⟪ (ℓ "些乪") ⟫ʷ
+wp1005 c4 L = pw1 c4 L (ℓ "乪些") (ℓ "些乪") tt tt Eq.refl
 
-wp1006 : Base 4 → WsL → ⟪ (CS24 ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (Toff302 ∷ CS24 ∷ []) ⟫ʷ
-wp1006 c4 L = pw1 c4 L (CS24 ∷ Toff302 ∷ []) (Toff302 ∷ CS24 ∷ []) tt tt Eq.refl
+wp1006 : Base 4 → WsL → ⟪ (ℓ "乩些") ⟫ʷ ≈ ⟪ (ℓ "些乩") ⟫ʷ
+wp1006 c4 L = pw1 c4 L (ℓ "乩些") (ℓ "些乩") tt tt Eq.refl
 
-wp1007 : Base 4 → WsL → ⟪ (Toff302 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ Toff302 ∷ []) ⟫ʷ
-wp1007 c4 L = pw1 c4 L (Toff302 ∷ Toff324 ∷ []) (Toff324 ∷ Toff302 ∷ []) tt tt Eq.refl
+wp1007 : Base 4 → WsL → ⟪ (ℓ "些亲") ⟫ʷ ≈ ⟪ (ℓ "亲些") ⟫ʷ
+wp1007 c4 L = pw1 c4 L (ℓ "些亲") (ℓ "亲些") tt tt Eq.refl
 
-wp1008 : Base 4 → WsL → ⟪ (Toff024 ∷ Toff324 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ []) ⟫ʷ
-wp1008 c4 L = pw1 c4 L (Toff024 ∷ Toff324 ∷ Toff324 ∷ []) (Toff024 ∷ []) tt tt Eq.refl
+wp1008 : Base 4 → WsL → ⟪ (ℓ "亝亲亲") ⟫ʷ ≈ ⟪ (ℓ "亝") ⟫ʷ
+wp1008 c4 L = pw1 c4 L (ℓ "亝亲亲") (ℓ "亝") tt tt Eq.refl
 
-wp1009 : Base 4 → WsL → ⟪ (CX03 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ CX03 ∷ []) ⟫ʷ
-wp1009 c4 L = pw1 c4 L (CX03 ∷ Toff324 ∷ []) (Toff324 ∷ CX03 ∷ []) tt tt Eq.refl
+wp1009 : Base 4 → WsL → ⟪ (ℓ "为亲") ⟫ʷ ≈ ⟪ (ℓ "亲为") ⟫ʷ
+wp1009 c4 L = pw1 c4 L (ℓ "为亲") (ℓ "亲为") tt tt Eq.refl
 
-wp1010 : Base 4 → WsL → ⟪ (CCZ014 ∷ CX30 ∷ CCZ134 ∷ []) ⟫ʷ ≈ ⟪ (CX30 ∷ CCZ014 ∷ []) ⟫ʷ
-wp1010 c4 L = pw2 c4 L (CCZ014 ∷ CX30 ∷ CCZ134 ∷ []) (CX30 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp1010 : Base 4 → WsL → ⟪ (ℓ "五买京") ⟫ʷ ≈ ⟪ (ℓ "买五") ⟫ʷ
+wp1010 c4 L = pw2 c4 L (ℓ "五买京") (ℓ "买五") tt tt Eq.refl
 
-wp1011 : Base 4 → WsL → ⟪ (CX30 ∷ CCZ134 ∷ CCZ134 ∷ []) ⟫ʷ ≈ ⟪ (CX30 ∷ []) ⟫ʷ
-wp1011 c4 L = pw2 c4 L (CX30 ∷ CCZ134 ∷ CCZ134 ∷ []) (CX30 ∷ []) tt tt Eq.refl
+wp1011 : Base 4 → WsL → ⟪ (ℓ "买京京") ⟫ʷ ≈ ⟪ (ℓ "买") ⟫ʷ
+wp1011 c4 L = pw2 c4 L (ℓ "买京京") (ℓ "买") tt tt Eq.refl
 
-wp1012 : Base 4 → WsL → ⟪ (CX30 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ CX30 ∷ Toff024 ∷ []) ⟫ʷ
-wp1012 c4 L = pw1 c4 L (CX30 ∷ Toff324 ∷ []) (Toff324 ∷ CX30 ∷ Toff024 ∷ []) tt tt Eq.refl
+wp1012 : Base 4 → WsL → ⟪ (ℓ "买亲") ⟫ʷ ≈ ⟪ (ℓ "亲买亝") ⟫ʷ
+wp1012 c4 L = pw1 c4 L (ℓ "买亲") (ℓ "亲买亝") tt tt Eq.refl
 
-wp1013 : Base 4 → WsL → ⟪ (CX30 ∷ Toff024 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ CX30 ∷ []) ⟫ʷ
-wp1013 c4 L = pw1 c4 L (CX30 ∷ Toff024 ∷ Toff324 ∷ []) (Toff324 ∷ CX30 ∷ []) tt tt Eq.refl
+wp1013 : Base 4 → WsL → ⟪ (ℓ "买亝亲") ⟫ʷ ≈ ⟪ (ℓ "亲买") ⟫ʷ
+wp1013 c4 L = pw1 c4 L (ℓ "买亝亲") (ℓ "亲买") tt tt Eq.refl
 
-wp1014 : Base 4 → WsL → ⟪ (CCZ134 ∷ Sw03 ∷ []) ⟫ʷ ≈ ⟪ (Sw03 ∷ CCZ014 ∷ []) ⟫ʷ
-wp1014 c4 L = pw2 c4 L (CCZ134 ∷ Sw03 ∷ []) (Sw03 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp1014 : Base 4 → WsL → ⟪ (ℓ "京丹") ⟫ʷ ≈ ⟪ (ℓ "丹五") ⟫ʷ
+wp1014 c4 L = pw2 c4 L (ℓ "京丹") (ℓ "丹五") tt tt Eq.refl
 
-wp1015 : Base 4 → WsL → ⟪ (Sw03 ∷ Toff014 ∷ []) ⟫ʷ ≈ ⟪ (Toff314 ∷ Sw03 ∷ []) ⟫ʷ
-wp1015 c4 L = pw2 c4 L (Sw03 ∷ Toff014 ∷ []) (Toff314 ∷ Sw03 ∷ []) tt tt Eq.refl
+wp1015 : Base 4 → WsL → ⟪ (ℓ "丹井") ⟫ʷ ≈ ⟪ (ℓ "亮丹") ⟫ʷ
+wp1015 c4 L = pw2 c4 L (ℓ "丹井") (ℓ "亮丹") tt tt Eq.refl
 
-wp1016 : Base 4 → WsL → ⟪ (Sw03 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ Sw03 ∷ []) ⟫ʷ
-wp1016 c4 L = pw1 c4 L (Sw03 ∷ Toff324 ∷ []) (Toff024 ∷ Sw03 ∷ []) tt tt Eq.refl
+wp1016 : Base 4 → WsL → ⟪ (ℓ "丹亲") ⟫ʷ ≈ ⟪ (ℓ "亝丹") ⟫ʷ
+wp1016 c4 L = pw1 c4 L (ℓ "丹亲") (ℓ "亝丹") tt tt Eq.refl
 
-wp1017 : Base 4 → WsL → ⟪ (CCZ034 ∷ CX24 ∷ CCZ023 ∷ []) ⟫ʷ ≈ ⟪ (CX24 ∷ CCZ034 ∷ []) ⟫ʷ
-wp1017 c4 L = pw1 c4 L (CCZ034 ∷ CX24 ∷ CCZ023 ∷ []) (CX24 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp1017 : Base 4 → WsL → ⟪ (ℓ "亠乭亘") ⟫ʷ ≈ ⟪ (ℓ "乭亠") ⟫ʷ
+wp1017 c4 L = pw1 c4 L (ℓ "亠乭亘") (ℓ "乭亠") tt tt Eq.refl
 
-wp1018 : Base 4 → WsL → ⟪ (CX24 ∷ CCZ023 ∷ CCZ023 ∷ []) ⟫ʷ ≈ ⟪ (CX24 ∷ []) ⟫ʷ
-wp1018 c4 L = pw1 c4 L (CX24 ∷ CCZ023 ∷ CCZ023 ∷ []) (CX24 ∷ []) tt tt Eq.refl
+wp1018 : Base 4 → WsL → ⟪ (ℓ "乭亘亘") ⟫ʷ ≈ ⟪ (ℓ "乭") ⟫ʷ
+wp1018 c4 L = pw1 c4 L (ℓ "乭亘亘") (ℓ "乭") tt tt Eq.refl
 
-wp1019 : Base 4 → WsL → ⟪ (CCZ012 ∷ []) ⟫ʷ ≈ ⟪ (CX24 ∷ CCZ012 ∷ CX24 ∷ []) ⟫ʷ
-wp1019 c4 L = pw3 c4 L (CCZ012 ∷ []) (CX24 ∷ CCZ012 ∷ CX24 ∷ []) tt tt Eq.refl
+wp1019 : Base 4 → WsL → ⟪ (ℓ "二") ⟫ʷ ≈ ⟪ (ℓ "乭二乭") ⟫ʷ
+wp1019 c4 L = pw3 c4 L (ℓ "二") (ℓ "乭二乭") tt tt Eq.refl
 
-wp1020 : Base 4 → WsL → ⟪ (CCZ034 ∷ CX42 ∷ []) ⟫ʷ ≈ ⟪ (CX42 ∷ CCZ034 ∷ []) ⟫ʷ
-wp1020 c4 L = pw1 c4 L (CCZ034 ∷ CX42 ∷ []) (CX42 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp1020 : Base 4 → WsL → ⟪ (ℓ "亠了") ⟫ʷ ≈ ⟪ (ℓ "了亠") ⟫ʷ
+wp1020 c4 L = pw1 c4 L (ℓ "亠了") (ℓ "了亠") tt tt Eq.refl
 
-wp1021 : Base 4 → WsL → ⟪ (CCZ014 ∷ []) ⟫ʷ ≈ ⟪ (CX42 ∷ CCZ014 ∷ CX42 ∷ []) ⟫ʷ
-wp1021 c4 L = pw3 c4 L (CCZ014 ∷ []) (CX42 ∷ CCZ014 ∷ CX42 ∷ []) tt tt Eq.refl
+wp1021 : Base 4 → WsL → ⟪ (ℓ "五") ⟫ʷ ≈ ⟪ (ℓ "了五了") ⟫ʷ
+wp1021 c4 L = pw3 c4 L (ℓ "五") (ℓ "了五了") tt tt Eq.refl
 
-wp1022 : Base 4 → WsL → ⟪ (CCZ012 ∷ CX42 ∷ []) ⟫ʷ ≈ ⟪ (CX42 ∷ CCZ014 ∷ CCZ012 ∷ []) ⟫ʷ
-wp1022 c4 L = pw3 c4 L (CCZ012 ∷ CX42 ∷ []) (CX42 ∷ CCZ014 ∷ CCZ012 ∷ []) tt tt Eq.refl
+wp1022 : Base 4 → WsL → ⟪ (ℓ "二了") ⟫ʷ ≈ ⟪ (ℓ "了五二") ⟫ʷ
+wp1022 c4 L = pw3 c4 L (ℓ "二了") (ℓ "了五二") tt tt Eq.refl
 
-wp1023 : Base 4 → WsL → ⟪ (CCZ014 ∷ CX24 ∷ []) ⟫ʷ ≈ ⟪ (CX24 ∷ CCZ012 ∷ CCZ014 ∷ []) ⟫ʷ
-wp1023 c4 L = pw3 c4 L (CCZ014 ∷ CX24 ∷ []) (CX24 ∷ CCZ012 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp1023 : Base 4 → WsL → ⟪ (ℓ "五乭") ⟫ʷ ≈ ⟪ (ℓ "乭二五") ⟫ʷ
+wp1023 c4 L = pw3 c4 L (ℓ "五乭") (ℓ "乭二五") tt tt Eq.refl
 
-wp1024 : Base 4 → WsL → ⟪ (CCZ012 ∷ CCZ014 ∷ CCZ012 ∷ CCZ014 ∷ CCZ012 ∷ []) ⟫ʷ ≈ ⟪ (CCZ012 ∷ []) ⟫ʷ
-wp1024 c4 L = pw3 c4 L (CCZ012 ∷ CCZ014 ∷ CCZ012 ∷ CCZ014 ∷ CCZ012 ∷ []) (CCZ012 ∷ []) tt tt Eq.refl
+wp1024 : Base 4 → WsL → ⟪ (ℓ "二五二五二") ⟫ʷ ≈ ⟪ (ℓ "二") ⟫ʷ
+wp1024 c4 L = pw3 c4 L (ℓ "二五二五二") (ℓ "二") tt tt Eq.refl
 
-wp1025 : Base 4 → WsL → ⟪ (Toff024 ∷ Toff324 ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (Toff302 ∷ Toff024 ∷ []) ⟫ʷ
-wp1025 c4 L = pw1 c4 L (Toff024 ∷ Toff324 ∷ Toff302 ∷ []) (Toff302 ∷ Toff024 ∷ []) tt tt Eq.refl
+wp1025 : Base 4 → WsL → ⟪ (ℓ "亝亲些") ⟫ʷ ≈ ⟪ (ℓ "些亝") ⟫ʷ
+wp1025 c4 L = pw1 c4 L (ℓ "亝亲些") (ℓ "些亝") tt tt Eq.refl
 
-wp1026 : Base 4 → WsL → ⟪ (K0 ∷ CS24 ∷ CX02 ∷ CS24⁻ ∷ CX02 ∷ CS04 ∷ K0⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ []) ⟫ʷ
-wp1026 c4 L = pw1 c4 L (K0 ∷ CS24 ∷ CX02 ∷ CS24⁻ ∷ CX02 ∷ CS04 ∷ K0⁻ ∷ []) (Toff024 ∷ []) tt tt Eq.refl
+wp1026 : Base 4 → WsL → ⟪ (ℓ "丌乩丳乪丳丽不") ⟫ʷ ≈ ⟪ (ℓ "亝") ⟫ʷ
+wp1026 c4 L = pw1 c4 L (ℓ "丌乩丳乪丳丽不") (ℓ "亝") tt tt Eq.refl
 
-wp1027 : Base 4 → WsL → ⟪ (CCZ134 ∷ CS01⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS01⁻ ∷ CCZ134 ∷ []) ⟫ʷ
-wp1027 c4 L = pw2 c4 L (CCZ134 ∷ CS01⁻ ∷ []) (CS01⁻ ∷ CCZ134 ∷ []) tt tt Eq.refl
+wp1027 : Base 4 → WsL → ⟪ (ℓ "京丩") ⟫ʷ ≈ ⟪ (ℓ "丩京") ⟫ʷ
+wp1027 c4 L = pw2 c4 L (ℓ "京丩") (ℓ "丩京") tt tt Eq.refl
 
-wp1028 : Base 4 → WsL → ⟪ (K0 ∷ CS24 ∷ CX04 ∷ CS24⁻ ∷ CX04 ∷ CS02 ∷ K0⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ []) ⟫ʷ
-wp1028 c4 L = pw1 c4 L (K0 ∷ CS24 ∷ CX04 ∷ CS24⁻ ∷ CX04 ∷ CS02 ∷ K0⁻ ∷ []) (Toff024 ∷ []) tt tt Eq.refl
+wp1028 : Base 4 → WsL → ⟪ (ℓ "丌乩乁乪乁丯不") ⟫ʷ ≈ ⟪ (ℓ "亝") ⟫ʷ
+wp1028 c4 L = pw1 c4 L (ℓ "丌乩乁乪乁丯不") (ℓ "亝") tt tt Eq.refl
 
-wp1029 : Base 4 → WsL → ⟪ (CCZ034 ∷ Toff024 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ CCZ234 ∷ CCZ034 ∷ []) ⟫ʷ
-wp1029 c4 L = pw1 c4 L (CCZ034 ∷ Toff024 ∷ []) (Toff024 ∷ CCZ234 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp1029 : Base 4 → WsL → ⟪ (ℓ "亠亝") ⟫ʷ ≈ ⟪ (ℓ "亝亰亠") ⟫ʷ
+wp1029 c4 L = pw1 c4 L (ℓ "亠亝") (ℓ "亝亰亠") tt tt Eq.refl
 
-wp1030 : Base 4 → WsL → ⟪ (CCZ014 ∷ CS02 ∷ Toff214 ∷ []) ⟫ʷ ≈ ⟪ (CS02 ∷ Toff214 ∷ CCZ014 ∷ []) ⟫ʷ
-wp1030 c4 L = pw3 c4 L (CCZ014 ∷ CS02 ∷ Toff214 ∷ []) (CS02 ∷ Toff214 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp1030 : Base 4 → WsL → ⟪ (ℓ "五丯亪") ⟫ʷ ≈ ⟪ (ℓ "丯亪五") ⟫ʷ
+wp1030 c4 L = pw3 c4 L (ℓ "五丯亪") (ℓ "丯亪五") tt tt Eq.refl
 
-wp1031 : Base 4 → WsL → ⟪ (CCZ034 ∷ Toff314 ∷ []) ⟫ʷ ≈ ⟪ (Toff314 ∷ CCZ034 ∷ CCZ014 ∷ []) ⟫ʷ
-wp1031 c4 L = pw2 c4 L (CCZ034 ∷ Toff314 ∷ []) (Toff314 ∷ CCZ034 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp1031 : Base 4 → WsL → ⟪ (ℓ "亠亮") ⟫ʷ ≈ ⟪ (ℓ "亮亠五") ⟫ʷ
+wp1031 c4 L = pw2 c4 L (ℓ "亠亮") (ℓ "亮亠五") tt tt Eq.refl
 
-wp1032 : Base 4 → WsL → ⟪ (CCZ014 ∷ CCZ012 ∷ CCZ014 ∷ CCZ012 ∷ CCZ014 ∷ []) ⟫ʷ ≈ ⟪ (CCZ014 ∷ []) ⟫ʷ
-wp1032 c4 L = pw3 c4 L (CCZ014 ∷ CCZ012 ∷ CCZ014 ∷ CCZ012 ∷ CCZ014 ∷ []) (CCZ014 ∷ []) tt tt Eq.refl
+wp1032 : Base 4 → WsL → ⟪ (ℓ "五二五二五") ⟫ʷ ≈ ⟪ (ℓ "五") ⟫ʷ
+wp1032 c4 L = pw3 c4 L (ℓ "五二五二五") (ℓ "五") tt tt Eq.refl
 
-wp1033 : Base 4 → WsL → ⟪ (CCZ034 ∷ Toff304 ∷ CZ04 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CCZ034 ∷ []) ⟫ʷ
-wp1033 c4 L = pw1 c4 L (CCZ034 ∷ Toff304 ∷ CZ04 ∷ []) (Toff304 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp1033 : Base 4 → WsL → ⟪ (ℓ "亠亢丿") ⟫ʷ ≈ ⟪ (ℓ "亢亠") ⟫ʷ
+wp1033 c4 L = pw1 c4 L (ℓ "亠亢丿") (ℓ "亢亠") tt tt Eq.refl
 
-wp1034 : Base 4 → WsL → ⟪ (CCZ034 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CZ04 ∷ CCZ034 ∷ []) ⟫ʷ
-wp1034 c4 L = pw1 c4 L (CCZ034 ∷ Toff304 ∷ []) (Toff304 ∷ CZ04 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp1034 : Base 4 → WsL → ⟪ (ℓ "亠亢") ⟫ʷ ≈ ⟪ (ℓ "亢丿亠") ⟫ʷ
+wp1034 c4 L = pw1 c4 L (ℓ "亠亢") (ℓ "亢丿亠") tt tt Eq.refl
 
-wp1035 : Base 4 → WsL → ⟪ (K2 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ K2 ∷ []) ⟫ʷ
-wp1035 c4 L = pw1 c4 L (K2 ∷ Toff304 ∷ []) (Toff304 ∷ K2 ∷ []) tt tt Eq.refl
+wp1035 : Base 4 → WsL → ⟪ (ℓ "丘亢") ⟫ʷ ≈ ⟪ (ℓ "亢丘") ⟫ʷ
+wp1035 c4 L = pw1 c4 L (ℓ "丘亢") (ℓ "亢丘") tt tt Eq.refl
 
-wp1036 : Base 4 → WsL → ⟪ (CS24⁻ ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CS24⁻ ∷ []) ⟫ʷ
-wp1036 c4 L = pw1 c4 L (CS24⁻ ∷ Toff304 ∷ []) (Toff304 ∷ CS24⁻ ∷ []) tt tt Eq.refl
+wp1036 : Base 4 → WsL → ⟪ (ℓ "乪亢") ⟫ʷ ≈ ⟪ (ℓ "亢乪") ⟫ʷ
+wp1036 c4 L = pw1 c4 L (ℓ "乪亢") (ℓ "亢乪") tt tt Eq.refl
 
-wp1037 : Base 4 → WsL → ⟪ (CS14 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CS14 ∷ []) ⟫ʷ
-wp1037 c4 L = pw2 c4 L (CS14 ∷ Toff304 ∷ []) (Toff304 ∷ CS14 ∷ []) tt tt Eq.refl
+wp1037 : Base 4 → WsL → ⟪ (ℓ "乕亢") ⟫ʷ ≈ ⟪ (ℓ "亢乕") ⟫ʷ
+wp1037 c4 L = pw2 c4 L (ℓ "乕亢") (ℓ "亢乕") tt tt Eq.refl
 
-wp1038 : Base 4 → WsL → ⟪ (K2⁻ ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ K2⁻ ∷ []) ⟫ʷ
-wp1038 c4 L = pw1 c4 L (K2⁻ ∷ Toff304 ∷ []) (Toff304 ∷ K2⁻ ∷ []) tt tt Eq.refl
+wp1038 : Base 4 → WsL → ⟪ (ℓ "丙亢") ⟫ʷ ≈ ⟪ (ℓ "亢丙") ⟫ʷ
+wp1038 c4 L = pw1 c4 L (ℓ "丙亢") (ℓ "亢丙") tt tt Eq.refl
 
-wp1039 : Base 4 → WsL → ⟪ (CCZ014 ∷ CCZ134 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CCZ134 ∷ []) ⟫ʷ
-wp1039 c4 L = pw2 c4 L (CCZ014 ∷ CCZ134 ∷ Toff304 ∷ []) (Toff304 ∷ CCZ134 ∷ []) tt tt Eq.refl
+wp1039 : Base 4 → WsL → ⟪ (ℓ "五京亢") ⟫ʷ ≈ ⟪ (ℓ "亢京") ⟫ʷ
+wp1039 c4 L = pw2 c4 L (ℓ "五京亢") (ℓ "亢京") tt tt Eq.refl
 
-wp1040 : Base 4 → WsL → ⟪ (CCZ014 ∷ []) ⟫ʷ ≈ ⟪ (CCZ134 ∷ CCZ014 ∷ CCZ134 ∷ []) ⟫ʷ
-wp1040 c4 L = pw2 c4 L (CCZ014 ∷ []) (CCZ134 ∷ CCZ014 ∷ CCZ134 ∷ []) tt tt Eq.refl
+wp1040 : Base 4 → WsL → ⟪ (ℓ "五") ⟫ʷ ≈ ⟪ (ℓ "京五京") ⟫ʷ
+wp1040 c4 L = pw2 c4 L (ℓ "五") (ℓ "京五京") tt tt Eq.refl
 
-wp1041 : Base 4 → WsL → ⟪ (CS04 ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (Toff302 ∷ CS04 ∷ []) ⟫ʷ
-wp1041 c4 L = pw1 c4 L (CS04 ∷ Toff302 ∷ []) (Toff302 ∷ CS04 ∷ []) tt tt Eq.refl
+wp1041 : Base 4 → WsL → ⟪ (ℓ "丽些") ⟫ʷ ≈ ⟪ (ℓ "些丽") ⟫ʷ
+wp1041 c4 L = pw1 c4 L (ℓ "丽些") (ℓ "些丽") tt tt Eq.refl
 
-wp1042 : Base 4 → WsL → ⟪ (CCZ124 ∷ CS01 ∷ Toff024 ∷ []) ⟫ʷ ≈ ⟪ (CS01 ∷ Toff024 ∷ CCZ124 ∷ []) ⟫ʷ
-wp1042 c4 L = pw3 c4 L (CCZ124 ∷ CS01 ∷ Toff024 ∷ []) (CS01 ∷ Toff024 ∷ CCZ124 ∷ []) tt tt Eq.refl
+wp1042 : Base 4 → WsL → ⟪ (ℓ "亨丨亝") ⟫ʷ ≈ ⟪ (ℓ "丨亝亨") ⟫ʷ
+wp1042 c4 L = pw3 c4 L (ℓ "亨丨亝") (ℓ "丨亝亨") tt tt Eq.refl
 
-wp1043 : Base 4 → WsL → ⟪ (Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ Toff214 ∷ CS02 ∷ Toff214 ∷ CS02⁻ ∷ []) ⟫ʷ ≈ ⟪ (Toff214 ∷ CS02 ∷ Toff214 ∷ CS02⁻ ∷ Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ []) ⟫ʷ
-wp1043 c4 L = pw3 c4 L (Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ Toff214 ∷ CS02 ∷ Toff214 ∷ CS02⁻ ∷ []) (Toff214 ∷ CS02 ∷ Toff214 ∷ CS02⁻ ∷ Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ []) tt tt Eq.refl
+wp1043 : Base 4 → WsL → ⟪ (ℓ "亝丨亝丩亪丯亪丰") ⟫ʷ ≈ ⟪ (ℓ "亪丯亪丰亝丨亝丩") ⟫ʷ
+wp1043 c4 L = pw3 c4 L (ℓ "亝丨亝丩亪丯亪丰") (ℓ "亪丯亪丰亝丨亝丩") tt tt Eq.refl
 
-wp1044 : Base 4 → WsL → ⟪ (CCZ014 ∷ Toff134 ∷ []) ⟫ʷ ≈ ⟪ (Toff134 ∷ CCZ034 ∷ CCZ014 ∷ []) ⟫ʷ
-wp1044 c4 L = pw2 c4 L (CCZ014 ∷ Toff134 ∷ []) (Toff134 ∷ CCZ034 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp1044 : Base 4 → WsL → ⟪ (ℓ "五亭") ⟫ʷ ≈ ⟪ (ℓ "亭亠五") ⟫ʷ
+wp1044 c4 L = pw2 c4 L (ℓ "五亭") (ℓ "亭亠五") tt tt Eq.refl
 
-wp1045 : Base 4 → WsL → ⟪ (CCZ034 ∷ CCZ234 ∷ Toff023 ∷ []) ⟫ʷ ≈ ⟪ (Toff023 ∷ CCZ034 ∷ []) ⟫ʷ
-wp1045 c4 L = pw1 c4 L (CCZ034 ∷ CCZ234 ∷ Toff023 ∷ []) (Toff023 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp1045 : Base 4 → WsL → ⟪ (ℓ "亠亰亙") ⟫ʷ ≈ ⟪ (ℓ "亙亠") ⟫ʷ
+wp1045 c4 L = pw1 c4 L (ℓ "亠亰亙") (ℓ "亙亠") tt tt Eq.refl
 
-wp1046 : Base 4 → WsL → ⟪ (CCZ023 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ CCZ024 ∷ CCZ023 ∷ []) ⟫ʷ
-wp1046 c4 L = pw1 c4 L (CCZ023 ∷ Toff324 ∷ []) (Toff324 ∷ CCZ024 ∷ CCZ023 ∷ []) tt tt Eq.refl
+wp1046 : Base 4 → WsL → ⟪ (ℓ "亘亲") ⟫ʷ ≈ ⟪ (ℓ "亲亜亘") ⟫ʷ
+wp1046 c4 L = pw1 c4 L (ℓ "亘亲") (ℓ "亲亜亘") tt tt Eq.refl
 
-wp1047 : Base 4 → WsL → ⟪ (CCZ124 ∷ []) ⟫ʷ ≈ ⟪ (Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ []) ⟫ʷ
-wp1047 c4 L = pw3 c4 L (CCZ124 ∷ []) (Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ []) tt tt Eq.refl
+wp1047 : Base 4 → WsL → ⟪ (ℓ "亨") ⟫ʷ ≈ ⟪ (ℓ "亝丨亝丩亝丨亝丩") ⟫ʷ
+wp1047 c4 L = pw3 c4 L (ℓ "亨") (ℓ "亝丨亝丩亝丨亝丩") tt tt Eq.refl
 
-wp1048 : Base 4 → WsL → ⟪ (CCZ034 ∷ Toff034 ∷ CZ01 ∷ Toff034 ∷ CCZ034 ∷ CZ01 ∷ []) ⟫ʷ ≈ ⟪ (CCZ134 ∷ []) ⟫ʷ
-wp1048 c4 L = pw2 c4 L (CCZ034 ∷ Toff034 ∷ CZ01 ∷ Toff034 ∷ CCZ034 ∷ CZ01 ∷ []) (CCZ134 ∷ []) tt tt Eq.refl
+wp1048 : Base 4 → WsL → ⟪ (ℓ "亠亡个亡亠个") ⟫ʷ ≈ ⟪ (ℓ "京") ⟫ʷ
+wp1048 c4 L = pw2 c4 L (ℓ "亠亡个亡亠个") (ℓ "京") tt tt Eq.refl
 
-wp1049 : Base 4 → WsL → ⟪ (CX24 ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (Toff302 ∷ CX24 ∷ []) ⟫ʷ
-wp1049 c4 L = pw1 c4 L (CX24 ∷ Toff302 ∷ []) (Toff302 ∷ CX24 ∷ []) tt tt Eq.refl
+wp1049 : Base 4 → WsL → ⟪ (ℓ "乭些") ⟫ʷ ≈ ⟪ (ℓ "些乭") ⟫ʷ
+wp1049 c4 L = pw1 c4 L (ℓ "乭些") (ℓ "些乭") tt tt Eq.refl
 
-wp1050 : Base 4 → WsL → ⟪ (CX42 ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (Toff302 ∷ CX42 ∷ Toff304 ∷ []) ⟫ʷ
-wp1050 c4 L = pw1 c4 L (CX42 ∷ Toff302 ∷ []) (Toff302 ∷ CX42 ∷ Toff304 ∷ []) tt tt Eq.refl
+wp1050 : Base 4 → WsL → ⟪ (ℓ "了些") ⟫ʷ ≈ ⟪ (ℓ "些了亢") ⟫ʷ
+wp1050 c4 L = pw1 c4 L (ℓ "了些") (ℓ "些了亢") tt tt Eq.refl
 
-wp1051 : Base 4 → WsL → ⟪ (CCZ134 ∷ Toff304 ∷ CCZ014 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CCZ134 ∷ []) ⟫ʷ
-wp1051 c4 L = pw2 c4 L (CCZ134 ∷ Toff304 ∷ CCZ014 ∷ []) (Toff304 ∷ CCZ134 ∷ []) tt tt Eq.refl
+wp1051 : Base 4 → WsL → ⟪ (ℓ "京亢五") ⟫ʷ ≈ ⟪ (ℓ "亢京") ⟫ʷ
+wp1051 c4 L = pw2 c4 L (ℓ "京亢五") (ℓ "亢京") tt tt Eq.refl
 
-wp1052 : Base 4 → WsL → ⟪ (CX04 ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (Toff302 ∷ CX04 ∷ []) ⟫ʷ
-wp1052 c4 L = pw1 c4 L (CX04 ∷ Toff302 ∷ []) (Toff302 ∷ CX04 ∷ []) tt tt Eq.refl
+wp1052 : Base 4 → WsL → ⟪ (ℓ "乁些") ⟫ʷ ≈ ⟪ (ℓ "些乁") ⟫ʷ
+wp1052 c4 L = pw1 c4 L (ℓ "乁些") (ℓ "些乁") tt tt Eq.refl
 
-wp1053 : Base 4 → WsL → ⟪ (Toff302 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ Toff302 ∷ []) ⟫ʷ
-wp1053 c4 L = pw1 c4 L (Toff302 ∷ Toff304 ∷ []) (Toff304 ∷ Toff302 ∷ []) tt tt Eq.refl
+wp1053 : Base 4 → WsL → ⟪ (ℓ "些亢") ⟫ʷ ≈ ⟪ (ℓ "亢些") ⟫ʷ
+wp1053 c4 L = pw1 c4 L (ℓ "些亢") (ℓ "亢些") tt tt Eq.refl
 
-wp1054 : Base 4 → WsL → ⟪ (CX42 ∷ Toff304 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (CX42 ∷ []) ⟫ʷ
-wp1054 c4 L = pw1 c4 L (CX42 ∷ Toff304 ∷ Toff304 ∷ []) (CX42 ∷ []) tt tt Eq.refl
+wp1054 : Base 4 → WsL → ⟪ (ℓ "了亢亢") ⟫ʷ ≈ ⟪ (ℓ "了") ⟫ʷ
+wp1054 c4 L = pw1 c4 L (ℓ "了亢亢") (ℓ "了") tt tt Eq.refl
 
-wp1055 : Base 4 → WsL → ⟪ (CX42 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CX42 ∷ []) ⟫ʷ
-wp1055 c4 L = pw1 c4 L (CX42 ∷ Toff304 ∷ []) (Toff304 ∷ CX42 ∷ []) tt tt Eq.refl
+wp1055 : Base 4 → WsL → ⟪ (ℓ "了亢") ⟫ʷ ≈ ⟪ (ℓ "亢了") ⟫ʷ
+wp1055 c4 L = pw1 c4 L (ℓ "了亢") (ℓ "亢了") tt tt Eq.refl
 
-wp1056 : Base 4 → WsL → ⟪ (CCZ134 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CCZ134 ∷ CCZ014 ∷ []) ⟫ʷ
-wp1056 c4 L = pw2 c4 L (CCZ134 ∷ Toff304 ∷ []) (Toff304 ∷ CCZ134 ∷ CCZ014 ∷ []) tt tt Eq.refl
+wp1056 : Base 4 → WsL → ⟪ (ℓ "京亢") ⟫ʷ ≈ ⟪ (ℓ "亢京五") ⟫ʷ
+wp1056 c4 L = pw2 c4 L (ℓ "京亢") (ℓ "亢京五") tt tt Eq.refl
 
-wp1057 : Base 4 → WsL → ⟪ (CX24 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CX24 ∷ Toff302 ∷ []) ⟫ʷ
-wp1057 c4 L = pw1 c4 L (CX24 ∷ Toff304 ∷ []) (Toff304 ∷ CX24 ∷ Toff302 ∷ []) tt tt Eq.refl
+wp1057 : Base 4 → WsL → ⟪ (ℓ "乭亢") ⟫ʷ ≈ ⟪ (ℓ "亢乭些") ⟫ʷ
+wp1057 c4 L = pw1 c4 L (ℓ "乭亢") (ℓ "亢乭些") tt tt Eq.refl
 
-wp1058 : Base 4 → WsL → ⟪ (CS01 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CS01 ∷ []) ⟫ʷ
-wp1058 c4 L = pw2 c4 L (CS01 ∷ Toff304 ∷ []) (Toff304 ∷ CS01 ∷ []) tt tt Eq.refl
+wp1058 : Base 4 → WsL → ⟪ (ℓ "丨亢") ⟫ʷ ≈ ⟪ (ℓ "亢丨") ⟫ʷ
+wp1058 c4 L = pw2 c4 L (ℓ "丨亢") (ℓ "亢丨") tt tt Eq.refl
 
-wp1059 : Base 4 → WsL → ⟪ (CX02 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CX02 ∷ []) ⟫ʷ
-wp1059 c4 L = pw1 c4 L (CX02 ∷ Toff304 ∷ []) (Toff304 ∷ CX02 ∷ []) tt tt Eq.refl
+wp1059 : Base 4 → WsL → ⟪ (ℓ "丳亢") ⟫ʷ ≈ ⟪ (ℓ "亢丳") ⟫ʷ
+wp1059 c4 L = pw1 c4 L (ℓ "丳亢") (ℓ "亢丳") tt tt Eq.refl
 
-wp1060 : Base 4 → WsL → ⟪ (CX24 ∷ Toff302 ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (CX24 ∷ []) ⟫ʷ
-wp1060 c4 L = pw1 c4 L (CX24 ∷ Toff302 ∷ Toff302 ∷ []) (CX24 ∷ []) tt tt Eq.refl
+wp1060 : Base 4 → WsL → ⟪ (ℓ "乭些些") ⟫ʷ ≈ ⟪ (ℓ "乭") ⟫ʷ
+wp1060 c4 L = pw1 c4 L (ℓ "乭些些") (ℓ "乭") tt tt Eq.refl
 
-wp1061 : Base 4 → WsL → ⟪ (CCZ012 ∷ CK41 ∷ CCZ012 ∷ CCZ012 ∷ []) ⟫ʷ ≈ ⟪ (CCZ012 ∷ CK41 ∷ []) ⟫ʷ
-wp1061 c4 L = pw3 c4 L (CCZ012 ∷ CK41 ∷ CCZ012 ∷ CCZ012 ∷ []) (CCZ012 ∷ CK41 ∷ []) tt tt Eq.refl
+wp1061 : Base 4 → WsL → ⟪ (ℓ "二亄二二") ⟫ʷ ≈ ⟪ (ℓ "二亄") ⟫ʷ
+wp1061 c4 L = pw3 c4 L (ℓ "二亄二二") (ℓ "二亄") tt tt Eq.refl
 
-wp1062 : Base 4 → WsL → ⟪ (CCZ012 ∷ CK41 ∷ CCZ012 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CCZ012 ∷ K1 ∷ CK41 ∷ S4 ∷ CCZ012 ∷ []) ⟫ʷ
-wp1062 c4 L = pw3 c4 L (CCZ012 ∷ CK41 ∷ CCZ012 ∷ X4 ∷ []) (X4 ∷ CCZ012 ∷ K1 ∷ CK41 ∷ S4 ∷ CCZ012 ∷ []) tt tt Eq.refl
+wp1062 : Base 4 → WsL → ⟪ (ℓ "二亄二並") ⟫ʷ ≈ ⟪ (ℓ "並二丒亄丢二") ⟫ʷ
+wp1062 c4 L = pw3 c4 L (ℓ "二亄二並") (ℓ "並二丒亄丢二") tt tt Eq.refl
 
-wp1063 : Base 4 → WsL → ⟪ (CCZ234 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CCZ234 ∷ CCZ024 ∷ []) ⟫ʷ
-wp1063 c4 L = pw1 c4 L (CCZ234 ∷ Toff304 ∷ []) (Toff304 ∷ CCZ234 ∷ CCZ024 ∷ []) tt tt Eq.refl
+wp1063 : Base 4 → WsL → ⟪ (ℓ "亰亢") ⟫ʷ ≈ ⟪ (ℓ "亢亰亜") ⟫ʷ
+wp1063 c4 L = pw1 c4 L (ℓ "亰亢") (ℓ "亢亰亜") tt tt Eq.refl
 
-wp1064 : Base 4 → WsL → ⟪ (CX14 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CX14 ∷ Toff301 ∷ []) ⟫ʷ
-wp1064 c4 L = pw2 c4 L (CX14 ∷ Toff304 ∷ []) (Toff304 ∷ CX14 ∷ Toff301 ∷ []) tt tt Eq.refl
+wp1064 : Base 4 → WsL → ⟪ (ℓ "乙亢") ⟫ʷ ≈ ⟪ (ℓ "亢乙亓") ⟫ʷ
+wp1064 c4 L = pw2 c4 L (ℓ "乙亢") (ℓ "亢乙亓") tt tt Eq.refl
 
-wp1065 : Base 4 → WsL → ⟪ (CS02 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CS02 ∷ []) ⟫ʷ
-wp1065 c4 L = pw1 c4 L (CS02 ∷ Toff304 ∷ []) (Toff304 ∷ CS02 ∷ []) tt tt Eq.refl
+wp1065 : Base 4 → WsL → ⟪ (ℓ "丯亢") ⟫ʷ ≈ ⟪ (ℓ "亢丯") ⟫ʷ
+wp1065 c4 L = pw1 c4 L (ℓ "丯亢") (ℓ "亢丯") tt tt Eq.refl
 
-wp1066 : Base 4 → WsL → ⟪ (Toff301 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ Toff301 ∷ []) ⟫ʷ
-wp1066 c4 L = pw2 c4 L (Toff301 ∷ Toff304 ∷ []) (Toff304 ∷ Toff301 ∷ []) tt tt Eq.refl
+wp1066 : Base 4 → WsL → ⟪ (ℓ "亓亢") ⟫ʷ ≈ ⟪ (ℓ "亢亓") ⟫ʷ
+wp1066 c4 L = pw2 c4 L (ℓ "亓亢") (ℓ "亢亓") tt tt Eq.refl
 
-wp1067 : Base 4 → WsL → ⟪ (CX14 ∷ Toff301 ∷ Toff301 ∷ []) ⟫ʷ ≈ ⟪ (CX14 ∷ []) ⟫ʷ
-wp1067 c4 L = pw2 c4 L (CX14 ∷ Toff301 ∷ Toff301 ∷ []) (CX14 ∷ []) tt tt Eq.refl
+wp1067 : Base 4 → WsL → ⟪ (ℓ "乙亓亓") ⟫ʷ ≈ ⟪ (ℓ "乙") ⟫ʷ
+wp1067 c4 L = pw2 c4 L (ℓ "乙亓亓") (ℓ "乙") tt tt Eq.refl
 
-wp1068 : Base 4 → WsL → ⟪ (CCZ034 ∷ Toff034 ∷ CZ02 ∷ Toff034 ∷ CCZ034 ∷ CZ02 ∷ []) ⟫ʷ ≈ ⟪ (CCZ234 ∷ []) ⟫ʷ
-wp1068 c4 L = pw1 c4 L (CCZ034 ∷ Toff034 ∷ CZ02 ∷ Toff034 ∷ CCZ034 ∷ CZ02 ∷ []) (CCZ234 ∷ []) tt tt Eq.refl
+wp1068 : Base 4 → WsL → ⟪ (ℓ "亠亡丱亡亠丱") ⟫ʷ ≈ ⟪ (ℓ "亰") ⟫ʷ
+wp1068 c4 L = pw1 c4 L (ℓ "亠亡丱亡亠丱") (ℓ "亰") tt tt Eq.refl
 
-wp1069 : Base 4 → WsL → ⟪ (CX14 ∷ Toff301 ∷ []) ⟫ʷ ≈ ⟪ (Toff301 ∷ CX14 ∷ []) ⟫ʷ
-wp1069 c4 L = pw2 c4 L (CX14 ∷ Toff301 ∷ []) (Toff301 ∷ CX14 ∷ []) tt tt Eq.refl
+wp1069 : Base 4 → WsL → ⟪ (ℓ "乙亓") ⟫ʷ ≈ ⟪ (ℓ "亓乙") ⟫ʷ
+wp1069 c4 L = pw2 c4 L (ℓ "乙亓") (ℓ "亓乙") tt tt Eq.refl
 
-wp1070 : Base 4 → WsL → ⟪ (CX41 ∷ Toff301 ∷ []) ⟫ʷ ≈ ⟪ (Toff301 ∷ CX41 ∷ Toff304 ∷ []) ⟫ʷ
-wp1070 c4 L = pw2 c4 L (CX41 ∷ Toff301 ∷ []) (Toff301 ∷ CX41 ∷ Toff304 ∷ []) tt tt Eq.refl
+wp1070 : Base 4 → WsL → ⟪ (ℓ "亃亓") ⟫ʷ ≈ ⟪ (ℓ "亓亃亢") ⟫ʷ
+wp1070 c4 L = pw2 c4 L (ℓ "亃亓") (ℓ "亓亃亢") tt tt Eq.refl
 
-wp1071 : Base 4 → WsL → ⟪ (CCZ234 ∷ Toff304 ∷ CCZ024 ∷ []) ⟫ʷ ≈ ⟪ (Toff304 ∷ CCZ234 ∷ []) ⟫ʷ
-wp1071 c4 L = pw1 c4 L (CCZ234 ∷ Toff304 ∷ CCZ024 ∷ []) (Toff304 ∷ CCZ234 ∷ []) tt tt Eq.refl
+wp1071 : Base 4 → WsL → ⟪ (ℓ "亰亢亜") ⟫ʷ ≈ ⟪ (ℓ "亢亰") ⟫ʷ
+wp1071 c4 L = pw1 c4 L (ℓ "亰亢亜") (ℓ "亢亰") tt tt Eq.refl
 
-wp1072 : Base 4 → WsL → ⟪ (CX04 ∷ Toff301 ∷ []) ⟫ʷ ≈ ⟪ (Toff301 ∷ CX04 ∷ []) ⟫ʷ
-wp1072 c4 L = pw2 c4 L (CX04 ∷ Toff301 ∷ []) (Toff301 ∷ CX04 ∷ []) tt tt Eq.refl
+wp1072 : Base 4 → WsL → ⟪ (ℓ "乁亓") ⟫ʷ ≈ ⟪ (ℓ "亓乁") ⟫ʷ
+wp1072 c4 L = pw2 c4 L (ℓ "乁亓") (ℓ "亓乁") tt tt Eq.refl
 
-wp1073 : Base 4 → WsL → ⟪ (CX41 ∷ Toff304 ∷ Toff304 ∷ []) ⟫ʷ ≈ ⟪ (CX41 ∷ []) ⟫ʷ
-wp1073 c4 L = pw2 c4 L (CX41 ∷ Toff304 ∷ Toff304 ∷ []) (CX41 ∷ []) tt tt Eq.refl
+wp1073 : Base 4 → WsL → ⟪ (ℓ "亃亢亢") ⟫ʷ ≈ ⟪ (ℓ "亃") ⟫ʷ
+wp1073 c4 L = pw2 c4 L (ℓ "亃亢亢") (ℓ "亃") tt tt Eq.refl
 
-wp1074 : Base 4 → WsL → ⟪ (CCZ012 ∷ CK42 ∷ CCZ012 ∷ CCZ012 ∷ []) ⟫ʷ ≈ ⟪ (CCZ012 ∷ CK42 ∷ []) ⟫ʷ
-wp1074 c4 L = pw3 c4 L (CCZ012 ∷ CK42 ∷ CCZ012 ∷ CCZ012 ∷ []) (CCZ012 ∷ CK42 ∷ []) tt tt Eq.refl
+wp1074 : Base 4 → WsL → ⟪ (ℓ "二亇二二") ⟫ʷ ≈ ⟪ (ℓ "二亇") ⟫ʷ
+wp1074 c4 L = pw3 c4 L (ℓ "二亇二二") (ℓ "二亇") tt tt Eq.refl
 
-wp1075 : Base 4 → WsL → ⟪ (CCZ012 ∷ CK42 ∷ CCZ012 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CCZ012 ∷ K2 ∷ CK42 ∷ S4 ∷ CCZ012 ∷ []) ⟫ʷ
-wp1075 c4 L = pw3 c4 L (CCZ012 ∷ CK42 ∷ CCZ012 ∷ X4 ∷ []) (X4 ∷ CCZ012 ∷ K2 ∷ CK42 ∷ S4 ∷ CCZ012 ∷ []) tt tt Eq.refl
+wp1075 : Base 4 → WsL → ⟪ (ℓ "二亇二並") ⟫ʷ ≈ ⟪ (ℓ "並二丘亇丢二") ⟫ʷ
+wp1075 c4 L = pw3 c4 L (ℓ "二亇二並") (ℓ "並二丘亇丢二") tt tt Eq.refl
 
-wp1076 : Base 4 → WsL → ⟪ (CCZ014 ∷ []) ⟫ʷ ≈ ⟪ (Toff214 ∷ CS02 ∷ Toff214 ∷ CS02⁻ ∷ Toff214 ∷ CS02 ∷ Toff214 ∷ CS02⁻ ∷ []) ⟫ʷ
-wp1076 c4 L = pw3 c4 L (CCZ014 ∷ []) (Toff214 ∷ CS02 ∷ Toff214 ∷ CS02⁻ ∷ Toff214 ∷ CS02 ∷ Toff214 ∷ CS02⁻ ∷ []) tt tt Eq.refl
+wp1076 : Base 4 → WsL → ⟪ (ℓ "五") ⟫ʷ ≈ ⟪ (ℓ "亪丯亪丰亪丯亪丰") ⟫ʷ
+wp1076 c4 L = pw3 c4 L (ℓ "五") (ℓ "亪丯亪丰亪丯亪丰") tt tt Eq.refl
 
-wp1077 : Base 4 → WsL → ⟪ (CCZ134 ∷ CX04 ∷ CCZ013 ∷ []) ⟫ʷ ≈ ⟪ (CX04 ∷ CCZ134 ∷ []) ⟫ʷ
-wp1077 c4 L = pw2 c4 L (CCZ134 ∷ CX04 ∷ CCZ013 ∷ []) (CX04 ∷ CCZ134 ∷ []) tt tt Eq.refl
+wp1077 : Base 4 → WsL → ⟪ (ℓ "京乁亐") ⟫ʷ ≈ ⟪ (ℓ "乁京") ⟫ʷ
+wp1077 c4 L = pw2 c4 L (ℓ "京乁亐") (ℓ "乁京") tt tt Eq.refl
 
-wp1078 : Base 4 → WsL → ⟪ (CX04 ∷ CCZ013 ∷ CCZ013 ∷ []) ⟫ʷ ≈ ⟪ (CX04 ∷ []) ⟫ʷ
-wp1078 c4 L = pw2 c4 L (CX04 ∷ CCZ013 ∷ CCZ013 ∷ []) (CX04 ∷ []) tt tt Eq.refl
+wp1078 : Base 4 → WsL → ⟪ (ℓ "乁亐亐") ⟫ʷ ≈ ⟪ (ℓ "乁") ⟫ʷ
+wp1078 c4 L = pw2 c4 L (ℓ "乁亐亐") (ℓ "乁") tt tt Eq.refl
 
-wp1079 : Base 4 → WsL → ⟪ (CCZ012 ∷ []) ⟫ʷ ≈ ⟪ (CX04 ∷ CCZ012 ∷ CX04 ∷ []) ⟫ʷ
-wp1079 c4 L = pw3 c4 L (CCZ012 ∷ []) (CX04 ∷ CCZ012 ∷ CX04 ∷ []) tt tt Eq.refl
+wp1079 : Base 4 → WsL → ⟪ (ℓ "二") ⟫ʷ ≈ ⟪ (ℓ "乁二乁") ⟫ʷ
+wp1079 c4 L = pw3 c4 L (ℓ "二") (ℓ "乁二乁") tt tt Eq.refl
 
-wp1080 : Base 4 → WsL → ⟪ (CX40 ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (Toff302 ∷ CX40 ∷ Toff324 ∷ []) ⟫ʷ
-wp1080 c4 L = pw1 c4 L (CX40 ∷ Toff302 ∷ []) (Toff302 ∷ CX40 ∷ Toff324 ∷ []) tt tt Eq.refl
+wp1080 : Base 4 → WsL → ⟪ (ℓ "亀些") ⟫ʷ ≈ ⟪ (ℓ "些亀亲") ⟫ʷ
+wp1080 c4 L = pw1 c4 L (ℓ "亀些") (ℓ "些亀亲") tt tt Eq.refl
 
-wp1081 : Base 4 → WsL → ⟪ (CCZ134 ∷ CX40 ∷ []) ⟫ʷ ≈ ⟪ (CX40 ∷ CCZ134 ∷ []) ⟫ʷ
-wp1081 c4 L = pw2 c4 L (CCZ134 ∷ CX40 ∷ []) (CX40 ∷ CCZ134 ∷ []) tt tt Eq.refl
+wp1081 : Base 4 → WsL → ⟪ (ℓ "京亀") ⟫ʷ ≈ ⟪ (ℓ "亀京") ⟫ʷ
+wp1081 c4 L = pw2 c4 L (ℓ "京亀") (ℓ "亀京") tt tt Eq.refl
 
-wp1082 : Base 4 → WsL → ⟪ (CX40 ∷ Toff324 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (CX40 ∷ []) ⟫ʷ
-wp1082 c4 L = pw1 c4 L (CX40 ∷ Toff324 ∷ Toff324 ∷ []) (CX40 ∷ []) tt tt Eq.refl
+wp1082 : Base 4 → WsL → ⟪ (ℓ "亀亲亲") ⟫ʷ ≈ ⟪ (ℓ "亀") ⟫ʷ
+wp1082 c4 L = pw1 c4 L (ℓ "亀亲亲") (ℓ "亀") tt tt Eq.refl
 
-wp1083 : Base 4 → WsL → ⟪ (CCZ124 ∷ []) ⟫ʷ ≈ ⟪ (CX40 ∷ CCZ124 ∷ CX40 ∷ []) ⟫ʷ
-wp1083 c4 L = pw3 c4 L (CCZ124 ∷ []) (CX40 ∷ CCZ124 ∷ CX40 ∷ []) tt tt Eq.refl
+wp1083 : Base 4 → WsL → ⟪ (ℓ "亨") ⟫ʷ ≈ ⟪ (ℓ "亀亨亀") ⟫ʷ
+wp1083 c4 L = pw3 c4 L (ℓ "亨") (ℓ "亀亨亀") tt tt Eq.refl
 
-wp1084 : Base 4 → WsL → ⟪ (CX04 ∷ CX40 ∷ CX04 ∷ []) ⟫ʷ ≈ ⟪ (Sw04 ∷ []) ⟫ʷ
-wp1084 c4 L = pw1 c4 L (CX04 ∷ CX40 ∷ CX04 ∷ []) (Sw04 ∷ []) tt tt Eq.refl
+wp1084 : Base 4 → WsL → ⟪ (ℓ "乁亀乁") ⟫ʷ ≈ ⟪ (ℓ "乀") ⟫ʷ
+wp1084 c4 L = pw1 c4 L (ℓ "乁亀乁") (ℓ "乀") tt tt Eq.refl
 
-wp1085 : Base 4 → WsL → ⟪ (CCZ012 ∷ CX40 ∷ []) ⟫ʷ ≈ ⟪ (CX40 ∷ CCZ124 ∷ CCZ012 ∷ []) ⟫ʷ
-wp1085 c4 L = pw3 c4 L (CCZ012 ∷ CX40 ∷ []) (CX40 ∷ CCZ124 ∷ CCZ012 ∷ []) tt tt Eq.refl
+wp1085 : Base 4 → WsL → ⟪ (ℓ "二亀") ⟫ʷ ≈ ⟪ (ℓ "亀亨二") ⟫ʷ
+wp1085 c4 L = pw3 c4 L (ℓ "二亀") (ℓ "亀亨二") tt tt Eq.refl
 
-wp1086 : Base 4 → WsL → ⟪ (CCZ012 ∷ CX04 ∷ []) ⟫ʷ ≈ ⟪ (CX04 ∷ CCZ012 ∷ []) ⟫ʷ
-wp1086 c4 L = pw3 c4 L (CCZ012 ∷ CX04 ∷ []) (CX04 ∷ CCZ012 ∷ []) tt tt Eq.refl
+wp1086 : Base 4 → WsL → ⟪ (ℓ "二乁") ⟫ʷ ≈ ⟪ (ℓ "乁二") ⟫ʷ
+wp1086 c4 L = pw3 c4 L (ℓ "二乁") (ℓ "乁二") tt tt Eq.refl
 
-wp1087 : Base 4 → WsL → ⟪ (CCZ124 ∷ CX04 ∷ []) ⟫ʷ ≈ ⟪ (CX04 ∷ CCZ012 ∷ CCZ124 ∷ []) ⟫ʷ
-wp1087 c4 L = pw3 c4 L (CCZ124 ∷ CX04 ∷ []) (CX04 ∷ CCZ012 ∷ CCZ124 ∷ []) tt tt Eq.refl
+wp1087 : Base 4 → WsL → ⟪ (ℓ "亨乁") ⟫ʷ ≈ ⟪ (ℓ "乁二亨") ⟫ʷ
+wp1087 c4 L = pw3 c4 L (ℓ "亨乁") (ℓ "乁二亨") tt tt Eq.refl
 
-wp1088 : Base 4 → WsL → ⟪ (CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ []) ⟫ʷ ≈ ⟪ (CCZ012 ∷ []) ⟫ʷ
-wp1088 c4 L = pw3 c4 L (CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ []) (CCZ012 ∷ []) tt tt Eq.refl
+wp1088 : Base 4 → WsL → ⟪ (ℓ "二亨二亨二") ⟫ʷ ≈ ⟪ (ℓ "二") ⟫ʷ
+wp1088 c4 L = pw3 c4 L (ℓ "二亨二亨二") (ℓ "二") tt tt Eq.refl
 
-wp1089 : Base 4 → WsL → ⟪ (CCZ234 ∷ Sw04 ∷ []) ⟫ʷ ≈ ⟪ (Sw04 ∷ CCZ023 ∷ []) ⟫ʷ
-wp1089 c4 L = pw1 c4 L (CCZ234 ∷ Sw04 ∷ []) (Sw04 ∷ CCZ023 ∷ []) tt tt Eq.refl
+wp1089 : Base 4 → WsL → ⟪ (ℓ "亰乀") ⟫ʷ ≈ ⟪ (ℓ "乀亘") ⟫ʷ
+wp1089 c4 L = pw1 c4 L (ℓ "亰乀") (ℓ "乀亘") tt tt Eq.refl
 
-wp1090 : Base 4 → WsL → ⟪ (Sw04 ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ Sw04 ∷ []) ⟫ʷ
-wp1090 c4 L = pw1 c4 L (Sw04 ∷ Toff302 ∷ []) (Toff324 ∷ Sw04 ∷ []) tt tt Eq.refl
+wp1090 : Base 4 → WsL → ⟪ (ℓ "乀些") ⟫ʷ ≈ ⟪ (ℓ "亲乀") ⟫ʷ
+wp1090 c4 L = pw1 c4 L (ℓ "乀些") (ℓ "亲乀") tt tt Eq.refl
 
-wp1091 : Base 4 → WsL → ⟪ (CCZ023 ∷ Sw04 ∷ []) ⟫ʷ ≈ ⟪ (Sw04 ∷ CCZ234 ∷ []) ⟫ʷ
-wp1091 c4 L = pw1 c4 L (CCZ023 ∷ Sw04 ∷ []) (Sw04 ∷ CCZ234 ∷ []) tt tt Eq.refl
+wp1091 : Base 4 → WsL → ⟪ (ℓ "亘乀") ⟫ʷ ≈ ⟪ (ℓ "乀亰") ⟫ʷ
+wp1091 c4 L = pw1 c4 L (ℓ "亘乀") (ℓ "乀亰") tt tt Eq.refl
 
-wp1092 : Base 4 → WsL → ⟪ (Sw04 ∷ Toff234 ∷ []) ⟫ʷ ≈ ⟪ (Toff203 ∷ Sw04 ∷ []) ⟫ʷ
-wp1092 c4 L = pw1 c4 L (Sw04 ∷ Toff234 ∷ []) (Toff203 ∷ Sw04 ∷ []) tt tt Eq.refl
+wp1092 : Base 4 → WsL → ⟪ (ℓ "乀亱") ⟫ʷ ≈ ⟪ (ℓ "亚乀") ⟫ʷ
+wp1092 c4 L = pw1 c4 L (ℓ "乀亱") (ℓ "亚乀") tt tt Eq.refl
 
-wp1093 : Base 4 → WsL → ⟪ (Sw04 ∷ Sw04 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-wp1093 c4 L = pw1 c4 L (Sw04 ∷ Sw04 ∷ []) [] tt tt Eq.refl
+wp1093 : Base 4 → WsL → ⟪ (ℓ "乀乀") ⟫ʷ ≈ ⟪ [] ⟫ʷ
+wp1093 c4 L = pw1 c4 L (ℓ "乀乀") [] tt tt Eq.refl
 
-wp1094 : Base 4 → WsL → ⟪ (CX40 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ CX40 ∷ []) ⟫ʷ
-wp1094 c4 L = pw1 c4 L (CX40 ∷ Toff324 ∷ []) (Toff324 ∷ CX40 ∷ []) tt tt Eq.refl
+wp1094 : Base 4 → WsL → ⟪ (ℓ "亀亲") ⟫ʷ ≈ ⟪ (ℓ "亲亀") ⟫ʷ
+wp1094 c4 L = pw1 c4 L (ℓ "亀亲") (ℓ "亲亀") tt tt Eq.refl
 
-wp1095 : Base 4 → WsL → ⟪ (CCZ013 ∷ CX40 ∷ CCZ134 ∷ []) ⟫ʷ ≈ ⟪ (CX40 ∷ CCZ013 ∷ []) ⟫ʷ
-wp1095 c4 L = pw2 c4 L (CCZ013 ∷ CX40 ∷ CCZ134 ∷ []) (CX40 ∷ CCZ013 ∷ []) tt tt Eq.refl
+wp1095 : Base 4 → WsL → ⟪ (ℓ "亐亀京") ⟫ʷ ≈ ⟪ (ℓ "亀亐") ⟫ʷ
+wp1095 c4 L = pw2 c4 L (ℓ "亐亀京") (ℓ "亀亐") tt tt Eq.refl
 
-wp1096 : Base 4 → WsL → ⟪ (CX40 ∷ CCZ134 ∷ CCZ134 ∷ []) ⟫ʷ ≈ ⟪ (CX40 ∷ []) ⟫ʷ
-wp1096 c4 L = pw2 c4 L (CX40 ∷ CCZ134 ∷ CCZ134 ∷ []) (CX40 ∷ []) tt tt Eq.refl
+wp1096 : Base 4 → WsL → ⟪ (ℓ "亀京京") ⟫ʷ ≈ ⟪ (ℓ "亀") ⟫ʷ
+wp1096 c4 L = pw2 c4 L (ℓ "亀京京") (ℓ "亀") tt tt Eq.refl
 
-wp1097 : Base 4 → WsL → ⟪ (CX04 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ CX04 ∷ Toff302 ∷ []) ⟫ʷ
-wp1097 c4 L = pw1 c4 L (CX04 ∷ Toff324 ∷ []) (Toff324 ∷ CX04 ∷ Toff302 ∷ []) tt tt Eq.refl
+wp1097 : Base 4 → WsL → ⟪ (ℓ "乁亲") ⟫ʷ ≈ ⟪ (ℓ "亲乁些") ⟫ʷ
+wp1097 c4 L = pw1 c4 L (ℓ "乁亲") (ℓ "亲乁些") tt tt Eq.refl
 
-wp1098 : Base 4 → WsL → ⟪ (CCZ013 ∷ CX04 ∷ []) ⟫ʷ ≈ ⟪ (CX04 ∷ CCZ013 ∷ []) ⟫ʷ
-wp1098 c4 L = pw2 c4 L (CCZ013 ∷ CX04 ∷ []) (CX04 ∷ CCZ013 ∷ []) tt tt Eq.refl
+wp1098 : Base 4 → WsL → ⟪ (ℓ "亐乁") ⟫ʷ ≈ ⟪ (ℓ "乁亐") ⟫ʷ
+wp1098 c4 L = pw2 c4 L (ℓ "亐乁") (ℓ "乁亐") tt tt Eq.refl
 
-wp1099 : Base 4 → WsL → ⟪ (CX20 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ CX20 ∷ []) ⟫ʷ
-wp1099 c4 L = pw1 c4 L (CX20 ∷ Toff324 ∷ []) (Toff324 ∷ CX20 ∷ []) tt tt Eq.refl
+wp1099 : Base 4 → WsL → ⟪ (ℓ "乜亲") ⟫ʷ ≈ ⟪ (ℓ "亲乜") ⟫ʷ
+wp1099 c4 L = pw1 c4 L (ℓ "乜亲") (ℓ "亲乜") tt tt Eq.refl
 
-wp1100 : Base 4 → WsL → ⟪ (CX04 ∷ Toff302 ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (CX04 ∷ []) ⟫ʷ
-wp1100 c4 L = pw1 c4 L (CX04 ∷ Toff302 ∷ Toff302 ∷ []) (CX04 ∷ []) tt tt Eq.refl
+wp1100 : Base 4 → WsL → ⟪ (ℓ "乁些些") ⟫ʷ ≈ ⟪ (ℓ "乁") ⟫ʷ
+wp1100 c4 L = pw1 c4 L (ℓ "乁些些") (ℓ "乁") tt tt Eq.refl
 
-wp1101 : Base 4 → WsL → ⟪ (CX40 ∷ CX04 ∷ CX40 ∷ []) ⟫ʷ ≈ ⟪ (Sw04 ∷ []) ⟫ʷ
-wp1101 c4 L = pw1 c4 L (CX40 ∷ CX04 ∷ CX40 ∷ []) (Sw04 ∷ []) tt tt Eq.refl
+wp1101 : Base 4 → WsL → ⟪ (ℓ "亀乁亀") ⟫ʷ ≈ ⟪ (ℓ "乀") ⟫ʷ
+wp1101 c4 L = pw1 c4 L (ℓ "亀乁亀") (ℓ "乀") tt tt Eq.refl
 
-wp1102 : Base 4 → WsL → ⟪ (CCZ124 ∷ CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ CCZ124 ∷ []) ⟫ʷ ≈ ⟪ (CCZ124 ∷ []) ⟫ʷ
-wp1102 c4 L = pw3 c4 L (CCZ124 ∷ CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ CCZ124 ∷ []) (CCZ124 ∷ []) tt tt Eq.refl
+wp1102 : Base 4 → WsL → ⟪ (ℓ "亨二亨二亨") ⟫ʷ ≈ ⟪ (ℓ "亨") ⟫ʷ
+wp1102 c4 L = pw3 c4 L (ℓ "亨二亨二亨") (ℓ "亨") tt tt Eq.refl
 
-wp1103 : Base 4 → WsL → ⟪ (Sw04 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff302 ∷ Sw04 ∷ []) ⟫ʷ
-wp1103 c4 L = pw1 c4 L (Sw04 ∷ Toff324 ∷ []) (Toff302 ∷ Sw04 ∷ []) tt tt Eq.refl
+wp1103 : Base 4 → WsL → ⟪ (ℓ "乀亲") ⟫ʷ ≈ ⟪ (ℓ "些乀") ⟫ʷ
+wp1103 c4 L = pw1 c4 L (ℓ "乀亲") (ℓ "些乀") tt tt Eq.refl
 
-wp1104 : Base 4 → WsL → ⟪ (Sw04 ∷ Toff203 ∷ []) ⟫ʷ ≈ ⟪ (Toff234 ∷ Sw04 ∷ []) ⟫ʷ
-wp1104 c4 L = pw1 c4 L (Sw04 ∷ Toff203 ∷ []) (Toff234 ∷ Sw04 ∷ []) tt tt Eq.refl
+wp1104 : Base 4 → WsL → ⟪ (ℓ "乀亚") ⟫ʷ ≈ ⟪ (ℓ "亱乀") ⟫ʷ
+wp1104 c4 L = pw1 c4 L (ℓ "乀亚") (ℓ "亱乀") tt tt Eq.refl
 
-wp1105 : Base 4 → WsL → ⟪ (CCZ012 ∷ CK40 ∷ CCZ012 ∷ CCZ012 ∷ []) ⟫ʷ ≈ ⟪ (CCZ012 ∷ CK40 ∷ []) ⟫ʷ
-wp1105 c4 L = pw3 c4 L (CCZ012 ∷ CK40 ∷ CCZ012 ∷ CCZ012 ∷ []) (CCZ012 ∷ CK40 ∷ []) tt tt Eq.refl
+wp1105 : Base 4 → WsL → ⟪ (ℓ "二亁二二") ⟫ʷ ≈ ⟪ (ℓ "二亁") ⟫ʷ
+wp1105 c4 L = pw3 c4 L (ℓ "二亁二二") (ℓ "二亁") tt tt Eq.refl
 
-wp1106 : Base 4 → WsL → ⟪ (CCZ034 ∷ K0 ∷ []) ⟫ʷ ≈ ⟪ (K0 ∷ Toff034 ∷ CCZ034 ∷ CCZ034 ∷ []) ⟫ʷ
-wp1106 c4 L = pw1 c4 L (CCZ034 ∷ K0 ∷ []) (K0 ∷ Toff034 ∷ CCZ034 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp1106 : Base 4 → WsL → ⟪ (ℓ "亠丌") ⟫ʷ ≈ ⟪ (ℓ "丌亡亠亠") ⟫ʷ
+wp1106 c4 L = pw1 c4 L (ℓ "亠丌") (ℓ "丌亡亠亠") tt tt Eq.refl
 
-wp1107 : Base 4 → WsL → ⟪ (CCZ034 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CZ03 ∷ CK40 ∷ CZ03 ∷ CCZ034 ∷ []) ⟫ʷ
-wp1107 c4 L = pw1 c4 L (CCZ034 ∷ CK40 ∷ []) (CZ03 ∷ CK40 ∷ CZ03 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp1107 : Base 4 → WsL → ⟪ (ℓ "亠亁") ⟫ʷ ≈ ⟪ (ℓ "丸亁丸亠") ⟫ʷ
+wp1107 c4 L = pw1 c4 L (ℓ "亠亁") (ℓ "丸亁丸亠") tt tt Eq.refl
 
-wp1108 : Base 4 → WsL → ⟪ (K0 ∷ CK40 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (K0 ∷ Toff034 ∷ CCZ034 ∷ CZ03 ∷ CK40 ∷ CZ03 ∷ S4 ∷ []) ⟫ʷ
-wp1108 c4 L = pw1 c4 L (K0 ∷ CK40 ∷ S4 ∷ []) (K0 ∷ Toff034 ∷ CCZ034 ∷ CZ03 ∷ CK40 ∷ CZ03 ∷ S4 ∷ []) tt tt Eq.refl
+wp1108 : Base 4 → WsL → ⟪ (ℓ "丌亁丢") ⟫ʷ ≈ ⟪ (ℓ "丌亡亠丸亁丸丢") ⟫ʷ
+wp1108 c4 L = pw1 c4 L (ℓ "丌亁丢") (ℓ "丌亡亠丸亁丸丢") tt tt Eq.refl
 
-wp1109 : Base 4 → WsL → ⟪ (CCZ012 ∷ CK40 ∷ CCZ012 ∷ X4 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CCZ012 ∷ K0 ∷ CK40 ∷ S4 ∷ CCZ012 ∷ []) ⟫ʷ
-wp1109 c4 L = pw3 c4 L (CCZ012 ∷ CK40 ∷ CCZ012 ∷ X4 ∷ []) (X4 ∷ CCZ012 ∷ K0 ∷ CK40 ∷ S4 ∷ CCZ012 ∷ []) tt tt Eq.refl
+wp1109 : Base 4 → WsL → ⟪ (ℓ "二亁二並") ⟫ʷ ≈ ⟪ (ℓ "並二丌亁丢二") ⟫ʷ
+wp1109 c4 L = pw3 c4 L (ℓ "二亁二並") (ℓ "並二丌亁丢二") tt tt Eq.refl
 
-wp1110 : Base 4 → WsL → ⟪ (CK40 ∷ CCZ014 ∷ CK40 ∷ S4 ∷ CK41 ∷ CCZ014 ∷ CK41 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (Toff014 ∷ Toff104 ∷ []) ⟫ʷ
-wp1110 c4 L = pw2 c4 L (CK40 ∷ CCZ014 ∷ CK40 ∷ S4 ∷ CK41 ∷ CCZ014 ∷ CK41 ∷ S4 ∷ []) (Toff014 ∷ Toff104 ∷ []) tt tt Eq.refl
+wp1110 : Base 4 → WsL → ⟪ (ℓ "亁五亁丢亄五亄丢") ⟫ʷ ≈ ⟪ (ℓ "井亖") ⟫ʷ
+wp1110 c4 L = pw2 c4 L (ℓ "亁五亁丢亄五亄丢") (ℓ "井亖") tt tt Eq.refl
 
-wp1111 : Base 4 → WsL → ⟪ (S4 ∷ Toff302 ∷ []) ⟫ʷ ≈ ⟪ (Toff302 ∷ S4 ∷ []) ⟫ʷ
-wp1111 c4 L = pw1 c4 L (S4 ∷ Toff302 ∷ []) (Toff302 ∷ S4 ∷ []) tt tt Eq.refl
+wp1111 : Base 4 → WsL → ⟪ (ℓ "丢些") ⟫ʷ ≈ ⟪ (ℓ "些丢") ⟫ʷ
+wp1111 c4 L = pw1 c4 L (ℓ "丢些") (ℓ "些丢") tt tt Eq.refl
 
-wp1112 : Base 4 → WsL → ⟪ (Toff014 ∷ Toff104 ∷ Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ CCZ012 ∷ CK41 ∷ CCZ014 ∷ CK41 ∷ S4 ∷ CK40 ∷ CCZ014 ∷ CK40 ∷ CCZ012 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (Toff214 ∷ Toff124 ∷ Toff214 ∷ CS02 ∷ Toff214 ∷ CS02⁻ ∷ CCZ012 ∷ CK41 ∷ CCZ124 ∷ CK41 ∷ S4 ∷ CK42 ∷ CCZ124 ∷ CK42 ∷ CCZ012 ∷ S4 ∷ []) ⟫ʷ
-wp1112 c4 L = pw3 c4 L (Toff014 ∷ Toff104 ∷ Toff024 ∷ CS01 ∷ Toff024 ∷ CS01⁻ ∷ CCZ012 ∷ CK41 ∷ CCZ014 ∷ CK41 ∷ S4 ∷ CK40 ∷ CCZ014 ∷ CK40 ∷ CCZ012 ∷ S4 ∷ []) (Toff214 ∷ Toff124 ∷ Toff214 ∷ CS02 ∷ Toff214 ∷ CS02⁻ ∷ CCZ012 ∷ CK41 ∷ CCZ124 ∷ CK41 ∷ S4 ∷ CK42 ∷ CCZ124 ∷ CK42 ∷ CCZ012 ∷ S4 ∷ []) tt tt Eq.refl
+wp1112 : Base 4 → WsL → ⟪ (ℓ "井亖亝丨亝丩二亄五亄丢亁五亁二丢") ⟫ʷ ≈ ⟪ (ℓ "亪亩亪丯亪丰二亄亨亄丢亇亨亇二丢") ⟫ʷ
+wp1112 c4 L = pw3 c4 L (ℓ "井亖亝丨亝丩二亄五亄丢亁五亁二丢") (ℓ "亪亩亪丯亪丰二亄亨亄丢亇亨亇二丢") tt tt Eq.refl
 
-wp1113 : Base 4 → WsL → ⟪ (CX42 ∷ Toff012 ∷ []) ⟫ʷ ≈ ⟪ (Toff012 ∷ CX42 ∷ Toff014 ∷ []) ⟫ʷ
-wp1113 c4 L = pw3 c4 L (CX42 ∷ Toff012 ∷ []) (Toff012 ∷ CX42 ∷ Toff014 ∷ []) tt tt Eq.refl
+wp1113 : Base 4 → WsL → ⟪ (ℓ "了亍") ⟫ʷ ≈ ⟪ (ℓ "亍了井") ⟫ʷ
+wp1113 c4 L = pw3 c4 L (ℓ "了亍") (ℓ "亍了井") tt tt Eq.refl
 
-wp1114 : Base 4 → WsL → ⟪ (CCZ034 ∷ Toff014 ∷ CCZ134 ∷ []) ⟫ʷ ≈ ⟪ (Toff014 ∷ CCZ034 ∷ []) ⟫ʷ
-wp1114 c4 L = pw2 c4 L (CCZ034 ∷ Toff014 ∷ CCZ134 ∷ []) (Toff014 ∷ CCZ034 ∷ []) tt tt Eq.refl
+wp1114 : Base 4 → WsL → ⟪ (ℓ "亠井京") ⟫ʷ ≈ ⟪ (ℓ "井亠") ⟫ʷ
+wp1114 c4 L = pw2 c4 L (ℓ "亠井京") (ℓ "井亠") tt tt Eq.refl
 
-wp1115 : Base 4 → WsL → ⟪ (CX42 ∷ Toff014 ∷ Toff014 ∷ []) ⟫ʷ ≈ ⟪ (CX42 ∷ []) ⟫ʷ
-wp1115 c4 L = pw3 c4 L (CX42 ∷ Toff014 ∷ Toff014 ∷ []) (CX42 ∷ []) tt tt Eq.refl
+wp1115 : Base 4 → WsL → ⟪ (ℓ "了井井") ⟫ʷ ≈ ⟪ (ℓ "了") ⟫ʷ
+wp1115 c4 L = pw3 c4 L (ℓ "了井井") (ℓ "了") tt tt Eq.refl
 
-wp1116 : Base 4 → WsL → ⟪ (Sw24 ∷ Toff012 ∷ []) ⟫ʷ ≈ ⟪ (Toff014 ∷ Sw24 ∷ []) ⟫ʷ
-wp1116 c4 L = pw3 c4 L (Sw24 ∷ Toff012 ∷ []) (Toff014 ∷ Sw24 ∷ []) tt tt Eq.refl
+wp1116 : Base 4 → WsL → ⟪ (ℓ "乬亍") ⟫ʷ ≈ ⟪ (ℓ "井乬") ⟫ʷ
+wp1116 c4 L = pw3 c4 L (ℓ "乬亍") (ℓ "井乬") tt tt Eq.refl
 
-wp1117 : Base 4 → WsL → ⟪ (Sw24 ∷ Toff104 ∷ []) ⟫ʷ ≈ ⟪ (Toff102 ∷ Sw24 ∷ []) ⟫ʷ
-wp1117 c4 L = pw3 c4 L (Sw24 ∷ Toff104 ∷ []) (Toff102 ∷ Sw24 ∷ []) tt tt Eq.refl
+wp1117 : Base 4 → WsL → ⟪ (ℓ "乬亖") ⟫ʷ ≈ ⟪ (ℓ "于乬") ⟫ʷ
+wp1117 c4 L = pw3 c4 L (ℓ "乬亖") (ℓ "于乬") tt tt Eq.refl
 
-wp1118 : Base 4 → WsL → ⟪ (CCZ024 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ CCZ014 ∷ CK41 ∷ S4 ∷ CCZ124 ∷ CK41 ∷ CCZ014 ∷ CK41 ∷ S4 ∷ CCZ124 ∷ []) ⟫ʷ
-wp1118 c4 L = pw3 c4 L (CCZ024 ∷ []) (CK41 ∷ CCZ014 ∷ CK41 ∷ S4 ∷ CCZ124 ∷ CK41 ∷ CCZ014 ∷ CK41 ∷ S4 ∷ CCZ124 ∷ []) tt tt Eq.refl
+wp1118 : Base 4 → WsL → ⟪ (ℓ "亜") ⟫ʷ ≈ ⟪ (ℓ "亄五亄丢亨亄五亄丢亨") ⟫ʷ
+wp1118 c4 L = pw3 c4 L (ℓ "亜") (ℓ "亄五亄丢亨亄五亄丢亨") tt tt Eq.refl
 
-wp1119 : Base 4 → WsL → ⟪ (CCZ024 ∷ []) ⟫ʷ ≈ ⟪ (CK40 ∷ CCZ014 ∷ CK40 ∷ S4 ∷ CK41 ∷ CCZ014 ∷ CK41 ∷ S4 ∷ CCZ124 ∷ CK41 ∷ CCZ014 ∷ CK41 ∷ S4 ∷ CK40 ∷ CCZ014 ∷ CK40 ∷ S4 ∷ []) ⟫ʷ
-wp1119 c4 L = pw3 c4 L (CCZ024 ∷ []) (CK40 ∷ CCZ014 ∷ CK40 ∷ S4 ∷ CK41 ∷ CCZ014 ∷ CK41 ∷ S4 ∷ CCZ124 ∷ CK41 ∷ CCZ014 ∷ CK41 ∷ S4 ∷ CK40 ∷ CCZ014 ∷ CK40 ∷ S4 ∷ []) tt tt Eq.refl
+wp1119 : Base 4 → WsL → ⟪ (ℓ "亜") ⟫ʷ ≈ ⟪ (ℓ "亁五亁丢亄五亄丢亨亄五亄丢亁五亁丢") ⟫ʷ
+wp1119 c4 L = pw3 c4 L (ℓ "亜") (ℓ "亁五亁丢亄五亄丢亨亄五亄丢亁五亁丢") tt tt Eq.refl
 
-wp1120 : Base 4 → WsL → ⟪ (CCZ024 ∷ []) ⟫ʷ ≈ ⟪ (CCZ024 ∷ []) ⟫ʷ
-wp1120 c4 L = pw1 c4 L (CCZ024 ∷ []) (CCZ024 ∷ []) tt tt Eq.refl
+wp1120 : Base 4 → WsL → ⟪ (ℓ "亜") ⟫ʷ ≈ ⟪ (ℓ "亜") ⟫ʷ
+wp1120 c4 L = pw1 c4 L (ℓ "亜") (ℓ "亜") tt tt Eq.refl
 
-wp1121 : Base 4 → WsL → ⟪ (CCZ012 ∷ CK41 ∷ CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ CK41 ∷ CCZ012 ∷ S4 ∷ CCZ014 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02⁻ ∷ CCZ012 ∷ CCZ012 ∷ CK41 ∷ CCZ012 ∷ CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ CCZ012 ∷ CK41 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ CK41 ∷ CCZ012 ∷ S4 ∷ CCZ014 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02⁻ ∷ CCZ012 ∷ CCZ012 ∷ CK41 ∷ CCZ012 ∷ CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ CCZ012 ∷ CK41 ∷ CCZ012 ∷ []) ⟫ʷ
-wp1121 c4 L = pw3 c4 L (CCZ012 ∷ CK41 ∷ CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ CK41 ∷ CCZ012 ∷ S4 ∷ CCZ014 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02⁻ ∷ CCZ012 ∷ CCZ012 ∷ CK41 ∷ CCZ012 ∷ CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ CCZ012 ∷ CK41 ∷ []) (CK41 ∷ CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ CK41 ∷ CCZ012 ∷ S4 ∷ CCZ014 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02⁻ ∷ CCZ012 ∷ CCZ012 ∷ CK41 ∷ CCZ012 ∷ CCZ012 ∷ CCZ124 ∷ CCZ012 ∷ CCZ012 ∷ CK41 ∷ CCZ012 ∷ []) tt tt Eq.refl
+wp1121 : Base 4 → WsL → ⟪ (ℓ "二亄二亨二亄二丢五亪五五丯亪五五丰二二亄二二亨二二亄") ⟫ʷ ≈ ⟪ (ℓ "亄二亨二亄二丢五亪五五丯亪五五丰二二亄二二亨二二亄二") ⟫ʷ
+wp1121 c4 L = pw3 c4 L (ℓ "二亄二亨二亄二丢五亪五五丯亪五五丰二二亄二二亨二二亄") (ℓ "亄二亨二亄二丢五亪五五丯亪五五丰二二亄二二亨二二亄二") tt tt Eq.refl
 
-wp1122 : Base 4 → WsL → ⟪ (CCZ012 ∷ S4 ∷ CCZ014 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02⁻ ∷ []) ⟫ʷ ≈ ⟪ (S4 ∷ CCZ014 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02⁻ ∷ CCZ012 ∷ []) ⟫ʷ
-wp1122 c4 L = pw3 c4 L (CCZ012 ∷ S4 ∷ CCZ014 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02⁻ ∷ []) (S4 ∷ CCZ014 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02 ∷ Toff214 ∷ CCZ014 ∷ CCZ014 ∷ CS02⁻ ∷ CCZ012 ∷ []) tt tt Eq.refl
+wp1122 : Base 4 → WsL → ⟪ (ℓ "二丢五亪五五丯亪五五丰") ⟫ʷ ≈ ⟪ (ℓ "丢五亪五五丯亪五五丰二") ⟫ʷ
+wp1122 c4 L = pw3 c4 L (ℓ "二丢五亪五五丯亪五五丰") (ℓ "丢五亪五五丯亪五五丰二") tt tt Eq.refl

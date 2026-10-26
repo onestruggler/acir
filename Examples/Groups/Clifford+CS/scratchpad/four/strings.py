@@ -1,6 +1,6 @@
 """Letter lists as strings, in the derivation modules of Four/D or Five/D.
 
-    python3 strings.py REPO Four|Five
+    python3 strings.py REPO Four|Five [--wins]
 
 Writes TREE/Str.agda -- `ℓ s`, the list of the macro letters the
 characters of s stand for, the n-th letter of Mac being U+4E00 + n -- and
@@ -74,15 +74,27 @@ def enc(mm):
 
 n_files = n_lists = 0
 DDIR = os.path.join(B, 'D')
-for f in sorted(os.listdir(DDIR)):
-    if not f.endswith('.agda'):
-        continue
-    p = os.path.join(DDIR, f)
+paths = [os.path.join(DDIR, f) for f in sorted(os.listdir(DDIR)) if f.endswith('.agda')]
+# With --wins, also the window statements (TREE/WinSig) and the window
+# libraries (TREE/Wins), which must be spelled alike: TREE/WinInst
+# compares each library's lemma with its statement in WinSig, and a
+# string against a list would be compared by unfolding the letters.
+WINS = '--wins' in sys.argv[3:]
+if WINS:
+    WDIR = os.path.join(B, 'Wins')
+    paths += [os.path.join(B, 'WinSig.agda')]
+    paths += [os.path.join(WDIR, f) for f in sorted(os.listdir(WDIR)) if f.endswith('.agda')]
+for p in paths:
+    f = os.path.relpath(p, B)
     s = open(p, encoding='utf-8').read()
     new, k = LIST.subn(enc, s)
     n_lists += sum(1 for _ in re.finditer(r'\(ℓ "', new)) - sum(1 for _ in re.finditer(r'\(ℓ "', s))
-    if IMPORT not in new:
-        new = REFL.sub(lambda mm: mm.group(1) + IMPORT, new, count=1)
+    if IMPORT not in new and '(ℓ "' in new:
+        if REFL.search(new):
+            new = REFL.sub(lambda mm: mm.group(1) + IMPORT, new, count=1)
+        else:
+            last = list(re.finditer(r'^open import .*\n', new, re.M))[-1]
+            new = new[:last.end()] + IMPORT + new[last.end():]
         assert IMPORT in new, f
     new = new.replace('open import Data.List using (List ; [] ; _∷_)\n',
                       'open import Data.List.Base using (List ; [] ; _∷_)\n')
