@@ -1,0 +1,20 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=term] (0) at (-3, 0) {$I$};
+		\node [style=term] (1) at (0, 1) {$M'$};
+		\node [style=term] (2) at (0, -1) {$Q$};
+		\node [style=term] (3) at (2.5, 1) {$M$};
+		\node [style=term] (4) at (2.5, -1) {$gM$};
+		\node [style=term] (5) at (2.8, 0) {$g$};
+		\node [style=rule label] (6) at (-1, 0) {IH};
+		\node [style=rule label] (7) at (1.25, 0) {Main\\Lemma};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=normal step] (3) to (1);
+		\draw [style=normal step] (4) to (2);
+		\draw [style=generator] (3) to (4);
+		\draw [style=lower path] (1) to (2);
+		\draw [style=normal step, bend right=30] (1) to (0);
+		\draw [style=normal step, bend left=30] (2) to (0);
+	\end{pgfonlayer}
+\end{tikzpicture}

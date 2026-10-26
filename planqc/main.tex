@@ -47,6 +47,8 @@
 \citestyle{acmnumeric}
 %% Table 1 keeps author-year citations: ``Greylyn [2014]''.
 \newcommand{\tabcite}[1]{\citeauthor{#1}~[\citeyear{#1}]}
+%% Named ``Bian, Li et al.'' (authors in alphabetical order), as a link.
+\defcitealias{bian2026qupit}{Bian, Li et al.}
 \newcommand{\rewrites}[1]{\overset{#1^{*}}{\longleftrightarrow}}
 
 %% Inline Agda identifiers, in a sans-serif face.
@@ -183,16 +185,7 @@ The main computational cost came from Agda's conversion checker. If two terms ar
 
 \section{Sixteen Formalizations}\label{sec:corpus}
 
-Table~\ref{tab:corpus} lists the sources, results, module counts and
-typechecking times. The formalizations comprise about 420{,}000 lines
-of Agda and contain no postulates. All proofs are constructive. They
-use neither excluded middle nor choice and need no real numbers, so
-each case split is a decision procedure and each proof is a program.
-Together with decidable matrix equality, soundness and completeness
-give an executable decision procedure for each theory's word problem.
-The two-level presentations hold in every dimension, except for Greylyn's,
-which holds for $n\le4$ as in the thesis. The circuit theories hold
-for every number of wires unless the source paper fixes it.
+The sixteen formalizations in \Cref{tab:corpus} comprise about 420{,}000 lines of Agda and assume nothing without proof. Each result holds in every dimension or for any number of wires, unless its source restricts these (e.g., to $n\le4$ in Greylyn's thesis~\cite{greylyn2014}). All proofs are constructive and need no real numbers. Since matrix equality is decidable, soundness and completeness give a decision procedure for each theory's word problem.
 
 \begin{table}[H]
 \small
@@ -210,7 +203,7 @@ Source & Object & Result & Mod. & Time \\
 \midrule
 \multicolumn{5}{@{}l}{\emph{Circuits}}\\
 \tabcite{selinger2015clifford} & Clifford & sub-presentation & 31 & 34 \\
-\tabcite{bian2026qupit} & Clifford, odd prime $p$ & presentation of a model & 215 & 546 \\
+\citetalias{bian2026qupit}~[\citeyear{bian2026qupit}] & Clifford, odd prime $p$ & presentation of a model & 215 & 546 \\
 \tabcite{makary2021real} & real stabilizer & sub-presentation & 30 & 35 \\
 \tabcite{amy2018cnotdihedral} & CNOT-dihedral & sub-presentation & 30 & 24 \\
 \tabcite{blake2026phaseaffine} & phase-affine, prime $d$ & sub-presentations & 56 & 61 \\
@@ -234,80 +227,46 @@ Total & & & 1{,}476 & 2{,}332 \\
 \label{tab:corpus}
 \end{table}
 
-The proofs follow a few common methods. For \emph{exact synthesis}, an
-algorithm expresses each matrix as a word in the generators.
-Completeness follows by well-founded induction on a level, using a
-Main Lemma that closes a square for every state and generator. We
-formalize the induction once and prove the Main Lemma for each
-presentation. For \emph{normal forms}, each circuit is rewritten into
-a normal form recoverable from its matrix. For \emph{induction on the
-width}, we decompose a circuit into a circuit on one fewer wire and a
-component on the bottom wire. For \emph{encoding}, we translate
-circuits into a complete theory and back.
+The completeness proofs follow the two strategies of \Cref{fig:strategies}. For the groups of two-level matrices, the normal forms come from exact synthesis. Each matrix, or \emph{state}, has a \emph{level}, built from quantities such as the least denominator exponent of a column, and the algorithm reduces each state $M$ to the identity in steps that lower the level. These steps form the normal word $N_M$. The \emph{Main Lemma} says that for every state $M$ and generator $g$, a diagram of relations closes the square formed by $g$ and the algorithm's next steps from $M$ and $gM$, passing only through states of lower level (\Cref{fig:mainlemma}). By well-founded induction on the level, the relations then rewrite $N_{gM}\,g$ into $N_M$ (\Cref{fig:level}), and by induction on length, every word that reduces $M$ to the identity rewrites into $N_M$ (\Cref{fig:length}). Two words with the same matrix therefore rewrite into each other. We formalize these inductions once and prove the Main Lemma for each presentation.
 
-Two developments reuse Agda proofs by Bian and
-Selinger~\cite{bian2023cliffordt2,bian2023cliffordcs3}. These relate
-circuit relations to two-level relations using the
-Reidemeister--Schreier method. We connect them to our two-level
-presentations to obtain statements about matrices. The qudit Clifford theorem
-of~\citet{bian2026qupit} uses an algebraic model of the Clifford group,
-built from the Pauli and symplectic groups together with a phase. The
-other theorems use matrices.
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.26\linewidth}
+  \centering
+  \tikzfig{figures/mainlemma}
+  \caption{The Main Lemma.}
+  \label{fig:mainlemma}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.38\linewidth}
+  \centering
+  \tikzfig{figures/levelinduction}
+  \caption{Induction on the level.}
+  \label{fig:level}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.32\linewidth}
+  \centering
+  \tikzfig{figures/lengthinduction}
+  \caption{Induction on length.}
+  \label{fig:length}
+\end{subfigure}
+\vspace{-.2 cm}
+\caption{Completeness from the Main Lemma. Plain arrows are words, double arrows are steps of the algorithm, and dashed arrows are words through states of lower level.}
+\label{fig:proof}
+\end{figure}
 
-Much of each development is generated. Computational derivations,
-such as those in Selinger's 105-page supplement or the qutrit box
-relations, are generated by scripts that follow the paper or search
-for the steps. Agda checks these derivations using a rewriter and
-decides soundness by evaluating matrices. Conceptual arguments, such
-as the Main Lemma or uniqueness of a normal form, are formalized
-directly. In the real stabilizer development, half the lines are
-generated and a fifth formalize the paper's mathematics.
+Two formalizations reuse the Agda proofs of Bian and Selinger~\cite{bian2023cliffordt2,bian2023cliffordcs3}, which relate circuit relations to two-level relations by the Reidemeister--Schreier method. We connect these to our two-level presentations to obtain statements about matrices. Only the qudit Clifford theorem of \citetalias{bian2026qupit}~\cite{bian2026qupit} uses, in place of matrices, an algebraic model built from the Pauli and symplectic groups together with a phase.
+
+Long computational derivations, such as those in Selinger's 105-page supplement and the qutrit box relations, come from scripts that follow the paper, as in \Cref{sec:method}, or search for the steps. In the real stabilizer formalization, half the lines are generated in this way, and a fifth formalize the paper's mathematics.
 
 \section{Findings from the Formalizations}\label{sec:findings}
 
-Formalizing these papers uncovered many misprints, several of them
-in statements that the proofs rely on, as well as the two more
-serious problems described below.
+Besides many misprints, several of them in statements that the proofs rely on, the formalizations uncovered two more serious problems.
 
-\paragraph{A gap in Hadamard-$\Pi$.} Theorem~4.14 of Hadamard-$\Pi$
-states that the relations in its Figure~6 present the group
-$O_n(\Z[\frac1{\sqrt2}])$ of orthogonal matrices over
-$\Z[\frac1{\sqrt2}]$. The proof uses exact synthesis. One subcase of
-its Main Lemma relies on Lemmas~A.16 and~A.17, both of which are
-false. Each fails on a unit column in dimension~6, such as
-$(-1-\sqrt2, 1, -1-\sqrt2, 1, \sqrt2, -2+\sqrt2)/\sqrt2^4$.
-The underlying calculation omits a $+1$ from an expression that is
-reduced modulo~2.
-By testing the case analysis on random states, we also found a state
-in dimension~9 for which every diagram provided in the proof exceeds
-the required level bound. The proof of the Main Lemma therefore does
-not cover this state.
+\paragraph{A gap in Hadamard-$\Pi$.} Theorem~4.14 of Hadamard-$\Pi$ states that the relations in its Figure~6 present $O_n(\Z[\frac1{\sqrt2}])$. One subcase of its Main Lemma relies on Lemmas~A.16 and~A.17, both of which are false. Each fails on a unit column in dimension~6, such as $(-1-\sqrt2, 1, -1-\sqrt2, 1, \sqrt2, -2+\sqrt2)/\sqrt2^4$, because the underlying calculation omits a $+1$ from an expression reduced modulo~2. By testing the case analysis on random states, we also found a state in dimension~9 that the proof does not cover, since every diagram it gives for this state exceeds the required level bound.
 
-The theorem itself still holds. Cl\'ement's unpublished
-2019 thesis~\cite{clement2019thesis} presents the same group using a
-different set of relations, and its case analysis covers the missing
-case. We prove that the two sets of relations are equivalent in every
-dimension. We then formalize Cl\'ement's case analysis as a decision
-tree checked by evaluation in Agda, together with the rest of his
-proof. Cl\'ement's 2026 theorem on real Clifford+CH
-circuits~\cite{clement2026realcliffordch} uses Theorem~4.14 and thus
-depends on the same gap. Our formalization supplies the missing proof
-of Theorem~4.14.
+The theorem itself still holds. Cl\'ement's unpublished 2019 thesis~\cite{clement2019thesis} presents the same group with different relations, and its case analysis covers the missing case. We prove that the two sets of relations are equivalent in every dimension and formalize Cl\'ement's proof, with its case analysis as a decision tree checked by evaluation. This also closes the gap in Cl\'ement's 2026 theorem on real Clifford+CH circuits~\cite{clement2026realcliffordch}, which uses Theorem~4.14.
 
-\paragraph{An omitted relation.} Amy, Ross and
-Wesley~\cite{amy2024toffoli} present three-qubit Toffoli--Hadamard
-circuits in two steps. They first present $O_8(\Z[\frac12])$ using
-the Toffoli and $\mathrm{K} = \mathrm{H}\otimes\mathrm{H}$ gates,
-and then present the scaled dyadic orthogonal group $L_8$.
-Their Section~5.5 uses a relation $r_{\mathrm{K}}$ that defines
-$\mathrm{K}_{1,2}$ in terms of a controlled K gate. However, this
-relation is omitted from the figures specifying the relations of
-Theorem~5.2, and it cannot be derived from the remaining relations.
-To show this, we interpret each Toffoli--K gate $g$ as $RgR$, where
-$R = I - J/4$ and $J$ is the all-ones matrix. This interpretation
-satisfies every other relation but fails to satisfy $r_{\mathrm{K}}$.
-Thus the relations as printed are incomplete. After restoring
-$r_{\mathrm{K}}$, we prove that they present $L_8$.
+\paragraph{An omitted relation.} Amy, Ross and Wesley~\cite{amy2024toffoli} present three-qubit Toffoli--Hadamard circuits in two steps, first $O_8(\Z[\frac12])$ by the Toffoli and $\mathrm{K} = \mathrm{H}\otimes\mathrm{H}$ gates (their Theorem~5.2) and then the scaled dyadic orthogonal group $L_8$. A relation $r_{\mathrm{K}}$ of their Section~5.5, which defines $\mathrm{K}_{1,2}$ in terms of a controlled K gate, is missing from the relations of Theorem~5.2 and cannot be derived from them, so the printed relations are incomplete. Indeed, interpreting each Toffoli--K gate $g$ as $RgR$, where $R = I - J/4$ and $J$ is the all-ones matrix, satisfies every other relation but not $r_{\mathrm{K}}$. With $r_{\mathrm{K}}$ restored, we prove that the relations present $L_8$.
 
 % \paragraph{Misprints.} The other papers are correct in the parts we
 % formalize, up to misprints, several of which occur in statements used
@@ -329,33 +288,25 @@ $r_{\mathrm{K}}$, we prove that they present $L_8$.
 % cost moves from writing proofs to checking statements, and a scaffold
 % keeps that check small.
 
-\section{Conclusion and Future Work}\label{sec:conclusion}
+\section{Discussions and Future Work}\label{sec:conclusion}
 
-We formalize sixteen developments within a common framework, with
-shared circuit syntax, presentation records, and libraries for rings
-and their matrix groups. This allows us to relate different
-presentations, as in our proof that Cl\'ement's relations and those of
-Hadamard-$\Pi$ are equivalent.
+We formalize the results of sixteen papers in QCert, with shared
+circuit syntax, presentation records, and libraries for rings and
+their matrix groups. This allows us to relate different presentations,
+as in our proof that Cl\'ement's relations and those of Hadamard-$\Pi$
+are equivalent. These libraries and the induction from a Main Lemma to
+completeness can also be reused for new exact synthesis algorithms,
+although each algorithm still needs a proof of its own Main Lemma,
+which is where the gap in Hadamard-$\Pi$ occurs.
 
-The framework provides a foundation for completeness in
-higher-dimensional systems, where case analyses can become difficult
-to check by hand. The qutrit theorem, for example, relies on hundreds
-of box relations. We decide soundness by evaluating exact matrices,
-generate and check derivations in Agda, and typecheck the corpus in
-about 40 minutes. The rings, matrix groups and induction from a Main
-Lemma to completeness (\Cref{sec:corpus}) also support
-number-theoretic exact synthesis. These components are formalized once
-and can be reused for new algorithms. Each algorithm still requires a
-proof of its Main Lemma, where the gap in Hadamard-$\Pi$ occurs
-(\Cref{sec:findings}).
+QCert's scope is limited in two ways. First, it supports only discrete gate sets, whose matrices it evaluates exactly, so it does not cover completeness results for circuits with continuous parameters, such as rotations by arbitrary angles~\cite{clement2023complete,clement2024extensions,clement2024minimal}. Second, control is not a circuit constructor in QCert, so it does not cover results that treat control as a primitive operation on circuits~\cite{delorme2026control,schober2026control,blake2026qudit}.
 
-QCert's scope is limited in two ways. First, it supports only discrete gate sets, whose matrices it evaluates exactly. Completeness results for circuits with continuous parameters, such as rotations by arbitrary angles~\cite{clement2023complete,clement2024extensions,clement2024minimal}, are therefore not formalized. Second, QCert does not support control as a circuit constructor. A controlled gate must be a gate of the gate set or a circuit over it, so completeness results that treat control as a primitive operation on circuits~\cite{delorme2026control,schober2026control,blake2026qudit} are not formalized either.
-
-\paragraph{Future work.} We are porting the developments to Lean to
-make our theorems available to its larger community and use them with
-its broader mathematical library, Mathlib. We also plan to study
+QCert provides a foundation for completeness in higher dimensions,
+where case analyses become hard to check by hand. We plan to study
 Clifford completeness in all dimensions and T-count optimization for
-multi-qubit Clifford+T exact synthesis.
+multi-qubit Clifford+T exact synthesis. We are also porting the
+formalizations to Lean, to make them available to its larger community
+and to use them with its mathematical library, Mathlib.
 %We are also working on a longer version of this work, with the details of each development.
 
 \bibliographystyle{ACM-Reference-Format}

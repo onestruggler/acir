@@ -1,0 +1,17 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=term] (0) at (-3, 0) {$I$};
+		\node [style=term] (1) at (1.5, 1) {$M$};
+		\node [style=term] (2) at (1.5, -1) {$gM$};
+		\node [style=term] (3) at (1.8, 0) {$g$};
+		\node [style=term] (4) at (-0.75, -2.2) {$w'$};
+		\node [style=rule label] (5) at (-0.4, 0.45) {(b)};
+		\node [style=rule label] (6) at (-0.6, -0.95) {IH};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=generator] (1) to (2);
+		\draw [style=normal step, bend right=30] (1) to (0);
+		\draw [style=normal step] (2) to (0);
+		\draw [style=generator, bend left=45] (2) to (0);
+	\end{pgfonlayer}
+\end{tikzpicture}

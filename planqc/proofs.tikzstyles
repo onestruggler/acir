@@ -11,3 +11,6 @@
 \tikzstyle{equal}=[-, double, double distance=1.5pt]
 \tikzstyle{translate}=[|->, >=stealth]
 \tikzstyle{translate back}=[|->, >=stealth]
+\tikzstyle{generator}=[->, >=stealth]
+\tikzstyle{normal step}=[-implies, double, double distance=1.5pt]
+\tikzstyle{lower path}=[->, >=stealth, dashed]

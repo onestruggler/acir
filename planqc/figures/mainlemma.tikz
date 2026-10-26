@@ -1,0 +1,15 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=term] (0) at (0, 1) {$M'$};
+		\node [style=term] (1) at (0, -1) {$Q$};
+		\node [style=term] (2) at (2.5, 1) {$M$};
+		\node [style=term] (3) at (2.5, -1) {$gM$};
+		\node [style=term] (4) at (2.8, 0) {$g$};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=normal step] (2) to (0);
+		\draw [style=normal step] (3) to (1);
+		\draw [style=generator] (2) to (3);
+		\draw [style=lower path] (0) to (1);
+	\end{pgfonlayer}
+\end{tikzpicture}
