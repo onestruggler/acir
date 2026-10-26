@@ -73,18 +73,22 @@ png: $(MAIN).pdf
 # latexdiff of this revision against the submitted version.  submitted/
 # holds the sources of the PDF the reviewers read (paper/ of the
 # supplementary material).  Agda code blocks, figures and the acks are
-# compared as wholes: diffcode.py shows each old listing (agdacode, a
-# verbatim environment latexdiff would leave out) as a deleted block in
-# red and puts a blue bar beside each new code block; the bibliography
+# compared as wholes, as are tables: diffcode.py restores old floats
+# with red captions and marks revised floats with blue captions. It shows
+# each old listing (agdacode, a verbatim environment latexdiff would leave
+# out) as a deleted block in red and puts a blue bar beside each new code
+# block. Citations stay breakable; displayed equations are compared as
+# wholes. The bibliography
 # is the current one (main.bbl is moved aside so that it is not
 # flattened).
 # The three figures the revision replaced are taken from submitted/.
-LDCONFIG := --config="PICTUREENV=(?:picture|DIFnomarkup|code|tikzpicture|acks)[\w\d*@]*" \
+LDCONFIG := --disable-citation-markup --math-markup=whole --append-safecmd=aid,aidop,aidrel \
+            --config="PICTUREENV=(?:picture|DIFnomarkup|code|tikzpicture|acks|table|figure)[\w\d*@]*" \
             --config="VERBATIMENV=(?:comment|agdacode)"
 
 diff: diff.pdf
 
-diff.tex: $(DEPS) $(AGDATEX) diffcode.py $(wildcard submitted/*.tex submitted/sections/*.tex)
+diff.tex: $(DEPS) $(AGDATEX) Makefile diffcode.py $(wildcard submitted/*.tex submitted/sections/*.tex)
 	[ ! -f $(MAIN).bbl ] || mv $(MAIN).bbl $(MAIN).bbl.keep
 	latexdiff --flatten --encoding=utf8 $(LDCONFIG) submitted/$(MAIN).tex $(MAIN).tex > $@; \
 	  s=$$?; [ ! -f $(MAIN).bbl.keep ] || mv $(MAIN).bbl.keep $(MAIN).bbl; exit $$s

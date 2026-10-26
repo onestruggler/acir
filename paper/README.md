@@ -72,10 +72,13 @@ text, and the cuts made for length are kept. Measured by `make diff`
 whole from `popl-revision2`, and a later pass restored more of the
 submitted wording and corrected the claims and citations the
 fact-check of 2026-10-26 found wrong; those counts are from before
-that. Agda code blocks, figures and the acks are compared
-as wholes: `diffcode.py` shows each submitted listing as a deleted block
-(red, with a red bar) and puts a blue bar beside each new code block;
-the circuit diagrams appear in their revised form.
+that. Agda code blocks, figures, tables, displayed equations and the acks
+are compared as wholes. `diffcode.py` shows each submitted listing as a
+deleted block (red, with a red bar) and puts a blue bar beside each new
+code block. Deleted figures and tables are retained with red captions;
+their revised versions have blue captions. References to deleted figures
+and tables resolve to those retained blocks. Citations remain breakable,
+and tables and old code lines are fitted to the text width.
 
 From PowerShell: `wsl bash -lc "make -C /mnt/d/work/acir/paper"`.
 
