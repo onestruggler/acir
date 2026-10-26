@@ -28,7 +28,7 @@ open import Examples.Groups.Clifford+CS.Four.Chain
 open import Examples.Groups.Clifford+CS.Four.TransportTables C
 open import Examples.Groups.Clifford+CS.Four.Transport C
 
--- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+-- The lemmas of Four/D it uses (Four.CStmt; Four.Complete gives them).
 private
   lem-top-ki-sq : Win clemmas 501
   lem-top-ki-sq = get clemmas C 501

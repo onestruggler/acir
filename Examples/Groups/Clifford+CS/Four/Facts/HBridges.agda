@@ -33,7 +33,7 @@ open import Examples.Groups.Clifford+CS.MultiControlled using (Layout ; mc ; G-k
 open import Examples.Groups.Clifford+CS.Decoding 0 using (layout□ ; dKI₁)
 open import Examples.Groups.Clifford+CS.Four.Facts.Bridges C using (mc-cong ; negs-F)
 
--- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+-- The lemmas of Four/D it uses (Four.CStmt; Four.Complete gives them).
 private
   lem-bridge-G-ki : Win clemmas 479
   lem-bridge-G-ki = get clemmas C 479

@@ -33,7 +33,7 @@ open import Examples.Groups.Clifford+CS.Four.Facts.HBridges C
 open import Examples.Groups.Clifford+CS.Four.Facts.Classes C using (Resp ; []ʳ ; same ; re ; resp)
 open import Examples.Groups.Clifford+CS.Four.Facts.HClasses C
 
--- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+-- The lemmas of Four/D it uses (Four.CStmt; Four.Complete gives them).
 private
   lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01- : Win clemmas 537
   lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01- = get clemmas C 537

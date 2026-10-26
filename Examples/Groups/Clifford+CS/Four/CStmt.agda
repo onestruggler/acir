@@ -7,7 +7,7 @@
 --
 -- As a balanced tree (WinSig's), `clemmas`: the consumers of Four/D
 -- (Four.TransportTables ... Lemma87.Four) take their proofs as one
--- parameter (C : Proofs clemmas), which Four.ConsInst builds, so that
+-- parameter (C : Proofs clemmas), which Four.Complete builds, so that
 -- they do not load Four/D.  Written by `scratchpad/four/di.py`.
 ------------------------------------------------------------------------
 

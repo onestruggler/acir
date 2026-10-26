@@ -11,7 +11,10 @@ modules, closed under their unchecked imports, checked by one Agda
 process through a generated root module that imports them (Par5Batch/ in
 the repository): the interfaces they import are then read once per batch
 rather than once per module, which was most of a derivation module's time
-(Four/D, Five/D: 20-35 s of loading against 3-16 s of checking).  With
+(Four/D, Five/D: 20-35 s of loading against 3-16 s of checking).  A
+batch member counts as checked as soon as Agda has moved past it (the
+next "Checking" line at its depth or above), not when the batch ends, so
+that its importers can start in other jobs.  With
 PAR5_BIGSRC set, a module of more source bytes runs alone, estimated at
 12 GB (since the chain fix no derivation module needs it).  A batch that fails is split into
 single modules, so that the others go on and the error is the module's
@@ -57,7 +60,11 @@ unknown, 20 s; only logs of the same layout -- after repack.py a name
 like Four/D/D724 is another module, and a stale cost of a heavy one ran
 light modules alone, too many of them at once), PAR5_HEAVY (60: a module known to take longer runs
 alone), PAR5_TARGET (40: a batch stops at that many seconds of known
-time), PAR5_OVERHEAD (5: a job's fixed cost in the critical-path height
+time, counting what each member adds to the loading), PAR5_SHARE (0.5:
+a module joins a batch only if at most that part of what it loads is new
+to the batch), PAR5_WIDTH (1: in a module's height, each importer adds
+the checking time of everything it waits on, over JOBS), PAR5_OVERHEAD
+(5: a job's fixed cost in the critical-path height
 by which ready modules are taken, highest first), PAR5_LOADRATE (1.5:
 seconds of loading per MB of source a module imports, in that height),
 PAR5_SLACK (60: a
@@ -82,7 +89,9 @@ partners; 727 s with Four's consumers taking their lemmas as a
 parameter; 618 s with -A256m (job time 2525 s); and 552 s on eight jobs
 with the memory estimates from what a job loads (job time 3670 s, 7-8
 jobs at a time; -A64m 614 s, -A512m 544 s).  So: python3 par5.py 8 LOG
-on this machine (16 cores, 26 GB, PAR5_BUDGET_GB=22).
+on this machine (16 cores, 26 GB, PAR5_BUDGET_GB=22).  Later, with two
+cores taken by another session: 561 s with batch members released as
+Agda passes them, 527 s with batches of modules that share their loading.
 """
 import fcntl, os, re, subprocess, sys, time, zlib
 
@@ -321,18 +330,29 @@ def alone_p(p): return p in solo or big(p) or cost(p) > HEAVY
 # cheap, waited 180 s after they were ready, and then took 78 s.
 OVERHEAD = float(os.environ.get('PAR5_OVERHEAD', '5'))
 LOADRATE = float(os.environ.get('PAR5_LOADRATE', '1.5'))
-srcmb = {p: sum(size(d) for d in clos(p) if os.path.exists(os.path.join(REPO, d))) / 1e6 for p in deps}
+srcsize = {d: size(d) for d in deps if os.path.exists(os.path.join(REPO, d))}
+srcmb = {p: sum(srcsize.get(d, 0) for d in clos(p)) / 1e6 for p in deps}
+SHARE = float(os.environ.get('PAR5_SHARE', '0.5'))
 def own_h(p): return cost(p) + OVERHEAD + LOADRATE * srcmb[p]
 rdeps = {p: set() for p in deps}
 for p in deps:
     for d in deps[p]:
         if d in rdeps: rdeps[d].add(p)
+# A module waits not only for its longest chain but for all of its
+# imports, which take their total cost spread over the slots: a module's
+# height counts, for each module that imports it, that one's height plus
+# PAR5_WIDTH times the checking time of everything it imports, over JOBS.
+# Without it Five/D (240 modules, 460 s of jobs) had the height of the one
+# assembly after it, 38 s, ran after even the modules nothing imports,
+# and the assembly ended a from-scratch run at 531 s.
+WIDTH = float(os.environ.get('PAR5_WIDTH', '1'))
+wsum = {q: sum(cost(d) for d in deps[q] if d in deps) for q in deps}
 height = {}
 for p in reversed(topo):
     missing = [q for q in rdeps[p] if q not in height]
     if missing:   # only an import cycle leaves a dependent unvisited
         sys.exit(f'par5: import cycle through {p} and {missing[0]}')
-    height[p] = own_h(p) + max((height[q] for q in rdeps[p]), default=0.0)
+    height[p] = own_h(p) + max((height[q] + WIDTH * wsum[q] / JOBS for q in rdeps[p]), default=0.0)
 
 
 if os.environ.get('PAR5_HEIGHTS'):   # a file to write the heights to, then stop
@@ -375,6 +395,34 @@ def start(job, heap):
                             cwd=REPO, stdout=out, stderr=subprocess.STDOUT)
     running[tag] = (proc, time.time(), heap, out, job, target)
     busy.update(job)
+
+
+# A batch member counts as checked as soon as Agda has moved past it, not
+# when the batch ends.  Agda flushes "Checking M (path)." as it starts M,
+# indented by M's depth under the batch root, and prints the next line at
+# that depth or above only once M's interface is written.  A critical
+# module had waited for the rest of its batch: in one from-scratch run
+# Place (1.5 s of its own) for the 45 derivation modules batched behind
+# it (70 s), then Windows for four window libraries (50 s).
+released = {}
+
+
+def release(tag):
+    job = running[tag][4]
+    if len(job) == 1: return
+    try:
+        txt = open(f'{OUT}/{tag}.out', errors='replace').read()
+    except OSError:
+        return
+    lines = [(len(i), n) for i, n in re.findall(r'^( *)Checking (\S+) \(', txt, re.M)]
+    rel = released.setdefault(tag, set())
+    after = 1 << 30                       # the least depth after line k
+    for d, n in reversed(lines):
+        q = bypath.get(n)
+        if after <= d and q in job and q not in rel and q not in done:
+            rel.add(q); done.add(q)
+            log(f'{q} released by {tag} elapsed={int(time.time() - t_start)}s')
+        after = min(after, d)
 
 
 def own_times(txt):
@@ -451,10 +499,21 @@ def form_batch(ready_set, pending, idle):
             if heads_chain(p):
                 return chain_after(p)
     if len(rs) >= idle:
-        cap, job = max(1, min(BATCH, max(MINB, -(-len(rs) // idle)))), []
+        # A module joins a batch only if it shares most of what it loads
+        # with the batch (PAR5_SHARE), and what it adds to the loading
+        # counts towards TARGET: batching saves the loading two modules
+        # share, and two that share little only wait for each other.  At
+        # the end of one run Four.Complete (0.1 s of its own, loading all
+        # of Four/D) and Five.DAll.F1 (loading Five/D) were one 78 s job,
+        # the last of the run, where alone they take about 45 s each.
+        cap, job, seen, spent = max(1, min(BATCH, max(MINB, -(-len(rs) // idle)))), [], set(), 0.0
         for p in rs:
-            if len(job) >= cap or (job and sum(map(cost, job)) + cost(p) > TARGET): break
-            job.append(p)
+            new = clos(p) - seen
+            extra = sum(srcsize.get(d, 0) for d in new) / 1e6
+            if job and (len(job) >= cap or spent + cost(p) + LOADRATE * extra > TARGET): break
+            if job and extra > SHARE * srcmb[p] + 1: continue
+            job.append(p); seen |= clos(p)
+            spent += cost(p) + (LOADRATE * extra if len(job) > 1 else 0)
         return job
     job = [rs[0]]
     for p in pending:
@@ -469,8 +528,10 @@ while True:
     for tag in list(running):
         proc, t0, heap, out, job, target = running[tag]
         rc = proc.poll()
-        if rc is None: continue
-        out.close(); del running[tag]; busy.difference_update(job)
+        if rc is None:
+            release(tag)
+            continue
+        out.close(); del running[tag]; busy.difference_update(job); released.pop(tag, None)
         txt = open(f'{OUT}/{tag}.out', errors='replace').read()
         m = re.findall(r'maxrss=(\d+)kB', txt)
         rss = int(m[-1]) if m else 0

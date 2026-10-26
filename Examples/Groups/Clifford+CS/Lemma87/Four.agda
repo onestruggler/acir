@@ -49,7 +49,7 @@ open import Examples.Groups.Clifford+CS.Lemma87.Sem.S09 using (s-h-8 ; s-l-6 ; s
 open import Examples.Groups.Clifford+CS.Lemma87.Sem.S10 using (s-h-9 ; s-l-5 ; s-l-11 ; s-h-3)
 open import Examples.Groups.Clifford+CS.Lemma87.Sem.S11 using (s-h-7)
 
--- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+-- The lemmas of Four/D it uses (Four.CStmt; Four.Complete gives them).
 private
   lem-L87-iI : Win clemmas 557
   lem-L87-iI = get clemmas C 557

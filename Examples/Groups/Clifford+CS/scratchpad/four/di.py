@@ -468,9 +468,9 @@ open(os.path.join(BASE, TREE, 'DEqn.agda'), 'w', encoding='utf-8').write(NL.join
 # proofs.  Now every module of the tree takes the proofs of the
 # statements its members use, `(C : Proofs clemmas)` (Four.CStmt; WinSig's
 # trees of statements and of proofs), names them in a private block
-# (`lem-x = get clemmas C k`) and opens its siblings at C; Four.ConsInst
-# builds C from Four.DAll and Four.WinInst, and Four.Complete applies
-# the tree to it.  Read back off the private blocks on a rerun.
+# (`lem-x = get clemmas C k`) and opens its siblings at C; Four.Complete
+# builds C from Four.DAll and Four.WinInst and applies the tree to it.
+# Read back off the private blocks on a rerun.
 if FOUR:
     CTREE = ['Four/TransportTables.agda', 'Four/Transport.agda', 'Four/Bridge.agda',
              'Four/Facts/Bridges.agda', 'Four/Facts/HBridges.agda', 'Four/Facts/Classes.agda',
@@ -482,8 +482,9 @@ if FOUR:
     CALT = '|'.join(re.escape(m) for m in CMODS)
     CSTMT = PFX + 'Four.CStmt'
     CINST = PFX + 'Four.ConsInst'
-    CMARK = '-- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).'
-    CBLOCK = re.compile(r'^' + re.escape(CMARK) + r'\nprivate\n((?:  .*\n)*)\n?', re.M)
+    CMARK = '-- The lemmas of Four/D it uses (Four.CStmt; Four.Complete gives them).'
+    CMARK0 = '-- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).'
+    CBLOCK = re.compile(r'^(?:' + re.escape(CMARK) + '|' + re.escape(CMARK0) + r')\nprivate\n((?:  .*\n)*)\n?', re.M)
     WIIMP = 'import ' + PFX + 'Four.WinInst as WI\n'
     DAIMP = re.compile(r'^open import ' + re.escape(DALL) + r' WI\.ws using \(([^)]*)\)\n', re.M)
     CPRE = ['open import ' + PFX + 'Four.WinSig using (Proofs ; Win ; get)',
@@ -512,7 +513,7 @@ if FOUR:
         '--',
         '-- As a balanced tree (WinSig\'s), `clemmas`: the consumers of Four/D',
         '-- (Four.TransportTables ... Lemma87.Four) take their proofs as one',
-        '-- parameter (C : Proofs clemmas), which Four.ConsInst builds, so that',
+        '-- parameter (C : Proofs clemmas), which Four.Complete builds, so that',
         '-- they do not load Four/D.  Written by `scratchpad/four/di.py`.'] + TAIL + [
         'module ' + CSTMT + ' where', '',
         'open import Data.List.Base using ([] ; _∷_)', '',
@@ -551,14 +552,6 @@ if FOUR:
         if new != s:
             open(os.path.join(BASE, c), 'w', encoding='utf-8').write(new)
 
-    # the top applies the tree to the proofs
-    s = cread(CTOP)
-    new = re.sub(r'^open import (' + CALT + r')(?=[ \n])(?! CI\.C[ \n])', r'open import \1 CI.C', s, flags=re.M)
-    if f'import {CINST} as CI\n' not in new:
-        new = re.sub(r'^(open import (?:' + CALT + r') CI\.C)', f'import {CINST} as CI' + NL + r'\1', new, count=1, flags=re.M)
-    if new != s:
-        open(os.path.join(BASE, CTOP), 'w', encoding='utf-8').write(new)
-
     def ptree(items):
         if not items:
             return 'leaf'
@@ -566,21 +559,38 @@ if FOUR:
         right = [items[i] for i in range(2, len(items)) if i % 2 == 0]
         return f'(node {ptree(left)} {items[0]} {ptree(right)})'
 
-    out = HEAD + [
-        '-- The proofs of the lemmas of Four/D that its consumers use',
-        '--',
-        '-- The parameter of Four.TransportTables ... Lemma87.Four (Four.CStmt):',
-        '-- the lemmas of Four.DAll at the windows of Four.WinInst.  Written by',
-        '-- `scratchpad/four/di.py`.'] + TAIL + [
-        'module ' + CINST + ' where', '',
+    # The top builds the proofs, the lemmas of Four.DAll at the windows of
+    # Four.WinInst, and applies the tree to them.  They had a module of
+    # their own, Four.ConsInst, which loaded all of Four/D; Four.Complete
+    # (0.1 s of its own) then loaded it all again, a job of about 40 s at
+    # the end of a from-scratch run.
+    block = [
+        '-- The proofs of the lemmas of Four/D that the consumers use (C, the',
+        '-- parameter of Four.TransportTables ... Lemma87.Four, Four.CStmt):',
+        '-- the lemmas of Four.DAll at the windows of Four.WinInst.  Written',
+        '-- by `scratchpad/four/di.py`, down to the definition of C.',
         'open import Examples.Groups.Clifford+CS.Four.WinSig using (Proofs ; leaf ; node)',
         f'open import {CSTMT} using (clemmas)',
         WIIMP.rstrip(NL),
         f'open import {DALL} WI.ws using (' + ' ; '.join(cnames) + ')', '',
         'C : Proofs clemmas',
         'C = ' + ptree(cnames)]
-    open(os.path.join(BASE, 'Four', 'ConsInst.agda'), 'w', encoding='utf-8').write(NL.join(out) + NL)
-    CONSUMERS = ['Four/ConsInst.agda']
+    s = cread(CTOP)
+    new = s.replace(f'import {CINST} as CI\n', '')
+    new = re.sub(r'^(open import (?:' + CALT + r')) CI\.C(?=[ \n])', r'\1 C', new, flags=re.M)
+    new = re.sub(r'^open import (' + CALT + r')(?=[ \n])(?! C[ \n])', r'open import \1 C', new, flags=re.M)
+    BLK = re.compile(r'^' + re.escape(block[0]) + r'\n(?:.*\n)*?C = .*\n', re.M)
+    if BLK.search(new):
+        new = BLK.sub(lambda _: NL.join(block) + NL, new)
+    else:
+        first = re.search(r'^open import (?:' + CALT + r') C[ \n]', new, re.M)
+        new = new[:first.start()] + NL + NL.join(block) + NL + NL + new[first.start():]
+    if new != s:
+        open(os.path.join(BASE, CTOP), 'w', encoding='utf-8').write(new)
+    old = os.path.join(BASE, 'Four', 'ConsInst.agda')
+    if os.path.exists(old):
+        os.remove(old)
+    CONSUMERS = [CTOP]
     print('  consumers', len(CTREE), 'statements', len(cnames))
 
 # The consumers, and the assemblies they import: Four's one, DAll;

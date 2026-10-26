@@ -21,7 +21,7 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Examples.Groups.Clifford+CS.Four.Chain
 
--- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+-- The lemmas of Four/D it uses (Four.CStmt; Four.Complete gives them).
 private
   lem-sw0-CCZ012 : Win clemmas 0
   lem-sw0-CCZ012 = get clemmas C 0

@@ -25,7 +25,7 @@ open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.MultiControlled using (G-pp)
 open import Examples.Groups.Clifford+CS.Four.Chain
 
--- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+-- The lemmas of Four/D it uses (Four.CStmt; Four.Complete gives them).
 private
   lem-bridge-G-pp : Win clemmas 477
   lem-bridge-G-pp = get clemmas C 477

@@ -30,7 +30,7 @@ open import Examples.Groups.Clifford+CS.Decoding 0 using (dPP₁ ; dPP₁′ ; l
 open import Examples.Groups.Clifford+CS.Four.Facts.Bridges C
 open import Examples.Groups.Clifford+CS.Four.Facts.Classes C
 
--- The lemmas of Four/D it uses (Four.CStmt; Four.ConsInst gives them).
+-- The lemmas of Four/D it uses (Four.CStmt; Four.Complete gives them).
 private
   lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 : Win clemmas 533
   lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 = get clemmas C 533
