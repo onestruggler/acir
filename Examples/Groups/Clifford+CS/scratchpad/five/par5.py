@@ -34,8 +34,10 @@ repository (the standard library, EucDomain) are taken to be up to date.
 With DRY=1 the stale modules are listed and nothing is run.
 
 Memory: at most JOBS jobs; a job starts only if the estimated peaks of the
-running jobs and its own fit PAR5_BUDGET_GB, and its estimate, with those
-of jobs started in the last PAR5_YOUNG seconds (90: not grown yet), fits
+running jobs and its own fit PAR5_BUDGET_GB, and its estimate, with what
+jobs started in the last PAR5_YOUNG seconds (90: not grown yet) have
+still to allocate of theirs (their estimate less the memory resident in
+their processes now), fits
 the memory the system reports available less PAR5_RESERVE_GB -- other
 sessions share the machine.  A job's estimate is the larger of
 PAR5_FLOOR_GB (1.2) plus PAR5_MEMRATE (15) times the size of the
@@ -260,6 +262,20 @@ def available():
     for line in open('/proc/meminfo'):
         if line.startswith('MemAvailable:'): return int(line.split()[1])
     return BUDGET
+
+
+def resident(pid):
+    # kB resident in a process and its descendants (a job is time, timeout
+    # and Agda); 0 for one that has gone
+    total = 0
+    try:
+        for line in open(f'/proc/{pid}/status'):
+            if line.startswith('VmRSS:'):
+                total = int(line.split()[1]); break
+        kids = open(f'/proc/{pid}/task/{pid}/children').read().split()
+    except OSError:
+        return total
+    return total + sum(resident(int(k)) for k in kids)
 
 
 def peak(p):
@@ -596,7 +612,11 @@ while True:
         time.sleep(2); continue
     # a job reaches its peak in about 20 s (the interfaces it loads): until
     # then, its estimate is not yet in the memory the system reports used
-    young = sum(estimate(r[4]) for r in running.values() if time.time() - r[1] < YOUNG)
+    # -- only what it has still to allocate of it, since what it holds is
+    # no longer available: counting whole estimates, every running job
+    # being young, held jobs back with 18 GB available and 8 GB in use
+    young = sum(max(0.0, estimate(r[4]) - resident(r[0].pid))
+                for r in running.values() if time.time() - r[1] < YOUNG)
     started = True
     while started and len(running) < JOBS and time.time() >= cool[0]:
         started = False
@@ -609,10 +629,7 @@ while True:
         load = sum(estimate(r[4]) for r in running.values())
         for job in jobs:
             est = estimate(job)
-            # logged once per job held back: in one run every running job
-            # was young (under PAR5_YOUNG seconds old), so `young` counted
-            # their estimates again on top of the memory they already used,
-            # and a job waited with 18 GB available and about 8 GB in use
+            # a job held back is logged once
             if (running and load + est > BUDGET) or est + young + RESERVE > available():
                 if waiting[0] != job[0]:
                     waiting[0] = job[0]
