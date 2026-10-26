@@ -11,6 +11,8 @@
 -- an S-box, the transports of two-wire equations (Five.TR2); the items
 -- at the offsets 2-4 are Five.F1Low's; the controlled lf, hyb-sq,
 -- hyb-yb are rules of the schema.
+-- Each side is compared with its derivation letter by letter
+-- (Five.LamLetters, scratchpad/five/lamletters.py).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -33,7 +35,7 @@ open import Examples.Groups.Clifford+CS.Five.Rules
 open import Examples.Groups.Clifford+CS.Five.Transport using (F1)
 import Examples.Groups.Clifford+CS.Five.F1Low as F1Low
 open import Examples.Groups.Clifford+CS.Five.Chain
-open import Examples.Groups.Clifford+CS.Five.Flat using (by-flat)
+open import Examples.Groups.Clifford+CS.Five.LamLetters using (via₀ ; via₁)
 
 -- The lemmas of Five/D it uses (DSig; its assembly in Five.DAll gives them).
 private
@@ -116,48 +118,48 @@ private
     w v : Word (Gen n)
 
 f1₀ : Ws → 4 SRel, w === v → 5 ⊢ₓ λ¹ʷ w ≈ λ¹ʷ v
-f1₀ c4 order-I = trans (by-flat Eq.refl) (trans (lem-F1-order-Iat0 c4) (by-flat Eq.refl))
-f1₀ c4 order-S = trans (by-flat Eq.refl) (trans (lem-F1-order-Sat0 c4) (by-flat Eq.refl))
-f1₀ c4 order-K = trans (by-flat Eq.refl) (trans (lem-F1-order-Kat0 c4) (by-flat Eq.refl))
-f1₀ c4 order-SK = trans (by-flat Eq.refl) (trans (lem-F1-order-SKat0 c4) (by-flat Eq.refl))
-f1₀ c4 order-CS = trans (by-flat Eq.refl) (trans (lem-F1-order-CSat0 c4) (by-flat Eq.refl))
-f1₀ c4 comm-CS-S₀ = trans (by-flat Eq.refl) (trans (lem-F1-comm-CS-S0at0 c4) (by-flat Eq.refl))
-f1₀ c4 comm-CS-S₁ = trans (by-flat Eq.refl) (trans (lem-F1-comm-CS-S1at0 c4) (by-flat Eq.refl))
-f1₀ c4 X-CS₀ = trans (by-flat Eq.refl) (trans (lem-F1-X-CS0at0 c4) (by-flat Eq.refl))
-f1₀ c4 X-CS₁ = trans (by-flat Eq.refl) (trans (lem-F1-X-CS1at0 c4) (by-flat Eq.refl))
-f1₀ c4 CS-K₀ = trans (by-flat Eq.refl) (trans (lem-F1-CS-K0at0 c4) (by-flat Eq.refl))
-f1₀ c4 CS-K₁ = trans (by-flat Eq.refl) (trans (lem-F1-CS-K1at0 c4) (by-flat Eq.refl))
-f1₀ c4 comm-CS↑-CS = trans (by-flat Eq.refl) (trans (lem-F1-comm-CSu-CSat0 c4) (by-flat Eq.refl))
-f1₀ c4 rel-266 = trans (by-flat Eq.refl) (trans (lem-F1-rel-266at0 c4) (by-flat Eq.refl))
-f1₀ c4 rel-267 = trans (by-flat Eq.refl) (trans (lem-F1-rel-267at0 c4) (by-flat Eq.refl))
-f1₀ c4 rel-268 = trans (by-flat Eq.refl) (trans (lem-F1-rel-268at0 c4) (by-flat Eq.refl))
-f1₀ c4 rel-269 = trans (by-flat Eq.refl) (trans (lem-F1-rel-269at0 c4) (by-flat Eq.refl))
-f1₀ c4 rel-272 = trans (by-flat Eq.refl) (trans (lem-F1-rel-272at0 c4) (by-flat Eq.refl))
-f1₀ c4 cx-ccz = trans (by-flat Eq.refl) (trans (lem-F1-cx-cczat0 c4) (by-flat Eq.refl))
-f1₀ c4 toff-ccz = trans (by-flat Eq.refl) (trans (lem-F1-toff-cczat0 c4) (by-flat Eq.refl))
-f1₀ c4 ck-tct = trans (by-flat Eq.refl) (trans (lem-F1-ck-tctat0 c4) (by-flat Eq.refl))
+f1₀ c4 order-I = via₀ order-I (lem-F1-order-Iat0 c4)
+f1₀ c4 order-S = via₀ order-S (lem-F1-order-Sat0 c4)
+f1₀ c4 order-K = via₀ order-K (lem-F1-order-Kat0 c4)
+f1₀ c4 order-SK = via₀ order-SK (lem-F1-order-SKat0 c4)
+f1₀ c4 order-CS = via₀ order-CS (lem-F1-order-CSat0 c4)
+f1₀ c4 comm-CS-S₀ = via₀ comm-CS-S₀ (lem-F1-comm-CS-S0at0 c4)
+f1₀ c4 comm-CS-S₁ = via₀ comm-CS-S₁ (lem-F1-comm-CS-S1at0 c4)
+f1₀ c4 X-CS₀ = via₀ X-CS₀ (lem-F1-X-CS0at0 c4)
+f1₀ c4 X-CS₁ = via₀ X-CS₁ (lem-F1-X-CS1at0 c4)
+f1₀ c4 CS-K₀ = via₀ CS-K₀ (lem-F1-CS-K0at0 c4)
+f1₀ c4 CS-K₁ = via₀ CS-K₁ (lem-F1-CS-K1at0 c4)
+f1₀ c4 comm-CS↑-CS = via₀ comm-CS↑-CS (lem-F1-comm-CSu-CSat0 c4)
+f1₀ c4 rel-266 = via₀ rel-266 (lem-F1-rel-266at0 c4)
+f1₀ c4 rel-267 = via₀ rel-267 (lem-F1-rel-267at0 c4)
+f1₀ c4 rel-268 = via₀ rel-268 (lem-F1-rel-268at0 c4)
+f1₀ c4 rel-269 = via₀ rel-269 (lem-F1-rel-269at0 c4)
+f1₀ c4 rel-272 = via₀ rel-272 (lem-F1-rel-272at0 c4)
+f1₀ c4 cx-ccz = via₀ cx-ccz (lem-F1-cx-cczat0 c4)
+f1₀ c4 toff-ccz = via₀ toff-ccz (lem-F1-toff-cczat0 c4)
+f1₀ c4 ck-tct = via₀ ck-tct (lem-F1-ck-tctat0 c4)
 f1₀ c4 lf = PB.axiom (srelₓ (ctl-lf 0))
 f1₀ c4 hyb-sq = PB.axiom (srelₓ (ctl-hsq 0))
 f1₀ c4 hyb-yb = PB.axiom (srelₓ (ctl-hyb 0))
 
 f1₁ : Ws → 3 SRel, w === v → 5 ⊢ₓ λ¹ʷ (w ↑) ≈ λ¹ʷ (v ↑)
-f1₁ c4 order-I = trans (by-flat Eq.refl) (trans (lem-F1-order-Iat0 c4) (by-flat Eq.refl))
-f1₁ c4 order-S = trans (by-flat Eq.refl) (trans (lem-F1-order-Sat1 c4) (by-flat Eq.refl))
-f1₁ c4 order-K = trans (by-flat Eq.refl) (trans (lem-F1-order-Kat1 c4) (by-flat Eq.refl))
-f1₁ c4 order-SK = trans (by-flat Eq.refl) (trans (lem-F1-order-SKat1 c4) (by-flat Eq.refl))
-f1₁ c4 order-CS = trans (by-flat Eq.refl) (trans (lem-F1-order-CSat1 c4) (by-flat Eq.refl))
-f1₁ c4 comm-CS-S₀ = trans (by-flat Eq.refl) (trans (lem-F1-comm-CS-S0at1 c4) (by-flat Eq.refl))
-f1₁ c4 comm-CS-S₁ = trans (by-flat Eq.refl) (trans (lem-F1-comm-CS-S1at1 c4) (by-flat Eq.refl))
-f1₁ c4 X-CS₀ = trans (by-flat Eq.refl) (trans (lem-F1-X-CS0at1 c4) (by-flat Eq.refl))
-f1₁ c4 X-CS₁ = trans (by-flat Eq.refl) (trans (lem-F1-X-CS1at1 c4) (by-flat Eq.refl))
-f1₁ c4 CS-K₀ = trans (by-flat Eq.refl) (trans (lem-F1-CS-K0at1 c4) (by-flat Eq.refl))
-f1₁ c4 CS-K₁ = trans (by-flat Eq.refl) (trans (lem-F1-CS-K1at1 c4) (by-flat Eq.refl))
-f1₁ c4 comm-CS↑-CS = trans (by-flat Eq.refl) (trans (lem-F1-comm-CSu-CSat1 c4) (by-flat Eq.refl))
-f1₁ c4 rel-266 = trans (by-flat Eq.refl) (trans (lem-F1-rel-266at1 c4) (by-flat Eq.refl))
-f1₁ c4 rel-267 = trans (by-flat Eq.refl) (trans (lem-F1-rel-267at1 c4) (by-flat Eq.refl))
-f1₁ c4 rel-268 = trans (by-flat Eq.refl) (trans (lem-F1-rel-268at1 c4) (by-flat Eq.refl))
-f1₁ c4 rel-269 = trans (by-flat Eq.refl) (trans (lem-F1-rel-269at1 c4) (by-flat Eq.refl))
-f1₁ c4 rel-272 = trans (by-flat Eq.refl) (trans (lem-F1-rel-272at1 c4) (by-flat Eq.refl))
+f1₁ c4 order-I = via₁ order-I (lem-F1-order-Iat0 c4)
+f1₁ c4 order-S = via₁ order-S (lem-F1-order-Sat1 c4)
+f1₁ c4 order-K = via₁ order-K (lem-F1-order-Kat1 c4)
+f1₁ c4 order-SK = via₁ order-SK (lem-F1-order-SKat1 c4)
+f1₁ c4 order-CS = via₁ order-CS (lem-F1-order-CSat1 c4)
+f1₁ c4 comm-CS-S₀ = via₁ comm-CS-S₀ (lem-F1-comm-CS-S0at1 c4)
+f1₁ c4 comm-CS-S₁ = via₁ comm-CS-S₁ (lem-F1-comm-CS-S1at1 c4)
+f1₁ c4 X-CS₀ = via₁ X-CS₀ (lem-F1-X-CS0at1 c4)
+f1₁ c4 X-CS₁ = via₁ X-CS₁ (lem-F1-X-CS1at1 c4)
+f1₁ c4 CS-K₀ = via₁ CS-K₀ (lem-F1-CS-K0at1 c4)
+f1₁ c4 CS-K₁ = via₁ CS-K₁ (lem-F1-CS-K1at1 c4)
+f1₁ c4 comm-CS↑-CS = via₁ comm-CS↑-CS (lem-F1-comm-CSu-CSat1 c4)
+f1₁ c4 rel-266 = via₁ rel-266 (lem-F1-rel-266at1 c4)
+f1₁ c4 rel-267 = via₁ rel-267 (lem-F1-rel-267at1 c4)
+f1₁ c4 rel-268 = via₁ rel-268 (lem-F1-rel-268at1 c4)
+f1₁ c4 rel-269 = via₁ rel-269 (lem-F1-rel-269at1 c4)
+f1₁ c4 rel-272 = via₁ rel-272 (lem-F1-rel-272at1 c4)
 
 -- The record Five.Transport takes.
 f1 : Ws → F1
