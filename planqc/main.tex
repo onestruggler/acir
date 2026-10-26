@@ -80,9 +80,9 @@
 \vspace{-.2 cm}
 
 \section{Introduction}
-An equational theory for a family of quantum circuits is a set of equations between circuits used as rewrite rules. By applying these rules to subcircuits, we can transform a circuit into an equivalent one. Such a theory should be \emph{sound} because every rewrite preserves the underlying linear map. It should also be \emph{complete} so that any equivalence between circuits can be derived. Additionally, we want it to be \emph{minimal}, with no redundant rules. Equational rewriting supports circuit optimization~\cite{hietala2021voqc,nam2018automated,maslov2008simplification,xu2022quartz}, equivalence checking~\cite{yamashita2010fast}, and hardware mapping~\cite{sivarajah2020tket}. Completeness ensures that every circuit equivalence can be derived within the theory, making it a powerful tool for reasoning about quantum programs. For example,
-\mbox{Hadamard-$\Pi$}~\cite{fang2026hadamard} provides a complete
-equational framework for reasoning about reversible quantum programs. Completeness results have been established for a wide range of circuit families, including reversible linear circuits~\cite{lafont2003boolean,sakashita2013cnot}, reversible circuits over multiple-control Toffoli gates~\cite{feng2026complete,feng2026ancillas}, Clifford~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, CNOT-dihedral~\cite{amy2018cnotdihedral,blake2026phaseaffine}, two-qubit Clifford+T~\cite{bian2023cliffordt2}, three-qubit Clifford+CS~\cite{bian2023cliffordcs3}, Toffoli--Hadamard~\cite{amy2024toffoli} and real Clifford+CH~\cite{clement2026realcliffordch} circuits, and with continuous parameters, all quantum circuits~\cite{clement2023complete,clement2024extensions}. Completeness has also been obtained for the group of two-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimal theories have been given for six of these circuit fragments~\cite{blake2026simpler} and for all quantum circuits~\cite{clement2024minimal}.
+An equational theory for a family of quantum circuits is a set of equations between circuits used as rewrite rules. By applying these rules to subcircuits, we can transform a circuit into an equivalent one. Such a theory should be \emph{sound} because every rewrite preserves the underlying linear map. It should also be \emph{complete} so that any equivalence between circuits can be derived. Additionally, we want it to be \emph{minimal}, with no redundant rules. Equational rewriting supports circuit optimization~\cite{hietala2021voqc,nam2018automated,maslov2008simplification,xu2022quartz}, equivalence checking~\cite{yamashita2010fast}, and hardware mapping~\cite{sivarajah2020tket}. Complete theories also support reasoning about quantum programs. For example,
+\mbox{Hadamard-$\Pi$}~\cite{fang2026hadamard} is a complete
+equational theory for reversible quantum programs. Completeness results have been established for a wide range of circuit families, including reversible linear circuits~\cite{lafont2003boolean,sakashita2013cnot}, reversible circuits over multiple-control Toffoli gates~\cite{feng2026complete,feng2026ancillas}, Clifford~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, CNOT-dihedral~\cite{amy2018cnotdihedral,blake2026phaseaffine}, two-qubit Clifford+T~\cite{bian2023cliffordt2}, three-qubit Clifford+CS~\cite{bian2023cliffordcs3}, Toffoli--Hadamard~\cite{amy2024toffoli} and real Clifford+CH~\cite{clement2026realcliffordch} circuits, and with continuous parameters, all quantum circuits~\cite{clement2023complete,clement2024extensions}. Completeness has also been obtained for the group of two-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimal theories have been given for six of these circuit fragments~\cite{blake2026simpler} and for all quantum circuits~\cite{clement2024minimal}.
 
 There are two main strategies for proving completeness of a rule set $\mathcal{R}$ over a gate set $\mathcal{G}$. Our machine-checked framework builds on both of them, so we start by sketching the ideas behind them. Consider any two circuits $C_1$ and $C_2$ over $\mathcal{G}$ that have the same linear map, $C_1\equiv_{u}C_2$. We need to show that $C_1$ can be rewritten into $C_2$ using $\mathcal{R}$. \Cref{fig:normalform} outlines the first strategy. It specifies a unique normal form for each linear map~\cite{lafont2003boolean,sakashita2013cnot,feng2026complete,feng2026ancillas,selinger2015clifford,bian2026qupit,makary2021real,amy2018cnotdihedral,blake2026phaseaffine,li2025qutrit}, often through giving an exact synthesis algorithm~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Completeness follows by proving that every circuit can be transformed into its normal form using the rewrite rules. By uniqueness, $C_1$ and $C_2$ have the same normal form $N$. Reversing the path from $C_2$ to $N$ and concatenating it with the path from $C_1$ to $N$ gives
 \[
@@ -124,9 +124,9 @@ Starting from a complete rule set, we can remove a redundant rule by deriving it
 
 Completeness and minimality proofs typically require long case distinctions over gates, relations, and normal forms, whose supporting derivations sometimes span hundreds of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}. In particular, relation reductions require intricate circuit manipulations and repeated rewrites, making them prone to human mistakes. For example, circular reasoning can lead us to remove a rule whose derivation still relies on that rule, hidden in a chain of other derivations. Errors can then propagate through dependent derivations, invalidating the entire reduction and making the error source hard to trace by hand. 
 
-\paragraph{Our contributions.} To make completeness proofs robust and manageable as they extend to new gate sets and higher dimensions, we turn to a machine-checked framework, where a proof assistant like Agda~\cite{norell2007thesis,bove2009agda} carries out tedious checks, verifying every derivation together with everything it depends on. A human then only needs to check that the framework is set up correctly and that the main theorems are stated as intended. Consistent definitions of circuits and their matrices also allow us to compare different completeness results in a unified setting. Because all proofs are checked at scale, such a framework paves the way for verifying circuit completeness in higher dimensions.
+\paragraph{Our contributions.} To make completeness proofs robust and manageable as they extend to new gate sets, we turn to a machine-checked framework, where a proof assistant like Agda~\cite{norell2007thesis,bove2009agda} verifies every derivation and its dependencies. A human then only needs to check that the framework is set up correctly and the main theorems are stated as intended. Consistent definitions of circuits and their matrices also allow us to compare different completeness results in a unified setting. Because all proofs are checked at scale, such a framework paves the way for verifying circuit completeness in higher dimensions.
 
-This work builds on our formalization of qudit Clifford completeness~\cite{bian2026qupit}, which showed us how powerful a machine-checked framework could be. There, we built the framework and carried out the main verification steps by hand. LLM coding agents came in only at the final stage, to connect these steps into a formal proof of the completeness theorem. Our experience was part of a broader shift where LLMs can now write large formal proofs. Anthropic, for example, reports that LLMs wrote a 13-million-line Lean proof of Fermat's Last Theorem in 11 days~\cite{anthropic2026flt}. This makes it possible to develop a machine-checked framework systematically. In a hybrid approach, humans write and carefully review the definitions and theorem statements~\cite{hales2026reliability}, coding agents write the proofs, and Agda checks them. Using this approach, we extend our previous formalization framework~\cite{bian2027popl} to QCert and use it to formalize completeness and minimality results from sixteen papers, as shown in \Cref{tab:corpus}. The remainder of this extended abstract presents our four contributions as follows.
+This work builds on our formalization of qudit Clifford completeness~\cite{bian2026qupit}, where we built the framework~\cite{bian2027popl} and carried out the main verification steps by hand. LLM coding agents came in only at the final stage, to connect various steps into the formal proof. Our experience was part of a broader shift where LLMs are now used to write large formal proofs. Anthropic, for example, reports that LLMs wrote a 13-million-line Lean proof of Fermat's Last Theorem within 11 days~\cite{anthropic2026flt}. In a hybrid approach, humans write and carefully review the definitions and theorem statements~\cite{hales2026reliability}, coding agents write the proofs, and Agda checks them. Following this, we extend our previous framework~\cite{bian2027popl} to QCert and use it to formalize completeness and minimality results from sixteen papers, as shown in \Cref{tab:corpus}. 
 % \begin{itemize}
 % \item QCert extends an earlier library of words, circuits and
 %   presentations~\cite{bian2027popl} with matrix semantics over the
@@ -144,7 +144,8 @@ This work builds on our formalization of qudit Clifford completeness~\cite{bian2
 %   checks them (Section~\ref{sec:method}).
 % \end{itemize}
 
-In Section~\ref{sec:form}, we describe how QCert extends that framework's library of words, circuits and presentations with matrix semantics over the rings of exact synthesis and support for proving independence of rules. In QCert, every theorem has the same form. In Section~\ref{sec:corpus}, we give machine-checked proofs of the sixteen theorems in about 1{,}500 modules and 420{,}000 lines of Agda, with no postulates. The corpus typechecks in about 40 minutes. In Section~\ref{sec:findings}, we identify and repair a gap in the completeness proof of Hadamard-$\Pi$, identify a rule omitted from a Toffoli--Hadamard theory, and report misprints in the other papers. We present our formalization workflow in Section~\ref{sec:method}, where people develop the framework and state the theorems, LLM coding agents write the proofs, and Agda checks them. In Section~\ref{sec:conclusion}, we summarize our results and discuss future directions.
+% The remainder of this extended abstract is organized as follows. 
+In \Cref{sec:form}, we describe how QCert adds matrix semantics to our earlier Agda library of circuits and presentations~\cite{bian2027popl}, so that every main theorem is stated the same way, as soundness and completeness of a paper's rules for the matrix representation of its circuits. In \Cref{sec:method}, we present our formalization workflow. Then in \Cref{sec:corpus}, we demonstrate the usefulness of QCert by machine-checking the completeness and minimality results of sixteen papers. In \Cref{sec:findings}, we identify and repair a gap in the completeness proof of Hadamard-$\Pi$~\cite{fang2026hadamard}, identify a rule omitted from a Toffoli--Hadamard theory~\cite{amy2024toffoli}, and report misprints in the other papers. In \Cref{sec:conclusion}, we discuss limitations of QCert and point to future directions.
 
 \section{A Common Framework for Completeness Theorems}\label{sec:form}
 
@@ -198,10 +199,36 @@ these checks involve fewer than 500 of its 12{,}010 lines. A single
 root module states all sixteen main theorems in this form and provides
 a starting point for reading the formalizations.
 
+\section{Formalization Workflow}\label{sec:method}
+
+LLM coding agents wrote the fifteen developments other than qudit
+Clifford under our direction within four weeks. Most took less than a
+day each. Our workflow has three parts. First, we check claims using
+exact matrices in short scripts before formalizing them. This caught
+most misprints before any Agda code was written. Second, scripts
+generate long derivations following the paper, so a failing step can
+be traced to a specific line. Finally, the framework fixes the
+relation, group and presentation record, leaving the agent to supply
+the proof.
+
+The main computational cost came from Agda's conversion checker,
+which compares terms by unfolding their definitions. For long matrix
+products, comparing syntactically different expressions can take
+exponential time. We therefore keep circuit interpretations
+abstract and decide matrix equality by computing a single Boolean
+using row operations. This is a hundred to four hundred times faster
+than comparing matrices entry by entry. All proofs are constructive:
+they use neither excluded middle nor choice, and do not require real
+numbers. Each case split is a decision procedure, and each proof is a
+program. Together with decidable matrix equality, soundness and
+completeness give an executable decision procedure for each theory's
+word problem.
+
 \section{Sixteen Formalizations}\label{sec:corpus}
 
 Table~\ref{tab:corpus} lists the sources, results, module counts and
-typechecking times. The formalizations contain no postulates. The
+typechecking times. The formalizations comprise about 420{,}000 lines
+of Agda and contain no postulates. The
 two-level presentations hold in every dimension, except for Greylyn's,
 which holds for $n\le4$ as in the thesis. The circuit theories hold
 for every number of wires unless the source paper fixes it.
@@ -328,31 +355,6 @@ of~\citet{clement2026realcliffordch}, five formulas
 of~\citet{amy2024toffoli}, and one box relation
 of~\citet{li2025qutrit}. In each case, either the statement failed a
 numerical check or a derivation failed at the step that used it.
-
-\section{Formalization Workflow}\label{sec:method}
-
-LLM coding agents wrote the fifteen developments other than qudit
-Clifford under our direction within four weeks. Most took less than a
-day each. Our workflow has three parts. First, we check claims using
-exact matrices in short scripts before formalizing them. This caught
-most misprints before any Agda code was written. Second, scripts
-generate long derivations following the paper, so a failing step can
-be traced to a specific line. Finally, the framework fixes the
-relation, group and presentation record, leaving the agent to supply
-the proof.
-
-The main computational cost came from Agda's conversion checker,
-which compares terms by unfolding their definitions. For long matrix
-products, comparing syntactically different expressions can take
-exponential time. We therefore keep circuit interpretations
-abstract and decide matrix equality by computing a single Boolean
-using row operations. This is a hundred to four hundred times faster
-than comparing matrices entry by entry. All proofs are constructive:
-they use neither excluded middle nor choice, and do not require real
-numbers. Each case split is a decision procedure, and each proof is a
-program. Together with decidable matrix equality, soundness and
-completeness give an executable decision procedure for each theory's
-word problem.
 
 % \section{The Talk}
 
