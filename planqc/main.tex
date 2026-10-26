@@ -266,7 +266,7 @@ The completeness proofs follow the two strategies of \Cref{fig:strategies}. For 
 \label{fig:proof}
 \end{figure}
 \fi
-Three rows of \Cref{tab:corpus} differ from the others, whose theorems are proved from scratch in QCert against a matrix semantics. The two rows of ~\cite{bian2023cliffordt2,bian2023cliffordcs3} build on the Agda proofs that accompany those papers. These proofs relate the circuit relations to two-level relations by the Reidemeister--Schreier method~\cite{magnus2004combinatorial}, and we connect them to our formalizations of the two-level presentations of ~\cite{greylyn2014,bian2021un}, the first two rows of the table, to obtain sub-presentations of $U_4\left(\Z\left[1/\sqrt2,i\right]\right)$ and $U_8\left(\Z\left[1/2,i\right]\right)$. The qudit Clifford theorem of ~\cite{bian2026qupit} is the only one whose semantics is not a matrix group. Its relations present an algebraic model built from the Pauli and symplectic groups together with a phase.
+Most theorems in \Cref{tab:corpus} are proved from scratch in QCert against a matrix semantics, with three exceptions. The two rows of ~\cite{bian2023cliffordt2,bian2023cliffordcs3} build on the Agda proofs that accompany those papers. These proofs relate the circuit relations to two-level relations by the Reidemeister--Schreier method~\cite{magnus2004combinatorial}, and we connect them to our formalizations of the two-level matrix presentations in~\cite{greylyn2014,bian2021un}, the first two rows of the table, to obtain sub-presentations of $U_4\left(\Z\left[1/\sqrt2,i\right]\right)$ and $U_8\left(\Z\left[1/2,i\right]\right)$. The qudit Clifford theorem of ~\cite{bian2026qupit} is the only one whose semantics is not a matrix group. Its relations present an algebraic model built from the Pauli and symplectic groups together with a phase.
 
 % Long computational derivations, such as those in Selinger's 105-page supplement and the qutrit box relations, come from scripts that follow the paper, as in \Cref{sec:method}, or search for the steps. In the real stabilizer formalization, half the lines are generated in this way, and a fifth formalize the paper's mathematics.
 
@@ -274,7 +274,7 @@ Three rows of \Cref{tab:corpus} differ from the others, whose theorems are prove
 
 We corrected many misprints, some of them in statements that the proofs rely on. There are two issues beyond misprints, as explained below.
 
-\paragraph{A gap in Hadamard-$\Pi$.} Theorem~4.14 of Hadamard-$\Pi$ states that the relations in its Figure~6 present $O_n\left(\Z\left[1/\sqrt2\right]\right)$. One subcase of its Main Lemma relies on Lemmas~A.16 and~A.17, both of which are false. Each fails on a unit column in dimension~6, such as $(-1-\sqrt2, 1, -1-\sqrt2, 1, \sqrt2, -2+\sqrt2)/\sqrt2^4$, because the underlying calculation omits a $+1$ from an expression reduced modulo~2. By testing the case analysis on random states, we also found a state in dimension~9 that the proof does not cover, since every diagram it gives for this state exceeds the required level bound.
+\paragraph{A gap in Hadamard-$\Pi$.} Theorem~4.14 of Hadamard-$\Pi$ states that the relations in its Figure~6 present $O_n\left(\Z\left[1/\sqrt2\right]\right)$. One case of its completeness proof relies on Lemmas~A.16 and~A.17, both of which are false. Each fails on a unit column in dimension~6, such as $(-1-\sqrt2, 1, -1-\sqrt2, 1, \sqrt2, -2+\sqrt2)/\sqrt2^4$, because the underlying calculation omits a $+1$ from an expression reduced modulo~2. By testing the case analysis on random states, we also found a state in dimension~9 that the proof does not cover, since every diagram it gives for this state goes beyond what the proof's induction allows.
 
 The theorem itself still holds. Cl\'ement's unpublished 2019 thesis~\cite{clement2019thesis} presents the same group with different relations, and its case analysis covers the missing case. We prove that the two sets of relations are equivalent in every dimension and formalize Cl\'ement's proof, with its case analysis as a decision tree checked by evaluation. This also closes the gap in Cl\'ement's 2026 theorem on real Clifford+CH circuits~\cite{clement2026realcliffordch}, which uses Theorem~4.14.
 
@@ -306,10 +306,11 @@ We formalize the results of sixteen papers in QCert, with shared
 circuit syntax, presentation records, and libraries for rings and
 their matrix groups. This allows us to relate different presentations,
 as in our proof that Cl\'ement's relations and those of Hadamard-$\Pi$
-are equivalent. These libraries and the induction from a Main Lemma to
-completeness can also be reused for new exact synthesis algorithms,
-although each algorithm still needs a proof of its own Main Lemma,
-which is where the gap in Hadamard-$\Pi$ occurs.
+are equivalent. These libraries, and the induction that turns an exact
+synthesis algorithm into a completeness proof, can also be reused for
+new algorithms. Each new algorithm still needs its own case analysis
+over matrices and generators, and this case analysis is where the gap
+in Hadamard-$\Pi$ occurs.
 
 QCert's scope is limited in two ways. First, it supports only discrete gate sets, whose matrices it evaluates exactly, so it does not cover completeness results for circuits with continuous parameters, such as rotations by arbitrary angles~\cite{clement2023complete,clement2024extensions,clement2024minimal}. Second, control is not a circuit constructor in QCert, so it does not cover results that treat control as a primitive operation on circuits~\cite{delorme2026control,schober2026control,blake2026qudit}.
 
