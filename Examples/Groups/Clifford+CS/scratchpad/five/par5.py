@@ -91,7 +91,11 @@ with the memory estimates from what a job loads (job time 3670 s, 7-8
 jobs at a time; -A64m 614 s, -A512m 544 s).  So: python3 par5.py 8 LOG
 on this machine (16 cores, 26 GB, PAR5_BUDGET_GB=22).  Later, with two
 cores taken by another session: 561 s with batch members released as
-Agda passes them, 527 s with batches of modules that share their loading.
+Agda passes them, 527 s with batches of modules that share their
+loading, 524 s with Four.ConsInst merged into Four.Complete.  A tighter
+share (0.3, and 0.2 MB rather than 1 MB of slack) with critical heads
+kept apart from the rest while slots are idle made more and smaller
+jobs: 575 s, not kept.
 """
 import fcntl, os, re, subprocess, sys, time, zlib
 
@@ -378,6 +382,7 @@ os.makedirs(BDIR, exist_ok=True)
 nbatch = [0]
 solo, retry = set(), []
 cool = [0.0]
+waiting = [None]                               # the head of a job memory holds back
 
 
 def start(job, heap):
@@ -604,8 +609,18 @@ while True:
         load = sum(estimate(r[4]) for r in running.values())
         for job in jobs:
             est = estimate(job)
-            if running and load + est > BUDGET: continue
-            if est + young + RESERVE > available(): continue
+            # logged once per job held back: in one run every running job
+            # was young (under PAR5_YOUNG seconds old), so `young` counted
+            # their estimates again on top of the memory they already used,
+            # and a job waited with 18 GB available and about 8 GB in use
+            if (running and load + est > BUDGET) or est + young + RESERVE > available():
+                if waiting[0] != job[0]:
+                    waiting[0] = job[0]
+                    log(f'memory: {job[0]} ({len(job)}) waits, estimate {est / 1e6:.1f} GB, '
+                        f'running {load / 1e6:.1f} GB in {len(running)} jobs, young {young / 1e6:.1f} GB, '
+                        f'available {available() / 1e6:.1f} GB, elapsed={int(time.time() - t_start)}s')
+                continue
+            waiting[0] = None
             start(job, BIG if any(big(p) for p in job) else HEAP)
             young += est
             started = True
