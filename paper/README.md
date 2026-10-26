@@ -126,18 +126,19 @@ Checklist before camera-ready:
 
 ## Relation to the Agda code
 
-The Zenodo artifact at https://doi.org/10.5281/zenodo.23636192
-(version `popl-revision2`) provides one combined `acir-popl-revision2.zip`
+The Zenodo artifact at https://doi.org/10.5281/zenodo.23660617
+(version `popl-revision2a`) provides one combined `acir-popl-revision2a.zip`
 archive containing both the source code and the root-level `html/` folder.
 Extract the complete archive and open `html/index.html` in a browser to read
 `MainTheorems` and its transitive imports with linked identifiers. The
 package includes dependency pages and can be browsed offline without Agda.
 It was generated with Agda 2.8.0 and standard library 2.4 using
-`agda --html --html-dir=html MainTheorems.agda`; the archived Agda sources
-are those of the `popl-revision1` release, and the repository's `html/` has
-since been regenerated from the sources with `--cubical-compatible` on
-every module (commit `245f2315`). The top-level `README.md`
-provides browsing and typechecking instructions.
+`agda --html --html-dir=html MainTheorems.agda`. The archive contains commit
+`df54a833f42d0ac7d5f2eebe05408c9109aa43c4`, including the sources with
+`--cubical-compatible` on every module and the HTML regenerated on
+2026-10-26. The top-level `README.md` provides browsing and typechecking
+instructions. References to the preceding Zenodo version inside the
+archived snapshot are retained from that commit.
 
 - Every visible Agda block is quoted from the repository and
   scope-checked against it; `notes/repo-survey.md` records the source
