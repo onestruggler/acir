@@ -16,7 +16,8 @@ reach every module of Five/; Main needs Four.Complete built (it is
 outside Five/, so the first process that needs it builds it alone).
 Settings by environment: AGDA (the agda binary), PAR5_OUT (where each
 module's output goes, default /tmp/par5_out), PAR5_BUDGET_GB (11),
-PAR5_HEAP / PAR5_BIG (5G / 7G), DONE (comma-separated logs of an
+PAR5_HEAP / PAR5_BIG (5G / 7G), PAR5_RTS (further RTS options, such
+as -A64m), DONE (comma-separated logs of an
 earlier run: their passes count as checked -- only for a rerun after
 changes that touched neither those modules nor what they import).
 
@@ -53,6 +54,7 @@ TARGETS = sys.argv[3:] or [FIVE + 'Main.agda', FIVE + 'Soundness.agda']
 OUT = os.environ.get('PAR5_OUT', '/tmp/par5_out')
 AGDA = os.environ.get('AGDA', 'agda')
 HEAP, BIG = os.environ.get('PAR5_HEAP', '5G'), os.environ.get('PAR5_BIG', '7G')
+RTS = os.environ.get('PAR5_RTS', '').split()
 BUDGET = float(os.environ.get('PAR5_BUDGET_GB', '11')) * 1e6     # kB
 DEFAULT = 3.5e6                                                  # kB
 BIGSRC = 230_000
@@ -200,7 +202,7 @@ def start(p, heap):
     tag = p.replace('/', '_')
     out = open(f'{OUT}/{tag}.out', 'w')
     proc = subprocess.Popen(['/usr/bin/time', '-f', 'maxrss=%MkB', 'timeout', '3600', AGDA,
-                             '+RTS', f'-M{heap}', '-c', '-RTS', p],
+                             '+RTS', f'-M{heap}', '-c', *RTS, '-RTS', p],
                             cwd=REPO, stdout=out, stderr=subprocess.STDOUT)
     running[p] = (proc, time.time(), heap, out, tag)
 
