@@ -274,29 +274,9 @@ Most theorems in \Cref{tab:corpus} are proved from scratch in QCert against a ma
 
 The formalizations in \Cref{tab:corpus} found two kinds of issues in the source papers. Most are typos, some of them in statements that the proofs rely on. These are easy to fix. The remaining issues need more work. The first one is a gap in a proof and the second is a relation missing from a theorem. We describe how to repair them below. In all cases, the completeness and minimality results still hold.
 
-The first concerns Theorem~4.14 of Hadamard-$\Pi$~\cite{fang2026hadamard}, which states that the relations in its Figure~6 present the group $O_n\left(\Z\left[1/\sqrt2\right]\right)$. One case of its completeness proof relies on Lemmas~A.16 and~A.17, which have counterexamples in dimension~$6$, and the case analysis built on them misses a matrix in dimension~$9$. Cl\'ement's unpublished notes~\cite{clement2019thesis} present the same group with different relations, and their case analysis covers the missing case. We prove that the two sets of relations are equivalent in every dimension and formalize Cl\'ement's proof~\cite{qcert2026clement}. Hence, Theorem~4.14 holds, and so does Cl\'ement's 2026 theorem on real Clifford+CH circuits~\cite{clement2026realcliffordch} that builds on it.
+The gap is in the proof of Theorem~4.14 of Hadamard-$\Pi$~\cite{fang2026hadamard}, which states that the relations in its Figure~6 present the group $O_n\left(\Z\left[1/\sqrt2\right]\right)$. One case of the proof relies on Lemmas~A.16 and~A.17, which have counterexamples in dimension~$6$, and the case analysis built on them misses a matrix in dimension~$9$. The authors have confirmed this gap (personal communication). Cl\'ement's unpublished notes~\cite{clement2019thesis} present the same group with different relations, and his case analysis covers the missing case. We prove that the two sets of relations are equivalent in every dimension and formalize Cl\'ement's proof~\cite{qcert2026clement}. Hence, Theorem~4.14 holds, so does Cl\'ement's completeness result for real Clifford+CH circuits~\cite{clement2026realcliffordch} which builds on it.
 
-The second concerns the three-qubit Toffoli--Hadamard circuits of Amy, Ross and Wesley~\cite{amy2024toffoli}, which they present in two steps, first $O_8\left(\Z\left[1/2\right]\right)$ by the Toffoli and $\mathrm{K} = \mathrm{H}\otimes\mathrm{H}$ gates (their Theorem~5.2) and then the scaled dyadic orthogonal group $L_8$. Their Section~5.5 gives a relation $r_{\mathrm{K}}$, which defines $\mathrm{K}_{1,2}$ in terms of a controlled K gate. This relation does not appear among the relations of Theorem~5.2, and it cannot be derived from them. Indeed, interpreting each Toffoli--K gate $g$ as $RgR$, where $R = I - J/4$ and $J$ is the all-ones matrix, satisfies every other relation but not $r_{\mathrm{K}}$. Once $r_{\mathrm{K}}$ is included, we prove both presentations~\cite{qcert2026toffoli}, of $O_8\left(\Z\left[1/2\right]\right)$ and of $L_8$, as the paper intends.
-
-% \paragraph{Misprints.} The other papers are correct in the parts we
-% formalize, up to misprints, several of which occur in statements used
-% by the proofs. These include eleven of the 137 typed relations
-% of~\citet{makary2021real}, one relation in the $L_n$ table
-% of~\citet{li2021on}, the scalar of a qutrit rule
-% in~\citet{blake2026simpler}, two equations in the encoding
-% of~\citet{clement2026realcliffordch}, five formulas
-% of~\citet{amy2024toffoli}, and one box relation
-% of~\citet{li2025qutrit}. In each case, either the statement failed a
-% numerical check or a derivation failed at the step that used it.
-
-% \section{The Talk}
-
-% The talk will show the form of a theorem and what a reader checks, one
-% development from its gate set to its theorem, the gap in
-% Hadamard-$\Pi$ and how it was found, and what working with coding
-% agents on a human-made scaffold changes for proofs of this kind: the
-% cost moves from writing proofs to checking statements, and a scaffold
-% keeps that check small.
+The missing relation is in Theorem~5.2 of~\cite{amy2024toffoli}. It states that the relations in its Figures~4 and~7, over the Toffoli and $\mathrm{K} = \mathrm{H}\otimes\mathrm{H}$ gates, present the group $O_8\left(\Z\left[1/2\right]\right)$. This is the first of two steps towards presenting the scaled dyadic orthogonal group $L_8$ by three-qubit Toffoli--Hadamard circuits. The relation $r_{\mathrm{K}}$ in Section~5.5, $\mathrm{K}_{1,2} = \mathrm{K}_{[4,5,6,7]}\,\mathrm{X}_0\,\mathrm{K}_{[4,5,6,7]}\,\mathrm{X}_0$ (see \cite{amy2024toffoli} for more details), is in neither figure. Nor can it be derived from them. Hence, Theorem~5.2 fails as stated, and we have informed the authors. Our formalization~\cite{qcert2026toffoli} shows that $r_{\mathrm{K}}$ is independent by giving an interpretation of circuits that every other relation preserves except $r_{\mathrm{K}}$, and proves the presentations of $O_8\left(\Z\left[1/2\right]\right)$ and $L_8$ with $r_{\mathrm{K}}$ restored.
 
 \section{Discussion and Future Work}\label{sec:conclusion}
 
