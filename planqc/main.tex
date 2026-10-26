@@ -164,7 +164,7 @@ QCert states every theorem as a group presentation. A circuit is a word over an 
 
 Unlike the letters of an ordinary word, gates act on wires. The gates in $X$ are indexed by the number of wires they act on. Wires are numbered from $0$ at the bottom, and a gate always acts on the bottom wires of a circuit. To place it anywhere else, we apply a shift, which takes a circuit on $n$ wires and places it on wires $1,\dots,n$ of a circuit with $n+1$ wires. Each relation is stated on as many wires as the paper draws it on. To apply it inside a circuit with more wires, we need \emph{structural rules}, which hold for every circuit, regardless of its gate set. These rules say that an equation can be shifted up by one wire, gates on disjoint wires commute, and a scalar can be placed on any wire. They are intuitive to humans and thus rarely stated, but a formalization in Agda must define them explicitly.
 
-QCert then gives circuits a matrix semantics $\llbracket - \rrbracket$ with entries in one of the rings $\Z[1/\sqrt2,i]$, $\Z[1/2,i]$, $\Z[1/\sqrt2]$ and $\Z[1/2]$, which are used in exact synthesis algorithms. The target group $G$ is the unitary group over that ring, built from the group structures of Agda's standard library and defined once per ring, so it is checked once. As matrices, a gate on the bottom wires and a shift are Kronecker products with an identity, so the extension of $\llbracket - \rrbracket$ from gates to circuits is defined once for all gate sets. Since the structural rules are universal, their soundness is also proved only once. Then for each paper, it suffices to check the soundness of its own rules.
+QCert then gives circuits a matrix semantics $\llbracket - \rrbracket$ with entries in one of the rings $\Z[1/\sqrt2,i]$, $\Z[1/2,i]$, $\Z[1/\sqrt2]$ and $\Z[1/2]$, which are used in exact synthesis algorithms. The target group $G$ is the unitary group over that ring. It is built from the group structures of Agda's standard library and defined once per ring, so it is checked once. As matrices, a gate on the bottom wires and a shift are Kronecker products with an identity, so the extension of $\llbracket - \rrbracket$ from gates to circuits is defined once for all gate sets. Since the structural rules are universal, their soundness is also proved only once. Then for each paper, it suffices to check the soundness of its own rules.
 
 The formalization of each paper ends with its main theorem stated as a record of one of these two kinds, \aid{IsSubPresentationOf} or \aid{IsPresentationOf}. For example, \Cref{agda:stab} is the theorem for the real stabilizer circuits of~\cite{makary2021real}, with the relations R1--R16 of its Figure~1 lifted to $n$ wires. \Cref{agda:hpi} is the theorem for the two-level matrices of Hadamard-$\Pi$~\cite{fang2026hadamard}, with the relations of its Figure~6.
 \begin{agdacode}[escapechar=@]
@@ -176,39 +176,25 @@ Agda checks every proof, so a reader only needs to check that each theorem state
 
 \section{Formalization Workflow}\label{sec:method}
 
-LLM coding agents wrote the fifteen developments other than qudit
-Clifford under our direction within four weeks. Most took less than a
-day each. Our workflow has three parts. First, we check claims using
-exact matrices in short scripts before formalizing them. This caught
-most misprints before any Agda code was written. Second, scripts
-generate long derivations following the paper, so a failing step can
-be traced to a specific line. Finally, the framework fixes the
-relation, group and presentation record, leaving the agent to supply
-the proof.
+Our workflow has three parts. First, before formalizing a paper, we check its rewrite rules, its intermediate results, and each line of its derivations with exact matrices in short scripts. This caught most misprints before any Agda code was written. Second, we state each main theorem in QCert before a coding agent starts, so the agent only supplies the proof. Finally, for long derivations, the agent writes a script that turns each line of the paper into one step of the Agda proof, so a failing step points to a specific line of the paper. 
+%With this workflow, coding agents wrote the fifteen formalizations other than qudit Clifford within four weeks, most in less than a day.
 
-The main computational cost came from Agda's conversion checker,
-which compares terms by unfolding their definitions. For long matrix
-products, comparing syntactically different expressions can take
-exponential time. We therefore keep circuit interpretations
-abstract and decide matrix equality by computing a single Boolean
-using row operations. This is a hundred to four hundred times faster
-than comparing matrices entry by entry. All proofs are constructive:
-they use neither excluded middle nor choice, and do not require real
-numbers. Each case split is a decision procedure, and each proof is a
-program. Together with decidable matrix equality, soundness and
-completeness give an executable decision procedure for each theory's
-word problem.
+The main computational cost came from Agda's conversion checker. If two terms are syntactically identical (i.e., written in the same way), it accepts them immediately. Otherwise, it evaluates both, which can take exponential time for a long matrix product. For such products, we keep circuit interpretations abstract and decide matrix equality by computing a single Boolean using row operations, which is orders of magnitude faster than comparing matrices entry by entry. We record these techniques in the instructions followed by the agents, so later proofs avoid the same slowdowns.
 
 \section{Sixteen Formalizations}\label{sec:corpus}
 
 Table~\ref{tab:corpus} lists the sources, results, module counts and
 typechecking times. The formalizations comprise about 420{,}000 lines
-of Agda and contain no postulates. The
-two-level presentations hold in every dimension, except for Greylyn's,
+of Agda and contain no postulates. All proofs are constructive. They
+use neither excluded middle nor choice and need no real numbers, so
+each case split is a decision procedure and each proof is a program.
+Together with decidable matrix equality, soundness and completeness
+give an executable decision procedure for each theory's word problem.
+The two-level presentations hold in every dimension, except for Greylyn's,
 which holds for $n\le4$ as in the thesis. The circuit theories hold
 for every number of wires unless the source paper fixes it.
 
-\begin{table}
+\begin{table}[H]
 \small
 \setlength{\tabcolsep}{4pt}
 \begin{tabularx}{\linewidth}{@{}l Y l r r@{}}
@@ -241,11 +227,10 @@ Total & & & 1{,}476 & 2{,}332 \\
 \bottomrule
 \end{tabularx}
 \captionsetup{position=bottom}
-\caption{The object presented, the result (a presentation of the whole
- group or of the subgroup generated by the gates), the module count,
- and typechecking time in seconds. Times sum the modules' own
- typechecking times from scratch, with prerequisite developments
- already checked (Agda~2.8, Core i5-14400).}
+\caption{The sixteen formalized papers. Here, a presentation is of the
+ whole group and a sub-presentation is of the subgroup generated by
+ the gates. Mod.\ is the number of Agda modules, and Time is their
+ typechecking time in seconds from scratch (Agda~2.8, Core i5-14400).}
 \label{tab:corpus}
 \end{table}
 
