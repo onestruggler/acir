@@ -501,6 +501,23 @@ theorem smul_eval_eq_of_evalRows {n : ℕ} {w w' : Circuit Gate n} (c c' : K)
     c • O.eval n w = c' • O.eval n w' := by
   rw [← den_evalRows, ← den_evalRows, ← LinRep.den_smul, ← LinRep.den_smul, h]
 
+/-- The row trie of a matrix given by its entries. -/
+def matRows {n : ℕ} (M : Op K d n) : Trie (Trie K d n) d n :=
+  Trie.ofFn n fun s => Trie.ofFn n fun t => M s t
+
+omit [DecidableEq K] in
+theorem den_matRows {n : ℕ} (M : Op K d n) : (rowsRep d n).den (matRows M) = M := by
+  funext s t
+  show Trie.get (LinRep.base K).ops n
+      (Trie.get ((LinRep.base K).trie n).ops n (Trie.ofFn n fun s => Trie.ofFn n fun t => M s t) s)
+      t = _
+  rw [Trie.get_ofFn, Trie.get_ofFn]
+
+/-- A matrix whose entry trie is the row trie of a circuit is its matrix. -/
+theorem eq_eval_of_matRows {n : ℕ} (M : Op K d n) (w : Circuit Gate n)
+    (h : matRows M = evalRows O n w) : M = O.eval n w := by
+  rw [← den_matRows M, h, den_evalRows]
+
 /-- The entry of a matrix read off the row trie. -/
 theorem eval_apply_eq {n : ℕ} (w : Circuit Gate n) (s t : State d n) :
     O.eval n w s t = Trie.get (LinRep.base K).ops n
