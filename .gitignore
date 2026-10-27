@@ -16,6 +16,17 @@ paper/*.fls
 paper/*.log
 paper/*.out
 paper/*.pdf
+paper/*.synctex.gz
+
+planqc/*.aux
+planqc/*.bbl
+planqc/*.blg
+planqc/*.fdb_latexmk
+planqc/*.fls
+planqc/*.log
+planqc/*.out
+planqc/*.pdf
+planqc/*.synctex.gz
 
 # Haskell / GHC build artifacts (Cir2Tikz tool)
 *.hi
