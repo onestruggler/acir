@@ -62,6 +62,13 @@ def place {Base : CRel Gate} {k : ℕ} (q : DEqn (Padded Base) k) (m p : ℕ) :
   rhs := shiftN p (Circuit.pad m q.rhs)
   proof := derivable_shiftN p (derivable_pad m q.proof)
 
+/-- A scalar moved up one wire is the scalar (the structural rule
+`Lift.scalar`), on `m + 1` wires moved up `p`. -/
+def scal {Base : CRel Gate} (c : Gate 0) (m p : ℕ) : DEqn (Padded Base) (m + 1 + p) where
+  lhs := shiftN p (FreeMonoid.of (Gen.gate0 c).up)
+  rhs := shiftN p (g0 c)
+  proof := derivable_shiftN p (Derivable.of (Lift.scalar c))
+
 /-- The two sides exchanged. -/
 def symm {R : CRel Gate} {n : ℕ} (q : DEqn R n) : DEqn R n := ⟨q.rhs, q.lhs, q.proof.symm⟩
 
@@ -130,6 +137,7 @@ theorem rwAt_sound {l r : List (Gen Gate n)} {i : ℕ} {w w' : List (Gen Gate n)
   rw [e2]
   exact derivable_slice _ _ _ _ hlr
 
+omit [∀ k, DecidableEq (Gate k)] in
 theorem swapAt_sound (hsc : ∀ c c' : Gate 0, c = c') {i : ℕ} {w w' : List (Gen Gate n)}
     (h : swapAt i w = some w') :
     Derivable (Lift R n) (FreeMonoid.ofList w) (FreeMonoid.ofList w') := by
