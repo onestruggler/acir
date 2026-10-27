@@ -13,17 +13,30 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 -/
 import QCert.ToffoliHadamard.Independence
 import QCert.ToffoliHadamard.Section6
+import QCert.ToffoliHadamard.Translation
+import QCert.LiRossSelinger.Theorem
 
 namespace QCert.ToffoliHadamard
 
-/-- Completeness of `R₁` (to be proved through Li–Ross–Selinger). -/
-theorem complete1 : ∀ ⦃u v : Word Sym1⦄,
-    FreeMonoid.lift sem1 u = FreeMonoid.lift sem1 v → Derivable R1 u v := by
+/-- The encoding of each relation of Li–Ross–Selinger's Table 1 at `n = 8`
+is derivable from `R₁` (the Tietze steps of Sections 5.2–5.6; not
+formalized). -/
+theorem encodesTable1 : EncodesTable1 := by
   sorry
 
-/-- Every element of `O(8, 𝔻)` is the value of a word over `Σ₁`. -/
-theorem surjective1 : Function.Surjective (FreeMonoid.lift sem1) := by
+/-- Each letter of `Σ₁` is derivably equal to the circuit of its decoding
+into level matrices (not formalized). -/
+theorem roundTrip : RoundTrip := by
   sorry
+
+/-- Completeness of `R₁`, through Li–Ross–Selinger's Theorem 4.10 at `n = 8`. -/
+theorem complete1 : ∀ ⦃u v : Word Sym1⦄,
+    FreeMonoid.lift sem1 u = FreeMonoid.lift sem1 v → Derivable R1 u v :=
+  complete1_of (LiRossSelinger.complete 8) encodesTable1 roundTrip
+
+/-- Every element of `O(8, 𝔻)` is the value of a word over `Σ₁`
+(Li–Ross–Selinger's Theorem 3.5 through `enc`). -/
+theorem surjective1 : Function.Surjective (FreeMonoid.lift sem1) := surjective1_of
 
 /-- Theorem 5.2, corrected: Figures 4 and 7 and `(r_K)` present `O(8, 𝔻)`. -/
 theorem theorem_5_2 : IsPresentationOf R1 sem1 where
