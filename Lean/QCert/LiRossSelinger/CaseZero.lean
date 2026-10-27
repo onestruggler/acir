@@ -415,4 +415,104 @@ theorem squareZ_X {s : O_ZHalf n} (hs : s ≠ 1) (hk : lde s = 0) {x y : Fin n} 
       exact DL_of [Gen.neg b, Gen.x x y hxy] [Gen.x x y hxy, Gen.neg b] rfl rfl
         (Derivable.of (Table1.r2b x y b hxy (nd3 (by omega) (by omega) (by omega)))).symm
 
+/-! ## `G = K_[a,b,c,d]` -/
+
+theorem nd5 {a₀ a₁ a₂ a₃ b : Fin n} (h₁ : a₀ < a₁) (h₂ : a₁ < a₂) (h₃ : a₂ < a₃) (h₄ : a₃ < b) :
+    [b, a₀, a₁, a₂, a₃].Nodup := by
+  have := Fin.lt_def.1 h₁; have := Fin.lt_def.1 h₂; have := Fin.lt_def.1 h₃
+  have := Fin.lt_def.1 h₄
+  apply nodup_vals
+  simp only [List.map_cons, List.map_nil, List.nodup_cons, List.mem_cons, List.not_mem_nil,
+    or_false, not_or, List.nodup_nil, and_true, not_false_eq_true]
+  omega
+
+theorem nd6 {a₀ a₁ a₂ a₃ b p : Fin n} (h₁ : a₀ < a₁) (h₂ : a₁ < a₂) (h₃ : a₂ < a₃) (h₄ : a₃ < b)
+    (h₅ : b < p) : [b, p, a₀, a₁, a₂, a₃].Nodup := by
+  have := Fin.lt_def.1 h₁; have := Fin.lt_def.1 h₂; have := Fin.lt_def.1 h₃
+  have := Fin.lt_def.1 h₄; have := Fin.lt_def.1 h₅
+  apply nodup_vals
+  simp only [List.map_cons, List.map_nil, List.nodup_cons, List.mem_cons, List.not_mem_nil,
+    or_false, not_or, List.nodup_nil, and_true, not_false_eq_true]
+  omega
+
+theorem gact_k_ucol_out {a₀ a₁ a₂ a₃ b : Fin n} (h₁ : a₀ < a₁) (h₂ : a₁ < a₂) (h₃ : a₂ < a₃)
+    (t : Bool) (hb : b ∉ [a₀, a₁, a₂, a₃]) :
+    gact (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃) (ucol b t) = ucol b t := by
+  simp only [List.mem_cons, List.not_mem_nil, or_false, not_or] at hb
+  obtain ⟨b0, b1, b2, b3⟩ := hb
+  funext r
+  simp only [gact, ucol, if_neg (Ne.symm b0), if_neg (Ne.symm b1), if_neg (Ne.symm b2),
+    if_neg (Ne.symm b3)]
+  split_ifs <;> simp_all
+
+/-- `K` on `±e_b` with `b` among its indices raises the level (Subcases
+3.1.1–3.1.4 are retrograde). -/
+theorem level_up_K {s : O_ZHalf n} (hs : s ≠ 1) (hk : lde s = 0) {b : Fin n} {t : Bool}
+    (hc : pcol s = ucol b t) {a₀ a₁ a₂ a₃ : Fin n} (h₁ : a₀ < a₁) (h₂ : a₁ < a₂) (h₃ : a₂ < a₃)
+    (hb : b ∈ [a₀, a₁, a₂, a₃]) (hext : extent (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃) < pivotJ s) :
+    level s < level (sem n (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃) * s) := by
+  have hU := pivot_pos hs
+  have hup := isCol_k_up (isCol_ucol b t) h₁ h₂ h₃
+  have v1 := Fin.lt_def.1 h₁; have v2 := Fin.lt_def.1 h₂; have v3 := Fin.lt_def.1 h₃
+  have d01 : a₀ ≠ a₁ := ne_of_lt h₁
+  have d02 : a₀ ≠ a₂ := ne_of_lt (h₁.trans h₂)
+  have d03 : a₀ ≠ a₃ := ne_of_lt (h₁.trans (h₂.trans h₃))
+  have d12 : a₁ ≠ a₂ := ne_of_lt h₂
+  have d13 : a₁ ≠ a₃ := ne_of_lt (h₂.trans h₃)
+  have d23 : a₂ ≠ a₃ := ne_of_lt h₃
+  have hodd : Odd (if t then (-1 : ℤ) else 1) := by cases t <;> decide
+  have ho : Odd ((fun r => if r = a₀ then ((fun r => if r = b then (if t then (-1 : ℤ) else 1)
+      else 0) a₀ + (fun r => if r = b then (if t then (-1 : ℤ) else 1) else 0) a₁ +
+      (fun r => if r = b then (if t then (-1 : ℤ) else 1) else 0) a₂ +
+      (fun r => if r = b then (if t then (-1 : ℤ) else 1) else 0) a₃) else 0) a₀) := by
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hb
+    rcases hb with rfl | rfl | rfl | rfl <;>
+      simp [d01, d02, d03, d12, d13, d23, d01.symm, d02.symm, d03.symm, d12.symm, d13.symm,
+        d23.symm, hodd]
+  obtain ⟨hpV, _, hkV⟩ := state_gen hs hext (by rw [hc]; exact hup) Nat.one_pos (r := a₀) (by
+    simpa only [if_pos rfl] using ho)
+  rw [level_eq_mk s hU, level_eq_mk _ (by rw [hpV]; exact hU), hpV, hkV, hk, mkLevel_lt_iff]
+  right; exact ⟨rfl, Or.inl Nat.one_pos⟩
+
+/-- Subcase 3.1 (for `K` on an initial segment of the indices). -/
+theorem squareZ_K {s : O_ZHalf n} (hs : s ≠ 1) (hk : lde s = 0) {a₀ a₁ a₂ a₃ : Fin n}
+    (h₁ : a₀ < a₁) (h₂ : a₁ < a₂) (h₃ : a₂ < a₃)
+    (hcons : ∀ r : Fin n, r ≤ a₃ → r ∈ [a₀, a₁, a₂, a₃])
+    (hle : level (sem n (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃) * s) ≤ level s) :
+    ∃ (m : ℕ) (gs : List (Gen n)), PathBelow gs (next s) (level s) ∧
+      Derivable (Table1 n) (FreeMonoid.ofList (npath m (sem n (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃) * s)) *
+        FreeMonoid.of (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃))
+        (FreeMonoid.ofList gs * FreeMonoid.ofList (syll s)) := by
+  have hU := pivot_pos hs
+  have hb := extent_lt_of_le hs hle
+  obtain ⟨b, t, hc, hbp, hne⟩ := col_zero hs hk
+  set p := pidx s hU
+  by_cases hbK : b ∈ [a₀, a₁, a₂, a₃]
+  · exact absurd hle (not_le.2 (level_up_K hs hk hc h₁ h₂ h₃ hbK hb))
+  have hb3 : a₃ < b := by
+    by_contra h; push Not at h; exact hbK (hcons b h)
+  have v1 := Fin.lt_def.1 h₁; have v2 := Fin.lt_def.1 h₂; have v3 := Fin.lt_def.1 h₃
+  have vb := Fin.lt_def.1 hb3
+  have vbp := Fin.le_def.1 hbp
+  have hcol : gact (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃) (pcol s) = ucol b t := by
+    rw [hc, gact_k_ucol_out h₁ h₂ h₃ t hbK]
+  obtain ⟨hV, hpV, hcV⟩ := stateU hs hb hcol hne
+  set K := Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃
+  have h2e : Derivable (Table1 n) (FreeMonoid.ofList [Gen.neg b, K]) (FreeMonoid.ofList [K, Gen.neg b]) :=
+    Derivable.of (Table1.r2e b a₀ a₁ a₂ a₃ h₁ h₂ h₃ (nd5 h₁ h₂ h₃ hb3))
+  refine square_short hs hle [K] (by simp) ?_
+  rcases lt_or_eq_of_le hbp with hlt | heq
+  · rw [syll_ucol_lt _ hV hpV hcV hlt, syll_ucol_lt s hU rfl hc hlt]
+    have vbp' := Fin.lt_def.1 hlt
+    have h2c : Derivable (Table1 n) (FreeMonoid.ofList [Gen.x b p hlt, K])
+        (FreeMonoid.ofList [K, Gen.x b p hlt]) :=
+      Derivable.of (Table1.r2c b p a₀ a₁ a₂ a₃ hlt h₁ h₂ h₃ (nd6 h₁ h₂ h₃ hb3 hlt))
+    cases t
+    · exact DL_of _ _ rfl rfl (stepL (A := []) (B := []) _ _ h2c rfl rfl)
+    · exact DL_of [Gen.x b p hlt, Gen.neg b, K] [K, Gen.x b p hlt, Gen.neg b] rfl rfl
+        ((stepL (A := [Gen.x b p hlt]) (B := []) _ _ h2e rfl rfl).trans
+          (stepL (A := []) (B := [Gen.neg b]) _ _ h2c rfl rfl))
+  · rw [syll_ucol_eq _ hV (hpV.trans heq.symm) hcV, syll_ucol_eq s hU heq.symm hc]
+    exact h2e
+
 end QCert.LiRossSelinger

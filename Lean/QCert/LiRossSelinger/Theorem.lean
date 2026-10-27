@@ -13,12 +13,13 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 import QCert.LiRossSelinger.PushL
 import QCert.LiRossSelinger.Generation
 import QCert.LiRossSelinger.Decomp
+import QCert.LiRossSelinger.MainLemma
 
 namespace QCert.LiRossSelinger
 
-/-- Lemma A.20, the Main Lemma for the basic edges that do not raise the level. -/
-theorem mainLemmaBasic (n : ℕ) : MainLemmaBasic n := by
-  sorry
+/-- Lemma A.20, the Main Lemma for the basic edges that do not raise the level
+(`MainLemma.mainLemmaBasic_cases`; three of its cases are not proved yet). -/
+theorem mainLemmaBasic (n : ℕ) : MainLemmaBasic n := mainLemmaBasic_cases
 
 /-- Lemma A.19 (cited from Greylyn 2014 in the paper), with the level bound
 at every intermediate state (`Decomp.lemmaA19`). -/

@@ -117,10 +117,43 @@ groups `O_ZHalf n` and `L n`, `matIH` = `I ⊗ H`), `Theorem.lean`.
   beyond `max(j(s), j(G s))` fixed (the extent lies below that) and permutes
   the pivot column, so it never rises above `max(level s, level(G s))`.
 
+* Lemma A.20 (`MainLemma.mainLemmaBasic_cases`), the case distinction of
+  Figure 9 of the paper.  The tools:
+  * `Square.lean`: a square needs only the inner states of its bottom path
+    checked; its two ends are below the level for free (`square`,
+    `square_short` for a bottom path of at most one edge).
+  * `Column.lean`: a word below the pivot acts on the pivot column
+    (`pcol_word`, `pivot_word_lt`); at a scale `k`, `IsCol v k u` (`2^k v`
+    is the integer vector `u`), with the action of each generator on `u`
+    (`isCol_neg`, `isCol_x`, `isCol_k`, `isCol_k_up`), `lde`, the odd entries,
+    the first four odd entries and the syllable read off `u` (`lde_eq`,
+    `oddS_eq`, `firstOdd_eq`, `syll_eq_pos`).
+  * `SwapConj.lean`: conjugation by `X_[x,x+1]` renames any generator not
+    involving both `x` and `x+1` ((2a)–(2c), (3a)–(3g); `conj_swap`).
+  * `Checker.lean`: rewriting chains on concrete indices checked by the
+    kernel, moved along order embeddings (`checkSteps_sound`,
+    `derivable_rename`); not used yet.
+  * `CasePair.lean`: `rev_derivable` (a derivation read backwards: every
+    generator is an involution), (A.11c) `ksym2`, signed permutations below
+    the pivot keep a state below the level (`level_signed_lt`).
+
+  Proved cases: Subcases 1.1 (`CaseZero.squareZ_X`), 1.2.1, 1.2.2.1,
+  1.2.2.2 and 1.2.2.3 with `u_e` even (`CaseX.squareX_rename`: the syllable
+  of `G s` is that of `s` renamed, and `G` closes the square), 1.2.3
+  (`CasePair.squareX_pair'`), 2.1 (`CaseZero.squareZ_N`), 2.2
+  (`CaseN.squareN_in`, `squareN_out`) and 3.1 (`CaseZero.squareZ_K`;
+  Subcases 3.1.1–3.1.4 raise the level, which the hypothesis excludes).
+
 ## Remaining `sorry`
 
-* `Theorem.mainLemmaBasic` — Lemma A.20 (the case analysis of Appendix A.4,
-  about 45 distinct squares) for the basic edges that do not raise the
-  level.
+Two cases of Lemma A.20, in `MainLemma.lean`:
+
+* `squareX_odd` — Subcase 1.2.2.3 with `u_e` odd (`G = X_[d,d+1]`, `d+1`
+  the fifth odd entry): the two eight-entry diagrams of the paper, with
+  relation (6a) and Proposition A.16, and the residue Lemmas A.7–A.10 on
+  `ū ᵀ ū mod 16`.
+* `squareK_pos` — Case 3.2 (`G = K_[0,1,2,3]` at `k > 0`), the five
+  subcases by `|{a,b,c,d} ∩ {0,1,2,3}|`.
+
 Theorem 4.10 (`Theorem.complete`) and everything else, including
-`presentationL`, are proved from it.
+`presentationL`, are proved from them.
