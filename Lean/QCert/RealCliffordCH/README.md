@@ -29,7 +29,11 @@ Formalized from the paper only.
 | `Engine.lean` | A rewriting engine for two-wire derivations: words of letters (`H`, `Z` on each wire, `CZ`, `CH`, the swap), steps that rewrite with an equation of a table up to the commutation of single-qubit gates on different wires, checked by `decide`; tables grow by proved runs, mirror images (Lemma B.3) and upside-down images (conjugation by the swap). |
 | `AuxEq.lean` | Generated: the auxiliary equations (81)–(110) of Figure 12 (Appendix B.2) and a few helper equations, derived from the two-wire axioms, following the paper's chains where it gives them. |
 | `Lemma75.lean`, `Lemma75Fam.lean` | Generated: Lemma 7.5 for every equation of Figure 6 at every admissible choice of indices in `0, …, 3` (90 instances: 72 by runs over the table, 18 by rewriting over `𝒢₄` with decoded equations already proved), and one theorem per equation of Figure 6. |
-| `Theorem.lean` | `theorem_4_4`, `lemma_7_5`, `lemma_7_6`, `completeness`, `presentation`. |
+| `Sec8/Encoding.lean` | The Gray code (Definition 8.1), the alphabet `𝒫_N` with its semantics (Proposition 4.6, Definition 4.9), the encoding of Definition 8.2 (`encW`), `E_{k,ℓ}(swap)`, the negations `ℰ`, and the statement `ESem` that the encoding preserves the semantics. |
+| `Sec8/Fig8.lean` | Figure 8 (equations (20)–(46)), with `Σ_{a,b,c,d}`, `Σ'_{a,b,c,d}` of Definition E.1 and `𝒲₁`, `𝒲₂` of Appendix A.4.1 (corrected, see below). |
+| `Sec8/Decoding.lean` | The decoding of Definition 8.3 (`decW`): the multi-controlled gates of Definition 2.4 placed by swap networks, colours by `X`. |
+| `Sec8/Statement.lean` | The back-and-forth argument of Theorem 8.9 (`complete_of`) from the four statements `ESem`, `Thm410` (Theorem 4.10), `Lemma87`, `Lemma88`, the last two taking completeness on fewer wires (Lemma 5.1). |
+| `Theorem.lean` | `theorem_4_4`, `lemma_7_5`, `lemma_7_6`, `completeness_at` (by induction on the number of wires), `completeness`, `presentation`. |
 
 ## Conventions and correspondence with the paper
 
@@ -84,10 +88,37 @@ is open for two wires too.
 
 | Declaration | Stands for |
 | --- | --- |
-| `Theorem.lean`: `completeness_ge_three` | Theorem 8.9 from three wires on: Theorem 4.10 (Appendices A.3, A.4), Lemmas 8.7 and 8.8 (Section 8, Appendices D and E), with the encoding and decoding of Definitions 8.2 and 8.3. |
+| `Sec8/Statement.lean`: `esem` | The encoding of Definition 8.2 preserves the semantics (used in the proof of Theorem 8.9). |
+| `Sec8/Statement.lean`: `theorem_4_10` | Theorem 4.10 (Appendices A.3, A.4): Figure 8 is complete for proper words over `𝒫_{2ⁿ}`, `n ≥ 3`. |
+| `Sec8/Statement.lean`: `lemma_8_7` | Lemma 8.7 (via Lemma 8.6, Appendix E.4), given completeness on fewer wires. |
+| `Sec8/Statement.lean`: `lemma_8_8` | Lemma 8.8 (Appendix E.5, with the auxiliary equations of Appendix D), given completeness on fewer wires. |
+
+The induction on the number of wires (`completeness_at`) and the
+back-and-forth argument (`Sec8.complete_of`) carry no `sorry` of their own.
+The transcriptions of Definitions 8.1–8.3, E.1, A.4.1 and Figure 8 were
+checked numerically first (every equation of Figure 8 at `n = 3, 4`; the
+encoding and decoding against the semantics at `n = 3, 4`); the Lean
+definitions agree with that model on examples (`#eval`, and the decoding of
+twelve letters checked against the semantics by `decide` at `n = 3`).
 
 ## Paper errors found
 
-None so far: every equation of Figure 4, (f1)–(f4) and (g) is sound as
-transcribed, and the multi-controlled `Z` gate of Definition 2.4 has the
-stated semantics at every width.
+* Appendix A.4.1, `𝒲₁` and `𝒲₂` (right-hand sides of (36), (37)): the
+  negations are printed `ℰ^{1-x_j}_{j,n-j-2}(X)`.  The index `j, n-j-2`
+  describes a gate on `n - 1` wires (it should be `j, n-j-1`), and with
+  either reading of the index, negating the bits equal to `0` makes (36) and
+  (37) fail at every tuple of the required forms (e.g. `n = 3`,
+  `(a, b, c, d) = (0, 3, 1, 2)`): the support of `H_[0,1]H_[3,2]` has the
+  top bits `0`, so the bits equal to `1` are the ones to negate.  We use
+  `ℰ^{x_j}_{j,n-j-1}(X)`; with it (36) and (37) hold at every tuple for
+  `n = 3, 4, 5`.
+* Definition E.1: `e₂` is printed "`1` if `c ≠ i₂`, `0` if `d = i₂`"; the
+  second case is `c = i₂`.
+* Equations (35)–(37) are read for four distinct indices, as in the case
+  split of Definition 8.3 (the other case is (42)); as printed their side
+  conditions only refer to the forms of the Gray codes.
+
+Otherwise none: every equation of Figure 4, (f1)–(f4), (g) and Figure 12 is
+sound as transcribed, the multi-controlled `Z` gate of Definition 2.4 has
+the stated semantics at every width, and every line of the paper's chains
+in Appendix B.2 that we followed checked numerically.
