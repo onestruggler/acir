@@ -210,3 +210,17 @@ theorem Holds.of_derives {k : ℕ} {db : List Eqn} (hdb : ∀ q ∈ db, Holds q.
   run_sound hdb (of_decide_eq_true h)
 
 end QCert.SelingerClifford
+
+namespace QCert.SelingerClifford
+
+/-- Building the hypothesis of `Holds.of_derives` entry by entry. -/
+theorem db_ok_cons {q : Eqn} {db : List Eqn} (h : Holds q.k q.l q.r)
+    (t : ∀ x ∈ db, Holds x.k x.l x.r) : ∀ x ∈ q :: db, Holds x.k x.l x.r := by
+  intro x hx
+  rcases List.mem_cons.1 hx with rfl | hx
+  · exact h
+  · exact t x hx
+
+theorem db_ok_nil : ∀ x ∈ ([] : List Eqn), Holds x.k x.l x.r := fun _ h => absurd h List.not_mem_nil
+
+end QCert.SelingerClifford
