@@ -11,7 +11,8 @@ encoding (`Lemma87`, Lemma 8.7).  The proofs of Lemmas 8.7 and 8.8 use
 completeness on fewer wires (Lemma 5.1), so they are stated with it as a
 hypothesis, and completeness follows by induction on the number of wires
 (`Theorem.completeness`).  `complete_of` is that argument; the four
-statements are proved, or not, separately.
+statements are proved in `ESemProof`, `Thm410Proof`, `Lemma87Proof` and
+`Lemma88Proof`, and assembled in `Main`.
 -/
 import QCert.RealCliffordCH.Sec8.Decoding
 
@@ -51,28 +52,5 @@ theorem complete_of {n : ℕ} (hE : ESem n) (hT : Thm410 n) (h87 : Lemma87 n) (h
   have hc : conGen (Fig8 n) ≤ c := Con.conGen_le fun a b hab => h88 ih a b hab
   have dd : Derivable (theory n) (decW n (encW n w)) (decW n (encW n v)) := hc d
   exact ((h87 ih w).symm.trans dd).trans (h87 ih v)
-
-/-! ## The four statements -/
-
-/-- The encoding preserves the semantics (Definition 8.2, used in the proof of
-Theorem 8.9).  Not yet proved. -/
-theorem esem (n : ℕ) (hn : 3 ≤ n) : ESem n := by
-  sorry
-
-/-- Theorem 4.10 (Appendices A.3 and A.4).  Not yet proved. -/
-theorem theorem_4_10 (n : ℕ) (hn : 3 ≤ n) : Thm410 n := by
-  sorry
-
-/-- Lemma 8.7 (via Lemma 8.6, Appendix E.4).  Not yet proved. -/
-theorem lemma_8_7 (n : ℕ) (hn : 3 ≤ n) : Lemma87 n := by
-  sorry
-
-/-- Lemma 8.8 (Appendix E.5, with Appendix D).  Not yet proved. -/
-theorem lemma_8_8 (n : ℕ) (hn : 3 ≤ n) : Lemma88 n := by
-  sorry
-
-/-- Theorem 8.9 on `n ≥ 3` wires, given completeness on fewer wires. -/
-theorem complete_ge_three {n : ℕ} (hn : 3 ≤ n) (ih : ∀ k < n, CompleteAt k) : CompleteAt n :=
-  complete_of (esem n hn) (theorem_4_10 n hn) (lemma_8_7 n hn) (lemma_8_8 n hn) ih
 
 end QCert.RealCliffordCH.Sec8

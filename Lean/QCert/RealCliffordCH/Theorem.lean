@@ -26,7 +26,7 @@ import QCert.RealCliffordCH.TwoQubit
 import QCert.RealCliffordCH.Decode
 import QCert.RealCliffordCH.Lemma75Fam
 import QCert.HadamardPi.Theorem
-import QCert.RealCliffordCH.Sec8.Statement
+import QCert.RealCliffordCH.Sec8.Main
 
 namespace QCert.RealCliffordCH
 
