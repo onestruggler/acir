@@ -34,6 +34,20 @@ theorem mem_support {v : Fin n → ℝ} {i : Fin n} : i ∈ support v ↔ v i �
   classical
   simp [support]
 
+/-- The syllable at a positive exponent, from the odd entries `O` and the
+partners `P` (Lines 5–8 of Algorithm 1). -/
+noncomputable def sylPos (j : Fin n) (O : Finset (Fin n)) (P : Fin n → Finset (Fin n)) :
+    Word (Gen n) :=
+  if h1 : O.Nonempty then
+    if h2 : (P (O.min' h1)).Nonempty then
+      if hz2 : (⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) j.2⟩ : Fin n) < (P (O.min' h1)).min' h2 then
+        FreeMonoid.of (Gen.H _ _ hz2) *
+          (if hz1 : (⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) j.2⟩ : Fin n) < O.min' h1
+            then FreeMonoid.of (Gen.X _ _ hz1) else 1)
+      else 1
+    else 1
+  else 1
+
 /-- The syllable output by one step of Algorithm 1 on the column `v` at
 the pivot index `j` (Definition A.1); indices from 0. -/
 noncomputable def sylOf (j : Fin n) (v : Fin n → ℝ) : Word (Gen n) :=
@@ -43,18 +57,11 @@ noncomputable def sylOf (j : Fin n) (v : Fin n → ℝ) : Word (Gen n) :=
       (if hlt : (support v).min' ha < j then FreeMonoid.of (Gen.X _ j hlt) else 1) *
         (if v ((support v).min' ha) < 0 then FreeMonoid.of (Gen.Z ((support v).min' ha)) else 1)
     else 1
-  else
-    if h1 : (oddSet v).Nonempty then
-      if h2 : (partners v ((oddSet v).min' h1)).Nonempty then
-        have hz2 : (⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) j.2⟩ : Fin n) <
-            (partners v ((oddSet v).min' h1)).min' h2 :=
-          lt_of_le_of_lt (Fin.le_def.2 (Nat.zero_le _))
-            (mem_partners.1 ((partners v _).min'_mem h2)).1
-        FreeMonoid.of (Gen.H _ _ hz2) *
-          (if hz1 : (⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) j.2⟩ : Fin n) < (oddSet v).min' h1
-            then FreeMonoid.of (Gen.X _ _ hz1) else 1)
-      else 1
-    else 1
+  else sylPos j (oddSet v) (partners v)
+
+theorem sylOf_eq_sylPos {j : Fin n} {v : Fin n → ℝ} (hk : lde v ≠ 0) :
+    sylOf j v = sylPos j (oddSet v) (partners v) := by
+  rw [sylOf, if_neg hk]
 
 /-- The syllable of a state (`1` for the identity). -/
 noncomputable def syl (M : O n) : Word (Gen n) :=
@@ -92,7 +99,7 @@ theorem sylOf_pos {j : Fin n} {v : Fin n → ℝ} (hk : lde v ≠ 0) (h1 : (oddS
     sylOf j v = FreeMonoid.of (Gen.H z _ hz2) *
       (if hz1 : z < (oddSet v).min' h1 then FreeMonoid.of (Gen.X z _ hz1) else 1) := by
   subst hz
-  rw [sylOf, if_neg hk, dif_pos h1, dif_pos h2]
+  rw [sylOf, if_neg hk, sylPos, dif_pos h1, dif_pos h2, dif_pos hz2]
 
 /-! ### Partners exist -/
 
