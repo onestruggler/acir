@@ -14,15 +14,19 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 import QCert.ToffoliHadamard.Independence
 import QCert.ToffoliHadamard.Section6
 import QCert.ToffoliHadamard.Translation
+import QCert.ToffoliHadamard.Families
 import QCert.LiRossSelinger.Theorem
 
 namespace QCert.ToffoliHadamard
 
 /-- The encoding of each relation of Li–Ross–Selinger's Table 1 at `n = 8`
-is derivable from `R₁` (the Tietze steps of Sections 5.2–5.6; not
-formalized). -/
+is derivable from `R₁` (`Families.lean`: every family carried from a
+relation of Figure 7, or by conjugation with `X_[a,b]`, along paths of
+adjacent transpositions). -/
 theorem encodesTable1 : EncodesTable1 := by
-  sorry
+  intro u v h
+  rw [← Macro.phi_encMW, ← Macro.phi_encMW]
+  exact Macro.toR1 (Macro.table1_macro h)
 
 /-- Each letter of `Σ₁` is derivably equal to the circuit of its decoding
 into level matrices (not formalized). -/

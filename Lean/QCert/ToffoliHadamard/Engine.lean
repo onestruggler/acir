@@ -355,6 +355,23 @@ theorem checkTable_valid {E : List (Eqn α)} (hE : Valid Γ E)
     have := ih hE' h.2
     simpa [eqns] using this
 
+/-- Check entries with plain steps against a fixed list of equations (the
+entries do not use one another). -/
+def checkFlat (E : List (Eqn α)) (T : List (Entry α)) : Bool :=
+  T.all fun t => !t.rot && t.check E
+
+theorem checkFlat_valid {E : List (Eqn α)} (hE : Valid Γ E) {T : List (Entry α)}
+    (h : checkFlat E T = true) : Valid Γ (eqns T) := by
+  intro e he
+  simp only [eqns, List.mem_map] at he
+  obtain ⟨t, ht, rfl⟩ := he
+  have h1 := List.all_eq_true.1 h t ht
+  simp only [Bool.and_eq_true, Bool.not_eq_true'] at h1
+  obtain ⟨hr, h1⟩ := h1
+  unfold Entry.check at h1
+  rw [if_neg (by simp [hr])] at h1
+  exact run_sound hE (by simpa using h1)
+
 /-- The same for tables with plain steps only, which need no involutions. -/
 def checkPlain (E : List (Eqn α)) : List (Entry α) → Bool
   | [] => true

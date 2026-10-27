@@ -92,12 +92,44 @@ groups), `Theorem.lean`.
   sorry-free too.
 * Completeness of `R₁` reduced to Li–Ross–Selinger's completeness at
   `n = 8` (`Translation.complete1_of`), given two families of derivations.
+* `Theorem.encodesTable1`: the encoding of every one of the 2123 instances
+  of Li–Ross–Selinger's Table 1 at `n = 8` is derivable from `R₁`
+  (`Engine`, `Micro`, `Macro`, `Gens`, `MacroTable`, `Transport`,
+  `Families`; see "Derivations" below).
+
+## Derivations (`encodesTable1`)
+
+* `Engine.lean`: tables of equations replayed by `decide +kernel`, each
+  equation proved by packed steps over the earlier ones; plain steps, and,
+  when every letter is an involution, rotation steps (an equation `l = r`
+  is the relator `l · rev r`; every rotation `u v` of it or of its reverse
+  gives the rule `u → rev v`).
+* `Micro.lean` (generated): in `R₁` itself, every letter is an involution,
+  and the paper's words `xAdj i` for `X_[i,i+1]` satisfy the Coxeter
+  relations of `S₈` — 311 derived relations found by a bidirectional
+  breadth-first search over rotations of relators; the relations of
+  `X_[3,4]` go through `xAdj 3 = P · X_[3,5] · P⁻¹` with `X_[3,5]` a
+  three-letter word.
+* `Macro.lean`: the alphabet `ML = {T i, N, K}` read through `phi`
+  (`T i ↦ xAdj i`, `N ↦` the alias of `(−1)_[0]`, `K ↦ K_[0,1,2,3]`); every
+  encoding `enc g` is `phi` of a word, Figure 7 is literally `phi` of
+  equations over `ML`, and derivations from the Coxeter relations and
+  Figure 7 over `ML` map to derivations in `R₁` (`toR1`).
+* `MacroTable.lean` (generated): the complete rewriting system of `S₈`
+  (43 rules, Knuth–Bendix), and `T_j · enc g · T_j = enc (s_j g)` for all
+  630 pairs of an adjacent transposition and a generator it keeps
+  well-formed, by `S₈` normal forms and pushing the stabiliser of `N`
+  ((85)–(90)) or `K` ((91)–(93)) across it.
+* `Transport.lean`: hence conjugation by the word of a path of valid
+  adjacent transpositions renames the indices of a relation; the encoding
+  of `X_[a,b]` is the word of the palindromic path of `(a b)`.
+* `Families.lean` (generated): (1a), (2a)–(2c), (3a)–(3g) are conjugation by
+  `X_[a,b]`; (1b), (1c), (2d)–(2f), (4a)–(4c), (5a) are carried along a
+  bubble-sort path from a relation of Figure 7, and (6a) is derived from
+  (101); one `decide +kernel` per family checks every instance's path.
 
 ## Remaining `sorry`
 
-* `Theorem.encodesTable1` (`EncodesTable1`): the encoding of each relation
-  of Li–Ross–Selinger's Table 1 at `n = 8` is derivable from `R₁` — the
-  Tietze `Rel(−)` steps of Sections 5.2–5.6, Appendix F and the supplement.
 * `Theorem.roundTrip` (`RoundTrip`): each letter of `Σ₁` is derivably equal
   to the circuit of its decoding into level matrices (the `Gen(±)` steps).
 * Through `LiRossSelinger.complete` (Li–Ross–Selinger's Theorem 4.10, its
