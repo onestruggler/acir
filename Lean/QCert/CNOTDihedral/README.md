@@ -39,6 +39,10 @@ SWAPs (`CX₂₀`, `U₀₂`, `U₁₃`, `U₀₃`, `V₀₂₃`, `V₀₁₃`).
   (`sem_eq_toOp`).  The four-wire relation R₁₃ checks in seconds (the generic
   matrix evaluation needed more than 5 GB).
 * **Grouplike** (`Theorem.lean`).
+* **The matrix determines the pair** (`PhaseAffine.pa_eq_of_sem`): `toOp`
+  is injective because `ω` is a primitive eighth root of unity, so circuits
+  with the same matrix have the same phase polynomial and affine map, the
+  semantic starting point of Proposition 6.4.
 
 ## Remaining `sorry`
 
