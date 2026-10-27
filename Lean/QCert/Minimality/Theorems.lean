@@ -31,6 +31,7 @@ import QCert.Minimality.CliffordCS.Soundness
 import QCert.Minimality.CliffordCS.Minimality
 import QCert.Minimality.CNOTDihedral.Soundness
 import QCert.Minimality.CNOTDihedral.Minimality
+import QCert.Minimality.CNOTDihedral.Completeness
 
 namespace QCert.Minimality
 
@@ -84,9 +85,20 @@ qubits. -/
 theorem cliffordCS_complete : CliffordCS.pres.CompleteUpTo (fun n => CliffordCS.sem.sem n) 3 := by
   sorry
 
-/-- Theorem 22 (6): CNOTdihe₂ is complete for CNOT-dihedral circuits. -/
-theorem cnotDihedral_complete : CNOTDihedral.pres.Complete fun n => CNOTDihedral.sem.sem n := by
-  sorry
+/-- Theorem 22 (6), the transfer: CNOTdihe₂ is complete for CNOT-dihedral
+circuits as soon as Amy, Chen and Ross's presentation is (as formalised in
+`QCert.CNOTDihedral`). -/
+theorem cnotDihedral_complete_of_source
+    (hsrc : ∀ n (w v : Circuit QCert.CNOTDihedral.Gate n),
+      QCert.CNOTDihedral.S.sem n w = QCert.CNOTDihedral.S.sem n v →
+        Derivable (QCert.CNOTDihedral.Theory n) w v) :
+    CNOTDihedral.pres.Complete fun n => CNOTDihedral.sem.sem n :=
+  CNOTDihedral.complete_of_source hsrc
+
+/-- Theorem 22 (6): CNOTdihe₂ is complete for CNOT-dihedral circuits (through
+`QCert.CNOTDihedral.presentation`). -/
+theorem cnotDihedral_complete : CNOTDihedral.pres.Complete fun n => CNOTDihedral.sem.sem n :=
+  CNOTDihedral.complete
 
 /-! ### Theorem 37: minimality -/
 
