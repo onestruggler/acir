@@ -42,7 +42,7 @@ main result) and a `README.md` listing what is proved and every remaining
 | Source | Object | Folder | Status |
 | --- | --- | --- | --- |
 | Greylyn [2014] | U_n(ℤ[1/√2,i]), n ≤ 4 | `QCert/Greylyn` | in progress |
-| Bian, Selinger [2021] | U_n(ℤ[1/2,i]) | `QCert/BianSelingerUn` | in progress |
+| Bian, Selinger [2021] | U_n(ℤ[1/2,i]) | `QCert/BianSelingerUn` | **proved** (Theorem 3.1, every n; no `sorry`) |
 | Li, Ross, Selinger [2021] | O_n(ℤ[1/2]), L_n | `QCert/LiRossSelinger` | in progress |
 | Fang, Heunen, Kaarsgaard [2026] | O_n(ℤ[1/√2]) | `QCert/HadamardPi` | in progress |
 | Clément [2019] | O_n(ℤ[1/√2]) | `QCert/Clement2019` | in progress |
