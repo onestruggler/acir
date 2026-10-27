@@ -11,6 +11,7 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
   in Section 5).
 -/
 import QCert.LiRossSelinger.PushL
+import QCert.LiRossSelinger.Generation
 
 namespace QCert.LiRossSelinger
 
@@ -21,8 +22,7 @@ theorem complete (n : ℕ) : ∀ ⦃u v : Word (Gen n)⦄,
 
 /-- Theorem 3.5 (generation): every element of `Oₙ(ℤ[1/2])` is a product of
 generators. -/
-theorem surjective (n : ℕ) : Function.Surjective (FreeMonoid.lift (sem n)) := by
-  sorry
+theorem surjective (n : ℕ) : Function.Surjective (FreeMonoid.lift (sem n)) := generation
 
 /-- Theorems 3.5, 4.3 and 4.10: Table 1 presents `Oₙ(ℤ[1/2])`. -/
 theorem presentation (n : ℕ) : IsPresentationOf (Table1 n) (sem n) where
