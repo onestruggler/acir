@@ -8,8 +8,7 @@ every odd prime `p` (Proposition A.28, by the path-sum calculations of
 Lemmas A.25–A.27).  Proved here: the rules whose
 circuits are diagonal, (C0), (C1), (C6) and (C8), and (C5), from
 Proposition 2.13 (`H² = λ_p⁻² M_{-1}`, `Hop_sq`); the others are in
-`QuditClifford.Theorem` (`rule_sound`), with `sorry`s that `README.md`
-lists.
+`TwoQudit`, `Rules`, `ThreeQudit`, `Multiplier` and `GaussScalar`.
 -/
 import QCert.QuditClifford.Semantics
 

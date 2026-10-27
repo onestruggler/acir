@@ -13,21 +13,26 @@ denote (`IsSubPresentationOf`), the matrix semantics being part of the
 statement.
 
 `g` is the generator of `ℤ_p^*` chosen in Figure 1; soundness holds for any
-`g ≠ 0`, completeness needs `g` to generate.  The remaining `sorry`s are
+`g ≠ 0`, completeness needs `g` to generate.  Soundness of every rule is
+proved (Proposition A.28), (C2) and (C3) through Gauss's evaluation of the
+quadratic Gauss sum (`QCert.gauss_sum_sign`); the remaining `sorry`s are
 listed in `README.md`.
 -/
-import QCert.QuditClifford.Multiplier
+import QCert.QuditClifford.GaussScalar
 
 namespace QCert.QuditClifford
 
 variable (p : ℕ) [hp : Fact p.Prime]
 
-/-- Every rule of Figure 1 holds for the matrices of Definition 2.11. -/
+/-- Proposition A.28: every rule of Figure 1 holds for the matrices of
+Definition 2.11. -/
 theorem rule_sound (hp2 : p ≠ 2) (g : ZMod p) (hg : g ≠ 0) {k : ℕ} {w v : Circ k}
     (h : Rule p g k w v) : sem p k w = sem p k v := by
   cases h with
   | C0 => exact sound_C0 p
   | C1 => exact sound_C1 p
+  | C2 => exact sound_C2 p hp2
+  | C3 k => exact sound_C3 p hp2 hg k
   | C4 => exact sound_C4 p hp2 g hg
   | C5 => exact sound_C5 p
   | C6 => exact sound_C6 p
@@ -40,7 +45,6 @@ theorem rule_sound (hp2 : p ≠ 2) (g : ZMod p) (hg : g ≠ 0) {k : ℕ} {w v : 
   | C13 => exact sound_C13 p hp2
   | C14 => exact sound_C14 p hp2
   | C15 => exact sound_C15 p hp2
-  | _ => sorry
 
 /-- The rules and the structural rules hold at every width. -/
 theorem theory_sound (hp2 : p ≠ 2) (g : ZMod p) (hg : g ≠ 0) {n : ℕ} {w v : Circ n}

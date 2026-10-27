@@ -18,7 +18,7 @@ symbolic `p` with `[Fact p.Prime]` and `p ≠ 2`).
 | --- | --- | --- |
 | `Syntax.lean` | gates `-ω`, `H`, `S`, `CZ`; derived generators `M_a` (T1), `X` (T2), `Z` (T3), `SWAP` (T4), `CX` (T6), remote `CZ` (T7); the rules `Rule.C0`–`Rule.C15` (`C3` a family over `k ∈ ℤ_p`), each on its own wires | Definition 2.11, Figures 1, 2 |
 | `Semantics.lean` | `ω = e^{2πi/p}` (`ωℂ`), `λ_p = e^{(p-1)πi/4}` (`lambdaP`), the operators `Hop`, `Sop`, `CZop` on basis states `Fin n → Fin p`, their unitarity (`Hop_mem`: orthogonality of the characters of `ℤ_p`), `gateSem`, `sem p n` | Definitions 2.1, 2.5, 2.11 |
-| `Soundness.lean` | soundness of (C0), (C1), (C5), (C6), (C8); `Hop_sq`: `H² = λ_p⁻² M_{-1}` | Corollaries A.13, A.14; Propositions 2.13, A.28 |
+| `PathSum`, `Soundness`, `TwoQudit`, `Rules`, `ThreeQudit`, `Multiplier`, `GaussScalar` | soundness of every rule (below) | Proposition A.28, Lemmas A.15–A.27, 2.15, Proposition 2.13 |
 | `Theorem.lean` | `rule_sound`, `sound`, `complete`, `grouplike`, `theorem_4_10` | Theorem 4.10 |
 
 Conventions (as in `QCert/QutritClifford`): the paper's top wire on `k`
@@ -38,18 +38,41 @@ C0–C15, every `k` of C3, and every `M_a` against `|x⟩ ↦ |ax⟩`) for
 ## Proved
 
 * Unitarity of the gate matrices, so that the semantics is a monoid
-  homomorphism into `U(pⁿ)` (`Semantics.lean`, no `sorry`).
-* Soundness of (C0) `(-ω)^{2p} = 1`, (C1) `S^p = 1`, (C6) `CZ^p = 1`,
-  (C8), and (C5) `H² ⨾ S ⨾ H² ⨾ S = S ⨾ H² ⨾ S ⨾ H²` through Proposition
-  2.13, `H² = λ_p⁻² M_{-1}` (`Hop_sq`, by the orthogonality of the
-  characters of `ℤ_p`) (`Soundness.lean`, no `sorry`).
+  homomorphism into `U(pⁿ)` (`Semantics.lean`).
+* **Soundness of all sixteen rules** (`rule_sound`, `sound`), at symbolic
+  `p`, with no `sorry` of their own; (C2) and (C3) use Gauss's evaluation
+  of the quadratic Gauss sum, `QCert.gauss_sum_sign`
+  (`QCert/NumberTheory/GaussSign.lean`, stated separately and proved by
+  another development). The path sums of Appendix A:
+  * `PathSum.lean`: the character `ψ a = ω^a` of `ℤ_p` and
+    `∑_u ψ(au) = p [a = 0]`; monomial operators `|t⟩ ↦ φ t |σ t⟩`,
+    closed under products, shifts and padding.
+  * `Soundness.lean`: (C0), (C1), (C6), (C8); Proposition 2.13
+    `H² = λ_p⁻² M_{-1}` (`Hop_sq`) and (C5).
+  * `TwoQudit.lean`: `λ_p² = (-1)^{(p-1)/2}`, `λ_p⁴ = 1`; Lemma A.20
+    (`sem_SWAP`: (T4) is the swap) and Lemma A.18 (`sem_CX`).
+  * `Rules.lean`: (C7), (C10), (C11), (C12); `ThreeQudit.lean`: (C13),
+    (C14), (C15).
+  * `Multiplier.lean`: Lemmas A.15, A.16 (`sem_Z`, `sem_X`); completing
+    the square; `sem_M`: for `a ≠ 0` the circuit (T1) is a scalar `κ_a`
+    times `|x⟩ ↦ |ax⟩` (one Gauss sum `G(a⁻¹/2)` in `κ_a`); (C4), (C9),
+    which have one multiplier on each side.
+  * `GaussScalar.lean`: `G(b) = (b/p) G(1)` (`G_mul`, from Mathlib's
+    `quadraticChar_card_sqrts`), `λ_p = i^{(p-1)/2}`, and `κ_a = 1`
+    (`κM_eq_one`, by `p mod 8` and `QCert.gauss_sum_sign`): Lemma 2.15
+    (`sem_M_eq`); then (C2) and (C3) for every `k`.
 * The inverses of `-ω`, `S` and `CZ` modulo the rules (from C0, C1, C6).
+
+Soundness of (C2) and (C3) needs the sign of the Gauss sum: with
+`M_a = κ P_a` (`κ = (2/p) λ_p⁻³ G(1)/√p`, independent of `a`, `κ² = 1`), (C2)
+holds iff `κ = 1`, and (C3) says `κ^{k-1} = 1`, which for even `k` (and at
+`k = 0`, `M_1 = 1`) is again `κ = 1`; `κ = 1` is Gauss's theorem.
 
 ## Remaining `sorry`s
 
 | Name | Stands for |
 | --- | --- |
-| `rule_sound`, cases C2–C4, C7, C9–C15 (`Theorem.lean`) | Proposition A.28 (Lemmas A.25–A.27, path sums). C7, C10–C15 need the matrices of `SWAP` and `CX` (Lemmas A.18, A.20: character sums over `ℤ_p`, like `Hop_sq`). C2, C3, C4, C9 involve the multiplier `M_a` (T1), whose matrix is `|x⟩ ↦ |ax⟩` exactly (Lemma 2.15) only by Gauss's evaluation of the quadratic Gauss sum `∑_j ω^{j²} = (2/p)_L λ_p⁻¹ √p`, sign included, which the paper cites and which Mathlib does not have (it has `gaussSum_sq`, not the sign). (C3) at `k = 0` says `M_1 = 1`, i.e. `H ⨾ S ⨾ H ⨾ S ⨾ H ⨾ S = ω^{-1/8}`, which is this evaluation. |
+| `QCert.gauss_sum_sign` (not in this folder) | Gauss's sign of the quadratic Gauss sum, used by (C2), (C3) |
 | `complete` (`Theorem.lean`) | Theorem 4.10's completeness: Propositions 3.8 and 3.13 (normal forms), Theorem 4.4 (the 18 symplectic relations of Figure 9 are complete up to Pauli corrections, through the 42 box relations of Proposition 4.3; Figure 9's relations are derived from Figure 1 in the supplement), Propositions 4.8, 4.9 (lifting by Pauli corrections and scalars) |
 | `exists_inverse`, case `H` (`Theorem.lean`) | `H⁴ = 1` (Corollary A.8) is derivable from (C0), (C2), (C3) |
 
