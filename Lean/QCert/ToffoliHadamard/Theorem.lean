@@ -12,6 +12,7 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
   (Theorem 6.3).
 -/
 import QCert.ToffoliHadamard.Independence
+import QCert.ToffoliHadamard.Section6
 
 namespace QCert.ToffoliHadamard
 
@@ -42,12 +43,12 @@ theorem theorem_5_2_as_stated_fails : ¬ IsSubPresentationOf Fig47 sem1 :=
 
 /-- Completeness of `R₂`, from that of `R₁` (Lemmas 6.1, 6.2). -/
 theorem complete2 : ∀ ⦃u v : Word Sym2⦄,
-    FreeMonoid.lift sem2 u = FreeMonoid.lift sem2 v → Derivable R2 u v := by
-  sorry
+    FreeMonoid.lift sem2 u = FreeMonoid.lift sem2 v → Derivable R2 u v :=
+  complete2_of complete1
 
 /-- Every element of `TofH(3)` is the value of a word over `Σ₂`. -/
-theorem surjective2 : Function.Surjective (FreeMonoid.lift sem2) := by
-  sorry
+theorem surjective2 : Function.Surjective (FreeMonoid.lift sem2) :=
+  surjective2_of surjective1
 
 /-- Theorem 6.3: `R₂` presents `TofH(3)`. -/
 theorem theorem_6_3 : IsPresentationOf R2 sem2 where
