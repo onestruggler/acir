@@ -42,8 +42,10 @@ C0–C15, every `k` of C3, and every `M_a` against `|x⟩ ↦ |ax⟩`) for
 * **Soundness of all sixteen rules** (`rule_sound`, `sound`), at symbolic
   `p`, with no `sorry` of their own; (C2) and (C3) use Gauss's evaluation
   of the quadratic Gauss sum, `QCert.gauss_sum_sign`
-  (`QCert/NumberTheory/GaussSign.lean`, stated separately and proved by
-  another development). The path sums of Appendix A:
+  (`QCert/NumberTheory/GaussSign.lean`, proved by another development).
+  `#print axioms` on `sound`, `rule_sound` and `grouplike` gives only
+  `propext`, `Classical.choice` and `Quot.sound`. The path sums of
+  Appendix A:
   * `PathSum.lean`: the character `ψ a = ω^a` of `ℤ_p` and
     `∑_u ψ(au) = p [a = 0]`; monomial operators `|t⟩ ↦ φ t |σ t⟩`,
     closed under products, shifts and padding.
@@ -77,7 +79,6 @@ holds iff `κ = 1`, and (C3) says `κ^{k-1} = 1`, which for even `k` (and at
 
 | Name | Stands for |
 | --- | --- |
-| `QCert.gauss_sum_sign` (not in this folder) | Gauss's sign of the quadratic Gauss sum, used by (C2), (C3) |
 | `complete` (`Theorem.lean`) | Theorem 4.10's completeness: Propositions 3.8 and 3.13 (normal forms), Theorem 4.4 (the 18 symplectic relations of Figure 9 are complete up to Pauli corrections, through the 42 box relations of Proposition 4.3; Figure 9's relations are derived from Figure 1 in the supplement), Propositions 4.8, 4.9 (lifting by Pauli corrections and scalars) |
 
 ## Errors in the paper
