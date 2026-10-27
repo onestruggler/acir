@@ -1,0 +1,205 @@
+/-
+Copyright (c) 2026 QCert contributors. All rights reserved.
+
+# Integer quartic rings and the roots of unity of the six fragments
+
+`ZQuartic p q` is ℤ[x]/(x⁴ - p x² - q), elements `a₀ + a₁ x + a₂ x² + a₃ x³`
+with integer coefficients and decidable equality.  It is the integer
+counterpart of the framework's `Quartic p q`, used because the kernel
+evaluates integer arithmetic much faster than rational arithmetic.  The two
+instances:
+
+* `ZOmega = ZQuartic 0 (-1)`: ℤ[ω], ω = e^{iπ/4}, with `√2 = ω - ω³`;
+* `ZZeta = ZQuartic 1 (-1)`: ℤ[ζ], ζ = e^{iπ/6}, with `√3 = 2ζ - ζ³`.
+
+Matrices over these rings are the qubit and qutrit gate matrices scaled by
+`√2` and `√3` (`QCert.Minimality.Scaled`).  `conj` is complex conjugation
+(`x ↦ x⁻¹`), compatible with `star` on `ℂ` (`toC_conj`).
+-/
+import QCert.Exact.Roots
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+
+namespace QCert.Minimality
+
+/-- ℤ[x]/(x⁴ - p x² - q). -/
+@[ext]
+structure ZQuartic (p q : ℤ) where
+  a0 : ℤ
+  a1 : ℤ
+  a2 : ℤ
+  a3 : ℤ
+  deriving DecidableEq
+
+namespace ZQuartic
+
+variable {p q : ℤ}
+
+instance : Zero (ZQuartic p q) := ⟨⟨0, 0, 0, 0⟩⟩
+instance : One (ZQuartic p q) := ⟨⟨1, 0, 0, 0⟩⟩
+instance : Add (ZQuartic p q) := ⟨fun a b => ⟨a.a0 + b.a0, a.a1 + b.a1, a.a2 + b.a2, a.a3 + b.a3⟩⟩
+instance : Neg (ZQuartic p q) := ⟨fun a => ⟨-a.a0, -a.a1, -a.a2, -a.a3⟩⟩
+instance : Sub (ZQuartic p q) := ⟨fun a b => ⟨a.a0 - b.a0, a.a1 - b.a1, a.a2 - b.a2, a.a3 - b.a3⟩⟩
+
+/-- Multiplication, reducing `x⁴ = p x² + q`, `x⁵ = p x³ + q x` and
+`x⁶ = (p² + q) x² + p q`. -/
+instance : Mul (ZQuartic p q) := ⟨fun a b =>
+  let c4 := a.a1 * b.a3 + a.a2 * b.a2 + a.a3 * b.a1
+  let c5 := a.a2 * b.a3 + a.a3 * b.a2
+  let c6 := a.a3 * b.a3
+  ⟨a.a0 * b.a0 + q * c4 + p * q * c6,
+   a.a0 * b.a1 + a.a1 * b.a0 + q * c5,
+   a.a0 * b.a2 + a.a1 * b.a1 + a.a2 * b.a0 + p * c4 + (p * p + q) * c6,
+   a.a0 * b.a3 + a.a1 * b.a2 + a.a2 * b.a1 + a.a3 * b.a0 + p * c5⟩⟩
+
+theorem zero_def : (0 : ZQuartic p q) = ⟨0, 0, 0, 0⟩ := rfl
+theorem one_def : (1 : ZQuartic p q) = ⟨1, 0, 0, 0⟩ := rfl
+theorem add_def (a b : ZQuartic p q) :
+    a + b = ⟨a.a0 + b.a0, a.a1 + b.a1, a.a2 + b.a2, a.a3 + b.a3⟩ := rfl
+theorem neg_def (a : ZQuartic p q) : -a = ⟨-a.a0, -a.a1, -a.a2, -a.a3⟩ := rfl
+theorem sub_def (a b : ZQuartic p q) :
+    a - b = ⟨a.a0 - b.a0, a.a1 - b.a1, a.a2 - b.a2, a.a3 - b.a3⟩ := rfl
+theorem mul_def (a b : ZQuartic p q) : a * b =
+    ⟨a.a0 * b.a0 + q * (a.a1 * b.a3 + a.a2 * b.a2 + a.a3 * b.a1) + p * q * (a.a3 * b.a3),
+     a.a0 * b.a1 + a.a1 * b.a0 + q * (a.a2 * b.a3 + a.a3 * b.a2),
+     a.a0 * b.a2 + a.a1 * b.a1 + a.a2 * b.a0 + p * (a.a1 * b.a3 + a.a2 * b.a2 + a.a3 * b.a1) +
+       (p * p + q) * (a.a3 * b.a3),
+     a.a0 * b.a3 + a.a1 * b.a2 + a.a2 * b.a1 + a.a3 * b.a0 + p * (a.a2 * b.a3 + a.a3 * b.a2)⟩ :=
+  rfl
+
+attribute [local simp] zero_def one_def add_def neg_def sub_def mul_def in
+instance : CommRing (ZQuartic p q) where
+  add_assoc a b c := by ext <;> simp <;> ring
+  zero_add a := by ext <;> simp
+  add_zero a := by ext <;> simp
+  add_comm a b := by ext <;> simp <;> ring
+  neg_add_cancel a := by ext <;> simp
+  sub_eq_add_neg a b := by ext <;> simp <;> ring
+  mul_assoc a b c := by ext <;> simp <;> ring
+  one_mul a := by ext <;> simp
+  mul_one a := by ext <;> simp
+  zero_mul a := by ext <;> simp
+  mul_zero a := by ext <;> simp
+  left_distrib a b c := by ext <;> simp <;> ring
+  right_distrib a b c := by ext <;> simp <;> ring
+  mul_comm a b := by ext <;> simp <;> ring
+  nsmul := nsmulRec
+  zsmul := zsmulRec
+
+/-- The element `x`. -/
+def X : ZQuartic p q := ⟨0, 1, 0, 0⟩
+
+/-- An integer. -/
+def ofInt (r : ℤ) : ZQuartic p q := ⟨r, 0, 0, 0⟩
+
+theorem intCast_eq (r : ℤ) : ((r : ZQuartic p q)) = ofInt r := by
+  induction r using Int.induction_on with
+  | zero => rfl
+  | succ k ih => rw [Int.cast_add, Int.cast_one, ih]; ext <;> simp [ofInt, add_def, one_def]
+  | pred k ih => rw [Int.cast_sub, Int.cast_one, ih]; ext <;> simp [ofInt, sub_def, one_def]
+
+/-- Every element is `a₀ + a₁ x + a₂ x² + a₃ x³`. -/
+theorem eq_sum (a : ZQuartic p q) :
+    a = (a.a0 : ZQuartic p q) + (a.a1 : ZQuartic p q) * X + (a.a2 : ZQuartic p q) * X ^ 2 +
+      (a.a3 : ZQuartic p q) * X ^ 3 := by
+  simp only [intCast_eq, pow_succ, pow_zero]
+  ext <;> simp [ofInt, X, add_def, mul_def, one_def]
+
+section Lift
+
+variable {R : Type*} [CommRing R]
+
+/-- Evaluation at a root `θ` of `x⁴ = p x² + q` in any commutative ring. -/
+def lift (θ : R) (hθ : θ ^ 4 = p * θ ^ 2 + q) : ZQuartic p q →+* R where
+  toFun a := a.a0 + a.a1 * θ + a.a2 * θ ^ 2 + a.a3 * θ ^ 3
+  map_one' := by simp [one_def]
+  map_zero' := by simp [zero_def]
+  map_add' a b := by simp [add_def]; ring
+  map_mul' a b := by
+    simp only [mul_def]
+    push_cast
+    linear_combination
+      -((a.a1 * b.a3 + a.a2 * b.a2 + a.a3 * b.a1 : R) + (a.a2 * b.a3 + a.a3 * b.a2 : R) * θ +
+        (a.a3 * b.a3 : R) * (θ ^ 2 + p)) * hθ
+
+theorem lift_apply (θ : R) (hθ : θ ^ 4 = p * θ ^ 2 + q) (a : ZQuartic p q) :
+    lift θ hθ a = a.a0 + a.a1 * θ + a.a2 * θ ^ 2 + a.a3 * θ ^ 3 := rfl
+
+@[simp] theorem lift_X (θ : R) (hθ : θ ^ 4 = p * θ ^ 2 + q) : lift θ hθ X = θ := by
+  simp [lift_apply, X]
+
+/-- Two ring homomorphisms out of `ZQuartic p q` agreeing on `x` agree. -/
+theorem hom_ext {f g : ZQuartic p q →+* R} (h : f X = g X) : f = g := by
+  ext a
+  rw [eq_sum a]
+  simp only [map_add, map_mul, map_pow, map_intCast, h]
+
+end Lift
+
+end ZQuartic
+
+/-! ### ℤ[ω] -/
+
+/-- ℤ[ω], ω⁴ = -1. -/
+abbrev ZOmega := ZQuartic 0 (-1)
+
+namespace ZOmega
+
+open ZQuartic
+
+/-- `√2 = ω - ω³`. -/
+def sqrt2 : ZOmega := ⟨0, 1, 0, -1⟩
+
+/-- `i = ω²`. -/
+def I : ZOmega := ⟨0, 0, 1, 0⟩
+
+/-- `ω`. -/
+def ω : ZOmega := X
+
+/-- ℤ[ω] inside `ℂ`, `x ↦ ω = e^{iπ/4}`. -/
+noncomputable def toC : ZOmega →+* ℂ := lift QCert.ω (by rw [ω_pow_four]; push_cast; ring)
+
+/-- ℤ[ω] inside ℚ(ω). -/
+def toQ : ZOmega →+* QOmega := lift Quartic.X (by ext <;> simp [pow_succ, Quartic.X])
+
+/-- Complex conjugation `ω ↦ ω⁻¹ = -ω³`. -/
+def conj : ZOmega →+* ZOmega := lift ⟨0, 0, 0, -1⟩ (by decide)
+
+theorem toC_X : toC X = QCert.ω := lift_X _ _
+
+theorem toC_sqrt2 : toC sqrt2 = ((Real.sqrt 2 : ℝ) : ℂ) := by
+  have h := QCert.inv_sqrt2_eq
+  have h0 := QCert.sqrt2_ne_zero
+  have h2 := QCert.sqrt2_sq
+  have e : toC sqrt2 = QCert.ω - QCert.ω ^ 3 := by
+    simp only [toC, lift_apply, sqrt2]; push_cast; ring
+  rw [e, show QCert.ω - QCert.ω ^ 3 = 2 * ((Real.sqrt 2 : ℝ) : ℂ)⁻¹ by rw [h]; ring]
+  have hs : ((Real.sqrt 2 : ℝ) : ℂ) * ((Real.sqrt 2 : ℝ) : ℂ) = 2 := by rw [← sq, h2]
+  rw [← hs, mul_assoc, mul_inv_cancel₀ h0, mul_one]
+
+theorem toC_I : toC I = Complex.I := by
+  simp only [toC, lift_apply, I]
+  push_cast
+  rw [QCert.ω_sq]; ring
+
+theorem star_ω : star QCert.ω = -QCert.ω ^ 3 := by
+  have h3 : QCert.ω ^ 3 = QCert.ω * Complex.I := by rw [pow_succ, QCert.ω_sq, mul_comm]
+  rw [h3]
+  simp only [QCert.ω, star_mul', Complex.star_def, map_inv₀, Complex.conj_ofReal, map_add,
+    map_one, Complex.conj_I]
+  ring_nf
+  rw [Complex.I_sq]
+  ring
+
+/-- `conj` is complex conjugation. -/
+theorem toC_conj (a : ZOmega) : toC (conj a) = star (toC a) := by
+  have : toC.comp conj = (starRingEnd ℂ).comp toC := by
+    apply hom_ext
+    simp only [RingHom.comp_apply, conj, lift_X, starRingEnd_apply]
+    rw [toC_X, star_ω]
+    simp [toC, lift_apply]
+  exact congrArg (fun f : ZOmega →+* ℂ => f a) this
+
+end ZOmega
+
+end QCert.Minimality
