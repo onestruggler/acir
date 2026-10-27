@@ -20,7 +20,7 @@ for Multi-Qutrit Clifford Circuits* (QPL 2025, arXiv:2508.14670).
 
 The remaining `sorry`s are listed in `README.md`.
 -/
-import QCert.QutritClifford.Soundness
+import QCert.QutritClifford.Pauli
 
 namespace QCert.QutritClifford
 
@@ -51,8 +51,8 @@ theorem subpresentation (n : ℕ) : IsSubPresentationOf (Theory n) (gateSem.gen 
 /-! ### The Clifford group -/
 
 /-- Every generator's operator lies in the Clifford group. -/
-theorem gen_mem_cliffordGroup {n : ℕ} (g : Gen Gate n) : gateSem.gen g ∈ cliffordGroup n := by
-  sorry
+theorem gen_mem_cliffordGroup {n : ℕ} (g : Gen Gate n) : gateSem.gen g ∈ cliffordGroup n :=
+  gen_mem g
 
 /-- The operator of a generator, as an element of the Clifford group. -/
 noncomputable def cliffordGen (n : ℕ) (g : Gen Gate n) : cliffordGroup n :=

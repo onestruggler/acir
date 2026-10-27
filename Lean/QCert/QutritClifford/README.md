@@ -56,12 +56,24 @@ Conventions:
   below; general lemmas `evalShift`, `evalPad`, `genPad` (evaluation of
   shifted and padded circuits for `GateOps`) are in `Soundness.lean`.
 
+* `Pauli.lean`: every generator's operator lies in `𝒞ₙ` (`gen_mem`, used by
+  `gen_mem_cliffordGroup`): a Pauli operator on `n + k` wires is one on the
+  bottom `k` wires times one on the top `n` (`pauli_split`,
+  `onBottom_pauli_mul`), so a gate on the bottom wires or a generator moved
+  up normalises `𝒫` when it does on its own wires (`Normalises.onBottom`,
+  `Normalises.onTop`); `H` and `S` are unitary and send `X` and `Z` to
+  Paulis (`H X H† = Z`, `H Z H† = X²`, `S X S† = X Z²`, `S Z S† = Z`,
+  decided over `ℚ(ζ)` on `3 × 3` matrices), and conjugation is
+  multiplicative, so the one-qutrit Pauli calculus (`pauliQ1_mul`, from
+  `Z X = ω X Z`) gives the rest; `CZ`, diagonal, by the exponent identity
+  of its action (`cz_exponent`, decided on `Fin 3`); the entries of `H` lie
+  in `ℤ[1/3, ω]` since `(ω² - ω)⁻¹ = (ω - ω²)/3`.
+
 ## Remaining `sorry`s
 
 | Name | Stands for |
 | --- | --- |
 | `complete` (`Theorem.lean`) | Theorem 4.4: Proposition 3.9 (unique normal forms, Lemmas 3.5–3.8), Lemma 4.2 and Proposition 4.3 (normalisation by the 380 box relations of Appendix C), and the supplement's derivation of the box relations from C1–C18 |
-| `gen_mem_cliffordGroup` (`Theorem.lean`) | each generator normalises the Pauli group and has entries in `ℤ[1/3, ω]` (Appendix D, generator actions) |
 | `cliffordGroup_le_closure` (`Theorem.lean`) | Proposition 3.9 (existence of normal forms: every Pauli automorphism is a circuit) and Corollary B.3 (the phases of `𝒞ₙ` are the powers of `-ω`) |
 | `card_cliffordGroup` (`Theorem.lean`) | Corollary 3.10 (counting normal forms) |
 
