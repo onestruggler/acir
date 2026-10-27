@@ -51,10 +51,18 @@ operators*, QPL 2023, arXiv:2306.08530.  Table 1 of qcert.tex:
   because that module did not build at the time (its `MainK.lean` failed);
   replace by `BianSelingerUn.presentation 8` once it builds.
 * `Completeness.rsData`: the existence of the Reidemeister–Schreier coset
-  data with hypotheses (a) and (b).  The paper gives no coset table (only
-  that the subgroup has index 2, the matrices of determinant ±1); its proof
-  is the authors' Agda code ("a sequence of multiple applications of the
-  Reidemeister–Schreier theorem passing through a number of intermediate
-  representations", Steps 1–8, thousands of relations of up to 50,000
-  generators), which is not part of the arXiv source and was not
-  reproduced.  Everything else in the completeness argument is proved.
+  data with hypotheses (a) and (b).  What the paper's proof consists of
+  (Sections 3.1, 4 and 6): `CliffordCS(3)` is the subgroup of `U₈(ℤ[1/2, i])`
+  of determinant `±1`, of index 2; the Reidemeister–Schreier theorem is
+  applied "recursively", "through a number of intermediate
+  representations" (the folders `Step1` – `Step8` of their code), and the
+  resulting thousands of relations, "some … more than 50,000 generators",
+  are reduced to Figure 2 by rewriting to an almost-normal form built from
+  normal forms of the finite subgroups of Section 4 (`W`, `Q`, `C`, `CQ`,
+  `P`, `D`, `PD`, `QD`, `CQD`, `K₀D`, `K₀CD`, `K₀W`) and the relations of
+  Figure 4.  The paper prints none of the coset tables, translations or
+  intermediate presentations: all of them live only in the authors' Agda
+  code, cited as "[6] Agda code accompanying this paper", available from
+  https://www.mathstat.dal.ca/~selinger/papers/downloads/cliffordcs3/ (not
+  part of the arXiv source).  It was not reproduced here.  Everything else
+  in the completeness argument is proved.
