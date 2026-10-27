@@ -76,21 +76,38 @@ Conventions:
   `ℤ[1/3, ω]` of norm one are the powers of `-ω`; `mem_ZThirdOmega` writes
   an element as `(a + bω)/3ᵏ`) and Corollary B.3 (`same_action_phase`: two
   elements of `𝒞ₙ` acting alike on `𝒫ₙ` differ by a power of `-ω`). With
-  them `cliffordGroup_le_closure` (generation) is proved from the
-  existence half of Proposition 3.9 alone.
+  them `cliffordGroup_le_closure` (generation) follows from the existence
+  half of Proposition 3.9.
+* `PauliAction.lean`: Pauli data `PD n` (phase, `X` and `Z` exponents per
+  wire), their multiplication law (`PD.op_mul`), injectivity of the
+  operator (`PD.op_inj`), and the action of circuits on Pauli data as an
+  explicit, computable function `actC` with `sem_conj`:
+  `sem w · P · sem w† = actC w P`. Facts about the action of a fixed
+  circuit on Paulis are then decided by computation on the data.
+* `NormalForm.lean`: the boxes `A`–`F` of Figure 9 and both columns of
+  Figure 8 (their required and additional actions), decided on Pauli data
+  for every index; the `Z`- and `X`-normal circuits of Figure 10 as data
+  (`ZN`, `XN`) together with the Pauli each sends to `Z` on the top wire,
+  resp. `X` on the bottom wire, which determines it: Lemmas 3.5–3.7.
+* `Prop39.lean`: Lemma 3.8; Proposition 3.9, existence (`exists_nf`: every
+  unitary normalising `𝒫ₙ` acts on it as the layers of a normal form do —
+  an operator fixing `Z` and `X` on the bottom wire acts on the other wires,
+  `eq_onTop`, and normalises their Paulis, `normal_of_onTop`) and
+  uniqueness (`nfx_unique`, and `nf_unique` with the phase `(-ω)^t`).
+* `Count.lean`: normal forms are in bijection with `𝒞ₙ` (`nfEquiv`), and
+  Corollary 3.10 (`card_cliffordGroup_eq`), so `exists_circuit_action` and
+  `card_cliffordGroup` are proved.
 
 ## Remaining `sorry`s
 
 | Name | Stands for |
 | --- | --- |
-| `complete` (`Theorem.lean`) | Theorem 4.4: Proposition 3.9 (unique normal forms, Lemmas 3.5–3.8), Lemma 4.2 and Proposition 4.3 (normalisation by the 380 box relations of Appendix C), and the supplement's derivation of the box relations from C1–C18 |
-| `exists_circuit_action` (`Theorem.lean`) | Proposition 3.9, existence: every element of `𝒞ₙ` acts on `𝒫ₙ` as some circuit (the normal form, by Lemmas 3.5–3.8) |
-| `card_cliffordGroup` (`Theorem.lean`) | Corollary 3.10 (counting normal forms) |
+| `complete` (`Theorem.lean`) | Theorem 4.4: Lemma 4.2 and Proposition 4.3 (every circuit rewrites to a normal form by the 380 box relations of Appendix C) and the supplement's derivation of the box relations from C1–C18; the uniqueness of normal forms it also needs is `nf_unique` |
 
-`sound`, `grouplike`, `rule_sound`, `gen_mem_cliffordGroup` and everything
-in `Soundness.lean`, `Trie.lean`, `Semantics.lean`, `Pauli.lean` and
-`Phases.lean` have no `sorry`; `cliffordGroup_le_closure` and
-`presentation` rest on `exists_circuit_action` and `complete`.
+Everything but `complete` (and what uses it: `subpresentation`,
+`presentation`) has no `sorry`: soundness, generation
+(`cliffordGroup_le_closure`), the normal forms (Proposition 3.9) and the
+order of `𝒞ₙ` (`card_cliffordGroup`, Corollary 3.10).
 
 ## Errors in the paper
 

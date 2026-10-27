@@ -20,7 +20,7 @@ for Multi-Qutrit Clifford Circuits* (QPL 2025, arXiv:2508.14670).
 
 The remaining `sorry`s are listed in `README.md`.
 -/
-import QCert.QutritClifford.Phases
+import QCert.QutritClifford.Count
 
 namespace QCert.QutritClifford
 
@@ -59,14 +59,16 @@ noncomputable def cliffordGen (n : ℕ) (g : Gen Gate n) : cliffordGroup n :=
   ⟨gateSem.gen g, gen_mem_cliffordGroup g⟩
 
 /-- **Proposition 3.9**, existence: every element of `𝒞ₙ` acts on `𝒫ₙ` as
-some circuit does (the paper builds a normal form, Lemmas 3.5–3.8). -/
+some circuit does; it is the operator of a normal form (`nfOp_surjective`). -/
 theorem exists_circuit_action {n : ℕ} (U : cliffordGroup n) :
     ∃ w : Circ n, ∀ P ∈ pauliGroup n,
       ((sem n w : unitaryGroup (State 3 n) ℂ) : Op ℂ 3 n) * P *
         star ((sem n w : unitaryGroup (State 3 n) ℂ) : Op ℂ 3 n) =
       ((U : unitaryGroup (State 3 n) ℂ) : Op ℂ 3 n) * P *
         star ((U : unitaryGroup (State 3 n) ℂ) : Op ℂ 3 n) := by
-  sorry
+  obtain ⟨N, hN⟩ := nfOp_surjective n U
+  refine ⟨N.circ, fun P _ => ?_⟩
+  rw [show sem n N.circ = (U : unitaryGroup (State 3 n) ℂ) from congrArg Subtype.val hN]
 
 /-- **Generation** (Proposition 3.9 with Corollary B.3): every element of
 `𝒞ₙ` is the operator of a circuit over `-ω`, `H`, `S` and `CZ`: a circuit
@@ -127,7 +129,7 @@ theorem presentation (n : ℕ) : IsPresentationOf (Theory n) (cliffordGen n) whe
 
 /-- **Corollary 3.10**: `|𝒞ₙ| = 6 · ∏ₖ₌₁ⁿ 3 (9ᵏ - 1) 9ᵏ`. -/
 theorem card_cliffordGroup (n : ℕ) :
-    Nat.card (cliffordGroup n) = 6 * ∏ k ∈ Finset.Icc 1 n, 3 * (9 ^ k - 1) * 9 ^ k := by
-  sorry
+    Nat.card (cliffordGroup n) = 6 * ∏ k ∈ Finset.Icc 1 n, 3 * (9 ^ k - 1) * 9 ^ k :=
+  card_cliffordGroup_eq n
 
 end QCert.QutritClifford

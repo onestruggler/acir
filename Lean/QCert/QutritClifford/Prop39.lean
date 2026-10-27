@@ -422,6 +422,154 @@ theorem exists_nf : ∀ (n : ℕ) (U : Op ℂ 3 n), Normal n U →
     rw [star_mul]
     simp only [mul_assoc]
 
+/-! ### Uniqueness -/
+
+theorem PD.op_sc {n : ℕ} (c : Fin 3) : (PD.sc c : PD n).op = wp c • (1 : Op ℂ 3 n) := by
+  ext s t
+  rw [PD.op_apply, smul_apply, one_apply, smul_eq_mul]
+  simp only [PD.sc, add_zero, Pi.zero_apply, zero_mul, Finset.sum_const_zero]
+  split_ifs <;> simp
+
+/-- Circuits fix the scalars. -/
+theorem actC_sc {n : ℕ} (w : Circ n) (c : Fin 3) : actC n w (PD.sc c) = PD.sc c := by
+  apply PD.op_inj
+  rw [← sem_conj, PD.op_sc, mul_smul_comm, mul_one, smul_mul_assoc, (sem_unitary w).2]
+
+theorem actC_top_Zbot {n : ℕ} (w : Circ n) : actC (n + 1) (top w) (Zbot n) = Zbot n := by
+  rw [Zbot, actC_top, actC_sc]
+
+theorem actC_top_Xbot {n : ℕ} (w : Circ n) : actC (n + 1) (top w) (Xbot n 0 0) = Xbot n 0 0 := by
+  rw [Xbot, actC_top, actC_sc]
+
+theorem NFX.actC_succ {n : ℕ} (x : NFX (n + 1)) (P : PD (n + 1)) :
+    actC (n + 1) (NFX.circ (n + 1) x) P =
+      actC (n + 1) (top (NFX.circ n x.2.2)) (actC (n + 1) x.2.1.circ (actC (n + 1) x.1.circ P)) := by
+  rw [NFX.circ, actC_seq, actC_seq]
+
+/-- **Proposition 3.9**, uniqueness: the layers of a normal form are
+determined by its action on the Pauli group. -/
+theorem nfx_unique : ∀ (n : ℕ) (x x' : NFX n),
+    actC n (NFX.circ n x) = actC n (NFX.circ n x') → x = x'
+  | 0, (), (), _ => rfl
+  | n + 1, x, x', h => by
+    obtain ⟨L, M, y⟩ := x
+    obtain ⟨L', M', y'⟩ := x'
+    have hP : ∀ P, actC (n + 1) (NFX.circ (n + 1) (L, M, y)) P =
+        actC (n + 1) (NFX.circ (n + 1) (L', M', y')) P := fun P => by rw [h]
+    simp only [NFX.actC_succ] at hP
+    -- the `Z`-normal layers agree
+    have hL : L = L' := by
+      have e := hP L.pre
+      rw [ZN.act_pre, show ZN.ztop (n + 1) = Ztop n from rfl, XN.act_Ztop, actC_top_Zbot,
+        ← actC_top_Zbot (NFX.circ n y')] at e
+      have e1 := actC_injective _ e
+      rw [← XN.act_Ztop M'] at e1
+      have e2 := actC_injective _ e1
+      apply ZN.pre_injective
+      apply actC_injective L'.circ
+      rw [← e2, ZN.act_pre]
+      rfl
+    subst hL
+    -- the `X`-normal layers agree
+    have hM : M = M' := by
+      obtain ⟨q, hq⟩ := (actC_bijective L.circ).2 M.pre
+      have e := hP q
+      rw [hq, XN.act_pre, actC_top_Xbot, ← actC_top_Xbot (NFX.circ n y')] at e
+      have e1 := actC_injective _ e
+      rw [← XN.act_pre M'] at e1
+      exact XN.pre_injective (actC_injective _ e1).symm
+    subst hM
+    -- the rest agrees
+    have hy : actC n (NFX.circ n y) = actC n (NFX.circ n y') := by
+      funext p
+      obtain ⟨P, hPp⟩ := (actC_bijective (L.circ ⨾ M.circ)).2 (p.cons 0 0)
+      have e := hP P
+      rw [show actC (n + 1) M.circ (actC (n + 1) L.circ P) = p.cons 0 0 by
+        rw [← actC_seq]; exact hPp, actC_top, actC_top] at e
+      exact (PD.cons_inj e).2.2
+    rw [nfx_unique n y y' hy]
+
+/-! ### Normal forms with their phase -/
+
+/-- A normal form (Definition 3.3, Figure 11): the layers, and the global
+phase `(-ω)^t`, `t ∈ ℤ₆`. -/
+def NF (n : ℕ) := NFX n × Fin 6
+
+/-- The circuit of a normal form. -/
+def NF.circ {n : ℕ} (N : NF n) : Circ n := NFX.circ n N.1 * negω ^ (N.2 : ℕ)
+
+theorem sem_negω_pow (n t : ℕ) :
+    (sem n (negω ^ t) : Op ℂ 3 n) = (-ωℂ) ^ t • (1 : Op ℂ 3 n) := by
+  rw [map_pow, SubmonoidClass.coe_pow]
+  show ((-ωℂ) • (1 : Op ℂ 3 n)) ^ t = _
+  rw [smul_pow, one_pow]
+
+theorem actC_negω_pow (n t : ℕ) (P : PD n) : actC n (negω ^ t) P = P := by
+  have h1 : star ((-ωℂ) ^ t) * (-ωℂ) ^ t = 1 := by
+    rw [star_pow, ← mul_pow, star_neg, neg_mul_neg, star_ωℂ, ← pow_succ, ωℂ_pow_three, one_pow]
+  apply PD.op_inj
+  rw [← sem_conj, sem_negω_pow]
+  simp only [star_smul, star_one, smul_mul_assoc, one_mul, mul_smul_comm, mul_one, smul_smul, h1,
+    one_smul]
+
+theorem negω_pow_ne_one : ∀ k : ℕ, 0 < k → k < 6 → (-ωℂ) ^ k ≠ 1 := by
+  intro k h0 h6 h
+  interval_cases k
+  · exact ωℂ_sq_ne_one (by linear_combination (1 - ωℂ) * h)
+  · exact ωℂ_sq_ne_one (by linear_combination h)
+  · have h2 : (2 : ℂ) = 0 := by linear_combination -h - ωℂ_pow_three
+    norm_num at h2
+  · exact ωℂ_ne_one (by linear_combination h - ωℂ * ωℂ_pow_three)
+  · have h2 : ωℂ ^ 2 + 1 = 0 := by linear_combination -h - ωℂ ^ 2 * ωℂ_pow_three
+    have h0 : ωℂ = 0 := by linear_combination ωℂ_sum - h2
+    have := ωℂ_pow_three
+    rw [h0] at this
+    norm_num at this
+
+theorem negω_pow_inj {t t' : ℕ} (ht : t < 6) (ht' : t' < 6) (h : (-ωℂ) ^ t = (-ωℂ) ^ t') :
+    t = t' := by
+  have hne : ∀ k : ℕ, (-ωℂ) ^ k ≠ 0 := fun k =>
+    pow_ne_zero _ (neg_ne_zero.2 fun h0 => by
+      have := ωℂ_pow_three; rw [h0] at this; norm_num at this)
+  rcases Nat.lt_trichotomy t t' with hlt | heq | hgt
+  · exfalso
+    apply negω_pow_ne_one (t' - t) (by omega) (by omega)
+    apply mul_left_cancel₀ (hne t)
+    rw [← pow_add, Nat.add_sub_cancel' hlt.le, mul_one, h]
+  · exact heq
+  · exfalso
+    apply negω_pow_ne_one (t - t') (by omega) (by omega)
+    apply mul_left_cancel₀ (hne t')
+    rw [← pow_add, Nat.add_sub_cancel' hgt.le, mul_one, h]
+
+theorem actC_eq_of_sem_eq {n : ℕ} {w w' : Circ n} (h : sem n w = sem n w') :
+    actC n w = actC n w' := by
+  funext P
+  apply PD.op_inj
+  rw [← sem_conj, ← sem_conj, h]
+
+/-- **Proposition 3.9**, uniqueness with the phase: a normal form is
+determined by its operator. -/
+theorem nf_unique {n : ℕ} {N N' : NF n} (h : sem n N.circ = sem n N'.circ) : N = N' := by
+  obtain ⟨x, t⟩ := N
+  obtain ⟨x', t'⟩ := N'
+  have hact := actC_eq_of_sem_eq h
+  have hx : x = x' := by
+    apply nfx_unique
+    funext P
+    have e := congrFun hact P
+    simp only [NF.circ, actC_mul, actC_negω_pow] at e
+    exact e
+  subst hx
+  have e := congrArg Subtype.val h
+  simp only [NF.circ, map_mul, Submonoid.coe_mul, sem_negω_pow] at e
+  have e2 : (-ωℂ) ^ (t : ℕ) • (1 : Op ℂ 3 n) = (-ωℂ) ^ (t' : ℕ) • (1 : Op ℂ 3 n) := by
+    have := congrArg (fun A => star (sem n (NFX.circ n x) : Op ℂ 3 n) * A) e
+    simpa only [← mul_assoc, (sem_unitary _).1, one_mul] using this
+  have e3 := congrFun (congrFun e2 0) 0
+  simp only [smul_apply, one_apply_eq, smul_eq_mul, mul_one] at e3
+  rw [Fin.ext (negω_pow_inj t.2 t'.2 e3)]
+
 end
 
 end QCert.QutritClifford
