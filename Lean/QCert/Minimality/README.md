@@ -15,7 +15,7 @@ The main statements are in [`Theorems.lean`](Theorems.lean).
 | qutrit Clifford Cliff₃ | Figure 4, 10 rules, (E) corrected | proved | stated (`sorry`) | **proved** up to 2 wires |
 | Clifford+T CliffT₂ | Figure 5, 11 rules | proved | stated up to 2 qubits (`sorry`) | **proved** up to 1 wire, and (CPh), (B), (CZ) independent |
 | Clifford+CS CliffCS₂ | Figure 6, 14 rules | proved | stated up to 3 qubits (`sorry`) | **proved** up to 2 wires, and (I) independent |
-| CNOT-dihedral CNOTdihe₂ | Figure 7, 11 rules | proved | stated (`sorry`) | **proved**, all arities |
+| CNOT-dihedral CNOTdihe₂ | Figure 7, 11 rules | proved | **transferred** from Amy–Chen–Ross (`complete_of_source`, proved; `complete` through `QCert.CNOTDihedral.presentation`) | **proved**, all arities |
 
 Every rule of every figure, and every law of the symmetry, is checked
 against the semantics of Section 3 by an exact computation.  Every separator
@@ -50,6 +50,17 @@ full as stated.
   rule), `Semantics.lean`, `Soundness.lean`, `Minimality.lean` for
   `Clifford`, `RealClifford`, `QutritClifford`, `CliffordT`, `CliffordCS`,
   `CNOTDihedral`.
+* `Engine.lean`, `Comm.lean`, `Derive.lean` — derivations: moving them up
+  and padding them (`derivable_shift`, `derivable_pad`), the interchange law
+  (`comm_apart`: generators on disjoint wires commute), and a checker that
+  replays a derivation given as rewrite and exchange steps (`derive`,
+  decided by `decide +kernel`).
+* `Transfer.lean` — Theorem 21 (`complete_of_transfer`), Lemma 20
+  (`derivable_map_of`), and renaming gates (`derivable_rename`).
+* `CNOTDihedral/Derivations.lean` — every relation of Amy, Chen and Ross
+  (`QCert.CNOTDihedral.Rel`) derived from Figure 7 (Appendix H); generated
+  from derivations found by a search (`gen_cnot.py`, kept in the scratch
+  area).  `CNOTDihedral/Completeness.lean` — the transfer.
 * `Theorems.lean` — the statements.
 
 General lemmas that a framework could host (they are in this folder, the
@@ -117,7 +128,7 @@ has them for `GateSem`), `ZQuartic`, and the evaluator of `Trie.lean`.
 | `qutritClifford_complete` | Theorem 22 (3) | the qutrit Clifford presentation with scalar refinement (Lemma 50), Lemmas 19, 20 (Appendices D, F, G) |
 | `cliffordT_complete` | Theorem 22 (4) | Bian–Selinger's two-qubit Clifford+T presentation, Lemmas 19, 20 (Appendices E, F, G) |
 | `cliffordCS_complete` | Theorem 22 (5) | Bian–Selinger's three-qubit Clifford+CS presentation with scalar refinement, Lemmas 19, 20 |
-| `cnotDihedral_complete` | Theorem 22 (6) | Amy–Chen–Ross's presentation, and the derivations of Appendix H |
+| `cnotDihedral_complete` | Theorem 22 (6) | nothing here: the transfer is proved (`cnotDihedral_complete_of_source`); the statement uses `QCert.CNOTDihedral.presentation`, whose completeness is that formalisation's `sorry` |
 
 ## Building
 
