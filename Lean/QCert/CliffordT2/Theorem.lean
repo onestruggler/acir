@@ -14,6 +14,7 @@ unitary group `U(4)` (they present the subgroup the generators generate,
 the two-qubit Clifford+T group), and equally of `U₄(ℤ[1/√2, i])`, the
 group of Greylyn's Theorem 4.1 that contains it.
 -/
+import QCert.CliffordT2.Soundness
 import QCert.CliffordT2.Completeness
 
 namespace QCert.CliffordT2
