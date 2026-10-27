@@ -7,8 +7,10 @@ These scripts write the generated modules of `QCert/SelingerClifford`:
 | `Axioms.lean` | `genlean.gen_axioms` | the relations C1–C15 (`engine.BASE`) |
 | `Lemmas.lean` | `genlean.gen_lemmas` | derivations found by `lemmas.py` |
 | `Rules1.lean` … `Rules5.lean` | `genlean.gen_rules` | derivations found by `rules.py` |
+| `Tables.lean` | `tables.py` | the statements of equations 3.3–3.101 |
 
-`generate.py` runs the searches and writes them.
+`generate.py` runs the searches and writes the first seven; `tables.py`
+writes `Tables.lean` (in a second, with no search).
 
 ## Running
 
@@ -20,6 +22,7 @@ at it.  Python 3 with NumPy (used only for numerical checks).
 
     python generate.py            # writes ../Axioms.lean … ../Rules5.lean
     python generate.py --check    # compares with them instead
+    python tables.py [--check]    # writes (compares) ../Tables.lean
 
 `generate.py` takes about ten minutes (the lemmas about a minute, the
 rules the rest); `--cache FILE` keeps the derivations in a pickle so that
@@ -51,3 +54,8 @@ reproduced byte for byte.
   (11) is really the commutation C12 of two CZs sharing a wire, the
   fallback to C12 is reported.
 * `genlean.py` — the Lean writer.
+* `tables.py` — the push tables of Section 6: each of equations 3.3–3.101
+  read as "a dirty gate before one or two boxes equals boxes followed by
+  dirty gates", with the gates after the boxes as data, the equation of
+  `Rules*.lean` as proof, and a `decide` check that they are allowed where
+  they stand.

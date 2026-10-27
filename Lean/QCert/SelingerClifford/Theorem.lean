@@ -10,7 +10,7 @@ spatial laws, §2), present the `n`-qubit Clifford group, the subgroup of
 `n` (Proposition 7.1).
 -/
 import QCert.SelingerClifford.Soundness
-import QCert.SelingerClifford.NormalForm
+import QCert.SelingerClifford.Push
 
 namespace QCert.SelingerClifford
 
@@ -42,11 +42,11 @@ theorem grouplike (n : ℕ) : Grouplike (Theory n) := by
     simpa [map_mul] using this
 
 /-- Proposition 6.3 (with Lemma 6.2): every circuit is equal, by the relations
-of Figure 8, to a normal circuit.  The paper rewrites the circuit, followed by
-the normal form of the identity, with the rules of Figures 3–7 (equations
-3.1–3.101 of the supplement, all derived from Figure 8 in `Rules1`–`Rules5`). -/
-theorem exists_normal (n : ℕ) (w : Circ n) : ∃ N : NF n, Eqv n w N.circ := by
-  sorry
+of Figure 8, to a normal circuit: the circuit, followed by the normal form of
+the identity, is rewritten with the rules of Figures 3–7 (equations 3.1–3.101
+of the supplement, all derived from Figure 8 in `Rules1`–`Rules5`), `Push`. -/
+theorem exists_normal (n : ℕ) (w : Circ n) : ∃ N : NF n, Eqv n w N.circ :=
+  exists_normal' w
 
 /-- Proposition 5.5 (with Lemmas 5.1–5.4): distinct normal circuits denote
 distinct operators. -/
