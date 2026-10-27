@@ -144,32 +144,66 @@ def eL16 : Eqn :=
   ⟨2, [.S 1, .H 1, .CZ 0, .H 0, .H 1, .CZ 0],
     [.H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0, .S 0, .H 0]⟩
 
-theorem hL16 : Holds eL16.k eL16.l eL16.r := by
-  sorry
+theorem hL16 : Holds eL16.k eL16.l eL16.r :=
+  Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hM14 db_ok_nil)))))))))
+    (steps := [.mv 4 3, .rw 2 4 0 true, .rw 4 2 0 false, .mv 15 18, .mv 14 17, .mv 13 16, .mv 12 15,
+     .mv 11 14, .mv 10 13, .mv 9 12, .rw 7 0 1 false, .mv 4 12, .rw 0 12 0 false,
+     .rw 3 3 0 false, .mv 5 4, .rw 3 2 0 false, .mv 4 3, .rw 3 1 0 false, .mv 4 3, .mv 5 4,
+     .mv 6 5, .mv 7 6, .rw 1 2 1 false, .rw 5 5 0 false, .mv 4 3, .rw 8 4 0 false, .mv 4 3,
+     .mv 12 11, .rw 3 4 0 false, .rw 1 12 0 true, .rw 1 12 0 true, .mv 7 6, .mv 9 7,
+     .mv 11 8, .rw 1 5 1 false, .mv 3 2, .rw 6 16 0 false, .rw 0 20 0 false, .rw 1 6 0 false,
+     .rw 1 6 0 false, .rw 1 6 0 false])
+    (by decide +kernel)
 
 /-- The upside-down version of (16) of Lemma 1.2. -/
 def eM16 : Eqn :=
   ⟨2, [.S 0, .H 0, .CZ 0, .H 1, .H 0, .CZ 0],
     [.H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .S 1, .H 1]⟩
 
-theorem hM16 : Holds eM16.k eM16.l eM16.r := by
-  sorry
+theorem hM16 : Holds eM16.k eM16.l eM16.r :=
+  Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC7 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hL14 db_ok_nil)))))))))
+    (steps := [.mv 4 3, .rw 2 4 0 true, .rw 5 2 0 false, .mv 15 18, .mv 14 17, .mv 13 16, .mv 12 15,
+     .mv 11 14, .mv 10 13, .mv 9 12, .rw 7 0 0 false, .mv 4 12, .rw 0 12 0 false,
+     .rw 3 3 0 false, .mv 5 4, .rw 3 2 0 false, .mv 4 3, .rw 3 1 0 false, .mv 4 3, .mv 5 4,
+     .mv 6 5, .mv 7 6, .rw 1 2 0 false, .rw 4 5 0 false, .mv 4 3, .rw 8 4 0 false, .mv 4 3,
+     .mv 12 11, .rw 3 4 0 false, .rw 1 12 1 true, .rw 1 12 1 true, .mv 7 6, .mv 9 7,
+     .mv 11 8, .rw 1 5 0 false, .mv 3 2, .rw 6 16 1 false, .rw 0 20 0 false, .rw 1 6 1 false,
+     .rw 1 6 1 false, .rw 1 6 1 false])
+    (by decide +kernel)
 
 /-- (17) of Lemma 1.2. -/
 def eL17 : Eqn :=
   ⟨2, [.H 1, .CZ 0, .H 0, .S 1, .H 1, .CZ 0],
     [.CZ 0, .H 0, .S 1, .H 1, .CZ 0, .S 0, .S 0, .S 0, .H 0, .S 0, .H 1, .S 1, .S 1, .H 1]⟩
 
-theorem hL17 : Holds eL17.k eL17.l eL17.r := by
-  sorry
+theorem hL17 : Holds eL17.k eL17.l eL17.r :=
+  Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC8 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hL4 (db_ok_cons hL7 (db_ok_cons hL15 db_ok_nil))))))))))
+    (steps := [.mv 3 2, .rw 3 1 0 true, .mv 4 3, .rw 2 4 0 true, .rw 5 2 0 false, .mv 15 18, .mv 14 17,
+     .mv 13 16, .mv 12 15, .mv 11 14, .mv 10 13, .mv 9 12, .rw 4 0 0 false, .mv 3 1, .mv 4 3,
+     .mv 7 6, .rw 7 7 1 false, .mv 11 14, .rw 0 14 0 false, .mv 3 2, .mv 5 3, .mv 7 4,
+     .mv 8 5, .mv 9 7, .mv 10 9, .rw 1 2 1 false, .rw 6 7 0 false, .mv 2 1, .mv 4 2, .mv 6 3,
+     .mv 7 4, .rw 1 1 0 false, .mv 4 1, .mv 7 6, .mv 8 7, .mv 9 8, .rw 9 2 0 false,
+     .mv 18 22, .mv 17 21, .mv 16 20, .mv 15 19, .mv 14 18, .mv 13 17, .mv 12 16,
+     .rw 0 22 0 false, .mv 6 5, .mv 8 6, .mv 12 7, .mv 13 8, .mv 14 9, .rw 8 10 1 false,
+     .rw 0 14 0 false])
+    (by decide +kernel)
 
 /-- The upside-down version of (17) of Lemma 1.2. -/
 def eM17 : Eqn :=
   ⟨2, [.H 0, .CZ 0, .H 1, .S 0, .H 0, .CZ 0],
     [.CZ 0, .H 1, .S 0, .H 0, .CZ 0, .S 1, .S 1, .S 1, .H 1, .S 1, .H 0, .S 0, .S 0, .H 0]⟩
 
-theorem hM17 : Holds eM17.k eM17.l eM17.r := by
-  sorry
+theorem hM17 : Holds eM17.k eM17.l eM17.r :=
+  Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC7 (db_ok_cons hC9 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hL4 (db_ok_cons hL7 (db_ok_cons hM15 db_ok_nil))))))))))
+    (steps := [.mv 3 2, .rw 3 1 0 true, .mv 4 3, .rw 2 4 0 true, .rw 6 2 0 false, .mv 15 18, .mv 14 17,
+     .mv 13 16, .mv 12 15, .mv 11 14, .mv 10 13, .mv 9 12, .rw 4 0 0 false, .mv 3 1, .mv 4 3,
+     .mv 7 6, .rw 7 7 0 false, .mv 11 14, .rw 0 14 0 false, .mv 3 2, .mv 5 3, .mv 7 4,
+     .mv 8 5, .mv 9 7, .mv 10 9, .rw 1 2 0 false, .rw 5 7 0 false, .mv 2 1, .mv 4 2, .mv 6 3,
+     .mv 7 4, .rw 1 1 1 false, .mv 4 1, .mv 7 6, .mv 8 7, .mv 9 8, .rw 9 2 0 false,
+     .mv 18 22, .mv 17 21, .mv 16 20, .mv 15 19, .mv 14 18, .mv 13 17, .mv 12 16,
+     .rw 0 22 0 false, .mv 6 5, .mv 8 6, .mv 12 7, .mv 13 8, .mv 14 9, .rw 8 10 0 false,
+     .rw 0 14 0 false])
+    (by decide +kernel)
 
 /-- (18) of Lemma 1.2. -/
 def eL18 : Eqn :=
