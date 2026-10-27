@@ -83,10 +83,13 @@ groups), `Theorem.lean`.
   argument (`H₂` is not dyadic), via the generic extension lemma of
   `LiRossSelinger/Extension.lean`: completeness and generation of `R₂` from
   those of `R₁`.
-* Generation (surjectivity) of `O(8, 𝔻)` by `Σ₁` (`Encode.lean`): every
-  generator of Li–Ross–Selinger's `𝒢₈` is the circuit of the paper's
-  abbreviations (all 106 checked by the kernel), and Li–Ross–Selinger's
-  Theorem 3.5 (proved in `LiRossSelinger/Generation.lean`).
+* Generation (surjectivity) of `O(8, 𝔻)` by `Σ₁` (`Encode.lean`), with no
+  `sorry`: every generator of Li–Ross–Selinger's `𝒢₈` has the matrix of the
+  circuit of the paper's abbreviations (`X_[a,b]`, `(−1)_[a]` decided by the
+  kernel; `K_[a,b,c,d]` as `K_[0,1,2,3]` conjugated by four transpositions,
+  proved in general), and Li–Ross–Selinger's Theorem 3.5 (proved in
+  `LiRossSelinger/Generation.lean`).  Hence `theorem_6_3`'s surjectivity is
+  sorry-free too.
 * Completeness of `R₁` reduced to Li–Ross–Selinger's completeness at
   `n = 8` (`Translation.complete1_of`), given two families of derivations.
 
