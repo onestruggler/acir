@@ -9,7 +9,8 @@ pivot column `u e_c` (3.1.2, 3.1.3) the squares come from (10), (24), (25)
 or are disjoint; at a positive exponent with first odd entries `j < ℓ`
 (3.2.2) they come from (13), (14), (10), from (15) and (28) when
 `{j, ℓ} = {α, α+1}`, or are disjoint — except Case 3.2.2.2 with
-`w_{α+1}` odd, which has four odd entries (`case_3222_odd`).
+`w_{α+1}` odd, which has four odd entries (`case_3222_odd`, proved in
+`Case3222.lean`).
 -/
 import QCert.BianSelingerUn.MainK
 import QCert.BianSelingerUn.Derived2
