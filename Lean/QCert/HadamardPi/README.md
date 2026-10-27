@@ -100,9 +100,22 @@ Exactly one, in `MainLemma.lean`; `theorem_4_14` depends on it
    dimension ≤ 5 and `k ≤ 3` give none).  The proof of A.16 goes wrong in its
    second case (`a₃ + a₄` odd), where the norm equation is used to rule the case
    out.  Main Case 9 (`l = 4`, via Lemma A.19) rests on these two lemmas, so
-   its proof is incomplete; QCert reports that the resulting case analysis also
-   misses a case in dimension 9 (not re-derived here).  Clément's notes (row
-   `QCert/Clement2019`) treat this situation as their Case 3.4.
+   its proof is incomplete.  Clément's notes (row `QCert/Clement2019`) treat
+   this situation as their Case 3.4.
+
+   **The four odd entries alone do not suffice.**  In dimension 9 with
+   `k = 7` (indices from 0), the column
+   `√2⁷ v = (1+3√2, 1, −3√2, 1+3√2, 2, 5, −2+√2, −4+2√2, −2−2√2)` (a unit
+   vector) has exactly four odd entries, 0, 1, 3, 5, with 0 and 1 of
+   different classes; the first syllable of `s` is `H_[0,3]`, and that of
+   `H_[0,1] s` is `H_[0,3]` too.  No word on the four odd entries joins
+   `t = H_[0,3] s` to `q = H_[0,3] H_[0,1] s` below `s`: a breadth-first
+   search over all words in `H`, `X` and `(-1)` on the indices 0, 1, 3, 5,
+   from `t`, keeping every state integral at exponent 7 with fewer than four
+   odd numerators (that is, below `s`), exhausts the 3840 reachable states
+   without meeting `q` (`gen/` has the script).  So the square needs entries
+   outside the four odd ones: Clément's Subcase 3.4.2 brings in two entries
+   with numerators `√2 × odd`, and 3.4.2.3 three more.
 2. **Main Case 1 (1) is wrong as stated.**  It claims that for `x < i₂` the
    first syllable of `X_[1,x] s` is `H_[1,i₂] X_[1,x]`.  This fails when an odd
    entry of the other class lies among the positions `2, …, x`.  Example
