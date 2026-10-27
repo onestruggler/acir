@@ -20,7 +20,7 @@ for Multi-Qutrit Clifford Circuits* (QPL 2025, arXiv:2508.14670).
 
 The remaining `sorry`s are listed in `README.md`.
 -/
-import QCert.QutritClifford.Pauli
+import QCert.QutritClifford.Phases
 
 namespace QCert.QutritClifford
 
@@ -58,11 +58,45 @@ theorem gen_mem_cliffordGroup {n : ℕ} (g : Gen Gate n) : gateSem.gen g ∈ cli
 noncomputable def cliffordGen (n : ℕ) (g : Gen Gate n) : cliffordGroup n :=
   ⟨gateSem.gen g, gen_mem_cliffordGroup g⟩
 
+/-- **Proposition 3.9**, existence: every element of `𝒞ₙ` acts on `𝒫ₙ` as
+some circuit does (the paper builds a normal form, Lemmas 3.5–3.8). -/
+theorem exists_circuit_action {n : ℕ} (U : cliffordGroup n) :
+    ∃ w : Circ n, ∀ P ∈ pauliGroup n,
+      ((sem n w : unitaryGroup (State 3 n) ℂ) : Op ℂ 3 n) * P *
+        star ((sem n w : unitaryGroup (State 3 n) ℂ) : Op ℂ 3 n) =
+      ((U : unitaryGroup (State 3 n) ℂ) : Op ℂ 3 n) * P *
+        star ((U : unitaryGroup (State 3 n) ℂ) : Op ℂ 3 n) := by
+  sorry
+
 /-- **Generation** (Proposition 3.9 with Corollary B.3): every element of
-`𝒞ₙ` is the operator of a circuit over `-ω`, `H`, `S` and `CZ`. -/
+`𝒞ₙ` is the operator of a circuit over `-ω`, `H`, `S` and `CZ`: a circuit
+acting on `𝒫ₙ` as it does (`exists_circuit_action`) differs from it by a
+power of `-ω` (`same_action_phase`), which is a circuit too. -/
 theorem cliffordGroup_le_closure (n : ℕ) :
     cliffordGroup n ≤ Subgroup.closure (Set.range (gateSem.gen (n := n))) := by
-  sorry
+  intro U hU
+  have hle : Subgroup.closure (Set.range (gateSem.gen (n := n))) ≤ cliffordGroup n :=
+    (Subgroup.closure_le _).2 (Set.range_subset_iff.2 gen_mem_cliffordGroup)
+  obtain ⟨w, hw⟩ := exists_circuit_action ⟨U, hU⟩
+  have hsem : sem n w ∈ Subgroup.closure (Set.range (gateSem.gen (n := n))) := by
+    have hrange : (Subgroup.closure (Set.range (gateSem.gen (n := n)))).toSubmonoid =
+        MonoidHom.mrange (gateSem.sem n) :=
+      ((subpresentation n).mrange_eq_closure).symm
+    show sem n w ∈ (Subgroup.closure (Set.range (gateSem.gen (n := n)))).toSubmonoid
+    rw [hrange]
+    exact ⟨w, rfl⟩
+  obtain ⟨t, -, ht⟩ := same_action_phase ⟨U, hU⟩ ⟨_, hle hsem⟩ fun P hP => (hw P hP).symm
+  have hg : gateSem.gen (Gen.gate0 Gate.negω : Gen Gate n) ∈
+      Subgroup.closure (Set.range (gateSem.gen (n := n))) :=
+    Subgroup.subset_closure ⟨_, rfl⟩
+  have hU' : U = gateSem.gen (Gen.gate0 Gate.negω : Gen Gate n) ^ t * sem n w := by
+    apply Subtype.ext
+    rw [Submonoid.coe_mul, SubmonoidClass.coe_pow]
+    show _ = ((-ωℂ) • (1 : Op ℂ 3 n)) ^ t * _
+    rw [smul_pow, one_pow, smul_mul_assoc, one_mul]
+    exact ht
+  rw [hU']
+  exact Subgroup.mul_mem _ (Subgroup.pow_mem _ hg t) hsem
 
 theorem lift_cliffordGen {n : ℕ} (w : Circ n) :
     (FreeMonoid.lift (cliffordGen n) w : unitaryGroup (State 3 n) ℂ) = sem n w := by
