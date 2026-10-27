@@ -38,26 +38,6 @@ variable {n : ℕ}
 
 local notation "⟪" w "⟫" => FreeMonoid.lift (sem _) w
 
-theorem FirstTwo.below {w : Fin n → ZOmega} {x y : Fin n} (hf : FirstTwo w x y) :
-    ∀ i, i < y → i ≠ x → ¬ IsOdd (w i) := by
-  intro i hi hix
-  rcases lt_trichotomy i x with h | h | h
-  · exact hf.2.2.2.1 i h
-  · exact absurd h hix
-  · exact hf.2.2.2.2 i h hi
-
-theorem FirstTwo.mk' {w : Fin n → ZOmega} {x y : Fin n} (hxy : x < y) (hx : IsOdd (w x))
-    (hy : IsOdd (w y)) (h : ∀ i, i < y → i ≠ x → ¬ IsOdd (w i)) : FirstTwo w x y :=
-  ⟨hxy, hx, hy, fun i hi => h i (hi.trans hxy) (ne_of_lt hi),
-    fun i h1 h2 => h i h2 (ne_of_gt h1)⟩
-
-theorem hasNum_Xswap {v : Fin n → ℂ} {k : ℕ} {u : Fin n → ZOmega} (h : HasNum v k u)
-    {a b : Fin n} (hab : a ≠ b) :
-    HasNum (twoLevel a b Xmat *ᵥ v) k (fun i => u (Equiv.swap a b i)) := by
-  intro i
-  rw [twoLevel_X_mulVec hab, Equiv.symm_swap]
-  exact h _
-
 /-- `X_[a,b] X_[a,p] ≈ X_[b,p] X_[a,b]` read the other way. -/
 theorem eXap (a b p : Fin n) (hab : a < b) (hbp : b < p) :
     gX a p (hab.trans hbp) * gX a b hab = gX a b hab * gX b p hbp :=
