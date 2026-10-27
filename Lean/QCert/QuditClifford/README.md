@@ -18,7 +18,7 @@ symbolic `p` with `[Fact p.Prime]` and `p ≠ 2`).
 | --- | --- | --- |
 | `Syntax.lean` | gates `-ω`, `H`, `S`, `CZ`; derived generators `M_a` (T1), `X` (T2), `Z` (T3), `SWAP` (T4), `CX` (T6), remote `CZ` (T7); the rules `Rule.C0`–`Rule.C15` (`C3` a family over `k ∈ ℤ_p`), each on its own wires | Definition 2.11, Figures 1, 2 |
 | `Semantics.lean` | `ω = e^{2πi/p}` (`ωℂ`), `λ_p = e^{(p-1)πi/4}` (`lambdaP`), the operators `Hop`, `Sop`, `CZop` on basis states `Fin n → Fin p`, their unitarity (`Hop_mem`: orthogonality of the characters of `ℤ_p`), `gateSem`, `sem p n` | Definitions 2.1, 2.5, 2.11 |
-| `Soundness.lean` | soundness of (C0), (C1), (C6), (C8) | Corollaries A.13, A.14; Proposition A.28 |
+| `Soundness.lean` | soundness of (C0), (C1), (C5), (C6), (C8); `Hop_sq`: `H² = λ_p⁻² M_{-1}` | Corollaries A.13, A.14; Propositions 2.13, A.28 |
 | `Theorem.lean` | `rule_sound`, `sound`, `complete`, `grouplike`, `theorem_4_10` | Theorem 4.10 |
 
 Conventions (as in `QCert/QutritClifford`): the paper's top wire on `k`
@@ -39,15 +39,17 @@ C0–C15, every `k` of C3, and every `M_a` against `|x⟩ ↦ |ax⟩`) for
 
 * Unitarity of the gate matrices, so that the semantics is a monoid
   homomorphism into `U(pⁿ)` (`Semantics.lean`, no `sorry`).
-* Soundness of (C0) `(-ω)^{2p} = 1`, (C1) `S^p = 1`, (C6) `CZ^p = 1` and
-  (C8) (`Soundness.lean`, no `sorry`).
+* Soundness of (C0) `(-ω)^{2p} = 1`, (C1) `S^p = 1`, (C6) `CZ^p = 1`,
+  (C8), and (C5) `H² ⨾ S ⨾ H² ⨾ S = S ⨾ H² ⨾ S ⨾ H²` through Proposition
+  2.13, `H² = λ_p⁻² M_{-1}` (`Hop_sq`, by the orthogonality of the
+  characters of `ℤ_p`) (`Soundness.lean`, no `sorry`).
 * The inverses of `-ω`, `S` and `CZ` modulo the rules (from C0, C1, C6).
 
 ## Remaining `sorry`s
 
 | Name | Stands for |
 | --- | --- |
-| `rule_sound`, cases C2–C5, C7, C9–C15 (`Theorem.lean`) | Proposition A.28 (Lemmas A.25–A.27, path sums). C5, C7, C10–C15 need the matrices of `H²`, `SWAP` and `CX` (character sums over `ℤ_p`). C2, C3, C4, C9 involve the multiplier `M_a` (T1), whose matrix is `|x⟩ ↦ |ax⟩` exactly (Lemma 2.15) only by Gauss's evaluation of the quadratic Gauss sum `∑_j ω^{j²} = (2/p)_L λ_p⁻¹ √p`, sign included, which the paper cites and which Mathlib does not have (it has `gaussSum_sq`, not the sign). (C3) at `k = 0` says `M_1 = 1`, i.e. `H ⨾ S ⨾ H ⨾ S ⨾ H ⨾ S = ω^{-1/8}`, which is this evaluation. |
+| `rule_sound`, cases C2–C4, C7, C9–C15 (`Theorem.lean`) | Proposition A.28 (Lemmas A.25–A.27, path sums). C7, C10–C15 need the matrices of `SWAP` and `CX` (Lemmas A.18, A.20: character sums over `ℤ_p`, like `Hop_sq`). C2, C3, C4, C9 involve the multiplier `M_a` (T1), whose matrix is `|x⟩ ↦ |ax⟩` exactly (Lemma 2.15) only by Gauss's evaluation of the quadratic Gauss sum `∑_j ω^{j²} = (2/p)_L λ_p⁻¹ √p`, sign included, which the paper cites and which Mathlib does not have (it has `gaussSum_sq`, not the sign). (C3) at `k = 0` says `M_1 = 1`, i.e. `H ⨾ S ⨾ H ⨾ S ⨾ H ⨾ S = ω^{-1/8}`, which is this evaluation. |
 | `complete` (`Theorem.lean`) | Theorem 4.10's completeness: Propositions 3.8 and 3.13 (normal forms), Theorem 4.4 (the 18 symplectic relations of Figure 9 are complete up to Pauli corrections, through the 42 box relations of Proposition 4.3; Figure 9's relations are derived from Figure 1 in the supplement), Propositions 4.8, 4.9 (lifting by Pauli corrections and scalars) |
 | `exists_inverse`, case `H` (`Theorem.lean`) | `H⁴ = 1` (Corollary A.8) is derivable from (C0), (C2), (C3) |
 

@@ -28,6 +28,7 @@ theorem rule_sound (hp2 : p ≠ 2) (g : ZMod p) (hg : g ≠ 0) {k : ℕ} {w v : 
   cases h with
   | C0 => exact sound_C0 p
   | C1 => exact sound_C1 p
+  | C5 => exact sound_C5 p
   | C6 => exact sound_C6 p
   | C8 => exact sound_C8 p
   | _ => sorry
