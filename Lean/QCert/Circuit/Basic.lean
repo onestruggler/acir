@@ -55,6 +55,19 @@ abbrev g3 {n : ℕ} (g : Gate 3) : Circuit Gate (n + 3) := FreeMonoid.of (Gen.ga
 
 end Circuit
 
+/-- A generator of `k`-wire circuits as a generator of `n + k`-wire
+circuits: the same gate on the same wires, with `n` idle wires on top. -/
+def Gen.pad (n : ℕ) : {k : ℕ} → Gen Gate k → Gen Gate (n + k)
+  | _, .gate0 g => .gate0 g
+  | _, .gate1 g => .gate1 g
+  | _, .gate2 g => .gate2 g
+  | _, .gate3 g => .gate3 g
+  | _, .up g => .up (g.pad n)
+
+/-- A `k`-wire circuit on the bottom `k` of `n + k` wires. -/
+def Circuit.pad (n : ℕ) {k : ℕ} : Circuit Gate k →* Circuit Gate (n + k) :=
+  FreeMonoid.map (Gen.pad n)
+
 /-- A rule set given at every width: `R n w v` says `w = v` is a rule on `n`
 wires. -/
 abbrev CRel (Gate : ℕ → Type) := (n : ℕ) → WRel (Gen Gate n)
@@ -79,6 +92,13 @@ inductive Lift (R : CRel Gate) : CRel Gate
   /-- A scalar is the same on every wire. -/
   | scalar {n : ℕ} (c : Gate 0) :
       Lift R (n + 1) (FreeMonoid.of (Gen.gate0 c).up) (g0 c)
+
+/-- Rules stated on their own wires, as a paper draws them (`Base k w v`
+for an equation between `k`-wire circuits), applied on the bottom wires of
+every wider circuit.  `Lift (Padded Base)` is then the full theory. -/
+inductive Padded (Base : CRel Gate) : CRel Gate
+  | pad {k : ℕ} (n : ℕ) {w v : Circuit Gate k} :
+      Base k w v → Padded Base (n + k) (Circuit.pad n w) (Circuit.pad n v)
 
 /-- The derivable equations of `n`-wire circuits under the rules `R` and the
 structural rules. -/
