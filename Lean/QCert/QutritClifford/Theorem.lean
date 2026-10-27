@@ -8,15 +8,15 @@ for Multi-Qutrit Clifford Circuits* (QPL 2025, arXiv:2508.14670).
 
 * `sound`: the rules of Figure 1 only equate circuits with the same
   operator;
-* `complete` (Theorem 4.3): circuits with the same operator are equal by
+* `complete` (Theorem 4.4): circuits with the same operator are equal by
   the rules of Figure 1;
 * `subpresentation`: the two together, with every generator invertible
   modulo the rules — the rules present the group of operators that
   `n`-qutrit circuits denote, at every `n`;
 * `presentation`: the rules present the `n`-qutrit Clifford group `𝒞ₙ`
   (Definition 2.3 over `ℤ[1/3, ω]`), which `-ω`, `H`, `S` and `CZ` generate
-  (Proposition 3.12 and Corollary C.3);
-* `card_cliffordGroup` (Corollary 3.13): `|𝒞ₙ| = 6 ∏ₖ₌₁ⁿ 3 (9ᵏ - 1) 9ᵏ`.
+  (Proposition 3.9 and Corollary B.3);
+* `card_cliffordGroup` (Corollary 3.10): `|𝒞ₙ| = 6 ∏ₖ₌₁ⁿ 3 (9ᵏ - 1) 9ᵏ`.
 
 The remaining `sorry`s are listed in `README.md`.
 -/
@@ -28,14 +28,14 @@ open Matrix
 
 /-! ### Completeness -/
 
-/-- **Theorem 4.3**: the eighteen rules of Figure 1 are complete for
+/-- **Theorem 4.4**: the eighteen rules of Figure 1 are complete for
 qutrit Clifford circuits: two `n`-qutrit circuits with the same operator
 are equal by the rules.
 
-The paper's proof: every circuit rewrites to a normal form (Proposition 4.2,
+The paper's proof: every circuit rewrites to a normal form (Proposition 4.3 and Lemma 4.2,
 by the 380 box relations of Appendix C, which follow from the eighteen
 rules by the supplement), and normal forms with the same operator coincide
-(Proposition 3.12). -/
+(Proposition 3.9). -/
 theorem complete {n : ℕ} {w v : Circ n} (h : sem n w = sem n v) :
     Derives (Padded Rule) n w v := by
   sorry
@@ -58,7 +58,7 @@ theorem gen_mem_cliffordGroup {n : ℕ} (g : Gen Gate n) : gateSem.gen g ∈ cli
 noncomputable def cliffordGen (n : ℕ) (g : Gen Gate n) : cliffordGroup n :=
   ⟨gateSem.gen g, gen_mem_cliffordGroup g⟩
 
-/-- **Generation** (Proposition 3.12 with Corollary C.3): every element of
+/-- **Generation** (Proposition 3.9 with Corollary B.3): every element of
 `𝒞ₙ` is the operator of a circuit over `-ω`, `H`, `S` and `CZ`. -/
 theorem cliffordGroup_le_closure (n : ℕ) :
     cliffordGroup n ≤ Subgroup.closure (Set.range (gateSem.gen (n := n))) := by
@@ -91,7 +91,7 @@ theorem presentation (n : ℕ) : IsPresentationOf (Theory n) (cliffordGen n) whe
     obtain ⟨w, hw⟩ := this
     exact ⟨w, Subtype.ext (by rw [lift_cliffordGen]; exact hw)⟩
 
-/-- **Corollary 3.13**: `|𝒞ₙ| = 6 · ∏ₖ₌₁ⁿ 3 (9ᵏ - 1) 9ᵏ`. -/
+/-- **Corollary 3.10**: `|𝒞ₙ| = 6 · ∏ₖ₌₁ⁿ 3 (9ᵏ - 1) 9ᵏ`. -/
 theorem card_cliffordGroup (n : ℕ) :
     Nat.card (cliffordGroup n) = 6 * ∏ k ∈ Finset.Icc 1 n, 3 * (9 ^ k - 1) * 9 ^ k := by
   sorry

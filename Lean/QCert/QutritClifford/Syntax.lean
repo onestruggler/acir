@@ -52,7 +52,7 @@ abbrev Circ (n : ℕ) := Circuit Gate n
 `b * a`. -/
 def seq {n : ℕ} (a b : Circ n) : Circ n := b * a
 
-@[inherit_doc] infixl:70 " ⨾ " => seq
+@[inherit_doc] scoped infixl:70 " ⨾ " => seq
 
 theorem seq_def {n : ℕ} (a b : Circ n) : a ⨾ b = b * a := rfl
 

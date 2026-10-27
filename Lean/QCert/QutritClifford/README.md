@@ -11,7 +11,7 @@ development.
 | --- | --- | --- |
 | `Syntax.lean` | gates `-ω`, `H`, `S`, `CZ`; derived generators (D1)–(D11); the eighteen rules `Rule.C1`–`Rule.C18`, each on the wires it is drawn on; the theory `Theory = Lift (Padded Rule)` | §2.1, Figures 1 and 5 |
 | `Semantics.lean` | `ω = e^{2πi/3}` (`ωℂ`), the gate matrices `Hmat`, `Smat`, `CZmat` as printed, `gateSem`, `sem n`; the Pauli group `pauliGroup n` and the Clifford group `cliffordGroup n` | Definitions 2.1–2.4, §2.1 |
-| `Theorem.lean` | `sound`, `complete`, `subpresentation`, `presentation`, `card_cliffordGroup` | Theorem 4.3, Proposition 3.12, Corollary 3.13 |
+| `Theorem.lean` | `sound`, `complete`, `subpresentation`, `presentation`, `card_cliffordGroup` | Theorem 4.4, Proposition 3.9, Corollary 3.10 |
 
 Conventions:
 
@@ -27,7 +27,7 @@ Conventions:
   as its figure. A phase `· λ` drawn after a circuit is a scalar gate.
 * **The Clifford group.** Definition 2.3 is the normaliser of the Pauli
   group; §2.1 restricts it to matrices with entries in `ℤ[1/3, ω]`, the
-  group whose order Corollary 3.13 gives. `cliffordGroup n` is that group.
+  group whose order Corollary 3.10 gives. `cliffordGroup n` is that group.
   `presentation` states that the rules present it, with each generator
   read as its matrix; `subpresentation` states the same for the group the
   generators generate inside `U(3ⁿ)`.
@@ -60,10 +60,10 @@ Conventions:
 
 | Name | Stands for |
 | --- | --- |
-| `complete` (`Theorem.lean`) | Theorem 4.3: Proposition 3.12 (unique normal forms, Lemmas 3.7–3.11), Lemma 4.1 and Proposition 4.2 (normalisation by the 380 box relations of Appendix C), and the supplement's derivation of the box relations from C1–C18 |
+| `complete` (`Theorem.lean`) | Theorem 4.4: Proposition 3.9 (unique normal forms, Lemmas 3.5–3.8), Lemma 4.2 and Proposition 4.3 (normalisation by the 380 box relations of Appendix C), and the supplement's derivation of the box relations from C1–C18 |
 | `gen_mem_cliffordGroup` (`Theorem.lean`) | each generator normalises the Pauli group and has entries in `ℤ[1/3, ω]` (Appendix D, generator actions) |
-| `cliffordGroup_le_closure` (`Theorem.lean`) | Proposition 3.12 (existence of normal forms: every Pauli automorphism is a circuit) and Corollary C.3 (the phases of `𝒞ₙ` are the powers of `-ω`) |
-| `card_cliffordGroup` (`Theorem.lean`) | Corollary 3.13 (counting normal forms) |
+| `cliffordGroup_le_closure` (`Theorem.lean`) | Proposition 3.9 (existence of normal forms: every Pauli automorphism is a circuit) and Corollary B.3 (the phases of `𝒞ₙ` are the powers of `-ω`) |
+| `card_cliffordGroup` (`Theorem.lean`) | Corollary 3.10 (counting normal forms) |
 
 `sound`, `grouplike`, `rule_sound` and everything in `Soundness.lean`,
 `Trie.lean` and `Semantics.lean` have no `sorry`.
