@@ -9,5 +9,6 @@ import QCert.Circuit.Eval
 import QCert.Matrix.Level
 import QCert.Matrix.Rings
 import QCert.Exact.Quartic
+import QCert.Exact.Quadratic
 import QCert.Exact.Roots
 import QCert.Synthesis

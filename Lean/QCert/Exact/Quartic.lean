@@ -10,8 +10,12 @@ between matrices over it are decided by `decide +kernel`.  For any root
 is a ring homomorphism.  The instances used in the corpus:
 
 * `p = 0, q = -1`: ℚ(ω), ω = e^{iπ/4}, which holds ℤ[1/√2, i] and ℤ[1/2, i];
-* `p = 1, q = -1`: ℚ(ζ₁₂);
-* `p = 2, q = 0`: a ring mapping onto ℚ(√2) ⊆ ℝ (θ = √2).
+* `p = 1, q = -1`: ℚ(ζ₁₂).
+
+Both polynomials are irreducible over ℚ, so these rings are fields and an
+identity holds in them exactly when it holds in `ℂ`.  For any other `(p, q)`
+check irreducibility before relying on it: ℚ[x]/(x⁴ - 2x²) is not ℚ(√2)
+(there `x² ≠ 2`); ℚ(√2) is `Quadratic 2`.
 -/
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.LinearCombination

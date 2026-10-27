@@ -6,9 +6,11 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 * `ω = (1 + i)/√2 = e^{iπ/4}`, with `QOmega = Quartic 0 (-1)` and
   `QOmega.toC : QOmega →+* ℂ` sending `x` to `ω`;
 * `ζ₁₂ = e^{iπ/6}`, with `QZeta12 = Quartic 1 (-1)` and `QZeta12.toC`;
-* `√2 ∈ ℝ`, with `QSqrt2 = Quartic 2 0` and `QSqrt2.toR` sending `x` to `√2`.
+* `√2 ∈ ℝ`, with `QSqrt2 = Quadratic 2` (ℚ(√2)) and `QSqrt2.toR` sending
+  `x` to `√2`.
 -/
 import QCert.Exact.Quartic
+import QCert.Exact.Quadratic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
@@ -68,25 +70,25 @@ theorem QOmega.toC_I : QOmega.toC QOmega.I = Complex.I := by
 
 theorem QOmega.toC_X : QOmega.toC Quartic.X = ω := Quartic.lift_X _ _
 
-/-- `√2 ∈ ℝ` as a root of `x⁴ = 2 x²`. -/
-abbrev QSqrt2 := Quartic 2 0
+/-- ℚ(√2), as ℚ[x]/(x² - 2). -/
+abbrev QSqrt2 := Quadratic 2
 
-/-- `QSqrt2` onto ℚ(√2) ⊆ ℝ. -/
+/-- ℚ(√2) inside `ℝ`. -/
 def QSqrt2.toR : QSqrt2 →+* ℝ :=
-  Quartic.lift (Real.sqrt 2) (by
-    have h : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
-    rw [show (4 : ℕ) = 2 * 2 from rfl, pow_mul, h]; push_cast; ring)
+  Quadratic.lift (Real.sqrt 2) (by rw [Real.sq_sqrt (by norm_num)]; norm_num)
 
-/-- `1/√2 = √2/2 ∈ QSqrt2`. -/
-def QSqrt2.invSqrt2 : QSqrt2 := ⟨0, 1 / 2, 0, 0⟩
+/-- `1/√2 = √2/2 ∈ ℚ(√2)`. -/
+def QSqrt2.invSqrt2 : QSqrt2 := ⟨0, 1 / 2⟩
 
 theorem QSqrt2.toR_invSqrt2 : QSqrt2.toR QSqrt2.invSqrt2 = (Real.sqrt 2)⁻¹ := by
-  simp only [QSqrt2.toR, Quartic.lift_apply, QSqrt2.invSqrt2]
+  simp only [QSqrt2.toR, Quadratic.lift_apply, QSqrt2.invSqrt2]
   have h : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
   have h0 : Real.sqrt 2 ≠ 0 := by positivity
   field_simp
   push_cast
   nlinarith [h]
+
+theorem QSqrt2.toR_X : QSqrt2.toR Quadratic.X = Real.sqrt 2 := Quadratic.lift_X _ _
 
 end
 
