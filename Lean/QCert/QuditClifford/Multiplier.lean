@@ -113,7 +113,7 @@ theorem sem_X (hp2 : p ≠ 2) :
     have : ∀ a b c : ZMod p, hc p * ψ p a * (ψ p b * (hc p * ψ p c)) =
         hc p ^ 2 * ψ p (a + b + c) := by
       intro a b c; rw [ψ_add, ψ_add]; ring
-    rw [this]; congr 1; ring
+    rw [this]; congr 1; ring_nf
   simp_rw [key, ← Finset.mul_sum]
   rw [sum_ψ, mono]
   have hz1 : z p (1 : Fin p) = 1 := by
@@ -185,7 +185,7 @@ theorem core_apply (hp2 : p ≠ 2) (a : ZMod p) (ha : a ≠ 0) (w x : State p 1)
     dsimp only
     have : ∀ u v y : ZMod p, hc p * ψ p u * (ψ p v * (hc p * ψ p y)) = hc p ^ 2 * ψ p (u + v + y) := by
       intro u v y; rw [ψ_add, ψ_add]; ring
-    rw [this]; congr 1; simp only [q]; field_simp; ring
+    rw [this]; congr 1; simp only [q]; field_simp; ring_nf
   have hm : ∀ m : Fin p, Hop p w (fun _ => m) *
       (mono (n := 1) p id (fun t => ψ p (a * q p (z p (t 0)))) *
         (Hop p * (mono (n := 1) p id (fun t => ψ p (a⁻¹ * q p (z p (t 0)))) * Hop p)) :
