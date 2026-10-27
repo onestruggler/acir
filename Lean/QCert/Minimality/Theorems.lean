@@ -32,6 +32,8 @@ import QCert.Minimality.CliffordCS.Minimality
 import QCert.Minimality.CNOTDihedral.Soundness
 import QCert.Minimality.CNOTDihedral.Minimality
 import QCert.Minimality.CNOTDihedral.Completeness
+import QCert.Minimality.Clifford.Completeness
+import QCert.Minimality.RealClifford.Completeness
 
 namespace QCert.Minimality
 
@@ -61,13 +63,35 @@ theorem cnotDihedral_sound {n : ℕ} {w v : Circuit CNOTDihedral.Gate n}
 
 /-! ### Theorem 22: completeness -/
 
-/-- Theorem 22 (1): Cliff₂ is complete for qubit Clifford circuits. -/
-theorem clifford_complete : Clifford.pres.Complete fun n => Clifford.sem.sem n := by
-  sorry
+/-- Theorem 22 (1), the transfer: Cliff₂ is complete for qubit Clifford
+circuits as soon as Selinger's presentation is (as formalised in
+`QCert.SelingerClifford`). -/
+theorem clifford_complete_of_source
+    (hsrc : ∀ n (w v : Circuit QCert.SelingerClifford.Gate n),
+      QCert.SelingerClifford.S.sem n w = QCert.SelingerClifford.S.sem n v →
+        Derivable (QCert.SelingerClifford.Theory n) w v) :
+    Clifford.pres.Complete fun n => Clifford.sem.sem n :=
+  Clifford.complete_of_source hsrc
 
-/-- Theorem 22 (2): RCliff₂ is complete for real Clifford circuits. -/
-theorem realClifford_complete : RealClifford.pres.Complete fun n => RealClifford.sem.sem n := by
-  sorry
+/-- Theorem 22 (1): Cliff₂ is complete for qubit Clifford circuits (through
+`QCert.SelingerClifford.presentation`). -/
+theorem clifford_complete : Clifford.pres.Complete fun n => Clifford.sem.sem n :=
+  Clifford.complete
+
+/-- Theorem 22 (2), the transfer: RCliff₂ is complete for real Clifford
+circuits as soon as Makary, Ross and Selinger's presentation is (as
+formalised in `QCert.RealStabilizer`, with real orthogonal matrices). -/
+theorem realClifford_complete_of_source
+    (hsrc : ∀ n (w v : Circuit QCert.RealStabilizer.Gate n),
+      QCert.RealStabilizer.S.sem n w = QCert.RealStabilizer.S.sem n v →
+        Derivable (QCert.RealStabilizer.Theory n) w v) :
+    RealClifford.pres.Complete fun n => RealClifford.sem.sem n :=
+  RealClifford.complete_of_source hsrc
+
+/-- Theorem 22 (2): RCliff₂ is complete for real Clifford circuits (through
+`QCert.RealStabilizer.presentation`). -/
+theorem realClifford_complete : RealClifford.pres.Complete fun n => RealClifford.sem.sem n :=
+  RealClifford.complete
 
 /-- Theorem 22 (3): Cliff₃ (with (E) corrected) is complete for qutrit
 Clifford circuits. -/

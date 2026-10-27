@@ -10,8 +10,8 @@ The main statements are in [`Theorems.lean`](Theorems.lean).
 
 | fragment | rules | soundness | completeness (Theorem 22) | minimality (Theorem 37) |
 |---|---|---|---|---|
-| qubit Clifford Cliff₂ | Figure 2, 8 rules | proved | stated (`sorry`) | **proved**, all arities |
-| real Clifford RCliff₂ | Figure 3, 10 rules | proved | stated (`sorry`) | **proved**, all arities |
+| qubit Clifford Cliff₂ | Figure 2, 8 rules | proved | **transferred** from Selinger (`clifford_complete_of_source`, proved; `clifford_complete` through `QCert.SelingerClifford.presentation`) | **proved**, all arities |
+| real Clifford RCliff₂ | Figure 3, 10 rules | proved | **transferred** from Makary–Ross–Selinger (`realClifford_complete_of_source`, proved; `realClifford_complete` through `QCert.RealStabilizer.presentation`) | **proved**, all arities |
 | qutrit Clifford Cliff₃ | Figure 4, 10 rules, (E) corrected | proved | stated (`sorry`) | **proved** up to 2 wires |
 | Clifford+T CliffT₂ | Figure 5, 11 rules | proved | stated up to 2 qubits (`sorry`) | **proved** up to 1 wire, and (CPh), (B), (CZ) independent |
 | Clifford+CS CliffCS₂ | Figure 6, 14 rules | proved | stated up to 3 qubits (`sorry`) | **proved** up to 2 wires, and (I) independent |
@@ -57,10 +57,28 @@ full as stated.
   decided by `decide +kernel`).
 * `Transfer.lean` — Theorem 21 (`complete_of_transfer`), Lemma 20
   (`derivable_map_of`), and renaming gates (`derivable_rename`).
+* `Cross.lean` — the semantic half of an encoding (Definition 18): circuits
+  of two gate sets compared on row tries (`sem_eq_cross`), a substitution
+  preserving every gate's matrix preserves every circuit's
+  (`GateSubst.sem_map`), real matrices read over `ℂ` (`GateSem.sem_map_of`),
+  and Theorem 21 for a source semantics in another monoid
+  (`complete_of_transfer_map`).
 * `Subst.lean` — encodings and decodings (Definition 18) as substitutions
   of circuits for gates (`GateSubst`), extended to PROP morphisms; the
   structural rules carried (`lift_map`), Lemma 20 (`derivable_map`) and
   Lemma 19 (`derivable_comp`).
+* `Clifford/Transfer.lean`, `Clifford/Derivations.lean`,
+  `Clifford/Completeness.lean` — Theorem 22 (1): the encoding and decoding
+  of Table 3 (with the swap encoded by its `H`/`CZ` circuit, Selinger's
+  presentation having no swap), the semantics preserved (`sem_E`), the
+  derivations of Appendix A, the decoded relations C1–C15 (Appendix G.1,
+  `rel_derivable`) and the round trips (Appendix F.1, `DE`).
+* `RealClifford/Transfer.lean`, `RealClifford/Derivations.lean`,
+  `RealClifford/Completeness.lean` — Theorem 22 (2), likewise from Makary,
+  Ross and Selinger's presentation (Appendices B, F.2, G.2); their real
+  orthogonal matrices are read over `ℂ`.  The decodings of R13–R16, which
+  the paper leaves to be mimicked from C12–C15, replay Appendix A's
+  derivations in RCliff₂ and derive R14–R16 from them.
 * `CNOTDihedral/Derivations.lean` — every relation of Amy, Chen and Ross
   (`QCert.CNOTDihedral.Rel`) derived from Figure 7 (Appendix H); generated
   from derivations found by a search (`gen/`: `run_all.py`,
@@ -129,30 +147,39 @@ has them for `GateSem`), `ZQuartic`, and the evaluator of `Trie.lean`.
 ## Completeness: what remains
 
 The transfer of Section 4 is formalised generically (`Transfer.lean`,
-`Subst.lean`, `Derive.lean`) and carried out for CNOT-dihedral, where no
-encoding is needed: every relation of Amy, Chen and Ross is derived from
-Figure 7 (Appendix H), the derivations found by a search over rewrites
-(a breadth-first search in both directions over the rule instances,
-`gen/`) and replayed in Lean.  For the other five fragments the transfer needs, besides the source completeness theorems
-(formalised in other folders, themselves not yet complete), the decoded
-source relations derived in the target rule set (Appendix G) and the
-round trips of the generators (Appendix F), resting on the derivations of
-Appendices A–E (28 for Cliff₂, 10, 30, 33 and 13 for the others).  A search found, for Cliff₂, `CX² = 1`, Selinger's
-C4–C7 decoded, the symmetry of the decoded `CZ` and of the phase gadget,
-but C8–C15 need longer chains than the search reaches without the
-intermediate lemmas of Appendix A, so these transfers are left as the
-`sorry`s below.
+`Subst.lean`, `Derive.lean`, `Cross.lean`) and carried out for
+CNOT-dihedral (no encoding needed), Cliff₂ and RCliff₂.  Each
+`X_complete_of_source` takes the source presentation's completeness as a
+hypothesis and is proved; `X_complete` instantiates it with the source
+formalisation's own theorem.
+
+The derivations of the appendices are transcribed line by line: every
+figure of a derivation is read off the paper's PDF figures
+(`gen/figparse.py`; boxes, controls, targets, crossings, scalars; the
+shortcuts of Figure 9 expanded), every pair of consecutive lines is checked
+to have the same matrix, and the step between them is found by a search
+modulo commuting gates on disjoint wires (`gen/tsearch.py`,
+`gen/tsearch2.py`, `gen/driver.py`) that uses the rules the paper cites
+for that step first, then their derived forms (inverse, upside down,
+wires reversed, `gen/variants.py`, each derived mechanically), then the
+neighbouring steps' rules, and finally relator-style partial rewriting.
+Where the paper draws a line upside down (a step `σ w σ = mirror(w)`, or
+its three-wire analogue), that move is made mechanically.  Three steps are
+split by intermediate lines (`EXTRA` in `gen/cliff2.py`).  The figures and
+chains read from the paper are cached in `gen/figures.json` and
+`gen/derivations.json`, the derivations found in `gen/*_cache.txt`;
+`python run_cliffd.py && python gen_cliff.py ../Clifford/Derivations.lean`
+(likewise `run_rcliff.py`, `gen_rcliff.py`) reproduces the generated files
+byte for byte.
 
 ## Remaining `sorry`s
 
 | statement | paper | what it needs |
 |---|---|---|
-| `clifford_complete` | Theorem 22 (1) | completeness of Selinger's presentation; Lemma 19 (Appendix F.1) and Lemma 20 (Appendix G.1), with the derivations of Appendix A |
-| `realClifford_complete` | Theorem 22 (2) | Makary–Ross–Selinger's presentation; Lemmas 19, 20 (F.2, G.2, Appendix B) |
 | `qutritClifford_complete` | Theorem 22 (3) | the qutrit Clifford presentation with the scalar refinement of Appendix I (Lemma 50); Lemmas 19, 20 (F.3, G.3, Appendix C) |
 | `cliffordT_complete` | Theorem 22 (4) | Bian–Selinger's two-qubit Clifford+T presentation; Lemmas 19, 20 (F.4, G.4, Appendix D) |
 | `cliffordCS_complete` | Theorem 22 (5) | Bian–Selinger's three-qubit Clifford+CS presentation with the scalar refinement of Appendix I; Lemmas 19, 20 (F.5, G.5, Appendix E) |
-| `cnotDihedral_complete`, `cnotDihedral_presentation` | Theorem 22 (6) | no `sorry` of this folder: the transfer is proved (`cnotDihedral_complete_of_source`); the statements use `QCert.CNOTDihedral.presentation`, whose completeness is that formalisation's `sorry` |
+| `clifford_complete`, `realClifford_complete`, `cnotDihedral_complete`, `cnotDihedral_presentation` | Theorem 22 (1), (2), (6) | no `sorry` of this folder: the transfers are proved (`*_complete_of_source`); the statements use the source formalisations' presentation theorems (`QCert.SelingerClifford.presentation`, `QCert.RealStabilizer.presentation`, `QCert.CNOTDihedral.presentation`), whose completeness is still a `sorry` there |
 
 ## Building
 

@@ -14,6 +14,7 @@ completeness gives ours (Theorem 21, `complete_of_source`).
 import QCert.Minimality.CNOTDihedral.Derivations
 import QCert.Minimality.CNOTDihedral.Semantics
 import QCert.Minimality.CNOTDihedral.Soundness
+import QCert.Minimality.Cross
 import QCert.CNOTDihedral.Theorem
 
 namespace QCert.Minimality.CNOTDihedral
@@ -40,25 +41,6 @@ theorem tr_enc {n : ℕ} (w : Circuit Gate n) : tr n (enc n w) = w := by
     rw [hg]
 
 /-! ### The same matrices -/
-
-theorem idx1 (s : State 2 1) : (finFunctionFinEquiv s : ℕ) = s 0 := by
-  rw [finFunctionFinEquiv_apply]; simp
-
-theorem idx2 (s : State 2 2) : (finFunctionFinEquiv s : ℕ) = s 0 + 2 * s 1 := by
-  rw [finFunctionFinEquiv_apply]; simp [Fin.sum_univ_two]; ring
-
-/-- The index `a + 2 b` of the digits `a` (wire `0`) and `b` (wire `1`). -/
-def pair (a b : Fin 2) : Fin (2 ^ 2) := ⟨a + 2 * b, by omega⟩
-
-theorem ofMat1 (M : Matrix (Fin (2 ^ 1)) (Fin (2 ^ 1)) ℂ) (s t : State 2 1) :
-    ofMat M s t = M (Fin.cast (by norm_num) (s 0)) (Fin.cast (by norm_num) (t 0)) := by
-  show M (finFunctionFinEquiv s) (finFunctionFinEquiv t) = _
-  congr 1 <;> exact Fin.ext (idx1 _)
-
-theorem ofMat2 (M : Matrix (Fin (2 ^ 2)) (Fin (2 ^ 2)) ℂ) (s t : State 2 2) :
-    ofMat M s t = M (pair (s 0) (s 1)) (pair (t 0) (t 1)) := by
-  show M (finFunctionFinEquiv s) (finFunctionFinEquiv t) = _
-  congr 1 <;> exact Fin.ext (idx2 _)
 
 theorem matX_eq : ofMat QCert.CNOTDihedral.matX = xC := by
   ext s t
