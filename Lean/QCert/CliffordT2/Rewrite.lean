@@ -132,6 +132,32 @@ theorem derivable_of_runSteps (rules : List (Rule Γ)) (w v : Word α)
     Derivable Γ w v := by
   simpa using derivable_of_runSteps' rules h
 
+/-! ### Packed certificates
+
+A certificate of many steps is written as one number: step `i` is the
+`i`-th digit in base `2²³`, the digit `2 (4096 p + k) + d` standing for the
+step `(p, k, d)`.  This keeps generated proofs small and their terms
+shallow. -/
+
+/-- Decode `n` steps from a packed certificate. -/
+def decodeSteps : ℕ → ℕ → List (ℕ × ℕ × Bool)
+  | 0, _ => []
+  | n + 1, c =>
+    let s := c % 8388608
+    (s / 2 / 4096, s / 2 % 4096, s % 2 == 1) :: decodeSteps n (c / 8388608)
+
+/-- A rule proved by a packed certificate over earlier rules. -/
+def Rule.byCode (rules : List (Rule Γ)) (l r : List α) (n code : ℕ)
+    (h : runSteps rules l (decodeSteps n code) = some r) : Rule Γ :=
+  ⟨l, r, derivable_of_runSteps' rules h⟩
+
+/-- An equation proved by a packed certificate. -/
+theorem derivable_of_code (rules : List (Rule Γ)) (w v : Word α) (n code : ℕ)
+    (h : runSteps rules (FreeMonoid.toList w) (decodeSteps n code) =
+      some (FreeMonoid.toList v)) :
+    Derivable Γ w v :=
+  derivable_of_runSteps rules w v _ h
+
 /-! ### Normalization -/
 
 /-- The first rule whose left side is a prefix of `w`, applied there. -/
