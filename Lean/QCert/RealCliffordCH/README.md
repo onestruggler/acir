@@ -24,7 +24,8 @@ Formalized from the paper only.
 | `Soundness.lean` | Proposition 3.1: every rule is sound (`rule_sound`, `sound`); the schema (19) at every width by induction on the number of controls (`eval_box`). |
 | `Grouplike.lean` | Every gate is invertible in the theory. |
 | `OneQubit.lean` | Completeness on 0 wires and Lemma 7.1 (1 wire), by the sixteen normal forms. |
-| `Theorem.lean` | `completeness`, `presentation`. |
+| `TwoQubit.lean` | Section 7.2: the encoding `E` (Definition 7.2) into Hadamard-Π's words over `𝒢₄` and the proof that it preserves the semantics; the decoding `D` (Definition 7.3); Lemma 7.4 (`D(E(C)) = C`), proved; Lemma 7.6 from Theorem 4.4 and Lemma 7.5 (`complete_two_of`). |
+| `Theorem.lean` | `theorem_4_4`, `lemma_7_5`, `lemma_7_6`, `completeness`, `presentation`. |
 
 ## Conventions and correspondence with the paper
 
@@ -64,12 +65,16 @@ Formalized from the paper only.
   at every width, with no `sorry`.
 * Every generator is invertible in the theory.
 * Completeness on 0 and 1 wires (Lemma 7.1).
+* On 2 wires: the encoding preserves the semantics, Lemma 7.4, and Lemma
+  7.6 from Theorem 4.4 and Lemma 7.5.
 
 ## Remaining `sorry`
 
 | Declaration | Stands for |
 | --- | --- |
-| `Theorem.lean`: `completeness_ge_two` | Theorem 8.9 from two wires on: for `n = 2`, Lemma 7.6 (via Theorem 4.4 of [17], Proposition 4.8 / Lemma A.1, Lemmas 7.4 and 7.5, Appendices B.2 and C); for `n ≥ 3`, Theorem 4.10 (Appendix A.3–A.4), Lemmas 8.7 and 8.8 (Appendices D and E). |
+| `Theorem.lean`: `theorem_4_4` | Theorem 4.4 at `N = 4`, the result the paper imports from Hadamard-Π [17]: Hadamard-Π's Theorem 4.14 at `n = 4`, formalized separately in `QCert.HadamardPi.theorem_4_14` (`(theorem_4_14 4).complete`).  It is restated rather than imported so that this folder builds independently of that one (whose working tree did not build at the time); replacing the `sorry` by that term closes it. |
+| `Theorem.lean`: `lemma_7_5` | Lemma 7.5 (Appendix C.2, with Proposition 4.8 / Lemma A.1 and the auxiliary equations (81)–(110) of Appendix B.2): `D` maps each equation of Figure 6 on `𝒢₄` to an equation derivable from Figure 4. |
+| `Theorem.lean`: `completeness_ge_three` | Theorem 8.9 from three wires on: Theorem 4.10 (Appendices A.3, A.4), Lemmas 8.7 and 8.8 (Section 8, Appendices D and E), with the encoding and decoding of Definitions 8.2 and 8.3. |
 
 ## Paper errors found
 
