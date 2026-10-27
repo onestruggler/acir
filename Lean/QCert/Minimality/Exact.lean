@@ -229,4 +229,102 @@ theorem isUnit_toQ_ω_pow (k : ℕ) : IsUnit (toQ (ω ^ k)) := by
 
 end ZOmega
 
+/-! ### ℤ[ζ₁₂] -/
+
+/-- ℤ[ζ], ζ = ζ₁₂ = e^{iπ/6}, ζ⁴ = ζ² - 1. -/
+abbrev ZZeta := ZQuartic 1 (-1)
+
+namespace ZZeta
+
+open ZQuartic
+
+/-- `ζ₁₂ = (√3 + i)/2 = e^{iπ/6}` (`ζ12_eq_exp`). -/
+noncomputable def ζ12 : ℂ := (((Real.sqrt 3 : ℝ) : ℂ) + Complex.I) / 2
+
+theorem sqrt3_sq : ((Real.sqrt 3 : ℝ) : ℂ) ^ 2 = 3 := by
+  rw [← Complex.ofReal_pow, Real.sq_sqrt (by norm_num)]; norm_num
+
+theorem sqrt3_ne_zero : ((Real.sqrt 3 : ℝ) : ℂ) ≠ 0 := by
+  intro h; have := sqrt3_sq; rw [h] at this; norm_num at this
+
+theorem ζ12_eq_exp : ζ12 = Complex.exp (↑(Real.pi / 6) * Complex.I) := by
+  rw [Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin, Real.cos_pi_div_six,
+    Real.sin_pi_div_six, ζ12]
+  push_cast; ring
+
+theorem ζ12_pow_four : ζ12 ^ 4 = ((1 : ℤ) : ℂ) * ζ12 ^ 2 + ((-1 : ℤ) : ℂ) := by
+  have h3 := sqrt3_sq
+  have hI := Complex.I_sq
+  set s : ℂ := ((Real.sqrt 3 : ℝ) : ℂ)
+  simp only [ζ12, Int.cast_one, Int.cast_neg]
+  linear_combination ((6 * Complex.I ^ 2 + 4 * Complex.I * s + s ^ 2 - 1) / 16) * h3 +
+    ((Complex.I ^ 2 + 4 * Complex.I * s + 13) / 16) * hI
+
+theorem ζ12_pow_three : ζ12 ^ 3 = Complex.I := by
+  have h3 := sqrt3_sq
+  have hI := Complex.I_sq
+  set s : ℂ := ((Real.sqrt 3 : ℝ) : ℂ)
+  simp only [ζ12]
+  linear_combination ((3 * Complex.I + s) / 8) * h3 + ((Complex.I + 3 * s) / 8) * hI
+
+/-- ℤ[ζ] inside `ℂ`, `x ↦ ζ₁₂`. -/
+noncomputable def toC : ZZeta →+* ℂ := lift ζ12 ζ12_pow_four
+
+/-- `ζ`. -/
+def ζ : ZZeta := X
+
+/-- `√3 = 2ζ - ζ³`. -/
+def sqrt3 : ZZeta := ⟨0, 2, 0, -1⟩
+
+/-- Complex conjugation `ζ ↦ ζ⁻¹ = ζ - ζ³`. -/
+def conj : ZZeta →+* ZZeta := lift ⟨0, 1, 0, -1⟩ (by decide)
+
+/-- ℤ[ζ] inside ℚ(ζ₁₂). -/
+def toQ : ZZeta →+* Quartic 1 (-1) := lift Quartic.X (by ext <;> simp [pow_succ, Quartic.X])
+
+theorem toC_X : toC X = ζ12 := lift_X _ _
+
+theorem toC_sqrt3 : toC sqrt3 = ((Real.sqrt 3 : ℝ) : ℂ) := by
+  have e : toC sqrt3 = 2 * ζ12 - ζ12 ^ 3 := by
+    simp only [toC, lift_apply, sqrt3]; push_cast; ring
+  rw [e, ζ12_pow_three, ζ12]; ring
+
+theorem star_ζ12 : star ζ12 = ζ12 - ζ12 ^ 3 := by
+  rw [ζ12_pow_three]
+  simp only [ζ12, star_div₀, star_add, Complex.star_def, Complex.conj_ofReal, Complex.conj_I,
+    map_ofNat]
+  ring
+
+/-- `conj` is complex conjugation. -/
+theorem toC_conj (a : ZZeta) : toC (conj a) = star (toC a) := by
+  have : toC.comp conj = (starRingEnd ℂ).comp toC := by
+    apply hom_ext
+    simp only [RingHom.comp_apply, conj, lift_X, starRingEnd_apply]
+    rw [toC_X, star_ζ12]
+    simp [toC, lift_apply]
+    ring
+  exact congrArg (fun f : ZZeta →+* ℂ => f a) this
+
+theorem toQ_apply (a : ZZeta) : toQ a = ⟨a.a0, a.a1, a.a2, a.a3⟩ := by
+  simp only [toQ, lift_apply, Quartic.intCast_eq']
+  ext <;> simp [Quartic.X, pow_succ]
+
+theorem toQ_injective : Function.Injective toQ := by
+  intro a b h
+  rw [toQ_apply, toQ_apply] at h
+  simp only [Quartic.mk.injEq, Int.cast_inj] at h
+  ext <;> simp [h]
+
+theorem isUnit_toQ_sqrt3 : IsUnit (toQ sqrt3) := by
+  refine IsUnit.of_mul_eq_one (⟨0, 2 / 3, 0, -1 / 3⟩ : Quartic 1 (-1)) ?_
+  rw [toQ_apply]
+  ext <;> simp [sqrt3] <;> norm_num
+
+theorem isUnit_toQ_ζ_pow (k : ℕ) : IsUnit (toQ (ζ ^ k)) := by
+  refine IsUnit.of_mul_eq_one (toQ (ζ ^ (12 * k - k))) ?_
+  rw [← map_mul, ← pow_add, show k + (12 * k - k) = 12 * k by omega, pow_mul,
+    show ζ ^ 12 = (1 : ZZeta) by decide, one_pow, map_one]
+
+end ZZeta
+
 end QCert.Minimality
