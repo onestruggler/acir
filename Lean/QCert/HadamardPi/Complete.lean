@@ -20,7 +20,7 @@ The argument of Appendix A (after Greylyn, Lemmas 32 and 33):
   (`step_all`).  Lemma A.9 and Theorem 4.14 are then
   `QCert.NormalWords.isPresentationOf`.
 -/
-import QCert.HadamardPi.MainLemma
+import QCert.HadamardPi.Pairs
 
 namespace QCert.HadamardPi
 

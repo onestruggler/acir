@@ -626,15 +626,6 @@ end CaseZ
 
 section CaseX
 
-/-- Main Cases 1 and 2: `G = X_[0,x]` below the pivot, at a positive
-exponent.  Not formalized (see the README: the claim of Case 1(1) about the
-first syllable of `X_[1,x] s` fails when an odd entry of the other class lies
-between the first two of the same class). -/
-theorem main_X_odd {s : O n} (hs : s ≠ 1) {z x : Fin n} (hzx : z < x) (hz : (z : ℕ) = 0)
-    (hr : sem n (Gen.X z x hzx) * s ≠ 1) (hxJ : (x : ℕ) < piv s)
-    (hk : lde (col s (pj s (piv_pos hs))) ≠ 0) : MainSquare s (Gen.X z x hzx) := by
-  sorry
-
 /-- A one-letter path `X_[0,y]` from `t`, below the pivot index of `s`. -/
 theorem path_X1 {s : O n} (hs : s ≠ 1) (hk : lde (col s (pj s (piv_pos hs))) = 0)
     {z y : Fin n} (hzy : z < y) (hy : y < pj s (piv_pos hs)) :
@@ -646,8 +637,12 @@ theorem path_X1 {s : O n} (hs : s ≠ 1) (hk : lde (col s (pj s (piv_pos hs))) =
   exact piv_path (B := piv s - 1) (by omega) _ _ (fun g hg i hi => by
     simp at hg; subst hg; simp [Gen.idx] at hi; rcases hi with rfl | rfl <;> omega) (by omega)
 
+/-- Main Cases 3 and 4 and the retrograde cases of 1 and 2; Main Cases 1 and 2
+proper (below the pivot at a positive exponent) are the hypothesis `hodd`. -/
 theorem main_X {s : O n} (hs : s ≠ 1) {z x : Fin n} (hzx : z < x) (hz : (z : ℕ) = 0)
-    (hr : sem n (Gen.X z x hzx) * s ≠ 1) : MainSquare s (Gen.X z x hzx) := by
+    (hr : sem n (Gen.X z x hzx) * s ≠ 1)
+    (hodd : (x : ℕ) < piv s → lde (col s (pj s (piv_pos hs))) ≠ 0 → MainSquare s (Gen.X z x hzx)) :
+    MainSquare s (Gen.X z x hzx) := by
   classical
   have hp := piv_pos hs
   -- `x` at or above the pivot: the square is retrograde
@@ -655,7 +650,7 @@ theorem main_X {s : O n} (hs : s ≠ 1) {z x : Fin n} (hzx : z < x) (hz : (z : �
   · exact square_retro hs (syl_X_above hzx hz hxJ)
   push Not at hxJ
   by_cases hk : lde (col s (pj s hp)) ≠ 0
-  · exact main_X_odd hs hzx hz hr hxJ hk
+  · exact hodd hxJ hk
   push Not at hk
   have hidx : ∀ i ∈ (Gen.X z x hzx).idx, (i : ℕ) < piv s := by
     intro i hi; simp [Gen.idx] at hi
@@ -1285,30 +1280,5 @@ theorem main_H {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : �
       rw [this] at hneg; norm_num at hneg
 
 end CaseH
-
-/-- Lemma A.7 (Main Lemma), for every basic generator; the cases at a
-positive exponent with `X_[0,x]` or `H_[0,1]` below the pivot (Main Cases
-1, 2, 9, 10) are `main_X_odd` and `main_H_odd`. -/
-theorem main_lemma (s : O n) (hs : s ≠ 1) (g : Gen n) (hg : Basic g) : MainSquare s g := by
-  by_cases hr : sem n g * s = 1
-  · have hsg : s = sem n g := by
-      have := congrArg (sem n g * ·) hr
-      simp only [sem_sq_assoc, mul_one] at this
-      exact this
-    subst hsg
-    exact square_pro hs (syl_basic g hg)
-  cases g with
-  | Z a =>
-    simp only [Basic] at hg
-    obtain ⟨a, ha⟩ := a
-    simp only at hg
-    subst hg
-    exact main_Z hs ha hr
-  | X a x h =>
-    simp only [Basic] at hg
-    exact main_X hs h hg hr
-  | H a b h =>
-    simp only [Basic] at hg
-    exact main_H hs h hg.1 hg.2 hr
 
 end QCert.HadamardPi
