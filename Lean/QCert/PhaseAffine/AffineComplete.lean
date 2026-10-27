@@ -12,49 +12,17 @@ fragment (`linear_complete`).
 
 `linear_complete` is the step the paper delegates to Lafont's linear normal
 form theorem [17] (with the derivations of Lafont's rules in `Aff_d`,
-Lemma 16 and Appendix D.1); it is left as `sorry` here.
+Lemma 16 and Appendix D.1); it is proved in `Linear` for `Aff_d` and lifted
+to every level here.
 -/
 import QCert.PhaseAffine.Embed
+import QCert.PhaseAffine.Linear
 
 namespace QCert.PhaseAffine
 
 open Circuit
 
 variable {d lv : ℕ}
-
-/-! ### Pairs on some of the wires -/
-
-namespace PA
-
-theorem high_eq_tail {n : ℕ} (v : Lab d (n + 1)) : high v = Fin.tail v := by
-  funext j; simp only [high, Fin.tail]; congr 1; ext; simp; omega
-
-theorem onTop_f_zero' {n : ℕ} (p : PA d n) (v : Lab d (n + 1)) : (onTop p).f v 0 = v 0 :=
-  onTop_f_zero p v 0 rfl
-
-theorem onTop_f_succ {n : ℕ} (p : PA d n) (v : Lab d (n + 1)) (j : Fin n) :
-    (onTop p).f v j.succ = p.f (Fin.tail v) j := by
-  rw [onTop_f_pos p v j.succ (by simp), high_eq_tail]; congr 1
-
-theorem onTop_q' {n : ℕ} (p : PA d n) (v : Lab d (n + 1)) : (onTop p).q v = p.q (Fin.tail v) := by
-  rw [onTop_q, high_eq_tail]
-
-theorem low_one {n : ℕ} (v : Lab d (n + 1)) : (low v : Lab d 1) = fun _ => v 0 := by
-  funext i; simp only [low]; congr 1; ext; simp [Fin.fin_one_eq_zero i]
-
-theorem onBottom1_f_zero {n : ℕ} (p : PA d 1) (v : Lab d (n + 1)) :
-    (onBottom n p).f v 0 = p.f (fun _ => v 0) 0 := by
-  rw [onBottom_f_lt _ _ _ _ (by simp), low_one]; rfl
-
-theorem onBottom1_f_succ {n : ℕ} (p : PA d 1) (v : Lab d (n + 1)) (j : Fin n) :
-    (onBottom n p).f v j.succ = v j.succ :=
-  onBottom_f_ge _ _ _ _ (by simp)
-
-theorem onBottom1_q {n : ℕ} (p : PA d 1) (v : Lab d (n + 1)) :
-    (onBottom n p).q v = p.q (fun _ => v 0) := by
-  rw [onBottom_q, low_one]
-
-end PA
 
 local notation "𝒢" => gateData d lv
 
@@ -86,64 +54,11 @@ theorem sem_xcol [NeZero d] (n : ℕ) (b : Lab d n) : (𝒢).sem n (xcol n b) = 
         rfl
     · simp only [PA.mul_q, PA.onTop_q, PA.onBottom_q, PA.perm_q, add_zero]
 
-/-! ### Linear circuits fix `0` and carry no phase -/
-
-theorem gen_lin {n : ℕ} (x : Gen (Gate d lv) n) (hx : x.IsLin) :
-    ((𝒢).gen x).f 0 = 0 ∧ ∀ v, ((𝒢).gen x).q v = 0 := by
-  induction x with
-  | gate0 c => exact absurd hx (by simp [Gen.IsLin])
-  | gate3 g => exact absurd hx (by simp [Gen.IsLin])
-  | @gate1 m g =>
-    cases g <;> simp only [Gen.IsLin] at hx
-    refine ⟨funext fun i => ?_, fun v => rfl⟩
-    show (PA.onBottom m _).f 0 i = 0
-    by_cases h : (i : ℕ) < 1
-    · rw [PA.onBottom_f_lt _ _ _ _ h]; simp [gateData, PA.perm, PA.low]
-    · rw [PA.onBottom_f_ge _ _ _ _ h]; rfl
-  | @gate2 m g =>
-    refine ⟨funext fun i => ?_, fun v => ?_⟩
-    · show (PA.onBottom m _).f 0 i = 0
-      by_cases h : (i : ℕ) < 2
-      · rw [PA.onBottom_f_lt _ _ _ _ h]
-        cases g <;> simp [gateData, PA.perm, PA.low] <;> (interval_cases (i : ℕ) <;> simp)
-      · rw [PA.onBottom_f_ge _ _ _ _ h]; rfl
-    · cases g <;> rfl
-  | @up m g ih =>
-    obtain ⟨h0, hq⟩ := ih hx
-    refine ⟨funext fun i => ?_, fun v => ?_⟩
-    · show (PA.onTop _).f 0 i = 0
-      refine Fin.cases ?_ (fun j => ?_) i
-      · rw [PA.onTop_f_zero']; rfl
-      · rw [PA.onTop_f_succ]; exact congrFun h0 j
-    · show (PA.onTop _).q v = 0
-      rw [PA.onTop_q']; exact hq _
-
-theorem sem_lin {n : ℕ} (w : C d lv n) (hw : IsLinW w) :
-    ((𝒢).sem n w).f 0 = 0 ∧ ∀ v, ((𝒢).sem n w).q v = 0 := by
-  induction w using FreeMonoid.inductionOn' with
-  | one => exact ⟨rfl, fun v => rfl⟩
-  | mul_of x w ih =>
-    have hx : x.IsLin := hw x (by simp)
-    have hw' : IsLinW w := fun y hy => hw y (by rw [FreeMonoid.toList_of_mul]; simp [hy])
-    obtain ⟨h0, hq⟩ := ih hw'
-    obtain ⟨g0, gq⟩ := gen_lin x hx
-    rw [map_mul, GateData.sem_of]
-    exact ⟨by simp [h0, g0], fun v => by simp [hq, gq]⟩
-
 /-! ### Theorem 1 -/
 
 section Complete
 
 variable [Fact d.Prime]
-
-/-- Completeness of the linear fragment of `Aff_d`: linear circuits
-(multipliers, controlled additions, crossings) with the same linear map are
-equal in `Aff_d`.  The paper obtains this from Lafont's normal form theorem
-for linear circuits [17], cited without proof, whose rules (43)–(51) it
-derives in `Aff_d` (Lemma 16); this is that step of the proof of Lemma 3. -/
-theorem linear_complete0 {n : ℕ} {w v : C d 0 n} (hw : IsLinW w) (hv : IsLinW v)
-    (h : (gateData d 0).sem n w = (gateData d 0).sem n v) : Derivable (theory d 0 n) w v := by
-  sorry
 
 /-- Completeness of the linear fragment at every level, from `Aff_d`. -/
 theorem linear_complete {n : ℕ} {w v : C d lv n} (hw : IsLinW w) (hv : IsLinW v)

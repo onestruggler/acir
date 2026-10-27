@@ -53,6 +53,25 @@ fragments, indexed by a level `lv`:
 * `Embed.lean` — `Aff_d` inside every level: its gates and rules are those
   of every level, so its derivations lift (`derivable_lift`) with the same
   pairs (`sem_lift`), and every linear circuit comes from `Aff_d`.
+* `LinearLocal.lean` — the local relations the linear normal form uses, as
+  group equations on two and three wires: the multipliers against `CX`
+  ((4), (5)), the Bruhat relation `s a s = a s a⁻¹ M₁(-1)` from (7)
+  (`swap_conj_cx`, `bruhat`), the Yang–Baxter equation and the naturality of
+  the crossing for `CX`, rule (8) as `b a L = a b` (`steinberg`), Lemmas 23
+  and 24 (`lemma23`, `lemma24`), the Steinberg relation with labels, and the
+  exchange of the lower entries of a stair (`stair_swap`).
+* `LinearNF.lean` — the normal form of a linear circuit on `n + 1` wires: a
+  *stair* `S(v)` (a linear circuit sending `e₀` to `v`, one representative
+  of each coset of the stabiliser `H` of `e₀`), a *fan* `F(c)`
+  (`x₀ ↦ x₀ + c · (x₁, …, x_n)`) and a linear circuit one wire up
+  (`decompose`). The design is written out at the head of the module: fans
+  add (`fan_add`), a linear circuit one wire up passes a fan (`passes_word`),
+  and the table (`table`) rewrites a generator applied to a stair as a stair
+  followed by an element of `H`.
+* `Linear.lean` — completeness of the linear fragment of `Aff_d`
+  (`linear_complete0`): the map of `S(v) F(c) ↑B` determines `v`, `B` (by
+  induction on the number of wires) and `c`. The relabellings are computed
+  through the affine map of each generator (`gen_f`).
 * `AffineComplete.lean` — Lemma 2 (the column is fixed by the image of `0`)
   and Theorem 1 (`affine_complete`, at every level) from the completeness of
   the linear fragment of `Aff_d` (`linear_complete0`), lifted to every level
@@ -107,18 +126,14 @@ Proved: soundness of every rule at every level (Lemmas 1, 8, 9; no
 hypotheses beyond the paper's: `2` invertible at level 2, `2, 3` at level 3),
 soundness of the theories for the matrices and the pairs, grouplikeness,
 the reduction of matrix completeness to completeness for pairs (Remark 2),
-Theorem 1 from the completeness of the linear fragment (translations
-collected, Lemmas 2, 3), and Theorem 2 for `LinPhase_d` from Theorem 1.
+**Theorem 1** (`theorem1`, `theorem1ℂ`: `Aff_d` presents the affine
+operators), and **Theorem 2 for `LinPhase_d`** (`theorem2_lin`,
+`theorem2_linℂ`). These depend on no `sorry`. The step of Lemma 3 that the
+paper takes from Lafont's linear normal form theorem [17] is proved here
+directly (`LinearNF`, `Linear`), from the rules of Figure 1.
 
 Remaining `sorry`s:
 
-* `AffineComplete.linear_complete0` — completeness of the linear fragment
-  of `Aff_d`: linear circuits (multipliers, controlled additions, crossings)
-  with the same linear map are equal in `Aff_d`. The paper obtains it from
-  Lafont's linear normal form theorem [17], which it cites without proof,
-  after deriving Lafont's rules (43)–(51) in `Aff_d` (Lemma 16, with Lemmas
-  17–28); it stands for that step of the proof of Lemma 3. Theorem 1 and
-  Theorem 2 for `LinPhase_d` are proved from it.
 * `Completeness.complete_quad`, `Completeness.complete_cube` — Theorem 2
   for `QuadPhase_d` and `CubicPhase_d` (Lemmas 10–15 and Proposition 1 for
   the quadratic and cubic diagonal normal forms, with the local certificates
@@ -131,8 +146,17 @@ Remaining `sorry`s:
   interpretation of Definition 20 (Lemma 8 holds as stated).
 * Rule (7) uses upside-down `CX^{-1}`; in the PROP these are the conjugates
   of `CX^{-1}` by the crossing, transcribed as `flip (CX ^ᶠ (-1))`.
-* Two derivations differ from the paper's: Lemma 21 (`X` on the target of
+* Some derivations differ from the paper's: Lemma 21 (`X` on the target of
   `CX` commutes with it) and `Z` on the control of `CX` commuting with it
   (used for the transport of Lemma 12) are both obtained by conjugating a
   rule ((6), resp. (21)) with `M_{-1}` on the control, which inverts `CX`
-  ((4)) and `X` (Lemma 18), resp. `Z` ((22)).
+  ((4)) and `X` (Lemma 18), resp. `Z` ((22)). Lemmas 23 and 24 (`CX` from
+  the middle wire, resp. from the top wire to the middle wire, commutes with
+  `CX` from the top wire to the bottom wire) follow from (8), read as
+  `L = a⁻¹ b⁻¹ a b`, and its conjugates by `M_{-1}` on the bottom wire
+  (inverting `a` and `L`) and on the top wire (inverting `b` and `L`); the
+  argument is uniform in `d`, including `d = 2`.
+* The paper does not prove the completeness of its linear fragment; it cites
+  Lafont [17] after deriving Lafont's rules (Lemma 16). The normal form used
+  here instead (stairs and fans, `LinearNF`) needs only (2), (4), (5), (7),
+  (8) and the symmetry rules.
