@@ -16,7 +16,7 @@ statement.
 `g ≠ 0`, completeness needs `g` to generate.  The remaining `sorry`s are
 listed in `README.md`.
 -/
-import QCert.QuditClifford.Rules
+import QCert.QuditClifford.ThreeQudit
 
 namespace QCert.QuditClifford
 
@@ -35,6 +35,9 @@ theorem rule_sound (hp2 : p ≠ 2) (g : ZMod p) (hg : g ≠ 0) {k : ℕ} {w v : 
   | C10 => exact sound_C10 p hp2
   | C11 => exact sound_C11 p hp2
   | C12 => exact sound_C12 p hp2
+  | C13 => exact sound_C13 p hp2
+  | C14 => exact sound_C14 p hp2
+  | C15 => exact sound_C15 p hp2
   | _ => sorry
 
 /-- The rules and the structural rules hold at every width. -/
