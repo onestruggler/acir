@@ -10,7 +10,7 @@ a matched pair `A` of the pivot column, the first syllable of `X_[0,x] s`
 reduces (up to the permutation) a matched pair `B`, and the two reductions
 are joined below the level of `s`.
 -/
-import QCert.HadamardPi.Confluence
+import QCert.HadamardPi.Case9
 
 namespace QCert.HadamardPi
 
@@ -295,6 +295,6 @@ theorem main_lemma (s : O n) (hs : s ≠ 1) (g : Gen n) (hg : Basic g) : MainSqu
     exact main_X hs h hg hr (main_X_odd hs h hg hr)
   | H a b h =>
     simp only [Basic] at hg
-    exact main_H hs h hg.1 hg.2 hr
+    exact main_H case9_hard hs h hg.1 hg.2 hr
 
 end QCert.HadamardPi

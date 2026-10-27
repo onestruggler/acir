@@ -974,21 +974,20 @@ theorem run_eq_of_der {w w' : List (Gen n)} (d : Derivable Fig6 (ofList w) (ofLi
 theorem kl_eq_of {v w : Fin n → ℝ} (hl : lde w = lde v) (ho : oddSet w = oddSet v) : kl w = kl v := by
   simp only [kl, hl, ho]
 
-/-- Main Case 9, the subcase the paper's proof gets wrong: entries `0` and `1`
-of the pivot column odd of different classes (so `H_[0,1]` keeps the level),
-with the first syllable `H_[0,i₂]`, `i₂ > 1`.  Not formalized; this is
-Clément's Case 3.4 (`QCert/Clement2019`). -/
-theorem main_H_case9_hard {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
-    (ho : (o : ℕ) = 1) (hr : sem n (Gen.H z o hzo) * s ≠ 1) (hoJ : (o : ℕ) < piv s)
-    (hk : lde (col s (pj s (piv_pos hs))) ≠ 0)
-    (h0 : Odd (num (col s (pj s (piv_pos hs))) z).re)
-    (h1 : Odd (num (col s (pj s (piv_pos hs))) o).re)
-    (hdiff : ¬SameOdd (num (col s (pj s (piv_pos hs))) z) (num (col s (pj s (piv_pos hs))) o)) :
-    MainSquare s (Gen.H z o hzo) := by
-  sorry
+/-- Main Case 9 (2)(b), the subcase the paper's proof gets wrong: entries `0`
+and `1` of the pivot column odd of different classes (so `H_[0,1]` keeps the
+level), with the first syllable `H_[0,i₂]`, `i₂ > 1`.  This is Clément's
+Case 3.4; it is proved in `Case9.lean` and passed here as a hypothesis. -/
+def Case9Hard (n : ℕ) : Prop :=
+  ∀ {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o), (z : ℕ) = 0 → (o : ℕ) = 1 →
+    sem n (Gen.H z o hzo) * s ≠ 1 → (o : ℕ) < piv s →
+    lde (col s (pj s (piv_pos hs))) ≠ 0 →
+    Odd (num (col s (pj s (piv_pos hs))) z).re → Odd (num (col s (pj s (piv_pos hs))) o).re →
+    ¬SameOdd (num (col s (pj s (piv_pos hs))) z) (num (col s (pj s (piv_pos hs))) o) →
+    MainSquare s (Gen.H z o hzo)
 
 /-- Main Case 9: `G = H_[0,1]` and first syllable `H_[0,i₂]`. -/
-theorem main_H_case9 {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
+theorem main_H_case9 (hard : Case9Hard n) {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
     (ho : (o : ℕ) = 1) (hr : sem n (Gen.H z o hzo) * s ≠ 1) (hoJ : (o : ℕ) < piv s)
     (hk : lde (col s (pj s (piv_pos hs))) ≠ 0)
     (h0 : Odd (num (col s (pj s (piv_pos hs))) z).re) : MainSquare s (Gen.H z o hzo) := by
@@ -1012,7 +1011,7 @@ theorem main_H_case9 {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : 
     (Ne.symm hi2)
   by_cases hoodd : Odd (num v o).re
   · -- Main Case 9 (2)(b): both odd; they are of different classes since `i₂ > 1`
-    exact main_H_case9_hard hs hzo hz ho hr hoJ hk h0 hoodd
+    exact hard hs hzo hz ho hr hoJ hk h0 hoodd
       (fun h => absurd (hmin2 o hzo h) (not_le.2 hoi2))
   · -- Main Case 9 (2)(a): entry `1` even; the square is retrograde
     have hidx : ∀ i ∈ (Gen.H i1 o hzo).idx, (i : ℕ) < piv s := by
@@ -1034,7 +1033,7 @@ theorem main_H_case9 {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : 
 
 /-- Main Cases 9 and 10: `G = H_[0,1]` below the pivot at a positive
 exponent. -/
-theorem main_H_odd {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
+theorem main_H_odd (hard : Case9Hard n) {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
     (ho : (o : ℕ) = 1) (hr : sem n (Gen.H z o hzo) * s ≠ 1) (hoJ : (o : ℕ) < piv s)
     (hk : lde (col s (pj s (piv_pos hs))) ≠ 0) : MainSquare s (Gen.H z o hzo) := by
   classical
@@ -1049,7 +1048,7 @@ theorem main_H_odd {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z
   swap
   · -- Main Case 9: the first odd entry is `0`
     have : i1 = z' := le_antisymm (not_lt.1 hz1) hz1le
-    exact main_H_case9 hs hzo hz ho hr hoJ hk (this ▸ hodd1)
+    exact main_H_case9 hard hs hzo hz ho hr hoJ hk (this ▸ hodd1)
   -- Main Case 10
   have hzeven : ¬Odd (num v z').re := fun h => absurd (hmin1 z' h) (not_le.2 hz1)
   have hidx : ∀ i ∈ (Gen.H z' o hzo).idx, (i : ℕ) < piv s := by
@@ -1193,7 +1192,7 @@ theorem hv_single_other {p q a : Fin n} (ε : ℝ) (hap : a ≠ p) (haq : a ≠ 
   · subst h2; simp [Ne.symm hap, Ne.symm haq]
   · rfl
 
-theorem main_H {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
+theorem main_H (hard : Case9Hard n) {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
     (ho : (o : ℕ) = 1) (hr : sem n (Gen.H z o hzo) * s ≠ 1) : MainSquare s (Gen.H z o hzo) := by
   classical
   have hp := piv_pos hs
@@ -1201,7 +1200,7 @@ theorem main_H {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : �
   · exact square_retro hs (syl_H_above hzo hz hoJ)
   push Not at hoJ
   by_cases hk : lde (col s (pj s hp)) ≠ 0
-  · exact main_H_odd hs hzo hz ho hr hoJ hk
+  · exact main_H_odd hard hs hzo hz ho hr hoJ hk
   push Not at hk
   have hidx : ∀ i ∈ (Gen.H z o hzo).idx, (i : ℕ) < piv s := by
     intro i hi; simp [Gen.idx] at hi
