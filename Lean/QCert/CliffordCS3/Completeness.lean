@@ -24,6 +24,7 @@ given any such data, the relations of Figure 2 are complete
 import QCert.CliffordCS3.Soundness
 import QCert.CliffordCS3.Translation
 import QCert.CliffordT2.ReidemeisterSchreier
+import QCert.BianSelingerUn.Theorem
 
 namespace QCert.CliffordCS3
 
@@ -44,12 +45,6 @@ structure RSData where
   /-- Hypothesis (b). -/
   hb : ∀ (c : C) (w w' : Word (BianSelingerUn.Gen 8)), BianSelingerUn.Rel 8 w w' →
     (hstar h c w).2 = (hstar h c w').2 ∧ Derivable Rel (hstar h c w).1 (hstar h c w').1
-
-/-- Theorem 2.1 of the paper, the presentation of `U₈(ℤ[1/2, i])`: the
-statement of `QCert.BianSelingerUn.presentation 8`, whose module is not
-imported here while it does not build. -/
-theorem bsPresentation : IsPresentationOf (BianSelingerUn.Rel 8) (BianSelingerUn.sem 8) := by
-  sorry
 
 /-- The Reidemeister–Schreier data of the authors' proof (their Agda
 Steps 1–8, not reproduced here). -/
@@ -87,6 +82,6 @@ theorem complete_of_rsData
 /-- Completeness of the relations of Figure 2 for `U(8)`. -/
 theorem complete : ∀ ⦃w v : Word Gen⦄,
     FreeMonoid.lift sem w = FreeMonoid.lift sem v → Derivable Rel w v :=
-  complete_of_rsData bsPresentation (Classical.choice rsData)
+  complete_of_rsData (BianSelingerUn.presentation 8) (Classical.choice rsData)
 
 end QCert.CliffordCS3

@@ -38,18 +38,13 @@ operators*, QPL 2023, arXiv:2306.08530.  Table 1 of qcert.tex:
   two-level generators of `U₈(ℤ[1/2, i])` (`Translation.lean`) respects the
   interpretation (`lift_f`, decided by an evaluator for the one- and
   two-level matrices); with the presentation of `U₈(ℤ[1/2, i])` (their
-  Theorem 2.1, `bsPresentation`) and the
+  Theorem 2.1, `QCert.BianSelingerUn.presentation 8`) and the
   Reidemeister–Schreier theorem (`QCert.reidemeister_schreier`, proved in
   `QCert/CliffordT2/ReidemeisterSchreier.lean`), any coset data satisfying
   hypotheses (a) and (b) gives completeness (`complete_of_rsData`).
 
-## Remaining `sorry`s
+## Remaining `sorry`
 
-* `Completeness.bsPresentation`: Theorem 2.1 of the paper (the presentation
-  of `U₈(ℤ[1/2, i])`), the statement `QCert.BianSelingerUn.presentation 8`
-  of the folder `QCert/BianSelingerUn/` (another agent's), restated here
-  because that module did not build at the time (its `MainK.lean` failed);
-  replace by `BianSelingerUn.presentation 8` once it builds.
 * `Completeness.rsData`: the existence of the Reidemeister–Schreier coset
   data with hypotheses (a) and (b).  What the paper's proof consists of
   (Sections 3.1, 4 and 6): `CliffordCS(3)` is the subgroup of `U₈(ℤ[1/2, i])`
