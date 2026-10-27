@@ -9,20 +9,16 @@ Figure 1 holds on the bottom wires of every wider circuit (`Eqv.rule`).
 -/
 import QCert.CNOTDihedral.Syntax
 
-namespace QCert
+namespace QCert.CNOTDihedral
 
 /-- A monoid homomorphism carrying the axioms of one theory into another
 carries its derivations. -/
-theorem Derivable.map' {X Y : Type*} {Γ : WRel X} {Δ : WRel Y} (φ : Word X →* Word Y)
+theorem derivable_map {X Y : Type*} {Γ : WRel X} {Δ : WRel Y} (φ : Word X →* Word Y)
     (h : ∀ w v, Γ w v → Derivable Δ (φ w) (φ v)) {w v : Word X} (d : Derivable Γ w v) :
     Derivable Δ (φ w) (φ v) := by
   have : conGen Γ ≤ (conGen Δ).comap φ (map_mul φ) :=
     Con.conGen_le fun x y hxy => (Con.comap_rel _).2 (h x y hxy)
   exact (Con.comap_rel _).1 (this d)
-
-end QCert
-
-namespace QCert.CNOTDihedral
 
 open Circuit
 
@@ -44,7 +40,7 @@ theorem mul_right (u : Circ n) (h : Eqv n w v) : Eqv n (w * u) (v * u) := mul h 
 
 /-- A derivation moved up one wire. -/
 theorem shift (h : Eqv n w v) : Eqv (n + 1) (Circuit.shift w) (Circuit.shift v) :=
-  Derivable.map' Circuit.shift (fun _ _ r => Derivable.of (Lift.shift r)) h
+  derivable_map Circuit.shift (fun _ _ r => Derivable.of (Lift.shift r)) h
 
 /-- A relation of Figure 1 on the bottom wires of a wider circuit. -/
 theorem rule {k : ℕ} (m : ℕ) {w v : Circ k} (r : Rel k w v) :
