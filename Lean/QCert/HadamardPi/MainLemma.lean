@@ -820,8 +820,8 @@ theorem sylOf_H01 {j z o : Fin n} {w : Fin n → ℝ} (hzo : z < o) (hz : (z : �
 
 /-- `H_[0,1]` on an even entry `0` and an odd entry `1`: both become odd of the
 same class at exponent `k + 1`. -/
-theorem hv_even_odd {v : Fin n → ℝ} (hR : InRing v) {z o : Fin n} (hzo : z ≠ o)
-    (hz : ¬Odd (num v z).re) (ho : Odd (num v o).re) :
+theorem hv_odd_sum {v : Fin n → ℝ} (hR : InRing v) {z o : Fin n} (hzo : z ≠ o)
+    (hsum : Odd ((num v z).re + (num v o).re)) :
     lde (hv z o v) ≠ 0 ∧ Odd (num (hv z o v) z).re ∧ SameOdd (num (hv z o v) z) (num (hv z o v) o) := by
   classical
   set k := lde v
@@ -844,8 +844,7 @@ theorem hv_even_odd {v : Fin n → ℝ} (hR : InRing v) {z o : Fin n} (hzo : z �
     · exact hR i
   have huz : u z = num v z + num v o := by simp [u]
   have huo : u o = num v z - num v o := by simp [u, Ne.symm hzo]
-  have hzodd : Odd (u z).re := by
-    rw [huz, Zsqrtd.re_add]; exact (Int.not_odd_iff_even.1 hz).add_odd ho
+  have hzodd : Odd (u z).re := by rw [huz, Zsqrtd.re_add]; exact hsum
   have hl : lde (hv z o v) = k + 1 := by
     apply le_antisymm (lde_le fun i => ⟨u i, hu i⟩)
     by_contra hlt
@@ -855,7 +854,9 @@ theorem hv_even_odd {v : Fin n → ℝ} (hR : InRing v) {z o : Fin n} (hzo : z �
   refine ⟨by omega, by rw [hnum]; exact hzodd, ?_⟩
   rw [hnum]
   refine ⟨hzodd, ?_, ?_⟩
-  · rw [huo, Zsqrtd.re_sub]; exact (Int.not_odd_iff_even.1 hz).sub_odd ho
+  · rw [huo, Zsqrtd.re_sub,
+      show (num v z).re - (num v o).re = (num v z).re + (num v o).re - 2 * (num v o).re by ring]
+    exact hsum.sub_even (even_two_mul _)
   · rw [huz, huo, Zsqrtd.im_add, Zsqrtd.im_sub,
       show (num v z).im - (num v o).im = (num v z).im + (num v o).im - 2 * (num v o).im by ring]
     exact ⟨fun h => h.sub_even (even_two_mul _), fun h => by
@@ -978,15 +979,66 @@ theorem run_eq_of_der {w w' : List (Gen n)} (d : Derivable Fig6 (ofList w) (ofLi
 theorem kl_eq_of {v w : Fin n → ℝ} (hl : lde w = lde v) (ho : oddSet w = oddSet v) : kl w = kl v := by
   simp only [kl, hl, ho]
 
-/-- Main Cases 9 and 10: `G = H_[0,1]` below the pivot at a positive
-exponent.  Case 10 (the first odd entry is not `0`) is proved; Case 9
-(`main_H_case9`) is not. -/
+/-- Main Case 9, the subcase the paper's proof gets wrong: entries `0` and `1`
+of the pivot column odd of different classes (so `H_[0,1]` keeps the level),
+with the first syllable `H_[0,i₂]`, `i₂ > 1`.  Not formalized; this is
+Clément's Case 3.4 (`QCert/Clement2019`). -/
+theorem main_H_case9_hard {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
+    (ho : (o : ℕ) = 1) (hr : sem n (Gen.H z o hzo) * s ≠ 1) (hoJ : (o : ℕ) < piv s)
+    (hk : lde (col s (pj s (piv_pos hs))) ≠ 0)
+    (h0 : Odd (num (col s (pj s (piv_pos hs))) z).re)
+    (h1 : Odd (num (col s (pj s (piv_pos hs))) o).re)
+    (hdiff : ¬SameOdd (num (col s (pj s (piv_pos hs))) z) (num (col s (pj s (piv_pos hs))) o)) :
+    MainSquare s (Gen.H z o hzo) := by
+  sorry
+
+/-- Main Case 9: `G = H_[0,1]` and first syllable `H_[0,i₂]`. -/
 theorem main_H_case9 {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
     (ho : (o : ℕ) = 1) (hr : sem n (Gen.H z o hzo) * s ≠ 1) (hoJ : (o : ℕ) < piv s)
     (hk : lde (col s (pj s (piv_pos hs))) ≠ 0)
     (h0 : Odd (num (col s (pj s (piv_pos hs))) z).re) : MainSquare s (Gen.H z o hzo) := by
-  sorry
+  classical
+  have hp := piv_pos hs
+  obtain ⟨i1, i2, z', hz2, hz', hz1le, h12, hi1J, hi2J, hodd1, hsame, hmin1, hmin2, hsyl⟩ :=
+    syl_pos_form hs hk
+  have hzz : z' = z := Fin.ext (by rw [hz', hz])
+  subst hzz
+  have hi1 : i1 = z' := le_antisymm (hmin1 z' h0) hz1le
+  subst hi1
+  have hsyl' : syl s = FreeMonoid.of (Gen.H i1 i2 hz2) := by
+    rw [hsyl, dif_neg (lt_irrefl _), mul_one]
+  by_cases hi2 : i2 = o
+  · -- Main Case 9 (1): `i₂ = 2`, the square is prograde
+    subst hi2
+    exact square_pro hs hsyl'
+  set v := col s (pj s hp) with hvdef
+  have hR : InRing v := col_inRing s _
+  have hoi2 : o < i2 := lt_of_le_of_ne (Fin.le_def.2 (by have := Fin.lt_def.1 hz2; omega))
+    (Ne.symm hi2)
+  by_cases hoodd : Odd (num v o).re
+  · -- Main Case 9 (2)(b): both odd; they are of different classes since `i₂ > 1`
+    exact main_H_case9_hard hs hzo hz ho hr hoJ hk h0 hoodd
+      (fun h => absurd (hmin2 o hzo h) (not_le.2 hoi2))
+  · -- Main Case 9 (2)(a): entry `1` even; the square is retrograde
+    have hidx : ∀ i ∈ (Gen.H i1 o hzo).idx, (i : ℕ) < piv s := by
+      intro i hi; simp [Gen.idx] at hi
+      rcases hi with rfl | rfl <;> omega
+    obtain ⟨hl, hzodd, hsame'⟩ :=
+      hv_odd_sum hR (ne_of_lt hzo) (h0.add_even (Int.not_odd_iff_even.1 hoodd))
+    have hpiv : piv (sem n (Gen.H i1 o hzo) * s) = piv s :=
+      piv_eq_of_col hp hidx (by
+        show hv i1 o v ≠ _
+        intro h; rw [h] at hl
+        exact hl (lde_eq_zero_of_int fun i => by
+          by_cases hi : i = pj s hp
+          · subst hi; exact ⟨1, by simp⟩
+          · exact ⟨0, by simp [hi]⟩))
+    apply square_retro hs
+    rw [syl_of_piv_eq hp hpiv, ← hvdef]
+    exact sylOf_H01 hzo hz ho hl hzodd hsame'
 
+/-- Main Cases 9 and 10: `G = H_[0,1]` below the pivot at a positive
+exponent. -/
 theorem main_H_odd {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
     (ho : (o : ℕ) = 1) (hr : sem n (Gen.H z o hzo) * s ≠ 1) (hoJ : (o : ℕ) < piv s)
     (hk : lde (col s (pj s (piv_pos hs))) ≠ 0) : MainSquare s (Gen.H z o hzo) := by
@@ -1019,7 +1071,8 @@ theorem main_H_odd {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z
   by_cases hio : i1 = o
   · -- Case 10 (1): `i₁ = 1`: the square is retrograde
     have hoodd : Odd (num v o).re := hio ▸ hodd1
-    obtain ⟨hl, hzodd, hsame'⟩ := hv_even_odd hR (ne_of_lt hzo) hzeven hoodd
+    obtain ⟨hl, hzodd, hsame'⟩ :=
+      hv_odd_sum hR (ne_of_lt hzo) ((Int.not_odd_iff_even.1 hzeven).add_odd hoodd)
     apply square_retro hs
     rw [syl_of_piv_eq hp (hpiv_of hl), ← hvdef, hcolr, sylOf_H01 hzo hz ho hl hzodd hsame']
   -- Case 10 (2): `i₁ > 1`; entries `0` and `1` are even

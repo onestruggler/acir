@@ -58,9 +58,9 @@ theorem theorem_4_14 (n : ℕ) : IsPresentationOf (Fig6 (n := n)) (sem n)
   * `G = (-1)_[0]`: Main Cases 5, 6, 7, 8, all subcases;
   * `G = X_[0,x]`: Main Cases 3 and 4 (exponent 0), and every case with `x` at
     or above the pivot (retrograde squares);
-  * `G = H_[0,1]`: Main Case 10 (first odd entry not at `0`), Main Cases 11
-    and 12 (exponent 0), and the case where the pivot is the first column
-    (retrograde);
+  * `G = H_[0,1]`: Main Case 10 (first odd entry not at `0`), Main Case 9
+    except its subcase (2)(b), Main Cases 11 and 12 (exponent 0), and the case
+    where the pivot is the first column (retrograde);
   * the base case `s = ⟦G⟧`.
 
 ## Remaining `sorry`s
@@ -71,7 +71,7 @@ Exactly two, both in `MainLemma.lean`; `theorem_4_14` depends on them
 | Declaration | Stands for |
 |---|---|
 | `main_X_odd` | Main Cases 1 and 2 of Lemma A.7: `G = X_[1,x]` (ours `X_[0,x]`) with `x` below the pivot, at a positive exponent (`N = H_[1,i₂]` or `H_[1,i₂] X_[1,i₁]`) |
-| `main_H_case9` | Main Case 9 of Lemma A.7: `G = H_[1,2]` (ours `H_[0,1]`) with the pivot beyond the second column, at a positive exponent, and first syllable `H_[1,i₂]` (the first odd entry at `1`). This is where the paper's proof is wrong (below); Clément's Case 3.4 is the argument that closes it |
+| `main_H_case9_hard` | Main Case 9 (2)(b) of Lemma A.7: `G = H_[1,2]` (ours `H_[0,1]`) at a state whose first syllable is `H_[1,i₂]` with `i₂ > 2` and whose entries 1 and 2 (ours 0 and 1) are odd of different classes, so that `H_[1,2]` keeps the level. This is where the paper's proof is wrong (below); Clément's Case 3.4 is the argument that closes it |
 
 ## Errors and gaps found in the paper
 
