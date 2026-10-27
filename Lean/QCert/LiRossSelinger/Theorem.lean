@@ -12,7 +12,7 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 -/
 import QCert.LiRossSelinger.PushL
 import QCert.LiRossSelinger.Generation
-import QCert.LiRossSelinger.Reduction
+import QCert.LiRossSelinger.Decomp
 
 namespace QCert.LiRossSelinger
 
@@ -21,9 +21,8 @@ theorem mainLemmaBasic (n : ℕ) : MainLemmaBasic n := by
   sorry
 
 /-- Lemma A.19 (cited from Greylyn 2014 in the paper), with the level bound
-at every intermediate state. -/
-theorem basicDecomp (n : ℕ) : BasicDecomp n := by
-  sorry
+at every intermediate state (`Decomp.lemmaA19`). -/
+theorem basicDecomp (n : ℕ) : BasicDecomp n := lemmaA19
 
 /-- Theorem 4.10 (completeness), by induction on the level of edges
 (`Reduction.complete_of`). -/

@@ -97,6 +97,7 @@ groups `O_ZHalf n` and `L n`, `matIH` = `I ⊗ H`), `Theorem.lean`.
 
 1. **Lemma A.19** (every simple edge is a sequence of basic edges with the
    same extent and level) is not proved in the paper; it cites Greylyn 2014.
+   It is proved here (`Decomp.lemmaA19`).
 2. **Retrograde edges.** Lemma A.20 dismisses the cases where `G` acts on
    already fixed columns ("this case is retrograde") without a diagram, but
    the induction of Lemma 4.8 (on `level(s)`) and Lemma A.21 apply the Main
@@ -109,12 +110,17 @@ groups `O_ZHalf n` and `L n`, `matIH` = `I ⊗ H`), `Theorem.lean`.
 3. Typos in levels, e.g. "`level(r) = (j,k,m+1)`" in the case
    `|{a,b,c,d} ∩ {1,2,3,4}| = 0`, where four odd entries appear (`m+4`).
 
+* `Decomp.lean`: **Lemma A.19, proved** (`lemmaA19`).  Every generator is
+  derivably `P g₀ P⁻¹` with `g₀` basic and `P` adjacent transpositions up
+  to its extent (renaming relations (3b)–(3g)); every intermediate state is
+  a permutation by `P`'s letters of `s` or of `G s`, which keeps the columns
+  beyond `max(j(s), j(G s))` fixed (the extent lies below that) and permutes
+  the pivot column, so it never rises above `max(level s, level(G s))`.
+
 ## Remaining `sorry`
 
 * `Theorem.mainLemmaBasic` — Lemma A.20 (the case analysis of Appendix A.4,
   about 45 distinct squares) for the basic edges that do not raise the
   level.
-* `Theorem.basicDecomp` — Lemma A.19 with the level bound.
-
 Theorem 4.10 (`Theorem.complete`) and everything else, including
-`presentationL`, are proved from these two.
+`presentationL`, are proved from it.
