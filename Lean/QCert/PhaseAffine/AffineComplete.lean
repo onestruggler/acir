@@ -14,7 +14,7 @@ fragment (`linear_complete`).
 form theorem [17] (with the derivations of Lafont's rules in `Aff_d`,
 Lemma 16 and Appendix D.1); it is left as `sorry` here.
 -/
-import QCert.PhaseAffine.Translation
+import QCert.PhaseAffine.Embed
 
 namespace QCert.PhaseAffine
 
@@ -136,13 +136,22 @@ section Complete
 
 variable [Fact d.Prime]
 
-/-- Completeness of the linear fragment: linear circuits (multipliers,
-controlled additions, crossings) with the same linear map are equal in the
-theory.  The paper obtains this from Lafont's normal form theorem for
-linear circuits [17], whose rules it derives in `Aff_d` (Lemma 16). -/
+/-- Completeness of the linear fragment of `Aff_d`: linear circuits
+(multipliers, controlled additions, crossings) with the same linear map are
+equal in `Aff_d`.  The paper obtains this from Lafont's normal form theorem
+for linear circuits [17], cited without proof, whose rules (43)–(51) it
+derives in `Aff_d` (Lemma 16); this is that step of the proof of Lemma 3. -/
+theorem linear_complete0 {n : ℕ} {w v : C d 0 n} (hw : IsLinW w) (hv : IsLinW v)
+    (h : (gateData d 0).sem n w = (gateData d 0).sem n v) : Derivable (theory d 0 n) w v := by
+  sorry
+
+/-- Completeness of the linear fragment at every level, from `Aff_d`. -/
 theorem linear_complete {n : ℕ} {w v : C d lv n} (hw : IsLinW w) (hv : IsLinW v)
     (h : (𝒢).sem n w = (𝒢).sem n v) : Derivable (theory d lv n) w v := by
-  sorry
+  obtain ⟨w0, hw0, rfl⟩ := lin_lift_surj w hw
+  obtain ⟨v0, hv0, rfl⟩ := lin_lift_surj v hv
+  rw [sem_lift, sem_lift] at h
+  exact derivable_lift (linear_complete0 hw0 hv0 h)
 
 /-- Theorem 1 at every level: affine circuits with the same map are equal in
 the theory. -/

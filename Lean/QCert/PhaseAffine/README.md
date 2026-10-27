@@ -108,7 +108,7 @@ collected, Lemmas 2, 3), and Theorem 2 for `LinPhase_d` from Theorem 1.
 
 Remaining `sorry`s:
 
-* `AffineComplete.linear_complete` — completeness of the linear fragment
+* `AffineComplete.linear_complete0` — completeness of the linear fragment of `Aff_d`
   (multipliers, controlled additions, crossings). The paper obtains it from
   Lafont's linear normal form theorem [17], which it cites without proof,
   after deriving Lafont's rules (43)–(51) in `Aff_d` (Lemma 16, Lemmas
