@@ -152,6 +152,12 @@ theorem f28 (t : Pres n) :
   rw [tKd, tKd, t10, tKX, tKa, t4 j l h.ne, t4 j l h.ne, t4 j l h.ne, ti4 l, t4 j l h.ne,
     ti4 j, tXb, tXb, tXK]
 
+/-- (17) for `K†`: `K† b a = a b K†`. -/
+theorem f17 (t : Pres n) :
+    gK j l h ^ 7 * (gi l * (gi j * t)) = gi j * (gi l * (gK j l h ^ 7 * t)) := by
+  conv_lhs => rw [tKd, t4 j l h.ne, ← t17]
+  rw [tKd]
+
 /-- The inverse of (15): `K†_[j,ℓ] X_[j,ℓ] ∼ i_[ℓ]² K†_[j,ℓ]`. -/
 theorem f15' (t : Pres n) :
     gK j l h ^ 7 * (gX j l h * t) = gi l * (gi l * (gK j l h ^ 7 * t)) := by

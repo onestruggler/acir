@@ -39,6 +39,9 @@ theorem gK_congr {a b a' b' : Fin n} {h : a < b} {h' : a' < b'} (ea : a = a') (e
 @[simp] theorem cl_X (j k : Fin n) (h : j < k) : cl (X j k h) = gX j k h := rfl
 @[simp] theorem cl_K (j k : Fin n) (h : j < k) : cl (K j k h) = gK j k h := rfl
 @[simp] theorem cl_i (j : Fin n) : cl (i j) = gi j := rfl
+@[simp] theorem cl_ofX (j k : Fin n) (h : j < k) : cl (FreeMonoid.of (Gen.X j k h)) = gX j k h := rfl
+@[simp] theorem cl_ofK (j k : Fin n) (h : j < k) : cl (FreeMonoid.of (Gen.K j k h)) = gK j k h := rfl
+@[simp] theorem cl_ofi (j : Fin n) : cl (FreeMonoid.of (Gen.i j)) = gi j := rfl
 
 section Relations
 
