@@ -11,6 +11,7 @@ Theorem 4.8, generation, the words reach every element of the group).
 Indices start at 0 (the paper's at 1).
 -/
 import QCert.HadamardPi.Soundness
+import QCert.HadamardPi.Synth
 
 namespace QCert.HadamardPi
 
@@ -27,6 +28,6 @@ theorem theorem_4_14 (n : ℕ) : IsPresentationOf (Fig6 (n := n)) (sem n) where
   grouplike := fig6_grouplike
   sound := fig6_sound
   complete := sorry
-  surjective := sorry
+  surjective := lift_sem_surjective
 
 end QCert.HadamardPi
