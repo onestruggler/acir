@@ -50,9 +50,13 @@ fragments, indexed by a level `lv`:
 * `Translation.lean` — Lemma 3, first step: an affine circuit is its
   translation column `NF_tr(b)` (`xcol`) after its linear part
   (`affine_collect`).
+* `Embed.lean` — `Aff_d` inside every level: its gates and rules are those
+  of every level, so its derivations lift (`derivable_lift`) with the same
+  pairs (`sem_lift`), and every linear circuit comes from `Aff_d`.
 * `AffineComplete.lean` — Lemma 2 (the column is fixed by the image of `0`)
   and Theorem 1 (`affine_complete`, at every level) from the completeness of
-  the linear fragment (`linear_complete`).
+  the linear fragment of `Aff_d` (`linear_complete0`), lifted to every level
+  (`linear_complete`).
 * `LinPhase.lean` — Theorem 2 for `LinPhase_d` (`complete1`): Lemma 12
   (`zcol_push`: a diagonal normal form `ω^k Z^{a_0} ⋯ Z^{a_{n-1}}` moves
   through an affine gate by (21), (22), (23), the crossing, and `Z` on the
@@ -108,12 +112,13 @@ collected, Lemmas 2, 3), and Theorem 2 for `LinPhase_d` from Theorem 1.
 
 Remaining `sorry`s:
 
-* `AffineComplete.linear_complete0` — completeness of the linear fragment of `Aff_d`
-  (multipliers, controlled additions, crossings). The paper obtains it from
+* `AffineComplete.linear_complete0` — completeness of the linear fragment
+  of `Aff_d`: linear circuits (multipliers, controlled additions, crossings)
+  with the same linear map are equal in `Aff_d`. The paper obtains it from
   Lafont's linear normal form theorem [17], which it cites without proof,
-  after deriving Lafont's rules (43)–(51) in `Aff_d` (Lemma 16, Lemmas
-  17–25); it stands for that step of Lemma 3. Theorem 1 and Theorem 2 for
-  `LinPhase_d` are proved from it.
+  after deriving Lafont's rules (43)–(51) in `Aff_d` (Lemma 16, with Lemmas
+  17–28); it stands for that step of the proof of Lemma 3. Theorem 1 and
+  Theorem 2 for `LinPhase_d` are proved from it.
 * `Completeness.complete_quad`, `Completeness.complete_cube` — Theorem 2
   for `QuadPhase_d` and `CubicPhase_d` (Lemmas 10–15 and Proposition 1 for
   the quadratic and cubic diagonal normal forms, with the local certificates
@@ -121,7 +126,13 @@ Remaining `sorry`s:
 
 ## Notes on the paper
 
+* No error found: every rule of Figures 1, 3, 4, 5, with the definitions of
+  `CZ`, `CS`, `CCZ` (Definitions 16–18), is sound as transcribed for the
+  interpretation of Definition 20 (Lemma 8 holds as stated).
 * Rule (7) uses upside-down `CX^{-1}`; in the PROP these are the conjugates
   of `CX^{-1}` by the crossing, transcribed as `flip (CX ^ᶠ (-1))`.
-* The paper's rule figures and its interpretation (Definition 20, Lemma 8)
-  agree: every displayed equation was found sound as transcribed.
+* Two derivations differ from the paper's: Lemma 21 (`X` on the target of
+  `CX` commutes with it) and `Z` on the control of `CX` commuting with it
+  (used for the transport of Lemma 12) are both obtained by conjugating a
+  rule ((6), resp. (21)) with `M_{-1}` on the control, which inverts `CX`
+  ((4)) and `X` (Lemma 18), resp. `Z` ((22)).
