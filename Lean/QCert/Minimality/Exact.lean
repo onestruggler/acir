@@ -138,6 +138,13 @@ end Lift
 
 end ZQuartic
 
+/-- Integers in the framework's rational quartic ring. -/
+theorem Quartic.intCast_eq' {p q : ℤ} (r : ℤ) : ((r : Quartic p q)) = ⟨r, 0, 0, 0⟩ := by
+  induction r using Int.induction_on with
+  | zero => rfl
+  | succ k ih => rw [Int.cast_add, Int.cast_one, ih]; ext <;> simp
+  | pred k ih => rw [Int.cast_sub, Int.cast_one, ih]; ext <;> simp
+
 /-! ### ℤ[ω] -/
 
 /-- ℤ[ω], ω⁴ = -1. -/
@@ -199,6 +206,26 @@ theorem toC_conj (a : ZOmega) : toC (conj a) = star (toC a) := by
     rw [toC_X, star_ω]
     simp [toC, lift_apply]
   exact congrArg (fun f : ZOmega →+* ℂ => f a) this
+
+theorem toQ_apply (a : ZOmega) : toQ a = ⟨a.a0, a.a1, a.a2, a.a3⟩ := by
+  simp only [toQ, lift_apply, Quartic.intCast_eq']
+  ext <;> simp [Quartic.X, pow_succ]
+
+theorem toQ_injective : Function.Injective toQ := by
+  intro a b h
+  rw [toQ_apply, toQ_apply] at h
+  simp only [Quartic.mk.injEq, Int.cast_inj] at h
+  ext <;> simp [h]
+
+theorem isUnit_toQ_sqrt2 : IsUnit (toQ sqrt2) := by
+  refine IsUnit.of_mul_eq_one QOmega.invSqrt2 ?_
+  rw [toQ_apply]
+  ext <;> simp [sqrt2, QOmega.invSqrt2] <;> norm_num
+
+theorem isUnit_toQ_ω_pow (k : ℕ) : IsUnit (toQ (ω ^ k)) := by
+  refine IsUnit.of_mul_eq_one (toQ (ω ^ (8 * k - k))) ?_
+  rw [← map_mul, ← pow_add, show k + (8 * k - k) = 8 * k by omega, pow_mul,
+    show ω ^ 8 = (1 : ZOmega) by decide, one_pow, map_one]
 
 end ZOmega
 

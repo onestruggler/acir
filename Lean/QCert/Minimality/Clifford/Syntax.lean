@@ -83,8 +83,8 @@ inductive Ax
   /-- (CZ): `H` on the target around a CNOT is
   `(S ⊗ S) CNOT (id ⊗ S S S) CNOT`. -/
   | CZ
-  /-- (I): `CNOT₁₂ ; CNOT₀₁ ; CNOT₀₂ = CNOT₀₁ ; CNOT₁₂` on three wires
-  (wires counted from the top in the label). -/
+  /-- (I): `CNOT₁₂ ; CNOT₀₁ ; CNOT₀₂ = CNOT₀₁ ; CNOT₁₂`, wires numbered
+  from the top as in the figure (`CNOT_{cd}`: control `c`, target `d`). -/
   | I
   deriving DecidableEq
 

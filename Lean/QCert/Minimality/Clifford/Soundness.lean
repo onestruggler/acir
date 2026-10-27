@@ -13,24 +13,30 @@ namespace QCert.Minimality.Clifford
 
 open Circuit
 
+private theorem go {n : ℕ} {w v : Circuit Gate n}
+    (h : (rowsRep 2 n).ops.smul (ZOmega.sqrt2 ^ (scaled.ex v - scaled.ex w)) (evalRows ops n w) =
+      (rowsRep 2 n).ops.smul (ZOmega.sqrt2 ^ (scaled.ex w - scaled.ex v)) (evalRows ops n v)) :
+    sem.sem n w = sem.sem n v :=
+  Qubit.sem_eq_of_rows sem scaled sem_toOps h
+
 /-- Every rule of Figure 2 is sound. -/
 theorem sound_ax : ∀ a : Ax, sem.sem a.arity a.sides.1 = sem.sem a.arity a.sides.2
-  | .ω8 => sem_eq_of_rows (by decide +kernel)
-  | .H2 => sem_eq_of_rows (by decide +kernel)
-  | .S4 => sem_eq_of_rows (by decide +kernel)
-  | .E => sem_eq_of_rows (by decide +kernel)
-  | .CPh => sem_eq_of_rows (by decide +kernel)
-  | .B => sem_eq_of_rows (by decide +kernel)
-  | .CZ => sem_eq_of_rows (by decide +kernel)
-  | .I => sem_eq_of_rows (by decide +kernel)
+  | .ω8 => go (by decide +kernel)
+  | .H2 => go (by decide +kernel)
+  | .S4 => go (by decide +kernel)
+  | .E => go (by decide +kernel)
+  | .CPh => go (by decide +kernel)
+  | .B => go (by decide +kernel)
+  | .CZ => go (by decide +kernel)
+  | .I => go (by decide +kernel)
 
 /-- The laws of the symmetry hold for the swap matrix. -/
 theorem sound_sym {k : ℕ} {w v : Circuit Gate k} : Sym Gate.swap k w v → sem.sem k w = sem.sem k v
-  | .invol => sem_eq_of_rows (by decide +kernel)
-  | .nat1 .H => sem_eq_of_rows (by decide +kernel)
-  | .nat1 .S => sem_eq_of_rows (by decide +kernel)
-  | .nat2 .CX => sem_eq_of_rows (by decide +kernel)
-  | .nat2 .swap => sem_eq_of_rows (by decide +kernel)
+  | .invol => go (by decide +kernel)
+  | .nat1 .H => go (by decide +kernel)
+  | .nat1 .S => go (by decide +kernel)
+  | .nat2 .CX => go (by decide +kernel)
+  | .nat2 .swap => go (by decide +kernel)
   | .nat3 g => nomatch g
 
 /-- Soundness: every equation derivable in Cliff₂ holds in the semantics. -/

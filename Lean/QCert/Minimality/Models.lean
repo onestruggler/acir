@@ -267,4 +267,52 @@ theorem not_projEq_of_cross {K : Type*} [CommRing K] {ι : Type*} {A B : Matrix 
   simp only [Matrix.smul_apply, smul_eq_mul]
   ring
 
+/-- A matrix model read through a ring homomorphism: scaled equations between
+the original matrices by units become projective equalities. -/
+theorem projEq_map_of_smul {K K' : Type*} [CommRing K] [CommRing K'] {d : ℕ} (f : K →+* K')
+    (O : GateOps Gate K d) {n : ℕ} {w v : Circuit Gate n} (a b : K) (ha : IsUnit (f a))
+    (hb : IsUnit (f b)) (h : a • O.eval n w = b • O.eval n v) :
+    ProjEq ((O.map f).eval n w) ((O.map f).eval n v) := by
+  rw [GateOps.eval_map, GateOps.eval_map]
+  have h' := congrArg (fun M => M.map f) h
+  simp only [Matrix.map_smul' _ _ _ (map_mul f)] at h'
+  obtain ⟨u, hu⟩ := ha
+  refine ⟨↑u⁻¹ * f b, (Units.isUnit _).mul hb, ?_⟩
+  rw [← smul_smul, ← h', ← hu, smul_smul, Units.inv_mul, one_smul]
+
+/-- A matrix model read through an injective ring homomorphism: a cross
+ratio of entries that differs separates. -/
+theorem not_projEq_map {K K' : Type*} [CommRing K] [CommRing K'] {d : ℕ} (f : K →+* K')
+    (hf : Function.Injective f) (O : GateOps Gate K d) {n : ℕ} {w v : Circuit Gate n}
+    (i j k l : State d n)
+    (h : O.eval n w i j * O.eval n v k l ≠ O.eval n w k l * O.eval n v i j) :
+    ¬ ProjEq ((O.map f).eval n w) ((O.map f).eval n v) := by
+  rw [GateOps.eval_map, GateOps.eval_map]
+  apply not_projEq_of_cross i j k l
+  simp only [Matrix.map_apply, ← map_mul]
+  exact fun e => h (hf e)
+
+/-- Lemma 25 for a projective substitution (Definitions 32–34): matrices over
+`K` read through an injective homomorphism into `K'` modulo units of `K'`.
+The laws of the symmetry hold exactly, every other axiom on at most as many
+wires holds up to units, and the cross ratio of two entries separates the
+two sides of `ρ`. -/
+theorem independent_of_proj {P : PropPresentation Gate} {K K' : Type*} [CommRing K]
+    [CommRing K'] {d : ℕ} (f : K →+* K') (hf : Function.Injective f) (O : GateOps Gate K d)
+    (hσ : ∀ {k : ℕ} {w v : Circuit Gate k}, Sym P.swap k w v → O.eval k w = O.eval k v)
+    (ρ : P.Ax)
+    (hS : ∀ a, P.arity a ≤ P.arity ρ → a ≠ ρ → ∃ x y : K, IsUnit (f x) ∧ IsUnit (f y) ∧
+      x • O.eval _ (P.lhs a) = y • O.eval _ (P.rhs a))
+    (hρ : ∃ i j k l : State d (P.arity ρ), O.eval _ (P.lhs ρ) i j * O.eval _ (P.rhs ρ) k l ≠
+      O.eval _ (P.lhs ρ) k l * O.eval _ (P.rhs ρ) i j) :
+    P.Independent ρ := by
+  have hσ' : ∀ {k : ℕ} {w v : Circuit Gate k}, Sym P.swap k w v →
+      (O.map f).eval k w = (O.map f).eval k v := by
+    intro k w v s; rw [GateOps.eval_map, GateOps.eval_map, hσ s]
+  refine P.independent_of_model (projModel (O.map f) P.swap hσ') (fun a ha hne => ?_) ?_
+  · obtain ⟨x, y, hx, hy, h⟩ := hS a ha hne
+    exact projEq_map_of_smul f O x y hx hy h
+  · obtain ⟨i, j, k, l, h⟩ := hρ
+    exact not_projEq_map f hf O i j k l h
+
 end QCert.Minimality
