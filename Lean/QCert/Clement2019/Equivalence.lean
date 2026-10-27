@@ -27,14 +27,8 @@ open Matrix QCert.HadamardPi
 
 variable {n : ℕ}
 
-/-- A generator of `𝒢ₙ` as one of Clément's. -/
-def ιg : HadamardPi.Gen n → Gen n
-  | .Z a => .Z a
-  | .X a b h => .X a b (ne_of_lt h)
-  | .H a b h => .H a b (ne_of_lt h)
-
 /-- The inclusion of words over `𝒢ₙ`. -/
-def ι : Word (HadamardPi.Gen n) →* Word (Gen n) := FreeMonoid.map ιg
+def ι : Word (HadamardPi.Gen n) →* Word (Gen n) := FreeMonoid.map ofFig6
 
 /-- A Clément generator as a word over `𝒢ₙ`. -/
 def trg : Gen n → Word (HadamardPi.Gen n)
@@ -52,13 +46,7 @@ def trg : Gen n → Word (HadamardPi.Gen n)
 def tr : Word (Gen n) →* Word (HadamardPi.Gen n) := FreeMonoid.lift trg
 
 theorem lift_ι (w : Word (HadamardPi.Gen n)) :
-    FreeMonoid.lift (sem n) (ι w) = FreeMonoid.lift (HadamardPi.sem n) w := by
-  induction w using FreeMonoid.inductionOn' with
-  | one => simp
-  | mul_of g w ih =>
-    rw [map_mul, map_mul, map_mul, ih]
-    congr 1
-    cases g <;> rfl
+    FreeMonoid.lift (sem n) (ι w) = FreeMonoid.lift (HadamardPi.sem n) w := lift_ofFig6 w
 
 theorem lift_tr (w : Word (Gen n)) :
     FreeMonoid.lift (HadamardPi.sem n) (tr w) = FreeMonoid.lift (sem n) w := by
