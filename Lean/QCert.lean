@@ -12,3 +12,4 @@ import QCert.Exact.Quartic
 import QCert.Exact.Quadratic
 import QCert.Exact.Roots
 import QCert.Synthesis
+import QCert.RealCliffordCH.Theorem

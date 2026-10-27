@@ -67,13 +67,15 @@ Formalized from the paper only.
 * Every generator is invertible in the theory.
 * Completeness on 0 and 1 wires (Lemma 7.1).
 * On 2 wires: the encoding preserves the semantics, Lemma 7.4, Lemma 7.5
-  for (a1)–(a3), and Lemma 7.6 from Theorem 4.4 and Lemma 7.5.
+  for (a1)–(a3), and Lemma 7.6 from Theorem 4.4 and Lemma 7.5.  Theorem 4.4,
+  which the paper imports from Hadamard-Π [17], is imported from the
+  Hadamard-Π folder (`theorem_4_4 := (QCert.HadamardPi.theorem_4_14 4).complete`);
+  whatever remains open there is that folder's.
 
 ## Remaining `sorry`
 
 | Declaration | Stands for |
 | --- | --- |
-| `Theorem.lean`: `theorem_4_4` | Theorem 4.4 at `N = 4`, the result the paper imports from Hadamard-Π [17]: Hadamard-Π's Theorem 4.14 at `n = 4`, formalized separately in `QCert.HadamardPi.theorem_4_14` (`(theorem_4_14 4).complete`).  It is restated rather than imported so that this folder builds independently of that one (whose working tree did not build at the time); replacing the `sorry` by that term closes it. |
 | `Theorem.lean`: `lemma_7_5` (the case `\| _ => sorry`) | Lemma 7.5 (Appendix C.2, with the auxiliary equations (81)–(110) of Appendix B.2) for the equations (b1)–(d3) of Figure 6 on `𝒢₄`: `D` maps each to an equation derivable from Figure 4.  The cases (a1)–(a3) are proved (`Decode.lean`). |
 | `Theorem.lean`: `completeness_ge_three` | Theorem 8.9 from three wires on: Theorem 4.10 (Appendices A.3, A.4), Lemmas 8.7 and 8.8 (Section 8, Appendices D and E), with the encoding and decoding of Definitions 8.2 and 8.3. |
 

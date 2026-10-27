@@ -15,26 +15,25 @@ identifies the group they generate inside it.
 
 Completeness is proved here on zero and one wire (Lemma 7.1).  On two wires
 it is the back-and-forth argument of Section 7.2 (`TwoQubit`): proved from
-Theorem 4.4 (imported from Hadamard-Π; `theorem_4_4`, a `sorry` standing for
-`QCert.HadamardPi.theorem_4_14`) and Lemma 7.5 (`lemma_7_5`, a `sorry`).  From three wires on (Section 8: Theorem 4.10,
-Lemmas 8.7 and 8.8, Appendices A.3–A.4, D and E) it is not formalized
-(`completeness_ge_three`, a `sorry`).  See `README.md`.
+Theorem 4.4 (imported: Hadamard-Π's `QCert.HadamardPi.theorem_4_14` at
+`n = 4`) and Lemma 7.5 (`lemma_7_5`, partly a `sorry`).  From three wires
+on (Section 8: Theorem 4.10, Lemmas 8.7 and 8.8, Appendices A.3–A.4, D and
+E) it is not formalized (`completeness_ge_three`, a `sorry`).  See `README.md`.
 -/
 import QCert.RealCliffordCH.OneQubit
 import QCert.RealCliffordCH.TwoQubit
 import QCert.RealCliffordCH.Decode
+import QCert.HadamardPi.Theorem
 
 namespace QCert.RealCliffordCH
 
 /-- Theorem 4.4 at `N = 4`, which the paper imports from Hadamard-Π [17]:
 words over `𝒢₄` with the same matrix are equal by the equations of
-Figure 6.  It is Hadamard-Π's Theorem 4.14 at `n = 4`, formalized in
-`QCert.HadamardPi.theorem_4_14` (`(theorem_4_14 4).complete`); it is stated
-here rather than imported, so that this development builds independently
-of that one. -/
+Figure 6.  It is Hadamard-Π's Theorem 4.14 at `n = 4`, formalized in its
+own folder (`QCert.HadamardPi.theorem_4_14`). -/
 theorem theorem_4_4 : ∀ u v : Word Two.G4, FreeMonoid.lift (QCert.HadamardPi.sem 4) u =
-    FreeMonoid.lift (QCert.HadamardPi.sem 4) v → Derivable QCert.HadamardPi.Fig6 u v := by
-  sorry
+    FreeMonoid.lift (QCert.HadamardPi.sem 4) v → Derivable QCert.HadamardPi.Fig6 u v :=
+  fun _ _ h => (QCert.HadamardPi.theorem_4_14 4).complete h
 
 /-- Lemma 7.5 (Appendix C.2): the decoding `D` maps every equation of
 Figure 6 on `𝒢₄` to an equation derivable from Figure 4.  Proved for (a1),
