@@ -33,7 +33,8 @@ def eL5 : Eqn :=
 
 theorem hL5 : Holds eL5.k eL5.l eL5.r :=
   Holds.of_derives (db_ok_cons hC2 (db_ok_cons hL4 db_ok_nil))
-    (steps := [.rw 0 0 0 true, .rw 0 0 0 true, .rw 1 3 0 false, .mv 7 8, .rw 0 6 0 false, .rw 0 0 0 false])
+    (steps := [.rw 0 0 0 true, .rw 0 0 0 true, .rw 0 0 0 true, .rw 1 5 0 false, .mv 9 10, .rw 0 0 0 false,
+     .rw 0 0 0 false, .rw 0 4 0 false])
     (by decide +kernel)
 
 /-- (6) of Lemma 1.1: `HSSSH = SHS·ω⁻¹`. -/
@@ -54,8 +55,8 @@ def eL7 : Eqn :=
 theorem hL7 : Holds eL7.k eL7.l eL7.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hL6 db_ok_nil))))
     (steps := [.rw 0 6 0 true, .mv 13 3, .mv 13 4, .mv 13 5, .mv 13 6, .mv 13 7, .mv 13 8, .mv 13 9,
-     .rw 3 0 0 true, .rw 0 9 0 true, .mv 16 8, .mv 16 9, .mv 16 10, .mv 16 11, .mv 16 12,
-     .mv 16 13, .mv 16 14, .rw 3 5 0 true, .rw 1 4 0 false, .rw 2 1 0 false])
+     .rw 3 0 0 true, .rw 0 9 0 true, .mv 16 6, .mv 16 7, .mv 16 8, .mv 16 9, .mv 16 10,
+     .mv 16 11, .mv 16 12, .rw 3 3 0 true, .rw 1 7 0 false, .rw 2 4 0 false])
     (by decide +kernel)
 
 /-- (8) of Lemma 1.1: `HSSHSS = SSHSSH·ω⁴`. -/
@@ -76,7 +77,8 @@ def eL9 : Eqn :=
 
 theorem hL9 : Holds eL9.k eL9.l eL9.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hL5 db_ok_nil)))
-    (steps := [.rw 0 7 0 true, .mv 14 7, .rw 2 3 0 true, .mv 13 4, .rw 2 0 0 true, .rw 1 3 0 false])
+    (steps := [.rw 0 7 0 true, .mv 14 7, .rw 2 3 0 true, .rw 2 3 0 false, .rw 0 7 0 false, .rw 0 7 0 true,
+     .mv 14 7, .rw 2 3 0 true, .mv 13 4, .rw 2 0 0 true, .rw 1 3 0 false])
     (by decide +kernel)
 
 /-- (10) of Lemma 1.1: `SSSHSSS = HSH·ω⁻¹`. -/
@@ -150,9 +152,9 @@ theorem hL16 : Holds eL16.k eL16.l eL16.r :=
      .mv 11 14, .mv 10 13, .mv 9 12, .rw 7 0 1 false, .mv 4 12, .rw 0 12 0 false,
      .rw 3 3 0 false, .mv 5 4, .rw 3 2 0 false, .mv 4 3, .rw 3 1 0 false, .mv 4 3, .mv 5 4,
      .mv 6 5, .mv 7 6, .rw 1 2 1 false, .rw 5 5 0 false, .mv 4 3, .rw 8 4 0 false, .mv 4 3,
-     .mv 12 11, .rw 3 4 0 false, .rw 1 12 0 true, .rw 1 12 0 true, .mv 7 6, .mv 9 7,
-     .mv 11 8, .rw 1 5 1 false, .mv 3 2, .rw 6 16 0 false, .rw 0 20 0 false, .rw 1 6 0 false,
-     .rw 1 6 0 false, .rw 1 6 0 false])
+     .mv 12 11, .rw 3 4 0 false, .mv 7 6, .mv 9 7, .mv 11 8, .rw 1 5 1 false, .rw 1 1 1 true,
+     .rw 1 1 1 true, .mv 11 10, .rw 6 16 0 false, .rw 0 20 0 false, .rw 1 1 1 false,
+     .rw 1 1 1 false, .rw 1 6 0 false])
     (by decide +kernel)
 
 /-- The upside-down version of (16) of Lemma 1.2. -/
@@ -166,9 +168,9 @@ theorem hM16 : Holds eM16.k eM16.l eM16.r :=
      .mv 11 14, .mv 10 13, .mv 9 12, .rw 7 0 0 false, .mv 4 12, .rw 0 12 0 false,
      .rw 3 3 0 false, .mv 5 4, .rw 3 2 0 false, .mv 4 3, .rw 3 1 0 false, .mv 4 3, .mv 5 4,
      .mv 6 5, .mv 7 6, .rw 1 2 0 false, .rw 4 5 0 false, .mv 4 3, .rw 8 4 0 false, .mv 4 3,
-     .mv 12 11, .rw 3 4 0 false, .rw 1 12 1 true, .rw 1 12 1 true, .mv 7 6, .mv 9 7,
-     .mv 11 8, .rw 1 5 0 false, .mv 3 2, .rw 6 16 1 false, .rw 0 20 0 false, .rw 1 6 1 false,
-     .rw 1 6 1 false, .rw 1 6 1 false])
+     .mv 12 11, .rw 3 4 0 false, .mv 7 6, .mv 9 7, .mv 11 8, .rw 1 5 0 false, .rw 1 1 0 true,
+     .rw 1 1 0 true, .mv 11 10, .rw 6 16 1 false, .rw 0 20 0 false, .rw 1 1 0 false,
+     .rw 1 1 0 false, .rw 1 6 1 false])
     (by decide +kernel)
 
 /-- (17) of Lemma 1.2. -/
