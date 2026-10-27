@@ -64,9 +64,10 @@ full as stated.
 * `CNOTDihedral/Derivations.lean` — every relation of Amy, Chen and Ross
   (`QCert.CNOTDihedral.Rel`) derived from Figure 7 (Appendix H); generated
   from derivations found by a search (`gen/`: `run_all.py`,
-  `gen_cnot.py`; regenerating reproduces the file).  `CNOTDihedral/Completeness.lean` — the transfer, and
-  Theorem 22 (6) as a presentation (`CNOTDihedral.presentation`:
-  `IsSubPresentationOf` on every number of wires).
+  `gen_cnot.py`; regenerating reproduces the file).
+* `CNOTDihedral/Completeness.lean` — the transfer, and Theorem 22 (6) as a
+  presentation (`CNOTDihedral.presentation`: `IsSubPresentationOf` on every
+  number of wires).
 * `Theorems.lean` — the statements.
 
 General lemmas that a framework could host (they are in this folder, the
@@ -132,12 +133,11 @@ The transfer of Section 4 is formalised generically (`Transfer.lean`,
 encoding is needed: every relation of Amy, Chen and Ross is derived from
 Figure 7 (Appendix H), the derivations found by a search over rewrites
 (a breadth-first search in both directions over the rule instances,
-`gen/`) and replayed in Lean.  For the other five
-fragments the transfer needs, besides the source completeness theorems
+`gen/`) and replayed in Lean.  For the other five fragments the transfer needs, besides the source completeness theorems
 (formalised in other folders, themselves not yet complete), the decoded
 source relations derived in the target rule set (Appendix G) and the
-round trips of the generators (Appendix F); Appendix A alone has 28
-lemmas for Cliff₂.  A search found, for Cliff₂, `CX² = 1`, Selinger's
+round trips of the generators (Appendix F), resting on the derivations of
+Appendices A–E (28 for Cliff₂, 10, 30, 33 and 13 for the others).  A search found, for Cliff₂, `CX² = 1`, Selinger's
 C4–C7 decoded, the symmetry of the decoded `CZ` and of the phase gadget,
 but C8–C15 need longer chains than the search reaches without the
 intermediate lemmas of Appendix A, so these transfers are left as the
@@ -147,14 +147,15 @@ intermediate lemmas of Appendix A, so these transfers are left as the
 
 | statement | paper | what it needs |
 |---|---|---|
-| `clifford_complete` | Theorem 22 (1) | completeness of Selinger's presentation, and Lemmas 19, 20 (Appendices A, F, G) |
-| `realClifford_complete` | Theorem 22 (2) | Makary–Ross–Selinger's presentation, Lemmas 19, 20 (Appendices C, F, G) |
-| `qutritClifford_complete` | Theorem 22 (3) | the qutrit Clifford presentation with scalar refinement (Lemma 50), Lemmas 19, 20 (Appendices D, F, G) |
-| `cliffordT_complete` | Theorem 22 (4) | Bian–Selinger's two-qubit Clifford+T presentation, Lemmas 19, 20 (Appendices E, F, G) |
-| `cliffordCS_complete` | Theorem 22 (5) | Bian–Selinger's three-qubit Clifford+CS presentation with scalar refinement, Lemmas 19, 20 |
+| `clifford_complete` | Theorem 22 (1) | completeness of Selinger's presentation; Lemma 19 (Appendix F.1) and Lemma 20 (Appendix G.1), with the derivations of Appendix A |
+| `realClifford_complete` | Theorem 22 (2) | Makary–Ross–Selinger's presentation; Lemmas 19, 20 (F.2, G.2, Appendix B) |
+| `qutritClifford_complete` | Theorem 22 (3) | the qutrit Clifford presentation with the scalar refinement of Appendix I (Lemma 50); Lemmas 19, 20 (F.3, G.3, Appendix C) |
+| `cliffordT_complete` | Theorem 22 (4) | Bian–Selinger's two-qubit Clifford+T presentation; Lemmas 19, 20 (F.4, G.4, Appendix D) |
+| `cliffordCS_complete` | Theorem 22 (5) | Bian–Selinger's three-qubit Clifford+CS presentation with the scalar refinement of Appendix I; Lemmas 19, 20 (F.5, G.5, Appendix E) |
 | `cnotDihedral_complete`, `cnotDihedral_presentation` | Theorem 22 (6) | no `sorry` of this folder: the transfer is proved (`cnotDihedral_complete_of_source`); the statements use `QCert.CNOTDihedral.presentation`, whose completeness is that formalisation's `sorry` |
 
 ## Building
 
-`./check.sh QCert/Minimality/Theorems.lean` builds everything (the slowest
-module, `CNOTDihedral/Soundness`, about 20 s).
+`./check.sh QCert/Minimality/Theorems.lean` builds everything, each module
+in under a minute (`CNOTDihedral/Completeness` and `Theorems`, which import
+`QCert.CNOTDihedral.Theorem`, are the slowest).
