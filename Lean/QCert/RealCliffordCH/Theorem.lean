@@ -22,6 +22,7 @@ Lemmas 8.7 and 8.8, Appendices A.3–A.4, D and E) it is not formalized
 -/
 import QCert.RealCliffordCH.OneQubit
 import QCert.RealCliffordCH.TwoQubit
+import QCert.RealCliffordCH.Decode
 
 namespace QCert.RealCliffordCH
 
@@ -36,10 +37,19 @@ theorem theorem_4_4 : ∀ u v : Word Two.G4, FreeMonoid.lift (QCert.HadamardPi.s
   sorry
 
 /-- Lemma 7.5 (Appendix C.2): the decoding `D` maps every equation of
-Figure 6 on `𝒢₄` to an equation derivable from Figure 4.  Not formalized. -/
+Figure 6 on `𝒢₄` to an equation derivable from Figure 4.  Proved for (a1),
+(a2), (a3) (`Two.dec_a1`, `Two.dec_a2`, `Two.dec_a3`); the other equations,
+(b1)–(d4), are not formalized (a `sorry`; (d4) has no instance on four
+indices). -/
 theorem lemma_7_5 : ∀ u v : Word Two.G4, QCert.HadamardPi.Fig6 u v →
     Derivable (theory 2) (Two.decW u) (Two.decW v) := by
-  sorry
+  intro u v h
+  rw [← Two.cl_eq]
+  cases h with
+  | a1 a => exact Two.dec_a1 a
+  | a2 hab => exact Two.dec_a2 _ _ hab
+  | a3 hab => exact Two.dec_a3 _ _ hab
+  | _ => sorry
 
 /-- Lemma 7.6 (2-qubit completeness): from Theorem 4.4, Lemma 7.4
 (`Two.lemma_7_4`, proved) and Lemma 7.5. -/
