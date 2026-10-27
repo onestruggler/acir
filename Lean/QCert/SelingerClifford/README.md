@@ -39,10 +39,14 @@ checked numerically, and `Soundness.lean` proves each one exactly.
   checker (`Holds.of_derives`, proved sound) and `Letters.lean` the letters
   and `Holds k l r` (`l = r` on every `n ≥ k` wires), the commutation of
   letters on disjoint wires and the relations as equations of letters.
-* **The lemmas of the supplement** (Lemmas 1.1–1.3), `Lemmas.lean`: (4)–(10)
-  (one qubit), (14), (15) and their upside-down versions are derived from
-  Figure 8 by checked derivations found by a search guided by the steps
-  cited in the supplement's proofs.
+* **The lemmas of the supplement** (Lemmas 1.1–1.3), `Lemmas.lean`: all of
+  (4)–(10), (14)–(18), (20), (21) and the upside-down versions of the two-
+  and three-qubit ones are derived from Figure 8 by checked derivations.
+  The supplement proves them with diagrams only; the derivations were found
+  by a search guided by the lemmas cited at each step of those proofs, with
+  intermediate lines read off the figures (each checked numerically), and
+  the upside-down versions by mirroring.  So the rules of Figures 3–7 follow
+  from C1–C15 with no gap.
 * **Normal forms** (Definition 4.3), `NormalForm.lean`, and completeness from
   Propositions 6.3 and 5.5 (`Theorem.complete`).
 
@@ -52,7 +56,6 @@ checked numerically, and `Soundness.lean` proves each one exactly.
 |---|---|
 | `Theorem.exists_normal` | Proposition 6.3 with Lemma 6.2: every circuit rewrites, with the rules of Figures 3–7 (all proved), into a normal form |
 | `Theorem.normal_unique` | Proposition 5.5 with Lemmas 5.1–5.4: distinct normal forms denote distinct operators (the action on Pauli operators) |
-| `Lemmas.hL16`, `hL17`, `hL18`, `hL20`, `hL21` and the upside-down `hM16`–`hM21` | supplement equations (16), (17), (18), (20), (21) (Lemmas 1.2, 1.3), used by the rules; statements verified numerically, derivations from Figure 8 not yet found by the search (see below) |
 
 ## Notes on the sources
 
@@ -64,7 +67,9 @@ checked numerically, and `Soundness.lean` proves each one exactly.
   steps insert or remove `x x⁻¹` for words `x` of involutions and of `S`
   (`S⁻¹ = S³`); the translation makes these explicit.
 * The supplement's proof of Lemma 1.3 says "Property (19) is (C10)"; it is
-  (C12) of Figure 8.
+  (C12) of Figure 8.  In its proof of (21), two steps labelled (11)
+  (`Z_c² = 1`) exchange two overlapping controlled-`Z` gates, which is (19)
+  (C12); we use C12 there.
 
 ## Files
 
