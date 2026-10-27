@@ -302,14 +302,14 @@ theorem rrun_sound {E : List (Eqn α)} (hE : Valid Γ E) {w v : List α}
 
 end Involutions
 
-/-- Decode `n` rotation steps: base `2⁴⁰`, a digit packing
-`i < 2⁷, k < 2¹⁴, rot < 2⁹, cut < 2⁹, rv`. -/
+/-- Decode `n` rotation steps: base `2⁴⁴`, a digit packing
+`i < 2¹¹, k < 2¹⁴, rot < 2⁹, cut < 2⁹, rv`. -/
 def decodeRot : ℕ → ℕ → List (ℕ × ℕ × ℕ × ℕ × Bool)
   | 0, _ => []
   | n + 1, c =>
-    let s := c % 1099511627776
+    let s := c % 17592186044416
     (s / 8589934592, s / 524288 % 16384, s / 1024 % 512, s / 2 % 512, s % 2 == 1) ::
-      decodeRot n (c / 1099511627776)
+      decodeRot n (c / 17592186044416)
 
 /-! ## Tables -/
 

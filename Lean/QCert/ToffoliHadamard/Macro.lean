@@ -133,9 +133,12 @@ def coxM : List (Eqn ML) :=
     ((List.range 7).filter fun j => i + 2 ≤ j).map fun j => ([.T i, .T j], [.T j, .T i])) ++
   ((List.range 6).map fun i => ([.T i, .T (i + 1), .T i], [.T (i + 1), .T i, .T (i + 1)]))
 
-/-- The relations over `ML`: Coxeter and Figure 7. -/
+/-- The relations over `ML`: Coxeter and Figure 7, and `T i T i = ε` for
+every `i` (for `i ≥ 7`, `T i` is read as `X_[6,7]`, so every letter is an
+involution). -/
 inductive MRel : WRel ML
   | ax {e : Eqn ML} (h : e ∈ coxM ++ fig7M) : MRel (FreeMonoid.ofList e.1) (FreeMonoid.ofList e.2)
+  | sqAll (i : ℕ) : MRel (FreeMonoid.ofList [.T i, .T i]) 1
 
 /-- The base of the macro tables. -/
 def baseM : List (Eqn ML) := coxM ++ fig7M
@@ -163,15 +166,25 @@ theorem coxM_cases : ∀ e ∈ coxM,
   · exact Or.inr (Or.inl ⟨i, j, hj, hij, rfl⟩)
   · exact Or.inr (Or.inr ⟨i, hi, rfl⟩)
 
-theorem xAdj_palin : ∀ i : Fin 7, (xAdj i).reverse = xAdj i := by decide
+theorem xAdj_palin' : ∀ i : Fin 7, (xAdj i).reverse = xAdj i := by decide
+
+theorem xAdj_palin (i : ℕ) : (xAdj i).reverse = xAdj i := by
+  by_cases hi : i < 7
+  · exact xAdj_palin' ⟨i, hi⟩
+  · unfold xAdj; split <;> first | omega | rfl
 
 theorem mrel_sound : ∀ u v, MRel u v → Derivable R1 (phi u) (phi v) := by
-  rintro _ _ ⟨he⟩
+  rintro _ _ (⟨he⟩ | ⟨i⟩)
+  rotate_left
+  · rw [phi_ofList]
+    have := reverse_mul Micro.involution (xAdj i)
+    rw [xAdj_palin i] at this
+    simpa [phiL] using this
   rw [phi_ofList, phi_ofList]
   rcases List.mem_append.1 he with h | h
   · rcases coxM_cases _ h with ⟨i, hi, rfl⟩ | ⟨i, j, hj, hij, rfl⟩ | ⟨i, hi, rfl⟩
     · have := reverse_mul Micro.involution (xAdj i)
-      rw [xAdj_palin ⟨i, hi⟩] at this
+      rw [xAdj_palin i] at this
       simpa [phiL] using this
     · simpa [phiL] using Micro.far_micro hj hij
     · simpa [phiL] using Micro.braid_micro hi
@@ -179,6 +192,12 @@ theorem mrel_sound : ∀ u v, MRel u v → Derivable R1 (phi u) (phi v) := by
     rw [fig7M_phi] at h2
     have := Micro.base_valid _ (List.mem_of_mem_drop (List.mem_of_mem_take h2))
     simpa [phiE] using this
+
+/-- Every macro letter is an involution. -/
+theorem involutionM : ∀ x : ML, Derivable MRel (FreeMonoid.ofList [x, x]) 1
+  | .T i => Derivable.of (MRel.sqAll i)
+  | .N => Derivable.of (MRel.ax (e := ([.N, .N], [])) (by decide))
+  | .K => Derivable.of (MRel.ax (e := ([.K, .K], [])) (by decide))
 
 /-- A derivation over `ML` gives one in `R₁`. -/
 theorem toR1 {u v : Word ML} (h : Derivable MRel u v) : Derivable R1 (phi u) (phi v) :=

@@ -14,7 +14,7 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 import QCert.ToffoliHadamard.Independence
 import QCert.ToffoliHadamard.Section6
 import QCert.ToffoliHadamard.Translation
-import QCert.ToffoliHadamard.Families
+import QCert.ToffoliHadamard.RoundTrip
 import QCert.LiRossSelinger.Theorem
 
 namespace QCert.ToffoliHadamard
@@ -29,9 +29,8 @@ theorem encodesTable1 : EncodesTable1 := by
   exact Macro.toR1 (Macro.table1_macro h)
 
 /-- Each letter of `Σ₁` is derivably equal to the circuit of its decoding
-into level matrices (not formalized). -/
-theorem roundTrip : RoundTrip := by
-  sorry
+into level matrices (`RoundTrip.lean`). -/
+theorem roundTrip : RoundTrip := fun x => Macro.roundTrip' x
 
 /-- Completeness of `R₁`, through Li–Ross–Selinger's Theorem 4.10 at `n = 8`. -/
 theorem complete1 : ∀ ⦃u v : Word Sym1⦄,
