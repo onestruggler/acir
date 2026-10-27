@@ -13,7 +13,7 @@ Theorem 34, completeness.
 The Main Lemma is the one place that needs `n ≤ 4` (Subcase 4.3.3 of its
 proof, with Lemma 39).
 -/
-import QCert.Greylyn.BaseCase
+import QCert.Greylyn.MainX
 import QCert.Synthesis
 
 namespace QCert.Greylyn
@@ -36,7 +36,10 @@ theorem main_lemma (hn : n ≤ 4) (s : St n) (hs : s ≠ 1) (x : Gen n) (hx : Ba
     ∃ (q : St n) (N' G' : Word (Gen n)), NormalPath (sem n x * s) N' q ∧
       ⟪G'⟫ * (⟪syl s⟫ * s) = q ∧ AllBelow (level s) (⟪syl s⟫ * s) G' ∧
       Derivable (Rel n) (N' * FreeMonoid.of x) (G' * syl s) := by
-  sorry
+  cases x with
+  | X j k h => exact square_X hn hs j k h hx
+  | H j k h => exact square_H hs j k h hx.1 hx.2
+  | ω j => exact square_ω hs j hx
 
 /-- The inductive step of Lemma 32: Lemma 31 closes the square at `s`, and
 `Step` holds along its path by the induction hypothesis. -/
