@@ -10,16 +10,41 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
   present `Lₙ` on `𝓕ₙ = 𝒢ₙ ∪ {I ⊗ H}` (Theorems 5.4 and 5.7; generation as
   in Section 5).
 -/
-import QCert.LiRossSelinger.Semantics
+import QCert.LiRossSelinger.SoundnessL
 
 namespace QCert.LiRossSelinger
 
+/-- Theorem 4.10 (completeness). -/
+theorem complete (n : ℕ) : ∀ ⦃u v : Word (Gen n)⦄,
+    FreeMonoid.lift (sem n) u = FreeMonoid.lift (sem n) v → Derivable (Table1 n) u v := by
+  sorry
+
+/-- Theorem 3.5 (generation): every element of `Oₙ(ℤ[1/2])` is a product of
+generators. -/
+theorem surjective (n : ℕ) : Function.Surjective (FreeMonoid.lift (sem n)) := by
+  sorry
+
 /-- Theorems 3.5, 4.3 and 4.10: Table 1 presents `Oₙ(ℤ[1/2])`. -/
-theorem presentation (n : ℕ) : IsPresentationOf (Table1 n) (sem n) := by
+theorem presentation (n : ℕ) : IsPresentationOf (Table1 n) (sem n) where
+  grouplike := grouplike
+  sound := sound
+  complete := complete n
+  surjective := surjective n
+
+/-- Theorem 5.7 (completeness). -/
+theorem completeL (m : ℕ) (hm : 1 ≤ m) : ∀ ⦃u v : Word (GenL m)⦄,
+    FreeMonoid.lift (semL m) u = FreeMonoid.lift (semL m) v → Derivable (Table12 m) u v := by
+  sorry
+
+/-- Generation of `Lₙ` by `𝓕ₙ` (Section 5). -/
+theorem surjectiveL (m : ℕ) : Function.Surjective (FreeMonoid.lift (semL m)) := by
   sorry
 
 /-- Theorems 5.4 and 5.7: for `n = m * 2 ≥ 2`, Tables 1 and 2 present `Lₙ`. -/
-theorem presentationL (m : ℕ) (hm : 1 ≤ m) : IsPresentationOf (Table12 m) (semL m) := by
-  sorry
+theorem presentationL (m : ℕ) (hm : 1 ≤ m) : IsPresentationOf (Table12 m) (semL m) where
+  grouplike := grouplikeL
+  sound := soundL
+  complete := completeL m hm
+  surjective := surjectiveL m
 
 end QCert.LiRossSelinger
