@@ -26,6 +26,9 @@ Formalized from the paper only.
 | `OneQubit.lean` | Completeness on 0 wires and Lemma 7.1 (1 wire), by the sixteen normal forms. |
 | `TwoQubit.lean` | Section 7.2: the encoding `E` (Definition 7.2) into Hadamard-Π's words over `𝒢₄` and the proof that it preserves the semantics; the decoding `D` (Definition 7.3); Lemma 7.4 (`D(E(C)) = C`), proved; Lemma 7.6 from Theorem 4.4 and Lemma 7.5 (`complete_two_of`). |
 | `Decode.lean` | Lemma 7.5 for the equations (a1)–(a3) of Figure 6, by a normalization in the quotient monoid of two-wire circuits. |
+| `Engine.lean` | A rewriting engine for two-wire derivations: words of letters (`H`, `Z` on each wire, `CZ`, `CH`, the swap), steps that rewrite with an equation of a table up to the commutation of single-qubit gates on different wires, checked by `decide`; tables grow by proved runs, mirror images (Lemma B.3) and upside-down images (conjugation by the swap). |
+| `AuxEq.lean` | Generated: the auxiliary equations (81)–(110) of Figure 12 (Appendix B.2) and a few helper equations, derived from the two-wire axioms, following the paper's chains where it gives them. |
+| `Lemma75.lean`, `Lemma75Fam.lean` | Generated: Lemma 7.5 for every equation of Figure 6 at every admissible choice of indices in `0, …, 3` (90 instances: 72 by runs over the table, 18 by rewriting over `𝒢₄` with decoded equations already proved), and one theorem per equation of Figure 6. |
 | `Theorem.lean` | `theorem_4_4`, `lemma_7_5`, `lemma_7_6`, `completeness`, `presentation`. |
 
 ## Conventions and correspondence with the paper
@@ -66,17 +69,21 @@ Formalized from the paper only.
   at every width, with no `sorry`.
 * Every generator is invertible in the theory.
 * Completeness on 0 and 1 wires (Lemma 7.1).
-* On 2 wires: the encoding preserves the semantics, Lemma 7.4, Lemma 7.5
-  for (a1)–(a3), and Lemma 7.6 from Theorem 4.4 and Lemma 7.5.  Theorem 4.4,
+* On 2 wires (Lemma 7.6): the encoding preserves the semantics, Lemma 7.4,
+  Lemma 7.5 (every equation of Figure 6, with the auxiliary equations
+  (81)–(110)), and Lemma 7.6 from them and Theorem 4.4.  Theorem 4.4,
   which the paper imports from Hadamard-Π [17], is imported from the
   Hadamard-Π folder (`theorem_4_4 := (QCert.HadamardPi.theorem_4_14 4).complete`);
   whatever remains open there is that folder's.
 
 ## Remaining `sorry`
 
+Completeness on two wires is proved here; it uses Theorem 4.4 from the
+Hadamard-Π folder, so whatever is open there (`QCert.HadamardPi.theorem_4_14`)
+is open for two wires too.
+
 | Declaration | Stands for |
 | --- | --- |
-| `Theorem.lean`: `lemma_7_5` (the case `\| _ => sorry`) | Lemma 7.5 (Appendix C.2, with the auxiliary equations (81)–(110) of Appendix B.2) for the equations (b1)–(d3) of Figure 6 on `𝒢₄`: `D` maps each to an equation derivable from Figure 4.  The cases (a1)–(a3) are proved (`Decode.lean`). |
 | `Theorem.lean`: `completeness_ge_three` | Theorem 8.9 from three wires on: Theorem 4.10 (Appendices A.3, A.4), Lemmas 8.7 and 8.8 (Section 8, Appendices D and E), with the encoding and decoding of Definitions 8.2 and 8.3. |
 
 ## Paper errors found

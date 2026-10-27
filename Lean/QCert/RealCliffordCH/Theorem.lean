@@ -16,13 +16,14 @@ identifies the group they generate inside it.
 Completeness is proved here on zero and one wire (Lemma 7.1).  On two wires
 it is the back-and-forth argument of Section 7.2 (`TwoQubit`): proved from
 Theorem 4.4 (imported: Hadamard-Π's `QCert.HadamardPi.theorem_4_14` at
-`n = 4`) and Lemma 7.5 (`lemma_7_5`, partly a `sorry`).  From three wires
+`n = 4`) and Lemma 7.5 (`lemma_7_5`).  From three wires
 on (Section 8: Theorem 4.10, Lemmas 8.7 and 8.8, Appendices A.3–A.4, D and
 E) it is not formalized (`completeness_ge_three`, a `sorry`).  See `README.md`.
 -/
 import QCert.RealCliffordCH.OneQubit
 import QCert.RealCliffordCH.TwoQubit
 import QCert.RealCliffordCH.Decode
+import QCert.RealCliffordCH.Lemma75Fam
 import QCert.HadamardPi.Theorem
 
 namespace QCert.RealCliffordCH
@@ -36,19 +37,38 @@ theorem theorem_4_4 : ∀ u v : Word Two.G4, FreeMonoid.lift (QCert.HadamardPi.s
   fun _ _ h => (QCert.HadamardPi.theorem_4_14 4).complete h
 
 /-- Lemma 7.5 (Appendix C.2): the decoding `D` maps every equation of
-Figure 6 on `𝒢₄` to an equation derivable from Figure 4.  Proved for (a1),
-(a2), (a3) (`Two.dec_a1`, `Two.dec_a2`, `Two.dec_a3`); the other equations,
-(b1)–(d4), are not formalized (a `sorry`; (d4) has no instance on four
-indices). -/
+Figure 6 on `𝒢₄` to an equation derivable from Figure 4.  (a1)–(a3) by
+`Two.inv_g`; (b1)–(d3) at every admissible choice of indices by `Lemma75Fam`;
+(d4) has no instance on four indices. -/
 theorem lemma_7_5 : ∀ u v : Word Two.G4, QCert.HadamardPi.Fig6 u v →
     Derivable (theory 2) (Two.decW u) (Two.decW v) := by
   intro u v h
-  rw [← Two.cl_eq]
   cases h with
-  | a1 a => exact Two.dec_a1 a
-  | a2 hab => exact Two.dec_a2 _ _ hab
-  | a3 hab => exact Two.dec_a3 _ _ hab
-  | _ => sorry
+  | a1 a => exact Two.EG.derivable (Two.inv_g (.Z a))
+  | a2 hab => exact Two.EG.derivable (Two.inv_g (.X _ _ hab))
+  | a3 hab => exact Two.EG.derivable (Two.inv_g (.H _ _ hab))
+  | @b1 a b hab => exact Two.EG.derivable (Two.fam_b1 a b hab)
+  | @b2 a b c hbc hab hac => exact Two.EG.derivable (Two.fam_b2 a b c hbc hab hac)
+  | @b3 a b c d hab hcd hac had hbc hbd =>
+    exact Two.EG.derivable (Two.fam_b3 a b c d hab hcd hac had hbc hbd)
+  | @b4 a b c hbc hab hac => exact Two.EG.derivable (Two.fam_b4 a b c hbc hab hac)
+  | @b5 a b c d hab hcd hac had hbc hbd =>
+    exact Two.EG.derivable (Two.fam_b5 a b c d hab hcd hac had hbc hbd)
+  | @b6 a b c d hab hcd hac had hbc hbd =>
+    exact Two.EG.derivable (Two.fam_b6 a b c d hab hcd hac had hbc hbd)
+  | @c1 a b hab => exact Two.EG.derivable (Two.fam_c1 a b hab)
+  | @c2 a b c hab hbc => exact Two.EG.derivable (Two.fam_c2 a b c hab hbc)
+  | @c3 a b c hab hbc => exact Two.EG.derivable (Two.fam_c3 a b c hab hbc)
+  | @c4 a b c hab hbc => exact Two.EG.derivable (Two.fam_c4 a b c hab hbc)
+  | @c5 a b c hab hbc => exact Two.EG.derivable (Two.fam_c5 a b c hab hbc)
+  | @d1 a b hab => exact Two.EG.derivable (Two.fam_d1 a b hab)
+  | @d2 a b hab => exact Two.EG.derivable (Two.fam_d2 a b hab)
+  | @d3 a b c d hab hcd hac hbd hbc => exact Two.EG.derivable (Two.fam_d3 a b c d hab hcd hac hbd hbc)
+  | @d4 a b c d e f hac hbd hab hce hdf hef hbc hbe hcd hde =>
+    exfalso
+    have := f.isLt
+    simp only [Fin.lt_def, ne_eq, Fin.ext_iff] at *
+    omega
 
 /-- Lemma 7.6 (2-qubit completeness): from Theorem 4.4, Lemma 7.4
 (`Two.lemma_7_4`, proved) and Lemma 7.5. -/
