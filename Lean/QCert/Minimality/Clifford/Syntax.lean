@@ -114,4 +114,6 @@ def pres : PropPresentation Gate where
   lhs a := a.sides.1
   rhs a := a.sides.2
 
+instance : DecidableEq pres.Ax := inferInstanceAs (DecidableEq Ax)
+
 end QCert.Minimality.Clifford
