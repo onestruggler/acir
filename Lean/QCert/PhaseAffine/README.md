@@ -39,6 +39,26 @@ fragments, indexed by a level `lv`:
 * `Derive.lean` — general tools: a derivation moved up a wire, a rule on the
   bottom wires.
 * `Grouplike.lean` — every generator is invertible in the theory.
+* `Calc.lean` — the circuits modulo the theory as a group `Q d lv n`
+  (`mk` the class of a circuit), structural commutations, the central
+  scalar.
+* `Powers.lean` — powers labelled by `𝔽_d` of an element of order dividing
+  `d`.
+* `Affine.lean` — Figure 1 as group equations on the bottom wires, Lemmas
+  17, 18, 19 and 21 (`X` on the target of `CX`; derived here by conjugating
+  (6) with `M_{-1}` on the control rather than by the paper's chain).
+* `Translation.lean` — Lemma 3, first step: an affine circuit is its
+  translation column `NF_tr(b)` (`xcol`) after its linear part
+  (`affine_collect`).
+* `AffineComplete.lean` — Lemma 2 (the column is fixed by the image of `0`)
+  and Theorem 1 (`affine_complete`, at every level) from the completeness of
+  the linear fragment (`linear_complete`).
+* `LinPhase.lean` — Theorem 2 for `LinPhase_d` (`complete1`): Lemma 12
+  (`zcol_push`: a diagonal normal form `ω^k Z^{a_0} ⋯ Z^{a_{n-1}}` moves
+  through an affine gate by (21), (22), (23), the crossing, and `Z` on the
+  control of `CX`, derived by conjugating (21) with `M_{-1}`), Lemma 15
+  (`layered1`), Lemma 7 and Proposition 1 (the coefficients read off the
+  phase at `0` and at the unit vectors).
 * `Completeness.lean` — completeness for the pairs, one theorem per level.
 * `Theorem.lean` — the four main theorems `theorem1`, `theorem2_lin`,
   `theorem2_quad`, `theorem2_cube` as
@@ -79,16 +99,25 @@ fragments, indexed by a level `lv`:
 
 ## Status
 
-Proved: soundness of every rule at every level (no hypotheses beyond the
-paper's: `2` invertible at level 2, `2, 3` at level 3), soundness of the
-theories for the matrices and the pairs, grouplikeness, and the reduction of
-matrix completeness to completeness for pairs.
+Proved: soundness of every rule at every level (Lemmas 1, 8, 9; no
+hypotheses beyond the paper's: `2` invertible at level 2, `2, 3` at level 3),
+soundness of the theories for the matrices and the pairs, grouplikeness,
+the reduction of matrix completeness to completeness for pairs (Remark 2),
+Theorem 1 from the completeness of the linear fragment (translations
+collected, Lemmas 2, 3), and Theorem 2 for `LinPhase_d` from Theorem 1.
 
-Remaining `sorry`s (`Completeness.lean`):
+Remaining `sorry`s:
 
-* `complete_lin0` — Theorem 1 (with Lemmas 2, 3: the affine normal form).
-* `complete_lin1`, `complete_quad`, `complete_cube` — Theorem 2 (Lemmas
-  10–15, Proposition 1) for the three phase fragments.
+* `AffineComplete.linear_complete` — completeness of the linear fragment
+  (multipliers, controlled additions, crossings). The paper obtains it from
+  Lafont's linear normal form theorem [17], which it cites without proof,
+  after deriving Lafont's rules (43)–(51) in `Aff_d` (Lemma 16, Lemmas
+  17–25); it stands for that step of Lemma 3. Theorem 1 and Theorem 2 for
+  `LinPhase_d` are proved from it.
+* `Completeness.complete_quad`, `Completeness.complete_cube` — Theorem 2
+  for `QuadPhase_d` and `CubicPhase_d` (Lemmas 10–15 and Proposition 1 for
+  the quadratic and cubic diagonal normal forms, with the local certificates
+  of Tables 3–5, Appendix D).
 
 ## Notes on the paper
 
