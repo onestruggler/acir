@@ -3,7 +3,7 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 
 # Bian–Selinger: the matrices of the generators
 
-The generators of §3.1 read as one- and two-level matrices (Definition 2.6)
+The generators of §3.1 read as one- and two-level matrices (Definition 2.5)
 of the types `X = [[0,1],[1,0]]`, `K = ω† H = (1/(1+i)) [[1,1],[1,-1]]`
 (§1) and `i`, as elements of the target group `Uₙ(ℤ[1/2, i])` (`U_ZHalfI`).
 -/
