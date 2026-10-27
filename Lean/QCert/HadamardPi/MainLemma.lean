@@ -176,6 +176,218 @@ theorem lev0_lt_of_lde {q : ℕ} (hp : 0 < piv s) (hq : q < piv s)
 
 end Pivots
 
+/-! ### Signed basis columns -/
+
+section Single
+
+theorem xv_single (p q a : Fin n) (ε : ℝ) :
+    xv p q (Pi.single a ε) = Pi.single (Equiv.swap p q a) ε := by
+  rw [xv_eq_signed]
+  funext i
+  simp only [one_mul, Pi.single_apply, Equiv.swap_apply_eq_iff]
+
+theorem lde_single {b : Fin n} {ε : ℝ} (hε : ε = 1 ∨ ε = -1) : lde (Pi.single b ε) = 0 := by
+  apply lde_eq_zero_of_int
+  intro i
+  by_cases h : i = b
+  · subst h; rcases hε with rfl | rfl
+    · exact ⟨1, by simp⟩
+    · exact ⟨-1, by simp⟩
+  · exact ⟨0, by simp [h]⟩
+
+/-- If a generator acting below the pivot sends the pivot column to a
+signed basis vector other than `e_j`, the syllable of `G s` is the
+signed transposition back to `e_j`. -/
+theorem syl_r_single {s : O n} (hp : 0 < piv s) {g : Gen n}
+    (hb : ∀ i ∈ g.idx, (i : ℕ) < piv s) {b : Fin n} {ε : ℝ} (hε : ε = 1 ∨ ε = -1)
+    (hcol : gv g (col s (pj s hp)) = Pi.single b ε) (hne : ¬(b = pj s hp ∧ ε = 1)) :
+    syl (sem n g * s) = (if hlt : b < pj s hp then FreeMonoid.of (Gen.X b (pj s hp) hlt) else 1) *
+      (if ε < 0 then FreeMonoid.of (Gen.Z b) else 1) := by
+  have hpiv : piv (sem n g * s) = piv s := by
+    apply piv_eq_of_col hp hb
+    rw [hcol]
+    intro h
+    apply hne
+    have hb' : b = pj s hp := by
+      by_contra hbj
+      have := congrFun h b
+      rw [Pi.single_eq_same, Pi.single_eq_of_ne hbj] at this
+      rcases hε with rfl | rfl <;> norm_num at this
+    refine ⟨hb', ?_⟩
+    have := congrFun h (pj s hp)
+    rw [← hb', Pi.single_eq_same, Pi.single_eq_same] at this
+    exact this
+  rw [syl_of_piv_eq hp hpiv, hcol, sylOf_zero (lde_single hε) hε rfl]
+
+/-- At exponent 0, the syllable of `s`. -/
+theorem syl_s_single {s : O n} (hp : 0 < piv s) {a : Fin n} {ε : ℝ} (hε : ε = 1 ∨ ε = -1)
+    (hva : col s (pj s hp) = Pi.single a ε) :
+    syl s = (if hlt : a < pj s hp then FreeMonoid.of (Gen.X a (pj s hp) hlt) else 1) *
+      (if ε < 0 then FreeMonoid.of (Gen.Z a) else 1) := by
+  rw [syl_eq_sylOf hp, hva, sylOf_zero (lde_single hε) hε rfl]
+
+end Single
+
+/-! ### The basic generators at or above the pivot -/
+
+section Above
+
+/-- `X_[0,q]` at or above the pivot: its syllable is itself. -/
+theorem syl_X_above {t : O n} {z q : Fin n} (hzq : z < q) (hz : (z : ℕ) = 0) (hq : piv t ≤ q) :
+    syl (sem n (Gen.X z q hzq) * t) = FreeMonoid.of (Gen.X z q hzq) := by
+  have hp : piv (sem n (Gen.X z q hzq) * t) = q + 1 := piv_of_lev (lev_X_of_le hzq hq)
+  have hp0 : 0 < piv (sem n (Gen.X z q hzq) * t) := by omega
+  have hpj : pj _ hp0 = q := Fin.ext (by simp only [pj]; omega)
+  have hcol : col (sem n (Gen.X z q hzq) * t) q = Pi.single z 1 := by
+    rw [col_sem_mul, fixed_of_lt hq]
+    simp only [gv]; rw [xv_single, Equiv.swap_apply_right]
+  rw [syl, dif_pos hp0, hpj, hcol, sylOf_zero (lde_single (Or.inl rfl)) (Or.inl rfl) rfl,
+    dif_pos hzq, if_neg (by norm_num), mul_one]
+
+/-- The column `e (e_p ± e_q)/√2` reached by `H_[p,q]` from `±e_p` or `±e_q`
+(`e = ±1`): two odd entries of the same class at exponent 1. -/
+theorem hv_pm_facts {p q : Fin n} (hpq : p < q) {a : Fin n} (ha : a = p ∨ a = q) {e : ℤ}
+    (he : e = 1 ∨ e = -1) :
+    InRing (hv p q (Pi.single a (e : ℝ))) ∧ lde (hv p q (Pi.single a (e : ℝ))) = 1 ∧
+      oddSet (hv p q (Pi.single a (e : ℝ))) = {p, q} ∧
+      SameOdd (num (hv p q (Pi.single a (e : ℝ))) p) (num (hv p q (Pi.single a (e : ℝ))) q) ∧
+      ∀ i, i ≠ p → i ≠ q → num (hv p q (Pi.single a (e : ℝ))) i = 0 := by
+  classical
+  have hne : p ≠ q := ne_of_lt hpq
+  set v := hv p q (Pi.single a (e : ℝ))
+  have h2 := sqrt2_mul_invSqrt2
+  -- the numerators at exponent 1
+  set u : Fin n → ℤ√2 := fun i =>
+    if i = p then (e : ℤ√2) else if i = q then (if a = p then (e : ℤ√2) else -(e : ℤ√2)) else 0
+  have hvi : ∀ i, v i = if i = p then invSqrt2 * e else if i = q then
+      (if a = p then invSqrt2 * e else -(invSqrt2 * e)) else 0 := by
+    intro i
+    simp only [v, hv]
+    rcases ha with rfl | rfl
+    · by_cases h1 : i = a
+      · subst h1; simp [Pi.single_apply, hne, Ne.symm hne]
+      · by_cases h3 : i = q
+        · subst h3; simp [Pi.single_apply, hne, Ne.symm hne]
+        · simp [Pi.single_apply, h1, h3]
+    · by_cases h1 : i = p
+      · subst h1; simp [Pi.single_apply, hne, Ne.symm hne]
+      · by_cases h3 : i = a
+        · subst h3; simp [Pi.single_apply, hne, Ne.symm hne, h1]
+        · simp [Pi.single_apply, h1, h3]
+  have hu : ∀ i, toReal (u i) = Real.sqrt 2 ^ 1 * v i := by
+    intro i
+    rw [hvi i]
+    simp only [u]
+    split_ifs <;> simp <;> linear_combination (e : ℝ) * h2
+  have hmem : ((e : ℝ)) * invSqrt2 ∈ ZInvSqrt2 := ZInvSqrt2.mul_mem (by
+    rcases he with rfl | rfl
+    · simpa using ZInvSqrt2.one_mem
+    · simpa using ZInvSqrt2.neg_mem ZInvSqrt2.one_mem) invSqrt2_mem
+  have hR : InRing v := fun i => by
+    rw [hvi i]
+    split_ifs
+    · rw [mul_comm]; exact hmem
+    · rw [mul_comm]; exact hmem
+    · rw [mul_comm]; exact ZInvSqrt2.neg_mem hmem
+    · exact ZInvSqrt2.zero_mem
+  have hl : lde v = 1 := by
+    apply le_antisymm (lde_le fun i => ⟨u i, hu i⟩)
+    by_contra h0
+    have h00 : lde v = 0 := by omega
+    have := denV_lde hR p
+    rw [h00, hvi p, if_pos rfl] at this
+    rcases he with rfl | rfl
+    · simp only [Int.cast_one, mul_one] at this; exact not_den_zero_invSqrt2 this
+    · simp only [Int.cast_neg, Int.cast_one, mul_neg_one] at this
+      exact not_den_zero_invSqrt2 (by simpa using this.neg)
+  have hnum : num v = u := num_eq hR (by rw [hl]; exact hu)
+  have hoddE : Odd e := by rcases he with rfl | rfl <;> decide
+  refine ⟨hR, hl, ?_, ?_, ?_⟩
+  · ext i
+    rw [mem_oddSet, hnum]
+    simp only [u, mem_insert, mem_singleton]
+    split_ifs <;> simp_all [hoddE]
+  · rw [hnum]
+    simp only [SameOdd, u, if_pos rfl, if_neg (Ne.symm hne)]
+    split_ifs <;> simp [hoddE]
+  · intro i h1 h3
+    rw [hnum]; simp [u, h1, h3]
+
+/-- If the pivot column of `H_[0,1] s` is `ε (e_0 ± e_1)/√2`, its syllable
+is `H_[0,1]`. -/
+theorem sylOf_hv_pm {j z o a : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
+    (ha : a = z ∨ a = o) {e : ℤ} (he : e = 1 ∨ e = -1) :
+    sylOf j (hv z o (Pi.single a (e : ℝ))) = FreeMonoid.of (Gen.H z o hzo) := by
+  classical
+  obtain ⟨hR, hl, hodd, hsame, hzero⟩ := hv_pm_facts hzo ha he
+  set v := hv z o (Pi.single a (e : ℝ))
+  have hk : lde v ≠ 0 := by rw [hl]; norm_num
+  have h1 : (oddSet v).Nonempty := ⟨z, by rw [hodd]; simp⟩
+  have hm1 : (oddSet v).min' h1 = z := by
+    apply le_antisymm ((oddSet v).min'_le z (by rw [hodd]; simp))
+    apply (oddSet v).le_min'
+    intro y hy; rw [hodd] at hy; simp at hy; rcases hy with rfl | rfl
+    · exact le_rfl
+    · exact le_of_lt hzo
+  have hpart : partners v ((oddSet v).min' h1) = {o} := by
+    rw [hm1]; ext i
+    rw [mem_partners, mem_singleton]
+    constructor
+    · rintro ⟨hi, hs'⟩
+      by_contra hio
+      have := hs'.2.1
+      rw [hzero i (ne_of_gt hi) hio] at this
+      simp at this
+    · rintro rfl; exact ⟨hzo, hsame⟩
+  have h2 : (partners v ((oddSet v).min' h1)).Nonempty := by rw [hpart]; simp
+  have hm2 : (partners v ((oddSet v).min' h1)).min' h2 = o := by
+    have := (partners v ((oddSet v).min' h1)).min'_mem h2
+    exact mem_singleton.1 ((Finset.ext_iff.1 hpart _).1 this)
+  rw [sylOf_pos hk h1 h2 z (Fin.ext hz) (by rw [hm2]; exact hzo)]
+  generalize hgen : (partners v ((oddSet v).min' h1)).min' h2 = m at *
+  subst hm2
+  rw [dif_neg (by rw [hm1]; exact lt_irrefl _), mul_one]
+
+/-- `H_[0,1]` at or above the pivot: its syllable is itself. -/
+theorem syl_H_above {t : O n} {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0) (hq : piv t ≤ o) :
+    syl (sem n (Gen.H z o hzo) * t) = FreeMonoid.of (Gen.H z o hzo) := by
+  have hp : piv (sem n (Gen.H z o hzo) * t) = o + 1 := piv_of_lev (lev_H_of_le hzo hq)
+  have hp0 : 0 < piv (sem n (Gen.H z o hzo) * t) := by omega
+  have hpj : pj _ hp0 = o := Fin.ext (by simp only [pj]; omega)
+  have hcol : col (sem n (Gen.H z o hzo) * t) o = hv z o (Pi.single o ((1 : ℤ) : ℝ)) := by
+    rw [col_sem_mul, fixed_of_lt hq]; simp [gv]
+  rw [syl, dif_pos hp0, hpj, hcol, sylOf_hv_pm hzo hz (Or.inr rfl) (Or.inl rfl)]
+
+/-- The syllable of a basic generator is the generator itself. -/
+theorem syl_basic (g : Gen n) (hg : Basic g) : syl (sem n g) = FreeMonoid.of g := by
+  have h1 : piv (1 : O n) = 0 := piv_eq_zero_iff.2 rfl
+  cases g with
+  | Z a =>
+    simp only [Basic] at hg
+    have hp : piv (sem n (Gen.Z a) * 1) = (a : ℕ) + 1 :=
+      piv_of_lev (lev_Z_of_le (t := 1) (p := a) (by rw [h1]; exact Nat.zero_le _))
+    rw [mul_one] at hp
+    have hp0 : 0 < piv (sem n (Gen.Z a)) := by omega
+    have hpj : pj _ hp0 = a := Fin.ext (by simp only [pj]; omega)
+    have hcol : col (sem n (Gen.Z a)) a = Pi.single a (-1) := by
+      rw [← mul_one (sem n _), col_sem_mul, col_one]
+      funext i; simp only [gv, zv]
+      split_ifs with h
+      · subst h; simp
+      · simp [Pi.single_apply, h]
+    rw [syl, dif_pos hp0, hpj, hcol, sylOf_zero (lde_single (Or.inr rfl)) (Or.inr rfl) rfl,
+      dif_neg (lt_irrefl _), if_pos (by norm_num), one_mul]
+  | X a b hab =>
+    simp only [Basic] at hg
+    have := syl_X_above (t := 1) hab hg (by rw [h1]; exact Nat.zero_le _)
+    rwa [mul_one] at this
+  | H a b hab =>
+    simp only [Basic] at hg
+    have := syl_H_above (t := 1) hab hg.1 (by rw [h1]; exact Nat.zero_le _)
+    rwa [mul_one] at this
+
+end Above
+
 /-! ### Paths of signed permutations -/
 
 section PermPaths
@@ -410,8 +622,297 @@ theorem main_Z {s : O n} (hs : s ≠ 1) (hn : 0 < n)
 
 end CaseZ
 
-/-- Lemma A.7 (Main Lemma). -/
-theorem main_lemma (s : O n) (hs : s ≠ 1) (g : Gen n) (hg : Basic g) : MainSquare s g := by
+/-! ### `G = X_[0,x]`: Main Cases 1–4 -/
+
+section CaseX
+
+/-- Main Cases 1 and 2: `G = X_[0,x]` below the pivot, at a positive
+exponent.  Not formalized (see the README: the claim of Case 1(1) about the
+first syllable of `X_[1,x] s` fails when an odd entry of the other class lies
+between the first two of the same class). -/
+theorem main_X_odd {s : O n} (hs : s ≠ 1) {z x : Fin n} (hzx : z < x) (hz : (z : ℕ) = 0)
+    (hr : sem n (Gen.X z x hzx) * s ≠ 1) (hxJ : (x : ℕ) < piv s)
+    (hk : lde (col s (pj s (piv_pos hs))) ≠ 0) : MainSquare s (Gen.X z x hzx) := by
   sorry
+
+/-- A one-letter path `X_[0,y]` from `t`, below the pivot index of `s`. -/
+theorem path_X1 {s : O n} (hs : s ≠ 1) (hk : lde (col s (pj s (piv_pos hs))) = 0)
+    {z y : Fin n} (hzy : z < y) (hy : y < pj s (piv_pos hs)) :
+    PathLt (lev s) [Gen.X z y hzy] (FreeMonoid.lift (sem n) (syl s) * s) := by
+  have ht := piv_t_lt hs hk
+  have hy' := Fin.lt_def.1 hy
+  rw [pj_val] at hy'
+  have hzy' := Fin.lt_def.1 hzy
+  exact piv_path (B := piv s - 1) (by omega) _ _ (fun g hg i hi => by
+    simp at hg; subst hg; simp [Gen.idx] at hi; rcases hi with rfl | rfl <;> omega) (by omega)
+
+theorem main_X {s : O n} (hs : s ≠ 1) {z x : Fin n} (hzx : z < x) (hz : (z : ℕ) = 0)
+    (hr : sem n (Gen.X z x hzx) * s ≠ 1) : MainSquare s (Gen.X z x hzx) := by
+  classical
+  have hp := piv_pos hs
+  -- `x` at or above the pivot: the square is retrograde
+  by_cases hxJ : piv s ≤ x
+  · exact square_retro hs (syl_X_above hzx hz hxJ)
+  push Not at hxJ
+  by_cases hk : lde (col s (pj s hp)) ≠ 0
+  · exact main_X_odd hs hzx hz hr hxJ hk
+  push Not at hk
+  have hidx : ∀ i ∈ (Gen.X z x hzx).idx, (i : ℕ) < piv s := by
+    intro i hi; simp [Gen.idx] at hi
+    rcases hi with rfl | rfl
+    · exact lt_trans (Fin.lt_def.1 hzx) hxJ
+    · exact hxJ
+  obtain ⟨a, ε, hε, hva, haj, hajε⟩ := pcol_single hp hk
+  have hsyl := syl_s_single hp hε hva
+  have hcolr : gv (Gen.X z x hzx) (col s (pj s hp)) = Pi.single (Equiv.swap z x a) ε := by
+    rw [hva]; exact xv_single z x a ε
+  have hxj : x ≤ pj s hp := by rw [Fin.le_def, pj_val]; omega
+  have hz0 : ∀ i : Fin n, z ≤ i := fun i => Fin.le_def.2 (by omega)
+  by_cases ha : a = z
+  · rw [ha] at hva hsyl hcolr haj hajε
+    have hb : Equiv.swap z x z = x := Equiv.swap_apply_left z x
+    rw [hb] at hcolr
+    rcases lt_or_eq_of_le hxj with hxj' | hxj'
+    · -- Main Case 4 (1): `X_[x,j] (-1)_[x]^τ` from `G s`; `G' = X_[0,x]`
+      have hsylr := syl_r_single hp hidx hε hcolr (fun h => absurd h.1 (ne_of_lt hxj'))
+      have hzj : z < pj s hp := lt_trans hzx hxj'
+      refine square_of hs hr [Gen.X z x hzx] (path_X1 hs hk hzx hxj') ?_
+      rw [hsylr, hsyl, dif_pos hxj', dif_pos hzj]
+      rcases hε with rfl | rfl
+      · rw [if_neg (by norm_num), if_neg (by norm_num)]
+        show Derivable Fig6 (ofList [Gen.X x _ hxj', Gen.X z x hzx])
+          (ofList [Gen.X z x hzx, Gen.X z _ hzj])
+        exact rl_c2 hzx hxj'
+      · rw [if_pos (by norm_num), if_pos (by norm_num)]
+        show Derivable Fig6 (ofList [Gen.X x _ hxj', Gen.Z x, Gen.X z x hzx])
+          (ofList [Gen.X z x hzx, Gen.X z _ hzj, Gen.Z z])
+        exact (rw_at _ 1 (rl_XZa hzx).symm rfl).trans (rw_at _ 0 (rl_c2 hzx hxj') rfl)
+    · -- Main Case 4 (2): `x = j`
+      have hzj : z < pj s hp := hxj' ▸ hzx
+      have e1 : Gen.X z (pj s hp) hzj = Gen.X z x hzx := by congr 1; exact hxj'.symm
+      rcases hε with rfl | rfl
+      · -- `N = X_[0,j] = G`
+        apply square_pro hs
+        rw [hsyl, dif_pos hzj, if_neg (by norm_num), mul_one, e1]
+      · have hsylr := syl_r_single hp hidx (Or.inr rfl) hcolr (fun h => by norm_num at h)
+        refine square_of hs hr [] (lev_syl_lt hs) ?_
+        rw [hsylr, hsyl, dif_neg (by rw [hxj']; exact lt_irrefl _), dif_pos hzj,
+          if_pos (by norm_num), if_pos (by norm_num), one_mul, e1]
+        show Derivable Fig6 (ofList [Gen.Z x, Gen.X z x hzx]) (ofList [Gen.X z x hzx, Gen.Z z])
+        exact (rl_XZa hzx).symm
+  · have hza : z < a := lt_of_le_of_ne (hz0 a) (Ne.symm ha)
+    by_cases hxa : x = a
+    · -- `x = a`: the column becomes `ε e_0` (Main Cases 3 (2), 4 (4))
+      subst hxa
+      have hb : Equiv.swap z x x = z := Equiv.swap_apply_right z x
+      rw [hb] at hcolr
+      have hzj : z < pj s hp := lt_of_lt_of_le hzx haj
+      have hsylr := syl_r_single hp hidx hε hcolr (fun h => absurd h.1 (ne_of_lt hzj))
+      rcases lt_or_eq_of_le haj with hxj' | hxj'
+      · refine square_of hs hr [Gen.X z x hzx] (path_X1 hs hk hzx hxj') ?_
+        rw [hsylr, hsyl, dif_pos hzj, dif_pos hxj']
+        rcases hε with rfl | rfl
+        · rw [if_neg (by norm_num), if_neg (by norm_num)]
+          show Derivable Fig6 (ofList [Gen.X z _ hzj, Gen.X z x hzx])
+            (ofList [Gen.X z x hzx, Gen.X x _ hxj'])
+          exact (rw_at _ 0 (rl_a2 hzx).symm rfl).trans <|
+            (rw_at _ 1 (rl_c2 hzx hxj').symm rfl).trans (rw_at _ 2 (rl_a2 hzx) rfl)
+        · rw [if_pos (by norm_num), if_pos (by norm_num)]
+          show Derivable Fig6 (ofList [Gen.X z _ hzj, Gen.Z z, Gen.X z x hzx])
+            (ofList [Gen.X z x hzx, Gen.X x _ hxj', Gen.Z x])
+          exact (rw_at _ 1 (rl_c1 hzx) rfl).trans <|
+            (rw_at _ 0 (rl_a2 hzx).symm rfl).trans <|
+            (rw_at _ 1 (rl_c2 hzx hxj').symm rfl).trans (rw_at _ 2 (rl_a2 hzx) rfl)
+      · -- `x = a = j`: `N = (-1)_[j]` (Main Case 3 (2))
+        have hε' := hajε hxj'
+        subst hε'
+        refine square_of hs hr [] (lev_syl_lt hs) ?_
+        rw [hsylr, hsyl, dif_pos hzj, dif_neg (by rw [hxj']; exact lt_irrefl _),
+          if_pos (by norm_num), if_pos (by norm_num), one_mul]
+        have e1 : Gen.X z (pj s hp) hzj = Gen.X z x hzx := by congr 1; exact hxj'.symm
+        rw [e1]
+        show Derivable Fig6 (ofList [Gen.X z x hzx, Gen.Z z, Gen.X z x hzx]) (ofList [Gen.Z x])
+        exact (rw_at _ 1 (rl_c1 hzx) rfl).trans (rw_at _ 0 (rl_a2 hzx) rfl)
+    · -- `x ≠ a`: the column stays (Main Cases 3 (1), 4 (3))
+      have hb : Equiv.swap z x a = a := Equiv.swap_apply_of_ne_of_ne ha (Ne.symm hxa)
+      rw [hb] at hcolr
+      have hsylr : syl (sem n (Gen.X z x hzx) * s) = syl s := by
+        rw [syl_r_single hp hidx hε hcolr (fun h => not_fixed_pj hp (by
+          show col s (pj s hp) = Pi.single (pj s hp) 1
+          rw [hva, h.1, h.2])), hsyl]
+      rcases lt_or_eq_of_le hxj with hxj' | hxj'
+      · -- `G' = X_[0,x]`, commuting with `N`
+        refine square_of hs hr [Gen.X z x hzx] (path_X1 hs hk hzx hxj') ?_
+        rw [hsylr, hsyl]
+        have hxj'' : x ≠ pj s hp := ne_of_lt hxj'
+        have hzj : z ≠ pj s hp := ne_of_lt (lt_of_lt_of_le hzx hxj)
+        split_ifs with hlt hneg hneg
+        · show Derivable Fig6 (ofList [Gen.X a _ hlt, Gen.Z a, Gen.X z x hzx])
+            (ofList [Gen.X z x hzx, Gen.X a _ hlt, Gen.Z a])
+          exact (rw_at _ 1 (rl_b2 hzx ha (Ne.symm hxa)) rfl).trans
+            (rw_at _ 0 (rl_b3 hlt hzx ha (Ne.symm hxa) (Ne.symm hzj) (Ne.symm hxj'')) rfl)
+        · show Derivable Fig6 (ofList [Gen.X a _ hlt, Gen.X z x hzx])
+            (ofList [Gen.X z x hzx, Gen.X a _ hlt])
+          exact rl_b3 hlt hzx ha (Ne.symm hxa) (Ne.symm hzj) (Ne.symm hxj'')
+        · show Derivable Fig6 (ofList [Gen.Z a, Gen.X z x hzx]) (ofList [Gen.X z x hzx, Gen.Z a])
+          exact rl_b2 hzx ha (Ne.symm hxa)
+        · exfalso
+          have := hajε (le_antisymm haj (not_lt.1 hlt))
+          rw [this] at hneg; norm_num at hneg
+      · -- `x = j`: `G' = X_[0,a]`
+        have haj' : a < pj s hp := lt_of_le_of_ne haj (fun h => hxa (hxj'.trans h.symm))
+        refine square_of hs hr [Gen.X z a hza] (path_X1 hs hk hza haj') ?_
+        rw [hsylr, hsyl, dif_pos haj']
+        have hax : a < x := hxj' ▸ haj'
+        have e2 : Gen.X a (pj s hp) haj' = Gen.X a x hax := by congr 1; exact hxj'.symm
+        rw [e2]
+        rcases hε with rfl | rfl
+        · rw [if_neg (by norm_num)]
+          show Derivable Fig6 (ofList [Gen.X a x hax, Gen.X z x hzx])
+            (ofList [Gen.X z a hza, Gen.X a x hax])
+          exact (rw_at _ 2 (rl_a2 hax).symm rfl).trans <|
+            (rw_at _ 1 (rl_c3 hza hax) rfl).trans (rw_at _ 0 (rl_a2 hax) rfl)
+        · rw [if_pos (by norm_num)]
+          show Derivable Fig6 (ofList [Gen.X a x hax, Gen.Z a, Gen.X z x hzx])
+            (ofList [Gen.X z a hza, Gen.X a x hax, Gen.Z a])
+          exact (rw_at _ 1 (rl_b2 hzx ha (Ne.symm hxa)) rfl).trans <|
+            (rw_at _ 2 (rl_a2 hax).symm rfl).trans <|
+            (rw_at _ 1 (rl_c3 hza hax) rfl).trans (rw_at _ 0 (rl_a2 hax) rfl)
+
+end CaseX
+
+/-! ### `G = H_[0,1]`: Main Cases 9–12 -/
+
+section CaseH
+
+/-- Main Cases 9 and 10: `G = H_[0,1]` below the pivot, at a positive
+exponent.  Not formalized: Case 9 rests on Lemmas A.16 and A.17, which are
+false (see the README), and Clément's Case 3.4 is what closes it. -/
+theorem main_H_odd {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
+    (ho : (o : ℕ) = 1) (hr : sem n (Gen.H z o hzo) * s ≠ 1) (hoJ : (o : ℕ) < piv s)
+    (hk : lde (col s (pj s (piv_pos hs))) ≠ 0) : MainSquare s (Gen.H z o hzo) := by
+  sorry
+
+theorem hv_single_other {p q a : Fin n} (ε : ℝ) (hap : a ≠ p) (haq : a ≠ q) :
+    hv p q (Pi.single a ε) = Pi.single a ε := by
+  funext i
+  simp only [hv]
+  split_ifs with h1 h2
+  · subst h1; simp [Ne.symm hap, Ne.symm haq]
+  · subst h2; simp [Ne.symm hap, Ne.symm haq]
+  · rfl
+
+theorem main_H {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
+    (ho : (o : ℕ) = 1) (hr : sem n (Gen.H z o hzo) * s ≠ 1) : MainSquare s (Gen.H z o hzo) := by
+  classical
+  have hp := piv_pos hs
+  by_cases hoJ : piv s ≤ o
+  · exact square_retro hs (syl_H_above hzo hz hoJ)
+  push Not at hoJ
+  by_cases hk : lde (col s (pj s hp)) ≠ 0
+  · exact main_H_odd hs hzo hz ho hr hoJ hk
+  push Not at hk
+  have hidx : ∀ i ∈ (Gen.H z o hzo).idx, (i : ℕ) < piv s := by
+    intro i hi; simp [Gen.idx] at hi
+    rcases hi with rfl | rfl <;> omega
+  obtain ⟨a, ε, hε, hva, haj, hajε⟩ := pcol_single hp hk
+  have hsyl := syl_s_single hp hε hva
+  have hoj : o ≤ pj s hp := by rw [Fin.le_def, pj_val]; omega
+  by_cases ha : a = z ∨ a = o
+  · -- Main Cases 11 (1), 12 (1): the square is retrograde
+    apply square_retro hs
+    obtain ⟨e, he, rfl⟩ : ∃ e : ℤ, (e = 1 ∨ e = -1) ∧ ε = e := by
+      rcases hε with rfl | rfl
+      · exact ⟨1, Or.inl rfl, by simp⟩
+      · exact ⟨-1, Or.inr rfl, by simp⟩
+    have hcolr : gv (Gen.H z o hzo) (col s (pj s hp)) = hv z o (Pi.single a (e : ℝ)) := by
+      rw [hva]; rfl
+    have hpiv : piv (sem n (Gen.H z o hzo) * s) = piv s := by
+      apply piv_eq_of_col hp hidx
+      rw [hcolr]
+      intro h
+      have hj := congrFun h (pj s hp)
+      rw [Pi.single_eq_same] at hj
+      obtain ⟨hR, hl, hodd, -, hzero⟩ := hv_pm_facts hzo ha he
+      by_cases hjo : pj s hp = o
+      · -- the entry at `o` is odd at exponent 1, not `1`
+        have := toReal_num hR (pj s hp)
+        rw [hj, hl, mul_one, pow_one] at this
+        have hm : pj s hp ∈ oddSet (hv z o (Pi.single a (e : ℝ))) := by rw [hodd, hjo]; simp
+        have h2 : num (hv z o (Pi.single a (e : ℝ))) (pj s hp) = rt2 := by
+          apply toReal_injective; rw [this, toReal_rt2]
+        rw [mem_oddSet, h2] at hm
+        simp [rt2] at hm
+      · have hjz : pj s hp ≠ z := fun h' => by
+          have := Fin.lt_def.1 hzo; rw [← h'] at this; rw [Fin.le_def] at hoj; omega
+        have := toReal_num hR (pj s hp)
+        rw [hzero _ hjz hjo, hj, map_zero] at this
+        exact absurd this.symm (by simp [sqrt2_ne_zero])
+    rw [syl_of_piv_eq hp hpiv, hcolr, sylOf_hv_pm hzo hz ha he]
+  · -- Main Cases 11 (2), 12 (2): the column stays and `H_[0,1]` commutes with `N`
+    push Not at ha
+    have hcolr : gv (Gen.H z o hzo) (col s (pj s hp)) = col s (pj s hp) := by
+      rw [hva]; exact hv_single_other ε ha.1 ha.2
+    have hpiv : piv (sem n (Gen.H z o hzo) * s) = piv s := by
+      apply piv_eq_of_col hp hidx
+      rw [hcolr]; exact not_fixed_pj hp
+    have hsylr : syl (sem n (Gen.H z o hzo) * s) = syl s := by
+      rw [syl_of_piv_eq hp hpiv, hcolr, syl_eq_sylOf hp]
+    have hoa : o < a := lt_of_le_of_ne (Fin.le_def.2 (by
+      have : (a : ℕ) ≠ 0 := fun h => ha.1 (Fin.ext (by omega))
+      have : (a : ℕ) ≠ 1 := fun h => ha.2 (Fin.ext (by omega))
+      omega)) (Ne.symm ha.2)
+    have hoj' : o < pj s hp := lt_of_lt_of_le hoa haj
+    have ht := piv_t_lt hs hk
+    have hjv := Fin.lt_def.1 hoj'
+    rw [pj_val] at hjv
+    refine square_of hs hr [Gen.H z o hzo] (piv_path (B := piv s - 1) (by omega) _ _
+      (fun g hg i hi => by
+        simp at hg; subst hg; simp [Gen.idx] at hi; rcases hi with rfl | rfl <;> omega)
+      (by omega)) ?_
+    rw [hsylr, hsyl]
+    have hza : z ≠ a := Ne.symm ha.1
+    have hzj : z ≠ pj s hp := ne_of_lt (lt_of_lt_of_le hzo hoj)
+    have hoj'' : o ≠ pj s hp := ne_of_lt hoj'
+    split_ifs with hlt hneg hneg
+    · show Derivable Fig6 (ofList [Gen.X a _ hlt, Gen.Z a, Gen.H z o hzo])
+        (ofList [Gen.H z o hzo, Gen.X a _ hlt, Gen.Z a])
+      exact (rw_at _ 1 (rl_b4 hzo ha.1 ha.2) rfl).trans
+        (rw_at _ 0 (rl_b5 hlt hzo ha.1 ha.2 (Ne.symm hzj) (Ne.symm hoj'')) rfl)
+    · show Derivable Fig6 (ofList [Gen.X a _ hlt, Gen.H z o hzo])
+        (ofList [Gen.H z o hzo, Gen.X a _ hlt])
+      exact rl_b5 hlt hzo ha.1 ha.2 (Ne.symm hzj) (Ne.symm hoj'')
+    · show Derivable Fig6 (ofList [Gen.Z a, Gen.H z o hzo]) (ofList [Gen.H z o hzo, Gen.Z a])
+      exact rl_b4 hzo ha.1 ha.2
+    · exfalso
+      have := hajε (le_antisymm haj (not_lt.1 hlt))
+      rw [this] at hneg; norm_num at hneg
+
+end CaseH
+
+/-- Lemma A.7 (Main Lemma), for every basic generator; the cases at a
+positive exponent with `X_[0,x]` or `H_[0,1]` below the pivot (Main Cases
+1, 2, 9, 10) are `main_X_odd` and `main_H_odd`. -/
+theorem main_lemma (s : O n) (hs : s ≠ 1) (g : Gen n) (hg : Basic g) : MainSquare s g := by
+  by_cases hr : sem n g * s = 1
+  · have hsg : s = sem n g := by
+      have := congrArg (sem n g * ·) hr
+      simp only [sem_sq_assoc, mul_one] at this
+      exact this
+    subst hsg
+    exact square_pro hs (syl_basic g hg)
+  cases g with
+  | Z a =>
+    simp only [Basic] at hg
+    obtain ⟨a, ha⟩ := a
+    simp only at hg
+    subst hg
+    exact main_Z hs ha hr
+  | X a x h =>
+    simp only [Basic] at hg
+    exact main_X hs h hg hr
+  | H a b h =>
+    simp only [Basic] at hg
+    exact main_H hs h hg.1 hg.2 hr
 
 end QCert.HadamardPi
