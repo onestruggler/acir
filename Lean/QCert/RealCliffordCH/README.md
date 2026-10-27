@@ -33,6 +33,7 @@ Formalized from the paper only.
 | `Sec8/Fig8.lean` | Figure 8 (equations (20)–(46)), with `Σ_{a,b,c,d}`, `Σ'_{a,b,c,d}` of Definition E.1 and `𝒲₁`, `𝒲₂` of Appendix A.4.1 (corrected, see below). |
 | `Sec8/Decoding.lean` | The decoding of Definition 8.3 (`decW`): the multi-controlled gates of Definition 2.4 placed by swap networks, colours by `X`. |
 | `Sec8/Statement.lean` | The back-and-forth argument of Theorem 8.9 (`complete_of`) from the four statements `ESem`, `Thm410` (Theorem 4.10), `Lemma87`, `Lemma88`, the last two taking completeness on fewer wires (Lemma 5.1). |
+| `Sec8/ESem/`, `Sec8/ESemProof.lean` | The encoding preserves the semantics (`esem`): the Gray code is a bijection (`gray_gInv`, `gInv_gray`), so `toP` respects products (`toP_mul`); a word of letters each acting on two disjoint pairs of indices `G⁻¹(u), G⁻¹(u + 2^p)` acts pair by pair (`prod_pairs`); the encodings of the eight gate cases are such words over four shapes of pairs (`Shapes`), and match the gate operators entry by entry (`Gates`, `Encode`). |
 | `Theorem.lean` | `theorem_4_4`, `lemma_7_5`, `lemma_7_6`, `completeness_at` (by induction on the number of wires), `completeness`, `presentation`. |
 
 ## Conventions and correspondence with the paper
@@ -79,6 +80,8 @@ Formalized from the paper only.
   which the paper imports from Hadamard-Π [17], is imported from the
   Hadamard-Π folder (`theorem_4_4 := (QCert.HadamardPi.theorem_4_14 4).complete`);
   whatever remains open there is that folder's.
+* On `n ≥ 3` wires: the encoding of Definition 8.2 produces proper words and
+  preserves the semantics in the basis ordered by the Gray code (`esem`).
 
 ## Remaining `sorry`
 
@@ -88,7 +91,6 @@ is open for two wires too.
 
 | Declaration | Stands for |
 | --- | --- |
-| `Sec8/Statement.lean`: `esem` | The encoding of Definition 8.2 preserves the semantics (used in the proof of Theorem 8.9). |
 | `Sec8/Statement.lean`: `theorem_4_10` | Theorem 4.10 (Appendices A.3, A.4): Figure 8 is complete for proper words over `𝒫_{2ⁿ}`, `n ≥ 3`. |
 | `Sec8/Statement.lean`: `lemma_8_7` | Lemma 8.7 (via Lemma 8.6, Appendix E.4), given completeness on fewer wires. |
 | `Sec8/Statement.lean`: `lemma_8_8` | Lemma 8.8 (Appendix E.5, with the auxiliary equations of Appendix D), given completeness on fewer wires. |
