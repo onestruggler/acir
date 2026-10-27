@@ -16,7 +16,7 @@ statement.
 `g ≠ 0`, completeness needs `g` to generate.  The remaining `sorry`s are
 listed in `README.md`.
 -/
-import QCert.QuditClifford.ThreeQudit
+import QCert.QuditClifford.Multiplier
 
 namespace QCert.QuditClifford
 
@@ -28,10 +28,12 @@ theorem rule_sound (hp2 : p ≠ 2) (g : ZMod p) (hg : g ≠ 0) {k : ℕ} {w v : 
   cases h with
   | C0 => exact sound_C0 p
   | C1 => exact sound_C1 p
+  | C4 => exact sound_C4 p hp2 g hg
   | C5 => exact sound_C5 p
   | C6 => exact sound_C6 p
   | C7 => exact sound_C7 p hp2
   | C8 => exact sound_C8 p
+  | C9 => exact sound_C9 p hp2 g hg
   | C10 => exact sound_C10 p hp2
   | C11 => exact sound_C11 p hp2
   | C12 => exact sound_C12 p hp2
