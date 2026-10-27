@@ -78,9 +78,43 @@ groups `O_ZHalf n` and `L n`, `matIH` = `I ⊗ H`), `Theorem.lean`.
   (grouplike from units, `derivable_map`), `Extension` (adding an
   involution that normalises the words).
 
+## Theorem 4.10: structure of the proof
+
+* `Algorithm.lean`: Algorithm 1 made deterministic (pivot `j` of
+  Definition 3.6, least denominator exponent, the first four odd entries,
+  the signs `τ`), the level `(j, k, ℓ)` in lexicographic order, and
+  `level_next_lt`: each syllable lowers the level.
+* `Reduction.lean`: the normal words `nw` (`nw s = nw (N s) · N`) and
+  `complete_of`: Theorem 4.10 from two statements, `MainLemmaBasic`
+  (Lemma A.20 for the basic edges that do not raise the level) and
+  `BasicDecomp` (Lemma A.19 with a level bound at every intermediate state).
+  The induction is on the level of the edge, `max (level s) (level (G s))`,
+  with basic edges before the others at each level; a basic edge that
+  raises the level is closed by the square at its higher endpoint (every
+  generator is an involution).
+
+## Gaps in the paper's proof of Theorem 4.10
+
+1. **Lemma A.19** (every simple edge is a sequence of basic edges with the
+   same extent and level) is not proved in the paper; it cites Greylyn 2014.
+2. **Retrograde edges.** Lemma A.20 dismisses the cases where `G` acts on
+   already fixed columns ("this case is retrograde") without a diagram, but
+   the induction of Lemma 4.8 (on `level(s)`) and Lemma A.21 apply the Main
+   Lemma to every basic edge at every state, including those.  As written
+   the induction does not cover them.  The formalization inducts on the
+   edge level instead (above), which needs the Main Lemma only for edges
+   that do not raise the level and makes Lemma A.21 (and its "wedge" lemma)
+   unnecessary.  (Some raising edges are treated anyway, e.g. `G = K` with
+   `a = 1`, `level(r) = (j, k+1, ·)`.)
+3. Typos in levels, e.g. "`level(r) = (j,k,m+1)`" in the case
+   `|{a,b,c,d} ∩ {1,2,3,4}| = 0`, where four odd entries appear (`m+4`).
+
 ## Remaining `sorry`
 
-* `Theorem.complete` — **Theorem 4.10 (completeness)**, i.e. the Main
-  Lemma 4.7 with its case analysis (Appendix A: Lemmas A.19, A.20, A.21 and
-  the derived relations, Propositions A.11–A.16).  Everything else,
-  including `presentationL`, is proved from it.
+* `Theorem.mainLemmaBasic` — Lemma A.20 (the case analysis of Appendix A.4,
+  about 45 distinct squares) for the basic edges that do not raise the
+  level.
+* `Theorem.basicDecomp` — Lemma A.19 with the level bound.
+
+Theorem 4.10 (`Theorem.complete`) and everything else, including
+`presentationL`, are proved from these two.

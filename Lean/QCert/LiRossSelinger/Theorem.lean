@@ -12,13 +12,24 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 -/
 import QCert.LiRossSelinger.PushL
 import QCert.LiRossSelinger.Generation
+import QCert.LiRossSelinger.Reduction
 
 namespace QCert.LiRossSelinger
 
-/-- Theorem 4.10 (completeness). -/
-theorem complete (n : ℕ) : ∀ ⦃u v : Word (Gen n)⦄,
-    FreeMonoid.lift (sem n) u = FreeMonoid.lift (sem n) v → Derivable (Table1 n) u v := by
+/-- Lemma A.20, the Main Lemma for the basic edges that do not raise the level. -/
+theorem mainLemmaBasic (n : ℕ) : MainLemmaBasic n := by
   sorry
+
+/-- Lemma A.19 (cited from Greylyn 2014 in the paper), with the level bound
+at every intermediate state. -/
+theorem basicDecomp (n : ℕ) : BasicDecomp n := by
+  sorry
+
+/-- Theorem 4.10 (completeness), by induction on the level of edges
+(`Reduction.complete_of`). -/
+theorem complete (n : ℕ) : ∀ ⦃u v : Word (Gen n)⦄,
+    FreeMonoid.lift (sem n) u = FreeMonoid.lift (sem n) v → Derivable (Table1 n) u v :=
+  complete_of (mainLemmaBasic n) (basicDecomp n)
 
 /-- Theorem 3.5 (generation): every element of `Oₙ(ℤ[1/2])` is a product of
 generators. -/
