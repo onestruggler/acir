@@ -151,4 +151,71 @@ theorem toMat_level {k m : ℕ} (f : Fin k → Fin m) (hf : Function.Injective f
     rw [levelMat_apply_of_left _ (fun l h => hi ⟨l, congrArg Fin.val h⟩)]
     simp [Matrix.one_apply, Fin.ext_iff]
 
+/-! ## Sparse gates
+
+A gate that permutes or negates basis vectors acts on the rows of a matrix
+without arithmetic; `Act.apply` multiplies by a gate on the left. -/
+
+/-- A matrix given as a row permutation, a sign per row, or densely. -/
+inductive Act (R : Type*) where
+  /-- The matrix with a `1` at `(i, π i)`: row `i` of the product is row `π i`. -/
+  | perm (π : List ℕ)
+  /-- The diagonal matrix with `-1` at the rows marked `true`. -/
+  | signs (σ : List Bool)
+  /-- A dense matrix. -/
+  | dense (L : LMat R)
+
+theorem getD_map_neg (l : List R) (j : ℕ) : (l.map Neg.neg).getD j 0 = -(l.getD j 0) := by
+  simp only [List.getD_eq_getElem?_getD, List.getElem?_map]
+  cases l[j]? <;> simp
+
+namespace Act
+
+/-- The `n × n` matrix of a gate. -/
+def toMat (n : ℕ) : Act R → Matrix (Fin n) (Fin n) R
+  | perm π => fun i j => if π.getD i n = j then 1 else 0
+  | signs σ => fun i j => if i = j then (if σ.getD i false then -1 else 1) else 0
+  | dense L => ListMat.toMat n L
+
+/-- The product of a gate with a list matrix. -/
+def apply (n : ℕ) : Act R → LMat R → LMat R
+  | perm π, M => π.map fun i => if i < n then M.getD i [] else []
+  | signs σ, M => (List.range n).map fun i =>
+      if σ.getD i false then (M.getD i []).map Neg.neg else M.getD i []
+  | dense L, M => mul n L M
+
+theorem toMat_apply (n : ℕ) (a : Act R) (M : LMat R) :
+    ListMat.toMat n (a.apply n M) = a.toMat n * ListMat.toMat n M := by
+  cases a with
+  | perm π =>
+    ext i j
+    simp only [ListMat.toMat, apply, toMat, Matrix.mul_apply, ite_mul, one_mul, zero_mul]
+    by_cases hi : (i : ℕ) < π.length
+    · rw [getD_map_of_lt _ _ hi _ 0]
+      have e1 : π.getD i n = π[(i : ℕ)] := by simp [List.getD_eq_getElem?_getD, hi]
+      have e2 : π.getD i 0 = π[(i : ℕ)] := by simp [List.getD_eq_getElem?_getD, hi]
+      simp only [e1, e2]
+      rcases lt_or_ge π[(i : ℕ)] n with hk | hk
+      · rw [Finset.sum_eq_single ⟨π[(i : ℕ)], hk⟩ (fun b _ hb => by
+            rw [if_neg]; intro h; exact hb (Fin.ext h.symm)) (by simp)]
+        simp [hk]
+      · rw [Finset.sum_eq_zero (fun b _ => by rw [if_neg]; omega)]
+        simp [show ¬ π[(i : ℕ)] < n by omega]
+    · rw [getD_map_of_ge _ _ (by omega)]
+      rw [Finset.sum_eq_zero (fun b _ => by
+        rw [if_neg]; rw [List.getD_eq_getElem?_getD, List.getElem?_eq_none (by omega)]; simp; omega)]
+      simp
+  | signs σ =>
+    ext i j
+    simp only [ListMat.toMat, apply, toMat, Matrix.mul_apply, ite_mul, zero_mul,
+      getD_range_map _ _ _ i.2]
+    rw [Finset.sum_eq_single i (fun b _ hb => by rw [if_neg (Ne.symm hb)]) (by simp)]
+    simp only [if_true]
+    split_ifs with h
+    · rw [getD_map_neg]; simp
+    · simp
+  | dense L => exact toMat_mul n L M
+
+end Act
+
 end QCert.ListMat
