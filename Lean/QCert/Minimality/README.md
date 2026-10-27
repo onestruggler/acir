@@ -57,10 +57,16 @@ full as stated.
   decided by `decide +kernel`).
 * `Transfer.lean` — Theorem 21 (`complete_of_transfer`), Lemma 20
   (`derivable_map_of`), and renaming gates (`derivable_rename`).
+* `Subst.lean` — encodings and decodings (Definition 18) as substitutions
+  of circuits for gates (`GateSubst`), extended to PROP morphisms; the
+  structural rules carried (`lift_map`), Lemma 20 (`derivable_map`) and
+  Lemma 19 (`derivable_comp`).
 * `CNOTDihedral/Derivations.lean` — every relation of Amy, Chen and Ross
   (`QCert.CNOTDihedral.Rel`) derived from Figure 7 (Appendix H); generated
   from derivations found by a search (`gen_cnot.py`, kept in the scratch
-  area).  `CNOTDihedral/Completeness.lean` — the transfer.
+  area).  `CNOTDihedral/Completeness.lean` — the transfer, and
+  Theorem 22 (6) as a presentation (`CNOTDihedral.presentation`:
+  `IsSubPresentationOf` on every number of wires).
 * `Theorems.lean` — the statements.
 
 General lemmas that a framework could host (they are in this folder, the
@@ -119,6 +125,24 @@ has them for `GateSem`), `ZQuartic`, and the evaluator of `Trie.lean`.
   in place of `ω₁₂⁷`, and `QutritClifford.Ax.E` is that corrected rule.  The
   separators of Figure 8 (c) do not depend on the exponent.
 
+## Completeness: what remains
+
+The transfer of Section 4 is formalised generically (`Transfer.lean`,
+`Subst.lean`, `Derive.lean`) and carried out for CNOT-dihedral, where no
+encoding is needed: every relation of Amy, Chen and Ross is derived from
+Figure 7 (Appendix H), the derivations found by a search over rewrites
+(a breadth-first search in both directions over the rule instances, kept
+outside the repository) and replayed in Lean.  For the other five
+fragments the transfer needs, besides the source completeness theorems
+(formalised in other folders, themselves not yet complete), the decoded
+source relations derived in the target rule set (Appendix G) and the
+round trips of the generators (Appendix F); Appendix A alone has 28
+lemmas for Cliff₂.  A search found, for Cliff₂, `CX² = 1`, Selinger's
+C4–C7 decoded, the symmetry of the decoded `CZ` and of the phase gadget,
+but C8–C15 need longer chains than the search reaches without the
+intermediate lemmas of Appendix A, so these transfers are left as the
+`sorry`s below.
+
 ## Remaining `sorry`s
 
 | statement | paper | what it needs |
@@ -128,7 +152,7 @@ has them for `GateSem`), `ZQuartic`, and the evaluator of `Trie.lean`.
 | `qutritClifford_complete` | Theorem 22 (3) | the qutrit Clifford presentation with scalar refinement (Lemma 50), Lemmas 19, 20 (Appendices D, F, G) |
 | `cliffordT_complete` | Theorem 22 (4) | Bian–Selinger's two-qubit Clifford+T presentation, Lemmas 19, 20 (Appendices E, F, G) |
 | `cliffordCS_complete` | Theorem 22 (5) | Bian–Selinger's three-qubit Clifford+CS presentation with scalar refinement, Lemmas 19, 20 |
-| `cnotDihedral_complete` | Theorem 22 (6) | nothing here: the transfer is proved (`cnotDihedral_complete_of_source`); the statement uses `QCert.CNOTDihedral.presentation`, whose completeness is that formalisation's `sorry` |
+| `cnotDihedral_complete`, `cnotDihedral_presentation` | Theorem 22 (6) | no `sorry` of this folder: the transfer is proved (`cnotDihedral_complete_of_source`); the statements use `QCert.CNOTDihedral.presentation`, whose completeness is that formalisation's `sorry` |
 
 ## Building
 
