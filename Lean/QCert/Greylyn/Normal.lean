@@ -46,10 +46,14 @@ theorem not_isOdd_ηz_δz_mul (d : ZOmega) : ¬ IsOdd (ηz * δz * d) := by
   apply not_isOdd_of_dvd
   exact ⟨ηz * d, by ring⟩
 
-/-- Theorem 18: the syllable of a state `s ≠ I` lowers its level. -/
-theorem level_syl_lt {s : St n} (hs : s ≠ 1) :
-    level (FreeMonoid.lift (sem n) (syl s) * s) < level s := by
-  obtain ⟨p, hp⟩ := exists_pivot hs
+/-- Theorem 18, column by column: the syllable of a state with pivot `p`
+fixes the columns beyond `p`, and makes column `p` equal to `eₚ` when its
+least δ-exponent is `0` and lowers its profile otherwise. -/
+theorem syl_cols {s : St n} {p : Fin n} (hp : IsPivot s p) :
+    (∀ q, p < q → col (FreeMonoid.lift (sem n) (syl s) * s) q = ev q) ∧
+      (lde (col s p) = 0 → col (FreeMonoid.lift (sem n) (syl s) * s) p = ev p) ∧
+      (0 < lde (col s p) →
+        prof (col (FreeMonoid.lift (sem n) (syl s) * s) p) < prof (col s p)) := by
   have hcol : ∀ q, col (FreeMonoid.lift (sem n) (syl s) * s) q = matOf (syl s) *ᵥ col s q := by
     intro q; rw [col_mul, sm_lift]
   rw [syl_eq hp]
@@ -64,13 +68,13 @@ theorem level_syl_lt {s : St n} (hs : s ≠ 1) :
       by_contra h; exact hcne (hasNum_zero_of_entry hp hw (not_le.1 h))
     rcases hcp.lt_or_eq with hcp | hcp
     · rw [sylCol_unit_lt hw hcne hc0 hcp] at hcol ⊢
-      apply level_lt_of_cols hp
+      refine ⟨?_, ?_, ?_⟩
       · intro q hq
         rw [hcol, hp.2 q hq, matOf_mul_mulVec, matOf_ωpow, matOf_X,
           twoLevel_mulVec_of_zero hcp.ne _ (ev_apply_ne (ne_of_lt (hcp.trans hq)))
             (ev_apply_ne (ne_of_lt hq)),
           oneLevel_mulVec_of_zero _ _ (ev_apply_ne (ne_of_lt hq))]
-      · left
+      · intro _
         rw [hcol, matOf_mul_mulVec, matOf_ωpow, matOf_X]
         apply eq_ev_of_hasNum (hasNum_ω (hasNum_X hw hcp.ne) p _)
         intro a
@@ -81,14 +85,15 @@ theorem level_syl_lt {s : St n} (hs : s ≠ 1) :
           by_cases hac : a = c
           · rw [hac, Function.update_self]; exact hc0 p hcp.ne'
           · rw [Function.update_of_ne hac]; exact hc0 a hac
+      · intro h; omega
     · have hcne' : w p ≠ 0 := hcp ▸ hcne
       have hc0' : ∀ a, a ≠ p → w a = 0 := hcp ▸ hc0
       have hc1' : nrm0 (w p) = 1 := hcp ▸ hc1
       rw [sylCol_unit_eq hw hcne' hc0'] at hcol ⊢
-      apply level_lt_of_cols hp
+      refine ⟨?_, ?_, ?_⟩
       · intro q hq
         rw [hcol, hp.2 q hq, matOf_ωpow, oneLevel_mulVec_of_zero _ _ (ev_apply_ne (ne_of_lt hq))]
-      · left
+      · intro _
         rw [hcol, matOf_ωpow]
         apply eq_ev_of_hasNum (hasNum_ω hw _ _)
         intro a
@@ -96,6 +101,7 @@ theorem level_syl_lt {s : St n} (hs : s ≠ 1) :
         · rw [hap, Function.update_self, if_pos rfl]
           exact ωz_pow_sub_uexp_mul hc1'
         · rw [Function.update_of_ne hap, if_neg hap]; exact hc0' a hap
+      · intro h; omega
   · -- `k > 0`: Lemma 12 on the first two odd entries (Lemma 13)
     have hev := even_card_odd (col_unit s p) hw hk
     obtain ⟨j0, hj0⟩ := exists_odd hw hk
@@ -112,13 +118,14 @@ theorem level_syl_lt {s : St n} (hs : s ≠ 1) :
       rw [this] at h3; exact not_isOdd_zero h3
     have hjl := hf.1
     rw [sylCol_H hw hk rfl hf] at hcol ⊢
-    apply level_lt_of_cols hp
+    refine ⟨?_, ?_, ?_⟩
     · intro q hq
       rw [hcol, hp.2 q hq, matOf_mul_mulVec, matOf_ωpow, matOf_H,
         oneLevel_mulVec_of_zero _ _ (ev_apply_ne (ne_of_lt ((hjl.trans_le hlp).trans hq))),
         twoLevel_mulVec_of_zero hjl.ne _ (ev_apply_ne (ne_of_lt ((hjl.trans_le hlp).trans hq)))
           (ev_apply_ne (ne_of_lt (lt_of_le_of_lt hlp hq)))]
-    · right
+    · intro h; omega
+    · intro _
       rw [hcol, matOf_mul_mulVec, matOf_ωpow, matOf_H]
       obtain ⟨⟨d1, hd1⟩, ⟨d2, hd2⟩⟩ := lemma12 hf.2.1 hf.2.2.1
       have h0 := hasNum_ω hw j (zexp (w j) (w l))
@@ -144,6 +151,16 @@ theorem level_syl_lt {s : St n} (hs : s ≠ 1) :
       rw [hsub, Finset.card_erase_of_mem, Finset.card_erase_of_mem (mem_oddSet.2 hf.2.2.1)]
       · omega
       · exact Finset.mem_erase.2 ⟨hjl.ne, mem_oddSet.2 hf.2.1⟩
+
+/-- Theorem 18: the syllable of a state `s ≠ I` lowers its level. -/
+theorem level_syl_lt {s : St n} (hs : s ≠ 1) :
+    level (FreeMonoid.lift (sem n) (syl s) * s) < level s := by
+  obtain ⟨p, hp⟩ := exists_pivot hs
+  obtain ⟨h1, h2, h3⟩ := syl_cols hp
+  apply level_lt_of_cols hp h1
+  rcases Nat.eq_zero_or_pos (lde (col s p)) with hk | hk
+  · exact Or.inl (h2 hk)
+  · exact Or.inr (h3 hk)
 
 /-- The relation "smaller level" on states is well founded. -/
 theorem wf_level : WellFounded (fun s t : St n => level s < level t) :=
