@@ -63,8 +63,8 @@ full as stated.
   Lemma 19 (`derivable_comp`).
 * `CNOTDihedral/Derivations.lean` — every relation of Amy, Chen and Ross
   (`QCert.CNOTDihedral.Rel`) derived from Figure 7 (Appendix H); generated
-  from derivations found by a search (`gen_cnot.py`, kept in the scratch
-  area).  `CNOTDihedral/Completeness.lean` — the transfer, and
+  from derivations found by a search (`gen/`: `run_all.py`,
+  `gen_cnot.py`; regenerating reproduces the file).  `CNOTDihedral/Completeness.lean` — the transfer, and
   Theorem 22 (6) as a presentation (`CNOTDihedral.presentation`:
   `IsSubPresentationOf` on every number of wires).
 * `Theorems.lean` — the statements.
@@ -131,8 +131,8 @@ The transfer of Section 4 is formalised generically (`Transfer.lean`,
 `Subst.lean`, `Derive.lean`) and carried out for CNOT-dihedral, where no
 encoding is needed: every relation of Amy, Chen and Ross is derived from
 Figure 7 (Appendix H), the derivations found by a search over rewrites
-(a breadth-first search in both directions over the rule instances, kept
-outside the repository) and replayed in Lean.  For the other five
+(a breadth-first search in both directions over the rule instances,
+`gen/`) and replayed in Lean.  For the other five
 fragments the transfer needs, besides the source completeness theorems
 (formalised in other folders, themselves not yet complete), the decoded
 source relations derived in the target rule set (Appendix G) and the
