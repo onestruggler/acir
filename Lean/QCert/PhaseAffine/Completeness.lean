@@ -8,8 +8,7 @@ function) are equal in the theory of their fragment: Theorem 1 (level `0`)
 and Theorem 2 (levels `1`, `2`, `3`) of Blake (arXiv:2603.06466), in the
 form to which `Theorem` reduces the matrix statements.
 -/
-import QCert.PhaseAffine.Soundness
-import QCert.PhaseAffine.Derive
+import QCert.PhaseAffine.AffineComplete
 
 namespace QCert.PhaseAffine
 
@@ -17,8 +16,8 @@ variable {d : ℕ} [Fact d.Prime]
 
 /-- Theorem 1 for the pairs: affine circuits. -/
 theorem complete_lin0 (n : ℕ) (w v : C d 0 n)
-    (h : (gateData d 0).sem n w = (gateData d 0).sem n v) : Derivable (theory d 0 n) w v := by
-  sorry
+    (h : (gateData d 0).sem n w = (gateData d 0).sem n v) : Derivable (theory d 0 n) w v :=
+  affine_complete admissible_zero (isAffW_zero w) (isAffW_zero v) h
 
 /-- Theorem 2 for the pairs, `LinPhase_d`. -/
 theorem complete_lin1 (n : ℕ) (w v : C d 1 n)
