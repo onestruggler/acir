@@ -11,6 +11,7 @@ spatial laws, §2), present the `n`-qubit Clifford group, the subgroup of
 -/
 import QCert.SelingerClifford.Soundness
 import QCert.SelingerClifford.Push
+import QCert.SelingerClifford.Unique
 
 namespace QCert.SelingerClifford
 
@@ -49,10 +50,12 @@ theorem exists_normal (n : ℕ) (w : Circ n) : ∃ N : NF n, Eqv n w N.circ :=
   exists_normal' w
 
 /-- Proposition 5.5 (with Lemmas 5.1–5.4): distinct normal circuits denote
-distinct operators. -/
+distinct operators.  The matrix fixes the action on Pauli operators, the
+action fixes the normal form up to its scalar (`Unique`), and the matrix
+fixes the scalar. -/
 theorem normal_unique {n : ℕ} (N N' : NF n) (h : S.sem n N.circ = S.sem n N'.circ) :
-    N = N' := by
-  sorry
+    N = N' :=
+  normal_unique' N N' h
 
 /-- Completeness: circuits with the same matrix are equal by the relations. -/
 theorem complete (n : ℕ) {w w' : Circ n} (h : S.sem n w = S.sem n w') : Eqv n w w' := by
