@@ -13,6 +13,7 @@ decided on pairs, `2ⁿ` basis states at a time, rather than on matrices.
 -/
 import QCert.CNOTDihedral.Semantics
 import Mathlib.Data.ZMod.Basic
+import Mathlib.Tactic.IntervalCases
 
 namespace QCert.CNOTDihedral
 
@@ -239,6 +240,66 @@ theorem sem_eq_toOp {n : ℕ} (w : Circuit Gate n) : (S.sem n w).1 = toOp (pa n 
 theorem sem_eq_of_pa {n : ℕ} {w v : Circuit Gate n} (h : pa n w = pa n v) :
     S.sem n w = S.sem n v :=
   Subtype.ext (by rw [sem_eq_toOp, sem_eq_toOp, h])
+
+/-! ### The matrix determines the pair -/
+
+theorem ω_ne_zero : ω ≠ 0 := by
+  intro h; have := ω_pow_four; rw [h] at this; norm_num at this
+
+theorem ω_pow_ne_one {d : ℕ} (h0 : 0 < d) (h8 : d < 8) : ω ^ d ≠ 1 := by
+  intro h
+  have h2 : Complex.I ^ d = 1 := by
+    rw [← ω_sq, ← pow_mul, mul_comm, pow_mul, h, one_pow]
+  interval_cases d
+  · simp [Complex.ext_iff] at h2
+  · simp at h2; norm_num at h2
+  · simp [pow_succ, Complex.ext_iff] at h2
+  · rw [ω_pow_four] at h; norm_num at h
+  · simp [pow_succ, Complex.ext_iff] at h2
+  · simp [pow_succ, Complex.ext_iff] at h2; norm_num at h2
+  · simp [pow_succ, Complex.ext_iff] at h2
+
+theorem ω_pow_val_inj {x y : ZMod 8} (h : ω ^ x.val = ω ^ y.val) : x = y := by
+  have hx := ZMod.val_lt x
+  have hy := ZMod.val_lt y
+  apply ZMod.val_injective
+  rcases le_total x.val y.val with hxy | hxy
+  · obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le hxy
+    rw [hd, pow_add] at h
+    have : ω ^ d = 1 := by
+      have h' : ω ^ x.val * 1 = ω ^ x.val * ω ^ d := by rw [mul_one]; exact h
+      exact (mul_left_cancel₀ (pow_ne_zero _ ω_ne_zero) h').symm
+    by_contra hne
+    exact ω_pow_ne_one (by omega) (by omega) this
+  · obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le hxy
+    rw [hd, pow_add] at h
+    have : ω ^ d = 1 := by
+      have h' : ω ^ y.val * 1 = ω ^ y.val * ω ^ d := by rw [mul_one]; exact h.symm
+      exact (mul_left_cancel₀ (pow_ne_zero _ ω_ne_zero) h').symm
+    by_contra hne
+    exact ω_pow_ne_one (by omega) (by omega) this
+
+/-- The matrix of a pair determines the pair. -/
+theorem toOp_injective {n : ℕ} {a b : PA n} (h : toOp a = toOp b) : a = b := by
+  have key : ∀ t, a.f t = b.f t ∧ a.ph t = b.ph t := by
+    intro t
+    have e := congrFun (congrFun h (a.f t)) t
+    simp only [toOp] at e
+    by_cases hf : a.f t = b.f t
+    · rw [if_pos hf] at e
+      exact ⟨hf, ω_pow_val_inj e⟩
+    · rw [if_neg hf] at e
+      exact absurd e (pow_ne_zero _ ω_ne_zero)
+  obtain ⟨af, aph⟩ := a
+  obtain ⟨bf, bph⟩ := b
+  congr 1
+  · funext t; exact (key t).1
+  · funext t; exact (key t).2
+
+/-- Circuits with the same matrix have the same phase-affine pair. -/
+theorem pa_eq_of_sem {n : ℕ} {w v : Circuit Gate n} (h : S.sem n w = S.sem n v) :
+    pa n w = pa n v :=
+  toOp_injective (by rw [← sem_eq_toOp, ← sem_eq_toOp, h])
 
 end
 
