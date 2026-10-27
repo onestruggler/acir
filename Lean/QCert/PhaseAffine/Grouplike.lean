@@ -78,7 +78,7 @@ theorem grouplike (n : ℕ) : Grouplike (theory d lv n) := by
       have e1 : (conGen (theory d lv (m + 2))).mk' (g1 (Gate.M 1)) = 1 := by
         simpa [pad_g1] using mk_rule (m + 1) (Rules.r1 (d := d) (lv := lv))
       simp only [seq_cons, seq_nil, one_mul, map_mul, fpow, map_pow, pad_g1, pad_g2,
-        Units.val_one, map_one] at e5
+        Units.val_one] at e5
       rw [e1, mul_one] at e5
       simpa [fpow] using e5
     | SWAP =>

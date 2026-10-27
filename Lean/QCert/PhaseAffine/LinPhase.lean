@@ -28,16 +28,19 @@ section Rel
 
 variable [Fact d.Prime] (h : 1 ≤ lv) (m : ℕ)
 
+omit [Fact d.Prime] in
 /-- (19) on the bottom wires: `ω^d = 1`. -/
 theorem relωd {n : ℕ} : mk (g0 (n := n) (Gate.omega (d := d) h)) ^ d = 1 := by
   have e := mk_rule (d := d) (lv := lv) n (Rules.r19 h)
   simp only [map_pow, pad_g0, map_one] at e
   exact e
 
+omit [Fact d.Prime] in
 /-- (20): `Z^d = 1`. -/
 theorem relZd : mk (g1 (n := m) (Gate.Z (d := d) h)) ^ d = 1 := by
   simpa [pad_g1] using mk_rule (d := d) (lv := lv) m (Rules.r20 h)
 
+omit [Fact d.Prime] in
 /-- (23): `X`, `Z` is `Z`, `X`, `ω`. -/
 theorem relZX : mk (g1 (n := m) (Gate.Z (d := d) h)) * mk (g1 Gate.X) =
     mk (g0 (Gate.omega h)) * mk (g1 Gate.X) * mk (g1 (Gate.Z h)) := by
@@ -48,6 +51,7 @@ theorem relZM (x : (ZMod d)ˣ) : mk (g1 (n := m) (Gate.Z (d := d) h)) * mk (g1 (
     mk (g1 (Gate.M x)) * mk (g1 (Gate.Z h)) ^ (x : ZMod d).val := by
   simpa [pad_g1, fpow] using mk_rule (d := d) (lv := lv) m (Rules.r22 h x)
 
+omit [Fact d.Prime] in
 /-- (21): `Z` on both wires, then `CX`, is `CX`, then `Z` on the target. -/
 theorem rel21Z : mk (g2 (n := m) (Gate.CX (d := d) (lv := lv))) * mk (g1 (Gate.Z h)) *
     mk (shift (g1 (Gate.Z h))) = mk (g1 (Gate.Z h)) * mk (g2 Gate.CX) := by
@@ -158,11 +162,13 @@ section Transport
 
 variable [Fact d.Prime] (h : 1 ≤ lv)
 
+omit [Fact d.Prime] in
 theorem mk_omega_central {n : ℕ} (q : Q d lv n) : Commute (mk (g0 (Gate.omega h))) q := by
   obtain ⟨w, rfl⟩ := mk_surjective q
   show mk (g0 (Gate.omega h)) * mk w = mk w * mk (g0 (Gate.omega h))
   rw [← map_mul, ← map_mul]; exact mk_scalar_comm_word _ w
 
+omit [Fact d.Prime] in
 theorem relZd_top (m : ℕ) : mk (shift (g1 (n := m) (Gate.Z (d := d) h))) ^ d = 1 := by
   have := mk_shift_one (w := g1 (n := m) (Gate.Z (d := d) h) ^ d) (by rw [map_pow]; exact relZd h m)
   simpa only [map_pow] using this
@@ -192,6 +198,7 @@ theorem relZMpow (m : ℕ) (a : (ZMod d)ˣ) (k : ℕ) :
   | succ k ih =>
     rw [pow_succ, mul_assoc, relZM h m a, ← mul_assoc, ih, mul_assoc, ← pow_succ]
 
+omit [Fact d.Prime] in
 theorem relZ0CXpow (m : ℕ) (k : ℕ) :
     mk (g1 (n := m + 1) (Gate.Z (d := d) h)) ^ k * mk (g2 (n := m) Gate.CX) =
       mk (g2 Gate.CX) * (mk (g1 (Gate.Z h)) * mk (shift (g1 (Gate.Z h)))) ^ k := by
@@ -463,7 +470,7 @@ theorem sem_zcol [NeZero d] (h : 1 ≤ lv) (n : ℕ) (a : Lab d n) :
         PA.onBottom n (PA.diag fun v => a 0 * v 0) := by
       show (PA.onBottomHom n (PA.diag fun v : Lab d 1 => v 0)) ^ (a 0).val = _
       rw [← map_pow, PA.diag_pow, PA.onBottomHom_apply]
-      congr 2; funext v; simp [ZMod.natCast_zmod_val]
+      congr 2; funext v; simp
     rw [hp]
     refine PA.ext (funext fun v => funext fun i => ?_) (funext fun v => ?_)
     · simp only [PA.mul_f, Function.comp_apply, PA.diag_f, id]

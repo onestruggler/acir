@@ -77,10 +77,10 @@ theorem sem_xcol [NeZero d] (n : ℕ) (b : Lab d n) : (𝒢).sem n (xcol n b) = 
     · simp only [PA.mul_f, Function.comp_apply, PA.perm_f, Pi.add_apply]
       refine Fin.cases ?_ (fun j => ?_) i
       · rw [PA.onTop_f_zero', PA.onBottom1_f_zero]
-        simp only [PA.perm_f, Pi.add_apply, Fin.cases_zero]
+        simp only [PA.perm_f, Pi.add_apply]
         rw [ZMod.natCast_zmod_val]
       · rw [PA.onTop_f_succ]
-        simp only [PA.perm_f, Pi.add_apply, Fin.cases_succ]
+        simp only [PA.perm_f, Pi.add_apply]
         rw [show Fin.tail ((PA.onBottom n (PA.perm fun v => v + fun _ => ((b 0).val : ZMod d))).f v)
           j = v j.succ from PA.onBottom1_f_succ _ _ _]
         rfl
@@ -185,7 +185,7 @@ end Complete
 theorem gen_isAff_zero {n : ℕ} (x : Gen (Gate d 0) n) : x.IsAff := by
   induction x with
   | gate0 c => cases c; omega
-  | gate1 g => cases g <;> first | trivial | omega
+  | gate1 g => cases g <;> first | omega | trivial
   | gate2 g => trivial
   | gate3 g => nomatch g
   | up g ih => exact ih

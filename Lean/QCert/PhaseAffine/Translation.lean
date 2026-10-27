@@ -174,6 +174,7 @@ theorem relCX_X0pow (m : ℕ) (k : ℕ) :
       mk (g1 Gate.X) ^ k * mk (g2 Gate.CX) :=
   (Commute.pow_right (rel21 m) k).eq
 
+omit [Fact d.Prime] in
 theorem relSW_pow (m : ℕ) (g : Gate d lv 1) (k : ℕ) :
     mk (g2 (n := m) (Gate.SWAP (d := d) (lv := lv))) * mk (g1 g) ^ k =
       mk (shift (g1 g)) ^ k * mk (g2 Gate.SWAP) := by

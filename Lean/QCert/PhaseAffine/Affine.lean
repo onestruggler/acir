@@ -33,6 +33,7 @@ theorem one_lt_d : 1 < d := (Fact.out : d.Prime).one_lt
 
 /-! ### One wire -/
 
+omit [Fact d.Prime] in
 theorem rel1 : mk (g1 (n := m) (Gate.M (d := d) (lv := lv) 1)) = 1 := by
   simpa [pad_g1] using mk_rule m (Rules.r1 (d := d) (lv := lv))
 
@@ -101,6 +102,7 @@ theorem rel6 :
       mk (g1 Gate.X) * mk (shift (g1 Gate.X)) * mk (g2 Gate.CX) := by
   simpa [pad_g1, pad_g2, pad_shift, mul_assoc] using mk_rule m (Rules.r6 (d := d) (lv := lv))
 
+omit [Fact d.Prime] in
 /-- The crossing is an involution. -/
 theorem relSW2 :
     mk (g2 (n := m) (Gate.SWAP (d := d) (lv := lv))) * mk (g2 Gate.SWAP) = 1 := by
@@ -110,6 +112,7 @@ theorem relSW_inv :
     (mk (g2 (n := m) (Gate.SWAP (d := d) (lv := lv))))⁻¹ = mk (g2 Gate.SWAP) :=
   inv_eq_of_mul_eq_one_left (relSW2 m)
 
+omit [Fact d.Prime] in
 /-- The crossing is natural for one-wire gates. -/
 theorem relSWnat (g : Gate d lv 1) :
     mk (g2 (n := m) (Gate.SWAP (d := d) (lv := lv))) * mk (g1 g) =
@@ -120,11 +123,13 @@ theorem relSWnat' (g : Gate d lv 1) :
     mk (g2 (n := m) (Gate.SWAP (d := d) (lv := lv))) * mk (shift (g1 g)) =
       mk (g1 g) * mk (g2 Gate.SWAP) := by
   have e := relSWnat m g
-  calc _ = mk (g2 Gate.SWAP) * (mk (shift (g1 g)) * mk (g2 Gate.SWAP)) * (mk (g2 Gate.SWAP))⁻¹ := by
-          group
-    _ = _ := by rw [← e, relSW_inv]; simp only [mul_assoc, relSW2 m, mul_one]; rw [← mul_assoc,
-          relSW2 m, one_mul]
+  calc mk (g2 Gate.SWAP) * mk (shift (g1 g))
+      = mk (g2 Gate.SWAP) * (mk (g2 Gate.SWAP) * mk (g1 g) * (mk (g2 Gate.SWAP))⁻¹) := by
+        rw [e, mul_inv_cancel_right]
+    _ = mk (g1 g) * mk (g2 Gate.SWAP) := by
+        rw [relSW_inv, ← mul_assoc, ← mul_assoc, relSW2 m, one_mul]
 
+omit [Fact d.Prime] in
 theorem mk_shift_one {n : ℕ} {w : C d lv n} (h : mk w = 1) : mk (shift w) = 1 := by
   rw [show (1 : Q d lv (n + 1)) = mk (shift (1 : C d lv n)) by simp]
   exact mk_shift (by rw [h, map_one])

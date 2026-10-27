@@ -95,8 +95,7 @@ variable [NeZero d]
 theorem sem_Xf (k : ZMod d) : (𝒢).sem 1 (X ^ᶠ k) = PA.perm fun v i => v i + k := by
   simp only [fpow, map_pow, GateData.sem_of, gen_g1_zero, gD_X, PA.perm_pow, iter_add]
   congr 1; funext v i
-  simp only [Pi.add_apply, Pi.smul_apply, Pi.one_apply, smul_eq_mul, mul_one, nsmul_eq_mul,
-    Pi.natCast_apply, ZMod.natCast_zmod_val]
+  simp only [Pi.add_apply, mul_one, nsmul_eq_mul, Pi.natCast_apply, ZMod.natCast_zmod_val]
 
 theorem sem_CXf (k : ZMod d) :
     (𝒢).sem 2 (CX ^ᶠ k) = PA.perm fun v => ![v 0 + k * v 1, v 1] := by
@@ -268,15 +267,13 @@ theorem rules_sound (h2 : 2 ≤ lv → (2 : ZMod d) ≠ 0) (h3 : 3 ≤ lv → (3
     have h2' := h2 (by omega)
     simp only [long3, seq_cons, seq_nil, one_mul, map_mul]
     rw [sem_pad_1_3, sem_CCZ h h2' (h3 h)]
-    simp only [map_mul, map_one, one_mul, GateData.sem_shift, GateData.sem_of, gen_up,
-      gen_g2_zero, gD_CX, gD_SW]
+    simp only [GateData.sem_shift, GateData.sem_of, gen_g2_zero, gD_CX, gD_SW]
     pa_eval
   | r42 h =>
     have h2' := h2 (by omega)
     simp only [long, seq_cons, seq_nil, one_mul, map_mul]
     rw [sem_pad_1_2, sem_CS h h2' (h3 h)]
-    simp only [map_mul, map_one, one_mul, GateData.sem_shift, GateData.sem_of, gen_up,
-      gen_g2_zero, gD_CX, gD_SW]
+    simp only [GateData.sem_shift, GateData.sem_of, gen_g2_zero, gD_CX, gD_SW]
     pa_eval
 
 /-! ### Soundness of the theories -/
