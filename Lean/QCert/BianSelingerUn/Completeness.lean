@@ -9,7 +9,7 @@ generator (Lemma 3.6), by induction on the level from the Main Lemma
 (Lemma 3.7) for basic generators (`steps_of`), and from basic generators to
 all (Lemma 3.4, `step_all`).  With soundness this is Theorem 3.1.
 -/
-import QCert.BianSelingerUn.Induction
+import QCert.BianSelingerUn.LevelBound
 import QCert.Synthesis
 
 namespace QCert.BianSelingerUn
@@ -30,12 +30,12 @@ generators whose intermediate states have level at most the larger level of
 the two ends, so `Step` along simple edges below a level follows from
 `Step` along basic edges below it. -/
 theorem lift_basic : ∀ L : ℕ ×ₗ ℕ ×ₗ ℕ, (∀ (u : St n) x, Basic x → level u < L → Step u x) →
-    ∀ u y, level u < L → level (sem n y * u) < L → Step u y := by
-  sorry
+    ∀ u y, level u < L → level (sem n y * u) < L → Step u y :=
+  lift_basic'
 
 /-- Lemma 3.4: every generator is a word of basic generators. -/
-theorem decomp : ∀ y : Gen n, ∃ b, AllBasic b ∧ Derivable (Rel n) (FreeMonoid.of y) b := by
-  sorry
+theorem decomp : ∀ y : Gen n, ∃ b, AllBasic b ∧ Derivable (Rel n) (FreeMonoid.of y) b :=
+  decomp'
 
 /-- Lemma 3.6 for every edge. -/
 theorem step (s : St n) (y : Gen n) : Step s y :=
