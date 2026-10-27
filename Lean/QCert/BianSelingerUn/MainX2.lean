@@ -9,6 +9,7 @@ column; `r = X_[α,α+1] s` has the numerator `w` with the entries `α`,
 `α + 1` exchanged.
 -/
 import QCert.BianSelingerUn.MainX
+import QCert.BianSelingerUn.Case3222
 
 namespace QCert.BianSelingerUn
 
@@ -29,8 +30,8 @@ theorem case_3222_odd {s : St n} (hs : s ≠ 1) {a b p : Fin n} (hab : a < b)
     (hw : HasNum (col s p) (lde (col s p)) w) (hpos : 0 < lde (col s p)) {j : Fin n}
     (hf : FirstTwo w j a) (hbodd : GOdd (w b))
     (hstep : ∀ u y, level u < level s → level (sem n y * u) < level s → Step u y) :
-    Step s (Gen.X a b hab) := by
-  sorry
+    Step s (Gen.X a b hab) :=
+  case_3222_odd' hs hab hb hp hbp hw hpos hf hbodd hstep
 
 /-- Case 3.2: `α < p` and a positive exponent. -/
 theorem main_X_pos {s : St n} (hs : s ≠ 1) {a b p : Fin n} (hab : a < b)
