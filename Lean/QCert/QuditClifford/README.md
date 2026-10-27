@@ -61,7 +61,12 @@ C0–C15, every `k` of C3, and every `M_a` against `|x⟩ ↦ |ax⟩`) for
     `quadraticChar_card_sqrts`), `λ_p = i^{(p-1)/2}`, and `κ_a = 1`
     (`κM_eq_one`, by `p mod 8` and `QCert.gauss_sum_sign`): Lemma 2.15
     (`sem_M_eq`); then (C2) and (C3) for every `k`.
-* The inverses of `-ω`, `S` and `CZ` modulo the rules (from C0, C1, C6).
+* Every generator is invertible modulo the rules (`grouplike`): `(-ω)^{2p-1}`,
+  `S^{p-1}`, `CZ^{p-1}` by (C0), (C1), (C6), and `H³` by `H_pow_four`, a
+  derivation of `H⁴ = 1` (Corollary A.8) from (C2), (C3) and (C0) through
+  `M_{-1} = M_g^{(p-1)/2}` (`g^{(p-1)/2} = -1` for a generator, by Euler's
+  criterion) and `M_g^{p-1} = M_1 = M_g^0`; the scalar commutes with every
+  generator by the structural rules (`scalar_comm`).
 
 Soundness of (C2) and (C3) needs the sign of the Gauss sum: with
 `M_a = κ P_a` (`κ = (2/p) λ_p⁻³ G(1)/√p`, independent of `a`, `κ² = 1`), (C2)
@@ -74,7 +79,6 @@ holds iff `κ = 1`, and (C3) says `κ^{k-1} = 1`, which for even `k` (and at
 | --- | --- |
 | `QCert.gauss_sum_sign` (not in this folder) | Gauss's sign of the quadratic Gauss sum, used by (C2), (C3) |
 | `complete` (`Theorem.lean`) | Theorem 4.10's completeness: Propositions 3.8 and 3.13 (normal forms), Theorem 4.4 (the 18 symplectic relations of Figure 9 are complete up to Pauli corrections, through the 42 box relations of Proposition 4.3; Figure 9's relations are derived from Figure 1 in the supplement), Propositions 4.8, 4.9 (lifting by Pauli corrections and scalars) |
-| `exists_inverse`, case `H` (`Theorem.lean`) | `H⁴ = 1` (Corollary A.8) is derivable from (C0), (C2), (C3) |
 
 ## Errors in the paper
 
