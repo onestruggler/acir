@@ -9,7 +9,7 @@ generator (Lemma 3.6), by induction on the level from the Main Lemma
 (Lemma 3.7) for basic generators (`steps_of`), and from basic generators to
 all (Lemma 3.4, `step_all`).  With soundness this is Theorem 3.1.
 -/
-import QCert.BianSelingerUn.LevelBound
+import QCert.BianSelingerUn.MainX2
 import QCert.Synthesis
 
 namespace QCert.BianSelingerUn
@@ -17,13 +17,16 @@ namespace QCert.BianSelingerUn
 variable {n : ℕ}
 
 /-- The edges out of `I` (proof of Lemma 3.6, base case). -/
-theorem base_step : ∀ x, Basic x → Step (1 : St n) x := by
-  sorry
+theorem base_step : ∀ x, Basic x → Step (1 : St n) x := base_step'
 
 /-- Lemma 3.7 (Main Lemma), with the induction hypothesis of Lemma 3.6. -/
 theorem main_lemma : ∀ (s : St n) x, s ≠ 1 → Basic x →
     (∀ u y, level u < level s → level (sem n y * u) < level s → Step u y) → Step s x := by
-  sorry
+  intro s x hs hx hstep
+  cases x with
+  | X a b hab => exact main_X hs hab hx hstep
+  | K a b hab => exact main_K hs hab hx.1 hx.2 hstep
+  | i a => exact main_i hs a hx hstep
 
 /-- Lemma 3.4 with its level remark: a generator is a word of basic
 generators whose intermediate states have level at most the larger level of
