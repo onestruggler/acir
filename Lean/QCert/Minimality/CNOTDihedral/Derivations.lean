@@ -8,7 +8,7 @@ circuits (`QCert.CNOTDihedral.Rel`: R₁–R₁₃ and the laws of the symmetry)
 read in our gates (`tr`), is derivable from Figure 7 (`rel_derivable`).
 The relations removed in Blake's presentation, R₂–R₅, R₈ and R₁₁, are the
 derivations of Appendix H (R₄ follows the derivation of `CX²` of
-Appendix E); the others are rules of Figure 7 up to commuting gates on
+Appendix D); the others are rules of Figure 7 up to commuting gates on
 disjoint wires.  The derivations were found by a search over rewrites and
 exchanges and are replayed by `derive`.
 
@@ -58,7 +58,7 @@ def dCPhr : DEqn Th 2 where
     [.rw 3 2 true, .rw 2 1 false, .rw 1 0 false, .rw 0 2 false, .rw 1 1 false]
     (by decide +kernel)
 
-/-- R₄: `CX² = 1` (as Appendix E, Derivation of (CX²)). -/
+/-- R₄: `CX² = 1` (as Appendix D, the derivation of (CX²)). -/
 def dR4 : DEqn Th 2 where
   lhs := seq [CX, CX]
   rhs := 1
