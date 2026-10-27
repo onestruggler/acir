@@ -141,8 +141,10 @@ groups `O_ZHalf n` and `L n`, `matIH` = `I ⊗ H`), `Theorem.lean`.
   1.2.2.2 and 1.2.2.3 with `u_e` even (`CaseX.squareX_rename`: the syllable
   of `G s` is that of `s` renamed, and `G` closes the square), 1.2.3
   (`CasePair.squareX_pair'`), 2.1 (`CaseZero.squareZ_N`), 2.2
-  (`CaseN.squareN_in`, `squareN_out`) and 3.1 (`CaseZero.squareZ_K`;
-  Subcases 3.1.1–3.1.4 raise the level, which the hypothesis excludes).
+  (`CaseN.squareN_in`, `squareN_out`), 3.1 (`CaseZero.squareZ_K`;
+  Subcases 3.1.1–3.1.4 raise the level, which the hypothesis excludes) and
+  3.2.1 (`CaseK.squareK_disj`: `K` makes the even entries `0, …, 3` all odd,
+  which raises the level, or all even, which keeps the syllable).
 
 ## Remaining `sorry`
 
@@ -152,8 +154,8 @@ Two cases of Lemma A.20, in `MainLemma.lean`:
   the fifth odd entry): the two eight-entry diagrams of the paper, with
   relation (6a) and Proposition A.16, and the residue Lemmas A.7–A.10 on
   `ū ᵀ ū mod 16`.
-* `squareK_pos` — Case 3.2 (`G = K_[0,1,2,3]` at `k > 0`), the five
-  subcases by `|{a,b,c,d} ∩ {0,1,2,3}|`.
+* `squareK_meet` — Subcases 3.2.2–3.2.5 (`G = K_[0,1,2,3]` at `k > 0`
+  with the first odd entry `a ≤ 3`), by `|{a,b,c,d} ∩ {0,1,2,3}| = 1…4`.
 
 Theorem 4.10 (`Theorem.complete`) and everything else, including
 `presentationL`, are proved from them.

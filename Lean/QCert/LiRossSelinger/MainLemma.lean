@@ -13,12 +13,13 @@ basic generator `G` that does not raise the level:
   and `u_{x+1}` odd (`squareX_odd`, Subcase 1.2.2.3 with `u_e` odd);
 * `G = (−1)_[0]`: `k = 0` (`squareZ_N`), `k > 0` (`squareN_in`,
   `squareN_out`);
-* `G = K_[0,1,2,3]`: `k = 0` (`squareZ_K`), `k > 0` (`squareK_pos`,
-  Case 3.2).
+* `G = K_[0,1,2,3]`: `k = 0` (`squareZ_K`), `k > 0` with no first odd
+  entry among `0, …, 3` (`squareK_disj`, Subcase 3.2.1) and with one
+  (`squareK_meet`, Subcases 3.2.2–3.2.5).
 
-`squareX_odd` and `squareK_pos` are not proved yet.
+`squareX_odd` and `squareK_meet` are not proved yet.
 -/
-import QCert.LiRossSelinger.CasePair
+import QCert.LiRossSelinger.CaseK
 
 namespace QCert.LiRossSelinger
 
@@ -52,13 +53,29 @@ theorem squareX_odd {s : O_ZHalf n} (hs : s ≠ 1) {x y : Fin n} (hxy : x < y)
     (h2 : d = x ∧ y ∈ oddS s) : Closes s (Gen.x x y hxy) := by
   sorry
 
-/-- Case 3.2: `G = K_[0,1,2,3]` at `k > 0`.  **Not proved yet.** -/
+/-- Subcases 3.2.2–3.2.5: `G = K_[0,1,2,3]` at `k > 0`, with the first odd
+entry `a ≤ 3`.  **Not proved yet.** -/
+theorem squareK_meet {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ : Fin n} (h₁ : a₀ < a₁)
+    (h₂ : a₁ < a₂) (h₃ : a₂ < a₃)
+    (hbasic : a₀.val = 0 ∧ a₁.val = 1 ∧ a₂.val = 2 ∧ a₃.val = 3)
+    (hle : level (sem n (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃) * s) ≤ level s) (hk : 0 < lde s)
+    {a b c d : Fin n} (hab : a < b) (hbc : b < c) (hcd : c < d)
+    (ha : a ∈ oddS s) (hb : b ∈ oddS s) (hc : c ∈ oddS s) (hd : d ∈ oddS s)
+    (hrest : ∀ r ∈ oddS s, r = a ∨ r = b ∨ r = c ∨ r = d ∨ d < r) (h3a : a.val ≤ 3) :
+    Closes s (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃) := by
+  sorry
+
+/-- Case 3.2: `G = K_[0,1,2,3]` at `k > 0`. -/
 theorem squareK_pos {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ : Fin n} (h₁ : a₀ < a₁)
     (h₂ : a₁ < a₂) (h₃ : a₂ < a₃)
     (hbasic : a₀.val = 0 ∧ a₁.val = 1 ∧ a₂.val = 2 ∧ a₃.val = 3)
     (hle : level (sem n (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃) * s) ≤ level s) (hk : 0 < lde s) :
     Closes s (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃) := by
-  sorry
+  obtain ⟨a, b, c, d, hab, hbc, hcd, ha, hb, hc, hd, hrest⟩ := first_four hs hk
+  by_cases h3a : 3 < a.val
+  · exact squareK_disj hs h₁ h₂ h₃ hle hk hab hbc hcd ha hb hc hd hrest
+      (Fin.lt_def.2 (by omega))
+  · exact squareK_meet hs h₁ h₂ h₃ hbasic hle hk hab hbc hcd ha hb hc hd hrest (by omega)
 
 /-- Lemma A.20 for the basic edges that do not raise the level. -/
 theorem mainLemmaBasic_cases : MainLemmaBasic n := by
