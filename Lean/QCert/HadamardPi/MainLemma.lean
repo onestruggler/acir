@@ -781,17 +781,360 @@ theorem main_X {s : O n} (hs : s ≠ 1) {z x : Fin n} (hzx : z < x) (hz : (z : �
 
 end CaseX
 
+/-! ### Main Case 10 -/
+
+section Case10
+
+/-- An odd numerator at exponent `K + 1` rules out exponent `K`. -/
+theorem not_den_of_odd {K : ℕ} {x : ℝ} {u : ℤ√2} (h : toReal u = Real.sqrt 2 ^ (K + 1) * x)
+    (hodd : Odd u.re) : ¬Den K x := by
+  rintro ⟨u0, h0⟩
+  have : u = rt2 * u0 := toReal_injective (by
+    rw [h, map_mul, toReal_rt2, h0, pow_succ]; ring)
+  rw [this] at hodd
+  exact Int.not_odd_iff_even.2 (even_re_rt2_mul u0) hodd
+
+/-- With `0`, `1` the first two indices: if entry `0` is odd and `1` is odd of
+the same class, the syllable is `H_[0,1]`. -/
+theorem sylOf_H01 {j z o : Fin n} {w : Fin n → ℝ} (hzo : z < o) (hz : (z : ℕ) = 0)
+    (ho : (o : ℕ) = 1) (hk : lde w ≠ 0) (hzodd : Odd (num w z).re)
+    (hsame : SameOdd (num w z) (num w o)) :
+    sylOf j w = FreeMonoid.of (Gen.H z o hzo) := by
+  classical
+  have h1 : (oddSet w).Nonempty := ⟨z, mem_oddSet.2 hzodd⟩
+  have hm1 : (oddSet w).min' h1 = z :=
+    le_antisymm ((oddSet w).min'_le z (mem_oddSet.2 hzodd))
+      ((oddSet w).le_min' _ _ fun y _ => Fin.le_def.2 (by omega))
+  have h2 : (partners w ((oddSet w).min' h1)).Nonempty := ⟨o, by rw [hm1]; exact mem_partners.2 ⟨hzo, hsame⟩⟩
+  have hm2 : (partners w ((oddSet w).min' h1)).min' h2 = o := by
+    apply le_antisymm ((partners w _).min'_le o (by rw [hm1]; exact mem_partners.2 ⟨hzo, hsame⟩))
+    apply (partners w _).le_min'
+    intro y hy
+    rw [hm1, mem_partners] at hy
+    have := Fin.lt_def.1 hy.1
+    exact Fin.le_def.2 (by omega)
+  rw [sylOf_pos hk h1 h2 z (Fin.ext hz) (by rw [hm2]; exact hzo)]
+  generalize hgen : (partners w ((oddSet w).min' h1)).min' h2 = m at *
+  subst hm2
+  rw [dif_neg (by rw [hm1]; exact lt_irrefl _), mul_one]
+
+/-- `H_[0,1]` on an even entry `0` and an odd entry `1`: both become odd of the
+same class at exponent `k + 1`. -/
+theorem hv_even_odd {v : Fin n → ℝ} (hR : InRing v) {z o : Fin n} (hzo : z ≠ o)
+    (hz : ¬Odd (num v z).re) (ho : Odd (num v o).re) :
+    lde (hv z o v) ≠ 0 ∧ Odd (num (hv z o v) z).re ∧ SameOdd (num (hv z o v) z) (num (hv z o v) o) := by
+  classical
+  set k := lde v
+  have hz' := toReal_num hR z
+  have ho' := toReal_num hR o
+  set u : Fin n → ℤ√2 := fun i =>
+    if i = z then num v z + num v o else if i = o then num v z - num v o else rt2 * num v i
+  have hu : ∀ i, toReal (u i) = Real.sqrt 2 ^ (k + 1) * hv z o v i := by
+    intro i
+    simp only [u, hv]
+    split_ifs with h1 h2
+    · exact den_hsum hz' ho'
+    · exact den_hdiff hz' ho'
+    · rw [map_mul, toReal_rt2, toReal_num hR i, pow_succ]; ring
+  have hR' : InRing (hv z o v) := fun i => by
+    simp only [hv]
+    split_ifs
+    · exact ZInvSqrt2.mul_mem invSqrt2_mem (ZInvSqrt2.add_mem (hR z) (hR o))
+    · exact ZInvSqrt2.mul_mem invSqrt2_mem (ZInvSqrt2.sub_mem (hR z) (hR o))
+    · exact hR i
+  have huz : u z = num v z + num v o := by simp [u]
+  have huo : u o = num v z - num v o := by simp [u, Ne.symm hzo]
+  have hzodd : Odd (u z).re := by
+    rw [huz, Zsqrtd.re_add]; exact (Int.not_odd_iff_even.1 hz).add_odd ho
+  have hl : lde (hv z o v) = k + 1 := by
+    apply le_antisymm (lde_le fun i => ⟨u i, hu i⟩)
+    by_contra hlt
+    have := (denV_lde hR').mono (k := lde (hv z o v)) (k' := k) (by omega) z
+    exact not_den_of_odd (hu z) hzodd this
+  have hnum : num (hv z o v) = u := num_eq hR' (by rw [hl]; exact hu)
+  refine ⟨by omega, by rw [hnum]; exact hzodd, ?_⟩
+  rw [hnum]
+  refine ⟨hzodd, ?_, ?_⟩
+  · rw [huo, Zsqrtd.re_sub]; exact (Int.not_odd_iff_even.1 hz).sub_odd ho
+  · rw [huz, huo, Zsqrtd.im_add, Zsqrtd.im_sub,
+      show (num v z).im - (num v o).im = (num v z).im + (num v o).im - 2 * (num v o).im by ring]
+    exact ⟨fun h => h.sub_even (even_two_mul _), fun h => by
+      have := h.add_even (even_two_mul (num v o).im); rwa [sub_add_cancel] at this⟩
+
+/-- `H_[0,1]` on two even entries: the exponent stays, the other numerators
+stay, and the two new entries have the same residue. -/
+theorem hv_even_even {v : Fin n → ℝ} (hR : InRing v) (hk : lde v ≠ 0) {z o : Fin n} (hzo : z ≠ o)
+    (hz : ¬Odd (num v z).re) (ho : ¬Odd (num v o).re) (hodd : ∃ i, Odd (num v i).re) :
+    InRing (hv z o v) ∧ lde (hv z o v) = lde v ∧
+      (∀ i, i ≠ z → i ≠ o → num (hv z o v) i = num v i) ∧
+      (Odd (num (hv z o v) z).re ↔ Odd (num (hv z o v) o).re) ∧
+      (Odd (num (hv z o v) z).re → SameOdd (num (hv z o v) z) (num (hv z o v) o)) := by
+  classical
+  obtain ⟨k1, hk1⟩ : ∃ k1, lde v = k1 + 1 := ⟨lde v - 1, by omega⟩
+  -- the two even numerators are `√2` times `w_z`, `w_o`
+  obtain ⟨cz, hcz⟩ := Int.not_odd_iff_even.1 hz
+  obtain ⟨co, hco⟩ := Int.not_odd_iff_even.1 ho
+  set wz : ℤ√2 := ⟨(num v z).im, cz⟩
+  set wo : ℤ√2 := ⟨(num v o).im, co⟩
+  have hwz : num v z = rt2 * wz := by rw [rt2_mul]; ext <;> simp [wz, hcz]; ring
+  have hwo : num v o = rt2 * wo := by rw [rt2_mul]; ext <;> simp [wo, hco]; ring
+  have hz' := toReal_num hR z
+  have ho' := toReal_num hR o
+  rw [hk1] at hz' ho'
+  have hz'' : toReal wz = Real.sqrt 2 ^ k1 * v z := by
+    rw [hwz, map_mul, toReal_rt2, pow_succ] at hz'
+    apply mul_left_cancel₀ sqrt2_ne_zero; rw [hz']; ring
+  have ho'' : toReal wo = Real.sqrt 2 ^ k1 * v o := by
+    rw [hwo, map_mul, toReal_rt2, pow_succ] at ho'
+    apply mul_left_cancel₀ sqrt2_ne_zero; rw [ho']; ring
+  set u : Fin n → ℤ√2 := fun i =>
+    if i = z then wz + wo else if i = o then wz - wo else num v i
+  have hu : ∀ i, toReal (u i) = Real.sqrt 2 ^ (k1 + 1) * hv z o v i := by
+    intro i
+    simp only [u, hv]
+    split_ifs with h1 h2
+    · exact den_hsum hz'' ho''
+    · exact den_hdiff hz'' ho''
+    · rw [← hk1]; exact toReal_num hR i
+  have hR' : InRing (hv z o v) := fun i => by
+    simp only [hv]
+    split_ifs
+    · exact ZInvSqrt2.mul_mem invSqrt2_mem (ZInvSqrt2.add_mem (hR z) (hR o))
+    · exact ZInvSqrt2.mul_mem invSqrt2_mem (ZInvSqrt2.sub_mem (hR z) (hR o))
+    · exact hR i
+  obtain ⟨i0, hi0⟩ := hodd
+  have hi0z : i0 ≠ z := fun h => hz (h ▸ hi0)
+  have hi0o : i0 ≠ o := fun h => ho (h ▸ hi0)
+  have hl : lde (hv z o v) = lde v := by
+    rw [hk1]
+    apply le_antisymm (lde_le fun i => ⟨u i, hu i⟩)
+    by_contra hlt
+    have := (denV_lde hR').mono (k := lde (hv z o v)) (k' := k1) (by omega) i0
+    refine not_den_of_odd (hu i0) ?_ this
+    simp only [u, if_neg hi0z, if_neg hi0o]; exact hi0
+  have hnum : num (hv z o v) = u := num_eq hR' (by rw [hl, hk1]; exact hu)
+  have huz : u z = wz + wo := by simp [u]
+  have huo : u o = wz - wo := by simp [u, Ne.symm hzo]
+  refine ⟨hR', hl, fun i h1 h2 => by rw [hnum]; simp [u, h1, h2], ?_, ?_⟩
+  · rw [hnum, huz, huo, Zsqrtd.re_add, Zsqrtd.re_sub,
+      show wz.re - wo.re = wz.re + wo.re - 2 * wo.re by ring]
+    exact ⟨fun h => h.sub_even (even_two_mul _), fun h => by
+      have := h.add_even (even_two_mul wo.re); rwa [sub_add_cancel] at this⟩
+  · intro h
+    rw [hnum, huz] at h
+    rw [hnum, huz, huo]
+    rw [Zsqrtd.re_add] at h
+    refine ⟨by rw [Zsqrtd.re_add]; exact h, ?_, ?_⟩
+    · rw [Zsqrtd.re_sub, show wz.re - wo.re = wz.re + wo.re - 2 * wo.re by ring]
+      exact h.sub_even (even_two_mul _)
+    · rw [Zsqrtd.im_add, Zsqrtd.im_sub, show wz.im - wo.im = wz.im + wo.im - 2 * wo.im by ring]
+      exact ⟨fun h' => h'.sub_even (even_two_mul _), fun h' => by
+        have := h'.add_even (even_two_mul wo.im); rwa [sub_add_cancel] at this⟩
+
+/-- `H_[p,q]` on two odd entries of the same class strictly lowers the
+level. -/
+theorem lev_pair_lt {u : O n} (hp : 0 < piv u) {p q : Fin n} (hpq : p < q)
+    (hq : (q : ℕ) < piv u) (hk : lde (col u (pj u hp)) ≠ 0)
+    (hs : SameOdd (num (col u (pj u hp)) p) (num (col u (pj u hp)) q)) :
+    lev (sem n (Gen.H p q hpq) * u) < lev u := by
+  have hb : ∀ i ∈ (Gen.H p q hpq).idx, (i : ℕ) < piv u := fun i hi => by
+    simp [Gen.idx] at hi; rcases hi with rfl | rfl
+    · exact lt_trans (Fin.lt_def.1 hpq) hq
+    · exact hq
+  have hle := piv_le_of_idx (le_refl (piv u)) hb
+  rcases lt_or_eq_of_le hle with h | h
+  · exact lev_lt_of_piv_lt h
+  · have hpc := pcol_of_piv_eq (w := FreeMonoid.of (Gen.H p q hpq)) (by simpa using h) hp
+    simp only [FreeMonoid.lift_eval_of, wv_of, gv] at hpc
+    obtain ⟨-, hle', heq⟩ := pair_reduce (col_inRing u _) (ne_of_lt hpq) hs
+    apply lev_lt_iff.2; right
+    refine ⟨h, ?_⟩
+    rw [hpc, pcol_eq hp]
+    apply kl_lt_iff.2
+    rcases lt_or_eq_of_le hle' with hl | hl
+    · left; exact hl
+    · right; refine ⟨hl, ?_⟩
+      have := heq hl
+      rw [hl, if_neg hk, if_neg hk]
+      omega
+
+end Case10
+
 /-! ### `G = H_[0,1]`: Main Cases 9–12 -/
 
 section CaseH
 
-/-- Main Cases 9 and 10: `G = H_[0,1]` below the pivot, at a positive
-exponent.  Not formalized: Case 9 rests on Lemmas A.16 and A.17, which are
-false (see the README), and Clément's Case 3.4 is what closes it. -/
+/-- `H_[a,c] X_[a,b] ≈ X_[a,b] H_[b,c]` for `a < b < c`, by (c4) and (a2). -/
+theorem rl_HX {a b c : Fin n} (hab : a < b) (hbc : b < c) :
+    Derivable Fig6 (ofList [Gen.H a c (hab.trans hbc), Gen.X a b hab])
+      (ofList [Gen.X a b hab, Gen.H b c hbc]) :=
+  (rw_at _ 0 (rl_a2 hab).symm rfl).trans <|
+    (rw_at _ 1 (Derivable.of (Fig6.c4 hab hbc)).symm rfl).trans (rw_at _ 2 (rl_a2 hab) rfl)
+
+theorem run_eq_of_der {w w' : List (Gen n)} (d : Derivable Fig6 (ofList w) (ofList w'))
+    (t : O n) : run w t = run w' t := by
+  rw [run, run, derivable_sound fig6_sound d]
+
+theorem kl_eq_of {v w : Fin n → ℝ} (hl : lde w = lde v) (ho : oddSet w = oddSet v) : kl w = kl v := by
+  simp only [kl, hl, ho]
+
+/-- Main Cases 9 and 10: `G = H_[0,1]` below the pivot at a positive
+exponent.  Case 10 (the first odd entry is not `0`) is proved; Case 9
+(`main_H_case9`) is not. -/
+theorem main_H_case9 {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
+    (ho : (o : ℕ) = 1) (hr : sem n (Gen.H z o hzo) * s ≠ 1) (hoJ : (o : ℕ) < piv s)
+    (hk : lde (col s (pj s (piv_pos hs))) ≠ 0)
+    (h0 : Odd (num (col s (pj s (piv_pos hs))) z).re) : MainSquare s (Gen.H z o hzo) := by
+  sorry
+
 theorem main_H_odd {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
     (ho : (o : ℕ) = 1) (hr : sem n (Gen.H z o hzo) * s ≠ 1) (hoJ : (o : ℕ) < piv s)
     (hk : lde (col s (pj s (piv_pos hs))) ≠ 0) : MainSquare s (Gen.H z o hzo) := by
-  sorry
+  classical
+  have hp := piv_pos hs
+  obtain ⟨i1, i2, z', hz2, hz', hz1le, h12, hi1J, hi2J, hodd1, hsame, hmin1, -, hsyl⟩ :=
+    syl_pos_form hs hk
+  have hzz : z' = z := Fin.ext (by rw [hz', hz])
+  subst hzz
+  set v := col s (pj s hp) with hvdef
+  have hR : InRing v := col_inRing s _
+  by_cases hz1 : z' < i1
+  swap
+  · -- Main Case 9: the first odd entry is `0`
+    have : i1 = z' := le_antisymm (not_lt.1 hz1) hz1le
+    exact main_H_case9 hs hzo hz ho hr hoJ hk (this ▸ hodd1)
+  -- Main Case 10
+  have hzeven : ¬Odd (num v z').re := fun h => absurd (hmin1 z' h) (not_le.2 hz1)
+  have hidx : ∀ i ∈ (Gen.H z' o hzo).idx, (i : ℕ) < piv s := by
+    intro i hi; simp [Gen.idx] at hi
+    rcases hi with rfl | rfl <;> omega
+  have hcolr : gv (Gen.H z' o hzo) v = hv z' o v := rfl
+  have hpiv_of : lde (hv z' o v) ≠ 0 → piv (sem n (Gen.H z' o hzo) * s) = piv s := fun hl =>
+    piv_eq_of_col hp hidx (by
+      rw [← hvdef, hcolr]; intro h; rw [h] at hl
+      exact hl (lde_eq_zero_of_int fun i => by
+        by_cases hi : i = pj s hp
+        · subst hi; exact ⟨1, by simp⟩
+        · exact ⟨0, by simp [hi]⟩))
+  by_cases hio : i1 = o
+  · -- Case 10 (1): `i₁ = 1`: the square is retrograde
+    have hoodd : Odd (num v o).re := hio ▸ hodd1
+    obtain ⟨hl, hzodd, hsame'⟩ := hv_even_odd hR (ne_of_lt hzo) hzeven hoodd
+    apply square_retro hs
+    rw [syl_of_piv_eq hp (hpiv_of hl), ← hvdef, hcolr, sylOf_H01 hzo hz ho hl hzodd hsame']
+  -- Case 10 (2): `i₁ > 1`; entries `0` and `1` are even
+  have hoi1 : o < i1 := lt_of_le_of_ne (Fin.le_def.2 (by have := Fin.lt_def.1 hz1; omega))
+    (Ne.symm hio)
+  have hoeven : ¬Odd (num v o).re := fun h => absurd (hmin1 o h) (not_le.2 hoi1)
+  obtain ⟨hR', hl, hsamenum, hpar, hsameo⟩ :=
+    hv_even_even hR hk (ne_of_lt hzo) hzeven hoeven ⟨i1, hodd1⟩
+  have hl0 : lde (hv z' o v) ≠ 0 := by rw [hl]; exact hk
+  have hpiv := hpiv_of hl0
+  by_cases hw : Odd (num (hv z' o v) z').re
+  · -- the two new entries are odd: retrograde
+    apply square_retro hs
+    rw [syl_of_piv_eq hp hpiv, ← hvdef, hcolr, sylOf_H01 hzo hz ho hl0 hw (hsameo hw)]
+  -- the two new entries are even: the syllable stays
+  have hwo : ¬Odd (num (hv z' o v) o).re := fun h => hw (hpar.2 h)
+  have hodds : oddSet (hv z' o v) = oddSet v := by
+    ext i
+    rw [mem_oddSet, mem_oddSet]
+    by_cases h1 : i = z'
+    · subst h1; exact ⟨fun h => absurd h hw, fun h => absurd h hzeven⟩
+    · by_cases h2 : i = o
+      · subst h2; exact ⟨fun h => absurd h hwo, fun h => absurd h hoeven⟩
+      · rw [hsamenum i h1 h2]
+  have hparts : partners (hv z' o v) = partners v := by
+    funext i
+    ext i'
+    rw [mem_partners, mem_partners]
+    by_cases hi : i = z' ∨ i = o
+    · constructor
+      · rintro ⟨-, h, -⟩; rcases hi with rfl | rfl
+        · exact absurd h hw
+        · exact absurd h hwo
+      · rintro ⟨-, h, -⟩; rcases hi with rfl | rfl
+        · exact absurd h hzeven
+        · exact absurd h hoeven
+    · push Not at hi
+      rw [hsamenum i hi.1 hi.2]
+      by_cases hi' : i' = z' ∨ i' = o
+      · constructor
+        · rintro ⟨-, -, h, -⟩; rcases hi' with rfl | rfl
+          · exact absurd h hw
+          · exact absurd h hwo
+        · rintro ⟨-, -, h, -⟩; rcases hi' with rfl | rfl
+          · exact absurd h hzeven
+          · exact absurd h hoeven
+      · push Not at hi'
+        rw [hsamenum i' hi'.1 hi'.2]
+  have hsylr : syl (sem n (Gen.H z' o hzo) * s) = syl s := by
+    rw [syl_of_piv_eq hp hpiv, ← hvdef, hcolr, sylOf_eq_sylPos hl0, hodds, hparts,
+      syl_eq_sylOf hp, ← hvdef, sylOf_eq_sylPos hk]
+  have hs' : syl s = ofList [Gen.H z' i2 hz2, Gen.X z' i1 hz1] := by rw [hsyl, dif_pos hz1]; rfl
+  -- the derivation `H_[0,i₂] X_[0,i₁] H_[0,1] ≈ X_[0,i₁] H_[0,1] X_[0,i₁] H_[0,i₂] X_[0,i₁]`
+  have hzi1 : z' ≠ i1 := ne_of_lt hz1
+  have hb6 := rl_b6 h12 hzo (Ne.symm hzi1) (ne_of_gt hoi1)
+    (ne_of_gt (lt_trans hz1 h12)) (ne_of_gt (lt_trans hoi1 h12))
+  have hder : Derivable Fig6 (ofList [Gen.H z' i2 hz2, Gen.X z' i1 hz1, Gen.H z' o hzo])
+      (ofList [Gen.X z' i1 hz1, Gen.H z' o hzo, Gen.X z' i1 hz1, Gen.H z' i2 hz2,
+        Gen.X z' i1 hz1]) :=
+    ((rw_at _ 0 (rl_HX hz1 h12) rfl).trans (rw_at _ 1 hb6 rfl)).trans
+      ((rw_at [Gen.X z' i1 hz1, Gen.H z' o hzo, Gen.X z' i1 hz1, Gen.H z' i2 hz2,
+        Gen.X z' i1 hz1] 3 (rl_HX hz1 h12) rfl).trans (rw_at _ 2 (rl_a2 hz1) rfl)).symm
+  -- the states of the path
+  have ht : FreeMonoid.lift (sem n) (syl s) * s = run [Gen.H z' i2 hz2, Gen.X z' i1 hz1] s := by
+    rw [hs']; rfl
+  have hXHX : run [Gen.X z' i1 hz1, Gen.H z' i2 hz2, Gen.X z' i1 hz1] s =
+      run [Gen.H i1 i2 h12] s :=
+    run_eq_of_der ((rw_at _ 1 (rl_HX hz1 h12) rfl).trans (rw_at _ 0 (rl_a2 hz1) rfl)) s
+  have hlev_r : lev (sem n (Gen.H z' o hzo) * s) = lev s := by
+    have hpc := pcol_of_piv_eq (w := FreeMonoid.of (Gen.H z' o hzo)) (by simpa using hpiv) hp
+    simp only [FreeMonoid.lift_eval_of, wv_of, gv] at hpc
+    rw [lev, lev, hpiv, hpc, pcol_eq hp, ← hvdef, kl_eq_of hl hodds]
+  have hpr : 0 < piv (sem n (Gen.H z' o hzo) * s) := hpiv ▸ hp
+  have hcol_r : col (sem n (Gen.H z' o hzo) * s) (pj _ hpr) = hv z' o v := by
+    have : pj _ hpr = pj s hp := Fin.ext (by simp only [pj]; rw [hpiv])
+    rw [this, col_sem_mul]
+    rfl
+  refine square_of hs hr [Gen.X z' i1 hz1, Gen.H z' o hzo, Gen.X z' i1 hz1] ?_ ?_
+  · rw [ht]
+    refine ⟨⟨⟨?_, ?_⟩, ?_⟩, ?_⟩
+    · rw [← ht]; exact lev_syl_lt hs
+    · -- `X_[0,i₁] t = H_[i₁,i₂] s`
+      rw [← run_append]
+      show lev (run [Gen.X z' i1 hz1, Gen.H z' i2 hz2, Gen.X z' i1 hz1] s) < lev s
+      rw [hXHX, run_cons, run_nil]
+      exact lev_pair_lt hp h12 hi2J hk hsame
+    · -- `H_[0,1] X_[0,i₁] t = H_[i₁,i₂] (H_[0,1] s)`
+      rw [← run_append]
+      show lev (run [Gen.H z' o hzo, Gen.X z' i1 hz1, Gen.H z' i2 hz2, Gen.X z' i1 hz1] s) < lev s
+      rw [show [Gen.H z' o hzo, Gen.X z' i1 hz1, Gen.H z' i2 hz2, Gen.X z' i1 hz1] =
+        [Gen.H z' o hzo] ++ [Gen.X z' i1 hz1, Gen.H z' i2 hz2, Gen.X z' i1 hz1] from rfl,
+        run_append, hXHX, ← run_append]
+      rw [run_eq_of_der (w' := [Gen.H i1 i2 h12, Gen.H z' o hzo]) (rw_at _ 0 hb6.symm rfl),
+        run_cons, run_cons, run_nil]
+      rw [← hlev_r]
+      refine lev_pair_lt hpr h12 (by rw [hpiv]; exact hi2J) (by rw [hcol_r]; exact hl0) ?_
+      rw [hcol_r, hsamenum i1 (ne_of_gt hz1) (ne_of_gt hoi1),
+        hsamenum i2 (ne_of_gt (lt_trans hz1 h12)) (ne_of_gt (lt_trans hoi1 h12))]
+      exact hsame
+    · -- the last state is the normal successor of `H_[0,1] s`
+      have hsound := derivable_sound fig6_sound hder
+      have : run [Gen.X z' i1 hz1, Gen.H z' o hzo, Gen.X z' i1 hz1]
+          (run [Gen.H z' i2 hz2, Gen.X z' i1 hz1] s) =
+          FreeMonoid.lift (sem n) (syl (sem n (Gen.H z' o hzo) * s)) * (sem n (Gen.H z' o hzo) * s) := by
+        rw [← run_append]
+        show FreeMonoid.lift (sem n) (ofList [Gen.X z' i1 hz1, Gen.H z' o hzo, Gen.X z' i1 hz1,
+          Gen.H z' i2 hz2, Gen.X z' i1 hz1]) * s = _
+        rw [← hsound, hsylr, hs']
+        show FreeMonoid.lift (sem n) (ofList [Gen.H z' i2 hz2, Gen.X z' i1 hz1] *
+          FreeMonoid.of (Gen.H z' o hzo)) * s = _
+        rw [map_mul, FreeMonoid.lift_eval_of, mul_assoc]
+      rw [this, ← hlev_r]
+      exact lev_syl_lt hr
+  · rw [hsylr, hs']
+    exact hder
 
 theorem hv_single_other {p q a : Fin n} (ε : ℝ) (hap : a ≠ p) (haq : a ≠ q) :
     hv p q (Pi.single a ε) = Pi.single a ε := by
