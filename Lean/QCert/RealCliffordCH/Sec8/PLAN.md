@@ -456,3 +456,12 @@ conjugating circuit. The three-wire cases use (133), (134), and colour
 conjugation. `D.eq345` now uses this proof, and its axiom audit is clean.
 This removes one more interface admission: 31 remain at this checkpoint,
 before integrating the five-wire families currently being checked.
+
+### Five-wire families complete, 2026-10-29
+
+`W5/Family268.lean` passed its kernel check in 2119 seconds. The shared
+`W5.lean` interface now proves (267) and (268) for all Boolean parameters;
+both exported statements have only standard Lean axioms. Together with
+the completed (345), this leaves 29 proof sites in the requested
+development (21 standalone and eight rule branches). Table 1 remains at
+13 of 16 complete rows. No Agda source was consulted.

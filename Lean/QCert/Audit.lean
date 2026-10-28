@@ -106,6 +106,9 @@ import QCert.RealCliffordCH.Sec8.D.W4.ConjCommBase
 #print axioms QCert.RealCliffordCH.Sec8.D.eq335
 #print axioms QCert.RealCliffordCH.Sec8.D.eq336
 #print axioms QCert.RealCliffordCH.Sec8.D.eq340
+#print axioms QCert.RealCliffordCH.Sec8.D.eq345
+#print axioms QCert.RealCliffordCH.Sec8.D.d267
+#print axioms QCert.RealCliffordCH.Sec8.D.d268
 
 #print axioms QCert.RealCliffordCH.Sec8.D.W4.t242Case0
 #print axioms QCert.RealCliffordCH.Sec8.D.W4.t242Case1
