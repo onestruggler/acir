@@ -380,3 +380,17 @@ The full build and axiom audit passed (4038 jobs); all four declarations
 depend only on standard Lean axioms. There are 35 remaining proof sites
 (27 standalone and eight rule branches), and Table 1 remains at 13 of 16
 complete rows. No Agda source was consulted.
+
+### Three general commutation interfaces completed, 2026-10-29
+
+`eq335`, `eq336`, and `eq340` are proved at every stated width. The new
+three-wire and four-wire cases use only the earlier equations and the
+stated smaller-width induction hypothesis. The four-wire box cases use
+the expansion (150), complementary-control merging (170), and (179),
+(180); controlled Hadamards follow by conjugation with `P ⊗ P`.
+
+The complete build and axiom audit passed (4041 jobs), with no `sorryAx`
+in these three results. There are now 32 remaining proof sites (24
+standalone and eight rule branches). Table 1 remains at 13 of 16 complete.
+The generators are `gen_boxcomm_low.py`, `gen_comm_three.py`, and
+`gen_comm_low_interface.py` in `gen/sec8/w4`.

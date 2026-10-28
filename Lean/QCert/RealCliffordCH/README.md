@@ -132,6 +132,10 @@ Formalized from the paper only.
 * The large-width commutation proofs (335), (336), and (340) have been
   audited without `sorryAx`. Their expansion uses the completed large-width
   case of (295), independently of its open four-wire case.
+* Equations (335), (336), and (340) are now proved at every stated width.
+  `W4/BoxCommLow`, `N13/Three`, and `N13/Low` supply their remaining base
+  cases and connect them to the general interfaces. The axiom audit reports
+  only standard Lean axioms for all three statements.
 * On four wires, all equations (150)–(248) now have kernel-checked
   derivations, including every Boolean parameter case. `W4/CommuteLate`,
   `Opposite`, `HgLate`, `FullRotation`, `SameRotation`, `ConjRotation`, and
@@ -155,7 +159,7 @@ that it uses; `QCert/Audit.lean` reports transitive axiom dependencies.
 | `Sec8/Thm410Proof.lean`: `item_b` | Hypothesis (b) (`ItemB`: for each relation of Hadamard-Π's Figure 6 and each coset of Definition A.2, the two words of `τ**` are equal by Figure 8). |
 | `Sec8/Lemma88Proof.lean`: `lemma_8_8` | Lemma 8.8 (Appendix E.5), given completeness on fewer wires: the cases of the rules (31), (36), (37), (40), (43)–(46); the other rules have proof terms, including (38), (39). |
 | `Sec8/D/N8.lean`: `eq295` | Remaining interface statement of Lemmas D.8–D.11 (package (iv)). The case from five wires on is proved in `N8/IFive`; the four-wire case remains to be connected. |
-| `Sec8/D/N13.lean`: `eq333`–`eq340`, `eq342`, `eq344`–`eq352` | Interface statements of Lemmas D.12–D.13 (package (v)); each checked numerically at 3–6 wires. |
+| `Sec8/D/N13.lean`: `eq333`, `eq334`, `eq337`–`eq339`, `eq342`, `eq344`–`eq352` | Remaining interface statements of Lemmas D.12–D.13 (package (v)); each checked numerically at 3–6 wires. |
 | `Sec8/D/W3.lean`: `d148b` | Lemma D.2 (and (148)) at width 3, from Figure 4 and completeness on two wires (package (i)); All of Lemma D.2, (117)–(147), and (148a) are proved. |
 | `Sec8/D/W5.lean`: `d267`, `d268` | Lemma D.7's (267), (268) at width 5 (package (iii)). |
 | `Sec8/D/N15.lean`: `eq358`, `eq360`, `eq361` | Remaining statements of Lemmas D.14–D.15 and of Equation (361) of Appendix E.5 (package (vi)); each checked numerically at 2–6 wires for every colouring (`gen/sec8/e/iface_n15.py`). |

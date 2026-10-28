@@ -14,6 +14,7 @@ checked numerically against the definitions at `N = 3, …, 6` (scratch
 replaces each `sorry` by its proof and keeps the statements.
 -/
 import QCert.RealCliffordCH.Sec8.D.N13.E319
+import QCert.RealCliffordCH.Sec8.D.N13.Low
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -113,13 +114,19 @@ theorem eq334 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
 /-- (335) -/
 theorem eq335 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) :
     Comm N (mc N .box [0] (colOn 1 N x)) (mc N .box [0] (colOn 1 N y)) := by
-  sorry
+  rcases (by omega : N = 3 ∨ N = 4 ∨ 5 ≤ N) with rfl | rfl | h5
+  · exact N13.comm335_3 ih x y
+  · exact N13.comm335_4 ih x y
+  · exact N13.comm335_ge5 N h5 ih x y
 
 /-- (336) -/
 theorem eq336 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (c₁ c₂ : Bool) :
     Comm N (mc N .box [0] (ctlOr (ctlAt 1 c₁) (colOn 2 N x)))
       (mc N .box [1] (ctlOr (ctlAt 0 c₂) (colOn 2 N y))) := by
-  sorry
+  rcases (by omega : N = 3 ∨ N = 4 ∨ 5 ≤ N) with rfl | rfl | h5
+  · exact N13.comm336_3 ih x y c₁ c₂
+  · exact N13.comm336_4 ih x y c₁ c₂
+  · exact N13.comm336_ge5 N h5 ih x y c₁ c₂
 
 /-- (337) -/
 theorem eq337 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : DiffOn 2 N x y)
@@ -142,7 +149,10 @@ theorem eq339 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
 /-- (340) -/
 theorem eq340 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) :
     Comm N (mc N .hg [0, 1] (colOn 2 N x)) (mc N .hg [0, 1] (colOn 2 N y)) := by
-  sorry
+  rcases (by omega : N = 3 ∨ N = 4 ∨ 5 ≤ N) with rfl | rfl | h5
+  · exact N13.comm340_3 ih x y
+  · exact N13.comm340_4 ih x y
+  · exact N13.comm340_ge5 N h5 ih x y
 
 /-- (342) -/
 theorem eq342 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : DiffOn 3 N x y)
