@@ -185,3 +185,7 @@ editing the others; it may assume everything exported by the others (the
 * Package (vi): `D/N15.lean` stated ((353)–(361), checked numerically by
   `gen/sec8/e/iface_n15.py`; the decoding model `gen/sec8/e/decode.py` mirrors
   `Decoding.lean` and preserves the semantics on every letter at `n = 3, 4`).
+  **`lemma_8_7` proved** (`Lemma87Proof.lean`, `E/`), from the interface
+  statements (274), (307), (309)–(311), (313), (336) and (353).  Lemma 8.8:
+  the rules that decode by definition are done (`E/Cheap.lean`); next the
+  other rules, through `E/Transport` (frames) and the merges.
