@@ -13,7 +13,7 @@ numerically against the definitions at `N = 3, …, 6` (scratch
 `PLAN.md` replaces each `sorry` by its proof and keeps the statements.
 -/
 import QCert.RealCliffordCH.Sec8.D.Colour
-import QCert.RealCliffordCH.Sec8.D.N8.I274
+import QCert.RealCliffordCH.Sec8.D.N8.I277
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -108,8 +108,8 @@ theorem eq274 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
 
 /-- (277): the same for the box of the multi-controlled `H`. -/
 theorem eq277 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
-    Derivable (theory N) (mc N .hg [1, 2] (blackOn 3 N)) (mc N .hg [0, 2] (blackOn 3 N)) := by
-  sorry
+    Derivable (theory N) (mc N .hg [1, 2] (blackOn 3 N)) (mc N .hg [0, 2] (blackOn 3 N)) :=
+  N8.eq277' N hN ih
 
 /-- (299): the box is an involution. -/
 theorem eq299 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :

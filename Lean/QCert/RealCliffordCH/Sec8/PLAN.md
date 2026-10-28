@@ -148,8 +148,8 @@ editing the others; it may assume everything exported by the others (the
   Engine for the schemas: `D/SymEngine.lean` (letters on five local wires,
   semantic steps decided by `D/LSim.lean`, frame from `Net`), tables
   `D/N8/Anchors.lean` ((19), (269), local swaps).  Proved: (81), (271),
-  (272), (274) (`eq81`, `eq274`).  Next: (273), (286), (275)–(277), then the
-  chain to (299).
+  (272), (274), (276), (277) (`eq81`, `eq274`, `eq277`).  Next: (273),
+  (286), (275), then the chain (283)–(299).
 * **(v) D.12–D.13** — `D/N13.lean` (interface, done): exports `eq315`–`eq317`,
   `eq333`, `eq334`, `eq335`–`eq340`, `eq342`, `eq344`–`eq352`.  Internal:
   (318)–(328) (cites (4-, 5-qubit) 214–248, 267, 268 via `eqNNN`).
