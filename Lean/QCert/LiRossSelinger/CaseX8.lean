@@ -552,4 +552,190 @@ theorem eight_lev_h {σ : O_ZHalf n} (hσ : σ ≠ 1) (hk : 0 < lde σ) {a b c d
     simp only [List.mem_cons, List.not_mem_nil, or_false] at hx'
     rcases hx' with rfl | rfl | rfl <;> exact ⟨by simp [Gen.tag], by simp [extent]; omega⟩
 
+/-! ## The derivation: the signs move across, `W⁻¹ C W ≈ C` does the rest -/
+
+/-- Words of sign letters commute. -/
+theorem signs_comm {l₁ l₂ : List (Gen n)} (h₁ : ∀ x ∈ l₁, ∃ r, x = Gen.neg r)
+    (h₂ : ∀ x ∈ l₂, ∃ r, x = Gen.neg r) :
+    Derivable (Table1 n) (FreeMonoid.ofList l₁ * FreeMonoid.ofList l₂)
+      (FreeMonoid.ofList l₂ * FreeMonoid.ofList l₁) :=
+  comm_list (fun x hx => by
+    obtain ⟨r, rfl⟩ := h₁ x hx
+    exact (comm_list (fun x' hx' => by
+      obtain ⟨r', rfl⟩ := h₂ x' hx'
+      exact neg_comm r' r)).symm)
+
+theorem negw_neg (t : Bool) (x : Fin n) : ∀ y ∈ negw t x, ∃ r, y = Gen.neg r := by
+  intro y hy; cases t <;> simp [negw] at hy; exact ⟨x, hy⟩
+
+theorem negw_mem (t : Bool) (x : Fin n) : ∀ y ∈ negw t x, ∃ r, y = Gen.neg r ∧ r = x := by
+  intro y hy; cases t <;> simp [negw] at hy; exact ⟨x, hy, rfl⟩
+
+/-- A sign word away from `K`'s indices commutes with `K`. -/
+theorem signs_k_comm {l : List (Gen n)} {a b c d : Fin n} (h₁ : a < b) (h₂ : b < c) (h₃ : c < d)
+    (hl : ∀ x ∈ l, ∃ r, x = Gen.neg r ∧ [r, a, b, c, d].Nodup) :
+    Derivable (Table1 n) (FreeMonoid.ofList l * FreeMonoid.of (Gen.k a b c d h₁ h₂ h₃))
+      (FreeMonoid.of (Gen.k a b c d h₁ h₂ h₃) * FreeMonoid.ofList l) :=
+  comm_list (fun x hx => by
+    obtain ⟨r, rfl, hr⟩ := hl x hx
+    exact Derivable.of (Table1.r2e r a b c d h₁ h₂ h₃ hr))
+
+/-- A sign word away from `x, y` commutes with `X_[x,y]`. -/
+theorem signs_x_comm {l : List (Gen n)} {x y : Fin n} (hxy : x < y)
+    (hl : ∀ z ∈ l, ∃ r, z = Gen.neg r ∧ [x, y, r].Nodup) :
+    Derivable (Table1 n) (FreeMonoid.of (Gen.x x y hxy) * FreeMonoid.ofList l)
+      (FreeMonoid.ofList l * FreeMonoid.of (Gen.x x y hxy)) :=
+  (comm_list (fun z hz => by
+    obtain ⟨r, rfl, hr⟩ := hl z hz
+    exact (Derivable.of (Table1.r2b x y r hxy hr)).symm)).symm
+
+/-- The square of Subcase 1.2.2.3 with `u_e` odd, given `P ≈ C`: the signs of
+`d` and `e` exchange across `X_[d,e]`, the others commute through. -/
+theorem der1223 {a b c d e f g h : Fin n} (h1 : a < b) (h2 : b < c) (h3 : c < d) (h4 : d < e)
+    (h5 : e < f) (h6 : f < g) (h7 : g < h) (Pfix : List (Gen n))
+    (hP : Derivable (Table1 n) (FreeMonoid.ofList Pfix)
+      (FreeMonoid.ofList [Gen.k e f g h h5 h6 h7, Gen.k a b c d h1 h2 h3, Gen.x d e h4,
+        Gen.k a b c d h1 h2 h3, Gen.k e f g h h5 h6 h7]))
+    (A F : List (Gen n)) (hA : ∀ x ∈ A, ∃ r, x = Gen.neg r ∧ r.val < d.val)
+    (hF : ∀ x ∈ F, ∃ r, x = Gen.neg r ∧ e.val < r.val) (td te : Bool) :
+    Derivable (Table1 n)
+      (FreeMonoid.ofList ((Gen.k e f g h h5 h6 h7 :: (negw td e ++ F)) ++
+        (Gen.k a b c d h1 h2 h3 :: (A ++ negw te d))) * FreeMonoid.of (Gen.x d e h4))
+      (FreeMonoid.ofList (Pfix ++ (Gen.k e f g h h5 h6 h7 :: (negw te e ++ F))) *
+        FreeMonoid.ofList (Gen.k a b c d h1 h2 h3 :: (A ++ negw td d))) := by
+  have v1 := Fin.lt_def.1 h1; have v2 := Fin.lt_def.1 h2; have v3 := Fin.lt_def.1 h3
+  have v4 := Fin.lt_def.1 h4; have v5 := Fin.lt_def.1 h5; have v6 := Fin.lt_def.1 h6
+  have v7 := Fin.lt_def.1 h7
+  have sA : ∀ x ∈ A, ∃ r, x = Gen.neg r := fun x hx => (hA x hx).imp fun r h => h.1
+  have sF : ∀ x ∈ F, ∃ r, x = Gen.neg r := fun x hx => (hF x hx).imp fun r h => h.1
+  -- `K_[a,b,c,d]` commutes with the signs on `e, …, h`
+  have kE : ∀ t : Bool, Derivable (Table1 n) (FreeMonoid.ofList (negw t e ++ F))
+      (FreeMonoid.of (Gen.k a b c d h1 h2 h3) * FreeMonoid.ofList (negw t e ++ F) *
+        FreeMonoid.of (Gen.k a b c d h1 h2 h3)) := by
+    intro t
+    have hc := signs_k_comm h1 h2 h3 (l := negw t e ++ F) (fun x hx => by
+      rcases List.mem_append.1 hx with hx | hx
+      · obtain ⟨r, rfl, rfl⟩ := negw_mem t e x hx
+        exact ⟨r, rfl, nodup_vals (by simp; omega)⟩
+      · obtain ⟨r, rfl, hr⟩ := hF x hx
+        exact ⟨r, rfl, nodup_vals (by simp; omega)⟩)
+    have e1 : Derivable (Table1 n) (FreeMonoid.ofList (negw t e ++ F))
+        (FreeMonoid.ofList (negw t e ++ F) * FreeMonoid.of (Gen.k a b c d h1 h2 h3) *
+          FreeMonoid.of (Gen.k a b c d h1 h2 h3)) := by
+      have := (Derivable.refl (FreeMonoid.ofList (negw t e ++ F))).mul
+        (sq_derivable (Gen.k a b c d h1 h2 h3)).symm
+      simpa [mul_assoc] using this
+    exact e1.trans (hc.mul (Derivable.refl _))
+  -- the right-hand side
+  have r1 : Derivable (Table1 n)
+      (FreeMonoid.ofList (Pfix ++ (Gen.k e f g h h5 h6 h7 :: (negw te e ++ F))) *
+        FreeMonoid.ofList (Gen.k a b c d h1 h2 h3 :: (A ++ negw td d)))
+      (FreeMonoid.of (Gen.k e f g h h5 h6 h7) * FreeMonoid.of (Gen.k a b c d h1 h2 h3) *
+        FreeMonoid.of (Gen.x d e h4) * FreeMonoid.ofList (negw te e ++ F) *
+        FreeMonoid.ofList A * FreeMonoid.ofList (negw td d)) := by
+    have s1 := (hP.mul (Derivable.refl (FreeMonoid.ofList
+      (Gen.k e f g h h5 h6 h7 :: (negw te e ++ F))))).mul
+      (Derivable.refl (FreeMonoid.ofList (Gen.k a b c d h1 h2 h3 :: (A ++ negw td d))))
+    refine (deq ?_).trans (s1.trans ?_)
+    · simp [FreeMonoid.ofList_append, mul_assoc]
+    have q1 : FreeMonoid.ofList [Gen.k e f g h h5 h6 h7, Gen.k a b c d h1 h2 h3, Gen.x d e h4,
+          Gen.k a b c d h1 h2 h3, Gen.k e f g h h5 h6 h7] *
+        FreeMonoid.ofList (Gen.k e f g h h5 h6 h7 :: (negw te e ++ F)) *
+        FreeMonoid.ofList (Gen.k a b c d h1 h2 h3 :: (A ++ negw td d)) =
+        FreeMonoid.of (Gen.k e f g h h5 h6 h7) * FreeMonoid.of (Gen.k a b c d h1 h2 h3) *
+          FreeMonoid.of (Gen.x d e h4) * FreeMonoid.of (Gen.k a b c d h1 h2 h3) *
+          (FreeMonoid.of (Gen.k e f g h h5 h6 h7) * FreeMonoid.of (Gen.k e f g h h5 h6 h7)) *
+          FreeMonoid.ofList (negw te e ++ F) * FreeMonoid.of (Gen.k a b c d h1 h2 h3) *
+          FreeMonoid.ofList A * FreeMonoid.ofList (negw td d) := by
+      simp [FreeMonoid.ofList_append, mul_assoc]
+    rw [q1]
+    refine (((((((Derivable.refl _).mul (sq_derivable (Gen.k e f g h h5 h6 h7))).mul
+      (Derivable.refl _)).mul (Derivable.refl _)).mul (Derivable.refl _)).mul
+      (Derivable.refl _))).trans ?_
+    have q2 : FreeMonoid.of (Gen.k e f g h h5 h6 h7) * FreeMonoid.of (Gen.k a b c d h1 h2 h3) *
+          FreeMonoid.of (Gen.x d e h4) * FreeMonoid.of (Gen.k a b c d h1 h2 h3) * 1 *
+          FreeMonoid.ofList (negw te e ++ F) * FreeMonoid.of (Gen.k a b c d h1 h2 h3) *
+          FreeMonoid.ofList A * FreeMonoid.ofList (negw td d) =
+        FreeMonoid.of (Gen.k e f g h h5 h6 h7) * FreeMonoid.of (Gen.k a b c d h1 h2 h3) *
+          FreeMonoid.of (Gen.x d e h4) *
+          (FreeMonoid.of (Gen.k a b c d h1 h2 h3) * FreeMonoid.ofList (negw te e ++ F) *
+            FreeMonoid.of (Gen.k a b c d h1 h2 h3)) *
+          FreeMonoid.ofList A * FreeMonoid.ofList (negw td d) := by
+      simp only [mul_one, mul_assoc]
+    rw [q2]
+    exact (((Derivable.refl _).mul (kE te).symm).mul (Derivable.refl _)).mul (Derivable.refl _)
+  -- `X_[d,e]` across the signs
+  have r2 : Derivable (Table1 n)
+      (FreeMonoid.of (Gen.x d e h4) * FreeMonoid.ofList (negw te e ++ F) *
+        FreeMonoid.ofList A * FreeMonoid.ofList (negw td d))
+      (FreeMonoid.ofList (negw te d) * FreeMonoid.ofList (F ++ A) *
+        FreeMonoid.ofList (negw td e) * FreeMonoid.of (Gen.x d e h4)) := by
+    have xFA := signs_x_comm h4 (l := F ++ A) (fun z hz => by
+      rcases List.mem_append.1 hz with hz | hz
+      · obtain ⟨r, rfl, hr⟩ := hF z hz; exact ⟨r, rfl, nodup_vals (by simp; omega)⟩
+      · obtain ⟨r, rfl, hr⟩ := hA z hz; exact ⟨r, rfl, nodup_vals (by simp; omega)⟩)
+    have w1 := (negw_swap' h4 te).symm
+    have w2 := (negw_swap h4 td).symm
+    have e1 : FreeMonoid.of (Gen.x d e h4) * FreeMonoid.ofList (negw te e ++ F) *
+        FreeMonoid.ofList A * FreeMonoid.ofList (negw td d) =
+        (FreeMonoid.of (Gen.x d e h4) * FreeMonoid.ofList (negw te e)) *
+          FreeMonoid.ofList (F ++ A) * FreeMonoid.ofList (negw td d) := by
+      simp [FreeMonoid.ofList_append, mul_assoc]
+    rw [e1]
+    refine ((w1.mul (Derivable.refl _)).mul (Derivable.refl _)).trans ?_
+    have s5 := (Derivable.refl (FreeMonoid.ofList (negw te d))).mul
+      ((xFA.mul (Derivable.refl (FreeMonoid.ofList (negw td d)))).trans
+        ((deq (mul_assoc _ _ _)).trans
+          ((Derivable.refl (FreeMonoid.ofList (F ++ A))).mul w2)))
+    exact (deq (by simp only [mul_assoc])).trans (s5.trans (deq (by simp only [mul_assoc])))
+  -- the signs of `d` and `e` exchange places
+  have r3 : Derivable (Table1 n)
+      (FreeMonoid.ofList (negw te d) * FreeMonoid.ofList (F ++ A) * FreeMonoid.ofList (negw td e))
+      (FreeMonoid.ofList (negw td e) * FreeMonoid.ofList (F ++ A) * FreeMonoid.ofList (negw te d)) := by
+    have hFA : ∀ x ∈ F ++ A, ∃ r, x = Gen.neg r := fun x hx => by
+      rcases List.mem_append.1 hx with hx | hx
+      · exact sF x hx
+      · exact sA x hx
+    have sc := signs_comm (negw_neg te d) (l₂ := F ++ A ++ negw td e) (fun x hx => by
+        rcases List.mem_append.1 hx with hx | hx
+        · exact hFA x hx
+        · exact negw_neg td e x hx)
+    have sc2 := signs_comm hFA (negw_neg td e)
+    refine (deq (by simp only [FreeMonoid.ofList_append, mul_assoc])).trans (sc.trans ?_)
+    refine (deq (by simp only [FreeMonoid.ofList_append, mul_assoc])).trans
+      ((sc2.mul (Derivable.refl (FreeMonoid.ofList (negw te d)))).trans (deq (by simp only [FreeMonoid.ofList_append, mul_assoc])))
+  -- the left-hand side
+  have r4 : Derivable (Table1 n)
+      (FreeMonoid.ofList ((Gen.k e f g h h5 h6 h7 :: (negw td e ++ F)) ++
+        (Gen.k a b c d h1 h2 h3 :: (A ++ negw te d))) * FreeMonoid.of (Gen.x d e h4))
+      (FreeMonoid.of (Gen.k e f g h h5 h6 h7) * FreeMonoid.of (Gen.k a b c d h1 h2 h3) *
+        FreeMonoid.ofList (negw td e) * FreeMonoid.ofList (F ++ A) *
+        FreeMonoid.ofList (negw te d) * FreeMonoid.of (Gen.x d e h4)) := by
+    have e1 : FreeMonoid.ofList ((Gen.k e f g h h5 h6 h7 :: (negw td e ++ F)) ++
+        (Gen.k a b c d h1 h2 h3 :: (A ++ negw te d))) * FreeMonoid.of (Gen.x d e h4) =
+        FreeMonoid.of (Gen.k e f g h h5 h6 h7) * FreeMonoid.ofList (negw td e ++ F) *
+          FreeMonoid.of (Gen.k a b c d h1 h2 h3) * FreeMonoid.ofList (A ++ negw te d) *
+          FreeMonoid.of (Gen.x d e h4) := by
+      simp [FreeMonoid.ofList_append, mul_assoc]
+    rw [e1]
+    refine (((((Derivable.refl _).mul (kE td)).mul (Derivable.refl _)).mul (Derivable.refl _)).mul
+      (Derivable.refl _)).trans ?_
+    have e2 : FreeMonoid.of (Gen.k e f g h h5 h6 h7) * (FreeMonoid.of (Gen.k a b c d h1 h2 h3) *
+        FreeMonoid.ofList (negw td e ++ F) * FreeMonoid.of (Gen.k a b c d h1 h2 h3)) *
+        FreeMonoid.of (Gen.k a b c d h1 h2 h3) * FreeMonoid.ofList (A ++ negw te d) *
+        FreeMonoid.of (Gen.x d e h4) =
+        FreeMonoid.of (Gen.k e f g h h5 h6 h7) * FreeMonoid.of (Gen.k a b c d h1 h2 h3) *
+          FreeMonoid.ofList (negw td e ++ F) *
+          (FreeMonoid.of (Gen.k a b c d h1 h2 h3) * FreeMonoid.of (Gen.k a b c d h1 h2 h3)) *
+          FreeMonoid.ofList (A ++ negw te d) * FreeMonoid.of (Gen.x d e h4) := by
+      simp only [mul_assoc]
+    rw [e2]
+    refine (((((Derivable.refl _).mul (sq_derivable (Gen.k a b c d h1 h2 h3))).mul
+      (Derivable.refl _)).mul (Derivable.refl _))).trans ?_
+    exact deq (by simp only [FreeMonoid.ofList_append, mul_assoc, one_mul, mul_one])
+  have r23 := ((Derivable.refl (FreeMonoid.of (Gen.k e f g h h5 h6 h7) *
+    FreeMonoid.of (Gen.k a b c d h1 h2 h3))).mul (r2.trans (r3.mul (Derivable.refl _))))
+  exact r4.trans ((deq (by simp only [mul_assoc])).trans (r23.symm.trans
+    ((deq (by simp only [mul_assoc])).trans r1.symm)))
+
 end QCert.LiRossSelinger
