@@ -51,7 +51,7 @@ main result) and a `README.md` listing what is proved and every remaining
 | Makary, Ross, Selinger [2021] | real stabilizer | `QCert/RealStabilizer` | in progress |
 | Amy, Chen, Ross [2018] | CNOT-dihedral | `QCert/CNOTDihedral` | in progress |
 | Blake [2026] | phase-affine, prime d | `QCert/PhaseAffine` | in progress |
-| Bian, Selinger [2023] | two-qubit Clifford+T | `QCert/CliffordT2` | in progress |
+| Bian, Selinger [2023] | two-qubit Clifford+T | `QCert/CliffordT2` | **proved** (Theorem 2.1, sub-presentation in U₄(ℤ[1/√2,i]); no `sorry`) |
 | Bian, Selinger [2023] | three-qubit Clifford+CS | `QCert/CliffordCS3` | in progress |
 | Clément [2026] | real Clifford+CH | `QCert/RealCliffordCH` | in progress |
 | Amy, Ross, Wesley [2024] | three-qubit Toffoli–Hadamard | `QCert/ToffoliHadamard` | in progress |
