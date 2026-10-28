@@ -20,7 +20,7 @@ The argument of Appendix A (after Greylyn, Lemmas 32 and 33):
   (`step_all`).  Lemma A.9 and Theorem 4.14 are then
   `QCert.NormalWords.isPresentationOf`.
 -/
-import QCert.HadamardPi.Pairs
+import QCert.HadamardPi.CaseFour
 
 namespace QCert.HadamardPi
 
@@ -244,7 +244,7 @@ theorem basic_step (s : O n) : ∀ g, Basic g → StepAt s g := by
       | Z a => exact Fig6.a1 a
       | X a b h => exact Fig6.a2 h
       | H a b h => exact Fig6.a3 h
-    · obtain ⟨q, N', G', hN', hq, hpath, hder⟩ := main_lemma s hs g hg
+    · obtain ⟨q, N', G', hN', hq, hpath, hder⟩ := main_lemma case9_four s hs g hg
       have hG := path_step (fun _ => True) (fun t g' _ h1 h2 => IH t g' h1 h2) G' _
         (fun _ _ => trivial) hpath
       rw [hq] at hG

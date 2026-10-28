@@ -274,8 +274,10 @@ theorem main_X_odd {s : O n} (hs : s ≠ 1) {z x : Fin n} (hzx : z < x) (hz : (z
 
 /-- Lemma A.7 (Main Lemma), for every basic generator; the cases at a
 positive exponent with `X_[0,x]` or `H_[0,1]` below the pivot (Main Cases
-1, 2, 9, 10) are `main_X_odd` and `main_H_odd`. -/
-theorem main_lemma (s : O n) (hs : s ≠ 1) (g : Gen n) (hg : Basic g) : MainSquare s g := by
+1, 2, 9, 10) are `main_X_odd` and `main_H_odd`; Main Case 9 (2)(b) with
+exactly four odd entries is the hypothesis `four` (`CaseFour.lean`). -/
+theorem main_lemma (four : Case9Four n) (s : O n) (hs : s ≠ 1) (g : Gen n) (hg : Basic g) :
+    MainSquare s g := by
   by_cases hr : sem n g * s = 1
   · have hsg : s = sem n g := by
       have := congrArg (sem n g * ·) hr
@@ -295,6 +297,6 @@ theorem main_lemma (s : O n) (hs : s ≠ 1) (g : Gen n) (hg : Basic g) : MainSqu
     exact main_X hs h hg hr (main_X_odd hs h hg hr)
   | H a b h =>
     simp only [Basic] at hg
-    exact main_H case9_hard hs h hg.1 hg.2 hr
+    exact main_H (case9_hard four) hs h hg.1 hg.2 hr
 
 end QCert.HadamardPi

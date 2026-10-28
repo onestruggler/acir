@@ -14,7 +14,8 @@ partners of `0` in `s` and in `r`.
   square closes by the diamond `H_E H_[0,P'] H_[0,1] H_[0,P] H_E`: every
   state on it is below `s` (`case9_many`).
 * With exactly four odd entries (Clément's Case 3.4) the square needs
-  entries outside the four odd ones (see the README); this is `case9_four`.
+  entries outside the four odd ones (see the README); this is `Case9Four`,
+  proved in `CaseFour.lean`.
 -/
 import QCert.HadamardPi.Confluence
 
@@ -304,22 +305,23 @@ theorem exists_far_pair {v : Fin n → ℝ} (hR : InRing v) (hU : IsUnitVec v) (
       exact ⟨e1, e2, h12, hs, fun h => hzCo (h ▸ c1), n1o, fun h => hPCo (h ▸ c1), n1P',
         fun h => hzCo (h ▸ c2), n2o, fun h => hPCo (h ▸ c2), n2P'⟩
 
-/-- Main Case 9 (2)(b) with exactly four odd entries: Clément's Case 3.4. -/
-theorem case9_four {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o) (hz : (z : ℕ) = 0)
-    (ho : (o : ℕ) = 1) (hr : sem n (Gen.H z o hzo) * s ≠ 1) (hoJ : (o : ℕ) < piv s)
-    (hk : lde (col s (pj s (piv_pos hs))) ≠ 0)
-    (h0 : Odd (num (col s (pj s (piv_pos hs))) z).re)
-    (h1 : Odd (num (col s (pj s (piv_pos hs))) o).re)
-    (hdiff : ¬SameOdd (num (col s (pj s (piv_pos hs))) z) (num (col s (pj s (piv_pos hs))) o))
-    (hl : (oddSet (col s (pj s (piv_pos hs)))).card = 4) : MainSquare s (Gen.H z o hzo) := by
-  sorry
+/-- Main Case 9 (2)(b) with exactly four odd entries: Clément's Case 3.4.
+It is proved in `CaseFour.lean` (`case9_four`), which needs the joins of
+`Join.lean`, and passed to the Main Lemma as a hypothesis. -/
+def Case9Four (n : ℕ) : Prop :=
+  ∀ {s : O n} (hs : s ≠ 1) {z o : Fin n} (hzo : z < o), (z : ℕ) = 0 → (o : ℕ) = 1 →
+    sem n (Gen.H z o hzo) * s ≠ 1 → (o : ℕ) < piv s →
+    lde (col s (pj s (piv_pos hs))) ≠ 0 →
+    Odd (num (col s (pj s (piv_pos hs))) z).re → Odd (num (col s (pj s (piv_pos hs))) o).re →
+    ¬SameOdd (num (col s (pj s (piv_pos hs))) z) (num (col s (pj s (piv_pos hs))) o) →
+    (oddSet (col s (pj s (piv_pos hs)))).card = 4 → MainSquare s (Gen.H z o hzo)
 
 /-- Main Case 9 (2)(b). -/
-theorem case9_hard : Case9Hard n := by
+theorem case9_hard (four : Case9Four n) : Case9Hard n := by
   intro s hs z o hzo hz ho hr hoJ hk h0 h1 hdiff
   classical
   by_cases hl : (oddSet (col s (pj s (piv_pos hs)))).card = 4
-  · exact case9_four hs hzo hz ho hr hoJ hk h0 h1 hdiff hl
+  · exact four hs hzo hz ho hr hoJ hk h0 h1 hdiff hl
   have hp := piv_pos hs
   set v := col s (pj s (piv_pos hs)) with hvdef
   have hR : InRing v := col_inRing s _
