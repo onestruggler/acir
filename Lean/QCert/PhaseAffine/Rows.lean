@@ -308,6 +308,7 @@ theorem sem_of_mul_f {n : ℕ} (x : Gen (Gate d lv) n) (hx : x.IsAff) (V : C d l
     ((𝒢).sem n (FreeMonoid.of x * V)).f y = affMap x (((𝒢).sem n V).f y) := by
   rw [sem_f_mul, GateData.sem_of, gen_f x hx]
 
+omit [Fact d.Prime] in
 theorem sem_SW_mul {n : ℕ} (V : C d lv (n + 2)) (y : Lab d (n + 2)) :
     ((𝒢).sem (n + 2) (g2 Gate.SWAP * V)).f y 0 = ((𝒢).sem (n + 2) V).f y 1 ∧
       ((𝒢).sem (n + 2) (g2 Gate.SWAP * V)).f y 1 = ((𝒢).sem (n + 2) V).f y 0 := by

@@ -8,7 +8,7 @@ function) are equal in the theory of their fragment: Theorem 1 (level `0`)
 and Theorem 2 (levels `1`, `2`, `3`) of Blake (arXiv:2603.06466), in the
 form to which `Theorem` reduces the matrix statements.
 -/
-import QCert.PhaseAffine.QuadComplete
+import QCert.PhaseAffine.CubeComplete
 
 namespace QCert.PhaseAffine
 
@@ -31,7 +31,7 @@ theorem complete_quad (hd : d ≠ 2) (n : ℕ) (w v : C d 2 n)
 
 /-- Theorem 2 for the pairs, `CubicPhase_d`, `d > 3`. -/
 theorem complete_cube (hd : 3 < d) (n : ℕ) (w v : C d 3 n)
-    (h : (gateData d 3).sem n w = (gateData d 3).sem n v) : Derivable (theory d 3 n) w v := by
-  sorry
+    (h : (gateData d 3).sem n w = (gateData d 3).sem n v) : Derivable (theory d 3 n) w v :=
+  complete3 hd h
 
 end QCert.PhaseAffine
