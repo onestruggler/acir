@@ -31,6 +31,7 @@ local controls `cs`, the bulk black if `b`), read on `m + K` wires for every
 import QCert.RealCliffordCH.Sec8.MCSem
 import QCert.RealCliffordCH.Sec8.Fast
 import QCert.RealCliffordCH.Sec8.EngineN
+import QCert.RealCliffordCH.Sec8.D.LSim
 
 namespace QCert.RealCliffordCH.Sec8.SE
 
@@ -156,15 +157,246 @@ theorem eval_wc_blk {m K : ℕ} : ∀ (l : List Lt), (∀ x ∈ l, x.ok K = true
     simp only [onW, offW, List.map_cons, drawn_cons, map_mul]
     split_ifs <;> rfl
 
+/-! ## Deciding identities on `K` wires by simulating the letters -/
+
+section Sim
+
+open LS Fast Sim
+
+/-- The target of a multi-controlled letter (none for the box). -/
+def twire (Kd : Kind) (tg : List ℕ) : ℕ :=
+  match Kd with
+  | .hg => tg.getD 1 0
+  | _ => tg.getD 0 0
+
+/-- The roles of the wires for a multi-controlled letter. -/
+def roleF (Kd : Kind) (tg : List ℕ) (cs : List (ℕ × Bool)) : ℕ → Role := fun j =>
+  if Kd ≠ .box ∧ j = twire Kd tg then .tgt
+  else if j ∈ tg then .idle
+  else match cs.lookup j with
+    | some true => .c1
+    | some false => .c0
+    | none => .idle
+
+/-- The action of a multi-controlled letter. -/
+def gAct (K : ℕ) (Kd : Kind) (tg : List ℕ) (cs : List (ℕ × Bool)) (v : V K) : V K :=
+  match Kd with
+  | .box => phV (roleF .box tg cs) K v
+  | .zx => tgV mZX Z2.one (roleF .zx tg cs) K v
+  | .xz => tgV mXZ Z2.one (roleF .xz tg cs) K v
+  | .hg => tgV mH r2 (roleF .hg tg cs) K v
+
+def gInc : Kind → ℕ
+  | .hg => 1
+  | _ => 0
+
+/-- The letter on `K` wires, on the bulk-all-`1` block (`on`) or elsewhere. -/
+def circL (K : ℕ) : Bool → Lt → Circ K
+  | true, x => x.on K
+  | false, x => x.off K
+
+def actL (K : ℕ) (on : Bool) : Lt → V K → V K
+  | .s l, v => actW (l.circ K) v
+  | .g Kd tg cs b, v => if on || !b then gAct K Kd tg cs v else v
+
+def incL (K : ℕ) (on : Bool) : Lt → ℕ
+  | .s l => incW (l.circ K)
+  | .g Kd _ _ b => if on || !b then gInc Kd else 0
+
+local notation "√2" => (Quadratic.X : QSqrt2)
+
+theorem match_roleF {K : ℕ} (Kd : Kind) {tg : List ℕ} (cs : List (ℕ × Bool)) (b : Bool)
+    (htw : Kd ≠ .box → twire Kd tg ∈ tg) (s : State 2 K) :
+    mt (roleF Kd tg cs) K s = true ↔ Match K tg (ctl K cs b) s := by
+  rw [mt_iff]
+  unfold Match ctl
+  refine forall_congr' fun j => imp_congr_right fun hj => ?_
+  rw [if_pos hj]
+  by_cases hjt : j ∈ tg
+  · have : (roleF Kd tg cs j).ok (MS.bit s j) = true := by
+      unfold roleF
+      split_ifs <;> rfl
+    simp [this, hjt]
+  · have h1 : ¬ (Kd ≠ .box ∧ j = twire Kd tg) := fun ⟨hk, e⟩ => hjt (e ▸ htw hk)
+    simp only [roleF, if_neg h1, if_neg hjt, hjt, not_false_eq_true, true_implies]
+    cases hl : cs.lookup j with
+    | none => simp [Role.ok]
+    | some bb =>
+      cases bb
+      · rcases LS.fin2 (MS.bit s j) with e | e <;> simp [Role.ok, e]
+      · rcases LS.fin2 (MS.bit s j) with e | e <;> simp [Role.ok, e]
+
+theorem firstT_roleF (Kd : Kind) (hk : Kd ≠ .box) (tg : List ℕ) (cs : List (ℕ × Bool)) :
+    FirstT (roleF Kd tg cs) (twire Kd tg) := by
+  refine ⟨by simp [roleF, hk], fun j hj => ?_⟩
+  unfold roleF
+  rw [if_neg (fun h => by omega)]
+  split_ifs
+  · exact Role.noConfusion
+  · cases cs.lookup j with
+    | none => exact Role.noConfusion
+    | some bb => cases bb <;> exact Role.noConfusion
+
+theorem toQ_one' : Z2.toQ Z2.one = 1 := Z2.toQ_one
+
+theorem tf_gAct {K : ℕ} (Kd : Kind) (tg : List ℕ) (cs : List (ℕ × Bool)) (b : Bool)
+    (hx : (Lt.g Kd tg cs b).ok K = true) (v : V K) :
+    toFun (toS (gAct K Kd tg cs v)) =
+      √2 ^ gInc Kd • (opsQ.eval K (mc K Kd tg (ctl K cs b)) *ᵥ toFun (toS v)) := by
+  simp only [Lt.ok, Bool.and_eq_true, decide_eq_true_eq, List.all_eq_true, beq_iff_eq] at hx
+  obtain ⟨⟨hnd, hlt⟩, ha⟩ := hx
+  rw [MS.eval_mc (ctl K cs b) hnd (fun j hj => by simpa using hlt j hj) ha]
+  funext s
+  cases Kd with
+  | box =>
+    obtain ⟨w, rfl⟩ : ∃ w, tg = [w] := by
+      match tg, ha with
+      | [w], _ => exact ⟨w, rfl⟩
+    have hU : Kind.box.U = fun u v : State 2 1 => if u = v then (-1 : Q) else 0 := eval_box0
+    have L := lam_box_mulVec (K := K) (w := w) (ctl K cs b) (toFun (toS v)) s
+    simp only [gAct, gInc, pow_zero, one_smul]
+    rw [tf_phV, hU]
+    refine Eq.trans ?_ L.symm
+    have hm := match_roleF (K := K) .box (tg := [w]) (b := b) cs (fun h => absurd rfl h) s
+    by_cases hM : Match K [w] (ctl K cs b) s
+    · rw [if_pos (hm.2 hM), if_pos hM]
+    · rw [if_neg (fun h => hM (hm.1 h)), if_neg hM]
+  | zx =>
+    obtain ⟨w, rfl⟩ : ∃ w, tg = [w] := by
+      match tg, ha with
+      | [w], _ => exact ⟨w, rfl⟩
+    have hw : w < K := by simpa using hlt w (by simp)
+    have hf := firstT_roleF .zx (by decide) [w] cs
+    have hU : Kind.zx.U = fun u v : State 2 1 => Z2.toQ (mZX (u 0) (v 0)) := eval_zx0
+    have L := lam_one_mulVec (K := K) hw hf (ctl K cs b) mZX (toFun (toS v)) s
+    simp only [gAct, gInc, pow_zero, one_smul]
+    rw [tf_tgV _ _ _ K w hw hf, hU]
+    refine Eq.trans ?_ L.symm
+    have hm := match_roleF (K := K) .zx (tg := [w]) (b := b) cs (fun _ => by simp [twire]) s
+    by_cases hM : Match K [w] (ctl K cs b) s
+    · rw [if_pos (hm.2 hM), if_pos hM, tb_eq _ K w hw hf s]
+    · rw [if_neg (fun h => hM (hm.1 h)), if_neg hM, toQ_one', one_mul]
+  | xz =>
+    obtain ⟨w, rfl⟩ : ∃ w, tg = [w] := by
+      match tg, ha with
+      | [w], _ => exact ⟨w, rfl⟩
+    have hw : w < K := by simpa using hlt w (by simp)
+    have hf := firstT_roleF .xz (by decide) [w] cs
+    have hU : Kind.xz.U = fun u v : State 2 1 => Z2.toQ (mXZ (u 0) (v 0)) := eval_xz0
+    have L := lam_one_mulVec (K := K) hw hf (ctl K cs b) mXZ (toFun (toS v)) s
+    simp only [gAct, gInc, pow_zero, one_smul]
+    rw [tf_tgV _ _ _ K w hw hf, hU]
+    refine Eq.trans ?_ L.symm
+    have hm := match_roleF (K := K) .xz (tg := [w]) (b := b) cs (fun _ => by simp [twire]) s
+    by_cases hM : Match K [w] (ctl K cs b) s
+    · rw [if_pos (hm.2 hM), if_pos hM, tb_eq _ K w hw hf s]
+    · rw [if_neg (fun h => hM (hm.1 h)), if_neg hM, toQ_one', one_mul]
+  | hg =>
+    obtain ⟨b', w, rfl⟩ : ∃ b' w, tg = [b', w] := by
+      match tg, ha with
+      | [b', w], _ => exact ⟨b', w, rfl⟩
+    have hw : w < K := by simpa using hlt w (by simp)
+    have hbw : b' ≠ w := by simpa using hnd
+    have hf := firstT_roleF .hg (by decide) [b', w] cs
+    have hU : Kind.hg.U = fun u v : State 2 2 =>
+        if u 0 = v 0 then QSqrt2.invSqrt2 * Z2.toQ (mH (u 1) (v 1)) else 0 := eval_mch0
+    have L := lam_hg_mulVec (K := K) hw hf hbw (ctl K cs b) (toFun (toS v)) s
+    simp only [gAct, gInc, pow_one, Pi.smul_apply, smul_eq_mul]
+    rw [tf_tgV _ _ _ K w hw hf, hU]
+    refine Eq.trans ?_ (congrArg (fun z => √2 * z) L).symm
+    have hm := match_roleF (K := K) .hg (tg := [b', w]) (b := b) cs (fun _ => by simp [twire]) s
+    have hr2 : Z2.toQ r2 = √2 := by ext <;> simp [Z2.toQ, r2, Quadratic.X]
+    by_cases hM : Match K [b', w] (ctl K cs b) s
+    · rw [if_pos (hm.2 hM), if_pos hM, tb_eq _ K w hw hf s]
+      rw [mul_add, ← mul_assoc, ← mul_assoc, ← mul_assoc, ← mul_assoc, Fast.X_mul_inv, one_mul,
+        one_mul]
+    · rw [if_neg (fun h => hM (hm.1 h)), if_neg hM, hr2]
+
+theorem tf_actL {K : ℕ} (on : Bool) (x : Lt) (hx : x.ok K = true) (v : V K) :
+    toFun (toS (actL K on x v)) =
+      √2 ^ incL K on x • (opsQ.eval K (circL K on x) *ᵥ toFun (toS v)) := by
+  cases x with
+  | s l =>
+    cases on <;> exact tf_actW _ _
+  | g Kd tg cs b =>
+    simp only [actL, incL]
+    by_cases h : (on || !b) = true
+    · rw [if_pos h, if_pos h, tf_gAct Kd tg cs b hx]
+      cases on
+      · simp only [Bool.false_or, Bool.not_eq_true'] at h
+        simp [circL, Lt.off, h, Lt.on]
+      · rfl
+    · rw [if_neg h, if_neg h]
+      simp only [Bool.or_eq_true, Bool.not_eq_true', not_or, Bool.not_eq_false] at h
+      obtain ⟨h1, h2⟩ := h
+      cases on
+      · simp only [circL, Lt.off, h2, if_true, map_one, one_mulVec, pow_zero, one_smul]
+      · simp at h1
+
+/-- A word simulated on `K` wires, the first letter first. -/
+def simW (K : ℕ) (on : Bool) : List Lt → V K → V K
+  | [], v => v
+  | x :: l, v => simW K on l (actL K on x v)
+
+def incWL (K : ℕ) (on : Bool) (l : List Lt) : ℕ := (l.map (incL K on)).sum
+
+def circWL (K : ℕ) (on : Bool) (l : List Lt) : Circ K := drawn (l.map (circL K on))
+
+theorem tf_simW {K : ℕ} (on : Bool) : ∀ (l : List Lt), (∀ x ∈ l, x.ok K = true) → ∀ (v : V K),
+    toFun (toS (simW K on l v)) =
+      √2 ^ incWL K on l • (opsQ.eval K (circWL K on l) *ᵥ toFun (toS v))
+  | [], _, v => by
+    simp only [simW, incWL, circWL, drawn, List.map_nil, List.sum_nil, pow_zero, one_smul,
+      List.reverse_nil, List.prod_nil, map_one, one_mulVec]
+  | x :: l, hl, v => by
+    rw [simW, tf_simW on l (fun y hy => hl y (by simp [hy])), tf_actL on x (hl x (by simp)),
+      mulVec_smul, smul_smul, ← pow_add]
+    have e1 : incWL K on (x :: l) = incWL K on l + incL K on x := by
+      simp [incWL, Nat.add_comm]
+    have e2 : circWL K on (x :: l) = circWL K on l * circL K on x := by
+      simp [circWL, drawn_cons]
+    rw [e1, e2, map_mul, mulVec_mulVec]
+
+/-- Two words act alike on `K` wires. -/
+def lcheck (K : ℕ) (on : Bool) (l₁ l₂ : List Lt) : Bool :=
+  let k1 := incWL K on l₁
+  let k2 := incWL K on l₂
+  (Sim.allStates K).all fun t =>
+    vbeq (vscale (k2 - k1) (simW K on l₁ (basisV t))) (vscale (k1 - k2) (simW K on l₂ (basisV t)))
+
+theorem lcheck_sound {K : ℕ} (on : Bool) {l₁ l₂ : List Lt} (h₁ : ∀ x ∈ l₁, x.ok K = true)
+    (h₂ : ∀ x ∈ l₂, x.ok K = true) (h : lcheck K on l₁ l₂ = true) :
+    opsQ.eval K (circWL K on l₁) = opsQ.eval K (circWL K on l₂) := by
+  funext s t
+  rw [lcheck, List.all_eq_true] at h
+  have ht := vbeq_eq (h t (Sim.mem_allStates t))
+  have hf : toFun (toS (vscale (incWL K on l₂ - incWL K on l₁) (simW K on l₁ (basisV t)))) =
+      toFun (toS (vscale (incWL K on l₁ - incWL K on l₂) (simW K on l₂ (basisV t)))) := by rw [ht]
+  rw [tf_scale, tf_scale, tf_simW on l₁ h₁, tf_simW on l₂ h₂, toS_basis, Sim.toFun_basis,
+    smul_smul, smul_smul, ← pow_add, ← pow_add] at hf
+  have e : incWL K on l₂ - incWL K on l₁ + incWL K on l₁ =
+      incWL K on l₁ - incWL K on l₂ + incWL K on l₂ := by omega
+  rw [e] at hf
+  have hc := congrFun (pow_cancel hf) s
+  simpa only [mulVec_single_one, transpose_apply] using hc
+
+theorem circWL_true (K : ℕ) (l : List Lt) : circWL K true l = onW K l := rfl
+theorem circWL_false (K : ℕ) (l : List Lt) : circWL K false l = offW K l := rfl
+
+end Sim
+
 /-- Two words have the same semantics at every width when they agree on the
-two kinds of blocks. -/
+two kinds of blocks, decided by simulating the letters on `K` wires. -/
 theorem sem_wc {m K : ℕ} {l₁ l₂ : List Lt} (h₁ : ∀ x ∈ l₁, x.ok K = true)
-    (h₂ : ∀ x ∈ l₂, x.ok K = true) (hon : Fast.check (onW K l₁) (onW K l₂) = true)
-    (hoff : Fast.check (offW K l₁) (offW K l₂) = true) :
+    (h₂ : ∀ x ∈ l₂, x.ok K = true) (hon : lcheck K true l₁ l₂ = true)
+    (hoff : lcheck K false l₁ l₂ = true) :
     S.sem (m + K) (wc K (m + K) l₁) = S.sem (m + K) (wc K (m + K) l₂) := by
   apply sem_of_eval
-  rw [eval_wc_blk l₁ h₁, eval_wc_blk l₂ h₂, Fast.check_sound hon, Fast.check_sound hoff]
-
+  have e1 := lcheck_sound true h₁ h₂ hon
+  have e2 := lcheck_sound false h₁ h₂ hoff
+  rw [circWL_true, circWL_true] at e1
+  rw [circWL_false, circWL_false] at e2
+  rw [eval_wc_blk l₁ h₁, eval_wc_blk l₂ h₂, e1, e2]
 
 /-! ## Removing a local wire -/
 
@@ -270,8 +502,8 @@ inductive St
 def semOK (k q : ℕ) (a b : List Lt) : Bool :=
   decide (q ≤ k) && (a ++ b).all (fun x => x.ok (k + 1) && x.avoids q) &&
     ((a ++ b).map (Lt.drop q)).all (Lt.ok k) &&
-    Fast.check (onW k (a.map (Lt.drop q))) (onW k (b.map (Lt.drop q))) &&
-    Fast.check (offW k (a.map (Lt.drop q))) (offW k (b.map (Lt.drop q)))
+    lcheck k true (a.map (Lt.drop q)) (b.map (Lt.drop q)) &&
+    lcheck k false (a.map (Lt.drop q)) (b.map (Lt.drop q))
 
 def orient (dir : Bool) (e : List Lt × List Lt) : List Lt × List Lt :=
   if dir then (e.2, e.1) else e
