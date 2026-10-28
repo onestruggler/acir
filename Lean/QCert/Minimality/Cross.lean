@@ -11,6 +11,7 @@ gate preserves the matrix of every circuit (`GateSubst.sem_map`).
 -/
 import QCert.Minimality.Subst
 import QCert.Minimality.Qubit
+import QCert.Minimality.Qutrit
 
 namespace QCert.Minimality
 
@@ -56,6 +57,20 @@ theorem sem_eq_cross (semA : GateSem G ℂ 2) (A : ScaledOps G ZOmega 2)
   rw [GateSem.sem_val, GateSem.sem_val, hA, hB]
   refine A.eval_toOps_cross B ZOmega.toC Qubit.invSqrt2 _ ZOmega.sqrt2 ZOmega.toC_sqrt2
     (mul_inv_cancel₀ QCert.sqrt2_ne_zero) (B.ex v - A.ex w) (A.ex w - B.ex v) (by omega) ?_
+  rw [← den_evalRows A.ops, ← den_evalRows B.ops, ← LinRep.den_smul, ← LinRep.den_smul, h]
+
+/-- `sem_eq_cross` for qutrit gate sets over ℤ[ζ₁₂], `H` scaled by `√3`. -/
+theorem sem_eq_cross3 (semA : GateSem G ℂ 3) (A : ScaledOps G ZZeta 3)
+    (hA : semA.toOps = A.toOps ZZeta.toC Qutrit.invSqrt3)
+    (semB : GateSem G' ℂ 3) (B : ScaledOps G' ZZeta 3)
+    (hB : semB.toOps = B.toOps ZZeta.toC Qutrit.invSqrt3) {n : ℕ} {w : Circuit G n}
+    {v : Circuit G' n}
+    (h : (rowsRep 3 n).ops.smul (ZZeta.sqrt3 ^ (B.ex v - A.ex w)) (evalRows A.ops n w) =
+      (rowsRep 3 n).ops.smul (ZZeta.sqrt3 ^ (A.ex w - B.ex v)) (evalRows B.ops n v)) :
+    (semA.sem n w : Op ℂ 3 n) = semB.sem n v := by
+  rw [GateSem.sem_val, GateSem.sem_val, hA, hB]
+  refine A.eval_toOps_cross B ZZeta.toC Qutrit.invSqrt3 _ ZZeta.sqrt3 ZZeta.toC_sqrt3
+    (mul_inv_cancel₀ ZZeta.sqrt3_ne_zero) (B.ex v - A.ex w) (A.ex w - B.ex v) (by omega) ?_
   rw [← den_evalRows A.ops, ← den_evalRows B.ops, ← LinRep.den_smul, ← LinRep.den_smul, h]
 
 end Cross
@@ -177,6 +192,25 @@ theorem ofMat1 {R : Type*} (M : Matrix (Fin (2 ^ 1)) (Fin (2 ^ 1)) R) (s t : Sta
     ofMat M s t = M (Fin.cast (by norm_num) (s 0)) (Fin.cast (by norm_num) (t 0)) := by
   show M (finFunctionFinEquiv s) (finFunctionFinEquiv t) = _
   congr 1 <;> exact Fin.ext (idx1 _)
+
+theorem idx3_1 (s : State 3 1) : (finFunctionFinEquiv s : ℕ) = s 0 := by
+  rw [finFunctionFinEquiv_apply]; simp
+
+theorem idx3_2 (s : State 3 2) : (finFunctionFinEquiv s : ℕ) = s 0 + 3 * s 1 := by
+  rw [finFunctionFinEquiv_apply]; simp [Fin.sum_univ_two]; ring
+
+/-- The index `a + 3 b` of the digits `a` (wire `0`) and `b` (wire `1`). -/
+def pair3 (a b : Fin 3) : Fin (3 ^ 2) := ⟨a + 3 * b, by omega⟩
+
+theorem ofMat3_1 {R : Type*} (M : Matrix (Fin (3 ^ 1)) (Fin (3 ^ 1)) R) (s t : State 3 1) :
+    ofMat M s t = M (Fin.cast (by norm_num) (s 0)) (Fin.cast (by norm_num) (t 0)) := by
+  show M (finFunctionFinEquiv s) (finFunctionFinEquiv t) = _
+  congr 1 <;> exact Fin.ext (idx3_1 _)
+
+theorem ofMat3_2 {R : Type*} (M : Matrix (Fin (3 ^ 2)) (Fin (3 ^ 2)) R) (s t : State 3 2) :
+    ofMat M s t = M (pair3 (s 0) (s 1)) (pair3 (t 0) (t 1)) := by
+  show M (finFunctionFinEquiv s) (finFunctionFinEquiv t) = _
+  congr 1 <;> exact Fin.ext (idx3_2 _)
 
 theorem ofMat2 {R : Type*} (M : Matrix (Fin (2 ^ 2)) (Fin (2 ^ 2)) R) (s t : State 2 2) :
     ofMat M s t = M (pair (s 0) (s 1)) (pair (t 0) (t 1)) := by
