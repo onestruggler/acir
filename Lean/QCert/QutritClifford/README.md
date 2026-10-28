@@ -182,10 +182,6 @@ Each family is matched against the table by computation (`ok_S1a`, …),
 which also pins its K-words (`Facts3Data.lean`) and the Lean definitions
 of the gadgets to those of the generator.
 
-`SchreierWords.lean` (Schreier's lemma on words modulo a relation) is a
-general form of the inductions of the two stages; the final proof does not
-use it.
-
 **Build times** (from scratch, with Mathlib): the three-wire library takes
 about 1 min 50 s in all (31 chunks of 12 lemmas, 2–5 s each), `Facts`
 15 s, `Cert1` 16 s, `Cert2` 11 s, `Stage1` 19 s, `Stage2` 11 s; the
