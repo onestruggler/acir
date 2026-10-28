@@ -531,6 +531,90 @@ theorem rel70 :
        .mv 7 6, .mv 9 7, .rw 8 6 2 false, .rw 5 3 0 false, .rw 9 2 0 false, .rw 9 2 1 false,
        .rw 8 1 1 false, .rw 9 0 0 false])
       (by decide +kernel)
+/-- The relator of relation 71 before a normal form on 3 wires (`gen/push.py`), rewritten into that normal form by the other typed relations. -/
+def ePush71 : Eqn :=
+  ⟨3, [.H 1, .CZ 0, .H 1, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 1, .H 1, .H 2, .CZ 1, .CZ 0, .H 1,
+       .CZ 0, .H 1, .H 0, .CZ 0, .H 0, .H 1, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 1, .H 0,
+       .CZ 0, .H 0, .Z 0, .CZ 1, .H 2, .H 1, .CZ 1, .H 1, .CZ 1, .H 1, .H 2, .CZ 1, .H 1,
+       .H 2, .CZ 1, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0, .H 1, .H 1,
+       .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .H 2, .CZ 1,
+       .H 1, .H 2, .H 2, .Z 2, .H 2],
+    [.H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0,
+     .H 1, .H 1, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .H 2,
+     .CZ 1, .H 1, .H 2, .H 2, .Z 2, .H 2]⟩
+
+theorem hPush71 : Holds ePush71.k ePush71.l ePush71.r :=
+  Holds.of_derives (db_ok_cons hT8_11 (db_ok_cons hT3_7 (db_ok_cons hT8_14 (db_ok_cons hT8_9 (db_ok_cons hT4_9 (db_ok_cons hT8_13 (db_ok_cons hT8_10 (db_ok_cons hT3_2 (db_ok_cons hT3_8 (db_ok_cons hT8_2 (db_ok_cons hT3_4 (db_ok_cons hT3_1 (db_ok_cons hT4_11 (db_ok_cons hT8_3 (db_ok_cons hT5_2 (db_ok_cons hT9_5 (db_ok_cons hT3_11 (db_ok_cons hT9_7 (db_ok_cons hT3_15 (db_ok_cons hT4_12 (db_ok_cons hT6_10 (db_ok_cons hT9_1 (db_ok_cons hT3_10 (db_ok_cons hT8_12 (db_ok_cons hT8_18 (db_ok_cons hT8_15 (db_ok_cons hT4_15 (db_ok_cons hT3_12 (db_ok_cons hT8_16 (db_ok_cons hR3 (db_ok_cons hT9_9 db_ok_nil)))))))))))))))))))))))))))))))
+    (steps := [.rw 0 43 0 false, .rw 1 1 0 false, .rw 1 1 0 false, .rw 2 42 0 false, .rw 3 33 1 false,
+     .mv 42 41, .mv 43 42, .mv 44 43, .mv 45 44, .mv 46 45, .mv 47 46, .mv 48 47, .mv 49 48,
+     .mv 50 49, .rw 4 50 1 false, .rw 5 58 1 false, .rw 1 1 0 false, .rw 1 1 0 false,
+     .rw 6 32 1 false, .rw 5 31 1 false, .rw 7 15 0 false, .rw 8 29 1 false,
+     .rw 0 42 0 false, .rw 1 1 0 false, .rw 2 41 0 false, .mv 29 28, .mv 30 29, .mv 31 30,
+     .mv 32 31, .mv 33 32, .mv 34 33, .mv 35 34, .mv 36 35, .mv 37 36, .mv 38 37, .mv 39 38,
+     .mv 40 39, .rw 9 40 0 false, .rw 10 50 1 false, .rw 11 49 1 false, .rw 12 49 1 false,
+     .rw 11 57 2 false, .rw 13 57 1 false, .rw 11 63 1 false, .rw 7 15 0 false, .mv 28 27,
+     .mv 29 28, .mv 30 29, .mv 31 30, .mv 32 31, .mv 33 32, .mv 34 33, .mv 35 34, .mv 36 35,
+     .mv 37 36, .mv 38 37, .mv 39 38, .rw 3 39 0 false, .mv 47 46, .mv 48 47,
+     .rw 10 46 1 false, .rw 1 1 0 false, .rw 14 26 0 false, .rw 1 1 0 false,
+     .rw 6 34 1 false, .rw 5 33 1 false, .rw 15 32 0 false, .rw 7 15 0 false,
+     .rw 16 46 1 false, .mv 45 44, .mv 46 45, .rw 10 44 1 false, .rw 0 38 0 false,
+     .rw 1 1 0 false, .rw 2 30 1 false, .mv 26 25, .mv 27 26, .mv 28 27, .mv 29 28,
+     .mv 30 29, .mv 31 30, .mv 32 31, .mv 33 32, .mv 34 33, .mv 35 34, .mv 36 35, .mv 37 36,
+     .rw 5 37 0 false, .rw 7 15 0 false, .rw 8 23 0 false, .mv 29 28, .mv 30 29, .mv 31 30,
+     .mv 32 31, .mv 33 32, .mv 34 33, .mv 35 34, .mv 36 35, .mv 37 36, .mv 38 37, .mv 39 38,
+     .mv 40 39, .rw 0 40 0 false, .rw 14 27 0 false, .rw 1 1 0 false, .rw 6 35 1 false,
+     .rw 5 34 1 false, .rw 17 33 0 false, .rw 7 15 0 false, .rw 18 48 1 false, .mv 47 46,
+     .mv 48 47, .rw 10 46 1 false, .rw 0 40 0 false, .rw 1 1 0 false, .rw 2 39 0 false,
+     .mv 15 14, .rw 19 12 0 false, .mv 15 14, .rw 20 21 0 false, .mv 36 35, .mv 37 36,
+     .mv 38 37, .mv 39 38, .mv 40 39, .mv 41 40, .mv 42 41, .mv 43 42, .rw 3 43 0 false,
+     .rw 7 15 0 false, .rw 21 34 0 false, .mv 51 50, .mv 55 54, .rw 10 53 1 false,
+     .rw 4 53 1 false, .mv 21 20, .rw 0 17 0 false, .mv 21 20, .rw 22 52 1 false,
+     .rw 5 62 1 false, .rw 1 1 0 false, .rw 23 61 1 false, .rw 24 68 1 false,
+     .rw 25 60 1 false, .mv 69 68, .rw 10 67 2 false, .rw 11 67 1 false, .rw 7 15 0 false,
+     .mv 51 50, .rw 4 51 1 false, .rw 25 59 1 false, .mv 67 66, .mv 68 67, .rw 7 15 0 false,
+     .rw 24 66 1 false, .mv 34 33, .mv 35 34, .mv 36 35, .mv 37 36, .mv 38 37, .mv 39 38,
+     .mv 40 39, .mv 41 40, .rw 3 41 0 false, .mv 49 48, .mv 50 49, .rw 10 48 1 false,
+     .rw 4 20 0 false, .mv 29 28, .mv 30 29, .mv 31 30, .mv 32 31, .mv 33 32, .mv 34 33,
+     .mv 35 34, .mv 36 35, .mv 37 36, .mv 38 37, .mv 39 38, .mv 40 39, .rw 3 40 0 false,
+     .rw 7 15 0 false, .rw 22 19 0 false, .mv 30 29, .mv 31 30, .mv 32 31, .mv 33 32,
+     .mv 34 33, .mv 35 34, .mv 36 35, .mv 37 36, .mv 38 37, .mv 39 38, .mv 40 39, .mv 41 40,
+     .rw 3 41 0 false, .mv 49 48, .mv 50 49, .rw 10 48 1 false, .rw 14 28 0 false,
+     .rw 1 1 0 false, .rw 6 36 1 false, .rw 5 35 1 false, .rw 15 34 0 false,
+     .rw 7 15 0 false, .rw 16 48 1 false, .mv 47 46, .mv 48 47, .rw 10 46 1 false, .mv 19 18,
+     .rw 0 18 0 false, .mv 19 18, .rw 1 1 0 false, .rw 2 20 0 false, .mv 28 27, .mv 29 28,
+     .mv 30 29, .mv 31 30, .mv 32 31, .mv 33 32, .mv 34 33, .mv 35 34, .mv 36 35, .mv 37 36,
+     .mv 38 37, .mv 39 38, .rw 5 39 0 false, .rw 4 18 0 false, .mv 27 26, .mv 28 27,
+     .mv 29 28, .mv 30 29, .mv 31 30, .mv 32 31, .mv 33 32, .mv 34 33, .mv 35 34, .mv 36 35,
+     .mv 37 36, .mv 38 37, .rw 0 38 0 false, .rw 7 15 0 false, .rw 16 16 0 false, .mv 15 14,
+     .mv 16 15, .rw 10 14 0 false, .rw 26 14 0 false, .rw 27 13 0 false, .mv 14 13,
+     .rw 14 15 0 false, .rw 1 1 0 false, .rw 6 23 1 false, .rw 5 22 1 false,
+     .rw 17 21 0 false, .rw 7 14 0 false, .rw 18 36 1 false, .mv 35 34, .mv 36 35,
+     .rw 10 34 1 false, .rw 0 28 0 false, .rw 1 1 0 false, .rw 2 27 0 false, .mv 15 14,
+     .mv 16 15, .mv 17 16, .mv 18 17, .mv 19 18, .mv 20 19, .mv 21 20, .mv 22 21, .mv 23 22,
+     .mv 24 23, .mv 25 24, .mv 26 25, .rw 3 26 0 false, .rw 7 27 0 false, .rw 10 12 1 false,
+     .rw 1 1 0 false, .rw 14 11 0 false, .rw 1 1 0 false, .rw 6 19 1 false, .rw 5 18 1 false,
+     .rw 15 17 0 false, .rw 10 32 1 false, .rw 22 31 1 false, .rw 25 41 1 false, .mv 50 49,
+     .rw 10 48 2 false, .rw 11 48 1 false, .rw 1 1 0 false, .rw 28 40 1 false,
+     .rw 24 46 1 false, .rw 0 23 0 false, .rw 7 23 0 false, .rw 0 23 0 false,
+     .rw 1 1 0 false, .rw 2 15 1 false, .rw 27 10 1 false, .mv 11 10, .rw 1 1 0 false,
+     .rw 6 12 1 false, .mv 11 9, .rw 29 8 1 false, .rw 10 8 2 false, .rw 1 1 0 false,
+     .rw 1 1 0 false, .rw 2 7 1 false, .rw 3 6 1 false, .mv 15 14, .mv 16 15, .mv 17 16,
+     .mv 18 17, .mv 19 18, .mv 20 19, .mv 21 20, .mv 22 21, .rw 4 22 1 false,
+     .rw 5 30 1 false, .rw 1 1 0 false, .rw 1 1 0 false, .rw 6 5 1 false, .rw 5 4 1 false,
+     .rw 17 3 0 false, .rw 10 19 1 false, .rw 22 18 1 false, .rw 0 10 0 false,
+     .rw 1 1 0 false, .rw 2 9 0 false, .rw 3 26 1 false, .rw 7 10 0 false, .rw 7 10 0 false,
+     .rw 0 10 0 false, .rw 30 1 0 false, .mv 20 19, .mv 21 20, .rw 10 19 1 false,
+     .rw 4 19 1 false, .rw 3 27 1 false, .mv 35 34, .mv 36 35, .rw 10 34 2 false,
+     .rw 22 18 1 false, .rw 3 28 1 false, .rw 7 9 0 false, .rw 1 8 0 false, .rw 6 27 1 false,
+     .rw 5 26 1 false, .rw 7 9 0 false, .mv 17 16, .rw 4 17 1 false, .rw 0 9 0 false,
+     .rw 5 0 1 false])
+    (by decide +kernel)
+/-- Relation 71 of Appendix B (Figure 5): `CXZ(1,0) B8(1,2) = B8(1,2) Z0 H0 CZ(1,0) H0 H1 CZ(1,0) H1 CZ(2,1) H1 CZ(1,0) H1 H0 CZ(1,0) H0 H1 CZ(1,0) H1 CZ(1,0)`.  Corrected: false as printed; true with Z on the lower wire right after B8 (the supplement, 5.8, has the same misprint).  Derived from its relator, which the normal form `ePush71.r` absorbs (`Holds.of_absorb`). -/
+theorem rel71 :
+    Holds 3 (bCXZ 1 0 ++ bB 8 1)
+      (bB 8 1 ++ [.Z 0, .H 0, .CZ 0, .H 0, .H 1, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 0, .H 1, .CZ 0, .H 1, .CZ 0]) :=
+  Holds.of_relator (by decide)
+    (Holds.of_absorb (N := ePush71.r) (by decide) hPush71)
 /-- Relation 72 of Appendix B (Figure 6): `CZ(2,1) B1(0,1) B1(1,2) = B1(0,1) B1(1,2) H0 H1 CZ(1,0) H0 H1`. -/
 theorem rel72 :
     Holds 3 ([.CZ 1] ++ bB 1 0 ++ bB 1 1)

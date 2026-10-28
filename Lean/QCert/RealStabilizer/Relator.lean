@@ -221,6 +221,16 @@ theorem Holds.variant' {k : ℕ} {l r l' r' : List Lt} (h : Holds k l r) (hl : B
   rw [e] at this
   exact this
 
+/-- A word that a word `N` absorbs is the identity: from `w N = N`, `w = 1`
+(every letter an involution). -/
+theorem Holds.of_absorb {k : ℕ} {w N : List Lt} (hN : Bnd k N) (h : Holds k (w ++ N) N) :
+    Holds k w [] := by
+  have h1 : Holds k w (w ++ (N ++ N.reverse)) := by
+    simpa using Holds.congr w [] (Holds.inv_cancel N hN).symm
+  have h2 : Holds k (w ++ (N ++ N.reverse)) (N ++ N.reverse) := by
+    simpa using Holds.congr [] N.reverse h
+  exact (h1.trans h2).trans (Holds.inv_cancel N hN)
+
 /-- An equation from its relator: `l r⁻¹ = 1` (every letter an involution). -/
 theorem Holds.of_relator {k : ℕ} {l r : List Lt} (hr : Bnd k r) (h : Holds k (l ++ r.reverse) []) :
     Holds k l r := by
