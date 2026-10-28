@@ -67,6 +67,9 @@ def d : QCert.CliffordT2.Gen → Circuit Gate 2
 /-- The decoding of Bian and Selinger's words. -/
 def D : Word QCert.CliffordT2.Gen →* Circuit Gate 2 := FreeMonoid.lift d
 
+theorem matQ_symm : ∀ y : QCert.CliffordT2.Gen, (QCert.CliffordT2.matQ y)ᵀ = QCert.CliffordT2.matQ y := by
+  intro y; cases y <;> decide +kernel
+
 theorem e_ok : ∀ g : Gen Gate 2,
     ofMat (d := 2) (k := 2) (FreeMonoid.lift matQ (e g)) =
       QOmega.invSqrt2 ^ scaled.exGen g • (scaled.ops.gen g).map ZOmega.toQ

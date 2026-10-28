@@ -120,6 +120,72 @@ theorem complete_of_flat {M' : Type*} [Monoid M'] (S : ScaledOps G ZOmega 2)
   rw [this]
   exact flat_sem S semT hT matQ e he w
 
+/-! ### Sources read in the other order -/
+
+/-- The paper draws a source relation `l = r`, stated in the order of matrix
+multiplication, left to right: its reversal.  A decoding read on reversed
+words respects derivability as soon as it does on each relation. -/
+theorem derivable_map_rev {X Y : Type*} (Γ : WRel X) (Γs : WRel Y)
+    (D : FreeMonoid Y →* FreeMonoid X)
+    (hD : ∀ a b, Γs a b → Derivable Γ (D a.reverse) (D b.reverse)) {a b : FreeMonoid Y}
+    (h : Derivable Γs a b) : Derivable Γ (D a.reverse) (D b.reverse) := by
+  let c : Con (FreeMonoid Y) :=
+    { r := fun a b => Derivable Γ (D a.reverse) (D b.reverse)
+      iseqv := ⟨fun _ => Derivable.refl _, fun h => h.symm, fun h h' => h.trans h'⟩
+      mul' := fun {a b c d} h1 h2 => by
+        simp only [FreeMonoid.reverse_mul, map_mul]
+        exact h2.mul h1 }
+  have : conGen Γs ≤ c := Con.conGen_le fun x y r => hD x y r
+  exact this h
+
+theorem lift_reverse {Y ι : Type*} [Fintype ι] [DecidableEq ι] (matQ : Y → Matrix ι ι QOmega)
+    (hsym : ∀ y, (matQ y)ᵀ = matQ y) (x : FreeMonoid Y) :
+    FreeMonoid.lift matQ x.reverse = (FreeMonoid.lift matQ x)ᵀ := by
+  induction x using FreeMonoid.inductionOn' with
+  | one => rw [show (1 : FreeMonoid Y).reverse = 1 from rfl, map_one, Matrix.transpose_one]
+  | mul_of y x ih =>
+    rw [FreeMonoid.reverse_mul, FreeMonoid.reverse_of, map_mul, map_mul, ih,
+      FreeMonoid.lift_eval_of, Matrix.transpose_mul, hsym]
+
+/-- Theorem 21 for a source on flat letters whose relations are read
+reversed: the encoding is reversed, so a circuit's matrix is the transpose
+of its encoding's, every letter's matrix being symmetric. -/
+theorem complete_of_flat_rev {M' : Type*} [Monoid M'] (S : ScaledOps G ZOmega 2)
+    (semT : GateSem G ℂ 2) (hT : semT.toOps = S.toOps ZOmega.toC Qubit.invSqrt2) {n : ℕ}
+    (Γ : WRel (Gen G n)) (Γs : WRel Y) (semY : FreeMonoid Y →* M')
+    (κ : M' →* Matrix (Fin (2 ^ n)) (Fin (2 ^ n)) ℂ) (hκ : Function.Injective κ)
+    (matQ : Y → Matrix (Fin (2 ^ n)) (Fin (2 ^ n)) QOmega)
+    (hsym : ∀ y, (matQ y)ᵀ = matQ y)
+    (hY : ∀ y, κ (semY (FreeMonoid.of y)) = (matQ y).map QOmega.toC)
+    (e : Gen G n → FreeMonoid Y)
+    (he : ∀ g, ofMat (FreeMonoid.lift matQ (e g)) =
+      QOmega.invSqrt2 ^ S.exGen g • (S.ops.gen g).map ZOmega.toQ)
+    (D : FreeMonoid Y →* Circuit G n)
+    (hsrc : ∀ a b, semY a = semY b → Derivable Γs a b)
+    (hrel : ∀ a b, Γs a b → Derivable Γ (D a.reverse) (D b.reverse))
+    (hDE : ∀ w, Derivable Γ (D (FreeMonoid.lift e w)) w) :
+    ∀ w v : Circuit G n, semT.sem n w = semT.sem n v → Derivable Γ w v := by
+  have hκY : κ.comp semY = (QOmega.toC.mapMatrix : Matrix (Fin (2 ^ n)) (Fin (2 ^ n)) QOmega →+*
+      Matrix (Fin (2 ^ n)) (Fin (2 ^ n)) ℂ).toMonoidHom.comp (FreeMonoid.lift matQ) := by
+    refine FreeMonoid.hom_eq fun y => ?_
+    simp only [MonoidHom.comp_apply, hY, FreeMonoid.lift_eval_of]
+    rfl
+  have htr : Function.Injective
+      (fun M : Matrix (Fin (2 ^ n)) (Fin (2 ^ n)) ℂ => Mᵀ) := fun _ _ h => Matrix.transpose_injective h
+  refine complete_of_transfer_map Γ Γs (semT.sem n) semY (fun w => (FreeMonoid.lift e w).reverse)
+    (fun a => D a.reverse) (fun U => ofMat (κ U)ᵀ) (ofMat_injective.comp (htr.comp hκ))
+    (fun U => (U : Op ℂ 2 n)) (fun w => ?_) hsrc
+    (fun a b hab => derivable_map_rev Γ Γs D hrel hab) (fun w => ?_)
+  · have := congrArg (fun f => f (FreeMonoid.lift e w).reverse) hκY
+    simp only [MonoidHom.comp_apply] at this
+    show ofMat (κ (semY (FreeMonoid.lift e w).reverse))ᵀ = (semT.sem n w : Op ℂ 2 n)
+    rw [this, ← flat_sem S semT hT matQ e he w, lift_reverse matQ hsym]
+    rfl
+  · show Derivable Γ (D (FreeMonoid.lift e w).reverse.reverse) w
+    rw [show (FreeMonoid.lift e w).reverse.reverse = FreeMonoid.lift e w from
+      List.reverse_reverse _]
+    exact hDE w
+
 /-- Lemma 19 for a flat encoding: decoding the encoding of every circuit
 derives the circuit as soon as it does for every generator. -/
 theorem derivable_lift_comp {n : ℕ} {Γ : WRel (Gen G n)} (e : Gen G n → FreeMonoid Y)
