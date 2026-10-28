@@ -159,10 +159,25 @@ editing the others; it may assume everything exported by the others (the
 
 ## Status
 
+* `Net.lean` (package (v), done, no `sorry`, no completeness hypothesis): swap
+  relations at width `N`; naturality of `placeG`/`mc` under swaps (`mc_swap`,
+  `mc_swap_sym` given `CanonSym`, i.e. (307)/(313)/(353) at the canonical
+  position); `mc_toTop`, `letter_toTop`, `ToTop`, `liftIdle`, `semIdle` (windows
+  idle on a wire `q`); `shift_placeG`, `place1_placeG`, `place2_placeG`.
+* Package (v): (315)–(317) proved in `D/N13.lean`.  (318), (319) transcribed and
+  checked numerically at widths 4–6 (scratch `t318.py`); their proofs and
+  (320)–(328), (333)–(352) remain.
+
 * Done: `EngineN.lean` (the concrete-width engine), `Fast.lean` (the fast checker), `Weak.lean` (weakening, semantic steps, window step), `MC.lean`
   (conventions), `D/N8.lean`, `D/N13.lean` (interfaces, statements only).
-* Next: the figure parser (prototype `gen/sec8/figparse.py`, state in
-  `gen/sec8/README.md`), then D.2 with the engine.
+* Package (i): `D/SmallDefs.lean` and `D/Small.lean` state every fixed-width
+  equation the chain cites (D.2 (117)–(148), D.3, D.4), generated from the
+  figures and checked numerically; the `m = 0` derivations are `D/W3.lean`
+  (package (i)), `D/W4.lean` (ii), `D/W5.lean` (iii), stated with `sorry`.
+  The figure parser `gen/sec8/figparse.py` reads every statement and every
+  derivation chain of D.2 (pages 66–79; each step checked numerically, see
+  `gen/sec8/README.md`) and the D.3/D.4 statements.  Next: D.2 at width 3
+  (`gen/sec8/w3.py` turns the paper's steps into engine runs).
 * Package (vi): `D/N15.lean` stated ((353)–(361), checked numerically by
   `gen/sec8/e/iface_n15.py`; the decoding model `gen/sec8/e/decode.py` mirrors
   `Decoding.lean` and preserves the semantics on every letter at `n = 3, 4`).
