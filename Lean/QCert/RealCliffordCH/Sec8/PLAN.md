@@ -413,3 +413,10 @@ uses the verified symbolic evaluator on three local wires; an idle wire
 then permits the smaller-width completeness hypothesis to give a circuit
 derivation at every width from five. Both modules typecheck, and the
 `commBBpp` axiom audit contains only standard Lean axioms.
+
+### All cases of five-wire equation (267) checked, 2026-10-29
+
+`W5/Family267.lean` supplies all 32 combinations of the five Boolean
+parameters of (267). Lean completed the module in 1448 seconds. Its first
+and last exported cases have only standard Lean axioms. The companion
+family (268) is still checking before the shared `W5` interface is audited.
