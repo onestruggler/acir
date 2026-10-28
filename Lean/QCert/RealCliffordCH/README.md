@@ -132,10 +132,10 @@ Formalized from the paper only.
 * The large-width commutation proofs (335), (336), and (340) have been
   audited without `sorryAx`. Their expansion uses the completed large-width
   case of (295), independently of its open four-wire case.
-* On four wires, (216)–(241) and (246)–(248) now have kernel-checked
+* On four wires, all equations (150)–(248) now have kernel-checked
   derivations, including every Boolean parameter case. `W4/CommuteLate`,
   `Opposite`, `HgLate`, `FullRotation`, `SameRotation`, `ConjRotation`, and
-  `WhiteCZ` supply these proofs. The corresponding Python generators
+  `WhiteCZ`, and `ConjComm242`–`ConjComm245` supply these proofs. The corresponding Python generators
   produce certificates checked by `WEng`; numerical comparisons guide
   the search and do not justify any derivation.
 * Toward Theorem 4.10: Lemma A.4 (a normal form for proper Hadamard-free
@@ -157,7 +157,6 @@ that it uses; `QCert/Audit.lean` reports transitive axiom dependencies.
 | `Sec8/D/N8.lean`: `eq295` | Remaining interface statement of Lemmas D.8–D.11 (package (iv)). The case from five wires on is proved in `N8/IFive`; the four-wire case remains to be connected. |
 | `Sec8/D/N13.lean`: `eq333`–`eq340`, `eq342`, `eq344`–`eq352` | Interface statements of Lemmas D.12–D.13 (package (v)); each checked numerically at 3–6 wires. |
 | `Sec8/D/W3.lean`: `d148b` | Lemma D.2 (and (148)) at width 3, from Figure 4 and completeness on two wires (package (i)); All of Lemma D.2, (117)–(147), and (148a) are proved. |
-| `Sec8/D/W4.lean`: `d242`–`d245` | Remaining cited equations of Lemma D.5 at width 4 (package (ii)); all other declarations of `W4.lean` have checked proof terms. |
 | `Sec8/D/W5.lean`: `d267`, `d268` | Lemma D.7's (267), (268) at width 5 (package (iii)). |
 | `Sec8/D/N15.lean`: `eq358`, `eq360`, `eq361` | Remaining statements of Lemmas D.14–D.15 and of Equation (361) of Appendix E.5 (package (vi)); each checked numerically at 2–6 wires for every colouring (`gen/sec8/e/iface_n15.py`). |
 

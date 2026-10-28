@@ -7,9 +7,9 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 The equations of D.3 that the chain cites, at width 4, given completeness on
 three wires (`IH 4`).  Owned by package (ii) of `PLAN.md`.  The derivations are
 runs of the engine `WEng` in the generated modules `W4/*.lean`
-(`gen/sec8/w4/gen_w4.py`); the remaining `sorry`s are the equations not yet
-generated.
+with every Boolean parameter case checked by Lean's kernel.
 -/
+import QCert.RealCliffordCH.Sec8.D.W4.ConjComm245
 import QCert.RealCliffordCH.Sec8.D.SmallDefs
 import QCert.RealCliffordCH.Sec8.D.W4.A
 import QCert.RealCliffordCH.Sec8.D.W4.B1
@@ -309,19 +309,179 @@ theorem d241 (a : Bool) (α : Bool) (b : Bool) (β : Bool) (δ : Bool) (γ : Boo
 
 theorem d242 (a : Bool) (α : Bool) (b : Bool) (β : Bool) (δ : Bool) (γ : Bool) (ih : IH 4) :
     Derivable (theory 4) (l242 a α b β δ γ) (r242 a α b β δ γ) := by
-  sorry
+  cases a <;> cases α <;> cases b <;> cases β <;> cases δ <;> cases γ
+  · exact W4.e242FFFFFF ih
+  · exact W4.e242FFFFFT ih
+  · exact W4.e242FFFFTF ih
+  · exact W4.e242FFFFTT ih
+  · exact W4.e242FFFTFF ih
+  · exact W4.e242FFFTFT ih
+  · exact W4.e242FFFTTF ih
+  · exact W4.e242FFFTTT ih
+  · exact W4.e242FFTFFF ih
+  · exact W4.e242FFTFFT ih
+  · exact W4.e242FFTFTF ih
+  · exact W4.e242FFTFTT ih
+  · exact W4.e242FFTTFF ih
+  · exact W4.e242FFTTFT ih
+  · exact W4.e242FFTTTF ih
+  · exact W4.e242FFTTTT ih
+  · exact W4.e242FTFFFF ih
+  · exact W4.e242FTFFFT ih
+  · exact W4.e242FTFFTF ih
+  · exact W4.e242FTFFTT ih
+  · exact W4.e242FTFTFF ih
+  · exact W4.e242FTFTFT ih
+  · exact W4.e242FTFTTF ih
+  · exact W4.e242FTFTTT ih
+  · exact W4.e242FTTFFF ih
+  · exact W4.e242FTTFFT ih
+  · exact W4.e242FTTFTF ih
+  · exact W4.e242FTTFTT ih
+  · exact W4.e242FTTTFF ih
+  · exact W4.e242FTTTFT ih
+  · exact W4.e242FTTTTF ih
+  · exact W4.e242FTTTTT ih
+  · exact W4.e242TFFFFF ih
+  · exact W4.e242TFFFFT ih
+  · exact W4.e242TFFFTF ih
+  · exact W4.e242TFFFTT ih
+  · exact W4.e242TFFTFF ih
+  · exact W4.e242TFFTFT ih
+  · exact W4.e242TFFTTF ih
+  · exact W4.e242TFFTTT ih
+  · exact W4.e242TFTFFF ih
+  · exact W4.e242TFTFFT ih
+  · exact W4.e242TFTFTF ih
+  · exact W4.e242TFTFTT ih
+  · exact W4.e242TFTTFF ih
+  · exact W4.e242TFTTFT ih
+  · exact W4.e242TFTTTF ih
+  · exact W4.e242TFTTTT ih
+  · exact W4.e242TTFFFF ih
+  · exact W4.e242TTFFFT ih
+  · exact W4.e242TTFFTF ih
+  · exact W4.e242TTFFTT ih
+  · exact W4.e242TTFTFF ih
+  · exact W4.e242TTFTFT ih
+  · exact W4.e242TTFTTF ih
+  · exact W4.e242TTFTTT ih
+  · exact W4.e242TTTFFF ih
+  · exact W4.e242TTTFFT ih
+  · exact W4.e242TTTFTF ih
+  · exact W4.e242TTTFTT ih
+  · exact W4.e242TTTTFF ih
+  · exact W4.e242TTTTFT ih
+  · exact W4.e242TTTTTF ih
+  · exact W4.e242TTTTTT ih
 
 theorem d243 (a : Bool) (α : Bool) (b : Bool) (β : Bool) (δ : Bool) (γ : Bool) (ih : IH 4) :
     Derivable (theory 4) (l243 a α b β δ γ) (r243 a α b β δ γ) := by
-  sorry
+  cases a <;> cases α <;> cases b <;> cases β <;> cases δ <;> cases γ
+  · exact W4.e243FFFFFF ih
+  · exact W4.e243FFFFFT ih
+  · exact W4.e243FFFFTF ih
+  · exact W4.e243FFFFTT ih
+  · exact W4.e243FFFTFF ih
+  · exact W4.e243FFFTFT ih
+  · exact W4.e243FFFTTF ih
+  · exact W4.e243FFFTTT ih
+  · exact W4.e243FFTFFF ih
+  · exact W4.e243FFTFFT ih
+  · exact W4.e243FFTFTF ih
+  · exact W4.e243FFTFTT ih
+  · exact W4.e243FFTTFF ih
+  · exact W4.e243FFTTFT ih
+  · exact W4.e243FFTTTF ih
+  · exact W4.e243FFTTTT ih
+  · exact W4.e243FTFFFF ih
+  · exact W4.e243FTFFFT ih
+  · exact W4.e243FTFFTF ih
+  · exact W4.e243FTFFTT ih
+  · exact W4.e243FTFTFF ih
+  · exact W4.e243FTFTFT ih
+  · exact W4.e243FTFTTF ih
+  · exact W4.e243FTFTTT ih
+  · exact W4.e243FTTFFF ih
+  · exact W4.e243FTTFFT ih
+  · exact W4.e243FTTFTF ih
+  · exact W4.e243FTTFTT ih
+  · exact W4.e243FTTTFF ih
+  · exact W4.e243FTTTFT ih
+  · exact W4.e243FTTTTF ih
+  · exact W4.e243FTTTTT ih
+  · exact W4.e243TFFFFF ih
+  · exact W4.e243TFFFFT ih
+  · exact W4.e243TFFFTF ih
+  · exact W4.e243TFFFTT ih
+  · exact W4.e243TFFTFF ih
+  · exact W4.e243TFFTFT ih
+  · exact W4.e243TFFTTF ih
+  · exact W4.e243TFFTTT ih
+  · exact W4.e243TFTFFF ih
+  · exact W4.e243TFTFFT ih
+  · exact W4.e243TFTFTF ih
+  · exact W4.e243TFTFTT ih
+  · exact W4.e243TFTTFF ih
+  · exact W4.e243TFTTFT ih
+  · exact W4.e243TFTTTF ih
+  · exact W4.e243TFTTTT ih
+  · exact W4.e243TTFFFF ih
+  · exact W4.e243TTFFFT ih
+  · exact W4.e243TTFFTF ih
+  · exact W4.e243TTFFTT ih
+  · exact W4.e243TTFTFF ih
+  · exact W4.e243TTFTFT ih
+  · exact W4.e243TTFTTF ih
+  · exact W4.e243TTFTTT ih
+  · exact W4.e243TTTFFF ih
+  · exact W4.e243TTTFFT ih
+  · exact W4.e243TTTFTF ih
+  · exact W4.e243TTTFTT ih
+  · exact W4.e243TTTTFF ih
+  · exact W4.e243TTTTFT ih
+  · exact W4.e243TTTTTF ih
+  · exact W4.e243TTTTTT ih
 
 theorem d244 (a : Bool) (α : Bool) (b : Bool) (β : Bool) (ih : IH 4) :
     Derivable (theory 4) (l244 a α b β) (r244 a α b β) := by
-  sorry
+  cases a <;> cases α <;> cases b <;> cases β
+  · exact W4.e244FFFF ih
+  · exact W4.e244FFFT ih
+  · exact W4.e244FFTF ih
+  · exact W4.e244FFTT ih
+  · exact W4.e244FTFF ih
+  · exact W4.e244FTFT ih
+  · exact W4.e244FTTF ih
+  · exact W4.e244FTTT ih
+  · exact W4.e244TFFF ih
+  · exact W4.e244TFFT ih
+  · exact W4.e244TFTF ih
+  · exact W4.e244TFTT ih
+  · exact W4.e244TTFF ih
+  · exact W4.e244TTFT ih
+  · exact W4.e244TTTF ih
+  · exact W4.e244TTTT ih
 
 theorem d245 (a : Bool) (α : Bool) (b : Bool) (β : Bool) (ih : IH 4) :
     Derivable (theory 4) (l245 a α b β) (r245 a α b β) := by
-  sorry
+  cases a <;> cases α <;> cases b <;> cases β
+  · exact W4.e245FFFF ih
+  · exact W4.e245FFFT ih
+  · exact W4.e245FFTF ih
+  · exact W4.e245FFTT ih
+  · exact W4.e245FTFF ih
+  · exact W4.e245FTFT ih
+  · exact W4.e245FTTF ih
+  · exact W4.e245FTTT ih
+  · exact W4.e245TFFF ih
+  · exact W4.e245TFFT ih
+  · exact W4.e245TFTF ih
+  · exact W4.e245TFTT ih
+  · exact W4.e245TTFF ih
+  · exact W4.e245TTFT ih
+  · exact W4.e245TTTF ih
+  · exact W4.e245TTTT ih
 
 theorem d246 (ih : IH 4) :
     Derivable (theory 4) (l246) (r246) := by

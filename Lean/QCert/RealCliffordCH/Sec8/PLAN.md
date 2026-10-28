@@ -370,3 +370,13 @@ the W4 base cases; all ten have only standard Lean axioms.
 Table 1 remains at 13 of 16 complete rows. No Agda source was consulted.
 The user requested pushes after each verified batch and six further
 hours of work, starting at 2026-10-28 16:50 UTC.
+
+### Four-wire equations completed, 2026-10-29
+
+All Boolean cases of `W4.d242`–`d245` are now proved, completing the
+four-wire interface. The certificates use the six checked base cases,
+inverse cancellation, colour conjugation, and earlier four-wire equations.
+The full build and axiom audit passed (4038 jobs); all four declarations
+depend only on standard Lean axioms. There are 35 remaining proof sites
+(27 standalone and eight rule branches), and Table 1 remains at 13 of 16
+complete rows. No Agda source was consulted.
