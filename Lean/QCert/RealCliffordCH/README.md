@@ -42,6 +42,7 @@ Formalized from the paper only.
 | `Sec8/MC.lean` | The conventions of Appendix D: circuits at the bottom of wider ones (`atBot`), swap networks (`netL`, `placeG`), colours (`colourW`), and the general multi-controlled gate `mc N K tg c` (box, `ZX`, `XZ`, `H`; special wires `tg`; controls `c`). |
 | `Sec8/D/N15.lean` | Lemmas D.14–D.15 ((353)–(360)) and Equation (361), stated (package (vi)). |
 | `Sec8/MCSem.lean` | The semantics of the gates of `MC` at every width, entry by entry over ℚ(√2): a gate on given wires (`onW`; `eval_place1`, `eval_place2`, `eval_atBot`), a swap network permutes wires (`eval_swAt`, `eval_conjNet`) and `netL N ps` brings `ps[i]` to wire `i` (`sig_netPos`), so `placeG N g ps` is `g` on the wires `ps` (`eval_placeG`); the canonical gates of Definition 2.4 apply their one-control gate when their controls are all `1` (`eval_canon`); `X` on both sides negates controls (`eval_colourW`); `mc N K tg c` is `Λ_c(U_K)` (`eval_mc`), and with its special wires below `k` it is block diagonal in the wires above (`eval_mc_blk`, `onW_blk`), which reduces semantic identities at every width to identities on `k` wires. |
+| `Sec8/D/Colour.lean` | Equation (81) for every multi-controlled gate (`eq81'`, used by `D/N8.eq81`): `X` gates on different wires commute (`xAt_comm`), `X X = 1` (`xx`), and a product of commuting gates does not depend on their order (`drawn_perm`). |
 | `Sec8/D/N8.lean`, `Sec8/D/N13.lean` | Interfaces: the equations of Lemmas D.8–D.13 used later ((81), (269), (274), (277), (290)–(292), (295), (299)–(302), (305), (307)–(317), (333)–(340), (342), (344)–(352)), stated in the conventions of `MC`, not yet proved. |
 | `Theorem.lean` | `theorem_4_4`, `lemma_7_5`, `lemma_7_6`, `completeness_at` (by induction on the number of wires), `completeness`, `presentation`. |
 
@@ -107,7 +108,7 @@ is open for two wires too.
 | `Sec8/Statement.lean`: `theorem_4_10` | Theorem 4.10 (Appendices A.3, A.4): Figure 8 is complete for proper words over `𝒫_{2ⁿ}`, `n ≥ 3`. |
 | `Sec8/Statement.lean`: `lemma_8_7` | Lemma 8.7 (via Lemma 8.6, Appendix E.4), given completeness on fewer wires. |
 | `Sec8/Statement.lean`: `lemma_8_8` | Lemma 8.8 (Appendix E.5, with the auxiliary equations of Appendix D), given completeness on fewer wires. |
-| `Sec8/D/N8.lean`: `eq81`, `eq269`, `eq274`, `eq277`, `eq290`–`eq292`, `eq295`, `eq299`–`eq302`, `eq305`, `eq307`–`eq314` | Interface statements of Lemmas D.8–D.11 (package (iv) of `Sec8/PLAN.md`); each checked numerically at 3–6 wires (`gen/sec8/iface.py`, `gen/sec8/iface_n8.py`). |
+| `Sec8/D/N8.lean`: `eq269`, `eq274`, `eq277`, `eq290`–`eq292`, `eq295`, `eq299`–`eq302`, `eq305`, `eq307`–`eq314` | Interface statements of Lemmas D.8–D.11 (package (iv) of `Sec8/PLAN.md`); each checked numerically at 3–6 wires (`gen/sec8/iface.py`, `gen/sec8/iface_n8.py`). |
 | `Sec8/D/N13.lean`: `eq315`–`eq317`, `eq333`–`eq340`, `eq342`, `eq344`–`eq352` | Interface statements of Lemmas D.12–D.13 (package (v)); each checked numerically at 3–6 wires. |
 | `Sec8/D/N15.lean`: `eq353`–`eq361` | Statements of Lemmas D.14–D.15 and of Equation (361) of Appendix E.5 (package (vi)); each checked numerically at 2–6 wires for every colouring (`gen/sec8/e/iface_n15.py`). |
 

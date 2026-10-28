@@ -12,7 +12,7 @@ numerically against the definitions at `N = 3, …, 6` (scratch
 `r87/iface.py`).  They are stated, not yet proved: package (iv) of
 `PLAN.md` replaces each `sorry` by its proof and keeps the statements.
 -/
-import QCert.RealCliffordCH.Sec8.MC
+import QCert.RealCliffordCH.Sec8.D.Colour
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -26,8 +26,8 @@ sides exchanges the colour of that control. -/
 theorem eq81 (N : ℕ) (K : Kind) (tg : List ℕ) (c : ℕ → Option Bool) (j : ℕ) (b : Bool)
     (hj : j < N) (hjt : j ∉ tg) (hc : c j = some b) :
     Derivable (theory N) (drawn [xAt N j, mc N K tg c, xAt N j])
-      (mc N K tg (setCtl c j (some !b))) := by
-  sorry
+      (mc N K tg (setCtl c j (some !b))) :=
+  eq81' N K tg c j b hj hjt hc
 
 /-- The box on wire `1` with controls on wire `0` and on the wires `3, …, N - 1`
 (the inner box of (269) and (300)). -/
