@@ -17,9 +17,9 @@ basic generator `G` that does not raise the level:
   entry among `0, …, 3` (`squareK_disj`, Subcase 3.2.1) and with one
   (`squareK_meet`, Subcases 3.2.2–3.2.5).
 
-`squareX_odd` is not proved yet.
 -/
 import QCert.LiRossSelinger.CaseKMeet
+import QCert.LiRossSelinger.CaseX8
 
 namespace QCert.LiRossSelinger
 
@@ -43,15 +43,15 @@ abbrev Closes (s : O_ZHalf n) (g : Gen n) : Prop :=
     Derivable (Table1 n) (FreeMonoid.ofList (npath m (sem n g * s)) * FreeMonoid.of g)
       (FreeMonoid.ofList gs * FreeMonoid.ofList (syll s))
 
-/-- Subcase 1.2.2.3 with `u_e` odd: `x = d` and `x + 1` is the fifth odd entry.
-**Not proved yet.** -/
+/-- Subcase 1.2.2.3 with `u_e` odd: `x = d` and `x + 1` is the fifth odd entry
+(`CaseX8.squareX_odd'`). -/
 theorem squareX_odd {s : O_ZHalf n} (hs : s ≠ 1) {x y : Fin n} (hxy : x < y)
     (hy : y.val = x.val + 1) (hle : level (sem n (Gen.x x y hxy) * s) ≤ level s)
     (hk : 0 < lde s) {a b c d : Fin n} (hab : a < b) (hbc : b < c) (hcd : c < d)
     (ha : a ∈ oddS s) (hb : b ∈ oddS s) (hc : c ∈ oddS s) (hd : d ∈ oddS s)
     (hrest : ∀ r ∈ oddS s, r = a ∨ r = b ∨ r = c ∨ r = d ∨ d < r)
-    (h2 : d = x ∧ y ∈ oddS s) : Closes s (Gen.x x y hxy) := by
-  sorry
+    (h2 : d = x ∧ y ∈ oddS s) : Closes s (Gen.x x y hxy) :=
+  squareX_odd' hs hxy hy hle hk hab hbc hcd ha hb hc hd hrest h2
 
 /-- Subcases 3.2.2–3.2.5: `G = K_[0,1,2,3]` at `k > 0`, with the first odd
 entry `a ≤ 3` (`CaseKMeet.squareK_meet'`). -/

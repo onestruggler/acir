@@ -150,10 +150,11 @@ groups `O_ZHalf n` and `L n`, `matIH` = `I ⊗ H`), `Theorem.lean`.
     permutations of the end), and `level_lt_of_col` (fewer odd entries at
     the scale of `s`).
 
-  Proved cases: Subcases 1.1 (`CaseZero.squareZ_X`), 1.2.1, 1.2.2.1,
-  1.2.2.2 and 1.2.2.3 with `u_e` even (`CaseX.squareX_rename`: the syllable
+  Proved cases: all of them.  Subcases 1.1 (`CaseZero.squareZ_X`), 1.2.1,
+  1.2.2.1, 1.2.2.2 and 1.2.2.3 with `u_e` even (`CaseX.squareX_rename`: the syllable
   of `G s` is that of `s` renamed, and `G` closes the square), 1.2.3
-  (`CasePair.squareX_pair'`), 2.1 (`CaseZero.squareZ_N`), 2.2
+  (`CasePair.squareX_pair'`), 1.2.2.3 with `u_e` odd (`CaseX8.squareX_odd'`,
+  below), 2.1 (`CaseZero.squareZ_N`), 2.2
   (`CaseN.squareN_in`, `squareN_out`), 3.1 (`CaseZero.squareZ_K`;
   Subcases 3.1.1–3.1.4 raise the level, which the hypothesis excludes) and
   3.2.1 (`CaseK.squareK_disj`: `K` makes the even entries `0, …, 3` all odd,
@@ -175,18 +176,30 @@ groups `O_ZHalf n` and `L n`, `matIH` = `I ⊗ H`), `Theorem.lean`.
     (`Rel323`); the signs of `c, d` commute with `K_[0,1,2,3]` and are
     handled generically (`CaseK2.square_two`).
 
-## Remaining `sorry`
+## Theorem 4.10 is complete
 
-One case of Lemma A.20, in `MainLemma.lean`:
+There is no `sorry`.  `#print axioms presentation` (and `presentationL`,
+`complete`) gives `[propext, Classical.choice, Quot.sound]`.
 
-* `squareX_odd` — Subcase 1.2.2.3 with `u_e` odd (`G = X_[d,d+1]`, `d+1`
-  the fifth odd entry): the two eight-entry diagrams of the paper.  Their
-  relations are proved (`Rel1223`: (6a) and Proposition A.16 as
-  `W⁻¹ C W ≈ C`); the residue argument of Lemmas A.8–A.10 is not yet
-  formalized.
+The last case of Lemma A.20, Subcase 1.2.2.3 with `u_e` odd
+(`CaseX8.squareX_odd'`): `G = X_[d,e]`, `e = d + 1` the fifth odd entry, `f, g, h`
+the next three.  `s` and `r = G s` have the same odd entries, and at both the
+first two syllables are on `a, b, c, d` and `e, f, g, h` (`eight_syll`).  The
+square closes by `P = W⁻¹ K_[a,b,c,d] K_[e,f,g,h] X_[d,e] K_[e,f,g,h] K_[a,b,c,d] W`
+followed by the syllable of `t`, with `W = (−1)_[a](−1)_[e]X_[a,e]` or
+`(−1)_[a](−1)_[h]X_[a,h]`; the derivation is `W⁻¹ C W ≈ C` (`Rel1223`: (6a),
+Proposition A.16) plus the signs of `d` and `e` exchanging across `X_[d,e]`
+(`der1223`).  The case split is on the sum of the eight entries made
+`≡ 1 (mod 4)`, `≡ 4` or `0 (mod 8)` (the paper's `ū ᵀ ū ≡ 0, 8 (mod 16)`); the
+residue claims of Lemmas A.8–A.10 become two `omega` lemmas on that sum
+(`par8_e`, `par8_h`), and the levels along both sides of the diagram follow
+(`eight_lev_e`, `eight_lev_h`: the two `K`s after `W` keep the eight entries
+even; the side of `q` is the same computation at `r`).
 
-Theorem 4.10 (`Theorem.complete`) and everything else, including
-`presentationL`, are proved from it.
+Every diagram and every intermediate level of Subcases 1.2.2.3, 3.2.3 and
+3.2.5 was checked numerically first (exact rational arithmetic on random
+states for `n = 6, …, 12`, scratch), as were the residue patterns of
+Lemma A.3 and the sign parities.
 
 ## Errors found in the proof of Lemma A.20
 

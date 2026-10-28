@@ -738,4 +738,279 @@ theorem der1223 {a b c d e f g h : Fin n} (h1 : a < b) (h2 : b < c) (h3 : c < d)
   exact r4.trans ((deq (by simp only [mul_assoc])).trans (r23.symm.trans
     ((deq (by simp only [mul_assoc])).trans r1.symm)))
 
+/-! ## Closing the square -/
+
+/-- The square with the path `T⁻¹ X T N_t`, given the levels along `T` after two
+syllables at `s` and at `r = X s`. -/
+theorem finish1223 {s : O_ZHalf n} (hs : s ≠ 1) (hk : 0 < lde s) {X : Gen n}
+    (hle : level (sem n X * s) ≤ level s) (T S : List (Gen n)) (hlen : T.length = 5)
+    (hsyllt : syll (next s) = S)
+    (hS : ∀ j, 0 < j → ∀ x ∈ S.drop j, SPBelow s x)
+    (hTs : ∀ j ≤ 5, level (FreeMonoid.lift (sem n) (FreeMonoid.ofList (T.drop j)) *
+      next (next s)) < level s)
+    (hTr : ∀ j ≤ 5, level (FreeMonoid.lift (sem n) (FreeMonoid.ofList (T.drop j)) *
+      next (next (sem n X * s))) < level s)
+    (hder : Derivable (Table1 n) (FreeMonoid.ofList (npath 2 (sem n X * s)) * FreeMonoid.of X)
+      (FreeMonoid.ofList (T.reverse ++ [X] ++ T ++ S) * FreeMonoid.ofList (syll s))) :
+    ∃ (m : ℕ) (gs : List (Gen n)), PathBelow gs (next s) (level s) ∧
+      Derivable (Table1 n) (FreeMonoid.ofList (npath m (sem n X * s)) * FreeMonoid.of X)
+        (FreeMonoid.ofList gs * FreeMonoid.ofList (syll s)) := by
+  set P := T.reverse ++ [X] ++ T ++ S with hPdef
+  have hsem := derivable_sound sound hder
+  simp only [map_mul, FreeMonoid.lift_eval_of] at hsem
+  have hq : FreeMonoid.lift (sem n) (FreeMonoid.ofList P) * next s =
+      next (next (sem n X * s)) := by
+    have := iterN_eq 2 (sem n X * s)
+    rw [show iterN 2 (sem n X * s) = next (next (sem n X * s)) from rfl] at this
+    rw [this, next, ← mul_assoc, ← hsem, mul_assoc]
+  refine square hs hle 2 P (Or.inl two_pos) hder ?_
+  intro i hi0 hi
+  have hlenP : P.length = 11 + S.length := by simp [hPdef, hlen]; omega
+  have htF : FixCols (mat (next s)) (pivotJ s) := fixCols_next s
+  have htL := level_next_lt s hs
+  by_cases h11 : 11 ≤ i
+  · obtain ⟨k, rfl⟩ : ∃ k, i = (T.reverse ++ [X] ++ T).length + k := ⟨i - 11, by simp [hlen]; omega⟩
+    have e : P.drop ((T.reverse ++ [X] ++ T).length + k) = S.drop k := by
+      rw [hPdef, List.drop_length_add_append]
+    rw [e]
+    rcases Nat.eq_zero_or_pos k with rfl | hk0
+    · rw [List.drop_zero, ← hsyllt]
+      have := hTs 5 le_rfl
+      rw [List.drop_eq_nil_of_le (by omega : T.length ≤ 5), FreeMonoid.ofList_nil, map_one,
+        one_mul] at this
+      exact this
+    · exact (level_sp_word hs hk (S.drop k) (hS k hk0) htF htL).2
+  by_cases h6 : 6 ≤ i
+  · obtain ⟨j, rfl⟩ : ∃ j, i = (T.reverse ++ [X]).length + j := ⟨i - 6, by simp [hlen]; omega⟩
+    have hj : j ≤ T.length := by simp [hlen] at h11 ⊢; omega
+    have e : P.drop ((T.reverse ++ [X]).length + j) = T.drop j ++ S := by
+      rw [hPdef, List.append_assoc (T.reverse ++ [X]), List.drop_length_add_append,
+        List.drop_append_of_le_length hj]
+    rw [e, FreeMonoid.ofList_append, map_mul, mul_assoc, ← hsyllt]
+    exact hTs j (by omega)
+  · -- the states on the side of `q`: signed permutations of `next (next r)` along `T`
+    push Not at h6
+    have hiT : i ≤ T.reverse.length := by simp [hlen]; omega
+    have hAB : P = P.take i ++ P.drop i := (List.take_append_drop i P).symm
+    have htake : P.take i = T.reverse.take i := by
+      rw [hPdef, List.append_assoc, List.append_assoc, List.take_append_of_le_length hiT]
+    have hB : FreeMonoid.lift (sem n) (FreeMonoid.ofList (P.drop i)) * next s =
+        FreeMonoid.lift (sem n) (FreeMonoid.ofList (P.take i).reverse) *
+          next (next (sem n X * s)) := by
+      have hsplit : FreeMonoid.lift (sem n) (FreeMonoid.ofList P) =
+          FreeMonoid.lift (sem n) (FreeMonoid.ofList (P.take i)) *
+            FreeMonoid.lift (sem n) (FreeMonoid.ofList (P.drop i)) := by
+        conv_lhs => rw [← List.take_append_drop i P]
+        rw [FreeMonoid.ofList_append, map_mul]
+      rw [← hq, hsplit, mul_assoc, ← mul_assoc, lift_rev_mul, one_mul]
+    rw [hB, htake, List.take_reverse, List.reverse_reverse, hlen]
+    exact hTr (5 - i) (by omega)
+
+theorem signs_append (U : O_ZHalf n) (l₁ l₂ : List (Fin n)) :
+    signs U (l₁ ++ l₂) = signs U l₁ ++ signs U l₂ := by
+  simp [signs, List.filter_append]
+
+theorem signs_one (U : O_ZHalf n) (x : Fin n) : signs U [x] = negw (tau (wint U x)) x := by
+  rw [signs_cons]; simp [signs, negw]
+
+/-- Subcase 1.2.2.3 with `u_e` odd. -/
+theorem squareX_odd' {s : O_ZHalf n} (hs : s ≠ 1) {x y : Fin n} (hxy : x < y)
+    (hy : y.val = x.val + 1) (hle : level (sem n (Gen.x x y hxy) * s) ≤ level s)
+    (hk : 0 < lde s) {a b c d : Fin n} (hab : a < b) (hbc : b < c) (hcd : c < d)
+    (ha : a ∈ oddS s) (hb : b ∈ oddS s) (hc : c ∈ oddS s) (hd : d ∈ oddS s)
+    (hrest : ∀ r ∈ oddS s, r = a ∨ r = b ∨ r = c ∨ r = d ∨ d < r)
+    (h2 : d = x ∧ y ∈ oddS s) :
+    ∃ (m : ℕ) (gs : List (Gen n)), PathBelow gs (next s) (level s) ∧
+      Derivable (Table1 n) (FreeMonoid.ofList (npath m (sem n (Gen.x x y hxy) * s)) *
+        FreeMonoid.of (Gen.x x y hxy)) (FreeMonoid.ofList gs * FreeMonoid.ofList (syll s)) := by
+  obtain ⟨hdx, he⟩ := h2
+  subst hdx
+  have hU := pivot_pos hs
+  have v1 := Fin.lt_def.1 hab; have v2 := Fin.lt_def.1 hbc; have v3 := Fin.lt_def.1 hcd
+  have v4 := Fin.lt_def.1 hxy
+  -- the next three odd entries `f, g, h`
+  have hcard : 8 ≤ (oddS s).card := by
+    have h4 : 4 ∣ (oddS s).card := four_dvd_card_oddSet (pcol_norm s hU) hk (intAt_lde s)
+    have hsub : ({a, b, c, d, y} : Finset (Fin n)) ⊆ oddS s := by
+      intro z hz
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+      rcases hz with rfl | rfl | rfl | rfl | rfl <;> assumption
+    have h5 : ({a, b, c, d, y} : Finset (Fin n)).card = 5 := by
+      rw [Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega),
+        Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega),
+        Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega),
+        Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega), Finset.card_singleton]
+    have := Finset.card_le_card hsub
+    rw [h5] at this
+    omega
+  set E := (oddS s).orderEmbOfFin rfl with hEdef
+  have hE4 : E ⟨4, by omega⟩ = y := by
+    apply orderEmbOfFin_eq_of_count rfl _ he
+    have : (oddS s).filter (· < y) = {a, b, c, d} := by
+      ext z
+      simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]
+      constructor
+      · rintro ⟨hz, hzy⟩
+        have := Fin.lt_def.1 hzy
+        rcases hrest z hz with h | h | h | h | h
+        · exact Or.inl h
+        · exact Or.inr (Or.inl h)
+        · exact Or.inr (Or.inr (Or.inl h))
+        · exact Or.inr (Or.inr (Or.inr h))
+        · have := Fin.lt_def.1 h; omega
+      · rintro (rfl | rfl | rfl | rfl)
+        · exact ⟨ha, Fin.lt_def.2 (by omega)⟩
+        · exact ⟨hb, Fin.lt_def.2 (by omega)⟩
+        · exact ⟨hc, Fin.lt_def.2 (by omega)⟩
+        · exact ⟨hd, hxy⟩
+    rw [this, Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega),
+      Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega),
+      Finset.card_insert_of_notMem (by simp [Fin.ext_iff]; omega), Finset.card_singleton]
+  set f := E ⟨5, by omega⟩
+  set g := E ⟨6, by omega⟩
+  set h := E ⟨7, by omega⟩
+  have hyf : y < f := by rw [← hE4]; exact E.strictMono (Fin.mk_lt_mk.2 (by omega))
+  have hfg : f < g := E.strictMono (Fin.mk_lt_mk.2 (by omega))
+  have hgh : g < h := E.strictMono (Fin.mk_lt_mk.2 (by omega))
+  have hf : f ∈ oddS s := Finset.orderEmbOfFin_mem _ rfl _
+  have hg : g ∈ oddS s := Finset.orderEmbOfFin_mem _ rfl _
+  have hh : h ∈ oddS s := Finset.orderEmbOfFin_mem _ rfl _
+  have hrest8 : ∀ r ∈ oddS s, r = a ∨ r = b ∨ r = c ∨ r = d ∨ r = y ∨ r = f ∨ r = g ∨ r = h ∨
+      h < r := by
+    intro r hr
+    rcases hrest r hr with e | e | e | e | e
+    · exact Or.inl e
+    · exact Or.inr (Or.inl e)
+    · exact Or.inr (Or.inr (Or.inl e))
+    · exact Or.inr (Or.inr (Or.inr (Or.inl e)))
+    right; right; right; right
+    have := Fin.lt_def.1 e
+    by_cases ry : r = y
+    · exact Or.inl ry
+    right
+    have hyr : y < r := Fin.lt_def.2 (by have := Fin.val_injective.ne ry; omega)
+    have : r ∈ Set.range E := by rw [hEdef, Finset.range_orderEmbOfFin]; exact hr
+    obtain ⟨i, rfl⟩ := this
+    have hi4 : 4 < i.val := by
+      rw [← hE4] at hyr
+      exact Fin.lt_def.1 (E.lt_iff_lt.1 hyr)
+    by_cases i5 : i.val = 5
+    · left; exact congrArg E (Fin.ext i5)
+    by_cases i6 : i.val = 6
+    · right; left; exact congrArg E (Fin.ext i6)
+    by_cases i7 : i.val = 7
+    · right; right; left; exact congrArg E (Fin.ext i7)
+    right; right; right
+    exact E.strictMono (Fin.mk_lt_mk.2 (by omega))
+  -- the state `r = X_[d,y] s`
+  have hcV : IsCol (gact (Gen.x d y hxy) (pcol s)) (lde s)
+      (fun z => wint s (Equiv.swap d y z)) := isCol_x (isCol_pcol s) hxy
+  obtain ⟨hpV, hcolV, hkV⟩ := state_gen hs (extent_lt_of_le hs hle) hcV hk (r := a)
+    (by rw [Equiv.swap_apply_of_ne_of_ne (Fin.ne_of_lt (by exact Fin.lt_def.2 (by omega)))
+      (Fin.ne_of_lt (by exact Fin.lt_def.2 (by omega)))]; exact (mem_oddS_iff a).1 ha)
+  set r := sem n (Gen.x d y hxy) * s
+  have hr1 : r ≠ 1 := fun e => by
+    have := hpV; rw [e, (pivotJ_eq_zero_iff 1).2 rfl] at this; omega
+  have hkr : 0 < lde r := by rw [hkV]; exact hk
+  have hcr : IsCol (pcol r) (lde r) (fun z => wint s (Equiv.swap d y z)) := by
+    rw [hcolV, hkV]; exact hcV
+  have hwr : ∀ z, wint r z = wint s (Equiv.swap d y z) := fun z => wint_eq hcr z
+  have hwr' : ∀ z, z ≠ d → z ≠ y → wint r z = wint s z := fun z h1 h2 => by
+    rw [hwr, Equiv.swap_apply_of_ne_of_ne h1 h2]
+  have hor : oddS r = oddS s := by
+    ext z
+    rw [mem_oddS_iff, mem_oddS_iff, hwr]
+    by_cases zd : z = d
+    · subst zd; rw [Equiv.swap_apply_left]
+      exact ⟨fun _ => (mem_oddS_iff _).1 hd, fun _ => (mem_oddS_iff _).1 he⟩
+    by_cases zy : z = y
+    · subst zy; rw [Equiv.swap_apply_right]
+      exact ⟨fun _ => (mem_oddS_iff _).1 he, fun _ => (mem_oddS_iff _).1 hd⟩
+    rw [Equiv.swap_apply_of_ne_of_ne zd zy]
+  have ne : ∀ {u v : Fin n}, u.val < v.val → u ≠ v := fun huv e => by subst e; omega
+  have ne' : ∀ {u v : Fin n}, u.val < v.val → v ≠ u := fun huv e => by subst e; omega
+  have vf := Fin.lt_def.1 hyf; have vg := Fin.lt_def.1 hfg; have vh := Fin.lt_def.1 hgh
+  -- the sums of the eight entries agree at `s` and `r`
+  have hFs : ∀ z ∈ oddS s, fix4 (wint s z) % 4 = 1 := fun z hz => fix4_mod ((mem_oddS_iff z).1 hz)
+  have hsum_r : fix4 (wint r a) + fix4 (wint r b) + fix4 (wint r c) + fix4 (wint r d) +
+      fix4 (wint r y) + fix4 (wint r f) + fix4 (wint r g) + fix4 (wint r h) =
+      fix4 (wint s a) + fix4 (wint s b) + fix4 (wint s c) + fix4 (wint s d) +
+      fix4 (wint s y) + fix4 (wint s f) + fix4 (wint s g) + fix4 (wint s h) := by
+    rw [hwr' a (ne (by omega)) (ne (by omega)), hwr' b (ne (by omega)) (ne (by omega)),
+      hwr' c (ne (by omega)) (ne (by omega)), hwr d, Equiv.swap_apply_left, hwr y,
+      Equiv.swap_apply_right, hwr' f (ne' (by omega)) (ne' (by omega)),
+      hwr' g (ne' (by omega)) (ne' (by omega)), hwr' h (ne' (by omega)) (ne' (by omega))]
+    ring
+  have hJ : h.val < pivotJ s := le_pidx_of_odd hs hh
+  -- the syllables
+  obtain ⟨hs1, hs2, -, -⟩ := eight_syll hs hk hab hbc hcd hxy hyf hfg hgh ha hb hc hd he hf hg hh
+    hrest8
+  obtain ⟨hr1s, hr2s, -, -⟩ := eight_syll hr1 hkr hab hbc hcd hxy hyf hfg hgh (hor ▸ ha)
+    (hor ▸ hb) (hor ▸ hc) (hor ▸ hd) (hor ▸ he) (hor ▸ hf) (hor ▸ hg) (hor ▸ hh) (hor ▸ hrest8)
+  set A := signs s [a, b, c]
+  set F := signs s [f, g, h]
+  have hsA : signs s [a, b, c, d] = A ++ negw (tau (wint s d)) d := by
+    rw [show [a, b, c, d] = [a, b, c] ++ [d] from rfl, signs_append, signs_one]
+  have hsF : signs s [y, f, g, h] = negw (tau (wint s y)) y ++ F := by
+    rw [signs_cons]; rfl
+  have hrA : signs r [a, b, c, d] = A ++ negw (tau (wint s y)) d := by
+    rw [show [a, b, c, d] = [a, b, c] ++ [d] from rfl, signs_append,
+      signs_congr s r [a, b, c] (fun z hz => by
+        simp only [List.mem_cons, List.not_mem_nil, or_false] at hz
+        rcases hz with rfl | rfl | rfl <;> exact hwr' _ (ne (by omega)) (ne (by omega))),
+      signs_one, hwr d, Equiv.swap_apply_left]
+  have hrF : signs r [y, f, g, h] = negw (tau (wint s d)) y ++ F := by
+    rw [signs_cons, hwr y, Equiv.swap_apply_right, signs_congr s r [f, g, h] (fun z hz => by
+        simp only [List.mem_cons, List.not_mem_nil, or_false] at hz
+        rcases hz with rfl | rfl | rfl <;> exact hwr' _ (ne' (by omega)) (ne' (by omega)))]
+    rfl
+  have hA : ∀ z ∈ A, ∃ q, z = Gen.neg q ∧ q.val < d.val := fun z hz => by
+    obtain ⟨q, hq, rfl⟩ := mem_signs hz
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hq
+    exact ⟨q, rfl, by rcases hq with rfl | rfl | rfl <;> omega⟩
+  have hF : ∀ z ∈ F, ∃ q, z = Gen.neg q ∧ y.val < q.val := fun z hz => by
+    obtain ⟨q, hq, rfl⟩ := mem_signs hz
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hq
+    exact ⟨q, rfl, by rcases hq with rfl | rfl | rfl <;> omega⟩
+  have hS : ∀ j, 0 < j → ∀ z ∈ (syll (next s)).drop j, SPBelow s z := by
+    intro j hj z hz
+    rw [hs2] at hz
+    obtain ⟨j', rfl⟩ : ∃ j', j = j' + 1 := ⟨j - 1, by omega⟩
+    have hz' := List.mem_of_mem_drop (by simpa using hz)
+    obtain ⟨q, hq, rfl⟩ := mem_signs hz'
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hq
+    exact ⟨by simp [Gen.tag], by simp only [extent]; rcases hq with rfl | rfl | rfl | rfl <;> omega⟩
+  have hnp : npath 2 r = syll (next r) ++ syll r := by
+    show npath 1 (next r) ++ syll r = _
+    rw [npath_one]
+  have hs4 : (fix4 (wint s a) + fix4 (wint s b) + fix4 (wint s c) + fix4 (wint s d) +
+      fix4 (wint s y) + fix4 (wint s f) + fix4 (wint s g) + fix4 (wint s h)) % 8 = 4 ∨
+      (fix4 (wint s a) + fix4 (wint s b) + fix4 (wint s c) + fix4 (wint s d) +
+      fix4 (wint s y) + fix4 (wint s f) + fix4 (wint s g) + fix4 (wint s h)) % 8 = 0 := by
+    have := hFs a ha; have := hFs b hb; have := hFs c hc; have := hFs d hd
+    have := hFs y he; have := hFs f hf; have := hFs g hg; have := hFs h hh
+    omega
+  rcases hs4 with h4 | h0
+  · -- `ū ᵀ ū ≡ 0 (mod 16)`: `W = (−1)_[a] (−1)_[e] X_[a,e]`, relation (6a)
+    refine finish1223 hs hk hle [Gen.k y f g h hyf hfg hgh, Gen.k a b c d hab hbc hcd, Gen.neg a,
+      Gen.neg y, Gen.x a y (hab.trans (hbc.trans (hcd.trans hxy)))] _ rfl rfl hS
+      (eight_lev_e hs hk hab hbc hcd hxy hyf hfg hgh ha hb hc hd he hf hg hh hrest8 h4)
+      (fun j hj => lt_of_lt_of_le (eight_lev_e hr1 hkr hab hbc hcd hxy hyf hfg hgh (hor ▸ ha)
+        (hor ▸ hb) (hor ▸ hc) (hor ▸ hd) (hor ▸ he) (hor ▸ hf) (hor ▸ hg) (hor ▸ hh)
+        (hor ▸ hrest8) (by rw [hsum_r]; exact h4) j hj) hle) ?_
+    rw [hnp, hr1s, hr2s, hrA, hrF, hs2, hsF, hs1, hsA]
+    exact der1223 hab hbc hcd hxy hyf hfg hgh _ (rel1223_e hab hbc hcd hxy hyf hfg hgh) A F hA hF
+      _ _
+  · -- `ū ᵀ ū ≡ 8 (mod 16)`: `W = (−1)_[a] (−1)_[h] X_[a,h]`, Proposition A.16
+    refine finish1223 hs hk hle [Gen.k y f g h hyf hfg hgh, Gen.k a b c d hab hbc hcd, Gen.neg a,
+      Gen.neg h, Gen.x a h (hab.trans (hbc.trans (hcd.trans (hxy.trans (hyf.trans
+      (hfg.trans hgh))))))] _ rfl rfl hS
+      (eight_lev_h hs hk hab hbc hcd hxy hyf hfg hgh ha hb hc hd he hf hg hh hrest8 h0)
+      (fun j hj => lt_of_lt_of_le (eight_lev_h hr1 hkr hab hbc hcd hxy hyf hfg hgh (hor ▸ ha)
+        (hor ▸ hb) (hor ▸ hc) (hor ▸ hd) (hor ▸ he) (hor ▸ hf) (hor ▸ hg) (hor ▸ hh)
+        (hor ▸ hrest8) (by rw [hsum_r]; exact h0) j hj) hle) ?_
+    rw [hnp, hr1s, hr2s, hrA, hrF, hs2, hsF, hs1, hsA]
+    exact der1223 hab hbc hcd hxy hyf hfg hgh _ (rel1223_h hab hbc hcd hxy hyf hfg hgh) A F hA hF
+      _ _
+
 end QCert.LiRossSelinger
