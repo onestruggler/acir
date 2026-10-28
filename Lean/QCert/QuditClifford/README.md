@@ -21,11 +21,13 @@ symbolic `p` with `[Fact p.Prime]` and `p ≠ 2`).
 | `PathSum`, `Soundness`, `TwoQudit`, `Rules`, `ThreeQudit`, `Multiplier`, `GaussScalar` | soundness of every rule (below) | Proposition A.28, Lemmas A.15–A.27, 2.15, Proposition 2.13 |
 | `Theory.lean` | `rule_sound`, `sound`, `grouplike` (`H_pow_four`) | Proposition A.28, Corollary A.8 |
 | `Group.lean` | circuits modulo the rules as a group `CG p g n`, `semG`, the shift `ι` | |
-| `SymplecticDef.lean`, `Weyl.lean`, `Symplectic.lean`, `SymplecticCalc.lean` | the action `σC` of circuits on Paulis modulo phases (`V p n`), its factorisation `σG` through the rules, its computation on shifted and padded circuits | §2.2.4 |
+| `SymplecticDef.lean`, `Symplectic.lean`, `SymplecticCalc.lean` | the action `σC` of circuits on Paulis modulo phases (`V p n`), its factorisation `σG` through the rules, its computation on shifted and padded circuits | §2.2.4 |
+| `WeylOps.lean`, `Weyl.lean` | Weyl operators `weylOp v`; every circuit conjugates them as `σC` says, up to a nonzero scalar (`weylActs_sem`); distinct Weyl operators are not proportional; hence `sigma_of_sem` | §2.2.4 |
 | `Pad.lean` | derivations on `k` wires hold on the bottom wires of `n + k` (`derives_pad`) | |
 | `Quot.lean` | the quotient `Gh` by the Pauli normal closure, `σh`, `ιh`, `padh`, disjoint wires commute | §4.1 |
 | `Schreier.lean` | Schreier's lemma for stabilisers | |
 | `Sections.lean`, `Stab.lean` | the coset sections (inverses of the boxes `A`, `B` of Figure 6), the stabiliser chain `J`, `Kst`, `faith_succ` | §3.1 |
+| `OneQudit.lean`, `Width1.lean` | the one-qudit calculus modulo Paulis (`Hq`, `Sq`, `Mq`; `M_a M_b = M_{ab}`, `M_a` conjugating `S`, `H` conjugating `M_a`); the stabiliser chain on one wire, `faith_one` | Lemma 3.6 |
 | `Pauli.lean` | the Pauli subgroup `PauliSub`, its normal closure `PauliN` | Lemma 3.7, Proposition 4.9 |
 | `SymplecticComplete.lean` | completeness up to Pauli corrections | Theorem 4.4 |
 | `Theorem.lean` | `semG_injective`, `complete`, `theorem_4_10` | Theorem 4.10 |
@@ -86,9 +88,10 @@ holds iff `κ = 1`, and (C3) says `κ^{k-1} = 1`, which for even `k` (and at
 
 ## Completeness: the route
 
-`complete` is proved (`Theorem.lean`) from four named statements, the
+`complete` is proved (`Theorem.lean`) from four statements, the
 paper's Section 4.2 (`semG_injective`): equal matrices give equal actions
-on Paulis (`sigma_of_sem`); equal actions give classes that differ by an
+on Paulis (`sigma_of_sem`, proved: needs `p ≠ 2`, for `p = 2` the phase
+gate is the identity matrix but not the identity action); equal actions give classes that differ by an
 element of the normal closure of the Pauli group (`symplectic_complete`,
 Theorem 4.4); that normal closure is the Pauli group (`pauli_normal`,
 Proposition 4.9); and a Pauli circuit, scalar included, that implements
@@ -107,7 +110,6 @@ a dozen local facts on one, two and three wires, derived from the rules.
 
 | Name | Stands for |
 | --- | --- |
-| `sigma_of_sem` (`Weyl.lean`) | circuits with the same matrix act alike on Paulis (Weyl operators; needs `p ≠ 2`, for `p = 2` the phase gate is the identity matrix but not the identity action) |
 | `pauli_normal` (`Pauli.lean`) | Proposition 4.9: generators conjugate Paulis to Paulis |
 | `pauli_inj` (`Pauli.lean`) | Lemma 3.7: Pauli normal form; a Pauli circuit implementing `1` is trivial |
 | `symplectic_complete` (`SymplecticComplete.lean`) | Theorem 4.4: completeness up to Pauli corrections |
