@@ -4,10 +4,11 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 # Section 8: tests of the window step
 
 The window step of `Weak` on windows placed by non-trivial swap networks,
-on three and four wires.  Not imported by the development (the semantic
-checks by `Sim.check` take a few minutes).
+on three and four wires, the semantic checks decided by `Fast.check`.  Not
+imported by the development.
 -/
 import QCert.RealCliffordCH.Sec8.Weak
+import QCert.RealCliffordCH.Sec8.Fast
 
 namespace QCert.RealCliffordCH.Sec8.WeakTest
 
@@ -35,7 +36,7 @@ example (ih : IH 3) :
     Derivable (theory 3) (swAt 3 0 * shift cz * swAt 3 0 * (swAt 3 0 * shift (shift z) * swAt 3 0))
       (swAt 3 0 * shift (shift z) * swAt 3 0 * (swAt 3 0 * shift cz * swAt 3 0)) := by
   refine window ih (swAt 3 0) (swAt 3 0) swsw3 (a := cz * shift z) (b := shift z * cz) ?_ ?_
-    (sem_of_check (by decide +kernel))
+    (Fast.sem_of_fast (by decide +kernel))
   · rw [map_mul]; exact conj_two swsw3
   · rw [map_mul]; exact conj_two swsw3
 
@@ -51,7 +52,7 @@ example (ih : IH 4) :
   have h0 := swsw4 0 (by omega)
   have h1 := swsw4 1 (by omega)
   refine window' ih (swAt 4 1 * swAt 4 0) (swAt 4 0 * swAt 4 1) (inv_pair h0 h1)
-    (a := cz * shift cz) (b := shift cz * cz) ?_ ?_ (sem_of_check (by decide +kernel))
+    (a := cz * shift cz) (b := shift cz * cz) ?_ ?_ (Fast.sem_of_fast (by decide +kernel))
   · rw [map_mul]; exact conj_two (inv_pair h1 h0)
   · rw [map_mul]; exact conj_two (inv_pair h1 h0)
 

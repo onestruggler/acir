@@ -36,19 +36,16 @@ swap of wires 0, 1 (three wires) and by the two-swap network carrying wire
 2 down to wire 0 (four wires).
 
 **Performance of semantic checks.**  `Sim.check` under `decide +kernel` is
-slow beyond three wires: about 3 minutes for a 40-gate comparison on three
-wires, and more than 6 minutes (not finished) for 80 gates on four (each
-swap is 9 gates, 6 of them `H`).  Decide the semantics of a window one wire
-down (`window'`) whenever possible, and package (i) should give the engine
-a faster checker before D.3/D.4: swaps as permutations of basis states, `Z`
-and `CZ` as signs, and the `H` gates over `ℤ[√2]` with a global power of
-`1/√2` instead of rationals.
-
-To use `window`, bring the window to `shift` form by swap-network
-naturality: conjugating a gate on small wires by a small network is itself a
-small-width equation, hence free when the width allows; for networks that
-span all wires (`down t`, `netL`) prove the naturality once, from
-(f1)–(f4), (g) and the structural rules.
+slow beyond three wires (rational arithmetic, normalised by `gcd`): about 3
+minutes for the 40-gate comparison on three wires of `WeakTest`, and more
+than 6 minutes (not finished) for its 80-gate one on four (each swap is 9
+gates, 6 of them `H`).  Use **`Fast.check`** (`Fast.lean`, `sem_of_fast`):
+the same simulation over `ℤ[√2]` as pairs of integers with one power of
+`1/√2` per circuit (`H`, `CH`: sums and differences, `CH` multiplying its
+control-0 block by `√2`; `Z`, `CZ`: negations), decided as one Boolean.
+Times (kernel, `decide +kernel`): 0.7 s for the 3-wire case, 5.4 s for the
+4-wire case.  A further factor (swaps as permutations of rows rather than
+9 gates) is possible if checks over letter words need it.
 
 ## Conventions (`MC.lean`, `Syntax.lean`, `Decoding.lean`)
 
@@ -152,6 +149,6 @@ editing the others; it may assume everything exported by the others (the
 
 ## Status
 
-* Done: `Weak.lean` (weakening, semantic steps, window step), `MC.lean`
+* Done: `Fast.lean` (the fast checker), `Weak.lean` (weakening, semantic steps, window step), `MC.lean`
   (conventions), `D/N8.lean`, `D/N13.lean` (interfaces, statements only).
 * Next: the concrete-width engine and the figure parser (package (i)).
