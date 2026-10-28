@@ -149,7 +149,7 @@ editing the others; it may assume everything exported by the others (the
   semantic steps decided by `D/LSim.lean`, frame from `Net`), tables
   `D/N8/Anchors.lean` ((19), (269), local swaps).  Proved: (81), (271),
   (272)–(277), (286) (`eq81`, `eq269`, `eq274`, `eq277`).  Next: the chain
-  (278)–(285), (288)–(299).
+  (278)–(285), (288)–(299); see "Package (iv): how to continue" below.
 * **(v) D.12–D.13** — `D/N13.lean` (interface, done): exports `eq315`–`eq317`,
   `eq333`, `eq334`, `eq335`–`eq340`, `eq342`, `eq344`–`eq352`.  Internal:
   (318)–(328) (cites (4-, 5-qubit) 214–248, 267, 268 via `eqNNN`).
@@ -189,3 +189,49 @@ editing the others; it may assume everything exported by the others (the
   statements (274), (307), (309)–(311), (313), (336) and (353).  Lemma 8.8:
   the rules that decode by definition are done (`E/Cheap.lean`); next the
   other rules, through `E/Transport` (frames) and the merges.
+
+## Package (iv): how to continue
+
+* **Workflow.**  Write the run in `gen/sec8/se.py`'s model first
+  (`se_runs.py` has every run so far; `semOK` checks a window on the
+  bulk-on and bulk-off blocks), then copy it into Lean as
+  `check 4 T w v [steps] = true := by decide +kernel` and
+  `check_sound (frame 4) ih (T_ok m ih) run` (width `m + 5`, letters on the
+  local wires `0..4`, bulk above).  A run module builds in under a minute.
+* **Letters.**  `.g Kd tg cs b`: `b = true` puts the bulk as black controls;
+  with no bulk (`m = 0`, the small cases) use `b = false`, or the off-block
+  check fails.  The order of `cs` matters for the table matching
+  (`DecidableEq`); relabeled letters are written `swapG j …` so that the
+  `swapE` table entries match.  A sem step needs every letter of both windows
+  to avoid the same *local* wire syntactically; a gate idle on wire `q` only
+  semantically is no help (move its box wire with (274)/(277) or carry it
+  across a swap with `swapE`).
+* **Tables.**  `t19`, `t269` (`Anchors`), `swapE` (not when both swapped
+  wires are controls), `qcommE` (`H`/`Z` on a wire passing a letter idle on
+  it), and the proved schemas: `s272` (`CZ₀₁` vs `B0` = box `[0]` ctl
+  `2,3,4`, wire 1 idle), `s274` (`B1 = B0`), `s276`, `s277`, `s286`
+  (`bx0 = V C W C`), `s271c`, `s273` (`CZ₀₂` passes `bx0`; shorter than the
+  paper: through (286)), `s274r`, `s275`.  Small widths: two semantic
+  steps through an intermediate idle on both wires (`I274`, `I277`), or
+  `Small.eqNNN` (`I269` uses `eq126`).
+* **Remaining same-width DAG** (read off the proof figures; the extracted
+  citation lists miss some): (278) ← (274), (277), (317)ₙ₋₂, (145);
+  (279) ← (278), (355)ₙ₋₁; (280) ← (272), (279); (282) ← (280), (18),
+  (112), (9), (111) [`P ⊗ P` turns `CZ(box, idle)` into `CH(box ← idle)`];
+  (283) ← (282), (272), (274), (277), (285)ₙ₋₁, (303)ₙ₋₁, (148), (82);
+  (284) ← (269), (283), (312)ₙ₋₁, (299)ₙ₋₁; (285) ← (284), (281)ₙ₋₁,
+  (282); (288) ← (272), (172), (173), (160); (289) ← (271), (272), (81),
+  (292)/(301)/(302)ₙ₋₁; (290) ← (288), (157); (291) ← (289), (157);
+  (292) ← (269), (287), (139), (140); (293) ← (291), (216), (217);
+  (294) ← (269) only; (295) ← (290), (293), (294) and D.3's (209), (218),
+  (221)–(226), (240); (296) ← (295), (232)–(235); (297) ← (275), (296);
+  (298) ← (285), (297); (299) ← (273), (298), (286).  (300)–(302),
+  (305), (309)–(313) then follow from (299), (307) from (275) and (306) ←
+  (295).  For (307) with `j ≥ 3` a direct route exists: `W`, `V` are on the
+  bottom three wires (structural commutation) and the inner box is idle on
+  wire 2, so (307) one width down applies to it (Lemma 5.1).
+* **Facts found on the way.**  With `B = W C V C`: `B² = 1` iff `B`
+  commutes with `V` iff `B` commutes with `C` (iff (300)); (286) follows from
+  (19) alone; `C W C ≈ W B` and `C V C ≈ V B` follow from (286), (269).
+  None of these avoids (298).
+
