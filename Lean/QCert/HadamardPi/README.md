@@ -82,6 +82,35 @@ Exactly one, in `Case9.lean`; `theorem_4_14` depends on it
 |---|---|
 | `case9_four` | Main Case 9 (2)(b) of Lemma A.7 with exactly four odd entries: `G = H_[1,2]` (ours `H_[0,1]`) at a state whose first syllable is `H_[1,i₂]` with `i₂ > 2`, whose entries 1 and 2 (ours 0 and 1) are odd of different classes, so that `H_[1,2]` keeps the level, and which has no other odd entry.  This is where the paper's proof is wrong (below); Clément's Case 3.4 is the argument that closes it.  With more than four odd entries the case is proved (`case9_hard`, by a diamond through a matched pair away from the square) |
 
+### Plan for `case9_four`
+
+The square is closed by a path `t = H_[0,P] s → … → q = H_[0,P'] H_[0,1] s`
+below `s`; with `σ = H_[1,J] t` and `ρ = H_[1,J'] q` (lower) it suffices to
+join `σ` to `ρ`.  Following Clément's Case 3.4, in this development's terms:
+
+* *Transfers.*  A join for `m s` gives one for `s` whenever `m` is a word
+  that keeps the level and conjugates the syllables into syllables:
+  signed permutations of the four odd entries (Clément's Lemmas 5.7, 5.9,
+  Assumptions 3 and 5), a permutation sorting the entries of a window into
+  increasing positions (so that window words need no reversed `H`), and
+  words on entries outside the window (his Lemma 5.3, Assumption 4).
+* *Leaves.*  Clément's completions, as words on a window: Subcase 3.4.1 on
+  the four odd entries (by (20), `Derived.lean`, `c20`); Subcases 3.4.2.1
+  and 3.4.2.2 on six entries (by (21) and Lemma 3.17); 3.4.2.3 reduced to
+  3.4.2.1 by `(-1)[α] X[α,β] H[j,m]` on three more entries.  Each state is
+  checked on the window for the whole residue family (as in `Good.lean`).
+* *Extensions.*  The extra entries (two with numerators `√2 × odd`, then
+  Lemma 5.13's three) exist by Clément's Lemma 2.1 (classes have evenly many
+  odd numerators) applied to an intermediate state at exponent `k − δ`.
+* *Coverage.*  The residue tests of the case analysis are decided by
+  `omega`/`decide` in Lean.
+
+(21) is derived from (d4) through `T T' T ≈ V C V` (with `T = Q A Q`,
+`T' = R A R`, `Q = H_[0,2] H_[1,3]`, `R = H_[0,4] H_[1,5]`, `V = H_[2,4] H_[3,5]`,
+`C = H_[4,5]`, which is (d4) at `0,…,5`): (21) is equivalent to
+`T' T T' ≈ M' T M'` with `M' = R (-1)_[0] (-1)_[1] R` a signed permutation,
+and `T' T T' ≈ X (T T' T) X` for `X = X_[2,4] X_[3,5]`.
+
 ## Errors and gaps found in the paper
 
 1. **Lemmas A.16 and A.17 are false.**  Both are stated for `M ∈ Oₙ(ℤ[1/√2])`
