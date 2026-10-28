@@ -188,12 +188,6 @@ theorem map_drop_append (f : Fin 4 → Fin n) (hf : StrictMono f) (D : List (Gen
       (D.drop k ++ [g]).map (Gen.map f hf) := by
   rw [List.map_append, List.map_drop]; rfl
 
-theorem der_map {m : ℕ} (f : Fin m → Fin n) (hf : StrictMono f) {L R : List (Gen m)}
-    (h : Derivable Fig6 (ofList L) (ofList R)) :
-    Derivable Fig6 (ofList (L.map (Gen.map f hf))) (ofList (R.map (Gen.map f hf))) := by
-  have := Derivable.map f hf h
-  rwa [wmap_ofList, wmap_ofList] at this
-
 section Window
 
 variable {s : O n} (hs : s ≠ 1) (hk : lde (col s (pj s (piv_pos hs))) ≠ 0)

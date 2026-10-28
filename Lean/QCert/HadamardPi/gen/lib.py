@@ -9,6 +9,8 @@ class Lib:
     def __init__(self):
         self.lemmas = []   # (name, m, L, R)
         self.out = []
+        self.placed = {}   # Lean name of a placed instance -> (lemma, m, placement)
+        self.emitted = set()
 
     def rules_for(self, m, use=None):
         rules = []
@@ -22,8 +24,8 @@ class Lib:
                 if list(pl) == list(range(k)) and k == m:
                     term = name
                 else:
-                    vec = ", ".join([f"({pl[0]} : Fin {m})"] + [str(i) for i in pl[1:]])
-                    term = f"(der_map ![{vec}] (by decide) {name})"
+                    term = f"{name}_at{'_'.join(map(str, pl))}_{m}"
+                    self.placed[term] = (name, k, m, pl)
                 rules.append((term, mp(L), mp(R)))
         return rules
 
@@ -44,6 +46,20 @@ class Lib:
             st = eng.chain(words, **kw)
         check_steps(st, L, R, eng)
         self.lemmas.append((name, m, L, R))
+        for (key, i, fwd) in st:
+            if key[0] == 'lem' and key[1] in self.placed and key[1] not in self.emitted:
+                self.emitted.add(key[1])
+                (nm, k, mm, pl) = self.placed[key[1]]
+                vec = ", ".join([f"({pl[0]} : Fin {mm})"] + [str(j) for j in pl[1:]])
+                f = dict(enumerate(pl))
+                Lk, Rk = next((a, b) for (n2, k2, a, b) in self.lemmas if n2 == nm)
+                def mp(w):
+                    return tuple((l[0],) + tuple(f[j] for j in l[1:]) for l in w)
+                lw = lean_word(mp(Lk)) if Lk else "[]"
+                rw = lean_word(mp(Rk)) if Rk else "[]"
+                self.out.append(f"theorem {key[1]} : Derivable Fig6 (ofList ({lw} : List (Gen {mm})))\n"
+                                f"    (ofList ({rw} : List (Gen {mm}))) :=\n"
+                                f"  der_map (m := {k}) ![{vec}] (by decide) {nm}" + chr(10))
         if doc: self.out.append(f"/-- {doc} -/")
         rhs = lean_word(R) if R else f"([] : List (Gen {m}))"
         lhs = lean_word(L) if L else f"([] : List (Gen {m}))"

@@ -124,10 +124,37 @@ class Engine:
             right.append((key, i, not fwd)); x = p
         return left + right
 
+    def swap_rule(self, g, h):
+        """a rule rewriting the adjacent pair (g, h) into (h, g)"""
+        for (key, fwd, S, T) in self.idx.get(g, ()):
+            if S == (g, h) and T == (h, g):
+                return key, fwd
+        return None
+
+    def perm(self, u, v):
+        """steps from u to v by swapping adjacent commuting letters (bubble sort), or None"""
+        u, v = list(u), list(v)
+        if sorted(u) != sorted(v): return None
+        steps = []
+        for i in range(len(v)):
+            j = i
+            while u[j] != v[i]:
+                j += 1
+            while j > i:
+                r = self.swap_rule(u[j - 1], u[j])
+                if r is None: return None
+                key, fwd = r
+                steps.append((key, j - 1, fwd))
+                u[j - 1], u[j] = u[j], u[j - 1]
+                j -= 1
+        return steps
+
     def chain(self, words, **kw):
         steps = []
         for u, v in zip(words, words[1:]):
-            s = self.search(u, v, **kw)
+            s = self.perm(u, v)
+            if s is None:
+                s = self.search(u, v, **kw)
             if s is None:
                 raise ValueError(f"no derivation found between\n {fmt(u)}\n {fmt(v)}")
             steps += s

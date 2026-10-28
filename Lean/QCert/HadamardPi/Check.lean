@@ -192,4 +192,11 @@ theorem derive_of (sts : List (Step m)) {L R : List (Gen m)} (h : runSteps sts L
     Derivable Fig6 (ofList L) (ofList R) :=
   runSteps_sound sts h
 
+/-- A derivation moved along a strictly increasing map of indices. -/
+theorem der_map {n : ℕ} (f : Fin m → Fin n) (hf : StrictMono f) {L R : List (Gen m)}
+    (h : Derivable Fig6 (ofList L) (ofList R)) :
+    Derivable Fig6 (ofList (L.map (Gen.map f hf))) (ofList (R.map (Gen.map f hf))) := by
+  have := Derivable.map f hf h
+  rwa [wmap_ofList, wmap_ofList] at this
+
 end QCert.HadamardPi
