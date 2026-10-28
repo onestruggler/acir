@@ -48,7 +48,7 @@ main result) and a `README.md` listing what is proved and every remaining
 | Clément [2019] | O_n(ℤ[1/√2]) | `QCert/Clement2019` | relations proved equivalent to Figure 6 syntactically; complete through Hadamard-Π (only `case9_four` open) |
 | Selinger [2015] | Clifford | `QCert/SelingerClifford` | **proved** (sub-presentation at every n; no `sorry`) |
 | Bian, Li et al. [2026] | Clifford, odd prime p | `QCert/QuditClifford` | soundness proved (with Gauss's sign theorem); completeness in progress |
-| Makary, Ross, Selinger [2021] | real stabilizer | `QCert/RealStabilizer` | soundness proved; completeness in progress |
+| Makary, Ross, Selinger [2021] | real stabilizer | `QCert/RealStabilizer` | **proved** (sub-presentation at every n; no `sorry`) |
 | Amy, Chen, Ross [2018] | CNOT-dihedral | `QCert/CNOTDihedral` | **proved** (sub-presentation at every n; no `sorry`) |
 | Blake [2026] | phase-affine, prime d | `QCert/PhaseAffine` | **proved** (Theorems 1 and 2 at all four levels; no `sorry`) |
 | Bian, Selinger [2023] | two-qubit Clifford+T | `QCert/CliffordT2` | **proved** (Theorem 2.1, sub-presentation in U₄(ℤ[1/√2,i]); no `sorry`) |
@@ -56,4 +56,4 @@ main result) and a `README.md` listing what is proved and every remaining
 | Clément [2026] | real Clifford+CH | `QCert/RealCliffordCH` | soundness, widths 0–2 (through Hadamard-Π), encoding semantics proved; Theorem 4.10, Lemmas 8.7, 8.8 in progress |
 | Amy, Ross, Wesley [2024] | three-qubit Toffoli–Hadamard | `QCert/ToffoliHadamard` | **proved** (Theorem 5.2 with (r_K) restored, Theorem 6.3; no `sorry`); (r_K) proved independent |
 | Li et al. [2025] | qutrit Clifford | `QCert/QutritClifford` | soundness, Prop. 3.9, Cor. 3.10, generation proved; completeness in progress |
-| Blake [2026] | six fragments, minimality | `QCert/Minimality` | Theorem 37 proved; Theorem 22: CNOT-dihedral proved, other transfers in progress |
+| Blake [2026] | six fragments, minimality | `QCert/Minimality` | Theorem 37 proved; Theorem 22 proved for Clifford, real Clifford, CNOT-dihedral and Clifford+T (up to 2 wires); qutrit through the qutrit row, Clifford+CS at 2–3 wires in progress |
