@@ -50,7 +50,7 @@ main result) and a `README.md` listing what is proved and every remaining
 | Bian, Li et al. [2026] | Clifford, odd prime p | `QCert/QuditClifford` | in progress |
 | Makary, Ross, Selinger [2021] | real stabilizer | `QCert/RealStabilizer` | in progress |
 | Amy, Chen, Ross [2018] | CNOT-dihedral | `QCert/CNOTDihedral` | **proved** (sub-presentation at every n; no `sorry`) |
-| Blake [2026] | phase-affine, prime d | `QCert/PhaseAffine` | in progress |
+| Blake [2026] | phase-affine, prime d | `QCert/PhaseAffine` | **proved** (Theorems 1 and 2 at all four levels; no `sorry`) |
 | Bian, Selinger [2023] | two-qubit Clifford+T | `QCert/CliffordT2` | **proved** (Theorem 2.1, sub-presentation in U₄(ℤ[1/√2,i]); no `sorry`) |
 | Bian, Selinger [2023] | three-qubit Clifford+CS | `QCert/CliffordCS3` | in progress |
 | Clément [2026] | real Clifford+CH | `QCert/RealCliffordCH` | in progress |
