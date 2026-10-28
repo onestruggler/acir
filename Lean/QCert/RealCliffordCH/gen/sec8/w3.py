@@ -13,6 +13,7 @@ import itertools
 import json
 import sys
 
+import bfs3
 import eng3
 import letters as LT
 import model
@@ -66,6 +67,7 @@ class Prover:
     def __init__(self, table):
         self.table = table            # list of (name, lhs, rhs)
         self.eng = eng3.Engine(N, [(l, r) for _, l, r in table])
+        self.blocks = [LT.ppAt(0, 1), LT.ppAt(1, 2)]
 
     def check(self, u, steps, v):
         w, bad = self.eng.run(u, steps)
@@ -342,9 +344,30 @@ class Prover:
                             last = e
         raise Fail('rule')
 
+    def bfs(self, u, v, cites, depth=6, limit=300000):
+        p, mu, mv = trim(u, v)
+        names = {'e' + c for c in cites} | {'d' + c for c in cites}
+        keep = [k for k, (name, l, r) in enumerate(self.table)
+                if name[0] in 'ef' or name.rstrip('m') in names]
+        sub = eng3.Engine(N, [(self.table[k][1], self.table[k][2]) for k in keep])
+        S = bfs3.Search(sub, maxlen=max(len(mu), len(mv)) + 6, blocks=self.blocks)
+        st = S.search(mu, mv, depth=depth, limit=limit)
+        if st is None:
+            raise Fail('bfs')
+        out = []
+        for s in st:
+            if s[0] == 'rw':
+                s = ('rw', s[1], keep[s[2]], s[3])
+            out.append(shift_step(s, p))
+        return out
+
     def step(self, u, v, cites):
         try:
             return self.local(u, v)
+        except Fail:
+            pass
+        try:
+            return self.bfs(u, v, cites)
         except Fail:
             pass
         names = set()

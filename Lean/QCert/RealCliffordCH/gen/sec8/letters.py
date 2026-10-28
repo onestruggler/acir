@@ -158,4 +158,4 @@ def disj(x, y): return not (wires(x) & wires(y))
 
 
 def lean(w):
-    return '[' + ', '.join(f'.{a} {j}' for a, j in w) + ']'
+    return '[' + ', '.join(f'L.{a} {j}' for a, j in w) + ']'

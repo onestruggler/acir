@@ -57,3 +57,18 @@
   another by a two-letter semantic window, windows on wires 0, 2 conjugated by the
   swap `S 0`) and table rewrites with the cited equations (the three-wire rules
   (12)–(18), (f3), (f4), their mirror images, earlier D.2 equations).
+* `bfs3.py` — a bidirectional breadth-first search for short three-wire engine runs:
+  states are words modulo exchanges of disjoint neighbours; moves are two-letter
+  semantic windows (a letter passed across another, changing wire across a swap; a
+  pair cancelled), a letter passed across a whole two-wire block (`P ⊗ P`), inserting
+  `S j S j`, and table rewrites.  It finds e.g. the commutation of `CZ(1,2)` with
+  `CZ(0,2)` (seven steps through (f3), (12)) in under a second.  `w3.py` calls it on a
+  paper step once the local tactics fail.
+* `w3gen.py D2.json OUT.lean [EQ …]` — writes `Sec8/D/W3.lean`: per equation, the run
+  (the paper's chain step by step; (117), (118) letter by letter; (120), (122), (138) as
+  mirror images; (137) by conjugation with `X` on wire 2), checked with `eng3`, and
+  emitted as `check_sound ih (T := …) … (by decide +kernel)` with a table of exactly
+  the entries it uses (`t_eNN`/`t_fN` the rules, `t_…m` their mirror images, `dNNN`
+  the earlier equations).  State: (117)–(128) proved (W3 builds in 9 s); the steps of
+  (129)–(147) that still fail are the long `P ⊗ P` moves ((130), (133)–(135), cited as
+  (18)(111)–(114)) and some steps of (139)–(147).
