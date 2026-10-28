@@ -12,7 +12,17 @@ def enc(w):
     return n
 
 
+def enc_pos(ps):
+    n = 0
+    for p in reversed(ps):
+        assert p < 255
+        n = 256 * n + p + 1
+    return n
+
+
 def enc_step(st):
+    if st[0] == 'swaps':
+        return '(2, %d, 0, 0, 0)' % enc_pos(st[1])
     if st[0] == 'rule':
         _, i, d, u, v = st
         return '(0, %d, %d, %d, %d)' % (i, 1 if d else 0, enc(u), enc(v))

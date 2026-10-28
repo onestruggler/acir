@@ -329,6 +329,12 @@ theorem canon_E {k : ℕ} (w : List Lt) : E k w (canon w) := canonF_E _ w
 theorem E_of_canon {k : ℕ} {a b : List Lt} (h : canon a = canon b) : E k a b :=
   (canon_E a).trans (h ▸ (canon_E b).symm)
 
+theorem E_of_canonOr {k : ℕ} {a b : List Lt} (h : (a == b || canon a == canon b) = true) :
+    E k a b := by
+  rcases Bool.or_eq_true _ _ ▸ h with h | h
+  · rw [beq_iff_eq.1 h]
+  · exact E_of_canon (beq_iff_eq.1 h)
+
 /-! ### Runs -/
 
 /-- A step: an equation of the table at a place (`u`, `v`), reversed when
@@ -336,6 +342,38 @@ theorem E_of_canon {k : ℕ} {a b : List Lt} (h : canon a = canon b) : E k a b :
 inductive Step
   | rule (i : ℕ) (rev : Bool) (u v : List Lt)
   | free (u s t v : List Lt)
+  | swaps (ps : List ℕ)
+
+/-- Exchange the letters at positions `i`, `i + 1` when they are on disjoint wires. -/
+def swapAt : ℕ → List Lt → Option (List Lt)
+  | 0, x :: y :: r => if Lt.disj x y = true then some (y :: x :: r) else none
+  | i + 1, x :: r => (swapAt i r).map (x :: ·)
+  | _, _ => none
+
+def swapsAt : List ℕ → List Lt → Option (List Lt)
+  | [], w => some w
+  | i :: ps, w => (swapAt i w).bind (swapsAt ps)
+
+theorem swapAt_E {k : ℕ} : ∀ (i : ℕ) (w w' : List Lt), swapAt i w = some w' → E k w w'
+  | 0, x :: y :: r, w', h => by
+    simp only [swapAt] at h
+    split_ifs at h with hd
+    cases h
+    exact (E.swap hd).append (E.refl r)
+  | i + 1, x :: r, w', h => by
+    simp only [swapAt, Option.map_eq_some_iff] at h
+    obtain ⟨r', hr, rfl⟩ := h
+    exact (E.refl [x]).append (swapAt_E i r r' hr)
+  | 0, [], _, h => nomatch h
+  | 0, [_], _, h => nomatch h
+  | _ + 1, [], _, h => nomatch h
+
+theorem swapsAt_E {k : ℕ} : ∀ (ps : List ℕ) (w w' : List Lt), swapsAt ps w = some w' → E k w w'
+  | [], w, w', h => by cases h; exact E.refl w
+  | i :: ps, w, w', h => by
+    simp only [swapsAt, Option.bind_eq_some_iff] at h
+    obtain ⟨v, hv, h⟩ := h
+    exact (swapAt_E i w v hv).trans (swapsAt_E ps v w' h)
 
 abbrev Tbl := List (List Lt × List Lt)
 
@@ -350,10 +388,13 @@ def runStep (T : Tbl) (cur : List Lt) : Step → Option (List Lt)
   | .rule i rev u v => match T[i]? with
     | none => none
     | some e =>
-      if canon cur == canon (u ++ (if rev then e.2 else e.1) ++ v)
+      if (cur == u ++ (if rev then e.2 else e.1) ++ v ||
+          canon cur == canon (u ++ (if rev then e.2 else e.1) ++ v)) = true
       then some (u ++ (if rev then e.1 else e.2) ++ v) else none
   | .free u s t v =>
-    if (canon cur == canon (u ++ s ++ v) && fo s t) = true then some (u ++ t ++ v) else none
+    if ((cur == u ++ s ++ v || canon cur == canon (u ++ s ++ v)) && fo s t) = true
+    then some (u ++ t ++ v) else none
+  | .swaps ps => swapsAt ps cur
 
 def runSteps (T : Tbl) : List Lt → List Step → Option (List Lt)
   | cur, [] => some cur
@@ -364,7 +405,7 @@ def runSteps (T : Tbl) : List Lt → List Step → Option (List Lt)
 def lemOk (T : Tbl) (l r : List Lt) (sts : List Step) : Bool :=
   match runSteps fo T l sts with
   | none => false
-  | some c => canon c == canon r
+  | some c => c == r || canon c == canon r
 
 /-- Check a library of lemmas, each over the table so far. -/
 def libOk : Tbl → List (List Lt × List Lt × List Step) → Bool
@@ -387,10 +428,11 @@ theorem runStep_E {T : Tbl} (hT : Valid k T) {cur nxt : List Lt} {st : Step}
     · exact nomatch h
     · rename_i e he
       have hv := hT e (List.mem_of_getElem? he)
-      by_cases hc : (canon cur == canon (u ++ (if rev then e.2 else e.1) ++ v)) = true
+      by_cases hc : (cur == u ++ (if rev then e.2 else e.1) ++ v ||
+          canon cur == canon (u ++ (if rev then e.2 else e.1) ++ v)) = true
       · rw [if_pos hc] at h
         cases h
-        refine (E_of_canon (beq_iff_eq.1 hc)).trans (E.append3 ?_)
+        refine (E_of_canonOr hc).trans (E.append3 ?_)
         cases rev
         · exact hv
         · exact hv.symm
@@ -400,7 +442,10 @@ theorem runStep_E {T : Tbl} (hT : Valid k T) {cur nxt : List Lt} {st : Step}
     split_ifs at h with hc
     cases h
     rw [Bool.and_eq_true] at hc
-    exact (E_of_canon (beq_iff_eq.1 hc.1)).trans (E.append3 (hfo s t hc.2))
+    exact (E_of_canonOr hc.1).trans (E.append3 (hfo s t hc.2))
+  | swaps ps =>
+    simp only [runStep] at h
+    exact swapsAt_E ps cur nxt h
 
 theorem runSteps_E {T : Tbl} (hT : Valid k T) :
     ∀ {cur fin : List Lt} {sts : List Step}, runSteps fo T cur sts = some fin → E k cur fin := by
@@ -420,7 +465,7 @@ theorem lemOk_E {T : Tbl} (hT : Valid k T) {l r : List Lt} {sts : List Step}
   split at h
   · exact nomatch h
   · rename_i c hc
-    exact (runSteps_E fo hfo hT hc).trans (E_of_canon (beq_iff_eq.1 h))
+    exact (runSteps_E fo hfo hT hc).trans (E_of_canonOr h)
 
 theorem libOk_valid : ∀ (T : Tbl) (L : List (List Lt × List Lt × List Step)),
     Valid k T → libOk fo T L = true → Valid k (libTbl T L)

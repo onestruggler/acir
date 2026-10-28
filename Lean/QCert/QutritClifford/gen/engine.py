@@ -70,28 +70,53 @@ class Engine:
         self.names[name] = len(self.table)
         self.table.append((list(l), list(r)))
 
+    def apply_step(self, cur, st):
+        if st[0] == 'swaps':
+            w = list(cur)
+            for p in st[1]:
+                assert cliff.commute(w[p], w[p + 1]), 'swap'
+                w[p], w[p + 1] = w[p + 1], w[p]
+            return w
+        if st[0] == 'rule':
+            _, i, d, u, v = st
+            L, R = self.table[i]
+            if d:
+                L, R = R, L
+            assert cur == u + L + v or lexmin(cur) == lexmin(u + L + v), ('rule', i)
+            return u + R + v
+        _, w, u, s, t, v = st
+        win = windows(self.k)[w]
+        assert cur == u + s + v or lexmin(cur) == lexmin(u + s + v), 'free canon'
+        assert in_window(s, win) and in_window(t, win), 'free window'
+        assert same_window_action(s, t, win), 'free action'
+        return u + t + v
+
     def run(self, lhs, steps):
         cur = list(lhs)
         for st in steps:
-            if st[0] == 'rule':
-                _, i, d, u, v = st
-                L, R = self.table[i]
-                if d:
-                    L, R = R, L
-                assert lexmin(cur) == lexmin(u + L + v), ('rule', i)
-                cur = u + R + v
-            else:
-                _, w, u, s, t, v = st
-                win = windows(self.k)[w]
-                assert lexmin(cur) == lexmin(u + s + v), 'free canon'
-                assert in_window(s, win) and in_window(t, win), 'free window'
-                assert same_window_action(s, t, win), 'free action'
-                cur = u + t + v
+            cur = self.apply_step(cur, st)
         return cur
+
+    SEG = 10
 
     def lemma(self, name, lhs, rhs, steps):
         cur = self.run(lhs, steps)
-        assert lexmin(cur) == lexmin(rhs), ('end', name)
+        assert cur == rhs or lexmin(cur) == lexmin(rhs), ('end', name)
+        if len(steps) > self.SEG:
+            # segments joined at the words reached
+            ws = [list(lhs)]
+            c = list(lhs)
+            for st in steps:
+                c = self.apply_step(c, st)
+                ws.append(c)
+            main = []
+            for a in range(0, len(steps), self.SEG):
+                b = min(a + self.SEG, len(steps))
+                nm = '%s.%d' % (name, a // self.SEG)
+                self.lemmas.append((nm, ws[a], ws[b], steps[a:b]))
+                self._add(nm, ws[a], ws[b])
+                main.append(('rule', self.names[nm], False, [], []))
+            steps = main
         self.lemmas.append((name, list(lhs), list(rhs), steps))
         self._add(name, lhs, rhs)
         return self.names[name]
@@ -158,17 +183,52 @@ class Engine:
 
     def chain(self, name, words, rhs=None):
         """Lemma from a chain of words (consecutive words one step apart;
-        a word may differ from the previous one only by canon)."""
+        a word may differ from the previous one only by canon).  Every rule
+        or free step matches the word reached literally, after explicit
+        swaps of adjacent commuting letters."""
         steps = []
         cur = list(words[0])
+        prev = list(words[0])
         for b in words[1:]:
+            b = list(b)
             if lexmin(cur) == lexmin(b):
-                cur = list(b)
+                prev = b
                 continue
-            st, nxt = self.step(cur, list(b))
+            st, nxt = self.step(cur, b)
             if st is None:
-                raise ValueError('%s: no step\n  %s\n  %s' % (name, cur, b))
+                st, nxt = self.step(prev, b)
+                if st is None:
+                    k = words.index(b) if b in words else -1
+                    raise ValueError('%s: no step at word %d of %d' % (name, k, len(words)))
+            pre = self.pre_of(st)
+            if pre != cur:
+                steps.append(('swaps', swaps(cur, pre)))
             steps.append(st)
-            cur = list(b)
-        rhs = words[-1] if rhs is None else rhs
+            cur = nxt
+            prev = b
+        rhs = list(words[-1] if rhs is None else rhs)
+        if cur != rhs:
+            steps.append(('swaps', swaps(cur, rhs)))
         return self.lemma(name, words[0], rhs, steps)
+
+    def pre_of(self, st):
+        if st[0] == 'rule':
+            _, i, d, u, v = st
+            L, R = self.table[i]
+            return u + (R if d else L) + v
+        _, w, u, s, t, v = st
+        return u + s + v
+
+
+def swaps(cur, target):
+    """Adjacent swaps taking cur to target (same trace)."""
+    w = list(cur)
+    ps = []
+    for t in range(len(target)):
+        i = w.index(target[t], t)
+        for p in range(i - 1, t - 1, -1):
+            assert cliff.commute(w[p], w[p + 1])
+            w[p], w[p + 1] = w[p + 1], w[p]
+            ps.append(p)
+    assert w == list(target)
+    return ps

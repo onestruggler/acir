@@ -43,22 +43,168 @@ def decWF : ℕ → ℕ → List Lt
 /-- The word of a number. -/
 def decW (n : ℕ) : List Lt := decWF 250 n
 
+/-! ### Pauli tableaux
+
+The action of a word on one or two wires on the Pauli generators, computed
+on explicit data (`run1`, `run2`) rather than through `actC`, whose
+evaluation is slow; the two agree letter by letter (`t1_ok`, `t2_ok`,
+decided on all data). -/
+
+/-- Pauli data on one wire: `ω^c X^a Z^b`. -/
+structure P1 where
+  c : Fin 3
+  a : Fin 3
+  b : Fin 3
+  deriving DecidableEq
+
+/-- Pauli data on two wires. -/
+structure P2 where
+  c : Fin 3
+  a0 : Fin 3
+  b0 : Fin 3
+  a1 : Fin 3
+  b1 : Fin 3
+  deriving DecidableEq
+
+def P1.pd (p : P1) : PD 1 := ⟨p.c, ![p.a], ![p.b]⟩
+def P2.pd (p : P2) : PD 2 := ⟨p.c, ![p.a0, p.a1], ![p.b0, p.b1]⟩
+
+def t1 : Lt → P1 → P1
+  | .H 0, p => ⟨p.c + 2 * p.a * p.b, 2 * p.b, p.a⟩
+  | .S 0, p => ⟨p.c + p.a * (p.a - 1), p.a, p.b + 2 * p.a⟩
+  | _, p => p
+
+def t2 : Lt → P2 → P2
+  | .H 0, p => ⟨p.c + 2 * p.a0 * p.b0, 2 * p.b0, p.a0, p.a1, p.b1⟩
+  | .S 0, p => ⟨p.c + p.a0 * (p.a0 - 1), p.a0, p.b0 + 2 * p.a0, p.a1, p.b1⟩
+  | .H 1, p => ⟨p.c + 2 * p.a1 * p.b1, p.a0, p.b0, 2 * p.b1, p.a1⟩
+  | .S 1, p => ⟨p.c + p.a1 * (p.a1 - 1), p.a0, p.b0, p.a1, p.b1 + 2 * p.a1⟩
+  | .C 0, p => ⟨p.c + p.a0 * p.a1, p.a0, p.b0 + p.a1, p.a1, p.b1 + p.a0⟩
+  | _, p => p
+
+def run1 : List Lt → P1 → P1
+  | [], p => p
+  | x :: l, p => run1 l (t1 x p)
+
+def run2 : List Lt → P2 → P2
+  | [], p => p
+  | x :: l, p => run2 l (t2 x p)
+
+/-- Letters on one wire, and on two wires. -/
+def in1 (x : Lt) : Bool := x.hi == 0
+def in2 (x : Lt) : Bool := x.hi ≤ 1
+
+theorem t1H : ∀ c a b : Fin 3, actGen (Lt.gen 1 (.H 0)) (P1.pd ⟨c, a, b⟩) =
+    (t1 (.H 0) ⟨c, a, b⟩).pd := by decide +kernel
+theorem t1S : ∀ c a b : Fin 3, actGen (Lt.gen 1 (.S 0)) (P1.pd ⟨c, a, b⟩) =
+    (t1 (.S 0) ⟨c, a, b⟩).pd := by decide +kernel
+
+theorem t1_ok (x : Lt) (hx : in1 x = true) (p : P1) :
+    actGen (Lt.gen 1 x) p.pd = (t1 x p).pd := by
+  obtain ⟨c, a, b⟩ := p
+  match x, hx with
+  | .H 0, _ => exact t1H c a b
+  | .S 0, _ => exact t1S c a b
+
+theorem t2H0 : ∀ c a0 b0 a1 b1 : Fin 3, actGen (Lt.gen 2 (.H 0)) (P2.pd ⟨c, a0, b0, a1, b1⟩) =
+    (t2 (.H 0) ⟨c, a0, b0, a1, b1⟩).pd := by decide +kernel
+theorem t2S0 : ∀ c a0 b0 a1 b1 : Fin 3, actGen (Lt.gen 2 (.S 0)) (P2.pd ⟨c, a0, b0, a1, b1⟩) =
+    (t2 (.S 0) ⟨c, a0, b0, a1, b1⟩).pd := by decide +kernel
+theorem t2H1 : ∀ c a0 b0 a1 b1 : Fin 3, actGen (Lt.gen 2 (.H 1)) (P2.pd ⟨c, a0, b0, a1, b1⟩) =
+    (t2 (.H 1) ⟨c, a0, b0, a1, b1⟩).pd := by decide +kernel
+theorem t2S1 : ∀ c a0 b0 a1 b1 : Fin 3, actGen (Lt.gen 2 (.S 1)) (P2.pd ⟨c, a0, b0, a1, b1⟩) =
+    (t2 (.S 1) ⟨c, a0, b0, a1, b1⟩).pd := by decide +kernel
+theorem t2C0 : ∀ c a0 b0 a1 b1 : Fin 3, actGen (Lt.gen 2 (.C 0)) (P2.pd ⟨c, a0, b0, a1, b1⟩) =
+    (t2 (.C 0) ⟨c, a0, b0, a1, b1⟩).pd := by decide +kernel
+
+theorem t2_ok (x : Lt) (hx : in2 x = true) (p : P2) :
+    actGen (Lt.gen 2 x) p.pd = (t2 x p).pd := by
+  obtain ⟨c, a0, b0, a1, b1⟩ := p
+  match x, hx with
+  | .H 0, _ => exact t2H0 c a0 b0 a1 b1
+  | .S 0, _ => exact t2S0 c a0 b0 a1 b1
+  | .H 1, _ => exact t2H1 c a0 b0 a1 b1
+  | .S 1, _ => exact t2S1 c a0 b0 a1 b1
+  | .C 0, _ => exact t2C0 c a0 b0 a1 b1
+
+theorem actC_gen {n : ℕ} (g : Gen Gate n) (P : PD n) :
+    actC n (FreeMonoid.of g) P = actGen g P := by
+  have := actC_of g 1 P
+  rwa [mul_one, actC_one] at this
+
+theorem run1_ok : ∀ (l : List Lt), l.all in1 = true → ∀ p : P1,
+    actC 1 (cw 1 l) p.pd = (run1 l p).pd
+  | [], _, _ => actC_one _
+  | x :: l, h, p => by
+    simp only [List.all_cons, Bool.and_eq_true] at h
+    rw [cw, actC_mul, actC_gen, t1_ok x h.1, run1_ok l h.2]; rfl
+
+theorem run2_ok : ∀ (l : List Lt), l.all in2 = true → ∀ p : P2,
+    actC 2 (cw 2 l) p.pd = (run2 l p).pd
+  | [], _, _ => actC_one _
+  | x :: l, h, p => by
+    simp only [List.all_cons, Bool.and_eq_true] at h
+    rw [cw, actC_mul, actC_gen, t2_ok x h.1, run2_ok l h.2]; rfl
+
+/-- Words on one wire acting alike on `X` and `Z`. -/
+def same1 (s t : List Lt) : Bool :=
+  run1 s ⟨0, 1, 0⟩ == run1 t ⟨0, 1, 0⟩ && run1 s ⟨0, 0, 1⟩ == run1 t ⟨0, 0, 1⟩
+
+/-- Words on two wires acting alike on `X₀`, `Z₀`, `X₁`, `Z₁`. -/
+def same2 (s t : List Lt) : Bool :=
+  run2 s ⟨0, 1, 0, 0, 0⟩ == run2 t ⟨0, 1, 0, 0, 0⟩ &&
+  run2 s ⟨0, 0, 1, 0, 0⟩ == run2 t ⟨0, 0, 1, 0, 0⟩ &&
+  run2 s ⟨0, 0, 0, 1, 0⟩ == run2 t ⟨0, 0, 0, 1, 0⟩ &&
+  run2 s ⟨0, 0, 0, 0, 1⟩ == run2 t ⟨0, 0, 0, 0, 1⟩
+
+theorem xat1 : PD.Xat (0 : Fin 1) = P1.pd ⟨0, 1, 0⟩ := by decide
+theorem zat1 : PD.Zat (0 : Fin 1) = P1.pd ⟨0, 0, 1⟩ := by decide
+theorem xat20 : PD.Xat (0 : Fin 2) = P2.pd ⟨0, 1, 0, 0, 0⟩ := by decide
+theorem zat20 : PD.Zat (0 : Fin 2) = P2.pd ⟨0, 0, 1, 0, 0⟩ := by decide
+theorem xat21 : PD.Xat (1 : Fin 2) = P2.pd ⟨0, 0, 0, 1, 0⟩ := by decide
+theorem zat21 : PD.Zat (1 : Fin 2) = P2.pd ⟨0, 0, 0, 0, 1⟩ := by decide
+
+theorem same1_sound {s t : List Lt} (hs : s.all in1 = true) (ht : t.all in1 = true)
+    (h : same1 s t = true) : actC 1 (cw 1 s) = actC 1 (cw 1 t) := by
+  simp only [same1, Bool.and_eq_true, beq_iff_eq] at h
+  apply actC_eq_of_gens
+  · intro j
+    rw [Subsingleton.elim j 0, xat1, run1_ok s hs, run1_ok t ht, h.1]
+  · intro j
+    rw [Subsingleton.elim j 0, zat1, run1_ok s hs, run1_ok t ht, h.2]
+
+theorem same2_sound {s t : List Lt} (hs : s.all in2 = true) (ht : t.all in2 = true)
+    (h : same2 s t = true) : actC 2 (cw 2 s) = actC 2 (cw 2 t) := by
+  simp only [same2, Bool.and_eq_true, beq_iff_eq] at h
+  obtain ⟨⟨⟨h1, h2⟩, h3⟩, h4⟩ := h
+  apply actC_eq_of_gens
+  · intro j
+    match j with
+    | 0 => rw [xat20, run2_ok s hs, run2_ok t ht, h1]
+    | 1 => rw [xat21, run2_ok s hs, run2_ok t ht, h3]
+  · intro j
+    match j with
+    | 0 => rw [zat20, run2_ok s hs, run2_ok t ht, h2]
+    | 1 => rw [zat21, run2_ok s hs, run2_ok t ht, h4]
+
 /-! ### Free steps -/
 
 /-- On two wires: the letters on wire 0 and on wire 1. -/
 def lo2 (x : Lt) : Bool := x.hi == 0
+def hi2 (x : Lt) : Bool := x.lo == 1 && x.hi == 1
 def hi1 (x : Lt) : Bool := 1 ≤ x.lo
 
 /-- On three wires: the letters on wires 0, 1 and on wires 1, 2. -/
 def lo3 (x : Lt) : Bool := x.hi ≤ 1
+def hi3 (x : Lt) : Bool := 1 ≤ x.lo && x.hi ≤ 2
 
 def fo2 (s t : List Lt) : Bool :=
-  (s.all lo2 && t.all lo2 && sameGens (cw 1 s) (cw 1 t)) ||
-  (s.all hi1 && t.all hi1 && sameGens (cw 1 (s.map down)) (cw 1 (t.map down)))
+  (s.all lo2 && t.all lo2 && same1 s t) ||
+  (s.all hi2 && t.all hi2 && same1 (s.map down) (t.map down))
 
 def fo3 (s t : List Lt) : Bool :=
-  (s.all lo3 && t.all lo3 && sameGens (cw 2 s) (cw 2 t)) ||
-  (s.all hi1 && t.all hi1 && sameGens (cw 2 (s.map down)) (cw 2 (t.map down)))
+  (s.all lo3 && t.all lo3 && same2 s t) ||
+  (s.all hi3 && t.all hi3 && same2 (s.map down) (t.map down))
 
 theorem gen_lo2 (x : Lt) (h : lo2 x = true) : gen 2 x = Gen.pad 1 (gen 1 x) := by
   match x, h with
@@ -93,21 +239,48 @@ theorem cw_hi (k : ℕ) : ∀ l : List Lt, l.all hi1 = true →
     simp only [cw, List.map_cons, map_mul, cw_hi k l (by simpa [hi1] using h.2),
       gen_up k x h.1, Circuit.shift_of]
 
+theorem all_mono {l : List Lt} {p q : Lt → Bool} (h : l.all p = true)
+    (hpq : ∀ x, p x = true → q x = true) : l.all q = true := by
+  simp only [List.all_eq_true] at h ⊢; exact fun x hx => hpq x (h x hx)
+
+theorem all_map_down {l : List Lt} {p q : Lt → Bool} (h : l.all p = true)
+    (hpq : ∀ x, p x = true → q (down x) = true) : (l.map down).all q = true := by
+  simp only [List.all_eq_true, List.mem_map] at h ⊢
+  rintro _ ⟨x, hx, rfl⟩; exact hpq x (h x hx)
+
+theorem hi2_hi1 (x : Lt) (hx : hi2 x = true) : hi1 x = true := by
+  cases x <;> simp [hi2, hi1, Lt.lo, Lt.hi] at hx ⊢ <;> omega
+
+theorem hi2_in1 (x : Lt) (hx : hi2 x = true) : in1 (down x) = true := by
+  cases x <;> simp [hi2, in1, Lt.lo, Lt.hi, down] at hx ⊢ <;> omega
+
+theorem hi3_hi1 (x : Lt) (hx : hi3 x = true) : hi1 x = true := by
+  cases x <;> simp [hi3, hi1, Lt.lo, Lt.hi] at hx ⊢ <;> omega
+
+theorem hi3_in2 (x : Lt) (hx : hi3 x = true) : in2 (down x) = true := by
+  cases x <;> simp [hi3, in2, Lt.lo, Lt.hi, down] at hx ⊢ <;> omega
+
 theorem fo2_sound (hc : Complete 1) (s t : List Lt) (h : fo2 s t = true) : E 2 s t := by
   simp only [fo2, Bool.or_eq_true, Bool.and_eq_true] at h
   rcases h with ⟨⟨hs, ht⟩, hg⟩ | ⟨⟨hs, ht⟩, hg⟩
-  · unfold E; rw [cw_lo2 s hs, cw_lo2 t ht]
-    exact PEq.pad 1 (pcomplete_gens hc hg)
-  · unfold E; rw [cw_hi 1 s hs, cw_hi 1 t ht]
-    exact PEq.shift (pcomplete_gens hc hg)
+  · have h0 : ∀ x, lo2 x = true → in1 x = true := fun x hx => hx
+    unfold E; rw [cw_lo2 s hs, cw_lo2 t ht]
+    exact PEq.pad 1 (pcomplete hc (same1_sound (all_mono hs h0) (all_mono ht h0) hg))
+  · have h1 := hi2_hi1
+    have h2 := hi2_in1
+    unfold E; rw [cw_hi 1 s (all_mono hs h1), cw_hi 1 t (all_mono ht h1)]
+    exact PEq.shift (pcomplete hc (same1_sound (all_map_down hs h2) (all_map_down ht h2) hg))
 
 theorem fo3_sound (hc : Complete 2) (s t : List Lt) (h : fo3 s t = true) : E 3 s t := by
   simp only [fo3, Bool.or_eq_true, Bool.and_eq_true] at h
   rcases h with ⟨⟨hs, ht⟩, hg⟩ | ⟨⟨hs, ht⟩, hg⟩
-  · unfold E; rw [cw_lo3 s hs, cw_lo3 t ht]
-    exact PEq.pad 1 (pcomplete_gens hc hg)
-  · unfold E; rw [cw_hi 2 s hs, cw_hi 2 t ht]
-    exact PEq.shift (pcomplete_gens hc hg)
+  · have h0 : ∀ x, lo3 x = true → in2 x = true := fun x hx => hx
+    unfold E; rw [cw_lo3 s hs, cw_lo3 t ht]
+    exact PEq.pad 1 (pcomplete hc (same2_sound (all_mono hs h0) (all_mono ht h0) hg))
+  · have h1 := hi3_hi1
+    have h2 := hi3_in2
+    unfold E; rw [cw_hi 2 s (all_mono hs h1), cw_hi 2 t (all_mono ht h1)]
+    exact PEq.shift (pcomplete hc (same2_sound (all_map_down hs h2) (all_map_down ht h2) hg))
 
 /-! ### Base tables -/
 
@@ -312,14 +485,79 @@ theorem exists_word {k : ℕ} (u : Circ k) : ∃ l : List Lt, Fits k l ∧ PEq k
 
 /-! ### Stored libraries -/
 
-/-- A stored step: `(0, i, rev, u, v)` a rule, `(1, u, s, t, v)` a free step. -/
+def decPF : ℕ → ℕ → List ℕ
+  | 0, _ => []
+  | f + 1, n => if n = 0 then [] else (n % 256 - 1) :: decPF f (n / 256)
+
+/-- A list of positions stored as a number (base 256, digits shifted by one). -/
+def decP (n : ℕ) : List ℕ := decPF 1000 n
+
+/-- A stored step: `(0, i, rev, u, v)` a rule, `(1, u, s, t, v)` a free step,
+`(2, ps, _, _, _)` swaps of adjacent commuting letters. -/
 def decStep : ℕ × ℕ × ℕ × ℕ × ℕ → Step
   | (0, i, r, u, v) => .rule i (r == 1) (decW u) (decW v)
-  | (_, u, s, t, v) => .free (decW u) (decW s) (decW t) (decW v)
+  | (1, u, s, t, v) => .free (decW u) (decW s) (decW t) (decW v)
+  | (_, ps, _, _, _) => .swaps (decP ps)
 
 /-- A stored library. -/
 def decLib (L : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))) :
     List (List Lt × List Lt × List Step) :=
   L.map fun e => (decW e.1, decW e.2.1, e.2.2.map decStep)
+
+/-! ### Libraries checked lemma by lemma
+
+A stored library is checked one lemma per declaration (`libLemOk`), each
+over the entries of the table before it, so that no single kernel check
+holds the whole library. -/
+
+/-- The first `n` entries of the table hold. -/
+def ValidUpTo (k : ℕ) (T : Tbl) (n : ℕ) : Prop := ∀ i < n, ∀ e, T[i]? = some e → E k e.1 e.2
+
+/-- Lemma `i` of a stored library checks over the table before it. -/
+def libLemOk (fo : List Lt → List Lt → Bool) (B : Tbl)
+    (D : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))) (i : ℕ) : Bool :=
+  match D[i]? with
+  | none => false
+  | some e => lemOk fo ((libTbl B (decLib D)).take (B.length + i)) (decW e.1) (decW e.2.1)
+      (e.2.2.map decStep)
+
+theorem validUpTo_base {k : ℕ} {B : Tbl} (hB : Valid k B) (D : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))) :
+    ValidUpTo k (libTbl B (decLib D)) B.length := by
+  intro i hi e he
+  apply hB e
+  rw [libTbl, List.getElem?_append_left hi] at he
+  exact List.mem_of_getElem? he
+
+theorem valid_take {k : ℕ} {T : Tbl} {n : ℕ} (h : ValidUpTo k T n) : Valid k (T.take n) := by
+  intro e he
+  obtain ⟨i, hi, hie⟩ := List.getElem_of_mem he
+  rw [List.getElem_take] at hie
+  have hin : i < n := by simp [List.length_take] at hi; omega
+  exact h i hin e (by rw [← hie]; exact List.getElem?_eq_getElem _)
+
+theorem validUpTo_step {k : ℕ} (fo : List Lt → List Lt → Bool)
+    (hfo : ∀ s t, fo s t = true → E k s t) {B : Tbl}
+    {D : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))} {i : ℕ}
+    (h : ValidUpTo k (libTbl B (decLib D)) (B.length + i)) (hi : libLemOk fo B D i = true) :
+    ValidUpTo k (libTbl B (decLib D)) (B.length + i + 1) := by
+  unfold libLemOk at hi
+  split at hi
+  · exact nomatch hi
+  · rename_i e he
+    have hE := lemOk_E fo hfo (valid_take h) hi
+    intro j hj e' he'
+    rcases Nat.lt_succ_iff_lt_or_eq.1 hj with hj | rfl
+    · exact h j hj e' he'
+    · have hD : i < D.length := (List.getElem?_eq_some_iff.1 he).1
+      rw [libTbl, List.getElem?_append_right (by omega), Nat.add_sub_cancel_left,
+        List.getElem?_map, decLib, List.getElem?_map, he] at he'
+      simp only [Option.map_some, Option.some.injEq] at he'
+      subst he'
+      exact hE
+
+/-- An entry of a table of which the first `n` entries hold. -/
+theorem ValidUpTo.get {k : ℕ} {T : Tbl} {n : ℕ} (h : ValidUpTo k T n) (i : ℕ) (hi : i < n)
+    {l r : List Lt} (he : T[i]? = some (l, r)) : E k l r :=
+  h i hi (l, r) he
 
 end QCert.QutritClifford

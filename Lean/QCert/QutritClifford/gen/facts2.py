@@ -234,6 +234,8 @@ def replay(rules, start, steps):
         cur_lit = list(cur_lit)
         Rl = split_raw(lwd)
         cur_lit[i] = lw(X) + Rl[0]
+        for j in range(1, s):
+            cur_lit[i + j] = list(Rl[j])
         cur_lit[i + s] = Rl[s] + lw(Y)
         words.append(join(cur_lit))
         # apply the rule
