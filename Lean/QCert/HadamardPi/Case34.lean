@@ -6626,9 +6626,12 @@ def c34_p253 : List ZL :=
     ([1, 0, 0, 0, 0, 2], [0, 0, 0, 0, 0, 0, 2]),
     ([1, 0, 0, 0, 0, 0, 0, 2], [1, 0, 0, 0, 0, 0, 0, 0, 2])]
 
+/-- The pattern of the four odd entries for `ε = 0`. -/
+abbrev c34_P0_0 : List ZL := c34_p253
+
 /-- The entry of Case 3.4 for `ε = 0`, `η = ε`. -/
 theorem c34_entryE0 {n : ℕ} (s : O n) (hs : s ≠ 1) (hk : lde (col s (pj s (piv_pos hs))) ≠ 0)
-    (hw : 4 ≤ piv s) (t : ℕ → ℤ) (hP : WinPat s hs hw c34_p253 t) (htail : TailD s hs 4 1)
+    (hw : 4 ≤ piv s) (t : ℕ → ℤ) (hP : WinPat s hs hw c34_P0_0 t) (htail : TailD s hs 4 1)
     (hη : evv [1, 1, 0, 1, 0, 0, 0, 0, 0] (c1 t) % 2 = 0) :
     wJ s hw ([hL 1 3, hL 0 2] : List (Gen 4)) ([hL 1 3, hL 0 2, hL 0 1] : List (Gen 4)) :=
   c34_tr268 s hs hk hw (Nat.one_le_iff_ne_zero.2 hk) _
@@ -6637,7 +6640,7 @@ theorem c34_entryE0 {n : ℕ} (s : O n) (hs : s ≠ 1) (hk : lde (col s (pj s (p
 
 /-- The entry of Case 3.4 for `ε = 0`, `η ≠ ε`. -/
 theorem c34_entryN0 {n : ℕ} (s : O n) (hs : s ≠ 1) (hk : lde (col s (pj s (piv_pos hs))) ≠ 0)
-    (hw : 4 ≤ piv s) (t : ℕ → ℤ) (hP : WinPat s hs hw c34_p253 t) (htail : TailD s hs 4 1)
+    (hw : 4 ≤ piv s) (t : ℕ → ℤ) (hP : WinPat s hs hw c34_P0_0 t) (htail : TailD s hs 4 1)
     (hη : evv [1, 1, 0, 1, 0, 0, 0, 0, 0] (c1 t) % 2 = 1) :
     wJ s hw ([hL 1 3, hL 0 2] : List (Gen 4)) ([hL 1 2, hL 0 3, hL 0 1] : List (Gen 4)) :=
   c34_tr269 s hs hk hw (Nat.one_le_iff_ne_zero.2 hk) _
@@ -6671,9 +6674,12 @@ def c34_p255 : List ZL :=
     ([1, 0, 0, 0, 0, 2], [1, 0, 0, 0, 0, 0, 2]),
     ([1, 0, 0, 0, 0, 0, 0, 2], [0, 0, 0, 0, 0, 0, 0, 0, 2])]
 
+/-- The pattern of the four odd entries for `ε = 1`. -/
+abbrev c34_P0_1 : List ZL := c34_p255
+
 /-- The entry of Case 3.4 for `ε = 1`, `η = ε`. -/
 theorem c34_entryE1 {n : ℕ} (s : O n) (hs : s ≠ 1) (hk : lde (col s (pj s (piv_pos hs))) ≠ 0)
-    (hw : 4 ≤ piv s) (t : ℕ → ℤ) (hP : WinPat s hs hw c34_p255 t) (htail : TailD s hs 4 1)
+    (hw : 4 ≤ piv s) (t : ℕ → ℤ) (hP : WinPat s hs hw c34_P0_1 t) (htail : TailD s hs 4 1)
     (hη : evv [1, 1, 0, 1, 0, 0, 0, 0, 0] (c1 t) % 2 = 1) :
     wJ s hw ([hL 1 3, hL 0 2] : List (Gen 4)) ([hL 1 3, hL 0 2, hL 0 1] : List (Gen 4)) :=
   c34_n267 s hs hk hw (Nat.one_le_iff_ne_zero.2 hk) _
@@ -6682,7 +6688,7 @@ theorem c34_entryE1 {n : ℕ} (s : O n) (hs : s ≠ 1) (hk : lde (col s (pj s (p
 
 /-- The entry of Case 3.4 for `ε = 1`, `η ≠ ε`. -/
 theorem c34_entryN1 {n : ℕ} (s : O n) (hs : s ≠ 1) (hk : lde (col s (pj s (piv_pos hs))) ≠ 0)
-    (hw : 4 ≤ piv s) (t : ℕ → ℤ) (hP : WinPat s hs hw c34_p255 t) (htail : TailD s hs 4 1)
+    (hw : 4 ≤ piv s) (t : ℕ → ℤ) (hP : WinPat s hs hw c34_P0_1 t) (htail : TailD s hs 4 1)
     (hη : evv [1, 1, 0, 1, 0, 0, 0, 0, 0] (c1 t) % 2 = 0) :
     wJ s hw ([hL 1 3, hL 0 2] : List (Gen 4)) ([hL 1 2, hL 0 3, hL 0 1] : List (Gen 4)) :=
   c34_tr270 s hs hk hw (Nat.one_le_iff_ne_zero.2 hk) _

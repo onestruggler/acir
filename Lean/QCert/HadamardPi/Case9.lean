@@ -31,7 +31,8 @@ theorem hv_odd_diff {v : Fin n → ℝ} (hR : InRing v) {z o : Fin n} (hzo : z �
     (hz : Odd (num v z).re) (ho : Odd (num v o).re) (hd : ¬SameOdd (num v z) (num v o)) :
     lde (hv z o v) = lde v ∧ (∀ i, i ≠ z → i ≠ o → num (hv z o v) i = num v i) ∧
       Odd (num (hv z o v) z).re ∧ Odd (num (hv z o v) o).re ∧
-      ¬SameOdd (num (hv z o v) z) (num (hv z o v) o) := by
+      ¬SameOdd (num (hv z o v) z) (num (hv z o v) o) ∧
+      num (hv z o v) z = ⟨(num v z).im + (num v o).im, ((num v z).re + (num v o).re) / 2⟩ := by
   classical
   set k := lde v
   have hz' := toReal_num hR z
@@ -82,7 +83,7 @@ theorem hv_odd_diff {v : Fin n → ℝ} (hR : InRing v) {z o : Fin n} (hzo : z �
     exact not_den_of_odd this hn1odd hden
   have hnum : num (hv z o v) = u := num_eq hR' (by rw [hl]; exact hu')
   refine ⟨hl, fun i h1 h2 => by rw [hnum]; simp [hu, h1, h2], by rw [hnum, huz]; exact hn1odd,
-    by rw [hnum, huo]; exact hn2odd, ?_⟩
+    by rw [hnum, huo]; exact hn2odd, ?_, by rw [hnum, huz, hn1]⟩
   rw [hnum, huz, huo]
   rintro ⟨-, -, hiff⟩
   rw [Int.odd_iff, Int.odd_iff] at hiff
@@ -336,7 +337,7 @@ theorem case9_hard (four : Case9Four n) : Case9Hard n := by
   have hsyl' : syl s = FreeMonoid.of (Gen.H z P hz1P) := by
     rw [hsyl, dif_neg (lt_irrefl _), mul_one]
   -- the state `r = H_[z,o] s`
-  obtain ⟨hlr, hnumr, hrz, hro, hrd⟩ := hv_odd_diff hR (ne_of_lt hzo) h0 h1 hdiff
+  obtain ⟨hlr, hnumr, hrz, hro, hrd, -⟩ := hv_odd_diff hR (ne_of_lt hzo) h0 h1 hdiff
   have hidx : ∀ i ∈ (Gen.H z o hzo).idx, (i : ℕ) < piv s := by
     intro i hi; simp [Gen.idx] at hi; rcases hi with rfl | rfl <;> omega
   have hpiv : piv (sem n (Gen.H z o hzo) * s) = piv s := piv_eq_of_col hp hidx (fun h => hk (by

@@ -496,7 +496,9 @@ def entries():
         q = child(P0(e), 8, LF_ETA, 1 - e)
         n_ne = mono_transfer(q, 8, 4, 1, 1, Wd("Z1"), Wd("Z1 Z3 X13"), Wd("X01"), "c34_tr57_A",
                              "c34_tr57_B", n1[e], P1[e], 8, "Lemma 5.7: `η = ε`.", Bsrc=Bne)
-        pat = patname(P0(e))
+        pat = f"c34_P0_{e}"
+        OUT.append(f"/-- The pattern of the four odd entries for `ε = {e}`. -/\n"
+                   f"abbrev {pat} : List ZL := {patname(P0(e))}\n")
         A_ = lword(A4)
         for tag, b, tgt, B_ in (("E", e, n1[e], lword(B4)), ("N", 1 - e, n_ne, lword(Bne))):
             name = f"c34_entry{tag}{e}"
