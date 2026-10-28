@@ -135,7 +135,7 @@ theorem derivable_of_runSteps (rules : List (Rule Γ)) (w v : Word α)
 /-! ### Packed certificates
 
 A certificate of many steps is written as one number: step `i` is the
-`i`-th digit in base `2²³`, the digit `2 (4096 p + k) + d` standing for the
+`i`-th digit in base `2²⁵`, the digit `2 (4096 p + k) + d` standing for the
 step `(p, k, d)`.  This keeps generated proofs small and their terms
 shallow. -/
 
@@ -143,8 +143,8 @@ shallow. -/
 def decodeSteps : ℕ → ℕ → List (ℕ × ℕ × Bool)
   | 0, _ => []
   | n + 1, c =>
-    let s := c % 8388608
-    (s / 2 / 4096, s / 2 % 4096, s % 2 == 1) :: decodeSteps n (c / 8388608)
+    let s := c % 33554432
+    (s / 2 / 4096, s / 2 % 4096, s % 2 == 1) :: decodeSteps n (c / 33554432)
 
 /-- A rule proved by a packed certificate over earlier rules. -/
 def Rule.byCode (rules : List (Rule Γ)) (l r : List α) (n code : ℕ)

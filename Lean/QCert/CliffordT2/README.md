@@ -52,37 +52,66 @@ Clifford+T, sub-presentation in U₄".
 
 ## Certificates
 
-`Cert/Axioms.lean`, `Cert/Clifford.lean` and `Cert/Rotations.lean` are
-rewriting rules, each proved by a packed certificate checked with
-`decide +kernel`: the relations of Figure 1, the coset tables of a
-stabilizer chain for the two-qubit Clifford group (normal forms
-`r₀ r₁ … r₅` for the chain `⟨ω⟩ ⊂ ⟨ω,S₀⟩ ⊂ ⟨ω,S₀,H₀⟩ ⊂ ⟨…,S₁⟩ ⊂ ⟨…,H₁⟩ ⊂
-⟨…,CZ⟩`, the last table by coset enumeration with proofs), and the Pauli
-rotation lemmas of Section 4.3 (`R(P) = C_P T₀ C_P⁻¹`).  They are generated
-by Python scripts kept outside the library (`Lean/Scratch/CliffordT2/py`,
-not committed): the search that finds the certificates is not trusted,
-only the replay in the kernel is.  The current files hold the part of the
-Clifford tables found so far.
+The 46 equations are proved by rewriting certificates, found outside Lean
+and replayed by the kernel (`decide +kernel`); only the replay is trusted.
+
+* `Rewrite.lean`: rules (`Rule Γ`: an equation between lists of letters
+  with its derivation), rewriting steps `(position, rule, direction)`,
+  their replay on lists and its soundness.
+* `FastRewrite.lean`: the same replay on words coded as numbers (a word
+  `a₀ a₁ …` is `κ a₀ + 16 κ a₁ + ⋯`, `κ` a coding of the letters by
+  `1 … 15`), each step a few operations on numbers that the kernel
+  evaluates eagerly; steps are packed 25 bits each into numbers, in chunks
+  of 2000 (`runChunks`, `derivable_of_chunks`, `Rule.byChunks`), with the
+  soundness proved once (`runFast_sound`, from the arithmetic of the coding).
+* `Cert/Code.lean`: the coding of the eight letters.
+* `Cert/Axioms.lean`: the relations of Figure 1 as rules.
+* `Cert/Clifford.lean`: normal forms of the two-qubit Clifford group by a
+  stabilizer chain `⟨ω⟩ ⊂ ⟨ω,S₀⟩ ⊂ ⟨ω,S₀,H₀⟩ ⊂ ⟨…,S₁⟩ ⊂ ⟨…,H₁⟩ ⊂ ⟨…,CZ⟩`,
+  each coset-table entry `r x → λ r'` a rule proved from the relations
+  (the last table, the 20 cosets of the local Clifford group, by coset
+  enumeration with proofs: every entry deduced from a relator, or found by
+  a search through partial normal forms).
+* `Cert/Rotations.lean`: the Pauli rotations of Section 4.3,
+  `R(P) = C_P T₀ C_P⁻¹`: a Clifford letter passes a rotation
+  (`R(P) x = x R(x†Px)`), `R(-P) = E_P R(P)`, `R(P)² = C_P S₀ C_P⁻¹`,
+  commuting rotations commute, `T₁ = R(I⊗Z)`; `lemma-rel-A` and
+  `lemma-rel-B` of the authors' code (the squares of the words of (C18) and
+  (C19) are trivial); and the local lemma of the authors' Equation 46.
+* `Eqs/Part00.lean` … `Eqs/Part12.lean`: the 46 equations (870 000 rewriting
+  steps in all, the longest 286 000; a long certificate is cut into lemmas of
+  at most 10 000 steps between explicit intermediate words, which keeps
+  each kernel check within a few gigabytes).  Both sides of
+  each are brought to the same normal form `C · R(P₁) ⋯ R(Pₙ)`: a Clifford
+  normal form followed by positive Pauli rotations in the lexicographic
+  normal form of their commutation trace.  For Equations 21, 28, 30, 43, 44
+  and 46 the two sides have different such forms, and, as in the authors'
+  proofs, (C18), (C19) and (C20) are applied at the places their
+  `Equation21/28/30/43/44/46.agda` apply them (`lemma-rel-A`,
+  `lemma-rel-B`, `rel-C`); between those places, normal forms agree.
+
+The generating scripts (Python, in `Lean/Scratch/CliffordT2/py`, not part
+of the library) are: `chain.py`, `cliffnf.py`, `psearch.py` (Clifford
+tables), `rot.py`, `rotcert.py`, `agda_chain.py` (rotations, normal forms,
+equations; `agda_chain.py` reads the words around the non-obvious steps
+from the authors' ancillary Agda files), `emit.py`, `gen_equations.py`
+(Lean output).
 
 ## Remaining `sorry`s
 
-* `Equations.eqn1` … `Equations.eqn46`: the 46 equations of the authors'
-  `Equation1.agda` … `Equation46.agda`, hypotheses (a) and (b) of the
-  Reidemeister–Schreier theorem.  Each is an equation between two Clifford+T
-  words that holds in `U(4)` (checked numerically); they are being proved by
-  rewriting certificates.  A prototype shows that 40 of them reduce to the
-  same Pauli-rotation normal form on both sides; Equations 21, 28, 30, 43,
-  44 and 46 need, as in the paper, the "non-obvious" relations (C18)–(C20)
-  (`lemma-rel-A`, `lemma-rel-B`, (C20)) at one or two places.
-* Greylyn's Theorem 4.1 is used through `QCert.Greylyn.presentation`
-  (folder `QCert/Greylyn/`, another formalization), whose proof is that
-  folder's business.
+None.  The completeness proof uses Greylyn's Theorem 4.1 through
+`QCert.Greylyn.presentation` (folder `QCert/Greylyn/`), and
+`#print axioms` reports `[propext, Classical.choice, Quot.sound]` for
+both `theorem_2_1` and `theorem_2_1_U`.
 
-Everything else (the Reidemeister–Schreier theorem, the five-generator
-form of Greylyn's presentation with all 123 translated relations, the
-translation `f`, the coset action, soundness) is proved.
+## Building
+
+The equation files take about 30 minutes in all (`Eqs/Part09`,
+`Part10` and `Part12` 4.5 to 8.5 minutes each), about 2 GB resident
+each; the rest of the folder a few minutes.  Lemmas of 60 000 steps
+needed over 7 GB, hence the cut at 10 000.
 
 ## Paper errors
 
 None found: every relation of Figure 1 holds (decided), every translated
-Greylyn relation is derivable, and all 46 equations hold numerically.
+Greylyn relation is derivable, and all 46 equations are proved.
