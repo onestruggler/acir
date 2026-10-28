@@ -5,15 +5,14 @@
 cd "$(dirname "$0")"
 export PATH="$HOME/.elan/bin:$PATH"
 got=
-for i in 1 2 3; do
-  exec {fd}>"$HOME/.qcert-build-$i.lock"
-  if flock -n "$fd"; then got=1; break; fi
-  exec {fd}>&-
+while [ -z "$got" ]; do
+  for i in 1 2 3; do
+    exec {fd}>"$HOME/.qcert-build-$i.lock"
+    if flock -n "$fd"; then got=1; break; fi
+    exec {fd}>&-
+  done
+  [ -z "$got" ] && sleep 5
 done
-if [ -z "$got" ]; then
-  exec {fd}>"$HOME/.qcert-build-$((RANDOM % 3 + 1)).lock"
-  flock "$fd"
-fi
 if [ $# -eq 0 ]; then
   /usr/bin/timeout 7200 lake build
   exit $?
