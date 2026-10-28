@@ -57,8 +57,12 @@ def labels_for(lab, known):
         return [lab]
     if lab == 'Def':
         return []
-    if lab.replace('.', '').isdigit() and 'T' + lab in known:
-        return ['T' + lab]
+    if lab.replace('.', '').isdigit():
+        f, _, k = lab.partition('.')
+        if f == '7':        # Figure 7 is Figure 6 untyped
+            lab = '6.' + k
+        if 'T' + lab in known:
+            return ['T' + lab]
     return None
 
 
@@ -314,3 +318,24 @@ def follow(d, path, names):
         if not try_step(d, names, w):
             return False
     return True
+
+
+_step2 = step
+BRIDGE = {'depth': 2, 'names': None}
+
+
+def step(d, names, tgt, anyone, known):
+    if _step2(d, names, tgt, anyone, known):
+        return True
+    base = BRIDGE['names'] or [n for n in known if '@' not in n]
+    path = bridge(d.word, tgt, base, d.kmax, depth=BRIDGE['depth'])
+    if path is None:
+        return False
+    saved = (list(d.word), list(d.steps))
+    if follow(d, path, base):
+        a, ap = strip_w(d.word)
+        b, bp = strip_w(tgt)
+        if canon(a) == canon(b) and (ap - bp) % 2 == 0:
+            return True
+    d.word, d.steps = saved
+    return False
