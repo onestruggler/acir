@@ -149,8 +149,10 @@ editing the others; it may assume everything exported by the others (the
   semantic steps decided by `D/LSim.lean`, frame from `Net`), tables
   `D/N8/Anchors.lean` ((19), (269), local swaps).  Proved: (81), (271),
   (272)–(277), (280), (285), (286) (`eq81`, `eq269`, `eq274`, `eq277`;
-  (280) and (285) in `D/N8/S285.lean`, not by the paper's route).  Next:
-  (288)–(299); see "Package (iv): how to continue" below.
+  (280) and (285) in `D/N8/S285.lean`, not by the paper's route), and from
+  five wires on (289), (293), (295)–(299) (`D/N8/S299.lean`).  Next: the
+  interface `eq299` (four wires needs (166), not yet in `Small`), then
+  (300)–(302), (305), (307)–(314), (290)–(292).
 * **(v) D.12–D.13** — `D/N13.lean` (interface, done): exports `eq315`–`eq317`,
   `eq333`, `eq334`, `eq335`–`eq340`, `eq342`, `eq344`–`eq352`.  Internal:
   (318)–(328) (cites (4-, 5-qubit) 214–248, 267, 268 via `eqNNN`).
@@ -194,9 +196,8 @@ editing the others; it may assume everything exported by the others (the
   `Decoding.lean` and preserves the semantics on every letter at `n = 3, 4`).
   **`lemma_8_7` proved** (`Lemma87Proof.lean`, `E/`), from the interface
   statements (274), (307), (309)–(311), (313), (336) and (353).  Lemma 8.8
-  (`Lemma88Proof.lean`, cases by rule): done (20)–(23), (25)–(30), (32)–(35),
-  (41), (42); open (24) (→ (358) with (81), (356) on the two targets),
-  (31), (36)–(40), (43)–(46).
+  (`Lemma88Proof.lean`, cases by rule): done (20)–(30), (32)–(35), (41),
+  (42); open (31), (36)–(40), (43)–(46).
 
 ## Package (iv): how to continue
 
