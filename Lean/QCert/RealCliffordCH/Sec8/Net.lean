@@ -1012,4 +1012,336 @@ theorem placeG_toTop {M m : ℕ} (g : Circ m) {ps : List ℕ} (hnd : ps.Nodup)
     simp only [dropW]; split_ifs <;> omega
   rwa [placeG_top g hnd' hlt (by simp [hm])] at h
 
+/-! ## Gates on given wires: where they act -/
+
+theorem gHi_pad (n : ℕ) : ∀ {k : ℕ} (g : Gen Gate k), gHi (Gen.pad n g) = gHi g
+  | _, .gate0 c => nomatch c
+  | _, .gate3 c => nomatch c
+  | _, .gate1 _ => rfl
+  | _, .gate2 _ => rfl
+  | _, .up g => by simp only [Gen.pad, gHi, gHi_pad n g]
+
+theorem lowW_pad {n k m : ℕ} (w : Circ k) (hk : k ≤ m) : LowW m (Circuit.pad n w) := by
+  intro x hx
+  simp only [Circuit.pad, FreeMonoid.toList_map, List.mem_map] at hx
+  obtain ⟨y, _, rfl⟩ := hx
+  rw [gHi_pad]; exact le_trans (gHi_le y) hk
+
+theorem lowW_shift {n m : ℕ} {w : Circ n} (h : LowW m w) : LowW (m + 1) (shift w) := by
+  intro x hx
+  simp only [Circuit.shift, FreeMonoid.toList_map, List.mem_map] at hx
+  obtain ⟨y, hy, rfl⟩ := hx
+  simp only [gHi]; have := h y hy; omega
+
+theorem highW_shift {n m : ℕ} {w : Circ n} (h : HighW m w) : HighW (m + 1) (shift w) := by
+  intro x hx
+  simp only [Circuit.shift, FreeMonoid.toList_map, List.mem_map] at hx
+  obtain ⟨y, hy, rfl⟩ := hx
+  simp only [gLo]; have := h y hy; omega
+
+theorem lowW_mul {n m : ℕ} {u v : Circ n} (hu : LowW m u) (hv : LowW m v) : LowW m (u * v) := by
+  intro g hg
+  simp only [FreeMonoid.toList_mul, List.mem_append] at hg
+  rcases hg with hg | hg
+  · exact hu g hg
+  · exact hv g hg
+
+theorem place1_wires : ∀ (N j : ℕ) (w : Circ 1), LowW (j + 1) (place1 N j w) ∧ HighW j (place1 N j w)
+  | N + 1, j + 1, w => by
+    obtain ⟨h1, h2⟩ := place1_wires N j w
+    exact ⟨lowW_shift h1, highW_shift h2⟩
+  | k + 1, 0, w => ⟨lowW_pad w le_rfl, fun _ _ => Nat.zero_le _⟩
+  | 0, 0, _ => ⟨fun x hx => by simp [place1] at hx, fun x hx => by simp [place1] at hx⟩
+  | 0, _ + 1, _ => ⟨fun x hx => by simp [place1] at hx, fun x hx => by simp [place1] at hx⟩
+
+theorem place2_wires : ∀ (N j : ℕ) (w : Circ 2), LowW (j + 2) (place2 N j w) ∧ HighW j (place2 N j w)
+  | N + 1, j + 1, w => by
+    obtain ⟨h1, h2⟩ := place2_wires N j w
+    exact ⟨lowW_shift h1, highW_shift h2⟩
+  | k + 2, 0, w => ⟨lowW_pad w le_rfl, fun _ _ => Nat.zero_le _⟩
+  | 0, 0, _ => ⟨fun x hx => by simp [place2] at hx, fun x hx => by simp [place2] at hx⟩
+  | 0, _ + 1, _ => ⟨fun x hx => by simp [place2] at hx, fun x hx => by simp [place2] at hx⟩
+  | 1, 0, _ => ⟨fun x hx => by simp [place2] at hx, fun x hx => by simp [place2] at hx⟩
+
+theorem place1_mul : ∀ (N j : ℕ) (a b : Circ 1), place1 N j (a * b) = place1 N j a * place1 N j b
+  | N + 1, j + 1, a, b => by
+    show shift (place1 N j (a * b)) = shift (place1 N j a) * shift (place1 N j b)
+    rw [place1_mul N j, map_mul]
+  | k + 1, 0, a, b => map_mul (Circuit.pad k) a b
+  | 0, 0, _, _ => rfl
+  | 0, _ + 1, _, _ => rfl
+
+theorem xAt_eq (N q : ℕ) : xAt N q = circW N [L.H q, L.Z q, L.H q] := by
+  simp only [xAt, x, drawn, circW, List.map, L.circ, List.reverse_cons, List.reverse_nil,
+    List.nil_append, List.cons_append, List.prod_cons, List.prod_nil, mul_one]
+  erw [place1_mul, place1_mul]
+
+theorem xAt_wires (N q : ℕ) : LowW (q + 1) (xAt N q) ∧ HighW q (xAt N q) :=
+  place1_wires N q x
+
+theorem swAt_wires (N j : ℕ) : LowW (j + 2) (swAt N j) ∧ HighW j (swAt N j) :=
+  place2_wires N j swap
+
+@[simp] theorem upLBy_H (j i : ℕ) : upLBy j (L.H i) = L.H (i + j) := by
+  induction j with
+  | zero => rfl
+  | succ j ih => simp only [upLBy, ih, upL]; rfl
+@[simp] theorem upLBy_Z (j i : ℕ) : upLBy j (L.Z i) = L.Z (i + j) := by
+  induction j with
+  | zero => rfl
+  | succ j ih => simp only [upLBy, ih, upL]; rfl
+@[simp] theorem upLBy_C (j i : ℕ) : upLBy j (L.C i) = L.C (i + j) := by
+  induction j with
+  | zero => rfl
+  | succ j ih => simp only [upLBy, ih, upL]; rfl
+@[simp] theorem upLBy_K (j i : ℕ) : upLBy j (L.K i) = L.K (i + j) := by
+  induction j with
+  | zero => rfl
+  | succ j ih => simp only [upLBy, ih, upL]; rfl
+
+/-! ## `X` through swaps -/
+
+/-- The table for `X` through a swap: (f2) and (f1). -/
+def xsT : Tbl := [([.H 1, .S 0], [.S 0, .H 0]), ([.Z 1, .S 0], [.S 0, .Z 0])]
+
+theorem xsT_ok : AllD 2 xsT := by
+  intro e he
+  simp only [xsT, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl
+  · have h := derivable_rule Rule.f2 0
+    simpa [circW, drawn, map_mul, L.circ, place2, place1] using h
+  · have h := derivable_rule Rule.f1 0
+    simpa [circW, drawn, map_mul, L.circ, place2, place1] using h
+
+theorem xs2 : Derivable (theory 2) (circW 2 [.H 1, .Z 1, .H 1, .S 0]) (circW 2 [.S 0, .H 0, .Z 0, .H 0]) :=
+  check_pure (N := 1) xsT_ok (ss := [.rw 2 0 false, .rw 1 1 false, .rw 0 0 false]) (by decide)
+    (by decide)
+
+/-- `X` on the upper wire of a swap comes out on the lower one. -/
+theorem x_sw_up (N j : ℕ) (hj : j + 2 ≤ N) :
+    Derivable (theory N) (drawn [xAt N (j + 1), swAt N j]) (drawn [swAt N j, xAt N j]) := by
+  have h := lift_word (K := 2) (by decide) xs2 j N hj
+  simp only [List.map, upLBy_H, upLBy_Z, upBy_S, Nat.zero_add] at h
+  rw [show 1 + j = j + 1 by omega] at h
+  rw [xAt_eq, xAt_eq, swAt_eq]
+  simpa [circW, drawn, mul_assoc] using h
+
+/-- Two inverse conjugations. -/
+theorem conj_mul {N : ℕ} {c a b : Circ N} (hc : Derivable (theory N) (c * c) 1) :
+    Derivable (theory N) (c * (a * b) * c) ((c * a * c) * (c * b * c)) := by
+  have : (c * a * c) * (c * b * c) = c * a * (c * c) * b * c := by simp only [mul_assoc]
+  rw [this]
+  have := dright c (dright b (dleft (c * a) hc))
+  simpa only [mul_one, mul_assoc] using this.symm
+
+theorem swsw (N j : ℕ) (hj : j + 2 ≤ N) : Derivable (theory N) (swAt N j * swAt N j) 1 := by
+  simpa [drawn] using sw_inv N j hj
+
+/-- Conjugating `X` by a swap. -/
+theorem x_conj (N j q : ℕ) (hj : j + 2 ≤ N) :
+    Derivable (theory N) (swAt N j * xAt N q * swAt N j) (xAt N (tau j q)) := by
+  have hs := swsw N j hj
+  -- from `drawn [X, s] ≈ drawn [s, X']`, i.e. `s X ≈ X' s`
+  have of_pass : ∀ q', Derivable (theory N) (swAt N j * xAt N q) (xAt N q' * swAt N j) →
+      Derivable (theory N) (swAt N j * xAt N q * swAt N j) (xAt N q') := by
+    intro q' h
+    have := dright (swAt N j) h
+    rw [mul_assoc (xAt N q')] at this
+    have h2 := dleft (xAt N q') hs
+    rw [mul_one] at h2
+    exact this.trans h2
+  by_cases h1 : q = j + 1
+  · subst h1
+    have : tau j (j + 1) = j := by simp [tau]
+    rw [this]
+    exact of_pass j (by simpa [drawn] using x_sw_up N j hj)
+  by_cases h2 : q = j
+  · subst h2
+    have : tau q q = q + 1 := by simp [tau]
+    rw [this]
+    refine of_pass (q + 1) ?_
+    -- `s X_q ≈ X_{q+1} s` from `s X_{q+1} ≈ X_q s` by conjugating with `s`
+    have h := (by simpa [drawn] using x_sw_up N q hj :
+      Derivable (theory N) (swAt N q * xAt N (q + 1)) (xAt N q * swAt N q))
+    have a1 := dright (swAt N q) (dleft (swAt N q) h)
+    have e1 : swAt N q * (swAt N q * xAt N (q + 1)) * swAt N q =
+        (swAt N q * swAt N q) * xAt N (q + 1) * swAt N q := by simp only [mul_assoc]
+    have e2 : swAt N q * (xAt N q * swAt N q) * swAt N q =
+        swAt N q * xAt N q * (swAt N q * swAt N q) := by simp only [mul_assoc]
+    rw [e1, e2] at a1
+    have b1 := dright (swAt N q) (dright (xAt N (q + 1)) hs)
+    have b2 := dleft (swAt N q * xAt N q) hs
+    rw [one_mul] at b1; rw [mul_one] at b2
+    exact b2.symm.trans (a1.symm.trans b1)
+  · have ht : tau j q = q := by unfold tau; split_ifs <;> omega
+    rw [ht]
+    refine of_pass q ?_
+    rcases Nat.lt_or_ge q j with h3 | h3
+    · exact comm_low_high (xAt N q) (swAt N j) (fun g hg => le_trans ((xAt_wires N q).1 g hg) h3)
+        (swAt_wires N j).2
+    · exact (comm_low_high (swAt N j) (xAt N q)
+        (fun g hg => le_trans ((swAt_wires N j).1 g hg) (by omega)) (xAt_wires N q).2).symm
+
+theorem drawn_cons {N : ℕ} (a : Circ N) (l : List (Circ N)) : drawn (a :: l) = drawn l * a := by
+  simp [drawn]
+
+/-- Conjugating a row of `X` gates by a swap. -/
+theorem xs_conj (N j : ℕ) (hj : j + 2 ≤ N) : ∀ ws : List ℕ,
+    Derivable (theory N) (swAt N j * drawn (ws.map (xAt N)) * swAt N j)
+      (drawn ((ws.map (tau j)).map (xAt N)))
+  | [] => by simpa [drawn] using swsw N j hj
+  | q :: ws => by
+    simp only [List.map_cons, drawn_cons]
+    exact (conj_mul (swsw N j hj)).trans (dmul (xs_conj N j hj ws) (x_conj N j q hj))
+
+theorem colourW_eq (N : ℕ) (ws : List ℕ) (G : Circ N) :
+    colourW N ws G = drawn (ws.map (xAt N)) * G * drawn (ws.map (xAt N)) := by
+  simp [colourW, drawn, List.reverse_append, List.prod_append, mul_assoc]
+
+/-- Conjugating a coloured gate by a swap. -/
+theorem colourW_conj (N j : ℕ) (hj : j + 2 ≤ N) (ws : List ℕ) (G : Circ N) :
+    Derivable (theory N) (swAt N j * colourW N ws G * swAt N j)
+      (colourW N (ws.map (tau j)) (swAt N j * G * swAt N j)) := by
+  rw [colourW_eq, colourW_eq]
+  have hs := swsw N j hj
+  have h1 := conj_mul (a := drawn (ws.map (xAt N)) * G) (b := drawn (ws.map (xAt N))) hs
+  have h2 := conj_mul (a := drawn (ws.map (xAt N))) (b := G) hs
+  exact h1.trans (dmul (h2.trans (dmul (xs_conj N j hj ws) (Derivable.refl _)))
+    (xs_conj N j hj ws))
+
+/-! ## Naturality of `mc` -/
+
+/-- A strictly increasing list is determined by its elements. -/
+theorem eq_of_lt_mem : ∀ {l₁ l₂ : List ℕ}, l₁.Pairwise (· < ·) → l₂.Pairwise (· < ·) →
+    (∀ x, x ∈ l₁ ↔ x ∈ l₂) → l₁ = l₂
+  | [], [], _, _, _ => rfl
+  | [], b :: _, _, _, h => absurd ((h b).2 (by simp)) (by simp)
+  | a :: _, [], _, _, h => absurd ((h a).1 (by simp)) (by simp)
+  | a :: l₁, b :: l₂, h₁, h₂, h => by
+    rw [List.pairwise_cons] at h₁ h₂
+    have hab : a = b := by
+      have ha := (h a).1 (by simp)
+      have hb := (h b).2 (by simp)
+      simp only [List.mem_cons] at ha hb
+      rcases ha with ha | ha
+      · exact ha
+      rcases hb with hb | hb
+      · exact hb.symm
+      have := h₂.1 a ha; have := h₁.1 b hb; omega
+    subst hab
+    rw [eq_of_lt_mem h₁.2 h₂.2 (fun x => ?_)]
+    constructor
+    · intro hx
+      have hx' := (h x).1 (by simp [hx])
+      have : a < x := h₁.1 x hx
+      simp only [List.mem_cons] at hx'
+      rcases hx' with rfl | hx'
+      · omega
+      · exact hx'
+    · intro hx
+      have hx' := (h x).2 (by simp [hx])
+      have : a < x := h₂.1 x hx
+      simp only [List.mem_cons] at hx'
+      rcases hx' with rfl | hx'
+      · omega
+      · exact hx'
+
+theorem tau_lt {j N q : ℕ} (hj : j + 2 ≤ N) (hq : q < N) : tau j q < N := by
+  unfold tau; split_ifs <;> omega
+
+/-- Filtering `range N` by a predicate read through the transposition. -/
+theorem filter_tau {N j : ℕ} (hj : j + 2 ≤ N) (P : ℕ → Bool) (hP : ¬ (P j = true ∧ P (j + 1) = true)) :
+    (List.range N).filter (fun i => P (tau j i)) = ((List.range N).filter P).map (tau j) := by
+  have hr : (List.range N).Pairwise (· < ·) := List.pairwise_lt_range
+  refine eq_of_lt_mem (hr.filter _) ?_ ?_
+  · rw [List.pairwise_map]
+    refine List.Pairwise.imp_of_mem (fun {a b} ha hb hab => ?_) (hr.filter P)
+    simp only [List.mem_filter] at ha hb
+    unfold tau
+    split_ifs <;> first | omega | (exfalso; apply hP; constructor <;> simp_all)
+  · intro q
+    simp only [List.mem_filter, List.mem_range, List.mem_map]
+    constructor
+    · rintro ⟨hq, hP'⟩
+      exact ⟨tau j q, ⟨tau_lt hj hq, hP'⟩, tau_tau j q⟩
+    · rintro ⟨y, ⟨hy, hPy⟩, rfl⟩
+      exact ⟨tau_lt hj hy, by rw [tau_tau]; exact hPy⟩
+
+theorem contains_map_tau (j i : ℕ) (tg : List ℕ) :
+    (tg.map (tau j)).contains i = tg.contains (tau j i) := by
+  rw [Bool.eq_iff_iff]
+  simp only [List.contains_iff_mem, List.mem_map]
+  constructor
+  · rintro ⟨y, hy, rfl⟩; rwa [tau_tau]
+  · intro h; exact ⟨tau j i, h, tau_tau j i⟩
+
+/-- The number of special wires of a kind. -/
+def kindSp : Kind → ℕ
+  | .box => 1 | .zx => 1 | .xz => 1 | .hg => 2
+
+theorem canonAt_swap {N : ℕ} (K : Kind) (k : ℕ) {ps : List ℕ} (hnd : ps.Nodup)
+    (hps : ∀ p ∈ ps, p < N) (hlen : ps.length = kindSp K + k) (j : ℕ) (hj : j + 2 ≤ N) :
+    Derivable (theory N) (drawn [swAt N j, canonAt N K k ps, swAt N j])
+      (canonAt N K k (ps.map (tau j))) := by
+  cases K with
+  | box => exact placeG_swap (box k) hnd hps (by simp [kindSp] at hlen; omega) j hj
+  | zx => exact placeG_swap (zx k) hnd hps (by simp [kindSp] at hlen; omega) j hj
+  | xz => exact placeG_swap (xz k) hnd hps (by simp [kindSp] at hlen; omega) j hj
+  | hg => exact placeG_swap (mch k) hnd hps (by simp [kindSp] at hlen; omega) j hj
+
+theorem ctrlWires_nodup (N : ℕ) (tg : List ℕ) (c : ℕ → Option Bool) (htg : tg.Nodup) :
+    (tg ++ ctrlWires N tg c).Nodup := by
+  rw [List.nodup_append]
+  refine ⟨htg, (List.nodup_range).filter _, fun a ha b hb hab => ?_⟩
+  subst hab
+  simp only [ctrlWires, List.mem_filter, Bool.and_eq_true, Bool.not_eq_true'] at hb
+  have h3 : ¬ tg.contains a = true := by rw [hb.2.2]; decide
+  exact h3 (List.contains_iff_mem.2 ha)
+
+/-- Naturality of `mc` for one swap that does not exchange two controls. -/
+theorem mc_swap (N j : ℕ) (hj : j + 2 ≤ N) (K : Kind) (tg : List ℕ) (c : ℕ → Option Bool)
+    (htg : tg.length = kindSp K) (hnd : tg.Nodup) (htgN : ∀ t ∈ tg, t < N)
+    (hnc : ¬ (j ∈ ctrlWires N tg c ∧ j + 1 ∈ ctrlWires N tg c)) :
+    Derivable (theory N) (drawn [swAt N j, mc N K tg c, swAt N j])
+      (mc N K (tg.map (tau j)) (c ∘ tau j)) := by
+  have hcw : ctrlWires N (tg.map (tau j)) (c ∘ tau j) = (ctrlWires N tg c).map (tau j) := by
+    unfold ctrlWires
+    have := filter_tau hj (fun i => (c i).isSome && !(tg.contains i)) (by
+      intro ⟨h1, h2⟩; apply hnc
+      simp only [ctrlWires, List.mem_filter, List.mem_range]
+      exact ⟨⟨by omega, h1⟩, ⟨by omega, h2⟩⟩)
+    rw [← this]
+    congr 1; funext i
+    simp only [Function.comp, contains_map_tau]
+  have hww : whiteWires N (tg.map (tau j)) (c ∘ tau j) = (whiteWires N tg c).map (tau j) := by
+    unfold whiteWires
+    have := filter_tau hj (fun i => c i == some false && !(tg.contains i)) (by
+      intro ⟨h1, h2⟩; apply hnc
+      simp only [ctrlWires, List.mem_filter, List.mem_range, Bool.and_eq_true, beq_iff_eq] at h1 h2 ⊢
+      refine ⟨⟨by omega, by simp [h1.1], h1.2⟩, ⟨by omega, by simp [h2.1], h2.2⟩⟩)
+    rw [← this]
+    congr 1; funext i
+    simp only [Function.comp, contains_map_tau]
+  unfold mc
+  rw [hcw, hww, List.length_map]
+  have hs := swsw N j hj
+  have e : drawn [swAt N j, colourW N (whiteWires N tg c)
+      (canonAt N K (ctrlWires N tg c).length (tg ++ ctrlWires N tg c)), swAt N j] =
+      swAt N j * colourW N (whiteWires N tg c)
+        (canonAt N K (ctrlWires N tg c).length (tg ++ ctrlWires N tg c)) * swAt N j := by
+    simp [drawn, mul_assoc]
+  rw [e]
+  refine (colourW_conj N j hj _ _).trans ?_
+  rw [colourW_eq, colourW_eq]
+  refine dright _ (dleft _ ?_)
+  have h := canonAt_swap K (ctrlWires N tg c).length (ctrlWires_nodup N tg c hnd)
+    (fun p hp => by
+      rcases List.mem_append.1 hp with hp | hp
+      · exact htgN p hp
+      · simp only [ctrlWires, List.mem_filter, List.mem_range] at hp; exact hp.1)
+    (by simp [htg]) j hj
+  simp only [drawn, List.reverse_cons, List.reverse_nil, List.nil_append, List.cons_append,
+    List.prod_cons, List.prod_nil, mul_one, List.map_append] at h
+  simpa only [mul_assoc, List.map_append] using h
+
 end QCert.RealCliffordCH.Sec8.Net
