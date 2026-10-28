@@ -16,7 +16,7 @@ bits, and the natural basis of its group of values is the monomials
 monomial of degree `k` matters only modulo `8 / 2^{k-1}`: degree `≥ 4`
 terms vanish, which is what `R₁₃` says (it is used as: the gadget of four
 wires is a product of smaller ones), and `R₈`, `R₉` say that `m S` has order
-dividing `4`, `2` for `|S| = 2, 3` (`m_two`, `m_three`).
+dividing `4`, `2` for `|S| = 2, 3` (`four_mon_two`, `two_mon_three`).
 
 **Uniqueness.**  Every element of `A` is `k • ω + ∑_{1 ≤ |S| ≤ 3} κ_S • m S`
 (`canon`), since each `PU U` is `∑_{S ⊆ U} m S` (Möbius inversion,

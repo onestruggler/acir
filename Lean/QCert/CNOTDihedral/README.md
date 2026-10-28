@@ -33,30 +33,48 @@ SWAPs (`CX₂₀`, `U₀₂`, `U₁₃`, `U₀₃`, `V₀₂₃`, `V₀₁₃`).
 
 ## What is proved
 
+Everything: `presentation n` holds for every `n` with no `sorry`.
+
 * **Soundness** (Proposition 3.6), `Soundness.lean`: each relation is decided
   on *phase-affine pairs* `|x⟩ ↦ ω^{p(x)} |f(x)⟩` (`PhaseAffine.lean`; the
   semantics of Definition 3.5), which are proved to give the matrix semantics
-  (`sem_eq_toOp`).  The four-wire relation R₁₃ checks in seconds (the generic
-  matrix evaluation needed more than 5 GB).
-* **Grouplike** (`Theorem.lean`).
-* **The matrix determines the pair** (`PhaseAffine.pa_eq_of_sem`): `toOp`
-  is injective because `ω` is a primitive eighth root of unity, so circuits
-  with the same matrix have the same phase polynomial and affine map, the
-  semantic starting point of Proposition 6.4.
+  (`sem_eq_toOp`).
+* **Grouplike** (`Calc.lean`).
+* **The matrix determines the pair** (`PhaseAffine.pa_eq_of_sem`).
+* **Completeness** (Propositions 5.5 and 6.4), `Complete.lean`:
+  `complete_pa : pa n w = pa n v → Eqv n w v` on every number of wires.
+
+## The proof of completeness
+
+The route differs from the paper's (which derives the 25 commutations of
+Figure 2 and cites Lafont for affine circuits); it works in the group `Q n`
+of circuits modulo the theory and needs only a handful of identities on two
+and three wires, each derived by hand from R₁–R₁₃ in a few lines.
+
+| file | content |
+|---|---|
+| `Calc.lean` | `Q n` as a group, `sh` (one wire up), gates on given wires `qX i`, `qT i`, `qCX i`, `qSW i`, `qω`; gates on disjoint wires commute |
+| `SemQ.lean` | the phase-affine pair `paQ` of a class; the pairs of the gates |
+| `Perm.lean` | swap words; normal form `sh u * rho k` (Coxeter relations); a swap word fixing wires `0, 1` is two wires up; placement of elements of the bottom wires is independent of the swap word |
+| `Place.lean` | `cc a b`, `CNOT` on any two wires; conjugation by swap words; the relations of `CNOT`s on three wires (common control/target, commutators) from one instance each (R₄, R₅, R₆); R₂, R₃, R₁₂ placed |
+| `Fans.lean` | products of commuting involutions; fan-out `fo`, fan-in `fi`; the linear subgroup `Lin` |
+| `Linear.lean` | **linear completeness** (`lin_complete`), by induction on the width: every linear element is `sh h * fo c * R r` (`lin_nf`; `R r` a row representative, eleven closure cases `R_mul_gen`), unique by its output row and column |
+| `Gadget.lean` | parity gadgets `P ℓ = (R ℓ)⁻¹ T₀ R ℓ` (phase `ω^{ℓ·x}`): linear conjugation (`conj_P`), commutation (`P_comm`, from `T₀U₀₁ = U₀₁T₀`, which follows from R₅, R₁₂ and the swap), `X` conjugation (R₁₁), and R₈, R₉, R₁₃ as relations between gadgets |
+| `Diagonal.lean` | **diagonal completeness** (`diag_complete`): the gadgets of at most three wires generate a commutative subgroup `A` closed under the gates (R₁₃ for the four-wire gadget); Möbius products `m S` have phase `(-2)^{|S|-1} x_S`, order dividing `8, 4, 2` (R₇, R₈, R₉); every element is `k ω + Σ κ_S m S`, and the phase determines it |
+| `Complete.lean` | every circuit is `Λ * Xc b * d` (`nf_mk`); its pair `x ↦ ω^{p_d(x)} |Λ(x ⊕ b)⟩` determines `Λ`, `b`, `d` (`nf_unique`) |
+
+`gen/` holds the numerical checks run before the Lean proofs were written
+(see `gen/README.md`).
 
 ## Remaining `sorry`
 
-| Lean | Paper |
-|---|---|
-| `Theorem.presentation`, field `complete` | Proposition 5.5 (every circuit has a normal form: Lemma 5.1, the 25 commutations of Figure 2; Lemmas 5.2, 5.3, diagonal normal forms; Lemma 5.4, Lafont's affine normal forms) and Proposition 6.4 (uniqueness: Lemmas 6.1–6.3) |
-
-The phase-affine semantics is the natural setting for the uniqueness half
-(Proposition 6.4 compares phase polynomials and affine maps); the existence
-half needs derivations the paper does not give ("a tedious but
-straightforward exercise") and Lafont's normal forms for affine circuits.
+None.
 
 ## Notes on the source
 
 * Figure 1's caption says "R₁₁ through R₁₂ are commutation relations";
   Definition 3.3 (and the figure) has R₁₁–R₁₃.
 * All relations hold exactly for the matrices of Definition 3.1 (Lean proof).
+* Lemma 5.4 relies on Lafont's normal forms for affine circuits, which the
+  paper cites without proof; here linear completeness is proved
+  (`Linear.lean`).
