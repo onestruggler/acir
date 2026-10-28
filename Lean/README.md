@@ -43,17 +43,17 @@ main result) and a `README.md` listing what is proved and every remaining
 | --- | --- | --- | --- |
 | Greylyn [2014] | U_n(ℤ[1/√2,i]), n ≤ 4 | `QCert/Greylyn` | **proved** (Theorem 22, every n ≤ 4; no `sorry`) |
 | Bian, Selinger [2021] | U_n(ℤ[1/2,i]) | `QCert/BianSelingerUn` | **proved** (Theorem 3.1, every n; no `sorry`) |
-| Li, Ross, Selinger [2021] | O_n(ℤ[1/2]), L_n | `QCert/LiRossSelinger` | in progress |
-| Fang, Heunen, Kaarsgaard [2026] | O_n(ℤ[1/√2]) | `QCert/HadamardPi` | in progress |
-| Clément [2019] | O_n(ℤ[1/√2]) | `QCert/Clement2019` | in progress |
+| Li, Ross, Selinger [2021] | O_n(ℤ[1/2]), L_n | `QCert/LiRossSelinger` | soundness, generation, L_n from O_n proved; completeness: two Main Lemma cases open |
+| Fang, Heunen, Kaarsgaard [2026] | O_n(ℤ[1/√2]) | `QCert/HadamardPi` | all but Main Case 9 (2)(b) with four odd entries (`case9_four`, Clément's Case 3.4) |
+| Clément [2019] | O_n(ℤ[1/√2]) | `QCert/Clement2019` | relations proved equivalent to Figure 6 syntactically; complete through Hadamard-Π (only `case9_four` open) |
 | Selinger [2015] | Clifford | `QCert/SelingerClifford` | **proved** (sub-presentation at every n; no `sorry`) |
-| Bian, Li et al. [2026] | Clifford, odd prime p | `QCert/QuditClifford` | in progress |
-| Makary, Ross, Selinger [2021] | real stabilizer | `QCert/RealStabilizer` | in progress |
+| Bian, Li et al. [2026] | Clifford, odd prime p | `QCert/QuditClifford` | soundness proved (with Gauss's sign theorem); completeness in progress |
+| Makary, Ross, Selinger [2021] | real stabilizer | `QCert/RealStabilizer` | soundness proved; completeness in progress |
 | Amy, Chen, Ross [2018] | CNOT-dihedral | `QCert/CNOTDihedral` | **proved** (sub-presentation at every n; no `sorry`) |
 | Blake [2026] | phase-affine, prime d | `QCert/PhaseAffine` | **proved** (Theorems 1 and 2 at all four levels; no `sorry`) |
 | Bian, Selinger [2023] | two-qubit Clifford+T | `QCert/CliffordT2` | **proved** (Theorem 2.1, sub-presentation in U₄(ℤ[1/√2,i]); no `sorry`) |
-| Bian, Selinger [2023] | three-qubit Clifford+CS | `QCert/CliffordCS3` | in progress |
-| Clément [2026] | real Clifford+CH | `QCert/RealCliffordCH` | in progress |
-| Amy, Ross, Wesley [2024] | three-qubit Toffoli–Hadamard | `QCert/ToffoliHadamard` | in progress |
-| Li et al. [2025] | qutrit Clifford | `QCert/QutritClifford` | in progress |
-| Blake [2026] | six fragments, minimality | `QCert/Minimality` | in progress |
+| Bian, Selinger [2023] | three-qubit Clifford+CS | `QCert/CliffordCS3` | all but the Reidemeister–Schreier coset data (`rsData`, the authors' Steps 1–8), deferred |
+| Clément [2026] | real Clifford+CH | `QCert/RealCliffordCH` | soundness, widths 0–2 (through Hadamard-Π), encoding semantics proved; Theorem 4.10, Lemmas 8.7, 8.8 in progress |
+| Amy, Ross, Wesley [2024] | three-qubit Toffoli–Hadamard | `QCert/ToffoliHadamard` | all but Li–Ross–Selinger's completeness at n = 8; (r_K) proved independent |
+| Li et al. [2025] | qutrit Clifford | `QCert/QutritClifford` | soundness, Prop. 3.9, Cor. 3.10, generation proved; completeness in progress |
+| Blake [2026] | six fragments, minimality | `QCert/Minimality` | Theorem 37 proved; Theorem 22: CNOT-dihedral proved, other transfers in progress |
