@@ -122,10 +122,17 @@ editing the others; it may assume everything exported by the others (the
 `sorry`s are listed in the README).
 
 * **(i) D.2 and `n = 3`** — `D/W3*.lean`: the 3-qubit equations (117)–(147)
-  at width 3 from Figure 4 and two-qubit completeness, via a concrete-width
-  rewriting engine (letters = placed gates; steps = table rewrites up to
-  commutation of disjoint gates, and `shift`/`padTop` window steps decided
-  by `Sim.check`).  Exports the `m = 0` cases of `eqNNN` for D.2.
+  at width 3 from Figure 4 and two-qubit completeness, via the engine
+  `EngineN.lean` (done, tested in `EngineTest.lean`): words of letters
+  `L` (`H j`, `Z j`, `C j` = CZ, `K j` = CH with `H` on wire `j`, `S j` =
+  swap, on `N + 1` wires, drawn order, `circW`); steps `rw i k dir` (table
+  equation `k`, `AllD`), `sw i` (exchange of disjoint letters,
+  `comm_disj`), `sem i len r` (Lemma 5.1 on a window avoiding wire 0 or the
+  top wire, decided by `Fast.check` one wire down); `check_sound` turns a
+  run decided by `decide +kernel` into a derivation, given `IH (N + 1)`.
+  On three wires the table needs only the three-wire rules (12)–(18),
+  (f3), (f4) and the definition (8) of the swap; every one- and two-wire
+  rule is a `sem` step.  Exports the `m = 0` cases of `eqNNN` for D.2.
 * **(ii) D.3 and `n = 4`** — `D/W4*.lean`: (150)–(248) at width 4 from
   completeness on three qubits.  Exports the `m = 0` cases for D.3.
 * **(iii) D.4 and `n = 5`** — `D/W5*.lean`: (249)–(268).  Exports the
@@ -149,6 +156,7 @@ editing the others; it may assume everything exported by the others (the
 
 ## Status
 
-* Done: `Fast.lean` (the fast checker), `Weak.lean` (weakening, semantic steps, window step), `MC.lean`
+* Done: `EngineN.lean` (the concrete-width engine), `Fast.lean` (the fast checker), `Weak.lean` (weakening, semantic steps, window step), `MC.lean`
   (conventions), `D/N8.lean`, `D/N13.lean` (interfaces, statements only).
-* Next: the concrete-width engine and the figure parser (package (i)).
+* Next: the figure parser (prototype in scratch `r87/figparse.py`:
+  wires grouped into diagrams by the `=` signs they surround), then D.2.
