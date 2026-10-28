@@ -267,12 +267,10 @@ in `gen/figures.json` and `gen/derivations.json`, the derivations found in
 
 The other completeness statements have no `sorry` of this folder.
 `clifford_complete`, `realClifford_complete`, `cliffordT_complete`,
-`cnotDihedral_complete` and the CliffCS₂ widths `0`, `1`
+`cnotDihedral_complete`, `qutritClifford_complete` and the CliffCS₂ widths `0`, `1`
 (`cliffordCS_complete₀₁_of_source` with `QCert.BianSelingerUn.presentation`)
 rest on source theorems that are proved: `#print axioms` gives `propext`,
-`Classical.choice`, `Quot.sound` only.  `qutritClifford_complete` uses
-`QCert.QutritClifford.complete`, which still has a `sorry` in that folder;
-the transfer itself, `qutritClifford_complete_of_source`, has none.
+`Classical.choice`, `Quot.sound` only.
 
 ## Building
 

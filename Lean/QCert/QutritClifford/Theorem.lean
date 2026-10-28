@@ -18,9 +18,9 @@ for Multi-Qutrit Clifford Circuits* (QPL 2025, arXiv:2508.14670).
   (Proposition 3.9 and Corollary B.3);
 * `card_cliffordGroup` (Corollary 3.10): `|𝒞ₙ| = 6 ∏ₖ₌₁ⁿ 3 (9ᵏ - 1) 9ᵏ`.
 
-The remaining `sorry`s are listed in `README.md`.
 -/
 import QCert.QutritClifford.Count
+import QCert.QutritClifford.Stage2
 
 namespace QCert.QutritClifford
 
@@ -32,13 +32,17 @@ open Matrix
 qutrit Clifford circuits: two `n`-qutrit circuits with the same operator
 are equal by the rules.
 
-The paper's proof: every circuit rewrites to a normal form (Proposition 4.3 and Lemma 4.2,
-by the 380 box relations of Appendix C, which follow from the eighteen
-rules by the supplement), and normal forms with the same operator coincide
-(Proposition 3.9). -/
+The paper's proof rewrites every circuit to a normal form by the 380 box
+relations of Appendix C.  Here the proof is a stabiliser chain by induction
+on the width (`complete_all`, `Stage2.lean`): coset certificates on one and
+two wires (`complete_one`, `complete_two`), and on `n + 1 ≥ 3` wires the
+two Schreier stages through the images of `Z₀` and `X₀`, whose conditions
+reduce to 311 equations on at most three wires derived from (C15)-(C18)
+with free two-wire segments (`Facts.lean`), and completeness on `n` wires
+for what is left above wire `0`. -/
 theorem complete {n : ℕ} {w v : Circ n} (h : sem n w = sem n v) :
-    Derives (Padded Rule) n w v := by
-  sorry
+    Derives (Padded Rule) n w v :=
+  complete_all n w v h
 
 /-- The rules of Figure 1, with the structural rules, present the group of
 operators of `n`-qutrit circuits: they are sound, complete, and every

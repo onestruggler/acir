@@ -96,11 +96,11 @@ def dedOk (c i : ℕ) : Bool :=
   | (_, e, d, side, j) =>
     match C.eqs[e]? with
     | none => false
-    | some (lc, rc, at) =>
+    | some (lc, rc, ac) =>
       let l := decW lc
       let r := decW rc
       let w := if side == 0 then l else r
-      (at == 0 || at == d + 1) && decide (d < C.dl.length) &&
+      (ac == 0 || ac == d + 1) && decide (d < C.dl.length) &&
       C.walk d (w.take j) == c && w[j]? == some (C.letter i) &&
       C.walk d l == C.walk d r &&
       C.below o (if side == 0 then j else l.length + 1) 0 d l &&
@@ -160,18 +160,18 @@ theorem path (hC : C.Ok) : ∀ (w : List Lt) (d : ℕ), d < C.dl.length → (∀
 
 theorem walk_append : ∀ (d : ℕ) (a b : List Lt), C.walk d (a ++ b) = C.walk (C.walk d a) b
   | _, [], _ => rfl
-  | d, x :: a, b => walk_append _ a b
+  | _, _ :: a, b => walk_append _ a b
 
 theorem walk_lt (hC : C.Ok) : ∀ (d : ℕ) (w : List Lt), d < C.dl.length → (∀ x ∈ w, x ∈ C.letters) →
     C.walk d w < C.dl.length
   | _, [], hd, _ => hd
-  | d, x :: w, hd, hw =>
+  | _, x :: w, hd, hw =>
     walk_lt hC _ w (hC.dl_lt _ _ hd (idx_lt (hw x List.mem_cons_self)))
       (fun y hy => hw y (List.mem_cons_of_mem _ hy))
 
 theorem idx_letter (hC : C.Ok) {i : ℕ} (hi : i < C.letters.length) : C.idx (C.letter i) = i := by
   simp only [idx, letter, List.getD_eq_getElem?_getD, List.getElem?_eq_getElem hi, Option.getD_some]
-  exact List.idxOf_getElem hC.nodup i hi
+  exact hC.nodup.idxOf_getElem i hi
 
 theorem below_spec (o skip : ℕ) : ∀ (t0 d : ℕ) (w : List Lt), C.below o skip t0 d w = true →
     ∀ t < w.length, t0 + t ≠ skip → ∀ x, w[t]? = some x →
@@ -209,13 +209,13 @@ theorem scan (hC : C.Ok) {l r : List Lt} {d j c i : ℕ} (hEq : C.EqV l r d) (hd
   have hjl : j < l.length := (List.getElem?_eq_some_iff.1 hj).1
   set x := C.letter i
   have hsplit : l = l.take j ++ x :: l.drop (j + 1) := by
-    rw [← List.getElem_cons_drop_succ_eq_drop hjl, List.take_append_drop]
-    · exact (List.getElem?_eq_some_iff.1 hj).2 ▸ rfl
+    have hx : l[j] = x := (List.getElem?_eq_some_iff.1 hj).2
+    rw [← hx, List.getElem_cons_drop hjl, List.take_append_drop]
   -- the cosets
   have hcl : c < C.dl.length := hc ▸ walk_lt hC d _ hd (fun y hy => hl y (List.mem_of_mem_take hy))
   set c' := C.del c i
   have hc' : C.walk d (l.take (j + 1)) = c' := by
-    rw [List.take_succ, walk_append, hc, List.getElem?_eq_getElem hjl]
+    rw [List.take_add_one, walk_append, hc, List.getElem?_eq_getElem hjl]
     simp only [Option.toList_some, walk]
     rw [show l[j] = x from by simpa [hjl] using hj, idx_letter hC hi]
   have hl1 : ∀ y ∈ l.take j, y ∈ C.letters := fun y hy => hl y (List.mem_of_mem_take hy)
@@ -224,7 +224,7 @@ theorem scan (hC : C.Ok) {l r : List Lt} {d j c i : ℕ} (hEq : C.EqV l r d) (hd
   obtain ⟨μ1, hμ1, h1⟩ := path hC (l.take j) d hd hl1 (fun t ht y hy => by
     have htj : t < j := by simp at ht; omega
     have := hvl t (by omega) (by omega) y (by rw [← hy, List.getElem?_take_of_lt htj])
-    rwa [List.take_take, min_eq_left (by omega)] at this)
+    rwa [List.take_take, Nat.min_eq_left (by omega : t ≤ j)])
   rw [hc] at h1
   obtain ⟨μ2, hμ2, h2⟩ := path hC (l.drop (j + 1)) c' (hC.dl_lt _ _ hcl hi) hl2 (fun t ht y hy => by
     have := hvl (j + 1 + t) (by simp at ht; omega) (by omega) y (by rw [← hy, List.getElem?_drop])
@@ -239,7 +239,9 @@ theorem scan (hC : C.Ok) {l r : List Lt} {d j c i : ℕ} (hEq : C.EqV l r d) (hd
   set e := C.repW (C.walk d r)
   have A : E C.k (μ1 ++ (C.repW c ++ [x]) ++ l.drop (j + 1)) (C.repW d ++ l) := by
     have := h1.symm.append (E.refl (x :: l.drop (j + 1)))
-    rw [hsplit]; simpa [List.append_assoc] using this
+    have e : C.repW d ++ l = C.repW d ++ l.take j ++ x :: l.drop (j + 1) := by
+      rw [List.append_assoc]; exact congrArg _ hsplit
+    rw [e]; simpa [List.append_assoc] using this
   have B : E C.k (C.repW d ++ l) (μ0 ++ μ3 ++ e) := by
     refine h0.trans ?_
     have := (E.refl μ0).append h3
@@ -301,13 +303,13 @@ theorem edges (hC : C.Ok) : ∀ n c i, c < C.dl.length → i < C.letters.length 
     refine ⟨[C.letter i], fun y hy => by simp at hy; subst hy; exact hloc, ?_⟩
     rw [h0, hr0]; exact E.refl _
   · -- an equation
-    rename_i e d side j _ _
+    rename_i e d side j _ _ _
     split at hd
     · exact nomatch hd
-    · rename_i lc rc at he
+    · rename_i lc rc ac he
       simp only [Bool.and_eq_true, Bool.or_eq_true, beq_iff_eq, decide_eq_true_eq] at hd
       obtain ⟨⟨⟨⟨⟨⟨hat, hdl⟩, hwc⟩, hwj⟩, hend⟩, hbl⟩, hbr⟩ := hd
-      have hmem : (lc, rc, at) ∈ C.eqs := List.mem_of_getElem? he
+      have hmem : (lc, rc, ac) ∈ C.eqs := List.mem_of_getElem? he
       have hEq := hC.eqs_valid _ hmem d (by rcases hat with h | h <;> simp [h])
       have hletl := fun x hx => hC.eqs_letters _ hmem x (List.mem_append_left _ hx)
       have hletr := fun x hx => hC.eqs_letters _ hmem x (List.mem_append_right _ hx)
@@ -327,7 +329,7 @@ theorem edges (hC : C.Ok) : ∀ n c i, c < C.dl.length → i < C.letters.length 
           (fun t ht htj x hx => edgeOf _ hletl j hbl t ht htj x hx)
           (fun t ht x hx => edgeOf _ hletr _ hbr t ht (by omega) x hx)
       | succ s =>
-        simp only [show (s + 1 == 0) = false from rfl, Bool.false_eq_true, ite_false] at hwc hwj hbl hbr
+        simp only [Nat.add_one_ne_zero, if_false] at hwc hwj hbl hbr
         exact scan hC (hEq.swap hC) hdl hletr hletl hi hwj hwc hend.symm
           (fun t ht htj x hx => edgeOf _ hletr j hbr t ht htj x hx)
           (fun t ht x hx => edgeOf _ hletl _ hbl t ht (by omega) x hx)

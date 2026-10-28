@@ -34,6 +34,7 @@ def write_lib(name, Name, E, k, base, fo, sound, hyp, doc, script, chunk=20, out
     pre = 'QCert.QutritClifford.'
     files = {}
     data = HDR % (doc + '\n\nThe data.', script, imports(pre + 'Run'))
+    data += 'set_option maxRecDepth 100000 in\n'
     data += 'def %sD : List (Nat × Nat × List (Nat × Nat × Nat × Nat × Nat)) := [\n' % name
     data += emit.lib_lines(lem) + ']\n\n'
     data += 'theorem %s_upto_0 : ∀ i < 0, libLemOk %s %s %sD i = true := upto_zero\n\n' % (

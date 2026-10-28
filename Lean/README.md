@@ -55,5 +55,5 @@ main result) and a `README.md` listing what is proved and every remaining
 | Bian, Selinger [2023] | three-qubit Clifford+CS | `QCert/CliffordCS3` | all but the Reidemeister–Schreier coset data (`rsData`, the authors' Steps 1–8), deferred |
 | Clément [2026] | real Clifford+CH | `QCert/RealCliffordCH` | soundness, widths 0–2 (through Hadamard-Π), encoding semantics proved; Theorem 4.10, Lemmas 8.7, 8.8 in progress |
 | Amy, Ross, Wesley [2024] | three-qubit Toffoli–Hadamard | `QCert/ToffoliHadamard` | **proved** (Theorem 5.2 with (r_K) restored, Theorem 6.3; no `sorry`); (r_K) proved independent |
-| Li et al. [2025] | qutrit Clifford | `QCert/QutritClifford` | soundness, Prop. 3.9, Cor. 3.10, generation proved; completeness in progress |
-| Blake [2026] | six fragments, minimality | `QCert/Minimality` | Theorem 37 proved; Theorem 22 proved for Clifford, real Clifford, CNOT-dihedral and Clifford+T (up to 2 wires); qutrit through the qutrit row, Clifford+CS at 2–3 wires in progress |
+| Li et al. [2025] | qutrit Clifford | `QCert/QutritClifford` | **proved** (Theorem 4.4 at every width, by a stabiliser chain; Proposition 3.9, Corollary 3.10; no `sorry`) |
+| Blake [2026] | six fragments, minimality | `QCert/Minimality` | Theorem 37 proved; Theorem 22 proved for Clifford, real Clifford, CNOT-dihedral and Clifford+T (up to 2 wires) and qutrit Clifford; Clifford+CS at 2–3 wires in progress |
