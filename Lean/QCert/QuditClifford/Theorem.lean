@@ -47,7 +47,7 @@ theorem semG_injective (g : ZMod p) [OddGen p g] (n : ℕ) :
   set x := mk p g n w * (mk p g n v)⁻¹ with hx
   have hσ : σG n x = 1 := by
     have e : σG n (mk p g n w) = σG n (mk p g n v) := by
-      rw [σG_mk, σG_mk, sigma_of_sem p h]
+      rw [σG_mk, σG_mk, sigma_of_sem p (OddGen.hp2 g) h]
     rw [hx, map_mul, e, ← map_mul, mul_inv_cancel, map_one]
   have hs : semG n x = 1 := by
     rw [hx, map_mul, semG_mk, h, ← semG_mk (g := g), ← map_mul, mul_inv_cancel, map_one]

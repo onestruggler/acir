@@ -41,6 +41,8 @@ noncomputable def PauliSub (n : ℕ) : Subgroup (CG p g n) := Subgroup.closure (
 /-- Its normal closure. -/
 noncomputable def PauliN (n : ℕ) : Subgroup (CG p g n) := Subgroup.normalClosure (PauliSet p g n)
 
+instance (n : ℕ) : (PauliN p g n).Normal := Subgroup.normalClosure_normal
+
 /-- Proposition 4.9: every generator conjugates a Pauli to a Pauli, so the
 Pauli group is normal. -/
 theorem pauli_normal (n : ℕ) : PauliN p g n ≤ PauliSub p g n := by
