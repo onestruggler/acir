@@ -13,7 +13,7 @@ checked numerically against the definitions at `N = 3, …, 6` (scratch
 `r87/iface.py`).  They are stated, not yet proved: package (v) of `PLAN.md`
 replaces each `sorry` by its proof and keeps the statements.
 -/
-import QCert.RealCliffordCH.Sec8.D.N13.E318
+import QCert.RealCliffordCH.Sec8.D.N13.E319
 
 namespace QCert.RealCliffordCH.Sec8.D
 

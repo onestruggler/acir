@@ -261,12 +261,6 @@ theorem comm_flip {N : ℕ} {a b a' b' u : Circ N} (h : Comm N a b)
     (hb : Derivable (theory N) (u * b * u) b') : Comm N a' b' :=
   Comm.congr ha hb (Comm.conj h hu)
 
-/-- Pointwise equality of control functions: the wires `0, …, 5` one by one,
-the others by `omega`. -/
-macro "ctl_tac" : tactic => `(tactic| (intro i hi; rcases i with _ | _ | _ | _ | _ | _ | i <;>
-  (simp only [ctl, ctlX, ctlOr, ctlAt, blackOn, colOn, setCtl]) <;> (try split_ifs) <;>
-  first | rfl | (exfalso; omega) | simp_all | omega))
-
 /-! ## The local wires stay below -/
 
 theorem lowW_mono {n m m' : ℕ} {u : Circ n} (h : LowW m u) (hm : m ≤ m') : LowW m' u :=
@@ -329,6 +323,12 @@ def ctlX (K : ℕ) (cs : List (ℕ × Bool)) (x : ℕ → Bool) : ℕ → Option
 def cX (K N : ℕ) (x : ℕ → Bool) : Lt → Circ N
   | .s l => l.circ N
   | .g Kd tg cs b => if b then mc N Kd tg (ctlX K cs x) else mc N Kd tg (ctl K cs false)
+
+/-- Pointwise equality of control functions: the wires `0, …, 5` one by one,
+the others by `omega`. -/
+macro "ctl_tac" : tactic => `(tactic| (intro i hi; rcases i with _ | _ | _ | _ | _ | _ | i <;>
+  (simp only [ctl, ctlX, ctlOr, ctlAt, blackOn, colOn, setCtl]) <;> (try split_ifs) <;>
+  first | rfl | (exfalso; omega) | simp_all | omega))
 
 /-- A word read with the bulk coloured by `x`. -/
 def wcX (K N : ℕ) (x : ℕ → Bool) (l : List Lt) : Circ N := drawn (l.map (cX K N x))
