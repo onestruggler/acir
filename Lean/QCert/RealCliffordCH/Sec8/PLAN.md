@@ -429,3 +429,14 @@ The four-wire cases with a white control in front of the Hadamard use
 complementary-box merging and the previously proved controlled-Z
 commutations. The modules typecheck and both exported small-width results
 have only standard Lean axioms.
+
+### Colour-product and borrowed-wire lemmas checked, 2026-10-29
+
+`N13/ThreeHg338.lean` and `LowHg338.lean` prove all three-wire cases
+of (338), and its four-wire cases with different bulk colours.
+`MergeAll.lean` proves the product over every colouring merges into the
+box with those controls removed, and isolates the final all-black factor
+when the other factors commute. `HgBorrow.lean` proves the small box and
+the borrowed-wire X commute with the all-black controlled Hadamard.
+All four modules typecheck; the five exported results audited here have
+only standard Lean axioms. The full arbitrary-width (338) is still pending.
