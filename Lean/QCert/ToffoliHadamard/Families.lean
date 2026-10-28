@@ -6,11 +6,11 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 Li–Ross–Selinger's Table 1 at `n = 8` has 2123 instances.  Each family is
 derived at every index from `Transport.lean`:
 
-* (2a)–(2c), (3a)–(3g) (976 instances) are conjugation by `X_[a,b]` itself:
+* (2a)–(2c), (3a)–(3g) (1372 instances) are conjugation by `X_[a,b]` itself:
   its encoding is the word of the palindromic path of `(a b)`, so they
   follow from `pal` once that path is valid for the other generator
   (`okPal`), and (1a) (28 instances) from `pathW_cancel`;
-* (1b), (1c), (2d), (2e), (2f), (4a)–(4c), (5a) (1118 instances) are carried
+* (1b), (1c), (2d), (2e), (2f), (4a)–(4c), (5a) (722 instances) are carried
   along a bubble-sort path (`path`) from one standard instance, a relation
   of Figure 7 ((83), (84), (95), (94), (96), (97), (98), (99), (100)), and the
   one instance of (6a) is derived from (101) (`std6aTable`).
