@@ -47,7 +47,7 @@ main result) and a `README.md` listing what is proved and every remaining
 | Fang, Heunen, Kaarsgaard [2026] | O_n(ℤ[1/√2]) | `QCert/HadamardPi` | **proved** (Theorem 4.14; the paper's gap in Main Case 9 closed by Clément's Case 3.4; no `sorry`) |
 | Clément [2019] | O_n(ℤ[1/√2]) | `QCert/Clement2019` | **proved** (Theorem 4.1, via the syntactic equivalence with Figure 6; no `sorry`) |
 | Selinger [2015] | Clifford | `QCert/SelingerClifford` | **proved** (sub-presentation at every n; no `sorry`) |
-| Bian, Li et al. [2026] | Clifford, odd prime p | `QCert/QuditClifford` | soundness proved (with Gauss's sign theorem); completeness in progress |
+| Bian, Li et al. [2026] | Clifford, odd prime p | `QCert/QuditClifford` | **proved** (Theorem 4.10 at every odd prime p, with Gauss's sign theorem; no `sorry`) |
 | Makary, Ross, Selinger [2021] | real stabilizer | `QCert/RealStabilizer` | **proved** (sub-presentation at every n; no `sorry`) |
 | Amy, Chen, Ross [2018] | CNOT-dihedral | `QCert/CNOTDihedral` | **proved** (sub-presentation at every n; no `sorry`) |
 | Blake [2026] | phase-affine, prime d | `QCert/PhaseAffine` | **proved** (Theorems 1 and 2 at all four levels; no `sorry`) |
