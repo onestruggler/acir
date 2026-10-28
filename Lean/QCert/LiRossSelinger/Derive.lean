@@ -159,6 +159,25 @@ def emb8 {a b c d e f g h : Fin n} (h₁ : a < b) (h₂ : b < c) (h₃ : c < d) 
     | 5 => h₆
     | 6 => h₇)
 
+section
+variable {a b c d e f g h : Fin n} (h₁ : a < b) (h₂ : b < c) (h₃ : c < d) (h₄ : d < e)
+  (h₅ : e < f) (h₆ : f < g) (h₇ : g < h)
+theorem emb6_0 : emb6 h₁ h₂ h₃ h₄ h₅ 0 = a := rfl
+theorem emb6_1 : emb6 h₁ h₂ h₃ h₄ h₅ 1 = b := rfl
+theorem emb6_2 : emb6 h₁ h₂ h₃ h₄ h₅ 2 = c := rfl
+theorem emb6_3 : emb6 h₁ h₂ h₃ h₄ h₅ 3 = d := rfl
+theorem emb6_4 : emb6 h₁ h₂ h₃ h₄ h₅ 4 = e := rfl
+theorem emb6_5 : emb6 h₁ h₂ h₃ h₄ h₅ 5 = f := rfl
+theorem emb8_0 : emb8 h₁ h₂ h₃ h₄ h₅ h₆ h₇ 0 = a := rfl
+theorem emb8_1 : emb8 h₁ h₂ h₃ h₄ h₅ h₆ h₇ 1 = b := rfl
+theorem emb8_2 : emb8 h₁ h₂ h₃ h₄ h₅ h₆ h₇ 2 = c := rfl
+theorem emb8_3 : emb8 h₁ h₂ h₃ h₄ h₅ h₆ h₇ 3 = d := rfl
+theorem emb8_4 : emb8 h₁ h₂ h₃ h₄ h₅ h₆ h₇ 4 = e := rfl
+theorem emb8_5 : emb8 h₁ h₂ h₃ h₄ h₅ h₆ h₇ 5 = f := rfl
+theorem emb8_6 : emb8 h₁ h₂ h₃ h₄ h₅ h₆ h₇ 6 = g := rfl
+theorem emb8_7 : emb8 h₁ h₂ h₃ h₄ h₅ h₆ h₇ 7 = h := rfl
+end
+
 /-! ## Derived relations (generated) -/
 
 /-- (8c) `X_[b,c] K_[a,b,c,d] ≈ K_[a,b,c,d] X_[b,c]`. -/
@@ -418,11 +437,23 @@ theorem dr_k32 {a b c d : Fin n} (h1 : a < b) (h2 : b < c) (h3 : c < d) :
   simpa only [renW_ofList, List.map_cons, List.map_nil, Gen.rename, emb4_0, emb4_1, emb4_2,
     emb4_3] using h
 
+/-- `K_[a,b,c,d] (−1)_[a] K_[a,b,c,d] ≈ X_[b,c] (−1)_[a] K_[a,b,c,d] (−1)_[a]`, from (4b). -/
+theorem dr_knk0 {a b c d : Fin n} (h1 : a < b) (h2 : b < c) (h3 : c < d) :
+    Derivable (Table1 n) (FreeMonoid.ofList [Gen.k a b c d h1 h2 h3, Gen.neg a, Gen.k a b c d h1 h2 h3])
+      (FreeMonoid.ofList [Gen.x b c h2, Gen.neg a, Gen.k a b c d h1 h2 h3, Gen.neg a]) := by
+  have h := derivable_rename (emb4 h1 h2 h3) (gCheck_sound rsides_sound
+    (w := ([Gen.k 0 1 2 3 (by decide) (by decide) (by decide), Gen.neg 0, Gen.k 0 1 2 3 (by decide) (by decide) (by decide)] : List (Gen 4)))
+    (w' := [Gen.x 1 2 (by decide), Gen.neg 0, Gen.k 0 1 2 3 (by decide) (by decide) (by decide), Gen.neg 0])
+    (sts := [⟨(.r1b, false), [0], false, 0⟩, ⟨(.r1b, false), [0], false, 5⟩, ⟨(.r4b, false), [0, 1, 2, 3], false, 1⟩, ⟨(.r2b, false), [1, 2, 0], false, 0⟩])
+    (by decide +kernel))
+  simpa only [renW_ofList, List.map_cons, List.map_nil, Gen.rename, emb4_0, emb4_1, emb4_2,
+    emb4_3] using h
+
 /-! ## Derived relations as steps -/
 
 /-- The derived relations, on four increasing indices. -/
 inductive MFam
-  | ksym2 | ksym6 | ksym4 | ksym5 | k21 | k11 | k31 | relk4 | k12 | k22 | k32
+  | ksym2 | ksym6 | ksym4 | ksym5 | k21 | k11 | k31 | relk4 | k12 | k22 | k32 | knk0
   deriving DecidableEq
 
 /-- The two sides of a derived relation at `a < b < c < d`. -/
@@ -460,6 +491,9 @@ def mword : MFam → (a b c d : Fin m) → a < b → b < c → c < d → List (G
   | .k32, a, b, c, d, h1, h2, h3 =>
     ([Gen.neg a, Gen.neg d, Gen.k a b c d h1 h2 h3],
       [Gen.k a b c d h1 h2 h3, Gen.x a d (h1.trans (h2.trans h3)), Gen.x b c h2, Gen.neg a, Gen.neg b, Gen.neg c, Gen.neg d])
+  | .knk0, a, b, c, d, h1, h2, h3 =>
+    ([Gen.k a b c d h1 h2 h3, Gen.neg a, Gen.k a b c d h1 h2 h3],
+      [Gen.x b c h2, Gen.neg a, Gen.k a b c d h1 h2 h3, Gen.neg a])
 
 theorem mword_sound : ∀ (f : MFam) (a b c d : Fin m) (h1 : a < b) (h2 : b < c) (h3 : c < d),
     Derivable (Table1 m) (FreeMonoid.ofList (mword f a b c d h1 h2 h3).1)
@@ -475,6 +509,7 @@ theorem mword_sound : ∀ (f : MFam) (a b c d : Fin m) (h1 : a < b) (h2 : b < c)
   | .k12, _, _, _, _, h1, h2, h3 => dr_k12 h1 h2 h3
   | .k22, _, _, _, _, h1, h2, h3 => dr_k22 h1 h2 h3
   | .k32, _, _, _, _, h1, h2, h3 => dr_k32 h1 h2 h3
+  | .knk0, _, _, _, _, h1, h2, h3 => dr_knk0 h1 h2 h3
 
 /-- The sides of a derived relation at the given indices. -/
 def msides : MFam → List (Fin m) → Option (List (Gen m) × List (Gen m))
@@ -492,21 +527,36 @@ theorem msides_sound (f : MFam) (ps : List (Fin m)) (u v : List (Gen m))
     exact mword_sound f _ _ _ _ hc.1 hc.2.1 hc.2.2
   · exact absurd h (by simp)
 
-/-- Table 1 (either way round) and the derived relations. -/
-def dsides : (Fam × Bool) ⊕ MFam → List (Fin m) → Option (List (Gen m) × List (Gen m))
-  | .inl f, ps => rsides f ps
+/-- Table 1 and the derived relations. -/
+def bsides : Fam ⊕ MFam → List (Fin m) → Option (List (Gen m) × List (Gen m))
+  | .inl f, ps => sides f ps
   | .inr f, ps => msides f ps
 
-theorem dsides_sound : ∀ (f : (Fam × Bool) ⊕ MFam) (ps : List (Fin m)) (u v : List (Gen m)),
-    dsides f ps = some (u, v) → Derivable (Table1 m) (FreeMonoid.ofList u) (FreeMonoid.ofList v)
-  | .inl f, ps, u, v, h => rsides_sound f ps u v h
+theorem bsides_sound : ∀ (f : Fam ⊕ MFam) (ps : List (Fin m)) (u v : List (Gen m)),
+    bsides f ps = some (u, v) → Derivable (Table1 m) (FreeMonoid.ofList u) (FreeMonoid.ofList v)
+  | .inl f, ps, u, v, h => Derivable.of (sides_sound h)
   | .inr f, ps, u, v, h => msides_sound f ps u v h
 
+/-- Table 1 and the derived relations, read backwards when the flag is set. -/
+def dsides : (Fam ⊕ MFam) × Bool → List (Fin m) → Option (List (Gen m) × List (Gen m))
+  | (f, false), ps => bsides f ps
+  | (f, true), ps => (bsides f ps).map fun p => (p.1.reverse, p.2.reverse)
+
+theorem dsides_sound : ∀ (f : (Fam ⊕ MFam) × Bool) (ps : List (Fin m)) (u v : List (Gen m)),
+    dsides f ps = some (u, v) → Derivable (Table1 m) (FreeMonoid.ofList u) (FreeMonoid.ofList v)
+  | (f, false), ps, u, v, h => bsides_sound f ps u v h
+  | (f, true), ps, u, v, h => by
+    simp only [dsides, Option.map_eq_some_iff] at h
+    obtain ⟨⟨u', v'⟩, h1, h2⟩ := h
+    simp only [Prod.mk.injEq] at h2
+    obtain ⟨rfl, rfl⟩ := h2
+    exact rev_derivable (bsides_sound f ps u' v' h1)
+
 /-- A derivation with derived relations as steps, checked by evaluation. -/
-abbrev checkD (w w' : List (Gen m)) (sts : List (GStep ((Fam × Bool) ⊕ MFam) m)) : Bool :=
+abbrev checkD (w w' : List (Gen m)) (sts : List (GStep ((Fam ⊕ MFam) × Bool) m)) : Bool :=
   gCheck dsides w w' sts
 
-theorem checkD_sound {w w' : List (Gen m)} {sts : List (GStep ((Fam × Bool) ⊕ MFam) m)}
+theorem checkD_sound {w w' : List (Gen m)} {sts : List (GStep ((Fam ⊕ MFam) × Bool) m)}
     (h : checkD w w' sts = true) :
     Derivable (Table1 m) (FreeMonoid.ofList w) (FreeMonoid.ofList w') :=
   gCheck_sound dsides_sound h
