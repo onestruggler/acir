@@ -34,6 +34,10 @@ Formalized from the paper only.
 | `Sec8/Decoding.lean` | The decoding of Definition 8.3 (`decW`): the multi-controlled gates of Definition 2.4 placed by swap networks, colours by `X`. |
 | `Sec8/Statement.lean` | The back-and-forth argument of Theorem 8.9 (`complete_of`) from the four statements `ESem`, `Thm410` (Theorem 4.10), `Lemma87`, `Lemma88`, the last two taking completeness on fewer wires (Lemma 5.1). |
 | `Sec8/ESem/`, `Sec8/ESemProof.lean` | The encoding preserves the semantics (`esem`): the Gray code is a bijection (`gray_gInv`, `gInv_gray`), so `toP` respects products (`toP_mul`); a word of letters each acting on two disjoint pairs of indices `G⁻¹(u), G⁻¹(u + 2^p)` acts pair by pair (`prod_pairs`); the encodings of the eight gate cases are such words over four shapes of pairs (`Shapes`), and match the gate operators entry by entry (`Gates`, `Encode`). |
+| `Sec8/PLAN.md` | The plan for Lemmas 8.7 and 8.8: dependency order of Appendices D and E, conventions, work packages and their interfaces. |
+| `Sec8/Weak.lean` | Weakening (`derivable_pad`, `derivable_shift`, `derivable_padTop`) and Lemma 5.1 as the semantic step: windows idle on a wire (`sem_step_shift`, `sem_step_top`, `sem_step_pad`), windows conjugated into that form (`window`), fixed-width equations on wider circuits (`small_of`); `IH n` is completeness below `n`.  `Sec8/WeakTest.lean` tests the window step on swap-placed windows. |
+| `Sec8/MC.lean` | The conventions of Appendix D: circuits at the bottom of wider ones (`atBot`), swap networks (`netL`, `placeG`), colours (`colourW`), and the general multi-controlled gate `mc N K tg c` (box, `ZX`, `XZ`, `H`; special wires `tg`; controls `c`). |
+| `Sec8/D/N8.lean`, `Sec8/D/N13.lean` | Interfaces: the equations of Lemmas D.8–D.13 used later ((81), (274), (277), (299), (305), (307)–(317), (333)–(340), (342), (344)–(352)), stated in the conventions of `MC`, not yet proved. |
 | `Theorem.lean` | `theorem_4_4`, `lemma_7_5`, `lemma_7_6`, `completeness_at` (by induction on the number of wires), `completeness`, `presentation`. |
 
 ## Conventions and correspondence with the paper
@@ -94,6 +98,8 @@ is open for two wires too.
 | `Sec8/Statement.lean`: `theorem_4_10` | Theorem 4.10 (Appendices A.3, A.4): Figure 8 is complete for proper words over `𝒫_{2ⁿ}`, `n ≥ 3`. |
 | `Sec8/Statement.lean`: `lemma_8_7` | Lemma 8.7 (via Lemma 8.6, Appendix E.4), given completeness on fewer wires. |
 | `Sec8/Statement.lean`: `lemma_8_8` | Lemma 8.8 (Appendix E.5, with the auxiliary equations of Appendix D), given completeness on fewer wires. |
+| `Sec8/D/N8.lean`: `eq81`, `eq274`, `eq277`, `eq299`, `eq305`, `eq307`–`eq314` | Interface statements of Lemmas D.8–D.11 (package (iv) of `Sec8/PLAN.md`); each checked numerically at 3–6 wires. |
+| `Sec8/D/N13.lean`: `eq315`–`eq317`, `eq333`–`eq340`, `eq342`, `eq344`–`eq352` | Interface statements of Lemmas D.12–D.13 (package (v)); each checked numerically at 3–6 wires. |
 
 The induction on the number of wires (`completeness_at`) and the
 back-and-forth argument (`Sec8.complete_of`) carry no `sorry` of their own.
