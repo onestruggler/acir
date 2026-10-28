@@ -17,39 +17,34 @@ from tok import S, G, P  # noqa: E402
 PP0 = [tuple(x) for x in LT.PP0]
 
 
+X0 = [('H', 0), ('Z', 0), ('H', 0)]
+
+
 def X(w):
-    return [S('H', w), S('Z', w), S('H', w)]
+    return [P(1, X0, [w])]
 
 
 def colour(c, env):
     return model.colour(c, env)
 
 
-def xs_white(ctrls, env):
+def local_x(ctrls, env, local):
+    """X letters on the local wires of the white controls (local: wire -> local wire)."""
     out = []
     for w, c in sorted(ctrls.items()):
         if not colour(c, env):
-            out += X(w)
+            out += [(k, j + local[w]) for k, j in X0]
     return out
 
 
-def cz(a, b):
-    lo, hi = min(a, b), max(a, b)
-    if hi == lo + 1:
-        return [S('C', lo)]
-    return [P(2, [('C', 0)], [lo, hi])]
-
-
-def ch(t, c):
-    if c == t + 1:
-        return [S('K', t)]
-    return [P(2, [('K', 0)], [t, c])]
-
-
-def pp(a, b):
-    if b == a + 1:
-        return [S(k, j + a) for k, j in PP0]
-    return [P(2, PP0, [a, b])]
+def two(core, a, b, ctrls, env):
+    """A two-wire gate with its local wires 0, 1 on the wires a, b, coloured."""
+    xs = local_x(ctrls, env, {a: 0, b: 1})
+    if not xs and b == a + 1 and len(core) == 1:
+        return [S(core[0][0], a)]
+    if not xs and b == a + 1:
+        return [S(k, j + a) for k, j in core] if False else [P(2, core, [a, b])]
+    return [P(2, xs + core + xs, [a, b])]
 
 
 def gate_tokens(N, g, env=None):
@@ -62,17 +57,16 @@ def gate_tokens(N, g, env=None):
     if k == 'X':
         return X(g[1])
     if k == 'Zw':
-        return X(g[1]) + [S('Z', g[1])] + X(g[1])
+        return [P(1, X0 + [('Z', 0)] + X0, [g[1]])]
     if k == 'SW':
         assert g[2] == g[1] + 1, g
         return [S('S', g[1])]
     if k == 'PP':
-        return pp(g[1], g[2])
+        return [P(2, PP0, [g[1], g[2]])]
     if k == 'CZ':
         ws = sorted(g[1])
         assert len(ws) == 2, g
-        xs = xs_white(g[1], env)
-        return xs + cz(ws[0], ws[1]) + xs
+        return two([('C', 0)], ws[0], ws[1], g[1], env)
     if k == 'BOX':
         return [G('box', [g[1]], [(w, colour(c, env)) for w, c in g[2].items()])]
     if k == 'CHB':
@@ -86,14 +80,12 @@ def gate_tokens(N, g, env=None):
             if not ctrls:
                 return [S('H', t)]
             (c, _), = ctrls.items()
-            xs = xs_white(ctrls, env)
-            return xs + ch(t, c) + xs
+            return two([('K', 0)], t, c, ctrls, env)
         if lab == 'X':
             if not ctrls:
                 return X(t)
             (c, _), = ctrls.items()
-            xs = xs_white(ctrls, env)
-            return xs + [S('H', t)] + cz(t, c) + [S('H', t)] + xs
+            return two([('H', 0), ('C', 0), ('H', 0)], t, c, ctrls, env)
     raise ValueError(f'cannot convert {g}')
 
 

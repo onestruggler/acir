@@ -183,6 +183,12 @@ editing the others; it may assume everything exported by the others (the
   derivation chain of D.2 (pages 66–79; each step checked numerically, see
   `gen/sec8/README.md`) and the D.3/D.4 statements.  Next: D.2 at width 3
   (`gen/sec8/w3.py` turns the paper's steps into engine runs).
+* Package (ii): `D/WEng.lean` (engine over gadget tokens, semantic windows idle on any
+  wire, `swp`), `gen/sec8/w4/` (tokens, solver, generator; see its README).  Proved at
+  width 4 (`D/W4/A.lean`): (150), (151), (154), (155), (157)–(159), (161), (162),
+  (164), (168), (169); `d157`, `d168` in `W4.lean`.  Next: derived table entries
+  (inverses, conjugates) for (152)/(153) and the equations blocked on them, then (177)
+  on, the families, D.4.
 * Package (vi): `D/N15.lean` stated ((353)–(361), checked numerically by
   `gen/sec8/e/iface_n15.py`; the decoding model `gen/sec8/e/decode.py` mirrors
   `Decoding.lean` and preserves the semantics on every letter at `n = 3, 4`).

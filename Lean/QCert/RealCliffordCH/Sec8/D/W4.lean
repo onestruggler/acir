@@ -5,26 +5,29 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 # Appendix D.3 at width 4 (package (ii)): statements
 
 The equations of D.3 that the chain cites, at width 4, given completeness on
-three wires (`IH 4`).  Owned by package (ii) of `PLAN.md`, which replaces each
-`sorry` by its derivation.
+three wires (`IH 4`).  Owned by package (ii) of `PLAN.md`.  The derivations are
+runs of the engine `WEng` in the generated modules `W4/*.lean`
+(`gen/sec8/w4/gen_w4.py`); the remaining `sorry`s are the equations not yet
+generated.
 -/
 import QCert.RealCliffordCH.Sec8.D.SmallDefs
+import QCert.RealCliffordCH.Sec8.D.W4.A
 
 namespace QCert.RealCliffordCH.Sec8.D
 
 open Circuit
 
 theorem d157 (ih : IH 4) :
-    Derivable (theory 4) (l157) (r157) := by
-  sorry
+    Derivable (theory 4) (l157) (r157) :=
+  W4.e157 ih
 
 theorem d160 (ih : IH 4) :
     Derivable (theory 4) (l160) (r160) := by
   sorry
 
 theorem d168 (ih : IH 4) :
-    Derivable (theory 4) (l168) (r168) := by
-  sorry
+    Derivable (theory 4) (l168) (r168) :=
+  W4.e168 ih
 
 theorem d172 (ih : IH 4) :
     Derivable (theory 4) (l172) (r172) := by
