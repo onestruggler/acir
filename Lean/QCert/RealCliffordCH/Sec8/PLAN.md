@@ -186,9 +186,10 @@ editing the others; it may assume everything exported by the others (the
   `gen/sec8/e/iface_n15.py`; the decoding model `gen/sec8/e/decode.py` mirrors
   `Decoding.lean` and preserves the semantics on every letter at `n = 3, 4`).
   **`lemma_8_7` proved** (`Lemma87Proof.lean`, `E/`), from the interface
-  statements (274), (307), (309)–(311), (313), (336) and (353).  Lemma 8.8:
-  the rules that decode by definition are done (`E/Cheap.lean`); next the
-  other rules, through `E/Transport` (frames) and the merges.
+  statements (274), (307), (309)–(311), (313), (336) and (353).  Lemma 8.8
+  (`Lemma88Proof.lean`, cases by rule): done (20)–(23), (25)–(30), (32)–(35),
+  (41), (42); open (24) (→ (358) with (81), (356) on the two targets),
+  (31), (36)–(40), (43)–(46).
 
 ## Package (iv): how to continue
 
