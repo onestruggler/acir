@@ -3,12 +3,12 @@
 Python 3, no dependencies beyond the standard library.  The scripts use
 `QCert/HadamardPi/gen/` (its search engine `deriv.py`, its lemma library
 `lib.py` and exact arithmetic `q2.py`), which they import by path.  Run them
-from this directory, one at a time:
+from this directory, one at a time (all three take a few seconds):
 
 ```
-python gen_conj.py     ../ConjLemmas.lean   # a few seconds
-python gen_derivedc.py ../DerivedC.lean     # about three minutes ((21) is slow)
-python gen_tables.py   ../Tables.lean       # about a minute
+python gen_conj.py     ../ConjLemmas.lean
+python gen_derivedc.py ../DerivedC.lean
+python gen_tables.py   ../Tables.lean
 ```
 
 Every script checks each intermediate word of a chain numerically (exact
