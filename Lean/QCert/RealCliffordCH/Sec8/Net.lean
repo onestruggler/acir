@@ -1873,4 +1873,493 @@ theorem mc_toTop (M q : ℕ) (hqM : q ≤ M) (K : Kind) (tg : List ℕ) (c : ℕ
   simp only [Function.comp]
   rw [hrev i (by omega), if_neg (by omega)]
 
+/-! ## Gates carried through swaps -/
+
+/-- `a`, then the swaps `l`, is the swaps `l`, then `b`. -/
+def PassW (N : ℕ) (a : Circ N) (l : List ℕ) (b : Circ N) : Prop :=
+  Derivable (theory N) (swW N l * a) (b * swW N l)
+
+theorem PassW.trans {N : ℕ} {a b c : Circ N} {l₁ l₂ : List ℕ} (h₁ : PassW N a l₁ b)
+    (h₂ : PassW N b l₂ c) : PassW N a (l₁ ++ l₂) c := by
+  unfold PassW at *
+  rw [swW_append, mul_assoc]
+  refine (dleft _ h₁).trans ?_
+  rw [← mul_assoc, ← mul_assoc]
+  exact dright _ h₂
+
+theorem PassW.nil {N : ℕ} (a : Circ N) : PassW N a [] a := by
+  unfold PassW; rw [swW_nil, one_mul, mul_one]
+
+/-- A gate passes swaps on wires it does not touch. -/
+theorem PassW.far {N : ℕ} (a : Circ N) (l : List ℕ)
+    (h : ∀ j ∈ l, LowW j a ∨ HighW (j + 2) a) : PassW N a l a := by
+  induction l with
+  | nil => exact PassW.nil a
+  | cons j l ih =>
+    have h1 : PassW N a [j] a := by
+      unfold PassW
+      rw [swW_single]
+      rcases h j (by simp) with h' | h'
+      · exact comm_low_high a (swAt N j) h' (swAt_wires N j).2
+      · exact (comm_low_high (swAt N j) a (swAt_wires N j).1 h').symm
+    have := h1.trans (ih (fun j' hj' => h j' (by simp [hj'])))
+    simpa using this
+
+theorem lowW_letter (N : ℕ) (x : L) : LowW (x.lo + x.wd) (x.circ N) := by
+  cases x with
+  | H j => exact (place1_wires N j _).1
+  | Z j => exact (place1_wires N j _).1
+  | C j => exact (place2_wires N j _).1
+  | K j => exact (place2_wires N j _).1
+  | S j => exact (place2_wires N j _).1
+
+theorem highW_letter (N : ℕ) (x : L) : HighW x.lo (x.circ N) := by
+  cases x with
+  | H j => exact (place1_wires N j _).2
+  | Z j => exact (place1_wires N j _).2
+  | C j => exact (place2_wires N j _).2
+  | K j => exact (place2_wires N j _).2
+  | S j => exact (place2_wires N j _).2
+
+/-- The rules (f1)–(f4) in letters. -/
+theorem f1L : Derivable (theory 2) (circW 2 [.Z 1, .S 0]) (circW 2 [.S 0, .Z 0]) := by
+  have h := derivable_rule Rule.f1 0
+  simpa [circW, drawn, map_mul, L.circ, place2, place1] using h
+
+theorem f2L : Derivable (theory 2) (circW 2 [.H 1, .S 0]) (circW 2 [.S 0, .H 0]) := by
+  have h := derivable_rule Rule.f2 0
+  simpa [circW, drawn, map_mul, L.circ, place2, place1] using h
+
+theorem f3L : Derivable (theory 3) (circW 3 [.C 1, .S 0, .S 1]) (circW 3 [.S 0, .S 1, .C 0]) := by
+  have h := derivable_rule Rule.f3 0
+  simpa [circW, drawn, map_mul, L.circ, place2, place1] using h
+
+theorem f4L : Derivable (theory 3) (circW 3 [.K 1, .S 0, .S 1]) (circW 3 [.S 0, .S 1, .K 0]) := by
+  have h := derivable_rule Rule.f4 0
+  simpa [circW, drawn, map_mul, L.circ, place2, place1] using h
+
+theorem pass_one {N d : ℕ} (hd : d + 2 ≤ N) {a b : L} (hab : (a = .H 1 ∧ b = .H 0) ∨ (a = .Z 1 ∧ b = .Z 0))
+    (d2 : Derivable (theory 2) (circW 2 [a, .S 0]) (circW 2 [.S 0, b])) :
+    PassW N ((upLBy d a).circ N) [d] ((upLBy d b).circ N) := by
+  have h := lift_word (K := 2) (by rcases hab with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> decide) d2 d N hd
+  unfold PassW
+  rw [swW_single]
+  simpa [circW, drawn, upBy_S, swAt_eq] using h
+
+theorem passH (N d : ℕ) (hd : d + 2 ≤ N) : PassW N ((L.H (d + 1)).circ N) [d] ((L.H d).circ N) := by
+  have := pass_one hd (Or.inl ⟨rfl, rfl⟩) f2L
+  simpa [Nat.add_comm] using this
+
+theorem passZ (N d : ℕ) (hd : d + 2 ≤ N) : PassW N ((L.Z (d + 1)).circ N) [d] ((L.Z d).circ N) := by
+  have := pass_one hd (Or.inr ⟨rfl, rfl⟩) f1L
+  simpa [Nat.add_comm] using this
+
+theorem pass_two {N d : ℕ} (hd : d + 3 ≤ N) {a b : L} (hab : (a = .C 1 ∧ b = .C 0) ∨ (a = .K 1 ∧ b = .K 0))
+    (d3 : Derivable (theory 3) (circW 3 [a, .S 0, .S 1]) (circW 3 [.S 0, .S 1, b])) :
+    PassW N ((upLBy d a).circ N) [d, d + 1] ((upLBy d b).circ N) := by
+  have h := lift_word (K := 3) (by rcases hab with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> decide) d3 d N hd
+  unfold PassW
+  simp only [swW, circW, List.map, drawn, List.reverse_cons, List.reverse_nil, List.nil_append,
+    List.cons_append, List.prod_cons, List.prod_nil, mul_one] at h ⊢
+  simpa [upBy_S, Nat.add_comm, mul_assoc] using h
+
+theorem passC (N d : ℕ) (hd : d + 3 ≤ N) :
+    PassW N ((L.C (d + 1)).circ N) [d, d + 1] ((L.C d).circ N) := by
+  have := pass_two hd (Or.inl ⟨rfl, rfl⟩) f3L
+  simpa [Nat.add_comm] using this
+
+theorem passK (N d : ℕ) (hd : d + 3 ≤ N) :
+    PassW N ((L.K (d + 1)).circ N) [d, d + 1] ((L.K d).circ N) := by
+  have := pass_two hd (Or.inr ⟨rfl, rfl⟩) f4L
+  simpa [Nat.add_comm] using this
+
+theorem upNet_add (q a b : ℕ) : upNet q (a + b) = upNet q a ++ upNet (q + a) b := by
+  induction b with
+  | zero => simp [upNet]
+  | succ b ih => rw [← Nat.add_assoc, upNet_succ, ih, upNet_succ, List.append_assoc, Nat.add_assoc]
+
+/-- A gate one wire up passes the cycle carrying wire 0 to the top, coming
+out on its own wires. -/
+theorem passCycle (n : ℕ) (x : L) (hS : ∀ j, x ≠ .S j) (hx : x.lo + x.wd ≤ n) :
+    PassW (n + 1) ((upL x).circ (n + 1)) (upNet 0 n) (x.circ (n + 1)) := by
+  have farL : ∀ (a : Circ (n + 1)) (d : ℕ), HighW (d + 1) a → PassW (n + 1) a (upNet 0 d) a :=
+    fun a d ha => PassW.far a _ (fun j hj => Or.inr (fun g hg => by
+      simp only [upNet, List.mem_map, List.mem_range] at hj
+      obtain ⟨e, he, rfl⟩ := hj
+      have := ha g hg; omega))
+  have farR : ∀ (a : Circ (n + 1)) (s r : ℕ), LowW s a → PassW (n + 1) a (upNet s r) a :=
+    fun a s r ha => PassW.far a _ (fun j hj => Or.inl (fun g hg => by
+      simp only [upNet, List.mem_map, List.mem_range] at hj
+      obtain ⟨e, he, rfl⟩ := hj
+      have := ha g hg; omega))
+  cases x with
+  | H d =>
+    simp only [L.lo, L.wd] at hx
+    have e : upNet 0 n = upNet 0 d ++ [d] ++ upNet (d + 1) (n - (d + 1)) := by
+      rw [show n = d + 1 + (n - (d + 1)) by omega, upNet_add, upNet_add]
+      simp [upNet]
+    rw [e]
+    exact ((farL _ d (highW_letter (n + 1) (.H (d + 1)))).trans (passH (n + 1) d (by omega))).trans
+      (farR _ (d + 1) _ (lowW_letter (n + 1) (.H d)))
+  | Z d =>
+    simp only [L.lo, L.wd] at hx
+    have e : upNet 0 n = upNet 0 d ++ [d] ++ upNet (d + 1) (n - (d + 1)) := by
+      rw [show n = d + 1 + (n - (d + 1)) by omega, upNet_add, upNet_add]
+      simp [upNet]
+    rw [e]
+    exact ((farL _ d (highW_letter (n + 1) (.Z (d + 1)))).trans (passZ (n + 1) d (by omega))).trans
+      (farR _ (d + 1) _ (lowW_letter (n + 1) (.Z d)))
+  | C d =>
+    simp only [L.lo, L.wd] at hx
+    have e : upNet 0 n = upNet 0 d ++ [d, d + 1] ++ upNet (d + 2) (n - (d + 2)) := by
+      rw [show n = d + 2 + (n - (d + 2)) by omega, upNet_add, upNet_add]
+      simp [upNet, List.range_succ]
+    rw [e]
+    exact ((farL _ d (highW_letter (n + 1) (.C (d + 1)))).trans (passC (n + 1) d (by omega))).trans
+      (farR _ (d + 2) _ (lowW_letter (n + 1) (.C d)))
+  | K d =>
+    simp only [L.lo, L.wd] at hx
+    have e : upNet 0 n = upNet 0 d ++ [d, d + 1] ++ upNet (d + 2) (n - (d + 2)) := by
+      rw [show n = d + 2 + (n - (d + 2)) by omega, upNet_add, upNet_add]
+      simp [upNet, List.range_succ]
+    rw [e]
+    exact ((farL _ d (highW_letter (n + 1) (.K (d + 1)))).trans (passK (n + 1) d (by omega))).trans
+      (farR _ (d + 2) _ (lowW_letter (n + 1) (.K d)))
+  | S d => exact absurd rfl (hS d)
+
+/-! ## Generators as letters -/
+
+/-- The letter of a generator. -/
+def genL : {n : ℕ} → Gen Gate n → L
+  | _, .gate0 c => nomatch c
+  | _, .gate3 c => nomatch c
+  | _, .gate1 .H => .H 0
+  | _, .gate1 .Z => .Z 0
+  | _, .gate2 .CZ => .C 0
+  | _, .gate2 .CH => .K 0
+  | _, .up g => upL (genL g)
+
+theorem genL_notS : ∀ {n : ℕ} (g : Gen Gate n) (j : ℕ), genL g ≠ .S j
+  | _, .gate0 c, _ => nomatch c
+  | _, .gate3 c, _ => nomatch c
+  | _, .gate1 .H, _ => by simp [genL]
+  | _, .gate1 .Z, _ => by simp [genL]
+  | _, .gate2 .CZ, _ => by simp [genL]
+  | _, .gate2 .CH, _ => by simp [genL]
+  | _, .up g, j => by
+    intro h
+    simp only [genL] at h
+    cases hg : genL g <;> rw [hg] at h <;> simp [upL] at h
+    exact genL_notS g _ hg
+
+theorem genL_fit : ∀ {n : ℕ} (g : Gen Gate n), (genL g).lo + (genL g).wd = gHi g
+  | _, .gate0 c => nomatch c
+  | _, .gate3 c => nomatch c
+  | _, .gate1 .H => rfl
+  | _, .gate1 .Z => rfl
+  | _, .gate2 .CZ => rfl
+  | _, .gate2 .CH => rfl
+  | _, .up g => by simp only [genL, upL_lo, upL_wd, gHi, ← genL_fit g]; omega
+
+theorem genL_circ : ∀ {n : ℕ} (g : Gen Gate n), (genL g).circ n = FreeMonoid.of g
+  | _, .gate0 c => nomatch c
+  | _, .gate3 c => nomatch c
+  | _, .gate1 .H => rfl
+  | _, .gate1 .Z => rfl
+  | _, .gate2 .CZ => rfl
+  | _, .gate2 .CH => rfl
+  | _, @Gen.up _ m g => by
+    simp only [genL]
+    rw [circ_shift m (upL (genL g)) (by simp), down_upL, genL_circ g, Circuit.shift_of]
+
+theorem genL_padTop : ∀ {n : ℕ} (g : Gen Gate n), genL (Gen.padTop g) = genL g
+  | _, .gate0 c => nomatch c
+  | _, .gate3 c => nomatch c
+  | _, .gate1 .H => rfl
+  | _, .gate1 .Z => rfl
+  | _, .gate2 .CZ => rfl
+  | _, .gate2 .CH => rfl
+  | _, .up g => by simp only [Gen.padTop, genL, genL_padTop g]
+
+/-! ## `shift` as a placement -/
+
+theorem upNet_ok (n : ℕ) : Ok (n + 1) (upNet 0 n) := fun x hx => by
+  simp only [upNet, List.mem_map, List.mem_range] at hx
+  obtain ⟨e, he, rfl⟩ := hx; omega
+
+theorem placedBy_mul {N : ℕ} (μ : List ℕ) (hμ : Ok N μ) (A B : Circ N) :
+    Derivable (theory N) (placedBy N μ (A * B)) (placedBy N μ A * placedBy N μ B) := by
+  have hc : Derivable (theory N) (swW N μ * swW N μ.reverse) 1 := by
+    rw [← swW_append]
+    have := SwEq.cancel μ.reverse (fun x hx => hμ x (List.mem_reverse.1 hx))
+    rw [List.reverse_reverse] at this
+    exact this.der
+  unfold placedBy
+  have e : swW N μ.reverse * A * swW N μ * (swW N μ.reverse * B * swW N μ) =
+      swW N μ.reverse * A * (swW N μ * swW N μ.reverse) * B * swW N μ := by simp only [mul_assoc]
+  rw [e]
+  have := dright (swW N μ) (dright B (dleft (swW N μ.reverse * A) hc))
+  rw [mul_one] at this
+  simpa only [mul_assoc] using this.symm
+
+theorem placedBy_one {N : ℕ} (μ : List ℕ) (hμ : Ok N μ) :
+    Derivable (theory N) (placedBy N μ 1) 1 := by
+  unfold placedBy
+  rw [mul_one, ← swW_append]
+  exact (SwEq.cancel μ hμ).der
+
+/-- `shift b` is `b` placed on the wires `1, …, n` by the cycle carrying
+wire 0 to the top. -/
+theorem shift_eq (n : ℕ) (b : Circ n) :
+    Derivable (theory (n + 1)) (placedBy (n + 1) (upNet 0 n) (padTop b)) (shift b) := by
+  have hok := upNet_ok n
+  induction b using FreeMonoid.inductionOn' with
+  | one => rw [map_one, map_one]; exact placedBy_one _ hok
+  | mul_of g b ih =>
+    rw [map_mul, map_mul]
+    refine (placedBy_mul _ hok _ _).trans (dmul ?_ ih)
+    rw [padTop_of, shift_of]
+    have hp := passCycle n (genL g) (genL_notS g) (by rw [genL_fit]; exact gHi_le g)
+    have e1 : (upL (genL g)).circ (n + 1) = FreeMonoid.of g.up := by
+      rw [show upL (genL g) = genL g.up from rfl, genL_circ]
+    have e2 : (genL g).circ (n + 1) = FreeMonoid.of (Gen.padTop g) := by
+      rw [← genL_padTop g, genL_circ]
+    rw [e1, e2] at hp
+    unfold PassW at hp
+    unfold placedBy
+    have hc : Derivable (theory (n + 1)) (swW (n + 1) (upNet 0 n).reverse * swW (n + 1) (upNet 0 n)) 1 := by
+      rw [← swW_append]; exact (SwEq.cancel _ hok).der
+    have := dleft (swW (n + 1) (upNet 0 n).reverse) hp
+    rw [← mul_assoc, ← mul_assoc] at this
+    refine this.symm.trans ?_
+    have := dright (FreeMonoid.of g.up) hc
+    rwa [one_mul] at this
+
+theorem pos_map_succ : ∀ (l : List ℕ) (q : ℕ), pos (l.map (· + 1)) (q + 1) = pos l q + 1
+  | [], _ => rfl
+  | j :: l, q => by
+    simp only [List.map_cons, pos_cons]
+    have : tau (j + 1) (q + 1) = tau j q + 1 := by unfold tau; split_ifs <;> omega
+    rw [this, pos_map_succ l]
+
+theorem pos_map_succ_zero : ∀ (l : List ℕ), pos (l.map (· + 1)) 0 = 0
+  | [] => rfl
+  | j :: l => by
+    simp only [List.map_cons, pos_cons]
+    have : tau (j + 1) 0 = 0 := by unfold tau; split_ifs <;> omega
+    rw [this, pos_map_succ_zero l]
+
+theorem swW_map_succ (N : ℕ) (l : List ℕ) : swW (N + 1) (l.map (· + 1)) = shift (swW N l) := by
+  have := circW_up N (l.map L.S)
+  rw [List.map_map] at this
+  simpa [swW, List.map_map, Function.comp_def, upL] using this
+
+theorem length_le_of_lt {ps : List ℕ} {M : ℕ} (hnd : ps.Nodup) (hps : ∀ p ∈ ps, p < M) :
+    ps.length ≤ M :=
+  calc ps.length = ps.toFinset.card := (List.toFinset_card_of_nodup hnd).symm
+    _ ≤ (Finset.range M).card := Finset.card_le_card (fun x hx => by
+        simp only [List.mem_toFinset] at hx; simpa using hps x hx)
+    _ = M := Finset.card_range M
+
+/-- A placed gate moved up one wire is the gate placed one wire up. -/
+theorem shift_placeG {M m : ℕ} (g : Circ m) {ps : List ℕ} (hnd : ps.Nodup)
+    (hps : ∀ p ∈ ps, p < M) (hm : ps.length = m) :
+    Derivable (theory (M + 1)) (shift (placeG M g ps)) (placeG (M + 1) g (ps.map (· + 1))) := by
+  have hmM : m ≤ M := hm ▸ length_le_of_lt hnd hps
+  have hnd' : (ps.map (· + 1)).Nodup := hnd.map (fun a b h => by simpa using h)
+  have hps' : ∀ p ∈ ps.map (· + 1), p < M + 1 := fun p hp => by
+    obtain ⟨q, hq, rfl⟩ := List.mem_map.1 hp; have := hps q hq; omega
+  have hokμ := (netK_spec hnd hps _ le_rfl).1
+  set μ := netK ps ps.length
+  have hokμ' : Ok (M + 1) (μ.map (· + 1)) := fun x hx => by
+    obtain ⟨y, hy, rfl⟩ := List.mem_map.1 hx; have := hokμ y hy; omega
+  rw [placeG_eq, placeG_eq]
+  -- shift of a placement
+  have e1 : shift (placedBy M μ (atBot M g)) =
+      placedBy (M + 1) (μ.map (· + 1)) (shift (atBot M g)) := by
+    simp only [placedBy, map_mul, ← List.map_reverse, swW_map_succ]
+  rw [e1]
+  have h2 := shift_eq M (atBot M g)
+  rw [← atBot_succ M g (by omega)] at h2
+  have e2 : placedBy (M + 1) (μ.map (· + 1)) (placedBy (M + 1) (upNet 0 M) (atBot (M + 1) g)) =
+      placedBy (M + 1) (μ.map (· + 1) ++ upNet 0 M) (atBot (M + 1) g) := by
+    simp only [placedBy, List.reverse_append, swW_append, mul_assoc]
+  have h3 : Derivable (theory (M + 1)) (placedBy (M + 1) (μ.map (· + 1)) (shift (atBot M g)))
+      (placedBy (M + 1) (μ.map (· + 1) ++ upNet 0 M) (atBot (M + 1) g)) := by
+    rw [← e2]; unfold placedBy; exact dright _ (dleft _ h2.symm)
+  refine h3.trans ?_
+  refine placement (m := m) ?_ (netK_spec hnd' hps' _ le_rfl).1 (lowW_atBot (M + 1) g) ?_
+  · intro x hx
+    rcases List.mem_append.1 hx with hx | hx
+    · exact hokμ' x hx
+    · exact upNet_ok M x hx
+  · intro q i hi
+    rw [← hm] at hi
+    have hi' : i < (ps.map (· + 1)).length := by simpa using hi
+    rw [pos_append, netK_pos_iff hnd' hps' hi', getD_eq hi', List.getElem_map]
+    have htop : ∀ y ≤ M, pos (upNet 0 M) y = if y = 0 then M else y - 1 := by
+      intro y hy
+      have := pos_topNet M 0 (Nat.zero_le _) y hy
+      simpa [topNet, upNet, dropW] using this
+    rcases q with _ | q
+    · rw [pos_map_succ_zero, htop 0 (Nat.zero_le _), if_pos rfl]
+      constructor
+      · intro h; omega
+      · intro h; omega
+    · by_cases hqM : q < M
+      · have hpq : pos μ q < M := pos_lt μ hokμ q hqM
+        rw [pos_map_succ, htop _ (by omega), if_neg (by omega), Nat.add_sub_cancel,
+          netK_pos_iff hnd hps hi, getD_eq hi]
+        omega
+      · have hbig : pos (μ.map (· + 1)) (q + 1) = q + 1 := by
+          rw [pos_map_succ, pos_below_gt μ q (fun x hx => by have := hokμ x hx; omega)]
+        have hbig2 : pos (upNet 0 M) (q + 1) = q + 1 :=
+          pos_below_gt _ _ (fun x hx => by have := upNet_ok M x hx; omega)
+        rw [hbig, hbig2]
+        have := hps _ (List.getElem_mem hi)
+        constructor
+        · intro h; omega
+        · intro h; omega
+
+/-! ## Letters and generators as placed gates -/
+
+theorem pad_zero1 (w : Circ 1) : Circuit.pad 0 w = w := by
+  induction w using FreeMonoid.inductionOn' with
+  | one => rfl
+  | mul_of g w ih =>
+    rw [map_mul, ih]
+    congr 1
+    match g with
+    | .gate0 c => exact nomatch c
+    | .gate1 c => rfl
+    | .up g => exact match g with | .gate0 c => nomatch c
+
+theorem pad_zero2 (w : Circ 2) : Circuit.pad 0 w = w := by
+  induction w using FreeMonoid.inductionOn' with
+  | one => rfl
+  | mul_of g w ih =>
+    rw [map_mul, ih]
+    congr 1
+    match g with
+    | .gate0 c => exact nomatch c
+    | .gate1 c => rfl
+    | .gate2 c => rfl
+    | .up g =>
+      match g with
+      | .gate0 c => exact nomatch c
+      | .gate1 c => rfl
+      | .up g => exact match g with | .gate0 c => nomatch c
+
+theorem pad_atBot1 : ∀ (k : ℕ) (w : Circ 1), Circuit.pad k w = atBot (k + 1) w
+  | 0, w => by rw [pad_zero1]; exact (atBot_self w).symm
+  | k + 1, w => by
+    rw [← padTop_pad1, pad_atBot1 k w, atBot_succ (k + 1) w (by omega)]
+
+theorem pad_atBot2 : ∀ (k : ℕ) (w : Circ 2), Circuit.pad k w = atBot (k + 2) w
+  | 0, w => by rw [pad_zero2]; exact (atBot_self w).symm
+  | k + 1, w => by
+    rw [← padTop_pad2, pad_atBot2 k w, atBot_succ (k + 2) w (by omega)]
+
+theorem placeG_single (N : ℕ) (w : Circ 1) (hN : 1 ≤ N) : placeG N w [0] = atBot N w := by
+  simp [placeG, netL_eq, netK, curPos, run_self, drawn]
+
+theorem placeG_pair (N : ℕ) (w : Circ 2) (hN : 2 ≤ N) : placeG N w [0, 1] = atBot N w := by
+  simp [placeG, netL_eq, netK, curPos, run_self, drawn]
+
+/-- A one-wire circuit on wire `j` is the circuit placed on `[j]`. -/
+theorem place1_placeG (w : Circ 1) : ∀ (N j : ℕ), j < N →
+    Derivable (theory N) (place1 N j w) (placeG N w [j])
+  | N + 1, j + 1, h => by
+    have := (derivable_shift (place1_placeG w N j (by omega))).trans
+      (shift_placeG w (ps := [j]) (by simp) (by simp; omega) rfl)
+    simpa using this
+  | k + 1, 0, _ => der_of_eq (by rw [placeG_single _ _ (by omega)]; exact pad_atBot1 k w)
+  | 0, _, h => by omega
+
+/-- A two-wire circuit on wires `j, j + 1` is the circuit placed on `[j, j + 1]`. -/
+theorem place2_placeG (w : Circ 2) : ∀ (N j : ℕ), j + 2 ≤ N →
+    Derivable (theory N) (place2 N j w) (placeG N w [j, j + 1])
+  | N + 1, j + 1, h => by
+    have := (derivable_shift (place2_placeG w N j (by omega))).trans
+      (shift_placeG w (ps := [j, j + 1]) (by simp) (by simp; omega) rfl)
+    simpa using this
+  | k + 2, 0, _ => der_of_eq (by rw [placeG_pair _ _ (by omega)]; exact pad_atBot2 k w)
+  | 0, _, h => by omega
+  | 1, 0, h => by omega
+
+/-- A generator on wire `j` (one-wire gate) as a placed gate. -/
+theorem gen1_placeG (N j : ℕ) (hj : j < N) (g : Gate 1) :
+    Derivable (theory N) (place1 N j (g1 g)) (placeG N (g1 g : Circ 1) [j]) :=
+  place1_placeG _ N j hj
+
+/-- A shifted circuit is the circuit placed on the wires `1, …, n`. -/
+theorem shift_placeG_id (n : ℕ) (b : Circ n) :
+    Derivable (theory (n + 1)) (shift b) (placeG (n + 1) b (List.range' 1 n)) := by
+  have h := shift_placeG b (ps := List.range n) (List.nodup_range) (fun p hp => List.mem_range.1 hp)
+    (List.length_range)
+  rw [placeG_id] at h
+  have e : (List.range n).map (· + 1) = List.range' 1 n := by
+    have hf : (fun x : ℕ => x + 1) = (fun x => 1 + x) := funext fun x => Nat.add_comm x 1
+    simp only [List.range_eq_range', hf, List.map_add_range', Nat.add_zero]
+  rwa [e] at h
+
+/-- The identity placement is `atBot`. -/
+theorem placeG_range (N : ℕ) {k : ℕ} (b : Circ k) (hk : k ≤ N) :
+    placeG N b (List.range k) = atBot N b := by
+  simp [placeG, netL_eq, netK_id k k le_rfl, drawn]
+
+/-! ## Letters moved to the top -/
+
+/-- The letter `ℓ` with its wires mapped by `dropW q`. -/
+def dropL (q : ℕ) : L → L
+  | .H j => .H (dropW q j) | .Z j => .Z (dropW q j) | .C j => .C (dropW q j)
+  | .K j => .K (dropW q j) | .S j => .S (dropW q j)
+
+/-- A gate placed by `placeG`, moved to the top. -/
+theorem gate_toTop {M k : ℕ} (g : Circ k) {ps : List ℕ} (hnd : ps.Nodup) (hps : ∀ p ∈ ps, p ≤ M)
+    (hm : ps.length = k) (q : ℕ) (hqM : q ≤ M) (hqps : q ∉ ps) {A : Circ (M + 1)} {B : Circ M}
+    (hA : Derivable (theory (M + 1)) A (placeG (M + 1) g ps))
+    (hB : Derivable (theory M) B (placeG M g (ps.map (dropW q)))) :
+    Derivable (theory (M + 1)) (swW (M + 1) (topNet M q) * A * swW (M + 1) (topNet M q).reverse)
+      (padTop B) :=
+  (dright _ (dleft _ hA)).trans ((placeG_toTop g hnd hps hm q hqM hqps).trans
+    (derivable_padTop hB.symm))
+
+theorem dropW_pair {q j : ℕ} (hq : q < j ∨ j + 2 ≤ q) :
+    [j, j + 1].map (dropW q) = [dropW q j, dropW q j + 1] := by
+  simp only [List.map_cons, List.map_nil, dropW]
+  split_ifs <;> simp <;> omega
+
+/-- `toTop` for the letters: a letter avoiding wire `q`, conjugated by the
+swaps carrying `q` to the top, is `padTop` of the letter with its wires
+mapped by `dropW q`. -/
+theorem letter_toTop (M q : ℕ) (hqM : q ≤ M) (x : L) (hx : x.lo + x.wd ≤ M + 1)
+    (hq : q < x.lo ∨ x.lo + x.wd ≤ q) :
+    Derivable (theory (M + 1))
+      (swW (M + 1) (topNet M q) * x.circ (M + 1) * swW (M + 1) (topNet M q).reverse)
+      (padTop ((dropL q x).circ M)) := by
+  have one : ∀ (w : Circ 1) (j : ℕ), j + 1 ≤ M + 1 → (q < j ∨ j + 1 ≤ q) →
+      Derivable (theory (M + 1))
+        (swW (M + 1) (topNet M q) * place1 (M + 1) j w * swW (M + 1) (topNet M q).reverse)
+        (padTop (place1 M (dropW q j) w)) := by
+    intro w j hj hqj
+    have hd : dropW q j < M := by simp only [dropW]; split_ifs <;> omega
+    exact gate_toTop w (ps := [j]) (by simp) (by simp; omega) rfl q hqM (by simp; omega)
+      (place1_placeG w (M + 1) j (by omega)) (by simpa using place1_placeG w M (dropW q j) hd)
+  have two : ∀ (w : Circ 2) (j : ℕ), j + 2 ≤ M + 1 → (q < j ∨ j + 2 ≤ q) →
+      Derivable (theory (M + 1))
+        (swW (M + 1) (topNet M q) * place2 (M + 1) j w * swW (M + 1) (topNet M q).reverse)
+        (padTop (place2 M (dropW q j) w)) := by
+    intro w j hj hqj
+    have hd : dropW q j + 2 ≤ M := by simp only [dropW]; split_ifs <;> omega
+    exact gate_toTop w (ps := [j, j + 1]) (by simp) (by simp; omega) rfl q hqM
+      (by simp; omega) (place2_placeG w (M + 1) j hj)
+      (by rw [dropW_pair hqj]; exact place2_placeG w M (dropW q j) hd)
+  cases x with
+  | H j => exact one h j hx hq
+  | Z j => exact one z j hx hq
+  | C j => exact two cz j hx hq
+  | K j => exact two ch j hx hq
+  | S j => exact two swap j hx hq
+
 end QCert.RealCliffordCH.Sec8.Net
