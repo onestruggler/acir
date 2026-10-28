@@ -445,3 +445,14 @@ only standard Lean axioms. The full arbitrary-width (338) is still pending.
 case at any width. Instantiating this with the checked finite cases gives
 `LowHg338Complete.comm338_all_4`, including every colouring on four wires.
 Its axiom audit contains only `propext`, `Classical.choice`, and `Quot.sound`.
+
+### Equation (345) complete, 2026-10-29
+
+`N13/E345.lean` and `ThreeHg345.lean` prove the commutation of the two
+controlled Hadamards, with arbitrary bulk colours, at every width from
+three. Above three wires this is the already proved box commutation (336)
+conjugated by `P ⊗ P`; the swap of the two bottom wires commutes with that
+conjugating circuit. The three-wire cases use (133), (134), and colour
+conjugation. `D.eq345` now uses this proof, and its axiom audit is clean.
+This removes one more interface admission: 31 remain at this checkpoint,
+before integrating the five-wire families currently being checked.

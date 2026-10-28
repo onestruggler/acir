@@ -15,6 +15,7 @@ replaces each `sorry` by its proof and keeps the statements.
 -/
 import QCert.RealCliffordCH.Sec8.D.N13.E319
 import QCert.RealCliffordCH.Sec8.D.N13.Low
+import QCert.RealCliffordCH.Sec8.D.N13.E345
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -171,7 +172,7 @@ theorem eq344 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
 /-- (345) -/
 theorem eq345 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) :
     Comm N (mc N .hg [1, 0] (colOn 2 N x)) (mc N .hg [0, 1] (colOn 2 N y)) := by
-  sorry
+  exact N13.comm345 N hN ih x y
 
 /-- (346) -/
 theorem eq346 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (a : Bool) :
