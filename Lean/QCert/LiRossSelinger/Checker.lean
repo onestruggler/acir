@@ -247,7 +247,7 @@ theorem sides_sound {f : Fam} {ps : List (Fin m)} {u v : List (Gen m)}
 
 /-- A rewriting step: a family with its indices, the direction (`true`: from
 left to right side) and the position in the word. -/
-structure Step (m : ℕ) where
+structure TStep (m : ℕ) where
   fam : Fam
   ps : List (Fin m)
   dir : Bool
@@ -276,12 +276,12 @@ theorem rewriteAt_sound {w w' l r : List (Gen m)} {pos : ℕ}
   exact ((Derivable.refl _).mul hlr).mul (Derivable.refl _)
 
 /-- Apply a step to a word. -/
-def applyStep (w : List (Gen m)) (st : Step m) : Option (List (Gen m)) :=
+def applyStep (w : List (Gen m)) (st : TStep m) : Option (List (Gen m)) :=
   match sides st.fam st.ps with
   | none => none
   | some (u, v) => if st.dir then rewriteAt w st.pos u v else rewriteAt w st.pos v u
 
-theorem applyStep_sound {w w' : List (Gen m)} {st : Step m} (h : applyStep w st = some w') :
+theorem applyStep_sound {w w' : List (Gen m)} {st : TStep m} (h : applyStep w st = some w') :
     Derivable (Table1 m) (FreeMonoid.ofList w) (FreeMonoid.ofList w') := by
   unfold applyStep at h
   split at h
@@ -293,13 +293,13 @@ theorem applyStep_sound {w w' : List (Gen m)} {st : Step m} (h : applyStep w st 
     · exact rewriteAt_sound (Derivable.of hrel).symm h
 
 /-- Apply a list of steps. -/
-def runSteps (w : List (Gen m)) : List (Step m) → Option (List (Gen m))
+def runSteps (w : List (Gen m)) : List (TStep m) → Option (List (Gen m))
   | [] => some w
   | st :: sts => match applyStep w st with
     | none => none
     | some w' => runSteps w' sts
 
-theorem runSteps_sound {w w' : List (Gen m)} {sts : List (Step m)} (h : runSteps w sts = some w') :
+theorem runSteps_sound {w w' : List (Gen m)} {sts : List (TStep m)} (h : runSteps w sts = some w') :
     Derivable (Table1 m) (FreeMonoid.ofList w) (FreeMonoid.ofList w') := by
   induction sts generalizing w with
   | nil => obtain rfl := Option.some.inj h; exact Derivable.refl _
@@ -311,9 +311,9 @@ theorem runSteps_sound {w w' : List (Gen m)} {sts : List (Step m)} (h : runSteps
       exact (applyStep_sound hw'').trans (ih h)
 
 /-- A derivation, checked by evaluation. -/
-def checkSteps (w w' : List (Gen m)) (sts : List (Step m)) : Bool := runSteps w sts == some w'
+def checkSteps (w w' : List (Gen m)) (sts : List (TStep m)) : Bool := runSteps w sts == some w'
 
-theorem checkSteps_sound {w w' : List (Gen m)} {sts : List (Step m)}
+theorem checkSteps_sound {w w' : List (Gen m)} {sts : List (TStep m)}
     (h : checkSteps w w' sts = true) :
     Derivable (Table1 m) (FreeMonoid.ofList w) (FreeMonoid.ofList w') :=
   runSteps_sound (by simpa [checkSteps] using h)
