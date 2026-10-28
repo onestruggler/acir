@@ -81,6 +81,9 @@ inductive Step
   | rw (i e : ℕ) (rev : Bool)
   /-- Exchange the generators at positions `i` and `i + 1`. -/
   | swap (i : ℕ)
+  /-- Move the generator at position `i` to position `j`, past generators it
+  is apart from (a run of exchanges in one step). -/
+  | slide (i j : ℕ)
 
 section Run
 
@@ -96,6 +99,21 @@ def swapAt (i : ℕ) (w : List (Gen Gate n)) : Option (List (Gen Gate n)) :=
   | a :: b :: rest => if Gen.apart a b then some (w.take i ++ b :: a :: rest) else none
   | _ => none
 
+/-- Move the generator at position `i` of `w` to position `j`, if it is apart
+from every generator it passes. -/
+def slideAt (i j : ℕ) (w : List (Gen Gate n)) : Option (List (Gen Gate n)) :=
+  match w.drop i with
+  | [] => none
+  | x :: C =>
+    if j < i then
+      if ((w.take i).drop j).all (fun b => Gen.apart b x) then
+        some (w.take j ++ x :: (w.take i).drop j ++ C)
+      else none
+    else
+      if (C.take (j - i)).all (fun b => Gen.apart x b) ∧ j - i ≤ C.length then
+        some (w.take i ++ C.take (j - i) ++ x :: C.drop (j - i))
+      else none
+
 /-- One step on a word. -/
 def applyStep (eqs : List (DEqn R n)) (w : List (Gen Gate n)) : Step → Option (List (Gen Gate n))
   | .rw i e rev =>
@@ -105,6 +123,7 @@ def applyStep (eqs : List (DEqn R n)) (w : List (Gen Gate n)) : Step → Option 
       if rev then rwAt (FreeMonoid.toList q.rhs) (FreeMonoid.toList q.lhs) i w
       else rwAt (FreeMonoid.toList q.lhs) (FreeMonoid.toList q.rhs) i w
   | .swap i => swapAt i w
+  | .slide i j => slideAt i j w
 
 /-- The steps replayed on a word. -/
 def run (eqs : List (DEqn R n)) : List Step → List (Gen Gate n) → Option (List (Gen Gate n))
@@ -155,6 +174,79 @@ theorem swapAt_sound (hsc : ∀ c c' : Gate 0, c = c') {i : ℕ} {w w' : List (G
     exact comm_apart hsc a b hab
   · cases h
 
+omit [∀ k, DecidableEq (Gate k)] in
+/-- A generator passes a list of generators it is apart from, leftwards. -/
+theorem slide_left (hsc : ∀ c c' : Gate 0, c = c') (x : Gen Gate n) :
+    ∀ B : List (Gen Gate n), B.all (fun b => Gen.apart b x) = true →
+      Derivable (Lift R n) (FreeMonoid.ofList (B ++ [x])) (FreeMonoid.ofList (x :: B))
+  | [], _ => Derivable.refl _
+  | b :: B, h => by
+    simp only [List.all_cons, Bool.and_eq_true] at h
+    have ih := slide_left hsc x B h.2
+    have e1 : FreeMonoid.ofList (b :: B ++ [x]) =
+        FreeMonoid.of b * FreeMonoid.ofList (B ++ [x]) := by
+      rw [List.cons_append, FreeMonoid.ofList_cons]
+    have e2 : FreeMonoid.ofList (x :: b :: B) =
+        FreeMonoid.of x * FreeMonoid.of b * FreeMonoid.ofList B := by
+      rw [FreeMonoid.ofList_cons, FreeMonoid.ofList_cons, mul_assoc]
+    rw [e1, e2]
+    refine ((Derivable.refl _).mul ih).trans ?_
+    rw [FreeMonoid.ofList_cons, ← mul_assoc]
+    exact (comm_apart hsc b x h.1).mul (Derivable.refl _)
+
+omit [∀ k, DecidableEq (Gate k)] in
+/-- A generator passes a list of generators it is apart from, rightwards. -/
+theorem slide_right (hsc : ∀ c c' : Gate 0, c = c') (x : Gen Gate n) :
+    ∀ B : List (Gen Gate n), B.all (fun b => Gen.apart x b) = true →
+      Derivable (Lift R n) (FreeMonoid.ofList (x :: B)) (FreeMonoid.ofList (B ++ [x]))
+  | [], _ => Derivable.refl _
+  | b :: B, h => by
+    simp only [List.all_cons, Bool.and_eq_true] at h
+    have ih := slide_right hsc x B h.2
+    have e1 : FreeMonoid.ofList (x :: b :: B) =
+        FreeMonoid.of x * FreeMonoid.of b * FreeMonoid.ofList B := by
+      rw [FreeMonoid.ofList_cons, FreeMonoid.ofList_cons, mul_assoc]
+    have e2 : FreeMonoid.ofList (b :: B ++ [x]) =
+        FreeMonoid.of b * FreeMonoid.ofList (B ++ [x]) := by
+      rw [List.cons_append, FreeMonoid.ofList_cons]
+    rw [e1, e2]
+    refine ((comm_apart hsc x b h.1).mul (Derivable.refl _)).trans ?_
+    rw [mul_assoc, ← FreeMonoid.ofList_cons]
+    exact (Derivable.refl _).mul ih
+
+omit [∀ k, DecidableEq (Gate k)] in
+theorem slideAt_sound (hsc : ∀ c c' : Gate 0, c = c') {i j : ℕ} {w w' : List (Gen Gate n)}
+    (h : slideAt i j w = some w') :
+    Derivable (Lift R n) (FreeMonoid.ofList w) (FreeMonoid.ofList w') := by
+  unfold slideAt at h
+  split at h
+  · cases h
+  · rename_i x C hd
+    have hw : w = w.take i ++ x :: C := by rw [← hd, List.take_append_drop]
+    split_ifs at h with hji hall hall'
+    · cases h
+      have ht : w.take j ++ (w.take i).drop j = w.take i := by
+        conv_rhs => rw [← List.take_append_drop j (w.take i)]
+        rw [List.take_take, Nat.min_eq_left hji.le]
+      have e : FreeMonoid.ofList w =
+          FreeMonoid.ofList (w.take j ++ ((w.take i).drop j ++ [x]) ++ C) := by
+        conv_lhs => rw [hw, ← ht]
+        simp
+      have e' : FreeMonoid.ofList (w.take j ++ x :: (w.take i).drop j ++ C) =
+          FreeMonoid.ofList (w.take j ++ (x :: (w.take i).drop j) ++ C) := by simp
+      rw [e, e']
+      exact derivable_slice _ _ _ _ (slide_left hsc x _ hall)
+    · cases h
+      obtain ⟨hall', _⟩ := hall'
+      have e : FreeMonoid.ofList w =
+          FreeMonoid.ofList (w.take i ++ (x :: C.take (j - i)) ++ C.drop (j - i)) := by
+        conv_lhs => rw [hw, ← List.take_append_drop (j - i) C]
+        simp
+      have e' : FreeMonoid.ofList (w.take i ++ C.take (j - i) ++ x :: C.drop (j - i)) =
+          FreeMonoid.ofList (w.take i ++ (C.take (j - i) ++ [x]) ++ C.drop (j - i)) := by simp
+      rw [e, e']
+      exact derivable_slice _ _ _ _ (slide_right hsc x _ hall')
+
 theorem applyStep_sound (hsc : ∀ c c' : Gate 0, c = c') (eqs : List (DEqn R n))
     (w w' : List (Gen Gate n)) (s : Step) (h : applyStep eqs w s = some w') :
     Derivable (Lift R n) (FreeMonoid.ofList w) (FreeMonoid.ofList w') := by
@@ -168,6 +260,7 @@ theorem applyStep_sound (hsc : ∀ c c' : Gate 0, c = c') (eqs : List (DEqn R n)
       · exact rwAt_sound (by simpa using q.proof) h
       · exact rwAt_sound (by simpa using q.proof.symm) h
   | swap i => exact swapAt_sound hsc h
+  | slide i j => exact slideAt_sound hsc h
 
 theorem run_sound (hsc : ∀ c c' : Gate 0, c = c') (eqs : List (DEqn R n)) :
     ∀ (steps : List Step) (w w' : List (Gen Gate n)), run eqs steps w = some w' →
