@@ -90,12 +90,14 @@ and replayed by the kernel (`decide +kernel`); only the replay is trusted.
   `Equation21/28/30/43/44/46.agda` apply them (`lemma-rel-A`,
   `lemma-rel-B`, `rel-C`); between those places, normal forms agree.
 
-The generating scripts (Python, in `Lean/Scratch/CliffordT2/py`, not part
-of the library) are: `chain.py`, `cliffnf.py`, `psearch.py` (Clifford
-tables), `rot.py`, `rotcert.py`, `agda_chain.py` (rotations, normal forms,
-equations; `agda_chain.py` reads the words around the non-obvious steps
-from the authors' ancillary Agda files), `emit.py`, `gen_equations.py`
-(Lean output).
+The generating scripts are in `gen/` (Python).  `gen/README.md` says:
+
+- which script writes which module (`Cert/*`, `Eqs/*`, `Equations.lean`,
+  `SimplifiedGreylyn.lean`);
+- where to get the authors' ancillary files they read (by URL and
+  SHA-256);
+- that a regeneration from scratch reproduces the committed modules byte
+  for byte.
 
 ## Remaining `sorry`s
 
