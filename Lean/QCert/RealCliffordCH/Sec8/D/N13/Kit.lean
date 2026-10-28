@@ -244,6 +244,29 @@ theorem all_two {P : Lt → Prop} {x y : Lt} (hx : P x) (hy : P y) : ∀ g ∈ [
   intro g hg; simp only [List.mem_cons, List.mem_nil_iff, or_false] at hg
   rcases hg with rfl | rfl <;> assumption
 
+/-- `X` on wire `q`, as three letters. -/
+def xL (q : ℕ) : List Lt := [.s (.H q), .s (.Z q), .s (.H q)]
+
+theorem wc_xconj (K N q : ℕ) (g : Lt) :
+    wc K N (xL q ++ [g] ++ xL q) = xAt N q * g.circ K N * xAt N q := by
+  simp [wc, xL, drawn, xAt_eq, circW, mul_assoc, Lt.circ]
+
+theorem wc_xconj2 (K N q : ℕ) (g h : Lt) :
+    wc K N (xL q ++ [g, h] ++ xL q) = xAt N q * (h.circ K N * g.circ K N) * xAt N q := by
+  simp [wc, xL, drawn, xAt_eq, circW, mul_assoc, Lt.circ]
+
+/-- Conjugating a commutation by an involution `u`. -/
+theorem comm_flip {N : ℕ} {a b a' b' u : Circ N} (h : Comm N a b)
+    (hu : Derivable (theory N) (u * u) 1) (ha : Derivable (theory N) (u * a * u) a')
+    (hb : Derivable (theory N) (u * b * u) b') : Comm N a' b' :=
+  Comm.congr ha hb (Comm.conj h hu)
+
+/-- Pointwise equality of control functions: the wires `0, …, 5` one by one,
+the others by `omega`. -/
+macro "ctl_tac" : tactic => `(tactic| (intro i hi; rcases i with _ | _ | _ | _ | _ | _ | i <;>
+  (simp only [ctl, ctlX, ctlOr, ctlAt, blackOn, colOn, setCtl]) <;> (try split_ifs) <;>
+  first | rfl | (exfalso; omega) | simp_all | omega))
+
 /-! ## The local wires stay below -/
 
 theorem lowW_mono {n m m' : ℕ} {u : Circ n} (h : LowW m u) (hm : m ≤ m') : LowW m' u :=
@@ -284,6 +307,17 @@ theorem lowW_lt {K : ℕ} (x : Lt) (hx : x.ok K = true) (hb : ∀ Kd tg cs, x �
     cases b
     · exact lowW_mcL Kd tg cs hx N hN
     · exact absurd rfl (hb Kd tg cs)
+
+/-- A multi-controlled gate without controls above `k` is at the bottom. -/
+theorem mc_atBot {k : ℕ} (Kd : Kind) (tg : List ℕ) (c : ℕ → Option Bool) (htg : tg.length = kindSp Kd)
+    (hnd : tg.Nodup) (hlt : ∀ t ∈ tg, t < k) (hc : ∀ j, k ≤ j → c j = none) :
+    ∀ N, k ≤ N → mc N Kd tg c = atBot N (mc k Kd tg c) := by
+  intro N hN
+  induction N, hN using Nat.le_induction with
+  | base => rw [atBot_self]
+  | succ M hM ih =>
+    rw [mc_top M Kd tg c htg hnd (fun t ht => by have := hlt t ht; omega) (hc M hM), ih,
+      atBot_succ M _ (by omega)]
 
 /-! ## Colouring the bulk -/
 
