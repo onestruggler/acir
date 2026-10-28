@@ -1344,4 +1344,364 @@ theorem mc_swap (N j : ℕ) (hj : j + 2 ≤ N) (K : Kind) (tg : List ℕ) (c : �
     List.prod_cons, List.prod_nil, mul_one, List.map_append] at h
   simpa only [mul_assoc, List.map_append] using h
 
+/-! ## `atBot` -/
+
+theorem atBot_mul : ∀ (N : ℕ) {m : ℕ} (a b : Circ m), atBot N (a * b) = atBot N a * atBot N b
+  | 0, _, _, _ => by simp [atBot]
+  | N + 1, m, a, b => by
+    by_cases h : m = N + 1
+    · subst h; simp
+    · rw [atBot_succ N _ h, atBot_succ N _ h, atBot_succ N _ h, atBot_mul N, map_mul]
+
+theorem atBot_drawn (N : ℕ) {m : ℕ} (l : List (Circ m)) :
+    atBot N (drawn l) = drawn (l.map (atBot N)) := by
+  induction l with
+  | nil =>
+    show atBot N 1 = 1
+    have := atBot_mul N (1 : Circ m) 1
+    rw [mul_one] at this
+    exact (mul_eq_left.1 this.symm)
+  | cons a l ih => rw [drawn_cons, List.map_cons, drawn_cons, atBot_mul, ih]
+
+/-- A derivation on `m` wires holds on the bottom `m` wires of `N ≥ m`. -/
+theorem der_atBot {m : ℕ} {a b : Circ m} (d : Derivable (theory m) a b) :
+    ∀ N, m ≤ N → Derivable (theory N) (atBot N a) (atBot N b)
+  | 0, h => by simp [atBot]; exact Derivable.refl _
+  | N + 1, h => by
+    by_cases e : m = N + 1
+    · subst e; simpa using d
+    · rw [atBot_succ N _ e, atBot_succ N _ e]
+      exact derivable_padTop (der_atBot d N (by omega))
+
+theorem atBot_swAt {m : ℕ} (u : ℕ) (hu : u + 2 ≤ m) : ∀ N, m ≤ N → atBot N (swAt m u) = swAt N u
+  | 0, h => by omega
+  | N + 1, h => by
+    by_cases e : m = N + 1
+    · subst e; simp
+    · rw [atBot_succ N _ e, atBot_swAt u hu N (by omega), swAt_top N u (by omega)]
+
+/-! ## Swapping two controls -/
+
+/-- The canonical gate of a kind with `k` controls, on its own wires. -/
+def canonC : (K : Kind) → (k : ℕ) → Circ (k + kindSp K)
+  | .box, k => box k
+  | .zx, k => zx k
+  | .xz, k => xz k
+  | .hg, k => mch k
+
+theorem canonAt_eq (N : ℕ) (K : Kind) (k : ℕ) (ps : List ℕ) :
+    canonAt N K k ps = placeG N (canonC K k) ps := by
+  cases K <;> rfl
+
+/-- The canonical gate commutes with the swap of any two adjacent controls
+(Equations (307), (313) and (353) at the canonical position). -/
+def CanonSym (K : Kind) (k : ℕ) : Prop :=
+  ∀ u, kindSp K ≤ u → u + 2 ≤ k + kindSp K →
+    Derivable (theory (k + kindSp K)) (drawn [swAt _ u, canonC K k, swAt _ u]) (canonC K k)
+
+theorem tau_getD {ps : List ℕ} (hnd : ps.Nodup) {u j i : ℕ} (hi : i < ps.length)
+    (hu : u + 1 < ps.length) (hpu : ps.getD u 0 = j) (hpu' : ps.getD (u + 1) 0 = j + 1) :
+    tau j (ps.getD (tau u i) 0) = ps.getD i 0 := by
+  by_cases h1 : i = u
+  · subst h1
+    have e : tau i i = i + 1 := by simp [tau]
+    rw [e, hpu', hpu]; simp [tau]
+  by_cases h2 : i = u + 1
+  · subst h2
+    have e : tau u (u + 1) = u := by simp [tau]
+    rw [e, hpu, hpu']; simp [tau]
+  · have e : tau u i = i := by unfold tau; rw [if_neg h1, if_neg h2]
+    rw [e]
+    have n1 : ps.getD i 0 ≠ j := fun h => h1 (getD_inj hnd hi (by omega) (h.trans hpu.symm))
+    have n2 : ps.getD i 0 ≠ j + 1 := fun h => h2 (getD_inj hnd hi hu (h.trans hpu'.symm))
+    unfold tau; rw [if_neg n1, if_neg n2]
+
+/-- A placed gate that is symmetric in its wires `u`, `u + 1`, placed with
+those on the wires `j`, `j + 1`, commutes with their swap. -/
+theorem placeG_sym {N m : ℕ} (g : Circ m) {ps : List ℕ} (hnd : ps.Nodup)
+    (hps : ∀ p ∈ ps, p < N) (hm : ps.length = m) (u j : ℕ) (hu : u + 2 ≤ m) (hj : j + 2 ≤ N)
+    (hpu : ps.getD u 0 = j) (hpu' : ps.getD (u + 1) 0 = j + 1)
+    (hsym : Derivable (theory m) (drawn [swAt m u, g, swAt m u]) g) :
+    Derivable (theory N) (drawn [swAt N j, placeG N g ps, swAt N j]) (placeG N g ps) := by
+  have hmN : m ≤ N := by
+    calc m = ps.length := hm.symm
+      _ = ps.toFinset.card := (List.toFinset_card_of_nodup hnd).symm
+      _ ≤ (Finset.range N).card := Finset.card_le_card (fun x hx => by
+          simp only [List.mem_toFinset] at hx; simpa using hps x hx)
+      _ = N := Finset.card_range N
+  have hA := der_atBot hsym N hmN
+  rw [atBot_drawn, List.map_cons, List.map_cons, List.map_cons, List.map_nil,
+    atBot_swAt u hu N hmN] at hA
+  set A := atBot N g
+  set μ := netK ps ps.length
+  have hok := (netK_spec hnd hps _ le_rfl).1
+  rw [placeG_eq]
+  have e1 : drawn [swAt N j, placedBy N μ A, swAt N j] = placedBy N (j :: μ) A := by
+    simp only [placedBy, drawn, List.reverse_cons, swW_append, swW_cons, swW_nil, List.reverse_nil,
+      List.nil_append, List.cons_append, List.prod_cons, List.prod_nil, mul_one, one_mul,
+      List.singleton_append, mul_assoc]
+  rw [e1]
+  have e2 : placedBy N (j :: μ) (drawn [swAt N u, A, swAt N u]) = placedBy N (j :: μ ++ [u]) A := by
+    simp only [placedBy, drawn, List.reverse_cons, List.reverse_append, swW_append, swW_cons,
+      swW_nil, List.reverse_nil, List.nil_append, List.cons_append, List.prod_cons, List.prod_nil,
+      mul_one, one_mul, List.singleton_append, mul_assoc]
+  have h3 : Derivable (theory N) (placedBy N (j :: μ) A) (placedBy N (j :: μ ++ [u]) A) := by
+    rw [← e2]; unfold placedBy; exact dright _ (dleft _ hA.symm)
+  refine h3.trans ?_
+  refine placement (m := m) ?_ hok (lowW_atBot N g) ?_
+  · intro x hx
+    simp only [List.cons_append, List.mem_cons, List.mem_append, List.mem_singleton,
+      List.not_mem_nil, or_false] at hx
+    rcases hx with rfl | hx | rfl
+    · exact hj
+    · exact hok x hx
+    · omega
+  · intro q i hi
+    rw [← hm] at hi
+    have hτi : tau u i < ps.length := by unfold tau; split_ifs <;> omega
+    have hu1 : u + 1 < ps.length := by omega
+    have aux := tau_getD hnd hi hu1 hpu hpu'
+    rw [pos_append, pos_cons, pos_cons, pos_nil, netK_pos_iff hnd hps hi]
+    constructor
+    · intro h
+      have h' : pos μ (tau j q) = tau u i := by rw [← h, tau_tau]
+      rw [netK_pos_iff hnd hps hτi] at h'
+      rw [← tau_tau j q, h', aux]
+    · intro h
+      subst h
+      rw [← aux, tau_tau, (netK_pos_iff hnd hps hτi).2 rfl, tau_tau]
+
+theorem range_split {N j : ℕ} (hj : j + 2 ≤ N) :
+    List.range N = List.range j ++ j :: (j + 1) :: List.range' (j + 1 + 1) (N - (j + 2)) := by
+  have h1 := @List.range'_append_1 0 j (N - j)
+  rw [Nat.zero_add, show j + (N - j) = N by omega] at h1
+  rw [List.range_eq_range', List.range_eq_range', ← h1]
+  congr 1
+  rw [show N - j = (N - (j + 2)) + 1 + 1 by omega, List.range'_succ, List.range'_succ]
+
+/-- A permutation of a row of distinct `X` gates. -/
+theorem xs_perm {N : ℕ} {l l' : List ℕ} (hp : l.Perm l') (hnd : l.Nodup) :
+    Derivable (theory N) (drawn (l.map (xAt N))) (drawn (l'.map (xAt N))) := by
+  induction hp with
+  | nil => exact Derivable.refl _
+  | cons x _ ih =>
+    simp only [List.map_cons, drawn_cons]
+    exact dright _ (ih (List.nodup_cons.1 hnd).2)
+  | swap x y l =>
+    simp only [List.map_cons, drawn_cons, mul_assoc]
+    refine dleft _ ?_
+    have hxy : y ≠ x := fun h => by subst h; simp at hnd
+    rcases Nat.lt_or_gt_of_ne hxy with h | h
+    · exact comm_low_high (xAt N y) (xAt N x) (fun g hg => le_trans ((xAt_wires N y).1 g hg) h)
+        (xAt_wires N x).2
+    · exact (comm_low_high (xAt N x) (xAt N y) (fun g hg => le_trans ((xAt_wires N x).1 g hg) h)
+        (xAt_wires N y).2).symm
+  | trans h1 _ ih1 ih2 => exact (ih1 hnd).trans (ih2 (h1.nodup_iff.1 hnd))
+
+theorem whiteWires_nodup (N : ℕ) (tg : List ℕ) (c : ℕ → Option Bool) : (whiteWires N tg c).Nodup :=
+  (List.nodup_range).filter _
+
+/-- The white wires after a swap are those before, swapped, in another order. -/
+theorem whiteWires_perm (N j : ℕ) (hj : j + 2 ≤ N) (tg : List ℕ) (c : ℕ → Option Bool) :
+    ((whiteWires N tg c).map (tau j)).Perm (whiteWires N (tg.map (tau j)) (c ∘ tau j)) := by
+  refine (List.perm_ext_iff_of_nodup ((whiteWires_nodup N tg c).map (fun a b h => by
+    rw [← tau_tau j a, h, tau_tau])) (whiteWires_nodup N _ _)).2 (fun i => ?_)
+  simp only [whiteWires, List.mem_map, List.mem_filter, List.mem_range, Function.comp,
+    contains_map_tau]
+  constructor
+  · rintro ⟨y, ⟨hy, hP⟩, rfl⟩
+    exact ⟨tau_lt hj hy, by rw [tau_tau]; exact hP⟩
+  · rintro ⟨hi, hP⟩
+    exact ⟨tau j i, ⟨tau_lt hj hi, hP⟩, tau_tau j i⟩
+
+/-- Naturality of `mc` for one swap, for every kind and every controls,
+given the symmetry of the canonical gate in its controls. -/
+theorem mc_swap_sym (N j : ℕ) (hj : j + 2 ≤ N) (K : Kind) (tg : List ℕ) (c : ℕ → Option Bool)
+    (htg : tg.length = kindSp K) (hnd : tg.Nodup) (htgN : ∀ t ∈ tg, t < N)
+    (hsym : CanonSym K (ctrlWires N tg c).length) :
+    Derivable (theory N) (drawn [swAt N j, mc N K tg c, swAt N j])
+      (mc N K (tg.map (tau j)) (c ∘ tau j)) := by
+  by_cases hb : j ∈ ctrlWires N tg c ∧ j + 1 ∈ ctrlWires N tg c
+  swap
+  · exact mc_swap N j hj K tg c htg hnd htgN hb
+  set P : ℕ → Bool := fun i => (c i).isSome && !(tg.contains i) with hP
+  have hPj : P j = true := by
+    have := hb.1; simp only [ctrlWires, List.mem_filter] at this; exact this.2
+  have hPj' : P (j + 1) = true := by
+    have := hb.2; simp only [ctrlWires, List.mem_filter] at this; exact this.2
+  have hjt : j ∉ tg := by
+    intro h; simp only [hP, Bool.and_eq_true, Bool.not_eq_true'] at hPj
+    have h3 : ¬ tg.contains j = true := by rw [hPj.2]; decide
+    exact h3 (List.contains_iff_mem.2 h)
+  have hjt' : j + 1 ∉ tg := by
+    intro h; simp only [hP, Bool.and_eq_true, Bool.not_eq_true'] at hPj'
+    have h3 : ¬ tg.contains (j + 1) = true := by rw [hPj'.2]; decide
+    exact h3 (List.contains_iff_mem.2 h)
+  have htg' : tg.map (tau j) = tg := by
+    conv_rhs => rw [← List.map_id tg]
+    refine List.map_congr_left (fun t ht => ?_)
+    have : t ≠ j := fun h => hjt (h ▸ ht)
+    have : t ≠ j + 1 := fun h => hjt' (h ▸ ht)
+    simp only [id]; unfold tau; split_ifs <;> omega
+  -- the control wires do not change
+  have hcw : ctrlWires N tg (c ∘ tau j) = ctrlWires N tg c := by
+    unfold ctrlWires
+    refine List.filter_congr (fun i _ => ?_)
+    simp only [Function.comp]
+    have hs1 : (c j).isSome = true := by
+      simp only [hP, Bool.and_eq_true] at hPj; exact hPj.1
+    have hs2 : (c (j + 1)).isSome = true := by
+      simp only [hP, Bool.and_eq_true] at hPj'; exact hPj'.1
+    unfold tau; split_ifs with h1 h2
+    · rw [h1, hs1, hs2]
+    · rw [h2, hs1, hs2]
+    · rfl
+  -- the position of `j` among the wires of the canonical gate
+  have hsplit : ctrlWires N tg c =
+      (List.range j).filter P ++ j :: (j + 1) :: (List.range' (j + 1 + 1) (N - (j + 2))).filter P := by
+    unfold ctrlWires
+    rw [range_split hj, List.filter_append, List.filter_cons_of_pos hPj,
+      List.filter_cons_of_pos hPj']
+  set u := tg.length + ((List.range j).filter P).length with hu
+  have hpu : (tg ++ ctrlWires N tg c).getD u 0 = j := by
+    rw [hsplit, ← List.append_assoc, List.getD_eq_getElem?_getD,
+      List.getElem?_append_right (by simp [hu])]
+    simp [hu]
+  have hpu' : (tg ++ ctrlWires N tg c).getD (u + 1) 0 = j + 1 := by
+    rw [hsplit, ← List.append_assoc, List.getD_eq_getElem?_getD,
+      List.getElem?_append_right (by simp only [List.length_append, hu]; omega)]
+    simp [hu, show tg.length + (List.filter P (List.range j)).length + 1 -
+      (tg.length + (List.filter P (List.range j)).length) = 1 by omega]
+  have hlen : (tg ++ ctrlWires N tg c).length = (ctrlWires N tg c).length + kindSp K := by
+    simp [htg, Nat.add_comm]
+  have hu2 : u + 2 ≤ (ctrlWires N tg c).length + kindSp K := by
+    rw [← hlen, hsplit]; simp [hu]; omega
+  have hsym' := hsym u (by simp [hu, htg]) hu2
+  have hps : ∀ p ∈ tg ++ ctrlWires N tg c, p < N := fun p hp => by
+    rcases List.mem_append.1 hp with hp | hp
+    · exact htgN p hp
+    · simp only [ctrlWires, List.mem_filter, List.mem_range] at hp; exact hp.1
+  have hG := placeG_sym (canonC K (ctrlWires N tg c).length) (ctrlWires_nodup N tg c hnd) hps
+    hlen u j hu2 hj hpu hpu' hsym'
+  unfold mc
+  rw [htg', hcw, canonAt_eq]
+  have e : drawn [swAt N j, colourW N (whiteWires N tg c)
+      (placeG N (canonC K (ctrlWires N tg c).length) (tg ++ ctrlWires N tg c)), swAt N j] =
+      swAt N j * colourW N (whiteWires N tg c)
+        (placeG N (canonC K (ctrlWires N tg c).length) (tg ++ ctrlWires N tg c)) * swAt N j := by
+    simp [drawn, mul_assoc]
+  rw [e]
+  refine (colourW_conj N j hj _ _).trans ?_
+  rw [colourW_eq, colourW_eq]
+  have hG' : Derivable (theory N)
+      (swAt N j * placeG N (canonC K (ctrlWires N tg c).length) (tg ++ ctrlWires N tg c) * swAt N j)
+      (placeG N (canonC K (ctrlWires N tg c).length) (tg ++ ctrlWires N tg c)) := by
+    simpa [drawn, mul_assoc] using hG
+  have hw := whiteWires_perm N j hj tg c
+  rw [htg'] at hw
+  have hx := xs_perm (N := N) hw ((whiteWires_nodup N tg c).map (fun a b h => by
+    rw [← tau_tau j a, h, tau_tau]))
+  exact dmul (dmul hx hG') hx
+
+/-! ## The canonical gates at the canonical position -/
+
+theorem netK_id : ∀ (m k : ℕ), k ≤ m → netK (List.range m) k = []
+  | _, 0, _ => rfl
+  | m, k + 1, hk => by
+    rw [netK, netK_id m k (by omega)]
+    have h1 : (List.range m).getD k 0 = k := by
+      rw [getD_eq (by simp; omega), List.getElem_range]
+    have h2 : curPos (List.range m) k k = k := by
+      have : (List.take k (List.range m)).filter (fun p => decide (k < p)) = [] := by
+        rw [List.filter_eq_nil_iff]
+        intro a ha
+        rw [List.take_range] at ha
+        simp only [List.mem_range] at ha
+        simp only [decide_eq_true_eq]; omega
+      simp only [curPos, this, List.length_nil, Nat.add_zero]
+    rw [h1, h2, run_self]; rfl
+
+theorem placeG_id (m : ℕ) (g : Circ m) : placeG m g (List.range m) = g := by
+  simp [placeG, netL_eq, netK_id m m le_rfl, drawn]
+
+/-- The canonical gate is `mc` on its own wires with black controls. -/
+theorem mc_canon (K : Kind) (k : ℕ) :
+    mc (k + kindSp K) K (List.range (kindSp K)) (blackOn (kindSp K) (k + kindSp K)) =
+      canonC K k := by
+  have hcw : ctrlWires (k + kindSp K) (List.range (kindSp K)) (blackOn (kindSp K) (k + kindSp K)) =
+      List.range' (kindSp K) k := by
+    refine eq_of_lt_mem ((List.pairwise_lt_range).filter _) ?_ (fun i => ?_)
+    · exact List.pairwise_lt_range'
+    · simp only [ctrlWires, blackOn, List.mem_filter, List.mem_range, List.mem_range'_1,
+        Bool.and_eq_true, Bool.not_eq_true', List.contains_eq_any_beq]
+      constructor
+      · rintro ⟨_, h1, h2⟩
+        by_cases h : kindSp K ≤ i ∧ i < k + kindSp K
+        · omega
+        · simp [h] at h1
+      · intro h
+        refine ⟨by omega, by simp; omega, ?_⟩
+        simp only [List.any_eq_false, List.mem_range, beq_iff_eq]
+        intro x hx; omega
+  have hww : whiteWires (k + kindSp K) (List.range (kindSp K)) (blackOn (kindSp K) (k + kindSp K)) =
+      [] := by
+    simp only [whiteWires, List.filter_eq_nil_iff, blackOn]
+    intro i _
+    split_ifs <;> simp
+  have hps : List.range (kindSp K) ++ List.range' (kindSp K) k = List.range (k + kindSp K) := by
+    have h1 := @List.range'_append_1 0 (kindSp K) k
+    rw [Nat.zero_add] at h1
+    rw [List.range_eq_range', List.range_eq_range', h1, Nat.add_comm]
+  simp only [mc, hcw, hww, List.length_range', hps, canonAt_eq, placeG_id]
+  simp [colourW, drawn]
+
+/-- The symmetry of the canonical gate in its controls, from the same
+statement for its `mc` form on its own wires. -/
+theorem canonSym_of (K : Kind) (k : ℕ)
+    (h : ∀ u, kindSp K ≤ u → u + 2 ≤ k + kindSp K →
+      Derivable (theory (k + kindSp K))
+        (drawn [mc (k + kindSp K) K (List.range (kindSp K)) (blackOn (kindSp K) (k + kindSp K)),
+          swAt (k + kindSp K) u])
+        (drawn [swAt (k + kindSp K) u,
+          mc (k + kindSp K) K (List.range (kindSp K)) (blackOn (kindSp K) (k + kindSp K))])) :
+    CanonSym K k := by
+  intro u hu hu2
+  have hu' := h u hu hu2
+  rw [mc_canon] at hu'
+  have hs := swsw (k + kindSp K) u hu2
+  simp only [drawn, List.reverse_cons, List.reverse_nil, List.nil_append, List.cons_append,
+    List.prod_cons, List.prod_nil, mul_one] at hu' ⊢
+  have h1 := dright (swAt (k + kindSp K) u) hu'
+  have h2 := dleft (canonC K k) hs
+  rw [mul_one] at h2
+  rw [← mul_assoc]
+  exact h1.trans (by rw [mul_assoc]; exact h2)
+
+/-- (307) at the canonical position: the symmetry of the box in its controls. -/
+theorem canonSym_box (k : ℕ)
+    (h307 : ∀ j, 1 ≤ j → j + 2 ≤ k + 1 →
+      Derivable (theory (k + 1)) (drawn [mc (k + 1) .box [0] (blackOn 1 (k + 1)), swAt (k + 1) j])
+        (drawn [swAt (k + 1) j, mc (k + 1) .box [0] (blackOn 1 (k + 1))])) :
+    CanonSym .box k :=
+  canonSym_of .box k h307
+
+/-- (313) at the canonical position. -/
+theorem canonSym_hg (k : ℕ)
+    (h313 : ∀ j, 2 ≤ j → j + 2 ≤ k + 2 →
+      Derivable (theory (k + 2)) (drawn [mc (k + 2) .hg [0, 1] (blackOn 2 (k + 2)), swAt (k + 2) j])
+        (drawn [swAt (k + 2) j, mc (k + 2) .hg [0, 1] (blackOn 2 (k + 2))])) :
+    CanonSym .hg k :=
+  canonSym_of .hg k h313
+
+/-- (353) at the canonical position, for `ZX` (`a = false`) and `XZ`. -/
+theorem canonSym_zx (k : ℕ) (a : Bool)
+    (h353 : ∀ j, 1 ≤ j → j + 2 ≤ k + 1 →
+      Derivable (theory (k + 1))
+        (drawn [mc (k + 1) (Kind.sgnZX a) [0] (blackOn 1 (k + 1)), swAt (k + 1) j])
+        (drawn [swAt (k + 1) j, mc (k + 1) (Kind.sgnZX a) [0] (blackOn 1 (k + 1))])) :
+    CanonSym (Kind.sgnZX a) k := by
+  cases a
+  · exact canonSym_of .zx k h353
+  · exact canonSym_of .xz k h353
+
 end QCert.RealCliffordCH.Sec8.Net
