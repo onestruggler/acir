@@ -24,6 +24,7 @@ variable (p g) in
 /-- The class of the scalar `-ω`. -/
 noncomputable abbrev νc (n : ℕ) : CG p g n := mk p g n negω
 
+omit [OddGen p g] in
 theorem νc_comm {n : ℕ} (x : CG p g n) : Commute (νc p g n) x := by
   obtain ⟨w, rfl⟩ := mk_surjective n x
   have := scalar_pow_comm p g (n := n) 1 w
@@ -112,6 +113,7 @@ noncomputable def ιs (n : ℕ) : Gs p g n →* Gs p g (n + 1) :=
 @[simp] theorem ιs_qs {n : ℕ} (w : Circ n) : ιs p g n (qs p g n w) = qs p g (n + 1) (Circuit.shift w) :=
   rfl
 
+omit [OddGen p g] in
 theorem mk_pad_negω (n k : ℕ) : mk p g (n + k) (Circuit.pad n negω) = mk p g (n + k) negω := rfl
 
 theorem Sc_le_comap_pad (n k : ℕ) : Sc p g k ≤ (Sc p g (n + k)).comap (padG p g n k) := by
@@ -181,6 +183,7 @@ theorem commute_of_gens_CG {n k m : ℕ} (f : CG p g k →* CG p g n) (f' : CG p
   rw [map_mul]
   exact Commute.mul_right (h y z) hb
 
+omit [OddGen p g] in
 theorem commute_mk_of_lift {n : ℕ} {a b : Gen Gate n}
     (h : Theory p g n (FreeMonoid.of a * FreeMonoid.of b) (FreeMonoid.of b * FreeMonoid.of a)) :
     Commute (mk p g n (FreeMonoid.of b)) (mk p g n (FreeMonoid.of a)) := by

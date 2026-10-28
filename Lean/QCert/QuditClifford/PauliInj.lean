@@ -37,7 +37,7 @@ theorem weylOp_mul {n : ℕ} (u v : V p n) :
     dsimp only
     rw [← ψ_add, ← ψ_add]
     congr 1
-    simp only [z_wtr, Pi.add_apply, Prod.fst_add, Prod.snd_add, ← Finset.sum_add_distrib]
+    simp only [z_wtr, Pi.add_apply, Prod.snd_add, ← Finset.sum_add_distrib]
     exact Finset.sum_congr rfl fun i _ => by ring
 
 theorem weylOp_zero {n : ℕ} : weylOp p (0 : V p n) = 1 := by
@@ -140,11 +140,13 @@ theorem sem_xzc (hp2 : p ≠ 2) (u : ZMod p × ZMod p) :
   rw [sem_X_weyl p hp2, sem_Z_weyl p hp2, weylOp_X_pow, weylOp_Z_pow, weylOp_mul]
   dsimp only
   simp only [mul_zero, Finset.sum_const_zero, ψ_zero, one_smul]
-  congr 1; funext i; ext <;> simp [ZMod.natCast_zmod_val]
+  congr 1; funext i; ext <;> simp
 
+omit hp in
 theorem weylLo_one {n : ℕ} (v : V p (n + 1)) : weylLo p (k := 1) v = fun _ => v 0 := by
   funext i; rw [Subsingleton.elim i 0]; rfl
 
+omit hp in
 theorem weylHi_one {n : ℕ} (v : V p (n + 1)) : weylHi p (k := 1) v = Fin.tail v := by
   funext j; simp only [weylHi, Fin.tail]; congr 1; ext; simp [Nat.add_comm]
 

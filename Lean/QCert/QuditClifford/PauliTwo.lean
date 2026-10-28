@@ -86,8 +86,7 @@ theorem alg_cx_Z {B cx s t c zt zb : G} (hB2 : B * B = 1) (hBcx : B * cx * B⁻�
     _ = (B * cx * B⁻¹) * (B * s * B) * (B * cx⁻¹ * B⁻¹) * (cx⁻¹ * s⁻¹ * cx) := by
         rw [hBcx, hcxB]; gnorm
     _ = B * (cx * s * cx⁻¹) * B⁻¹ * (cx⁻¹ * s * cx)⁻¹ := by
-        simp only [one_mul, mul_assoc, mul_inv_rev, inv_inv, mul_inv_cancel_left, inv_mul_cancel_left,
-          mul_inv_cancel, inv_mul_cancel, mul_one, inv_one, hBi, hBB, hB2]
+        simp only [mul_assoc, mul_inv_rev, inv_inv, hBi, hBB]
     _ = (B * (zt * t) * B⁻¹) * (B * s * B⁻¹) * (B * c * B⁻¹)⁻¹ * (t * s * c)⁻¹ := by
         rw [hcx, h12]; gnorm
     _ = (zt * t) * (zb * s) * (c⁻¹)⁻¹ * (t * s * c)⁻¹ := by rw [hBt, hBs, hBc]
