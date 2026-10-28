@@ -14,6 +14,7 @@ numerically against the definitions at `N = 3, …, 6` (scratch
 -/
 import QCert.RealCliffordCH.Sec8.D.Colour
 import QCert.RealCliffordCH.Sec8.D.N8.I277
+import QCert.RealCliffordCH.Sec8.D.N8.I269
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -39,8 +40,8 @@ abbrev Bx1 (N : ℕ) : Circ N := mc N .box [1] (ctlOr (ctlAt 0 true) (blackOn 3 
 (controls `1`, `2`), `B` the box on wire `1` (controls `0`, `3, …`). -/
 theorem eq269 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
     Derivable (theory N) (Bx N)
-      (drawn [mc N .zx [0] (blackOn 1 3), Bx1 N, mc N .xz [0] (blackOn 1 3), Bx1 N]) := by
-  sorry
+      (drawn [mc N .zx [0] (blackOn 1 3), Bx1 N, mc N .xz [0] (blackOn 1 3), Bx1 N]) :=
+  N8.eq269' N hN ih
 
 /-- (290): the box without controls on the wires `2`, `3` commutes with the
 `ZX` controlled by the wires `1, 2, 3`. -/
