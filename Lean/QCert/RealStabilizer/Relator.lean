@@ -221,4 +221,10 @@ theorem Holds.variant' {k : ℕ} {l r l' r' : List Lt} (h : Holds k l r) (hl : B
   rw [e] at this
   exact this
 
+/-- An equation from its relator: `l r⁻¹ = 1` (every letter an involution). -/
+theorem Holds.of_relator {k : ℕ} {l r : List Lt} (hr : Bnd k r) (h : Holds k (l ++ r.reverse) []) :
+    Holds k l r := by
+  have := Holds.split (bnd_reverse hr) h
+  rwa [List.reverse_reverse] at this
+
 end QCert.RealStabilizer

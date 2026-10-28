@@ -339,3 +339,37 @@ def step(d, names, tgt, anyone, known):
             return True
     d.word, d.steps = saved
     return False
+
+
+def collapse(w, names, kmax, limit=200000):
+    """A path of words from w to the empty word (scalars counted mod 2),
+    each one rewrite by one of `names` from the last: best-first by length.
+    A relation l = r follows from the path for its relator l ++ rev(r)."""
+    import heapq
+    b, p = strip_w(w)
+    start = (tuple(canon(b)), p % 2)
+    seen = {start: None}
+    words = {start: (b, p % 2)}
+    heap = [(len(b), 0, start)]
+    cnt = 0
+    while heap:
+        _, _, key = heapq.heappop(heap)
+        if key == ((), 0):
+            path = []
+            while key is not None:
+                wb, wp = words[key]
+                path.append(wb + [M] * wp)
+                key = seen[key]
+            return path[::-1]
+        wb, wp = words[key]
+        for nw, np_ in neighbours(wb, wp, names, kmax, limit=20):
+            k2 = (tuple(canon(nw)), np_)
+            if k2 in seen:
+                continue
+            seen[k2] = key
+            words[k2] = (nw, np_)
+            cnt += 1
+            heapq.heappush(heap, (len(nw), cnt, k2))
+        if cnt > limit:
+            return None
+    return None

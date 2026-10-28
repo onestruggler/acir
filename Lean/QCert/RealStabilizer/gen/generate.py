@@ -12,10 +12,11 @@ Every derivation is found here, in one run, from R1-R16 (Figure 1):
 1. the supplement's lemmas L1-L19 and their upside-down versions, line by
    line (`derive.derive_lines`);
 2. the typed relations, in the supplement's order, from its derivations;
-   where a relation is false as printed (`relations.CORRECTIONS`) its
-   corrected statement is derived instead, each drawn line that is off by
-   one gate being repaired by the one insertion that lets the cited step go
-   through (`derive_repaired`);
+   where a relation is false as printed (`relations.CORRECTIONS`), or the
+   supplement's derivation does not go through, the relation as used is
+   derived from its relator `l r⁻¹ = 1` (every letter is an involution),
+   collapsed to the empty word by a best-first search over the equations
+   derived so far (`derive.collapse`);
 3. the 139 relations of Appendix B as stated (`relations.records`), each
    by a short derivation from the equation of step 2 it is (up to the order
    of commuting letters and the side of the scalar), or from its typed twin.
@@ -59,50 +60,19 @@ def add(name, k, first, last):
     engine.set_db(engine.DB + [derive.normalise(name, k, first, last)])
 
 
-def repairs(gs, neg, L, k):
-    """The lines one Z or X gate away from gs that denote L."""
-    for p in range(len(gs), -1, -1):
-        for g in ('Z', 'X'):
-            for q in range(k):
-                gs2 = gs[:p] + [(g, q)] + gs[p:]
-                if paper.same(derive.letters(gs2, neg), L, k):
-                    yield gs2
-
-
-def derive_repaired(lines, k, known):
-    """Like derive.derive_lines, but a line that does not denote the first
-    line's operator is replaced by the first repair the cited step reaches."""
-    L = derive.letters(lines[0][1], lines[0][2])
-    d = Deriv(L, k)
-    prev = L
-    pending = []
-    for idx in range(1, len(lines)):
-        lab, gs, neg = lines[idx]
-        pending.append(lab)
-        names, anyone = [], False
-        for lb in pending:
-            ls = derive.labels_for(lb, known)
-            if ls is None:
-                anyone = True
-            else:
-                names += ls
-        w = derive.letters(gs, neg)
-        if paper.same(w, L, k):
-            cands = [w]
-        else:
-            cands = [derive.letters(g2, neg) for g2 in repairs(gs, neg, L, k)]
-        for tgt in cands:
-            saved = (list(d.word), list(d.steps))
-            derive.reorder_to_canon(d, prev)
-            if derive.step(d, names, tgt, anyone, known):
-                prev = tgt
-                pending = []
-                break
-            d.word, d.steps = saved
-        else:
-            if idx == len(lines) - 1:
-                return None, 'last line not reached'
-    return d, None
+def by_relator(L, R, k):
+    """A derivation of the relator L ++ rev(R) down to the empty word, by
+    `derive.collapse` over the equations so far (of at most k wires)."""
+    names = [e[0] for e in engine.DB if '@' not in e[0] and e[1] <= k]
+    path = derive.collapse(L + R[::-1], names, k)
+    if path is None:
+        return None
+    d = Deriv(L + R[::-1], k)
+    if not derive.follow(d, path, names):
+        return None
+    if not finish(d, []):
+        return None
+    return d
 
 
 def finish(d, R):
@@ -140,7 +110,7 @@ def run_derivations():
                 log(nm, 'FAILED (ends elsewhere)')
                 res['failed'].append(nm)
                 continue
-            res['lemmas'].append((nm, k, first, last, named(d.steps)))
+            res['lemmas'].append((nm, k, first, last, named(d.steps), 'line'))
             add(nm, k, first, last)
             known.append(nm)
             log(nm, 'ok', len(d.steps))
@@ -163,33 +133,30 @@ def run_derivations():
                 if not finish(d, last):
                     log(name, 'ends elsewhere')
                     err = 'ends elsewhere'
+        kind = 'line'
         if d is None or err:
             if rec is None:
                 log(name, 'FAILED (no relation)')
                 res['failed'].append(name)
                 continue
             _, _, _, (lg, ln), (rg, rn), _ = rec
-            ls = [(None, lg, ln)] + lines[1:-1] + [(lines[-1][0], rg, rn)]
-            k = max(derive.frame(ls), 2)
-            d, err = derive_repaired(ls, k, known)
-            if err:
-                log(name, 'FAILED', err)
-                res['failed'].append(name)
-                continue
             first = derive.letters(lg, ln)
             last = derive.letters(rg, rn)
-            if not finish(d, last):
-                log(name, 'FAILED (ends elsewhere)')
+            k = max(derive.frame(lines), paper.width(first), paper.width(last), 1)
+            d = by_relator(first, last, k)
+            if d is None:
+                log(name, 'FAILED')
                 res['failed'].append(name)
                 continue
+            kind = 'relator'
         tn = 'T' + name
-        res['typed'].append((tn, k, first, last, named(d.steps)))
+        res['typed'].append((tn, k, first, last, named(d.steps), kind))
         add(tn, k, first, last)
         known.append(tn)
-        log(tn, 'ok', len(d.steps))
+        log(tn, 'ok', kind, len(d.steps))
     # 3. Appendix B as stated
     tkeys = {}
-    for tn, k, first, last, _ in res['typed']:
+    for tn, k, first, last, _, _ in res['typed']:
         a, ap = strip_w(first)
         b, bp = strip_w(last)
         tkeys.setdefault((tuple(canon(a)), tuple(canon(b)), (ap + bp) % 2), (tn, k))
@@ -201,17 +168,20 @@ def run_derivations():
         b, bp = strip_w(R)
         hit = tkeys.get((tuple(canon(a)), tuple(canon(b)), (ap + bp) % 2))
         if hit is None:
-            log('relation', num, 'FAILED (no derivation)')
-            res['failed'].append(num)
-            continue
+            hit = (None, 1)
         tn, k = hit
         k = max(k, paper.width(L), paper.width(R), 1)
         d = Deriv(L, k)
-        if not (derive.step(d, [tn], R, False, known) and finish(d, R)):
-            log('relation', num, 'FAILED (step)')
-            res['failed'].append(num)
-            continue
-        res['records'].append((num, fig, supp, (lg, ln), (rg, rn), note, k, tn, named(d.steps)))
+        kind = 'line'
+        if tn is None or not (derive.step(d, [tn], R, False, known) and finish(d, R)):
+            d = by_relator(L, R, k)
+            kind = 'relator'
+            if d is None:
+                log('relation', num, 'FAILED (step)')
+                res['failed'].append(num)
+                continue
+        res['records'].append((num, fig, supp, (lg, ln), (rg, rn), note, k, tn, named(d.steps),
+                               kind))
     res['db'] = list(engine.DB)
     return res
 
@@ -278,6 +248,13 @@ def of_derives(names, st, indent=2):
     return (pad + 'Holds.of_derives (%s)\n' % dbterm(names) +
             pad + '  (steps := %s)\n' % steps_lean(st, remap, indent + 2) +
             pad + '  (by decide +kernel)\n')
+
+
+def proof(kind, names, st):
+    """`Holds k l r` by a derivation from l to r, or of its relator."""
+    if kind == 'line':
+        return of_derives(names, st)
+    return '  Holds.of_relator (by decide) <|\n' + of_derives(names, st, 4)
 
 
 def eqn_def(name, k, l, r, doc=None):
@@ -394,8 +371,8 @@ class Emitter:
     def __init__(self, res):
         self.db = {e[0]: e for e in res['db']}
         self.raw = {}
-        for nm, k, first, last, st in res['lemmas'] + res['typed']:
-            self.raw[nm] = (k, first, last, st)
+        for nm, k, first, last, st, kind in res['lemmas'] + res['typed']:
+            self.raw[nm] = (k, first, last, st, kind)
         self.done = set()
 
     def need(self, name, out):
@@ -411,22 +388,19 @@ class Emitter:
                        '  Holds.variant\' h%s (by decide) (by decide) %s %s %s (by decide +kernel)\n\n'
                        % (ident(name), ident(name), ident(name), ident(name), ident(base), f, i, j))
         elif name in self.raw:
-            k0, first, last, st = self.raw[name]
+            k0, first, last, st, kind = self.raw[name]
             for g in used(st):
                 self.need(g, out)
             doc = DOCS.get(name, 'Derived as in the supplement.')
-            if (l, r) == (first, last):
-                out.append(eqn_def(name, k, l, r, doc))
-                out.append('theorem h%s : Holds e%s.k e%s.l e%s.r :=\n' % ((ident(name),) * 4) +
-                           of_derives(used(st), st))
-            else:
-                out.append(eqn_def(name + '_raw', k, first, last, doc))
-                out.append('theorem h%s_raw : Holds e%s_raw.k e%s_raw.l e%s_raw.r :=\n'
-                           % ((ident(name),) * 4) + of_derives(used(st), st))
+            raw = name if (l, r) == (first, last) else name + '_raw'
+            out.append(eqn_def(raw, k, first, last, doc))
+            out.append('theorem h%s : Holds e%s.k e%s.l e%s.r :=\n' % ((ident(raw),) * 4) +
+                       proof(kind, used(st), st))
+            if raw != name:
                 out.append(eqn_def(name, k, l, r, 'The same, the scalars collected on the right.'))
                 out.append('theorem h%s : Holds e%s.k e%s.l e%s.r :=\n'
-                           '  Holds.variant\' h%s_raw (by decide) (by decide) 0 0 %d (by decide +kernel)\n\n'
-                           % (ident(name), ident(name), ident(name), ident(name), ident(name),
+                           "  Holds.variant' h%s (by decide) (by decide) 0 0 %d (by decide +kernel)\n\n"
+                           % (ident(name), ident(name), ident(name), ident(name), ident(raw),
                               len(l)))
         else:
             raise KeyError(name)
@@ -443,19 +417,35 @@ def module(doc, imports, body):
 def gen_all(res):
     files = {'Boxes.lean': gen_boxes()}
     em = Emitter(res)
-    # Axioms
+    # Axioms: each relation as Syntax.lean states it (gates drawn at the
+    # same position bottom wire first), and in the form the derivations use
+    engine.set_db(res['db'])
+    rel = {'R1': [M, M], 'R1r': []}
+    for i, ch in enumerate(paper.reduced_relations()):
+        (lc, ln), (rc, rn) = ch
+        for side, c, neg in (('', lc, ln), ('r', rc, rn)):
+            gs = [it for x, it in sorted(c.items, key=lambda p: (p[0], min(
+                [v for v in p[1][1:] if isinstance(v, int)] or [0])))]
+            rel['R%d%s' % (i + 2, side)] = derive.letters(gs, neg)
     body = []
     for nm, k, l, r in res['db']:
-        if nm.startswith('R') and '@' not in nm:
-            num = int(nm[1:])
-            if num == 1:
-                body.append(eqn_def(nm, k, l, r, 'R1 of Figure 1: `(-1)(-1) = 1`.'))
-            else:
-                body.append(eqn_def(nm, k, l, r, 'R%d of Figure 1.' % num))
-            body.append('theorem h%s : Holds e%s.k e%s.l e%s.r :=\n'
-                        '  Holds.of_rel Rel.%s _ _ rfl rfl (by decide) (by decide)\n\n'
-                        % (nm, nm, nm, nm, nm))
-            em.done.add(nm)
+        if not (nm.startswith('R') and '@' not in nm):
+            continue
+        doc = 'R1 of Figure 1: `(-1)(-1) = 1`.' if nm == 'R1' else '%s of Figure 1.' % nm
+        lr, rr = rel[nm], rel[nm + 'r']
+        raw = nm if (lr, rr) == (l, r) else nm + '_rel'
+        body.append(eqn_def(raw, k, lr, rr, doc if raw == nm else doc + '  As `Syntax` states it.'))
+        body.append('theorem h%s : Holds e%s.k e%s.l e%s.r :=\n'
+                    '  Holds.of_rel Rel.%s _ _ rfl rfl (by decide) (by decide)\n\n'
+                    % (raw, raw, raw, raw, nm))
+        if raw != nm:
+            engine.set_db(engine.DB + [(raw, k, lr, rr)])
+            d = Deriv(l, k)
+            assert derive.step(d, [raw], r, False, []) and finish(d, r), nm
+            body.append(eqn_def(nm, k, l, r, 'The same, as the derivations use it.'))
+            body.append('theorem h%s : Holds e%s.k e%s.l e%s.r :=\n' % ((nm,) * 4) +
+                        of_derives(used(named(d.steps)), named(d.steps)))
+        em.done.add(nm)
     files['Axioms.lean'] = module('''# Real stabilizer circuits: the relations as equations of letters
 
 The reduced relations R1-R16 of Figure 1 as equations between words of
@@ -502,7 +492,7 @@ split relators, `Holds.variant`) are stated as they are used.  Generated by
     # Appendix B as stated
     parts = []
     body = []
-    for num, fig, supp, (lg, ln), (rg, rn), note, k, tn, st in res['records']:
+    for num, fig, supp, (lg, ln), (rg, rn), note, k, tn, st, kind in res['records']:
         for g in used(st):
             em.need(g, body)
         doc = 'Relation %d of Appendix B (Figure %d): `%s = %s`.' % (
@@ -511,7 +501,7 @@ split relators, `Holds.variant`) are stated as they are used.  Generated by
             doc += '  Corrected: %s.' % note
         body.append('/-- %s -/\n' % doc)
         body.append('theorem rel%d :\n    Holds %d (%s)\n      (%s) :=\n' % (
-            num, k, circ_expr(lg, ln), circ_expr(rg, rn)) + of_derives(used(st), st))
+            num, k, circ_expr(lg, ln), circ_expr(rg, rn)) + proof(kind, used(st), st))
         if sum(len(b) for b in body) > 120000:
             parts.append(body)
             body = []
