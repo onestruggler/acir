@@ -12,9 +12,9 @@ The main statements are in [`Theorems.lean`](Theorems.lean).
 |---|---|---|---|---|
 | qubit Clifford Cliff₂ | Figure 2, 8 rules | proved | **transferred** from Selinger (`clifford_complete_of_source`, proved; `clifford_complete` through `QCert.SelingerClifford.presentation`) | **proved**, all arities |
 | real Clifford RCliff₂ | Figure 3, 10 rules | proved | **transferred** from Makary–Ross–Selinger (`realClifford_complete_of_source`, proved; `realClifford_complete` through `QCert.RealStabilizer.presentation`) | **proved**, all arities |
-| qutrit Clifford Cliff₃ | Figure 4, 10 rules, (E) corrected | proved | stated (`sorry`) | **proved** up to 2 wires |
-| Clifford+T CliffT₂ | Figure 5, 11 rules | proved | stated up to 2 qubits (`sorry`) | **proved** up to 1 wire, and (CPh), (B), (CZ) independent |
-| Clifford+CS CliffCS₂ | Figure 6, 14 rules | proved | stated up to 3 qubits (`sorry`) | **proved** up to 2 wires, and (I) independent |
+| qutrit Clifford Cliff₃ | Figure 4, 10 rules, (E) corrected | proved | **transferred** from Li–Mosca–Ross–van de Wetering–Zhao refined by `ω₁₂` (Lemma 50 proved; `qutritClifford_complete_of_source`, proved; `qutritClifford_complete` through `QCert.QutritClifford.complete`) | **proved** up to 2 wires |
+| Clifford+T CliffT₂ | Figure 5, 11 rules | proved | **transferred** up to 2 qubits: two from Bian–Selinger, one and none from Greylyn (`cliffordT_complete_of_source`, proved; `cliffordT_complete` through `QCert.CliffordT2.theorem_2_1` and `QCert.Greylyn.presentation`) | **proved** up to 1 wire, and (CPh), (B), (CZ) independent |
+| Clifford+CS CliffCS₂ | Figure 6, 14 rules | proved | **transferred** with no wire and on one wire from Bian–Selinger's `Uₘ(ℤ[½,i])`, refined by `ω` (`cliffordCS_complete₀₁_of_source`, proved); two and three wires open (`sorry`) | **proved** up to 2 wires, and (I) independent |
 | CNOT-dihedral CNOTdihe₂ | Figure 7, 11 rules | proved | **transferred** from Amy–Chen–Ross (`complete_of_source`, proved; `complete` through `QCert.CNOTDihedral.presentation`) | **proved**, all arities |
 
 Every rule of every figure, and every law of the symmetry, is checked
@@ -54,7 +54,9 @@ full as stated.
   and padding them (`derivable_shift`, `derivable_pad`), the interchange law
   (`comm_apart`: generators on disjoint wires commute), and a checker that
   replays a derivation given as rewrite and exchange steps (`derive`,
-  decided by `decide +kernel`).
+  decided by `decide +kernel`); a run of exchanges moving one generator is
+  one step (`slide`), which shortens long derivations (the qutrit ones from
+  21 020 steps to 3 239, which the kernel then checks in minutes).
 * `Transfer.lean` — Theorem 21 (`complete_of_transfer`), Lemma 20
   (`derivable_map_of`), and renaming gates (`derivable_rename`).
 * `Cross.lean` — the semantic half of an encoding (Definition 18): circuits
@@ -63,6 +65,19 @@ full as stated.
   (`GateSubst.sem_map`), real matrices read over `ℂ` (`GateSem.sem_map_of`),
   and Theorem 21 for a source semantics in another monoid
   (`complete_of_transfer_map`).
+* `Flat.lean` — Theorem 21 for a source whose letters are flat (one letter
+  per gate and qubit, or one- and two-level matrices of a fixed dimension),
+  with matrices over `ℚ(ω)` indexed by `Fin (2ⁿ)`: the encoding preserves
+  the semantics as soon as it does on each generator (`flat_sem`), and
+  `complete_of_flat`, `derivable_lift_comp` (Lemma 19 for such an
+  encoding).
+* `FlatRefine.lean` — Lemma 50 for a flat source whose scalars are the powers
+  of `i`: the refinement by a central `w` with `w² = i` (`RRel`), every
+  refined word `wᵃ` times a source word (`extract`), and completeness of the
+  refinement from the source's (`refine_complete`), the hypothesis "no
+  hidden phases" proved by a parity argument in `ℚ(ω)` (`parity`: the
+  source's matrices have their entries in `ℚ(i)`); `ℚ(ω) → ℂ` injective
+  (`toC_injective`).
 * `Subst.lean` — encodings and decodings (Definition 18) as substitutions
   of circuits for gates (`GateSubst`), extended to PROP morphisms; the
   structural rules carried (`lift_map`), Lemma 20 (`derivable_map`) and
@@ -79,6 +94,20 @@ full as stated.
   orthogonal matrices are read over `ℂ`.  The decodings of R13–R16, which
   the paper leaves to be mimicked from C12–C15, replay Appendix A's
   derivations in RCliff₂ and derive R14–R16 from them.
+* `QutritClifford/Refine.lean`, `QutritClifford/Transfer.lean`,
+  `QutritClifford/Derivations.lean`, `QutritClifford/Completeness.lean` —
+  Theorem 22 (3): Li et al.'s presentation refined by the new scalar `ω₁₂`
+  with `-ω = ω₁₂¹⁰` (Appendix I) and Lemma 50 for it (`refined_complete`,
+  "no hidden phases" proved by the parity of the powers of `ζ₁₂` in
+  `ℚ(ζ₁₂)` over `ℚ(ω)`), the encoding and decoding of Table 3 with the phases
+  of `H` corrected (`sem_E`), the derivations of Appendix C, the decoded
+  rules C1–C18 and `ω₁₂¹² = 1` (Appendix G.3, `rel_derivable`) and the round
+  trips (Appendix F.3, `DE`).
+* `CliffordCS/Transfer.lean`, `CliffordCS/Derivations.lean`,
+  `CliffordCS/Completeness.lean` — Theorem 22 (5) with no wire and on one
+  wire, from Bian and Selinger's presentation of `Uₘ(ℤ[½, i])` in
+  dimensions `1` and `2` refined by `ω` (`FlatRefine`); the paper does not
+  treat these widths.
 * `CNOTDihedral/Derivations.lean` — every relation of Amy, Chen and Ross
   (`QCert.CNOTDihedral.Rel`) derived from Figure 7 (Appendix H); generated
   from derivations found by a search (`gen/`: `run_all.py`,
@@ -86,6 +115,10 @@ full as stated.
 * `CNOTDihedral/Completeness.lean` — the transfer, and Theorem 22 (6) as a
   presentation (`CNOTDihedral.presentation`: `IsSubPresentationOf` on every
   number of wires).
+* `CliffordT/Transfer.lean`, `CliffordT/Derivations.lean`,
+  `CliffordT/Completeness.lean` — Theorem 22 (4): on two wires from Bian and
+  Selinger's presentation read reversed (Appendices D, F.4, G.4), on one
+  wire and none from Greylyn's presentation in dimensions `2` and `1`.
 * `Theorems.lean` — the statements.
 
 General lemmas that a framework could host (they are in this folder, the
@@ -144,42 +177,102 @@ has them for `GateSem`), `ZQuartic`, and the evaluator of `Trie.lean`.
   in place of `ω₁₂⁷`, and `QutritClifford.Ax.E` is that corrected rule.  The
   separators of Figure 8 (c) do not depend on the exponent.
 
-## Completeness: what remains
+* **Table 3, the qutrit Hadamard.**  Li et al.'s `H` is
+  `(ω² - ω)⁻¹ [ωʲᵏ]`, which is `i` times the `H` of Definition 17, so
+  `D(H) = H ω₁₂³` and `E(H) = H ω₁₂⁹`; Table 3 prints the two phases the other
+  way round, which preserves neither semantics, and the decoded rule (C4)
+  then fails.  The corrected phases are used (`QutritClifford/Transfer.lean`).
+* **Appendix C, figures.**  Several lines carry the scalar of the misprinted
+  (E) (`ω₁₂⁷` for `ω₁₂`) or drop a scalar; in (ZK) `Z` is drawn `S S'²`,
+  which is `Z⁻¹` for Figure 9's `Z = S² S'`; the figure `Kb-CNOT-03` cited in
+  (KbCnot) is missing from the sources.  Such lines are corrected by their
+  phase or skipped (`gen/driver.py`, `repair`), and every step is still
+  derived.
+* **Appendix D, the decoded (C19).**  The step from
+  `(T† ⊗ T†) CX (1 ⊗ T) CX` to `CS†` cites only the definition
+  `CS† = CS³`; it needs Figure 5's rules besides (found by the search).
+* **Appendix E, figures (provisional).**  The figure `C5-14` cited in the
+  decoded (C5) is missing from the sources; in the decoded (C15) the lines
+  drawn as `C15-04` and `C15-07` do not have the matrix of the first line as
+  read (in `C15-04` an `H` appears to be missing).  These chains are not yet
+  used in a proof (two and three wires of CliffCS₂ are open).
+
+## Completeness
 
 The transfer of Section 4 is formalised generically (`Transfer.lean`,
-`Subst.lean`, `Derive.lean`, `Cross.lean`) and carried out for
-CNOT-dihedral (no encoding needed), Cliff₂ and RCliff₂.  Each
-`X_complete_of_source` takes the source presentation's completeness as a
-hypothesis and is proved; `X_complete` instantiates it with the source
+`Subst.lean`, `Derive.lean`, `Cross.lean`, `Flat.lean`, `FlatRefine.lean`)
+and carried out for CNOT-dihedral (no encoding needed), Cliff₂, RCliff₂,
+Cliff₃, CliffT₂ up to two wires, and CliffCS₂ with no wire and on one wire.
+Each `X_complete_of_source` takes the source presentation's completeness as
+a hypothesis and is proved; `X_complete` instantiates it with the source
 formalisation's own theorem.
+
+* Cliff₃: Li et al.'s presentation refined by the new scalar `ω₁₂`
+  (Appendix I); Lemma 50 is proved for it, its hypothesis "no hidden phases"
+  included (`QutritClifford/Refine.lean`).
+* CliffT₂ on two wires: Bian and Selinger's presentation
+  (`QCert.CliffordT2`).  Its relations are stated in the order of matrix
+  multiplication, and the paper draws each of them left to right, i.e.
+  reversed; so the decoding reads source words reversed and the encoding
+  reverses circuits, which the semantics allows because every gate's matrix
+  is symmetric (`Flat.complete_of_flat_rev`).  Then every decoded relation is
+  the paper's own figure, and Appendix D's derivations apply as printed.
+  (C15), which the paper draws as (TX) `T X = X T† ω₈`, is Bian and Selinger's
+  `(T X)² = ω`; its decoding is derived from (TX) and (X²).
+* CliffT₂ on one wire and none: Greylyn's presentation of `Uₘ(ℤ[1/√2, i])`
+  in dimensions `2` and `1` (`QCert.Greylyn`), which the paper does not
+  treat: `H ↦ H_[0,1]`, `T ↦ ω_[1]`, `ω₈ ↦ ω_[0] ω_[1]`, and back
+  `X_[0,1] ↦ H Z H`, `ω_[0] ↦ ω₈ T⁷`, `ω_[1] ↦ T`.
+* CliffCS₂ on one wire and none: Bian and Selinger's presentation of
+  `Uₘ(ℤ[½, i])` in dimensions `2` and `1` (`QCert.BianSelingerUn`), whose
+  scalars are the powers of `i`, refined by a central `w` with `w² = i`
+  (`FlatRefine`, Lemma 50 proved); `H ↦ w K_[0,1]`, `S ↦ i_[1]`, and back
+  `K_[0,1] ↦ ω₈⁷ H`, `i_[0] ↦ ω₈² S³`, `i_[1] ↦ S`, `X_[0,1] ↦ H S S H`.
 
 The derivations of the appendices are transcribed line by line: every
 figure of a derivation is read off the paper's PDF figures
-(`gen/figparse.py`; boxes, controls, targets, crossings, scalars; the
-shortcuts of Figure 9 expanded), every pair of consecutive lines is checked
-to have the same matrix, and the step between them is found by a search
-modulo commuting gates on disjoint wires (`gen/tsearch.py`,
+(`gen/figparse.py`; boxes, black and white controls, targets, controlled
+boxes, dashed `CS` lines, crossings, scalars; the shortcuts of Figure 9
+expanded), every pair of consecutive lines is checked to have the same
+matrix (lines off by a power of the scalar are corrected, lines that are
+not multiples are skipped and reported), and the step between them is found
+by a search modulo commuting gates on disjoint wires (`gen/tsearch.py`,
 `gen/tsearch2.py`, `gen/driver.py`) that uses the rules the paper cites
 for that step first, then their derived forms (inverse, upside down,
 wires reversed, `gen/variants.py`, each derived mechanically), then the
 neighbouring steps' rules, and finally relator-style partial rewriting.
 Where the paper draws a line upside down (a step `σ w σ = mirror(w)`, or
-its three-wire analogue), that move is made mechanically.  Three steps are
-split by intermediate lines (`EXTRA` in `gen/cliff2.py`).  The figures and
-chains read from the paper are cached in `gen/figures.json` and
-`gen/derivations.json`, the derivations found in `gen/*_cache.txt`;
-`python run_cliffd.py && python gen_cliff.py ../Clifford/Derivations.lean`
-(likewise `run_rcliff.py`, `gen_rcliff.py`) reproduces the generated files
-byte for byte.
+its three-wire analogue), that move is made mechanically.  A few steps are
+split by intermediate lines (`EXTRA` in `gen/cliff2.py`, `gen/cliff3.py`,
+`gen/tcliff.py`; for instance Appendix D's (wCNOT), (CSCSCSCS), (SCSd) and
+(HSTH) move one `T` or one block at a time), and a few helper equations are
+derived first: `dczrev`, `natHi`, `natCXi` for the qutrit decodings; `T6CS`,
+`TCS`, `T7CS` (a `T` on the target passes `CS`) for (SCSd) and (HSTH);
+`CHup` (the decoded controlled Hadamard of qubit 0 is Figure 9's upside
+down) for the decoding of (C20).  Uncited steps: in the decoding lemma of
+(C19) the step from `(T† ⊗ T†) CX (1 ⊗ T) CX` to `CS³` cites only the
+definition of `CS`; it is the helper `CSdag`, derived from (CSCSCSCS),
+(T⁸), (CX²), (C) and (phasegadgetCS).  The figures and chains read from the paper are cached
+in `gen/figures.json` and `gen/derivations.json`, the derivations found in
+`gen/*_cache.txt`; `python run_cliffd.py && python gen_cliff.py
+../Clifford/Derivations.lean` (likewise `run_rcliff.py`/`gen_rcliff.py`,
+`run_cliff3.py`/`gen_cliff3.py`, `run_tcliff.py`/`gen_tcliff.py`,
+`run_cs.py`/`gen_cs.py`) reproduces the generated files byte for byte.
 
 ## Remaining `sorry`s
 
 | statement | paper | what it needs |
 |---|---|---|
-| `qutritClifford_complete` | Theorem 22 (3) | the qutrit Clifford presentation with the scalar refinement of Appendix I (Lemma 50); Lemmas 19, 20 (F.3, G.3, Appendix C) |
-| `cliffordT_complete` | Theorem 22 (4) | Bian–Selinger's two-qubit Clifford+T presentation; Lemmas 19, 20 (F.4, G.4, Appendix D) |
-| `cliffordCS_complete` | Theorem 22 (5) | Bian–Selinger's three-qubit Clifford+CS presentation with the scalar refinement of Appendix I; Lemmas 19, 20 (F.5, G.5, Appendix E) |
-| `clifford_complete`, `realClifford_complete`, `cnotDihedral_complete`, `cnotDihedral_presentation` | Theorem 22 (1), (2), (6) | no `sorry` of this folder: the transfers are proved (`*_complete_of_source`); the statements use the source formalisations' presentation theorems (`QCert.SelingerClifford.presentation`, `QCert.RealStabilizer.presentation`, `QCert.CNOTDihedral.presentation`), whose completeness is still a `sorry` there |
+| `cliffordCS_complete`, two and three wires | Theorem 22 (5) | Two wires: Bian and Selinger's presentation in dimension `4`; its sixteen generators are decoded as conjugates of `CS`, the CNOT and the controlled `K` (`S†₁ CS H₀ CS H₀ CS`) by permutation circuits (`gen/cs2.py`, checked numerically), and the 135 decoded relation instances (with the refinement's) remain to be derived; the paper does not treat this width.  Three wires: Bian and Selinger's three-qubit presentation (`QCert.CliffordCS3`, whose completeness still has one `sorry`, the Reidemeister–Schreier coset data), Appendices E, F.5, G.5; of the chains of Appendix E, all but two steps go through the search (`gen/run_cs.py`): the first step of the decoded (C14) and the fourth of the decoded (C15); the decoded relations of Appendix G.5 and the transfer at three wires remain to be written |
+
+The other completeness statements have no `sorry` of this folder.
+`clifford_complete`, `realClifford_complete`, `cliffordT_complete`,
+`cnotDihedral_complete` and the CliffCS₂ widths `0`, `1`
+(`cliffordCS_complete₀₁_of_source` with `QCert.BianSelingerUn.presentation`)
+rest on source theorems that are proved: `#print axioms` gives `propext`,
+`Classical.choice`, `Quot.sound` only.  `qutritClifford_complete` uses
+`QCert.QutritClifford.complete`, which still has a `sorry` in that folder;
+the transfer itself, `qutritClifford_complete_of_source`, has none.
 
 ## Building
 

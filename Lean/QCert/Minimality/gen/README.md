@@ -15,15 +15,17 @@ writes `../CNOTDihedral/Derivations.lean`, whose steps `derive` replays.
 
     python run_all.py && python gen_cnot.py
 
-## The appendices, line by line (Cliff₂, RCliff₂)
+## The appendices, line by line (Cliff₂, RCliff₂, Cliff₃, CliffT₂, CliffCS₂)
 
 * `figparse.py` reads a figure of the paper (a TikZ picture compiled to
-  PDF) into gates: boxes with their labels, control dots and targets on a
-  vertical line, crossings of wires, scalars.  `figs.py` caches the figures
+  PDF) into gates: boxes with their labels, black and white control dots
+  and targets on a vertical line, controlled boxes (the line reaching the
+  box), dashed `CS` lines, crossings of wires, scalars.  `figs.py` caches the figures
   (`figures.json`) and the derivations of the appendices as chains of
   figures with the labels cited between them (`derivations.json`); the
   paper's source is only needed to refill them (`BLAKE_SRC`).
-* `cliff2.py`, `rcliff2.py`: the rule sets of Figures 2 and 3, the figures
+* `cliff2.py`, `rcliff2.py`, `cliff3.py`, `tcliff.py`, `cscliff.py`: the
+  rule sets of Figures 2–6, the figures
   as words (the shortcuts of Figure 9 expanded), exact matrices to check
   every line, and the intermediate lines added where the search needs them
   (`EXTRA`).
@@ -47,3 +49,26 @@ writes `../CNOTDihedral/Derivations.lean`, whose steps `derive` replays.
 
   With the caches present this reproduces the files byte for byte; with a
   cache removed the search runs again (minutes).
+
+* `run_cliff3.py`, `gen_cliff3.py`: Appendix C, the decodings of Li et al.'s
+  rules refined by `ω₁₂` (Appendix G.3) and the round trips (F.3), written
+  to `../QutritClifford/Derivations.lean`.
+* `run_tcliff.py`, `gen_tcliff.py`: Appendix D, the decodings of Bian and
+  Selinger's two-qubit rules read reversed as the paper draws them (G.4),
+  the round trips (F.4), and Greylyn's relations in dimensions 2 and 1,
+  written to `../CliffordT/Derivations.lean`.
+* `run_cs.py`, `gen_cs.py`: Appendix E's chains (not all go through yet)
+  and Bian and Selinger's two-level relations in dimensions 2 and 1 refined
+  by `ω`, written to `../CliffordCS/Derivations.lean`.  `cs2.py` decodes
+  the two-level generators of dimension 4 as two-wire circuits and
+  `cs3src.py` states the three-qubit Clifford+CS relations with their
+  decodings, both checked numerically, for the widths still open.
+* `tacgen.py`: the case analyses on indices in `Fin m` for the two-level
+  sources.
+
+      python run_cliff3.py && python gen_cliff3.py ../QutritClifford/Derivations.lean
+      python run_tcliff.py && python gen_tcliff.py ../CliffordT/Derivations.lean
+      python run_cs.py && python gen_cs.py ../CliffordCS/Derivations.lean
+
+  Long derivations are written with `slide` steps (a run of exchanges as
+  one step) and long step lists as definitions of their own.

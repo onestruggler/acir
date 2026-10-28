@@ -24,6 +24,7 @@ class Driver:
         self.FAILED = []
         self.CACHE = {}
         self.NBR = []
+        self.REPAIRS = []
         try: self.CACHE.update(ast.literal_eval(open(C.CACHE, encoding='utf-8').read()))
         except FileNotFoundError: pass
 
@@ -34,7 +35,11 @@ class Driver:
         if with_syms:
             for nm, (k, l, r) in C.syms.items(): idx += eng.placements('sym', nm, k, l, r)
         names = list(C.axioms) + list(self.lemmas) if use_all else labs
+        expanded = []
         for lab in names:
+            m = C.LABELS.get(lab, lab)
+            expanded += m if isinstance(m, list) else [lab]
+        for lab in expanded:
             if lab in C.SHORTCUTS: continue
             lab = C.LABELS.get(lab, lab)
             if lab in C.axioms:
@@ -48,6 +53,7 @@ class Driver:
     def resolve(self, lab):
         C = self.C
         lab = C.LABELS.get(lab, lab)
+        if isinstance(lab, list): return None
         if lab in C.axioms: return 'ax', lab, C.axioms[lab]
         if lab in self.lemmas: return 'lem', lab, self.lemmas[lab]
         return None
@@ -123,7 +129,11 @@ class Driver:
     def with_variants(self, labs):
         C = self.C
         out = list(labs)
+        exp = []
         for lab in labs:
+            m = C.LABELS.get(lab, lab)
+            exp += m if isinstance(m, list) else [lab]
+        for lab in exp:
             if lab in C.SHORTCUTS: continue
             lab = C.LABELS.get(lab, lab)
             for which in ['i', 'm', 'r']:
@@ -145,6 +155,7 @@ class Driver:
             ('plain', lambda: ei(eng, labs, with_syms=False), dict(maxdepth=8, timeout=3)),
             ('plain+forms', lambda: ei(eng, wv(labs), with_syms=False), dict(maxdepth=4, timeout=5)),
             ('cited', lambda: ei(eng, labs, with_syms=False), dict(maxdepth=8, timeout=5)),
+            ('plain+syms', lambda: ei(eng, wv(labs)), dict(maxdepth=4, timeout=5)),
             ('cited+forms', lambda: ei(eng, wv(labs), with_syms=False), dict(maxdepth=4, timeout=10)),
             ('nbr+forms', lambda: ei(eng, wv(nbr), with_syms=False), dict(maxdepth=4, timeout=10)),
             ('+syms', lambda: ei(eng, wv(labs)), dict(maxdepth=6, timeout=30)),
@@ -152,13 +163,17 @@ class Driver:
             ('nbr+partial', lambda: ei(eng, wv(nbr) + canc), dict(maxdepth=4, partial=True, timeout=30)),
             ('all', lambda: ei(eng, [], use_all=True), dict(maxdepth=3, partial=True, timeout=90)),
         ]
+        # long words make every expansion slower: give the stages time in proportion
+        scale = max(1.0, (max(len(A), len(B)) / 60.0) ** 2)
         for sname, idxf, kw in stages:
+            kw = dict(kw)
+            kw['timeout'] = kw['timeout'] * scale
             t1 = time.time()
             idx = idxf()
             if sname.startswith('plain'):
                 eng.reducing = False
                 ca, cb = eng.canon(A), eng.canon(B)
-                path = eng.search(ca, cb, idx, maxnodes=10**7, **kw)
+                path = eng.search(ca, cb, idx, maxnodes=10**7, maxlen=max(80, len(ca), len(cb)) + 16, **kw)
                 out = None
                 if path is not None:
                     mid = eng.path_steps(path)
@@ -166,7 +181,7 @@ class Driver:
                     out = invert(eng.reduce(ca)[1]) + mid + eng.reduce(cb)[1]
                 eng.reducing = True
             else:
-                path = eng.search(cur, nxt, idx, maxnodes=10**7, **kw)
+                path = eng.search(cur, nxt, idx, maxnodes=10**7, maxlen=max(80, len(cur), len(nxt)) + 16, **kw)
                 out = None if path is None else eng.path_steps(path)
             if out is not None:
                 if sname != 'plain' and not quiet:
@@ -268,13 +283,14 @@ class Driver:
             self.NBR[:] = (list(labels[i - 1]) if i > 0 else []) + (list(labels[i + 1]) if i + 1 < len(labels) else [])
             st = None
             conjA, conjB = self.conj_shape(n, self.split_scalars(A)[1]), self.conj_shape(n, self.split_scalars(B)[1])
+            if name.startswith('R3:'): conjA = conjB = None     # the letters of the reversal itself
             if conjA != conjB:      # drawn upside down on one side: try that first
                 st = (self.mirror_try if n == 2 else self.mirror3_try)(eng, name, i, A, B, cur, nxt, list(labels[i]), quiet)
             if st is None:
                 st = self.step_search(eng, name, i, A, B, cur, nxt, list(labels[i]), quiet)
-            if st is None and n == 2 and conjA == conjB:
+            if st is None and n == 2 and conjA == conjB and conjA is not None:
                 st = self.mirror_try(eng, name, i, A, B, cur, nxt, list(labels[i]), quiet)
-            if st is None and n == 3 and conjA == conjB:
+            if st is None and n == 3 and conjA == conjB and conjA is not None:
                 st = self.mirror3_try(eng, name, i, A, B, cur, nxt, list(labels[i]), quiet)
             if st is None:
                 print('  FAILED %s step %d %s' % (name, i, labels[i]), flush=True)
@@ -312,12 +328,48 @@ class Driver:
         first, steps = figs.chain(toks)
         n, w0 = C.word(first)
         ways = [w0]; labs = []
+        carry = []
         for i, (l, f) in enumerate(steps):
             extra = C.EXTRA.get(label, {}).get(i, [])
             for (el, ew) in extra:
-                ways.append(ew); labs.append(el)
-            ways.append(C.word(f)[1]); labs.append(l)
+                ways.append(ew); labs.append(carry + list(el)); carry = []
+            try:
+                w = C.word(f)[1]
+            except Exception as e:
+                if 'no such file' not in str(e): raise
+                print('   (%s: figure %s missing, line skipped)' % (label, f))
+                self.REPAIRS.append((label, f, 'missing'))
+                carry = carry + list(l)
+                continue
+            ways.append(w); labs.append(carry + list(l)); carry = []
+        if getattr(C, 'REPAIR', False):
+            ways, labs = self.repair(label, n, ways, labs)
         return n, ways, labs
+
+    def repair(self, label, n, ways, labs):
+        """Lines whose matrix is the first line's times a power of the scalar get that power
+        compensated; lines whose matrix is not a multiple of it are dropped."""
+        import numpy as np, cmath
+        C = self.C
+        sc, order = C.SCALAR
+        M0 = C.mat(n, ways[0])
+        out_w, out_l = [ways[0]], []
+        pend = []
+        for i in range(1, len(ways)):
+            pend = pend + list(labs[i - 1])
+            M = C.mat(n, ways[i])
+            r = M @ np.linalg.inv(M0)
+            if not np.allclose(r, r[0, 0] * np.eye(r.shape[0])):
+                print('   (%s: line %d is not a multiple of the first, dropped)' % (label, i))
+                self.REPAIRS.append((label, i, 'dropped'))
+                continue
+            k = round(cmath.phase(r[0, 0]) / (2 * cmath.pi) * order) % order
+            w = list(ways[i])
+            if k:
+                w = w + [(sc, 0)] * ((order - k) % order)
+                self.REPAIRS.append((label, i, k))
+            out_w.append(w); out_l.append(pend); pend = []
+        return out_w, out_l
 
     def from_chain(self, label, name=None, tex=None):
         n, ways, labs = self.chain_ways(label, tex)

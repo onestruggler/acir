@@ -115,26 +115,29 @@ class Engine:
                 if b == a and all(self.apart(rem[u], a) for u in range(t)):
                     return t
             return None
-        def dfs(q, rem, chosen, after):
-            if not rem:
-                res.append(list(chosen)); return
-            if q >= N: return
-            a = W[q]
-            t = takeable(rem, a)
-            if t is not None and all(self.apart(W[x], a) for x in after):
-                chosen.append(q)
-                dfs(q + 1, rem[:t] + rem[t + 1:], chosen, after)
-                chosen.pop()
-            # skip a
-            dep = any(not self.apart(W[x], a) for x in chosen) or any(not self.apart(W[x], a) for x in after)
-            if dep:
-                after.append(q); dfs(q + 1, rem, chosen, after); after.pop()
-            else:
-                dfs(q + 1, rem, chosen, after)
+        def dfs(q0, rem0, chosen0):
+            stack = [(q0, rem0, chosen0, ())]
+            while stack:
+                q, rem, chosen, after = stack.pop()
+                if not rem:
+                    res.append(list(chosen)); continue
+                if q >= N: continue
+                a = W[q]
+                # skip a
+                dep = any(not self.apart(W[x], a) for x in chosen) or any(not self.apart(W[x], a) for x in after)
+                if dep:
+                    # a must go after the block: every letter still needed must pass it
+                    if all(self.apart(a, r) for r in rem):
+                        stack.append((q + 1, rem, chosen, after + (q,)))
+                else:
+                    stack.append((q + 1, rem, chosen, after))
+                t = takeable(rem, a)
+                if t is not None and all(self.apart(W[x], a) for x in after):
+                    stack.append((q + 1, rem[:t] + rem[t + 1:], chosen + (q,), after))
         for q0 in range(base, N):
             t = takeable(lns, W[q0])
             if t is None: continue
-            dfs(q0 + 1, lns[:t] + lns[t + 1:], [q0], [])
+            dfs(q0 + 1, lns[:t] + lns[t + 1:], (q0,))
         seen = set()
         for c in res:
             tc = tuple(c)

@@ -21,7 +21,7 @@ except FileNotFoundError:
 def _fix(ev):
     x, kind, data = ev
     if kind == 'box': return (x, kind, (data[0], tuple(data[1]), data[2]))
-    if kind == 'ctrl': return (x, kind, (list(data[0]), list(data[1])))
+    if kind == 'ctrl': return (x, kind, tuple(list(d) for d in data))
     return ev
 
 def events(name):
@@ -50,8 +50,7 @@ def derivations(texfile):
     for m in re.finditer(r'\\begin\{derivation\}\\label\{([^}]*)\}(.*?)\\end\{derivation\}', s, re.S):
         out[m.group(1)] = tokens(m.group(2))
     d[texfile] = out
-    json.dump(d, open(TEXCACHE, 'w', encoding='utf-8', newline='\n'), ensure_ascii=False, indent=0,
-              sort_keys=True)
+    json.dump(d, open(TEXCACHE, 'w', encoding='utf-8', newline='\n'), ensure_ascii=False, indent=0)
     return out
 
 def tokens(body):

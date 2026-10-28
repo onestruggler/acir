@@ -1,5 +1,5 @@
 """Generate `<Fragment>/Derivations.lean` from the derivations the search found (a cache file)."""
-import ast, sys
+import ast, sys, re
 from leangen import Gen, fmt_list, lean_steps
 
 def ident(name):
@@ -11,6 +11,8 @@ def word(letters, lname):
     return '[' + ', '.join('(.%s, %d)' % (lname[g], o) for (g, o) in letters) + ']'
 
 def generate(cfg):
+    import leangen
+    leangen.SLIDES = cfg.get('slides', False)
     CACHE = ast.literal_eval(open(cfg['cache'], encoding='utf-8').read())
     res = {k: v[1] for k, v in CACHE.items()}
     g = Gen(cfg['syms'], cfg['scalar'], ident)
@@ -30,7 +32,8 @@ def generate(cfg):
     def used_lemmas(name):
         return [e[1] for e in res[name][3] if e[0] == 'lem']
 
-    tops = [k for k in res if k.startswith('dec') or k.startswith('DE')]
+    tops = [k for k in res if (k.startswith('dec') and not k.startswith('decwb10')) or k.startswith('DE')
+            or any(k.startswith(p) for p in cfg.get('tops_extra', ()))]
     needed = set()
     for nm in tops:
         stack = [nm]
@@ -76,13 +79,32 @@ def %s : DEqn Th %d where
   proof := %s
 ''' % (doc(nm), ident(nm), n, n, word(l, lname), n, word(r, lname), g.proof(eqs, steps, 4)))
 
-    out.append('''/-- %s: the decoding of every relation of %s is derivable from %s. -/
+    if cfg.get('rel_header') is not None:
+        out.append(cfg['rel_header'])
+        cases = cfg['rel_cases']
+    else:
+        out.append('''/-- %s: the decoding of every relation of %s is derivable from %s. -/
 theorem rel_derivable : ∀ {k : ℕ} {w v : Circuit %s.Gate k},
     %s.Rel k w v → Derivable (Lift Th k) (D.map k w) (D.map k v)''' % (
-        cfg['appG'], cfg['srcname'], cfg['figure'], cfg['src'], cfg['src']))
-    for c in cfg['rels']:
-        n, l, r, eqs, steps = res['dec' + c]
-        out.append('  | _, _, _, .%s =>\n    %s' % (c, g.proof(eqs, steps, 6)))
+            cfg['appG'], cfg['srcname'], cfg['figure'], cfg['src'], cfg['src']))
+        cases = [(c, 'dec' + c) for c in cfg['rels']]
+    # long step lists are definitions of their own, each elaborated within its own budget
+    big = cfg.get('big_steps', 10 ** 9)
+    arm = cfg.get('arm', '  | _, _, _, .%s =>')
+    named = {}
+    for c, nm in cases:
+        n, l, r, eqs, steps = res[nm]
+        if len(steps) > big:
+            sn = 'steps_' + '_'.join(t for t in re.split(r'[ .]+', c) if t and t != '_')
+            named[c] = sn
+            out.insert(len(out) - 1, g.steps_def(sn, steps, 'The steps of the decoding of %s.' % c))
+    for c, nm in cases:
+        n, l, r, eqs, steps = res[nm]
+        if c in named:
+            out.append((arm + '\n    %s') % (c, g.proof_named(eqs, named[c], 6)))
+        else:
+            out.append((arm + '\n    %s') % (c, g.proof(eqs, steps, 6)))
+    if cfg.get('rel_tail'): out.append(cfg['rel_tail'](g, res))
     out.append(cfg['de'](g, res))
     out.append('\nend %s\n' % cfg['ns'])
     open(cfg['out'], 'w', encoding='utf-8', newline='\n').write('\n'.join(out))

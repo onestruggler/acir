@@ -24,6 +24,8 @@ def mirror_letter(a, fr=None):
     g, o = a
     if g == 'SW' or (fr is not None and g in fr.scalars) or (fr is None and g == 'w'): return [a]
     if g == 'CX': return [('SW', 0), ('CX', 0), ('SW', 0)]
+    if fr is not None and fr.arity[g] == 2 and g in getattr(fr, 'mirror2', ()):
+        return [('SW', 0), (g, 0), ('SW', 0)]
     if fr is not None and fr.arity[g] != 1: raise KeyError(g)
     return [(g, 1 - o)]
 
@@ -43,8 +45,8 @@ def mirror_push(eng, w, nat1, invol, fr=None):
             steps.append(('swap', i)); cur[i], cur[i + 1] = cur[i + 1], cur[i]
         elif g == 'SW':
             pass
-        elif g == 'CX':
-            assert cur[i:i + 4] == [('SW', 0), ('SW', 0), ('CX', 0), ('SW', 0)]
+        elif g == 'CX' or (fr is not None and g in getattr(fr, 'mirror2', ())):
+            assert cur[i:i + 4] == [('SW', 0), ('SW', 0), (g, 0), ('SW', 0)]
             steps.append(('rw', i, invol, False)); del cur[i:i + 2]
         elif o == 0:
             assert cur[i:i + 2] == [('SW', 0), (g, 1)]
