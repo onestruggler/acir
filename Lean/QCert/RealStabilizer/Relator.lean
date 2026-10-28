@@ -18,6 +18,8 @@ open Circuit
 /-- A word on the bottom `k` wires. -/
 def Bnd (k : ℕ) (l : List Lt) : Prop := ∀ a ∈ l, a.hi ≤ k
 
+instance (k : ℕ) (l : List Lt) : Decidable (Bnd k l) := by unfold Bnd; infer_instance
+
 theorem bnd_append {k : ℕ} {l l' : List Lt} (h : Bnd k l) (h' : Bnd k l') : Bnd k (l ++ l') := by
   intro a ha; rcases List.mem_append.1 ha with ha | ha; exacts [h a ha, h' a ha]
 
@@ -211,5 +213,12 @@ theorem Holds.variant {k : ℕ} {l r : List Lt} (h : Holds k l r) (hl : Bnd k l)
     simp [N, List.reverse_replicate]
   rw [e] at h4
   exact h4.trans (comm _)
+
+/-- `Holds.variant`, with the variant written out (checked by evaluation). -/
+theorem Holds.variant' {k : ℕ} {l r l' r' : List Lt} (h : Holds k l r) (hl : Bnd k l)
+    (hr : Bnd k r) (flip i j : ℕ) (e : variantEq l r flip i j = (l', r')) : Holds k l' r' := by
+  have := h.variant hl hr flip i j
+  rw [e] at this
+  exact this
 
 end QCert.RealStabilizer
