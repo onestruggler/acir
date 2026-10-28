@@ -291,7 +291,7 @@ theorem canon24 (α β : Bool) (x : ℕ → Bool) : Braid (g24a N α β x) (g24b
     refine Braid.congr ?_ ?_ h
     · exact Net.mc_congr N _ [0] (fun j hj => by
         simp only [ctlOr, ctlAt, colOn, blackOn]
-        split_ifs <;> rfl)
+        split_ifs <;> first | rfl | (exfalso; omega))
     · exact Net.mc_congr N _ [1] (fun j hj => by
         simp only [ctlOr, ctlAt, colOn, blackOn]
         split_ifs <;> first | rfl | (exfalso; omega))

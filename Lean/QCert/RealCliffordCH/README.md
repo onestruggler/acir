@@ -42,7 +42,7 @@ Formalized from the paper only.
 | `Sec8/EngineN.lean` | A rewriting engine for derivations on a fixed number of wires: words of placed gates (`L`, `circW`), steps rewriting with a table, exchanging disjoint letters (`comm_disj`, from the structural rules) and replacing a window idle on the bottom or top wire by Lemma 5.1, decided by `Fast.check` (`check_sound`); tested in `Sec8/EngineTest.lean`. |
 | `Sec8/Net.lean` | Swap networks at every width, with no completeness hypothesis: the Coxeter relations of the swaps (`sw_inv`, `sw_far`, `sw_braid`); swap words up to them (`SwEq`), their bubble normal form and the parabolic lemma; the placement lemma (two networks bringing the same wires down in the same order place a gate identically), hence the naturality of `placeG` (`placeG_net`, `placeG_swap`) and of `mc` under a swap (`mc_swap`; `mc_swap_sym` when two controls are exchanged, from the symmetry `CanonSym` of the canonical gate, i.e. (307), (313), (353) at the canonical position); `toTop` (a gate idle on wire `q`, conjugated by the swaps `topNet M q`, is `padTop` of the narrower gate: `placeG_toTop`, `mc_toTop`, `letter_toTop`); `shift` and the letters as placed gates (`shift_eq`, `shift_placeG`, `place1_placeG`, `place2_placeG`, `genL_circ`). |
 | `Sec8/MC.lean` | The conventions of Appendix D: circuits at the bottom of wider ones (`atBot`), swap networks (`netL`, `placeG`), colours (`colourW`), and the general multi-controlled gate `mc N K tg c` (box, `ZX`, `XZ`, `H`; special wires `tg`; controls `c`). |
-| `Sec8/D/N15.lean` | Lemmas D.14–D.15 ((353)–(360)) and Equation (361), stated (package (vi)). |
+| `Sec8/D/N15.lean` | Lemmas D.14–D.15 ((353)–(360)) and Equation (361) (package (vi)); (353)–(357) and (359) are connected to the proofs in `N15/`. |
 | `Sec8/E/` | Appendix E (package (vi)).  `Cheap`: the rules of Figure 8 that decode by definition ((20), (21), (25)–(28), (30), (33)–(35), (42)).  `Letters`, `Place`, `EncH`, `Patt`: the decoded letters as `mc` gates (the network of `placeG` at the special wires followed by the others in order is that of the special wires; the patterns of (36), (37) computed).  `Gray`: the Gray code facts of Appendices E.2, E.3.  `Transport`: `mc` gates moved along swap networks (`McSwapAll` from `Net.mc_swap_sym` and (307), (313), (353)), frames.  `Lemma84`, `Step84`: Lemma 8.4.  `Merge`, `MergeHg`: (309), (310) with idle wires (toward the top, one wire down) and over every colouring of a list of wires.  `Gates`, `EncZ`, `Lemma87`, `Lemma87Gates`, `Lemma87H`: Lemma 8.6 for each gate, hence Lemma 8.7 (`Sec8/Lemma87Proof.lean`).  `Rules1` ((23), (29), (41)), `Rule22`, `Rule24` ((24): the braid relation (358) moved to any colours and kinds by `X` on the controls and targets, `tflip0`, `tflip1`), `Rule32`: rules of Lemma 8.8. |
 | `Sec8/MCSem.lean` | The semantics of the gates of `MC` at every width, entry by entry over ℚ(√2): a gate on given wires (`onW`; `eval_place1`, `eval_place2`, `eval_atBot`), a swap network permutes wires (`eval_swAt`, `eval_conjNet`) and `netL N ps` brings `ps[i]` to wire `i` (`sig_netPos`), so `placeG N g ps` is `g` on the wires `ps` (`eval_placeG`); the canonical gates of Definition 2.4 apply their one-control gate when their controls are all `1` (`eval_canon`); `X` on both sides negates controls (`eval_colourW`); `mc N K tg c` is `Λ_c(U_K)` (`eval_mc`), and with its special wires below `k` it is block diagonal in the wires above (`eval_mc_blk`, `onW_blk`), which reduces semantic identities at every width to identities on `k` wires. |
 | `Sec8/D/Colour.lean` | Equation (81) for every multi-controlled gate (`eq81'`, used by `D/N8.eq81`): `X` gates on different wires commute (`xAt_comm`), `X X = 1` (`xx`), and a product of commuting gates does not depend on their order (`drawn_perm`). |
@@ -56,9 +56,9 @@ Formalized from the paper only.
 | `Sec8/D/N8/S299.lean` | (289) (two boxes overlapping on one control: one written as `[CZ, ZX]` one width down, the other passing both factors up to a box with an idle wire, which passes by (272)), (291) for the inner box `C` of (269), (293), (295) (the second line of the paper's proof), (296)–(298) and (299), the box is an involution, at every width from five; the paper's route from (295) on, without (288), (290), (292), (294) as separate steps. |
 | `Sec8/D/N8/Anchors.lean` | The tables the engine starts from, on five local wires: the schema (19) at every width (`t19`, a rule at its own width by `rule_full`), Definition 2.4 of the box as (269) (`t269`, through `Net`'s placements), `mc` conjugated by a local swap (`swapE`, from `Net.mc_swap`), and `H` or `Z` on a wire passing a letter idle on it (`qcommE`). |
 | `Sec8/D/SmallDefs.lean`, `Sec8/D/Small.lean` | The fixed-width equations of Appendices D.2–D.4 that the chain cites ((117)–(148), (157), (160), (168), (172)–(174), (209), (214)–(248), (267), (268)): `lNNN rNNN : Circ K` as engine words, generated from the figures (`gen/sec8/gen_small.py`, each checked numerically for every value of its parameters), and `eqNNN m ih`, the equation on the bottom `K` wires of `m + K` (`small_of`: Lemma 5.1 for `m ≥ 1`, the derivation `dNNN` of `W3`/`W4`/`W5` for `m = 0`). |
-| `Sec8/D/W3.lean`, `Sec8/D/W4.lean`, `Sec8/D/W5.lean` | The derivations `dNNN` of D.2, D.3, D.4 at widths 3, 4, 5 (packages (i), (ii), (iii)); stated. |
+| `Sec8/D/W3.lean`, `Sec8/D/W4.lean`, `Sec8/D/W5.lean` | The derivations `dNNN` of D.2, D.3, D.4 at widths 3, 4, 5 (packages (i), (ii), (iii)); partly proved, with the remaining declarations listed below. |
 | `Sec8/D/WEng.lean`, `Sec8/D/W4/A.lean` | A fixed-width engine over gadget tokens: letters, multi-controlled gates (`mc`, simulated directly), small words placed on any wires (`placeG`); semantic windows idle on any wire (Lemma 5.1 through `Net.semIdle`), a placed token conjugated by a swap (`swp`).  `W4/A.lean`: (150)–(155), (157)–(159), (161), (162), (164), (168), (169) at width 4 as runs of it, generated by `gen/sec8/w4/gen_w4.py`. |
-| `Sec8/D/N8.lean`, `Sec8/D/N13.lean` | Interfaces: the equations of Lemmas D.8–D.13 used later ((81), (269), (274), (277), (290)–(292), (295), (299)–(302), (305), (307)–(317), (333)–(340), (342), (344)–(352)), stated in the conventions of `MC`, not yet proved. |
+| `Sec8/D/N8.lean`, `Sec8/D/N13.lean` | Interfaces: the equations of Lemmas D.8–D.13 in the conventions of `MC`. All of `N8` except (295) has proof terms; `N13` proves (315)–(317) and still has the later commutation interfaces open. |
 | `Theorem.lean` | `theorem_4_4`, `lemma_7_5`, `lemma_7_6`, `completeness_at` (by induction on the number of wires), `completeness`, `presentation`. |
 
 ## Conventions and correspondence with the paper
@@ -104,17 +104,40 @@ Formalized from the paper only.
   (81)–(110)), and Lemma 7.6 from them and Theorem 4.4.  Theorem 4.4,
   which the paper imports from Hadamard-Π [17], is imported from the
   Hadamard-Π folder (`theorem_4_4 := (QCert.HadamardPi.theorem_4_14 4).complete`);
-  whatever remains open there is that folder's.
+  that source theorem is proved without `sorry`.
 * On `n ≥ 3` wires: the encoding of Definition 8.2 produces proper words and
   preserves the semantics in the basis ordered by the Gray code (`esem`).
 * Theorem 4.10 from the two hypotheses of the Reidemeister–Schreier theorem
-  (`Sec8/A/RS.lean`, `thm410_of`), which are the remaining targets `item_a`,
-  `item_b`; toward them, from Equation (65) (`E65`, proved from (35) for the
+  (`Sec8/A/RS.lean`, `thm410_of`). Hypothesis (a), `item_a`, is proved in
+  `A/ItemAProof` by fresh frames and the contraction of two Hadamard letters;
+  `item_b` remains open. Toward it, from Equation (65) (`E65`, proved from (35) for the
   tuples whose Gray codes have neither form of (36), (37)): Lemma A.6 and
   Corollary A.7 (on signed permutations), frames and telescopes, Equations
   (66), (70), (71), conjugation of a letter (`hh_conj`, `push_twist`) and the
   twist of Equation (40).
 * Equation (65) at every tuple of distinct indices (`Sec8/A/E65.lean`, `e65`), also for the tuples whose Gray codes have the form of (36) or (37): their words `𝒲₁`, `𝒲₂` are frames.
+* The general interfaces for (290)–(292), (299)–(302), (305), and (307)–(314)
+  are proved, including the three- and four-wire cases. `D/N8/Low`,
+  `MoreLow`, `ControlFour`, `Below`, and `MergeHg` connect the fixed-width runs to the
+  general proofs: boxes and controlled Hadamards are involutions, opposite
+  controls merge, controls can be permuted, and circuits below the box
+  commute with it. These proofs use the stated induction hypothesis `IH`.
+* The fixed-width interfaces (160), (172)–(174), and (209) are connected to
+  the kernel-checked runs of `D/W4/B1` and `B3`.
+* Equations (141)–(144) and (148a) on three wires, and (214), (215), and
+  (221)–(226) on four wires have kernel-checked derivations. `W4/Expansion`
+  supplies the prerequisite expansions (210)–(213); `W4/AvailFull` proves
+  the control symmetries for every canonical gate on four wires. Inverse
+  rotations are expanded into previously proved involutions.
+* The large-width commutation proofs (335), (336), and (340) have been
+  audited without `sorryAx`. Their expansion uses the completed large-width
+  case of (295), independently of its open four-wire case.
+* On four wires, (216)–(241) and (246)–(248) now have kernel-checked
+  derivations, including every Boolean parameter case. `W4/CommuteLate`,
+  `Opposite`, `HgLate`, `FullRotation`, `SameRotation`, `ConjRotation`, and
+  `WhiteCZ` supply these proofs. The corresponding Python generators
+  produce certificates checked by `WEng`; numerical comparisons guide
+  the search and do not justify any derivation.
 * Toward Theorem 4.10: Lemma A.4 (a normal form for proper Hadamard-free
   words over `𝒫_{2ⁿ}`, unique given the semantics) and Corollary A.5 (two
   proper Hadamard-free words with the same matrix are equal by Figure 8),
@@ -122,21 +145,21 @@ Formalized from the paper only.
 
 ## Remaining `sorry`
 
-Completeness on two wires is proved here; it uses Theorem 4.4 from the
-Hadamard-Π folder, so whatever is open there (`QCert.HadamardPi.theorem_4_14`)
-is open for two wires too.
+Completeness through two wires is proved without `sorryAx`, using the
+completed Hadamard-Π theorem. Completeness at every width is still open.
+Connecting an interface proof below does not remove unfinished lemmas
+that it uses; `QCert/Audit.lean` reports transitive axiom dependencies.
 
 | Declaration | Stands for |
 | --- | --- |
-| `Sec8/Thm410Proof.lean`: `item_a` | Hypothesis (a) of the Reidemeister–Schreier theorem for Theorem 4.10 (`ItemA`, the equations (DE-**) of Appendix A.3.2); `theorem_4_10` follows from `item_a` and `item_b` (`Sec8/A/RS.lean`, `thm410_of`). |
 | `Sec8/Thm410Proof.lean`: `item_b` | Hypothesis (b) (`ItemB`: for each relation of Hadamard-Π's Figure 6 and each coset of Definition A.2, the two words of `τ**` are equal by Figure 8). |
-| `Sec8/Lemma88Proof.lean`: `lemma_8_8` | Lemma 8.8 (Appendix E.5), given completeness on fewer wires: the cases of the rules (31), (36)–(40), (43)–(46); the other rules are proved (`E/Cheap`, `E/Rules1`, `E/Rule22`, `E/Rule24`, `E/Rule32`). |
-| `Sec8/D/N8.lean`: `eq290`–`eq292`, `eq295`, `eq299`–`eq302`, `eq305`, `eq307`–`eq314` | Interface statements of Lemmas D.8–D.11 (package (iv) of `Sec8/PLAN.md`); each checked numerically at 3–6 wires (`gen/sec8/iface.py`, `gen/sec8/iface_n8.py`). |
+| `Sec8/Lemma88Proof.lean`: `lemma_8_8` | Lemma 8.8 (Appendix E.5), given completeness on fewer wires: the cases of the rules (31), (36), (37), (40), (43)–(46); the other rules have proof terms, including (38), (39). |
+| `Sec8/D/N8.lean`: `eq295` | Remaining interface statement of Lemmas D.8–D.11 (package (iv)). The case from five wires on is proved in `N8/IFive`; the four-wire case remains to be connected. |
 | `Sec8/D/N13.lean`: `eq333`–`eq340`, `eq342`, `eq344`–`eq352` | Interface statements of Lemmas D.12–D.13 (package (v)); each checked numerically at 3–6 wires. |
-| `Sec8/D/W3.lean`: `d139`–`d147`, `d148a`, `d148b` | Lemma D.2 (and (148)) at width 3, from Figure 4 and completeness on two wires (package (i)); (117)–(138) are proved. |
-| `Sec8/D/W4.lean`: `d160`, `d172`–`d174`, `d209`, `d214`–`d248` | Lemma D.5's equations that the chain cites, at width 4 (package (ii)); `d157`, `d168` are proved (`Sec8/D/W4/A.lean`). |
+| `Sec8/D/W3.lean`: `d148b` | Lemma D.2 (and (148)) at width 3, from Figure 4 and completeness on two wires (package (i)); All of Lemma D.2, (117)–(147), and (148a) are proved. |
+| `Sec8/D/W4.lean`: `d242`–`d245` | Remaining cited equations of Lemma D.5 at width 4 (package (ii)); all other declarations of `W4.lean` have checked proof terms. |
 | `Sec8/D/W5.lean`: `d267`, `d268` | Lemma D.7's (267), (268) at width 5 (package (iii)). |
-| `Sec8/D/N15.lean`: `eq353`–`eq361` | Statements of Lemmas D.14–D.15 and of Equation (361) of Appendix E.5 (package (vi)); each checked numerically at 2–6 wires for every colouring (`gen/sec8/e/iface_n15.py`). |
+| `Sec8/D/N15.lean`: `eq358`, `eq360`, `eq361` | Remaining statements of Lemmas D.14–D.15 and of Equation (361) of Appendix E.5 (package (vi)); each checked numerically at 2–6 wires for every colouring (`gen/sec8/e/iface_n15.py`). |
 
 The induction on the number of wires (`completeness_at`) and the
 back-and-forth argument (`Sec8.complete_of`) carry no `sorry` of their own.

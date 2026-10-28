@@ -1,18 +1,12 @@
 #!/usr/bin/env bash
 # Build Lean modules in WSL (dependencies included):
 #   ./check.sh QCert/Foo.lean [QCert/Bar.lean ...]     ./check.sh   (whole library)
-# At most three builds run at once on this machine (lock files in $HOME).
+# Serialize builds: concurrent Lake processes can replace the same .olean
+# while another process is importing it. Lake still schedules its own jobs.
 cd "$(dirname "$0")"
 export PATH="$HOME/.elan/bin:$PATH"
-got=
-while [ -z "$got" ]; do
-  for i in 1 2 3; do
-    exec {fd}>"$HOME/.qcert-build-$i.lock"
-    if flock -n "$fd"; then got=1; break; fi
-    exec {fd}>&-
-  done
-  [ -z "$got" ] && sleep 5
-done
+exec {fd}>"$HOME/.qcert-build-1.lock"
+flock "$fd"
 if [ $# -eq 0 ]; then
   /usr/bin/timeout 7200 lake build
   exit $?

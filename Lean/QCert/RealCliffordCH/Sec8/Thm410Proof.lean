@@ -7,17 +7,19 @@ By the Reidemeister–Schreier theorem for monoids (`Sec8/A/RS.lean`):
 Theorem 4.10 follows from its hypotheses (a) (`ItemA`, the equations
 (DE-**) of Appendix A.3.2) and (b) (`ItemB`, one equation per relation of
 Figure 6 and coset), with the completeness of Figure 6
-(`QCert.HadamardPi.theorem_4_14`).  The two hypotheses are not yet proved.
+(`QCert.HadamardPi.theorem_4_14`). Hypothesis (a) is proved by the frame
+construction in `A/ItemAProof`; hypothesis (b) remains open.
 -/
 import QCert.RealCliffordCH.Sec8.Statement
 import QCert.RealCliffordCH.Sec8.A.RS
+import QCert.RealCliffordCH.Sec8.A.ItemAProof
 
 namespace QCert.RealCliffordCH.Sec8
 
 /-- Hypothesis (a) of the Reidemeister–Schreier theorem (Appendix A.3.2, the
-equations (DE-**)).  Not yet proved. -/
-theorem item_a (n : ℕ) (hn : 3 ≤ n) : ItemA n := by
-  sorry
+equations (DE-**)). -/
+theorem item_a (n : ℕ) (hn : 3 ≤ n) : ItemA n :=
+  item_a_proof n hn
 
 /-- Hypothesis (b) of the Reidemeister–Schreier theorem (Appendix A.3.2, one
 equation per relation of Figure 6 and coset).  Not yet proved. -/

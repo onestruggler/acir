@@ -70,6 +70,59 @@ class Gen:
 
     def plan(self, n):
         l, r = self.stw[n]
+        if n == '142':
+            # CZ on wires 1,2 passes both CH on 0,1 (rule 13) and
+            # Z on wire 0 (disjointness). Expose Z0 in each SW Z1 SW.
+            return [('sem', 2, 3, [w3.Zj(0)]),
+                    ('sem', 4, 3, [w3.Zj(0)]),
+                    ('rw', 0, self.index['e13'], False), ('sw', 1),
+                    ('rw', 2, self.index['e13'], False), ('sw', 3),
+                    ('sem', 3, 1, [w3.S0, w3.Zj(1), w3.S0]),
+                    ('sem', 1, 1, [w3.S0, w3.Zj(1), w3.S0])]
+        if n == '143':
+            # Distribute the colour exchange over the two CZ factors. The
+            # resulting white-controlled CZ passes C1 by (131) conjugated
+            # by X2; each CH passes C1 by rule (13).
+            white = w3.X2 + w3.CZ20 + w3.X2
+            u = [w3.C1] + white + [w3.K0] + white + [w3.K0]
+            v = white + [w3.K0] + white + [w3.K0, w3.C1]
+            k = self.index['d131x2']
+            assert self.table[k][1:] == ([w3.C1] + white, white + [w3.C1])
+            return self.pr.local(l, u) + [
+                ('rw', 0, k, False),
+                ('rw', len(white), self.index['e13'], False),
+                ('rw', len(white) + 1, k, False),
+                ('rw', 2 * len(white) + 1, self.index['e13'], False)
+            ] + self.pr.local(v, r)
+        if n == '148a':
+            # Conjugate rule 12 by SW01; CZ01 is symmetric.
+            return [('sem', 0, 2, [w3.S0, w3.C0]),
+                    ('rw', 1, self.index['e12'], True),
+                    ('sem', 2, 2, [w3.S0, w3.C0])]
+        if n == '144':
+            ch = self.d['proofs'][n][0]
+            ws = [w3.words_of(D) for D in ch['diags']]
+            white = w3.model.word(3, [('CU', 'H', 0, {1: 'w'})])
+            h02 = w3.CH20
+            # A white-controlled H is H0 times the black-controlled H.
+            # Thus (135) also commutes the white-controlled version with
+            # H controlled from wire 2; H0 passes the latter locally.
+            pair = self.pr.local(white + h02, [w3.Hj(0), w3.K0] + h02)
+            pair += [('rw', 1, self.index['d135'], True)]
+            pair += self.pr.local([w3.Hj(0)] + h02 + [w3.K0], h02 + white)
+            steps = []
+            for i, (u, v) in enumerate(zip(ws, ws[1:])):
+                if i == 4:
+                    sub, pos = [], 1
+                    for block in ([w3.C0], h02, [w3.C0], h02):
+                        part = pair if block == h02 else self.pr.local(white + block, block + white)
+                        sub += [w3.shift_step(s, pos) for s in part]
+                        pos += len(block)
+                else:
+                    sub = self.pr.step(u, v, ch['cites'][i])
+                assert self.eng.run(u, sub)[0] == v, (n, i)
+                steps += sub
+            return steps
         if n in ('117', '118'):
             k = len(l) // 2
             assert l[k:] == l[:k][::-1] and r == []
@@ -110,7 +163,7 @@ class Gen:
         return st
 
     def run_all(self, only=None):
-        for n in [str(k) for k in range(117, 148)]:
+        for n in [str(k) for k in range(117, 148)] + ['148a', '148b']:
             if only and n not in only:
                 continue
             st = self.plan(n)
@@ -122,7 +175,7 @@ class Gen:
             # only earlier equations may be used
             used = {s[2] for s in st if s[0] == 'rw'}
             later = [self.table[k][0] for k in used if self.table[k][0][0] == 'd'
-                     and int(self.table[k][0][1:4]) >= int(n)]
+                     and int(self.table[k][0][1:4]) >= int(n[:3])]
             if later:
                 print(n, 'uses later', later)
                 continue

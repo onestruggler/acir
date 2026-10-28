@@ -59,7 +59,7 @@ theorem kQ_map (j k : Fin 3) (s : R) : (kQ j k s).map φ = kQ j k (φ s) := by
 
 theorem gateMat_map (s : R) (g : Sym1) : (gateMat s g).map φ = gateMat (φ s) g := by
   cases g <;> simp only [gateMat, toMat8_map, onQ_map, ctrl_map, ctrl2_map, swapQ_map, kQ_map,
-    matX_map, matZ_map, levelMat_map, matK_map]
+    matX_map, matZ_map, LiRossSelinger.levelMat_map, matK_map]
 
 theorem matH2_map (s : R) : (matH2 s).map φ = matH2 (φ s) := by
   simp only [matH2, toMat8_map, onQ_map, matH_map]

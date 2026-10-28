@@ -40,6 +40,15 @@ theorem base336 (N : ℕ) (hN : 5 ≤ N) (ih : IH N) (x : ℕ → Bool) :
   rw [e3, e3, f1, f2] at h2
   exact h2
 
+/-- (315), as in `N13.lean`: `X` on the box wire commutes with the box. -/
+theorem eq315k (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
+    Derivable (theory N) (drawn [xAt N 0, Bx N]) (drawn [Bx N, xAt N 0]) := by
+  obtain ⟨k, rfl⟩ : ∃ k, N = k + 1 := ⟨N - 1, by omega⟩
+  have h := eq308 (k + 1) hN ih 1 le_rfl (by omega) x
+  have e : atBot (k + 1) (x : Circ 1) = xAt (k + 1) 0 := (Net.pad_atBot1 k x).symm
+  rw [e] at h
+  exact h
+
 /-- (315) for the box on wire `0` with coloured controls: `X` on the box wire
 passes it. -/
 theorem x0_hole (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x : ℕ → Bool) (c : Bool) :
@@ -68,7 +77,7 @@ theorem x0_hole (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x : ℕ → Bool) (c : Boo
   have c1 : Derivable (theory (k + 1)) (D * xAt (k + 1) 0) (xAt (k + 1) 0 * D) :=
     comm_low_high _ _ hX hD
   -- `X B ≈ B X` for the canonical box
-  have h315 := eq315 (k + 1) hN ih
+  have h315 := eq315k (k + 1) hN ih
   have hb := mc_canon .box k
   simp only [kindSp, canonC] at hb
   rw [show Bx (k + 1) = box k from hb] at h315

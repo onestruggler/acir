@@ -43,7 +43,7 @@ theorem t295 (m : ℕ) (ih : IH (m + 5)) :
     Derivable (theory (m + 5)) (wc 5 (m + 5) [bxC true true true])
       (wc 5 (m + 5) [Zc, Rg false true, Bc, Rg true true, Wl true true true, Rg false true, Bc,
         Rg true true]) := by
-  have h := eq295 (m + 5) (by omega) ih
+  have h := N8.eq295_5 m ih
   have e0 : (bxC true true true).circ 5 (m + 5) = Bx (m + 5) := mc_congr _ _ _ (by ctl_tac)
   have e1 : Zc.circ 5 (m + 5) = mc (m + 5) .zx [0] (blackOn 1 4) := mc_congr _ _ _ (by ctl_tac)
   have e2 : (Rg false true).circ 5 (m + 5) =

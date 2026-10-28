@@ -104,13 +104,13 @@ theorem chkSw : check 4 Tsw [bxB, bxBw] [cC] (conjSteps 4 5 6 0 true) = true ∧
 /-! ## The chain -/
 
 def T336 : SE.Tbl :=
-  [([bx0], [wW, cC, wV, cC]), ([bxB, bxBw], [cC]), ([bxBw, bxB], [cC]), ([wW, bxBw], [bxBw, wW]),
-   ([bxBw, bxBw], []), ([bxB, bxB], []), ([bx0], [cC, wW, cC, wV])]
+  [([bx0], [N8.wW, cC, N8.wV, cC]), ([bxB, bxBw], [cC]), ([bxBw, bxB], [cC]), ([N8.wW, bxBw], [bxBw, N8.wW]),
+   ([bxBw, bxBw], []), ([bxB, bxB], []), ([bx0], [cC, N8.wW, cC, N8.wV])]
 
 theorem t292 (m : ℕ) (ih : IH (m + 5)) :
-    Derivable (theory (m + 5)) (wc 5 (m + 5) [wW, bxBw]) (wc 5 (m + 5) [bxBw, wW]) := by
+    Derivable (theory (m + 5)) (wc 5 (m + 5) [N8.wW, bxBw]) (wc 5 (m + 5) [bxBw, N8.wW]) := by
   have h := eq292 (m + 5) (by omega) ih
-  have e1 : wW.circ 5 (m + 5) = mc (m + 5) .zx [0] (blackOn 1 3) := mc_congr _ _ _ (by ctl_tac)
+  have e1 : N8.wW.circ 5 (m + 5) = mc (m + 5) .zx [0] (blackOn 1 3) := mc_congr _ _ _ (by ctl_tac)
   have e2 : bxBw.circ 5 (m + 5) =
       mc (m + 5) .box [1] (ctlOr (ctlAt 0 true) (ctlOr (ctlAt 2 false) (blackOn 3 (m + 5)))) :=
     mc_congr _ _ _ (by ctl_tac)
@@ -118,11 +118,11 @@ theorem t292 (m : ℕ) (ih : IH (m + 5)) :
   exact h
 
 theorem t300 (m : ℕ) (ih : IH (m + 5)) :
-    Derivable (theory (m + 5)) (wc 5 (m + 5) [bx0]) (wc 5 (m + 5) [cC, wW, cC, wV]) := by
+    Derivable (theory (m + 5)) (wc 5 (m + 5) [bx0]) (wc 5 (m + 5) [cC, N8.wW, cC, N8.wV]) := by
   have h := eq300 (m + 5) (by omega) ih
   have e0 : bx0.circ 5 (m + 5) = Bx (m + 5) := mc_congr _ _ _ (by ctl_tac)
-  have e1 : wW.circ 5 (m + 5) = mc (m + 5) .zx [0] (blackOn 1 3) := mc_congr _ _ _ (by ctl_tac)
-  have e2 : wV.circ 5 (m + 5) = mc (m + 5) .xz [0] (blackOn 1 3) := mc_congr _ _ _ (by ctl_tac)
+  have e1 : N8.wW.circ 5 (m + 5) = mc (m + 5) .zx [0] (blackOn 1 3) := mc_congr _ _ _ (by ctl_tac)
+  have e2 : N8.wV.circ 5 (m + 5) = mc (m + 5) .xz [0] (blackOn 1 3) := mc_congr _ _ _ (by ctl_tac)
   have e3 : cC.circ 5 (m + 5) = Bx1 (m + 5) := mc_congr _ _ _ (by ctl_tac)
   rw [wc_one', e0]
   simp only [wc, List.map_cons, List.map_nil, e1, e2, e3]
@@ -142,7 +142,7 @@ theorem T336_ok (m : ℕ) (ih : IH (m + 5)) : AllD 5 m T336 := by
 
 /-- From `[B_A, B_B]` to `W B_B V`, then back to `[B_B, B_A]`. -/
 def run336 : List St :=
-  [.rw 0 0 false, .rw 1 1 true, .rw 4 2 true, .sem 2 0 [wV, wW] 3, .rw 3 3 false, .sem 4 2 [] 3,
+  [.rw 0 0 false, .rw 1 1 true, .rw 4 2 true, .sem 2 0 [N8.wV, N8.wW] 3, .rw 3 3 false, .sem 4 2 [] 3,
    .rw 3 4 false, .rw 3 5 false,
    .rw 1 4 true, .rw 2 2 false, .rw 0 3 false, .rw 0 5 true, .rw 1 1 false, .rw 1 6 true]
 

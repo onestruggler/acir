@@ -13,9 +13,16 @@ system):
 ```sh
 ./check.sh QCert/Some/Module.lean   # one module and its dependencies
 ./check.sh                          # the whole library
+./check.sh QCert/Audit.lean          # axioms of the Table 1 results
 ```
 
 On a fresh machine, `lake exe cache get` fetches the prebuilt Mathlib.
+
+`QCert.lean` imports `QCert/Table1.lean`, which includes all sixteen rows.
+A successful build alone does not establish completeness: Lean accepts
+`sorry`. The audit prints `sorryAx` for a result with an unfinished proof
+anywhere in its dependencies. Independent invocations of `check.sh` are
+serialized to avoid races on Lake's output files.
 
 ## Framework
 
@@ -29,8 +36,9 @@ On a fresh machine, `lake exe cache get` fetches the prebuilt Mathlib.
 | `QCert/Matrix/Rings` | ℤ[1/√2, i], ℤ[1/2, i] ⊆ ℂ and ℤ[1/√2], ℤ[1/2] ⊆ ℝ, and the unitary (orthogonal) matrices with entries in them. |
 | `QCert/Exact/*` | `Quartic p q` = ℚ[x]/(x⁴ - p x² - q), computable, with homomorphisms to ℂ and ℝ (ω = e^{iπ/4}, √2). |
 
-The framework has no `sorry`.  No development uses `native_decide` or
-axioms beyond Lean's standard ones.
+The framework has no `sorry`. No development uses `native_decide`.
+Completed proofs use only Lean's standard axioms; unfinished results
+additionally depend on `sorryAx`, as reported by the audit.
 
 ## The sixteen results
 
@@ -56,4 +64,8 @@ main result) and a `README.md` listing what is proved and every remaining
 | Clément [2026] | real Clifford+CH | `QCert/RealCliffordCH` | soundness, widths 0–2 (through Hadamard-Π), encoding semantics proved; Theorem 4.10, Lemmas 8.7, 8.8 in progress |
 | Amy, Ross, Wesley [2024] | three-qubit Toffoli–Hadamard | `QCert/ToffoliHadamard` | **proved** (Theorem 5.2 with (r_K) restored, Theorem 6.3; no `sorry`); (r_K) proved independent |
 | Li et al. [2025] | qutrit Clifford | `QCert/QutritClifford` | **proved** (Theorem 4.4 at every width, by a stabiliser chain; Proposition 3.9, Corollary 3.10; no `sorry`) |
-| Blake [2026] | six fragments, minimality | `QCert/Minimality` | Theorem 37 proved; Theorem 22 proved for Clifford, real Clifford, CNOT-dihedral and Clifford+T (up to 2 wires) and qutrit Clifford; Clifford+CS at 2–3 wires in progress |
+| Blake [2026] | six fragments, minimality | `QCert/Minimality` | Theorem 37 proved; Theorem 22 transferred for all six fragments in the stated ranges. No local `sorry`; the three-wire Clifford+CS case still inherits `CliffordCS3.rsData`. The two-wire Clifford+CS case is proved. |
+
+Thirteen rows currently have complete proofs without `sorryAx`. The open
+rows are three-qubit Clifford+CS, real Clifford+CH, and the Clifford+CS
+completeness dependency in the final minimality row.

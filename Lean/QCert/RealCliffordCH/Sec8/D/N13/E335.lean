@@ -262,8 +262,7 @@ theorem comm335_ge5 (N : ℕ) (hN : 5 ≤ N) (ih : IH N) (x y : ℕ → Bool) :
         · rw [hall i h.1 h.2]
         · rfl)
     rw [e]
-    exact Derivable.refl _
-  · push_neg at hall
+  · push Not at hall
     obtain ⟨q, hq1, hqN, hxy⟩ := hall
     rcases (by omega : q = 1 ∨ 2 ≤ q) with rfl | hq2
     · refine sw x y 1 le_rfl (by omega) (at2 _ _ ?_)

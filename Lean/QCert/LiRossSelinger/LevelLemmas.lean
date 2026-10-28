@@ -9,7 +9,9 @@ index map (`levelMat_comp`), is multiplicative for injective `f`
 -/
 import QCert.Matrix.Level
 
-namespace QCert
+-- Keep these helpers local to this development: `LevelCalc` has a
+-- `QCert.levelMat_mul` in the opposite orientation.
+namespace QCert.LiRossSelinger
 
 open Matrix
 
@@ -65,4 +67,4 @@ theorem levelMat_map (φ : R →+* S) (f : Fin m → Fin n) (M : Matrix (Fin m) 
   rw [levelMat, levelMat, h1, map_add, map_one, RingHom.mapMatrix_apply, Matrix.map_mul,
     Matrix.map_mul, embedMat_map, Matrix.transpose_map, embedMat_map, h2]
 
-end QCert
+end QCert.LiRossSelinger

@@ -4,11 +4,12 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 # Section 8: Lemma 8.8
 
 The decoding maps each rule of Figure 8 to a derivable equation (Appendix
-E.5), rule by rule (`E/Cheap`, `E/Rules1`, `E/Rule22`, `E/Rule24`, `E/Rule32`).
-Still open: (31), (36)–(40), (43)–(46).
+E.5), rule by rule (`E/Cheap`, `E/Rules1`, `E/Rule22`, `E/Rule24`, `E/Rule32`, `E/Rule38`,
+`E/Rule39`).
+Still open: (31), (36), (37), (40), (43)–(46).
 -/
 import QCert.RealCliffordCH.Sec8.Statement
-import QCert.RealCliffordCH.Sec8.E.Rule24
+import QCert.RealCliffordCH.Sec8.E.Rule38
 
 namespace QCert.RealCliffordCH.Sec8
 
@@ -37,8 +38,8 @@ theorem lemma_8_8 (n : ℕ) (hn : 3 ≤ n) : Lemma88 n := by
   | r35 a b c d ha hb hc hd hd4 hp => rw [E.dec35 hn a b c d ha hb hc hd hd4 hp]
   | r36 a b c d u w ha hb hc hd hd4 hp => sorry
   | r37 a b c d u w ha hb hc hd hd4 hp => sorry
-  | r38 a h4 ha => sorry
-  | r39 => sorry
+  | r38 a h4 ha => exact E.dec38 ih' a h4 ha
+  | r39 => exact E.dec39 ih'
   | r40 => sorry
   | r41 => exact E.dec41 ih'
   | r42 a b c d ha hb hc hd hab hcd h3 => rw [E.dec42 hn a b c d ha hb hc hd hab hcd h3]

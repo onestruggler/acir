@@ -64,7 +64,10 @@ operators*, QPL 2023, arXiv:2306.08530.  Table 1 of qcert.tex:
 
 ### What porting `rsData` would involve
 
-Deferred: whether to port it is the user's decision, given its size.
+The current task excludes consulting Agda formalizations. Completing this
+row therefore requires independently constructing and verifying suitable
+coset data, or another completeness proof. The historical inventory below
+is not a Lean proof and does not discharge `rsData`.
 
 **Source.** All the data is in the authors' Agda code (CC BY 2.0), at
 https://www.mathstat.dal.ca/~selinger/papers/downloads/cliffordcs3/cliffordcs3.tgz

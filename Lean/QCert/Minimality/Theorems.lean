@@ -37,6 +37,7 @@ import QCert.Minimality.RealClifford.Completeness
 import QCert.Minimality.QutritClifford.Completeness
 import QCert.Minimality.CliffordT.Completeness
 import QCert.Minimality.CliffordCS.Completeness
+import QCert.Minimality.CliffordCS.W3Complete
 
 namespace QCert.Minimality
 
@@ -153,21 +154,47 @@ theorem cliffordCS_complete₀₁_of_source
   | 0, _ => exact CliffordCS.complete₀_of_source h₀ w v h
   | 1, _ => exact CliffordCS.complete₁_of_source h₁ w v h
 
-/-- Theorem 22 (5): CliffCS₂ is complete for Clifford+CS circuits up to three
-qubits.  With no wire and on one wire it is proved (`complete₀_of_source`,
-`complete₁_of_source` with `QCert.BianSelingerUn.presentation`); on two and
-three wires it is not yet. -/
-theorem cliffordCS_complete : CliffordCS.pres.CompleteUpTo (fun n => CliffordCS.sem.sem n) 3 := by
+/-- Theorem 22 (5), the transfer: CliffCS₂ is complete for Clifford+CS circuits up
+to three qubits as soon as Bian and Selinger's presentations of `Uₘ(ℤ[½, i])` in
+dimensions `1`, `2`, `4` and their three-qubit Clifford+CS presentation
+(`QCert.CliffordCS3`) are, each refined by the new scalar (Lemma 50, proved).  The
+paper treats three wires (Appendices E, F.5, G.5); two wires, one and none are
+transferred here from the two-level presentation.  On three wires the two-qubit
+steps are taken by completeness on two wires (`CliffordCS.complete₂`, through
+`QCert.BianSelingerUn.presentation`, proved). -/
+theorem cliffordCS_complete_of_source
+    (h₃ : ∀ a b : Word QCert.CliffordCS3.Gen,
+      FreeMonoid.lift QCert.CliffordCS3.sem a = FreeMonoid.lift QCert.CliffordCS3.sem b →
+        Derivable QCert.CliffordCS3.Rel a b)
+    (h₂ : ∀ a b : Word (QCert.BianSelingerUn.Gen 4),
+      FreeMonoid.lift (QCert.BianSelingerUn.sem 4) a =
+        FreeMonoid.lift (QCert.BianSelingerUn.sem 4) b →
+        Derivable (QCert.BianSelingerUn.Rel 4) a b)
+    (h₁ : ∀ a b : Word (QCert.BianSelingerUn.Gen 2),
+      FreeMonoid.lift (QCert.BianSelingerUn.sem 2) a =
+        FreeMonoid.lift (QCert.BianSelingerUn.sem 2) b →
+        Derivable (QCert.BianSelingerUn.Rel 2) a b)
+    (h₀ : ∀ a b : Word (QCert.BianSelingerUn.Gen 1),
+      FreeMonoid.lift (QCert.BianSelingerUn.sem 1) a =
+        FreeMonoid.lift (QCert.BianSelingerUn.sem 1) b →
+        Derivable (QCert.BianSelingerUn.Rel 1) a b) :
+    CliffordCS.pres.CompleteUpTo (fun n => CliffordCS.sem.sem n) 3 := by
   intro n hn w v h
   match n, hn with
-  | 0, _ =>
-    exact CliffordCS.complete₀_of_source
-      (fun _ _ h => (QCert.BianSelingerUn.presentation 1).complete h) w v h
-  | 1, _ =>
-    exact CliffordCS.complete₁_of_source
-      (fun _ _ h => (QCert.BianSelingerUn.presentation 2).complete h) w v h
-  | 2, _ => sorry
-  | 3, _ => sorry
+  | 0, _ => exact CliffordCS.complete₀_of_source h₀ w v h
+  | 1, _ => exact CliffordCS.complete₁_of_source h₁ w v h
+  | 2, _ => exact CliffordCS.complete₂_of_source h₂ w v h
+  | 3, _ => exact CliffordCS.complete₃_of_source h₃ w v h
+
+/-- Theorem 22 (5): CliffCS₂ is complete for Clifford+CS circuits up to three
+qubits: with no wire, on one and on two wires through
+`QCert.BianSelingerUn.presentation` (proved), on three wires through
+`QCert.CliffordCS3.theorem_3_1`. -/
+theorem cliffordCS_complete : CliffordCS.pres.CompleteUpTo (fun n => CliffordCS.sem.sem n) 3 :=
+  cliffordCS_complete_of_source (fun _ _ h => QCert.CliffordCS3.theorem_3_1.complete h)
+    (fun _ _ h => (QCert.BianSelingerUn.presentation 4).complete h)
+    (fun _ _ h => (QCert.BianSelingerUn.presentation 2).complete h)
+    (fun _ _ h => (QCert.BianSelingerUn.presentation 1).complete h)
 
 /-- Theorem 22 (6), the transfer: CNOTdihe₂ is complete for CNOT-dihedral
 circuits as soon as Amy, Chen and Ross's presentation is (as formalised in

@@ -69,7 +69,17 @@ def fold_rw(t):
 
 
 def canon_pieces(Kd, k):
-    """The canonical gate of kind Kd with k controls (4 wires), as pieces."""
+    """Definition 2.4 on at most four wires, as smaller gate factors."""
+    if Kd == 'box' and k in (1, 2):
+        letter = ('Z', 1) if k == 1 else ('C', 1)
+        return [([letter], ('s',) + letter, None)]
+    if Kd == 'hg' and k in (0, 1):
+        letter = ('H', 1) if k == 0 else ('K', 1)
+        return [([letter], ('s',) + letter, None)]
+    if Kd in ('zx', 'xz') and k == 2:
+        p1 = (LT.K0, ('s', 'K', 0), None)
+        p2 = (LT.conj(LT.S0, LT.sh(LT.C0)), tok.P(2, LT.C0, [0, 2]), None)
+        return [p1, p2, p1, p2] if Kd == 'zx' else [p2, p1, p2, p1]
     if Kd == 'box' and k == 3:
         B = LT.conj(LT.TAU02, LT.sh(LT.box(2)))
         return [(LT.zx(2), tok.G('zx', [0], [(1, 1), (2, 1)]), None),
@@ -90,7 +100,7 @@ def canon_pieces(Kd, k):
 
 
 def decompose(N, t):
-    if t[0] != 'g' or N != 4:
+    if t[0] != 'g':
         return None
     _, Kd, tg, cs = t
     ctrls, whites = ctrl_info(N, t)
