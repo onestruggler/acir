@@ -403,3 +403,13 @@ The generators are `gen_boxcomm_low.py`, `gen_comm_three.py`, and
 The axiom audit of (249) and the two main base cases reports only standard
 Lean axioms. Their complete Boolean families are being checked separately;
 the remaining-interface count is still 32 at this checkpoint.
+
+### Opposite-control commutation checked, 2026-10-29
+
+`N13/BoxPPIdle.lean` and `BoxPPBridge.lean` prove that two boxes with
+opposite controls on wire 2 commute when one is conjugated by `P ⊗ P`.
+The bulk controls may have independent colourings. The semantic calculation
+uses the verified symbolic evaluator on three local wires; an idle wire
+then permits the smaller-width completeness hypothesis to give a circuit
+derivation at every width from five. Both modules typecheck, and the
+`commBBpp` axiom audit contains only standard Lean axioms.
