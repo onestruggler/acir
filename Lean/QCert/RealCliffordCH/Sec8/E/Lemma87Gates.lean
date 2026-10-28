@@ -95,4 +95,170 @@ theorem lemma86_Z_hi {M : ℕ} (ih : IH (M + 3)) (ℓ : ℕ) (hj : ℓ + 1 < M +
   rw [idleOn_of_none ws _ hnone] at hd
   exact hd.trans (box1_z (by omega) (by omega) hj)
 
+/-- `CZ` on the wires `ℓ + 1`, `ℓ + 2`. -/
+theorem lemma86_CZ_hi {M : ℕ} (ih : IH (M + 3)) (ℓ : ℕ) (hj : ℓ + 3 ≤ M + 3) :
+    Derivable (theory (M + 3)) (decW (M + 3) (wordOf (encL (M + 3) (.C (ℓ + 1)))))
+      ((L.C (ℓ + 1)).circ (M + 3)) := by
+  set k := M + 3 - 2 - (ℓ + 1) with hk
+  have hn : M + 3 = ℓ + 3 + k := by omega
+  set ws := lowHigh ℓ 3 k with hws_def
+  have hlen : ws.length = ℓ + k := lowHigh_length ℓ 3 k
+  set sOf : ℕ → ℕ := fun i => i / 2 ^ ℓ * 2 ^ (ℓ + 3) + 6 * 2 ^ ℓ + i % 2 ^ ℓ with hsOf
+  have hmid : ∀ i q, (sOf i).testBit q =
+      if q < ℓ then (i % 2 ^ ℓ).testBit q else if q < ℓ + 3 then (6 : ℕ).testBit (q - ℓ)
+        else (i / 2 ^ ℓ).testBit (q - (ℓ + 3)) := fun i q =>
+    testBit_mid _ _ _ _ _ _ (Nat.mod_lt _ (Nat.two_pow_pos ℓ)) (by norm_num)
+  have hbt : ∀ i, (sOf i).testBit ℓ = false := fun i => by
+    rw [hmid, if_neg (by omega), if_pos (by omega), Nat.sub_self]; decide
+  have hbt1 : ∀ i, (sOf i).testBit (ℓ + 1) = true := fun i => by
+    rw [hmid, if_neg (by omega), if_pos (by omega), show ℓ + 1 - ℓ = 1 by omega]; decide
+  have hbt2 : ∀ i, (sOf i).testBit (ℓ + 2) = true := fun i => by
+    rw [hmid, if_neg (by omega), if_pos (by omega), show ℓ + 2 - ℓ = 2 by omega]; decide
+  have hl : encL (M + 3) (.C (ℓ + 1)) = (List.range (2 ^ ws.length)).map fun i =>
+      PG.zz (gx (M + 3) (sOf i)) (gx (M + 3) (sOf i ^^^ 2 ^ ℓ)) := by
+    simp only [encL, enc2, grid_eq, List.map_map]
+    rw [hlen, ← hk, show (2 : ℕ) ^ (ℓ + k) = 2 ^ k * 2 ^ ℓ by rw [pow_add, mul_comm]]
+    apply List.map_congr_left
+    intro i _
+    simp only [Function.comp]
+    congr 2
+    · simp only [hsOf]; ring
+    · rw [← add_two_pow_eq_xor (hbt i)]; simp only [hsOf]; ring
+  rw [hl]
+  have hb : blackL [ℓ + 1, ℓ + 2] ℓ = none := by simp [blackL]
+  have hnone : ∀ w ∈ ws, blackL [ℓ + 1, ℓ + 2] w = none := by
+    intro w hw
+    rw [hws_def, mem_lowHigh] at hw
+    simp [blackL]; omega
+  have hd := decode_zz_list ih (t := ℓ) (by omega) ws (lowHigh_nodup ℓ 3 k)
+    (by rw [hws_def, mem_lowHigh]; omega) (by intro w hw; rw [hws_def, mem_lowHigh] at hw; omega)
+    (blackL [ℓ + 1, ℓ + 2]) hb sOf (by
+      intro i hi
+      refine ⟨?_, hbt i, ?_⟩
+      · have := state_lt i 6 ℓ 3 k (by rw [hlen] at hi; exact hi) (by norm_num)
+        rw [hn]; exact this
+      · apply ctlOf_eq_bitsOn ws (lowHigh_nodup ℓ 3 k) _ ℓ (sOf i) i
+          (by rw [hws_def, mem_lowHigh]; omega)
+        · intro r hr
+          rw [hlen] at hr
+          exact testBit_state i 6 ℓ 3 k r hr (by norm_num)
+        · intro j hj hjw
+          rw [hws_def, mem_lowHigh] at hjw
+          have : j = ℓ ∨ j = ℓ + 1 ∨ j = ℓ + 2 := by omega
+          rcases this with rfl | rfl | rfl
+          · simp [ctlOf, blackL]
+          · simp [ctlOf, blackL, bitOf_eq, hbt1]
+          · simp [ctlOf, blackL, bitOf_eq, hbt2])
+  rw [idleOn_of_none ws _ hnone] at hd
+  exact hd.trans (box2_cz (by omega) (by omega) (by omega) (by omega))
+
+/-- `Z` on wire `0`: the box is on the top wire. -/
+theorem lemma86_Z_lo {M : ℕ} (ih : IH (M + 3)) :
+    Derivable (theory (M + 3)) (decW (M + 3) (wordOf (encL (M + 3) (.Z 0))))
+      ((L.Z 0).circ (M + 3)) := by
+  set k := M + 2 with hk
+  set ws := lowHigh 0 1 (k - 1) with hws_def
+  have hlen : ws.length = k - 1 := by rw [hws_def, lowHigh_length]; omega
+  set sOf : ℕ → ℕ := fun i => i / 2 ^ 0 * 2 ^ (0 + 1) + 1 * 2 ^ 0 + i % 2 ^ 0 with hsOf
+  have hsv : ∀ i, sOf i = i * 2 + 1 := fun i => by simp [hsOf, Nat.mod_one]
+  have hslt : ∀ i, i < 2 ^ (k - 1) → sOf i < 2 ^ k := fun i hi => by
+    have := state_lt i 1 0 1 (k - 1) (by simpa using hi) (by norm_num)
+    rw [show 0 + 1 + (k - 1) = k by omega] at this
+    exact this
+  have hl : encL (M + 3) (.Z 0) = (List.range (2 ^ ws.length)).map fun i =>
+      PG.zz (gx (M + 3) (sOf i)) (gx (M + 3) (sOf i ^^^ 2 ^ k)) := by
+    simp only [encL, enc1]
+    rw [show M + 3 - 1 - 0 = k by omega, hlen]
+    apply List.map_congr_left
+    intro i hi
+    have hi' := List.mem_range.1 hi
+    have hbt : (sOf i).testBit k = false := testBit_of_lt (hslt i hi') le_rfl
+    congr 2
+    · rw [hsv]; ring
+    · rw [← add_two_pow_eq_xor hbt, hsv]; ring
+  rw [hl]
+  have hb : blackL [0] k = none := by simp [blackL]
+  have hnone : ∀ w ∈ ws, blackL [0] w = none := by
+    intro w hw
+    rw [hws_def, mem_lowHigh] at hw
+    simp [blackL]; omega
+  have hd := decode_zz_list ih (t := k) (by omega) ws (lowHigh_nodup 0 1 (k - 1))
+    (by rw [hws_def, mem_lowHigh]; omega) (by intro w hw; rw [hws_def, mem_lowHigh] at hw; omega)
+    (blackL [0]) hb sOf (by
+      intro i hi
+      rw [hlen] at hi
+      refine ⟨lt_of_lt_of_le (hslt i hi) (Nat.pow_le_pow_right (by norm_num) (by omega)),
+        testBit_of_lt (hslt i hi) le_rfl, ?_⟩
+      apply ctlOf_eq_bitsOn ws (lowHigh_nodup 0 1 (k - 1)) _ k (sOf i) i
+        (by rw [hws_def, mem_lowHigh]; omega)
+      · intro r hr
+        rw [hlen] at hr
+        exact testBit_state i 1 0 1 (k - 1) r (by omega) (by norm_num)
+      · intro j hj hjw
+        rw [hws_def, mem_lowHigh] at hjw
+        have h0 : (sOf i).testBit 0 = true := by
+          rw [hsv, Nat.testBit_zero]; simp only [decide_eq_true_eq]; omega
+        have : j = 0 ∨ j = k := by omega
+        rcases this with rfl | rfl
+        · simp [ctlOf, blackL, bitOf_eq, h0, show (0 : ℕ) ≠ k by omega]
+        · simp [ctlOf, blackL, show k ≠ 0 by omega])
+  rw [idleOn_of_none ws _ hnone] at hd
+  exact hd.trans (box1_z (by omega) (by omega) (by omega))
+
+/-- `CZ` on the wires `0`, `1`: the box is on the top wire. -/
+theorem lemma86_CZ_lo {M : ℕ} (ih : IH (M + 3)) :
+    Derivable (theory (M + 3)) (decW (M + 3) (wordOf (encL (M + 3) (.C 0))))
+      ((L.C 0).circ (M + 3)) := by
+  set k := M + 1 with hk
+  set ws := lowHigh 0 2 (k - 1) with hws_def
+  have hlen : ws.length = k - 1 := by rw [hws_def, lowHigh_length]; omega
+  set sOf : ℕ → ℕ := fun i => i / 2 ^ 0 * 2 ^ (0 + 2) + 3 * 2 ^ 0 + i % 2 ^ 0 with hsOf
+  have hsv : ∀ i, sOf i = i * 4 + 3 := fun i => by simp [hsOf, Nat.mod_one]
+  have hslt : ∀ i, i < 2 ^ (k - 1) → sOf i < 2 ^ (k + 1) := fun i hi => by
+    have := state_lt i 3 0 2 (k - 1) (by simpa using hi) (by norm_num)
+    rw [show 0 + 2 + (k - 1) = k + 1 by omega] at this
+    exact this
+  have hl : encL (M + 3) (.C 0) = (List.range (2 ^ ws.length)).map fun i =>
+      PG.zz (gx (M + 3) (sOf i)) (gx (M + 3) (sOf i ^^^ 2 ^ (k + 1))) := by
+    simp only [encL, enc2]
+    rw [show M + 3 - 2 - 0 = k by omega, hlen]
+    apply List.map_congr_left
+    intro i hi
+    have hi' := List.mem_range.1 hi
+    have hbt : (sOf i).testBit (k + 1) = false := testBit_of_lt (hslt i hi') le_rfl
+    congr 2
+    · rw [hsv]; ring
+    · rw [← add_two_pow_eq_xor hbt, hsv]; ring
+  rw [hl]
+  have hb : blackL [0, 1] (k + 1) = none := by simp [blackL]
+  have hnone : ∀ w ∈ ws, blackL [0, 1] w = none := by
+    intro w hw
+    rw [hws_def, mem_lowHigh] at hw
+    simp [blackL]; omega
+  have hd := decode_zz_list ih (t := k + 1) (by omega) ws (lowHigh_nodup 0 2 (k - 1))
+    (by rw [hws_def, mem_lowHigh]; omega) (by intro w hw; rw [hws_def, mem_lowHigh] at hw; omega)
+    (blackL [0, 1]) hb sOf (by
+      intro i hi
+      rw [hlen] at hi
+      refine ⟨lt_of_lt_of_le (hslt i hi) (Nat.pow_le_pow_right (by norm_num) (by omega)),
+        testBit_of_lt (hslt i hi) le_rfl, ?_⟩
+      apply ctlOf_eq_bitsOn ws (lowHigh_nodup 0 2 (k - 1)) _ (k + 1) (sOf i) i
+        (by rw [hws_def, mem_lowHigh]; omega)
+      · intro r hr
+        rw [hlen] at hr
+        exact testBit_state i 3 0 2 (k - 1) r (by omega) (by norm_num)
+      · intro j hj hjw
+        rw [hws_def, mem_lowHigh] at hjw
+        have h0 : (sOf i).testBit 0 = true := by
+          rw [hsv, Nat.testBit_zero]; simp only [decide_eq_true_eq]; omega
+        have h1 : (sOf i).testBit 1 = true := by
+          rw [hsv, Nat.testBit_add_one, Nat.testBit_zero]; simp; omega
+        have : j = 0 ∨ j = 1 ∨ j = k + 1 := by omega
+        rcases this with rfl | rfl | rfl
+        · simp [ctlOf, blackL, bitOf_eq, h0, show (0 : ℕ) ≠ k + 1 by omega]
+        · simp [ctlOf, blackL, bitOf_eq, h1, show (1 : ℕ) ≠ k + 1 by omega]
+        · simp [ctlOf, blackL])
+  rw [idleOn_of_none ws _ hnone] at hd
+  exact hd.trans (box2_cz (by omega) (by omega) (by omega) (by omega))
+
 end QCert.RealCliffordCH.Sec8.E
