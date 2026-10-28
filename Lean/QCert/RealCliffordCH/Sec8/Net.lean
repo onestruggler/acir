@@ -1704,4 +1704,173 @@ theorem canonSym_zx (k : ℕ) (a : Bool)
   · exact canonSym_of .zx k h353
   · exact canonSym_of .xz k h353
 
+/-! ## `mc` gates idle on a wire, moved to the top -/
+
+theorem der_of_eq {N : ℕ} {a b : Circ N} (h : a = b) : Derivable (theory N) a b :=
+  h ▸ Derivable.refl a
+
+/-- The inverse of `dropW w` on the wires other than `w`. -/
+def liftW (w i : ℕ) : ℕ := if i < w then i else i + 1
+
+/-- `mc` reads its controls only on its own wires. -/
+theorem mc_congr (N : ℕ) (K : Kind) (tg : List ℕ) {c c' : ℕ → Option Bool}
+    (h : ∀ i < N, c i = c' i) : mc N K tg c = mc N K tg c' := by
+  have h1 : ctrlWires N tg c = ctrlWires N tg c' := by
+    unfold ctrlWires
+    refine List.filter_congr (fun i hi => ?_)
+    rw [h i (List.mem_range.1 hi)]
+  have h2 : whiteWires N tg c = whiteWires N tg c' := by
+    unfold whiteWires
+    refine List.filter_congr (fun i hi => ?_)
+    rw [h i (List.mem_range.1 hi)]
+  simp only [mc, h1, h2]
+
+theorem xAt_top (M w : ℕ) (hw : w < M) : xAt (M + 1) w = padTop (xAt M w) :=
+  place1_top M w x (by omega)
+
+theorem colourW_top (M : ℕ) (ws : List ℕ) (hws : ∀ w ∈ ws, w < M) (G : Circ M) :
+    colourW (M + 1) ws (padTop G) = padTop (colourW M ws G) := by
+  have e : ws.map (xAt (M + 1)) = (ws.map (xAt M)).map padTop := by
+    rw [List.map_map]
+    exact List.map_congr_left (fun w hw => xAt_top M w (hws w hw))
+  rw [colourW_eq, colourW_eq, e, drawn_map_padTop, map_mul, map_mul]
+
+/-- An `mc` gate whose top wire is idle is `padTop` of the gate one wire
+narrower. -/
+theorem mc_top (M : ℕ) (K : Kind) (tg : List ℕ) (c : ℕ → Option Bool)
+    (htg : tg.length = kindSp K) (hnd : tg.Nodup) (htgM : ∀ t ∈ tg, t < M) (hcM : c M = none) :
+    mc (M + 1) K tg c = padTop (mc M K tg c) := by
+  have h1 : ctrlWires (M + 1) tg c = ctrlWires M tg c := by
+    unfold ctrlWires
+    rw [List.range_succ, List.filter_append]
+    simp [hcM]
+  have h2 : whiteWires (M + 1) tg c = whiteWires M tg c := by
+    unfold whiteWires
+    rw [List.range_succ, List.filter_append]
+    simp [hcM]
+  have hps : ∀ p ∈ tg ++ ctrlWires M tg c, p < M := fun p hp => by
+    rcases List.mem_append.1 hp with hp | hp
+    · exact htgM p hp
+    · simp only [ctrlWires, List.mem_filter, List.mem_range] at hp; exact hp.1
+  unfold mc
+  rw [h1, h2, canonAt_eq, canonAt_eq,
+    placeG_top _ (ctrlWires_nodup M tg c hnd) hps (by simp [htg, Nat.add_comm]),
+    colourW_top M _ (fun w hw => by
+      simp only [whiteWires, List.mem_filter, List.mem_range] at hw; exact hw.1)]
+
+/-- The swaps `q, q + 1, …, q + d - 1`. -/
+def upNet (q d : ℕ) : List ℕ := (List.range d).map (q + ·)
+
+theorem upNet_succ (q d : ℕ) : upNet q (d + 1) = upNet q d ++ [q + d] := by
+  simp [upNet, List.range_succ]
+
+theorem pos_upNet (q : ℕ) : ∀ d, pos (upNet q d) q = q + d
+  | 0 => rfl
+  | d + 1 => by
+    rw [upNet_succ, pos_append, pos_upNet q d, pos_cons, pos_nil]
+    unfold tau; rw [if_pos rfl]; omega
+
+theorem swW_single (N j : ℕ) : swW N [j] = swAt N j := by simp [swW, circW, drawn, swAt_eq]
+
+/-- Moving an idle wire up by `d` swaps relabels the gate. -/
+theorem mc_upNet (M : ℕ) (K : Kind) (q : ℕ) (hqM : q ≤ M) (tg : List ℕ) (c : ℕ → Option Bool)
+    (htg : tg.length = kindSp K) (hnd : tg.Nodup) (htgM : ∀ t ∈ tg, t ≤ M) (hcq : c q = none) :
+    ∀ d, q + d ≤ M →
+      Derivable (theory (M + 1))
+        (swW (M + 1) (upNet q d) * mc (M + 1) K tg c * swW (M + 1) (upNet q d).reverse)
+        (mc (M + 1) K (tg.map (pos (upNet q d))) (c ∘ pos (upNet q d).reverse))
+  | 0, _ => by
+    have e1 : tg.map (pos (upNet q 0)) = tg := by
+      conv_rhs => rw [← List.map_id tg]
+      exact List.map_congr_left (fun _ _ => rfl)
+    have e2 : c ∘ pos (upNet q 0).reverse = c := rfl
+    rw [e1, e2]
+    simpa [upNet, swW_nil] using Derivable.refl (Γ := theory (M + 1)) (mc (M + 1) K tg c)
+  | d + 1, hd => by
+    have ih := mc_upNet M K q hqM tg c htg hnd htgM hcq d (by omega)
+    set ℓ := upNet q d
+    have hok : Ok (M + 1) ℓ := fun x hx => by
+      simp only [ℓ, upNet, List.mem_map, List.mem_range] at hx
+      obtain ⟨e, he, rfl⟩ := hx; omega
+    have hinj : Function.Injective (pos ℓ) := pos_injective ℓ
+    have hsw := mc_swap (M + 1) (q + d) (by omega) K (tg.map (pos ℓ)) (c ∘ pos ℓ.reverse)
+      (by simp [htg]) (hnd.map hinj)
+      (fun t ht => by
+        obtain ⟨s, hs, rfl⟩ := List.mem_map.1 ht
+        exact pos_lt ℓ hok s (by have := htgM s hs; omega))
+      (by
+        intro ⟨h1, _⟩
+        simp only [ctrlWires, List.mem_filter, Function.comp, Bool.and_eq_true] at h1
+        have : pos ℓ.reverse (q + d) = q := by rw [← pos_upNet q d, pos_reverse]
+        rw [this, hcq] at h1
+        simp at h1)
+    rw [upNet_succ, List.reverse_append, List.reverse_singleton, List.singleton_append,
+      swW_append, swW_single, swW_cons]
+    have e : swAt (M + 1) (q + d) * swW (M + 1) ℓ * mc (M + 1) K tg c *
+        (swW (M + 1) ℓ.reverse * swAt (M + 1) (q + d)) =
+        swAt (M + 1) (q + d) * (swW (M + 1) ℓ * mc (M + 1) K tg c * swW (M + 1) ℓ.reverse) *
+          swAt (M + 1) (q + d) := by simp only [mul_assoc]
+    rw [e]
+    refine (dright _ (dleft _ ih)).trans ?_
+    have e2 : swAt (M + 1) (q + d) * mc (M + 1) K (tg.map (pos ℓ)) (c ∘ pos ℓ.reverse) *
+        swAt (M + 1) (q + d) =
+        drawn [swAt (M + 1) (q + d), mc (M + 1) K (tg.map (pos ℓ)) (c ∘ pos ℓ.reverse),
+          swAt (M + 1) (q + d)] := by simp [drawn, mul_assoc]
+    rw [e2]
+    have e3 : (tg.map (pos ℓ)).map (tau (q + d)) = tg.map (pos (ℓ ++ [q + d])) := by
+      rw [List.map_map]; exact List.map_congr_left (fun t _ => by simp [pos_append])
+    have e4 : (c ∘ pos ℓ.reverse) ∘ tau (q + d) = c ∘ pos ((q + d) :: ℓ.reverse) := rfl
+    rw [e3, e4] at hsw
+    exact hsw
+
+/-- `toTop` for `mc`: a gate idle on wire `q`, conjugated by the swaps
+carrying `q` to the top, is `padTop` of the gate on the remaining wires. -/
+theorem mc_toTop (M q : ℕ) (hqM : q ≤ M) (K : Kind) (tg : List ℕ) (c : ℕ → Option Bool)
+    (htg : tg.length = kindSp K) (hnd : tg.Nodup) (htgM : ∀ t ∈ tg, t ≤ M) (hqt : q ∉ tg)
+    (hcq : c q = none) :
+    Derivable (theory (M + 1))
+      (swW (M + 1) (topNet M q) * mc (M + 1) K tg c * swW (M + 1) (topNet M q).reverse)
+      (padTop (mc M K (tg.map (dropW q)) (c ∘ liftW q))) := by
+  have e0 : topNet M q = upNet q (M - q) := rfl
+  have h := mc_upNet M K q hqM tg c htg hnd htgM hcq (M - q) (by omega)
+  rw [← e0] at h
+  have hpos : ∀ t ∈ tg, pos (topNet M q) t = dropW q t := fun t ht => by
+    rw [pos_topNet M q hqM t (htgM t ht), if_neg (fun (h : t = q) => hqt (h ▸ ht))]
+  have e1 : tg.map (pos (topNet M q)) = tg.map (dropW q) := List.map_congr_left hpos
+  rw [e1] at h
+  refine h.trans (der_of_eq ?_)
+  have htg' : ∀ t ∈ tg.map (dropW q), t < M := fun t ht => by
+    obtain ⟨s, hs, rfl⟩ := List.mem_map.1 ht
+    have := htgM s hs
+    have hs' : s ≠ q := fun h => hqt (h ▸ hs)
+    simp only [dropW]; split_ifs <;> omega
+  have hnd' : (tg.map (dropW q)).Nodup := by
+    refine List.Nodup.map_on (fun a ha b hb hab => ?_) hnd
+    have ha' : a ≠ q := fun h => hqt (h ▸ ha)
+    have hb' : b ≠ q := fun h => hqt (h ▸ hb)
+    simp only [dropW] at hab; split_ifs at hab <;> omega
+  have hrev : ∀ i ≤ M, pos (topNet M q).reverse i = if i = M then q else liftW q i := by
+    intro i hi
+    by_cases him : i = M
+    · have h1 : pos (topNet M q) q = M := by rw [pos_topNet M q hqM q hqM, if_pos rfl]
+      rw [if_pos him, him]
+      have h2 := pos_reverse (topNet M q) q
+      rw [h1] at h2
+      exact h2
+    · rw [if_neg him]
+      have hl : liftW q i ≤ M := by simp only [liftW]; split_ifs <;> omega
+      have hlq : liftW q i ≠ q := by simp only [liftW]; split_ifs <;> omega
+      have : pos (topNet M q) (liftW q i) = i := by
+        rw [pos_topNet M q hqM _ hl, if_neg hlq]
+        simp only [dropW, liftW]; split_ifs <;> omega
+      have h2 := pos_reverse (topNet M q) (liftW q i)
+      rw [this] at h2
+      exact h2
+  rw [mc_top M K _ _ (by simp [htg]) hnd' htg' (by
+    simp only [Function.comp]; rw [hrev M le_rfl, if_pos rfl, hcq])]
+  congr 1
+  refine mc_congr M K _ (fun i hi => ?_)
+  simp only [Function.comp]
+  rw [hrev i (by omega), if_neg (by omega)]
+
 end QCert.RealCliffordCH.Sec8.Net
