@@ -44,8 +44,8 @@ main result) and a `README.md` listing what is proved and every remaining
 | Greylyn [2014] | U_n(ℤ[1/√2,i]), n ≤ 4 | `QCert/Greylyn` | **proved** (Theorem 22, every n ≤ 4; no `sorry`) |
 | Bian, Selinger [2021] | U_n(ℤ[1/2,i]) | `QCert/BianSelingerUn` | **proved** (Theorem 3.1, every n; no `sorry`) |
 | Li, Ross, Selinger [2021] | O_n(ℤ[1/2]), L_n | `QCert/LiRossSelinger` | **proved** (Theorem 4.10 for O_n(ℤ[1/2]) and Theorem 5.7 for L_n; no `sorry`) |
-| Fang, Heunen, Kaarsgaard [2026] | O_n(ℤ[1/√2]) | `QCert/HadamardPi` | all but Main Case 9 (2)(b) with four odd entries (`case9_four`, Clément's Case 3.4) |
-| Clément [2019] | O_n(ℤ[1/√2]) | `QCert/Clement2019` | relations proved equivalent to Figure 6 syntactically; complete through Hadamard-Π (only `case9_four` open) |
+| Fang, Heunen, Kaarsgaard [2026] | O_n(ℤ[1/√2]) | `QCert/HadamardPi` | **proved** (Theorem 4.14; the paper's gap in Main Case 9 closed by Clément's Case 3.4; no `sorry`) |
+| Clément [2019] | O_n(ℤ[1/√2]) | `QCert/Clement2019` | **proved** (Theorem 4.1, via the syntactic equivalence with Figure 6; no `sorry`) |
 | Selinger [2015] | Clifford | `QCert/SelingerClifford` | **proved** (sub-presentation at every n; no `sorry`) |
 | Bian, Li et al. [2026] | Clifford, odd prime p | `QCert/QuditClifford` | soundness proved (with Gauss's sign theorem); completeness in progress |
 | Makary, Ross, Selinger [2021] | real stabilizer | `QCert/RealStabilizer` | **proved** (sub-presentation at every n; no `sorry`) |
