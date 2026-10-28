@@ -17,9 +17,9 @@ basic generator `G` that does not raise the level:
   entry among `0, …, 3` (`squareK_disj`, Subcase 3.2.1) and with one
   (`squareK_meet`, Subcases 3.2.2–3.2.5).
 
-`squareX_odd` and `squareK_meet` are not proved yet.
+`squareX_odd` is not proved yet.
 -/
-import QCert.LiRossSelinger.CaseK
+import QCert.LiRossSelinger.CaseKMeet
 
 namespace QCert.LiRossSelinger
 
@@ -54,7 +54,7 @@ theorem squareX_odd {s : O_ZHalf n} (hs : s ≠ 1) {x y : Fin n} (hxy : x < y)
   sorry
 
 /-- Subcases 3.2.2–3.2.5: `G = K_[0,1,2,3]` at `k > 0`, with the first odd
-entry `a ≤ 3`.  **Not proved yet.** -/
+entry `a ≤ 3` (`CaseKMeet.squareK_meet'`). -/
 theorem squareK_meet {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ : Fin n} (h₁ : a₀ < a₁)
     (h₂ : a₁ < a₂) (h₃ : a₂ < a₃)
     (hbasic : a₀.val = 0 ∧ a₁.val = 1 ∧ a₂.val = 2 ∧ a₃.val = 3)
@@ -62,8 +62,8 @@ theorem squareK_meet {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ : Fin n
     {a b c d : Fin n} (hab : a < b) (hbc : b < c) (hcd : c < d)
     (ha : a ∈ oddS s) (hb : b ∈ oddS s) (hc : c ∈ oddS s) (hd : d ∈ oddS s)
     (hrest : ∀ r ∈ oddS s, r = a ∨ r = b ∨ r = c ∨ r = d ∨ d < r) (h3a : a.val ≤ 3) :
-    Closes s (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃) := by
-  sorry
+    Closes s (Gen.k a₀ a₁ a₂ a₃ h₁ h₂ h₃) :=
+  squareK_meet' hs h₁ h₂ h₃ hbasic hle hk hab hbc hcd ha hb hc hd hrest h3a
 
 /-- Case 3.2: `G = K_[0,1,2,3]` at `k > 0`. -/
 theorem squareK_pos {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ : Fin n} (h₁ : a₀ < a₁)

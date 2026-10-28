@@ -6,7 +6,7 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 Then `{x, x+1}` is `{a,b}`, `{b,c}` or `{c,d}`, `G s` has the same first
 four odd entries with the signs of `x` and `x + 1` exchanged, and the square
 is closed by `(−1)_[d] (−1)_[b] X_[b,d]`, `X_[b,c]` and `X_[b,d]`
-respectively: `K X_[x,x+1] ≈ P K` is (4a), (A.11c) and (4c) read backwards
+respectively: `K X_[x,x+1] ≈ P K` is (4a), (8c) and (4c) read backwards
 (`rev_derivable`: every generator is an involution).
 -/
 import QCert.LiRossSelinger.CaseZero
@@ -54,7 +54,7 @@ theorem rev_derivable {l l' : List (Gen n)}
   rw [one_mul] at e3
   exact e1.trans (e2.trans e3)
 
-/-- (A.11c): `X_[b,c] K_[a,b,c,d] ≈ K_[a,b,c,d] X_[b,c]`. -/
+/-- (8c) of Proposition A.11: `X_[b,c] K_[a,b,c,d] ≈ K_[a,b,c,d] X_[b,c]`. -/
 theorem ksym2 {a b c d : Fin n} (h₁ : a < b) (h₂ : b < c) (h₃ : c < d) :
     Derivable (Table1 n) (FreeMonoid.ofList [Gen.x b c h₂, Gen.k a b c d h₁ h₂ h₃])
       (FreeMonoid.ofList [Gen.k a b c d h₁ h₂ h₃, Gen.x b c h₂]) := by

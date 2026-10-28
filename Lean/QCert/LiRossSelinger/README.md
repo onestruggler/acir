@@ -130,12 +130,25 @@ groups `O_ZHalf n` and `L n`, `matIH` = `I ⊗ H`), `Theorem.lean`.
     `oddS_eq`, `firstOdd_eq`, `syll_eq_pos`).
   * `SwapConj.lean`: conjugation by `X_[x,x+1]` renames any generator not
     involving both `x` and `x+1` ((2a)–(2c), (3a)–(3g); `conj_swap`).
-  * `Checker.lean`: rewriting chains on concrete indices checked by the
-    kernel, moved along order embeddings (`checkSteps_sound`,
-    `derivable_rename`); not used yet.
+  * `Checker.lean`, `Derive.lean`: rewriting chains on concrete indices
+    checked by the kernel (`decide +kernel`), moved along order embeddings
+    (`derivable_rename`, `emb4`, `emb6`, `emb8`).  The steps of `checkD` are
+    relations of Table 1, read either way round (`rev_derivable`), and the
+    derived relations (8a)–(8d), (9a)–(9g) of Propositions A.11, A.12 (and
+    `K (−1)_[a] K ≈ X_[b,c] (−1)_[a] K (−1)_[a]`, from (4b)), each proved
+    once at every choice of indices.  The chains are found by a search
+    script (scratch): a BFS for short gaps, a normaliser for words of
+    signed permutations, and a planner that moves a signed permutation
+    through a `K` (`σ K_S τ ≈ σ' K_S' τ'`) by the passing relations and the
+    renaming relations (3d)–(3g).
   * `CasePair.lean`: `rev_derivable` (a derivation read backwards: every
-    generator is an involution), (A.11c) `ksym2`, signed permutations below
+    generator is an involution), (8c) `ksym2`, signed permutations below
     the pivot keep a state below the level (`level_signed_lt`).
+  * `PathSP.lean`: a closing path `X g Y` whose letters other than `g` are
+    `(−1)`/`X` generators below the pivot stays below the level when its end
+    does (`square_sp`, `square_sp0`; the states along `X` are signed
+    permutations of the end), and `level_lt_of_col` (fewer odd entries at
+    the scale of `s`).
 
   Proved cases: Subcases 1.1 (`CaseZero.squareZ_X`), 1.2.1, 1.2.2.1,
   1.2.2.2 and 1.2.2.3 with `u_e` even (`CaseX.squareX_rename`: the syllable
@@ -144,18 +157,48 @@ groups `O_ZHalf n` and `L n`, `matIH` = `I ⊗ H`), `Theorem.lean`.
   (`CaseN.squareN_in`, `squareN_out`), 3.1 (`CaseZero.squareZ_K`;
   Subcases 3.1.1–3.1.4 raise the level, which the hypothesis excludes) and
   3.2.1 (`CaseK.squareK_disj`: `K` makes the even entries `0, …, 3` all odd,
-  which raises the level, or all even, which keeps the syllable).
+  which raises the level, or all even, which keeps the syllable), and
+  3.2.2–3.2.5 (`CaseKMeet.squareK_meet'`):
+  * 3.2.2 and 3.2.4 (one or three of the first four odd entries among
+    `0, …, 3`) raise the least denominator exponent (the four entries have
+    an odd sum), so the hypothesis of the Main Lemma excludes them
+    (`CaseK2.k_odd_raises`).
+  * 3.2.5 (`CaseK4.squareK_four`): `K ≈ V K S` or `K S' K ≈ V K S` with `V`
+    a signed permutation (Corollaries A.13, A.14); the 72 chains are in
+    `Rel325`.
+  * 3.2.3 (`CaseKMeet.two_ij`, `finish323`): `K s` has two odd entries
+    `α < β` among `0, …, 3` (Lemma A.3), and the square closes by
+    `X K_[0,1,2,c] Y` with `X`, `Y` signed permutations (Proposition A.15,
+    which the paper proves for two of its twelve words).  Each of the 96
+    relations (twelve configurations, eight sign patterns of a fixed
+    parity each) reduces to the one instance of (5a) on `0, 1, 2, 3, c, d`
+    (`Rel323`); the signs of `c, d` commute with `K_[0,1,2,3]` and are
+    handled generically (`CaseK2.square_two`).
 
 ## Remaining `sorry`
 
-Two cases of Lemma A.20, in `MainLemma.lean`:
+One case of Lemma A.20, in `MainLemma.lean`:
 
 * `squareX_odd` — Subcase 1.2.2.3 with `u_e` odd (`G = X_[d,d+1]`, `d+1`
-  the fifth odd entry): the two eight-entry diagrams of the paper, with
-  relation (6a) and Proposition A.16, and the residue Lemmas A.7–A.10 on
-  `ū ᵀ ū mod 16`.
-* `squareK_meet` — Subcases 3.2.2–3.2.5 (`G = K_[0,1,2,3]` at `k > 0`
-  with the first odd entry `a ≤ 3`), by `|{a,b,c,d} ∩ {0,1,2,3}| = 1…4`.
+  the fifth odd entry): the two eight-entry diagrams of the paper.  Their
+  relations are proved (`Rel1223`: (6a) and Proposition A.16 as
+  `W⁻¹ C W ≈ C`); the residue argument of Lemmas A.8–A.10 is not yet
+  formalized.
 
 Theorem 4.10 (`Theorem.complete`) and everything else, including
-`presentationL`, are proved from them.
+`presentationL`, are proved from it.
+
+## Errors found in the proof of Lemma A.20
+
+* **Proposition A.16**: the printed proof derives the relation for
+  `K_[e,f,g,h] K_[a,b,c,d] K_[a,b,c,e] K_[d,f,g,h]` in place of
+  `C = K_[e,f,g,h] K_[a,b,c,d] X_[d,e] K_[a,b,c,d] K_[e,f,g,h]` (the two
+  differ by `X_[d,e]` on the right), and uses (6a) in that form.  The
+  statement holds; `Rel1223.rel1223_h` derives it as (6a) conjugated by
+  `X_[e,h]`, which commutes with `C` by (8b).
+* Subcases 3.2.2 and 3.2.4 state `level(r) = (j,k+1,1)`; `K` makes the four
+  entries `0, …, 3` odd at scale `k+1`, so the last component counts those
+  (the subcases raise the level either way).
+* Proposition A.15 is proved for two of the twelve words; the others are
+  "treated similarly".  All twelve, at every sign pattern that occurs,
+  are derived here (`Rel323`), each checked numerically first.
