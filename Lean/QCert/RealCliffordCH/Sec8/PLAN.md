@@ -162,3 +162,6 @@ editing the others; it may assume everything exported by the others (the
   (conventions), `D/N8.lean`, `D/N13.lean` (interfaces, statements only).
 * Next: the figure parser (prototype `gen/sec8/figparse.py`, state in
   `gen/sec8/README.md`), then D.2 with the engine.
+* Package (vi): `D/N15.lean` stated ((353)–(361), checked numerically by
+  `gen/sec8/e/iface_n15.py`; the decoding model `gen/sec8/e/decode.py` mirrors
+  `Decoding.lean` and preserves the semantics on every letter at `n = 3, 4`).

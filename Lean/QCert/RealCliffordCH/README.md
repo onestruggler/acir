@@ -40,6 +40,7 @@ Formalized from the paper only.
 | `Sec8/Fast.lean` | A fast decision procedure for circuit identities: the simulation of `Sim` over `ℤ[√2]` (pairs of integers) with one power of `1/√2` per circuit, decided as one Boolean (`check`, `check_sound`, `sem_of_fast`); 0.7 s for a 40-gate comparison on three wires and 5.4 s for an 80-gate one on four, where `Sim.check` takes minutes. |
 | `Sec8/EngineN.lean` | A rewriting engine for derivations on a fixed number of wires: words of placed gates (`L`, `circW`), steps rewriting with a table, exchanging disjoint letters (`comm_disj`, from the structural rules) and replacing a window idle on the bottom or top wire by Lemma 5.1, decided by `Fast.check` (`check_sound`); tested in `Sec8/EngineTest.lean`. |
 | `Sec8/MC.lean` | The conventions of Appendix D: circuits at the bottom of wider ones (`atBot`), swap networks (`netL`, `placeG`), colours (`colourW`), and the general multi-controlled gate `mc N K tg c` (box, `ZX`, `XZ`, `H`; special wires `tg`; controls `c`). |
+| `Sec8/D/N15.lean` | Lemmas D.14–D.15 ((353)–(360)) and Equation (361), stated (package (vi)). |
 | `Sec8/D/N8.lean`, `Sec8/D/N13.lean` | Interfaces: the equations of Lemmas D.8–D.13 used later ((81), (269), (274), (277), (290)–(292), (295), (299)–(302), (305), (307)–(317), (333)–(340), (342), (344)–(352)), stated in the conventions of `MC`, not yet proved. |
 | `Theorem.lean` | `theorem_4_4`, `lemma_7_5`, `lemma_7_6`, `completeness_at` (by induction on the number of wires), `completeness`, `presentation`. |
 
@@ -107,6 +108,7 @@ is open for two wires too.
 | `Sec8/Statement.lean`: `lemma_8_8` | Lemma 8.8 (Appendix E.5, with the auxiliary equations of Appendix D), given completeness on fewer wires. |
 | `Sec8/D/N8.lean`: `eq81`, `eq269`, `eq274`, `eq277`, `eq290`–`eq292`, `eq295`, `eq299`–`eq302`, `eq305`, `eq307`–`eq314` | Interface statements of Lemmas D.8–D.11 (package (iv) of `Sec8/PLAN.md`); each checked numerically at 3–6 wires (`gen/sec8/iface.py`, `gen/sec8/iface_n8.py`). |
 | `Sec8/D/N13.lean`: `eq315`–`eq317`, `eq333`–`eq340`, `eq342`, `eq344`–`eq352` | Interface statements of Lemmas D.12–D.13 (package (v)); each checked numerically at 3–6 wires. |
+| `Sec8/D/N15.lean`: `eq353`–`eq361` | Statements of Lemmas D.14–D.15 and of Equation (361) of Appendix E.5 (package (vi)); each checked numerically at 2–6 wires for every colouring (`gen/sec8/e/iface_n15.py`). |
 
 The induction on the number of wires (`completeness_at`) and the
 back-and-forth argument (`Sec8.complete_of`) carry no `sorry` of their own.
