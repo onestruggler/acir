@@ -64,16 +64,20 @@
   `S j S j`, and table rewrites.  It finds e.g. the commutation of `CZ(1,2)` with
   `CZ(0,2)` (seven steps through (f3), (12)) in under a second.  `w3.py` calls it on a
   paper step once the local tactics fail.
+* `push3.py` — pushes a block (`P ⊗ P`, the cycles `S0 S1`, `S1 S0`) across letters:
+  by a table rule (`(f3)`, `(f4)`, `(18)` read suitably), letter by letter through
+  two-letter semantic windows, or, for a swap, through its definition (8) and back; it
+  derives e.g. the braid relation `S1 S0 S1 = S0 S1 S0` (17 steps).  `w3.py` uses it
+  (block taken where it is, or inserted with its inverse anywhere in the window).
 * `w3gen.py D2.json OUT.lean [EQ …]` — writes `Sec8/D/W3.lean`: per equation, the run
-  (the paper's chain step by step; (117), (118) letter by letter; (120), (122), (138) as
-  mirror images; (137) by conjugation with `X` on wire 2), checked with `eng3`, and
-  emitted as `check_sound ih (T := …) … (by decide +kernel)` with a table of exactly
-  the entries it uses (`t_eNN`/`t_fN` the rules, `t_…m` their mirror images, `dNNN`
-  the earlier equations).  State: (117)–(128) proved (W3 builds in 9 s); the steps of
-  (129)–(147) that still fail are the long `P ⊗ P` moves ((130), (133)–(135), cited as
-  (18)(111)–(114)) and some steps of (139)–(147).
-* `se.py` — a model of `Sec8/D/SymEngine.lean`: letters (`S(kind, j)` small gates, `G(Kd, tg, cs, b)`
-  multi-controlled gates on local wires with the bulk black or untouched), their circuits at any width
-  through `mc.py`, the semantic step (`semOK`, a window avoiding a local wire compared on the bulk-on and
-  bulk-off blocks), and `run(k, table, word, steps)`; `se_runs.py` replays the runs of `Sec8/D/N8/*`
-  (each Lean run was developed and checked here first).
+  (the paper's chain step by step, bridged to the statement's words at either end;
+  (117), (118) letter by letter; (120), (122), (138) as mirror images; (137) by
+  conjugation with `X` on wire 2), checked with `eng3`, and emitted as
+  `check_sound ih (T := …) … (by decide +kernel)` with a table of exactly the entries
+  it uses: `t_eNN`/`t_fN` the rules, `t_…m` their mirror images, `dNNN` the earlier
+  equations, `t_dNNNxJ` an earlier equation conjugated by `X` on wire `J` ((81),
+  derived by inserting and cancelling `X X`).  A candidate is built as an unimported
+  module before it replaces `W3.lean`, so that a failing run never breaks `Small`.
+  State: (117)–(138) proved (W3 builds in 19 s); (139) fails at its second step, and
+  (140)–(147), (148) are not done (the paper's chains of (139)–(147) are parsed and
+  numerically valid; what is missing are tactics for their longer three-wire steps).

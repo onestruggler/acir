@@ -301,34 +301,149 @@ theorem d128 (ih : IH 3) : Derivable (theory 3) l128 r128 := by
     (by decide +kernel)
 
 theorem d129 (ih : IH 3) : Derivable (theory 3) l129 r129 := by
-  sorry
+  unfold l129 r129
+  exact check_sound ih (T := [([L.C 1, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.K 1])])
+    (by
+    intro e he
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at he
+    rcases he with rfl
+    · exact t_e18)
+    (w := [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.K 1, L.S 1, L.Z 2, L.S 1, L.K 1, L.S 1, L.Z 2, L.S 1]) (v := [L.S 1, L.Z 2, L.S 1, L.K 1, L.S 1, L.Z 2, L.S 1, L.K 1, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0])
+    (ss := [.sem 11 7 [L.Z 1, L.K 1, L.Z 1], .rw 0 0 true, .sem 1 11 [L.H 1, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], .rw 2 0 true, .sem 3 11 [L.H 1, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], .sem 0 4 [L.Z 1, L.K 1, L.Z 1, L.K 1], .sem 0 3 [L.S 1, L.Z 2, L.S 1, L.K 1, L.S 1, L.Z 2, L.S 1]])
+    (by decide +kernel)
 
 theorem d130 (ih : IH 3) : Derivable (theory 3) l130 r130 := by
-  sorry
+  unfold l130 r130
+  exact check_sound ih (T := [([L.C 1, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.K 1]), ([L.C 1, L.S 0, L.S 1], [L.S 0, L.S 1, L.C 0]), ([L.K 1, L.S 0, L.S 1], [L.S 0, L.S 1, L.K 0])])
+    (by
+    intro e he
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at he
+    rcases he with rfl | rfl | rfl
+    · exact t_e18
+    · exact t_f3
+    · exact t_f4)
+    (w := [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.K 1, L.H 2, L.Z 1, L.K 1, L.H 2, L.Z 1, L.K 1, L.H 2, L.Z 1, L.S 1]) (v := [L.S 0, L.K 1, L.H 2, L.Z 1, L.K 1, L.H 2, L.Z 1, L.K 1, L.H 2, L.Z 1, L.S 1, L.S 0])
+    (ss := [.sem 14 2 [L.Z 1, L.H 2], .rw 0 0 true, .sw 10, .sw 9, .sw 8, .sw 7, .sw 6, .sw 5, .sw 4, .sw 3, .sw 2, .sw 1, .sem 2 11 [L.H 1, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], .rw 3 0 true, .sem 4 11 [L.H 1, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], .sw 14, .sw 13, .sw 12, .sw 11, .sw 10, .sw 9, .sw 8, .sw 7, .sw 6, .sw 5, .rw 6 0 true, .sw 16, .sw 15, .sw 14, .sw 13, .sw 12, .sw 11, .sw 10, .sw 9, .sw 8, .sw 7, .sem 8 11 [L.H 1, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], .sem 4 2 [L.H 2, L.H 1], .sem 0 9 [L.S 1], .sem 1 0 [L.S 1, L.S 1], .sem 2 0 [L.S 0, L.S 0], .rw 3 2 true, .sem 5 2 [L.H 2, L.S 1], .sw 4, .sw 6, .sem 5 2 [L.Z 1, L.S 0], .rw 6 2 true, .sem 8 2 [L.H 2, L.S 1], .sw 7, .sw 9, .sem 8 2 [L.Z 1, L.S 0], .rw 9 2 true, .sem 11 2 [L.H 2, L.S 1], .sw 10, .sw 12, .sem 11 2 [L.Z 1, L.S 0], .sem 14 1 [L.C 0, L.H 1, L.H 0, L.C 0, L.H 1, L.H 0, L.C 0, L.H 1, L.H 0], .rw 12 1 true, .sem 14 2 [L.H 2, L.S 1], .sw 13, .sw 15, .sem 14 2 [L.H 1, L.S 0], .rw 15 1 true, .sem 17 2 [L.H 2, L.S 1], .sw 16, .sw 18, .sem 17 2 [L.H 1, L.S 0], .rw 18 1 true, .sem 20 2 [L.H 2, L.S 1], .sw 19, .sw 21, .sem 20 2 [L.H 1, L.S 0], .sem 12 9 [L.S 1], .sem 0 2 [], .sem 12 2 []])
+    (by decide +kernel)
 
 theorem d131 (ih : IH 3) : Derivable (theory 3) l131 r131 := by
-  sorry
+  unfold l131 r131
+  exact check_sound ih (T := [([L.C 1, L.C 0], [L.C 0, L.C 1]), ([L.C 1, L.S 0, L.S 1], [L.S 0, L.S 1, L.C 0]), ([L.S 1, L.S 0, L.C 1], [L.C 0, L.S 1, L.S 0])])
+    (by
+    intro e he
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at he
+    rcases he with rfl | rfl | rfl
+    · exact t_e12
+    · exact t_f3
+    · exact t_f3m ih)
+    (w := [L.H 2, L.Z 2, L.H 2, L.C 1, L.H 2, L.Z 2, L.H 2, L.S 0, L.C 1, L.S 0]) (v := [L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2, L.C 1, L.H 2, L.Z 2, L.H 2])
+    (ss := [.sem 0 7 [L.C 1, L.Z 1], .sem 1 2 [L.S 0, L.Z 0], .sw 2, .sem 3 2 [L.S 0, L.Z 1], .sem 2 0 [L.S 1, L.S 1], .sem 3 2 [L.C 1, L.S 1], .rw 0 1 false, .rw 2 0 true, .rw 3 2 true, .sem 2 2 [L.S 1, L.C 1], .sem 1 2 [], .sem 3 2 [L.H 2, L.Z 2, L.H 2, L.C 1, L.H 2, L.Z 2, L.H 2]])
+    (by decide +kernel)
+
+/-- (131) conjugated by `X` on wire 2 ((81)). -/
+theorem t_d131x2 (ih : IH 3) :
+    Derivable (theory 3) (circW 3 [L.C 1, L.H 2, L.Z 2, L.H 2, L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2]) (circW 3 [L.H 2, L.Z 2, L.H 2, L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2, L.C 1]) :=
+  check_sound ih (T := [([L.H 2, L.Z 2, L.H 2, L.C 1, L.H 2, L.Z 2, L.H 2, L.S 0, L.C 1, L.S 0], [L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2, L.C 1, L.H 2, L.Z 2, L.H 2])])
+    (by
+    intro e he
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at he
+    rcases he with rfl
+    · exact d131 ih)
+    (w := [L.C 1, L.H 2, L.Z 2, L.H 2, L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2]) (v := [L.H 2, L.Z 2, L.H 2, L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2, L.C 1])
+    (ss := [.sem 0 0 [L.H 2, L.H 2], .sem 1 0 [L.Z 2, L.Z 2], .sem 2 0 [L.H 2, L.H 2], .rw 3 0 false, .sem 12 2 [], .sem 11 2 [], .sem 10 2 []])
+    (by decide +kernel)
 
 theorem d132 (ih : IH 3) : Derivable (theory 3) l132 r132 := by
-  sorry
+  unfold l132 r132
+  exact check_sound ih (T := [([L.C 1, L.K 0], [L.K 0, L.C 1]), ([L.K 1, L.S 0, L.S 1], [L.S 0, L.S 1, L.K 0]), ([L.S 1, L.S 0, L.K 1], [L.K 0, L.S 1, L.S 0])])
+    (by
+    intro e he
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at he
+    rcases he with rfl | rfl | rfl
+    · exact t_e13
+    · exact t_f4
+    · exact t_f4m ih)
+    (w := [L.C 1, L.H 2, L.Z 2, L.H 2, L.S 0, L.K 1, L.S 0, L.H 2, L.Z 2, L.H 2]) (v := [L.H 2, L.Z 2, L.H 2, L.S 0, L.K 1, L.S 0, L.H 2, L.Z 2, L.H 2, L.C 1])
+    (ss := [.sem 1 0 [L.S 0, L.S 0], .sw 2, .sw 3, .sw 4, .sem 5 2 [], .sw 6, .sw 7, .sw 8, .sem 2 7 [L.K 1, L.H 1], .sem 3 2 [L.S 0, L.H 0], .sem 2 0 [L.S 0, L.S 0], .sem 1 2 [], .sem 0 0 [L.S 0, L.S 0], .sem 2 0 [L.S 1, L.S 1], .sem 3 2 [L.C 1, L.S 1], .rw 4 2 false, .sem 6 2 [], .sw 5, .rw 3 0 false, .rw 1 1 true, .sw 5, .sem 4 2 [L.S 1, L.C 1], .sem 3 2 [], .sw 3, .sem 0 0 [L.S 0, L.S 0], .sem 1 2 [], .sem 2 2 [L.H 1, L.S 0], .sem 1 2 [L.H 2, L.Z 2, L.H 2, L.K 1, L.H 2, L.Z 2, L.H 2], .sw 7, .sw 6, .sw 5, .sem 4 0 [L.S 0, L.S 0], .sw 3, .sw 2, .sw 1, .sem 0 2 []])
+    (by decide +kernel)
 
 theorem d133 (ih : IH 3) : Derivable (theory 3) l133 r133 := by
-  sorry
+  unfold l133 r133
+  exact check_sound ih (T := [([L.C 1, L.C 0], [L.C 0, L.C 1]), ([L.C 1, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.K 1]), ([L.C 1, L.S 0, L.S 1], [L.S 0, L.S 1, L.C 0]), ([L.S 1, L.S 0, L.C 1], [L.C 0, L.S 1, L.S 0])])
+    (by
+    intro e he
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at he
+    rcases he with rfl | rfl | rfl | rfl
+    · exact t_e12
+    · exact t_e18
+    · exact t_f3
+    · exact t_f3m ih)
+    (w := [L.K 1, L.S 0, L.K 1, L.S 0]) (v := [L.S 0, L.K 1, L.S 0, L.K 1])
+    (ss := [.sem 0 0 [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], .rw 10 1 true, .sem 11 11 [L.S 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], .rw 12 1 true, .sem 13 10 [L.S 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0], .sem 12 0 [L.S 1, L.S 1], .sem 13 2 [L.C 1, L.S 1], .rw 10 2 false, .rw 12 0 true, .rw 13 3 true, .sem 12 2 [L.S 1, L.C 1], .sem 11 2 [], .rw 13 1 false, .sem 12 11 [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.S 0], .rw 11 1 false, .sem 10 11 [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.S 0], .sem 0 20 []])
+    (by decide +kernel)
 
 theorem d134 (ih : IH 3) : Derivable (theory 3) l134 r134 := by
-  sorry
+  unfold l134 r134
+  exact check_sound ih (T := [([L.C 1, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.K 1]), ([L.C 1, L.H 2, L.Z 2, L.H 2, L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2], [L.H 2, L.Z 2, L.H 2, L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2, L.C 1])])
+    (by
+    intro e he
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at he
+    rcases he with rfl | rfl
+    · exact t_e18
+    · exact t_d131x2 ih)
+    (w := [L.K 1, L.H 2, L.Z 2, L.H 2, L.S 0, L.K 1, L.S 0, L.H 2, L.Z 2, L.H 2]) (v := [L.H 2, L.Z 2, L.H 2, L.S 0, L.K 1, L.S 0, L.H 2, L.Z 2, L.H 2, L.K 1])
+    (ss := [.sem 0 0 [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], .rw 10 0 true, .sw 20, .sw 19, .sw 18, .sw 17, .sw 16, .sw 15, .sw 14, .sw 13, .sw 12, .sw 11, .sw 21, .sw 20, .sw 19, .sw 18, .sw 17, .sw 16, .sw 15, .sw 14, .sw 13, .sw 12, .sw 22, .sw 21, .sw 20, .sw 19, .sw 18, .sw 17, .sw 16, .sw 15, .sw 14, .sw 13, .sem 14 11 [L.S 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], .rw 15 0 true, .sem 16 11 [L.S 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], .sw 26, .sw 25, .sw 24, .sw 23, .sw 22, .sw 21, .sw 20, .sw 19, .sw 18, .sw 17, .sw 27, .sw 26, .sw 25, .sw 24, .sw 23, .sw 22, .sw 21, .sw 20, .sw 19, .sw 18, .sw 28, .sw 27, .sw 26, .sw 25, .sw 24, .sw 23, .sw 22, .sw 21, .sw 20, .sw 19, .rw 10 1 false, .rw 19 0 false, .sw 18, .sw 19, .sw 20, .sw 21, .sw 22, .sw 23, .sw 24, .sw 25, .sw 26, .sw 27, .sw 17, .sw 18, .sw 19, .sw 20, .sw 21, .sw 22, .sw 23, .sw 24, .sw 25, .sw 26, .sw 16, .sw 17, .sw 18, .sw 19, .sw 20, .sw 21, .sw 22, .sw 23, .sw 24, .sw 25, .sem 15 11 [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.S 0], .rw 14 0 false, .sem 13 11 [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.S 0], .sw 12, .sw 13, .sw 14, .sw 15, .sw 16, .sw 17, .sw 18, .sw 19, .sw 20, .sw 21, .sw 11, .sw 12, .sw 13, .sw 14, .sw 15, .sw 16, .sw 17, .sw 18, .sw 19, .sw 20, .sw 10, .sw 11, .sw 12, .sw 13, .sw 14, .sw 15, .sw 16, .sw 17, .sw 18, .sw 19, .sem 0 20 []])
+    (by decide +kernel)
 
 theorem d135 (ih : IH 3) : Derivable (theory 3) l135 r135 := by
-  sorry
+  unfold l135 r135
+  exact check_sound ih (T := [([L.C 1, L.K 0], [L.K 0, L.C 1]), ([L.S 0, L.Z 0, L.H 1, L.K 0, L.Z 0, L.H 1, L.K 0, L.Z 0, L.H 1, L.K 0, L.C 1], [L.K 1, L.S 0, L.Z 0, L.H 1, L.K 0, L.Z 0, L.H 1, L.K 0, L.Z 0, L.H 1, L.K 0])])
+    (by
+    intro e he
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at he
+    rcases he with rfl | rfl
+    · exact t_e13
+    · exact t_e18m ih)
+    (w := [L.S 0, L.K 1, L.S 0, L.K 0]) (v := [L.K 0, L.S 0, L.K 1, L.S 0])
+    (ss := [.sem 3 1 [L.Z 0, L.H 1, L.K 0, L.Z 0, L.H 1, L.K 0, L.Z 0, L.H 1, L.K 0, L.S 0, L.S 0, L.K 0, L.S 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0], .sem 0 0 [L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.S 0, L.S 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0, L.K 0, L.H 1, L.Z 0], .rw 21 1 true, .sem 20 2 [], .sem 19 2 [], .sem 18 2 [], .sem 17 2 [], .sem 16 2 [], .sem 15 2 [], .sem 14 2 [], .sem 13 2 [], .sem 12 2 [], .sem 11 2 [], .sem 12 2 [], .rw 11 0 false, .sem 12 0 [L.S 0, L.S 0], .sem 14 0 [L.K 0, L.K 0], .sem 15 0 [L.H 1, L.H 1], .sem 16 0 [L.Z 0, L.Z 0], .sem 17 0 [L.K 0, L.K 0], .sem 18 0 [L.H 1, L.H 1], .sem 19 0 [L.Z 0, L.Z 0], .sem 20 0 [L.K 0, L.K 0], .sem 21 0 [L.H 1, L.H 1], .sem 22 0 [L.Z 0, L.Z 0], .sem 23 0 [L.S 0, L.S 0], .rw 24 1 false, .sem 1 22 [], .sem 3 20 []])
+    (by decide +kernel)
 
 theorem d136 (ih : IH 3) : Derivable (theory 3) l136 r136 := by
-  sorry
+  unfold l136 r136
+  exact check_sound ih (T := [([L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0], []), ([L.Z 0, L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0, L.K 0], [L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0, L.Z 0])])
+    (by
+    intro e he
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at he
+    rcases he with rfl | rfl
+    · exact d118 ih
+    · exact d123 ih)
+    (w := [L.H 2, L.Z 2, L.H 2, L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2, L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0]) (v := [L.K 0, L.S 0, L.Z 1, L.S 0, L.K 0, L.S 0, L.Z 1, L.S 0])
+    (ss := [.sw 2, .sw 1, .sw 0, .sem 9 0 [L.H 2, L.Z 2, L.H 2, L.H 2, L.Z 2, L.H 2], .sw 8, .sw 9, .sw 10, .sw 11, .sw 12, .sw 13, .sw 7, .sw 8, .sw 9, .sem 1 0 [L.S 0, L.S 0], .sw 2, .sw 3, .sw 4, .sem 5 2 [], .sw 6, .sw 7, .sw 8, .sem 2 7 [L.Z 1, L.C 1], .sem 3 0 [L.S 0, L.S 0], .sem 2 2 [L.S 0, L.Z 0], .sem 1 2 [], .sem 6 0 [L.S 0, L.S 0], .sw 7, .sw 8, .sw 9, .sem 10 2 [], .sw 11, .sw 12, .sw 13, .sem 7 7 [L.C 1, L.Z 1], .sem 8 2 [L.S 0, L.Z 0], .sem 7 0 [L.S 0, L.S 0], .sem 6 2 [], .sem 2 0 [L.K 0, L.K 0], .rw 3 1 true, .rw 4 0 false, .sem 1 3 [L.S 0, L.Z 1, L.S 0, L.K 0, L.S 0, L.Z 1, L.S 0]])
+    (by decide +kernel)
 
 theorem d137 (ih : IH 3) : Derivable (theory 3) l137 r137 := by
-  sorry
+  unfold l137 r137
+  exact check_sound ih (T := [([L.H 2, L.Z 2, L.H 2, L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2, L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0], [L.K 0, L.S 0, L.Z 1, L.S 0, L.K 0, L.S 0, L.Z 1, L.S 0])])
+    (by
+    intro e he
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at he
+    rcases he with rfl
+    · exact d136 ih)
+    (w := [L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2, L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2]) (v := [L.K 0, L.S 0, L.Z 1, L.S 0, L.K 0, L.S 0, L.Z 1, L.S 0])
+    (ss := [.sem 0 0 [L.H 2, L.Z 2, L.H 2, L.H 2, L.Z 2, L.H 2], .sem 28 0 [L.H 2, L.Z 2, L.H 2, L.H 2, L.Z 2, L.H 2], .sem 28 6 [], .rw 3 0 false, .sw 2, .sw 1, .sw 0, .sw 3, .sw 2, .sw 1, .sw 4, .sw 3, .sw 2, .sw 5, .sw 4, .sw 3, .sw 6, .sw 5, .sw 4, .sw 7, .sw 6, .sw 5, .sw 8, .sw 7, .sw 6, .sw 9, .sw 8, .sw 7, .sem 8 6 []])
+    (by decide +kernel)
 
 theorem d138 (ih : IH 3) : Derivable (theory 3) l138 r138 := by
-  sorry
+  unfold l138 r138
+  exact check_sound ih (T := [([L.H 2, L.Z 2, L.H 2, L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0, L.H 2, L.Z 2, L.H 2, L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0], [L.K 0, L.S 0, L.Z 1, L.S 0, L.K 0, L.S 0, L.Z 1, L.S 0])])
+    (by
+    intro e he
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at he
+    rcases he with rfl
+    · exact d136 ih)
+    (w := [L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.H 2, L.Z 2, L.H 2, L.S 0, L.C 1, L.S 0, L.K 0, L.S 0, L.C 1, L.S 0, L.K 0, L.H 2, L.Z 2, L.H 2]) (v := [L.S 0, L.Z 1, L.S 0, L.K 0, L.S 0, L.Z 1, L.S 0, L.K 0])
+    (ss := [.sem 22 0 [L.K 0, L.K 0], .sem 23 0 [L.S 0, L.S 0], .sem 24 0 [L.Z 1, L.Z 1], .sem 25 0 [L.S 0, L.S 0], .sem 26 0 [L.K 0, L.K 0], .sem 27 0 [L.S 0, L.S 0], .sem 28 0 [L.Z 1, L.Z 1], .sem 29 0 [L.S 0, L.S 0], .rw 22 0 true, .sem 21 2 [], .sem 20 2 [], .sem 19 2 [], .sem 18 2 [], .sem 17 2 [], .sem 16 2 [], .sem 15 2 [], .sem 14 2 [], .sem 13 2 [], .sem 12 2 [], .sem 11 2 [], .sem 10 2 [], .sem 9 2 [], .sem 8 2 [], .sem 7 2 [], .sem 6 2 [], .sem 5 2 [], .sem 4 2 [], .sem 3 2 [], .sem 2 2 [], .sem 1 2 [], .sem 0 2 []])
+    (by decide +kernel)
 
 theorem d139 (ih : IH 3) : Derivable (theory 3) l139 r139 := by
   sorry

@@ -37,10 +37,24 @@ class Gen:
         order = [str(n) for n in range(117, 148)] + ['148a', '148b']
         for n in order:
             self.table.append(('d' + n, self.stw[n][0], self.stw[n][1]))
+        # conjugates of the D.2 equations by X on one wire ((81)): derived entries
+        self.derived = {}
+        eng0 = eng3.Engine(N, [(l, r) for _, l, r in self.table])
+        for n in order:
+            k = self.index_of('d' + n)
+            for j in range(3):
+                xg = [('H', j), ('Z', j), ('H', j)]
+                l2, r2, st = w3.conj_variant(eng0, k, self.table[k][1], self.table[k][2], xg)
+                name = f'd{n}x{j}'
+                self.derived[name] = (k, st)
+                self.table.append((name, l2, r2))
         self.index = {name: k for k, (name, _, _) in enumerate(self.table)}
         self.pr = w3.Prover(self.table)
         self.eng = self.pr.eng
         self.runs = {}
+
+    def index_of(self, name):
+        return next(k for k, t in enumerate(self.table) if t[0] == name)
 
     def chain_run(self, ws, cites, log):
         steps = []
@@ -82,8 +96,13 @@ class Gen:
         cites = ch['cites']
         if n == '129':
             ws = ws[:-1]
-        if ws[0] != l or ws[-1] != r:
-            return None
+        # the chain's ends against the statement's words (same operators; the words may be
+        # spelled differently): one more step at either end
+        if ws[0] != l:
+            ws = [l] + ws
+            cites = [[]] + cites
+        if ws[-1] != r:
+            ws = ws + [r]
         log = []
         st = self.chain_run(ws, cites, log)
         if st is None:
@@ -108,7 +127,7 @@ class Gen:
                 print(n, 'uses later', later)
                 continue
             missing = [self.table[k][0] for k in used if self.table[k][0][0] == 'd'
-                       and self.table[k][0][1:] not in self.runs]
+                       and w3.base(self.table[k][0])[1:] not in self.runs]
             if missing:
                 print(n, 'uses unproved', missing)
                 continue
@@ -122,7 +141,10 @@ class Gen:
         for k in used:
             name, l, r = self.table[k]
             entries.append(f'({lw(l)}, {lw(r)})')
-            if name in RULE_CTOR:
+            if name in self.derived:
+                self.used_derived.add(name)
+                proofs.append(f't_{name} ih')
+            elif name in RULE_CTOR:
                 proofs.append(f't_{name}')
             elif name.endswith('m') and name[:-1] in RULE_CTOR:
                 proofs.append(f't_{name} ih')
@@ -168,14 +190,30 @@ class Gen:
             out.append(f'/-- ({name[1:]}) read right to left (its mirror image, Lemma B.3). -/\n'
                        f'theorem t_{name}m (ih : IH 3) :\n'
                        f'    Derivable (theory 3) (circW 3 {lw(l[::-1])}) (circW 3 {lw(r[::-1])}) :=\n  {body}\n')
+        self.used_derived = set()
+        bodies = {}
         for n in [str(k) for k in range(117, 148)] + ['148a', '148b']:
             if n in self.runs:
                 l, r = self.stw[n]
-                body = self.lean_run('d' + n, l, r, self.runs[n])
+                bodies[n] = self.lean_run('d' + n, l, r, self.runs[n])
+        # the derived entries the runs use, right after the equation they come from
+        derived_after = {}
+        for name in sorted(self.used_derived):
+            k, st = self.derived[name]
+            _, l2, r2 = self.table[self.index[name]]
+            body = self.lean_run(name, l2, r2, st)
+            src = w3.base(name)[1:]
+            derived_after.setdefault(src, []).append(
+                f'/-- ({src}) conjugated by `X` on wire {name[-1]} ((81)). -/\n'
+                f'theorem t_{name} (ih : IH 3) :\n'
+                f'    Derivable (theory 3) (circW 3 {lw(l2)}) (circW 3 {lw(r2)}) :=\n  {body}\n')
+        for n in [str(k) for k in range(117, 148)] + ['148a', '148b']:
+            if n in self.runs:
                 out.append(f'theorem d{n} (ih : IH 3) : Derivable (theory 3) l{n} r{n} := by\n'
-                           f'  unfold l{n} r{n}\n  exact {body}\n')
+                           f'  unfold l{n} r{n}\n  exact {bodies[n]}\n')
             else:
                 out.append(f'theorem d{n} (ih : IH 3) : Derivable (theory 3) l{n} r{n} := by\n  sorry\n')
+            out += derived_after.get(n, [])
         out.append('end QCert.RealCliffordCH.Sec8.D\n')
         with open(path, 'w', encoding='utf-8', newline='\n') as f:
             f.write('\n'.join(out))

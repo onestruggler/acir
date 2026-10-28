@@ -15,6 +15,7 @@ import sys
 
 import bfs3
 import eng3
+import push3
 import letters as LT
 import model
 
@@ -84,21 +85,44 @@ class Prover:
 
     # -- several windows: the blocks of a diff, each a semantic step
     def diffsem(self, u, v):
+        """The blocks of a diff, each a semantic window or a window on wires 0, 2
+        conjugated by the swap; a block that is neither is grown over its neighbours."""
         if u == v:
             return []
         sm = difflib.SequenceMatcher(None, u, v, autojunk=False)
-        ops = [o for o in sm.get_opcodes() if o[0] != 'equal']
-        # merge blocks that are close, try the finest grouping first
+        segs = sm.get_opcodes()
         steps = []
         cur = list(u)
         shift = 0
-        for tag, i1, i2, j1, j2 in ops:
-            a, b = cur[i1 + shift:i2 + shift], v[j1:j2]
-            if not self.eng.sem_ok(a, b):
+        t = 0
+        while t < len(segs):
+            if segs[t][0] == 'equal':
+                t += 1
+                continue
+            done = False
+            for e in range(t, len(segs)):
+                if segs[e][0] == 'equal':
+                    continue
+                i1, j1 = segs[t][1], segs[t][3]
+                i2, j2 = segs[e][2], segs[e][4]
+                a, b = cur[i1 + shift:i2 + shift], v[j1:j2]
+                st = None
+                if self.eng.sem_ok(a, b):
+                    st = [('sem', i1 + shift, i2 - i1, b)]
+                else:
+                    try:
+                        st = [shift_step(x, i1 + shift) for x in self.conj02(a, b)]
+                    except Fail:
+                        st = None
+                if st is not None:
+                    steps += st
+                    cur = cur[:i1 + shift] + b + cur[i2 + shift:]
+                    shift += (j2 - j1) - (i2 - i1)
+                    t = e + 1
+                    done = True
+                    break
+            if not done:
                 raise Fail('diffsem')
-            steps.append(('sem', i1 + shift, i2 - i1, b))
-            cur = cur[:i1 + shift] + b + cur[i2 + shift:]
-            shift += (j2 - j1) - (i2 - i1)
         if cur != v:
             raise Fail('diffsem2')
         return steps
@@ -326,7 +350,7 @@ class Prover:
     def rule(self, u, v, depth=1, names=None):
         last = None
         for k, (name, l, r) in enumerate(self.table):
-            if names is not None and name not in names:
+            if names is not None and base(name) not in names:
                 continue
             for d in (False, True):
                 a, b = (r, l) if d else (l, r)
@@ -344,11 +368,11 @@ class Prover:
                             last = e
         raise Fail('rule')
 
-    def bfs(self, u, v, cites, depth=6, limit=300000):
+    def bfs(self, u, v, cites, depth=6, limit=60000):
         p, mu, mv = trim(u, v)
         names = {'e' + c for c in cites} | {'d' + c for c in cites}
         keep = [k for k, (name, l, r) in enumerate(self.table)
-                if name[0] in 'ef' or name.rstrip('m') in names]
+                if name[0] in 'ef' or base(name).rstrip('m') in names]
         sub = eng3.Engine(N, [(self.table[k][1], self.table[k][2]) for k in keep])
         S = bfs3.Search(sub, maxlen=max(len(mu), len(mv)) + 6, blocks=self.blocks)
         st = S.search(mu, mv, depth=depth, limit=limit)
@@ -361,13 +385,108 @@ class Prover:
             out.append(shift_step(s, p))
         return out
 
+    # -- pushing a two-wire block (P (x) P) through a word
+    def bsearch(self):
+        if not hasattr(self, '_bs'):
+            self._bs = bfs3.Search(self.eng, blocks=self.blocks)
+        return self._bs
+
+    def push_right(self, w, i, B):
+        """Push the block B at w[i:] right as far as it goes: past disjoint letters, letters
+        it conjugates to letters (two-wire windows), and through table rules B x... = ... B;
+        an adjacent copy of B cancels.  Returns (steps, word)."""
+        w = list(w)
+        n = len(B)
+        steps = []
+        bw = set().union(*(LT.wires(x) for x in B))
+        S = self.bsearch()
+        while i + n < len(w):
+            if w[i + n:i + 2 * n] == B:
+                steps.append(('sem', i, 2 * n, []))
+                w = w[:i] + w[i + 2 * n:]
+                return steps, w
+            x = w[i + n]
+            if not (LT.wires(x) & bw):
+                for k in range(i + n - 1, i - 1, -1):
+                    steps.append(('sw', k))
+                    w[k], w[k + 1] = w[k + 1], w[k]
+                i += 1
+                continue
+            ys = S.block_pass(B, x, True)
+            if ys:
+                steps.append(('sem', i, n + 1, [ys[0]] + B))
+                w = w[:i] + [ys[0]] + B + w[i + n + 1:]
+                i += 1
+                continue
+            done = False
+            for k, (l, r) in enumerate(self.eng.table):
+                for d in (False, True):
+                    a, b = (r, l) if d else (l, r)
+                    if len(a) > n and a[:n] == B and w[i:i + len(a)] == a and b[-n:] == B:
+                        steps.append(('rw', i, k, d))
+                        w = w[:i] + b + w[i + len(a):]
+                        i += len(b) - n
+                        done = True
+                        break
+                if done:
+                    break
+            if not done:
+                break
+        return steps, w
+
+    def push(self, u, v, cites):
+        """Insert B B or take an occurrence of B, push it right, then local steps."""
+        p, mu, mv = trim(u, v)
+        tries = []
+        for B in self.blocks:
+            n = len(B)
+            for i in range(len(mu) - n + 1):
+                if mu[i:i + n] == B:
+                    tries.append(([], mu, i, B))
+            tries.append(([('sem', 0, 0, B + B)], B + B + mu, n, B))
+        for deep in (False, True):
+            for pre, w, i, B in tries:
+                st, w2 = self.push_right(w, i, B)
+                f = (lambda a, b: self.bfs(a, b, cites, depth=4, limit=20000)) if deep else self.local
+                try:
+                    rest = f(w2, mv)
+                    return [shift_step(s, p) for s in pre + st + rest]
+                except Fail:
+                    pass
+        raise Fail('push')
+
+    def push_tac(self, u, v):
+        """Push a block (the cycles S0 S1, S1 S0, or P (x) P) through the changed window,
+        from where it is or after inserting it with its inverse at one end; then local."""
+        p, mu, mv = trim(u, v)
+        P = push3.Pusher(self)
+        blocks = [[S0, S1], [S1, S0]] + self.blocks
+        cands = []
+        for B in blocks:
+            n = len(B)
+            for i in range(len(mu) - n + 1):
+                if mu[i:i + n] == B:
+                    cands.append(([], mu, i, B))
+            inv = B[::-1]
+            for i in range(len(mu) + 1):
+                w = mu[:i] + B + inv + mu[i:]
+                cands.append((insert_pairs(i, B), w, i + n, inv))
+                cands.append((insert_pairs(i, B), w, i, B))
+        for pre, w, i, B in cands:
+            for left in (False, True):
+                st, w2, j = P.push(w, i, B, left)
+                if not st:
+                    continue
+                try:
+                    rest = self.local(w2, mv)
+                except Fail:
+                    continue
+                return [shift_step(s, p) for s in pre + st + rest]
+        raise Fail('push_tac')
+
     def step(self, u, v, cites):
         try:
             return self.local(u, v)
-        except Fail:
-            pass
-        try:
-            return self.bfs(u, v, cites)
         except Fail:
             pass
         names = set()
@@ -379,14 +498,75 @@ class Prover:
         names |= {'f3', 'f4', 'f3m', 'f4m'}
         if not any(n in {t[0] for t in self.table} for n in names - {'f3', 'f4', 'f3m', 'f4m'}):
             names = None
-        for depth in (1, 2):
+
+        def rules(depth):
             for f in (lambda a, b: self.rule(a, b, depth, names),
                       lambda a, b: eng3.reverse_steps(self.eng, b, self.rule(b, a, depth, names))):
                 try:
                     return f(u, v)
                 except Fail:
                     pass
+            return None
+
+        if names is not None:
+            st = rules(1)
+            if st is not None:
+                return st
+        for a, b, rev in ((u, v, False), (v, u, True)):
+            try:
+                st = self.push_tac(a, b)
+                return eng3.reverse_steps(self.eng, a, st) if rev else st
+            except Fail:
+                pass
+        for a, b, rev in ((u, v, False), (v, u, True)):
+            try:
+                st = self.push(a, b, cites)
+                return eng3.reverse_steps(self.eng, a, st) if rev else st
+            except Fail:
+                pass
+        try:
+            return self.bfs(u, v, cites)
+        except Fail:
+            pass
+        st = rules(2)
+        if st is not None:
+            return st
         raise Fail('step')
+
+
+def base(name):
+    """The table entry a derived entry comes from: 'd131x2' -> 'd131'."""
+    if len(name) > 2 and name[-2] == 'x' and name[-1].isdigit():
+        return name[:-2]
+    return name
+
+
+def cancel(w):
+    """Cancel adjacent equal letters (each an involution), as semantic steps."""
+    w = list(w)
+    steps = []
+    changed = True
+    while changed:
+        changed = False
+        for i in range(len(w) - 1):
+            if w[i] == w[i + 1]:
+                steps.append(('sem', i, 2, []))
+                del w[i:i + 2]
+                changed = True
+                break
+    return steps, w
+
+
+def conj_variant(eng, k, l, r, g):
+    """(l', r', steps): l' = g l g and r' = g r g with adjacent pairs cancelled, and a run
+    l' -> r' using table entry k (l = r)."""
+    sl, l2 = cancel(g + l + g)
+    sr, r2 = cancel(g + r + g)
+    up = eng3.reverse_steps(eng, g + l + g, sl)        # l2 -> g l g
+    st = up + [('rw', len(g), k, False)] + sr
+    w, bad = eng.run(l2, st)
+    assert w == r2, (k, g)
+    return l2, r2, st
 
 
 def shift_step(s, p):
@@ -470,6 +650,7 @@ def main():
                 res.append('ok' if ok else 'BAD')
             except Fail as e:
                 res.append('fail')
+            print(n, i, res[-1], flush=True)
         print(n, ' '.join(res))
         report[n] = res
     tot = sum(len(r) for r in report.values())
