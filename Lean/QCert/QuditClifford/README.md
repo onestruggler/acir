@@ -30,8 +30,9 @@ symbolic `p` with `[Fact p.Prime]` and `p ≠ 2`).
 | `OneQudit.lean`, `Width1.lean` | the one-qudit calculus modulo Paulis (`Hq`, `Sq`, `Mq`; `M_a M_b = M_{ab}`, `M_a` conjugating `S`, `H` conjugating `M_a`); the stabiliser chain on one wire, `faith_one` | |
 | `Transport.lean`, `Step.lean`, `Step2.lean` | the generators, sections and subgroups placed on the bottom wires; the induction step (`zstab_succ`, `xstab_succ`) from the local facts on two and three wires (`LF2`, `LF3`); `stab_all` | |
 | `Width2Kit.lean`, `Width2.lean` | two qudits modulo Paulis: the swap, `CX`, `CX'`, the diagonal classes, `SWAP = H₁² CX CX'⁻¹ CX`; the local facts on two wires, `lf2` | |
+| `Width3.lean` | three qudits modulo Paulis: the cycle of the wires ((C14), `cyc`), `CZ₀₁ CZ₁₂ = CZ₁₂ CZ₀₁` ((C15) conjugated by `S` on wire 1), (C15) moved by the cycle and the Steinberg relation of the `CX` gates; the local facts on three wires, `lf3` | |
 | `Pauli.lean` | the Pauli subgroup `PauliSub`, its normal closure `PauliN` | Lemma 3.7, Proposition 4.9 |
-| `SymplecticComplete.lean` | completeness up to Pauli corrections | Theorem 4.4 |
+| `SymplecticComplete.lean` | completeness up to Pauli corrections (`faith_all`, `symplectic_complete`) | Theorem 4.4 |
 | `Theorem.lean` | `semG_injective`, `complete`, `theorem_4_10` | Theorem 4.10 |
 
 Conventions (as in `QCert/QutritClifford`): the paper's top wire on `k`
@@ -107,19 +108,19 @@ stabiliser of `X` on wire 0 by circuits on the other wires (stage 2), each
 by Schreier's lemma with explicit coset sections built from the paper's
 normal boxes.  The generator cases reduce to the induction hypothesis and
 a dozen local facts on one, two and three wires, derived from the rules
-(`lf1`, `lf2`, `lf3`).  `lf1` and `lf2` are proved; with `LF3`, the
-three-wire facts, `stab_all` gives faithfulness at every width.  The
-derivation of `LF3` planned (and checked on symplectic matrices for
-`p = 3, 5, 7`) uses (C14) and (C15) only: the cycle `SWAP₀₁ SWAP₁₂`
-carries the classes on wires 0, 1 to those on wires 1, 2 ((C14)), and
-(C15), conjugated by `S` on wire 1, gives the commutation of `CZ₀₁` and
-`CZ₁₂` and, moved by the cycle, the Steinberg relation of the `CX` gates.
+(`lf1`, `lf2`, `lf3`), all proved; `stab_all` then gives faithfulness at
+every width (`faith_all`), which is Theorem 4.4 (`symplectic_complete`).
+The three-wire facts (checked on symplectic matrices for `p = 3, 5, 7`
+first) use (C14) and (C15) only, beside the two-wire facts: the cycle
+`SWAP₀₁ SWAP₁₂` carries the classes on wires 0, 1 to those on wires 1, 2
+((C14)), and (C15), conjugated by `S` on wire 1, gives the commutation of
+`CZ₀₁` and `CZ₁₂` and, moved by the cycle, the Steinberg relation of the
+`CX` gates.
 
 ## Remaining `sorry`s
 
 | Name | Stands for |
 | --- | --- |
-| `symplectic_complete` (`SymplecticComplete.lean`) | Theorem 4.4: completeness up to Pauli corrections; reduced (`Step2.stab_all`) to the three-wire local facts `LF3` |
 | `pauli_normal` (`Pauli.lean`) | Proposition 4.9: generators conjugate Paulis to Paulis |
 | `pauli_inj` (`Pauli.lean`) | Lemma 3.7: Pauli normal form; a Pauli circuit implementing `1` is trivial |
 
