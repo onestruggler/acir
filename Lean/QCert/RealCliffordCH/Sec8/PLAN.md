@@ -394,3 +394,12 @@ in these three results. There are now 32 remaining proof sites (24
 standalone and eight rule branches). Table 1 remains at 13 of 16 complete.
 The generators are `gen_boxcomm_low.py`, `gen_comm_three.py`, and
 `gen_comm_low_interface.py` in `gen/sec8/w4`.
+
+### Five-wire foundation checked, 2026-10-29
+
+`W5/Base.lean` checks 19 certificates: the auxiliary equations
+(249)–(260), colour variants needed by them, and base cases for (267),
+(268). The build passed (2177 jobs, 205 seconds for the new module).
+The axiom audit of (249) and the two main base cases reports only standard
+Lean axioms. Their complete Boolean families are being checked separately;
+the remaining-interface count is still 32 at this checkpoint.
