@@ -420,3 +420,12 @@ derivation at every width from five. Both modules typecheck, and the
 parameters of (267). Lean completed the module in 1448 seconds. Its first
 and last exported cases have only standard Lean axioms. The companion
 family (268) is still checking before the shared `W5` interface is audited.
+
+### Small-width equation (337) checked, 2026-10-29
+
+`W4/BoxHgLow.lean`, `N13/ThreeHg.lean`, and `N13/LowHg.lean` prove
+equation (337) on three and four wires, for every allowed colouring.
+The four-wire cases with a white control in front of the Hadamard use
+complementary-box merging and the previously proved controlled-Z
+commutations. The modules typecheck and both exported small-width results
+have only standard Lean axioms.
