@@ -13,6 +13,7 @@ numerically against the definitions at `N = 3, …, 6` (scratch
 `PLAN.md` replaces each `sorry` by its proof and keeps the statements.
 -/
 import QCert.RealCliffordCH.Sec8.D.Colour
+import QCert.RealCliffordCH.Sec8.D.N8.I274
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -102,8 +103,8 @@ theorem eq302 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
 
 /-- (274): the box wire is an identity wire; the box moves to an idle wire. -/
 theorem eq274 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
-    Derivable (theory N) (mc N .box [1] (blackOn 2 N)) (mc N .box [0] (blackOn 2 N)) := by
-  sorry
+    Derivable (theory N) (mc N .box [1] (blackOn 2 N)) (mc N .box [0] (blackOn 2 N)) :=
+  N8.eq274' N hN ih
 
 /-- (277): the same for the box of the multi-controlled `H`. -/
 theorem eq277 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
