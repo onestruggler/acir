@@ -2362,4 +2362,84 @@ theorem letter_toTop (M q : ℕ) (hqM : q ≤ M) (x : L) (hx : x.lo + x.wd ≤ M
   | K j => exact two ch j hx hq
   | S j => exact two swap j hx hq
 
+/-! ## Windows idle on a wire -/
+
+/-- `A` conjugated by the swaps carrying wire `q` to the top is `padTop A'`:
+`A` is `A'` on the wires other than `q`. -/
+def ToTop (M q : ℕ) (A : Circ (M + 1)) (A' : Circ M) : Prop :=
+  Derivable (theory (M + 1)) (swW (M + 1) (topNet M q) * A * swW (M + 1) (topNet M q).reverse)
+    (padTop A')
+
+theorem topNet_rev_ok (M q : ℕ) : Ok (M + 1) (topNet M q).reverse :=
+  fun x hx => topNet_ok M q x (List.mem_reverse.1 hx)
+
+theorem ToTop.one (M q : ℕ) : ToTop M q 1 1 := by
+  have h := placedBy_one (N := M + 1) _ (topNet_rev_ok M q)
+  unfold placedBy at h
+  rw [List.reverse_reverse] at h
+  unfold ToTop
+  rw [map_one]; exact h
+
+theorem ToTop.mul {M q : ℕ} {A B : Circ (M + 1)} {A' B' : Circ M} (hA : ToTop M q A A')
+    (hB : ToTop M q B B') : ToTop M q (A * B) (A' * B') := by
+  have h := placedBy_mul (N := M + 1) _ (topNet_rev_ok M q) A B
+  unfold placedBy at h
+  rw [List.reverse_reverse] at h
+  unfold ToTop at *
+  rw [map_mul]
+  exact h.trans (dmul hA hB)
+
+theorem ToTop.ofList {M q : ℕ} : ∀ {l : List (Circ (M + 1))} {l' : List (Circ M)},
+    List.Forall₂ (ToTop M q) l l' → ToTop M q (drawn l) (drawn l')
+  | [], [], _ => by simpa [drawn] using ToTop.one M q
+  | a :: l, a' :: l', List.Forall₂.cons h hl => by
+    rw [drawn_cons, drawn_cons]
+    exact (ToTop.ofList hl).mul h
+
+theorem ToTop.congr {M q : ℕ} {A B : Circ (M + 1)} {A' : Circ M}
+    (hAB : Derivable (theory (M + 1)) A B) (hB : ToTop M q B A') : ToTop M q A A' :=
+  (dright _ (dleft _ hAB)).trans hB
+
+/-- `mc_toTop` in the form `ToTop`. -/
+theorem ToTop.mc {M q : ℕ} (hqM : q ≤ M) (K : Kind) (tg : List ℕ) (c : ℕ → Option Bool)
+    (htg : tg.length = kindSp K) (hnd : tg.Nodup) (htgM : ∀ t ∈ tg, t ≤ M) (hqt : q ∉ tg)
+    (hcq : c q = none) :
+    ToTop M q (mc (M + 1) K tg c) (mc M K (tg.map (dropW q)) (c ∘ liftW q)) :=
+  mc_toTop M q hqM K tg c htg hnd htgM hqt hcq
+
+/-- `letter_toTop` in the form `ToTop`. -/
+theorem ToTop.letter {M q : ℕ} (hqM : q ≤ M) (x : L) (hx : x.lo + x.wd ≤ M + 1)
+    (hq : q < x.lo ∨ x.lo + x.wd ≤ q) : ToTop M q (x.circ (M + 1)) ((dropL q x).circ M) :=
+  letter_toTop M q hqM x hx hq
+
+/-- A derivation on the wires other than `q`: two windows that are `A'` and
+`B'` on those wires are equal when `A'` and `B'` are. -/
+theorem liftIdle {M q : ℕ} {A B : Circ (M + 1)} {A' B' : Circ M} (hA : ToTop M q A A')
+    (hB : ToTop M q B B') (d : Derivable (theory M) A' B') : Derivable (theory (M + 1)) A B := by
+  have hc : Derivable (theory (M + 1))
+      (swW (M + 1) (topNet M q).reverse * swW (M + 1) (topNet M q)) 1 := by
+    rw [← swW_append]; exact (SwEq.cancel _ (topNet_ok M q)).der
+  have back : ∀ X : Circ (M + 1), Derivable (theory (M + 1)) X
+      (swW (M + 1) (topNet M q).reverse *
+        (swW (M + 1) (topNet M q) * X * swW (M + 1) (topNet M q).reverse) *
+          swW (M + 1) (topNet M q)) := by
+    intro X
+    have e : swW (M + 1) (topNet M q).reverse *
+        (swW (M + 1) (topNet M q) * X * swW (M + 1) (topNet M q).reverse) *
+          swW (M + 1) (topNet M q) =
+        (swW (M + 1) (topNet M q).reverse * swW (M + 1) (topNet M q)) * X *
+          (swW (M + 1) (topNet M q).reverse * swW (M + 1) (topNet M q)) := by
+      simp only [mul_assoc]
+    rw [e]
+    have := dmul (dmul hc (Derivable.refl X)) hc
+    simpa using this.symm
+  refine (back A).trans ((dctx _ _ (hA.trans ((derivable_padTop d).trans hB.symm))).trans
+    (back B).symm)
+
+/-- A semantic step on the wires other than `q` (Lemma 5.1 there). -/
+theorem semIdle {M q : ℕ} (ih : IH (M + 1)) {A B : Circ (M + 1)} {A' B' : Circ M}
+    (hA : ToTop M q A A') (hB : ToTop M q B B') (h : S.sem M A' = S.sem M B') :
+    Derivable (theory (M + 1)) A B :=
+  liftIdle hA hB (ih M (Nat.lt_succ_self M) A' B' h)
+
 end QCert.RealCliffordCH.Sec8.Net
