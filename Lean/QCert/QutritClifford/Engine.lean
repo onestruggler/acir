@@ -248,38 +248,58 @@ theorem disj_of_free {bl : Bl} {pre : List Lt} (h : Inv bl pre) {x : Lt}
 end Bl
 
 /-- Scan for the least-ranked letter that commutes with every letter before
-it: `pre` the letters passed, `best` the best so far. -/
-def pickGo : Bl → List Lt → Option (List Lt × Lt × List Lt) → List Lt →
-    Option (List Lt × Lt × List Lt)
+it: `i` the position, `best` the best so far (position and letter). -/
+def pickI : Bl → ℕ → Option (ℕ × Lt) → List Lt → Option (ℕ × Lt)
   | _, _, best, [] => best
-  | bl, pre, best, x :: rest =>
+  | bl, i, best, x :: rest =>
     let better : Bool := match best with
       | none => true
-      | some (_, y, _) => decide (x.rank < y.rank)
-    let best' := if (bl.free x && better) = true then some (pre, x, rest) else best
-    pickGo (bl.add x) (pre ++ [x]) best' rest
+      | some (_, y) => decide (x.rank < y.rank)
+    let best' := if (bl.free x && better) = true then some (i, x) else best
+    pickI (bl.add x) (i + 1) best' rest
 
-def pick (w : List Lt) : Option (List Lt × Lt × List Lt) := pickGo ⟨false, false, false⟩ [] none w
+def pick (w : List Lt) : Option (List Lt × Lt × List Lt) :=
+  match pickI ⟨false, false, false⟩ 0 none w with
+  | none => none
+  | some (i, x) => some (w.take i, x, w.drop (i + 1))
 
-theorem pickGo_spec : ∀ (bl : Bl) (pre : List Lt) (best : Option (List Lt × Lt × List Lt))
-    (w : List Lt) (orig : List Lt), Bl.Inv bl pre → pre ++ w = orig →
-    (∀ p x s, best = some (p, x, s) → p ++ x :: s = orig ∧ ∀ y ∈ p, Lt.disj y x = true) →
-    ∀ p x s, pickGo bl pre best w = some (p, x, s) →
-      p ++ x :: s = orig ∧ ∀ y ∈ p, Lt.disj y x = true
-  | _, _, _, [], _, _, _, hb => fun p x s h => hb p x s h
+/-- The specification of a choice `(j, x)` in `orig`. -/
+def PickSpec (orig : List Lt) (j : ℕ) (x : Lt) : Prop :=
+  orig.take j ++ x :: orig.drop (j + 1) = orig ∧ ∀ y ∈ orig.take j, Lt.disj y x = true
+
+theorem pickI_spec : ∀ (bl : Bl) (pre : List Lt) (best : Option (ℕ × Lt)) (w : List Lt)
+    (orig : List Lt), Bl.Inv bl pre → pre ++ w = orig →
+    (∀ j x, best = some (j, x) → PickSpec orig j x) →
+    ∀ j x, pickI bl pre.length best w = some (j, x) → PickSpec orig j x
+  | _, _, _, [], _, _, _, hb => fun j x h => hb j x h
   | bl, pre, best, y :: rest, orig, hi, ho, hb => by
-    intro p x s h
-    refine pickGo_spec (bl.add y) (pre ++ [y]) _ rest orig (Bl.inv_add hi y)
-      (by rw [← ho]; simp) ?_ p x s h
-    intro p' x' s' h'
+    intro j x h
+    simp only [pickI] at h
+    rw [show pre.length + 1 = (pre ++ [y]).length by simp] at h
+    refine pickI_spec (bl.add y) (pre ++ [y]) _ rest orig (Bl.inv_add hi y)
+      (by rw [← ho]; simp) ?_ j x h
+    intro j' x' h'
     split_ifs at h' with hc
     · cases h'
-      exact ⟨ho, Bl.disj_of_free hi (Bool.and_eq_true _ _ ▸ hc).1⟩
-    · exact hb p' x' s' h'
+      have hpre : orig.take pre.length = pre := by rw [← ho]; simp
+      have hpost : orig.drop (pre.length + 1) = rest := by rw [← ho]; simp
+      refine ⟨by rw [hpre, hpost, ← ho], ?_⟩
+      rw [hpre]
+      exact Bl.disj_of_free hi (Bool.and_eq_true _ _ ▸ hc).1
+    · exact hb j' x' h'
 
 theorem pick_spec {w : List Lt} {p : List Lt} {x : Lt} {s : List Lt}
-    (h : pick w = some (p, x, s)) : p ++ x :: s = w ∧ ∀ y ∈ p, Lt.disj y x = true :=
-  pickGo_spec _ [] none w w Bl.inv_nil rfl (fun _ _ _ h => nomatch h) p x s h
+    (h : pick w = some (p, x, s)) : p ++ x :: s = w ∧ ∀ y ∈ p, Lt.disj y x = true := by
+  unfold pick at h
+  cases hp : pickI ⟨false, false, false⟩ 0 none w with
+  | none => rw [hp] at h; exact nomatch h
+  | some iy =>
+    obtain ⟨i, y⟩ := iy
+    rw [hp] at h
+    simp only [Option.some.injEq, Prod.mk.injEq] at h
+    obtain ⟨rfl, rfl, rfl⟩ := h
+    exact pickI_spec ⟨false, false, false⟩ [] none w w Bl.inv_nil rfl
+      (fun _ _ h => nomatch h) i y hp
 
 def canonF : ℕ → List Lt → List Lt
   | 0, w => w
