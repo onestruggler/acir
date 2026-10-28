@@ -11,7 +11,7 @@ which the kernel evaluates much faster than the rational arithmetic of
 -/
 import QCert.Exact.Roots
 
-namespace QCert
+namespace QCert.SelingerClifford
 
 /-- ℤ[ω] = ℤ[x]/(x⁴ + 1). -/
 @[ext]
@@ -108,4 +108,4 @@ theorem toC_sqrt2 : toC sqrt2 = ((Real.sqrt 2 : ℝ) : ℂ) := by
 
 end ZOmega
 
-end QCert
+end QCert.SelingerClifford
