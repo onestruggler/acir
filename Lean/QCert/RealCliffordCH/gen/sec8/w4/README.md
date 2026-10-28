@@ -41,14 +41,20 @@ out and reported; the title line is edited by hand).
 
 ## State
 
-Proved (token level, `W4/A.lean`): (150), (151), (154), (155), (157), (158), (159),
-(161), (162), (164), (168), (169); exported to `W4.lean`: `d157`, `d168`.
-Lean checks `A.lean` in about 2.5 minutes.
+Proved (token level, `W4/A.lean`): (150)–(155), (157)–(159), (161), (162), (164), (168),
+(169); exported to `W4.lean`: `d157`, `d168`.  Lean checks `A.lean` in about 4.5
+minutes.  Chains are joined end to end and oriented (`full_chain`: (152) runs from its
+right side, (170) has two chains).  Each proved equation also yields derived table entries
+(`derive`, each with its own run): its inverse (`NNNi`), and for a commutation `x y = y x`
+the commutations of `x⁻¹` with `y` (`NNNca`) and of `y⁻¹` with `x` (`NNNcb`) — (153) uses
+(152) that way.
 
-Not yet: (152) (its statement and chain ends differ by a reordering the solver does not
-find), (153) (cites (152) for `XZ`, i.e. through the inverse of (152): table entries for
-inverses and conjugates are the next tactic), (156) and (160) (no chain: "follows
+Not yet: (156) and (160) (no chain: "follows
 directly from (154), (155)" and "(157), (159)": combine the earlier runs), (163),
-(165)–(167), (170)–(176) (each blocked on a cited equation used in a derived form, or on
-(152)/(165)), everything from (177) on; the families (Bool parameters, per instance) and
+(165)–(167), (170)–(176): each uses a cited equation conjugated by a swap whose wires are
+two controls of a gadget ((165) uses (159) under SW23, with (161)); the next tactics are
+derived entries "conjugated by S j" (distributing S j over the tokens, keeping
+`[S j, gadget, S j]` where the gadget's controls are exchanged, then (157)/(161)), or the
+engine step `swp` for such gadgets from `Net.mc_swap_sym` with `CanonSym .box 3`
+(= (157), (161) via `Net.canonSym_box`); everything from (177) on; the families (Bool parameters, per instance) and
 D.4 (`W5.lean`).

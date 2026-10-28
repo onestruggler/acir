@@ -135,6 +135,229 @@ theorem run151 : check 3 T151 L151 R151
 theorem t151 (ih : IH 4) : Derivable (theory 4) (wcT 4 L151) (wcT 4 R151) :=
   check_sound ih (AllD.nil 4) run151
 
+def L151i : List Tk := [tg .zx [0] [(3, true)], tg .zx [0] [(2, true), (1, true)]]
+
+def R151i : List Tk := [tg .zx [0] [(2, true), (1, true)], tg .zx [0] [(3, true)]]
+
+def T151i : Tbl := [([tg .xz [0] [(2, true), (1, true)], tg .xz [0] [(3, true)]], [tg .xz [0] [(3, true)], tg .xz [0] [(2, true), (1, true)]])]
+
+theorem run151i : check 3 T151i L151i R151i
+    [.sem 2 0 [tg .xz [0] [(3, true)], tg .zx [0] [(3, true)]] 1,
+    .sem 3 0 [tg .xz [0] [(2, true), (1, true)], tg .zx [0] [(2, true), (1, true)]] 3,
+    .rw 2 0 true,
+    .sem 1 2 [] 3,
+    .sem 0 2 [] 1] = true := by
+  decide +kernel
+
+theorem t151i (ih : IH 4) : Derivable (theory 4) (wcT 4 L151i) (wcT 4 R151i) :=
+  check_sound ih (AllD.cons (t151 ih) (AllD.nil 4)) run151i
+
+def L151ca : List Tk := [tg .xz [0] [(3, true)], tg .zx [0] [(2, true), (1, true)]]
+
+def R151ca : List Tk := [tg .zx [0] [(2, true), (1, true)], tg .xz [0] [(3, true)]]
+
+def T151ca : Tbl := [([tg .xz [0] [(2, true), (1, true)], tg .xz [0] [(3, true)]], [tg .xz [0] [(3, true)], tg .xz [0] [(2, true), (1, true)]])]
+
+theorem run151ca : check 3 T151ca L151ca R151ca
+    [.sem 0 0 [tg .zx [0] [(2, true), (1, true)], tg .xz [0] [(2, true), (1, true)]] 3,
+    .rw 1 0 false,
+    .sem 2 2 [] 3] = true := by
+  decide +kernel
+
+theorem t151ca (ih : IH 4) : Derivable (theory 4) (wcT 4 L151ca) (wcT 4 R151ca) :=
+  check_sound ih (AllD.cons (t151 ih) (AllD.nil 4)) run151ca
+
+def L151cb : List Tk := [tg .xz [0] [(2, true), (1, true)], tg .zx [0] [(3, true)]]
+
+def R151cb : List Tk := [tg .zx [0] [(3, true)], tg .xz [0] [(2, true), (1, true)]]
+
+def T151cb : Tbl := [([tg .xz [0] [(2, true), (1, true)], tg .xz [0] [(3, true)]], [tg .xz [0] [(3, true)], tg .xz [0] [(2, true), (1, true)]])]
+
+theorem run151cb : check 3 T151cb L151cb R151cb
+    [.sem 0 0 [tg .zx [0] [(3, true)], tg .xz [0] [(3, true)]] 1,
+    .rw 1 0 true,
+    .sem 2 2 [] 1] = true := by
+  decide +kernel
+
+theorem t151cb (ih : IH 4) : Derivable (theory 4) (wcT 4 L151cb) (wcT 4 R151cb) :=
+  check_sound ih (AllD.cons (t151 ih) (AllD.nil 4)) run151cb
+
+def L152 : List Tk := [tg .zx [0] [(2, true), (1, true)], tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3]]
+
+def R152 : List Tk := [tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3], tg .zx [0] [(2, true), (1, true)]]
+
+def T152 : Tbl := []
+
+theorem run152 : check 3 T152 L152 R152
+    [.sem 0 1 [tK 0, tC 0, tp 2 [L.H 0, L.C 0, L.H 0] [1, 2], tC 0, tK 0, tp 2 [L.H 0, L.C 0, L.H 0] [1, 2], tp 2 [L.K 0] [0, 2], tp 2 [L.C 0] [0, 2]] 3,
+    .sem 6 4 [tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3], tp 2 [L.K 0] [0, 2], tp 2 [L.C 0] [0, 2]] 1,
+    .swp 5 2 (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 2]) true,
+    .swp 6 1 (tp 2 [L.H 0, L.C 0, L.H 0] [2, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) true,
+    .swp 10 2 (tp 2 [L.K 0] [0, 2]) (tp 2 [L.K 0] [0, 3]) true,
+    .swp 11 1 (tp 2 [L.K 0] [0, 1]) (tp 2 [L.K 0] [0, 2]) true,
+    .sem 9 2 [] 0,
+    .sem 8 2 [] 0,
+    .sem 7 1 [tH 2, tC 2, tH 2] 0,
+    .sem 10 1 [tK 0] 2,
+    .sw 9,
+    .sw 8,
+    .sw 7,
+    .sem 8 3 [tp 2 [L.H 0, L.C 0, L.H 0] [2, 3]] 0,
+    .sem 7 1 [tp 2 [L.K 0] [0, 1]] 2,
+    .sem 8 0 [tS 1, tS 1] 0,
+    .sem 9 0 [tS 2, tS 2] 0,
+    .swp 11 1 (tp 2 [L.H 0, L.C 0, L.H 0] [2, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) false,
+    .swp 10 2 (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 2]) false,
+    .swp 6 1 (tp 2 [L.K 0] [0, 1]) (tp 2 [L.K 0] [0, 2]) false,
+    .swp 5 2 (tp 2 [L.K 0] [0, 2]) (tp 2 [L.K 0] [0, 3]) false,
+    .swp 6 2 (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 2]) true,
+    .swp 7 1 (tp 2 [L.H 0, L.C 0, L.H 0] [2, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) true,
+    .swp 11 2 (tp 2 [L.C 0] [0, 2]) (tp 2 [L.C 0] [0, 3]) true,
+    .swp 12 1 (tp 2 [L.C 0] [0, 1]) (tp 2 [L.C 0] [0, 2]) true,
+    .sem 10 2 [] 0,
+    .sem 9 2 [] 0,
+    .sem 8 1 [tH 2, tC 2, tH 2] 0,
+    .sem 11 1 [tC 0] 2,
+    .sw 10,
+    .sw 9,
+    .sw 8,
+    .sem 9 3 [tp 2 [L.H 0, L.C 0, L.H 0] [2, 3]] 0,
+    .sem 8 1 [tp 2 [L.C 0] [0, 1]] 2,
+    .sem 9 0 [tS 1, tS 1] 0,
+    .sem 10 0 [tS 2, tS 2] 0,
+    .swp 12 1 (tp 2 [L.H 0, L.C 0, L.H 0] [2, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) false,
+    .swp 11 2 (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 2]) false,
+    .swp 7 1 (tp 2 [L.C 0] [0, 1]) (tp 2 [L.C 0] [0, 2]) false,
+    .swp 6 2 (tp 2 [L.C 0] [0, 2]) (tp 2 [L.C 0] [0, 3]) false,
+    .sem 3 4 [tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3], tC 0, tK 0] 2,
+    .swp 2 2 (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 2]) true,
+    .swp 3 1 (tp 2 [L.H 0, L.C 0, L.H 0] [2, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) true,
+    .swp 7 2 (tp 2 [L.K 0] [0, 2]) (tp 2 [L.K 0] [0, 3]) true,
+    .swp 8 1 (tp 2 [L.K 0] [0, 1]) (tp 2 [L.K 0] [0, 2]) true,
+    .sem 6 2 [] 0,
+    .sem 5 2 [] 0,
+    .sem 4 1 [tH 2, tC 2, tH 2] 0,
+    .sem 7 1 [tK 0] 2,
+    .sw 6,
+    .sw 5,
+    .sw 4,
+    .sem 5 3 [tp 2 [L.H 0, L.C 0, L.H 0] [2, 3]] 0,
+    .sem 4 1 [tp 2 [L.K 0] [0, 1]] 2,
+    .sem 5 0 [tS 1, tS 1] 0,
+    .sem 6 0 [tS 2, tS 2] 0,
+    .swp 8 1 (tp 2 [L.H 0, L.C 0, L.H 0] [2, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) false,
+    .swp 7 2 (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 2]) false,
+    .swp 3 1 (tp 2 [L.K 0] [0, 1]) (tp 2 [L.K 0] [0, 2]) false,
+    .swp 2 2 (tp 2 [L.K 0] [0, 2]) (tp 2 [L.K 0] [0, 3]) false,
+    .swp 3 2 (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 2]) true,
+    .swp 4 1 (tp 2 [L.H 0, L.C 0, L.H 0] [2, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) true,
+    .swp 8 2 (tp 2 [L.C 0] [0, 2]) (tp 2 [L.C 0] [0, 3]) true,
+    .swp 9 1 (tp 2 [L.C 0] [0, 1]) (tp 2 [L.C 0] [0, 2]) true,
+    .sem 7 2 [] 0,
+    .sem 6 2 [] 0,
+    .sem 5 1 [tH 2, tC 2, tH 2] 0,
+    .sem 8 1 [tC 0] 2,
+    .sw 7,
+    .sw 6,
+    .sw 5,
+    .sem 6 3 [tp 2 [L.H 0, L.C 0, L.H 0] [2, 3]] 0,
+    .sem 5 1 [tp 2 [L.C 0] [0, 1]] 2,
+    .sem 6 0 [tS 1, tS 1] 0,
+    .sem 7 0 [tS 2, tS 2] 0,
+    .swp 9 1 (tp 2 [L.H 0, L.C 0, L.H 0] [2, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) false,
+    .swp 8 2 (tp 2 [L.H 0, L.C 0, L.H 0] [1, 3]) (tp 2 [L.H 0, L.C 0, L.H 0] [1, 2]) false,
+    .swp 4 1 (tp 2 [L.C 0] [0, 1]) (tp 2 [L.C 0] [0, 2]) false,
+    .swp 3 2 (tp 2 [L.C 0] [0, 2]) (tp 2 [L.C 0] [0, 3]) false,
+    .sem 7 2 [tp 2 [L.K 0] [0, 2], tp 2 [L.H 0, L.C 0, L.H 0] [1, 2]] 3,
+    .sem 6 2 [tp 2 [L.H 0, L.C 0, L.H 0] [1, 2], tK 0, tp 2 [L.H 0, L.C 0, L.H 0] [1, 2]] 3,
+    .sem 8 2 [] 0,
+    .sem 4 3 [tC 0, tp 2 [L.C 0] [0, 2]] 3,
+    .sem 0 4 [tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3], tK 0, tC 0] 2,
+    .sem 3 2 [] 2,
+    .sem 2 4 [tg .zx [0] [(2, true), (1, true)]] 3] = true := by
+  decide +kernel
+
+theorem t152 (ih : IH 4) : Derivable (theory 4) (wcT 4 L152) (wcT 4 R152) :=
+  check_sound ih (AllD.nil 4) run152
+
+def L152i : List Tk := [tp 2 [L.C 0] [0, 3], tp 2 [L.K 0] [0, 3], tg .xz [0] [(2, true), (1, true)]]
+
+def R152i : List Tk := [tg .xz [0] [(2, true), (1, true)], tp 2 [L.C 0] [0, 3], tp 2 [L.K 0] [0, 3]]
+
+def T152i : Tbl := [([tg .zx [0] [(2, true), (1, true)], tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3]], [tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3], tg .zx [0] [(2, true), (1, true)]])]
+
+theorem run152i : check 3 T152i L152i R152i
+    [.sem 3 0 [tp 2 [L.K 0] [0, 3], tp 2 [L.K 0] [0, 3]] 1,
+    .sem 4 0 [tp 2 [L.C 0] [0, 3], tp 2 [L.C 0] [0, 3]] 1,
+    .sem 5 0 [tg .zx [0] [(2, true), (1, true)], tg .xz [0] [(2, true), (1, true)]] 3,
+    .rw 3 0 true,
+    .sem 2 2 [] 3,
+    .sem 1 2 [] 1,
+    .sem 0 2 [] 1] = true := by
+  decide +kernel
+
+theorem t152i (ih : IH 4) : Derivable (theory 4) (wcT 4 L152i) (wcT 4 R152i) :=
+  check_sound ih (AllD.cons (t152 ih) (AllD.nil 4)) run152i
+
+def L152ca : List Tk := [tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3], tg .xz [0] [(2, true), (1, true)]]
+
+def R152ca : List Tk := [tg .xz [0] [(2, true), (1, true)], tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3]]
+
+def T152ca : Tbl := [([tg .zx [0] [(2, true), (1, true)], tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3]], [tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3], tg .zx [0] [(2, true), (1, true)]])]
+
+theorem run152ca : check 3 T152ca L152ca R152ca
+    [.sem 0 0 [tg .xz [0] [(2, true), (1, true)], tg .zx [0] [(2, true), (1, true)]] 3,
+    .rw 1 0 false,
+    .sem 3 2 [] 3] = true := by
+  decide +kernel
+
+theorem t152ca (ih : IH 4) : Derivable (theory 4) (wcT 4 L152ca) (wcT 4 R152ca) :=
+  check_sound ih (AllD.cons (t152 ih) (AllD.nil 4)) run152ca
+
+def L152cb : List Tk := [tg .zx [0] [(2, true), (1, true)], tp 2 [L.C 0] [0, 3], tp 2 [L.K 0] [0, 3]]
+
+def R152cb : List Tk := [tp 2 [L.C 0] [0, 3], tp 2 [L.K 0] [0, 3], tg .zx [0] [(2, true), (1, true)]]
+
+def T152cb : Tbl := [([tg .zx [0] [(2, true), (1, true)], tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3]], [tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3], tg .zx [0] [(2, true), (1, true)]])]
+
+theorem run152cb : check 3 T152cb L152cb R152cb
+    [.sem 0 0 [tp 2 [L.C 0] [0, 3], tp 2 [L.C 0] [0, 3]] 1,
+    .sem 1 0 [tp 2 [L.K 0] [0, 3], tp 2 [L.K 0] [0, 3]] 1,
+    .rw 2 0 true,
+    .sem 4 2 [] 1,
+    .sem 3 2 [] 1] = true := by
+  decide +kernel
+
+theorem t152cb (ih : IH 4) : Derivable (theory 4) (wcT 4 L152cb) (wcT 4 R152cb) :=
+  check_sound ih (AllD.cons (t152 ih) (AllD.nil 4)) run152cb
+
+def L153 : List Tk := [tg .box [0] [(3, true), (2, true), (1, true)]]
+
+def R153 : List Tk := [tg .zx [0] [(2, true), (1, true)], tp 2 [L.K 0] [0, 3], tg .xz [0] [(2, true), (1, true)], tp 2 [L.K 0] [0, 3]]
+
+def T153 : Tbl := [([tK 0, tS 0, tC 1, tS 0, tK 0, tS 0, tC 1, tS 0, tS 0, tS 1, tS 0, tC 2, tS 0, tS 1, tS 0, tS 0, tC 1, tS 0, tK 0, tS 0, tC 1, tS 0, tK 0, tS 0, tS 1, tS 0, tC 2, tS 0, tS 1, tS 0], [tg .box [0] [(3, true), (2, true), (1, true)]]),
+  ([tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3], tg .xz [0] [(2, true), (1, true)]], [tg .xz [0] [(2, true), (1, true)], tp 2 [L.K 0] [0, 3], tp 2 [L.C 0] [0, 3]])]
+
+theorem run153 : check 3 T153 L153 R153
+    [.rw 0 0 true,
+    .sem 0 8 [tg .zx [0] [(2, true), (1, true)]] 3,
+    .sem 4 1 [tp 2 [L.C 0] [2, 3]] 0,
+    .swp 3 0 (tp 2 [L.C 0] [2, 3]) (tp 2 [L.C 0] [2, 3]) false,
+    .swp 2 1 (tp 2 [L.C 0] [2, 3]) (tp 2 [L.C 0] [1, 3]) false,
+    .swp 1 0 (tp 2 [L.C 0] [1, 3]) (tp 2 [L.C 0] [0, 3]) false,
+    .sem 2 8 [tg .xz [0] [(2, true), (1, true)]] 3,
+    .sem 6 1 [tp 2 [L.C 0] [2, 3]] 0,
+    .swp 5 0 (tp 2 [L.C 0] [2, 3]) (tp 2 [L.C 0] [2, 3]) false,
+    .swp 4 1 (tp 2 [L.C 0] [2, 3]) (tp 2 [L.C 0] [1, 3]) false,
+    .swp 3 0 (tp 2 [L.C 0] [1, 3]) (tp 2 [L.C 0] [0, 3]) false,
+    .sem 1 0 [tp 2 [L.K 0] [0, 3], tp 2 [L.K 0] [0, 3]] 1,
+    .rw 2 1 false,
+    .sem 4 2 [] 1] = true := by
+  decide +kernel
+
+theorem t153 (ih : IH 4) : Derivable (theory 4) (wcT 4 L153) (wcT 4 R153) :=
+  check_sound ih (AllD.cons (Net.der_of_eq (by set_option maxRecDepth 100000 in rfl)) (AllD.cons (t152ca ih) (AllD.nil 4))) run153
+
 def L154 : List Tk := [tZ 0, tg .box [0] [(3, true), (2, true), (1, true)]]
 
 def R154 : List Tk := [tg .box [0] [(3, true), (2, true), (1, true)], tZ 0]
@@ -191,6 +414,21 @@ theorem run154 : check 3 T154 L154 R154
 
 theorem t154 (ih : IH 4) : Derivable (theory 4) (wcT 4 L154) (wcT 4 R154) :=
   check_sound ih (AllD.cons (Net.der_of_eq (by set_option maxRecDepth 100000 in rfl)) (AllD.nil 4)) run154
+
+def L154ca : List Tk := [tg .box [0] [(3, true), (2, true), (1, true)], tZ 0]
+
+def R154ca : List Tk := [tZ 0, tg .box [0] [(3, true), (2, true), (1, true)]]
+
+def T154ca : Tbl := [([tZ 0, tg .box [0] [(3, true), (2, true), (1, true)]], [tg .box [0] [(3, true), (2, true), (1, true)], tZ 0])]
+
+theorem run154ca : check 3 T154ca L154ca R154ca
+    [.sem 0 0 [tZ 0, tZ 0] 1,
+    .rw 1 0 false,
+    .sem 2 2 [] 1] = true := by
+  decide +kernel
+
+theorem t154ca (ih : IH 4) : Derivable (theory 4) (wcT 4 L154ca) (wcT 4 R154ca) :=
+  check_sound ih (AllD.cons (t154 ih) (AllD.nil 4)) run154ca
 
 def L155 : List Tk := [tH 0, tg .box [0] [(3, true), (2, true), (1, true)]]
 
@@ -255,6 +493,21 @@ theorem run155 : check 3 T155 L155 R155
 
 theorem t155 (ih : IH 4) : Derivable (theory 4) (wcT 4 L155) (wcT 4 R155) :=
   check_sound ih (AllD.cons (Net.der_of_eq (by set_option maxRecDepth 100000 in rfl)) (AllD.cons (t151 ih) (AllD.nil 4))) run155
+
+def L155ca : List Tk := [tg .box [0] [(3, true), (2, true), (1, true)], tH 0]
+
+def R155ca : List Tk := [tH 0, tg .box [0] [(3, true), (2, true), (1, true)]]
+
+def T155ca : Tbl := [([tH 0, tg .box [0] [(3, true), (2, true), (1, true)]], [tg .box [0] [(3, true), (2, true), (1, true)], tH 0])]
+
+theorem run155ca : check 3 T155ca L155ca R155ca
+    [.sem 0 0 [tH 0, tH 0] 1,
+    .rw 1 0 false,
+    .sem 2 2 [] 1] = true := by
+  decide +kernel
+
+theorem t155ca (ih : IH 4) : Derivable (theory 4) (wcT 4 L155ca) (wcT 4 R155ca) :=
+  check_sound ih (AllD.cons (t155 ih) (AllD.nil 4)) run155ca
 
 def L157 : List Tk := [tS 1, tg .box [0] [(3, true), (2, true), (1, true)], tS 1]
 
@@ -402,6 +655,21 @@ theorem run158 : check 3 T158 L158 R158
 theorem t158 (ih : IH 4) : Derivable (theory 4) (wcT 4 L158) (wcT 4 R158) :=
   check_sound ih (AllD.cons (t157 ih) (AllD.cons (t150 ih) (AllD.cons (Net.der_of_eq (by set_option maxRecDepth 100000 in rfl)) (AllD.nil 4)))) run158
 
+def L158ca : List Tk := [tg .box [0] [(3, true), (2, true), (1, true)], tp 2 [L.H 1, L.Z 1, L.H 1, L.C 0, L.H 1, L.Z 1, L.H 1] [0, 2]]
+
+def R158ca : List Tk := [tp 2 [L.H 1, L.Z 1, L.H 1, L.C 0, L.H 1, L.Z 1, L.H 1] [0, 2], tg .box [0] [(3, true), (2, true), (1, true)]]
+
+def T158ca : Tbl := [([tp 2 [L.H 1, L.Z 1, L.H 1, L.C 0, L.H 1, L.Z 1, L.H 1] [0, 2], tg .box [0] [(3, true), (2, true), (1, true)]], [tg .box [0] [(3, true), (2, true), (1, true)], tp 2 [L.H 1, L.Z 1, L.H 1, L.C 0, L.H 1, L.Z 1, L.H 1] [0, 2]])]
+
+theorem run158ca : check 3 T158ca L158ca R158ca
+    [.sem 0 0 [tp 2 [L.H 1, L.Z 1, L.H 1, L.C 0, L.H 1, L.Z 1, L.H 1] [0, 2], tp 2 [L.H 1, L.Z 1, L.H 1, L.C 0, L.H 1, L.Z 1, L.H 1] [0, 2]] 1,
+    .rw 1 0 false,
+    .sem 2 2 [] 1] = true := by
+  decide +kernel
+
+theorem t158ca (ih : IH 4) : Derivable (theory 4) (wcT 4 L158ca) (wcT 4 R158ca) :=
+  check_sound ih (AllD.cons (t158 ih) (AllD.nil 4)) run158ca
+
 def L159 : List Tk := [tp 2 [L.C 0] [0, 2], tg .box [0] [(3, true), (2, true), (1, true)]]
 
 def R159 : List Tk := [tg .box [0] [(3, true), (2, true), (1, true)], tp 2 [L.C 0] [0, 2]]
@@ -421,6 +689,21 @@ theorem run159 : check 3 T159 L159 R159
 
 theorem t159 (ih : IH 4) : Derivable (theory 4) (wcT 4 L159) (wcT 4 R159) :=
   check_sound ih (AllD.cons (t154 ih) (AllD.cons (t150 ih) (AllD.cons (t158 ih) (AllD.nil 4)))) run159
+
+def L159ca : List Tk := [tg .box [0] [(3, true), (2, true), (1, true)], tp 2 [L.C 0] [0, 2]]
+
+def R159ca : List Tk := [tp 2 [L.C 0] [0, 2], tg .box [0] [(3, true), (2, true), (1, true)]]
+
+def T159ca : Tbl := [([tp 2 [L.C 0] [0, 2], tg .box [0] [(3, true), (2, true), (1, true)]], [tg .box [0] [(3, true), (2, true), (1, true)], tp 2 [L.C 0] [0, 2]])]
+
+theorem run159ca : check 3 T159ca L159ca R159ca
+    [.sem 0 0 [tp 2 [L.C 0] [0, 2], tp 2 [L.C 0] [0, 2]] 1,
+    .rw 1 0 false,
+    .sem 2 2 [] 1] = true := by
+  decide +kernel
+
+theorem t159ca (ih : IH 4) : Derivable (theory 4) (wcT 4 L159ca) (wcT 4 R159ca) :=
+  check_sound ih (AllD.cons (t159 ih) (AllD.nil 4)) run159ca
 
 def L161 : List Tk := [tS 2, tg .box [0] [(3, true), (2, true), (1, true)], tS 2]
 
@@ -901,6 +1184,21 @@ theorem run164 : check 3 T164 L164 R164
 theorem t164 (ih : IH 4) : Derivable (theory 4) (wcT 4 L164) (wcT 4 R164) :=
   check_sound ih (AllD.cons (t157 ih) (AllD.cons (t150 ih) (AllD.cons (Net.der_of_eq (by set_option maxRecDepth 100000 in rfl)) (AllD.nil 4)))) run164
 
+def L164ca : List Tk := [tg .box [0] [(3, true), (2, true), (1, true)], tp 2 [L.H 1, L.Z 1, L.H 1, L.K 0, L.H 1, L.Z 1, L.H 1] [1, 2]]
+
+def R164ca : List Tk := [tp 2 [L.H 1, L.Z 1, L.H 1, L.K 0, L.H 1, L.Z 1, L.H 1] [1, 2], tg .box [0] [(3, true), (2, true), (1, true)]]
+
+def T164ca : Tbl := [([tp 2 [L.H 1, L.Z 1, L.H 1, L.K 0, L.H 1, L.Z 1, L.H 1] [1, 2], tg .box [0] [(3, true), (2, true), (1, true)]], [tg .box [0] [(3, true), (2, true), (1, true)], tp 2 [L.H 1, L.Z 1, L.H 1, L.K 0, L.H 1, L.Z 1, L.H 1] [1, 2]])]
+
+theorem run164ca : check 3 T164ca L164ca R164ca
+    [.sem 0 0 [tp 2 [L.H 1, L.Z 1, L.H 1, L.K 0, L.H 1, L.Z 1, L.H 1] [1, 2], tp 2 [L.H 1, L.Z 1, L.H 1, L.K 0, L.H 1, L.Z 1, L.H 1] [1, 2]] 0,
+    .rw 1 0 false,
+    .sem 2 2 [] 0] = true := by
+  decide +kernel
+
+theorem t164ca (ih : IH 4) : Derivable (theory 4) (wcT 4 L164ca) (wcT 4 R164ca) :=
+  check_sound ih (AllD.cons (t164 ih) (AllD.nil 4)) run164ca
+
 def L168 : List Tk := [tp 2 [L.C 0] [0, 2], tg .zx [1] [(3, true), (2, true)]]
 
 def R168 : List Tk := [tg .zx [1] [(3, true), (2, true)], tp 2 [L.C 0] [0, 2]]
@@ -962,6 +1260,53 @@ theorem run168 : check 3 T168 L168 R168
 
 theorem t168 (ih : IH 4) : Derivable (theory 4) (wcT 4 L168) (wcT 4 R168) :=
   check_sound ih (AllD.nil 4) run168
+
+def L168i : List Tk := [tg .xz [1] [(3, true), (2, true)], tp 2 [L.C 0] [0, 2]]
+
+def R168i : List Tk := [tp 2 [L.C 0] [0, 2], tg .xz [1] [(3, true), (2, true)]]
+
+def T168i : Tbl := [([tp 2 [L.C 0] [0, 2], tg .zx [1] [(3, true), (2, true)]], [tg .zx [1] [(3, true), (2, true)], tp 2 [L.C 0] [0, 2]])]
+
+theorem run168i : check 3 T168i L168i R168i
+    [.sem 2 0 [tg .zx [1] [(3, true), (2, true)], tg .xz [1] [(3, true), (2, true)]] 0,
+    .sem 3 0 [tp 2 [L.C 0] [0, 2], tp 2 [L.C 0] [0, 2]] 1,
+    .rw 2 0 true,
+    .sem 1 2 [] 1,
+    .sem 0 2 [] 0] = true := by
+  decide +kernel
+
+theorem t168i (ih : IH 4) : Derivable (theory 4) (wcT 4 L168i) (wcT 4 R168i) :=
+  check_sound ih (AllD.cons (t168 ih) (AllD.nil 4)) run168i
+
+def L168ca : List Tk := [tg .zx [1] [(3, true), (2, true)], tp 2 [L.C 0] [0, 2]]
+
+def R168ca : List Tk := [tp 2 [L.C 0] [0, 2], tg .zx [1] [(3, true), (2, true)]]
+
+def T168ca : Tbl := [([tp 2 [L.C 0] [0, 2], tg .zx [1] [(3, true), (2, true)]], [tg .zx [1] [(3, true), (2, true)], tp 2 [L.C 0] [0, 2]])]
+
+theorem run168ca : check 3 T168ca L168ca R168ca
+    [.sem 0 0 [tp 2 [L.C 0] [0, 2], tp 2 [L.C 0] [0, 2]] 1,
+    .rw 1 0 false,
+    .sem 2 2 [] 1] = true := by
+  decide +kernel
+
+theorem t168ca (ih : IH 4) : Derivable (theory 4) (wcT 4 L168ca) (wcT 4 R168ca) :=
+  check_sound ih (AllD.cons (t168 ih) (AllD.nil 4)) run168ca
+
+def L168cb : List Tk := [tp 2 [L.C 0] [0, 2], tg .xz [1] [(3, true), (2, true)]]
+
+def R168cb : List Tk := [tg .xz [1] [(3, true), (2, true)], tp 2 [L.C 0] [0, 2]]
+
+def T168cb : Tbl := [([tp 2 [L.C 0] [0, 2], tg .zx [1] [(3, true), (2, true)]], [tg .zx [1] [(3, true), (2, true)], tp 2 [L.C 0] [0, 2]])]
+
+theorem run168cb : check 3 T168cb L168cb R168cb
+    [.sem 0 0 [tg .xz [1] [(3, true), (2, true)], tg .zx [1] [(3, true), (2, true)]] 0,
+    .rw 1 0 true,
+    .sem 2 2 [] 0] = true := by
+  decide +kernel
+
+theorem t168cb (ih : IH 4) : Derivable (theory 4) (wcT 4 L168cb) (wcT 4 R168cb) :=
+  check_sound ih (AllD.cons (t168 ih) (AllD.nil 4)) run168cb
 
 def SLC168 : List Tk := ([L.S 0, L.C 1, L.S 0, L.K 1, L.S 1, L.C 2, L.S 1, L.K 1, L.S 1, L.C 2, L.S 1] : List L).map Tk.s
 
@@ -1041,5 +1386,52 @@ theorem run169 : check 3 T169 L169 R169
 
 theorem t169 (ih : IH 4) : Derivable (theory 4) (wcT 4 L169) (wcT 4 R169) :=
   check_sound ih (AllD.nil 4) run169
+
+def L169i : List Tk := [tg .xz [1] [(3, true), (2, true)], tp 2 [L.K 0] [0, 3]]
+
+def R169i : List Tk := [tp 2 [L.K 0] [0, 3], tg .xz [1] [(3, true), (2, true)]]
+
+def T169i : Tbl := [([tp 2 [L.K 0] [0, 3], tg .zx [1] [(3, true), (2, true)]], [tg .zx [1] [(3, true), (2, true)], tp 2 [L.K 0] [0, 3]])]
+
+theorem run169i : check 3 T169i L169i R169i
+    [.sem 2 0 [tg .zx [1] [(3, true), (2, true)], tg .xz [1] [(3, true), (2, true)]] 0,
+    .sem 3 0 [tp 2 [L.K 0] [0, 3], tp 2 [L.K 0] [0, 3]] 1,
+    .rw 2 0 true,
+    .sem 1 2 [] 1,
+    .sem 0 2 [] 0] = true := by
+  decide +kernel
+
+theorem t169i (ih : IH 4) : Derivable (theory 4) (wcT 4 L169i) (wcT 4 R169i) :=
+  check_sound ih (AllD.cons (t169 ih) (AllD.nil 4)) run169i
+
+def L169ca : List Tk := [tg .zx [1] [(3, true), (2, true)], tp 2 [L.K 0] [0, 3]]
+
+def R169ca : List Tk := [tp 2 [L.K 0] [0, 3], tg .zx [1] [(3, true), (2, true)]]
+
+def T169ca : Tbl := [([tp 2 [L.K 0] [0, 3], tg .zx [1] [(3, true), (2, true)]], [tg .zx [1] [(3, true), (2, true)], tp 2 [L.K 0] [0, 3]])]
+
+theorem run169ca : check 3 T169ca L169ca R169ca
+    [.sem 0 0 [tp 2 [L.K 0] [0, 3], tp 2 [L.K 0] [0, 3]] 1,
+    .rw 1 0 false,
+    .sem 2 2 [] 1] = true := by
+  decide +kernel
+
+theorem t169ca (ih : IH 4) : Derivable (theory 4) (wcT 4 L169ca) (wcT 4 R169ca) :=
+  check_sound ih (AllD.cons (t169 ih) (AllD.nil 4)) run169ca
+
+def L169cb : List Tk := [tp 2 [L.K 0] [0, 3], tg .xz [1] [(3, true), (2, true)]]
+
+def R169cb : List Tk := [tg .xz [1] [(3, true), (2, true)], tp 2 [L.K 0] [0, 3]]
+
+def T169cb : Tbl := [([tp 2 [L.K 0] [0, 3], tg .zx [1] [(3, true), (2, true)]], [tg .zx [1] [(3, true), (2, true)], tp 2 [L.K 0] [0, 3]])]
+
+theorem run169cb : check 3 T169cb L169cb R169cb
+    [.sem 0 0 [tg .xz [1] [(3, true), (2, true)], tg .zx [1] [(3, true), (2, true)]] 0,
+    .rw 1 0 true,
+    .sem 2 2 [] 0] = true := by
+  decide +kernel
+
+theorem t169cb (ih : IH 4) : Derivable (theory 4) (wcT 4 L169cb) (wcT 4 R169cb) :=
+  check_sound ih (AllD.cons (t169 ih) (AllD.nil 4)) run169cb
 
 end QCert.RealCliffordCH.Sec8.D.W4

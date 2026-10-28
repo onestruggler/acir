@@ -64,11 +64,26 @@ def solve_chain(S, ws):
     return steps
 
 
+def full_chain(chains, L, R):
+    """The chains joined end to end (a statement with three sides has two), oriented from
+    the statement's left side when the first chain starts at its right side."""
+    cs = [c for c in chains if c]
+    ws = list(cs[0])
+    for c in cs[1:]:
+        if c[0] == ws[-1]:
+            ws += c[1:]
+        else:
+            break
+    if (ws[0] == list(R) or ws[-1] == list(L)) and not (ws[0] == list(L)):
+        ws = list(reversed(ws))
+    return ws
+
+
 def prove(d, n, env=None, chain=0, start=0, eqs=()):
     env = env or {}
     L, R, chains = chain_words(d, n, env)
     S = solve.Solver(N, (), eqs)
-    ws = chains[chain][start:]
+    ws = full_chain(chains, L, R) if chain == 0 and start == 0 else chains[chain][start:]
     S.start()
     pre = S.solve(L, ws[0]) if ws[0] != L else []
     steps = solve_chain(S, ws)
@@ -226,6 +241,100 @@ def endpoint(d, n, side, env=None):
     return letters, toks, steps, S.table
 
 
+def tinv(t):
+    """The inverse token (or None)."""
+    if t[0] == 's':
+        return t
+    if t[0] == 'g':
+        _, Kd, tg, cs = t
+        return ('g', {'zx': 'xz', 'xz': 'zx'}.get(Kd, Kd), tg, cs)
+    _, m, w, ps = t
+    if tok.weq(N, [t, t], []):
+        return t
+    w2 = tuple(reversed(w))
+    t2 = ('p', m, w2, ps)
+    return t2 if tok.weq(N, [t, t2], []) else None
+
+
+def winv(w):
+    out = [tinv(t) for t in reversed(w)]
+    return None if None in out else out
+
+
+def pair_steps(S, at, w):
+    """Insert w + winv(w) at position `at`, outermost pair first, each a semantic window."""
+    steps = []
+    for k, t in enumerate(w):
+        ti = tinv(t)
+        q = S.window([], [t, ti])
+        if q is None:
+            raise solve.Fail('pair')
+        steps.append(('sem', at + k, 0, (t, ti), q))
+    return steps
+
+
+def derive(name, l, r, known):
+    """Derived forms of an equation l = r: its inverse, and when it is a commutation
+    x y = y x, the commutations of x^-1 with y and of y^-1 with x.  Each comes with a run
+    using l = r once; returns a list of (name, Eq)."""
+    out = []
+    S = solve.Solver(N, (), [])
+    k = S.table_index(l, r)
+    il, ir = winv(l), winv(r)
+    if il is not None and ir is not None and (il, ir) != (list(l), list(r)):
+        try:
+            # inv(l) -> inv(l) r inv(r) -> inv(l) l inv(r) -> inv(r)
+            st = pair_steps(S, len(il), list(r))
+            st.append(('rw', len(il), k, True))
+            cur = il + list(l) + ir
+            # cancel inv(l) l: innermost pair at len(il) - 1
+            for j in range(len(il)):
+                i = len(il) - 1 - j
+                t = cur[i]
+                q = S.window([cur[i], cur[i + 1]], [])
+                if q is None:
+                    raise solve.Fail('cancel')
+                st.append(('sem', i, 2, (), q))
+                cur = cur[:i] + cur[i + 2:]
+            out.append((name + 'i', finish(S, il, ir, st, name + 'i')))
+        except (solve.Fail, AssertionError):
+            pass
+    for c in range(1, len(l)):
+        x, y = list(l[:c]), list(l[c:])
+        if list(r) != y + x:
+            continue
+        for (u, v, nm) in ((x, y, 'a'), (y, x, 'b')):
+            iu = winv(u)
+            if iu is None:
+                continue
+            # v iu -> iu u v iu -> iu v u iu -> iu v
+            try:
+                S2 = solve.Solver(N, (), [])
+                k2 = S2.table_index(l, r)
+                st = pair_steps(S2, 0, iu)      # iu u in front (iu u = 1)
+                cur = iu + winv(iu) + v + iu
+                assert winv(iu) == u
+                kk = k2
+                if nm == 'a':
+                    st.append(('rw', len(iu), kk, False))     # u v -> v u
+                else:
+                    st.append(('rw', len(iu), kk, True))      # v u -> u v (here u = y, v = x)
+                cur = iu + v + u + iu
+                # cancel u iu at the end
+                for j in range(len(u)):
+                    i = len(iu) + len(v) + len(u) - 1 - j
+                    q = S2.window([cur[i], cur[i + 1]], [])
+                    if q is None:
+                        raise solve.Fail('cancel')
+                    st.append(('sem', i, 2, (), q))
+                    cur = cur[:i] + cur[i + 2:]
+                out.append((name + 'c' + nm, finish(S2, v + iu, iu + v, st, name + 'c' + nm)))
+            except (solve.Fail, AssertionError):
+                pass
+        break
+    return out
+
+
 def entry_proof(e, known):
     a, b = e
     for name, (l, r) in known.items():
@@ -254,6 +363,12 @@ def generate(d, eqs, known, title, imp):
             continue
         body.append(lean_run(str(n), e, proofs))
         known[str(n)] = (e.L, e.R)
+        for dn, de in derive(str(n), e.L, e.R, known):
+            dp = [entry_proof(t, known) for t in de.table]
+            if None in dp:
+                continue
+            body.append(lean_run(dn, de, dp))
+            known[dn] = (de.L, de.R)
         if n in EXPORT:
             try:
                 body.append(lean_endpoint(n, d, known))
