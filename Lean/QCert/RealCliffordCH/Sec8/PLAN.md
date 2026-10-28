@@ -142,9 +142,10 @@ editing the others; it may assume everything exported by the others (the
   `eq299`–`eq302`, `eq305`, `eq307`–`eq314`.  The statements (269),
   (290)–(292), (295), (300)–(302) that package (v) cites are in
   `D/N8.lean` (stated, checked numerically by `gen/sec8/iface_n8.py`).
-  Next: the semantics of `mc` at every width
-  (`Λ_c(U)`, extending `Soundness.eval_box` to `zx`, `xz`, `mch`, placement
-  and colours) for the semantic steps.
+  The semantics of `mc` at every width (`Λ_c(U)`, extending
+  `Soundness.eval_box` to `zx`, `xz`, `mch`, placement and colours) is
+  `MCSem.lean` (done: `eval_mc`; `eval_mc_blk` for the semantic steps).
+  Next: the schemas.
 * **(v) D.12–D.13** — `D/N13.lean` (interface, done): exports `eq315`–`eq317`,
   `eq333`, `eq334`, `eq335`–`eq340`, `eq342`, `eq344`–`eq352`.  Internal:
   (318)–(328) (cites (4-, 5-qubit) 214–248, 267, 268 via `eqNNN`).
