@@ -440,3 +440,8 @@ when the other factors commute. `HgBorrow.lean` proves the small box and
 the borrowed-wire X commute with the all-black controlled Hadamard.
 All four modules typecheck; the five exported results audited here have
 only standard Lean axioms. The full arbitrary-width (338) is still pending.
+
+`E338Merge.lean` now completes the equal-colour case from the different-colour
+case at any width. Instantiating this with the checked finite cases gives
+`LowHg338Complete.comm338_all_4`, including every colouring on four wires.
+Its axiom audit contains only `propext`, `Classical.choice`, and `Quot.sound`.
