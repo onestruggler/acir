@@ -21,6 +21,7 @@ Derivations here use no semantic step, so nothing here needs completeness
 on fewer wires.
 -/
 import QCert.RealCliffordCH.Sec8.EngineN
+import QCert.RealCliffordCH.Sec8.MC
 
 namespace QCert.RealCliffordCH.Sec8.Net
 
@@ -226,5 +227,789 @@ theorem sw_braid (N j : ℕ) (hj : j + 3 ≤ N) :
       (drawn [swAt N j, swAt N (j + 1), swAt N j]) := by
   have h := lift_word (K := 3) (by decide) braid3 j N hj
   simpa [upBy_S, circW, swAt_eq, Nat.add_comm] using h
+
+/-! ## Swap words up to the Coxeter relations -/
+
+/-- A word of swaps `swAt N j`, in drawn order. -/
+def swW (N : ℕ) (l : List ℕ) : Circ N := circW N (l.map L.S)
+
+theorem swW_nil (N : ℕ) : swW N [] = 1 := rfl
+
+theorem swW_append (N : ℕ) (a b : List ℕ) : swW N (a ++ b) = swW N b * swW N a := by
+  simp only [swW, List.map_append, circW_append]
+
+theorem swW_cons (N j : ℕ) (l : List ℕ) : swW N (j :: l) = swW N l * swAt N j := by
+  rw [show j :: l = [j] ++ l from rfl, swW_append]
+  simp [swW, circW, drawn, swAt_eq]
+
+/-- The transposition of `j` and `j + 1`. -/
+def tau (j q : ℕ) : ℕ := if q = j then j + 1 else if q = j + 1 then j else q
+
+theorem tau_tau (j q : ℕ) : tau j (tau j q) = q := by
+  unfold tau; split_ifs <;> omega
+
+theorem tau_of_lt {j q : ℕ} (h : q < j) : tau j q = q := by
+  unfold tau; split_ifs <;> omega
+
+theorem tau_of_gt {j q : ℕ} (h : j + 1 < q) : tau j q = q := by
+  unfold tau; split_ifs <;> omega
+
+/-- Where the wire at position `q` is after the swaps `l` (drawn order). -/
+def pos (l : List ℕ) (q : ℕ) : ℕ := l.foldl (fun q j => tau j q) q
+
+@[simp] theorem pos_nil (q : ℕ) : pos [] q = q := rfl
+@[simp] theorem pos_cons (j : ℕ) (l : List ℕ) (q : ℕ) : pos (j :: l) q = pos l (tau j q) := rfl
+theorem pos_append (a b : List ℕ) (q : ℕ) : pos (a ++ b) q = pos b (pos a q) := by
+  simp [pos, List.foldl_append]
+
+theorem pos_reverse : ∀ (l : List ℕ) (q : ℕ), pos l.reverse (pos l q) = q
+  | [], _ => rfl
+  | j :: l, q => by
+    simp only [List.reverse_cons, pos_append, pos_cons, pos_nil, pos_reverse l, tau_tau]
+
+theorem pos_reverse' (l : List ℕ) (q : ℕ) : pos l (pos l.reverse q) = q := by
+  have := pos_reverse l.reverse q
+  rwa [List.reverse_reverse] at this
+
+theorem pos_injective (l : List ℕ) : Function.Injective (pos l) := fun a b h => by
+  rw [← pos_reverse l a, ← pos_reverse l b, h]
+
+/-- `pos l` fixes a position below every index of `l`. -/
+theorem pos_below : ∀ (l : List ℕ) (q : ℕ), (∀ x ∈ l, q < x) → pos l q = q
+  | [], _, _ => rfl
+  | j :: l, q, h => by
+    rw [pos_cons, tau_of_lt (h j (by simp)), pos_below l q (fun x hx => h x (by simp [hx]))]
+
+/-- The indices of a word are valid on `N` wires. -/
+def Ok (N : ℕ) (l : List ℕ) : Prop := ∀ j ∈ l, j + 2 ≤ N
+
+/-- Equality of swap words modulo the Coxeter relations. -/
+inductive SwEq (N : ℕ) : List ℕ → List ℕ → Prop
+  | refl (l : List ℕ) : SwEq N l l
+  | symm {a b : List ℕ} : SwEq N a b → SwEq N b a
+  | trans {a b c : List ℕ} : SwEq N a b → SwEq N b c → SwEq N a c
+  | cong (u v : List ℕ) {a b : List ℕ} : SwEq N a b → SwEq N (u ++ a ++ v) (u ++ b ++ v)
+  | inv (j : ℕ) : j + 2 ≤ N → SwEq N [j, j] []
+  | far (i j : ℕ) : i + 2 ≤ j → SwEq N [i, j] [j, i]
+  | braid (j : ℕ) : j + 3 ≤ N → SwEq N [j + 1, j, j + 1] [j, j + 1, j]
+
+namespace SwEq
+
+variable {N : ℕ}
+
+theorem der {a b : List ℕ} (h : SwEq N a b) : Derivable (theory N) (swW N a) (swW N b) := by
+  induction h with
+  | refl l => exact Derivable.refl _
+  | symm _ ih => exact ih.symm
+  | trans _ _ ih1 ih2 => exact ih1.trans ih2
+  | cong u v _ ih =>
+    rw [swW_append, swW_append, swW_append, swW_append]
+    simpa only [mul_assoc] using dctx (swW N v) (swW N u) ih
+  | inv j hj => simpa [swW, circW, swAt_eq] using sw_inv N j hj
+  | far i j hij => simpa [swW, circW, swAt_eq] using sw_far N i j hij
+  | braid j hj => simpa [swW, circW, swAt_eq] using sw_braid N j hj
+
+theorem pos_eq {a b : List ℕ} (h : SwEq N a b) : pos a = pos b := by
+  induction h with
+  | refl l => rfl
+  | symm _ ih => exact ih.symm
+  | trans _ _ ih1 ih2 => exact ih1.trans ih2
+  | cong u v _ ih => funext q; rw [pos_append, pos_append, pos_append, pos_append, ih]
+  | inv j hj => funext q; simp [tau_tau]
+  | far i j hij => funext q; simp only [pos_cons, pos_nil]; unfold tau; split_ifs <;> omega
+  | braid j hj => funext q; simp only [pos_cons, pos_nil]; unfold tau; split_ifs <;> omega
+
+theorem of_eq {a b : List ℕ} (h : a = b) : SwEq N a b := h ▸ refl a
+
+theorem app {a b : List ℕ} (u v : List ℕ) (h : SwEq N a b) : SwEq N (u ++ a ++ v) (u ++ b ++ v) :=
+  cong u v h
+
+theorem appL {a b : List ℕ} (u : List ℕ) (h : SwEq N a b) : SwEq N (u ++ a) (u ++ b) := by
+  simpa using cong u [] h
+
+theorem appR {a b : List ℕ} (v : List ℕ) (h : SwEq N a b) : SwEq N (a ++ v) (b ++ v) := by
+  simpa using cong [] v h
+
+theorem cons {a b : List ℕ} (j : ℕ) (h : SwEq N a b) : SwEq N (j :: a) (j :: b) := appL [j] h
+
+theorem reverse {a b : List ℕ} (h : SwEq N a b) : SwEq N a.reverse b.reverse := by
+  induction h with
+  | refl l => exact refl _
+  | symm _ ih => exact ih.symm
+  | trans _ _ ih1 ih2 => exact ih1.trans ih2
+  | cong u v _ ih =>
+    simp only [List.reverse_append]
+    simpa only [List.append_assoc] using cong v.reverse u.reverse ih
+  | inv j hj => exact inv j hj
+  | far i j hij => exact (far i j hij).symm
+  | braid j hj => exact braid j hj
+
+/-- A word followed by its reverse cancels. -/
+theorem cancel : ∀ (l : List ℕ), Ok N l → SwEq N (l ++ l.reverse) []
+  | [], _ => refl _
+  | j :: l, hl => by
+    have h1 := cancel l (fun x hx => hl x (by simp [hx]))
+    have e : j :: l ++ (j :: l).reverse = [j] ++ (l ++ l.reverse) ++ [j] := by simp
+    rw [e]
+    refine (app [j] [j] h1).trans ?_
+    simpa using inv j (hl j (by simp))
+
+/-- An index commutes with a word all of whose indices are far from it. -/
+theorem pass : ∀ (j : ℕ) (l : List ℕ), (∀ x ∈ l, x + 2 ≤ j ∨ j + 2 ≤ x) →
+    SwEq N (j :: l) (l ++ [j])
+  | _, [], _ => refl _
+  | j, x :: l, h => by
+    have h1 : SwEq N [j, x] [x, j] := by
+      rcases h x (by simp) with h' | h'
+      · exact (far x j h').symm
+      · exact far j x h'
+    have h2 := pass j l (fun y hy => h y (by simp [hy]))
+    have e1 : j :: x :: l = [] ++ [j, x] ++ l := rfl
+    rw [e1]
+    refine (app [] l h1).trans ?_
+    simpa using cons x h2
+
+end SwEq
+
+/-! ## The normal form of swap words -/
+
+/-- The swaps carrying position `c` down to position `i`: `c - 1, …, i`. -/
+def run (c i : ℕ) : List ℕ := (List.range (c - i)).reverse.map (i + ·)
+
+theorem run_self (i : ℕ) : run i i = [] := by simp [run]
+
+theorem run_succ {c i : ℕ} (h : i ≤ c) : run (c + 1) i = c :: run c i := by
+  simp only [run, show c + 1 - i = (c - i) + 1 by omega, List.range_succ, List.reverse_append,
+    List.map_append, List.reverse_cons, List.reverse_nil, List.nil_append, List.map_cons,
+    List.map_nil, List.singleton_append]
+  congr 1; omega
+
+theorem mem_run {c i x : ℕ} (h : x ∈ run c i) : i ≤ x ∧ x < c := by
+  simp only [run, List.mem_map, List.mem_reverse, List.mem_range] at h
+  obtain ⟨d, hd, rfl⟩ := h; omega
+
+/-- A run splits at an intermediate position. -/
+theorem run_split {c k i : ℕ} (h1 : i ≤ k) (h2 : k ≤ c) : run c i = run c k ++ run k i := by
+  induction c, h2 using Nat.le_induction with
+  | base => rw [run_self, List.nil_append]
+  | succ c hkc ih => rw [run_succ (by omega), run_succ hkc, ih]; rfl
+
+theorem pos_run {c i : ℕ} (hic : i ≤ c) (q : ℕ) :
+    pos (run c i) q = if q = c then i else if i ≤ q ∧ q < c then q + 1 else q := by
+  induction c, hic using Nat.le_induction generalizing q with
+  | base => rw [run_self, pos_nil]; split_ifs <;> omega
+  | succ c hic ih =>
+    rw [run_succ hic, pos_cons, ih]
+    unfold tau
+    split_ifs <;> omega
+
+/-- `s_j` past a run it does not end: `s_j r ≈ r s_{j+1}`. -/
+theorem run_braid {N c i j : ℕ} (hij : i ≤ j) (hjc : j + 2 ≤ c) (hc : c + 1 ≤ N) :
+    SwEq N (j :: run c i) (run c i ++ [j + 1]) := by
+  rw [run_split (k := j + 2) (by omega) hjc, run_split (c := j + 2) (k := j) hij (by omega),
+    run_succ (by omega), run_succ (le_refl j), run_self]
+  have hA : SwEq N (j :: run c (j + 2)) (run c (j + 2) ++ [j]) :=
+    SwEq.pass j _ (fun x hx => Or.inr (mem_run hx).1)
+  have hB : SwEq N ((j + 1) :: run j i) (run j i ++ [j + 1]) :=
+    SwEq.pass (j + 1) _ (fun x hx => Or.inl (by have := (mem_run hx).2; omega))
+  have hbr : SwEq N [j, j + 1, j] [j + 1, j, j + 1] := (SwEq.braid j (by omega)).symm
+  refine (SwEq.of_eq (by simp)).trans ((SwEq.appR ([j + 1, j] ++ run j i) hA).trans ?_)
+  refine (SwEq.of_eq (by simp)).trans ((SwEq.app (run c (j + 2)) (run j i) hbr).trans ?_)
+  refine (SwEq.of_eq (by simp)).trans ((SwEq.appL (run c (j + 2) ++ [j + 1, j]) hB).trans ?_)
+  exact SwEq.of_eq (by simp)
+
+/-- The word of a code `cᵢ, cᵢ₊₁, …`: for each level `k` from `i` on, the run
+carrying position `cₖ` down to position `k`. -/
+def nfw : ℕ → List ℕ → List ℕ
+  | _, [] => []
+  | i, c :: cs => run c i ++ nfw (i + 1) cs
+
+/-- Prepending `s_j` to the word of a code. -/
+def ins (j : ℕ) : List ℕ → List ℕ
+  | [] => []
+  | c :: cs =>
+    if j = c then (c + 1) :: cs
+    else if j + 1 = c then j :: cs
+    else if c < j then c :: ins j cs
+    else c :: ins (j + 1) cs
+
+/-- A valid code at level `i` on `N` wires. -/
+def VC (N : ℕ) : ℕ → List ℕ → Prop
+  | i, [] => i = N
+  | i, c :: cs => i ≤ c ∧ c + 1 ≤ N ∧ VC N (i + 1) cs
+
+theorem mem_nfw : ∀ {N i : ℕ} {cs : List ℕ}, VC N i cs → ∀ x ∈ nfw i cs, i ≤ x ∧ x + 2 ≤ N
+  | _, _, [], _, x, hx => by simp [nfw] at hx
+  | N, i, c :: cs, ⟨h1, h2, h3⟩, x, hx => by
+    rcases List.mem_append.1 hx with hx | hx
+    · have := mem_run hx; omega
+    · have := mem_nfw h3 x hx; omega
+
+theorem ins_spec {N : ℕ} : ∀ (cs : List ℕ) (i j : ℕ), VC N i cs → i ≤ j → j + 2 ≤ N →
+    SwEq N (j :: nfw i cs) (nfw i (ins j cs)) ∧ VC N i (ins j cs)
+  | [], i, j, hv, hij, hjN => by simp only [VC] at hv; omega
+  | c :: cs, i, j, ⟨h1, h2, h3⟩, hij, hjN => by
+    simp only [ins]
+    split_ifs with e1 e2 e3
+    · subst e1
+      refine ⟨?_, ⟨by omega, by omega, h3⟩⟩
+      simp only [nfw, run_succ h1]
+      exact SwEq.refl _
+    · subst e2
+      refine ⟨?_, ⟨hij, by omega, h3⟩⟩
+      simp only [nfw, run_succ hij]
+      have := SwEq.appR (run j i ++ nfw (i + 1) cs) (SwEq.inv (N := N) j hjN)
+      simpa using this
+    · obtain ⟨hs, hv⟩ := ins_spec cs (i + 1) j h3 (by omega) hjN
+      refine ⟨?_, ⟨h1, h2, hv⟩⟩
+      simp only [nfw]
+      have hp : SwEq N (j :: run c i) (run c i ++ [j]) :=
+        SwEq.pass j _ (fun x hx => Or.inl (by have := (mem_run hx).2; omega))
+      have := SwEq.appR (nfw (i + 1) cs) hp
+      refine this.trans ?_
+      simpa using SwEq.appL (run c i) hs
+    · obtain ⟨hs, hv⟩ := ins_spec cs (i + 1) (j + 1) h3 (by omega) (by omega)
+      refine ⟨?_, ⟨h1, h2, hv⟩⟩
+      simp only [nfw]
+      have hp : SwEq N (j :: run c i) (run c i ++ [j + 1]) := run_braid hij (by omega) h2
+      have := SwEq.appR (nfw (i + 1) cs) hp
+      refine this.trans ?_
+      simpa using SwEq.appL (run c i) hs
+
+/-- The code of the empty word at level `i`. -/
+def idCode (N i : ℕ) : List ℕ := List.range' i (N - i)
+
+theorem idCode_spec (N : ℕ) : ∀ i, i ≤ N → VC N i (idCode N i) ∧ nfw i (idCode N i) = []
+  | i, hi => by
+    by_cases h : i = N
+    · subst h; simp [idCode, VC, nfw]
+    · have e : idCode N i = i :: idCode N (i + 1) := by
+        simp only [idCode, show N - i = (N - (i + 1)) + 1 by omega, List.range'_succ]
+      obtain ⟨h1, h2⟩ := idCode_spec N (i + 1) (by omega)
+      rw [e]
+      exact ⟨⟨le_refl i, by omega, h1⟩, by simp [nfw, run_self, h2]⟩
+termination_by i => N - i
+
+/-- The code of a word. -/
+def code (N : ℕ) (l : List ℕ) : List ℕ := l.foldr ins (idCode N 0)
+
+/-- Every swap word is equal to the word of its code. -/
+theorem nf_spec {N : ℕ} : ∀ (l : List ℕ), Ok N l → SwEq N l (nfw 0 (code N l)) ∧ VC N 0 (code N l)
+  | [], _ => by
+    obtain ⟨h1, h2⟩ := idCode_spec N 0 (Nat.zero_le _)
+    exact ⟨by simp only [code, List.foldr_nil, h2]; exact SwEq.refl _, h1⟩
+  | j :: l, hl => by
+    obtain ⟨hs, hv⟩ := nf_spec l (fun x hx => hl x (by simp [hx]))
+    obtain ⟨hs', hv'⟩ := ins_spec (code N l) 0 j hv (Nat.zero_le _) (hl j (by simp))
+    exact ⟨(SwEq.cons j hs).trans hs', hv'⟩
+
+/-- The word of a code whose permutation fixes the positions `i, …, m - 1`
+has all its indices at least `m`. -/
+theorem nfw_high {N m : ℕ} : ∀ (cs : List ℕ) (i : ℕ), VC N i cs →
+    (∀ q, i ≤ q → q < m → pos (nfw i cs) q = q) → ∀ x ∈ nfw i cs, m ≤ x
+  | [], _, _, _, x, hx => by simp [nfw] at hx
+  | c :: cs, i, ⟨h1, h2, h3⟩, hfix, x, hx => by
+    by_cases him : i < m
+    · have hrest : ∀ y ∈ nfw (i + 1) cs, i + 1 ≤ y := fun y hy => (mem_nfw h3 y hy).1
+      have hr : pos (run c i) c = i := by rw [pos_run h1]; simp
+      have hc : pos (nfw i (c :: cs)) c = i := by
+        rw [nfw, pos_append, hr]
+        exact pos_below _ _ (fun y hy => by have := hrest y hy; omega)
+      have hi := hfix i (le_refl i) him
+      have hci : c = i := pos_injective _ (hc.trans hi.symm)
+      subst hci
+      simp only [nfw, run_self, List.nil_append] at hx hfix
+      exact nfw_high cs (c + 1) h3 (fun q hq hqm => hfix q (by omega) hqm) x hx
+    · have := (mem_nfw (N := N) (i := i) (cs := c :: cs) ⟨h1, h2, h3⟩ x hx).1; omega
+
+/-- A swap word whose permutation fixes the positions below `m` is equal to
+one whose indices are all at least `m`. -/
+theorem parabolic {N m : ℕ} (l : List ℕ) (hl : Ok N l) (hfix : ∀ q < m, pos l q = q) :
+    ∃ l', SwEq N l l' ∧ Ok N l' ∧ ∀ x ∈ l', m ≤ x := by
+  obtain ⟨hs, hv⟩ := nf_spec l hl
+  refine ⟨_, hs, fun x hx => (mem_nfw hv x hx).2, nfw_high _ 0 hv ?_⟩
+  intro q _ hqm
+  rw [← hs.pos_eq]; exact hfix q hqm
+
+/-! ## Gates on disjoint wires commute -/
+
+/-- One above the highest wire a generator acts on. -/
+def gHi : {n : ℕ} → Gen Gate n → ℕ
+  | _, .gate0 _ => 0
+  | _, .gate1 _ => 1
+  | _, .gate2 _ => 2
+  | _, .gate3 _ => 3
+  | _, .up g => gHi g + 1
+
+/-- The lowest wire a generator acts on. -/
+def gLo : {n : ℕ} → Gen Gate n → ℕ
+  | _, .gate0 _ => 0
+  | _, .gate1 _ => 0
+  | _, .gate2 _ => 0
+  | _, .gate3 _ => 0
+  | _, .up g => gLo g + 1
+
+theorem comm_gen : ∀ {n : ℕ} (a b : Gen Gate n), gHi a ≤ gLo b →
+    Derivable (theory n) (FreeMonoid.of b * FreeMonoid.of a) (FreeMonoid.of a * FreeMonoid.of b)
+  | _, .gate0 c, _, _ => nomatch c
+  | _, .gate3 c, _, _ => nomatch c
+  | _, .gate1 c, .up b, _ => Derivable.of (Lift.comm1 c b)
+  | _, .gate2 c, .up (.up b), _ => Derivable.of (Lift.comm2 c b)
+  | _, .up a, .up b, h => by
+    have := derivable_shift (comm_gen a b (by simp only [gHi, gLo] at h; omega))
+    simpa using this
+  | _, .gate1 _, .gate0 c, _ => nomatch c
+  | _, .gate1 _, .gate1 _, h => by simp [gHi, gLo] at h
+  | _, .gate1 _, .gate2 _, h => by simp [gHi, gLo] at h
+  | _, .gate1 _, .gate3 c, _ => nomatch c
+  | _, .gate2 _, .gate0 c, _ => nomatch c
+  | _, .gate2 _, .gate1 _, h => by simp [gHi, gLo] at h
+  | _, .gate2 _, .gate2 _, h => by simp [gHi, gLo] at h
+  | _, .gate2 _, .gate3 c, _ => nomatch c
+  | _, .gate2 _, .up (.gate0 c), _ => nomatch c
+  | _, .gate2 _, .up (.gate1 _), h => by simp [gHi, gLo] at h
+  | _, .gate2 _, .up (.gate2 _), h => by simp [gHi, gLo] at h
+  | _, .gate2 _, .up (.gate3 c), _ => nomatch c
+  | _, .up _, .gate0 c, _ => nomatch c
+  | _, .up _, .gate1 _, h => by simp [gHi, gLo] at h
+  | _, .up _, .gate2 _, h => by simp [gHi, gLo] at h
+  | _, .up _, .gate3 c, _ => nomatch c
+
+/-- Every generator of `u` acts below wire `m`. -/
+def LowW {n : ℕ} (m : ℕ) (u : Circ n) : Prop := ∀ g ∈ FreeMonoid.toList u, gHi g ≤ m
+
+/-- Every generator of `v` acts on wire `m` or above. -/
+def HighW {n : ℕ} (m : ℕ) (v : Circ n) : Prop := ∀ g ∈ FreeMonoid.toList v, m ≤ gLo g
+
+theorem comm_low_high {n m : ℕ} (u v : Circ n) (hu : LowW m u) (hv : HighW m v) :
+    Derivable (theory n) (v * u) (u * v) := by
+  induction u using FreeMonoid.inductionOn' with
+  | one => rw [mul_one, one_mul]
+  | mul_of a u ih =>
+    have ha : gHi a ≤ m := hu a (by simp)
+    have hu' : LowW m u := fun g hg => hu g (by simp [hg])
+    have hva : Derivable (theory n) (v * FreeMonoid.of a) (FreeMonoid.of a * v) := by
+      clear ih hu hu'
+      induction v using FreeMonoid.inductionOn' with
+      | one => rw [mul_one, one_mul]
+      | mul_of b v ihv =>
+        have hb : m ≤ gLo b := hv b (by simp)
+        have hv' : HighW m v := fun g hg => hv g (by simp [hg])
+        have h1 := dleft (FreeMonoid.of b) (ihv hv')
+        have h2 := dright v (comm_gen a b (le_trans ha hb))
+        rw [mul_assoc]
+        refine h1.trans ?_
+        rw [← mul_assoc, ← mul_assoc]
+        exact h2
+    rw [← mul_assoc]
+    refine (dright u hva).trans ?_
+    rw [mul_assoc, mul_assoc]
+    exact dleft _ (ih hu')
+
+theorem gHi_le : ∀ {n : ℕ} (g : Gen Gate n), gHi g ≤ n
+  | _, .gate0 c => nomatch c
+  | _, .gate3 c => nomatch c
+  | _, .gate1 _ => by simp [gHi]
+  | _, .gate2 _ => by simp [gHi]
+  | _, .up g => by have := gHi_le g; simp only [gHi]; omega
+
+theorem gHi_padTop : ∀ {n : ℕ} (g : Gen Gate n), gHi (Gen.padTop g) = gHi g
+  | _, .gate0 c => nomatch c
+  | _, .gate3 c => nomatch c
+  | _, .gate1 _ => rfl
+  | _, .gate2 _ => rfl
+  | _, .up g => by simp only [Gen.padTop, gHi, gHi_padTop g]
+
+theorem lowW_atBot : ∀ (N : ℕ) {m : ℕ} (g : Circ m), LowW m (atBot N g)
+  | 0, _, _ => by intro x hx; simp [atBot] at hx
+  | N + 1, m, g => by
+    intro x hx
+    by_cases h : m = N + 1
+    · subst h
+      rw [atBot_self] at hx
+      exact gHi_le x
+    · rw [atBot_succ N g h] at hx
+      simp only [padTop, FreeMonoid.toList_map, List.mem_map] at hx
+      obtain ⟨y, hy, rfl⟩ := hx
+      rw [gHi_padTop]
+      exact lowW_atBot N g y hy
+
+theorem gLo_swAt : ∀ (N j : ℕ), HighW j (swAt N j)
+  | N + 1, j + 1 => by
+    intro x hx
+    have e : swAt (N + 1) (j + 1) = shift (swAt N j) := rfl
+    rw [e] at hx
+    simp only [Circuit.shift, FreeMonoid.toList_map, List.mem_map] at hx
+    obtain ⟨y, hy, rfl⟩ := hx
+    simp only [gLo]
+    have := gLo_swAt N j y hy
+    omega
+  | _, 0 => fun _ _ => Nat.zero_le _
+  | 0, _ + 1 => by intro x hx; simp [swAt, place2] at hx
+
+theorem highW_mul {n m : ℕ} {u v : Circ n} (hu : HighW m u) (hv : HighW m v) : HighW m (u * v) := by
+  intro g hg
+  simp only [FreeMonoid.toList_mul, List.mem_append] at hg
+  rcases hg with hg | hg
+  · exact hu g hg
+  · exact hv g hg
+
+theorem highW_swW {N m : ℕ} : ∀ (l : List ℕ), (∀ x ∈ l, m ≤ x) → HighW m (swW N l)
+  | [], _ => by intro g hg; simp [swW, circW, drawn] at hg
+  | j :: l, h => by
+    rw [swW_cons]
+    refine highW_mul (highW_swW l (fun x hx => h x (by simp [hx]))) ?_
+    intro g hg
+    exact le_trans (h j (by simp)) (gLo_swAt N j g hg)
+
+/-! ## The placement lemma -/
+
+/-- `A` conjugated by a swap network: the network `μ`, `A`, `μ` backwards. -/
+def placedBy (N : ℕ) (μ : List ℕ) (A : Circ N) : Circ N := swW N μ.reverse * A * swW N μ
+
+/-- Two networks that bring the same wires to the positions `0, …, m - 1`,
+in the same order, place a circuit on the bottom `m` wires identically. -/
+theorem placement {N m : ℕ} {μ₁ μ₂ : List ℕ} (h₁ : Ok N μ₁) (h₂ : Ok N μ₂) {A : Circ N}
+    (hA : LowW m A) (H : ∀ q i, i < m → (pos μ₁ q = i ↔ pos μ₂ q = i)) :
+    Derivable (theory N) (placedBy N μ₁ A) (placedBy N μ₂ A) := by
+  have hok : Ok N (μ₁.reverse ++ μ₂) := fun x hx => by
+    rcases List.mem_append.1 hx with hx | hx
+    · exact h₁ x (List.mem_reverse.1 hx)
+    · exact h₂ x hx
+  obtain ⟨ρ, hρ, hρok, hρm⟩ := parabolic (m := m) (μ₁.reverse ++ μ₂) hok (by
+    intro q hq
+    rw [pos_append]
+    exact (H _ q hq).1 (pos_reverse' μ₁ q))
+  have e2 : SwEq N μ₂ (μ₁ ++ ρ) := by
+    have c1 : SwEq N (μ₁ ++ μ₁.reverse) [] := SwEq.cancel μ₁ h₁
+    have : SwEq N (μ₁ ++ (μ₁.reverse ++ μ₂)) μ₂ := by
+      simpa [List.append_assoc] using SwEq.appR μ₂ c1
+    exact this.symm.trans (SwEq.appL μ₁ hρ)
+  have e2r : SwEq N μ₂.reverse (ρ.reverse ++ μ₁.reverse) := by
+    simpa using e2.reverse
+  have hρr : HighW m (swW N ρ.reverse) := highW_swW _ (fun x hx => hρm x (List.mem_reverse.1 hx))
+  have hcanc : Derivable (theory N) (swW N ρ.reverse * swW N ρ) 1 := by
+    rw [← swW_append]; exact (SwEq.cancel ρ hρok).der
+  unfold placedBy
+  refine Derivable.symm ((dmul (dmul e2r.der (Derivable.refl A)) e2.der).trans ?_)
+  rw [swW_append, swW_append]
+  have hc := comm_low_high A (swW N ρ.reverse) hA hρr
+  have e3 : swW N μ₁.reverse * swW N ρ.reverse * A * (swW N ρ * swW N μ₁) =
+      swW N μ₁.reverse * (swW N ρ.reverse * A) * swW N ρ * swW N μ₁ := by simp only [mul_assoc]
+  rw [e3]
+  refine (dright (swW N μ₁) (dright (swW N ρ) (dleft (swW N μ₁.reverse) hc))).trans ?_
+  have e4 : swW N μ₁.reverse * (A * swW N ρ.reverse) * swW N ρ * swW N μ₁ =
+      swW N μ₁.reverse * A * (swW N ρ.reverse * swW N ρ) * swW N μ₁ := by simp only [mul_assoc]
+  rw [e4]
+  have := dright (swW N μ₁) (dleft (swW N μ₁.reverse * A) hcanc)
+  simpa only [mul_one] using this
+
+/-! ## The network of `placeG` -/
+
+/-- `pos l` fixes a position above every index of `l`. -/
+theorem pos_below_gt : ∀ (l : List ℕ) (q : ℕ), (∀ x ∈ l, x + 1 < q) → pos l q = q
+  | [], _, _ => rfl
+  | j :: l, q, h => by
+    rw [pos_cons, tau_of_gt (h j (by simp)), pos_below_gt l q (fun x hx => h x (by simp [hx]))]
+
+/-- The swap indices of `netL`: the runs carrying the wires of `ps` down,
+one at a time. -/
+def netK (ps : List ℕ) : ℕ → List ℕ
+  | 0 => []
+  | k + 1 => netK ps k ++ run (curPos ps k (ps.getD k 0)) k
+
+theorem moveDown_eq (N p i : ℕ) : moveDown N p i = (run p i).map (swAt N) := by
+  simp only [moveDown, run, List.map_map]; rfl
+
+theorem netL_eq (N : ℕ) (ps : List ℕ) : netL N ps = (netK ps ps.length).map (swAt N) := by
+  have : ∀ k, ((List.range k).flatMap fun i => moveDown N (curPos ps i (ps.getD i 0)) i) =
+      (netK ps k).map (swAt N) := by
+    intro k
+    induction k with
+    | zero => rfl
+    | succ k ih =>
+      rw [List.range_succ, List.flatMap_append, ih, netK, List.map_append]
+      simp [moveDown_eq]
+  exact this _
+
+theorem swW_eq_drawn (N : ℕ) (l : List ℕ) : swW N l = drawn (l.map (swAt N)) := by
+  simp only [swW, circW, List.map_map]; rfl
+
+theorem placeG_eq (N : ℕ) {m : ℕ} (g : Circ m) (ps : List ℕ) :
+    placeG N g ps = placedBy N (netK ps ps.length) (atBot N g) := by
+  simp only [placeG, placedBy, netL_eq, swW_eq_drawn, drawn, List.reverse_append,
+    List.prod_append, List.map_reverse, List.reverse_reverse, List.reverse_cons, List.reverse_nil,
+    List.nil_append, List.prod_cons, List.prod_nil, mul_one, mul_assoc]
+
+theorem pos_lt {N : ℕ} : ∀ (l : List ℕ), Ok N l → ∀ q < N, pos l q < N
+  | [], _, q, hq => hq
+  | j :: l, hl, q, hq => by
+    rw [pos_cons]
+    refine pos_lt l (fun x hx => hl x (by simp [hx])) _ ?_
+    have := hl j (by simp)
+    unfold tau; split_ifs <;> omega
+
+section Lists
+
+variable {ps : List ℕ}
+
+theorem getD_eq {k : ℕ} (hk : k < ps.length) : ps.getD k 0 = ps[k] := by
+  simp [List.getD_eq_getElem?_getD, List.getElem?_eq_getElem hk]
+
+theorem take_succ_getD {k : ℕ} (hk : k < ps.length) :
+    ps.take (k + 1) = ps.take k ++ [ps.getD k 0] := by
+  rw [List.take_add_one, List.getElem?_eq_getElem hk, getD_eq hk]; rfl
+
+theorem getD_mem_take {i k : ℕ} (hi : i < k) (hk : k ≤ ps.length) : ps.getD i 0 ∈ ps.take k := by
+  rw [getD_eq (by omega)]
+  have h1 : i < (ps.take k).length := by simp; omega
+  have := List.getElem_mem h1
+  rwa [List.getElem_take] at this
+
+theorem getD_inj (hnd : ps.Nodup) {i k : ℕ} (hi : i < ps.length) (hk : k < ps.length)
+    (h : ps.getD i 0 = ps.getD k 0) : i = k := by
+  rw [getD_eq hi, getD_eq hk] at h
+  exact (List.Nodup.getElem_inj_iff hnd).1 h
+
+theorem getD_not_mem_take (hnd : ps.Nodup) {k : ℕ} (hk : k < ps.length) :
+    ps.getD k 0 ∉ ps.take k := by
+  intro h
+  obtain ⟨i, hi, he⟩ := List.getElem_of_mem h
+  rw [List.getElem_take] at he
+  have hi' : i < k := by simp at hi; omega
+  have := getD_inj hnd (i := i) (k := k) (by omega) hk (by rw [getD_eq (by omega), he])
+  omega
+
+theorem curPos_zero (q : ℕ) : curPos ps 0 q = q := by simp [curPos]
+
+theorem curPos_succ {k : ℕ} (hk : k < ps.length) (q : ℕ) :
+    curPos ps (k + 1) q = curPos ps k q + if q < ps.getD k 0 then 1 else 0 := by
+  rw [curPos, curPos, take_succ_getD hk, List.filter_append, List.length_append]
+  generalize ps.getD k 0 = p
+  by_cases h : q < p <;> simp [h] <;> omega
+
+theorem curPos_mono (hnd : ps.Nodup) : ∀ k, k ≤ ps.length → ∀ q q', q ∉ ps.take k →
+    q' ∉ ps.take k → q < q' → curPos ps k q < curPos ps k q'
+  | 0, _, q, q', _, _, h => by rw [curPos_zero, curPos_zero]; exact h
+  | k + 1, hk, q, q', hq, hq', h => by
+    have hk' : k < ps.length := by omega
+    rw [take_succ_getD hk'] at hq hq'
+    simp only [List.mem_append, List.mem_singleton, not_or] at hq hq'
+    have ih := curPos_mono hnd k (by omega) q q' hq.1 hq'.1 h
+    have hp := getD_not_mem_take hnd hk'
+    rw [curPos_succ hk', curPos_succ hk']
+    by_cases h1 : q < ps.getD k 0 <;> by_cases h2 : q' < ps.getD k 0
+    · simp only [h1, h2, if_true]; omega
+    · have a1 := curPos_mono hnd k (by omega) q _ hq.1 hp h1
+      have a2 := curPos_mono hnd k (by omega) _ q' hp hq'.1 (by omega)
+      simp only [h1, h2, if_true, if_false]; omega
+    · omega
+    · simp only [h1, h2, if_false]; omega
+
+/-- The network of `placeG` carries the `i`-th wire of `ps` to position `i`,
+and every other wire to its `curPos`. -/
+theorem netK_spec {N : ℕ} (hnd : ps.Nodup) (hps : ∀ p ∈ ps, p < N) : ∀ k, k ≤ ps.length →
+    Ok N (netK ps k) ∧ (∀ i < k, pos (netK ps k) (ps.getD i 0) = i) ∧
+      (∀ q, q ∉ ps.take k → pos (netK ps k) q = curPos ps k q)
+  | 0, _ => ⟨fun x hx => by simp [netK] at hx, fun i hi => by omega,
+      fun q _ => by rw [curPos_zero]; rfl⟩
+  | k + 1, hk => by
+    have hk' : k < ps.length := by omega
+    obtain ⟨hok, ha, hb⟩ := netK_spec hnd hps k (by omega)
+    rw [show netK ps (k + 1) = netK ps k ++ run (curPos ps k (ps.getD k 0)) k from rfl]
+    set p := ps.getD k 0 with hp_def
+    have hpn := getD_not_mem_take hnd hk'
+    have hpN : p < N := hps p (by rw [hp_def, getD_eq hk']; exact List.getElem_mem hk')
+    set c := curPos ps k p with hc_def
+    have hpc : pos (netK ps k) p = c := hb p hpn
+    -- positions below `k` are taken by the first `k` wires
+    have hge : ∀ q, q ∉ ps.take k → k ≤ pos (netK ps k) q := by
+      intro q hq
+      by_contra hlt
+      push Not at hlt
+      have e := ha _ hlt
+      have hqq : ps.getD (pos (netK ps k) q) 0 = q := pos_injective _ e
+      exact hq (hqq ▸ getD_mem_take hlt (by omega))
+    have hkc : k ≤ c := hpc ▸ hge p hpn
+    have hcN : c < N := hpc ▸ pos_lt _ hok p hpN
+    refine ⟨?_, ?_, ?_⟩
+    · intro x hx
+      rcases List.mem_append.1 hx with hx | hx
+      · exact hok x hx
+      · have := mem_run hx; omega
+    · intro i hi
+      simp only [pos_append]
+      rcases Nat.lt_succ_iff_lt_or_eq.1 hi with hi | rfl
+      · rw [ha i hi, pos_run hkc]
+        split_ifs <;> omega
+      · rw [hpc, pos_run hkc, if_pos rfl]
+    · intro q hq
+      rw [take_succ_getD hk'] at hq
+      simp only [List.mem_append, List.mem_singleton, not_or] at hq
+      simp only [pos_append]
+      rw [hb q hq.1, pos_run hkc, curPos_succ hk']
+      have hx := hb q hq.1 ▸ hge q hq.1
+      have hne : curPos ps k q ≠ c := fun h => hq.2 (pos_injective _ (by rw [hb q hq.1, hpc, h]))
+      have hmono : curPos ps k q < c ↔ q < p := by
+        constructor
+        · intro h
+          by_contra h'
+          have : p < q := by omega
+          have := curPos_mono hnd k (by omega) p q hpn hq.1 this
+          omega
+        · intro h; exact curPos_mono hnd k (by omega) q p hq.1 hpn h
+      by_cases h1 : q < p
+      · rw [if_neg hne, if_pos ⟨hx, hmono.2 h1⟩, if_pos h1]
+      · rw [if_neg hne, if_neg (fun h => h1 (hmono.1 h.2)), if_neg h1]; rfl
+
+theorem netK_pos_iff {N : ℕ} (hnd : ps.Nodup) (hps : ∀ p ∈ ps, p < N) {q i : ℕ}
+    (hi : i < ps.length) : pos (netK ps ps.length) q = i ↔ q = ps.getD i 0 := by
+  obtain ⟨_, ha, _⟩ := netK_spec hnd hps ps.length le_rfl
+  constructor
+  · intro h; exact pos_injective _ (h.trans (ha i hi).symm)
+  · rintro rfl; exact ha i hi
+
+end Lists
+
+theorem map_nodup {ps : List ℕ} (hnd : ps.Nodup) (f : ℕ → ℕ) (hf : Function.Injective f) :
+    (ps.map f).Nodup := hnd.map hf
+
+/-- Naturality of `placeG`: conjugating a placed gate by a swap network
+places it on the wires the network carries back. -/
+theorem placeG_net {N m : ℕ} (g : Circ m) {ps : List ℕ} (hnd : ps.Nodup)
+    (hps : ∀ p ∈ ps, p < N) (hm : ps.length = m) (σ : List ℕ) (hσ : Ok N σ) :
+    Derivable (theory N) (swW N σ.reverse * placeG N g ps * swW N σ)
+      (placeG N g (ps.map (pos σ.reverse))) := by
+  have hinj : Function.Injective (pos σ.reverse) := pos_injective _
+  have hσr : Ok N σ.reverse := fun x hx => hσ x (List.mem_reverse.1 hx)
+  have hnd' : (ps.map (pos σ.reverse)).Nodup := hnd.map hinj
+  have hps' : ∀ p ∈ ps.map (pos σ.reverse), p < N := by
+    intro p hp
+    obtain ⟨q, hq, rfl⟩ := List.mem_map.1 hp
+    exact pos_lt _ hσr q (hps q hq)
+  rw [placeG_eq, placeG_eq]
+  have e : swW N σ.reverse * placedBy N (netK ps ps.length) (atBot N g) * swW N σ =
+      placedBy N (σ ++ netK ps ps.length) (atBot N g) := by
+    simp only [placedBy, List.reverse_append, swW_append, mul_assoc]
+  rw [e]
+  refine placement (m := m) ?_ (netK_spec hnd' hps' _ le_rfl).1 (hm ▸ lowW_atBot N g) ?_
+  · intro x hx
+    rcases List.mem_append.1 hx with hx | hx
+    · exact hσ x hx
+    · exact (netK_spec hnd hps _ le_rfl).1 x hx
+  · intro q i hi
+    rw [← hm] at hi
+    have hi' : i < (ps.map (pos σ.reverse)).length := by simpa using hi
+    have h2 := netK_pos_iff hnd' hps' hi' (q := q)
+    rw [pos_append, netK_pos_iff hnd hps hi, h2, getD_eq hi', getD_eq hi, List.getElem_map]
+    constructor
+    · intro h; rw [← h, pos_reverse]
+    · intro h; rw [h, pos_reverse']
+
+/-- Naturality of `placeG` for one swap. -/
+theorem placeG_swap {N m : ℕ} (g : Circ m) {ps : List ℕ} (hnd : ps.Nodup)
+    (hps : ∀ p ∈ ps, p < N) (hm : ps.length = m) (j : ℕ) (hj : j + 2 ≤ N) :
+    Derivable (theory N) (drawn [swAt N j, placeG N g ps, swAt N j])
+      (placeG N g (ps.map (tau j))) := by
+  have h := placeG_net g hnd hps hm [j] (fun x hx => by simp at hx; omega)
+  have e : drawn [swAt N j, placeG N g ps, swAt N j] = swW N [j].reverse * placeG N g ps * swW N [j] := by
+    simp [drawn, swW_eq_drawn, mul_assoc]
+  rw [e]
+  have e2 : pos [j].reverse = tau j := by funext q; rfl
+  rwa [e2] at h
+
+/-! ## Gates idle on the top wire -/
+
+theorem swAt_top (M j : ℕ) (hj : j + 2 ≤ M) : swAt (M + 1) j = padTop (swAt M j) :=
+  circ_top M (L.S j) hj
+
+theorem drawn_map_padTop {M : ℕ} (l : List (Circ M)) : drawn (l.map padTop) = padTop (drawn l) := by
+  simp [drawn, ← List.map_reverse, map_list_prod]
+
+/-- A gate placed on wires below `M` is idle on the top wire of `M + 1`. -/
+theorem placeG_top {M m : ℕ} (g : Circ m) {ps : List ℕ} (hnd : ps.Nodup)
+    (hps : ∀ p ∈ ps, p < M) (hm : ps.length = m) :
+    placeG (M + 1) g ps = padTop (placeG M g ps) := by
+  have hok := (netK_spec (N := M) hnd hps _ le_rfl).1
+  have hmM : m ≠ M + 1 := by
+    have : ps.length ≤ M := by
+      calc ps.length = ps.toFinset.card := (List.toFinset_card_of_nodup hnd).symm
+        _ ≤ (Finset.range M).card := Finset.card_le_card (fun x hx => by
+            simp only [List.mem_toFinset] at hx; simpa using hps x hx)
+        _ = M := Finset.card_range M
+    omega
+  have hnet : netL (M + 1) ps = (netL M ps).map padTop := by
+    rw [netL_eq, netL_eq, List.map_map]
+    refine List.map_congr_left (fun j hj => ?_)
+    exact swAt_top M j (hok j hj)
+  simp only [placeG, hnet, atBot_succ M g hmM]
+  rw [← List.map_reverse, ← drawn_map_padTop]
+  simp
+
+/-- The swaps carrying wire `w` to the top wire `M` of `M + 1` wires, the
+wires above `w` moving down one: `w, w + 1, …, M - 1`. -/
+def topNet (M w : ℕ) : List ℕ := (List.range (M - w)).map (w + ·)
+
+/-- Where a wire goes when wire `w` is moved to the top. -/
+def dropW (w q : ℕ) : ℕ := if q < w then q else q - 1
+
+theorem topNet_ok (M w : ℕ) : Ok (M + 1) (topNet M w) := by
+  intro x hx
+  simp only [topNet, List.mem_map, List.mem_range] at hx
+  obtain ⟨d, hd, rfl⟩ := hx; omega
+
+theorem pos_topNet (M w : ℕ) (hw : w ≤ M) (q : ℕ) (hq : q ≤ M) :
+    pos (topNet M w) q = if q = w then M else dropW w q := by
+  induction M, hw using Nat.le_induction generalizing q with
+  | base => simp [topNet, dropW]; split_ifs <;> omega
+  | succ M hwM ih =>
+    have e : topNet (M + 1) w = topNet M w ++ [M] := by
+      simp only [topNet, show M + 1 - w = (M - w) + 1 by omega, List.range_succ, List.map_append,
+        List.map_singleton]
+      congr 2; omega
+    rw [e, pos_append]
+    rcases Nat.lt_or_ge q (M + 1) with h | h
+    · rw [ih q (by omega)]
+      simp only [pos_cons, pos_nil, dropW]
+      unfold tau; split_ifs <;> omega
+    · have hq' : q = M + 1 := by omega
+      subst hq'
+      have : pos (topNet M w) (M + 1) = M + 1 :=
+        pos_below_gt _ _ (fun x hx => by
+          simp only [topNet, List.mem_map, List.mem_range] at hx
+          obtain ⟨d, hd, rfl⟩ := hx; omega)
+      rw [this]
+      simp only [pos_cons, pos_nil, dropW]
+      unfold tau; split_ifs <;> omega
+
+/-- A gate placed on wires that avoid `w`, conjugated by the swaps carrying
+wire `w` to the top: the same gate on the wires that remain, idle on the
+top wire. -/
+theorem placeG_toTop {M m : ℕ} (g : Circ m) {ps : List ℕ} (hnd : ps.Nodup)
+    (hps : ∀ p ∈ ps, p ≤ M) (hm : ps.length = m) (w : ℕ) (hw : w ≤ M) (hwp : w ∉ ps) :
+    Derivable (theory (M + 1))
+      (swW (M + 1) (topNet M w) * placeG (M + 1) g ps * swW (M + 1) (topNet M w).reverse)
+      (padTop (placeG M g (ps.map (dropW w)))) := by
+  have hσ : Ok (M + 1) (topNet M w).reverse := fun x hx => topNet_ok M w x (List.mem_reverse.1 hx)
+  have h := placeG_net g hnd (fun p hp => by have := hps p hp; omega) hm _ hσ
+  rw [List.reverse_reverse] at h
+  have e : ps.map (pos (topNet M w)) = ps.map (dropW w) := by
+    refine List.map_congr_left (fun q hq => ?_)
+    rw [pos_topNet M w hw q (hps q hq), if_neg (fun (h : q = w) => hwp (h ▸ hq))]
+  rw [e] at h
+  have hnd' : (ps.map (dropW w)).Nodup := by
+    refine List.Nodup.map_on (fun a ha b hb hab => ?_) hnd
+    simp only [dropW] at hab
+    have := hps a ha; have := hps b hb
+    have ha' : a ≠ w := fun (h : a = w) => hwp (h ▸ ha)
+    have hb' : b ≠ w := fun (h : b = w) => hwp (h ▸ hb)
+    split_ifs at hab <;> omega
+  have hlt : ∀ p ∈ ps.map (dropW w), p < M := by
+    intro p hp
+    obtain ⟨q, hq, rfl⟩ := List.mem_map.1 hp
+    have := hps q hq
+    have hq' : q ≠ w := fun (h : q = w) => hwp (h ▸ hq)
+    simp only [dropW]; split_ifs <;> omega
+  rwa [placeG_top g hnd' hlt (by simp [hm])] at h
 
 end QCert.RealCliffordCH.Sec8.Net
