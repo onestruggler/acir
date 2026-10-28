@@ -138,9 +138,11 @@ editing the others; it may assume everything exported by the others (the
 * **(iii) D.4 and `n = 5`** — `D/W5*.lean`: (249)–(268).  Exports the
   `m = 0` cases for D.4.
 * **(iv) D.8–D.11** — `D/N8.lean` (interface, done) and its own modules:
-  exports `eq81`, `eq274`, `eq277`, `eq299`, `eq305`, `eq307`–`eq314`.
-  First task: add the statements (269), (290)–(292), (295), (300)–(302)
-  that package (v) cites, and the semantics of `mc` at every width
+  exports `eq81`, `eq269`, `eq274`, `eq277`, `eq290`–`eq292`, `eq295`,
+  `eq299`–`eq302`, `eq305`, `eq307`–`eq314`.  The statements (269),
+  (290)–(292), (295), (300)–(302) that package (v) cites are in
+  `D/N8.lean` (stated, checked numerically by `gen/sec8/iface_n8.py`).
+  Next: the semantics of `mc` at every width
   (`Λ_c(U)`, extending `Soundness.eval_box` to `zx`, `xz`, `mch`, placement
   and colours) for the semantic steps.
 * **(v) D.12–D.13** — `D/N13.lean` (interface, done): exports `eq315`–`eq317`,

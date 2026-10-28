@@ -29,6 +29,77 @@ theorem eq81 (N : ℕ) (K : Kind) (tg : List ℕ) (c : ℕ → Option Bool) (j :
       (mc N K tg (setCtl c j (some !b))) := by
   sorry
 
+/-- The box on wire `1` with controls on wire `0` and on the wires `3, …, N - 1`
+(the inner box of (269) and (300)). -/
+abbrev Bx1 (N : ℕ) : Circ N := mc N .box [1] (ctlOr (ctlAt 0 true) (blackOn 3 N))
+
+/-- (269), Definition 2.4 in the conventions of `MC`: the box is
+`W B V B`, `W` and `V` the doubly controlled `ZX` and `XZ` on wire `0`
+(controls `1`, `2`), `B` the box on wire `1` (controls `0`, `3, …`). -/
+theorem eq269 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
+    Derivable (theory N) (Bx N)
+      (drawn [mc N .zx [0] (blackOn 1 3), Bx1 N, mc N .xz [0] (blackOn 1 3), Bx1 N]) := by
+  sorry
+
+/-- (290): the box without controls on the wires `2`, `3` commutes with the
+`ZX` controlled by the wires `1, 2, 3`. -/
+theorem eq290 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) :
+    Derivable (theory N)
+      (drawn [mc N .box [0] (ctlOr (ctlAt 1 true) (blackOn 4 N)), mc N .zx [0] (blackOn 1 4)])
+      (drawn [mc N .zx [0] (blackOn 1 4), mc N .box [0] (ctlOr (ctlAt 1 true) (blackOn 4 N))]) := by
+  sorry
+
+/-- (291): the box without a control on wire `2` commutes with the `ZX`
+controlled by the wires `1, 2, 3`. -/
+theorem eq291 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) :
+    Derivable (theory N)
+      (drawn [mc N .box [0] (ctlOr (ctlAt 1 true) (blackOn 3 N)), mc N .zx [0] (blackOn 1 4)])
+      (drawn [mc N .zx [0] (blackOn 1 4), mc N .box [0] (ctlOr (ctlAt 1 true) (blackOn 3 N))]) := by
+  sorry
+
+/-- (292): the `ZX` controlled by the wires `1, 2` commutes with the box on
+wire `1` with a white control on wire `2` (black on `0` and `3, …`). -/
+theorem eq292 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
+    Derivable (theory N)
+      (drawn [mc N .zx [0] (blackOn 1 3),
+        mc N .box [1] (ctlOr (ctlAt 0 true) (ctlOr (ctlAt 2 false) (blackOn 3 N)))])
+      (drawn [mc N .box [1] (ctlOr (ctlAt 0 true) (ctlOr (ctlAt 2 false) (blackOn 3 N))),
+        mc N .zx [0] (blackOn 1 3)]) := by
+  sorry
+
+/-- (295): the box written with `ZX` and `XZ` gates on wires `0`, `1` and the
+box without controls on the wires `2`, `3`. -/
+theorem eq295 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) :
+    Derivable (theory N) (Bx N)
+      (drawn [mc N .zx [0] (blackOn 1 4), mc N .zx [1] (ctlOr (ctlAt 0 true) (blackOn 2 4)),
+        mc N .box [0] (ctlOr (ctlAt 1 true) (blackOn 4 N)),
+        mc N .xz [1] (ctlOr (ctlAt 0 true) (blackOn 2 4)), mc N .xz [0] (blackOn 1 4),
+        mc N .zx [1] (ctlOr (ctlAt 0 true) (blackOn 2 4)),
+        mc N .box [0] (ctlOr (ctlAt 1 true) (blackOn 4 N)),
+        mc N .xz [1] (ctlOr (ctlAt 0 true) (blackOn 2 4))]) := by
+  sorry
+
+/-- (300): (269) with the factors rotated, `B W B V`. -/
+theorem eq300 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
+    Derivable (theory N) (Bx N)
+      (drawn [Bx1 N, mc N .zx [0] (blackOn 1 3), Bx1 N, mc N .xz [0] (blackOn 1 3)]) := by
+  sorry
+
+/-- (301): the box followed by its version white on wire `2` is the box
+without a control on wire `2`. -/
+theorem eq301 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
+    Derivable (theory N)
+      (drawn [Bx N, mc N .box [0] (setCtl (blackOn 1 N) 2 (some false))])
+      (mc N .box [0] (setCtl (blackOn 1 N) 2 none)) := by
+  sorry
+
+/-- (302): (301) in the other order. -/
+theorem eq302 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
+    Derivable (theory N)
+      (drawn [mc N .box [0] (setCtl (blackOn 1 N) 2 (some false)), Bx N])
+      (mc N .box [0] (setCtl (blackOn 1 N) 2 none)) := by
+  sorry
+
 /-- (274): the box wire is an identity wire; the box moves to an idle wire. -/
 theorem eq274 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
     Derivable (theory N) (mc N .box [1] (blackOn 2 N)) (mc N .box [0] (blackOn 2 N)) := by
