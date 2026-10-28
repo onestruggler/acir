@@ -158,5 +158,5 @@ editing the others; it may assume everything exported by the others (the
 
 * Done: `EngineN.lean` (the concrete-width engine), `Fast.lean` (the fast checker), `Weak.lean` (weakening, semantic steps, window step), `MC.lean`
   (conventions), `D/N8.lean`, `D/N13.lean` (interfaces, statements only).
-* Next: the figure parser (prototype in scratch `r87/figparse.py`:
-  wires grouped into diagrams by the `=` signs they surround), then D.2.
+* Next: the figure parser (prototype `gen/sec8/figparse.py`, state in
+  `gen/sec8/README.md`), then D.2 with the engine.

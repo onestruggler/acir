@@ -10,3 +10,14 @@
   arXiv:2602.06644, the equations it cites with their width subscripts;
   `closure.py` the equations transitively needed by Appendix E; `steps.py` counts
   derivation steps (`=` signs) per proof.
+* `figparse.py` — **prototype** of the figure parser (PyMuPDF): `page_items` collects the
+  vector items of a page (horizontal/vertical segments, filled and white dots, boxes,
+  dashed boxes, curves, text spans); `merge_wires` joins wire fragments split by
+  boxes (not across an `=` sign); `diagrams` groups wires into diagrams by the `=`
+  sign they flank (nearest in height).  State: on the D.2 statement pages most
+  diagrams come out right, but some are mis-split (page 67 gives 2- and 4-wire groups
+  where all are 3-wire), and on proof pages the `=` signs carrying citations are
+  missed (they are not separate text spans).  Still to do: those two fixes, gate
+  extraction per diagram (connected components of dots/boxes along vertical
+  segments; swaps from curves; `P ⊗ P` from dashed vertical links), and output as
+  `Eng.L` letter words checked numerically with `mc.py`.
