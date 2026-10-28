@@ -72,3 +72,8 @@
   the earlier equations).  State: (117)–(128) proved (W3 builds in 9 s); the steps of
   (129)–(147) that still fail are the long `P ⊗ P` moves ((130), (133)–(135), cited as
   (18)(111)–(114)) and some steps of (139)–(147).
+* `se.py` — a model of `Sec8/D/SymEngine.lean`: letters (`S(kind, j)` small gates, `G(Kd, tg, cs, b)`
+  multi-controlled gates on local wires with the bulk black or untouched), their circuits at any width
+  through `mc.py`, the semantic step (`semOK`, a window avoiding a local wire compared on the bulk-on and
+  bulk-off blocks), and `run(k, table, word, steps)`; `se_runs.py` replays the runs of `Sec8/D/N8/*`
+  (each Lean run was developed and checked here first).
