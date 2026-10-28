@@ -141,7 +141,7 @@ theorem one_F5 (h4 : h ^ 4 = 1) (hx : x = h * s * h ^ 2 * s⁻¹ * h)
       _ = 1 := by gnorm4 h4
   exact inv_mul_eq_one.1 key
 
-theorem one_zpow {n : ℕ} (h4 : h ^ 4 = 1) (hz : z = h ^ 2 * s * h ^ 2 * s⁻¹)
+theorem one_Zpow {n : ℕ} (h4 : h ^ 4 = 1) (hz : z = h ^ 2 * s * h ^ 2 * s⁻¹)
     (c5 : s * h ^ 2 * s * h ^ 2 = h ^ 2 * s * h ^ 2 * s) (sn : s ^ n = 1) : z ^ n = 1 := by
   have hc0 : Commute s (h ^ 2 * s * h ^ 2) := by
     show s * (h ^ 2 * s * h ^ 2) = (h ^ 2 * s * h ^ 2) * s
@@ -152,10 +152,10 @@ theorem one_zpow {n : ℕ} (h4 : h ^ 4 = 1) (hz : z = h ^ 2 * s * h ^ 2 * s⁻¹
       mul_one, inv_mul_cancel]
   rw [hz, hc.mul_pow, e, one_mul, inv_pow, sn, inv_one]
 
-theorem one_xpow {n : ℕ} (h4 : h ^ 4 = 1) (hx : x = h * s * h ^ 2 * s⁻¹ * h)
+theorem one_Xpow {n : ℕ} (h4 : h ^ 4 = 1) (hx : x = h * s * h ^ 2 * s⁻¹ * h)
     (hz : z = h ^ 2 * s * h ^ 2 * s⁻¹) (c5 : s * h ^ 2 * s * h ^ 2 = h ^ 2 * s * h ^ 2 * s)
     (sn : s ^ n = 1) : x ^ n = 1 := by
-  rw [one_F1' hx hz, conj_pow_inv, one_zpow h4 hz c5 sn, mul_one, inv_mul_cancel]
+  rw [one_F1' hx hz, conj_pow_inv, one_Zpow h4 hz c5 sn, mul_one, inv_mul_cancel]
 
 end OneAlg
 
@@ -207,9 +207,9 @@ theorem qs_R1 : 𝐒 * 𝐇 * 𝐒 * 𝐇 * 𝐒 * 𝐇 = 1 := by
     simp only [mul_assoc]
   rw [← e, ← h]
 
-theorem qsZ_pow_p : 𝐙 ^ p = 1 := one_zpow qsH_pow_four qsZ_eq qs_C5 qsS_pow_p
+theorem qsZ_pow_p : 𝐙 ^ p = 1 := one_Zpow qsH_pow_four qsZ_eq qs_C5 qsS_pow_p
 
-theorem qsX_pow_p : 𝐗 ^ p = 1 := one_xpow qsH_pow_four qsX_eq qsZ_eq qs_C5 qsS_pow_p
+theorem qsX_pow_p : 𝐗 ^ p = 1 := one_Xpow qsH_pow_four qsX_eq qsZ_eq qs_C5 qsS_pow_p
 
 /-- (C2) with (T1) at `a = -1`, modulo the scalars. -/
 theorem qs_R2 : 𝐇 ^ 2 = 𝐙⁻¹ * 𝐗 * 𝐒⁻¹ * 𝐇 * 𝐒⁻¹ * 𝐇 * 𝐒⁻¹ * 𝐇 := by

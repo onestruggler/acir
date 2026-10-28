@@ -21,11 +21,11 @@ Completeness follows the paper's Section 4.2: two circuits with the same
 matrix act alike on Paulis (`sigma_of_sem`), so modulo the rules they differ
 by an element of the normal closure of the Pauli group
 (`symplectic_complete`, Theorem 4.4); that is the Pauli group itself
-(`pauli_normal`, Proposition 4.9), on which the matrix semantics is
-injective (`pauli_inj`).  The remaining `sorry`s are listed in
-`README.md`.
+(`pauli_normal`, Propositions 4.8 and 4.9), on which the matrix semantics
+is injective (`pauli_inj`, Lemma 3.11).  Every step is proved from the
+rules of Figure 1.
 -/
-import QCert.QuditClifford.SymplecticComplete
+import QCert.QuditClifford.PauliInj
 
 namespace QCert.QuditClifford
 
