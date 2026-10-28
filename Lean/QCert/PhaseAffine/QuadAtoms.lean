@@ -10,7 +10,8 @@ The phase gates `Z` and `S` placed on a linear form `u · x` (`Psi u`,
 
 * any linear circuit computing `u · x` places them (`atom_S_eq`,
   `atom_Z_eq`), so a linear circuit conjugates an atom into an atom;
-* they commute (`atoms_commute`; Lemma 11 of the paper for `Z`, `S`, `CZ`):
+* they commute (`atoms_commute`, for any set of phase gates with the
+  properties `PhaseSet`; Lemma 11 of the paper for `Z`, `S`, `CZ`):
   a representative for `u` is `M_{u₀} CX ↑W'`, so the question is whether
   `S` and `Z` commute with `CX⁻¹ S CX` and `CX⁻¹ Z CX` — the latter is
   `Z Z` by (21), and the former is `S` placed on `x₀ + x₁`, which is also
@@ -182,28 +183,59 @@ theorem atomL_pow_d (g : Gate d lv 1) (hd : ∀ m : ℕ, mk (g1 (n := m) g) ^ d 
 
 /-! ### Atoms commute -/
 
-/-- The hypotheses on a phase gate on wire `0` used for commutation: it
-commutes with `CX` on its control, with `S` and with `Z`. -/
-structure PhaseGate (h2 : 2 ≤ lv) (g : Gate d lv 1) : Prop where
-  ctrl : ∀ m : ℕ, Commute (shiftQ (mk (g1 (n := m) g))) (qa (d := d) (lv := lv) m)
-  withS : ∀ m : ℕ, Commute (mk (g1 (n := m) g)) (mk (g1 (Gate.S h2)))
-  withZ : ∀ m : ℕ, Commute (mk (g1 (n := m) g)) (mk (g1 (Gate.Z (by omega))))
-  /-- `M_x⁻¹ g M_x` is a word in `Z` and `S`. -/
-  mul : ∀ (m : ℕ) (x : (ZMod d)ˣ), ∃ a b : ℕ,
-    (qm m x)⁻¹ * mk (g1 (n := m) g) * qm m x =
-      mk (g1 (Gate.Z (by omega))) ^ a * mk (g1 (Gate.S h2)) ^ b
+/-- A set `P` of phase gates on wire `0` for which the commutation argument
+works: each commutes with `CX` on its control, any two commute, and a
+multiplier conjugates each into the group they generate. -/
+structure PhaseSet (P : Gate d lv 1 → Prop) : Prop where
+  ctrl : ∀ g, P g → ∀ m : ℕ, Commute (shiftQ (mk (g1 (n := m) g))) (qa (d := d) (lv := lv) m)
+  comm : ∀ g g', P g → P g' → ∀ m : ℕ, Commute (mk (g1 (n := m) g)) (mk (g1 g'))
+  mul : ∀ g, P g → ∀ (m : ℕ) (x : (ZMod d)ˣ), (qm m x)⁻¹ * mk (g1 (n := m) g) * qm m x ∈
+    Subgroup.closure {y | ∃ g', P g' ∧ y = mk (g1 (n := m) g')}
 
-theorem phaseGate_S (h2 : 2 ≤ lv) : PhaseGate (d := d) h2 (Gate.S h2) where
-  ctrl := relS1CX h2
-  withS _ := Commute.refl _
-  withZ m := relSZ h2 m
-  mul m x := ⟨_, _, relMS h2 m x⟩
+omit [Fact d.Prime] in
+theorem commute_of_closure {G : Type*} [Group G] {k : Set G} (p : G)
+    (h : ∀ y ∈ k, Commute p y) : ∀ y ∈ Subgroup.closure k, Commute p y := by
+  intro y hy
+  induction hy using Subgroup.closure_induction with
+  | mem y hy => exact h y hy
+  | one => exact Commute.one_right _
+  | mul x y _ _ hx hy => exact hx.mul_right hy
+  | inv x _ hx => exact hx.inv_right
 
-theorem phaseGate_Z (h2 : 2 ≤ lv) : PhaseGate (d := d) h2 (Gate.Z (by omega)) where
-  ctrl := relZ1CX' _
-  withS m := (relSZ h2 m).symm
-  withZ _ := Commute.refl _
-  mul m x := ⟨(x : ZMod d).val, 0, by rw [relMZ, pow_zero, mul_one]⟩
+omit [Fact d.Prime] in
+theorem commute_conj_closure {G : Type*} [Group G] {k : Set G} (p q : G)
+    (h : ∀ y ∈ k, Commute q (p⁻¹ * y * p)) :
+    ∀ y ∈ Subgroup.closure k, Commute q (p⁻¹ * y * p) := by
+  intro y hy
+  induction hy using Subgroup.closure_induction with
+  | mem y hy => exact h y hy
+  | one => simp
+  | mul x y _ _ hx hy =>
+    rw [show p⁻¹ * (x * y) * p = (p⁻¹ * x * p) * (p⁻¹ * y * p) by group]
+    exact hx.mul_right hy
+  | inv x _ hx =>
+    rw [show p⁻¹ * x⁻¹ * p = (p⁻¹ * x * p)⁻¹ by group]
+    exact hx.inv_right
+
+/-- `S` and `Z`. -/
+theorem quadSet (h2 : 2 ≤ lv) :
+    PhaseSet (d := d) (fun g => g = Gate.S h2 ∨ g = Gate.Z (by omega)) where
+  ctrl g hg m := by
+    rcases hg with rfl | rfl
+    exacts [relS1CX h2 m, relZ1CX' _ m]
+  comm g g' hg hg' m := by
+    rcases hg with rfl | rfl <;> rcases hg' with rfl | rfl
+    exacts [Commute.refl _, relSZ h2 m, (relSZ h2 m).symm, Commute.refl _]
+  mul g hg m x := by
+    have hS : mk (g1 (n := m) (Gate.S (d := d) (lv := lv) h2)) ∈ Subgroup.closure
+        {y | ∃ g', (g' = Gate.S h2 ∨ g' = Gate.Z (by omega)) ∧ y = mk (g1 (n := m) g')} :=
+      Subgroup.subset_closure ⟨_, Or.inl rfl, rfl⟩
+    have hZ : mk (g1 (n := m) (Gate.Z (d := d) (lv := lv) (by omega))) ∈ Subgroup.closure
+        {y | ∃ g', (g' = Gate.S h2 ∨ g' = Gate.Z (by omega)) ∧ y = mk (g1 (n := m) g')} :=
+      Subgroup.subset_closure ⟨_, Or.inr rfl, rfl⟩
+    rcases hg with rfl | rfl
+    · rw [relMS]; exact mul_mem (pow_mem hZ _) (pow_mem hS _)
+    · rw [relMZ]; exact pow_mem hZ _
 
 theorem commute_conj_of {G : Type*} [Group G] {x y p : G} (h : Commute x y) :
     Commute (p⁻¹ * x * p) (p⁻¹ * y * p) := by
@@ -212,12 +244,13 @@ theorem commute_conj_of {G : Type*} [Group G] {x y p : G} (h : Commute x y) :
     _ = p⁻¹ * (y * x) * p := by rw [h.eq]
     _ = _ := by group
 
-/-- `S` on `x₀ + x₁`, written by the `CX` from wire `0` to wire `1`. -/
-theorem atom_CX_eq (hA : Admissible d lv) (h2 : 2 ≤ lv) (g' : Gate d lv 1)
-    (hg' : PhaseGate h2 g') (m : ℕ) :
+/-- A phase gate placed on `x₀ + x₁`, written by the `CX` from wire `0` to
+wire `1`. -/
+theorem atom_CX_eq (hA : Admissible d lv) (g' : Gate d lv 1)
+    (hg' : ∀ m : ℕ, Commute (shiftQ (mk (g1 (n := m) g'))) (qa (d := d) (lv := lv) m)) (m : ℕ) :
     (qa (d := d) (lv := lv) m)⁻¹ * mk (g1 g') * qa m =
       (qs m * qa m * qs m)⁻¹ * shiftQ (mk (g1 (n := m) g')) * (qs m * qa m * qs m) := by
-  have e := atom_wd hA g' hg'.ctrl (W := g2 Gate.CX) (W' := g2 Gate.SWAP * abarW 1)
+  have e := atom_wd hA g' hg' (W := g2 Gate.CX) (W' := g2 Gate.SWAP * abarW 1)
     (isLinW_g2 _) ((isLinW_g2 _).mul (isLinW_abarW _)) (by
       intro y
       rw [← Fin.cons_self_tail y, ← Fin.cons_self_tail (Fin.tail y), sem_f_mul, sem_abarW,
@@ -226,11 +259,10 @@ theorem atom_CX_eq (hA : Admissible d lv) (h2 : 2 ≤ lv) (g' : Gate d lv 1)
   have e' : (qa (d := d) (lv := lv) m)⁻¹ * mk (g1 g') * qa m =
       (qs m * (qs m * qa m * qs m))⁻¹ * mk (g1 g') * (qs m * (qs m * qa m * qs m)) := by
     have := e
-    simp only [atom, map_mul, abarW, map_pow, val_one_zmod, pow_one] at this
+    simp only [atom, map_mul, abarW, val_one_zmod, pow_one] at this
     exact this
   rw [e']
   have h1 : qs (d := d) (lv := lv) m * mk (g1 g') = shiftQ (mk (g1 g')) * qs m := relSWnat m g'
-  have hs : (qs (d := d) (lv := lv) m)⁻¹ = qs m := qs_inv m
   calc (qs m * (qs m * qa m * qs m))⁻¹ * mk (g1 g') * (qs m * (qs m * qa m * qs m))
       = (qs m * qa m * qs m)⁻¹ * (qs m * mk (g1 g') * (qs m)⁻¹) * (qs m * qa m * qs m) := by
         rw [show qs (d := d) (lv := lv) m * (qs m * qa m * qs m) = qa m * qs m by
@@ -238,43 +270,42 @@ theorem atom_CX_eq (hA : Admissible d lv) (h2 : 2 ≤ lv) (g' : Gate d lv 1)
         group
     _ = _ := by rw [h1, mul_inv_cancel_right]
 
-/-- A phase gate on wire `0` commutes with `S` and `Z` placed on
-`x₀ + x₁`. -/
-theorem commute_CX_atom (hA : Admissible d lv) (h2 : 2 ≤ lv) {g g' : Gate d lv 1}
-    (hg : PhaseGate h2 g) (hg' : PhaseGate h2 g') (m : ℕ) :
+/-- A phase gate on wire `0` commutes with another placed on `x₀ + x₁`. -/
+theorem commute_CX_atom (hA : Admissible d lv) {g g' : Gate d lv 1}
+    (hg : ∀ m : ℕ, Commute (shiftQ (mk (g1 (n := m) g))) (qa (d := d) (lv := lv) m))
+    (hg' : ∀ m : ℕ, Commute (shiftQ (mk (g1 (n := m) g'))) (qa (d := d) (lv := lv) m)) (m : ℕ) :
     Commute (mk (g1 (n := m + 1) g)) ((qa (d := d) (lv := lv) m)⁻¹ * mk (g1 g') * qa m) := by
-  rw [atom_CX_eq hA h2 g' hg' m]
-  have h1 : Commute (mk (g1 (n := m + 1) g)) (qs m * qa m * qs m) := commute_abar g (hg.ctrl m)
+  rw [atom_CX_eq hA g' hg' m]
+  have h1 : Commute (mk (g1 (n := m + 1) g)) (qs m * qa m * qs m) := commute_abar g (hg m)
   have h2' : Commute (mk (g1 (n := m + 1) g)) (shiftQ (mk (g1 (n := m) g'))) := comm1Q _ _
   exact (h1.inv_right.mul_right h2').mul_right h1
 
 /-- A phase gate on wire `0` commutes with every atom. -/
-theorem commute_atom0 (hA : Admissible d lv) (h2 : 2 ≤ lv) {g g' : Gate d lv 1}
-    (hg : PhaseGate h2 g) (hg' : PhaseGate h2 g') {n : ℕ} (W : C d lv (n + 1))
+theorem commute_atom0 (hA : Admissible d lv) {P : Gate d lv 1 → Prop} (hP : PhaseSet P)
+    {g g' : Gate d lv 1} (hg : P g) (hg' : P g') {n : ℕ} (W : C d lv (n + 1))
     (hW : IsLinW W) : Commute (mk (g1 (n := n) g)) (atom g' W) := by
-  rw [atom_eq_atomL hA g' hg'.ctrl W hW (rowv W) (sem_row W hW)]
-  -- the words in `Z` and `S` on wire `0`
-  have hZS : ∀ (m : ℕ) (a b : ℕ), Commute (mk (g1 (n := m) g))
-      (mk (g1 (Gate.Z (by omega))) ^ a * mk (g1 (Gate.S h2)) ^ b) :=
-    fun m a b => ((hg.withZ m).pow_right a).mul_right ((hg.withS m).pow_right b)
+  rw [atom_eq_atomL hA g' (hP.ctrl g' hg') W hW (rowv W) (sem_row W hW)]
+  -- the group generated by the gates of `P` on wire `0`
+  have hL : ∀ (m : ℕ), ∀ y ∈ Subgroup.closure {y | ∃ g'', P g'' ∧ y = mk (g1 (n := m) g'')},
+      Commute (mk (g1 (n := m) g)) y := fun m =>
+    commute_of_closure _ (fun y hy => by
+      obtain ⟨g'', hg'', rfl⟩ := hy; exact hP.comm g g'' hg hg'' m)
   generalize rowv W = u
   rw [atomL]
   split_ifs with hu
   · exact Commute.one_right _
   cases n with
   | zero =>
-    obtain ⟨a, b, e⟩ := hg'.mul 0 (unitOf (u 0))
-    rw [rowW, atom, e]; exact hZS 0 a b
+    rw [rowW, atom]; exact hL 0 _ (hP.mul g' hg' 0 (unitOf (u 0)))
   | succ n =>
     by_cases h0 : u 0 = 0
     · rw [rowW, if_pos h0, ← shiftQ_atom]; exact comm1Q _ _
     -- the representative `M_{u₀} CX ↑W'`
-    obtain ⟨a, b, e⟩ := hg'.mul (n + 1) (unitOf (u 0))
     by_cases ht : Fin.tail u = 0
     · rw [rowW, if_neg h0, ht, smul_zero]
       simp only [atom, map_mul]
-      rw [show mk (fanW (lv := lv) (n + 1) 0) = 1 from fan_zero (n + 1), mul_one, e]
-      exact hZS _ a b
+      rw [show mk (fanW (lv := lv) (n + 1) 0) = 1 from fan_zero (n + 1), mul_one]
+      exact hL _ _ (hP.mul g' hg' (n + 1) (unitOf (u 0)))
     set c := (u 0)⁻¹ • Fin.tail u
     have hc : c ≠ 0 := by
       intro hc; apply ht
@@ -295,31 +326,30 @@ theorem commute_atom0 (hA : Admissible d lv) (h2 : 2 ≤ lv) {g g' : Gate d lv 1
       rw [sem_rowW n c hc, unitOf_val h0, sum_cons u]
       simp only [c, Pi.smul_apply, smul_eq_mul, mul_add, Finset.mul_sum, ← mul_assoc,
         mul_inv_cancel₀ h0, one_mul]
-    rw [atom_wd hA g' hg'.ctrl (isLinW_rowW _ _) hW' (fun y => by rw [sem_rowW _ u hu y, hrow y])]
+    rw [atom_wd hA g' (hP.ctrl g' hg') (isLinW_rowW _ _) hW'
+      (fun y => by rw [sem_rowW _ u hu y, hrow y])]
     simp only [atom, map_mul]
     rw [show (mk (g1 (Gate.M (unitOf (u 0)))) * mk (g2 Gate.CX) * mk (shift (rowW n c)))⁻¹ *
         mk (g1 g') * (mk (g1 (Gate.M (unitOf (u 0)))) * mk (g2 Gate.CX) *
         mk (shift (rowW n c))) = (mk (shift (rowW n c)))⁻¹ * ((mk (g2 Gate.CX))⁻¹ *
         ((qm (n + 1) (unitOf (u 0)))⁻¹ * mk (g1 g') * qm (n + 1) (unitOf (u 0))) *
-        mk (g2 Gate.CX)) * mk (shift (rowW n c)) by group, e]
+        mk (g2 Gate.CX)) * mk (shift (rowW n c)) by group]
     have hR : Commute (mk (g1 (n := n + 1) g)) (mk (shift (rowW n c))) := comm1Q g (mk (rowW n c))
-    have hX : Commute (mk (g1 (n := n + 1) g)) ((qa n)⁻¹ * (mk (g1 (Gate.Z (by omega))) ^ a *
-        mk (g1 (Gate.S h2)) ^ b) * qa n) := by
-      rw [show (qa (d := d) (lv := lv) n)⁻¹ * (mk (g1 (Gate.Z (by omega))) ^ a *
-          mk (g1 (Gate.S h2)) ^ b) * qa n = ((qa n)⁻¹ * mk (g1 (Gate.Z (by omega))) * qa n) ^ a *
-          ((qa n)⁻¹ * mk (g1 (Gate.S h2)) * qa n) ^ b by
-        rw [conjInv_pow, conjInv_pow]; group]
-      exact ((commute_CX_atom hA h2 hg (phaseGate_Z h2) n).pow_right a).mul_right
-        ((commute_CX_atom hA h2 hg (phaseGate_S h2) n).pow_right b)
+    have hX : Commute (mk (g1 (n := n + 1) g)) ((qa n)⁻¹ *
+        ((qm (n + 1) (unitOf (u 0)))⁻¹ * mk (g1 g') * qm (n + 1) (unitOf (u 0))) * qa n) :=
+      commute_conj_closure _ _ (fun y hy => by
+        obtain ⟨g'', hg'', rfl⟩ := hy
+        exact commute_CX_atom hA (hP.ctrl g hg) (hP.ctrl g'' hg'') n) _
+        (hP.mul g' hg' (n + 1) (unitOf (u 0)))
     exact (hR.inv_right.mul_right hX).mul_right hR
 
 /-- Atoms commute. -/
-theorem atoms_commute (hA : Admissible d lv) (h2 : 2 ≤ lv) {g g' : Gate d lv 1}
-    (hg : PhaseGate h2 g) (hg' : PhaseGate h2 g') {n : ℕ} (W W' : C d lv (n + 1))
+theorem atoms_commute (hA : Admissible d lv) {P : Gate d lv 1 → Prop} (hP : PhaseSet P)
+    {g g' : Gate d lv 1} (hg : P g) (hg' : P g') {n : ℕ} (W W' : C d lv (n + 1))
     (hW : IsLinW W) (hW' : IsLinW W') : Commute (atom g W) (atom g' W') := by
   obtain ⟨V, hV, e⟩ := linInv W hW
   have hVi : mk V = (mk W)⁻¹ := by rw [map_mul] at e; exact eq_inv_of_mul_eq_one_left e
-  have h := commute_atom0 hA h2 hg hg' (W' * V) (hW'.mul hV)
+  have h := commute_atom0 hA hP hg hg' (W' * V) (hW'.mul hV)
   rw [← atom_conj, hVi, inv_inv] at h
   have := commute_conj_of (p := mk W) h
   simp only [atom] at this ⊢
@@ -330,15 +360,15 @@ theorem atoms_commute (hA : Admissible d lv) (h2 : 2 ≤ lv) {g g' : Gate d lv 1
         ((mk W)⁻¹ * mk (g1 g) * mk W) := this.eq
     _ = _ := by group
 
-theorem atomL_commute (hA : Admissible d lv) (h2 : 2 ≤ lv) {g g' : Gate d lv 1}
-    (hg : PhaseGate h2 g) (hg' : PhaseGate h2 g') {n : ℕ} (u v : Lab d (n + 1)) :
+theorem atomL_commute (hA : Admissible d lv) {P : Gate d lv 1 → Prop} (hP : PhaseSet P)
+    {g g' : Gate d lv 1} (hg : P g) (hg' : P g') {n : ℕ} (u v : Lab d (n + 1)) :
     Commute (atomL g u) (atomL g' v) := by
   rw [atomL, atomL]
   split_ifs
   · exact Commute.one_left _
   · exact Commute.one_left _
   · exact Commute.one_right _
-  · exact atoms_commute hA h2 hg hg' _ _ (isLinW_rowW _ _) (isLinW_rowW _ _)
+  · exact atoms_commute hA hP hg hg' _ _ (isLinW_rowW _ _) (isLinW_rowW _ _)
 
 /-! ### Scaling, additivity and the parallelogram law -/
 

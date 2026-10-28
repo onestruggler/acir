@@ -126,10 +126,10 @@ theorem dgens_comm (hA : Admissible d lv) (h2 : 2 ≤ lv) :
       | rfl
       | exact (hω _).eq
       | exact (hω _).eq.symm
-      | exact (atomL_commute hA h2 (phaseGate_S h2) (phaseGate_S h2) u v).eq
-      | exact (atomL_commute hA h2 (phaseGate_S h2) (phaseGate_Z h2) u v).eq
-      | exact (atomL_commute hA h2 (phaseGate_Z h2) (phaseGate_S h2) u v).eq
-      | exact (atomL_commute hA h2 (phaseGate_Z h2) (phaseGate_Z h2) u v).eq
+      | exact (atomL_commute hA (quadSet h2) (Or.inl rfl) (Or.inl rfl) u v).eq
+      | exact (atomL_commute hA (quadSet h2) (Or.inl rfl) (Or.inr rfl) u v).eq
+      | exact (atomL_commute hA (quadSet h2) (Or.inr rfl) (Or.inl rfl) u v).eq
+      | exact (atomL_commute hA (quadSet h2) (Or.inr rfl) (Or.inr rfl) u v).eq
 
 /-- The diagonal group on `n` wires. -/
 noncomputable abbrev Dg (h2 : 2 ≤ lv) (n : ℕ) : Subgroup (Q d lv n) := Subgroup.closure (dgens h2 n)
@@ -417,7 +417,7 @@ theorem cons_split {n : ℕ} (u : Lab d (n + 1)) :
   funext i
   refine Fin.cases ?_ (fun j => ?_) i
   · simp
-  · simp [Fin.tail, Pi.single_apply, Fin.succ_ne_zero]
+  · simp [Fin.tail, Fin.succ_ne_zero]
 
 end NF
 
@@ -563,7 +563,7 @@ theorem atomZ_isNF {n : ℕ} (u : Lab d (n + 1)) :
   rw [atomL_Z_add hA, atomL_Z_smul hA, shiftQ_atomW hA _ (relZ1CX' _), kfan_zero]
   have hc : Commute (atomL (Gate.Z (one_le_of_two h2)) (Pi.single 0 1 : Lab d (n + 1)) ^ (u 0).val)
       (atomL (Gate.Z (one_le_of_two h2)) (Fin.cons 0 (Fin.tail u))) :=
-    ((atomL_commute hA h2 (phaseGate_Z h2) (phaseGate_Z h2) _ _).pow_left _)
+    ((atomL_commute hA (quadSet h2) (Or.inr rfl) (Or.inr rfl) _ _).pow_left _)
   rw [hc.eq]
   simp
 
