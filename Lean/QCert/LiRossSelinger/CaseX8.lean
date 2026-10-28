@@ -278,4 +278,278 @@ theorem eight_syll {σ : O_ZHalf n} (hσ : σ ≠ 1) (hk : 0 < lde σ) {a b c d 
   · intro r e0 e1 e2 e3 e4 e5 e6 e7
     rw [o2 r e4 e5 e6 e7, hw1, o1 r e0 e1 e2 e3]
 
+/-- The states along `T = K_[e,f,g,h] K_[a,b,c,d] (−1)_[a] (−1)_[e] X_[a,e]` after
+the two syllables lie below the level (sum `≡ 4 (mod 8)`). -/
+theorem eight_lev_e {σ : O_ZHalf n} (hσ : σ ≠ 1) (hk : 0 < lde σ) {a b c d e f g h : Fin n}
+    (h1 : a < b) (h2 : b < c) (h3 : c < d) (h4 : d < e) (h5 : e < f) (h6 : f < g) (h7 : g < h)
+    (ha : a ∈ oddS σ) (hb : b ∈ oddS σ) (hc : c ∈ oddS σ) (hd : d ∈ oddS σ)
+    (he : e ∈ oddS σ) (hf : f ∈ oddS σ) (hg : g ∈ oddS σ) (hh : h ∈ oddS σ)
+    (hrest : ∀ r ∈ oddS σ, r = a ∨ r = b ∨ r = c ∨ r = d ∨ r = e ∨ r = f ∨ r = g ∨ r = h ∨
+      h < r)
+    (hsum : (fix4 (wint σ a) + fix4 (wint σ b) + fix4 (wint σ c) + fix4 (wint σ d) +
+      fix4 (wint σ e) + fix4 (wint σ f) + fix4 (wint σ g) + fix4 (wint σ h)) % 8 = 4) :
+    ∀ j ≤ 5, level (FreeMonoid.lift (sem n) (FreeMonoid.ofList
+      ([Gen.k e f g h h5 h6 h7, Gen.k a b c d h1 h2 h3, Gen.neg a, Gen.neg e,
+        Gen.x a e (h1.trans (h2.trans (h3.trans h4)))].drop j)) * next (next σ)) < level σ := by
+  have v1 := Fin.lt_def.1 h1; have v2 := Fin.lt_def.1 h2; have v3 := Fin.lt_def.1 h3
+  have v4 := Fin.lt_def.1 h4; have v5 := Fin.lt_def.1 h5; have v6 := Fin.lt_def.1 h6
+  have v7 := Fin.lt_def.1 h7
+  have ne : ∀ {x y : Fin n}, x.val < y.val → y ≠ x := fun hxy e => by subst e; omega
+  have ne' : ∀ {x y : Fin n}, x.val < y.val → x ≠ y := fun hxy e => by subst e; omega
+  obtain ⟨hs1, hs2, hne1, u2, c2, va, vb, vc, vd, ve, vf, vg, vh, o2⟩ :=
+    eight_syll hσ hk h1 h2 h3 h4 h5 h6 h7 ha hb hc hd he hf hg hh hrest
+  have hF : ∀ x ∈ oddS σ, fix4 (wint σ x) % 4 = 1 := fun x hx => fix4_mod ((mem_oddS_iff x).1 hx)
+  obtain ⟨ea, eb, ec, ed, ee, ef, eg, eh, k1, k1a, k1b, k1c, k1d, k2, k2e, k2f, k2g, k2h⟩ :=
+    par8_e _ _ _ _ _ _ _ _ (hF a ha) (hF b hb) (hF c hc) (hF d hd) (hF e he) (hF f hf)
+      (hF g hg) (hF h hh) hsum _ _ _ _ _ _ _ _ va vb vc vd ve vf vg vh
+  have hJ : h.val < pivotJ σ := le_pidx_of_odd hσ hh
+  have hνF : FixCols (mat (next (next σ))) (pivotJ σ) := fixCols_iterN 2 σ (fixCols_pivotJ σ)
+  have hνL : level (next (next σ)) < level σ :=
+    lt_of_le_of_lt (level_next_le _) (level_next_lt σ hσ)
+  obtain ⟨u3, c3, x3a, x3z, o3⟩ := step_x c2 (h1.trans (h2.trans (h3.trans h4)))
+  obtain ⟨u4, c4, x4z, o4⟩ := step_neg c3 e
+  obtain ⟨u5, c5, x5a, o5⟩ := step_neg c4 a
+  have w5a : u5 a = -u2 e := by rw [x5a, o4 a (ne' (by omega)), x3a]
+  have w5z : u5 e = -u2 a := by rw [o5 e (ne (by omega)), x4z, x3z]
+  have w5 : ∀ r, r ≠ a → r ≠ e → u5 r = u2 r := fun r ra rz => by
+    rw [o5 r ra, o4 r rz, o3 r ra rz]
+  have hstate : ∀ l : List (Gen n), FreeMonoid.lift (sem n) (FreeMonoid.ofList
+      (l ++ (syll (next σ) ++ syll σ))) * σ =
+      FreeMonoid.lift (sem n) (FreeMonoid.ofList l) * next (next σ) := by
+    intro l
+    simp only [FreeMonoid.ofList_append, map_mul, mul_assoc]
+    rfl
+  have hbelow : ∀ l : List (Gen n), (∀ x ∈ l, extent x ≤ h.val) →
+      BelowJ (pivotJ σ) (l ++ (syll (next σ) ++ syll σ)) := by
+    intro l hl x hx
+    rcases List.mem_append.1 hx with hx | hx
+    · exact lt_of_le_of_lt (hl x hx) hJ
+    rcases List.mem_append.1 hx with hx | hx
+    · rw [hs2] at hx
+      rcases List.mem_cons.1 hx with rfl | hx
+      · exact hJ
+      · exact signs_extent (fun r hr => by
+          simp only [List.mem_cons, List.not_mem_nil, or_false] at hr
+          rcases hr with rfl | rfl | rfl | rfl <;> omega) x hx
+    · rw [hs1] at hx
+      rcases List.mem_cons.1 hx with rfl | hx
+      · show d.val < pivotJ σ; omega
+      · exact signs_extent (fun r hr => by
+          simp only [List.mem_cons, List.not_mem_nil, or_false] at hr
+          rcases hr with rfl | rfl | rfl | rfl <;> omega) x hx
+  have hoa : Odd (wint σ a) := (mem_oddS_iff a).1 ha
+  obtain ⟨u6, c6, y6a, y6b, y6c, y6d, o6⟩ := step_k c5 h1 h2 h3 (by
+    rw [w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))]; exact k1)
+  have w6 : ∀ r, r = e ∨ r = f ∨ r = g ∨ r = h → u6 r = u5 r := fun r hr => by
+    apply o6 <;> rcases hr with rfl | rfl | rfl | rfl <;> exact ne (by omega)
+  intro j hj
+  rcases (show j = 0 ∨ j = 1 ∨ 2 ≤ j by omega) with rfl | rfl | hj2
+  · obtain ⟨u7, c7, y7e, y7f, y7g, y7h, o7⟩ := step_k c6 h5 h6 h7 (by
+      rw [w6 e (by simp), w6 f (by simp), w6 g (by simp), w6 h (by simp), w5z, w5 f (ne (by omega)) (ne (by omega)), w5 g (ne (by omega)) (ne (by omega)), w5 h (ne (by omega)) (ne (by omega))]
+      exact k2)
+    have hl := hbelow [Gen.k e f g h h5 h6 h7, Gen.k a b c d h1 h2 h3, Gen.neg a, Gen.neg e,
+      Gen.x a e (h1.trans (h2.trans (h3.trans h4)))] (by
+        intro x hx
+        simp only [List.mem_cons, List.not_mem_nil, or_false] at hx
+        rcases hx with rfl | rfl | rfl | rfl | rfl <;> simp [extent] <;> omega)
+    have := level_lt_of_col hσ hk _ hl (u' := u7)
+      (by rw [wact_append]; exact c7) (fun r hr => by
+        have ho := Int.odd_iff.1 hr
+        by_cases ra : r = a
+        · rw [ra, o7 a (ne' (by omega)) (ne' (by omega)) (ne' (by omega)) (ne' (by omega)), y6a, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases rb : r = b
+        · rw [rb, o7 b (ne' (by omega)) (ne' (by omega)) (ne' (by omega)) (ne' (by omega)), y6b, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases rc : r = c
+        · rw [rc, o7 c (ne' (by omega)) (ne' (by omega)) (ne' (by omega)) (ne' (by omega)), y6c, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases rd : r = d
+        · rw [rd, o7 d (ne' (by omega)) (ne' (by omega)) (ne' (by omega)) (ne' (by omega)), y6d, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases re : r = e
+        · rw [re, y7e, w6 e (by simp), w6 f (by simp), w6 g (by simp), w6 h (by simp), w5z, w5 f (ne (by omega)) (ne (by omega)), w5 g (ne (by omega)) (ne (by omega)), w5 h (ne (by omega)) (ne (by omega))] at ho; exfalso; omega
+        by_cases rf : r = f
+        · rw [rf, y7f, w6 e (by simp), w6 f (by simp), w6 g (by simp), w6 h (by simp), w5z, w5 f (ne (by omega)) (ne (by omega)), w5 g (ne (by omega)) (ne (by omega)), w5 h (ne (by omega)) (ne (by omega))] at ho; exfalso; omega
+        by_cases rg : r = g
+        · rw [rg, y7g, w6 e (by simp), w6 f (by simp), w6 g (by simp), w6 h (by simp), w5z, w5 f (ne (by omega)) (ne (by omega)), w5 g (ne (by omega)) (ne (by omega)), w5 h (ne (by omega)) (ne (by omega))] at ho; exfalso; omega
+        by_cases rh : r = h
+        · rw [rh, y7h, w6 e (by simp), w6 f (by simp), w6 g (by simp), w6 h (by simp), w5z, w5 f (ne (by omega)) (ne (by omega)), w5 g (ne (by omega)) (ne (by omega)), w5 h (ne (by omega)) (ne (by omega))] at ho; exfalso; omega
+        rw [o7 r re rf rg rh, o6 r ra rb rc rd, w5 r ra re,
+          o2 r ra rb rc rd re rf rg rh] at hr
+        exact hr) (r₀ := a) hoa (fun hr => by
+          have ho := Int.odd_iff.1 hr
+          rw [o7 a (ne' (by omega)) (ne' (by omega)) (ne' (by omega)) (ne' (by omega)), y6a, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; omega)
+    rwa [hstate] at this
+  · have hl := hbelow [Gen.k a b c d h1 h2 h3, Gen.neg a, Gen.neg e, Gen.x a e (h1.trans (h2.trans (h3.trans h4)))] (by
+        intro x hx
+        simp only [List.mem_cons, List.not_mem_nil, or_false] at hx
+        rcases hx with rfl | rfl | rfl | rfl <;> simp [extent] <;> omega)
+    have := level_lt_of_col hσ hk _ hl (u' := u6)
+      (by rw [wact_append]; exact c6) (fun r hr => by
+        have ho := Int.odd_iff.1 hr
+        by_cases ra : r = a
+        · rw [ra, y6a, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases rb : r = b
+        · rw [rb, y6b, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases rc : r = c
+        · rw [rc, y6c, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases rd : r = d
+        · rw [rd, y6d, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        rw [o6 r ra rb rc rd] at ho hr
+        by_cases re : r = e
+        · rw [re, w5z] at ho; exfalso; omega
+        rw [w5 r ra re] at ho hr
+        by_cases rf : r = f
+        · rw [rf] at ho; exfalso; omega
+        by_cases rg : r = g
+        · rw [rg] at ho; exfalso; omega
+        by_cases rh : r = h
+        · rw [rh] at ho; exfalso; omega
+        rwa [o2 r ra rb rc rd re rf rg rh] at hr) (r₀ := a) hoa (fun hr => by
+          have ho := Int.odd_iff.1 hr
+          rw [y6a, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; omega)
+    rwa [hstate] at this
+  · obtain ⟨i, rfl⟩ : ∃ i, j = i + 2 := ⟨j - 2, by omega⟩
+    have e2 : ([Gen.k e f g h h5 h6 h7, Gen.k a b c d h1 h2 h3, Gen.neg a, Gen.neg e,
+        Gen.x a e (h1.trans (h2.trans (h3.trans h4)))].drop (i + 2)) = [Gen.neg a, Gen.neg e, Gen.x a e (h1.trans (h2.trans (h3.trans h4)))].drop i := rfl
+    rw [e2]
+    refine (level_sp_word hσ hk _ (fun x hx => ?_) hνF hνL).2
+    have hx' := List.mem_of_mem_drop hx
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hx'
+    rcases hx' with rfl | rfl | rfl <;> exact ⟨by simp [Gen.tag], by simp [extent]; omega⟩
+
+/-- The states along `T = K_[e,f,g,h] K_[a,b,c,d] (−1)_[a] (−1)_[h] X_[a,h]` after
+the two syllables lie below the level (sum `≡ 0 (mod 8)`). -/
+theorem eight_lev_h {σ : O_ZHalf n} (hσ : σ ≠ 1) (hk : 0 < lde σ) {a b c d e f g h : Fin n}
+    (h1 : a < b) (h2 : b < c) (h3 : c < d) (h4 : d < e) (h5 : e < f) (h6 : f < g) (h7 : g < h)
+    (ha : a ∈ oddS σ) (hb : b ∈ oddS σ) (hc : c ∈ oddS σ) (hd : d ∈ oddS σ)
+    (he : e ∈ oddS σ) (hf : f ∈ oddS σ) (hg : g ∈ oddS σ) (hh : h ∈ oddS σ)
+    (hrest : ∀ r ∈ oddS σ, r = a ∨ r = b ∨ r = c ∨ r = d ∨ r = e ∨ r = f ∨ r = g ∨ r = h ∨
+      h < r)
+    (hsum : (fix4 (wint σ a) + fix4 (wint σ b) + fix4 (wint σ c) + fix4 (wint σ d) +
+      fix4 (wint σ e) + fix4 (wint σ f) + fix4 (wint σ g) + fix4 (wint σ h)) % 8 = 0) :
+    ∀ j ≤ 5, level (FreeMonoid.lift (sem n) (FreeMonoid.ofList
+      ([Gen.k e f g h h5 h6 h7, Gen.k a b c d h1 h2 h3, Gen.neg a, Gen.neg h,
+        Gen.x a h (h1.trans (h2.trans (h3.trans (h4.trans (h5.trans (h6.trans h7))))))].drop j)) * next (next σ)) < level σ := by
+  have v1 := Fin.lt_def.1 h1; have v2 := Fin.lt_def.1 h2; have v3 := Fin.lt_def.1 h3
+  have v4 := Fin.lt_def.1 h4; have v5 := Fin.lt_def.1 h5; have v6 := Fin.lt_def.1 h6
+  have v7 := Fin.lt_def.1 h7
+  have ne : ∀ {x y : Fin n}, x.val < y.val → y ≠ x := fun hxy e => by subst e; omega
+  have ne' : ∀ {x y : Fin n}, x.val < y.val → x ≠ y := fun hxy e => by subst e; omega
+  obtain ⟨hs1, hs2, hne1, u2, c2, va, vb, vc, vd, ve, vf, vg, vh, o2⟩ :=
+    eight_syll hσ hk h1 h2 h3 h4 h5 h6 h7 ha hb hc hd he hf hg hh hrest
+  have hF : ∀ x ∈ oddS σ, fix4 (wint σ x) % 4 = 1 := fun x hx => fix4_mod ((mem_oddS_iff x).1 hx)
+  obtain ⟨ea, eb, ec, ed, ee, ef, eg, eh, k1, k1a, k1b, k1c, k1d, k2, k2e, k2f, k2g, k2h⟩ :=
+    par8_h _ _ _ _ _ _ _ _ (hF a ha) (hF b hb) (hF c hc) (hF d hd) (hF e he) (hF f hf)
+      (hF g hg) (hF h hh) hsum _ _ _ _ _ _ _ _ va vb vc vd ve vf vg vh
+  have hJ : h.val < pivotJ σ := le_pidx_of_odd hσ hh
+  have hνF : FixCols (mat (next (next σ))) (pivotJ σ) := fixCols_iterN 2 σ (fixCols_pivotJ σ)
+  have hνL : level (next (next σ)) < level σ :=
+    lt_of_le_of_lt (level_next_le _) (level_next_lt σ hσ)
+  obtain ⟨u3, c3, x3a, x3z, o3⟩ := step_x c2 (h1.trans (h2.trans (h3.trans (h4.trans (h5.trans (h6.trans h7))))))
+  obtain ⟨u4, c4, x4z, o4⟩ := step_neg c3 h
+  obtain ⟨u5, c5, x5a, o5⟩ := step_neg c4 a
+  have w5a : u5 a = -u2 h := by rw [x5a, o4 a (ne' (by omega)), x3a]
+  have w5z : u5 h = -u2 a := by rw [o5 h (ne (by omega)), x4z, x3z]
+  have w5 : ∀ r, r ≠ a → r ≠ h → u5 r = u2 r := fun r ra rz => by
+    rw [o5 r ra, o4 r rz, o3 r ra rz]
+  have hstate : ∀ l : List (Gen n), FreeMonoid.lift (sem n) (FreeMonoid.ofList
+      (l ++ (syll (next σ) ++ syll σ))) * σ =
+      FreeMonoid.lift (sem n) (FreeMonoid.ofList l) * next (next σ) := by
+    intro l
+    simp only [FreeMonoid.ofList_append, map_mul, mul_assoc]
+    rfl
+  have hbelow : ∀ l : List (Gen n), (∀ x ∈ l, extent x ≤ h.val) →
+      BelowJ (pivotJ σ) (l ++ (syll (next σ) ++ syll σ)) := by
+    intro l hl x hx
+    rcases List.mem_append.1 hx with hx | hx
+    · exact lt_of_le_of_lt (hl x hx) hJ
+    rcases List.mem_append.1 hx with hx | hx
+    · rw [hs2] at hx
+      rcases List.mem_cons.1 hx with rfl | hx
+      · exact hJ
+      · exact signs_extent (fun r hr => by
+          simp only [List.mem_cons, List.not_mem_nil, or_false] at hr
+          rcases hr with rfl | rfl | rfl | rfl <;> omega) x hx
+    · rw [hs1] at hx
+      rcases List.mem_cons.1 hx with rfl | hx
+      · show d.val < pivotJ σ; omega
+      · exact signs_extent (fun r hr => by
+          simp only [List.mem_cons, List.not_mem_nil, or_false] at hr
+          rcases hr with rfl | rfl | rfl | rfl <;> omega) x hx
+  have hoa : Odd (wint σ a) := (mem_oddS_iff a).1 ha
+  obtain ⟨u6, c6, y6a, y6b, y6c, y6d, o6⟩ := step_k c5 h1 h2 h3 (by
+    rw [w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))]; exact k1)
+  have w6 : ∀ r, r = e ∨ r = f ∨ r = g ∨ r = h → u6 r = u5 r := fun r hr => by
+    apply o6 <;> rcases hr with rfl | rfl | rfl | rfl <;> exact ne (by omega)
+  intro j hj
+  rcases (show j = 0 ∨ j = 1 ∨ 2 ≤ j by omega) with rfl | rfl | hj2
+  · obtain ⟨u7, c7, y7e, y7f, y7g, y7h, o7⟩ := step_k c6 h5 h6 h7 (by
+      rw [w6 e (by simp), w6 f (by simp), w6 g (by simp), w6 h (by simp), w5 e (ne (by omega)) (ne' (by omega)), w5 f (ne (by omega)) (ne' (by omega)), w5 g (ne (by omega)) (ne' (by omega)), w5z]
+      exact k2)
+    have hl := hbelow [Gen.k e f g h h5 h6 h7, Gen.k a b c d h1 h2 h3, Gen.neg a, Gen.neg h,
+      Gen.x a h (h1.trans (h2.trans (h3.trans (h4.trans (h5.trans (h6.trans h7))))))] (by
+        intro x hx
+        simp only [List.mem_cons, List.not_mem_nil, or_false] at hx
+        rcases hx with rfl | rfl | rfl | rfl | rfl <;> simp [extent] <;> omega)
+    have := level_lt_of_col hσ hk _ hl (u' := u7)
+      (by rw [wact_append]; exact c7) (fun r hr => by
+        have ho := Int.odd_iff.1 hr
+        by_cases ra : r = a
+        · rw [ra, o7 a (ne' (by omega)) (ne' (by omega)) (ne' (by omega)) (ne' (by omega)), y6a, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases rb : r = b
+        · rw [rb, o7 b (ne' (by omega)) (ne' (by omega)) (ne' (by omega)) (ne' (by omega)), y6b, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases rc : r = c
+        · rw [rc, o7 c (ne' (by omega)) (ne' (by omega)) (ne' (by omega)) (ne' (by omega)), y6c, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases rd : r = d
+        · rw [rd, o7 d (ne' (by omega)) (ne' (by omega)) (ne' (by omega)) (ne' (by omega)), y6d, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases re : r = e
+        · rw [re, y7e, w6 e (by simp), w6 f (by simp), w6 g (by simp), w6 h (by simp), w5 e (ne (by omega)) (ne' (by omega)), w5 f (ne (by omega)) (ne' (by omega)), w5 g (ne (by omega)) (ne' (by omega)), w5z] at ho; exfalso; omega
+        by_cases rf : r = f
+        · rw [rf, y7f, w6 e (by simp), w6 f (by simp), w6 g (by simp), w6 h (by simp), w5 e (ne (by omega)) (ne' (by omega)), w5 f (ne (by omega)) (ne' (by omega)), w5 g (ne (by omega)) (ne' (by omega)), w5z] at ho; exfalso; omega
+        by_cases rg : r = g
+        · rw [rg, y7g, w6 e (by simp), w6 f (by simp), w6 g (by simp), w6 h (by simp), w5 e (ne (by omega)) (ne' (by omega)), w5 f (ne (by omega)) (ne' (by omega)), w5 g (ne (by omega)) (ne' (by omega)), w5z] at ho; exfalso; omega
+        by_cases rh : r = h
+        · rw [rh, y7h, w6 e (by simp), w6 f (by simp), w6 g (by simp), w6 h (by simp), w5 e (ne (by omega)) (ne' (by omega)), w5 f (ne (by omega)) (ne' (by omega)), w5 g (ne (by omega)) (ne' (by omega)), w5z] at ho; exfalso; omega
+        rw [o7 r re rf rg rh, o6 r ra rb rc rd, w5 r ra rh,
+          o2 r ra rb rc rd re rf rg rh] at hr
+        exact hr) (r₀ := a) hoa (fun hr => by
+          have ho := Int.odd_iff.1 hr
+          rw [o7 a (ne' (by omega)) (ne' (by omega)) (ne' (by omega)) (ne' (by omega)), y6a, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; omega)
+    rwa [hstate] at this
+  · have hl := hbelow [Gen.k a b c d h1 h2 h3, Gen.neg a, Gen.neg h, Gen.x a h (h1.trans (h2.trans (h3.trans (h4.trans (h5.trans (h6.trans h7))))))] (by
+        intro x hx
+        simp only [List.mem_cons, List.not_mem_nil, or_false] at hx
+        rcases hx with rfl | rfl | rfl | rfl <;> simp [extent] <;> omega)
+    have := level_lt_of_col hσ hk _ hl (u' := u6)
+      (by rw [wact_append]; exact c6) (fun r hr => by
+        have ho := Int.odd_iff.1 hr
+        by_cases ra : r = a
+        · rw [ra, y6a, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases rb : r = b
+        · rw [rb, y6b, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases rc : r = c
+        · rw [rc, y6c, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        by_cases rd : r = d
+        · rw [rd, y6d, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; exfalso; omega
+        rw [o6 r ra rb rc rd] at ho hr
+        by_cases rh : r = h
+        · rw [rh, w5z] at ho; exfalso; omega
+        rw [w5 r ra rh] at ho hr
+        by_cases re : r = e
+        · rw [re] at ho; exfalso; omega
+        by_cases rf : r = f
+        · rw [rf] at ho; exfalso; omega
+        by_cases rg : r = g
+        · rw [rg] at ho; exfalso; omega
+        rwa [o2 r ra rb rc rd re rf rg rh] at hr) (r₀ := a) hoa (fun hr => by
+          have ho := Int.odd_iff.1 hr
+          rw [y6a, w5a, w5 b (ne (by omega)) (ne' (by omega)), w5 c (ne (by omega)) (ne' (by omega)), w5 d (ne (by omega)) (ne' (by omega))] at ho; omega)
+    rwa [hstate] at this
+  · obtain ⟨i, rfl⟩ : ∃ i, j = i + 2 := ⟨j - 2, by omega⟩
+    have e2 : ([Gen.k e f g h h5 h6 h7, Gen.k a b c d h1 h2 h3, Gen.neg a, Gen.neg h,
+        Gen.x a h (h1.trans (h2.trans (h3.trans (h4.trans (h5.trans (h6.trans h7))))))].drop (i + 2)) = [Gen.neg a, Gen.neg h, Gen.x a h (h1.trans (h2.trans (h3.trans (h4.trans (h5.trans (h6.trans h7))))))].drop i := rfl
+    rw [e2]
+    refine (level_sp_word hσ hk _ (fun x hx => ?_) hνF hνL).2
+    have hx' := List.mem_of_mem_drop hx
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hx'
+    rcases hx' with rfl | rfl | rfl <;> exact ⟨by simp [Gen.tag], by simp [extent]; omega⟩
+
 end QCert.LiRossSelinger
