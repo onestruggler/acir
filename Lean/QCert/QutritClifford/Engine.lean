@@ -22,15 +22,9 @@ in time order (`cw`), up to a phase (`E`, i.e. `PEq`):
 lemmas before it, and `Lib.sound` makes every one of them an equation.
 -/
 import QCert.QutritClifford.Proj
+import QCert.QutritClifford.Run
 
 namespace QCert.QutritClifford
-
-/-- Letters of derivations: `H` and `S` on wire `j`, `CZ` on wires `j, j + 1`. -/
-inductive Lt
-  | H (j : ℕ)
-  | S (j : ℕ)
-  | C (j : ℕ)
-  deriving DecidableEq, Repr
 
 namespace Lt
 
@@ -43,33 +37,6 @@ def gen : (k : ℕ) → Lt → Gen Gate k
   | k + 1, S (j + 1) => .up (gen k (S j))
   | k + 1, C (j + 1) => .up (gen k (C j))
   | _, _ => .gate0 .negω
-
-/-- The lowest wire of a letter. -/
-def lo : Lt → ℕ
-  | H j => j
-  | S j => j
-  | C j => j
-
-/-- The highest wire of a letter. -/
-def hi : Lt → ℕ
-  | H j => j
-  | S j => j
-  | C j => j + 1
-
-/-- The letter one wire down. -/
-def down : Lt → Lt
-  | H j => H (j - 1)
-  | S j => S (j - 1)
-  | C j => C (j - 1)
-
-/-- Letters on disjoint wires. -/
-def disj (x y : Lt) : Bool := x.hi < y.lo || y.hi < x.lo
-
-/-- The order of letters in canonical forms. -/
-def rank : Lt → ℕ
-  | H j => 3 * j
-  | S j => 3 * j + 1
-  | C j => 3 * j + 2
 
 end Lt
 
@@ -198,27 +165,7 @@ theorem E.move_left {k : ℕ} (x : Lt) : ∀ (p : List Lt), (∀ y ∈ p, Lt.dis
 
 /-! ### Canonical forms -/
 
-/-- Wires `0`, `1`, `2` blocked by the letters passed so far. -/
-structure Bl where
-  b0 : Bool
-  b1 : Bool
-  b2 : Bool
-
 namespace Bl
-
-def get (bl : Bl) : ℕ → Bool
-  | 0 => bl.b0
-  | 1 => bl.b1
-  | 2 => bl.b2
-  | _ => true
-
-/-- A letter is on wire `w`. -/
-def onw (x : Lt) (w : ℕ) : Bool := x.lo ≤ w && w ≤ x.hi
-
-def add (bl : Bl) (x : Lt) : Bl := ⟨bl.b0 || onw x 0, bl.b1 || onw x 1, bl.b2 || onw x 2⟩
-
-/-- The letter may be moved in front of the letters passed. -/
-def free (bl : Bl) (x : Lt) : Bool := !bl.get x.lo && !bl.get x.hi
 
 /-- `bl` blocks every wire of the letters of `pre`. -/
 def Inv (bl : Bl) (pre : List Lt) : Prop := ∀ w, bl.get w = false → ∀ y ∈ pre, onw y w = false
@@ -246,22 +193,6 @@ theorem disj_of_free {bl : Bl} {pre : List Lt} (h : Inv bl pre) {x : Lt}
   cases x <;> cases y <;> simp_all [onw, Lt.disj, Lt.lo, Lt.hi] <;> omega
 
 end Bl
-
-/-- Scan for the least-ranked letter that commutes with every letter before
-it: `i` the position, `best` the best so far (position and letter). -/
-def pickI : Bl → ℕ → Option (ℕ × Lt) → List Lt → Option (ℕ × Lt)
-  | _, _, best, [] => best
-  | bl, i, best, x :: rest =>
-    let better : Bool := match best with
-      | none => true
-      | some (_, y) => decide (x.rank < y.rank)
-    let best' := if (bl.free x && better) = true then some (i, x) else best
-    pickI (bl.add x) (i + 1) best' rest
-
-def pick (w : List Lt) : Option (List Lt × Lt × List Lt) :=
-  match pickI ⟨false, false, false⟩ 0 none w with
-  | none => none
-  | some (i, x) => some (w.take i, x, w.drop (i + 1))
 
 /-- The specification of a choice `(j, x)` in `orig`. -/
 def PickSpec (orig : List Lt) (j : ℕ) (x : Lt) : Prop :=
@@ -301,15 +232,6 @@ theorem pick_spec {w : List Lt} {p : List Lt} {x : Lt} {s : List Lt}
     exact pickI_spec ⟨false, false, false⟩ [] none w w Bl.inv_nil rfl
       (fun _ _ h => nomatch h) i y hp
 
-def canonF : ℕ → List Lt → List Lt
-  | 0, w => w
-  | n + 1, w => match pick w with
-    | none => w
-    | some (p, x, s) => x :: canonF n (p ++ s)
-
-/-- The canonical form of a word for commuting letters on disjoint wires. -/
-def canon (w : List Lt) : List Lt := canonF w.length w
-
 theorem canonF_E {k : ℕ} : ∀ (n : ℕ) (w : List Lt), E k w (canonF n w)
   | 0, w => E.refl w
   | n + 1, w => by
@@ -337,23 +259,6 @@ theorem E_of_canonOr {k : ℕ} {a b : List Lt} (h : (a == b || canon a == canon 
 
 /-! ### Runs -/
 
-/-- A step: an equation of the table at a place (`u`, `v`), reversed when
-`rev`; or a free replacement of `s` by `t`. -/
-inductive Step
-  | rule (i : ℕ) (rev : Bool) (u v : List Lt)
-  | free (u s t v : List Lt)
-  | swaps (ps : List ℕ)
-
-/-- Exchange the letters at positions `i`, `i + 1` when they are on disjoint wires. -/
-def swapAt : ℕ → List Lt → Option (List Lt)
-  | 0, x :: y :: r => if Lt.disj x y = true then some (y :: x :: r) else none
-  | i + 1, x :: r => (swapAt i r).map (x :: ·)
-  | _, _ => none
-
-def swapsAt : List ℕ → List Lt → Option (List Lt)
-  | [], w => some w
-  | i :: ps, w => (swapAt i w).bind (swapsAt ps)
-
 theorem swapAt_E {k : ℕ} : ∀ (i : ℕ) (w w' : List Lt), swapAt i w = some w' → E k w w'
   | 0, x :: y :: r, w', h => by
     simp only [swapAt] at h
@@ -375,46 +280,12 @@ theorem swapsAt_E {k : ℕ} : ∀ (ps : List ℕ) (w w' : List Lt), swapsAt ps w
     obtain ⟨v, hv, h⟩ := h
     exact (swapAt_E i w v hv).trans (swapsAt_E ps v w' h)
 
-abbrev Tbl := List (List Lt × List Lt)
-
 /-- Every equation of the table holds. -/
 def Valid (k : ℕ) (T : Tbl) : Prop := ∀ e ∈ T, E k e.1 e.2
 
 section Run
 
 variable (fo : List Lt → List Lt → Bool)
-
-def runStep (T : Tbl) (cur : List Lt) : Step → Option (List Lt)
-  | .rule i rev u v => match T[i]? with
-    | none => none
-    | some e =>
-      if (cur == u ++ (if rev then e.2 else e.1) ++ v ||
-          canon cur == canon (u ++ (if rev then e.2 else e.1) ++ v)) = true
-      then some (u ++ (if rev then e.1 else e.2) ++ v) else none
-  | .free u s t v =>
-    if ((cur == u ++ s ++ v || canon cur == canon (u ++ s ++ v)) && fo s t) = true
-    then some (u ++ t ++ v) else none
-  | .swaps ps => swapsAt ps cur
-
-def runSteps (T : Tbl) : List Lt → List Step → Option (List Lt)
-  | cur, [] => some cur
-  | cur, st :: sts => match runStep fo T cur st with
-    | none => none
-    | some nxt => runSteps T nxt sts
-
-def lemOk (T : Tbl) (l r : List Lt) (sts : List Step) : Bool :=
-  match runSteps fo T l sts with
-  | none => false
-  | some c => c == r || canon c == canon r
-
-/-- Check a library of lemmas, each over the table so far. -/
-def libOk : Tbl → List (List Lt × List Lt × List Step) → Bool
-  | _, [] => true
-  | T, (l, r, sts) :: rest => lemOk fo T l r sts && libOk (T ++ [(l, r)]) rest
-
-/-- The table after a library. -/
-def libTbl (T : Tbl) (L : List (List Lt × List Lt × List Step)) : Tbl :=
-  T ++ L.map fun e => (e.1, e.2.1)
 
 variable {k : ℕ} (hfo : ∀ s t, fo s t = true → E k s t)
 include hfo

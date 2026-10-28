@@ -68,6 +68,8 @@ def full_chain(chains, L, R):
     """The chains joined end to end (a statement with three sides has two), oriented from
     the statement's left side when the first chain starts at its right side."""
     cs = [c for c in chains if c]
+    if not cs:
+        return [list(L), list(R)]       # no chain: "follows directly from ..."
     ws = list(cs[0])
     for c in cs[1:]:
         if c[0] == ws[-1]:
@@ -335,6 +337,65 @@ def derive(name, l, r, known):
     return out
 
 
+def small_form(t):
+    """A placed word on two adjacent increasing wires (or one wire) as a letter, if it is one."""
+    if t[0] == 'p' and len(t[2]) == 1:
+        (k, j), = t[2]
+        ps = t[3]
+        if j == 0 and (len(ps) == 1 or (len(ps) == 2 and ps[1] == ps[0] + 1)):
+            return ('s', k, ps[0])
+    return t
+
+
+def conj_target(t, j):
+    if t[0] == 's':
+        k, i = t[1], t[2]
+        if k in 'HZ':
+            t = tok.P(1, [(k, 0)], [i])
+        elif k == 'S':
+            return None
+        else:
+            t = tok.P(2, [(k, 0)], [i, i + 1])
+    t2 = tok.relabel(t, j)
+    if t2[0] == 'g' and not tok.swp_ok(N, j, t, t2):
+        return t                       # both controls: a symmetry of the gadget, if known
+    return small_form(t2)
+
+
+def distribute_j(S, w, j):
+    """Steps from [S j] + w + [S j] to w conjugated token by token."""
+    sj = ('s', 'S', j)
+    steps = []
+    n = len(w)
+    for k in range(n - 1):
+        q = S.window([], [sj, sj])
+        steps.append(('sem', 2 + 3 * k, 0, (sj, sj), q))
+    out = []
+    for k in range(n - 1, -1, -1):
+        t = w[k]
+        t2 = conj_target(t, j)
+        if t2 is None:
+            raise solve.Fail('conj swap')
+        S.start(1500)
+        sub = S.solve([sj, t, sj], [t2])
+        steps += solve.shift(sub, 3 * k)
+        out.insert(0, t2)
+    return steps, out
+
+
+def conj_eq(name, l, r, j, known):
+    S = solve.Solver(N, (), [(k, a, b) for k, (a, b) in known.items()])
+    k = S.table_index(l, r)
+    sj = ('s', 'S', j)
+    sl, l2 = distribute_j(S, list(l), j)
+    sr, r2 = distribute_j(S, list(r), j)
+    if (l2, r2) == (list(l), list(r)):
+        return None
+    w0 = [sj] + list(l) + [sj]
+    steps = solve.reverse_steps(M, S.table, w0, sl) + [('rw', 1, k, False)] + sr
+    return finish(S, l2, r2, steps, name)
+
+
 def entry_proof(e, known):
     a, b = e
     for name, (l, r) in known.items():
@@ -348,6 +409,7 @@ def entry_proof(e, known):
 def generate(d, eqs, known, title, imp):
     body = []
     done = []
+    pending = []
     for n in eqs:
         try:
             if n == 161:
@@ -363,7 +425,20 @@ def generate(d, eqs, known, title, imp):
             continue
         body.append(lean_run(str(n), e, proofs))
         known[str(n)] = (e.L, e.R)
-        for dn, de in derive(str(n), e.L, e.R, known):
+        for j in range(N - 1):
+            pending.append((f'{n}s{j}', e.L, e.R, j))
+        conj = []
+        still = []
+        for (cn, cl, cr, j) in pending:
+            try:
+                ce = conj_eq(cn, cl, cr, j, known)
+            except (solve.Fail, AssertionError):
+                still.append((cn, cl, cr, j))
+                continue
+            if ce is not None:
+                conj.append((cn, ce))
+        pending[:] = still
+        for dn, de in derive(str(n), e.L, e.R, known) + conj:
             dp = [entry_proof(t, known) for t in de.table]
             if None in dp:
                 continue

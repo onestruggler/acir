@@ -23,26 +23,6 @@ namespace QCert.QutritClifford
 
 open Lt
 
-/-! ### Words as numbers -/
-
-/-- The letter of a digit: `1`-`8` are `H₀ S₀ H₁ S₁ H₂ S₂ C₀ C₁`. -/
-def digL : ℕ → Lt
-  | 1 => .H 0
-  | 2 => .S 0
-  | 3 => .H 1
-  | 4 => .S 1
-  | 5 => .H 2
-  | 6 => .S 2
-  | 7 => .C 0
-  | _ => .C 1
-
-def decWF : ℕ → ℕ → List Lt
-  | 0, _ => []
-  | f + 1, n => if n = 0 then [] else digL (n % 9) :: decWF f (n / 9)
-
-/-- The word of a number. -/
-def decW (n : ℕ) : List Lt := decWF 250 n
-
 /-! ### Pauli tableaux
 
 The action of a word on one or two wires on the Pauli generators, computed
@@ -50,49 +30,8 @@ on explicit data (`run1`, `run2`) rather than through `actC`, whose
 evaluation is slow; the two agree letter by letter (`t1_ok`, `t2_ok`,
 decided on all data). -/
 
-/-- Pauli data on one wire: `ω^c X^a Z^b`. -/
-structure P1 where
-  c : Fin 3
-  a : Fin 3
-  b : Fin 3
-  deriving DecidableEq
-
-/-- Pauli data on two wires. -/
-structure P2 where
-  c : Fin 3
-  a0 : Fin 3
-  b0 : Fin 3
-  a1 : Fin 3
-  b1 : Fin 3
-  deriving DecidableEq
-
 def P1.pd (p : P1) : PD 1 := ⟨p.c, ![p.a], ![p.b]⟩
 def P2.pd (p : P2) : PD 2 := ⟨p.c, ![p.a0, p.a1], ![p.b0, p.b1]⟩
-
-def t1 : Lt → P1 → P1
-  | .H 0, p => ⟨p.c + 2 * p.a * p.b, 2 * p.b, p.a⟩
-  | .S 0, p => ⟨p.c + p.a * (p.a - 1), p.a, p.b + 2 * p.a⟩
-  | _, p => p
-
-def t2 : Lt → P2 → P2
-  | .H 0, p => ⟨p.c + 2 * p.a0 * p.b0, 2 * p.b0, p.a0, p.a1, p.b1⟩
-  | .S 0, p => ⟨p.c + p.a0 * (p.a0 - 1), p.a0, p.b0 + 2 * p.a0, p.a1, p.b1⟩
-  | .H 1, p => ⟨p.c + 2 * p.a1 * p.b1, p.a0, p.b0, 2 * p.b1, p.a1⟩
-  | .S 1, p => ⟨p.c + p.a1 * (p.a1 - 1), p.a0, p.b0, p.a1, p.b1 + 2 * p.a1⟩
-  | .C 0, p => ⟨p.c + p.a0 * p.a1, p.a0, p.b0 + p.a1, p.a1, p.b1 + p.a0⟩
-  | _, p => p
-
-def run1 : List Lt → P1 → P1
-  | [], p => p
-  | x :: l, p => run1 l (t1 x p)
-
-def run2 : List Lt → P2 → P2
-  | [], p => p
-  | x :: l, p => run2 l (t2 x p)
-
-/-- Letters on one wire, and on two wires. -/
-def in1 (x : Lt) : Bool := x.hi == 0
-def in2 (x : Lt) : Bool := x.hi ≤ 1
 
 theorem t1H : ∀ c a b : Fin 3, actGen (Lt.gen 1 (.H 0)) (P1.pd ⟨c, a, b⟩) =
     (t1 (.H 0) ⟨c, a, b⟩).pd := by decide +kernel
@@ -146,17 +85,6 @@ theorem run2_ok : ∀ (l : List Lt), l.all in2 = true → ∀ p : P2,
     simp only [List.all_cons, Bool.and_eq_true] at h
     rw [cw, actC_mul, actC_gen, t2_ok x h.1, run2_ok l h.2]; rfl
 
-/-- Words on one wire acting alike on `X` and `Z`. -/
-def same1 (s t : List Lt) : Bool :=
-  run1 s ⟨0, 1, 0⟩ == run1 t ⟨0, 1, 0⟩ && run1 s ⟨0, 0, 1⟩ == run1 t ⟨0, 0, 1⟩
-
-/-- Words on two wires acting alike on `X₀`, `Z₀`, `X₁`, `Z₁`. -/
-def same2 (s t : List Lt) : Bool :=
-  run2 s ⟨0, 1, 0, 0, 0⟩ == run2 t ⟨0, 1, 0, 0, 0⟩ &&
-  run2 s ⟨0, 0, 1, 0, 0⟩ == run2 t ⟨0, 0, 1, 0, 0⟩ &&
-  run2 s ⟨0, 0, 0, 1, 0⟩ == run2 t ⟨0, 0, 0, 1, 0⟩ &&
-  run2 s ⟨0, 0, 0, 0, 1⟩ == run2 t ⟨0, 0, 0, 0, 1⟩
-
 theorem xat1 : PD.Xat (0 : Fin 1) = P1.pd ⟨0, 1, 0⟩ := by decide
 theorem zat1 : PD.Zat (0 : Fin 1) = P1.pd ⟨0, 0, 1⟩ := by decide
 theorem xat20 : PD.Xat (0 : Fin 2) = P2.pd ⟨0, 1, 0, 0, 0⟩ := by decide
@@ -188,23 +116,6 @@ theorem same2_sound {s t : List Lt} (hs : s.all in2 = true) (ht : t.all in2 = tr
     | 1 => rw [zat21, run2_ok s hs, run2_ok t ht, h4]
 
 /-! ### Free steps -/
-
-/-- On two wires: the letters on wire 0 and on wire 1. -/
-def lo2 (x : Lt) : Bool := x.hi == 0
-def hi2 (x : Lt) : Bool := x.lo == 1 && x.hi == 1
-def hi1 (x : Lt) : Bool := 1 ≤ x.lo
-
-/-- On three wires: the letters on wires 0, 1 and on wires 1, 2. -/
-def lo3 (x : Lt) : Bool := x.hi ≤ 1
-def hi3 (x : Lt) : Bool := 1 ≤ x.lo && x.hi ≤ 2
-
-def fo2 (s t : List Lt) : Bool :=
-  (s.all lo2 && t.all lo2 && same1 s t) ||
-  (s.all hi2 && t.all hi2 && same1 (s.map down) (t.map down))
-
-def fo3 (s t : List Lt) : Bool :=
-  (s.all lo3 && t.all lo3 && same2 s t) ||
-  (s.all hi3 && t.all hi3 && same2 (s.map down) (t.map down))
 
 theorem gen_lo2 (x : Lt) (h : lo2 x = true) : gen 2 x = Gen.pad 1 (gen 1 x) := by
   match x, h with
@@ -301,30 +212,6 @@ theorem E_of_rule {k : ℕ} {w v : Circ k} (h : Rule k w v) {l r : List Lt} (t :
   rw [hl, hr] at d
   exact ⟨t, d.trans (negω_pow_comm t _)⟩
 
-def W0 : List Lt := [.H 0, .H 1, .C 0, .H 0, .H 1, .C 0, .H 0, .H 1, .C 0]
-def W1 : List Lt := [.H 1, .H 2, .C 1, .H 1, .H 2, .C 1, .H 1, .H 2, .C 1]
-def XCw : List Lt := [.H 1, .C 0, .H 1, .H 1, .H 1]
-def Spw : List Lt := [.H 0, .H 0, .S 0, .H 0, .H 0]
-
-/-- (C6)-(C14), scalars dropped. -/
-def base2 : Tbl :=
-  [([.C 0, .C 0, .C 0], []),
-   (W0 ++ W0, []),
-   ([.S 1, .C 0], [.C 0, .S 1]),
-   ([.H 1, .H 1, .C 0, .C 0], [.C 0, .H 1, .H 1]),
-   ([.S 1] ++ W0, W0 ++ [.S 0]),
-   ([.H 1] ++ W0, W0 ++ [.H 0]),
-   ([.C 0] ++ W0, W0 ++ [.C 0]),
-   ([.S 1] ++ XCw, XCw ++ [.C 0, .S 1] ++ Spw),
-   ([.C 0] ++ XCw, XCw ++ [.C 0] ++ Spw ++ [.S 0])]
-
-/-- (C15)-(C18). -/
-def base3 : Tbl :=
-  [([.C 0, .C 1], [.C 1, .C 0]),
-   (W1 ++ W0 ++ W1, W0 ++ W1 ++ W0),
-   ([.C 0] ++ W1 ++ W0, W1 ++ W0 ++ [.C 1]),
-   ([.H 1, .C 1, .H 1, .H 1, .H 1, .C 0], [.C 0, .H 1, .C 1, .H 1, .H 1, .H 1] ++ W0 ++ [.C 1] ++ W0)]
-
 theorem base2_valid : Valid 2 base2 := by
   intro e he
   simp only [base2, List.mem_cons, List.not_mem_nil, or_false] at he
@@ -349,17 +236,6 @@ theorem base3_valid : Valid 3 base3 := by
   · exact E_of_rule Rule.C18 0 rfl rfl
 
 /-! ### Inverse words -/
-
-/-- The inverse of a letter, a power of it. -/
-def invL : Lt → List Lt
-  | .H j => [.H j, .H j, .H j]
-  | .S j => [.S j, .S j]
-  | .C j => [.C j, .C j]
-
-/-- The inverse of a word. -/
-def invW : List Lt → List Lt
-  | [] => []
-  | x :: l => invW l ++ invL x
 
 /-- A letter followed by its inverse. -/
 theorem E_letter : ∀ (k : ℕ) (x : Lt), x.hi < k → E k (x :: invL x) []
@@ -485,25 +361,6 @@ theorem exists_word {k : ℕ} (u : Circ k) : ∃ l : List Lt, Fits k l ∧ PEq k
 
 /-! ### Stored libraries -/
 
-def decPF : ℕ → ℕ → List ℕ
-  | 0, _ => []
-  | f + 1, n => if n = 0 then [] else (n % 256 - 1) :: decPF f (n / 256)
-
-/-- A list of positions stored as a number (base 256, digits shifted by one). -/
-def decP (n : ℕ) : List ℕ := decPF 1000 n
-
-/-- A stored step: `(0, i, rev, u, v)` a rule, `(1, u, s, t, v)` a free step,
-`(2, ps, _, _, _)` swaps of adjacent commuting letters. -/
-def decStep : ℕ × ℕ × ℕ × ℕ × ℕ → Step
-  | (0, i, r, u, v) => .rule i (r == 1) (decW u) (decW v)
-  | (1, u, s, t, v) => .free (decW u) (decW s) (decW t) (decW v)
-  | (_, ps, _, _, _) => .swaps (decP ps)
-
-/-- A stored library. -/
-def decLib (L : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))) :
-    List (List Lt × List Lt × List Step) :=
-  L.map fun e => (decW e.1, decW e.2.1, e.2.2.map decStep)
-
 /-! ### Libraries checked lemma by lemma
 
 A stored library is checked one lemma per declaration (`libLemOk`), each
@@ -512,14 +369,6 @@ holds the whole library. -/
 
 /-- The first `n` entries of the table hold. -/
 def ValidUpTo (k : ℕ) (T : Tbl) (n : ℕ) : Prop := ∀ i < n, ∀ e, T[i]? = some e → E k e.1 e.2
-
-/-- Lemma `i` of a stored library checks over the table before it. -/
-def libLemOk (fo : List Lt → List Lt → Bool) (B : Tbl)
-    (D : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))) (i : ℕ) : Bool :=
-  match D[i]? with
-  | none => false
-  | some e => lemOk fo ((libTbl B (decLib D)).take (B.length + i)) (decW e.1) (decW e.2.1)
-      (e.2.2.map decStep)
 
 theorem validUpTo_base {k : ℕ} {B : Tbl} (hB : Valid k B) (D : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))) :
     ValidUpTo k (libTbl B (decLib D)) B.length := by
@@ -554,6 +403,15 @@ theorem validUpTo_step {k : ℕ} (fo : List Lt → List Lt → Bool)
       simp only [Option.map_some, Option.some.injEq] at he'
       subst he'
       exact hE
+
+/-- A stored library all of whose lemmas below `n` check. -/
+theorem validUpTo_all {k : ℕ} (fo : List Lt → List Lt → Bool)
+    (hfo : ∀ s t, fo s t = true → E k s t) {B : Tbl} (hB : Valid k B)
+    (D : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))) :
+    ∀ n, (∀ i < n, libLemOk fo B D i = true) → ValidUpTo k (libTbl B (decLib D)) (B.length + n)
+  | 0, _ => validUpTo_base hB D
+  | n + 1, h => validUpTo_step fo hfo (validUpTo_all fo hfo hB D n (fun i hi => h i (by omega)))
+      (h n (by omega))
 
 /-- An entry of a table of which the first `n` entries hold. -/
 theorem ValidUpTo.get {k : ℕ} {T : Tbl} {n : ℕ} (h : ValidUpTo k T n) (i : ℕ) (hi : i < n)

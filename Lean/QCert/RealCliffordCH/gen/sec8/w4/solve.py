@@ -87,6 +87,7 @@ class Solver:
 
     def start(self, budget=4000):
         self.budget = budget
+        self.failed = set()
 
     # ------------------------------------------------------------------ helpers
     def wm(self, w):
@@ -264,6 +265,12 @@ class Solver:
         q = self.window(a, b)
         if q is not None:
             return [('sem', 0, len(a), tuple(b), q)]
+        if (len(a) == 3 and len(b) == 1 and a[0] == a[2] and a[0][:2] == ('s', 'S')
+                and a[1][0] in 'pg' and tok.swp_ok(self.nw, a[0][2], a[1], b[0])):
+            return [('swp', 0, a[0][2], a[1], b[0], False)]
+        if (len(b) == 3 and len(a) == 1 and b[0] == b[2] and b[0][:2] == ('s', 'S')
+                and b[1][0] in 'pg' and tok.swp_ok(self.nw, b[0][2], b[1], a[0])):
+            return [('swp', 0, b[0][2], b[1], a[0], True)]
         if depth > 8:
             raise Fail('depth')
         # split into two independent changes

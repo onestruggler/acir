@@ -4,16 +4,16 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 # Section 8: Lemma 8.8
 
 The decoding maps each rule of Figure 8 to a derivable equation (Appendix
-E.5), rule by rule (`E/Cheap`, `E/Rules1`, `E/Rule22`, `E/Rule32`).  Still
-open: (24), (31), (36)–(40), (43)–(46).
+E.5), rule by rule (`E/Cheap`, `E/Rules1`, `E/Rule22`, `E/Rule24`, `E/Rule32`).
+Still open: (31), (36)–(40), (43)–(46).
 -/
 import QCert.RealCliffordCH.Sec8.Statement
-import QCert.RealCliffordCH.Sec8.E.Rule32
+import QCert.RealCliffordCH.Sec8.E.Rule24
 
 namespace QCert.RealCliffordCH.Sec8
 
-/-- Lemma 8.8 (Appendix E.5, with Appendix D).  The rules (24), (31),
-(36)–(40) and (43)–(46) are not yet proved. -/
+/-- Lemma 8.8 (Appendix E.5, with Appendix D).  The rules (31), (36)–(40)
+and (43)–(46) are not yet proved. -/
 theorem lemma_8_8 (n : ℕ) (hn : 3 ≤ n) : Lemma88 n := by
   intro ih u v h
   obtain ⟨M, rfl⟩ : ∃ M, n = M + 3 := ⟨n - 3, by omega⟩
@@ -23,7 +23,7 @@ theorem lemma_8_8 (n : ℕ) (hn : 3 ≤ n) : Lemma88 n := by
   | r21 a b ha hb => rw [E.dec21 a b ha hb]
   | r22 a b c ha hb hc => exact E.dec22 ih' a b c ha hb hc
   | r23 a ha => exact E.dec23 ih' a ha
-  | r24 a ha => sorry
+  | r24 a ha => exact E.dec24 ih' a ha
   | r25 a c hac hc hodd => rw [E.dec25 a c hac hc hodd]
   | r26 a c hac hc hodd => rw [E.dec26 a c hac hc hodd]
   | r27 a c hac hc heven => rw [E.dec27 a c hac hc heven]
