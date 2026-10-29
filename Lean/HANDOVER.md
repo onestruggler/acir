@@ -331,3 +331,66 @@ chain uses (295)₄ (`N8.eq295`, open, other package), (319)₄, (326)₄,
 hold its lock for long stretches; a cold build of the `N13` closure also
 needs `W5/Family267`, `Family268` (about half an hour each).  Never `pkill`
 by a pattern that occurs in your own command line (it kills the shell).
+
+### Package (v), third session (2026-10-29): memory, (337), (338), and a plan for (339)
+
+**Memory, measured.** A watchdog logging each `lean` process's anonymous RSS
+(`/proc/<pid>/status`, `RssAnon`) shows: the imports of the N13 closure map
+about 2.8 GB of `.olean` pages (file-backed, shared between processes, not a
+risk); on top of that one engine semantic window of 22 letters on four wires
+costs about 0.7 GB in the kernel (4 s), and the kernel frees it only at the
+end of the declaration.  With the default `Elab.async` several declarations
+are also checked in parallel.  So: **one decided run per declaration and
+`set_option Elab.async false`**.  `E322` now takes 127 s and 0.9 GB (was 11
+GB; generator `gen/sec8/n13/split_e322.py`); `E337r1`, `E337r2` 140 s and 1.0
+GB each (`gen/sec8/n13/split_rr.py`); `W4/BoxHgLow` 0.7 GB (was over 4.5 GB:
+118 decided runs in parallel).  A five-wire window is out of reach: one
+`SE.lcheck 5` of two 34-letter words passed 4.5 GB in 20 s, so the drafted
+route of (339) (`E339r3`, `chkTBR`) cannot be built.
+
+**(337), (338): done** (`N13.eq337`, `eq338`; commit 2f7ebcdb).
+
+**`N13/SepSem.lean` (builds, nothing imports it yet): semantic facts without
+simulation.**  `Triv p v U`: `U` is the identity on the states whose wire `p`
+is `v`; `Triv.comm`: two operators trivial on complementary blocks commute;
+`Triv.conj` with `Route` (a circuit carrying wire `p` to `q`); `triv_lamOp`,
+`triv_g` (a multi-controlled letter is trivial where a local control does not
+match), `rtW`/`route_wc` (following a wire through a word of engine letters:
+swaps move it, other letters must avoid it), `triv_conj`, and `sep_sem`:
+`S.sem M (wc K M (u ++ w)) = S.sem M (wc K M (w ++ u))` for words trivial on
+complementary blocks of one wire.  Any separated pair (opposite colours on a
+common control) that shares an idle wire is then a semantic step with no
+kernel simulation (`Frame.window` with `hsem` from `sep_sem`, or `semIdle`),
+whatever its length and width.
+
+**(339) from six wires on, the plan (numerically checked,
+``gen/sec8/n13/f339.py`).**  Frame of `E339a` (sep_reduce at wire 3,
+then the swap of the wires 2, 3): `A` = box[0] (1: c₂, 2: ●, 3: c₁, bulk x),
+`B = BE` = hg[1,3] (0: c₃, 2: ○, bulk y).  The predecessor's `expBE` writes
+`B = M · box[0](colOn 1 (yS c₃ y)) · M'`, whose separator is the box's wire 1;
+relabel by the swap of the wires 1, 2 (`box_relabel`, j = 1) so the box is
+`G` = box[0] (1: c₃, 2: ○, 3: ●, bulk y): then every piece of `G`'s
+expansion (`expX`) is white on wire 2, and `M S₁` carries wire 2 to wire 2
+(`rtW`), so each conjugated piece is `Triv 2 1`.  Expand `A` with the triple
+`1, 2, 4` (relabel `S₃`, `box_relabel` j = 3): its rotations live on
+`{0, 1, 2, 4}` (idle on 3), its remainder `Ar` = box[0] (1: c₂, 2: ●, 3: c₁,
+bulk ≥ 5) is idle on 4.  The four kinds of pairs:
+  * rotation vs conjugated rotation: all local on the wires 0–4: `sep_sem` at
+    width 5, completeness on five wires (`ih 5`, needs N ≥ 6) and `der_loc`;
+  * rotation vs conjugated remainder (`remB`: `swAt 0 · boxN y c₃ false ·
+    swAt 0`, the box on wire 1 idle on 3): `sep_sem` without wire 3;
+  * `Ar` vs conjugated rotation (local on 0–3): `sep_sem` without wire 4;
+  * `Ar` vs conjugated remainder: two boxes (box wire 0 with control 1, box
+    wire 1 with control 0), idle on 4, resp. 3: split each idle wire by the
+    merge (309) and use `eq336` (proved at every width).
+`E339a` itself does not build yet: `expBE` times out (200000 heartbeats at
+its `by`; try more heartbeats or explicit widths), `base_circ`'s `▸` fails,
+and `chkMM` (two 32-letter windows in one declaration) peaks at 3.9 GB:
+split it, or prove the inverse by cancellations (`swsw`, `pp_inv`).
+
+**Widths 4, 5 of (339).**  At N = 5 every frame leaves one pair covering all
+five wires.  With `G`'s triple `3, 2, 1` instead, the pair "remainder of `A`
+vs conjugated rotation of `G`" becomes (322) by the relabeling 1 → 0, 3 → 1,
+0 → 3 and (274) (`commB_ppRw`), but then "rotation of `A` with target 0 vs
+`hg[1,3](2: ○, bulk)` idle on 0" is left; the paper's own chain (pages
+216–219: (244), (308), (214), (319), (215), (243), (111)) is the way there.
