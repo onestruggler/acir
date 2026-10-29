@@ -152,3 +152,94 @@ All of the following build, at every width `m + 5` unless noted:
 `CliffordCS3/Completeness.lean` (rsData) · `RealCliffordCH/Sec8/Thm410Proof.lean` 1 (item (b)) ·
 `Sec8/Lemma88Proof.lean` 8 · `Sec8/D/N13.lean` 19 · `Sec8/D/N15.lean` 3 · `Sec8/D/N8.lean` 1 ·
 `Sec8/D/W3.lean` 6 · `Sec8/D/W4.lean` 5 · `Sec8/D/W5.lean` 3.
+
+### Package (v), Lemmas D.12–D.13, continued (2026-10-29, second session)
+
+**Written, not yet built** (the shared build queue was saturated: other
+packages' `check.sh` runs held the lock for hours, and a cold build of the
+`N13` closure needs `W5/Family267`, `Family268`, about an hour; nothing
+imports these files, so they cannot break a build):
+
+* `N13/E337.lean`: (337) and (338) (`x ≠ y`) from five wires on, by the
+  template of `E336x`.  Once it builds, `eq337` and `eq338` close at every
+  width with `LowHg`, `LowHg338` (three and four wires) and `E338Merge`
+  (`x = y`): the replacement for `N13.lean` is in the commit message of this
+  checkpoint and in the PLAN status line (`N13.lean` imports `E337`, `LowHg`,
+  `LowHg338`, `E338Merge`; `eq337` by `comm337_3`, `comm337_4`,
+  `comm337_ge5`; `eq338` by `comm338_from_diff` with `comm338_3`,
+  `comm338_4`, `comm338d_ge5` and `eq335`).
+* `N13/E339.lean`: (339) from six wires on (`comm339_ge6`).
+* `N13/Loc5.lean`: `loc5`, an equation between two words of local letters
+  on the five wires `0–4` holds from six wires on as soon as `SE.lcheck 5`
+  decides it (completeness on five wires + `Loc.der_loc`).  This is the step
+  the engine cannot take inside a run.
+
+Build them with `./check.sh QCert/RealCliffordCH/Sec8/D/N13/E337.lean
+QCert/RealCliffordCH/Sec8/D/N13/E339.lean`, fix what fails, then wire
+`E337` (and `E339` for `N ≥ 6`, keeping `sorry` for `N = 4, 5`) into
+`N13.lean`.
+
+**How (339) is done (reuse it for (342), (344)).**  `sep_reduce` (lo = 3)
+puts the difference of the colourings on wire `3`; the swap of the wires
+`2, 3` carries the pair to the frame of `E336x` (`AE` = the box on wire `0`,
+separating control black on wire `2`; `BE` = `hg[1,3]`, white on wire `2`).
+`AE` is expanded by `expX`.  `BE = M · box · M'` (`expBE`), `M = S₀ S₂ S₁
+(P⊗P) S₁ S₂ S₁` (the letters `mL`, `mL'`): three swaps take `hg[1,3]` to
+`hg[0,1]`, `hg0_box4` writes it as `P⊗P` around the box, and the
+transposition `(1 3)` (`S₁ S₂ S₁`) puts the black control of its `H` wire on
+wire `3`, so that `expX` idles the `H` wire.  The pairs: two rotations, one
+semantic step without wire `4` (`chkRR339`); `A`'s rotations against `B`'s
+remainder: `M` carries the remainder to `box[1](0:c₃, 2○, 4…)` idle on `3`
+(`remB`, through (276) in the middle, `pp_box276` from `N8.s276`), then
+`E336x.commRBs`; the remainders by `E336x.commBBs`; `A`'s remainder (idle on
+wire `3`) against `M r M'` by an engine run (`chkBR339`, `runBR`): the
+remainder is re-expanded with the triple `1, 2, 4` by one semantic step
+without wire `3`, its rotations pass `M r M'` by `loc5` (table `TBR`), its own
+remainder by a semantic step without wire `4`.  That last pair is the only
+one needing six wires.
+
+* (344): `A = hg[0,1](2:c₁, …) = P⊗P₀₁ · bA · P⊗P₀₁`; after the same
+  reductions, `A`'s rotations become `P⊗P r P⊗P` (local), `A`'s remainder
+  `P⊗P · boxN · P⊗P` (idle on `3`).  The pairs: rotations, semantic; `A`-rem
+  against `B`-rem by `BoxPPBridge.commBBpp` (after `X` on wire `2` and the
+  swap of the wires `0, 1`); `A`-rot against `B`-rem by (322)/(323)
+  (`E337.commR_ppB`, generalise its `γ`); `A`-rem against `M q M'`:
+  conjugate by `P⊗P` and it is `chkBR339` with the word `ppL ++ RW q ++ ppL`.
+  Generalising `commBR339` to any local word `R` (avoiding wire `4`) is the
+  first thing to do.
+* (342): same, with `B = hg[0,2]`.
+
+**What is left after that.**  (333), (334), (346)–(352), and the widths
+`N = 4, 5` of (339), (342), (344) (and whatever the others inherit).
+(333) from (339): by Definition 2.4 `ZX = CH · B · CH · B` with `B` the box
+on wire `1` (all black), so (333) is `Comm (HG · CH) B` (`HG` the
+multi-controlled `H` with box wire `2`, `H` on wire `0`; both involutions).
+Write `H_k` for `HG` with its controls on the wires `3, …, k` black and the
+wires above idle (`H_2` is `CH` up to a semantic step: it is a three-wire
+gate).  Then `CH · HG = (H_2 H_3)(H_3 H_4)…` and `H_k H_{k+1}` is, by (310),
+`HG` white on wire `k + 1` and idle above; merged over the idle wires it is a
+product of fully coloured `HG`s, each separated from `B` on wire `k + 1`, so
+each passes `B` by (339) (relabelled by the 3-cycle `0 → 2 → 1 → 0`, `swBH`).
+This is the paper's argument (page 233); `MergeAll.mergeListB0`,
+`isolate_black` are the box versions of the merges, to be redone for the
+multi-controlled `H` (`N8.eq310`, relabelled).  (334) from (333) and Lemma B.5 ((311), (312), (317)).
+(346)–(352) per the paper from (333)/(334) and (335)–(345), except (346),
+(351) with `x = y` ((351): trivial for `a = b`, (317) and `Comm.inv`
+otherwise; (346): the paper's six-step chain).  Note: at three wires the
+decomposition does not separate the factors (the hole of the multi-controlled
+`H` of (333) is the only bulk wire), so the three-wire cases of (346)–(352)
+need their own derivations.
+
+**Do not import `D/N15*` in `N13`**: `N15/E353c`, `E354` use `D.eq333`,
+`D.eq339`, so (353) (`Sym353`) is unavailable.  Rotations can be relabelled
+on controls `≥ 2` through Definition 2.4 (`CH B CH B`) and (307).
+
+**Small widths.**  At `N = 5` every frame tried leaves a pair of pieces
+covering all five wires that is not (267)/(268); at `N = 4` the paper's
+chain uses (295)₄ (`N8.eq295`, open, other package), (319)₄, (326)₄,
+(327)₄.  The `gen/sec8/w4` tooling (`proj.py`, `solve2.py`,
+`gen_comm_low_interface.py`) produced the earlier four-wire cases.
+
+**Builds.**  `check.sh` kills a build after 3600 s; a cold build of the
+`N13` closure (with `W5/Family267`, `Family268`) takes longer when other
+agents compile at the same time, so rerun it: finished modules are kept.
