@@ -26,6 +26,7 @@ import QCert.RealCliffordCH.Sec8.D.N13.E346
 import QCert.RealCliffordCH.Sec8.D.N13.Low342
 import QCert.RealCliffordCH.Sec8.D.N13.Low339W4
 import QCert.RealCliffordCH.Sec8.D.N13.Low344W4
+import QCert.RealCliffordCH.Sec8.D.N13.E347
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -216,44 +217,70 @@ theorem eq346 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (a : Boo
   N13.comm346 hN ih (eq333 N hN ih) (eq334 N hN ih) (fun x y c₁ c₂ => eq336 N hN ih x y c₁ c₂)
     (fun x y c₁ => eq338 N hN ih x y c₁) x y a
 
+/-- Naturality of every multi-controlled gate under swaps, from (333), (339),
+(317) and (353) (`N13/S353`). -/
+theorem mcSwapAll (N : ℕ) (ih : IH N) : E.McSwapAll N :=
+  N13.R347.mcSwapAll ih (fun n hn hnN => eq333 n hn (ih.mono hnN))
+    (fun n hn hnN => eq339 n hn (ih.mono hnN)) (fun n hn hnN => eq317 n hn (ih.mono hnN))
+
 /-- (347) -/
 theorem eq347 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : DiffOn 2 N x y)
     (a c₁ c₂ : Bool) :
     Comm N (mc N .box [0] (ctlOr (ctlAt 1 c₁) (colOn 2 N x)))
-      (mc N (Kind.sgnZX a) [1] (ctlOr (ctlAt 0 c₂) (colOn 2 N y))) := by
-  sorry
+      (mc N (Kind.sgnZX a) [1] (ctlOr (ctlAt 0 c₂) (colOn 2 N y))) :=
+  N13.R347.comm347 hN ih (mcSwapAll N ih) (eq333 N hN ih) (eq334 N hN ih) (eq336 N hN ih)
+    (eq337 N hN ih) x y hxy a c₁ c₂
 
 /-- (348) -/
 theorem eq348 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : DiffOn 2 N x y)
     (a c₁ : Bool) :
     Comm N (mc N .hg [0, 1] (colOn 2 N x))
       (mc N (Kind.sgnZX a) [0] (ctlOr (ctlAt 1 c₁) (colOn 2 N y))) := by
-  sorry
+  rcases (by omega : N = 3 ∨ 4 ≤ N) with rfl | h4
+  · -- Three wires: open (the decomposition leaves no wire to spare).
+    sorry
+  · exact N13.R347.comm348 h4 ih (mcSwapAll N ih) (eq333 N hN ih) (eq334 N hN ih)
+      (eq338 N hN ih) (eq344 N h4 ih) x y hxy a c₁
 
 /-- (349) -/
 theorem eq349 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : DiffOn 2 N x y)
     (a c₁ : Bool) :
     Comm N (mc N .hg [0, 1] (colOn 2 N x))
       (mc N (Kind.sgnZX a) [1] (ctlOr (ctlAt 0 c₁) (colOn 2 N y))) := by
-  sorry
+  rcases (by omega : N = 3 ∨ 4 ≤ N) with rfl | h4
+  · -- Three wires: open (the decomposition leaves no wire to spare).
+    sorry
+  · exact N13.R347.comm349 h4 ih (mcSwapAll N ih) (eq333 N hN ih) (eq334 N hN ih)
+      (eq339 N h4 ih) (eq340 N hN ih) x y hxy a c₁
 
 /-- (350) -/
 theorem eq350 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : DiffOn 3 N x y)
     (a c₁ c₂ c₃ : Bool) :
     Comm N (mc N .hg [0, 1] (ctlOr (ctlAt 2 c₁) (colOn 3 N x)))
-      (mc N (Kind.sgnZX a) [2] (ctlOr (ctlAt 1 c₂) (ctlOr (ctlAt 0 c₃) (colOn 3 N y)))) := by
-  sorry
+      (mc N (Kind.sgnZX a) [2] (ctlOr (ctlAt 1 c₂) (ctlOr (ctlAt 0 c₃) (colOn 3 N y)))) :=
+  N13.R347.comm350 hN ih (mcSwapAll N ih) (eq333 N (by omega) ih) (eq334 N (by omega) ih)
+    (eq337 N (by omega) ih) (eq344 N hN ih) x y hxy a c₁ c₂ c₃
 
 /-- (351) -/
 theorem eq351 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (a b : Bool) :
     Comm N (mc N (Kind.sgnZX a) [0] (colOn 1 N x)) (mc N (Kind.sgnZX b) [0] (colOn 1 N y)) := by
-  sorry
+  by_cases hd : DiffOn 1 N x y
+  · rcases (by omega : N = 3 ∨ 4 ≤ N) with rfl | h4
+    · -- Three wires, different colourings: open.
+      sorry
+    · exact N13.R347.comm351 h4 ih (mcSwapAll N ih) (eq333 N hN ih) (eq334 N hN ih)
+        (eq317 N hN ih) (eq335 N hN ih) (eq339 N h4 ih) (eq340 N hN ih) x y a b
+  · exact N13.R347.comm351_same (eq317 N hN ih) x y hd a b
 
 /-- (352) -/
 theorem eq352 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : DiffOn 2 N x y)
     (a b c₁ c₂ : Bool) :
     Comm N (mc N (Kind.sgnZX a) [0] (ctlOr (ctlAt 1 c₁) (colOn 2 N x)))
       (mc N (Kind.sgnZX b) [1] (ctlOr (ctlAt 0 c₂) (colOn 2 N y))) := by
-  sorry
+  rcases (by omega : N = 3 ∨ 4 ≤ N) with rfl | h4
+  · -- Three wires: open (the decomposition leaves no wire to spare).
+    sorry
+  · exact N13.R347.comm352 h4 ih (mcSwapAll N ih) (eq333 N hN ih) (eq334 N hN ih)
+      (eq335 N hN ih) (eq339 N h4 ih) (eq345 N hN ih) x y hxy a b c₁ c₂
 
 end QCert.RealCliffordCH.Sec8.D

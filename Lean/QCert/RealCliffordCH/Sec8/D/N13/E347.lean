@@ -217,6 +217,25 @@ theorem comm350 {N : ℕ} (hN : 4 ≤ N) (ih : IH N) (hsw : E.McSwapAll N) (h333
 
 /-! ## (351) -/
 
+/-- (351) when the two colourings agree: trivial, or (317). -/
+theorem comm351_same {N : ℕ} (h317 : H317 N) (x y : ℕ → Bool) (hxy : ¬ DiffOn 1 N x y)
+    (a b : Bool) :
+    D.Comm N (mc N (Kind.sgnZX a) [0] (colOn 1 N x)) (mc N (Kind.sgnZX b) [0] (colOn 1 N y)) := by
+  have e : mc N (Kind.sgnZX b) [0] (colOn 1 N y) = mc N (Kind.sgnZX b) [0] (colOn 1 N x) :=
+    Net.mc_congr _ _ _ (fun i hi => by
+      simp only [colOn]; split_ifs with h
+      · rw [show y i = x i from by
+          by_contra hne; exact hxy ⟨i, h.1, h.2, Ne.symm hne⟩]
+      · rfl)
+  rw [e]
+  have h := h317 x
+  cases a <;> cases b
+  · exact Derivable.refl _
+  · exact h.1.trans h.2.symm
+  · exact h.2.trans h.1.symm
+  · exact Derivable.refl _
+
+
 theorem comm351 {N : ℕ} (hN : 4 ≤ N) (ih : IH N) (hsw : E.McSwapAll N) (h333 : H333 N)
     (h334 : H334 N) (h317 : H317 N) (h335 : H335 N) (h339 : H339 N) (h340 : H340 N)
     (x y : ℕ → Bool) (a b : Bool) :
