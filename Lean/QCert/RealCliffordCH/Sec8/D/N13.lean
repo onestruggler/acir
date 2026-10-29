@@ -27,7 +27,7 @@ import QCert.RealCliffordCH.Sec8.D.N13.Low342
 import QCert.RealCliffordCH.Sec8.D.N13.Low339W4
 import QCert.RealCliffordCH.Sec8.D.N13.Low344W4
 import QCert.RealCliffordCH.Sec8.D.N13.Low342W4
-import QCert.RealCliffordCH.Sec8.D.N13.E351t
+import QCert.RealCliffordCH.Sec8.D.N13.E352t
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -278,8 +278,9 @@ theorem eq352 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
     Comm N (mc N (Kind.sgnZX a) [0] (ctlOr (ctlAt 1 c₁) (colOn 2 N x)))
       (mc N (Kind.sgnZX b) [1] (ctlOr (ctlAt 0 c₂) (colOn 2 N y))) := by
   rcases (by omega : N = 3 ∨ 4 ≤ N) with rfl | h4
-  · -- Three wires: open (the decomposition leaves no wire to spare).
-    sorry
+  · -- Three wires: from (348) on three wires (`N13/E352t`).
+    exact N13.R347.comm352_3 ih (mcSwapAll 3 ih) (eq333 3 hN ih) (eq334 3 hN ih) (eq317 3 hN ih)
+      (eq336 3 hN ih) (eq337 3 hN ih) (eq348 3 hN ih) x y hxy a b c₁ c₂
   · exact N13.R347.comm352 h4 ih (mcSwapAll N ih) (eq333 N hN ih) (eq334 N hN ih)
       (eq335 N hN ih) (eq339 N h4 ih) (eq345 N hN ih) x y hxy a b c₁ c₂
 
