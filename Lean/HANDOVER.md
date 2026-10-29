@@ -14,7 +14,7 @@ and `git diff` before trusting anything below about a particular file.
 | Li et al. [2025], qutrit Clifford | **proved** (Theorem 4.4 at every width; commits 2a7787b5, cdf9ddad) |
 | Blake [2026], six fragments | Theorem 22 (5) on two and three wires written by the `cliffcs2` stream (uncommitted, see below); rests only on Clifford+CS's `rsData` |
 | Bian–Selinger [2023], three-qubit Clifford+CS | `rsData` open; design only (`cs3` stream) |
-| Clément [2026], real Clifford+CH | Theorem 4.10 item (a) proved, item (b) open; Lemma 8.8 and the Appendix D interfaces partly proved (uncommitted) |
+| Clément [2026], real Clifford+CH | Theorem 4.10 proved; Lemma 8.8 and the Appendix D interfaces partly proved (uncommitted) |
 
 Everything the streams wrote after commit cdf9ddad is uncommitted in the working
 tree. The streams were told not to edit interface files (`W3/W4/W5.lean`,
@@ -80,25 +80,34 @@ Nothing in Lean yet. Design, with Python in `CliffordCS3/gen/` (`core.py`,
 
 ### Real Clifford+CH, Theorem 4.10 (`rcch-thm410`)
 
-* Item (a): proved, `Sec8/A/ItemAProof.lean` (`item_a_proof`), wired in
-  `Thm410Proof.lean`.
-* Frame machinery, all building: `Sec8/A/FrameSteps` (push lemmas), `FrameFS` (A.5
-  tails at numerals, τ words on ℕ), `FrameCases` (every coset and generator),
-  `FrameRun` (`Tc`, `fs_all`, `frame_run`, parity of `hstar`, `good_frame`: a relation
-  holds when Figure 8 derives its frame images).
-* Item (b), the plan:
-  1. Every relation of Figure 6 on at most four indices except (d3), through
-     `good_frame` and `ItemBPhi`'s `img_*`.
-  2. Then pull the `Good` congruence back, use completeness of Figure 6 on `k`
-     indices, and a renaming principle (elementary moves via (c1)–(c5), (b2),
-     (b3), (b5)).
-  3. A chain checker at `Fin m` whose steps are semantic.
-  4. (d3*) and (46) directly, at positions avoiding 0 and 1. Chains are designed
-     in Python: (d3) in 83 steps with semantic steps on three indices, (d4) in 67
-     steps with semantic steps on five (`.handover-scratch/thm410/d3chain.py`,
-     `d4chain.py`).
-* `ItemASteps.lean`/`ItemBFun.lean` from the earlier commit did not build at the
-  start of the session; check whether they are still needed.
+Done: `Sec8/Thm410Proof.lean` has no `sorry` (`theorem_4_10`).
+
+* Item (a): `Sec8/A/ItemAProof.lean` (`item_a_proof`).
+* Item (b): `Sec8/A/ItemBProof.lean` (`item_b_proof`), through Clément's relations
+  (`QCert.Clement2019`, proved equivalent to Figure 6 syntactically):
+  * `ItemBCon`: `GB n := rsCon (tauA n) (Fig8 n)`; (a1)–(d2) in `GB` by `good_frame`
+    and `ItemBPhi`'s `img_*` (tags chosen away from the relation, `exists_tags`).
+  * `ItemBChk`: a checker for chains at `Fin m` whose steps are (a1)–(d2), extra
+    equations, or semantic identities on `K` indices (decided over `ℤ√2`);
+    `ItemBPull`: the pullback of `GB` along an increasing map contains the
+    semantic identities on `K ≤ 5` indices (completeness of Figure 6 on `K`
+    indices, given (d3)).
+  * `ItemBRen8`: conjugating a Figure 8 equation by a Hadamard-free word renames it.
+  * `ItemB20`: Clément's (20) at increasing pairs, from (45) through the frame.
+  * `ItemBd3`: (d3) at both orders of the middle indices from (20), chains
+    `chA`, `chB` (the printed derivation of Lemma A.1 split into steps on three
+    indices).
+  * `ItemBRel`: Clément's (1)–(19) in `GC n := GB.comap tr` by his tables
+    (`ToFig6`), and `GC n` invariant under permutations (`gc_perm`).
+  * `ItemB46`: the relation of (46) at the indices `2, …, 7`, directly: away from
+    `0, 1` the coset action is a frame with pair `0, 1` (`hstar_psi`), and the
+    images are (46) renamed by the even permutation `(0 2 5 7)(1 3 4 6)`. This
+    works at `n = 3`, where a frame with three tags does not fit six indices.
+  * `ItemB21`: Clément's (21) from it by a chain with steps on five indices (`ch21`).
+* The chains were generated and checked numerically by the Python in
+  `.handover-scratch/thm410/ib/` (`core.py`, `chain.py`, `lib.py`, `way.py`,
+  `emit.py`, `simlean.py`; `d3gen.py` + `gend3.py`, `c21.py` + `gen21.py`).
+* `ItemASteps.lean`, `ItemBFun.lean`, `ItemATest.lean` are older and unused.
 
 ### Real Clifford+CH, fixed widths (`rcch-fixed`)
 
@@ -149,8 +158,7 @@ All of the following build, at every width `m + 5` unless noted:
 
 ## Remaining `sorry`s at the time of writing (`grep -cw sorry`)
 
-`CliffordCS3/Completeness.lean` (rsData) · `RealCliffordCH/Sec8/Thm410Proof.lean` 1 (item (b)) ·
-`Sec8/Lemma88Proof.lean` 8 · `Sec8/D/N13.lean` 19 · `Sec8/D/N15.lean` 3 · `Sec8/D/N8.lean` 1 ·
+`CliffordCS3/Completeness.lean` (rsData) · `Sec8/Lemma88Proof.lean` 8 · `Sec8/D/N13.lean` 19 · `Sec8/D/N15.lean` 3 · `Sec8/D/N8.lean` 1 ·
 `Sec8/D/W3.lean` 6 · `Sec8/D/W4.lean` 5 · `Sec8/D/W5.lean` 3.
 
 ### Package (vi), second session (`rcch-e`, 2026-10-29)

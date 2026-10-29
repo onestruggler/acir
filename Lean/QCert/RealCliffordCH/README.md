@@ -107,14 +107,20 @@ Formalized from the paper only.
   that source theorem is proved without `sorry`.
 * On `n ≥ 3` wires: the encoding of Definition 8.2 produces proper words and
   preserves the semantics in the basis ordered by the Gray code (`esem`).
-* Theorem 4.10 from the two hypotheses of the Reidemeister–Schreier theorem
-  (`Sec8/A/RS.lean`, `thm410_of`). Hypothesis (a), `item_a`, is proved in
-  `A/ItemAProof` by fresh frames and the contraction of two Hadamard letters;
-  `item_b` remains open. Toward it, from Equation (65) (`E65`, proved from (35) for the
-  tuples whose Gray codes have neither form of (36), (37)): Lemma A.6 and
-  Corollary A.7 (on signed permutations), frames and telescopes, Equations
-  (66), (70), (71), conjugation of a letter (`hh_conj`, `push_twist`) and the
-  twist of Equation (40).
+* Theorem 4.10 (`Sec8/Thm410Proof.lean`, `theorem_4_10`, axioms `propext`,
+  `Classical.choice`, `Quot.sound` only), from the two hypotheses of the
+  Reidemeister–Schreier theorem (`Sec8/A/RS.lean`, `thm410_of`). Hypothesis (a),
+  `item_a`, is proved in `A/ItemAProof` by fresh frames and the contraction of two
+  Hadamard letters. Hypothesis (b), `item_b`, is proved in `A/ItemBProof` through
+  Clément's relations (`QCert.Clement2019`, syntactically equivalent to Figure 6):
+  the congruence of Claim B contains (a1)–(d2) by frames (`A/ItemBCon`), Clément's
+  (20) from Equation (45) (`A/ItemB20`), Figure 6's (d3) by the derivation of
+  Lemma A.1 split into steps on three indices (`A/ItemBd3`), Clément's (1)–(19)
+  by his tables, hence every renaming of its relations (`A/ItemBRel`), the
+  relation of Equation (46) at the indices `2, …, 7` read off the coset action
+  directly (`A/ItemB46`; it works at `n = 3`), and Clément's (21) from it by
+  steps on five indices (`A/ItemB21`). The steps on `k ≤ 5` indices are sound by
+  the completeness of Figure 6 on `k` indices (`A/ItemBChk`, `A/ItemBPull`).
 * Equation (65) at every tuple of distinct indices (`Sec8/A/E65.lean`, `e65`), also for the tuples whose Gray codes have the form of (36) or (37): their words `𝒲₁`, `𝒲₂` are frames.
 * The general interfaces for (290)–(292), (299)–(302), (305), and (307)–(314)
   are proved, including the three- and four-wire cases. `D/N8/Low`,
@@ -171,7 +177,6 @@ that it uses; `QCert/Audit.lean` reports transitive axiom dependencies.
 
 | Declaration | Stands for |
 | --- | --- |
-| `Sec8/Thm410Proof.lean`: `item_b` | Hypothesis (b) (`ItemB`: for each relation of Hadamard-Π's Figure 6 and each coset of Definition A.2, the two words of `τ**` are equal by Figure 8). |
 | `Sec8/Lemma88Proof.lean`: `lemma_8_8` | Lemma 8.8 (Appendix E.5), given completeness on fewer wires: the cases of the rules (36), (37), (43)–(46); the other rules have proof terms, including (31), (38)–(40). |
 | `Sec8/D/N13.lean`: `eq333`, `eq334`, `eq337`–`eq339`, `eq342`, `eq344`, `eq346`–`eq352` | Remaining interface statements of Lemmas D.12–D.13 (package (v)); each checked numerically at 3–6 wires. |
 | `Sec8/D/N15.lean`: `eq360`, `eq361` | Remaining statements of Lemmas D.14–D.15 and of Equation (361) of Appendix E.5 (package (vi)); each checked numerically at 2–6 wires for every colouring (`gen/sec8/e/iface_n15.py`). |

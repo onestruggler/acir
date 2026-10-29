@@ -8,11 +8,14 @@ Theorem 4.10 follows from its hypotheses (a) (`ItemA`, the equations
 (DE-**) of Appendix A.3.2) and (b) (`ItemB`, one equation per relation of
 Figure 6 and coset), with the completeness of Figure 6
 (`QCert.HadamardPi.theorem_4_14`). Hypothesis (a) is proved by the frame
-construction in `A/ItemAProof`; hypothesis (b) remains open.
+construction in `A/ItemAProof`; hypothesis (b) in `A/ItemBProof`, through
+Clément's relations (`QCert.Clement2019`), whose (20) and (21) come from
+Equations (45) and (46).
 -/
 import QCert.RealCliffordCH.Sec8.Statement
 import QCert.RealCliffordCH.Sec8.A.RS
 import QCert.RealCliffordCH.Sec8.A.ItemAProof
+import QCert.RealCliffordCH.Sec8.A.ItemBProof
 
 namespace QCert.RealCliffordCH.Sec8
 
@@ -22,9 +25,9 @@ theorem item_a (n : ℕ) (hn : 3 ≤ n) : ItemA n :=
   item_a_proof n hn
 
 /-- Hypothesis (b) of the Reidemeister–Schreier theorem (Appendix A.3.2, one
-equation per relation of Figure 6 and coset).  Not yet proved. -/
-theorem item_b (n : ℕ) (hn : 3 ≤ n) : ItemB n := by
-  sorry
+equation per relation of Figure 6 and coset). -/
+theorem item_b (n : ℕ) (hn : 3 ≤ n) : ItemB n :=
+  item_b_proof n hn
 
 /-- Theorem 4.10 (Appendices A.3 and A.4). -/
 theorem theorem_4_10 (n : ℕ) (hn : 3 ≤ n) : Thm410 n :=
