@@ -335,7 +335,8 @@ by a pattern that occurs in your own command line (it kills the shell).
 ### Package (v), third session (2026-10-29): memory, (337), (338), and a plan for (339)
 
 **Memory, measured.** A watchdog logging each `lean` process's anonymous RSS
-(`/proc/<pid>/status`, `RssAnon`) shows: the imports of the N13 closure map
+(`/proc/<pid>/status`, `RssAnon`; `gen/sec8/n13/watch.sh`, run in WSL with
+`setsid nohup … &`, kills a package-(v) build above 4.5 GB) shows: the imports of the N13 closure map
 about 2.8 GB of `.olean` pages (file-backed, shared between processes, not a
 risk); on top of that one engine semantic window of 22 letters on four wires
 costs about 0.7 GB in the kernel (4 s), and the kernel frees it only at the
