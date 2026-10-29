@@ -18,6 +18,7 @@ against the definitions at `N = 2, …, 6` for every colouring
 -/
 import QCert.RealCliffordCH.Sec8.D.N13
 import QCert.RealCliffordCH.Sec8.D.N15.E358
+import QCert.RealCliffordCH.Sec8.D.N15.E360
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -100,7 +101,10 @@ into `XZ`. -/
 theorem eq360 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
     Derivable (theory N) (drawn [ppAt N 0 1, mc N .zx [1] (blackOn 2 N)])
       (drawn [mc N .xz [1] (blackOn 2 N), ppAt N 0 1]) := by
-  sorry
+  rcases (by omega : N = 3 ∨ 4 ≤ N) with rfl | h4
+  · exact N15.eq360_3 ih
+  · obtain ⟨m, rfl⟩ : ∃ m, N = m + 4 := ⟨N - 4, by omega⟩
+    exact N15.eq360_ge4 ih
 
 /-! ## Equation (361) (Appendix E.5, decoding Equation (43)) -/
 
