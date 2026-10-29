@@ -26,6 +26,7 @@ import QCert.RealCliffordCH.Sec8.D.N13.E346
 import QCert.RealCliffordCH.Sec8.D.N13.Low342
 import QCert.RealCliffordCH.Sec8.D.N13.Low339W4
 import QCert.RealCliffordCH.Sec8.D.N13.Low344W4
+import QCert.RealCliffordCH.Sec8.D.N13.Low342W4
 import QCert.RealCliffordCH.Sec8.D.N13.E347
 
 namespace QCert.RealCliffordCH.Sec8.D
@@ -191,8 +192,7 @@ theorem eq342 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
     Comm N (mc N .hg [0, 1] (ctlOr (ctlAt 2 c₁) (colOn 3 N x)))
       (mc N .hg [0, 2] (ctlOr (ctlAt 1 c₂) (colOn 3 N y))) := by
   rcases (by omega : N = 4 ∨ N = 5 ∨ 6 ≤ N) with rfl | rfl | h6
-  · -- Width 4: open, worked on in `N13/Low342*`.
-    sorry
+  · exact N13.L342W4.eq342_4 ih x y hxy c₁ c₂
   · exact N13.L342.eq342_5 ih x y hxy c₁ c₂
   · exact N13.comm342_ge6 N h6 ih x y hxy c₁ c₂
 
