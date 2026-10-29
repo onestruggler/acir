@@ -39,6 +39,8 @@ imports it.
 import QCert.RealCliffordCH.Sec8.D.N13.E337
 import QCert.RealCliffordCH.Sec8.D.N13.Loc5
 
+set_option Elab.async false
+
 namespace QCert.RealCliffordCH.Sec8.D.N13
 
 open Circuit Eng SE Net N8
@@ -108,9 +110,14 @@ theorem mL_conj (m : ℕ) (X : Circ (m + 6)) :
 theorem wc5_mL (N : ℕ) : wc 5 N mL = wc 4 N mL := rfl
 theorem wc5_mL' (N : ℕ) : wc 5 N mL' = wc 4 N mL' := rfl
 
-theorem chkMM : check 4 [] (mL ++ mL') [] [.sem 0 32 [] 4] = true ∧
-    check 4 [] (mL' ++ mL) [] [.sem 0 32 [] 4] = true := by
+theorem chkMM1 : check 4 [] (mL ++ mL') [] [.sem 0 32 [] 4] = true := by
   decide +kernel
+
+theorem chkMM2 : check 4 [] (mL' ++ mL) [] [.sem 0 32 [] 4] = true := by
+  decide +kernel
+
+theorem chkMM : check 4 [] (mL ++ mL') [] [.sem 0 32 [] 4] = true ∧
+    check 4 [] (mL' ++ mL) [] [.sem 0 32 [] 4] = true := ⟨chkMM1, chkMM2⟩
 
 theorem MM_inv (m : ℕ) (ih : IH (m + 6)) :
     Derivable (theory (m + 6)) (wc 4 (m + 6) mL' * wc 4 (m + 6) mL) 1 ∧
@@ -169,6 +176,7 @@ theorem pp_box276 (m : ℕ) (ih : IH (m + 6)) (c₃ : Bool) (y : ℕ → Bool) :
 
 /-! ## The expansions -/
 
+set_option maxHeartbeats 2000000 in
 /-- The multi-controlled `H` of the frame between the swaps and `P ⊗ P` of
 `M`: the box with its controls `1` (white), `2` (`c₃`), `3` (black, its `H`
 wire). -/
@@ -266,7 +274,7 @@ theorem comm_basesC {N : ℕ} {P Q A0 A A1 A' : Circ N} (hQP : Derivable (theory
 
 theorem base_circ {K N : ℕ} {r r0 : Lt} {X : Prop} (e : r = r0 ∨ X) :
     r.circ K N = r0.circ K N ∨ X :=
-  e.imp (fun h => h ▸ rfl) id
+  e.imp (fun h => by rw [h]) id
 
 /-! ## The remainder of the box against a rotation of the multi-controlled `H` -/
 
