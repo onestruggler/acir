@@ -22,6 +22,7 @@ import QCert.RealCliffordCH.Sec8.D.N13.LowHg338
 import QCert.RealCliffordCH.Sec8.D.N13.E338Merge
 import QCert.RealCliffordCH.Sec8.D.N13.E344t
 import QCert.RealCliffordCH.Sec8.D.N13.E333
+import QCert.RealCliffordCH.Sec8.D.N13.E346
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -207,8 +208,9 @@ theorem eq345 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) :
 
 /-- (346) -/
 theorem eq346 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (a : Bool) :
-    Comm N (mc N .box [0] (colOn 1 N x)) (mc N (Kind.sgnZX a) [0] (colOn 1 N y)) := by
-  sorry
+    Comm N (mc N .box [0] (colOn 1 N x)) (mc N (Kind.sgnZX a) [0] (colOn 1 N y)) :=
+  N13.comm346 hN ih (eq333 N hN ih) (eq334 N hN ih) (fun x y c₁ c₂ => eq336 N hN ih x y c₁ c₂)
+    (fun x y c₁ => eq338 N hN ih x y c₁) x y a
 
 /-- (347) -/
 theorem eq347 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : DiffOn 2 N x y)
