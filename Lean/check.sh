@@ -13,4 +13,4 @@ if [ $# -eq 0 ]; then
 fi
 mods=()
 for f in "$@"; do m="${f%.lean}"; mods+=("${m//\//.}"); done
-/usr/bin/timeout 3600 lake build "${mods[@]}"
+/usr/bin/timeout 14400 lake build "${mods[@]}"
