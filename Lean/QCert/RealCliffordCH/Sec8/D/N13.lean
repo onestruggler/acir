@@ -23,6 +23,7 @@ import QCert.RealCliffordCH.Sec8.D.N13.E338Merge
 import QCert.RealCliffordCH.Sec8.D.N13.E344t
 import QCert.RealCliffordCH.Sec8.D.N13.E333
 import QCert.RealCliffordCH.Sec8.D.N13.E346
+import QCert.RealCliffordCH.Sec8.D.N13.Low342
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -140,9 +141,10 @@ theorem eq339 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
     (c₁ c₂ c₃ : Bool) :
     Comm N (mc N .box [0] (ctlOr (ctlAt 2 c₁) (ctlOr (ctlAt 1 c₂) (colOn 3 N x))))
       (mc N .hg [1, 2] (ctlOr (ctlAt 0 c₃) (colOn 3 N y))) := by
-  rcases (by omega : N ≤ 5 ∨ 6 ≤ N) with h5 | h6
-  · -- Widths 4 and 5: open, worked on in `N13/Low339*` (not yet wired).
+  rcases (by omega : N = 4 ∨ N = 5 ∨ 6 ≤ N) with rfl | rfl | h6
+  · -- Width 4: open, worked on in `N13/Low339*`.
     sorry
+  · exact N13.L339.eq339_5 ih x y hxy c₁ c₂ c₃
   · exact N13.comm339_ge6 N h6 ih x y hxy c₁ c₂ c₃
 
 /-- (333): the multi-controlled `ZX` written with a multi-controlled `H`
@@ -186,9 +188,10 @@ theorem eq342 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
     (c₁ c₂ : Bool) :
     Comm N (mc N .hg [0, 1] (ctlOr (ctlAt 2 c₁) (colOn 3 N x)))
       (mc N .hg [0, 2] (ctlOr (ctlAt 1 c₂) (colOn 3 N y))) := by
-  rcases (by omega : N ≤ 5 ∨ 6 ≤ N) with h5 | h6
-  · -- Widths 4 and 5: open, worked on in `N13/Low342*` (not yet wired).
+  rcases (by omega : N = 4 ∨ N = 5 ∨ 6 ≤ N) with rfl | rfl | h6
+  · -- Width 4: open, worked on in `N13/Low342*`.
     sorry
+  · exact N13.L342.eq342_5 ih x y hxy c₁ c₂
   · exact N13.comm342_ge6 N h6 ih x y hxy c₁ c₂
 
 /-- (344) -/
@@ -196,9 +199,10 @@ theorem eq344 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
     (c₁ c₂ : Bool) :
     Comm N (mc N .hg [0, 1] (ctlOr (ctlAt 2 c₁) (colOn 3 N x)))
       (mc N .hg [1, 2] (ctlOr (ctlAt 0 c₂) (colOn 3 N y))) := by
-  rcases (by omega : N ≤ 5 ∨ 6 ≤ N) with h5 | h6
-  · -- Widths 4 and 5: open, worked on in `N13/Low344*` (not yet wired).
+  rcases (by omega : N = 4 ∨ N = 5 ∨ 6 ≤ N) with rfl | rfl | h6
+  · -- Width 4: open, worked on in `N13/Low344*`.
     sorry
+  · exact N13.L344.eq344_5 ih x y hxy c₁ c₂
   · exact N13.comm344_ge6 N h6 ih x y hxy c₁ c₂
 
 /-- (345) -/
