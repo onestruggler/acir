@@ -20,6 +20,8 @@ import QCert.RealCliffordCH.Sec8.D.N13.E337
 import QCert.RealCliffordCH.Sec8.D.N13.LowHg
 import QCert.RealCliffordCH.Sec8.D.N13.LowHg338
 import QCert.RealCliffordCH.Sec8.D.N13.E338Merge
+import QCert.RealCliffordCH.Sec8.D.N13.E344t
+import QCert.RealCliffordCH.Sec8.D.N13.E333
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -95,25 +97,6 @@ theorem eq317 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x : ℕ → Bool) :
     refine (colourW_mul _ _ hnd hws _ _).trans (lift _ ?_)
     rw [exz', ezx']; exact palin hB hch
 
-/-- (333): the multi-controlled `ZX` written with a multi-controlled `H`
-(box wire 2, `H` on wire 0) and a box (box wire 1). -/
-theorem eq333 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
-    Derivable (theory N) (mc N .zx [0] (blackOn 1 N))
-      (drawn [mc N .hg [2, 0] (ctlOr (ctlAt 1 true) (blackOn 3 N)),
-        mc N .box [1] (ctlOr (ctlAt 0 true) (blackOn 2 N)),
-        mc N .hg [2, 0] (ctlOr (ctlAt 1 true) (blackOn 3 N)),
-        mc N .box [1] (ctlOr (ctlAt 0 true) (blackOn 2 N))]) := by
-  sorry
-
-/-- (334): the same for the multi-controlled `XZ`. -/
-theorem eq334 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
-    Derivable (theory N) (mc N .xz [0] (blackOn 1 N))
-      (drawn [mc N .box [1] (ctlOr (ctlAt 0 true) (blackOn 2 N)),
-        mc N .hg [2, 0] (ctlOr (ctlAt 1 true) (blackOn 3 N)),
-        mc N .box [1] (ctlOr (ctlAt 0 true) (blackOn 2 N)),
-        mc N .hg [2, 0] (ctlOr (ctlAt 1 true) (blackOn 3 N))]) := by
-  sorry
-
 /-! ## Lemma D.13: commutations of coloured multi-controlled gates -/
 
 /-- (335) -/
@@ -156,7 +139,38 @@ theorem eq339 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
     (c₁ c₂ c₃ : Bool) :
     Comm N (mc N .box [0] (ctlOr (ctlAt 2 c₁) (ctlOr (ctlAt 1 c₂) (colOn 3 N x))))
       (mc N .hg [1, 2] (ctlOr (ctlAt 0 c₃) (colOn 3 N y))) := by
-  sorry
+  rcases (by omega : N ≤ 5 ∨ 6 ≤ N) with h5 | h6
+  · -- Widths 4 and 5: open, worked on in `N13/Low339*` (not yet wired).
+    sorry
+  · exact N13.comm339_ge6 N h6 ih x y hxy c₁ c₂ c₃
+
+/-- (333): the multi-controlled `ZX` written with a multi-controlled `H`
+(box wire 2, `H` on wire 0) and a box (box wire 1). -/
+theorem eq333 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
+    Derivable (theory N) (mc N .zx [0] (blackOn 1 N))
+      (drawn [mc N .hg [2, 0] (ctlOr (ctlAt 1 true) (blackOn 3 N)),
+        mc N .box [1] (ctlOr (ctlAt 0 true) (blackOn 2 N)),
+        mc N .hg [2, 0] (ctlOr (ctlAt 1 true) (blackOn 3 N)),
+        mc N .box [1] (ctlOr (ctlAt 0 true) (blackOn 2 N))]) := by
+  obtain ⟨M, rfl⟩ : ∃ M, N = M + 3 := ⟨N - 3, by omega⟩
+  refine N13.comm333 M ih (fun y hy => ?_)
+  have h4 : 4 ≤ M + 3 := by obtain ⟨j, hj3, hjN, -⟩ := hy; omega
+  exact eq339 (M + 3) h4 ih (fun _ => true) y hy true true true
+
+/-- (334): the same for the multi-controlled `XZ`. -/
+theorem eq334 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
+    Derivable (theory N) (mc N .xz [0] (blackOn 1 N))
+      (drawn [mc N .box [1] (ctlOr (ctlAt 0 true) (blackOn 2 N)),
+        mc N .hg [2, 0] (ctlOr (ctlAt 1 true) (blackOn 3 N)),
+        mc N .box [1] (ctlOr (ctlAt 0 true) (blackOn 2 N)),
+        mc N .hg [2, 0] (ctlOr (ctlAt 1 true) (blackOn 3 N))]) := by
+  obtain ⟨M, rfl⟩ : ∃ M, N = M + 3 := ⟨N - 3, by omega⟩
+  have h317 := (eq317 (M + 3) hN ih (fun _ => true)).1
+  have e : ∀ K : Kind, mc (M + 3) K [0] (colOn 1 (M + 3) (fun _ => true)) =
+      mc (M + 3) K [0] (blackOn 1 (M + 3)) := fun K =>
+    Net.mc_congr _ _ _ (fun i hi => by simp [colOn, blackOn])
+  rw [e .zx, e .xz] at h317
+  exact N13.comm334 M ih (eq333 (M + 3) hN ih) h317
 
 /-- (340) -/
 theorem eq340 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) :
@@ -171,14 +185,20 @@ theorem eq342 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
     (c₁ c₂ : Bool) :
     Comm N (mc N .hg [0, 1] (ctlOr (ctlAt 2 c₁) (colOn 3 N x)))
       (mc N .hg [0, 2] (ctlOr (ctlAt 1 c₂) (colOn 3 N y))) := by
-  sorry
+  rcases (by omega : N ≤ 5 ∨ 6 ≤ N) with h5 | h6
+  · -- Widths 4 and 5: open, worked on in `N13/Low342*` (not yet wired).
+    sorry
+  · exact N13.comm342_ge6 N h6 ih x y hxy c₁ c₂
 
 /-- (344) -/
 theorem eq344 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : DiffOn 3 N x y)
     (c₁ c₂ : Bool) :
     Comm N (mc N .hg [0, 1] (ctlOr (ctlAt 2 c₁) (colOn 3 N x)))
       (mc N .hg [1, 2] (ctlOr (ctlAt 0 c₂) (colOn 3 N y))) := by
-  sorry
+  rcases (by omega : N ≤ 5 ∨ 6 ≤ N) with h5 | h6
+  · -- Widths 4 and 5: open, worked on in `N13/Low344*` (not yet wired).
+    sorry
+  · exact N13.comm344_ge6 N h6 ih x y hxy c₁ c₂
 
 /-- (345) -/
 theorem eq345 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) :
