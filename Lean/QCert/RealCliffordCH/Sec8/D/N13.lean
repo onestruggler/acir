@@ -28,6 +28,7 @@ import QCert.RealCliffordCH.Sec8.D.N13.Low339W4
 import QCert.RealCliffordCH.Sec8.D.N13.Low344W4
 import QCert.RealCliffordCH.Sec8.D.N13.Low342W4
 import QCert.RealCliffordCH.Sec8.D.N13.E352t
+import QCert.RealCliffordCH.Sec8.D.N13.E348t
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -237,8 +238,8 @@ theorem eq348 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
     Comm N (mc N .hg [0, 1] (colOn 2 N x))
       (mc N (Kind.sgnZX a) [0] (ctlOr (ctlAt 1 c₁) (colOn 2 N y))) := by
   rcases (by omega : N = 3 ∨ 4 ≤ N) with rfl | h4
-  · -- Three wires: open (the decomposition leaves no wire to spare).
-    sorry
+  · -- Three wires: from (17), (132) (`N13/E348t`).
+    exact N13.R347.comm348_3 ih (eq317 3 hN ih) x y hxy a c₁
   · exact N13.R347.comm348 h4 ih (mcSwapAll N ih) (eq333 N hN ih) (eq334 N hN ih)
       (eq338 N hN ih) (eq344 N h4 ih) x y hxy a c₁
 
