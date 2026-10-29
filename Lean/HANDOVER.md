@@ -153,6 +153,72 @@ All of the following build, at every width `m + 5` unless noted:
 `Sec8/Lemma88Proof.lean` 8 · `Sec8/D/N13.lean` 19 · `Sec8/D/N15.lean` 3 · `Sec8/D/N8.lean` 1 ·
 `Sec8/D/W3.lean` 6 · `Sec8/D/W4.lean` 5 · `Sec8/D/W5.lean` 3.
 
+### Package (vi), second session (`rcch-e`, 2026-10-29)
+
+Files: `Sec8/D/N15/E358.lean` (imported by `N15.lean`, which now proves
+`eq358`), `Sec8/E/Rule40.lean`, `Sec8/E/Rule31.lean` (imported by
+`Lemma88Proof.lean`, whose cases (31), (40) are now proof terms).
+Numerical models in the session scratch (`m358.py`, `m40.py`, `m31.py`,
+`m360.py`, built on `gen/sec8/mc.py`'s `mc_sem`); every claim below was
+checked there first.
+
+* **(358)** (`E358.braid358`, `eq358'`), not the paper's route.  `a` = the
+  `XZ` on wire 0, `b` = the `ZX` on wire 1, `G = CZ · swap` on wires 0, 1:
+  `G G = 1`, `G a G = b` (swap, then (357)); the `XZ` on wire 0 controlled by
+  wire 1 alone is `a P` ((354) over all colourings of the wires 2…,
+  `mergeListZ`), `P` passes `a` ((351)) and `b` ((352)); on two wires
+  `a₂ G a₂ G a₂ = G` (decided, lifted by `der_atBot`).  `braid_of_merge` (any
+  monoid) gives `a b a = b a b`; work in `(conGen (theory N)).Quotient`
+  (`q_of`, `of_q`, `Con.coe_mul`).
+* **Rule (40)** (`E.dec40`), the paper's chain: (333) with controls 1, 2
+  exchanged (swap) and coloured (`z333`; `X` on the box wire via `xbox` =
+  (315) with any colours, moved by a frame; `placedBy_xAt`), (309) at box
+  wire 2 (`merge40`), the merged box passes the gadget (`bi_hg`: (274)
+  framed by `[0, 2]` from `move274`, (309), (338)), (312), (311).
+* **Rule (31)** (`E.dec31`), both `c > a + 1` and `c < a`: far boxes pass
+  `R` (`box_rot_comm`: (346)/(347) with `gray_separated`); `B_{a±1}` (box on
+  another wire, controls those of `R` except on `R`'s target) conjugates `R`
+  into `R⁻¹` (`box_inv_rot`: `N15.bx_z1` moved by the swap of wires 0, 1,
+  coloured by (81), (315), `tflip0`); `rot_sq` ((355)), `rot_inv` ((317));
+  `rule31_up`/`rule31_down` are the monoid identities.
+* Pitfalls met: `D.xs_inv` is in namespace `D`, not `D.N13`; `move274` takes
+  its width as `(N := …)`; a theorem inside a `section` with `include ih`
+  takes `ih` even when unused (use `omit ih in`); `rw [← h]` with `h : … = G`
+  rewrites every `G`, including those inside `set` abbreviations created
+  before the goal (use `Eq.trans ?_ h`); `simp only [S8, …]` unfolds an
+  abbrev of `List.range (M + 1)` that `List.range_succ` then splits.
+
+**(360), a reduction found and checked numerically (`m360.py`), not yet in
+Lean.**  With `a` = the `ZX` on wire 1 (controls 2…, wire 0 idle),
+`Bx` = `D.Bx N` (box on wire 0, controls 1…) and `Hg01` = `mc N .hg [0,1] (blackOn 2 N)`:
+`Hg01 = PP Bx PP` (this is the definition of `mch`, via `mc_canon`), and
+`a = Bx Hg01 Bx Hg01` (monoid order), so `a = (Bx PP)⁴` and
+`PP a PP = (PP Bx)⁴ = a⁻¹` by `PP² = 1`, `Bx² = 1` ((299)) and (317).
+The one non-trivial input, `a = Bx Hg01 Bx Hg01`, is not a semantic step
+(every wire is used).  A route for `N ≥ 4`: (333) one width down, lifted
+past the idle wire 0 (`Net.liftIdle` with `ToTop.mc` and the derivation
+`D.eq333 (N-1)` itself, no semantics), gives `a = Hg[3,1](ctl 2,4…) · Bx[2](ctl 1,3,4…) · Hg · Bx`;
+move both box wires to wire 0 by (277) framed by `[0,3,1]` and (274) framed
+by `[0,2]` (as `E.bi_hg` does); then `PP Hg[0,1](ctl 2,4…) PP = Bx[0](ctl 1,2,4…)`
+and `PP Bx[0](ctl 1,3,4…) PP = Hg[0,1](ctl 3,4…)` are the definition of
+`mch` one width down (lifted past the idle wire 3, resp. 2), and the result is
+(334) in the frame with the controls 2, 3 exchanged, moved the same way.
+`N = 3` is Small's (129).
+
+**Rules (43), (44)** both need (360) and (361).  (44) is then short:
+`D(X03X12) = [box[0](1b, 2…w), XZ[1](2…w)]` by (361); the box passes the
+gadget by (338) (`eq338 N _ ih (fun _ => false) (fun _ => false) true`); the
+gadget `hg[1,0]` is `PP · box[1](0b, 2…w) · PP`, `PP` turns the `XZ` into a
+`ZX` ((360), coloured), and the box passes the `ZX` with wire 0 idle after
+splitting it by (354) ((346) for each half).  (361)'s proof uses Lemma 8.5
+for `D((-1)[0]X[0,3])` (one instance: the recursion `dZXab` unfolds it into
+five letters).
+
+Remaining sorries of package (vi): `N15.eq360`, `eq361`; `lemma_8_8` cases
+(36), (37), (43)–(46).  (36)/(37) need Lemma 8.5 (D(E(swap)), D(ℰ(X)));
+(45), (46) follow the paper's chains through (333)–(339), (309), (274),
+(311), (312).
+
 ### Package (v), Lemmas D.12–D.13, continued (2026-10-29, second session)
 
 Nothing new is proved; no interface `sorry` was removed.  Written (all new

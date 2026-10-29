@@ -17,7 +17,7 @@ against the definitions at `N = 2, …, 6` for every colouring
 (`gen/sec8/e/iface_n15.py`; (361) at `N = 3, 4, 5`).
 -/
 import QCert.RealCliffordCH.Sec8.D.N13
-import QCert.RealCliffordCH.Sec8.D.N15.E359
+import QCert.RealCliffordCH.Sec8.D.N15.E358
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -81,7 +81,7 @@ theorem eq358 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
         mc N .xz [0] (blackOn 1 N)])
       (drawn [mc N .zx [1] (ctlOr (ctlAt 0 true) (blackOn 2 N)), mc N .xz [0] (blackOn 1 N),
         mc N .zx [1] (ctlOr (ctlAt 0 true) (blackOn 2 N))]) := by
-  sorry
+  exact N15.eq358' N hN ih
 
 /-- (359): conjugating a control on wire `w` of a multi-controlled `(-1)ᵃ ZX`
 by the single-qubit `XZ` and `ZX` (in either order) exchanges its colour. -/

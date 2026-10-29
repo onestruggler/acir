@@ -196,8 +196,8 @@ editing the others; it may assume everything exported by the others (the
   `Decoding.lean` and preserves the semantics on every letter at `n = 3, 4`).
   **`lemma_8_7` proved** (`Lemma87Proof.lean`, `E/`), from the interface
   statements (274), (307), (309)–(311), (313), (336) and (353).  Lemma 8.8
-  (`Lemma88Proof.lean`, cases by rule): done (20)–(30), (32)–(35), (41),
-  (42); open (31), (36)–(40), (43)–(46).
+  (`Lemma88Proof.lean`, cases by rule): done (20)–(35), (38)–(42); open (36), (37), (43)–(46).
+  (360) reduces to `a = Bx Hg01 Bx Hg01` (see HANDOVER); (43), (44) need (360), (361).
 
 ## Package (iv): how to continue
 
