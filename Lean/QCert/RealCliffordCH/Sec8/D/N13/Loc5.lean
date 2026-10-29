@@ -10,7 +10,10 @@ wires (the induction hypothesis, `5 < N`) gives the derivation on five wires
 and `Loc.der_loc` carries it up.  This is the step the engine cannot take
 inside a run, its windows having to avoid one of the five local wires.
 
-Status: not yet built at the time of writing (the build queue was full); nothing imports it.
+Status: not built.  Its decided steps need too much memory as written (one
+declaration of four runs in `E337r1` passed 4.7 GB; `E322`, imported through
+`E322x`, needs about 11 GB): see `HANDOVER.md` before building.  Nothing
+imports it.
 -/
 import QCert.RealCliffordCH.Sec8.D.N13.Loc
 
@@ -24,7 +27,6 @@ theorem circL_loc (K : ℕ) (x : Lt) : SE.circL K true x = x.circ K K := by
 theorem circWL_loc (K : ℕ) (l : List Lt) : SE.circWL K true l = wc K K l := by
   unfold SE.circWL wc
   congr 1
-  exact List.map_congr_left (fun x _ => circL_loc K x)
 
 /-- Two local words with the same semantics on five wires are equal on
 every width `N ≥ 6`. -/

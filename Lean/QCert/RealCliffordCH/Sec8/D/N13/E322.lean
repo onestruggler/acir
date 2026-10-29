@@ -6,6 +6,12 @@ control on wire 2 has the opposite colour. Expanding the box on wire 4
 leaves four-wire rotations handled by (267), (268), and an inner box.
 The inner box is idle on wire 4, so its commutation follows directly from
 the smaller-width completeness hypothesis.
+
+Memory: building this module takes about 11 GB resident (measured
+2026-10-29; the runs `chk_inner322`, `chk322` are decided in single
+declarations).  Only `E322x` imports it, and only the unbuilt `E337` imports
+that; split the runs (one Boolean case per declaration) before building it
+on the shared machine.
 -/
 import QCert.RealCliffordCH.Sec8.D.N13.E322a
 

@@ -465,3 +465,13 @@ both exported statements have only standard Lean axioms. Together with
 the completed (345), this leaves 29 proof sites in the requested
 development (21 standalone and eight rule branches). Table 1 remains at
 13 of 16 complete rows. No Agda source was consulted.
+
+### Package (v), second session, 2026-10-29: drafts, not built
+
+(337), (338) from five wires on and (339) from six wires on are written in
+`N13/E337*`, `E339*` and `Loc5` (imported by nothing; `eq337`, `eq338`,
+`eq339` unchanged).  Building them is blocked on memory: `E322`, which
+`E337` imports through `E322x`, needs about 11 GB, and a declaration deciding
+four 22-letter semantic windows passed 4.7 GB.  `HANDOVER.md` (package (v),
+second session) has the analysis, the wiring for `N13.lean` and the plan for
+the rest of the package.

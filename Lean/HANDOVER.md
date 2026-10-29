@@ -155,29 +155,48 @@ All of the following build, at every width `m + 5` unless noted:
 
 ### Package (v), Lemmas D.12–D.13, continued (2026-10-29, second session)
 
-**Written, not yet built** (the shared build queue was saturated: other
-packages' `check.sh` runs held the lock for hours, and a cold build of the
-`N13` closure needs `W5/Family267`, `Family268`, about an hour; nothing
-imports these files, so they cannot break a build):
+Nothing new is proved; no interface `sorry` was removed.  Written (all new
+files under `Sec8/D/N13/`, imported by nothing, none built):
 
-* `N13/E337.lean`: (337) and (338) (`x ≠ y`) from five wires on, by the
-  template of `E336x`.  Once it builds, `eq337` and `eq338` close at every
-  width with `LowHg`, `LowHg338` (three and four wires) and `E338Merge`
-  (`x = y`): the replacement for `N13.lean` is in the commit message of this
-  checkpoint and in the PLAN status line (`N13.lean` imports `E337`, `LowHg`,
-  `LowHg338`, `E338Merge`; `eq337` by `comm337_3`, `comm337_4`,
-  `comm337_ge5`; `eq338` by `comm338_from_diff` with `comm338_3`,
-  `comm338_4`, `comm338d_ge5` and `eq335`).
-* `N13/E339.lean`: (339) from six wires on (`comm339_ge6`).
-* `N13/Loc5.lean`: `loc5`, an equation between two words of local letters
-  on the five wires `0–4` holds from six wires on as soon as `SE.lcheck 5`
-  decides it (completeness on five wires + `Loc.der_loc`).  This is the step
-  the engine cannot take inside a run.
+* `E337.lean` (+ `E337c`, `E337r1`, `E337r2`): (337), and (338) with
+  `x ≠ y`, from five wires on, by the template of `E336x`.  Once built, the
+  replacement for `N13.lean` is: import `E337`, `LowHg`, `LowHg338`,
+  `E338Merge`; `eq337` by `comm337_3`, `comm337_4`, `comm337_ge5`; `eq338` by
+  `comm338_from_diff N hN ih (diff) (fun x y => eq335 N hN ih x y) x y c₁` with
+  `diff` by `comm338_3`, `comm338_4`, `comm338d_ge5` (cases `N = 3, 4, ≥ 5`).
+  That closes both at every width.
+* `E339.lean` (+ `E339a`, `E339r1`–`E339r3`): (339) from six wires on
+  (`comm339_ge6`).
+* `Loc5.lean`: `loc5`, an equation between two words of local letters on the
+  five wires `0–4` holds from six wires on as soon as `SE.lcheck 5` decides
+  it (completeness on five wires + `Loc.der_loc`); the step the engine cannot
+  take inside a run.  (Its first build failed on a stray `exact` after
+  `congr 1`, now removed; not rebuilt.)
 
-Build them with `./check.sh QCert/RealCliffordCH/Sec8/D/N13/E337.lean
-QCert/RealCliffordCH/Sec8/D/N13/E339.lean`, fix what fails, then wire
-`E337` (and `E339` for `N ≥ 6`, keeping `sorry` for `N = 4, 5`) into
-`N13.lean`.
+**Why nothing is built: memory.**  The VM has 12 GB shared by four agents.
+`E322` (committed earlier, imported only through `E322x` by `E337`) takes
+**about 11 GB** to build (measured: 11.2 GB resident before it was stopped);
+its runs `chk_inner322` and `chk322` are decided in single declarations.
+`E337r1`/`E337r2`, one declaration of four 22-letter semantic windows each
+(`decide +kernel` on `check 4 [] …`), passed 4.7 GB within two minutes.  So
+an engine `sem` step on four local wires costs over a gigabyte in the kernel,
+and a run of several of them in one declaration is not affordable here.
+Before building any of these files:
+
+1. Split `E322`'s runs one Boolean case per declaration (the five Booleans
+   `one a α β γ`; `T322_ok` and `r322` then case on them), and measure.
+2. Split `E337r1`, `E337r2`, `E339r1`–`E339r3` to one run (one choice of the
+   rotations as well as of the Booleans) per declaration: change
+   `gen_split.py` (in the session scratch; simple to rewrite: one
+   `theorem name_<tag> : <statement> := by decide +kernel` per case, and a
+   combining theorem by `cases`).  If one run still needs several GB, replace
+   the rotation-against-rotation steps by a semantic lemma (the two gates act
+   on the subspaces where the separating wire is `1`, resp. `0`; prove the
+   commutation from `MS.eval_mc` as `Sem.sem_box_comm` does for boxes, then
+   `semIdle` on a bulk wire) instead of deciding windows.
+3. Build with a memory watchdog (a loop killing this package's `lean` above
+   about 4.5 GB; `ulimit -v` breaks `lake`, which then cannot create
+   threads).
 
 **How (339) is done (reuse it for (342), (344)).**  `sep_reduce` (lo = 3)
 puts the difference of the colourings on wire `3`; the swap of the wires
@@ -188,47 +207,42 @@ separating control black on wire `2`; `BE` = `hg[1,3]`, white on wire `2`).
 `hg[0,1]`, `hg0_box4` writes it as `P⊗P` around the box, and the
 transposition `(1 3)` (`S₁ S₂ S₁`) puts the black control of its `H` wire on
 wire `3`, so that `expX` idles the `H` wire.  The pairs: two rotations, one
-semantic step without wire `4` (`chkRR339`); `A`'s rotations against `B`'s
-remainder: `M` carries the remainder to `box[1](0:c₃, 2○, 4…)` idle on `3`
-(`remB`, through (276) in the middle, `pp_box276` from `N8.s276`), then
-`E336x.commRBs`; the remainders by `E336x.commBBs`; `A`'s remainder (idle on
-wire `3`) against `M r M'` by an engine run (`chkBR339`, `runBR`): the
-remainder is re-expanded with the triple `1, 2, 4` by one semantic step
-without wire `3`, its rotations pass `M r M'` by `loc5` (table `TBR`), its own
-remainder by a semantic step without wire `4`.  That last pair is the only
-one needing six wires.
+semantic step without wire `4`; `A`'s rotations against `B`'s remainder: `M`
+carries the remainder to `box[1](0:c₃, 2○, 4…)` idle on `3` (`remB`, through
+(276) in the middle, `pp_box276` from `N8.s276`), then `E336x.commRBs`; the
+remainders by `E336x.commBBs`; `A`'s remainder (idle on wire `3`) against
+`M r M'` by `gcl`: an engine run re-expanding the remainder with the triple
+`1, 2, 4` (one semantic step without wire `3`), whose four five-wire steps
+come from `loc5`.  That pair is the only one needing six wires.  Only the
+rotations `P1`, `P2` are decided; `P5`, `P4` are their inverses (`chkInvR`,
+`chkInvS`, `comm_bases`, `comm_basesC`, Lemma B.5).
 
 * (344): `A = hg[0,1](2:c₁, …) = P⊗P₀₁ · bA · P⊗P₀₁`; after the same
   reductions, `A`'s rotations become `P⊗P r P⊗P` (local), `A`'s remainder
   `P⊗P · boxN · P⊗P` (idle on `3`).  The pairs: rotations, semantic; `A`-rem
   against `B`-rem by `BoxPPBridge.commBBpp` (after `X` on wire `2` and the
   swap of the wires `0, 1`); `A`-rot against `B`-rem by (322)/(323)
-  (`E337.commR_ppB`, generalise its `γ`); `A`-rem against `M q M'`:
-  conjugate by `P⊗P` and it is `chkBR339` with the word `ppL ++ RW q ++ ppL`.
-  Generalising `commBR339` to any local word `R` (avoiding wire `4`) is the
-  first thing to do.
-* (342): same, with `B = hg[0,2]`.
+  (`E337.commR_ppB`); `A`-rem against `M q M'`: conjugate by `P⊗P`, then `gcl`
+  with the word `ppL ++ RW q ++ ppL`.  (342): same, with `B = hg[0,2]`.
 
 **What is left after that.**  (333), (334), (346)–(352), and the widths
-`N = 4, 5` of (339), (342), (344) (and whatever the others inherit).
-(333) from (339): by Definition 2.4 `ZX = CH · B · CH · B` with `B` the box
-on wire `1` (all black), so (333) is `Comm (HG · CH) B` (`HG` the
-multi-controlled `H` with box wire `2`, `H` on wire `0`; both involutions).
-Write `H_k` for `HG` with its controls on the wires `3, …, k` black and the
-wires above idle (`H_2` is `CH` up to a semantic step: it is a three-wire
-gate).  Then `CH · HG = (H_2 H_3)(H_3 H_4)…` and `H_k H_{k+1}` is, by (310),
-`HG` white on wire `k + 1` and idle above; merged over the idle wires it is a
-product of fully coloured `HG`s, each separated from `B` on wire `k + 1`, so
-each passes `B` by (339) (relabelled by the 3-cycle `0 → 2 → 1 → 0`, `swBH`).
-This is the paper's argument (page 233); `MergeAll.mergeListB0`,
-`isolate_black` are the box versions of the merges, to be redone for the
-multi-controlled `H` (`N8.eq310`, relabelled).  (334) from (333) and Lemma B.5 ((311), (312), (317)).
-(346)–(352) per the paper from (333)/(334) and (335)–(345), except (346),
-(351) with `x = y` ((351): trivial for `a = b`, (317) and `Comm.inv`
-otherwise; (346): the paper's six-step chain).  Note: at three wires the
-decomposition does not separate the factors (the hole of the multi-controlled
-`H` of (333) is the only bulk wire), so the three-wire cases of (346)–(352)
-need their own derivations.
+`N = 4, 5` of (339), (342), (344).  (333) from (339): by Definition 2.4
+`ZX = CH · B · CH · B` with `B` the box on wire `1` (all black), so (333) is
+`Comm (HG · CH) B` (`HG` the multi-controlled `H` with box wire `2`, `H` on
+wire `0`; both involutions).  Write `H_k` for `HG` with its controls on the
+wires `3, …, k` black and the wires above idle (`H_2` is `CH` up to a
+semantic step).  Then `CH · HG = (H_2 H_3)(H_3 H_4)…`, `H_k H_{k+1}` is, by
+(310), `HG` white on wire `k + 1` and idle above; merged over the idle wires
+it is a product of fully coloured `HG`s, each separated from `B` on wire
+`k + 1`, so each passes `B` by (339) (relabelled by the 3-cycle
+`0 → 2 → 1 → 0`, `swBH`).  This is the paper's argument (page 233);
+`MergeAll.mergeListB0`, `isolate_black` are the box versions of the merges.
+(334) from (333) and Lemma B.5 ((311), (312), (317)).  (346)–(352) per the
+paper from (333)/(334) and (335)–(345), except (346), (351) with `x = y`
+((351): trivial for `a = b`, (317) and `Comm.inv` otherwise; (346): the
+paper's six-step chain).  At three wires the decomposition of (333) does not
+separate the factors (the hole of its multi-controlled `H` is the only bulk
+wire), so the three-wire cases of (346)–(352) need their own derivations.
 
 **Do not import `D/N15*` in `N13`**: `N15/E353c`, `E354` use `D.eq333`,
 `D.eq339`, so (353) (`Sym353`) is unavailable.  Rotations can be relabelled
@@ -237,9 +251,9 @@ on controls `≥ 2` through Definition 2.4 (`CH B CH B`) and (307).
 **Small widths.**  At `N = 5` every frame tried leaves a pair of pieces
 covering all five wires that is not (267)/(268); at `N = 4` the paper's
 chain uses (295)₄ (`N8.eq295`, open, other package), (319)₄, (326)₄,
-(327)₄.  The `gen/sec8/w4` tooling (`proj.py`, `solve2.py`,
-`gen_comm_low_interface.py`) produced the earlier four-wire cases.
+(327)₄.
 
-**Builds.**  `check.sh` kills a build after 3600 s; a cold build of the
-`N13` closure (with `W5/Family267`, `Family268`) takes longer when other
-agents compile at the same time, so rerun it: finished modules are kept.
+**Builds.**  `check.sh` kills a build after 3600 s, and other packages' runs
+hold its lock for long stretches; a cold build of the `N13` closure also
+needs `W5/Family267`, `Family268` (about half an hour each).  Never `pkill`
+by a pattern that occurs in your own command line (it kills the shell).

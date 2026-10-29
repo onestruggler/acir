@@ -24,12 +24,17 @@ with every gate of the other, conjugated by `P ⊗ P`:
 * two boxes idle on wire `3`: a semantic step without wire `3`
   (`commBBpp`).
 
-Status: not yet built at the time of writing (the build queue was full); nothing imports it.
+Status: not built.  Its decided steps need too much memory as written (one
+declaration of four runs in `E337r1` passed 4.7 GB; `E322`, imported through
+`E322x`, needs about 11 GB): see `HANDOVER.md` before building.  Nothing
+imports it.
 -/
 import QCert.RealCliffordCH.Sec8.D.N13.E336x
 import QCert.RealCliffordCH.Sec8.D.N13.E322x
 import QCert.RealCliffordCH.Sec8.D.N13.BoxPPBridge
 import QCert.RealCliffordCH.Sec8.D.N13.E345
+import QCert.RealCliffordCH.Sec8.D.N13.E337r1
+import QCert.RealCliffordCH.Sec8.D.N13.E337r2
 
 namespace QCert.RealCliffordCH.Sec8.D.N13
 
@@ -208,16 +213,6 @@ end Pairs
 
 /-! ## Two rotations, a semantic step without wire `4` -/
 
-theorem chkRR337 : ∀ b1 b3 c3 : Bool, ∀ r ∈ rots b1 true b3, ∀ r' ∈ rots true false c3,
-    check 4 [] ([r] ++ N13.ppL ++ [r'] ++ N13.ppL) (N13.ppL ++ [r'] ++ N13.ppL ++ [r])
-      [.sem 0 22 (N13.ppL ++ [r'] ++ N13.ppL ++ [r]) 4] = true := by
-  decide +kernel
-
-theorem chkRR338 : ∀ b1 b3 c3 : Bool, ∀ r ∈ rots b1 true b3, ∀ r' ∈ srots true false c3,
-    check 4 [] ([r] ++ N13.ppL ++ [r'] ++ N13.ppL) (N13.ppL ++ [r'] ++ N13.ppL ++ [r])
-      [.sem 0 22 (N13.ppL ++ [r'] ++ N13.ppL ++ [r]) 4] = true := by
-  decide +kernel
-
 theorem comm_of_ppchk {m : ℕ} (ih : IH (m + 5)) {r r' : Lt}
     (hr : r.circ 5 (m + 5) = r.circ 4 (m + 5)) (hr' : r'.circ 5 (m + 5) = r'.circ 4 (m + 5))
     (c : check 4 [] ([r] ++ N13.ppL ++ [r'] ++ N13.ppL) (N13.ppL ++ [r'] ++ N13.ppL ++ [r])
@@ -229,6 +224,123 @@ theorem comm_of_ppchk {m : ℕ} (ih : IH (m + 5)) {r r' : Lt}
   unfold Comm
   rw [drawn_two, drawn_two]
   simpa only [mul_assoc] using h
+
+/-- A two-letter run to the empty word: the letters are inverse. -/
+theorem inv_of_chk {m : ℕ} (ih : IH (m + 5)) {x y : Lt}
+    (hx : x.circ 5 (m + 5) = x.circ 4 (m + 5)) (hy : y.circ 5 (m + 5) = y.circ 4 (m + 5))
+    (c : check 4 [] [x, y] [] [.sem 0 2 [] 4] = true) :
+    Derivable (theory (m + 5)) (y.circ 4 (m + 5) * x.circ 4 (m + 5)) 1 := by
+  have h := check_sound (frame 4) ih (allD_nil 5 m) c
+  have e : wc 5 (m + 5) ([] : List Lt) = 1 := rfl
+  rw [wc_two, drawn_two, e, hx, hy] at h
+  exact h
+
+/-- Conjugates of inverse circuits are inverse. -/
+theorem conj_inv {N : ℕ} {P a b : Circ N} (hP : Derivable (theory N) (P * P) 1)
+    (h : Derivable (theory N) (a * b) 1) :
+    Derivable (theory N) ((P * a * P) * (P * b * P)) 1 := by
+  have e : P * a * P * (P * b * P) = P * a * (P * P) * (b * P) := by simp only [mul_assoc]
+  rw [e]
+  refine (dright _ (dleft _ hP)).trans ?_
+  rw [mul_one]
+  have e2 : P * a * (b * P) = P * (a * b) * P := by simp only [mul_assoc]
+  rw [e2]
+  refine (dctx P P h).trans ?_
+  rw [mul_one]
+  exact hP
+
+/-- Commutation passes to an inverse of the second gate (Lemma B.5). -/
+theorem comm_inv_r {N : ℕ} {a b b' : Circ N} (h : Comm N a b)
+    (h1 : Derivable (theory N) (b * b') 1) (h2 : Derivable (theory N) (b' * b) 1) :
+    Comm N a b' :=
+  Derivable.symm (Comm.inv (Derivable.symm h) h1 h2)
+
+theorem rots2_sub {b1 b2 b3 : Bool} {r : Lt} (h : r ∈ rots2 b1 b2 b3) : r ∈ rots b1 b2 b3 := by
+  simp only [rots2, rots, List.mem_cons, List.mem_nil_iff, or_false] at h ⊢
+  rcases h with rfl | rfl <;> simp
+
+theorem srots2_sub {b1 b2 b3 : Bool} {r : Lt} (h : r ∈ srots2 b1 b2 b3) :
+    r ∈ srots b1 b2 b3 := by
+  rw [srots_eq]
+  simp only [srots2, List.mem_cons, List.mem_nil_iff, or_false] at h ⊢
+  rcases h with rfl | rfl <;> simp
+
+/-- A rotation of the expansion is one of `rots2` or the inverse of one. -/
+theorem rots_base (m : ℕ) (ih : IH (m + 5)) {b1 b2 b3 : Bool} {r : Lt}
+    (hr : r ∈ rots b1 b2 b3) :
+    ∃ r0 ∈ rots2 b1 b2 b3, r = r0 ∨
+      (Derivable (theory (m + 5)) (r0.circ 4 (m + 5) * r.circ 4 (m + 5)) 1 ∧
+        Derivable (theory (m + 5)) (r.circ 4 (m + 5) * r0.circ 4 (m + 5)) 1) := by
+  have hc := chkInvR b1 b2 b3
+  have rb : ∀ {x : Lt}, x ∈ rots b1 b2 b3 → x.circ 5 (m + 5) = x.circ 4 (m + 5) :=
+    fun hx => rots_rebase hx
+  have m1 : P1 b1 b2 b3 ∈ rots b1 b2 b3 := by simp [rots]
+  have m2 : P2 b1 b2 b3 ∈ rots b1 b2 b3 := by simp [rots]
+  have m4 : P4 b1 b2 b3 ∈ rots b1 b2 b3 := by simp [rots]
+  have m5 : P5 b1 b2 b3 ∈ rots b1 b2 b3 := by simp [rots]
+  simp only [rots, List.mem_cons, List.mem_nil_iff, or_false] at hr
+  rcases hr with rfl | rfl | rfl | rfl
+  · exact ⟨_, by simp [rots2], Or.inl rfl⟩
+  · exact ⟨_, by simp [rots2], Or.inl rfl⟩
+  · exact ⟨P2 b1 b2 b3, by simp [rots2], Or.inr
+      ⟨inv_of_chk ih (rb m4) (rb m2) hc.2.2.1, inv_of_chk ih (rb m2) (rb m4) hc.2.2.2⟩⟩
+  · exact ⟨P1 b1 b2 b3, by simp [rots2], Or.inr
+      ⟨inv_of_chk ih (rb m5) (rb m1) hc.1, inv_of_chk ih (rb m1) (rb m5) hc.2.1⟩⟩
+
+/-- The same for the rotations with the wires `0, 1` exchanged. -/
+theorem srots_base (m : ℕ) (ih : IH (m + 5)) {b1 b2 b3 : Bool} {r : Lt}
+    (hr : r ∈ srots b1 b2 b3) :
+    ∃ r0 ∈ srots2 b1 b2 b3, r = r0 ∨
+      (Derivable (theory (m + 5)) (r0.circ 4 (m + 5) * r.circ 4 (m + 5)) 1 ∧
+        Derivable (theory (m + 5)) (r.circ 4 (m + 5) * r0.circ 4 (m + 5)) 1) := by
+  have hc := chkInvS b1 b2 b3
+  have rb : ∀ {x : Lt}, x ∈ srots b1 b2 b3 → x.circ 5 (m + 5) = x.circ 4 (m + 5) :=
+    fun hx => srots_rebase hx
+  have m1 : SR1 b1 b2 b3 ∈ srots b1 b2 b3 := by simp [srots_eq]
+  have m2 : SR2 b1 b2 b3 ∈ srots b1 b2 b3 := by simp [srots_eq]
+  have m3 : SR3 b1 b2 b3 ∈ srots b1 b2 b3 := by simp [srots_eq]
+  have m4 : SR4 b1 b2 b3 ∈ srots b1 b2 b3 := by simp [srots_eq]
+  rw [srots_eq] at hr
+  simp only [List.mem_cons, List.mem_nil_iff, or_false] at hr
+  rcases hr with rfl | rfl | rfl | rfl
+  · exact ⟨_, by simp [srots2], Or.inl rfl⟩
+  · exact ⟨_, by simp [srots2], Or.inl rfl⟩
+  · exact ⟨SR2 b1 b2 b3, by simp [srots2], Or.inr
+      ⟨inv_of_chk ih (rb m3) (rb m2) hc.2.2.1, inv_of_chk ih (rb m2) (rb m3) hc.2.2.2⟩⟩
+  · exact ⟨SR1 b1 b2 b3, by simp [srots2], Or.inr
+      ⟨inv_of_chk ih (rb m4) (rb m1) hc.1, inv_of_chk ih (rb m1) (rb m4) hc.2.1⟩⟩
+
+/-- From the base cases to all rotations, on both sides. -/
+theorem comm_bases {m : ℕ} (ih : IH (m + 5)) {r0 r r1 r' : Lt}
+    (h : Comm (m + 5) (r0.circ 4 (m + 5)) ((pp : Circ (m + 5)) * r1.circ 4 (m + 5) * pp))
+    (e0 : r = r0 ∨ (Derivable (theory (m + 5)) (r0.circ 4 (m + 5) * r.circ 4 (m + 5)) 1 ∧
+        Derivable (theory (m + 5)) (r.circ 4 (m + 5) * r0.circ 4 (m + 5)) 1))
+    (e1 : r' = r1 ∨ (Derivable (theory (m + 5)) (r1.circ 4 (m + 5) * r'.circ 4 (m + 5)) 1 ∧
+        Derivable (theory (m + 5)) (r'.circ 4 (m + 5) * r1.circ 4 (m + 5)) 1)) :
+    Comm (m + 5) (r.circ 4 (m + 5)) ((pp : Circ (m + 5)) * r'.circ 4 (m + 5) * pp) := by
+  have h' : Comm (m + 5) (r0.circ 4 (m + 5)) ((pp : Circ (m + 5)) * r'.circ 4 (m + 5) * pp) := by
+    rcases e1 with rfl | ⟨i1, i2⟩
+    · exact h
+    · exact comm_inv_r h (conj_inv (pp5_inv m ih) i1) (conj_inv (pp5_inv m ih) i2)
+  rcases e0 with rfl | ⟨i1, i2⟩
+  · exact h'
+  · exact Comm.inv h' i1 i2
+
+theorem commRR337 {m : ℕ} (ih : IH (m + 5)) {b1 b3 c3 : Bool} {r r' : Lt}
+    (hr : r ∈ rots b1 true b3) (hr' : r' ∈ rots true false c3) :
+    Comm (m + 5) (r.circ 4 (m + 5)) ((pp : Circ (m + 5)) * r'.circ 4 (m + 5) * pp) := by
+  obtain ⟨r0, hr0, e0⟩ := rots_base m ih hr
+  obtain ⟨r1, hr1, e1⟩ := rots_base m ih hr'
+  exact comm_bases ih (comm_of_ppchk ih (rots_rebase (rots2_sub hr0)) (rots_rebase (rots2_sub hr1))
+    (chkRR337r b1 b3 c3 r0 hr0 r1 hr1)) e0 e1
+
+theorem commRR338 {m : ℕ} (ih : IH (m + 5)) {b1 b3 c3 : Bool} {r r' : Lt}
+    (hr : r ∈ rots b1 true b3) (hr' : r' ∈ srots true false c3) :
+    Comm (m + 5) (r.circ 4 (m + 5)) ((pp : Circ (m + 5)) * r'.circ 4 (m + 5) * pp) := by
+  obtain ⟨r0, hr0, e0⟩ := rots_base m ih hr
+  obtain ⟨r1, hr1, e1⟩ := srots_base m ih hr'
+  exact comm_bases ih (comm_of_ppchk ih (rots_rebase (rots2_sub hr0))
+    (srots_rebase (srots2_sub hr1)) (chkRR338r b1 b3 c3 r0 hr0 r1 hr1)) e0 e1
 
 /-! ## The pairs -/
 
@@ -247,7 +359,7 @@ theorem pairs337 (x y : ℕ → Bool) (c1 x3 y3 : Bool) :
   obtain ⟨g', hg', rfl⟩ := List.mem_map.1 hb'
   rcases pcs4_cls hg with hr | rfl <;> rcases pcs4_cls hg' with hr' | rfl
   · rw [rots_cX hr, rots_cX hr']
-    exact comm_of_ppchk ih (rots_rebase hr) (rots_rebase hr') (chkRR337 c1 x3 y3 g hr g' hr')
+    exact commRR337 ih hr hr'
   · rw [rots_cX hr, P3'_cX]
     obtain ⟨one, a, β, rfl⟩ := rots_Rr hr
     exact commR_ppB m ih y one a x3 β true
@@ -271,7 +383,7 @@ theorem pairs338 (x y : ℕ → Bool) (c1 x3 y3 : Bool) :
   · rw [rots_cX hr, rots_cX hr']
     obtain ⟨r'', hr'', hs⟩ := s0_rots (m + 5) (by omega) hr'
     exact Comm.congr (Derivable.refl _) (dright _ (dleft _ hs.symm))
-      (comm_of_ppchk ih (rots_rebase hr) (srots_rebase hr'') (chkRR338 c1 x3 y3 g hr r'' hr''))
+      (commRR338 ih hr hr'')
   · rw [rots_cX hr, P3'_cX]
     obtain ⟨one, a, β, rfl⟩ := rots_Rr hr
     exact Comm.congr (Derivable.refl _) (dright _ (dleft _ (sw_boxN m ih y true).symm))
