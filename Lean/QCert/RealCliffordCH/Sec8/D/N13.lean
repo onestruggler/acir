@@ -24,6 +24,8 @@ import QCert.RealCliffordCH.Sec8.D.N13.E344t
 import QCert.RealCliffordCH.Sec8.D.N13.E333
 import QCert.RealCliffordCH.Sec8.D.N13.E346
 import QCert.RealCliffordCH.Sec8.D.N13.Low342
+import QCert.RealCliffordCH.Sec8.D.N13.Low339W4
+import QCert.RealCliffordCH.Sec8.D.N13.Low344W4
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -142,8 +144,7 @@ theorem eq339 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
     Comm N (mc N .box [0] (ctlOr (ctlAt 2 c₁) (ctlOr (ctlAt 1 c₂) (colOn 3 N x))))
       (mc N .hg [1, 2] (ctlOr (ctlAt 0 c₃) (colOn 3 N y))) := by
   rcases (by omega : N = 4 ∨ N = 5 ∨ 6 ≤ N) with rfl | rfl | h6
-  · -- Width 4: open, worked on in `N13/Low339*`.
-    sorry
+  · exact N13.L339W4.eq339_4 ih x y hxy c₁ c₂ c₃
   · exact N13.L339.eq339_5 ih x y hxy c₁ c₂ c₃
   · exact N13.comm339_ge6 N h6 ih x y hxy c₁ c₂ c₃
 
@@ -200,8 +201,7 @@ theorem eq344 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
     Comm N (mc N .hg [0, 1] (ctlOr (ctlAt 2 c₁) (colOn 3 N x)))
       (mc N .hg [1, 2] (ctlOr (ctlAt 0 c₂) (colOn 3 N y))) := by
   rcases (by omega : N = 4 ∨ N = 5 ∨ 6 ≤ N) with rfl | rfl | h6
-  · -- Width 4: open, worked on in `N13/Low344*`.
-    sorry
+  · exact N13.L344W4.eq344_4 ih x y hxy c₁ c₂
   · exact N13.L344.eq344_5 ih x y hxy c₁ c₂
   · exact N13.comm344_ge6 N h6 ih x y hxy c₁ c₂
 
