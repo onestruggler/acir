@@ -476,3 +476,12 @@ development (21 standalone and eight rule branches). Table 1 remains at
 four 22-letter semantic windows passed 4.7 GB.  `HANDOVER.md` (package (v),
 second session) has the analysis, the wiring for `N13.lean` and the plan for
 the rest of the package.
+
+### Package (v), fourth session, 2026-10-29
+
+Built and wired: (339), (342), (344) from six wires on (`N13/E339b`,
+`E344s`, `E344t`, semantic separation, no decided window), (333), (334)
+(`N13/E333`, given (339) at the same width) and (346) at every width
+(`N13/E346`).  `eq339`, `eq342`, `eq344` keep one `sorry` branch for widths 4
+and 5 (another agent, `N13/Low339*` etc.).  Open: (347)–(352); the plan is in
+`HANDOVER.md` (package (v), fourth session).

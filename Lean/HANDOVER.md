@@ -504,3 +504,77 @@ vs conjugated rotation of `G`" becomes (322) by the relabeling 1 → 0, 3 → 1,
 0 → 3 and (274) (`commB_ppRw`), but then "rotation of `A` with target 0 vs
 `hg[1,3](2: ○, bulk)` idle on 0" is left; the paper's own chain (pages
 216–219: (244), (308), (214), (319), (215), (243), (111)) is the way there.
+
+### Package (v), fourth session (2026-10-29): (339), (342), (344) from six wires; (333), (334), (346)
+
+All built and committed (commits fcd0554e, d653953f, 78200cc9, f1e411a9); no
+file decides a semantic window; peaks 0.27–0.49 GB anonymous (watchdog
+`gen/sec8/n13/watch.sh` running in WSL).
+
+* `N13/E339b`: (339) from six wires on (`comm339_ge6`), steps 1–5 of the
+  third-session plan.  The predecessor's infeasible `E339`, `E339r1`–`r3`
+  are deleted (`E339a`, `E339s`, `Loc5` stay: `E339b` uses them).
+* `N13/E344s`, `E344t`: (342), (344) from six wires on (`comm342_ge6`,
+  `comm344_ge6`).  In (339)'s frame the first gate is `P ⊗ P` around
+  (339)'s box with `c₂` black (`hg0_box4`); conjugating the pair by `P ⊗ P`,
+  the second gate's pieces are `E339b`'s conjugated by a word `Q` on the
+  wires `0, 1` (`QOK`; `P ⊗ P` for (344), `P ⊗ P` and `S₀` for (342), since
+  (342)'s second gate is `BE` under `S₀`).  The pairs are generic in `Q`;
+  the two remainders, merged on their idle wires (309), are (338) under
+  `S₀` for (344) and (337) for (342).
+* `N13/E333`: (333) given (339) at the same width (`comm333`), and (334)
+  (`comm334`, from (333), (317), (311), (312)) — the paper's page-233 merge.
+  Reusable there: `mergeHg0`/`mergeListH0` ((310) with idle wires and over a
+  list of wires: a copy of `E/MergeHg`, which cannot be imported since
+  `E/Transport` imports `D/N15`), `hgR` (`S₁ (S₀ · S₀) S₁` carries
+  `hg[0, 1]` to `hg[2, 0]`), `hg_ch` (`CH` is `hg[2, 0]` with its only
+  control on wire `1`, by two swaps and (f4), at every width from three and
+  without completeness), `HGc_B` ((339) under the 3-cycle `0 → 1 → 2 → 0`).
+* `N13/E346`: (346) at every width from three (`comm346`): by (81) on both
+  gates (`MergeAll.colour_ind`) the rotation is black, (333)/(334) write it
+  as `HG333`, `B333`, and the box passes those by (338) under `S₁` and by
+  (336).  The paper's chain holds for every `x`, `y`, not only `x = y`.
+* `N13.lean`: `eq333`, `eq334`, `eq346` wired (they use `eq339`, which is
+  moved above them); `eq339`, `eq342`, `eq344` dispatch on the width: one
+  marked `sorry` branch for `N ≤ 5` each (the other agent's `N13/Low339*`,
+  `Low342*`, `Low344*`; replace the branch when those build), `6 ≤ N` from
+  `E339b`, `E344t`.
+
+**Left in package (v)**: `eq347`–`eq352`, and the width-4/5 branches.
+
+**Plan for (347)–(352)** (not started).  The paper (page 234): with (81),
+(315), (316), (333) and (334) write any coloured rotation as boxes and
+multi-controlled `H` "with a hole", and (335)–(345) apply "whenever there
+is a black control in front of a white one"; for (351) with `x = y` it is
+trivial (`a = b`) or (317).  Two ingredients are missing:
+1. Colour reduction as in `E346` (on both gates by (81); a control of one
+   gate on the other's box wire is absorbed by (315)/(316)), then the
+   decomposition of the black rotation (`HG333`, `B333`).
+2. The decomposition with the `H` gate's box wire on any wire `j ≥ 2`, not
+   only `2`.  It is needed: e.g. (347) reduces to `box[1](0: c₁, 2…: x)`
+   against the black `ZX`; the pieces are (335) under `S₀` and (339) under
+   the 3-cycle (as `HGc_B`), which needs `x` non-black on a wire `≥ 3`; if
+   `x` is non-black only on wire `2`, `HG333`'s box wire is `2` and that
+   pair is not separated (it does not commute).  The black rotation is
+   symmetric in its controls: for the swap of wires `j, j+1`, `j ≥ 3`, both
+   pieces pass it by `swBH`; for `j = 2` (and `1`) this is (353) at the
+   canonical position, whose paper proof (page 235) uses only (307), (310)
+   and (339), all available here (`D/N15/E353c` itself cannot be imported).
+   Prove `ZX ≈ drawn [hg[j,0](1, others black), B333, …]` for `j = 3`, and
+   choose the decomposition so that the separating wire is a control of
+   both pieces.
+Then: (348), (349) (`hg[0, 1]` against a rotation on wire `0`, resp. `1`):
+pieces against `HG` by (340)/(344)/(345) relabelled, against `B` by
+(337)/(338) relabelled; (350) is target `2`; (351) `x ≠ y` and (352) reduce
+to (347)-type pairs.  Three wires: the decomposition has no wire `≥ 3`, so
+check numerically which three-wire instances are not covered by
+(335)–(345) at `N = 3` and derive those separately.
+
+**Pitfalls met.**  `rcases … with rfl | …` inside a `macro` does not
+substitute (the pattern `rfl` gets macro scopes and becomes a variable):
+use `with h | h … <;> (try subst h)` (`ctl_case9`, `ctl_case33`).  The old
+`ctl_case` of `E339a` only works through its `simp_all` fallback, which
+times out when the context holds large `Derivable` hypotheses — prove
+control equalities in small lemmas.  `swBH`'s control functions cannot be
+left as `_` in a `have` (nothing determines them).  `dropW` is ambiguous
+between `Net` and `SE` when both are open.
