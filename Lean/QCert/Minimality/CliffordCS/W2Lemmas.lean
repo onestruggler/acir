@@ -31,8 +31,8 @@ def dRCX : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CSr trivial 0 0]
-    [.rw 2 2 false, .rw 1 2 false, .rw 3 0 false, .rw 3 0 true, .rw 0 0 true, .rw 1 1 false,
-    .rw 2 0 false, .rw 3 0 false, .rw 4 1 false]
+    [Step.rw 2 2 false, Step.rw 1 2 false, Step.rw 3 0 false, Step.rw 3 0 true, Step.rw 0 0 true, Step.rw 1 1 false,
+    Step.rw 2 0 false, Step.rw 3 0 false, Step.rw 4 1 false]
     (by decide +kernel)
 
 /-- `CPh~m`. -/
@@ -43,9 +43,9 @@ def dCPh_m : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CPh trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.S) 0 0]
-    [.rw 3 0 true, .rw 2 0 true, .rw 0 0 true, .rw 1 0 false, .rw 2 0 false, .rw 3 0 false,
-    .rw 6 0 true, .rw 5 2 true, .rw 4 0 false, .rw 5 0 false, .rw 1 1 false, .rw 1 0 true,
-    .rw 2 2 false, .rw 3 0 false, .rw 0 0 false]
+    [Step.rw 3 0 true, Step.rw 2 0 true, Step.rw 0 0 true, Step.rw 1 0 false, Step.rw 2 0 false, Step.rw 3 0 false,
+    Step.rw 6 0 true, Step.rw 5 2 true, Step.rw 4 0 false, Step.rw 5 0 false, Step.rw 1 1 false, Step.rw 1 0 true,
+    Step.rw 2 2 false, Step.rw 3 0 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `CPh^`. -/
@@ -55,8 +55,8 @@ def dCPhu : DEqn Th 2 where
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CSr trivial 0 0, dCPh_m.place 0 0]
-    [.rw 2 1 false, .rw 6 1 false, .rw 1 0 true, .rw 2 1 true, .rw 0 0 true, .rw 1 1 true,
-    .rw 0 2 false]
+    [Step.rw 2 1 false, Step.rw 6 1 false, Step.rw 1 0 true, Step.rw 2 1 true, Step.rw 0 0 true, Step.rw 1 1 true,
+    Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `lem:cs-C5-dec-eq`. -/
@@ -69,28 +69,28 @@ def dC5dec : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dRCX.place 0 0,
     dCPhu.place 0 0, DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0]
-    [.rw 0 1 true, .rw 4 1 true, .rw 8 1 true, .rw 0 1 false, .rw 2 1 false, .rw 4 1 false,
-    .rw 4 1 true, .rw 2 1 true, .rw 0 1 true, .rw 0 1 false, .rw 2 1 false, .rw 4 1 false,
-    .rw 4 1 true, .rw 2 1 true, .rw 0 1 true, .rw 0 0 true, .slide 2 0, .slide 3 1,
-    .rw 1 2 true, .rw 6 0 false, .rw 8 1 false, .rw 10 1 false, .rw 1 2 false,
-    .rw 0 1 false, .rw 0 1 true, .rw 1 2 true, .rw 10 1 true, .rw 8 1 true, .rw 6 0 true,
-    .slide 6 4, .rw 5 5 true, .rw 8 5 true, .rw 18 1 false, .rw 20 1 false, .rw 20 1 true,
-    .rw 18 1 true, .rw 7 0 true, .rw 11 0 true, .rw 16 0 true, .rw 7 0 false,
-    .rw 9 0 false, .rw 12 0 false, .rw 18 1 false, .rw 20 1 false, .rw 20 1 true,
-    .rw 18 1 true, .rw 12 0 true, .rw 9 0 true, .rw 7 0 true, .swap 15, .rw 12 4 false,
-    .swap 22, .rw 19 4 false, .rw 8 4 false, .rw 4 4 false, .rw 32 1 false, .rw 34 1 false,
-    .rw 9 3 false, .rw 8 1 false, .rw 11 3 false, .rw 10 1 false, .rw 10 1 true,
-    .rw 11 3 true, .rw 8 1 true, .rw 9 3 true, .rw 34 1 true, .rw 32 1 true,
-    .rw 23 6 false, .rw 31 1 false, .rw 9 3 false, .rw 8 1 false, .rw 11 3 false,
-    .rw 10 1 false, .rw 23 1 true, .rw 24 3 true, .rw 10 1 true, .rw 11 3 true,
-    .rw 8 1 true, .rw 9 3 true, .rw 23 3 true, .rw 24 6 false, .rw 9 3 false,
-    .rw 8 1 false, .rw 11 3 false, .rw 10 1 false, .rw 20 3 false, .rw 10 1 true,
-    .rw 11 3 true, .rw 8 1 true, .rw 9 3 true, .rw 16 4 true, .swap 19, .rw 21 4 true,
-    .swap 24, .rw 10 4 true, .rw 4 4 true, .rw 7 0 false, .rw 9 0 false, .rw 12 0 false,
-    .rw 12 0 true, .rw 9 0 true, .rw 7 0 true, .rw 16 0 false, .rw 11 0 false,
-    .rw 7 0 false, .rw 8 5 false, .rw 5 5 false, .slide 4 6, .rw 6 0 false, .rw 1 2 false,
-    .rw 0 1 false, .rw 0 1 true, .rw 1 2 true, .rw 6 0 true, .rw 1 2 false, .rw 2 0 false,
-    .rw 0 1 false, .rw 0 1 true, .rw 2 0 true, .rw 0 1 false, .rw 0 0 false]
+    [Step.rw 0 1 true, Step.rw 4 1 true, Step.rw 8 1 true, Step.rw 0 1 false, Step.rw 2 1 false, Step.rw 4 1 false,
+    Step.rw 4 1 true, Step.rw 2 1 true, Step.rw 0 1 true, Step.rw 0 1 false, Step.rw 2 1 false, Step.rw 4 1 false,
+    Step.rw 4 1 true, Step.rw 2 1 true, Step.rw 0 1 true, Step.rw 0 0 true, Step.slide 2 0, Step.slide 3 1,
+    Step.rw 1 2 true, Step.rw 6 0 false, Step.rw 8 1 false, Step.rw 10 1 false, Step.rw 1 2 false,
+    Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 1 2 true, Step.rw 10 1 true, Step.rw 8 1 true, Step.rw 6 0 true,
+    Step.slide 6 4, Step.rw 5 5 true, Step.rw 8 5 true, Step.rw 18 1 false, Step.rw 20 1 false, Step.rw 20 1 true,
+    Step.rw 18 1 true, Step.rw 7 0 true, Step.rw 11 0 true, Step.rw 16 0 true, Step.rw 7 0 false,
+    Step.rw 9 0 false, Step.rw 12 0 false, Step.rw 18 1 false, Step.rw 20 1 false, Step.rw 20 1 true,
+    Step.rw 18 1 true, Step.rw 12 0 true, Step.rw 9 0 true, Step.rw 7 0 true, Step.swap 15, Step.rw 12 4 false,
+    Step.swap 22, Step.rw 19 4 false, Step.rw 8 4 false, Step.rw 4 4 false, Step.rw 32 1 false, Step.rw 34 1 false,
+    Step.rw 9 3 false, Step.rw 8 1 false, Step.rw 11 3 false, Step.rw 10 1 false, Step.rw 10 1 true,
+    Step.rw 11 3 true, Step.rw 8 1 true, Step.rw 9 3 true, Step.rw 34 1 true, Step.rw 32 1 true,
+    Step.rw 23 6 false, Step.rw 31 1 false, Step.rw 9 3 false, Step.rw 8 1 false, Step.rw 11 3 false,
+    Step.rw 10 1 false, Step.rw 23 1 true, Step.rw 24 3 true, Step.rw 10 1 true, Step.rw 11 3 true,
+    Step.rw 8 1 true, Step.rw 9 3 true, Step.rw 23 3 true, Step.rw 24 6 false, Step.rw 9 3 false,
+    Step.rw 8 1 false, Step.rw 11 3 false, Step.rw 10 1 false, Step.rw 20 3 false, Step.rw 10 1 true,
+    Step.rw 11 3 true, Step.rw 8 1 true, Step.rw 9 3 true, Step.rw 16 4 true, Step.swap 19, Step.rw 21 4 true,
+    Step.swap 24, Step.rw 10 4 true, Step.rw 4 4 true, Step.rw 7 0 false, Step.rw 9 0 false, Step.rw 12 0 false,
+    Step.rw 12 0 true, Step.rw 9 0 true, Step.rw 7 0 true, Step.rw 16 0 false, Step.rw 11 0 false,
+    Step.rw 7 0 false, Step.rw 8 5 false, Step.rw 5 5 false, Step.slide 4 6, Step.rw 6 0 false, Step.rw 1 2 false,
+    Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 1 2 true, Step.rw 6 0 true, Step.rw 1 2 false, Step.rw 2 0 false,
+    Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 2 0 true, Step.rw 0 1 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `lem:cs-C7-dec-eq`. -/
@@ -101,12 +101,12 @@ def dC7dec : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dCPhu.place 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.S) 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CSr trivial 0 0, dC5dec.place 0 0]
-    [.rw 1 1 true, .rw 0 3 false, .rw 3 3 false, .rw 6 3 false, .rw 11 3 false,
-    .rw 9 3 false, .rw 2 0 false, .rw 3 0 false, .rw 4 0 false, .rw 4 0 true, .rw 3 0 true,
-    .rw 2 0 true, .rw 0 0 true, .rw 1 0 false, .rw 2 0 false, .rw 3 0 false, .rw 4 0 false,
-    .rw 7 0 true, .rw 6 2 true, .rw 5 0 false, .rw 6 0 false, .rw 1 4 false, .rw 2 0 true,
-    .rw 1 0 true, .rw 2 2 false, .rw 3 0 false, .rw 0 0 false, .rw 2 3 false,
-    .rw 1 0 false, .rw 2 0 false]
+    [Step.rw 1 1 true, Step.rw 0 3 false, Step.rw 3 3 false, Step.rw 6 3 false, Step.rw 11 3 false,
+    Step.rw 9 3 false, Step.rw 2 0 false, Step.rw 3 0 false, Step.rw 4 0 false, Step.rw 4 0 true, Step.rw 3 0 true,
+    Step.rw 2 0 true, Step.rw 0 0 true, Step.rw 1 0 false, Step.rw 2 0 false, Step.rw 3 0 false, Step.rw 4 0 false,
+    Step.rw 7 0 true, Step.rw 6 2 true, Step.rw 5 0 false, Step.rw 6 0 false, Step.rw 1 4 false, Step.rw 2 0 true,
+    Step.rw 1 0 true, Step.rw 2 2 false, Step.rw 3 0 false, Step.rw 0 0 false, Step.rw 2 3 false,
+    Step.rw 1 0 false, Step.rw 2 0 false]
     (by decide +kernel)
 
 /-- `U2 c11`. -/
@@ -117,9 +117,9 @@ def dU2_c11 : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 1 0, dC5dec.place 0 0,
     dC7dec.place 0 0]
-    [.rw 5 0 false, .rw 5 0 true, .rw 5 0 false, .rw 4 3 true, .rw 5 3 true, .rw 3 3 true,
-    .rw 4 3 true, .rw 5 1 false, .rw 5 1 true, .rw 1 2 false, .rw 1 1 false, .rw 0 0 false,
-    .rw 0 0 true, .rw 0 0 false]
+    [Step.rw 5 0 false, Step.rw 5 0 true, Step.rw 5 0 false, Step.rw 4 3 true, Step.rw 5 3 true, Step.rw 3 3 true,
+    Step.rw 4 3 true, Step.rw 5 1 false, Step.rw 5 1 true, Step.rw 1 2 false, Step.rw 1 1 false, Step.rw 0 0 false,
+    Step.rw 0 0 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `B2 P00`. -/
@@ -128,7 +128,7 @@ def dB2_P00 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dU2_c11.place 0 0]
-    [.rw 5 0 false, .rw 5 0 true, .rw 0 1 false]
+    [Step.rw 5 0 false, Step.rw 5 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `B2 P11`. -/
@@ -137,7 +137,7 @@ def dB2_P11 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0]
-    [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+    [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `U2 c33`. -/
@@ -146,7 +146,7 @@ def dU2_c33 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dC5dec.place 0 0]
-    [.rw 3 0 false, .rw 3 0 true, .rw 3 0 false, .rw 1 1 false, .rw 0 0 false]
+    [Step.rw 3 0 false, Step.rw 3 0 true, Step.rw 3 0 false, Step.rw 1 1 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `B2 P22`. -/
@@ -155,7 +155,7 @@ def dB2_P22 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dU2_c33.place 0 0]
-    [.rw 3 0 false, .rw 3 0 true, .rw 0 1 false]
+    [Step.rw 3 0 false, Step.rw 3 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `U2 c13`. -/
@@ -164,7 +164,7 @@ def dU2_c13 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.H, 0), (.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dC7dec.place 0 0]
-    [.rw 3 0 false, .rw 4 1 false, .rw 5 1 false, .rw 3 1 false, .rw 4 1 false, .rw 5 0 true]
+    [Step.rw 3 0 false, Step.rw 4 1 false, Step.rw 5 1 false, Step.rw 3 1 false, Step.rw 4 1 false, Step.rw 5 0 true]
     (by decide +kernel)
 
 /-- `B2 P02`. -/
@@ -173,7 +173,7 @@ def dB2_P02 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0), (.H, 0), (.H, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dU2_c13.place 0 0]
-    [.rw 5 0 false, .rw 5 0 true, .rw 0 1 true, .rw 3 0 false, .rw 3 0 true]
+    [Step.rw 5 0 false, Step.rw 5 0 true, Step.rw 0 1 true, Step.rw 3 0 false, Step.rw 3 0 true]
     (by decide +kernel)
 
 /-- `U2 xx0`. -/
@@ -183,8 +183,8 @@ def dU2_xx0 : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 1 0]
-    [.rw 3 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 3 0 true,
-    .rw 3 0 false, .rw 1 1 false, .rw 0 0 false]
+    [Step.rw 3 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 3 0 true,
+    Step.rw 3 0 false, Step.rw 1 1 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `U2 cs1`. -/
@@ -198,11 +198,11 @@ def dU2_cs1 : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.XCS trivial 0 0, dU2_xx0.place 0 0,
     dC5dec.place 0 0, dC7dec.place 0 0]
-    [.slide 8 4, .slide 16 12, .slide 17 13, .slide 18 14, .slide 19 15, .rw 3 1 false,
-    .rw 9 1 false, .slide 12 9, .slide 13 10, .slide 14 11, .slide 15 12, .rw 8 4 false,
-    .rw 7 7 false, .slide 7 3, .rw 8 4 false, .slide 8 4, .rw 8 0 false, .rw 6 2 false,
-    .rw 5 0 false, .rw 1 3 false, .rw 1 6 false, .rw 1 3 true, .rw 7 1 true, .rw 5 1 true,
-    .rw 3 1 true, .rw 0 5 false, .rw 3 1 false, .rw 3 1 true, .rw 3 1 false]
+    [Step.slide 8 4, Step.slide 16 12, Step.slide 17 13, Step.slide 18 14, Step.slide 19 15, Step.rw 3 1 false,
+    Step.rw 9 1 false, Step.slide 12 9, Step.slide 13 10, Step.slide 14 11, Step.slide 15 12, Step.rw 8 4 false,
+    Step.rw 7 7 false, Step.slide 7 3, Step.rw 8 4 false, Step.slide 8 4, Step.rw 8 0 false, Step.rw 6 2 false,
+    Step.rw 5 0 false, Step.rw 1 3 false, Step.rw 1 6 false, Step.rw 1 3 true, Step.rw 7 1 true, Step.rw 5 1 true,
+    Step.rw 3 1 true, Step.rw 0 5 false, Step.rw 3 1 false, Step.rw 3 1 true, Step.rw 3 1 false]
     (by decide +kernel)
 
 /-- `U2 xx1`. -/
@@ -212,8 +212,8 @@ def dU2_xx1 : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 1]
-    [.rw 3 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 3 0 true,
-    .rw 3 0 false, .rw 1 1 false, .rw 0 0 false]
+    [Step.rw 3 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 3 0 true,
+    Step.rw 3 0 false, Step.rw 1 1 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `U2 mX1`. -/
@@ -224,7 +224,7 @@ def dU2_mX1 : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.S) 0 0]
-    [.rw 0 0 true, .rw 1 1 false, .rw 2 2 false, .rw 3 2 false, .rw 4 1 false]
+    [Step.rw 0 0 true, Step.rw 1 1 false, Step.rw 2 2 false, Step.rw 3 2 false, Step.rw 4 1 false]
     (by decide +kernel)
 
 /-- `U2 sXX`. -/
@@ -239,12 +239,12 @@ def dU2_sXX : DEqn Th 2 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dU2_xx0.place 0 0,
     dU2_xx1.place 0 0, DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.S) 0 0, dU2_mX1.place 0 0]
-    [.slide 4 0, .slide 5 1, .slide 6 2, .slide 7 3, .rw 4 9 false, .rw 9 4 false,
-    .rw 8 1 false, .rw 6 3 false, .rw 5 1 false, .rw 4 0 true, .rw 5 2 true, .rw 7 0 true,
-    .rw 12 7 false, .slide 12 4, .rw 13 8 false, .slide 13 5, .rw 14 8 false, .slide 14 6,
-    .rw 15 7 false, .slide 15 7, .rw 11 0 false, .rw 3 1 false, .rw 7 2 false,
-    .rw 6 0 false, .rw 1 3 false, .rw 0 1 false, .rw 0 1 true, .rw 1 3 true, .rw 6 0 true,
-    .rw 7 2 true, .rw 3 1 true, .rw 11 0 true, .rw 8 6 false, .rw 0 5 false]
+    [Step.slide 4 0, Step.slide 5 1, Step.slide 6 2, Step.slide 7 3, Step.rw 4 9 false, Step.rw 9 4 false,
+    Step.rw 8 1 false, Step.rw 6 3 false, Step.rw 5 1 false, Step.rw 4 0 true, Step.rw 5 2 true, Step.rw 7 0 true,
+    Step.rw 12 7 false, Step.slide 12 4, Step.rw 13 8 false, Step.slide 13 5, Step.rw 14 8 false, Step.slide 14 6,
+    Step.rw 15 7 false, Step.slide 15 7, Step.rw 11 0 false, Step.rw 3 1 false, Step.rw 7 2 false,
+    Step.rw 6 0 false, Step.rw 1 3 false, Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 1 3 true, Step.rw 6 0 true,
+    Step.rw 7 2 true, Step.rw 3 1 true, Step.rw 11 0 true, Step.rw 8 6 false, Step.rw 0 5 false]
     (by decide +kernel)
 
 /-- `lem:cs-C5-dec-eq~m`. -/
@@ -253,8 +253,8 @@ def dC5dec_m : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dC5dec.place 0 0]
-    [.rw 4 0 true, .rw 3 0 true, .rw 2 0 true, .rw 0 0 true, .rw 1 0 false, .rw 2 0 false,
-    .rw 3 0 false, .rw 4 0 false, .rw 1 1 false, .rw 0 0 false]
+    [Step.rw 4 0 true, Step.rw 3 0 true, Step.rw 2 0 true, Step.rw 0 0 true, Step.rw 1 0 false, Step.rw 2 0 false,
+    Step.rw 3 0 false, Step.rw 4 0 false, Step.rw 1 1 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `U2 b23`. -/
@@ -265,8 +265,8 @@ def dU2_b23 : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0, dC5dec_m.place 0 0]
-    [.rw 4 1 true, .rw 3 0 true, .rw 2 0 true, .rw 1 1 true, .rw 0 0 false, .rw 3 0 false,
-    .rw 4 1 false, .rw 0 3 true, .rw 5 1 false, .rw 6 0 false, .rw 5 2 true, .rw 0 3 false]
+    [Step.rw 4 1 true, Step.rw 3 0 true, Step.rw 2 0 true, Step.rw 1 1 true, Step.rw 0 0 false, Step.rw 3 0 false,
+    Step.rw 4 1 false, Step.rw 0 3 true, Step.rw 5 1 false, Step.rw 6 0 false, Step.rw 5 2 true, Step.rw 0 3 false]
     (by decide +kernel)
 
 /-- `U2 cs1~m`. -/
@@ -278,16 +278,16 @@ def dU2_cs1_m : DEqn Th 2 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dU2_cs1.place 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.S) 0 0]
-    [.rw 9 1 true, .rw 17 0 true, .rw 7 0 true, .slide 19 15, .slide 3 7, .slide 2 6,
-    .slide 1 5, .slide 0 4, .rw 0 1 true, .rw 1 3 false, .rw 2 4 false, .rw 3 4 false,
-    .rw 4 3 false, .rw 7 1 true, .rw 6 3 true, .rw 5 1 false, .rw 8 1 true, .rw 7 4 true,
-    .rw 6 1 false, .rw 9 1 true, .rw 8 4 true, .rw 7 1 false, .rw 10 1 true, .rw 9 3 true,
-    .rw 8 1 false, .rw 9 3 false, .rw 10 1 false, .rw 11 1 false, .rw 12 3 false,
-    .rw 15 1 true, .rw 14 3 true, .rw 13 1 false, .rw 16 1 true, .rw 15 4 true,
-    .rw 14 1 false, .rw 17 1 true, .rw 16 4 true, .rw 15 1 false, .rw 18 1 true,
-    .rw 17 3 true, .rw 16 1 false, .rw 17 3 false, .rw 18 4 false, .rw 19 4 false,
-    .rw 20 3 false, .rw 1 2 false, .rw 6 3 true, .rw 5 4 true, .rw 4 4 true, .rw 3 1 true,
-    .rw 2 1 true, .rw 1 3 true, .rw 0 1 false, .rw 3 1 false]
+    [Step.rw 9 1 true, Step.rw 17 0 true, Step.rw 7 0 true, Step.slide 19 15, Step.slide 3 7, Step.slide 2 6,
+    Step.slide 1 5, Step.slide 0 4, Step.rw 0 1 true, Step.rw 1 3 false, Step.rw 2 4 false, Step.rw 3 4 false,
+    Step.rw 4 3 false, Step.rw 7 1 true, Step.rw 6 3 true, Step.rw 5 1 false, Step.rw 8 1 true, Step.rw 7 4 true,
+    Step.rw 6 1 false, Step.rw 9 1 true, Step.rw 8 4 true, Step.rw 7 1 false, Step.rw 10 1 true, Step.rw 9 3 true,
+    Step.rw 8 1 false, Step.rw 9 3 false, Step.rw 10 1 false, Step.rw 11 1 false, Step.rw 12 3 false,
+    Step.rw 15 1 true, Step.rw 14 3 true, Step.rw 13 1 false, Step.rw 16 1 true, Step.rw 15 4 true,
+    Step.rw 14 1 false, Step.rw 17 1 true, Step.rw 16 4 true, Step.rw 15 1 false, Step.rw 18 1 true,
+    Step.rw 17 3 true, Step.rw 16 1 false, Step.rw 17 3 false, Step.rw 18 4 false, Step.rw 19 4 false,
+    Step.rw 20 3 false, Step.rw 1 2 false, Step.rw 6 3 true, Step.rw 5 4 true, Step.rw 4 4 true, Step.rw 3 1 true,
+    Step.rw 2 1 true, Step.rw 1 3 true, Step.rw 0 1 false, Step.rw 3 1 false]
     (by decide +kernel)
 
 /-- `U2 b12`. -/
@@ -303,19 +303,19 @@ def dU2_b12 : DEqn Th 2 where
     dU2_sXX.place 0 0, dU2_b23.place 0 0, dU2_xx0.place 0 0, dU2_xx1.place 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.S) 0 0, dU2_cs1_m.place 0 0]
-    [.rw 7 5 true, .slide 15 11, .slide 23 19, .slide 24 20, .slide 25 21, .slide 26 22,
-    .rw 0 5 true, .slide 15 19, .slide 14 18, .slide 13 17, .slide 12 16, .slide 8 4,
-    .rw 3 1 false, .rw 9 1 false, .rw 20 1 false, .rw 26 1 false, .rw 26 1 true,
-    .rw 20 1 true, .rw 9 1 true, .rw 3 1 true, .slide 16 12, .slide 17 13, .slide 18 14,
-    .slide 19 15, .slide 25 29, .rw 12 6 false, .rw 3 1 false, .rw 14 1 false,
-    .rw 14 1 true, .rw 3 1 true, .slide 4 8, .rw 8 7 true, .rw 9 9 true, .slide 17 9,
-    .rw 20 9 true, .slide 28 20, .rw 21 8 true, .rw 9 8 true, .rw 21 0 false,
-    .rw 38 0 false, .rw 12 1 false, .rw 14 1 false, .rw 22 1 false, .rw 24 1 false,
-    .rw 15 2 false, .rw 14 0 false, .rw 22 2 false, .rw 21 0 false, .rw 10 3 false,
-    .rw 12 3 false, .rw 7 4 true, .rw 8 10 false, .rw 9 4 false, .rw 8 1 false,
-    .slide 16 12, .rw 10 10 true, .rw 11 0 false, .rw 0 12 false, .rw 3 4 true,
-    .rw 0 4 true, .rw 1 10 false, .rw 2 4 false, .rw 3 4 false, .rw 4 11 false,
-    .rw 5 11 false, .rw 6 10 false]
+    [Step.rw 7 5 true, Step.slide 15 11, Step.slide 23 19, Step.slide 24 20, Step.slide 25 21, Step.slide 26 22,
+    Step.rw 0 5 true, Step.slide 15 19, Step.slide 14 18, Step.slide 13 17, Step.slide 12 16, Step.slide 8 4,
+    Step.rw 3 1 false, Step.rw 9 1 false, Step.rw 20 1 false, Step.rw 26 1 false, Step.rw 26 1 true,
+    Step.rw 20 1 true, Step.rw 9 1 true, Step.rw 3 1 true, Step.slide 16 12, Step.slide 17 13, Step.slide 18 14,
+    Step.slide 19 15, Step.slide 25 29, Step.rw 12 6 false, Step.rw 3 1 false, Step.rw 14 1 false,
+    Step.rw 14 1 true, Step.rw 3 1 true, Step.slide 4 8, Step.rw 8 7 true, Step.rw 9 9 true, Step.slide 17 9,
+    Step.rw 20 9 true, Step.slide 28 20, Step.rw 21 8 true, Step.rw 9 8 true, Step.rw 21 0 false,
+    Step.rw 38 0 false, Step.rw 12 1 false, Step.rw 14 1 false, Step.rw 22 1 false, Step.rw 24 1 false,
+    Step.rw 15 2 false, Step.rw 14 0 false, Step.rw 22 2 false, Step.rw 21 0 false, Step.rw 10 3 false,
+    Step.rw 12 3 false, Step.rw 7 4 true, Step.rw 8 10 false, Step.rw 9 4 false, Step.rw 8 1 false,
+    Step.slide 16 12, Step.rw 10 10 true, Step.rw 11 0 false, Step.rw 0 12 false, Step.rw 3 4 true,
+    Step.rw 0 4 true, Step.rw 1 10 false, Step.rw 2 4 false, Step.rw 3 4 false, Step.rw 4 11 false,
+    Step.rw 5 11 false, Step.rw 6 10 false]
     (by decide +kernel)
 
 /-- `B2 P010`. -/
@@ -324,7 +324,7 @@ def dB2_P010 : DEqn Th 2 where
   rhs := tw 2 [(.SW, 0), (.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0), (.H, 0), (.SW, 0)]
   proof := derive hsc
     [dU2_b12.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `B2 P121`. -/
@@ -334,8 +334,8 @@ def dB2_P121 : DEqn Th 2 where
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0, dU2_b23.place 0 0]
-    [.rw 4 1 true, .rw 3 0 true, .rw 2 0 true, .rw 1 1 true, .rw 0 0 false, .rw 3 0 false,
-    .rw 4 1 false, .rw 0 0 true, .rw 1 1 false, .rw 2 0 false, .rw 0 2 false]
+    [Step.rw 4 1 true, Step.rw 3 0 true, Step.rw 2 0 true, Step.rw 1 1 true, Step.rw 0 0 false, Step.rw 3 0 false,
+    Step.rw 4 1 false, Step.rw 0 0 true, Step.rw 1 1 false, Step.rw 2 0 false, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `U2 mX0`. -/
@@ -344,7 +344,7 @@ def dU2_mX0 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0), (.H, 0), (.H, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dC5dec.place 0 0]
-    [.rw 1 1 true, .rw 3 0 true, .rw 3 0 false, .rw 3 0 true]
+    [Step.rw 1 1 true, Step.rw 3 0 true, Step.rw 3 0 false, Step.rw 3 0 true]
     (by decide +kernel)
 
 /-- `B2 PX0`. -/
@@ -354,7 +354,7 @@ def dB2_PX0 : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dU2_mX0.place 0 0,
     dU2_c13.place 0 0]
-    [.rw 0 1 false, .rw 3 0 false, .rw 3 0 true, .rw 0 2 false, .rw 5 0 false, .rw 5 0 true]
+    [Step.rw 0 1 false, Step.rw 3 0 false, Step.rw 3 0 true, Step.rw 0 2 false, Step.rw 5 0 false, Step.rw 5 0 true]
     (by decide +kernel)
 
 /-- `B2 PX1`. -/
@@ -365,7 +365,7 @@ def dB2_PX1 : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.S) 0 0]
-    [.rw 0 0 true, .rw 1 1 false, .rw 2 2 false, .rw 3 2 false, .rw 4 1 false]
+    [Step.rw 0 0 true, Step.rw 1 1 false, Step.rw 2 2 false, Step.rw 3 2 false, Step.rw 4 1 false]
     (by decide +kernel)
 
 /-- `CE~m`. -/
@@ -377,11 +377,11 @@ def dCE_m : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CE trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.S) 0 0]
-    [.rw 0 0 true, .rw 1 0 false, .rw 4 0 true, .rw 3 2 true, .rw 2 0 false, .rw 3 0 false,
-    .rw 6 0 true, .rw 5 2 true, .rw 4 0 false, .rw 7 0 true, .rw 6 3 true, .rw 5 0 false,
-    .rw 1 1 false, .rw 5 0 true, .rw 4 0 true, .rw 5 2 false, .rw 6 0 false, .rw 3 0 true,
-    .rw 2 0 true, .rw 3 2 false, .rw 4 0 false, .rw 1 0 true, .rw 2 3 false, .rw 3 0 false,
-    .rw 0 0 false]
+    [Step.rw 0 0 true, Step.rw 1 0 false, Step.rw 4 0 true, Step.rw 3 2 true, Step.rw 2 0 false, Step.rw 3 0 false,
+    Step.rw 6 0 true, Step.rw 5 2 true, Step.rw 4 0 false, Step.rw 7 0 true, Step.rw 6 3 true, Step.rw 5 0 false,
+    Step.rw 1 1 false, Step.rw 5 0 true, Step.rw 4 0 true, Step.rw 5 2 false, Step.rw 6 0 false, Step.rw 3 0 true,
+    Step.rw 2 0 true, Step.rw 3 2 false, Step.rw 4 0 false, Step.rw 1 0 true, Step.rw 2 3 false, Step.rw 3 0 false,
+    Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `CE^`. -/
@@ -390,7 +390,7 @@ def dCEu : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.S, 0)]
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.CSr trivial 0 0, dCE_m.place 0 0]
-    [.rw 0 0 false, .rw 4 0 false, .rw 0 1 false, .rw 6 0 true, .rw 2 0 true]
+    [Step.rw 0 0 false, Step.rw 4 0 false, Step.rw 0 1 false, Step.rw 6 0 true, Step.rw 2 0 true]
     (by decide +kernel)
 
 /-- `U2 nsg`. -/
@@ -399,7 +399,7 @@ def dU2_nsg : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.S, 0), (.CS, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dCEu.place 0 0, dC5dec.place 0 0, dC7dec.place 0 0]
-    [.rw 7 1 true, .rw 6 2 true, .rw 3 1 false, .rw 0 1 true, .rw 3 0 false, .rw 7 1 false]
+    [Step.rw 7 1 true, Step.rw 6 2 true, Step.rw 3 1 false, Step.rw 0 1 true, Step.rw 3 0 false, Step.rw 7 1 false]
     (by decide +kernel)
 
 /-- `U2 zg`. -/
@@ -408,7 +408,7 @@ def dU2_zg : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dU2_nsg.place 0 0, dC5dec.place 0 0, dC7dec.place 0 0]
-    [.rw 6 1 true, .rw 5 2 true, .rw 0 0 false, .rw 4 0 false, .rw 2 2 false, .rw 3 1 false]
+    [Step.rw 6 1 true, Step.rw 5 2 true, Step.rw 0 0 false, Step.rw 4 0 false, Step.rw 2 2 false, Step.rw 3 1 false]
     (by decide +kernel)
 
 /-- `U2 i1`. -/
@@ -417,8 +417,8 @@ def dU2_i1 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dU2_zg.place 0 0]
-    [.rw 0 0 true, .rw 0 0 false, .rw 0 0 true, .rw 0 0 false, .rw 0 0 true, .rw 1 1 false,
-    .rw 7 0 false, .rw 7 0 true, .rw 7 0 false]
+    [Step.rw 0 0 true, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 false,
+    Step.rw 7 0 false, Step.rw 7 0 true, Step.rw 7 0 false]
     (by decide +kernel)
 
 /-- `B2 St0cs`. -/
@@ -427,7 +427,7 @@ def dB2_St0cs : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dU2_i1.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `U2 i2`. -/
@@ -437,7 +437,7 @@ def dU2_i2 : DEqn Th 2 where
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CSr trivial 0 0]
-    [.rw 0 1 false, .rw 2 0 false]
+    [Step.rw 0 1 false, Step.rw 2 0 false]
     (by decide +kernel)
 
 /-- `B2 St1cs`. -/
@@ -446,7 +446,7 @@ def dB2_St1cs : DEqn Th 2 where
   rhs := tw 2 [(.SW, 0), (.CS, 0)]
   proof := derive hsc
     [dU2_i2.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `lem:cs-C6-dec-eq`. -/
@@ -455,7 +455,7 @@ def dC6dec : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.S, 1)]
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.CPh trivial 0 0, dC5dec.place 0 0]
-    [.rw 1 0 true, .rw 0 1 false]
+    [Step.rw 1 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB0 S1CS`. -/
@@ -464,7 +464,7 @@ def dKB0_S1CS : DEqn Th 2 where
   rhs := tw 2 [(.S, 1), (.CS, 0)]
   proof := derive hsc
     [dC6dec.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `KB r15`. -/
@@ -473,7 +473,7 @@ def dKB_r15 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.S, 1)]
   proof := derive hsc
     [dKB0_S1CS.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `KB0 S0CS`. -/
@@ -482,7 +482,7 @@ def dKB0_S0CS : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.CS, 0)]
   proof := derive hsc
     [dC7dec.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `KB r17`. -/
@@ -491,7 +491,7 @@ def dKB_r17 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.CS, 0)]
   proof := derive hsc
     [dKB0_S0CS.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `KB0 CE^`. -/
@@ -500,7 +500,7 @@ def dKB0_CEu : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.S, 0)]
   proof := derive hsc
     [dCEu.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `KB r25`. -/
@@ -509,7 +509,7 @@ def dKB_r25 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB0_CEu.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `KB0 CS4`. -/
@@ -518,7 +518,7 @@ def dKB0_CS4 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [dC5dec.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `KB r23`. -/
@@ -527,7 +527,7 @@ def dKB_r23 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [dKB0_CS4.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `KB0 S04`. -/
@@ -536,7 +536,7 @@ def dKB0_S04 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 1 0]
-    [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+    [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `KB r19`. -/
@@ -545,7 +545,7 @@ def dKB_r19 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [dKB0_S04.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `KB r66`. -/
@@ -554,7 +554,7 @@ def dKB_r66 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r17.place 0 0, dKB_r25.place 0 0, dKB_r19.place 0 0]
-    [.rw 0 0 true, .rw 1 0 true, .rw 2 0 true, .rw 3 1 true, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 0 true, Step.rw 2 0 true, Step.rw 3 1 true, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r68`. -/
@@ -563,7 +563,7 @@ def dKB_r68 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r23.place 0 0, dKB_r66.place 0 0]
-    [.rw 0 0 true, .rw 3 1 false]
+    [Step.rw 0 0 true, Step.rw 3 1 false]
     (by decide +kernel)
 
 /-- `KB r122`. -/
@@ -572,7 +572,7 @@ def dKB_r122 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r17.place 0 0, dKB_r25.place 0 0, dKB_r68.place 0 0]
-    [.rw 0 0 true, .rw 1 0 true, .rw 2 1 true, .rw 6 0 true, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 0 true, Step.rw 2 1 true, Step.rw 6 0 true, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB0 S1H0`. -/
@@ -581,7 +581,7 @@ def dKB0_S1H0 : DEqn Th 2 where
   rhs := tw 2 [(.S, 1), (.H, 0)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- `KB r13`. -/
@@ -590,7 +590,7 @@ def dKB_r13 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 1)]
   proof := derive hsc
     [dKB0_S1H0.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `KB0 H2`. -/
@@ -599,7 +599,7 @@ def dKB0_H2 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0]
-    [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+    [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `KB r1`. -/
@@ -608,7 +608,7 @@ def dKB_r1 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [dKB0_H2.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `XCS~m`. -/
@@ -620,12 +620,12 @@ def dXCS_m : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.XCS trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.S) 0 0]
-    [.rw 0 0 true, .rw 1 0 false, .rw 4 0 true, .rw 3 2 true, .rw 2 0 false, .rw 5 0 true,
-    .rw 4 3 true, .rw 3 0 false, .rw 6 0 true, .rw 5 3 true, .rw 4 0 false, .rw 7 0 true,
-    .rw 6 2 true, .rw 5 0 false, .rw 1 1 false, .rw 8 0 true, .rw 7 0 true, .rw 6 0 true,
-    .rw 5 0 true, .rw 6 2 false, .rw 7 0 false, .rw 4 0 true, .rw 5 3 false, .rw 6 0 false,
-    .rw 3 0 true, .rw 4 3 false, .rw 5 0 false, .rw 2 0 true, .rw 3 2 false, .rw 4 0 false,
-    .rw 1 3 true, .rw 0 0 false, .slide 0 4, .rw 7 0 false, .rw 8 0 false]
+    [Step.rw 0 0 true, Step.rw 1 0 false, Step.rw 4 0 true, Step.rw 3 2 true, Step.rw 2 0 false, Step.rw 5 0 true,
+    Step.rw 4 3 true, Step.rw 3 0 false, Step.rw 6 0 true, Step.rw 5 3 true, Step.rw 4 0 false, Step.rw 7 0 true,
+    Step.rw 6 2 true, Step.rw 5 0 false, Step.rw 1 1 false, Step.rw 8 0 true, Step.rw 7 0 true, Step.rw 6 0 true,
+    Step.rw 5 0 true, Step.rw 6 2 false, Step.rw 7 0 false, Step.rw 4 0 true, Step.rw 5 3 false, Step.rw 6 0 false,
+    Step.rw 3 0 true, Step.rw 4 3 false, Step.rw 5 0 false, Step.rw 2 0 true, Step.rw 3 2 false, Step.rw 4 0 false,
+    Step.rw 1 3 true, Step.rw 0 0 false, Step.slide 0 4, Step.rw 7 0 false, Step.rw 8 0 false]
     (by decide +kernel)
 
 /-- `XCS^`. -/
@@ -635,8 +635,8 @@ def dXCSu : DEqn Th 2 where
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CSr trivial 0 0, dXCS_m.place 0 0]
-    [.rw 0 1 false, .rw 0 2 false, .rw 8 1 false, .rw 10 0 false, .rw 7 0 true,
-    .rw 8 1 true, .rw 5 1 true, .slide 4 0]
+    [Step.rw 0 1 false, Step.rw 0 2 false, Step.rw 8 1 false, Step.rw 10 0 false, Step.rw 7 0 true,
+    Step.rw 8 1 true, Step.rw 5 1 true, Step.slide 4 0]
     (by decide +kernel)
 
 /-- `KB0 XCS^`. -/
@@ -645,7 +645,7 @@ def dKB0_XCSu : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 0), (.S, 0), (.H, 0), (.S, 1)]
   proof := derive hsc
     [dXCSu.place 0 0]
-    [.rw 0 0 false, .slide 0 4, .slide 4 0]
+    [Step.rw 0 0 false, Step.slide 0 4, Step.slide 4 0]
     (by decide +kernel)
 
 /-- `KB r63`. -/
@@ -654,7 +654,7 @@ def dKB_r63 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.S, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB0_XCSu.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `KB r64`. -/
@@ -663,7 +663,7 @@ def dKB_r64 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.S, 0), (.H, 0), (.S, 1)]
   proof := derive hsc
     [dKB_r63.place 0 0, dKB_r23.place 0 0]
-    [.rw 0 0 true, .rw 5 1 false]
+    [Step.rw 0 0 true, Step.rw 5 1 false]
     (by decide +kernel)
 
 /-- `KB r112`. -/
@@ -672,7 +672,7 @@ def dKB_r112 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.S, 0), (.S, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r15.place 0 0, dKB_r64.place 0 0, dKB_r23.place 0 0]
-    [.rw 0 0 true, .rw 1 0 true, .rw 2 0 true, .rw 3 1 true, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 0 true, Step.rw 2 0 true, Step.rw 3 1 true, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r113`. -/
@@ -681,7 +681,7 @@ def dKB_r113 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.S, 0), (.S, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r1.place 0 0, dKB_r112.place 0 0]
-    [.rw 7 0 true, .rw 0 1 false]
+    [Step.rw 7 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r133`. -/
@@ -690,7 +690,7 @@ def dKB_r133 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.S, 0), (.S, 0)]
   proof := derive hsc
     [dKB_r13.place 0 0, dKB_r113.place 0 0, dKB_r1.place 0 0]
-    [.rw 0 0 true, .rw 1 1 false, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 1 false, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r134`. -/
@@ -699,7 +699,7 @@ def dKB_r134 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 1)]
   proof := derive hsc
     [dKB_r133.place 0 0, dKB_r19.place 0 0]
-    [.rw 0 0 true, .rw 6 1 false]
+    [Step.rw 0 0 true, Step.rw 6 1 false]
     (by decide +kernel)
 
 /-- `KB r150`. -/
@@ -708,7 +708,7 @@ def dKB_r150 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.S, 1)]
   proof := derive hsc
     [dKB_r122.place 0 0, dKB_r134.place 0 0, dKB_r15.place 0 0]
-    [.rw 0 0 true, .rw 1 1 false, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 1 false, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r173`. -/
@@ -717,7 +717,7 @@ def dKB_r173 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r15.place 0 0, dKB_r150.place 0 0, dKB_r23.place 0 0]
-    [.rw 0 0 true, .rw 1 1 true, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB0 S14`. -/
@@ -726,7 +726,7 @@ def dKB0_S14 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 1]
-    [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+    [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `KB r21`. -/
@@ -735,7 +735,7 @@ def dKB_r21 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [dKB0_S14.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `KB r149`. -/
@@ -744,7 +744,7 @@ def dKB_r149 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.S, 0), (.H, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r133.place 0 0, dKB_r21.place 0 0]
-    [.rw 3 0 true, .rw 0 1 false]
+    [Step.rw 3 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r172`. -/
@@ -753,7 +753,7 @@ def dKB_r172 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.S, 0), (.S, 0), (.S, 1), (.S, 1), (.S, 1)]
   proof := derive hsc
     [dKB_r149.place 0 0, dKB_r1.place 0 0]
-    [.rw 0 0 true, .rw 7 1 false]
+    [Step.rw 0 0 true, Step.rw 7 1 false]
     (by decide +kernel)
 
 /-- `KB r518`. -/
@@ -762,8 +762,8 @@ def dKB_r518 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r173.place 0 0, dKB_r172.place 0 0, dKB_r15.place 0 0, dKB_r21.place 0 0]
-    [.rw 0 0 true, .rw 3 1 false, .rw 2 2 false, .rw 1 2 false, .rw 3 2 false,
-    .rw 2 2 false, .rw 4 2 false, .rw 3 2 false, .rw 0 3 false]
+    [Step.rw 0 0 true, Step.rw 3 1 false, Step.rw 2 2 false, Step.rw 1 2 false, Step.rw 3 2 false,
+    Step.rw 2 2 false, Step.rw 4 2 false, Step.rw 3 2 false, Step.rw 0 3 false]
     (by decide +kernel)
 
 /-- `KB r520`. -/
@@ -772,7 +772,7 @@ def dKB_r520 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r518.place 0 0, dKB_r1.place 0 0]
-    [.rw 1 0 true, .rw 0 1 false]
+    [Step.rw 1 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r69`. -/
@@ -781,7 +781,7 @@ def dKB_r69 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.S, 0)]
   proof := derive hsc
     [dKB_r17.place 0 0, dKB_r25.place 0 0, dKB_r23.place 0 0]
-    [.rw 6 0 true, .rw 5 0 true, .rw 4 0 true, .rw 0 1 true, .rw 4 2 false]
+    [Step.rw 6 0 true, Step.rw 5 0 true, Step.rw 4 0 true, Step.rw 0 1 true, Step.rw 4 2 false]
     (by decide +kernel)
 
 /-- `KB r71`. -/
@@ -790,7 +790,7 @@ def dKB_r71 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.S, 0), (.CS, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r23.place 0 0, dKB_r69.place 0 0]
-    [.rw 0 0 true, .rw 3 1 false]
+    [Step.rw 0 0 true, Step.rw 3 1 false]
     (by decide +kernel)
 
 /-- `KB r125`. -/
@@ -799,8 +799,8 @@ def dKB_r125 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r17.place 0 0, dKB_r25.place 0 0, dKB_r71.place 0 0]
-    [.rw 5 0 true, .rw 4 0 true, .rw 0 1 true, .rw 1 2 false, .rw 0 0 false, .rw 1 0 false,
-    .rw 2 0 false]
+    [Step.rw 5 0 true, Step.rw 4 0 true, Step.rw 0 1 true, Step.rw 1 2 false, Step.rw 0 0 false, Step.rw 1 0 false,
+    Step.rw 2 0 false]
     (by decide +kernel)
 
 /-- `KB r174`. -/
@@ -809,7 +809,7 @@ def dKB_r174 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r1.place 0 0, dKB_r173.place 0 0]
-    [.rw 7 0 true, .rw 0 1 false]
+    [Step.rw 7 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r175`. -/
@@ -818,7 +818,7 @@ def dKB_r175 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.S, 1)]
   proof := derive hsc
     [dKB_r174.place 0 0, dKB_r23.place 0 0]
-    [.rw 0 0 true, .rw 4 1 false]
+    [Step.rw 0 0 true, Step.rw 4 1 false]
     (by decide +kernel)
 
 /-- `KB r176`. -/
@@ -827,7 +827,7 @@ def dKB_r176 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 1)]
   proof := derive hsc
     [dKB_r1.place 0 0, dKB_r175.place 0 0, dKB_r13.place 0 0]
-    [.rw 0 0 true, .rw 1 1 false, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 1 false, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r192`. -/
@@ -836,7 +836,7 @@ def dKB_r192 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r15.place 0 0, dKB_r176.place 0 0, dKB_r23.place 0 0]
-    [.rw 0 0 true, .rw 1 0 true, .rw 2 0 true, .rw 3 1 true, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 0 true, Step.rw 2 0 true, Step.rw 3 1 true, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r193`. -/
@@ -845,7 +845,7 @@ def dKB_r193 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r1.place 0 0, dKB_r192.place 0 0]
-    [.rw 7 0 true, .rw 0 1 false]
+    [Step.rw 7 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r191`. -/
@@ -854,7 +854,7 @@ def dKB_r191 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r15.place 0 0, dKB_r174.place 0 0]
-    [.rw 0 0 true, .rw 1 1 false]
+    [Step.rw 0 0 true, Step.rw 1 1 false]
     (by decide +kernel)
 
 /-- `KB r210`. -/
@@ -863,7 +863,7 @@ def dKB_r210 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r193.place 0 0, dKB_r191.place 0 0]
-    [.rw 0 0 true, .rw 0 1 false]
+    [Step.rw 0 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r219`. -/
@@ -872,7 +872,7 @@ def dKB_r219 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r210.place 0 0, dKB_r1.place 0 0]
-    [.rw 1 0 true, .rw 0 1 false]
+    [Step.rw 1 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r220`. -/
@@ -881,7 +881,7 @@ def dKB_r220 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r1.place 0 0, dKB_r219.place 0 0]
-    [.rw 7 0 true, .rw 0 1 false]
+    [Step.rw 7 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB0 S1S0`. -/
@@ -890,7 +890,7 @@ def dKB0_S1S0 : DEqn Th 2 where
   rhs := tw 2 [(.S, 1), (.S, 0)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- `KB r11`. -/
@@ -899,7 +899,7 @@ def dKB_r11 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.S, 1)]
   proof := derive hsc
     [dKB0_S1S0.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `KB r177`. -/
@@ -908,7 +908,7 @@ def dKB_r177 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 0), (.S, 1)]
   proof := derive hsc
     [dKB_r17.place 0 0, dKB_r176.place 0 0, dKB_r11.place 0 0]
-    [.rw 0 0 true, .rw 1 1 false, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 1 false, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r114`. -/
@@ -917,7 +917,7 @@ def dKB_r114 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.S, 0), (.CS, 0), (.H, 0), (.S, 1)]
   proof := derive hsc
     [dKB_r17.place 0 0, dKB_r25.place 0 0, dKB_r64.place 0 0, dKB_r1.place 0 0]
-    [.rw 2 0 true, .rw 3 1 true, .rw 0 2 false, .rw 4 3 false, .rw 3 0 false, .rw 2 0 false]
+    [Step.rw 2 0 true, Step.rw 3 1 true, Step.rw 0 2 false, Step.rw 4 3 false, Step.rw 3 0 false, Step.rw 2 0 false]
     (by decide +kernel)
 
 /-- `KB r136`. -/
@@ -926,7 +926,7 @@ def dKB_r136 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.CS, 0), (.H, 0), (.S, 1)]
   proof := derive hsc
     [dKB_r19.place 0 0, dKB_r114.place 0 0]
-    [.rw 7 0 true, .rw 0 1 false, .rw 3 0 false]
+    [Step.rw 7 0 true, Step.rw 0 1 false, Step.rw 3 0 false]
     (by decide +kernel)
 
 /-- `KB r137`. -/
@@ -935,7 +935,7 @@ def dKB_r137 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.CS, 0), (.H, 0), (.S, 1)]
   proof := derive hsc
     [dKB_r1.place 0 0, dKB_r136.place 0 0]
-    [.rw 6 0 true, .rw 0 1 false]
+    [Step.rw 6 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r138`. -/
@@ -944,7 +944,7 @@ def dKB_r138 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.S, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r15.place 0 0, dKB_r136.place 0 0, dKB_r23.place 0 0]
-    [.rw 0 0 true, .rw 1 0 true, .rw 2 0 true, .rw 3 1 true, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 0 true, Step.rw 2 0 true, Step.rw 3 1 true, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r163`. -/
@@ -953,7 +953,7 @@ def dKB_r163 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.CS, 0), (.H, 0), (.S, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r15.place 0 0, dKB_r137.place 0 0, dKB_r138.place 0 0, dKB_r1.place 0 0]
-    [.rw 1 0 true, .rw 2 0 true, .rw 3 1 true, .rw 0 2 false, .rw 5 3 false]
+    [Step.rw 1 0 true, Step.rw 2 0 true, Step.rw 3 1 true, Step.rw 0 2 false, Step.rw 5 3 false]
     (by decide +kernel)
 
 /-- `KB r164`. -/
@@ -962,7 +962,7 @@ def dKB_r164 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0), (.S, 1), (.S, 1)]
   proof := derive hsc
     [dKB_r163.place 0 0, dKB_r1.place 0 0]
-    [.rw 0 0 true, .rw 7 1 false]
+    [Step.rw 0 0 true, Step.rw 7 1 false]
     (by decide +kernel)
 
 /-- `KB r187`. -/
@@ -971,7 +971,7 @@ def dKB_r187 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r13.place 0 0, dKB_r164.place 0 0, dKB_r1.place 0 0]
-    [.rw 1 0 true, .rw 0 0 true, .rw 1 1 true, .rw 0 2 false]
+    [Step.rw 1 0 true, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r204`. -/
@@ -980,7 +980,7 @@ def dKB_r204 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r187.place 0 0, dKB_r21.place 0 0]
-    [.rw 2 0 true, .rw 0 1 false]
+    [Step.rw 2 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r214`. -/
@@ -989,7 +989,7 @@ def dKB_r214 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r177.place 0 0, dKB_r204.place 0 0, dKB_r17.place 0 0]
-    [.rw 2 0 true, .rw 0 1 false, .rw 5 2 false]
+    [Step.rw 2 0 true, Step.rw 0 1 false, Step.rw 5 2 false]
     (by decide +kernel)
 
 /-- `KB r221`. -/
@@ -998,7 +998,7 @@ def dKB_r221 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.CS, 0), (.H, 0), (.S, 0), (.S, 1), (.S, 1), (.S, 1)]
   proof := derive hsc
     [dKB_r214.place 0 0, dKB_r1.place 0 0]
-    [.rw 0 0 true, .rw 7 1 false]
+    [Step.rw 0 0 true, Step.rw 7 1 false]
     (by decide +kernel)
 
 /-- `KB r227`. -/
@@ -1007,7 +1007,7 @@ def dKB_r227 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r13.place 0 0, dKB_r221.place 0 0, dKB_r1.place 0 0]
-    [.rw 2 0 true, .rw 1 0 true, .rw 0 0 true, .rw 1 1 true, .rw 0 2 false]
+    [Step.rw 2 0 true, Step.rw 1 0 true, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r238`. -/
@@ -1016,7 +1016,7 @@ def dKB_r238 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.CS, 0), (.H, 0), (.S, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r227.place 0 0, dKB_r21.place 0 0]
-    [.rw 1 0 true, .rw 0 1 false]
+    [Step.rw 1 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r239`. -/
@@ -1025,7 +1025,7 @@ def dKB_r239 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r1.place 0 0, dKB_r238.place 0 0]
-    [.rw 7 0 true, .rw 0 1 false]
+    [Step.rw 7 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r249`. -/
@@ -1034,7 +1034,7 @@ def dKB_r249 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r193.place 0 0, dKB_r15.place 0 0, dKB_r239.place 0 0]
-    [.rw 0 0 true, .rw 0 1 true, .rw 1 2 false]
+    [Step.rw 0 0 true, Step.rw 0 1 true, Step.rw 1 2 false]
     (by decide +kernel)
 
 /-- `KB r252`. -/
@@ -1043,7 +1043,7 @@ def dKB_r252 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r249.place 0 0, dKB_r1.place 0 0]
-    [.rw 1 0 true, .rw 0 1 false]
+    [Step.rw 1 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r253`. -/
@@ -1052,7 +1052,7 @@ def dKB_r253 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r1.place 0 0, dKB_r252.place 0 0]
-    [.rw 7 0 true, .rw 0 1 false]
+    [Step.rw 7 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r70`. -/
@@ -1061,7 +1061,7 @@ def dKB_r70 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r69.place 0 0, dKB_r19.place 0 0]
-    [.rw 0 0 true, .rw 7 1 false]
+    [Step.rw 0 0 true, Step.rw 7 1 false]
     (by decide +kernel)
 
 /-- `KB0 wCS`. -/
@@ -1070,7 +1070,7 @@ def dKB0_wCS : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.CS, 0)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- `KB r5`. -/
@@ -1079,7 +1079,7 @@ def dKB_r5 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.w, 0)]
   proof := derive hsc
     [dKB0_wCS.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `KB0 wS0`. -/
@@ -1088,7 +1088,7 @@ def dKB0_wS0 : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.S, 0)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- `KB r7`. -/
@@ -1097,7 +1097,7 @@ def dKB_r7 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.w, 0)]
   proof := derive hsc
     [dKB0_wS0.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `KB0 wH0`. -/
@@ -1106,7 +1106,7 @@ def dKB0_wH0 : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.H, 0)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- `KB r9`. -/
@@ -1115,7 +1115,7 @@ def dKB_r9 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.w, 0)]
   proof := derive hsc
     [dKB0_wH0.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `KB0 E`. -/
@@ -1124,7 +1124,7 @@ def dKB0_E : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.S, 0), (.S, 0), (.S, 0), (.H, 0), (.S, 0), (.S, 0), (.S, 0)]
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.E trivial 1 0]
-    [.rw 0 0 false, .slide 7 0, .slide 0 7]
+    [Step.rw 0 0 false, Step.slide 7 0, Step.slide 0 7]
     (by decide +kernel)
 
 /-- `KB r29`. -/
@@ -1133,8 +1133,8 @@ def dKB_r29 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r7.place 0 0, dKB_r9.place 0 0, dKB0_E.place 0 0]
-    [.rw 0 0 true, .rw 1 0 true, .rw 2 0 true, .rw 3 1 true, .rw 4 0 true, .rw 5 0 true,
-    .rw 6 0 true, .rw 0 2 true]
+    [Step.rw 0 0 true, Step.rw 1 0 true, Step.rw 2 0 true, Step.rw 3 1 true, Step.rw 4 0 true, Step.rw 5 0 true,
+    Step.rw 6 0 true, Step.rw 0 2 true]
     (by decide +kernel)
 
 /-- `KB r30`. -/
@@ -1143,7 +1143,7 @@ def dKB_r30 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.H, 0), (.S, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r19.place 0 0, dKB_r29.place 0 0]
-    [.rw 5 0 true, .rw 0 1 false]
+    [Step.rw 5 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r35`. -/
@@ -1152,7 +1152,7 @@ def dKB_r35 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.H, 0), (.S, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r5.place 0 0, dKB_r30.place 0 0]
-    [.rw 0 0 true, .rw 1 1 false]
+    [Step.rw 0 0 true, Step.rw 1 1 false]
     (by decide +kernel)
 
 /-- `KB r31`. -/
@@ -1161,7 +1161,7 @@ def dKB_r31 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.S, 0), (.S, 0), (.w, 0)]
   proof := derive hsc
     [dKB_r30.place 0 0, dKB_r1.place 0 0]
-    [.rw 0 0 true, .rw 4 1 false]
+    [Step.rw 0 0 true, Step.rw 4 1 false]
     (by decide +kernel)
 
 /-- `KB r32`. -/
@@ -1170,7 +1170,7 @@ def dKB_r32 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.H, 0), (.S, 0)]
   proof := derive hsc
     [dKB_r9.place 0 0, dKB_r31.place 0 0, dKB_r1.place 0 0]
-    [.rw 0 0 true, .rw 1 1 true, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r39`. -/
@@ -1179,7 +1179,7 @@ def dKB_r39 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.S, 0), (.H, 0), (.S, 0)]
   proof := derive hsc
     [dKB_r17.place 0 0, dKB_r32.place 0 0]
-    [.rw 2 0 true, .rw 3 0 true, .rw 4 0 true, .rw 0 1 false]
+    [Step.rw 2 0 true, Step.rw 3 0 true, Step.rw 4 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r46`. -/
@@ -1188,7 +1188,7 @@ def dKB_r46 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.S, 0), (.H, 0), (.S, 0)]
   proof := derive hsc
     [dKB_r35.place 0 0, dKB_r9.place 0 0, dKB_r39.place 0 0]
-    [.rw 1 0 true, .rw 0 1 false, .rw 0 2 false]
+    [Step.rw 1 0 true, Step.rw 0 1 false, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r258`. -/
@@ -1198,7 +1198,7 @@ def dKB_r258 : DEqn Th 2 where
   proof := derive hsc
     [dKB_r253.place 0 0, dKB_r25.place 0 0, dKB_r70.place 0 0, dKB_r46.place 0 0,
     dKB_r19.place 0 0]
-    [.rw 1 0 true, .rw 0 1 true, .rw 2 2 true, .rw 0 3 true, .rw 5 4 false]
+    [Step.rw 1 0 true, Step.rw 0 1 true, Step.rw 2 2 true, Step.rw 0 3 true, Step.rw 5 4 false]
     (by decide +kernel)
 
 /-- `KB r259`. -/
@@ -1207,7 +1207,7 @@ def dKB_r259 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r23.place 0 0, dKB_r258.place 0 0]
-    [.rw 0 0 true, .rw 1 1 false]
+    [Step.rw 0 0 true, Step.rw 1 1 false]
     (by decide +kernel)
 
 /-- `KB r260`. -/
@@ -1216,7 +1216,7 @@ def dKB_r260 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.S, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r259.place 0 0, dKB_r1.place 0 0]
-    [.rw 1 0 true, .rw 0 1 false]
+    [Step.rw 1 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r261`. -/
@@ -1225,7 +1225,7 @@ def dKB_r261 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.S, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r1.place 0 0, dKB_r260.place 0 0]
-    [.rw 6 0 true, .rw 0 1 false]
+    [Step.rw 6 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r397`. -/
@@ -1234,7 +1234,7 @@ def dKB_r397 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.H, 0), (.CS, 0), (.H, 0), (.S, 0), (.H, 0), (.CS, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r125.place 0 0, dKB_r220.place 0 0, dKB_r261.place 0 0]
-    [.rw 1 0 true, .rw 0 1 false, .rw 2 2 false]
+    [Step.rw 1 0 true, Step.rw 0 1 false, Step.rw 2 2 false]
     (by decide +kernel)
 
 /-- `KB r703`. -/
@@ -1243,7 +1243,7 @@ def dKB_r703 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r397.place 0 0, dKB_r1.place 0 0]
-    [.rw 0 0 true, .rw 8 1 false]
+    [Step.rw 0 0 true, Step.rw 8 1 false]
     (by decide +kernel)
 
 /-- `KB r704`. -/
@@ -1252,7 +1252,7 @@ def dKB_r704 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.H, 0), (.CS, 0), (.H, 0), (.S, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r703.place 0 0, dKB_r23.place 0 0]
-    [.rw 1 0 true, .rw 0 1 false]
+    [Step.rw 1 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r155`. -/
@@ -1261,7 +1261,7 @@ def dKB_r155 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 0), (.S, 1)]
   proof := derive hsc
     [dKB_r68.place 0 0, dKB_r134.place 0 0, dKB_r11.place 0 0]
-    [.rw 0 0 true, .rw 1 1 false, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 1 false, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r182`. -/
@@ -1270,7 +1270,7 @@ def dKB_r182 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r15.place 0 0, dKB_r155.place 0 0, dKB_r23.place 0 0]
-    [.rw 0 0 true, .rw 1 1 true, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r201`. -/
@@ -1279,7 +1279,7 @@ def dKB_r201 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r182.place 0 0, dKB_r21.place 0 0]
-    [.rw 3 0 true, .rw 0 1 false]
+    [Step.rw 3 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r188`. -/
@@ -1288,7 +1288,7 @@ def dKB_r188 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r173.place 0 0, dKB_r21.place 0 0]
-    [.rw 3 0 true, .rw 0 1 false]
+    [Step.rw 3 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r394`. -/
@@ -1297,7 +1297,7 @@ def dKB_r394 : DEqn Th 2 where
   rhs := tw 2 [(.S, 0), (.H, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r201.place 0 0, dKB_r17.place 0 0, dKB_r188.place 0 0]
-    [.rw 0 0 true, .rw 7 1 false, .rw 0 2 false]
+    [Step.rw 0 0 true, Step.rw 7 1 false, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `KB r387`. -/
@@ -1306,7 +1306,7 @@ def dKB_r387 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.S, 1), (.S, 1), (.S, 1)]
   proof := derive hsc
     [dKB_r188.place 0 0, dKB_r23.place 0 0]
-    [.rw 0 0 true, .rw 6 1 false]
+    [Step.rw 0 0 true, Step.rw 6 1 false]
     (by decide +kernel)
 
 /-- `KB r697`. -/
@@ -1315,8 +1315,8 @@ def dKB_r697 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.S, 0), (.S, 1), (.S, 1), (.S, 1)]
   proof := derive hsc
     [dKB_r17.place 0 0, dKB_r394.place 0 0, dKB_r387.place 0 0, dKB_r11.place 0 0]
-    [.rw 8 0 true, .rw 1 1 true, .rw 1 0 true, .rw 0 0 true, .rw 1 2 false, .rw 0 3 false,
-    .rw 1 3 false, .rw 2 3 false]
+    [Step.rw 8 0 true, Step.rw 1 1 true, Step.rw 1 0 true, Step.rw 0 0 true, Step.rw 1 2 false, Step.rw 0 3 false,
+    Step.rw 1 3 false, Step.rw 2 3 false]
     (by decide +kernel)
 
 /-- `KB r151`. -/
@@ -1325,7 +1325,7 @@ def dKB_r151 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.H, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 1)]
   proof := derive hsc
     [dKB_r70.place 0 0, dKB_r17.place 0 0, dKB_r25.place 0 0, dKB_r134.place 0 0]
-    [.rw 1 0 true, .rw 0 1 true, .rw 1 2 true, .rw 5 1 true, .rw 6 1 true, .rw 0 3 false]
+    [Step.rw 1 0 true, Step.rw 0 1 true, Step.rw 1 2 true, Step.rw 5 1 true, Step.rw 6 1 true, Step.rw 0 3 false]
     (by decide +kernel)
 
 /-- `KB r178`. -/
@@ -1334,7 +1334,7 @@ def dKB_r178 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r151.place 0 0, dKB_r23.place 0 0]
-    [.rw 0 0 true, .rw 5 1 false]
+    [Step.rw 0 0 true, Step.rw 5 1 false]
     (by decide +kernel)
 
 /-- `KB r199`. -/
@@ -1343,7 +1343,7 @@ def dKB_r199 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r178.place 0 0, dKB_r21.place 0 0]
-    [.rw 3 0 true, .rw 0 1 false]
+    [Step.rw 3 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r424`. -/
@@ -1352,8 +1352,8 @@ def dKB_r424 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r68.place 0 0, dKB_r259.place 0 0, dKB_r17.place 0 0, dKB_r23.place 0 0]
-    [.rw 0 0 true, .rw 3 1 false, .rw 2 2 false, .rw 1 2 false, .rw 0 2 false,
-    .rw 1 0 false, .rw 0 3 false]
+    [Step.rw 0 0 true, Step.rw 3 1 false, Step.rw 2 2 false, Step.rw 1 2 false, Step.rw 0 2 false,
+    Step.rw 1 0 false, Step.rw 0 3 false]
     (by decide +kernel)
 
 /-- `KB r425`. -/
@@ -1362,7 +1362,7 @@ def dKB_r425 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r23.place 0 0, dKB_r424.place 0 0]
-    [.rw 0 0 true, .rw 1 1 false]
+    [Step.rw 0 0 true, Step.rw 1 1 false]
     (by decide +kernel)
 
 /-- `KBT St0ck`. -/
@@ -1373,15 +1373,15 @@ def dKBT_St0ck : DEqn Th 2 where
     [dKB_r520.place 0 0, dKB_r1.place 0 0, dKB_r17.place 0 0, dKB_r704.place 0 0,
     dKB_r13.place 0 0, dKB_r11.place 0 0, dKB_r15.place 0 0, dKB_r697.place 0 0,
     dKB_r199.place 0 0, dKB_r425.place 0 0]
-    [.rw 0 0 false, .rw 6 1 false, .rw 5 2 false, .rw 4 2 false, .rw 0 3 false,
-    .rw 6 4 false, .rw 5 5 false, .rw 4 4 false, .rw 3 6 false, .rw 2 4 false,
-    .rw 1 5 false, .rw 0 4 false, .rw 7 4 false, .rw 6 5 false, .rw 5 4 false,
-    .rw 4 6 false, .rw 3 4 false, .rw 2 5 false, .rw 1 4 false, .rw 8 4 false,
-    .rw 7 5 false, .rw 6 4 false, .rw 5 6 false, .rw 4 4 false, .rw 3 5 false,
-    .rw 2 4 false, .rw 2 4 true, .rw 1 4 true, .rw 0 4 true, .rw 1 7 true, .rw 0 8 true,
-    .rw 4 9 true, .rw 2 6 true, .rw 3 4 true, .rw 4 6 true, .rw 5 4 true, .rw 6 6 true,
-    .rw 1 6 true, .rw 2 4 true, .rw 3 6 true, .rw 4 4 true, .rw 5 6 true, .rw 0 6 true,
-    .rw 1 4 true, .rw 2 6 true, .rw 3 4 true, .rw 4 6 true]
+    [Step.rw 0 0 false, Step.rw 6 1 false, Step.rw 5 2 false, Step.rw 4 2 false, Step.rw 0 3 false,
+    Step.rw 6 4 false, Step.rw 5 5 false, Step.rw 4 4 false, Step.rw 3 6 false, Step.rw 2 4 false,
+    Step.rw 1 5 false, Step.rw 0 4 false, Step.rw 7 4 false, Step.rw 6 5 false, Step.rw 5 4 false,
+    Step.rw 4 6 false, Step.rw 3 4 false, Step.rw 2 5 false, Step.rw 1 4 false, Step.rw 8 4 false,
+    Step.rw 7 5 false, Step.rw 6 4 false, Step.rw 5 6 false, Step.rw 4 4 false, Step.rw 3 5 false,
+    Step.rw 2 4 false, Step.rw 2 4 true, Step.rw 1 4 true, Step.rw 0 4 true, Step.rw 1 7 true, Step.rw 0 8 true,
+    Step.rw 4 9 true, Step.rw 2 6 true, Step.rw 3 4 true, Step.rw 4 6 true, Step.rw 5 4 true, Step.rw 6 6 true,
+    Step.rw 1 6 true, Step.rw 2 4 true, Step.rw 3 6 true, Step.rw 4 4 true, Step.rw 5 6 true, Step.rw 0 6 true,
+    Step.rw 1 4 true, Step.rw 2 6 true, Step.rw 3 4 true, Step.rw 4 6 true]
     (by decide +kernel)
 
 /-- `B2 St0ck`. -/
@@ -1390,7 +1390,7 @@ def dB2_St0ck : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 1), (.S, 1), (.S, 1), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKBT_St0ck.place 0 0]
-    [.rw 0 0 false, .slide 8 5, .slide 5 8]
+    [Step.rw 0 0 false, Step.slide 8 5, Step.slide 5 8]
     (by decide +kernel)
 
 /-- `B2 W8`. -/
@@ -1399,7 +1399,7 @@ def dB2_W8 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 2 0]
-    [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+    [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `B2 XSX`. -/
@@ -1411,8 +1411,8 @@ def dB2_XSX : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.E trivial 0 1]
-    [.rw 2 1 true, .rw 0 3 false, .rw 7 0 false, .slide 7 0, .rw 8 3 false, .rw 15 0 false,
-    .slide 15 1, .rw 13 2 false, .rw 6 2 false]
+    [Step.rw 2 1 true, Step.rw 0 3 false, Step.rw 7 0 false, Step.slide 7 0, Step.rw 8 3 false, Step.rw 15 0 false,
+    Step.slide 15 1, Step.rw 13 2 false, Step.rw 6 2 false]
     (by decide +kernel)
 
 /-- `B2 I1`. -/
@@ -1423,7 +1423,7 @@ def dB2_I1 : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.XCS trivial 0 0]
-    [.rw 4 2 false, .slide 4 0, .rw 4 0 false, .rw 2 1 false, .slide 0 2, .rw 0 0 false]
+    [Step.rw 4 2 false, Step.slide 4 0, Step.rw 4 0 false, Step.rw 2 1 false, Step.slide 0 2, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `B2 X11`. -/
@@ -1433,8 +1433,8 @@ def dB2_X11 : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 1, dU2_xx1.place 0 0]
-    [.rw 3 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 3 0 true,
-    .rw 0 2 false]
+    [Step.rw 3 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 3 0 true,
+    Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `B2 X1CK`. -/
@@ -1445,21 +1445,21 @@ def dB2_X1CK : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 1, dB2_XSX.place 0 0,
     dB2_I1.place 0 0, dB2_X11.place 0 0]
-    [.rw 11 4 true, .rw 15 2 false, .slide 15 0, .slide 16 1, .rw 20 4 false,
-    .rw 13 2 false, .slide 13 2, .slide 14 3, .rw 13 1 false, .rw 18 1 true,
-    .rw 18 1 false, .rw 18 1 true, .rw 14 2 false, .slide 14 4, .slide 15 5,
-    .rw 15 1 false, .rw 19 1 true, .rw 19 1 false, .rw 19 1 false, .rw 19 1 true,
-    .rw 19 1 true, .rw 13 4 true, .slide 21 13, .rw 18 3 false, .slide 18 14,
-    .rw 22 1 false, .rw 22 1 false, .rw 22 1 true, .rw 22 1 true, .rw 22 1 false,
-    .rw 22 1 false, .rw 22 1 true, .rw 22 1 true, .rw 11 4 true, .slide 19 11,
-    .slide 22 26, .slide 21 25, .rw 16 3 false, .slide 16 12, .rw 25 1 false,
-    .rw 25 1 false, .rw 25 1 true, .rw 25 1 true, .rw 25 1 false, .rw 25 1 false,
-    .rw 25 1 true, .rw 25 1 true, .rw 6 4 true, .slide 20 24, .slide 19 23, .rw 14 3 false,
-    .slide 14 6, .rw 10 0 false, .rw 8 1 false, .rw 7 0 false, .rw 20 1 false,
-    .rw 20 1 false, .rw 20 1 true, .rw 20 1 true, .rw 7 0 true, .rw 8 1 true,
-    .rw 10 0 true, .rw 7 4 false, .rw 20 1 false, .rw 20 1 false, .rw 20 1 true,
-    .rw 20 1 true, .rw 20 1 false, .rw 20 1 false, .slide 5 20, .slide 4 19, .slide 3 18,
-    .slide 2 17, .slide 1 16, .slide 0 15]
+    [Step.rw 11 4 true, Step.rw 15 2 false, Step.slide 15 0, Step.slide 16 1, Step.rw 20 4 false,
+    Step.rw 13 2 false, Step.slide 13 2, Step.slide 14 3, Step.rw 13 1 false, Step.rw 18 1 true,
+    Step.rw 18 1 false, Step.rw 18 1 true, Step.rw 14 2 false, Step.slide 14 4, Step.slide 15 5,
+    Step.rw 15 1 false, Step.rw 19 1 true, Step.rw 19 1 false, Step.rw 19 1 false, Step.rw 19 1 true,
+    Step.rw 19 1 true, Step.rw 13 4 true, Step.slide 21 13, Step.rw 18 3 false, Step.slide 18 14,
+    Step.rw 22 1 false, Step.rw 22 1 false, Step.rw 22 1 true, Step.rw 22 1 true, Step.rw 22 1 false,
+    Step.rw 22 1 false, Step.rw 22 1 true, Step.rw 22 1 true, Step.rw 11 4 true, Step.slide 19 11,
+    Step.slide 22 26, Step.slide 21 25, Step.rw 16 3 false, Step.slide 16 12, Step.rw 25 1 false,
+    Step.rw 25 1 false, Step.rw 25 1 true, Step.rw 25 1 true, Step.rw 25 1 false, Step.rw 25 1 false,
+    Step.rw 25 1 true, Step.rw 25 1 true, Step.rw 6 4 true, Step.slide 20 24, Step.slide 19 23, Step.rw 14 3 false,
+    Step.slide 14 6, Step.rw 10 0 false, Step.rw 8 1 false, Step.rw 7 0 false, Step.rw 20 1 false,
+    Step.rw 20 1 false, Step.rw 20 1 true, Step.rw 20 1 true, Step.rw 7 0 true, Step.rw 8 1 true,
+    Step.rw 10 0 true, Step.rw 7 4 false, Step.rw 20 1 false, Step.rw 20 1 false, Step.rw 20 1 true,
+    Step.rw 20 1 true, Step.rw 20 1 false, Step.rw 20 1 false, Step.slide 5 20, Step.slide 4 19, Step.slide 3 18,
+    Step.slide 2 17, Step.slide 1 16, Step.slide 0 15]
     (by decide +kernel)
 
 /-- `KB r159`. -/
@@ -1468,7 +1468,7 @@ def dKB_r159 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.S, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r137.place 0 0, dKB_r23.place 0 0]
-    [.rw 0 0 true, .rw 5 1 false]
+    [Step.rw 0 0 true, Step.rw 5 1 false]
     (by decide +kernel)
 
 /-- `KB r184`. -/
@@ -1477,7 +1477,7 @@ def dKB_r184 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKB_r159.place 0 0, dKB_r21.place 0 0]
-    [.rw 3 0 true, .rw 0 1 false]
+    [Step.rw 3 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KB r33`. -/
@@ -1486,7 +1486,7 @@ def dKB_r33 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.w, 0)]
   proof := derive hsc
     [dKB_r32.place 0 0, dKB_r19.place 0 0]
-    [.rw 0 0 true, .rw 2 1 false]
+    [Step.rw 0 0 true, Step.rw 2 1 false]
     (by decide +kernel)
 
 /-- `KB0 wS1`. -/
@@ -1495,7 +1495,7 @@ def dKB0_wS1 : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.S, 1)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- `KB r3`. -/
@@ -1504,7 +1504,7 @@ def dKB_r3 : DEqn Th 2 where
   rhs := tw 2 [(.S, 1), (.w, 0)]
   proof := derive hsc
     [dKB0_wS1.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `KB r523`. -/
@@ -1514,8 +1514,8 @@ def dKB_r523 : DEqn Th 2 where
   proof := derive hsc
     [dKB_r184.place 0 0, dKB_r33.place 0 0, dKB_r5.place 0 0, dKB_r9.place 0 0,
     dKB_r3.place 0 0]
-    [.rw 0 0 true, .rw 6 1 false, .rw 5 2 false, .rw 4 3 false, .rw 3 2 false,
-    .rw 2 4 false, .rw 1 4 false, .rw 0 4 false]
+    [Step.rw 0 0 true, Step.rw 6 1 false, Step.rw 5 2 false, Step.rw 4 3 false, Step.rw 3 2 false,
+    Step.rw 2 4 false, Step.rw 1 4 false, Step.rw 0 4 false]
     (by decide +kernel)
 
 /-- `KB r524`. -/
@@ -1524,7 +1524,7 @@ def dKB_r524 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.S, 1), (.S, 1), (.S, 1), (.w, 0)]
   proof := derive hsc
     [dKB_r1.place 0 0, dKB_r523.place 0 0, dKB_r9.place 0 0, dKB_r13.place 0 0]
-    [.rw 0 0 true, .rw 1 1 false, .rw 0 2 false, .rw 1 3 false, .rw 2 3 false, .rw 3 3 false]
+    [Step.rw 0 0 true, Step.rw 1 1 false, Step.rw 0 2 false, Step.rw 1 3 false, Step.rw 2 3 false, Step.rw 3 3 false]
     (by decide +kernel)
 
 /-- `KB r179`. -/
@@ -1533,7 +1533,7 @@ def dKB_r179 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.S, 1)]
   proof := derive hsc
     [dKB_r178.place 0 0, dKB_r23.place 0 0]
-    [.rw 0 0 true, .rw 6 1 false]
+    [Step.rw 0 0 true, Step.rw 6 1 false]
     (by decide +kernel)
 
 /-- `KBT KK0y`. -/
@@ -1545,23 +1545,23 @@ def dKBT_KK0y : DEqn Th 2 where
     dKB_r199.place 0 0, dKB_r387.place 0 0, dKB_r13.place 0 0, dKB_r425.place 0 0,
     dKB_r21.place 0 0, dKB_r9.place 0 0, dKB_r1.place 0 0, dKB_r179.place 0 0,
     dKB_r23.place 0 0]
-    [.rw 0 0 false, .rw 1 0 false, .rw 2 0 false, .rw 5 0 false, .rw 6 0 false,
-    .rw 7 0 false, .rw 2 1 false, .rw 1 2 false, .rw 0 2 false, .rw 2 3 false,
-    .rw 1 3 false, .rw 3 3 false, .rw 2 3 false, .rw 4 3 false, .rw 3 3 false,
-    .rw 1 4 false, .rw 3 5 false, .rw 2 3 false, .rw 1 6 false, .rw 3 3 false,
-    .rw 2 6 false, .rw 4 3 false, .rw 3 6 false, .rw 4 7 false, .rw 9 6 false,
-    .rw 8 3 false, .rw 7 6 false, .rw 6 3 false, .rw 5 6 false, .rw 4 3 false,
-    .rw 1 8 false, .rw 6 9 false, .rw 5 2 false, .rw 4 9 false, .rw 3 2 false,
-    .rw 2 9 false, .rw 1 2 false, .rw 7 9 false, .rw 6 2 false, .rw 5 9 false,
-    .rw 4 2 false, .rw 3 9 false, .rw 2 2 false, .rw 8 9 false, .rw 7 2 false,
-    .rw 6 9 false, .rw 5 2 false, .rw 4 9 false, .rw 3 2 false, .rw 9 9 false,
-    .rw 8 2 false, .rw 7 9 false, .rw 6 2 false, .rw 5 9 false, .rw 4 2 false,
-    .rw 10 9 false, .rw 9 2 false, .rw 8 9 false, .rw 7 2 false, .rw 6 9 false,
-    .rw 5 2 false, .rw 11 9 false, .rw 10 2 false, .rw 9 9 false, .rw 8 2 false,
-    .rw 7 9 false, .rw 6 2 false, .rw 8 7 false, .rw 13 10 false, .rw 7 11 false,
-    .rw 12 10 false, .rw 9 12 false, .rw 8 6 false, .rw 9 6 false, .rw 10 6 false,
-    .rw 7 8 false, .rw 6 9 true, .rw 5 9 true, .rw 4 9 true, .rw 3 9 true, .rw 2 9 true,
-    .rw 1 9 true, .rw 0 9 true]
+    [Step.rw 0 0 false, Step.rw 1 0 false, Step.rw 2 0 false, Step.rw 5 0 false, Step.rw 6 0 false,
+    Step.rw 7 0 false, Step.rw 2 1 false, Step.rw 1 2 false, Step.rw 0 2 false, Step.rw 2 3 false,
+    Step.rw 1 3 false, Step.rw 3 3 false, Step.rw 2 3 false, Step.rw 4 3 false, Step.rw 3 3 false,
+    Step.rw 1 4 false, Step.rw 3 5 false, Step.rw 2 3 false, Step.rw 1 6 false, Step.rw 3 3 false,
+    Step.rw 2 6 false, Step.rw 4 3 false, Step.rw 3 6 false, Step.rw 4 7 false, Step.rw 9 6 false,
+    Step.rw 8 3 false, Step.rw 7 6 false, Step.rw 6 3 false, Step.rw 5 6 false, Step.rw 4 3 false,
+    Step.rw 1 8 false, Step.rw 6 9 false, Step.rw 5 2 false, Step.rw 4 9 false, Step.rw 3 2 false,
+    Step.rw 2 9 false, Step.rw 1 2 false, Step.rw 7 9 false, Step.rw 6 2 false, Step.rw 5 9 false,
+    Step.rw 4 2 false, Step.rw 3 9 false, Step.rw 2 2 false, Step.rw 8 9 false, Step.rw 7 2 false,
+    Step.rw 6 9 false, Step.rw 5 2 false, Step.rw 4 9 false, Step.rw 3 2 false, Step.rw 9 9 false,
+    Step.rw 8 2 false, Step.rw 7 9 false, Step.rw 6 2 false, Step.rw 5 9 false, Step.rw 4 2 false,
+    Step.rw 10 9 false, Step.rw 9 2 false, Step.rw 8 9 false, Step.rw 7 2 false, Step.rw 6 9 false,
+    Step.rw 5 2 false, Step.rw 11 9 false, Step.rw 10 2 false, Step.rw 9 9 false, Step.rw 8 2 false,
+    Step.rw 7 9 false, Step.rw 6 2 false, Step.rw 8 7 false, Step.rw 13 10 false, Step.rw 7 11 false,
+    Step.rw 12 10 false, Step.rw 9 12 false, Step.rw 8 6 false, Step.rw 9 6 false, Step.rw 10 6 false,
+    Step.rw 7 8 false, Step.rw 6 9 true, Step.rw 5 9 true, Step.rw 4 9 true, Step.rw 3 9 true, Step.rw 2 9 true,
+    Step.rw 1 9 true, Step.rw 0 9 true]
     (by decide +kernel)
 
 /-- `B2 KK0`. -/
@@ -1570,10 +1570,10 @@ def dB2_KK0 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0)]
   proof := derive hsc
     [dB2_X1CK.place 0 0, dKBT_KK0y.place 0 0]
-    [.rw 0 0 false, .slide 15 0, .slide 16 1, .slide 17 2, .slide 18 3, .slide 19 4,
-    .slide 20 5, .slide 6 0, .slide 7 1, .slide 8 2, .slide 9 3, .slide 10 4, .slide 11 5,
-    .slide 12 6, .slide 13 7, .slide 14 8, .slide 15 9, .slide 16 10, .slide 17 11,
-    .slide 18 12, .slide 19 13, .slide 20 14, .rw 0 1 false, .slide 0 7]
+    [Step.rw 0 0 false, Step.slide 15 0, Step.slide 16 1, Step.slide 17 2, Step.slide 18 3, Step.slide 19 4,
+    Step.slide 20 5, Step.slide 6 0, Step.slide 7 1, Step.slide 8 2, Step.slide 9 3, Step.slide 10 4, Step.slide 11 5,
+    Step.slide 12 6, Step.slide 13 7, Step.slide 14 8, Step.slide 15 9, Step.slide 16 10, Step.slide 17 11,
+    Step.slide 18 12, Step.slide 19 13, Step.slide 20 14, Step.rw 0 1 false, Step.slide 0 7]
     (by decide +kernel)
 
 /-- `B2 I2`. -/
@@ -1583,7 +1583,7 @@ def dB2_I2 : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 1 0, dXCSu.place 0 0]
-    [.rw 4 2 false, .slide 4 8, .rw 3 0 false, .rw 1 1 false, .rw 0 0 false]
+    [Step.rw 4 2 false, Step.slide 4 8, Step.rw 3 0 false, Step.rw 1 1 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `KB r386`. -/
@@ -1592,7 +1592,7 @@ def dKB_r386 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r15.place 0 0, dKB_r188.place 0 0]
-    [.rw 2 0 true, .rw 1 0 true, .rw 0 0 true, .rw 1 1 false]
+    [Step.rw 2 0 true, Step.rw 1 0 true, Step.rw 0 0 true, Step.rw 1 1 false]
     (by decide +kernel)
 
 /-- `KBT CK2`. -/
@@ -1602,10 +1602,10 @@ def dKBT_CK2 : DEqn Th 2 where
   proof := derive hsc
     [dKB_r15.place 0 0, dKB_r13.place 0 0, dKB_r386.place 0 0, dKB_r1.place 0 0,
     dKB_r23.place 0 0]
-    [.rw 4 0 false, .rw 3 1 false, .rw 2 0 false, .rw 1 1 false, .rw 0 0 false,
-    .rw 5 0 false, .rw 4 1 false, .rw 3 0 false, .rw 2 1 false, .rw 1 0 false,
-    .rw 6 0 false, .rw 5 1 false, .rw 4 0 false, .rw 3 1 false, .rw 2 0 false,
-    .rw 0 2 false, .rw 7 3 false, .rw 4 4 false, .rw 3 3 false, .rw 0 4 false]
+    [Step.rw 4 0 false, Step.rw 3 1 false, Step.rw 2 0 false, Step.rw 1 1 false, Step.rw 0 0 false,
+    Step.rw 5 0 false, Step.rw 4 1 false, Step.rw 3 0 false, Step.rw 2 1 false, Step.rw 1 0 false,
+    Step.rw 6 0 false, Step.rw 5 1 false, Step.rw 4 0 false, Step.rw 3 1 false, Step.rw 2 0 false,
+    Step.rw 0 2 false, Step.rw 7 3 false, Step.rw 4 4 false, Step.rw 3 3 false, Step.rw 0 4 false]
     (by decide +kernel)
 
 /-- `B2 CK2`. -/
@@ -1614,7 +1614,7 @@ def dB2_CK2 : DEqn Th 2 where
   rhs := tw 2 [(.S, 1), (.S, 1), (.S, 1)]
   proof := derive hsc
     [dKBT_CK2.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `B2 S1CK`. -/
@@ -1623,7 +1623,7 @@ def dB2_S1CK : DEqn Th 2 where
   rhs := tw 2 [(.S, 1), (.S, 1), (.S, 1), (.S, 1), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 1, dC6dec.place 0 0]
-    [.rw 0 1 true, .swap 1, .rw 2 1 true, .swap 3, .rw 4 1 true, .rw 5 0 false, .rw 5 0 true]
+    [Step.rw 0 1 true, Step.swap 1, Step.rw 2 1 true, Step.swap 3, Step.rw 4 1 true, Step.rw 5 0 false, Step.rw 5 0 true]
     (by decide +kernel)
 
 /-- `B2 NS`. -/
@@ -1632,8 +1632,8 @@ def dB2_NS : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.CS, 0), (.CS, 0), (.S, 0), (.S, 1), (.S, 1), (.S, 1), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dCEu.place 0 0, dC5dec.place 0 0, dC6dec.place 0 0, dC7dec.place 0 0]
-    [.rw 1 1 false, .rw 0 0 true, .rw 8 1 true, .rw 7 2 true, .slide 4 6, .rw 6 3 true,
-    .rw 5 2 true, .swap 6, .rw 4 2 true, .swap 5, .slide 5 8]
+    [Step.rw 1 1 false, Step.rw 0 0 true, Step.rw 8 1 true, Step.rw 7 2 true, Step.slide 4 6, Step.rw 6 3 true,
+    Step.rw 5 2 true, Step.swap 6, Step.rw 4 2 true, Step.swap 5, Step.slide 5 8]
     (by decide +kernel)
 
 /-- `KBT R15`. -/
@@ -1643,14 +1643,14 @@ def dKBT_R15 : DEqn Th 2 where
   proof := derive hsc
     [dKB_r15.place 0 0, dKB_r13.place 0 0, dKB_r386.place 0 0, dKB_r1.place 0 0,
     dKB_r210.place 0 0]
-    [.rw 4 0 false, .rw 3 1 false, .rw 2 0 false, .rw 1 1 false, .rw 0 0 false,
-    .rw 5 0 false, .rw 4 1 false, .rw 3 0 false, .rw 2 1 false, .rw 1 0 false,
-    .rw 6 0 false, .rw 5 1 false, .rw 4 0 false, .rw 3 1 false, .rw 2 0 false,
-    .rw 0 2 false, .rw 0 2 true, .rw 2 0 true, .rw 3 1 true, .rw 4 0 true, .rw 5 1 true,
-    .rw 6 0 true, .rw 7 0 true, .rw 8 0 true, .rw 1 0 true, .rw 2 1 true, .rw 3 0 true,
-    .rw 4 1 true, .rw 5 0 true, .rw 6 0 true, .rw 7 0 true, .rw 0 0 true, .rw 1 1 true,
-    .rw 2 0 true, .rw 3 1 true, .rw 4 0 true, .rw 5 0 true, .rw 6 0 true, .rw 6 3 true,
-    .rw 0 4 true]
+    [Step.rw 4 0 false, Step.rw 3 1 false, Step.rw 2 0 false, Step.rw 1 1 false, Step.rw 0 0 false,
+    Step.rw 5 0 false, Step.rw 4 1 false, Step.rw 3 0 false, Step.rw 2 1 false, Step.rw 1 0 false,
+    Step.rw 6 0 false, Step.rw 5 1 false, Step.rw 4 0 false, Step.rw 3 1 false, Step.rw 2 0 false,
+    Step.rw 0 2 false, Step.rw 0 2 true, Step.rw 2 0 true, Step.rw 3 1 true, Step.rw 4 0 true, Step.rw 5 1 true,
+    Step.rw 6 0 true, Step.rw 7 0 true, Step.rw 8 0 true, Step.rw 1 0 true, Step.rw 2 1 true, Step.rw 3 0 true,
+    Step.rw 4 1 true, Step.rw 5 0 true, Step.rw 6 0 true, Step.rw 7 0 true, Step.rw 0 0 true, Step.rw 1 1 true,
+    Step.rw 2 0 true, Step.rw 3 1 true, Step.rw 4 0 true, Step.rw 5 0 true, Step.rw 6 0 true, Step.rw 6 3 true,
+    Step.rw 0 4 true]
     (by decide +kernel)
 
 /-- `B2 R15`. -/
@@ -1659,7 +1659,7 @@ def dB2_R15 : DEqn Th 2 where
   rhs := tw 2 [(.S, 1), (.S, 1), (.S, 1), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dKBT_R15.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `KB r460`. -/
@@ -1668,7 +1668,7 @@ def dKB_r460 : DEqn Th 2 where
   rhs := tw 2 [(.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r425.place 0 0, dKB_r210.place 0 0, dKB_r1.place 0 0]
-    [.rw 3 0 true, .rw 0 1 false, .rw 6 2 false]
+    [Step.rw 3 0 true, Step.rw 0 1 false, Step.rw 6 2 false]
     (by decide +kernel)
 
 /-- `KB r461`. -/
@@ -1677,7 +1677,7 @@ def dKB_r461 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.CS, 0), (.CS, 0), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     [dKB_r1.place 0 0, dKB_r460.place 0 0]
-    [.rw 8 0 true, .rw 0 1 false]
+    [Step.rw 8 0 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `KBT R16`. -/
@@ -1687,16 +1687,16 @@ def dKBT_R16 : DEqn Th 2 where
   proof := derive hsc
     [dKB_r15.place 0 0, dKB_r13.place 0 0, dKB_r386.place 0 0, dKB_r387.place 0 0,
     dKB_r23.place 0 0, dKB_r1.place 0 0, dKB_r461.place 0 0, dKB_r199.place 0 0]
-    [.rw 4 0 false, .rw 3 1 false, .rw 2 0 false, .rw 1 1 false, .rw 0 0 false,
-    .rw 5 0 false, .rw 4 1 false, .rw 3 0 false, .rw 2 1 false, .rw 1 0 false,
-    .rw 6 0 false, .rw 5 1 false, .rw 4 0 false, .rw 3 1 false, .rw 2 0 false,
-    .rw 0 2 false, .rw 1 3 false, .rw 0 0 false, .rw 1 0 false, .rw 2 0 false,
-    .rw 2 0 true, .rw 3 1 true, .rw 4 0 true, .rw 5 1 true, .rw 1 0 true, .rw 2 1 true,
-    .rw 3 0 true, .rw 4 1 true, .rw 0 0 true, .rw 1 1 true, .rw 2 0 true, .rw 3 1 true,
-    .rw 4 4 true, .rw 7 5 true, .rw 0 6 true, .rw 5 4 true, .rw 0 7 true, .rw 2 0 true,
-    .rw 3 0 true, .rw 4 1 true, .rw 5 0 true, .rw 6 1 true, .rw 7 0 true, .rw 1 0 true,
-    .rw 2 0 true, .rw 3 1 true, .rw 4 0 true, .rw 5 1 true, .rw 6 0 true, .rw 0 0 true,
-    .rw 1 0 true, .rw 2 1 true, .rw 3 0 true, .rw 4 1 true, .rw 5 0 true]
+    [Step.rw 4 0 false, Step.rw 3 1 false, Step.rw 2 0 false, Step.rw 1 1 false, Step.rw 0 0 false,
+    Step.rw 5 0 false, Step.rw 4 1 false, Step.rw 3 0 false, Step.rw 2 1 false, Step.rw 1 0 false,
+    Step.rw 6 0 false, Step.rw 5 1 false, Step.rw 4 0 false, Step.rw 3 1 false, Step.rw 2 0 false,
+    Step.rw 0 2 false, Step.rw 1 3 false, Step.rw 0 0 false, Step.rw 1 0 false, Step.rw 2 0 false,
+    Step.rw 2 0 true, Step.rw 3 1 true, Step.rw 4 0 true, Step.rw 5 1 true, Step.rw 1 0 true, Step.rw 2 1 true,
+    Step.rw 3 0 true, Step.rw 4 1 true, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 2 0 true, Step.rw 3 1 true,
+    Step.rw 4 4 true, Step.rw 7 5 true, Step.rw 0 6 true, Step.rw 5 4 true, Step.rw 0 7 true, Step.rw 2 0 true,
+    Step.rw 3 0 true, Step.rw 4 1 true, Step.rw 5 0 true, Step.rw 6 1 true, Step.rw 7 0 true, Step.rw 1 0 true,
+    Step.rw 2 0 true, Step.rw 3 1 true, Step.rw 4 0 true, Step.rw 5 1 true, Step.rw 6 0 true, Step.rw 0 0 true,
+    Step.rw 1 0 true, Step.rw 2 1 true, Step.rw 3 0 true, Step.rw 4 1 true, Step.rw 5 0 true]
     (by decide +kernel)
 
 /-- `B2 R16`. -/
@@ -1705,7 +1705,7 @@ def dB2_R16 : DEqn Th 2 where
   rhs := tw 2 [(.S, 1), (.S, 1), (.S, 1), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0), (.S, 1), (.S, 1), (.S, 1), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0), (.CS, 0)]
   proof := derive hsc
     [dKBT_R16.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `B2 CS4`. -/
@@ -1714,7 +1714,7 @@ def dB2_CS4 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [dC5dec.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `B2 S1CS`. -/
@@ -1723,7 +1723,7 @@ def dB2_S1CS : DEqn Th 2 where
   rhs := tw 2 [(.S, 1), (.CS, 0)]
   proof := derive hsc
     [dC6dec.place 0 0]
-    [.rw 0 0 true]
+    [Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- `B2 XSXS`. -/
@@ -1733,7 +1733,7 @@ def dB2_XSXS : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 1, dB2_XSX.place 0 0]
-    [.rw 0 2 false, .rw 8 0 false, .rw 6 1 false, .rw 5 0 false, .rw 2 1 false]
+    [Step.rw 0 2 false, Step.rw 8 0 false, Step.rw 6 1 false, Step.rw 5 0 false, Step.rw 2 1 false]
     (by decide +kernel)
 
 /-- `B2 S14`. -/
@@ -1742,7 +1742,7 @@ def dB2_S14 : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 1]
-    [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+    [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `B2 H01`. -/
@@ -1751,7 +1751,7 @@ def dB2_H01 : DEqn Th 2 where
   rhs := tw 2 [(.H, 0), (.H, 1)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- `B2 X1H0`. -/
@@ -1760,7 +1760,7 @@ def dB2_X1H0 : DEqn Th 2 where
   rhs := tw 2 [(.H, 1), (.S, 1), (.S, 1), (.H, 1), (.H, 0)]
   proof := derive hsc
     []
-    [.slide 4 0]
+    [Step.slide 4 0]
     (by decide +kernel)
 
 /-- `B2 T1H0`. -/
@@ -1770,7 +1770,7 @@ def dB2_T1H0 : DEqn Th 2 where
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0]
-    [.rw 1 1 true, .rw 0 0 false]
+    [Step.rw 1 1 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `B2 X00`. -/
@@ -1780,8 +1780,8 @@ def dB2_X00 : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 1 0, dU2_xx0.place 0 0]
-    [.rw 3 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 3 0 true,
-    .rw 0 2 false]
+    [Step.rw 3 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 3 0 true,
+    Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `B2 Wt0`. -/
@@ -1790,7 +1790,7 @@ def dB2_Wt0 : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.H, 0), (.S, 0), (.S, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     []
-    [.slide 0 6]
+    [Step.slide 0 6]
     (by decide +kernel)
 
 /-- `B2 Wt1`. -/
@@ -1799,7 +1799,7 @@ def dB2_Wt1 : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.SW, 0)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- `B2 Wt2`. -/
@@ -1808,7 +1808,7 @@ def dB2_Wt2 : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.H, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     []
-    [.slide 0 4]
+    [Step.slide 0 4]
     (by decide +kernel)
 
 /-- `B2 Wx0`. -/
@@ -1817,7 +1817,7 @@ def dB2_Wx0 : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.H, 0), (.S, 0), (.S, 0), (.H, 0)]
   proof := derive hsc
     []
-    [.slide 0 4]
+    [Step.slide 0 4]
     (by decide +kernel)
 
 /-- `B2 Wx1`. -/
@@ -1826,7 +1826,7 @@ def dB2_Wx1 : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.H, 1), (.S, 1), (.S, 1), (.H, 1)]
   proof := derive hsc
     []
-    [.slide 0 4]
+    [Step.slide 0 4]
     (by decide +kernel)
 
 /-- `B2 Wcs`. -/
@@ -1835,7 +1835,7 @@ def dB2_Wcs : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.CS, 0)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- `B2 Wck`. -/
@@ -1844,7 +1844,7 @@ def dB2_Wck : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.S, 1), (.S, 1), (.S, 1), (.CS, 0), (.H, 0), (.CS, 0), (.H, 0), (.CS, 0)]
   proof := derive hsc
     []
-    [.slide 0 8]
+    [Step.slide 0 8]
     (by decide +kernel)
 
 /-- `B2 Wh0`. -/
@@ -1853,7 +1853,7 @@ def dB2_Wh0 : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.H, 0)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- `B2 Wh1`. -/
@@ -1862,7 +1862,7 @@ def dB2_Wh1 : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.H, 1)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- `B2 Ws0`. -/
@@ -1871,7 +1871,7 @@ def dB2_Ws0 : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.S, 0)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- `B2 Ws1`. -/
@@ -1880,7 +1880,7 @@ def dB2_Ws1 : DEqn Th 2 where
   rhs := tw 2 [(.w, 0), (.S, 1)]
   proof := derive hsc
     []
-    [.swap 0]
+    [Step.swap 0]
     (by decide +kernel)
 
 /-- The derivations of the block relations, in the order of `brels`. -/

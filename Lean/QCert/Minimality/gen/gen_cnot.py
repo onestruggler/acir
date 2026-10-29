@@ -64,8 +64,8 @@ def lean_eq(e, width):
 def lean_steps(steps):
     out = []
     for st in steps:
-        if st[0] == 'swap': out.append('.swap %d' % st[1])
-        else: out.append('.rw %d %d %s' % (st[1], st[2], 'true' if st[3] else 'false'))
+        if st[0] == 'swap': out.append('Step.swap %d' % st[1])
+        else: out.append('Step.rw %d %d %s' % (st[1], st[2], 'true' if st[3] else 'false'))
     return out
 
 def fmt_list(items, indent):
@@ -182,7 +182,7 @@ def proof_of(nm):
       (by decide +kernel)''' % (fmt_list([lean_eq(e, n) for e in eqs], 6), fmt_list(lean_steps(steps), 6))
 
 def one(axname, n):
-    return '''derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.%s trivial 0 0] [.rw 0 0 false]
+    return '''derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.%s trivial 0 0] [Step.rw 0 0 false]
       (by decide +kernel)''' % axname
 
 cases = []
@@ -203,7 +203,7 @@ cases.append(('R12', one('CPh', 2)))
 cases.append(('R13', '''derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.C3T trivial 0 0]
       %s
       (by decide +kernel)''' % fmt_list(lean_steps(r13), 6)))
-cases.append(('swap_swap', '''derive hsc [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0] [.rw 0 0 false]
+cases.append(('swap_swap', '''derive hsc [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0] [Step.rw 0 0 false]
       (by decide +kernel)'''))
 cases.append(('swap_nat1 .X', 'dnat1X.proof'))
 cases.append(('swap_nat1 .T', 'dnat1T.proof'))

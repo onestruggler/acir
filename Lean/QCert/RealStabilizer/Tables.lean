@@ -19,7 +19,7 @@ set_option maxRecDepth 8000
 
 /-- `Z` at the wire of `A_i`: relations 1–3. -/
 theorem tAZ : ∀ i : Fin 3, ∃ (i' : Fin 3) (out : List Dg),
-    Holds 1 ([.Z 0] ++ bA (i.val + 1) 0) (bA (i'.val + 1) 0 ++ dw out) ∧
+    Holds 1 ([Lt.Z 0] ++ bA (i.val + 1) 0) (bA (i'.val + 1) 0 ++ dw out) ∧
       tA i' = tA i ∧ OkL (okB (tA i') 0) 1 out
   | 0 => ⟨0, [.Z 0], rel1, by decide⟩
   | 1 => ⟨1, [.X 0], rel2, by decide⟩
@@ -27,7 +27,7 @@ theorem tAZ : ∀ i : Fin 3, ∃ (i' : Fin 3) (out : List Dg),
 
 /-- `H` at the wire of `A_i`: relations 4–6. -/
 theorem tAH : ∀ i : Fin 3, ∃ (i' : Fin 3) (out : List Dg),
-    Holds 1 ([.H 0] ++ bA (i.val + 1) 0) (bA (i'.val + 1) 0 ++ dw out) ∧
+    Holds 1 ([Lt.H 0] ++ bA (i.val + 1) 0) (bA (i'.val + 1) 0 ++ dw out) ∧
       tA i' = tA i ∧ OkL (okB (tA i') 0) 1 out
   | 0 => ⟨1, [], rel4, by decide⟩
   | 1 => ⟨0, [], rel5, by decide⟩
@@ -37,10 +37,10 @@ theorem tAH : ∀ i : Fin 3, ∃ (i' : Fin 3) (out : List Dg),
 or the ladder grows down by one wire (`A_{i'}` below a `B` gate). -/
 theorem tACZ : ∀ i : Fin 3,
     (∃ (i' : Fin 3) (out : List Dg),
-      Holds 2 ([.CZ 0] ++ bA (i.val + 1) 1) (bA (i'.val + 1) 1 ++ dw out) ∧
+      Holds 2 ([Lt.CZ 0] ++ bA (i.val + 1) 1) (bA (i'.val + 1) 1 ++ dw out) ∧
         tA i' = tA i ∧ OkL (okB (tA i') 1) 2 out) ∨
     (∃ (i' : Fin 3) (j : Fin 4) (out : List Dg),
-      Holds 2 ([.CZ 0] ++ bA (i.val + 1) 1)
+      Holds 2 ([Lt.CZ 0] ++ bA (i.val + 1) 1)
         (bA (i'.val + 1) 0 ++ bB (bIdx (tA i') j) 0 ++ dw out) ∧
         tB (tA i') j = tA i ∧ OkL (okB (tB (tA i') j) 1) 2 out)
   | 0 => Or.inl ⟨0, [.CZ 0], rel7, by decide⟩
@@ -52,11 +52,11 @@ two boxes stay, or the ladder shrinks by one wire (`A_{i'}` on the upper
 wire). -/
 theorem tAB : ∀ (i : Fin 3) (j : Fin 4),
     (∃ (i' : Fin 3) (j' : Fin 4) (out : List Dg),
-      Holds 2 ([.CZ 0] ++ bA (i.val + 1) 0 ++ bB (bIdx (tA i) j) 0)
+      Holds 2 ([Lt.CZ 0] ++ bA (i.val + 1) 0 ++ bB (bIdx (tA i) j) 0)
         (bA (i'.val + 1) 0 ++ bB (bIdx (tA i') j') 0 ++ dw out) ∧
         tB (tA i') j' = tB (tA i) j ∧ OkL (okB (tB (tA i') j') 1) 2 out) ∨
     (∃ (i' : Fin 3) (out : List Dg),
-      Holds 2 ([.CZ 0] ++ bA (i.val + 1) 0 ++ bB (bIdx (tA i) j) 0)
+      Holds 2 ([Lt.CZ 0] ++ bA (i.val + 1) 0 ++ bB (bIdx (tA i) j) 0)
         (bA (i'.val + 1) 1 ++ dw out) ∧ tA i' = tB (tA i) j ∧ OkL (okB (tA i') 1) 2 out)
   | 0, 0 => Or.inl ⟨0, 0, [.H 0, .CZ 0, .H 0], rel10, by decide⟩
   | 0, 1 => Or.inr ⟨1, [.H 0, .CZ 0], rel12, by decide⟩
@@ -73,7 +73,7 @@ theorem tAB : ∀ (i : Fin 3) (j : Fin 4),
 
 /-- `H` on the lower wire of a `B` gate, which is double: relations 22–25. -/
 theorem tBH0 : ∀ j : Fin 4, ∃ (j' : Fin 4) (out : List Dg),
-    Holds 2 ([.H 0] ++ bB (bIdx true j) 0) (bB (bIdx true j') 0 ++ dw out) ∧
+    Holds 2 ([Lt.H 0] ++ bB (bIdx true j) 0) (bB (bIdx true j') 0 ++ dw out) ∧
       tB true j' = tB true j ∧ OkL (okB (tB true j') 1) 2 out
   | 0 => ⟨0, [.H 1], rel22, by decide⟩
   | 1 => ⟨1, [.Z 0, .CXZ 0, .H 0, .CXZ 0, .X 1, .Z 0], rel23, by decide⟩
@@ -95,7 +95,7 @@ theorem tBX : ∀ (t : Ty) (j : Fin 4), ∃ (j' : Fin 4) (out : List Dg),
 
 /-- `H` on the upper wire of a `B` gate: relations 34–41. -/
 theorem tBH1 : ∀ (t : Ty) (j : Fin 4), ∃ (j' : Fin 4) (out : List Dg),
-    Holds 2 ([.H 1] ++ bB (bIdx t j) 0) (bB (bIdx t j') 0 ++ dw out) ∧
+    Holds 2 ([Lt.H 1] ++ bB (bIdx t j) 0) (bB (bIdx t j') 0 ++ dw out) ∧
       tB t j' = tB t j ∧ OkL (okB (tB t j') 1) 2 out
   | false, 0 => ⟨0, [.H 0], rel34, by decide⟩
   | false, 1 => ⟨2, [], rel35, by decide⟩
@@ -108,7 +108,7 @@ theorem tBH1 : ∀ (t : Ty) (j : Fin 4), ∃ (j' : Fin 4) (out : List Dg),
 
 /-- `Z` on the upper wire of a `B` gate: relations 42–49. -/
 theorem tBZ1 : ∀ (t : Ty) (j : Fin 4), ∃ (j' : Fin 4) (out : List Dg),
-    Holds 2 ([.Z 1] ++ bB (bIdx t j) 0) (bB (bIdx t j') 0 ++ dw out) ∧
+    Holds 2 ([Lt.Z 1] ++ bB (bIdx t j) 0) (bB (bIdx t j') 0 ++ dw out) ∧
       tB t j' = tB t j ∧ OkL (okB (tB t j') 1) 2 out
   | false, 0 => ⟨0, [.H 0, .Z 0, .H 0], rel42, by decide⟩
   | false, 1 => ⟨1, [.Z 0, .X 1], rel43, by decide⟩
@@ -121,7 +121,7 @@ theorem tBZ1 : ∀ (t : Ty) (j : Fin 4), ∃ (j' : Fin 4) (out : List Dg),
 
 /-- `Z` on the lower wire of a `B` gate: relations 50–57. -/
 theorem tBZ0 : ∀ (t : Ty) (j : Fin 4), ∃ (j' : Fin 4) (out : List Dg),
-    Holds 2 ([.Z 0] ++ bB (bIdx t j) 0) (bB (bIdx t j') 0 ++ dw out) ∧
+    Holds 2 ([Lt.Z 0] ++ bB (bIdx t j) 0) (bB (bIdx t j') 0 ++ dw out) ∧
       tB t j' = tB t j ∧ OkL (okB (tB t j') 1) 2 out
   | false, 0 => ⟨0, [.Z 1], rel50, by decide⟩
   | false, 1 => ⟨1, [.Z 1, .H 0, .Z 0, .H 0], rel51, by decide⟩
@@ -134,7 +134,7 @@ theorem tBZ0 : ∀ (t : Ty) (j : Fin 4), ∃ (j' : Fin 4) (out : List Dg),
 
 /-- `CZ` below a `B` gate, its upper wire on the simple lower wire of the gate: relations 64–67. -/
 theorem tBCZ : ∀ j : Fin 4, ∃ (j' : Fin 4) (out : List Dg),
-    Holds 3 ([.CZ 0] ++ bB (bIdx false j) 1) (bB (bIdx false j') 1 ++ dw out) ∧
+    Holds 3 ([Lt.CZ 0] ++ bB (bIdx false j) 1) (bB (bIdx false j') 1 ++ dw out) ∧
       tB false j' = tB false j ∧ OkL (okB (tB false j') 2) 3 out
   | 0 => ⟨0, [.CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 1], rel64, by decide⟩
   | 1 => ⟨1, [.CZ 1, .H 1, .CZ 0, .H 1, .CZ 1], rel65, by decide⟩
@@ -143,7 +143,7 @@ theorem tBCZ : ∀ j : Fin 4, ∃ (j' : Fin 4) (out : List Dg),
 
 /-- `CXZ` below a `B` gate, its `XZ` on the double lower wire of the gate: relations 68–71. -/
 theorem tBCXZ : ∀ j : Fin 4, ∃ (j' : Fin 4) (out : List Dg),
-    Holds 3 ([.H 1, .CZ 0, .H 1, .CZ 0] ++ bB (bIdx true j) 1) (bB (bIdx true j') 1 ++ dw out) ∧
+    Holds 3 ([Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 0] ++ bB (bIdx true j) 1) (bB (bIdx true j') 1 ++ dw out) ∧
       tB true j' = tB true j ∧ OkL (okB (tB true j') 2) 3 out
   | 0 => ⟨0, [.H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CXZ 1, .H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 0], rel68, by decide⟩
   | 1 => ⟨1, [.H 0, .CZ 0, .H 0, .H 1, .CZ 0, .H 1, .CXZ 1, .H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 0, .H 1, .CZ 0, .H 1], rel69, by decide⟩
@@ -153,7 +153,7 @@ theorem tBCXZ : ∀ j : Fin 4, ∃ (j' : Fin 4) (out : List Dg),
 /-- `CZ` on the wires of the second of two `B` gates, before the first:
 relations 72–103. -/
 theorem tBB : ∀ (t : Ty) (a b : Fin 4), ∃ (a' b' : Fin 4) (out : List Dg),
-    Holds 3 ([.CZ 1] ++ bB (bIdx t a) 0 ++ bB (bIdx (tB t a) b) 1)
+    Holds 3 ([Lt.CZ 1] ++ bB (bIdx t a) 0 ++ bB (bIdx (tB t a) b) 1)
       (bB (bIdx t a') 0 ++ bB (bIdx (tB t a') b') 1 ++ dw out) ∧
       tB (tB t a') b' = tB (tB t a) b ∧ OkL (okB (tB (tB t a') b') 2) 3 out
   | false, 0, 0 => ⟨0, 0, [.H 0, .H 1, .CZ 0, .H 0, .H 1], rel72, by decide⟩
@@ -191,7 +191,7 @@ theorem tBB : ∀ (t : Ty) (a b : Fin 4), ∃ (a' b' : Fin 4) (out : List Dg),
 
 /-- `Z` at the wire of `C_k`: relations 58, 61. -/
 theorem tCZ : ∀ k : Fin 2, ∃ (k' : Fin 2) (out : List Dg),
-    Holds 1 ([.Z 0] ++ bC (k.val + 1) 0) (bC (k'.val + 1) 0 ++ dw out) ∧ OkL (okD true 0) 1 out
+    Holds 1 ([Lt.Z 0] ++ bC (k.val + 1) 0) (bC (k'.val + 1) 0 ++ dw out) ∧ OkL (okD true 0) 1 out
   | 0 => ⟨0, [.Z 0], rel58, by decide⟩
   | 1 => ⟨1, [.Z 0, .neg], rel61, by decide⟩
 
@@ -203,13 +203,13 @@ theorem tCX : ∀ k : Fin 2, ∃ (k' : Fin 2) (out : List Dg),
 
 /-- `CZ` below `C_k`, on its wire: relations 60, 63. -/
 theorem tCCZ : ∀ k : Fin 2, ∃ (k' : Fin 2) (out : List Dg),
-    Holds 2 ([.CZ 0] ++ bC (k.val + 1) 1) (bC (k'.val + 1) 1 ++ dw out) ∧ OkL (okD true 1) 2 out
+    Holds 2 ([Lt.CZ 0] ++ bC (k.val + 1) 1) (bC (k'.val + 1) 1 ++ dw out) ∧ OkL (okD true 1) 2 out
   | 0 => ⟨0, [.CZ 0], rel60, by decide⟩
   | 1 => ⟨1, [.CZ 0, .Z 0], rel63, by decide⟩
 
 /-- `Z` on the upper wire of `D_l`: relations 104–107. -/
 theorem tDZ1 : ∀ l : Fin 4, ∃ (l' : Fin 4) (out : List Dg),
-    Holds 2 ([.Z 1] ++ bD (l.val + 1) 0) (bD (l'.val + 1) 0 ++ dw out) ∧
+    Holds 2 ([Lt.Z 1] ++ bD (l.val + 1) 0) (bD (l'.val + 1) 0 ++ dw out) ∧
       OkL (okD false 0) 2 out
   | 0 => ⟨0, [.Z 0], rel104, by decide⟩
   | 1 => ⟨1, [.Z 0], rel105, by decide⟩
@@ -218,7 +218,7 @@ theorem tDZ1 : ∀ l : Fin 4, ∃ (l' : Fin 4) (out : List Dg),
 
 /-- `Z` on the lower wire of `D_l`: relations 108–111. -/
 theorem tDZ0 : ∀ l : Fin 4, ∃ (l' : Fin 4) (out : List Dg),
-    Holds 2 ([.Z 0] ++ bD (l.val + 1) 0) (bD (l'.val + 1) 0 ++ dw out) ∧
+    Holds 2 ([Lt.Z 0] ++ bD (l.val + 1) 0) (bD (l'.val + 1) 0 ++ dw out) ∧
       OkL (okD false 0) 2 out
   | 0 => ⟨0, [.H 1, .Z 1, .H 1], rel108, by decide⟩
   | 1 => ⟨1, [.Z 1, .Z 0], rel109, by decide⟩
@@ -227,7 +227,7 @@ theorem tDZ0 : ∀ l : Fin 4, ∃ (l' : Fin 4) (out : List Dg),
 
 /-- `H` on the lower wire of `D_l`: relations 112–115. -/
 theorem tDH : ∀ l : Fin 4, ∃ (l' : Fin 4) (out : List Dg),
-    Holds 2 ([.H 0] ++ bD (l.val + 1) 0) (bD (l'.val + 1) 0 ++ dw out) ∧
+    Holds 2 ([Lt.H 0] ++ bD (l.val + 1) 0) (bD (l'.val + 1) 0 ++ dw out) ∧
       OkL (okD false 0) 2 out
   | 0 => ⟨0, [.H 1], rel112, by decide⟩
   | 1 => ⟨2, [], rel113, by decide⟩
@@ -236,7 +236,7 @@ theorem tDH : ∀ l : Fin 4, ∃ (l' : Fin 4) (out : List Dg),
 
 /-- `CZ` on the wires of `D_l`: relations 116–119. -/
 theorem tDCZ : ∀ l : Fin 4, ∃ (l' : Fin 4) (out : List Dg),
-    Holds 2 ([.CZ 0] ++ bD (l.val + 1) 0) (bD (l'.val + 1) 0 ++ dw out) ∧
+    Holds 2 ([Lt.CZ 0] ++ bD (l.val + 1) 0) (bD (l'.val + 1) 0 ++ dw out) ∧
       OkL (okD false 0) 2 out
   | 0 => ⟨2, [], rel116, by decide⟩
   | 1 => ⟨3, [.Z 0], rel117, by decide⟩
@@ -246,7 +246,7 @@ theorem tDCZ : ∀ l : Fin 4, ∃ (l' : Fin 4) (out : List Dg),
 /-- `CZ` on the wires of the second of two `D` gates, before the first:
 relations 122–137. -/
 theorem tDD : ∀ a b : Fin 4, ∃ (a' b' : Fin 4) (out : List Dg),
-    Holds 3 ([.CZ 0] ++ bD (a.val + 1) 1 ++ bD (b.val + 1) 0)
+    Holds 3 ([Lt.CZ 0] ++ bD (a.val + 1) 1 ++ bD (b.val + 1) 0)
       (bD (a'.val + 1) 1 ++ bD (b'.val + 1) 0 ++ dw out) ∧ OkL (okD false 0) 3 out
   | 0, 0 => ⟨0, 0, [.H 2, .H 1, .CZ 1, .H 2, .H 1], rel122, by decide⟩
   | 0, 1 => ⟨2, 1, [.H 2, .CZ 1, .H 2], rel123, by decide⟩
@@ -267,7 +267,7 @@ theorem tDD : ∀ a b : Fin 4, ∃ (a' b' : Fin 4) (out : List Dg),
 
 /-- `Z` at the wire of `E_h`: relations 120, 121. -/
 theorem tEZ : ∀ h : Fin 2, ∃ h' : Fin 2,
-    Holds 1 ([.Z 0] ++ bE (h.val + 1) 0) (bE (h'.val + 1) 0)
+    Holds 1 ([Lt.Z 0] ++ bE (h.val + 1) 0) (bE (h'.val + 1) 0)
   | 0 => ⟨1, rel120⟩
   | 1 => ⟨0, rel121⟩
 

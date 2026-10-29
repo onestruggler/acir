@@ -29,9 +29,9 @@ def dC12dec : DEqn Th 3 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 1,
     DEqn.inst (P := pres) (S := fun _ => True) (Ax.SH 0) trivial 0 0]
-    [.rw 1 0 true, .rw 0 0 true, .rw 0 0 false, .rw 1 0 false, .rw 1 0 true, .rw 0 0 true,
-    .rw 1 1 false, .rw 0 0 false, .rw 1 0 false, .rw 1 0 true, .rw 0 0 true, .rw 3 0 false,
-    .rw 0 0 false]
+    [Step.rw 1 0 true, Step.rw 0 0 true, Step.rw 0 0 false, Step.rw 1 0 false, Step.rw 1 0 true, Step.rw 0 0 true,
+    Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 1 0 false, Step.rw 1 0 true, Step.rw 0 0 true, Step.rw 3 0 false,
+    Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `R3 c12`. -/
@@ -40,7 +40,7 @@ def dR3_c12 : DEqn Th 3 where
   rhs := tw 3 [(.CS, 1), (.CS, 0)]
   proof := derive hsc
     [dC12dec.place 0 0]
-    [.rw 0 0 false]
+    [Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `S2 cxcx3` (semantic). -/
@@ -61,7 +61,7 @@ def dT3_aCS : DEqn Th 3 where
   rhs := tw 3 [(.CS, 0), (.H, 2), (.CS, 1), (.CS, 1), (.H, 2)]
   proof := derive hsc
     [dC12dec.place 0 0]
-    [.swap 0, .rw 1 0 true, .rw 2 0 true, .swap 3]
+    [Step.swap 0, Step.rw 1 0 true, Step.rw 2 0 true, Step.swap 3]
     (by decide +kernel)
 
 /-- `S2 ee` (semantic). -/
@@ -82,7 +82,7 @@ def dT3_cCS : DEqn Th 3 where
   rhs := tw 3 [(.CS, 1), (.H, 0), (.CS, 0), (.CS, 0), (.H, 0)]
   proof := derive hsc
     [dC12dec.place 0 0]
-    [.swap 0, .rw 1 0 false, .rw 2 0 false, .swap 3]
+    [Step.swap 0, Step.rw 1 0 false, Step.rw 2 0 false, Step.swap 3]
     (by decide +kernel)
 
 /-- `S2 cxcx2` (semantic). -/
@@ -99,38 +99,38 @@ def dS2_cxcx : DEqn Th 2 :=
 
 /-- The steps of `dR3_c13`. -/
 def dR3_c13_steps : List Step :=
-  [.slide 12 9, .slide 13 10, .slide 14 11, .slide 15 12, .slide 16 13, .slide 17 14,
-    .slide 18 15, .slide 20 16, .slide 21 17, .slide 22 18, .slide 23 19, .slide 24 20,
-    .slide 25 21, .slide 26 22, .slide 27 23, .slide 28 24, .slide 32 25, .slide 33 26,
-    .slide 34 27, .slide 35 28, .slide 36 29, .slide 37 30, .slide 38 31, .slide 41 32,
-    .slide 42 33, .slide 43 34, .slide 44 35, .slide 45 36, .slide 46 37, .slide 47 38,
-    .slide 48 39, .slide 49 40, .slide 53 41, .slide 54 42, .slide 55 43, .slide 56 44,
-    .slide 57 45, .slide 58 46, .slide 59 47, .slide 61 48, .slide 62 49, .slide 63 50,
-    .slide 64 51, .slide 65 52, .slide 66 53, .slide 67 54, .slide 68 55, .slide 69 56,
-    .slide 73 57, .slide 74 58, .slide 75 59, .slide 76 60, .slide 77 61, .slide 78 62,
-    .slide 79 63, .swap 67, .rw 0 4 false, .rw 0 4 false, .rw 0 4 false, .rw 0 4 false,
-    .rw 0 4 false, .rw 0 4 false, .rw 0 4 false, .rw 0 4 false, .rw 0 4 true, .rw 0 4 true,
-    .rw 0 4 true, .rw 0 4 true, .rw 0 4 true, .rw 0 4 true, .rw 0 4 true, .rw 0 4 true,
-    .rw 56 4 false, .rw 48 4 false, .rw 40 4 false, .rw 32 4 false, .rw 24 4 false,
-    .rw 16 4 false, .rw 8 4 false, .rw 0 4 false, .rw 9 5 false, .swap 3, .rw 0 6 false,
-    .swap 4, .rw 5 0 false, .rw 5 0 true, .swap 4, .rw 5 7 false, .swap 8, .rw 4 0 false,
-    .rw 4 0 true, .swap 8, .rw 1 8 false, .rw 3 3 true, .rw 1 9 true, .rw 0 2 false,
-    .rw 1 10 true, .rw 4 1 false, .rw 4 1 true, .rw 5 11 true, .swap 5, .rw 4 1 false,
-    .rw 4 1 true, .rw 0 12 true, .swap 7, .slide 7 9, .rw 9 13 true, .swap 12,
-    .rw 0 4 true, .rw 8 4 true, .rw 16 4 true, .rw 24 4 true, .rw 32 4 true, .rw 40 4 true,
-    .rw 48 4 true, .rw 56 4 true, .rw 0 4 false, .rw 0 4 false, .rw 0 4 false,
-    .rw 0 4 false, .rw 0 4 false, .rw 0 4 false, .rw 0 4 false, .rw 0 4 false,
-    .rw 0 4 true, .rw 0 4 true, .rw 0 4 true, .rw 0 4 true, .rw 0 4 true, .rw 0 4 true,
-    .rw 0 4 true, .rw 0 4 true, .swap 76, .slide 63 79, .slide 62 78, .slide 61 77,
-    .slide 60 76, .slide 59 75, .slide 58 74, .slide 57 73, .slide 56 69, .slide 55 68,
-    .slide 54 67, .slide 53 66, .slide 52 65, .slide 51 64, .slide 50 63, .slide 49 62,
-    .slide 48 61, .slide 47 59, .slide 46 58, .slide 45 57, .slide 44 56, .slide 43 55,
-    .slide 42 54, .slide 41 53, .slide 40 49, .slide 39 48, .slide 38 47, .slide 37 46,
-    .slide 36 45, .slide 35 44, .slide 34 43, .slide 33 42, .slide 32 41, .slide 31 38,
-    .slide 30 37, .slide 29 36, .slide 28 35, .slide 27 34, .slide 26 33, .slide 25 32,
-    .slide 24 28, .slide 23 27, .slide 22 26, .slide 21 25, .slide 20 24, .slide 19 23,
-    .slide 18 22, .slide 17 21, .slide 16 20, .slide 15 18, .slide 14 17, .slide 13 16,
-    .slide 12 15, .slide 11 14, .slide 10 13, .slide 9 12]
+  [Step.slide 12 9, Step.slide 13 10, Step.slide 14 11, Step.slide 15 12, Step.slide 16 13, Step.slide 17 14,
+    Step.slide 18 15, Step.slide 20 16, Step.slide 21 17, Step.slide 22 18, Step.slide 23 19, Step.slide 24 20,
+    Step.slide 25 21, Step.slide 26 22, Step.slide 27 23, Step.slide 28 24, Step.slide 32 25, Step.slide 33 26,
+    Step.slide 34 27, Step.slide 35 28, Step.slide 36 29, Step.slide 37 30, Step.slide 38 31, Step.slide 41 32,
+    Step.slide 42 33, Step.slide 43 34, Step.slide 44 35, Step.slide 45 36, Step.slide 46 37, Step.slide 47 38,
+    Step.slide 48 39, Step.slide 49 40, Step.slide 53 41, Step.slide 54 42, Step.slide 55 43, Step.slide 56 44,
+    Step.slide 57 45, Step.slide 58 46, Step.slide 59 47, Step.slide 61 48, Step.slide 62 49, Step.slide 63 50,
+    Step.slide 64 51, Step.slide 65 52, Step.slide 66 53, Step.slide 67 54, Step.slide 68 55, Step.slide 69 56,
+    Step.slide 73 57, Step.slide 74 58, Step.slide 75 59, Step.slide 76 60, Step.slide 77 61, Step.slide 78 62,
+    Step.slide 79 63, Step.swap 67, Step.rw 0 4 false, Step.rw 0 4 false, Step.rw 0 4 false, Step.rw 0 4 false,
+    Step.rw 0 4 false, Step.rw 0 4 false, Step.rw 0 4 false, Step.rw 0 4 false, Step.rw 0 4 true, Step.rw 0 4 true,
+    Step.rw 0 4 true, Step.rw 0 4 true, Step.rw 0 4 true, Step.rw 0 4 true, Step.rw 0 4 true, Step.rw 0 4 true,
+    Step.rw 56 4 false, Step.rw 48 4 false, Step.rw 40 4 false, Step.rw 32 4 false, Step.rw 24 4 false,
+    Step.rw 16 4 false, Step.rw 8 4 false, Step.rw 0 4 false, Step.rw 9 5 false, Step.swap 3, Step.rw 0 6 false,
+    Step.swap 4, Step.rw 5 0 false, Step.rw 5 0 true, Step.swap 4, Step.rw 5 7 false, Step.swap 8, Step.rw 4 0 false,
+    Step.rw 4 0 true, Step.swap 8, Step.rw 1 8 false, Step.rw 3 3 true, Step.rw 1 9 true, Step.rw 0 2 false,
+    Step.rw 1 10 true, Step.rw 4 1 false, Step.rw 4 1 true, Step.rw 5 11 true, Step.swap 5, Step.rw 4 1 false,
+    Step.rw 4 1 true, Step.rw 0 12 true, Step.swap 7, Step.slide 7 9, Step.rw 9 13 true, Step.swap 12,
+    Step.rw 0 4 true, Step.rw 8 4 true, Step.rw 16 4 true, Step.rw 24 4 true, Step.rw 32 4 true, Step.rw 40 4 true,
+    Step.rw 48 4 true, Step.rw 56 4 true, Step.rw 0 4 false, Step.rw 0 4 false, Step.rw 0 4 false,
+    Step.rw 0 4 false, Step.rw 0 4 false, Step.rw 0 4 false, Step.rw 0 4 false, Step.rw 0 4 false,
+    Step.rw 0 4 true, Step.rw 0 4 true, Step.rw 0 4 true, Step.rw 0 4 true, Step.rw 0 4 true, Step.rw 0 4 true,
+    Step.rw 0 4 true, Step.rw 0 4 true, Step.swap 76, Step.slide 63 79, Step.slide 62 78, Step.slide 61 77,
+    Step.slide 60 76, Step.slide 59 75, Step.slide 58 74, Step.slide 57 73, Step.slide 56 69, Step.slide 55 68,
+    Step.slide 54 67, Step.slide 53 66, Step.slide 52 65, Step.slide 51 64, Step.slide 50 63, Step.slide 49 62,
+    Step.slide 48 61, Step.slide 47 59, Step.slide 46 58, Step.slide 45 57, Step.slide 44 56, Step.slide 43 55,
+    Step.slide 42 54, Step.slide 41 53, Step.slide 40 49, Step.slide 39 48, Step.slide 38 47, Step.slide 37 46,
+    Step.slide 36 45, Step.slide 35 44, Step.slide 34 43, Step.slide 33 42, Step.slide 32 41, Step.slide 31 38,
+    Step.slide 30 37, Step.slide 29 36, Step.slide 28 35, Step.slide 27 34, Step.slide 26 33, Step.slide 25 32,
+    Step.slide 24 28, Step.slide 23 27, Step.slide 22 26, Step.slide 21 25, Step.slide 20 24, Step.slide 19 23,
+    Step.slide 18 22, Step.slide 17 21, Step.slide 16 20, Step.slide 15 18, Step.slide 14 17, Step.slide 13 16,
+    Step.slide 12 15, Step.slide 11 14, Step.slide 10 13, Step.slide 9 12]
 
 /-- `R3 c13`. -/
 def dR3_c13 : DEqn Th 3 where
@@ -162,9 +162,9 @@ def dT3_dbc : DEqn Th 3 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 2 0, dS2_cc.place 0 1,
     dS2_cc.place 1 0, DEqn.inst (P := pres) (S := fun _ => True) Ax.I trivial 0 0]
-    [.rw 6 2 true, .rw 9 0 false, .rw 9 0 true, .rw 10 3 true, .slide 10 6, .rw 13 1 false,
-    .rw 13 1 true, .slide 6 10, .rw 0 4 false, .slide 8 4, .rw 3 1 false, .rw 3 1 true,
-    .slide 4 8]
+    [Step.rw 6 2 true, Step.rw 9 0 false, Step.rw 9 0 true, Step.rw 10 3 true, Step.slide 10 6, Step.rw 13 1 false,
+    Step.rw 13 1 true, Step.slide 6 10, Step.rw 0 4 false, Step.slide 8 4, Step.rw 3 1 false, Step.rw 3 1 true,
+    Step.slide 4 8]
     (by decide +kernel)
 
 /-- `T3 dd`. -/
@@ -174,7 +174,7 @@ def dT3_dd : DEqn Th 3 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 1,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0, dS2_cc.place 0 1]
-    [.rw 5 1 false, .rw 4 0 false, .rw 4 0 true, .rw 1 2 false, .rw 0 1 false]
+    [Step.rw 5 1 false, Step.rw 4 0 false, Step.rw 4 0 true, Step.rw 1 2 false, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- `T3 bc4`. -/
@@ -186,10 +186,10 @@ def dT3_bc4 : DEqn Th 3 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 2 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0, dT3_dbc.place 0 0,
     dT3_dd.place 0 0]
-    [.slide 8 4, .slide 16 12, .slide 24 20, .rw 3 1 false, .rw 9 1 false, .rw 15 1 false,
-    .rw 15 1 true, .rw 9 1 true, .rw 3 1 true, .slide 12 16, .slide 20 24, .rw 16 3 true,
-    .rw 3 1 false, .rw 3 1 true, .slide 4 8, .rw 0 3 true, .rw 5 2 false, .rw 4 0 false,
-    .rw 4 0 true, .rw 5 2 true, .rw 0 4 false]
+    [Step.slide 8 4, Step.slide 16 12, Step.slide 24 20, Step.rw 3 1 false, Step.rw 9 1 false, Step.rw 15 1 false,
+    Step.rw 15 1 true, Step.rw 9 1 true, Step.rw 3 1 true, Step.slide 12 16, Step.slide 20 24, Step.rw 16 3 true,
+    Step.rw 3 1 false, Step.rw 3 1 true, Step.slide 4 8, Step.rw 0 3 true, Step.rw 5 2 false, Step.rw 4 0 false,
+    Step.rw 4 0 true, Step.rw 5 2 true, Step.rw 0 4 false]
     (by decide +kernel)
 
 /-- `T3 cb4`. -/
@@ -200,11 +200,11 @@ def dT3_cb4 : DEqn Th 3 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 2 0, dS2_cc.place 0 1,
     dT3_bc4.place 0 0]
-    [.slide 4 0, .slide 12 8, .slide 20 16, .slide 28 24, .rw 7 1 false, .rw 13 1 false,
-    .rw 19 1 false, .rw 19 1 true, .rw 13 1 true, .rw 7 1 true, .rw 31 2 true,
-    .slide 39 31, .rw 35 0 false, .rw 7 1 false, .rw 13 1 false, .rw 19 1 false,
-    .rw 19 1 true, .rw 13 1 true, .rw 7 1 true, .rw 35 0 true, .slide 0 4, .slide 8 12,
-    .slide 16 20, .slide 24 28, .rw 4 3 false, .rw 3 0 false, .rw 3 0 true, .rw 0 2 false]
+    [Step.slide 4 0, Step.slide 12 8, Step.slide 20 16, Step.slide 28 24, Step.rw 7 1 false, Step.rw 13 1 false,
+    Step.rw 19 1 false, Step.rw 19 1 true, Step.rw 13 1 true, Step.rw 7 1 true, Step.rw 31 2 true,
+    Step.slide 39 31, Step.rw 35 0 false, Step.rw 7 1 false, Step.rw 13 1 false, Step.rw 19 1 false,
+    Step.rw 19 1 true, Step.rw 13 1 true, Step.rw 7 1 true, Step.rw 35 0 true, Step.slide 0 4, Step.slide 8 12,
+    Step.slide 16 20, Step.slide 24 28, Step.rw 4 3 false, Step.rw 3 0 false, Step.rw 3 0 true, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `T3 bd`. -/
@@ -215,13 +215,13 @@ def dT3_bd : DEqn Th 3 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 2 0, dT3_dbc.place 0 0,
     dS2_cc.place 0 1, dS2_cc.place 1 0, dT3_cb4.place 0 0]
-    [.rw 0 2 false, .slide 8 4, .rw 15 0 false, .rw 3 1 false, .rw 3 1 true, .rw 15 0 true,
-    .rw 12 3 false, .rw 3 1 false, .rw 3 1 true, .rw 0 5 true, .slide 4 0, .slide 12 8,
-    .slide 20 16, .slide 28 24, .rw 7 1 false, .rw 13 1 false, .rw 19 1 false,
-    .rw 25 1 false, .rw 27 1 false, .rw 27 1 true, .rw 25 1 true, .rw 19 1 true,
-    .rw 13 1 true, .rw 7 1 true, .slide 24 28, .rw 28 4 false, .slide 28 24, .slide 24 32,
-    .slide 23 31, .rw 23 3 false, .slide 16 20, .rw 20 4 false, .rw 7 1 false,
-    .rw 7 1 true, .slide 0 4, .slide 8 12, .rw 4 2 true]
+    [Step.rw 0 2 false, Step.slide 8 4, Step.rw 15 0 false, Step.rw 3 1 false, Step.rw 3 1 true, Step.rw 15 0 true,
+    Step.rw 12 3 false, Step.rw 3 1 false, Step.rw 3 1 true, Step.rw 0 5 true, Step.slide 4 0, Step.slide 12 8,
+    Step.slide 20 16, Step.slide 28 24, Step.rw 7 1 false, Step.rw 13 1 false, Step.rw 19 1 false,
+    Step.rw 25 1 false, Step.rw 27 1 false, Step.rw 27 1 true, Step.rw 25 1 true, Step.rw 19 1 true,
+    Step.rw 13 1 true, Step.rw 7 1 true, Step.slide 24 28, Step.rw 28 4 false, Step.slide 28 24, Step.slide 24 32,
+    Step.slide 23 31, Step.rw 23 3 false, Step.slide 16 20, Step.rw 20 4 false, Step.rw 7 1 false,
+    Step.rw 7 1 true, Step.slide 0 4, Step.slide 8 12, Step.rw 4 2 true]
     (by decide +kernel)
 
 /-- `T3 bcb`. -/
@@ -232,8 +232,8 @@ def dT3_bcb : DEqn Th 3 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.I trivial 0 0, dT3_bd.place 0 0,
     dS2_cc.place 0 1]
-    [.slide 4 0, .slide 0 4, .rw 4 1 true, .slide 14 10, .rw 0 2 true, .slide 10 6,
-    .rw 10 0 false, .rw 10 0 true, .rw 7 3 false]
+    [Step.slide 4 0, Step.slide 0 4, Step.rw 4 1 true, Step.slide 14 10, Step.rw 0 2 true, Step.slide 10 6,
+    Step.rw 10 0 false, Step.rw 10 0 true, Step.rw 7 3 false]
     (by decide +kernel)
 
 /-- `T3 P3`. -/
@@ -245,11 +245,11 @@ def dT3_P3 : DEqn Th 3 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 2 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0, dS2_czh.place 1 0,
     dT3_bcb.place 0 0, DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 1 0]
-    [.rw 4 3 false, .slide 4 0, .slide 5 1, .rw 0 1 false, .rw 6 1 false, .rw 6 1 true,
-    .rw 0 1 true, .rw 0 1 false, .rw 6 1 false, .rw 6 1 true, .rw 0 1 true, .slide 1 5,
-    .slide 9 13, .rw 1 4 false, .rw 10 1 false, .rw 10 1 true, .rw 7 1 true, .rw 7 1 false,
-    .rw 10 1 false, .rw 10 1 true, .rw 7 1 true, .rw 8 3 true, .rw 5 2 true, .rw 6 5 false,
-    .rw 7 2 false, .rw 6 1 false, .rw 0 5 true, .rw 1 0 false]
+    [Step.rw 4 3 false, Step.slide 4 0, Step.slide 5 1, Step.rw 0 1 false, Step.rw 6 1 false, Step.rw 6 1 true,
+    Step.rw 0 1 true, Step.rw 0 1 false, Step.rw 6 1 false, Step.rw 6 1 true, Step.rw 0 1 true, Step.slide 1 5,
+    Step.slide 9 13, Step.rw 1 4 false, Step.rw 10 1 false, Step.rw 10 1 true, Step.rw 7 1 true, Step.rw 7 1 false,
+    Step.rw 10 1 false, Step.rw 10 1 true, Step.rw 7 1 true, Step.rw 8 3 true, Step.rw 5 2 true, Step.rw 6 5 false,
+    Step.rw 7 2 false, Step.rw 6 1 false, Step.rw 0 5 true, Step.rw 1 0 false]
     (by decide +kernel)
 
 /-- `RCX`. -/
@@ -260,8 +260,8 @@ def dRCX : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CSr trivial 0 0]
-    [.rw 2 2 false, .rw 1 2 false, .rw 3 0 false, .rw 3 0 true, .rw 0 0 true, .rw 1 1 false,
-    .rw 2 0 false, .rw 3 0 false, .rw 4 1 false]
+    [Step.rw 2 2 false, Step.rw 1 2 false, Step.rw 3 0 false, Step.rw 3 0 true, Step.rw 0 0 true, Step.rw 1 1 false,
+    Step.rw 2 0 false, Step.rw 3 0 false, Step.rw 4 1 false]
     (by decide +kernel)
 
 /-- `CPh~m`. -/
@@ -272,9 +272,9 @@ def dCPh_m : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CPh trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.S) 0 0]
-    [.rw 3 0 true, .rw 2 0 true, .rw 0 0 true, .rw 1 0 false, .rw 2 0 false, .rw 3 0 false,
-    .rw 6 0 true, .rw 5 2 true, .rw 4 0 false, .rw 5 0 false, .rw 1 1 false, .rw 1 0 true,
-    .rw 2 2 false, .rw 3 0 false, .rw 0 0 false]
+    [Step.rw 3 0 true, Step.rw 2 0 true, Step.rw 0 0 true, Step.rw 1 0 false, Step.rw 2 0 false, Step.rw 3 0 false,
+    Step.rw 6 0 true, Step.rw 5 2 true, Step.rw 4 0 false, Step.rw 5 0 false, Step.rw 1 1 false, Step.rw 1 0 true,
+    Step.rw 2 2 false, Step.rw 3 0 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `CPh^`. -/
@@ -284,8 +284,8 @@ def dCPhu : DEqn Th 2 where
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CSr trivial 0 0, dCPh_m.place 0 0]
-    [.rw 2 1 false, .rw 6 1 false, .rw 1 0 true, .rw 2 1 true, .rw 0 0 true, .rw 1 1 true,
-    .rw 0 2 false]
+    [Step.rw 2 1 false, Step.rw 6 1 false, Step.rw 1 0 true, Step.rw 2 1 true, Step.rw 0 0 true, Step.rw 1 1 true,
+    Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- `lem:cs-C5-dec-eq`. -/
@@ -298,28 +298,28 @@ def dC5dec : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dRCX.place 0 0,
     dCPhu.place 0 0, DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0]
-    [.rw 0 1 true, .rw 4 1 true, .rw 8 1 true, .rw 0 1 false, .rw 2 1 false, .rw 4 1 false,
-    .rw 4 1 true, .rw 2 1 true, .rw 0 1 true, .rw 0 1 false, .rw 2 1 false, .rw 4 1 false,
-    .rw 4 1 true, .rw 2 1 true, .rw 0 1 true, .rw 0 0 true, .slide 2 0, .slide 3 1,
-    .rw 1 2 true, .rw 6 0 false, .rw 8 1 false, .rw 10 1 false, .rw 1 2 false,
-    .rw 0 1 false, .rw 0 1 true, .rw 1 2 true, .rw 10 1 true, .rw 8 1 true, .rw 6 0 true,
-    .slide 6 4, .rw 5 5 true, .rw 8 5 true, .rw 18 1 false, .rw 20 1 false, .rw 20 1 true,
-    .rw 18 1 true, .rw 7 0 true, .rw 11 0 true, .rw 16 0 true, .rw 7 0 false,
-    .rw 9 0 false, .rw 12 0 false, .rw 18 1 false, .rw 20 1 false, .rw 20 1 true,
-    .rw 18 1 true, .rw 12 0 true, .rw 9 0 true, .rw 7 0 true, .swap 15, .rw 12 4 false,
-    .swap 22, .rw 19 4 false, .rw 8 4 false, .rw 4 4 false, .rw 32 1 false, .rw 34 1 false,
-    .rw 9 3 false, .rw 8 1 false, .rw 11 3 false, .rw 10 1 false, .rw 10 1 true,
-    .rw 11 3 true, .rw 8 1 true, .rw 9 3 true, .rw 34 1 true, .rw 32 1 true,
-    .rw 23 6 false, .rw 31 1 false, .rw 9 3 false, .rw 8 1 false, .rw 11 3 false,
-    .rw 10 1 false, .rw 23 1 true, .rw 24 3 true, .rw 10 1 true, .rw 11 3 true,
-    .rw 8 1 true, .rw 9 3 true, .rw 23 3 true, .rw 24 6 false, .rw 9 3 false,
-    .rw 8 1 false, .rw 11 3 false, .rw 10 1 false, .rw 20 3 false, .rw 10 1 true,
-    .rw 11 3 true, .rw 8 1 true, .rw 9 3 true, .rw 16 4 true, .swap 19, .rw 21 4 true,
-    .swap 24, .rw 10 4 true, .rw 4 4 true, .rw 7 0 false, .rw 9 0 false, .rw 12 0 false,
-    .rw 12 0 true, .rw 9 0 true, .rw 7 0 true, .rw 16 0 false, .rw 11 0 false,
-    .rw 7 0 false, .rw 8 5 false, .rw 5 5 false, .slide 4 6, .rw 6 0 false, .rw 1 2 false,
-    .rw 0 1 false, .rw 0 1 true, .rw 1 2 true, .rw 6 0 true, .rw 1 2 false, .rw 2 0 false,
-    .rw 0 1 false, .rw 0 1 true, .rw 2 0 true, .rw 0 1 false, .rw 0 0 false]
+    [Step.rw 0 1 true, Step.rw 4 1 true, Step.rw 8 1 true, Step.rw 0 1 false, Step.rw 2 1 false, Step.rw 4 1 false,
+    Step.rw 4 1 true, Step.rw 2 1 true, Step.rw 0 1 true, Step.rw 0 1 false, Step.rw 2 1 false, Step.rw 4 1 false,
+    Step.rw 4 1 true, Step.rw 2 1 true, Step.rw 0 1 true, Step.rw 0 0 true, Step.slide 2 0, Step.slide 3 1,
+    Step.rw 1 2 true, Step.rw 6 0 false, Step.rw 8 1 false, Step.rw 10 1 false, Step.rw 1 2 false,
+    Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 1 2 true, Step.rw 10 1 true, Step.rw 8 1 true, Step.rw 6 0 true,
+    Step.slide 6 4, Step.rw 5 5 true, Step.rw 8 5 true, Step.rw 18 1 false, Step.rw 20 1 false, Step.rw 20 1 true,
+    Step.rw 18 1 true, Step.rw 7 0 true, Step.rw 11 0 true, Step.rw 16 0 true, Step.rw 7 0 false,
+    Step.rw 9 0 false, Step.rw 12 0 false, Step.rw 18 1 false, Step.rw 20 1 false, Step.rw 20 1 true,
+    Step.rw 18 1 true, Step.rw 12 0 true, Step.rw 9 0 true, Step.rw 7 0 true, Step.swap 15, Step.rw 12 4 false,
+    Step.swap 22, Step.rw 19 4 false, Step.rw 8 4 false, Step.rw 4 4 false, Step.rw 32 1 false, Step.rw 34 1 false,
+    Step.rw 9 3 false, Step.rw 8 1 false, Step.rw 11 3 false, Step.rw 10 1 false, Step.rw 10 1 true,
+    Step.rw 11 3 true, Step.rw 8 1 true, Step.rw 9 3 true, Step.rw 34 1 true, Step.rw 32 1 true,
+    Step.rw 23 6 false, Step.rw 31 1 false, Step.rw 9 3 false, Step.rw 8 1 false, Step.rw 11 3 false,
+    Step.rw 10 1 false, Step.rw 23 1 true, Step.rw 24 3 true, Step.rw 10 1 true, Step.rw 11 3 true,
+    Step.rw 8 1 true, Step.rw 9 3 true, Step.rw 23 3 true, Step.rw 24 6 false, Step.rw 9 3 false,
+    Step.rw 8 1 false, Step.rw 11 3 false, Step.rw 10 1 false, Step.rw 20 3 false, Step.rw 10 1 true,
+    Step.rw 11 3 true, Step.rw 8 1 true, Step.rw 9 3 true, Step.rw 16 4 true, Step.swap 19, Step.rw 21 4 true,
+    Step.swap 24, Step.rw 10 4 true, Step.rw 4 4 true, Step.rw 7 0 false, Step.rw 9 0 false, Step.rw 12 0 false,
+    Step.rw 12 0 true, Step.rw 9 0 true, Step.rw 7 0 true, Step.rw 16 0 false, Step.rw 11 0 false,
+    Step.rw 7 0 false, Step.rw 8 5 false, Step.rw 5 5 false, Step.slide 4 6, Step.rw 6 0 false, Step.rw 1 2 false,
+    Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 1 2 true, Step.rw 6 0 true, Step.rw 1 2 false, Step.rw 2 0 false,
+    Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 2 0 true, Step.rw 0 1 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `T3 cs02`. -/
@@ -329,7 +329,7 @@ def dT3_cs02 : DEqn Th 3 where
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0, dC12dec.place 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CSr trivial 1 0]
-    [.rw 3 2 false, .rw 2 0 false, .rw 1 1 false, .rw 2 0 true, .rw 0 2 true]
+    [Step.rw 3 2 false, Step.rw 2 0 false, Step.rw 1 1 false, Step.rw 2 0 true, Step.rw 0 2 true]
     (by decide +kernel)
 
 /-- `S2 swc` (semantic). -/
@@ -344,8 +344,8 @@ def dT3_be : DEqn Th 3 where
   rhs := tw 3 [(.H, 1), (.CS, 0), (.CS, 0), (.H, 1), (.H, 1), (.CS, 1), (.CS, 1), (.H, 1)]
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 1, dC12dec.place 0 0]
-    [.rw 3 0 false, .rw 3 0 true, .rw 3 0 false, .rw 2 1 true, .rw 3 1 true, .rw 1 1 true,
-    .rw 2 1 true, .rw 3 0 true, .rw 3 0 false, .rw 3 0 true]
+    [Step.rw 3 0 false, Step.rw 3 0 true, Step.rw 3 0 false, Step.rw 2 1 true, Step.rw 3 1 true, Step.rw 1 1 true,
+    Step.rw 2 1 true, Step.rw 3 0 true, Step.rw 3 0 false, Step.rw 3 0 true]
     (by decide +kernel)
 
 /-- `T3 Z12`. -/
@@ -355,7 +355,7 @@ def dT3_Z12 : DEqn Th 3 where
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 1, dC12dec.place 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CSr trivial 0 1]
-    [.rw 0 2 false, .rw 2 0 false, .rw 1 1 false, .rw 2 1 false, .rw 3 0 true, .rw 4 2 true]
+    [Step.rw 0 2 false, Step.rw 2 0 false, Step.rw 1 1 false, Step.rw 2 1 false, Step.rw 3 0 true, Step.rw 4 2 true]
     (by decide +kernel)
 
 /-- `T3 Z02CS1`. -/
@@ -366,8 +366,8 @@ def dT3_Z02CS1 : DEqn Th 3 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 1,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat2 Gate.CS) 0 0, dT3_Z12.place 0 0]
-    [.rw 1 0 true, .rw 2 2 false, .rw 3 2 false, .rw 5 1 false, .rw 0 3 false, .rw 4 1 true,
-    .rw 2 2 true, .rw 1 2 true, .rw 0 0 false]
+    [Step.rw 1 0 true, Step.rw 2 2 false, Step.rw 3 2 false, Step.rw 5 1 false, Step.rw 0 3 false, Step.rw 4 1 true,
+    Step.rw 2 2 true, Step.rw 1 2 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `S2 eh` (semantic). -/
@@ -388,8 +388,8 @@ def dT3_Z02CZ : DEqn Th 3 where
   rhs := tw 3 [(.CS, 0), (.CS, 0), (.SW, 0), (.CS, 1), (.CS, 1), (.SW, 0)]
   proof := derive hsc
     [dC12dec.place 0 0, DEqn.inst (P := pres) (S := fun _ => True) Ax.CSr trivial 1 0]
-    [.rw 0 1 false, .rw 2 1 true, .rw 2 0 true, .rw 3 0 true, .rw 1 0 true, .rw 2 0 true,
-    .rw 3 1 false, .rw 5 1 true]
+    [Step.rw 0 1 false, Step.rw 2 1 true, Step.rw 2 0 true, Step.rw 3 0 true, Step.rw 1 0 true, Step.rw 2 0 true,
+    Step.rw 3 1 false, Step.rw 5 1 true]
     (by decide +kernel)
 
 /-- `S2 cz2` (semantic). -/
@@ -405,7 +405,7 @@ def dT3_Q : DEqn Th 3 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 1, dS2_cc.place 0 1,
     dT3_P3.place 0 0, dT3_Z02CZ.place 0 0, dS2_cz2.place 1 0]
-    [.rw 8 1 true, .rw 11 0 false, .rw 11 0 true, .rw 2 2 false, .rw 0 3 false, .rw 4 4 false]
+    [Step.rw 8 1 true, Step.rw 11 0 false, Step.rw 11 0 true, Step.rw 2 2 false, Step.rw 0 3 false, Step.rw 4 4 false]
     (by decide +kernel)
 
 /-- `T3 P3r`. -/
@@ -417,38 +417,38 @@ def dT3_P3r : DEqn Th 3 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0, dS2_czh.place 0 1,
     dS2_eh.place 1 0, dS2_he.place 1 0, dT3_Q.place 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 1 0]
-    [.rw 4 2 false, .rw 3 0 false, .rw 6 0 false, .rw 6 0 true, .rw 3 0 true, .rw 0 4 false,
-    .rw 7 3 false, .rw 1 5 false, .rw 8 0 false, .rw 8 0 true, .rw 0 1 true, .rw 1 6 false,
-    .rw 2 1 false, .slide 1 3, .rw 3 6 true, .rw 4 0 false, .rw 6 0 false, .rw 6 0 true,
-    .rw 4 0 true, .rw 4 2 true]
+    [Step.rw 4 2 false, Step.rw 3 0 false, Step.rw 6 0 false, Step.rw 6 0 true, Step.rw 3 0 true, Step.rw 0 4 false,
+    Step.rw 7 3 false, Step.rw 1 5 false, Step.rw 8 0 false, Step.rw 8 0 true, Step.rw 0 1 true, Step.rw 1 6 false,
+    Step.rw 2 1 false, Step.slide 1 3, Step.rw 3 6 true, Step.rw 4 0 false, Step.rw 6 0 false, Step.rw 6 0 true,
+    Step.rw 4 0 true, Step.rw 4 2 true]
     (by decide +kernel)
 
 /-- The steps of `dR3_c14`. -/
 def dR3_c14_steps : List Step :=
-  [.slide 12 9, .slide 13 10, .slide 14 11, .slide 15 12, .slide 16 13, .slide 17 14,
-    .slide 18 15, .slide 23 16, .slide 24 17, .slide 25 18, .slide 26 19, .slide 27 20,
-    .slide 28 21, .slide 29 22, .slide 30 23, .slide 31 24, .slide 35 25, .slide 36 26,
-    .slide 37 27, .slide 38 28, .slide 39 29, .slide 40 30, .slide 41 31, .rw 0 3 false,
-    .rw 0 3 false, .rw 0 3 false, .rw 0 3 false, .rw 0 3 true, .rw 0 3 true, .rw 0 3 true,
-    .rw 0 3 true, .rw 24 3 false, .rw 16 3 false, .rw 8 3 false, .rw 0 3 false,
-    .rw 5 4 true, .rw 8 0 false, .rw 8 0 true, .rw 9 5 false, .rw 11 2 true, .rw 9 6 true,
-    .rw 15 2 false, .rw 4 2 true, .rw 5 1 true, .rw 6 7 true, .rw 23 2 true, .rw 8 1 true,
-    .rw 9 2 true, .rw 10 8 true, .rw 11 9 true, .rw 15 8 false, .rw 27 2 false,
-    .rw 27 2 true, .rw 21 10 true, .rw 22 10 true, .rw 23 10 true, .rw 27 2 false,
-    .rw 27 2 true, .rw 24 11 true, .rw 27 11 true, .rw 26 2 false, .rw 26 2 true,
-    .rw 30 7 false, .rw 26 2 false, .rw 26 2 true, .rw 4 12 false, .rw 3 0 false,
-    .rw 5 0 false, .rw 20 2 false, .rw 20 2 true, .rw 5 0 true, .rw 3 0 true,
-    .rw 4 13 false, .rw 3 0 false, .rw 5 0 false, .rw 20 2 false, .rw 20 2 true,
-    .rw 5 0 true, .rw 3 0 true, .rw 0 4 false, .rw 16 2 false, .rw 16 2 true,
-    .rw 0 12 true, .rw 18 2 false, .rw 7 12 false, .rw 0 12 false, .rw 11 14 false,
-    .rw 10 14 false, .rw 9 14 false, .rw 9 15 true, .rw 8 0 false, .rw 8 0 true,
-    .rw 5 16 false, .rw 0 3 true, .rw 8 3 true, .rw 16 3 true, .rw 24 3 true,
-    .rw 0 3 false, .rw 0 3 false, .rw 0 3 false, .rw 0 3 false, .rw 0 3 true, .rw 0 3 true,
-    .rw 0 3 true, .rw 0 3 true, .slide 31 41, .slide 30 40, .slide 29 39, .slide 28 38,
-    .slide 27 37, .slide 26 36, .slide 25 35, .slide 24 31, .slide 23 30, .slide 22 29,
-    .slide 21 28, .slide 20 27, .slide 19 26, .slide 18 25, .slide 17 24, .slide 16 23,
-    .slide 15 18, .slide 14 17, .slide 13 16, .slide 12 15, .slide 11 14, .slide 10 13,
-    .slide 9 12]
+  [Step.slide 12 9, Step.slide 13 10, Step.slide 14 11, Step.slide 15 12, Step.slide 16 13, Step.slide 17 14,
+    Step.slide 18 15, Step.slide 23 16, Step.slide 24 17, Step.slide 25 18, Step.slide 26 19, Step.slide 27 20,
+    Step.slide 28 21, Step.slide 29 22, Step.slide 30 23, Step.slide 31 24, Step.slide 35 25, Step.slide 36 26,
+    Step.slide 37 27, Step.slide 38 28, Step.slide 39 29, Step.slide 40 30, Step.slide 41 31, Step.rw 0 3 false,
+    Step.rw 0 3 false, Step.rw 0 3 false, Step.rw 0 3 false, Step.rw 0 3 true, Step.rw 0 3 true, Step.rw 0 3 true,
+    Step.rw 0 3 true, Step.rw 24 3 false, Step.rw 16 3 false, Step.rw 8 3 false, Step.rw 0 3 false,
+    Step.rw 5 4 true, Step.rw 8 0 false, Step.rw 8 0 true, Step.rw 9 5 false, Step.rw 11 2 true, Step.rw 9 6 true,
+    Step.rw 15 2 false, Step.rw 4 2 true, Step.rw 5 1 true, Step.rw 6 7 true, Step.rw 23 2 true, Step.rw 8 1 true,
+    Step.rw 9 2 true, Step.rw 10 8 true, Step.rw 11 9 true, Step.rw 15 8 false, Step.rw 27 2 false,
+    Step.rw 27 2 true, Step.rw 21 10 true, Step.rw 22 10 true, Step.rw 23 10 true, Step.rw 27 2 false,
+    Step.rw 27 2 true, Step.rw 24 11 true, Step.rw 27 11 true, Step.rw 26 2 false, Step.rw 26 2 true,
+    Step.rw 30 7 false, Step.rw 26 2 false, Step.rw 26 2 true, Step.rw 4 12 false, Step.rw 3 0 false,
+    Step.rw 5 0 false, Step.rw 20 2 false, Step.rw 20 2 true, Step.rw 5 0 true, Step.rw 3 0 true,
+    Step.rw 4 13 false, Step.rw 3 0 false, Step.rw 5 0 false, Step.rw 20 2 false, Step.rw 20 2 true,
+    Step.rw 5 0 true, Step.rw 3 0 true, Step.rw 0 4 false, Step.rw 16 2 false, Step.rw 16 2 true,
+    Step.rw 0 12 true, Step.rw 18 2 false, Step.rw 7 12 false, Step.rw 0 12 false, Step.rw 11 14 false,
+    Step.rw 10 14 false, Step.rw 9 14 false, Step.rw 9 15 true, Step.rw 8 0 false, Step.rw 8 0 true,
+    Step.rw 5 16 false, Step.rw 0 3 true, Step.rw 8 3 true, Step.rw 16 3 true, Step.rw 24 3 true,
+    Step.rw 0 3 false, Step.rw 0 3 false, Step.rw 0 3 false, Step.rw 0 3 false, Step.rw 0 3 true, Step.rw 0 3 true,
+    Step.rw 0 3 true, Step.rw 0 3 true, Step.slide 31 41, Step.slide 30 40, Step.slide 29 39, Step.slide 28 38,
+    Step.slide 27 37, Step.slide 26 36, Step.slide 25 35, Step.slide 24 31, Step.slide 23 30, Step.slide 22 29,
+    Step.slide 21 28, Step.slide 20 27, Step.slide 19 26, Step.slide 18 25, Step.slide 17 24, Step.slide 16 23,
+    Step.slide 15 18, Step.slide 14 17, Step.slide 13 16, Step.slide 12 15, Step.slide 11 14, Step.slide 10 13,
+    Step.slide 9 12]
 
 /-- `R3 c14`. -/
 def dR3_c14 : DEqn Th 3 where
@@ -472,36 +472,36 @@ def dT3_aCZ : DEqn Th 3 where
   rhs := tw 3 [(.CS, 0), (.CS, 0), (.H, 2), (.CS, 1), (.CS, 1), (.H, 2)]
   proof := derive hsc
     [dT3_aCS.place 0 0]
-    [.rw 1 0 false, .swap 4, .swap 4, .rw 0 0 false, .slide 3 5, .slide 5 3]
+    [Step.rw 1 0 false, Step.swap 4, Step.swap 4, Step.rw 0 0 false, Step.slide 3 5, Step.slide 5 3]
     (by decide +kernel)
 
 /-- The steps of `dR3_c15`. -/
 def dR3_c15_steps : List Step :=
-  [.slide 12 9, .slide 13 10, .slide 14 11, .slide 15 12, .slide 16 13, .slide 17 14,
-    .slide 18 15, .slide 20 16, .slide 21 17, .slide 22 18, .slide 23 19, .slide 24 20,
-    .slide 25 21, .slide 26 22, .slide 27 23, .slide 28 24, .slide 32 25, .slide 33 26,
-    .slide 34 27, .slide 35 28, .slide 36 29, .slide 37 30, .slide 38 31, .slide 42 32,
-    .slide 43 33, .slide 44 34, .slide 45 35, .slide 46 36, .slide 47 37, .slide 48 38,
-    .slide 49 39, .slide 50 40, .slide 54 41, .slide 55 42, .slide 56 43, .slide 57 44,
-    .slide 58 45, .slide 59 46, .slide 60 47, .slide 62 48, .slide 63 49, .slide 64 50,
-    .slide 65 51, .slide 66 52, .slide 67 53, .slide 68 54, .slide 69 55, .slide 70 56,
-    .slide 74 57, .slide 75 58, .slide 76 59, .slide 77 60, .slide 78 61, .slide 79 62,
-    .slide 80 63, .swap 67, .rw 0 3 false, .rw 0 3 false, .rw 0 3 false, .rw 0 3 false,
-    .rw 0 3 false, .rw 0 3 false, .rw 0 3 false, .rw 0 3 false, .rw 0 3 true, .rw 0 3 true,
-    .rw 0 3 true, .rw 0 3 true, .rw 0 3 true, .rw 0 3 true, .rw 0 3 true, .rw 0 3 true,
-    .rw 56 3 false, .rw 48 3 false, .rw 40 3 false, .rw 32 3 false, .rw 24 3 false,
-    .rw 16 3 false, .rw 8 3 false, .rw 0 3 false, .rw 10 4 false, .swap 3, .rw 0 5 false,
-    .slide 4 6, .rw 6 0 false, .rw 6 0 true, .slide 6 4, .rw 5 6 false, .slide 8 10,
-    .rw 4 0 false, .rw 4 0 true, .slide 10 8, .rw 1 7 false, .rw 4 2 true, .rw 2 8 true,
-    .rw 1 8 true, .rw 0 1 false, .rw 4 9 true, .rw 0 10 true, .rw 2 11 true, .rw 0 3 true,
-    .rw 8 3 true, .rw 16 3 true, .rw 24 3 true, .rw 0 3 false, .rw 0 3 false,
-    .rw 0 3 false, .rw 0 3 false, .rw 0 3 true, .rw 0 3 true, .rw 0 3 true, .rw 0 3 true,
-    .slide 31 42, .slide 30 41, .slide 29 40, .slide 28 39, .slide 27 38, .slide 26 37,
-    .slide 25 36, .slide 24 32, .slide 23 31, .slide 22 30, .slide 21 29, .slide 20 28,
-    .slide 19 27, .slide 18 26, .slide 17 25, .slide 16 24, .slide 15 20, .slide 14 19,
-    .slide 13 18, .slide 12 17, .slide 11 16, .slide 10 15, .slide 9 14, .slide 8 10,
-    .slide 7 9, .slide 6 8, .slide 5 7, .slide 4 6, .slide 3 5, .slide 2 4, .slide 1 3,
-    .slide 0 2]
+  [Step.slide 12 9, Step.slide 13 10, Step.slide 14 11, Step.slide 15 12, Step.slide 16 13, Step.slide 17 14,
+    Step.slide 18 15, Step.slide 20 16, Step.slide 21 17, Step.slide 22 18, Step.slide 23 19, Step.slide 24 20,
+    Step.slide 25 21, Step.slide 26 22, Step.slide 27 23, Step.slide 28 24, Step.slide 32 25, Step.slide 33 26,
+    Step.slide 34 27, Step.slide 35 28, Step.slide 36 29, Step.slide 37 30, Step.slide 38 31, Step.slide 42 32,
+    Step.slide 43 33, Step.slide 44 34, Step.slide 45 35, Step.slide 46 36, Step.slide 47 37, Step.slide 48 38,
+    Step.slide 49 39, Step.slide 50 40, Step.slide 54 41, Step.slide 55 42, Step.slide 56 43, Step.slide 57 44,
+    Step.slide 58 45, Step.slide 59 46, Step.slide 60 47, Step.slide 62 48, Step.slide 63 49, Step.slide 64 50,
+    Step.slide 65 51, Step.slide 66 52, Step.slide 67 53, Step.slide 68 54, Step.slide 69 55, Step.slide 70 56,
+    Step.slide 74 57, Step.slide 75 58, Step.slide 76 59, Step.slide 77 60, Step.slide 78 61, Step.slide 79 62,
+    Step.slide 80 63, Step.swap 67, Step.rw 0 3 false, Step.rw 0 3 false, Step.rw 0 3 false, Step.rw 0 3 false,
+    Step.rw 0 3 false, Step.rw 0 3 false, Step.rw 0 3 false, Step.rw 0 3 false, Step.rw 0 3 true, Step.rw 0 3 true,
+    Step.rw 0 3 true, Step.rw 0 3 true, Step.rw 0 3 true, Step.rw 0 3 true, Step.rw 0 3 true, Step.rw 0 3 true,
+    Step.rw 56 3 false, Step.rw 48 3 false, Step.rw 40 3 false, Step.rw 32 3 false, Step.rw 24 3 false,
+    Step.rw 16 3 false, Step.rw 8 3 false, Step.rw 0 3 false, Step.rw 10 4 false, Step.swap 3, Step.rw 0 5 false,
+    Step.slide 4 6, Step.rw 6 0 false, Step.rw 6 0 true, Step.slide 6 4, Step.rw 5 6 false, Step.slide 8 10,
+    Step.rw 4 0 false, Step.rw 4 0 true, Step.slide 10 8, Step.rw 1 7 false, Step.rw 4 2 true, Step.rw 2 8 true,
+    Step.rw 1 8 true, Step.rw 0 1 false, Step.rw 4 9 true, Step.rw 0 10 true, Step.rw 2 11 true, Step.rw 0 3 true,
+    Step.rw 8 3 true, Step.rw 16 3 true, Step.rw 24 3 true, Step.rw 0 3 false, Step.rw 0 3 false,
+    Step.rw 0 3 false, Step.rw 0 3 false, Step.rw 0 3 true, Step.rw 0 3 true, Step.rw 0 3 true, Step.rw 0 3 true,
+    Step.slide 31 42, Step.slide 30 41, Step.slide 29 40, Step.slide 28 39, Step.slide 27 38, Step.slide 26 37,
+    Step.slide 25 36, Step.slide 24 32, Step.slide 23 31, Step.slide 22 30, Step.slide 21 29, Step.slide 20 28,
+    Step.slide 19 27, Step.slide 18 26, Step.slide 17 25, Step.slide 16 24, Step.slide 15 20, Step.slide 14 19,
+    Step.slide 13 18, Step.slide 12 17, Step.slide 11 16, Step.slide 10 15, Step.slide 9 14, Step.slide 8 10,
+    Step.slide 7 9, Step.slide 6 8, Step.slide 5 7, Step.slide 4 6, Step.slide 3 5, Step.slide 2 4, Step.slide 1 3,
+    Step.slide 0 2]
 
 /-- `R3 c15`. -/
 def dR3_c15 : DEqn Th 3 where
@@ -525,13 +525,13 @@ def dR3_c16 : DEqn Th 3 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 3 0,
     DEqn.inst (P := pres) (S := fun _ => True) (Ax.SH 1) trivial 0 0]
-    [.slide 0 7, .slide 10 7, .slide 11 8, .slide 12 9, .slide 13 10, .slide 14 11,
-    .slide 15 12, .slide 16 13, .slide 19 14, .slide 20 15, .slide 21 16, .slide 22 17,
-    .slide 23 18, .slide 24 19, .slide 25 20, .rw 0 0 false, .rw 0 0 false, .rw 0 0 true,
-    .rw 0 0 true, .rw 21 1 false, .rw 0 0 false, .rw 0 0 false, .rw 0 0 true, .rw 0 0 true,
-    .slide 20 25, .slide 19 24, .slide 18 23, .slide 17 22, .slide 16 21, .slide 15 20,
-    .slide 14 19, .slide 13 16, .slide 12 15, .slide 11 14, .slide 10 13, .slide 9 12,
-    .slide 8 11, .slide 7 10, .slide 7 0]
+    [Step.slide 0 7, Step.slide 10 7, Step.slide 11 8, Step.slide 12 9, Step.slide 13 10, Step.slide 14 11,
+    Step.slide 15 12, Step.slide 16 13, Step.slide 19 14, Step.slide 20 15, Step.slide 21 16, Step.slide 22 17,
+    Step.slide 23 18, Step.slide 24 19, Step.slide 25 20, Step.rw 0 0 false, Step.rw 0 0 false, Step.rw 0 0 true,
+    Step.rw 0 0 true, Step.rw 21 1 false, Step.rw 0 0 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 true,
+    Step.slide 20 25, Step.slide 19 24, Step.slide 18 23, Step.slide 17 22, Step.slide 16 21, Step.slide 15 20,
+    Step.slide 14 19, Step.slide 13 16, Step.slide 12 15, Step.slide 11 14, Step.slide 10 13, Step.slide 9 12,
+    Step.slide 8 11, Step.slide 7 10, Step.slide 7 0]
     (by decide +kernel)
 
 /-- `lem:cs-C17-dec-eq`. -/
@@ -541,7 +541,7 @@ def dC17dec : DEqn Th 3 where
   proof := derive hsc
     [dC5dec.place 0 1, dC5dec.place 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) (Ax.SH 3) trivial 0 0, dC12dec.place 0 0]
-    [.rw 1 0 true, .rw 2 2 false, .rw 0 3 true, .rw 1 1 false]
+    [Step.rw 1 0 true, Step.rw 2 2 false, Step.rw 0 3 true, Step.rw 1 1 false]
     (by decide +kernel)
 
 /-- `R3 c17`. -/
@@ -550,13 +550,13 @@ def dR3_c17 : DEqn Th 3 where
   rhs := tw 3 [(.CS, 1), (.H, 1), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.CS, 1), (.CS, 1), (.CS, 1), (.H, 1), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.CS, 0), (.H, 1), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.w, 0), (.CS, 1)]
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 3 0, dC17dec.place 0 0]
-    [.slide 0 7, .slide 10 7, .slide 11 8, .slide 12 9, .slide 13 10, .slide 14 11,
-    .slide 15 12, .slide 16 13, .slide 21 14, .slide 22 15, .slide 23 16, .slide 24 17,
-    .slide 25 18, .slide 26 19, .slide 27 20, .rw 0 0 false, .rw 0 0 false, .rw 0 0 true,
-    .rw 0 0 true, .rw 21 1 false, .rw 0 0 false, .rw 0 0 false, .rw 0 0 true, .rw 0 0 true,
-    .slide 20 27, .slide 19 26, .slide 18 25, .slide 17 24, .slide 16 23, .slide 15 22,
-    .slide 14 21, .slide 13 16, .slide 12 15, .slide 11 14, .slide 10 13, .slide 9 12,
-    .slide 8 11, .slide 7 10, .slide 7 0]
+    [Step.slide 0 7, Step.slide 10 7, Step.slide 11 8, Step.slide 12 9, Step.slide 13 10, Step.slide 14 11,
+    Step.slide 15 12, Step.slide 16 13, Step.slide 21 14, Step.slide 22 15, Step.slide 23 16, Step.slide 24 17,
+    Step.slide 25 18, Step.slide 26 19, Step.slide 27 20, Step.rw 0 0 false, Step.rw 0 0 false, Step.rw 0 0 true,
+    Step.rw 0 0 true, Step.rw 21 1 false, Step.rw 0 0 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 true,
+    Step.slide 20 27, Step.slide 19 26, Step.slide 18 25, Step.slide 17 24, Step.slide 16 23, Step.slide 15 22,
+    Step.slide 14 21, Step.slide 13 16, Step.slide 12 15, Step.slide 11 14, Step.slide 10 13, Step.slide 9 12,
+    Step.slide 8 11, Step.slide 7 10, Step.slide 7 0]
     (by decide +kernel)
 
 end QCert.Minimality.CliffordCS.W3

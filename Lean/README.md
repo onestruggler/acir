@@ -69,3 +69,33 @@ main result) and a `README.md` listing what is proved and every remaining
 Thirteen rows currently have complete proofs without `sorryAx`. The open
 rows are three-qubit Clifford+CS, real Clifford+CH, and the Clifford+CS
 completeness dependency in the final minimality row.
+
+## Typechecking cost
+
+Nearly every slow module here is a computation checked by `decide +kernel`
+(certificate replays, matrix products, window checks), so two costs
+matter, and `lake env lean --profile -Dprofiler=true -Dprofiler.threshold=1000 QCert/X.lean`
+(read-only, imports must be built) tells them apart in its summary:
+`type checking` is the kernel, `elaboration` is term elaboration.
+
+* The kernel pays per unfolding, not per arithmetic operation: `Nat`
+  arithmetic on literals is GMP-accelerated and nearly free, `Int`, `Rat`,
+  ring structures and `Fin`-indexed matrices are not.  Write the checked
+  function for the kernel: precompute per-rule or per-gate data once,
+  look things up by primitive recursion (`List.rec`, `Nat.rec`; mark the
+  definition `noncomputable` if the compiler objects), test with
+  `Nat.beq`/`Nat.ble` under `bif` rather than `if` on propositions, decide
+  an equation of large structures by one Boolean function with a soundness
+  lemma, not by `DecidableEq`.  `QCert/CliffordT2/FastRewrite.lean` is the
+  worked example (3-4x).
+* A dotted constructor application `.ctor args` elaborated before its
+  expected type is known costs about 0.1 s per failed attempt (it is
+  postponed and retried; `set_option trace.profiler true` shows
+  `💥 expected type: ?m, term .CZ 0`).  That happens to the elements of a
+  list literal of 64 or more elements, to operands of `++` and other
+  `binop%` operators, and to arguments whose type is a metavariable.
+  Qualify the names (`Step.rw 5 1 false`, `Lt.CZ 0`): a 675-element list
+  went from 52 s to 0.16 s, `RealStabilizer/Relations1` from 190 s to 9 s,
+  `Minimality/QutritClifford/Derivations` from 328 s to 37 s.  Nullary
+  letters (`[.ω, .S₀, …]`) and constructors in positions with a known type
+  are fine.

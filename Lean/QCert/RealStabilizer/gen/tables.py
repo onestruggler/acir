@@ -207,10 +207,10 @@ def gen(recs):
 or the ladder grows down by one wire (`A_{i'}` below a `B` gate). -/
 theorem tACZ : ∀ i : Fin 3,
     (∃ (i' : Fin 3) (out : List Dg),
-      Holds 2 ([.CZ 0] ++ bA (i.val + 1) 1) (bA (i'.val + 1) 1 ++ dw out) ∧
+      Holds 2 ([Lt.CZ 0] ++ bA (i.val + 1) 1) (bA (i'.val + 1) 1 ++ dw out) ∧
         tA i' = tA i ∧ OkL (okB (tA i') 1) 2 out) ∨
     (∃ (i' : Fin 3) (j : Fin 4) (out : List Dg),
-      Holds 2 ([.CZ 0] ++ bA (i.val + 1) 1)
+      Holds 2 ([Lt.CZ 0] ++ bA (i.val + 1) 1)
         (bA (i'.val + 1) 0 ++ bB (bIdx (tA i') j) 0 ++ dw out) ∧
         tB (tA i') j = tA i ∧ OkL (okB (tB (tA i') j) 1) 2 out)
 '''
@@ -245,11 +245,11 @@ two boxes stay, or the ladder shrinks by one wire (`A_{i'}` on the upper
 wire). -/
 theorem tAB : ∀ (i : Fin 3) (j : Fin 4),
     (∃ (i' : Fin 3) (j' : Fin 4) (out : List Dg),
-      Holds 2 ([.CZ 0] ++ bA (i.val + 1) 0 ++ bB (bIdx (tA i) j) 0)
+      Holds 2 ([Lt.CZ 0] ++ bA (i.val + 1) 0 ++ bB (bIdx (tA i) j) 0)
         (bA (i'.val + 1) 0 ++ bB (bIdx (tA i') j') 0 ++ dw out) ∧
         tB (tA i') j' = tB (tA i) j ∧ OkL (okB (tB (tA i') j') 1) 2 out) ∨
     (∃ (i' : Fin 3) (out : List Dg),
-      Holds 2 ([.CZ 0] ++ bA (i.val + 1) 0 ++ bB (bIdx (tA i) j) 0)
+      Holds 2 ([Lt.CZ 0] ++ bA (i.val + 1) 0 ++ bB (bIdx (tA i) j) 0)
         (bA (i'.val + 1) 1 ++ dw out) ∧ tA i' = tB (tA i) j ∧ OkL (okB (tA i') 1) 2 out)
 '''
     for (i, j), t in sorted(rows):
@@ -258,12 +258,12 @@ theorem tAB : ∀ (i : Fin 3) (j : Fin 4),
 
     # one B box at (0, 1) ----------------------------------------------------------
     for name, ns, lhs, doc, fixed in (
-            ('tBH0', range(22, 26), '[.H 0]', '`H` on the lower wire of a `B` gate, which is double',
+            ('tBH0', range(22, 26), '[Lt.H 0]', '`H` on the lower wire of a `B` gate, which is double',
              True),
             ('tBX', range(26, 34), 'bX 0', '`X` on the lower wire of a `B` gate', None),
-            ('tBH1', range(34, 42), '[.H 1]', '`H` on the upper wire of a `B` gate', None),
-            ('tBZ1', range(42, 50), '[.Z 1]', '`Z` on the upper wire of a `B` gate', None),
-            ('tBZ0', range(50, 58), '[.Z 0]', '`Z` on the lower wire of a `B` gate', None)):
+            ('tBH1', range(34, 42), '[Lt.H 1]', '`H` on the upper wire of a `B` gate', None),
+            ('tBZ1', range(42, 50), '[Lt.Z 1]', '`Z` on the upper wire of a `B` gate', None),
+            ('tBZ0', range(50, 58), '[Lt.Z 0]', '`Z` on the lower wire of a `B` gate', None)):
         rows = []
         for n in ns:
             lg, rb, rd, rn = split(R[n])
@@ -292,9 +292,9 @@ theorem tAB : ∀ (i : Fin 3) (j : Fin 4),
         s += '\n'
     # a gate below the first B box: CZ (simple) or CXZ (double) at (0, 1)
     for name, ns, lhs, doc, fixed in (
-            ('tBCZ', range(64, 68), '[.CZ 0]', '`CZ` below a `B` gate, its upper wire on the '
+            ('tBCZ', range(64, 68), '[Lt.CZ 0]', '`CZ` below a `B` gate, its upper wire on the '
              'simple lower wire of the gate', False),
-            ('tBCXZ', range(68, 72), '[.H 1, .CZ 0, .H 1, .CZ 0]', '`CXZ` below a `B` gate, its '
+            ('tBCXZ', range(68, 72), '[Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 0]', '`CXZ` below a `B` gate, its '
              '`XZ` on the double lower wire of the gate', True)):
         rows = []
         for n in ns:
@@ -332,7 +332,7 @@ theorem tAB : ∀ (i : Fin 3) (j : Fin 4),
     s += '''/-- `CZ` on the wires of the second of two `B` gates, before the first:
 relations 72–103. -/
 theorem tBB : ∀ (t : Ty) (a b : Fin 4), ∃ (a' b' : Fin 4) (out : List Dg),
-    Holds 3 ([.CZ 1] ++ bB (bIdx t a) 0 ++ bB (bIdx (tB t a) b) 1)
+    Holds 3 ([Lt.CZ 1] ++ bB (bIdx t a) 0 ++ bB (bIdx (tB t a) b) 1)
       (bB (bIdx t a') 0 ++ bB (bIdx (tB t a') b') 1 ++ dw out) ∧
       tB (tB t a') b' = tB (tB t a) b ∧ OkL (okB (tB (tB t a') b') 2) 3 out
 '''
@@ -342,9 +342,9 @@ theorem tBB : ∀ (t : Ty) (a b : Fin 4), ∃ (a' b' : Fin 4) (out : List Dg),
 
     # the C box ------------------------------------------------------------------
     for name, ns, lhs, frame, doc in (
-            ('tCZ', (58, 61), '[.Z 0] ++ bC (k.val + 1) 0', 1, '`Z` at the wire of `C_k`'),
+            ('tCZ', (58, 61), '[Lt.Z 0] ++ bC (k.val + 1) 0', 1, '`Z` at the wire of `C_k`'),
             ('tCX', (59, 62), 'bX 0 ++ bC (k.val + 1) 0', 1, '`X` at the wire of `C_k`'),
-            ('tCCZ', (60, 63), '[.CZ 0] ++ bC (k.val + 1) 1', 2, '`CZ` below `C_k`, on its wire')):
+            ('tCCZ', (60, 63), '[Lt.CZ 0] ++ bC (k.val + 1) 1', 2, '`CZ` below `C_k`, on its wire')):
         rows = []
         cw = frame - 1
         for n in ns:
@@ -363,10 +363,10 @@ theorem tBB : ∀ (t : Ty) (a b : Fin 4), ∃ (a' b' : Fin 4) (out : List Dg),
 
     # the D and E boxes ----------------------------------------------------------------
     for name, ns, lhs, doc in (
-            ('tDZ1', range(104, 108), '[.Z 1]', '`Z` on the upper wire of `D_l`'),
-            ('tDZ0', range(108, 112), '[.Z 0]', '`Z` on the lower wire of `D_l`'),
-            ('tDH', range(112, 116), '[.H 0]', '`H` on the lower wire of `D_l`'),
-            ('tDCZ', range(116, 120), '[.CZ 0]', '`CZ` on the wires of `D_l`')):
+            ('tDZ1', range(104, 108), '[Lt.Z 1]', '`Z` on the upper wire of `D_l`'),
+            ('tDZ0', range(108, 112), '[Lt.Z 0]', '`Z` on the lower wire of `D_l`'),
+            ('tDH', range(112, 116), '[Lt.H 0]', '`H` on the lower wire of `D_l`'),
+            ('tDCZ', range(116, 120), '[Lt.CZ 0]', '`CZ` on the wires of `D_l`')):
         rows = []
         for n in ns:
             lg, rb, rd, rn = split(R[n])
@@ -391,7 +391,7 @@ theorem tBB : ∀ (t : Ty) (a b : Fin 4), ∃ (a' b' : Fin 4) (out : List Dg),
     s += '''/-- `CZ` on the wires of the second of two `D` gates, before the first:
 relations 122–137. -/
 theorem tDD : ∀ a b : Fin 4, ∃ (a' b' : Fin 4) (out : List Dg),
-    Holds 3 ([.CZ 0] ++ bD (a.val + 1) 1 ++ bD (b.val + 1) 0)
+    Holds 3 ([Lt.CZ 0] ++ bD (a.val + 1) 1 ++ bD (b.val + 1) 0)
       (bD (a'.val + 1) 1 ++ bD (b'.val + 1) 0 ++ dw out) ∧ OkL (okD false 0) 3 out
 '''
     for (a, b), r in sorted(rows):
@@ -404,7 +404,7 @@ theorem tDD : ∀ a b : Fin 4, ∃ (a' b' : Fin 4) (out : List Dg),
         rows.append((lg[-1][2] - 1, '⟨%d, rel%d⟩' % (rb[0][2] - 1, n)))
     s += '''/-- `Z` at the wire of `E_h`: relations 120, 121. -/
 theorem tEZ : ∀ h : Fin 2, ∃ h' : Fin 2,
-    Holds 1 ([.Z 0] ++ bE (h.val + 1) 0) (bE (h'.val + 1) 0)
+    Holds 1 ([Lt.Z 0] ++ bE (h.val + 1) 0) (bE (h'.val + 1) 0)
 '''
     for h, r in sorted(rows):
         s += '  | %d => %s\n' % (h, r)

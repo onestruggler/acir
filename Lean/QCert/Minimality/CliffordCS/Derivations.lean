@@ -58,14 +58,14 @@ theorem W1.src_derivable : ∀ {a b : Word (QCert.BianSelingerUn.Gen 2)},
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 1 0]
-          [.slide 5 2, .slide 6 3, .slide 10 4, .slide 11 5, .slide 15 6, .slide 16 7,
-          .rw 8 0 false, .rw 8 0 false, .rw 8 0 false, .rw 0 1 false, .rw 0 1 true, .rw 8 0 true,
-          .rw 8 0 true, .rw 8 0 true, .rw 0 1 false, .rw 0 0 false, .rw 0 0 false, .rw 0 0 false]
+          [Step.slide 5 2, Step.slide 6 3, Step.slide 10 4, Step.slide 11 5, Step.slide 15 6, Step.slide 16 7,
+          Step.rw 8 0 false, Step.rw 8 0 false, Step.rw 8 0 false, Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 8 0 true,
+          Step.rw 8 0 true, Step.rw 8 0 true, Step.rw 0 1 false, Step.rw 0 0 false, Step.rw 0 0 false, Step.rw 0 0 false]
           (by decide +kernel)
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 0]
-          [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+          [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
           (by decide +kernel)
     | r2 j k hjk =>
       fin_cases j <;> fin_cases k
@@ -74,8 +74,8 @@ theorem W1.src_derivable : ∀ {a b : Word (QCert.BianSelingerUn.Gen 2)},
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 0]
-          [.rw 3 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 3 0 true,
-          .rw 3 0 false, .rw 1 1 false, .rw 0 0 false]
+          [Step.rw 3 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 3 0 true,
+          Step.rw 3 0 false, Step.rw 1 1 false, Step.rw 0 0 false]
           (by revert hjk; decide +kernel)
       · exfalso; revert hjk; decide
       · exfalso; revert hjk; decide
@@ -86,16 +86,16 @@ theorem W1.src_derivable : ∀ {a b : Word (QCert.BianSelingerUn.Gen 2)},
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 1 0]
-          [.slide 7 14, .slide 16 14, .slide 17 15, .slide 18 16, .slide 19 17, .slide 20 18,
-          .slide 21 19, .slide 22 20, .slide 24 21, .slide 25 22, .slide 26 23, .slide 27 24,
-          .slide 28 25, .slide 29 26, .slide 30 27, .slide 32 28, .slide 33 29, .slide 34 30,
-          .slide 35 31, .slide 36 32, .slide 37 33, .slide 38 34, .slide 40 35, .slide 41 36,
-          .slide 42 37, .slide 43 38, .slide 44 39, .slide 45 40, .slide 46 41, .slide 48 42,
-          .slide 49 43, .slide 50 44, .slide 51 45, .slide 52 46, .slide 53 47, .slide 54 48,
-          .slide 56 49, .slide 57 50, .slide 58 51, .slide 59 52, .slide 60 53, .slide 61 54,
-          .slide 62 55, .rw 56 0 false, .rw 56 0 false, .rw 56 0 false, .rw 56 0 false,
-          .rw 0 1 false, .rw 0 1 false, .rw 0 1 false, .rw 0 1 false, .rw 0 1 false,
-          .rw 0 1 false, .rw 0 1 false]
+          [Step.slide 7 14, Step.slide 16 14, Step.slide 17 15, Step.slide 18 16, Step.slide 19 17, Step.slide 20 18,
+          Step.slide 21 19, Step.slide 22 20, Step.slide 24 21, Step.slide 25 22, Step.slide 26 23, Step.slide 27 24,
+          Step.slide 28 25, Step.slide 29 26, Step.slide 30 27, Step.slide 32 28, Step.slide 33 29, Step.slide 34 30,
+          Step.slide 35 31, Step.slide 36 32, Step.slide 37 33, Step.slide 38 34, Step.slide 40 35, Step.slide 41 36,
+          Step.slide 42 37, Step.slide 43 38, Step.slide 44 39, Step.slide 45 40, Step.slide 46 41, Step.slide 48 42,
+          Step.slide 49 43, Step.slide 50 44, Step.slide 51 45, Step.slide 52 46, Step.slide 53 47, Step.slide 54 48,
+          Step.slide 56 49, Step.slide 57 50, Step.slide 58 51, Step.slide 59 52, Step.slide 60 53, Step.slide 61 54,
+          Step.slide 62 55, Step.rw 56 0 false, Step.rw 56 0 false, Step.rw 56 0 false, Step.rw 56 0 false,
+          Step.rw 0 1 false, Step.rw 0 1 false, Step.rw 0 1 false, Step.rw 0 1 false, Step.rw 0 1 false,
+          Step.rw 0 1 false, Step.rw 0 1 false]
           (by revert hjk; decide +kernel)
       · exfalso; revert hjk; decide
       · exfalso; revert hjk; decide
@@ -105,12 +105,12 @@ theorem W1.src_derivable : ∀ {a b : Word (QCert.BianSelingerUn.Gen 2)},
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 0]
-          [.rw 2 0 false, .rw 2 0 true, .rw 2 0 false, .rw 2 0 true, .slide 2 0]
+          [Step.rw 2 0 false, Step.rw 2 0 true, Step.rw 2 0 false, Step.rw 2 0 true, Step.slide 2 0]
           (by revert hjk; decide +kernel)
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 0]
-          [.slide 0 2, .rw 2 0 false, .rw 2 0 true, .rw 2 0 false, .rw 2 0 true]
+          [Step.slide 0 2, Step.rw 2 0 false, Step.rw 2 0 true, Step.rw 2 0 false, Step.rw 2 0 true]
           (by revert hjk; decide +kernel)
       · exfalso; revert hjk; decide
     | r10 j k hjk =>
@@ -121,8 +121,8 @@ theorem W1.src_derivable : ∀ {a b : Word (QCert.BianSelingerUn.Gen 2)},
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.E trivial 0 0]
-          [.rw 0 0 true, .rw 1 2 false, .slide 8 0, .rw 6 1 false, .rw 5 2 false, .slide 12 1,
-          .rw 3 1 false, .slide 1 5, .slide 0 4]
+          [Step.rw 0 0 true, Step.rw 1 2 false, Step.slide 8 0, Step.rw 6 1 false, Step.rw 5 2 false, Step.slide 12 1,
+          Step.rw 3 1 false, Step.slide 1 5, Step.slide 0 4]
           (by revert hjk; decide +kernel)
       · exfalso; revert hjk; decide
       · exfalso; revert hjk; decide
@@ -132,8 +132,8 @@ theorem W1.src_derivable : ∀ {a b : Word (QCert.BianSelingerUn.Gen 2)},
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0]
-          [.rw 10 0 true, .rw 10 0 false, .rw 10 0 true, .slide 6 10, .slide 5 9, .slide 4 8,
-          .slide 3 7, .slide 2 6, .slide 1 5, .slide 0 4]
+          [Step.rw 10 0 true, Step.rw 10 0 false, Step.rw 10 0 true, Step.slide 6 10, Step.slide 5 9, Step.slide 4 8,
+          Step.slide 3 7, Step.slide 2 6, Step.slide 1 5, Step.slide 0 4]
           (by revert hjk; decide +kernel)
       · exfalso; revert hjk; decide
       · exfalso; revert hjk; decide
@@ -145,9 +145,9 @@ theorem W1.src_derivable : ∀ {a b : Word (QCert.BianSelingerUn.Gen 2)},
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 1 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.E trivial 0 0]
-          [.rw 7 0 true, .rw 7 1 true, .slide 14 22, .rw 15 2 true, .rw 0 1 false, .rw 0 1 true,
-          .slide 13 16, .slide 12 15, .slide 11 14, .slide 10 13, .slide 9 12, .slide 8 11,
-          .slide 7 10, .slide 7 0]
+          [Step.rw 7 0 true, Step.rw 7 1 true, Step.slide 14 22, Step.rw 15 2 true, Step.rw 0 1 false, Step.rw 0 1 true,
+          Step.slide 13 16, Step.slide 12 15, Step.slide 11 14, Step.slide 10 13, Step.slide 9 12, Step.slide 8 11,
+          Step.slide 7 10, Step.slide 7 0]
           (by revert hjk; decide +kernel)
       · exfalso; revert hjk; decide
       · exfalso; revert hjk; decide
@@ -158,9 +158,9 @@ theorem W1.src_derivable : ∀ {a b : Word (QCert.BianSelingerUn.Gen 2)},
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 1 0]
-          [.slide 7 9, .rw 10 0 false, .rw 0 1 false, .rw 0 1 true, .rw 10 0 true, .rw 10 0 false,
-          .rw 9 0 true, .rw 9 0 false, .rw 0 1 false, .rw 0 1 true, .rw 9 0 true, .slide 8 12,
-          .slide 7 11, .slide 6 10, .slide 5 9, .slide 4 8, .slide 3 7, .slide 2 6]
+          [Step.slide 7 9, Step.rw 10 0 false, Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 10 0 true, Step.rw 10 0 false,
+          Step.rw 9 0 true, Step.rw 9 0 false, Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 9 0 true, Step.slide 8 12,
+          Step.slide 7 11, Step.slide 6 10, Step.slide 5 9, Step.slide 4 8, Step.slide 3 7, Step.slide 2 6]
           (by revert hjk; decide +kernel)
       · exfalso; revert hjk; decide
       · exfalso; revert hjk; decide
@@ -172,9 +172,9 @@ theorem W1.src_derivable : ∀ {a b : Word (QCert.BianSelingerUn.Gen 2)},
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 1 0]
-          [.slide 7 14, .slide 16 14, .slide 17 15, .rw 16 0 false, .rw 16 1 false, .rw 0 2 false,
-          .rw 0 2 false, .rw 0 2 true, .rw 0 2 true, .rw 16 1 true, .rw 16 0 true, .rw 8 2 false,
-          .rw 0 2 false, .rw 2 1 false, .rw 0 0 false]
+          [Step.slide 7 14, Step.slide 16 14, Step.slide 17 15, Step.rw 16 0 false, Step.rw 16 1 false, Step.rw 0 2 false,
+          Step.rw 0 2 false, Step.rw 0 2 true, Step.rw 0 2 true, Step.rw 16 1 true, Step.rw 16 0 true, Step.rw 8 2 false,
+          Step.rw 0 2 false, Step.rw 2 1 false, Step.rw 0 0 false]
           (by revert hjk; decide +kernel)
       · exfalso; revert hjk; decide
       · exfalso; revert hjk; decide
@@ -204,7 +204,7 @@ theorem W1.rel_derivable : ∀ {a b : FreeMonoid (Option (QCert.BianSelingerUn.G
         · exact
             derive hsc
             []
-            [.slide 0 4]
+            [Step.slide 0 4]
             (by revert h; decide +kernel)
         · exfalso; revert h; decide
         · exfalso; revert h; decide
@@ -214,7 +214,7 @@ theorem W1.rel_derivable : ∀ {a b : FreeMonoid (Option (QCert.BianSelingerUn.G
         · exact
             derive hsc
             [DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 1 0]
-            [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false, .rw 0 0 true, .swap 7]
+            [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false, Step.rw 0 0 true, Step.swap 7]
             (by revert h; decide +kernel)
         · exfalso; revert h; decide
         · exfalso; revert h; decide
@@ -223,18 +223,18 @@ theorem W1.rel_derivable : ∀ {a b : FreeMonoid (Option (QCert.BianSelingerUn.G
         · exact
             derive hsc
             []
-            [.slide 2 5]
+            [Step.slide 2 5]
             (by decide +kernel)
         · exact
             derive hsc
             []
-            [.swap 0]
+            [Step.swap 0]
             (by decide +kernel)
     | sq  =>
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.S4 trivial 0 0]
-          [.rw 2 0 true, .rw 2 0 false, .rw 2 0 true]
+          [Step.rw 2 0 true, Step.rw 2 0 false, Step.rw 2 0 true]
           (by decide +kernel)
 
 /-- Decoding the encoding of a generator on one wire derives it. -/
@@ -243,13 +243,13 @@ theorem W1.DE_gen : ∀ g : Gen Gate 1, Derivable (Lift Th 1) (W1.D (W1.e g)) (F
   | .gate1 .H =>
       derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 1 0]
-      [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+      [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
       (by decide +kernel)
   | .gate1 .S => Derivable.refl _
   | .up (.gate0 .ω) =>
       derive hsc
       [DEqn.scal (Base := pres.Base fun _ => True) Gate.ω 0 0]
-      [.rw 0 0 true]
+      [Step.rw 0 0 true]
       (by decide +kernel)
 
 /-- The decoding of every relation of Bian and Selinger's presentation in
@@ -263,7 +263,7 @@ theorem W0.src_derivable : ∀ {a b : Word (QCert.BianSelingerUn.Gen 1)},
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 0 0]
-          [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+          [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
           (by decide +kernel)
     | r2 j k hjk => exfalso; revert hjk; revert j k; decide
     | r3 j k hjk => exfalso; revert hjk; revert j k; decide

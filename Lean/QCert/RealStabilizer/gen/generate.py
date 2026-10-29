@@ -224,8 +224,8 @@ def ident(name):
 
 def lt(a):
     if a[0] == 'm':
-        return '.neg'
-    return {'H': '.H', 'Z': '.Z', 'C': '.CZ'}[a[0]] + ' %d' % a[1]
+        return 'Lt.neg'
+    return {'H': 'Lt.H', 'Z': 'Lt.Z', 'C': 'Lt.CZ'}[a[0]] + ' %d' % a[1]
 
 
 def wrap_items(items, indent, width=92):
@@ -301,9 +301,9 @@ def box_word(kind, i, n):
 def sym_lt(a):
     """A letter of a box at wire `a` (+ offset)."""
     if a[0] == 'm':
-        return '.neg'
+        return 'Lt.neg'
     w = 'a' if a[1] == 0 else '(a + %d)' % a[1]
-    return {'H': '.H', 'Z': '.Z', 'C': '.CZ'}[a[0]] + ' ' + w
+    return {'H': 'Lt.H', 'Z': 'Lt.Z', 'C': 'Lt.CZ'}[a[0]] + ' ' + w
 
 
 BOXES = [('A', 3, 1), ('B', 8, 2), ('C', 2, 1), ('D', 4, 2), ('E', 2, 1)]
@@ -338,9 +338,9 @@ with other wire types (Definition 4.6).''', imports='import QCert.RealStabilizer
 
 def gate_expr(g):
     if g[0] in ('H', 'Z'):
-        return '[.%s %d]' % (g[0], g[1])
+        return '[Lt.%s %d]' % (g[0], g[1])
     if g[0] == 'CZ':
-        return '[.CZ %d]' % min(g[1], g[2])
+        return '[Lt.CZ %d]' % min(g[1], g[2])
     if g[0] == 'X':
         return 'bX %d' % g[1]
     if g[0] == 'CXZ':

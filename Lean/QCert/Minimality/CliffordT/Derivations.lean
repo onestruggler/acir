@@ -58,8 +58,8 @@ def dCPh_m : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CPh trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0]
-    [.rw 0 0 true, .rw 1 0 false, .rw 4 0 true, .rw 3 2 true, .rw 2 0 false, .rw 3 0 false,
-    .rw 1 1 false, .rw 1 0 true, .rw 2 2 false, .rw 3 0 false, .rw 0 0 false]
+    [Step.rw 0 0 true, Step.rw 1 0 false, Step.rw 4 0 true, Step.rw 3 2 true, Step.rw 2 0 false, Step.rw 3 0 false,
+    Step.rw 1 1 false, Step.rw 1 0 true, Step.rw 2 2 false, Step.rw 3 0 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- (CX2), Appendix D. -/
@@ -70,8 +70,8 @@ def dt_CX2 : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dCPh_m.place 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0]
-    [.rw 0 0 true, .rw 0 0 false, .rw 0 0 true, .rw 7 2 true, .rw 11 3 false, .rw 11 1 true,
-    .rw 12 3 false, .rw 7 2 false, .rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+    [Step.rw 0 0 true, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 7 2 true, Step.rw 11 3 false, Step.rw 11 1 true,
+    Step.rw 12 3 false, Step.rw 7 2 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- (C), Appendix D. -/
@@ -80,7 +80,7 @@ def dt_C : DEqn Th 2 where
   rhs := tw 2 [(.CX, 0), (.T, 1)]
   proof := derive hsc
     [dt_CX2.place 0 0, DEqn.inst (P := pres) (S := fun _ => True) Ax.CPh trivial 0 0]
-    [.rw 1 1 true, .rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+    [Step.rw 1 1 true, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- (phasegadget), Appendix D. -/
@@ -91,11 +91,11 @@ def dt_phasegadget : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_CX2.place 0 0,
     dt_C.place 0 0, DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0]
-    [.rw 4 0 true, .rw 3 0 true, .rw 1 0 true, .rw 0 0 true, .rw 0 0 true, .rw 2 0 false,
-    .rw 6 0 true, .rw 5 3 true, .rw 4 0 false, .rw 7 0 true, .rw 6 3 true, .rw 5 0 false,
-    .rw 7 0 false, .rw 0 0 false, .rw 6 0 false, .rw 0 4 true, .rw 3 2 false,
-    .rw 4 2 false, .rw 5 4 true, .rw 8 1 false, .rw 3 1 true, .rw 3 1 false, .rw 3 1 true,
-    .rw 3 1 false]
+    [Step.rw 4 0 true, Step.rw 3 0 true, Step.rw 1 0 true, Step.rw 0 0 true, Step.rw 0 0 true, Step.rw 2 0 false,
+    Step.rw 6 0 true, Step.rw 5 3 true, Step.rw 4 0 false, Step.rw 7 0 true, Step.rw 6 3 true, Step.rw 5 0 false,
+    Step.rw 7 0 false, Step.rw 0 0 false, Step.rw 6 0 false, Step.rw 0 4 true, Step.rw 3 2 false,
+    Step.rw 4 2 false, Step.rw 5 4 true, Step.rw 8 1 false, Step.rw 3 1 true, Step.rw 3 1 false, Step.rw 3 1 true,
+    Step.rw 3 1 false]
     (by decide +kernel)
 
 /-- Both sides of `dt_phasegadget` inverted, letter by letter. -/
@@ -107,9 +107,9 @@ def dt_phasegadget_i : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_CX2.place 0 0,
     dt_phasegadget.place 0 0]
-    [.rw 1 1 true, .rw 16 2 true, .rw 17 3 true, .rw 18 2 true, .rw 19 0 true,
-    .rw 20 0 true, .rw 21 2 true, .rw 22 3 true, .rw 23 2 true, .rw 16 4 true,
-    .rw 15 3 false, .rw 8 1 false, .rw 1 1 false, .rw 0 3 false, .rw 3 0 false]
+    [Step.rw 1 1 true, Step.rw 16 2 true, Step.rw 17 3 true, Step.rw 18 2 true, Step.rw 19 0 true,
+    Step.rw 20 0 true, Step.rw 21 2 true, Step.rw 22 3 true, Step.rw 23 2 true, Step.rw 16 4 true,
+    Step.rw 15 3 false, Step.rw 8 1 false, Step.rw 1 1 false, Step.rw 0 3 false, Step.rw 3 0 false]
     (by decide +kernel)
 
 /-- `dCZ` upside down (conjugated by the swap). -/
@@ -121,11 +121,11 @@ def dCZ_m : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CZ trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0]
-    [.rw 0 0 true, .rw 1 2 false, .rw 2 0 false, .rw 3 2 false, .rw 1 1 false,
-    .rw 12 0 true, .rw 13 3 false, .rw 14 0 false, .rw 11 0 true, .rw 12 3 false,
-    .rw 13 0 false, .rw 10 3 true, .rw 9 3 true, .rw 8 0 true, .rw 7 3 true, .rw 6 3 true,
-    .rw 5 3 true, .rw 4 3 true, .rw 3 3 true, .rw 2 3 true, .rw 1 0 true, .rw 0 0 false,
-    .slide 14 12, .slide 15 13]
+    [Step.rw 0 0 true, Step.rw 1 2 false, Step.rw 2 0 false, Step.rw 3 2 false, Step.rw 1 1 false,
+    Step.rw 12 0 true, Step.rw 13 3 false, Step.rw 14 0 false, Step.rw 11 0 true, Step.rw 12 3 false,
+    Step.rw 13 0 false, Step.rw 10 3 true, Step.rw 9 3 true, Step.rw 8 0 true, Step.rw 7 3 true, Step.rw 6 3 true,
+    Step.rw 5 3 true, Step.rw 4 3 true, Step.rw 3 3 true, Step.rw 2 3 true, Step.rw 1 0 true, Step.rw 0 0 false,
+    Step.slide 14 12, Step.slide 15 13]
     (by decide +kernel)
 
 /-- (CNOTHH), Appendix D. -/
@@ -137,9 +137,9 @@ def dt_CNOTHH : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CZ trivial 0 0,
     dt_phasegadget_i.place 0 0, dCZ_m.place 0 0]
-    [.rw 3 1 true, .rw 3 1 false, .rw 3 1 true, .swap 0, .rw 1 2 false, .slide 13 11,
-    .rw 1 3 false, .slide 15 17, .rw 1 4 true, .swap 5, .rw 0 0 false, .rw 0 0 true,
-    .rw 0 0 false, .swap 3]
+    [Step.rw 3 1 true, Step.rw 3 1 false, Step.rw 3 1 true, Step.swap 0, Step.rw 1 2 false, Step.slide 13 11,
+    Step.rw 1 3 false, Step.slide 15 17, Step.rw 1 4 true, Step.swap 5, Step.rw 0 0 false, Step.rw 0 0 true,
+    Step.rw 0 0 false, Step.swap 3]
     (by decide +kernel)
 
 /-- CHup -/
@@ -152,11 +152,11 @@ def dCHup : DEqn Th 2 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0, dt_CNOTHH.place 0 0]
-    [.slide 15 0, .slide 0 14, .rw 14 5 false, .slide 17 19, .rw 19 0 false, .rw 17 1 false,
-    .rw 0 2 true, .rw 1 4 false, .rw 2 4 false, .rw 3 4 false, .rw 4 4 false,
-    .rw 5 4 false, .rw 6 4 false, .rw 7 3 false, .rw 8 4 false, .rw 9 4 false,
-    .rw 10 4 false, .rw 11 4 false, .rw 12 4 false, .rw 13 4 false, .rw 14 4 false,
-    .rw 15 2 false, .rw 16 4 false, .rw 17 3 false, .rw 18 4 false, .rw 19 4 false]
+    [Step.slide 15 0, Step.slide 0 14, Step.rw 14 5 false, Step.slide 17 19, Step.rw 19 0 false, Step.rw 17 1 false,
+    Step.rw 0 2 true, Step.rw 1 4 false, Step.rw 2 4 false, Step.rw 3 4 false, Step.rw 4 4 false,
+    Step.rw 5 4 false, Step.rw 6 4 false, Step.rw 7 3 false, Step.rw 8 4 false, Step.rw 9 4 false,
+    Step.rw 10 4 false, Step.rw 11 4 false, Step.rw 12 4 false, Step.rw 13 4 false, Step.rw 14 4 false,
+    Step.rw 15 2 false, Step.rw 16 4 false, Step.rw 17 3 false, Step.rw 18 4 false, Step.rw 19 4 false]
     (by decide +kernel)
 
 /-- Both sides of `dCHup` inverted, letter by letter. -/
@@ -170,20 +170,20 @@ def dCHup_i : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_CX2.place 0 0,
     dCHup.place 0 0]
-    [.rw 21 2 true, .rw 21 2 true, .rw 21 2 true, .rw 21 2 true, .rw 21 2 true,
-    .rw 19 2 true, .rw 19 2 true, .rw 19 2 true, .rw 19 2 true, .rw 19 2 true,
-    .rw 19 2 true, .rw 1 2 true, .slide 0 23, .rw 119 4 true, .rw 120 3 true,
-    .rw 121 3 true, .rw 122 3 true, .rw 123 3 true, .rw 124 3 true, .rw 125 3 true,
-    .rw 126 1 true, .rw 127 3 true, .rw 128 3 true, .rw 129 3 true, .rw 130 3 true,
-    .rw 131 3 true, .rw 132 3 true, .rw 133 3 true, .rw 134 5 true, .rw 135 3 true,
-    .rw 136 1 true, .rw 137 3 true, .rw 138 3 true, .rw 139 4 true, .rw 119 6 true,
-    .rw 112 2 false, .rw 105 2 false, .rw 98 2 false, .rw 91 2 false, .rw 84 2 false,
-    .rw 77 2 false, .rw 76 0 false, .rw 69 2 false, .rw 62 2 false, .rw 55 2 false,
-    .rw 48 2 false, .rw 41 2 false, .rw 34 2 false, .rw 27 2 false, .rw 26 0 false,
-    .rw 25 1 false, .rw 24 5 false, .rw 23 1 false, .rw 22 0 false, .rw 15 2 false,
-    .rw 14 0 false, .rw 7 2 false, .rw 0 2 false, .rw 1 3 false, .rw 16 3 false,
-    .rw 16 3 false, .rw 16 3 false, .rw 16 3 false, .rw 16 3 false, .rw 16 3 false,
-    .rw 18 3 false, .rw 18 3 false, .rw 18 3 false, .rw 18 3 false, .rw 18 3 false]
+    [Step.rw 21 2 true, Step.rw 21 2 true, Step.rw 21 2 true, Step.rw 21 2 true, Step.rw 21 2 true,
+    Step.rw 19 2 true, Step.rw 19 2 true, Step.rw 19 2 true, Step.rw 19 2 true, Step.rw 19 2 true,
+    Step.rw 19 2 true, Step.rw 1 2 true, Step.slide 0 23, Step.rw 119 4 true, Step.rw 120 3 true,
+    Step.rw 121 3 true, Step.rw 122 3 true, Step.rw 123 3 true, Step.rw 124 3 true, Step.rw 125 3 true,
+    Step.rw 126 1 true, Step.rw 127 3 true, Step.rw 128 3 true, Step.rw 129 3 true, Step.rw 130 3 true,
+    Step.rw 131 3 true, Step.rw 132 3 true, Step.rw 133 3 true, Step.rw 134 5 true, Step.rw 135 3 true,
+    Step.rw 136 1 true, Step.rw 137 3 true, Step.rw 138 3 true, Step.rw 139 4 true, Step.rw 119 6 true,
+    Step.rw 112 2 false, Step.rw 105 2 false, Step.rw 98 2 false, Step.rw 91 2 false, Step.rw 84 2 false,
+    Step.rw 77 2 false, Step.rw 76 0 false, Step.rw 69 2 false, Step.rw 62 2 false, Step.rw 55 2 false,
+    Step.rw 48 2 false, Step.rw 41 2 false, Step.rw 34 2 false, Step.rw 27 2 false, Step.rw 26 0 false,
+    Step.rw 25 1 false, Step.rw 24 5 false, Step.rw 23 1 false, Step.rw 22 0 false, Step.rw 15 2 false,
+    Step.rw 14 0 false, Step.rw 7 2 false, Step.rw 0 2 false, Step.rw 1 3 false, Step.rw 16 3 false,
+    Step.rw 16 3 false, Step.rw 16 3 false, Step.rw 16 3 false, Step.rw 16 3 false, Step.rw 16 3 false,
+    Step.rw 18 3 false, Step.rw 18 3 false, Step.rw 18 3 false, Step.rw 18 3 false, Step.rw 18 3 false]
     (by decide +kernel)
 
 /-- (phasegadgetCS), Appendix D. -/
@@ -194,10 +194,10 @@ def dt_phasegadgetCS : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_CX2.place 0 0,
     dt_C.place 0 0, DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0]
-    [.rw 3 0 true, .rw 2 0 true, .rw 1 0 true, .rw 0 0 true, .rw 0 0 true, .rw 2 0 false,
-    .rw 6 0 true, .rw 5 3 true, .rw 4 0 false, .rw 6 0 false, .rw 0 0 false, .rw 5 0 false,
-    .rw 0 4 true, .rw 3 2 false, .rw 4 4 true, .rw 7 1 false, .rw 3 1 true, .rw 3 1 false,
-    .rw 3 1 true, .rw 3 1 false]
+    [Step.rw 3 0 true, Step.rw 2 0 true, Step.rw 1 0 true, Step.rw 0 0 true, Step.rw 0 0 true, Step.rw 2 0 false,
+    Step.rw 6 0 true, Step.rw 5 3 true, Step.rw 4 0 false, Step.rw 6 0 false, Step.rw 0 0 false, Step.rw 5 0 false,
+    Step.rw 0 4 true, Step.rw 3 2 false, Step.rw 4 4 true, Step.rw 7 1 false, Step.rw 3 1 true, Step.rw 3 1 false,
+    Step.rw 3 1 true, Step.rw 3 1 false]
     (by decide +kernel)
 
 /-- Both sides of `dt_phasegadgetCS` inverted, letter by letter. -/
@@ -209,8 +209,8 @@ def dt_phasegadgetCS_i : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_CX2.place 0 0,
     dt_phasegadgetCS.place 0 0]
-    [.rw 9 2 true, .rw 10 3 true, .rw 11 2 true, .rw 12 0 true, .rw 13 2 true,
-    .rw 14 3 true, .rw 15 2 true, .rw 9 4 true, .rw 8 3 false, .rw 1 1 false, .rw 0 3 false]
+    [Step.rw 9 2 true, Step.rw 10 3 true, Step.rw 11 2 true, Step.rw 12 0 true, Step.rw 13 2 true,
+    Step.rw 14 3 true, Step.rw 15 2 true, Step.rw 9 4 true, Step.rw 8 3 false, Step.rw 1 1 false, Step.rw 0 3 false]
     (by decide +kernel)
 
 /-- `dt_C` upside down (conjugated by the swap). -/
@@ -220,8 +220,8 @@ def dt_C_m : DEqn Th 2 where
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_C.place 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0]
-    [.rw 0 0 true, .rw 1 0 false, .rw 4 0 true, .rw 3 2 true, .rw 2 0 false, .rw 1 1 false,
-    .rw 2 0 true, .rw 1 0 true, .rw 2 2 false, .rw 3 0 false, .rw 0 0 false]
+    [Step.rw 0 0 true, Step.rw 1 0 false, Step.rw 4 0 true, Step.rw 3 2 true, Step.rw 2 0 false, Step.rw 1 1 false,
+    Step.rw 2 0 true, Step.rw 1 0 true, Step.rw 2 2 false, Step.rw 3 0 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- (Z2), Appendix D. -/
@@ -230,8 +230,8 @@ def dt_Z2 : DEqn Th 1 where
   rhs := tw 1 []
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0]
-    [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false, .rw 0 0 true, .rw 0 0 false, .rw 0 0 true,
-    .rw 0 0 false]
+    [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false, Step.rw 0 0 true,
+    Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- (XSX), Appendix D. -/
@@ -242,10 +242,10 @@ def dt_XSX : DEqn Th 1 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.E trivial 0 0]
-    [.rw 5 2 false, .slide 18 0, .rw 2 1 false, .rw 5 1 false, .rw 5 1 true, .rw 2 1 true,
-    .rw 13 1 false, .rw 2 1 false, .rw 4 2 false, .slide 17 1, .rw 3 1 false,
-    .rw 2 0 false, .rw 2 0 true, .rw 3 1 true, .rw 3 1 false, .rw 2 0 false, .slide 1 7,
-    .slide 0 6]
+    [Step.rw 5 2 false, Step.slide 18 0, Step.rw 2 1 false, Step.rw 5 1 false, Step.rw 5 1 true, Step.rw 2 1 true,
+    Step.rw 13 1 false, Step.rw 2 1 false, Step.rw 4 2 false, Step.slide 17 1, Step.rw 3 1 false,
+    Step.rw 2 0 false, Step.rw 2 0 true, Step.rw 3 1 true, Step.rw 3 1 false, Step.rw 2 0 false, Step.slide 1 7,
+    Step.slide 0 6]
     (by decide +kernel)
 
 /-- Both sides of `dt_XSX` inverted, letter by letter. -/
@@ -256,13 +256,13 @@ def dt_XSX_i : DEqn Th 1 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 1 0, dt_XSX.place 0 0]
-    [.rw 13 1 true, .rw 13 1 true, .rw 13 1 true, .rw 6 1 true, .rw 1 1 true, .rw 1 1 true,
-    .rw 1 1 true, .rw 74 1 true, .rw 75 1 true, .rw 76 1 true, .rw 77 1 true,
-    .rw 78 1 true, .rw 79 1 true, .rw 80 2 true, .rw 81 2 true, .rw 74 3 true,
-    .rw 73 0 false, .rw 66 1 false, .rw 59 1 false, .rw 52 1 false, .rw 45 1 false,
-    .rw 44 0 false, .rw 37 1 false, .rw 30 1 false, .rw 29 0 false, .rw 22 1 false,
-    .rw 15 1 false, .rw 8 1 false, .rw 1 1 false, .rw 0 0 false, .rw 14 1 false,
-    .rw 14 1 false, .rw 14 1 false, .rw 14 1 false, .rw 14 1 false, .rw 0 2 false]
+    [Step.rw 13 1 true, Step.rw 13 1 true, Step.rw 13 1 true, Step.rw 6 1 true, Step.rw 1 1 true, Step.rw 1 1 true,
+    Step.rw 1 1 true, Step.rw 74 1 true, Step.rw 75 1 true, Step.rw 76 1 true, Step.rw 77 1 true,
+    Step.rw 78 1 true, Step.rw 79 1 true, Step.rw 80 2 true, Step.rw 81 2 true, Step.rw 74 3 true,
+    Step.rw 73 0 false, Step.rw 66 1 false, Step.rw 59 1 false, Step.rw 52 1 false, Step.rw 45 1 false,
+    Step.rw 44 0 false, Step.rw 37 1 false, Step.rw 30 1 false, Step.rw 29 0 false, Step.rw 22 1 false,
+    Step.rw 15 1 false, Step.rw 8 1 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 14 1 false,
+    Step.rw 14 1 false, Step.rw 14 1 false, Step.rw 14 1 false, Step.rw 14 1 false, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- (X2), Appendix D. -/
@@ -272,10 +272,10 @@ def dt_X2 : DEqn Th 1 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0, dt_Z2.place 0 0]
-    [.rw 5 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 5 0 true,
-    .rw 5 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 5 0 true,
-    .rw 5 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 1 2 false,
-    .rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+    [Step.rw 5 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 5 0 true,
+    Step.rw 5 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 5 0 true,
+    Step.rw 5 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 1 2 false,
+    Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- Both sides of `dt_CNOTHH` inverted, letter by letter. -/
@@ -287,8 +287,8 @@ def dt_CNOTHH_i : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_CX2.place 0 0,
     dt_CNOTHH.place 0 0]
-    [.swap 1, .rw 3 2 true, .rw 4 3 true, .rw 5 2 true, .rw 6 0 true, .rw 7 1 true,
-    .rw 3 4 true, .rw 2 1 false, .rw 1 0 false, .rw 0 3 false]
+    [Step.swap 1, Step.rw 3 2 true, Step.rw 4 3 true, Step.rw 5 2 true, Step.rw 6 0 true, Step.rw 7 1 true,
+    Step.rw 3 4 true, Step.rw 2 1 false, Step.rw 1 0 false, Step.rw 0 3 false]
     (by decide +kernel)
 
 /-- (XcommutCNOT), Appendix D. -/
@@ -298,10 +298,10 @@ def dt_XcommutCNOT : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1, dt_CNOTHH.place 0 0,
     dt_CNOTHH_i.place 0 0, dt_C_m.place 0 0]
-    [.rw 1 0 true, .slide 3 1, .slide 4 2, .slide 5 3, .slide 6 4, .slide 7 5, .slide 8 6,
-    .rw 7 0 false, .rw 7 0 true, .slide 7 2, .rw 0 2 false, .rw 2 3 false, .swap 1,
-    .rw 3 3 false, .swap 2, .rw 4 3 false, .swap 3, .rw 5 3 false, .swap 4, .swap 9,
-    .rw 6 1 true, .swap 5, .rw 6 0 false, .rw 6 0 true, .rw 6 0 false]
+    [Step.rw 1 0 true, Step.slide 3 1, Step.slide 4 2, Step.slide 5 3, Step.slide 6 4, Step.slide 7 5, Step.slide 8 6,
+    Step.rw 7 0 false, Step.rw 7 0 true, Step.slide 7 2, Step.rw 0 2 false, Step.rw 2 3 false, Step.swap 1,
+    Step.rw 3 3 false, Step.swap 2, Step.rw 4 3 false, Step.swap 3, Step.rw 5 3 false, Step.swap 4, Step.swap 9,
+    Step.rw 6 1 true, Step.swap 5, Step.rw 6 0 false, Step.rw 6 0 true, Step.rw 6 0 false]
     (by decide +kernel)
 
 /-- `dt_XcommutCNOT` upside down (conjugated by the swap). -/
@@ -312,9 +312,9 @@ def dt_XcommutCNOT_m : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_XcommutCNOT.place 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0]
-    [.rw 0 0 true, .rw 1 0 false, .rw 2 2 false, .rw 3 3 false, .rw 4 3 false,
-    .rw 5 3 false, .rw 6 3 false, .rw 7 2 false, .rw 1 1 false, .rw 7 0 true, .rw 6 2 true,
-    .rw 5 3 true, .rw 4 3 true, .rw 3 3 true, .rw 2 3 true, .rw 1 2 true, .rw 0 0 false]
+    [Step.rw 0 0 true, Step.rw 1 0 false, Step.rw 2 2 false, Step.rw 3 3 false, Step.rw 4 3 false,
+    Step.rw 5 3 false, Step.rw 6 3 false, Step.rw 7 2 false, Step.rw 1 1 false, Step.rw 7 0 true, Step.rw 6 2 true,
+    Step.rw 5 3 true, Step.rw 4 3 true, Step.rw 3 3 true, Step.rw 2 3 true, Step.rw 1 2 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- (wCNOT), Appendix D. -/
@@ -331,50 +331,50 @@ def dt_wCNOT : DEqn Th 2 where
     dt_C.place 0 0, DEqn.inst (P := pres) (S := fun _ => True) Ax.CZ trivial 0 0,
     dt_phasegadget.place 0 0, dt_phasegadget_i.place 0 0, dt_C_m.place 0 0,
     dt_XSX.place 0 1, dt_XSX_i.place 0 1, dt_X2.place 0 1, dt_XcommutCNOT_m.place 0 0]
-    [.rw 7 1 true, .rw 5 1 true, .rw 5 1 false, .rw 7 1 false, .rw 7 1 true, .rw 5 1 true,
-    .rw 7 8 false, .slide 19 17, .rw 5 1 false, .rw 5 1 true, .rw 7 10 false,
-    .rw 5 1 false, .rw 4 11 true, .rw 3 11 true, .rw 2 11 true, .rw 1 11 true, .slide 7 13,
-    .rw 13 11 true, .slide 6 12, .rw 12 11 true, .slide 5 11, .rw 11 11 true, .slide 4 10,
-    .rw 10 11 true, .rw 0 5 true, .rw 2 0 true, .rw 3 0 true, .rw 4 0 true, .rw 5 0 true,
-    .rw 6 0 true, .rw 7 0 true, .slide 8 2, .slide 9 3, .slide 10 4, .slide 11 5,
-    .rw 6 13 true, .rw 0 5 true, .rw 4 0 true, .rw 5 0 true, .rw 6 0 true, .rw 7 0 true,
-    .rw 8 0 true, .rw 9 0 true, .slide 10 4, .slide 11 5, .slide 12 6, .slide 13 7,
-    .slide 14 8, .slide 15 9, .slide 16 10, .slide 17 11, .slide 18 12, .slide 19 13,
-    .slide 20 14, .slide 21 15, .slide 22 16, .slide 23 17, .slide 24 18, .slide 25 19,
-    .slide 26 20, .slide 27 21, .slide 28 22, .slide 29 23, .slide 30 24, .slide 31 25,
-    .slide 32 26, .slide 33 27, .slide 34 28, .slide 35 29, .slide 36 30, .slide 37 31,
-    .slide 38 32, .slide 39 33, .slide 40 34, .slide 41 35, .slide 42 36, .slide 43 37,
-    .slide 44 38, .slide 45 39, .rw 40 13 true, .rw 8 13 false, .slide 7 13, .slide 6 12,
-    .slide 5 11, .slide 4 10, .rw 9 0 false, .rw 8 0 false, .rw 7 0 false, .rw 6 0 false,
-    .rw 5 0 false, .rw 4 0 false, .slide 9 19, .slide 8 18, .rw 19 0 true, .rw 18 0 true,
-    .rw 12 12 true, .rw 0 5 false, .rw 0 5 true, .rw 0 5 false, .slide 28 21, .slide 29 22,
-    .slide 30 23, .slide 31 24, .slide 32 25, .slide 33 26, .rw 18 15 false,
-    .rw 12 14 false, .rw 1 15 false, .rw 7 9 true, .rw 17 6 true, .rw 17 6 false,
-    .rw 17 6 true, .rw 17 6 false, .rw 17 6 true, .rw 15 6 true, .rw 13 6 true,
-    .rw 13 6 false, .rw 15 6 false, .rw 17 6 false, .rw 17 6 true, .rw 15 6 true,
-    .rw 13 6 true, .rw 18 9 false, .rw 14 9 false, .rw 10 9 false, .rw 17 4 false,
-    .rw 23 4 false, .rw 16 6 false, .rw 15 4 false, .rw 18 6 false, .rw 17 4 false,
-    .rw 17 4 true, .rw 18 6 true, .rw 15 4 true, .rw 16 6 true, .rw 23 4 true,
-    .rw 17 4 true, .rw 9 11 true, .rw 8 11 true, .slide 12 14, .rw 14 11 true,
-    .slide 11 13, .rw 13 11 true, .rw 25 4 false, .rw 24 6 false, .rw 23 4 false,
-    .rw 23 4 true, .rw 24 6 true, .rw 25 4 true, .rw 17 11 true, .slide 20 22,
-    .rw 22 11 true, .rw 16 11 true, .slide 19 21, .rw 21 11 true, .rw 15 4 false,
-    .rw 14 6 false, .rw 13 4 false, .rw 13 4 true, .rw 14 6 true, .rw 15 4 true,
-    .rw 25 11 true, .rw 24 11 true, .slide 28 30, .rw 30 11 true, .slide 27 29,
-    .rw 29 11 true, .rw 15 4 false, .rw 21 4 false, .rw 14 6 false, .rw 13 4 false,
-    .rw 16 6 false, .rw 15 4 false, .rw 15 4 true, .rw 16 6 true, .rw 13 4 true,
-    .rw 14 6 true, .rw 21 4 true, .rw 15 4 true, .rw 8 9 true, .rw 12 9 true,
-    .rw 16 9 true, .rw 7 6 false, .slide 7 1, .slide 8 2, .rw 9 6 false, .slide 9 3,
-    .slide 10 4, .rw 11 6 false, .slide 11 5, .slide 12 6, .slide 6 12, .slide 5 11,
-    .slide 4 10, .slide 3 9, .slide 2 8, .slide 1 7, .rw 7 6 true, .swap 19,
-    .rw 18 7 false, .swap 20, .rw 19 7 false, .rw 8 8 true, .rw 10 8 false, .slide 0 6,
-    .rw 6 8 false, .rw 17 7 true, .rw 18 7 true, .slide 19 25, .rw 25 7 true, .slide 26 28,
-    .rw 16 7 true, .rw 17 7 true, .slide 18 24, .rw 24 7 true, .slide 25 27,
-    .rw 27 2 false, .rw 16 6 false, .rw 14 3 false, .rw 13 6 false, .rw 7 3 false,
-    .rw 7 3 true, .rw 13 6 true, .rw 14 3 true, .rw 16 6 true, .rw 27 2 true,
-    .rw 16 6 false, .rw 14 3 false, .rw 13 6 false, .rw 7 3 false, .rw 6 7 false,
-    .rw 7 7 false, .rw 8 7 false, .rw 9 7 false, .rw 10 7 false, .rw 11 7 false,
-    .rw 12 7 false, .rw 13 7 false, .rw 6 2 false]
+    [Step.rw 7 1 true, Step.rw 5 1 true, Step.rw 5 1 false, Step.rw 7 1 false, Step.rw 7 1 true, Step.rw 5 1 true,
+    Step.rw 7 8 false, Step.slide 19 17, Step.rw 5 1 false, Step.rw 5 1 true, Step.rw 7 10 false,
+    Step.rw 5 1 false, Step.rw 4 11 true, Step.rw 3 11 true, Step.rw 2 11 true, Step.rw 1 11 true, Step.slide 7 13,
+    Step.rw 13 11 true, Step.slide 6 12, Step.rw 12 11 true, Step.slide 5 11, Step.rw 11 11 true, Step.slide 4 10,
+    Step.rw 10 11 true, Step.rw 0 5 true, Step.rw 2 0 true, Step.rw 3 0 true, Step.rw 4 0 true, Step.rw 5 0 true,
+    Step.rw 6 0 true, Step.rw 7 0 true, Step.slide 8 2, Step.slide 9 3, Step.slide 10 4, Step.slide 11 5,
+    Step.rw 6 13 true, Step.rw 0 5 true, Step.rw 4 0 true, Step.rw 5 0 true, Step.rw 6 0 true, Step.rw 7 0 true,
+    Step.rw 8 0 true, Step.rw 9 0 true, Step.slide 10 4, Step.slide 11 5, Step.slide 12 6, Step.slide 13 7,
+    Step.slide 14 8, Step.slide 15 9, Step.slide 16 10, Step.slide 17 11, Step.slide 18 12, Step.slide 19 13,
+    Step.slide 20 14, Step.slide 21 15, Step.slide 22 16, Step.slide 23 17, Step.slide 24 18, Step.slide 25 19,
+    Step.slide 26 20, Step.slide 27 21, Step.slide 28 22, Step.slide 29 23, Step.slide 30 24, Step.slide 31 25,
+    Step.slide 32 26, Step.slide 33 27, Step.slide 34 28, Step.slide 35 29, Step.slide 36 30, Step.slide 37 31,
+    Step.slide 38 32, Step.slide 39 33, Step.slide 40 34, Step.slide 41 35, Step.slide 42 36, Step.slide 43 37,
+    Step.slide 44 38, Step.slide 45 39, Step.rw 40 13 true, Step.rw 8 13 false, Step.slide 7 13, Step.slide 6 12,
+    Step.slide 5 11, Step.slide 4 10, Step.rw 9 0 false, Step.rw 8 0 false, Step.rw 7 0 false, Step.rw 6 0 false,
+    Step.rw 5 0 false, Step.rw 4 0 false, Step.slide 9 19, Step.slide 8 18, Step.rw 19 0 true, Step.rw 18 0 true,
+    Step.rw 12 12 true, Step.rw 0 5 false, Step.rw 0 5 true, Step.rw 0 5 false, Step.slide 28 21, Step.slide 29 22,
+    Step.slide 30 23, Step.slide 31 24, Step.slide 32 25, Step.slide 33 26, Step.rw 18 15 false,
+    Step.rw 12 14 false, Step.rw 1 15 false, Step.rw 7 9 true, Step.rw 17 6 true, Step.rw 17 6 false,
+    Step.rw 17 6 true, Step.rw 17 6 false, Step.rw 17 6 true, Step.rw 15 6 true, Step.rw 13 6 true,
+    Step.rw 13 6 false, Step.rw 15 6 false, Step.rw 17 6 false, Step.rw 17 6 true, Step.rw 15 6 true,
+    Step.rw 13 6 true, Step.rw 18 9 false, Step.rw 14 9 false, Step.rw 10 9 false, Step.rw 17 4 false,
+    Step.rw 23 4 false, Step.rw 16 6 false, Step.rw 15 4 false, Step.rw 18 6 false, Step.rw 17 4 false,
+    Step.rw 17 4 true, Step.rw 18 6 true, Step.rw 15 4 true, Step.rw 16 6 true, Step.rw 23 4 true,
+    Step.rw 17 4 true, Step.rw 9 11 true, Step.rw 8 11 true, Step.slide 12 14, Step.rw 14 11 true,
+    Step.slide 11 13, Step.rw 13 11 true, Step.rw 25 4 false, Step.rw 24 6 false, Step.rw 23 4 false,
+    Step.rw 23 4 true, Step.rw 24 6 true, Step.rw 25 4 true, Step.rw 17 11 true, Step.slide 20 22,
+    Step.rw 22 11 true, Step.rw 16 11 true, Step.slide 19 21, Step.rw 21 11 true, Step.rw 15 4 false,
+    Step.rw 14 6 false, Step.rw 13 4 false, Step.rw 13 4 true, Step.rw 14 6 true, Step.rw 15 4 true,
+    Step.rw 25 11 true, Step.rw 24 11 true, Step.slide 28 30, Step.rw 30 11 true, Step.slide 27 29,
+    Step.rw 29 11 true, Step.rw 15 4 false, Step.rw 21 4 false, Step.rw 14 6 false, Step.rw 13 4 false,
+    Step.rw 16 6 false, Step.rw 15 4 false, Step.rw 15 4 true, Step.rw 16 6 true, Step.rw 13 4 true,
+    Step.rw 14 6 true, Step.rw 21 4 true, Step.rw 15 4 true, Step.rw 8 9 true, Step.rw 12 9 true,
+    Step.rw 16 9 true, Step.rw 7 6 false, Step.slide 7 1, Step.slide 8 2, Step.rw 9 6 false, Step.slide 9 3,
+    Step.slide 10 4, Step.rw 11 6 false, Step.slide 11 5, Step.slide 12 6, Step.slide 6 12, Step.slide 5 11,
+    Step.slide 4 10, Step.slide 3 9, Step.slide 2 8, Step.slide 1 7, Step.rw 7 6 true, Step.swap 19,
+    Step.rw 18 7 false, Step.swap 20, Step.rw 19 7 false, Step.rw 8 8 true, Step.rw 10 8 false, Step.slide 0 6,
+    Step.rw 6 8 false, Step.rw 17 7 true, Step.rw 18 7 true, Step.slide 19 25, Step.rw 25 7 true, Step.slide 26 28,
+    Step.rw 16 7 true, Step.rw 17 7 true, Step.slide 18 24, Step.rw 24 7 true, Step.slide 25 27,
+    Step.rw 27 2 false, Step.rw 16 6 false, Step.rw 14 3 false, Step.rw 13 6 false, Step.rw 7 3 false,
+    Step.rw 7 3 true, Step.rw 13 6 true, Step.rw 14 3 true, Step.rw 16 6 true, Step.rw 27 2 true,
+    Step.rw 16 6 false, Step.rw 14 3 false, Step.rw 13 6 false, Step.rw 7 3 false, Step.rw 6 7 false,
+    Step.rw 7 7 false, Step.rw 8 7 false, Step.rw 9 7 false, Step.rw 10 7 false, Step.rw 11 7 false,
+    Step.rw 12 7 false, Step.rw 13 7 false, Step.rw 6 2 false]
     (by decide +kernel)
 
 /-- `dt_wCNOT` upside down (conjugated by the swap). -/
@@ -385,15 +385,15 @@ def dt_wCNOT_m : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_wCNOT.place 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0]
-    [.rw 0 0 true, .rw 1 2 false, .rw 2 3 false, .rw 3 3 false, .rw 4 3 false,
-    .rw 5 3 false, .rw 6 2 false, .rw 7 0 false, .rw 1 1 false, .rw 13 0 true,
-    .rw 14 2 false, .rw 15 0 false, .rw 12 0 true, .rw 13 3 false, .rw 14 0 false,
-    .rw 11 0 true, .rw 12 3 false, .rw 13 0 false, .rw 10 0 true, .rw 11 3 false,
-    .rw 12 0 false, .rw 9 0 true, .rw 10 3 false, .rw 11 0 false, .rw 8 0 true,
-    .rw 9 2 false, .rw 10 0 false, .rw 7 0 true, .rw 6 0 true, .rw 7 2 false,
-    .rw 8 0 false, .rw 5 0 true, .rw 6 3 false, .rw 7 0 false, .rw 4 0 true, .rw 5 3 false,
-    .rw 6 0 false, .rw 3 0 true, .rw 4 3 false, .rw 5 0 false, .rw 2 0 true, .rw 3 3 false,
-    .rw 4 0 false, .rw 1 0 true, .rw 2 2 false, .rw 3 0 false, .rw 0 0 false]
+    [Step.rw 0 0 true, Step.rw 1 2 false, Step.rw 2 3 false, Step.rw 3 3 false, Step.rw 4 3 false,
+    Step.rw 5 3 false, Step.rw 6 2 false, Step.rw 7 0 false, Step.rw 1 1 false, Step.rw 13 0 true,
+    Step.rw 14 2 false, Step.rw 15 0 false, Step.rw 12 0 true, Step.rw 13 3 false, Step.rw 14 0 false,
+    Step.rw 11 0 true, Step.rw 12 3 false, Step.rw 13 0 false, Step.rw 10 0 true, Step.rw 11 3 false,
+    Step.rw 12 0 false, Step.rw 9 0 true, Step.rw 10 3 false, Step.rw 11 0 false, Step.rw 8 0 true,
+    Step.rw 9 2 false, Step.rw 10 0 false, Step.rw 7 0 true, Step.rw 6 0 true, Step.rw 7 2 false,
+    Step.rw 8 0 false, Step.rw 5 0 true, Step.rw 6 3 false, Step.rw 7 0 false, Step.rw 4 0 true, Step.rw 5 3 false,
+    Step.rw 6 0 false, Step.rw 3 0 true, Step.rw 4 3 false, Step.rw 5 0 false, Step.rw 2 0 true, Step.rw 3 3 false,
+    Step.rw 4 0 false, Step.rw 1 0 true, Step.rw 2 2 false, Step.rw 3 0 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- (zCNOT), Appendix D. -/
@@ -404,11 +404,11 @@ def dt_zCNOT : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dt_C.place 0 0,
     dt_CNOTHH.place 0 0, dt_wCNOT_m.place 0 0]
-    [.rw 3 2 true, .rw 2 2 true, .rw 1 2 true, .rw 0 2 true, .rw 0 1 true, .rw 2 2 false,
-    .rw 3 2 false, .rw 4 2 false, .rw 5 2 false, .rw 6 0 true, .slide 1 6, .rw 6 3 false,
-    .swap 9, .rw 1 0 true, .rw 2 4 false, .slide 1 7, .rw 0 1 false, .rw 14 1 false,
-    .slide 14 9, .rw 6 3 true, .swap 5, .rw 4 1 false, .slide 3 5, .slide 2 4, .slide 1 3,
-    .slide 0 2, .rw 0 0 false]
+    [Step.rw 3 2 true, Step.rw 2 2 true, Step.rw 1 2 true, Step.rw 0 2 true, Step.rw 0 1 true, Step.rw 2 2 false,
+    Step.rw 3 2 false, Step.rw 4 2 false, Step.rw 5 2 false, Step.rw 6 0 true, Step.slide 1 6, Step.rw 6 3 false,
+    Step.swap 9, Step.rw 1 0 true, Step.rw 2 4 false, Step.slide 1 7, Step.rw 0 1 false, Step.rw 14 1 false,
+    Step.slide 14 9, Step.rw 6 3 true, Step.swap 5, Step.rw 4 1 false, Step.slide 3 5, Step.slide 2 4, Step.slide 1 3,
+    Step.slide 0 2, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `dt_zCNOT` upside down (conjugated by the swap). -/
@@ -418,11 +418,11 @@ def dt_zCNOT_m : DEqn Th 2 where
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_zCNOT.place 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0]
-    [.rw 0 0 true, .rw 3 0 true, .rw 2 2 true, .rw 1 0 false, .rw 4 0 true, .rw 3 2 true,
-    .rw 2 0 false, .rw 5 0 true, .rw 4 2 true, .rw 3 0 false, .rw 6 0 true, .rw 5 2 true,
-    .rw 4 0 false, .rw 5 0 false, .rw 1 1 false, .rw 9 2 true, .rw 8 2 true, .rw 7 2 true,
-    .rw 6 2 true, .rw 5 0 true, .rw 4 2 true, .rw 3 2 true, .rw 2 2 true, .rw 1 2 true,
-    .rw 0 0 false]
+    [Step.rw 0 0 true, Step.rw 3 0 true, Step.rw 2 2 true, Step.rw 1 0 false, Step.rw 4 0 true, Step.rw 3 2 true,
+    Step.rw 2 0 false, Step.rw 5 0 true, Step.rw 4 2 true, Step.rw 3 0 false, Step.rw 6 0 true, Step.rw 5 2 true,
+    Step.rw 4 0 false, Step.rw 5 0 false, Step.rw 1 1 false, Step.rw 9 2 true, Step.rw 8 2 true, Step.rw 7 2 true,
+    Step.rw 6 2 true, Step.rw 5 0 true, Step.rw 4 2 true, Step.rw 3 2 true, Step.rw 2 2 true, Step.rw 1 2 true,
+    Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- Both sides of `dt_zCNOT_m` inverted, letter by letter. -/
@@ -434,12 +434,12 @@ def dt_zCNOT_m_i : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_CX2.place 0 0,
     dt_zCNOT_m.place 0 0]
-    [.rw 3 1 true, .rw 3 1 true, .rw 3 1 true, .rw 31 0 true, .rw 32 0 true, .rw 33 0 true,
-    .rw 34 0 true, .rw 35 2 true, .rw 36 3 true, .rw 37 2 true, .rw 38 0 true,
-    .rw 39 0 true, .rw 40 0 true, .rw 41 0 true, .rw 31 4 true, .rw 24 1 false,
-    .rw 17 1 false, .rw 10 1 false, .rw 3 1 false, .rw 2 2 false, .rw 1 3 false,
-    .rw 0 2 false, .rw 0 0 false, .rw 0 0 false, .rw 0 0 false, .rw 7 0 false,
-    .rw 7 0 false, .rw 7 0 false]
+    [Step.rw 3 1 true, Step.rw 3 1 true, Step.rw 3 1 true, Step.rw 31 0 true, Step.rw 32 0 true, Step.rw 33 0 true,
+    Step.rw 34 0 true, Step.rw 35 2 true, Step.rw 36 3 true, Step.rw 37 2 true, Step.rw 38 0 true,
+    Step.rw 39 0 true, Step.rw 40 0 true, Step.rw 41 0 true, Step.rw 31 4 true, Step.rw 24 1 false,
+    Step.rw 17 1 false, Step.rw 10 1 false, Step.rw 3 1 false, Step.rw 2 2 false, Step.rw 1 3 false,
+    Step.rw 0 2 false, Step.rw 0 0 false, Step.rw 0 0 false, Step.rw 0 0 false, Step.rw 7 0 false,
+    Step.rw 7 0 false, Step.rw 7 0 false]
     (by decide +kernel)
 
 /-- (CSCSCSCS), Appendix D. -/
@@ -451,61 +451,61 @@ def dt_CSCSCSCS : DEqn Th 2 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_CX2.place 0 0,
     dt_C.place 0 0, dt_phasegadgetCS_i.place 0 0, dt_C_m.place 0 0, dt_Z2.place 1 0,
     dt_zCNOT_m_i.place 0 0]
-    [.rw 10 3 true, .slide 11 18, .rw 18 3 true, .swap 19, .rw 21 3 true, .rw 20 3 true,
-    .slide 23 21, .slide 24 22, .slide 25 23, .slide 26 24, .slide 27 25, .slide 28 26,
-    .slide 29 27, .rw 29 3 true, .rw 28 3 true, .slide 31 29, .rw 32 3 true, .rw 31 3 true,
-    .rw 30 3 true, .slide 34 31, .slide 35 32, .slide 36 33, .slide 37 34, .slide 38 35,
-    .slide 39 36, .slide 40 37, .rw 40 3 true, .rw 39 3 true, .rw 38 3 true, .slide 42 39,
-    .rw 30 4 false, .rw 20 4 false, .rw 10 4 false, .rw 0 4 false, .rw 41 5 true,
-    .rw 40 1 false, .rw 39 2 false, .rw 38 1 false, .slide 38 31, .rw 32 0 false,
-    .rw 32 0 true, .slide 31 38, .rw 38 1 true, .rw 39 2 true, .rw 40 1 true, .slide 44 51,
-    .rw 51 5 true, .rw 40 1 false, .rw 39 2 false, .rw 38 1 false, .rw 31 0 false,
-    .rw 31 0 true, .rw 38 1 true, .rw 39 2 true, .rw 40 1 true, .rw 27 5 true,
-    .rw 26 1 false, .rw 38 1 false, .rw 25 2 false, .rw 24 1 false, .slide 24 17,
-    .rw 18 0 false, .rw 25 2 false, .rw 24 1 false, .rw 18 0 false, .rw 18 0 true,
-    .rw 24 1 true, .rw 25 2 true, .rw 18 0 true, .slide 17 24, .rw 24 1 true,
-    .rw 25 2 true, .rw 38 1 true, .rw 26 1 true, .slide 30 37, .rw 37 5 true,
-    .rw 26 1 false, .rw 25 2 false, .rw 24 1 false, .rw 17 0 false, .rw 17 0 true,
-    .rw 24 1 true, .rw 25 2 true, .rw 26 1 true, .rw 40 5 true, .rw 26 1 false,
-    .rw 37 1 false, .rw 25 2 false, .rw 24 1 false, .rw 17 0 false, .rw 24 2 false,
-    .rw 23 1 false, .slide 23 17, .rw 18 0 false, .rw 18 0 true, .slide 17 23,
-    .rw 23 1 true, .rw 24 2 true, .rw 17 0 true, .rw 24 1 true, .rw 25 2 true,
-    .rw 37 1 true, .rw 26 1 true, .slide 43 50, .rw 50 5 true, .rw 26 1 false,
-    .rw 37 1 false, .rw 25 2 false, .rw 24 1 false, .rw 17 0 false, .rw 24 2 false,
-    .rw 23 1 false, .rw 17 0 false, .rw 17 0 true, .rw 23 1 true, .rw 24 2 true,
-    .rw 17 0 true, .rw 24 1 true, .rw 25 2 true, .rw 37 1 true, .rw 26 1 true,
-    .rw 13 5 true, .rw 12 1 false, .rw 24 1 false, .rw 35 1 false, .rw 11 2 false,
-    .rw 10 1 false, .slide 10 3, .rw 4 0 false, .rw 11 2 false, .rw 10 1 false,
-    .rw 4 0 false, .rw 10 2 false, .rw 9 1 false, .rw 4 0 false, .rw 4 0 true,
-    .rw 9 1 true, .rw 10 2 true, .rw 4 0 true, .rw 10 1 true, .rw 11 2 true, .rw 4 0 true,
-    .slide 3 10, .rw 10 1 true, .rw 11 2 true, .rw 35 1 true, .rw 24 1 true, .rw 12 1 true,
-    .slide 16 23, .rw 23 5 true, .rw 12 1 false, .rw 37 1 false, .rw 11 2 false,
-    .rw 10 1 false, .rw 3 0 false, .rw 24 2 false, .rw 23 1 false, .rw 16 0 false,
-    .rw 16 0 true, .rw 23 1 true, .rw 24 2 true, .rw 3 0 true, .rw 10 1 true,
-    .rw 11 2 true, .rw 37 1 true, .rw 12 1 true, .rw 26 5 true, .rw 12 1 false,
-    .rw 23 1 false, .rw 35 1 false, .rw 11 2 false, .rw 10 1 false, .rw 3 0 false,
-    .rw 10 2 false, .rw 9 1 false, .slide 9 3, .rw 4 0 false, .rw 10 2 false,
-    .rw 9 1 false, .rw 4 0 false, .rw 4 0 true, .rw 9 1 true, .rw 10 2 true, .rw 4 0 true,
-    .slide 3 9, .rw 9 1 true, .rw 10 2 true, .rw 3 0 true, .rw 10 1 true, .rw 11 2 true,
-    .rw 35 1 true, .rw 23 1 true, .rw 12 1 true, .slide 29 36, .rw 36 5 true,
-    .rw 12 1 false, .rw 23 1 false, .rw 11 2 false, .rw 10 1 false, .rw 3 0 false,
-    .rw 10 2 false, .rw 9 1 false, .rw 3 0 false, .rw 3 0 true, .rw 9 1 true,
-    .rw 10 2 true, .rw 3 0 true, .rw 10 1 true, .rw 11 2 true, .rw 23 1 true,
-    .rw 12 1 true, .rw 39 5 true, .rw 12 1 false, .rw 23 1 false, .rw 34 1 false,
-    .rw 11 2 false, .rw 10 1 false, .rw 3 0 false, .rw 10 2 false, .rw 9 1 false,
-    .rw 3 0 false, .rw 9 2 false, .rw 8 1 false, .slide 8 3, .rw 4 0 false, .rw 4 0 true,
-    .slide 3 8, .rw 8 1 true, .rw 9 2 true, .rw 3 0 true, .rw 9 1 true, .rw 10 2 true,
-    .rw 3 0 true, .rw 10 1 true, .rw 11 2 true, .rw 34 1 true, .rw 23 1 true,
-    .rw 12 1 true, .slide 42 49, .rw 49 5 true, .rw 12 1 false, .rw 23 1 false,
-    .rw 34 1 false, .rw 11 2 false, .rw 10 1 false, .rw 3 0 false, .rw 10 2 false,
-    .rw 9 1 false, .rw 3 0 false, .rw 9 2 false, .rw 8 1 false, .rw 3 0 false,
-    .rw 3 0 true, .rw 3 0 true, .rw 3 0 true, .rw 3 0 false, .rw 3 0 false, .rw 3 0 false,
-    .slide 14 10, .slide 15 11, .slide 16 12, .slide 17 13, .rw 3 7 true, .rw 6 6 false,
-    .rw 2 1 true, .rw 2 1 false, .rw 2 1 false, .rw 1 2 false, .rw 0 1 false, .rw 0 1 true,
-    .rw 1 2 true, .rw 2 1 true, .rw 2 1 true, .rw 0 1 true, .rw 1 1 false, .rw 4 1 false,
-    .rw 2 1 false, .rw 1 2 false, .rw 0 1 false, .rw 0 1 true, .rw 1 2 true, .rw 2 1 true,
-    .rw 4 1 true, .rw 1 1 true, .rw 0 1 false, .rw 2 1 false, .rw 2 1 false, .rw 1 2 false,
-    .rw 0 1 false]
+    [Step.rw 10 3 true, Step.slide 11 18, Step.rw 18 3 true, Step.swap 19, Step.rw 21 3 true, Step.rw 20 3 true,
+    Step.slide 23 21, Step.slide 24 22, Step.slide 25 23, Step.slide 26 24, Step.slide 27 25, Step.slide 28 26,
+    Step.slide 29 27, Step.rw 29 3 true, Step.rw 28 3 true, Step.slide 31 29, Step.rw 32 3 true, Step.rw 31 3 true,
+    Step.rw 30 3 true, Step.slide 34 31, Step.slide 35 32, Step.slide 36 33, Step.slide 37 34, Step.slide 38 35,
+    Step.slide 39 36, Step.slide 40 37, Step.rw 40 3 true, Step.rw 39 3 true, Step.rw 38 3 true, Step.slide 42 39,
+    Step.rw 30 4 false, Step.rw 20 4 false, Step.rw 10 4 false, Step.rw 0 4 false, Step.rw 41 5 true,
+    Step.rw 40 1 false, Step.rw 39 2 false, Step.rw 38 1 false, Step.slide 38 31, Step.rw 32 0 false,
+    Step.rw 32 0 true, Step.slide 31 38, Step.rw 38 1 true, Step.rw 39 2 true, Step.rw 40 1 true, Step.slide 44 51,
+    Step.rw 51 5 true, Step.rw 40 1 false, Step.rw 39 2 false, Step.rw 38 1 false, Step.rw 31 0 false,
+    Step.rw 31 0 true, Step.rw 38 1 true, Step.rw 39 2 true, Step.rw 40 1 true, Step.rw 27 5 true,
+    Step.rw 26 1 false, Step.rw 38 1 false, Step.rw 25 2 false, Step.rw 24 1 false, Step.slide 24 17,
+    Step.rw 18 0 false, Step.rw 25 2 false, Step.rw 24 1 false, Step.rw 18 0 false, Step.rw 18 0 true,
+    Step.rw 24 1 true, Step.rw 25 2 true, Step.rw 18 0 true, Step.slide 17 24, Step.rw 24 1 true,
+    Step.rw 25 2 true, Step.rw 38 1 true, Step.rw 26 1 true, Step.slide 30 37, Step.rw 37 5 true,
+    Step.rw 26 1 false, Step.rw 25 2 false, Step.rw 24 1 false, Step.rw 17 0 false, Step.rw 17 0 true,
+    Step.rw 24 1 true, Step.rw 25 2 true, Step.rw 26 1 true, Step.rw 40 5 true, Step.rw 26 1 false,
+    Step.rw 37 1 false, Step.rw 25 2 false, Step.rw 24 1 false, Step.rw 17 0 false, Step.rw 24 2 false,
+    Step.rw 23 1 false, Step.slide 23 17, Step.rw 18 0 false, Step.rw 18 0 true, Step.slide 17 23,
+    Step.rw 23 1 true, Step.rw 24 2 true, Step.rw 17 0 true, Step.rw 24 1 true, Step.rw 25 2 true,
+    Step.rw 37 1 true, Step.rw 26 1 true, Step.slide 43 50, Step.rw 50 5 true, Step.rw 26 1 false,
+    Step.rw 37 1 false, Step.rw 25 2 false, Step.rw 24 1 false, Step.rw 17 0 false, Step.rw 24 2 false,
+    Step.rw 23 1 false, Step.rw 17 0 false, Step.rw 17 0 true, Step.rw 23 1 true, Step.rw 24 2 true,
+    Step.rw 17 0 true, Step.rw 24 1 true, Step.rw 25 2 true, Step.rw 37 1 true, Step.rw 26 1 true,
+    Step.rw 13 5 true, Step.rw 12 1 false, Step.rw 24 1 false, Step.rw 35 1 false, Step.rw 11 2 false,
+    Step.rw 10 1 false, Step.slide 10 3, Step.rw 4 0 false, Step.rw 11 2 false, Step.rw 10 1 false,
+    Step.rw 4 0 false, Step.rw 10 2 false, Step.rw 9 1 false, Step.rw 4 0 false, Step.rw 4 0 true,
+    Step.rw 9 1 true, Step.rw 10 2 true, Step.rw 4 0 true, Step.rw 10 1 true, Step.rw 11 2 true, Step.rw 4 0 true,
+    Step.slide 3 10, Step.rw 10 1 true, Step.rw 11 2 true, Step.rw 35 1 true, Step.rw 24 1 true, Step.rw 12 1 true,
+    Step.slide 16 23, Step.rw 23 5 true, Step.rw 12 1 false, Step.rw 37 1 false, Step.rw 11 2 false,
+    Step.rw 10 1 false, Step.rw 3 0 false, Step.rw 24 2 false, Step.rw 23 1 false, Step.rw 16 0 false,
+    Step.rw 16 0 true, Step.rw 23 1 true, Step.rw 24 2 true, Step.rw 3 0 true, Step.rw 10 1 true,
+    Step.rw 11 2 true, Step.rw 37 1 true, Step.rw 12 1 true, Step.rw 26 5 true, Step.rw 12 1 false,
+    Step.rw 23 1 false, Step.rw 35 1 false, Step.rw 11 2 false, Step.rw 10 1 false, Step.rw 3 0 false,
+    Step.rw 10 2 false, Step.rw 9 1 false, Step.slide 9 3, Step.rw 4 0 false, Step.rw 10 2 false,
+    Step.rw 9 1 false, Step.rw 4 0 false, Step.rw 4 0 true, Step.rw 9 1 true, Step.rw 10 2 true, Step.rw 4 0 true,
+    Step.slide 3 9, Step.rw 9 1 true, Step.rw 10 2 true, Step.rw 3 0 true, Step.rw 10 1 true, Step.rw 11 2 true,
+    Step.rw 35 1 true, Step.rw 23 1 true, Step.rw 12 1 true, Step.slide 29 36, Step.rw 36 5 true,
+    Step.rw 12 1 false, Step.rw 23 1 false, Step.rw 11 2 false, Step.rw 10 1 false, Step.rw 3 0 false,
+    Step.rw 10 2 false, Step.rw 9 1 false, Step.rw 3 0 false, Step.rw 3 0 true, Step.rw 9 1 true,
+    Step.rw 10 2 true, Step.rw 3 0 true, Step.rw 10 1 true, Step.rw 11 2 true, Step.rw 23 1 true,
+    Step.rw 12 1 true, Step.rw 39 5 true, Step.rw 12 1 false, Step.rw 23 1 false, Step.rw 34 1 false,
+    Step.rw 11 2 false, Step.rw 10 1 false, Step.rw 3 0 false, Step.rw 10 2 false, Step.rw 9 1 false,
+    Step.rw 3 0 false, Step.rw 9 2 false, Step.rw 8 1 false, Step.slide 8 3, Step.rw 4 0 false, Step.rw 4 0 true,
+    Step.slide 3 8, Step.rw 8 1 true, Step.rw 9 2 true, Step.rw 3 0 true, Step.rw 9 1 true, Step.rw 10 2 true,
+    Step.rw 3 0 true, Step.rw 10 1 true, Step.rw 11 2 true, Step.rw 34 1 true, Step.rw 23 1 true,
+    Step.rw 12 1 true, Step.slide 42 49, Step.rw 49 5 true, Step.rw 12 1 false, Step.rw 23 1 false,
+    Step.rw 34 1 false, Step.rw 11 2 false, Step.rw 10 1 false, Step.rw 3 0 false, Step.rw 10 2 false,
+    Step.rw 9 1 false, Step.rw 3 0 false, Step.rw 9 2 false, Step.rw 8 1 false, Step.rw 3 0 false,
+    Step.rw 3 0 true, Step.rw 3 0 true, Step.rw 3 0 true, Step.rw 3 0 false, Step.rw 3 0 false, Step.rw 3 0 false,
+    Step.slide 14 10, Step.slide 15 11, Step.slide 16 12, Step.slide 17 13, Step.rw 3 7 true, Step.rw 6 6 false,
+    Step.rw 2 1 true, Step.rw 2 1 false, Step.rw 2 1 false, Step.rw 1 2 false, Step.rw 0 1 false, Step.rw 0 1 true,
+    Step.rw 1 2 true, Step.rw 2 1 true, Step.rw 2 1 true, Step.rw 0 1 true, Step.rw 1 1 false, Step.rw 4 1 false,
+    Step.rw 2 1 false, Step.rw 1 2 false, Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 1 2 true, Step.rw 2 1 true,
+    Step.rw 4 1 true, Step.rw 1 1 true, Step.rw 0 1 false, Step.rw 2 1 false, Step.rw 2 1 false, Step.rw 1 2 false,
+    Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- Both sides of `dt_C_m` inverted, letter by letter. -/
@@ -516,8 +516,8 @@ def dt_C_m_i : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_CX2.place 0 0,
     dt_C_m.place 0 0]
-    [.rw 10 0 true, .rw 11 1 true, .rw 12 2 true, .rw 13 1 true, .rw 10 3 true,
-    .rw 9 1 false, .rw 8 2 false, .rw 7 1 false, .rw 0 0 false]
+    [Step.rw 10 0 true, Step.rw 11 1 true, Step.rw 12 2 true, Step.rw 13 1 true, Step.rw 10 3 true,
+    Step.rw 9 1 false, Step.rw 8 2 false, Step.rw 7 1 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- CSdag -/
@@ -527,26 +527,26 @@ def dCSdag : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0, dt_CX2.place 0 0,
     dt_C.place 0 0, dt_CSCSCSCS.place 0 0, dt_phasegadgetCS.place 0 0, dt_C_m_i.place 0 0]
-    [.rw 0 4 false, .rw 4 5 true, .slide 3 10, .rw 0 5 true, .rw 7 4 true, .rw 10 0 true,
-    .rw 17 1 true, .rw 18 0 true, .rw 19 1 true, .rw 20 0 true, .rw 27 1 true,
-    .rw 28 0 true, .rw 29 1 true, .rw 30 0 true, .rw 37 1 true, .rw 0 1 true,
-    .rw 40 0 true, .slide 69 73, .rw 68 2 false, .rw 69 2 false, .rw 70 2 false,
-    .rw 71 2 false, .slide 67 71, .slide 66 70, .slide 65 69, .slide 64 68, .slide 63 67,
-    .slide 62 66, .slide 61 65, .rw 60 2 false, .rw 61 2 false, .rw 62 2 false,
-    .rw 63 2 false, .slide 59 63, .rw 58 2 false, .rw 59 2 false, .rw 60 2 false,
-    .rw 61 2 false, .slide 57 61, .slide 56 60, .slide 55 59, .slide 54 58, .slide 53 57,
-    .slide 52 56, .slide 51 55, .rw 50 2 false, .rw 51 2 false, .rw 52 2 false,
-    .rw 53 2 false, .slide 49 53, .rw 48 2 false, .rw 49 2 false, .rw 50 2 false,
-    .rw 51 2 false, .slide 47 51, .slide 46 50, .slide 45 49, .slide 44 48, .slide 43 47,
-    .slide 42 46, .slide 41 45, .slide 40 43, .rw 39 2 false, .rw 40 2 false,
-    .rw 41 2 false, .slide 38 41, .slide 37 40, .slide 36 39, .slide 35 38, .slide 34 37,
-    .slide 33 36, .slide 32 35, .rw 31 2 false, .rw 32 2 false, .rw 33 2 false,
-    .slide 30 32, .rw 29 2 false, .rw 30 2 false, .slide 28 30, .slide 27 29, .slide 26 28,
-    .slide 25 27, .slide 24 26, .slide 23 25, .slide 22 24, .rw 21 2 false, .rw 22 2 false,
-    .swap 20, .rw 19 2 false, .slide 19 12, .rw 11 2 false, .rw 1 3 false, .slide 29 31,
-    .rw 28 2 false, .rw 29 2 false, .slide 27 29, .slide 26 28, .slide 25 27, .slide 24 26,
-    .slide 23 25, .slide 22 24, .slide 21 23, .rw 20 2 false, .rw 21 2 false, .swap 19,
-    .rw 18 2 false, .slide 18 11, .rw 10 2 false]
+    [Step.rw 0 4 false, Step.rw 4 5 true, Step.slide 3 10, Step.rw 0 5 true, Step.rw 7 4 true, Step.rw 10 0 true,
+    Step.rw 17 1 true, Step.rw 18 0 true, Step.rw 19 1 true, Step.rw 20 0 true, Step.rw 27 1 true,
+    Step.rw 28 0 true, Step.rw 29 1 true, Step.rw 30 0 true, Step.rw 37 1 true, Step.rw 0 1 true,
+    Step.rw 40 0 true, Step.slide 69 73, Step.rw 68 2 false, Step.rw 69 2 false, Step.rw 70 2 false,
+    Step.rw 71 2 false, Step.slide 67 71, Step.slide 66 70, Step.slide 65 69, Step.slide 64 68, Step.slide 63 67,
+    Step.slide 62 66, Step.slide 61 65, Step.rw 60 2 false, Step.rw 61 2 false, Step.rw 62 2 false,
+    Step.rw 63 2 false, Step.slide 59 63, Step.rw 58 2 false, Step.rw 59 2 false, Step.rw 60 2 false,
+    Step.rw 61 2 false, Step.slide 57 61, Step.slide 56 60, Step.slide 55 59, Step.slide 54 58, Step.slide 53 57,
+    Step.slide 52 56, Step.slide 51 55, Step.rw 50 2 false, Step.rw 51 2 false, Step.rw 52 2 false,
+    Step.rw 53 2 false, Step.slide 49 53, Step.rw 48 2 false, Step.rw 49 2 false, Step.rw 50 2 false,
+    Step.rw 51 2 false, Step.slide 47 51, Step.slide 46 50, Step.slide 45 49, Step.slide 44 48, Step.slide 43 47,
+    Step.slide 42 46, Step.slide 41 45, Step.slide 40 43, Step.rw 39 2 false, Step.rw 40 2 false,
+    Step.rw 41 2 false, Step.slide 38 41, Step.slide 37 40, Step.slide 36 39, Step.slide 35 38, Step.slide 34 37,
+    Step.slide 33 36, Step.slide 32 35, Step.rw 31 2 false, Step.rw 32 2 false, Step.rw 33 2 false,
+    Step.slide 30 32, Step.rw 29 2 false, Step.rw 30 2 false, Step.slide 28 30, Step.slide 27 29, Step.slide 26 28,
+    Step.slide 25 27, Step.slide 24 26, Step.slide 23 25, Step.slide 22 24, Step.rw 21 2 false, Step.rw 22 2 false,
+    Step.swap 20, Step.rw 19 2 false, Step.slide 19 12, Step.rw 11 2 false, Step.rw 1 3 false, Step.slide 29 31,
+    Step.rw 28 2 false, Step.rw 29 2 false, Step.slide 27 29, Step.slide 26 28, Step.slide 25 27, Step.slide 24 26,
+    Step.slide 23 25, Step.slide 22 24, Step.slide 21 23, Step.rw 20 2 false, Step.rw 21 2 false, Step.swap 19,
+    Step.rw 18 2 false, Step.slide 18 11, Step.rw 10 2 false]
     (by decide +kernel)
 
 /-- Both sides of `dE` inverted, letter by letter. -/
@@ -558,12 +558,12 @@ def dE_i : DEqn Th 1 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.E trivial 0 0]
-    [.rw 1 1 true, .rw 16 1 true, .rw 17 1 true, .rw 18 1 true, .rw 19 1 true,
-    .rw 20 1 true, .rw 21 1 true, .rw 22 0 true, .rw 23 1 true, .rw 24 1 true,
-    .rw 25 1 true, .rw 26 1 true, .rw 27 1 true, .rw 28 1 true, .rw 29 2 true,
-    .rw 16 3 true, .rw 15 0 false, .rw 8 1 false, .rw 1 1 false, .rw 0 0 false,
-    .rw 7 1 false, .rw 7 1 false, .rw 7 1 false, .rw 7 1 false, .rw 7 1 false,
-    .rw 10 1 false, .rw 10 1 false, .rw 10 1 false, .rw 10 1 false, .rw 10 1 false]
+    [Step.rw 1 1 true, Step.rw 16 1 true, Step.rw 17 1 true, Step.rw 18 1 true, Step.rw 19 1 true,
+    Step.rw 20 1 true, Step.rw 21 1 true, Step.rw 22 0 true, Step.rw 23 1 true, Step.rw 24 1 true,
+    Step.rw 25 1 true, Step.rw 26 1 true, Step.rw 27 1 true, Step.rw 28 1 true, Step.rw 29 2 true,
+    Step.rw 16 3 true, Step.rw 15 0 false, Step.rw 8 1 false, Step.rw 1 1 false, Step.rw 0 0 false,
+    Step.rw 7 1 false, Step.rw 7 1 false, Step.rw 7 1 false, Step.rw 7 1 false, Step.rw 7 1 false,
+    Step.rw 10 1 false, Step.rw 10 1 false, Step.rw 10 1 false, Step.rw 10 1 false, Step.rw 10 1 false]
     (by decide +kernel)
 
 /-- TCS -/
@@ -572,7 +572,7 @@ def dTCS : DEqn Th 2 where
   rhs := tw 2 [(.T, 1), (.T, 0), (.CX, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.CX, 0), (.T, 0)]
   proof := derive hsc
     [dt_phasegadgetCS_i.place 0 0, dt_C_m.place 0 0]
-    [.swap 10, .rw 0 0 false, .rw 10 1 false, .slide 10 3, .rw 0 1 false, .rw 1 0 true]
+    [Step.swap 10, Step.rw 0 0 false, Step.rw 10 1 false, Step.slide 10 3, Step.rw 0 1 false, Step.rw 1 0 true]
     (by decide +kernel)
 
 /-- T3CS -/
@@ -581,8 +581,8 @@ def dT3CS : DEqn Th 2 where
   rhs := tw 2 [(.T, 1), (.T, 0), (.CX, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.CX, 0), (.T, 0), (.T, 0), (.T, 0)]
   proof := derive hsc
     [dTCS.place 0 0]
-    [.slide 10 13, .slide 13 10, .rw 0 0 false, .slide 11 13, .slide 13 11, .rw 1 0 false,
-    .swap 12, .swap 12, .rw 2 0 false]
+    [Step.slide 10 13, Step.slide 13 10, Step.rw 0 0 false, Step.slide 11 13, Step.slide 13 11, Step.rw 1 0 false,
+    Step.swap 12, Step.swap 12, Step.rw 2 0 false]
     (by decide +kernel)
 
 /-- T6CS -/
@@ -591,9 +591,9 @@ def dT6CS : DEqn Th 2 where
   rhs := tw 2 [(.T, 1), (.T, 0), (.CX, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.CX, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0)]
   proof := derive hsc
     [dt_phasegadgetCS_i.place 0 0, dt_C_m.place 0 0, dt_C_m_i.place 0 0]
-    [.slide 10 16, .rw 0 0 false, .rw 10 2 true, .slide 10 3, .slide 11 4, .slide 12 5,
-    .slide 13 6, .slide 14 7, .slide 15 8, .slide 16 9, .rw 0 2 true, .rw 6 1 true,
-    .slide 9 16, .rw 16 1 true, .rw 6 0 true]
+    [Step.slide 10 16, Step.rw 0 0 false, Step.rw 10 2 true, Step.slide 10 3, Step.slide 11 4, Step.slide 12 5,
+    Step.slide 13 6, Step.slide 14 7, Step.slide 15 8, Step.slide 16 9, Step.rw 0 2 true, Step.rw 6 1 true,
+    Step.slide 9 16, Step.rw 16 1 true, Step.rw 6 0 true]
     (by decide +kernel)
 
 /-- T7CS -/
@@ -603,8 +603,8 @@ def dT7CS : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0, dT6CS.place 0 0,
     dTCS.place 0 0]
-    [.slide 10 17, .rw 9 0 false, .rw 9 0 true, .slide 17 10, .rw 0 2 false, .slide 11 17,
-    .slide 17 11, .rw 1 1 false]
+    [Step.slide 10 17, Step.rw 9 0 false, Step.rw 9 0 true, Step.slide 17 10, Step.rw 0 2 false, Step.slide 11 17,
+    Step.slide 17 11, Step.rw 1 1 false]
     (by decide +kernel)
 
 /-- The decoding of (C10), Appendix D. -/
@@ -616,10 +616,10 @@ def dt_C10dec : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 1, dt_X2.place 0 1,
     dt_wCNOT.place 0 0]
-    [.rw 0 3 true, .slide 12 0, .rw 6 0 false, .rw 2 2 false, .rw 1 0 false, .rw 1 0 true,
-    .rw 2 2 true, .rw 6 0 true, .slide 14 20, .rw 7 4 true, .slide 7 1, .slide 8 2,
-    .slide 9 3, .slide 10 4, .slide 11 5, .slide 12 6, .rw 0 1 false, .rw 0 1 true,
-    .rw 0 1 false, .slide 4 10, .slide 3 6, .slide 2 5, .slide 2 0]
+    [Step.rw 0 3 true, Step.slide 12 0, Step.rw 6 0 false, Step.rw 2 2 false, Step.rw 1 0 false, Step.rw 1 0 true,
+    Step.rw 2 2 true, Step.rw 6 0 true, Step.slide 14 20, Step.rw 7 4 true, Step.slide 7 1, Step.slide 8 2,
+    Step.slide 9 3, Step.slide 10 4, Step.slide 11 5, Step.slide 12 6, Step.rw 0 1 false, Step.rw 0 1 true,
+    Step.rw 0 1 false, Step.slide 4 10, Step.slide 3 6, Step.slide 2 5, Step.slide 2 0]
     (by decide +kernel)
 
 /-- (czrev), Appendix D. -/
@@ -629,8 +629,8 @@ def dt_czrev : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dt_CNOTHH.place 0 0]
-    [.rw 2 0 true, .slide 4 2, .rw 3 0 false, .rw 3 0 true, .rw 1 0 true, .swap 0,
-    .rw 1 2 false, .rw 5 1 false, .rw 4 0 false, .rw 0 1 true, .rw 0 1 false]
+    [Step.rw 2 0 true, Step.slide 4 2, Step.rw 3 0 false, Step.rw 3 0 true, Step.rw 1 0 true, Step.swap 0,
+    Step.rw 1 2 false, Step.rw 5 1 false, Step.rw 4 0 false, Step.rw 0 1 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- The decoding of (C11), Appendix D. -/
@@ -642,21 +642,21 @@ def dt_C11dec : DEqn Th 2 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_C.place 0 0,
     dt_czrev.place 0 0, DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0, dt_C10dec.place 0 0]
-    [.rw 2 0 false, .rw 2 0 true, .rw 0 3 false, .slide 4 10, .slide 10 4, .rw 0 1 true,
-    .rw 1 4 false, .rw 2 1 false, .rw 3 4 false, .rw 6 1 true, .rw 5 4 true, .rw 4 1 false,
-    .rw 7 1 true, .rw 6 5 true, .rw 5 1 false, .rw 8 1 true, .rw 7 5 true, .rw 6 1 false,
-    .rw 9 1 true, .rw 8 5 true, .rw 7 1 false, .rw 10 1 true, .rw 9 5 true, .rw 8 1 false,
-    .rw 11 1 true, .rw 10 4 true, .rw 9 1 false, .rw 1 6 false, .slide 1 3, .slide 6 3,
-    .slide 7 4, .slide 11 5, .slide 5 11, .slide 4 7, .slide 3 6, .slide 3 1,
-    .rw 13 4 true, .rw 12 1 true, .rw 11 4 true, .rw 10 1 true, .rw 11 4 false,
-    .rw 12 1 false, .rw 9 1 true, .rw 10 5 false, .rw 11 1 false, .rw 8 1 true,
-    .rw 9 5 false, .rw 10 1 false, .rw 7 5 true, .rw 6 5 true, .rw 5 1 true, .rw 6 5 false,
-    .rw 7 1 false, .rw 4 1 true, .rw 5 5 false, .rw 6 1 false, .rw 3 5 true, .rw 2 5 true,
-    .rw 1 1 true, .rw 2 4 false, .rw 3 1 false, .rw 0 1 false, .slide 3 1, .slide 4 2,
-    .slide 7 3, .slide 8 4, .slide 9 5, .rw 10 3 true, .slide 10 6, .rw 10 2 true,
-    .rw 9 2 true, .rw 8 2 true, .rw 7 2 true, .slide 12 8, .rw 5 0 false, .rw 5 0 true,
-    .slide 8 12, .rw 7 2 false, .rw 8 2 false, .rw 9 2 false, .rw 10 2 false, .slide 6 10,
-    .slide 5 7]
+    [Step.rw 2 0 false, Step.rw 2 0 true, Step.rw 0 3 false, Step.slide 4 10, Step.slide 10 4, Step.rw 0 1 true,
+    Step.rw 1 4 false, Step.rw 2 1 false, Step.rw 3 4 false, Step.rw 6 1 true, Step.rw 5 4 true, Step.rw 4 1 false,
+    Step.rw 7 1 true, Step.rw 6 5 true, Step.rw 5 1 false, Step.rw 8 1 true, Step.rw 7 5 true, Step.rw 6 1 false,
+    Step.rw 9 1 true, Step.rw 8 5 true, Step.rw 7 1 false, Step.rw 10 1 true, Step.rw 9 5 true, Step.rw 8 1 false,
+    Step.rw 11 1 true, Step.rw 10 4 true, Step.rw 9 1 false, Step.rw 1 6 false, Step.slide 1 3, Step.slide 6 3,
+    Step.slide 7 4, Step.slide 11 5, Step.slide 5 11, Step.slide 4 7, Step.slide 3 6, Step.slide 3 1,
+    Step.rw 13 4 true, Step.rw 12 1 true, Step.rw 11 4 true, Step.rw 10 1 true, Step.rw 11 4 false,
+    Step.rw 12 1 false, Step.rw 9 1 true, Step.rw 10 5 false, Step.rw 11 1 false, Step.rw 8 1 true,
+    Step.rw 9 5 false, Step.rw 10 1 false, Step.rw 7 5 true, Step.rw 6 5 true, Step.rw 5 1 true, Step.rw 6 5 false,
+    Step.rw 7 1 false, Step.rw 4 1 true, Step.rw 5 5 false, Step.rw 6 1 false, Step.rw 3 5 true, Step.rw 2 5 true,
+    Step.rw 1 1 true, Step.rw 2 4 false, Step.rw 3 1 false, Step.rw 0 1 false, Step.slide 3 1, Step.slide 4 2,
+    Step.slide 7 3, Step.slide 8 4, Step.slide 9 5, Step.rw 10 3 true, Step.slide 10 6, Step.rw 10 2 true,
+    Step.rw 9 2 true, Step.rw 8 2 true, Step.rw 7 2 true, Step.slide 12 8, Step.rw 5 0 false, Step.rw 5 0 true,
+    Step.slide 8 12, Step.rw 7 2 false, Step.rw 8 2 false, Step.rw 9 2 false, Step.rw 10 2 false, Step.slide 6 10,
+    Step.slide 5 7]
     (by decide +kernel)
 
 /-- The decoding of (C12), Appendix D. -/
@@ -672,19 +672,19 @@ def dt_C12dec : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.E trivial 0 1, dt_CNOTHH.place 0 0,
     dt_CNOTHH_i.place 0 0, dt_C_m.place 0 0, dt_C_m_i.place 0 0, dt_phasegadget.place 0 0,
     dt_zCNOT.place 0 0, DEqn.inst (P := pres) (S := fun _ => True) Ax.CZ trivial 0 0]
-    [.rw 2 1 false, .rw 0 4 true, .rw 13 2 true, .rw 10 2 true, .slide 20 26,
-    .rw 19 5 false, .rw 20 5 false, .rw 21 5 false, .rw 22 5 false, .rw 23 5 false,
-    .rw 24 5 false, .slide 7 24, .rw 24 0 true, .rw 11 6 true, .rw 9 1 true, .rw 9 1 false,
-    .rw 9 1 true, .slide 11 9, .rw 8 5 false, .slide 12 10, .rw 9 5 false, .swap 12,
-    .rw 10 8 false, .slide 10 8, .slide 15 17, .rw 17 7 false, .slide 20 22, .rw 7 1 false,
-    .rw 18 1 false, .rw 18 1 true, .rw 7 1 true, .rw 20 1 false, .rw 7 1 false,
-    .rw 13 3 true, .rw 13 3 false, .rw 13 3 true, .rw 10 9 false, .slide 10 7,
-    .slide 21 14, .slide 22 15, .rw 16 10 false, .rw 16 9 false, .slide 16 14,
-    .rw 11 9 false, .slide 11 8, .rw 12 11 true, .rw 13 3 true, .rw 19 12 true,
-    .rw 22 5 true, .rw 21 5 true, .rw 20 5 true, .rw 19 5 true, .slide 23 25, .slide 22 24,
-    .slide 21 23, .slide 20 22, .rw 12 13 true, .slide 12 9, .slide 14 16, .rw 13 5 false,
-    .rw 14 5 false, .slide 9 12, .slide 8 10, .slide 7 9, .slide 6 19, .slide 5 18,
-    .slide 4 17, .slide 3 16, .slide 2 15, .slide 1 14, .slide 0 13]
+    [Step.rw 2 1 false, Step.rw 0 4 true, Step.rw 13 2 true, Step.rw 10 2 true, Step.slide 20 26,
+    Step.rw 19 5 false, Step.rw 20 5 false, Step.rw 21 5 false, Step.rw 22 5 false, Step.rw 23 5 false,
+    Step.rw 24 5 false, Step.slide 7 24, Step.rw 24 0 true, Step.rw 11 6 true, Step.rw 9 1 true, Step.rw 9 1 false,
+    Step.rw 9 1 true, Step.slide 11 9, Step.rw 8 5 false, Step.slide 12 10, Step.rw 9 5 false, Step.swap 12,
+    Step.rw 10 8 false, Step.slide 10 8, Step.slide 15 17, Step.rw 17 7 false, Step.slide 20 22, Step.rw 7 1 false,
+    Step.rw 18 1 false, Step.rw 18 1 true, Step.rw 7 1 true, Step.rw 20 1 false, Step.rw 7 1 false,
+    Step.rw 13 3 true, Step.rw 13 3 false, Step.rw 13 3 true, Step.rw 10 9 false, Step.slide 10 7,
+    Step.slide 21 14, Step.slide 22 15, Step.rw 16 10 false, Step.rw 16 9 false, Step.slide 16 14,
+    Step.rw 11 9 false, Step.slide 11 8, Step.rw 12 11 true, Step.rw 13 3 true, Step.rw 19 12 true,
+    Step.rw 22 5 true, Step.rw 21 5 true, Step.rw 20 5 true, Step.rw 19 5 true, Step.slide 23 25, Step.slide 22 24,
+    Step.slide 21 23, Step.slide 20 22, Step.rw 12 13 true, Step.slide 12 9, Step.slide 14 16, Step.rw 13 5 false,
+    Step.rw 14 5 false, Step.slide 9 12, Step.slide 8 10, Step.slide 7 9, Step.slide 6 19, Step.slide 5 18,
+    Step.slide 4 17, Step.slide 3 16, Step.slide 2 15, Step.slide 1 14, Step.slide 0 13]
     (by decide +kernel)
 
 /-- The decoding of (C13), Appendix D. -/
@@ -697,29 +697,29 @@ def dt_C13dec : DEqn Th 2 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_C.place 0 0,
     dt_czrev.place 0 0, DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0, dt_C12dec.place 0 0]
-    [.rw 2 1 false, .rw 2 1 true, .rw 4 4 false, .rw 0 4 false, .swap 4, .rw 5 0 false,
-    .rw 5 0 true, .rw 5 0 false, .rw 5 0 true, .swap 4, .rw 0 2 true, .rw 1 5 false,
-    .rw 2 2 false, .rw 3 5 false, .rw 6 2 true, .rw 5 5 true, .rw 4 2 false, .rw 5 5 false,
-    .rw 6 2 false, .rw 7 5 false, .swap 4, .rw 3 1 false, .rw 3 1 true, .rw 1 7 false,
-    .slide 14 1, .slide 15 2, .slide 16 3, .slide 17 4, .slide 18 5, .slide 19 6,
-    .slide 20 7, .slide 10 8, .slide 11 9, .slide 13 10, .rw 15 3 true, .rw 14 3 true,
-    .slide 17 15, .slide 0 7, .rw 19 2 true, .slide 15 17, .rw 14 3 false, .rw 15 3 false,
-    .slide 10 15, .rw 15 4 false, .rw 19 0 false, .rw 18 2 false, .rw 19 0 true,
-    .slide 9 11, .slide 8 10, .slide 6 23, .slide 5 22, .slide 4 21, .slide 3 20,
-    .slide 2 19, .slide 1 18, .slide 0 17, .slide 17 0, .slide 18 1, .slide 19 2,
-    .slide 20 3, .slide 21 4, .slide 22 5, .slide 23 6, .rw 22 2 true, .rw 23 6 false,
-    .rw 24 2 false, .rw 21 2 true, .rw 22 6 false, .rw 23 2 false, .rw 20 2 true,
-    .rw 21 5 false, .rw 22 2 false, .rw 19 2 true, .rw 20 5 false, .rw 21 2 false,
-    .rw 17 2 true, .rw 15 2 true, .rw 16 5 false, .rw 17 2 false, .rw 14 2 true,
-    .rw 15 6 false, .rw 16 2 false, .rw 13 2 true, .rw 14 6 false, .rw 15 2 false,
-    .rw 12 2 true, .rw 13 5 false, .rw 14 2 false, .rw 11 6 true, .rw 10 6 true,
-    .rw 9 2 true, .rw 10 6 false, .rw 11 2 false, .rw 8 2 true, .rw 9 6 false,
-    .rw 10 2 false, .rw 7 2 false, .slide 11 9, .slide 12 10, .slide 13 11, .slide 14 12,
-    .rw 20 1 false, .rw 15 2 false, .rw 14 3 true, .rw 13 3 true, .rw 16 2 false,
-    .slide 16 14, .slide 17 15, .rw 14 1 true, .slide 17 19, .slide 16 18, .slide 15 17,
-    .slide 14 16, .rw 13 3 false, .rw 14 3 false, .slide 12 14, .slide 11 13, .slide 10 12,
-    .slide 9 11, .slide 6 19, .slide 5 18, .slide 4 17, .slide 3 16, .slide 2 15,
-    .slide 1 14, .slide 0 13]
+    [Step.rw 2 1 false, Step.rw 2 1 true, Step.rw 4 4 false, Step.rw 0 4 false, Step.swap 4, Step.rw 5 0 false,
+    Step.rw 5 0 true, Step.rw 5 0 false, Step.rw 5 0 true, Step.swap 4, Step.rw 0 2 true, Step.rw 1 5 false,
+    Step.rw 2 2 false, Step.rw 3 5 false, Step.rw 6 2 true, Step.rw 5 5 true, Step.rw 4 2 false, Step.rw 5 5 false,
+    Step.rw 6 2 false, Step.rw 7 5 false, Step.swap 4, Step.rw 3 1 false, Step.rw 3 1 true, Step.rw 1 7 false,
+    Step.slide 14 1, Step.slide 15 2, Step.slide 16 3, Step.slide 17 4, Step.slide 18 5, Step.slide 19 6,
+    Step.slide 20 7, Step.slide 10 8, Step.slide 11 9, Step.slide 13 10, Step.rw 15 3 true, Step.rw 14 3 true,
+    Step.slide 17 15, Step.slide 0 7, Step.rw 19 2 true, Step.slide 15 17, Step.rw 14 3 false, Step.rw 15 3 false,
+    Step.slide 10 15, Step.rw 15 4 false, Step.rw 19 0 false, Step.rw 18 2 false, Step.rw 19 0 true,
+    Step.slide 9 11, Step.slide 8 10, Step.slide 6 23, Step.slide 5 22, Step.slide 4 21, Step.slide 3 20,
+    Step.slide 2 19, Step.slide 1 18, Step.slide 0 17, Step.slide 17 0, Step.slide 18 1, Step.slide 19 2,
+    Step.slide 20 3, Step.slide 21 4, Step.slide 22 5, Step.slide 23 6, Step.rw 22 2 true, Step.rw 23 6 false,
+    Step.rw 24 2 false, Step.rw 21 2 true, Step.rw 22 6 false, Step.rw 23 2 false, Step.rw 20 2 true,
+    Step.rw 21 5 false, Step.rw 22 2 false, Step.rw 19 2 true, Step.rw 20 5 false, Step.rw 21 2 false,
+    Step.rw 17 2 true, Step.rw 15 2 true, Step.rw 16 5 false, Step.rw 17 2 false, Step.rw 14 2 true,
+    Step.rw 15 6 false, Step.rw 16 2 false, Step.rw 13 2 true, Step.rw 14 6 false, Step.rw 15 2 false,
+    Step.rw 12 2 true, Step.rw 13 5 false, Step.rw 14 2 false, Step.rw 11 6 true, Step.rw 10 6 true,
+    Step.rw 9 2 true, Step.rw 10 6 false, Step.rw 11 2 false, Step.rw 8 2 true, Step.rw 9 6 false,
+    Step.rw 10 2 false, Step.rw 7 2 false, Step.slide 11 9, Step.slide 12 10, Step.slide 13 11, Step.slide 14 12,
+    Step.rw 20 1 false, Step.rw 15 2 false, Step.rw 14 3 true, Step.rw 13 3 true, Step.rw 16 2 false,
+    Step.slide 16 14, Step.slide 17 15, Step.rw 14 1 true, Step.slide 17 19, Step.slide 16 18, Step.slide 15 17,
+    Step.slide 14 16, Step.rw 13 3 false, Step.rw 14 3 false, Step.slide 12 14, Step.slide 11 13, Step.slide 10 12,
+    Step.slide 9 11, Step.slide 6 19, Step.slide 5 18, Step.slide 4 17, Step.slide 3 16, Step.slide 2 15,
+    Step.slide 1 14, Step.slide 0 13]
     (by decide +kernel)
 
 /-- The decoding of (C17), Appendix D. -/
@@ -732,13 +732,13 @@ def dt_C17dec : DEqn Th 2 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_C.place 0 0,
     dt_czrev.place 0 0, DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0]
-    [.swap 0, .slide 4 7, .rw 4 1 false, .rw 7 1 false, .rw 7 1 true, .rw 4 1 true,
-    .rw 9 1 false, .rw 4 1 false, .slide 0 2, .rw 2 4 false, .rw 1 0 false, .rw 4 0 false,
-    .rw 4 0 true, .rw 1 0 true, .rw 6 0 false, .rw 1 0 false, .rw 1 5 false, .rw 0 3 true,
-    .rw 1 2 true, .rw 2 6 false, .rw 3 2 false, .rw 0 5 true, .rw 3 1 true, .rw 6 1 true,
-    .rw 5 0 true, .rw 0 0 true, .rw 0 0 false, .rw 5 0 false, .rw 3 1 false, .rw 4 1 false,
-    .rw 4 1 true, .rw 3 1 true, .rw 5 0 true, .rw 0 0 true, .slide 7 5, .rw 1 4 true,
-    .swap 0, .rw 3 1 false, .rw 6 1 false, .rw 6 1 true, .rw 3 1 true]
+    [Step.swap 0, Step.slide 4 7, Step.rw 4 1 false, Step.rw 7 1 false, Step.rw 7 1 true, Step.rw 4 1 true,
+    Step.rw 9 1 false, Step.rw 4 1 false, Step.slide 0 2, Step.rw 2 4 false, Step.rw 1 0 false, Step.rw 4 0 false,
+    Step.rw 4 0 true, Step.rw 1 0 true, Step.rw 6 0 false, Step.rw 1 0 false, Step.rw 1 5 false, Step.rw 0 3 true,
+    Step.rw 1 2 true, Step.rw 2 6 false, Step.rw 3 2 false, Step.rw 0 5 true, Step.rw 3 1 true, Step.rw 6 1 true,
+    Step.rw 5 0 true, Step.rw 0 0 true, Step.rw 0 0 false, Step.rw 5 0 false, Step.rw 3 1 false, Step.rw 4 1 false,
+    Step.rw 4 1 true, Step.rw 3 1 true, Step.rw 5 0 true, Step.rw 0 0 true, Step.slide 7 5, Step.rw 1 4 true,
+    Step.swap 0, Step.rw 3 1 false, Step.rw 6 1 false, Step.rw 6 1 true, Step.rw 3 1 true]
     (by decide +kernel)
 
 /-- (CtrlH), Appendix D. -/
@@ -749,11 +749,11 @@ def dt_CtrlH : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0, dE_i.place 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.TX trivial 1 0]
-    [.rw 0 2 false, .rw 10 1 false, .rw 10 1 true, .rw 7 1 true, .rw 7 1 false,
-    .rw 10 1 false, .rw 10 1 true, .rw 14 0 true, .rw 15 1 true, .slide 6 21,
-    .rw 8 3 false, .rw 15 1 true, .slide 5 21, .rw 8 3 false, .rw 15 1 true, .slide 4 21,
-    .rw 8 3 false, .rw 15 1 true, .slide 3 21, .rw 8 3 false, .rw 20 1 true, .slide 2 26,
-    .rw 13 3 false, .rw 20 1 true, .slide 1 26, .rw 13 3 false, .slide 0 26, .rw 13 3 false]
+    [Step.rw 0 2 false, Step.rw 10 1 false, Step.rw 10 1 true, Step.rw 7 1 true, Step.rw 7 1 false,
+    Step.rw 10 1 false, Step.rw 10 1 true, Step.rw 14 0 true, Step.rw 15 1 true, Step.slide 6 21,
+    Step.rw 8 3 false, Step.rw 15 1 true, Step.slide 5 21, Step.rw 8 3 false, Step.rw 15 1 true, Step.slide 4 21,
+    Step.rw 8 3 false, Step.rw 15 1 true, Step.slide 3 21, Step.rw 8 3 false, Step.rw 20 1 true, Step.slide 2 26,
+    Step.rw 13 3 false, Step.rw 20 1 true, Step.slide 1 26, Step.rw 13 3 false, Step.slide 0 26, Step.rw 13 3 false]
     (by decide +kernel)
 
 /-- (HCh), Appendix D. -/
@@ -766,13 +766,13 @@ def dt_HCh : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 2 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.E trivial 1 0, dE_i.place 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.TX trivial 1 0, dt_XcommutCNOT.place 0 0]
-    [.rw 0 4 false, .rw 21 3 false, .slide 34 7, .rw 0 2 false, .rw 3 1 false, .rw 3 1 true,
-    .rw 3 1 false, .rw 0 2 true, .slide 7 19, .rw 12 0 true, .rw 13 1 true, .rw 20 1 true,
-    .rw 27 1 true, .rw 34 1 true, .rw 41 0 true, .rw 42 5 false, .rw 48 0 false,
-    .rw 13 1 false, .rw 13 1 false, .rw 13 1 false, .rw 20 1 false, .rw 11 0 true,
-    .rw 12 1 true, .rw 16 0 true, .rw 10 5 true, .rw 9 0 false, .slide 21 7, .rw 0 2 false,
-    .rw 20 6 false, .rw 19 0 false, .rw 15 1 false, .rw 14 0 false, .rw 0 0 true,
-    .rw 0 0 false, .rw 0 0 true, .rw 0 0 false, .rw 0 0 true]
+    [Step.rw 0 4 false, Step.rw 21 3 false, Step.slide 34 7, Step.rw 0 2 false, Step.rw 3 1 false, Step.rw 3 1 true,
+    Step.rw 3 1 false, Step.rw 0 2 true, Step.slide 7 19, Step.rw 12 0 true, Step.rw 13 1 true, Step.rw 20 1 true,
+    Step.rw 27 1 true, Step.rw 34 1 true, Step.rw 41 0 true, Step.rw 42 5 false, Step.rw 48 0 false,
+    Step.rw 13 1 false, Step.rw 13 1 false, Step.rw 13 1 false, Step.rw 20 1 false, Step.rw 11 0 true,
+    Step.rw 12 1 true, Step.rw 16 0 true, Step.rw 10 5 true, Step.rw 9 0 false, Step.slide 21 7, Step.rw 0 2 false,
+    Step.rw 20 6 false, Step.rw 19 0 false, Step.rw 15 1 false, Step.rw 14 0 false, Step.rw 0 0 true,
+    Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false, Step.rw 0 0 true]
     (by decide +kernel)
 
 /-- (CNOTCH), Appendix D. -/
@@ -786,24 +786,24 @@ def dt_CNOTCH : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CZ trivial 0 0, dt_C_m.place 0 0,
     dt_phasegadgetCS_i.place 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CSH trivial 0 0]
-    [.rw 21 0 true, .rw 20 0 true, .rw 20 0 false, .rw 21 0 false, .rw 21 0 true,
-    .rw 20 0 true, .rw 0 4 false, .rw 0 0 false, .rw 21 0 false, .rw 21 0 true,
-    .rw 0 0 true, .rw 21 5 false, .slide 33 31, .rw 0 0 false, .rw 0 0 true, .rw 0 0 false,
-    .rw 0 0 true, .rw 22 1 true, .rw 0 0 false, .rw 20 1 false, .rw 20 1 true,
-    .rw 27 2 true, .rw 0 0 true, .rw 30 7 false, .rw 40 6 false, .slide 40 33,
-    .rw 30 6 false, .rw 31 7 true, .rw 0 0 false, .rw 0 0 true, .rw 0 0 false,
-    .rw 0 0 true, .slide 42 40, .rw 39 3 false, .slide 39 32, .rw 31 3 false,
-    .rw 1 8 false, .slide 11 26, .rw 26 3 true, .slide 27 31, .rw 31 3 true, .slide 32 39,
-    .rw 39 3 true, .slide 40 42, .swap 41, .rw 11 8 false, .slide 21 36, .rw 36 3 true,
-    .slide 37 42, .rw 21 4 false, .rw 21 0 false, .rw 21 0 true, .rw 21 0 false,
-    .rw 21 0 true, .rw 11 7 false, .rw 10 6 true, .slide 13 20, .rw 20 6 true,
-    .rw 10 7 true, .rw 21 0 false, .rw 19 1 false, .rw 9 2 false, .rw 2 1 false,
-    .rw 2 1 true, .rw 9 2 true, .rw 19 1 true, .rw 21 0 true, .rw 9 2 false,
-    .rw 19 0 false, .rw 2 1 false, .rw 9 1 false, .rw 9 1 true, .rw 2 1 true,
-    .rw 19 0 true, .rw 2 1 false, .rw 11 0 false, .rw 9 1 false, .rw 9 1 true,
-    .rw 11 0 true, .slide 32 28, .rw 27 3 false, .slide 27 11, .slide 33 29,
-    .rw 28 3 false, .slide 28 12, .rw 1 5 true, .rw 0 0 false, .rw 1 0 false, .rw 1 0 true,
-    .rw 0 0 true, .rw 3 0 false, .rw 0 0 false]
+    [Step.rw 21 0 true, Step.rw 20 0 true, Step.rw 20 0 false, Step.rw 21 0 false, Step.rw 21 0 true,
+    Step.rw 20 0 true, Step.rw 0 4 false, Step.rw 0 0 false, Step.rw 21 0 false, Step.rw 21 0 true,
+    Step.rw 0 0 true, Step.rw 21 5 false, Step.slide 33 31, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false,
+    Step.rw 0 0 true, Step.rw 22 1 true, Step.rw 0 0 false, Step.rw 20 1 false, Step.rw 20 1 true,
+    Step.rw 27 2 true, Step.rw 0 0 true, Step.rw 30 7 false, Step.rw 40 6 false, Step.slide 40 33,
+    Step.rw 30 6 false, Step.rw 31 7 true, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false,
+    Step.rw 0 0 true, Step.slide 42 40, Step.rw 39 3 false, Step.slide 39 32, Step.rw 31 3 false,
+    Step.rw 1 8 false, Step.slide 11 26, Step.rw 26 3 true, Step.slide 27 31, Step.rw 31 3 true, Step.slide 32 39,
+    Step.rw 39 3 true, Step.slide 40 42, Step.swap 41, Step.rw 11 8 false, Step.slide 21 36, Step.rw 36 3 true,
+    Step.slide 37 42, Step.rw 21 4 false, Step.rw 21 0 false, Step.rw 21 0 true, Step.rw 21 0 false,
+    Step.rw 21 0 true, Step.rw 11 7 false, Step.rw 10 6 true, Step.slide 13 20, Step.rw 20 6 true,
+    Step.rw 10 7 true, Step.rw 21 0 false, Step.rw 19 1 false, Step.rw 9 2 false, Step.rw 2 1 false,
+    Step.rw 2 1 true, Step.rw 9 2 true, Step.rw 19 1 true, Step.rw 21 0 true, Step.rw 9 2 false,
+    Step.rw 19 0 false, Step.rw 2 1 false, Step.rw 9 1 false, Step.rw 9 1 true, Step.rw 2 1 true,
+    Step.rw 19 0 true, Step.rw 2 1 false, Step.rw 11 0 false, Step.rw 9 1 false, Step.rw 9 1 true,
+    Step.rw 11 0 true, Step.slide 32 28, Step.rw 27 3 false, Step.slide 27 11, Step.slide 33 29,
+    Step.rw 28 3 false, Step.slide 28 12, Step.rw 1 5 true, Step.rw 0 0 false, Step.rw 1 0 false, Step.rw 1 0 true,
+    Step.rw 0 0 true, Step.rw 3 0 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- The decoding of (C18), Appendix D. -/
@@ -819,47 +819,47 @@ def dt_C18dec : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.TX trivial 1 0, dt_CtrlH.place 0 0,
     dt_zCNOT.place 0 0, DEqn.inst (P := pres) (S := fun _ => True) Ax.CSH trivial 0 0,
     dt_CNOTCH.place 0 0]
-    [.rw 9 7 true, .rw 21 6 true, .rw 14 0 false, .rw 10 2 false, .rw 9 0 false,
-    .rw 9 0 true, .rw 10 2 true, .rw 14 0 true, .rw 0 3 true, .slide 7 42, .rw 29 8 false,
-    .rw 15 8 true, .slide 28 7, .rw 0 3 false, .rw 7 0 false, .rw 32 0 false,
-    .rw 0 2 false, .rw 0 2 true, .rw 5 9 true, .rw 0 2 true, .rw 0 2 false, .rw 29 2 true,
-    .rw 24 10 true, .rw 27 5 true, .rw 26 5 true, .rw 25 5 true, .rw 24 5 true,
-    .slide 28 32, .slide 27 31, .slide 26 30, .slide 25 29, .rw 23 2 true, .rw 0 2 true,
-    .rw 33 4 true, .rw 0 2 false, .rw 25 4 false, .rw 23 2 false, .rw 23 2 true,
-    .rw 25 4 true, .rw 0 2 true, .rw 43 2 true, .rw 55 1 true, .rw 55 1 false,
-    .rw 0 2 false, .rw 35 2 false, .rw 25 4 false, .rw 23 2 false, .rw 23 2 true,
-    .rw 25 4 true, .rw 35 2 true, .rw 0 2 true, .rw 55 1 true, .rw 55 1 false,
-    .rw 0 2 false, .rw 35 2 false, .rw 25 4 false, .rw 23 2 false, .rw 23 2 true,
-    .rw 25 4 true, .rw 35 2 true, .rw 0 2 true, .rw 55 1 true, .rw 13 12 false,
-    .slide 55 44, .rw 14 11 false, .slide 24 39, .rw 39 5 true, .slide 40 55,
-    .rw 55 1 false, .rw 0 2 false, .rw 34 2 false, .rw 5 4 false, .rw 0 2 false,
-    .rw 0 2 true, .rw 5 4 true, .rw 34 2 true, .rw 0 2 true, .rw 55 1 true, .rw 55 1 false,
-    .rw 0 2 false, .rw 34 2 false, .rw 5 4 false, .rw 0 2 false, .rw 0 2 true,
-    .rw 5 4 true, .rw 34 2 true, .rw 0 2 true, .rw 55 1 true, .rw 55 1 false,
-    .rw 0 2 false, .rw 34 2 false, .rw 5 4 false, .rw 0 2 false, .rw 0 2 true,
-    .rw 5 4 true, .rw 34 2 true, .rw 0 2 true, .rw 55 1 true, .rw 13 4 false, .slide 52 60,
-    .slide 51 59, .slide 50 58, .slide 49 57, .slide 48 56, .slide 47 55, .slide 46 54,
-    .slide 45 53, .slide 44 52, .slide 43 51, .slide 42 50, .slide 41 49, .slide 40 48,
-    .slide 39 47, .slide 38 46, .rw 37 5 false, .rw 38 5 false, .rw 39 5 false,
-    .rw 40 5 false, .rw 41 5 false, .rw 42 5 false, .rw 43 5 false, .rw 44 5 false,
-    .slide 36 44, .slide 35 43, .slide 34 42, .slide 33 41, .slide 32 40, .slide 31 39,
-    .slide 30 38, .slide 29 37, .slide 28 36, .slide 27 35, .slide 26 34, .slide 25 33,
-    .slide 24 32, .slide 23 31, .slide 22 30, .slide 21 29, .rw 20 5 false, .rw 21 5 false,
-    .rw 22 5 false, .rw 23 5 false, .rw 24 5 false, .rw 25 5 false, .rw 26 5 false,
-    .rw 27 5 false, .slide 19 27, .slide 18 26, .slide 17 25, .slide 16 24, .slide 15 23,
-    .slide 14 22, .slide 13 21, .slide 12 20, .slide 11 19, .slide 10 18, .slide 9 17,
-    .slide 8 16, .slide 7 15, .slide 6 14, .slide 5 13, .slide 4 12, .slide 3 11,
-    .slide 2 10, .slide 1 9, .slide 0 8, .rw 0 1 false, .rw 0 2 false, .rw 0 2 false,
-    .rw 24 2 false, .rw 24 2 true, .rw 0 2 true, .rw 0 2 true, .rw 0 2 false,
-    .rw 0 2 false, .rw 24 2 false, .slide 29 22, .rw 21 5 false, .slide 21 5, .slide 30 23,
-    .rw 22 5 false, .slide 22 6, .slide 31 24, .rw 23 5 false, .slide 23 7, .slide 32 25,
-    .rw 24 5 false, .slide 24 8, .rw 4 5 false, .rw 5 5 false, .rw 6 5 false,
-    .rw 7 5 false, .rw 4 10 false, .rw 0 2 false, .rw 1 2 true, .rw 14 9 false,
-    .rw 1 2 false, .rw 1 2 false, .rw 1 2 true, .rw 1 2 true, .rw 1 2 false, .rw 1 2 false,
-    .rw 1 2 true, .rw 33 0 true, .rw 8 0 true, .rw 0 3 true, .slide 7 29, .rw 16 8 false,
-    .rw 30 8 true, .slide 43 7, .rw 0 3 false, .rw 15 0 false, .rw 11 2 false,
-    .rw 10 0 false, .rw 10 0 true, .rw 11 2 true, .rw 15 0 true, .rw 10 7 false,
-    .rw 10 6 false]
+    [Step.rw 9 7 true, Step.rw 21 6 true, Step.rw 14 0 false, Step.rw 10 2 false, Step.rw 9 0 false,
+    Step.rw 9 0 true, Step.rw 10 2 true, Step.rw 14 0 true, Step.rw 0 3 true, Step.slide 7 42, Step.rw 29 8 false,
+    Step.rw 15 8 true, Step.slide 28 7, Step.rw 0 3 false, Step.rw 7 0 false, Step.rw 32 0 false,
+    Step.rw 0 2 false, Step.rw 0 2 true, Step.rw 5 9 true, Step.rw 0 2 true, Step.rw 0 2 false, Step.rw 29 2 true,
+    Step.rw 24 10 true, Step.rw 27 5 true, Step.rw 26 5 true, Step.rw 25 5 true, Step.rw 24 5 true,
+    Step.slide 28 32, Step.slide 27 31, Step.slide 26 30, Step.slide 25 29, Step.rw 23 2 true, Step.rw 0 2 true,
+    Step.rw 33 4 true, Step.rw 0 2 false, Step.rw 25 4 false, Step.rw 23 2 false, Step.rw 23 2 true,
+    Step.rw 25 4 true, Step.rw 0 2 true, Step.rw 43 2 true, Step.rw 55 1 true, Step.rw 55 1 false,
+    Step.rw 0 2 false, Step.rw 35 2 false, Step.rw 25 4 false, Step.rw 23 2 false, Step.rw 23 2 true,
+    Step.rw 25 4 true, Step.rw 35 2 true, Step.rw 0 2 true, Step.rw 55 1 true, Step.rw 55 1 false,
+    Step.rw 0 2 false, Step.rw 35 2 false, Step.rw 25 4 false, Step.rw 23 2 false, Step.rw 23 2 true,
+    Step.rw 25 4 true, Step.rw 35 2 true, Step.rw 0 2 true, Step.rw 55 1 true, Step.rw 13 12 false,
+    Step.slide 55 44, Step.rw 14 11 false, Step.slide 24 39, Step.rw 39 5 true, Step.slide 40 55,
+    Step.rw 55 1 false, Step.rw 0 2 false, Step.rw 34 2 false, Step.rw 5 4 false, Step.rw 0 2 false,
+    Step.rw 0 2 true, Step.rw 5 4 true, Step.rw 34 2 true, Step.rw 0 2 true, Step.rw 55 1 true, Step.rw 55 1 false,
+    Step.rw 0 2 false, Step.rw 34 2 false, Step.rw 5 4 false, Step.rw 0 2 false, Step.rw 0 2 true,
+    Step.rw 5 4 true, Step.rw 34 2 true, Step.rw 0 2 true, Step.rw 55 1 true, Step.rw 55 1 false,
+    Step.rw 0 2 false, Step.rw 34 2 false, Step.rw 5 4 false, Step.rw 0 2 false, Step.rw 0 2 true,
+    Step.rw 5 4 true, Step.rw 34 2 true, Step.rw 0 2 true, Step.rw 55 1 true, Step.rw 13 4 false, Step.slide 52 60,
+    Step.slide 51 59, Step.slide 50 58, Step.slide 49 57, Step.slide 48 56, Step.slide 47 55, Step.slide 46 54,
+    Step.slide 45 53, Step.slide 44 52, Step.slide 43 51, Step.slide 42 50, Step.slide 41 49, Step.slide 40 48,
+    Step.slide 39 47, Step.slide 38 46, Step.rw 37 5 false, Step.rw 38 5 false, Step.rw 39 5 false,
+    Step.rw 40 5 false, Step.rw 41 5 false, Step.rw 42 5 false, Step.rw 43 5 false, Step.rw 44 5 false,
+    Step.slide 36 44, Step.slide 35 43, Step.slide 34 42, Step.slide 33 41, Step.slide 32 40, Step.slide 31 39,
+    Step.slide 30 38, Step.slide 29 37, Step.slide 28 36, Step.slide 27 35, Step.slide 26 34, Step.slide 25 33,
+    Step.slide 24 32, Step.slide 23 31, Step.slide 22 30, Step.slide 21 29, Step.rw 20 5 false, Step.rw 21 5 false,
+    Step.rw 22 5 false, Step.rw 23 5 false, Step.rw 24 5 false, Step.rw 25 5 false, Step.rw 26 5 false,
+    Step.rw 27 5 false, Step.slide 19 27, Step.slide 18 26, Step.slide 17 25, Step.slide 16 24, Step.slide 15 23,
+    Step.slide 14 22, Step.slide 13 21, Step.slide 12 20, Step.slide 11 19, Step.slide 10 18, Step.slide 9 17,
+    Step.slide 8 16, Step.slide 7 15, Step.slide 6 14, Step.slide 5 13, Step.slide 4 12, Step.slide 3 11,
+    Step.slide 2 10, Step.slide 1 9, Step.slide 0 8, Step.rw 0 1 false, Step.rw 0 2 false, Step.rw 0 2 false,
+    Step.rw 24 2 false, Step.rw 24 2 true, Step.rw 0 2 true, Step.rw 0 2 true, Step.rw 0 2 false,
+    Step.rw 0 2 false, Step.rw 24 2 false, Step.slide 29 22, Step.rw 21 5 false, Step.slide 21 5, Step.slide 30 23,
+    Step.rw 22 5 false, Step.slide 22 6, Step.slide 31 24, Step.rw 23 5 false, Step.slide 23 7, Step.slide 32 25,
+    Step.rw 24 5 false, Step.slide 24 8, Step.rw 4 5 false, Step.rw 5 5 false, Step.rw 6 5 false,
+    Step.rw 7 5 false, Step.rw 4 10 false, Step.rw 0 2 false, Step.rw 1 2 true, Step.rw 14 9 false,
+    Step.rw 1 2 false, Step.rw 1 2 false, Step.rw 1 2 true, Step.rw 1 2 true, Step.rw 1 2 false, Step.rw 1 2 false,
+    Step.rw 1 2 true, Step.rw 33 0 true, Step.rw 8 0 true, Step.rw 0 3 true, Step.slide 7 29, Step.rw 16 8 false,
+    Step.rw 30 8 true, Step.slide 43 7, Step.rw 0 3 false, Step.rw 15 0 false, Step.rw 11 2 false,
+    Step.rw 10 0 false, Step.rw 10 0 true, Step.rw 11 2 true, Step.rw 15 0 true, Step.rw 10 7 false,
+    Step.rw 10 6 false]
     (by decide +kernel)
 
 /-- (CHCH), Appendix D. -/
@@ -869,15 +869,15 @@ def dt_CHCH : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0, dt_CX2.place 0 0]
-    [.rw 17 1 false, .rw 16 0 false, .rw 15 1 false, .rw 14 2 false, .rw 7 1 false,
-    .rw 6 0 false, .rw 0 1 false, .rw 0 1 true, .rw 6 0 true, .rw 7 1 true, .rw 14 2 true,
-    .rw 15 1 true, .rw 16 0 true, .rw 17 1 true, .rw 17 1 false, .rw 16 0 false,
-    .rw 15 1 false, .rw 14 2 false, .rw 7 1 false, .rw 6 0 false, .rw 0 1 false,
-    .rw 0 1 true, .rw 6 0 true, .rw 7 1 true, .rw 14 2 true, .rw 15 1 true, .rw 16 0 true,
-    .rw 17 1 true, .rw 17 1 false, .rw 16 0 false, .rw 15 1 false, .rw 14 2 false,
-    .rw 7 1 false, .rw 6 0 false, .rw 0 1 false, .rw 0 1 true, .rw 6 0 true, .rw 7 1 true,
-    .rw 14 2 true, .rw 14 2 false, .rw 7 1 false, .rw 6 0 false, .rw 0 1 false,
-    .rw 0 1 true, .rw 6 0 true, .rw 7 1 true, .rw 7 1 false, .rw 6 0 false, .rw 0 1 false]
+    [Step.rw 17 1 false, Step.rw 16 0 false, Step.rw 15 1 false, Step.rw 14 2 false, Step.rw 7 1 false,
+    Step.rw 6 0 false, Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 6 0 true, Step.rw 7 1 true, Step.rw 14 2 true,
+    Step.rw 15 1 true, Step.rw 16 0 true, Step.rw 17 1 true, Step.rw 17 1 false, Step.rw 16 0 false,
+    Step.rw 15 1 false, Step.rw 14 2 false, Step.rw 7 1 false, Step.rw 6 0 false, Step.rw 0 1 false,
+    Step.rw 0 1 true, Step.rw 6 0 true, Step.rw 7 1 true, Step.rw 14 2 true, Step.rw 15 1 true, Step.rw 16 0 true,
+    Step.rw 17 1 true, Step.rw 17 1 false, Step.rw 16 0 false, Step.rw 15 1 false, Step.rw 14 2 false,
+    Step.rw 7 1 false, Step.rw 6 0 false, Step.rw 0 1 false, Step.rw 0 1 true, Step.rw 6 0 true, Step.rw 7 1 true,
+    Step.rw 14 2 true, Step.rw 14 2 false, Step.rw 7 1 false, Step.rw 6 0 false, Step.rw 0 1 false,
+    Step.rw 0 1 true, Step.rw 6 0 true, Step.rw 7 1 true, Step.rw 7 1 false, Step.rw 6 0 false, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- (CSCS), Appendix D. -/
@@ -889,9 +889,9 @@ def dt_CSCS : DEqn Th 2 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dt_CX2.place 0 0,
     dt_C.place 0 0, dt_phasegadgetCS_i.place 0 0, dt_C_m.place 0 0,
     dt_phasegadget_i.place 0 0, DEqn.inst (P := pres) (S := fun _ => True) Ax.CZ trivial 0 0]
-    [.rw 10 3 true, .slide 11 18, .rw 18 3 true, .swap 19, .rw 10 4 false, .rw 0 4 false,
-    .rw 13 5 true, .slide 16 23, .rw 23 5 true, .rw 12 1 false, .rw 11 2 false,
-    .rw 10 1 false, .rw 3 0 false, .rw 3 0 true, .rw 3 0 false, .rw 0 6 true, .rw 0 7 true]
+    [Step.rw 10 3 true, Step.slide 11 18, Step.rw 18 3 true, Step.swap 19, Step.rw 10 4 false, Step.rw 0 4 false,
+    Step.rw 13 5 true, Step.slide 16 23, Step.rw 23 5 true, Step.rw 12 1 false, Step.rw 11 2 false,
+    Step.rw 10 1 false, Step.rw 3 0 false, Step.rw 3 0 true, Step.rw 3 0 false, Step.rw 0 6 true, Step.rw 0 7 true]
     (by decide +kernel)
 
 /-- (SdCS), Appendix D. -/
@@ -907,24 +907,24 @@ def dt_SdCS : DEqn Th 2 where
     dt_C.place 0 0, dt_phasegadgetCS_i.place 0 0, dt_XcommutCNOT_m.place 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.TX trivial 0 1, dt_C_m.place 0 0,
     dt_zCNOT_m_i.place 0 0]
-    [.slide 10 16, .rw 0 7 false, .rw 10 1 true, .rw 11 2 true, .rw 15 1 true,
-    .rw 16 8 true, .slide 24 31, .slide 23 30, .slide 22 29, .slide 21 28, .slide 20 27,
-    .slide 19 26, .rw 0 1 true, .rw 1 2 true, .rw 5 1 true, .rw 6 8 true, .rw 0 4 true,
-    .slide 7 29, .rw 29 0 true, .rw 16 9 false, .rw 22 1 false, .rw 18 2 false,
-    .rw 17 1 false, .rw 33 2 true, .slide 6 39, .rw 39 0 true, .rw 26 9 false,
-    .rw 33 2 true, .slide 5 39, .rw 39 0 true, .rw 26 9 false, .rw 33 2 true, .slide 4 39,
-    .rw 39 0 true, .rw 26 9 false, .rw 33 2 true, .slide 3 39, .rw 39 0 true,
-    .rw 26 9 false, .rw 33 2 true, .slide 2 39, .rw 39 0 true, .rw 26 9 false,
-    .rw 33 2 true, .slide 1 39, .rw 39 0 true, .rw 26 9 false, .slide 0 39, .rw 39 0 true,
-    .rw 26 9 false, .rw 10 10 false, .swap 9, .rw 11 10 false, .swap 10, .rw 6 10 false,
-    .slide 6 0, .rw 7 10 false, .slide 7 1, .rw 12 11 false, .slide 23 19, .rw 20 2 false,
-    .slide 1 7, .rw 7 10 true, .slide 0 6, .rw 6 10 true, .rw 11 2 true, .rw 17 3 true,
-    .rw 18 5 true, .rw 11 2 true, .slide 10 17, .rw 17 3 true, .rw 18 5 true,
-    .rw 31 3 true, .rw 19 3 true, .slide 23 30, .rw 30 10 true, .slide 9 16,
-    .rw 16 10 true, .rw 6 7 true, .rw 16 7 true, .rw 26 7 true, .slide 35 37,
-    .rw 34 6 false, .rw 35 6 false, .slide 33 35, .slide 32 34, .slide 31 33, .slide 30 32,
-    .slide 29 31, .slide 28 30, .slide 27 29, .rw 26 6 false, .rw 27 6 false, .swap 25,
-    .rw 24 6 false, .slide 24 17, .rw 16 6 false]
+    [Step.slide 10 16, Step.rw 0 7 false, Step.rw 10 1 true, Step.rw 11 2 true, Step.rw 15 1 true,
+    Step.rw 16 8 true, Step.slide 24 31, Step.slide 23 30, Step.slide 22 29, Step.slide 21 28, Step.slide 20 27,
+    Step.slide 19 26, Step.rw 0 1 true, Step.rw 1 2 true, Step.rw 5 1 true, Step.rw 6 8 true, Step.rw 0 4 true,
+    Step.slide 7 29, Step.rw 29 0 true, Step.rw 16 9 false, Step.rw 22 1 false, Step.rw 18 2 false,
+    Step.rw 17 1 false, Step.rw 33 2 true, Step.slide 6 39, Step.rw 39 0 true, Step.rw 26 9 false,
+    Step.rw 33 2 true, Step.slide 5 39, Step.rw 39 0 true, Step.rw 26 9 false, Step.rw 33 2 true, Step.slide 4 39,
+    Step.rw 39 0 true, Step.rw 26 9 false, Step.rw 33 2 true, Step.slide 3 39, Step.rw 39 0 true,
+    Step.rw 26 9 false, Step.rw 33 2 true, Step.slide 2 39, Step.rw 39 0 true, Step.rw 26 9 false,
+    Step.rw 33 2 true, Step.slide 1 39, Step.rw 39 0 true, Step.rw 26 9 false, Step.slide 0 39, Step.rw 39 0 true,
+    Step.rw 26 9 false, Step.rw 10 10 false, Step.swap 9, Step.rw 11 10 false, Step.swap 10, Step.rw 6 10 false,
+    Step.slide 6 0, Step.rw 7 10 false, Step.slide 7 1, Step.rw 12 11 false, Step.slide 23 19, Step.rw 20 2 false,
+    Step.slide 1 7, Step.rw 7 10 true, Step.slide 0 6, Step.rw 6 10 true, Step.rw 11 2 true, Step.rw 17 3 true,
+    Step.rw 18 5 true, Step.rw 11 2 true, Step.slide 10 17, Step.rw 17 3 true, Step.rw 18 5 true,
+    Step.rw 31 3 true, Step.rw 19 3 true, Step.slide 23 30, Step.rw 30 10 true, Step.slide 9 16,
+    Step.rw 16 10 true, Step.rw 6 7 true, Step.rw 16 7 true, Step.rw 26 7 true, Step.slide 35 37,
+    Step.rw 34 6 false, Step.rw 35 6 false, Step.slide 33 35, Step.slide 32 34, Step.slide 31 33, Step.slide 30 32,
+    Step.slide 29 31, Step.slide 28 30, Step.slide 27 29, Step.rw 26 6 false, Step.rw 27 6 false, Step.swap 25,
+    Step.rw 24 6 false, Step.slide 24 17, Step.rw 16 6 false]
     (by decide +kernel)
 
 /-- (SCSd), Appendix D. -/
@@ -936,86 +936,86 @@ def dt_SCSd : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0, dt_C.place 0 0,
     dT6CS.place 0 0, dt_SdCS.place 0 0, dt_CSCSCSCS.place 0 0]
-    [.rw 10 3 true, .slide 11 18, .rw 18 3 true, .swap 19, .rw 21 3 true, .rw 20 3 true,
-    .slide 23 21, .slide 24 22, .slide 25 23, .slide 26 24, .slide 27 25, .slide 28 26,
-    .slide 29 27, .rw 29 3 true, .rw 28 3 true, .slide 31 29, .slide 33 30, .slide 34 31,
-    .rw 29 2 true, .rw 29 2 true, .rw 29 2 false, .rw 29 2 false, .rw 29 2 true,
-    .rw 29 2 true, .slide 48 30, .rw 20 4 false, .slide 36 48, .slide 48 36,
-    .rw 26 4 false, .slide 42 48, .rw 19 2 false, .rw 19 2 true, .slide 48 41,
-    .rw 40 3 false, .slide 40 33, .rw 32 3 false, .slide 32 20, .rw 10 4 false,
-    .slide 26 32, .rw 32 3 true, .slide 33 40, .rw 40 3 true, .slide 41 48, .slide 48 41,
-    .rw 40 3 false, .slide 40 33, .rw 32 3 false, .slide 49 42, .rw 41 3 false,
-    .slide 41 34, .rw 33 3 false, .slide 50 44, .rw 34 5 false, .rw 50 3 true,
-    .slide 51 58, .rw 58 3 true, .swap 59, .rw 61 3 true, .rw 60 3 true, .slide 63 61,
-    .slide 64 62, .slide 65 63, .slide 66 64, .slide 67 65, .slide 68 66, .slide 69 67,
-    .rw 69 3 true, .rw 68 3 true, .slide 71 69, .slide 32 25, .rw 24 3 false, .slide 24 17,
-    .rw 16 3 false, .slide 33 27, .rw 17 5 false, .rw 33 3 true, .slide 34 41,
-    .rw 41 3 true, .swap 42, .rw 44 3 true, .rw 43 3 true, .slide 46 44, .slide 47 45,
-    .slide 48 46, .slide 49 47, .slide 50 48, .slide 51 49, .slide 52 50, .rw 52 3 true,
-    .rw 51 3 true, .slide 54 52, .rw 61 0 false, .rw 57 1 false, .rw 56 0 false,
-    .rw 55 3 true, .rw 54 3 true, .rw 53 3 true, .slide 57 54, .slide 58 55, .slide 59 56,
-    .slide 60 57, .slide 61 58, .slide 62 59, .slide 63 60, .rw 63 3 true, .rw 62 3 true,
-    .rw 61 3 true, .slide 65 62, .rw 65 3 true, .rw 64 3 true, .rw 63 3 true, .slide 67 64,
-    .slide 68 65, .slide 69 66, .slide 70 67, .slide 71 68, .slide 72 69, .slide 73 70,
-    .rw 73 3 true, .rw 72 3 true, .rw 71 3 true, .slide 75 72, .rw 75 3 true,
-    .rw 74 3 true, .rw 73 3 true, .slide 77 74, .slide 78 75, .slide 79 76, .slide 80 77,
-    .slide 81 78, .slide 82 79, .slide 83 80, .rw 83 3 true, .rw 82 3 true, .rw 81 3 true,
-    .slide 85 82, .slide 82 85, .rw 81 3 false, .rw 82 3 false, .rw 83 3 false,
-    .slide 80 83, .slide 79 82, .slide 78 81, .slide 77 80, .slide 76 79, .slide 75 78,
-    .slide 74 77, .rw 73 3 false, .rw 74 3 false, .rw 75 3 false, .slide 72 75,
-    .rw 71 3 false, .rw 72 3 false, .rw 73 3 false, .slide 70 73, .slide 69 72,
-    .slide 68 71, .slide 67 70, .slide 66 69, .slide 65 68, .slide 64 67, .rw 63 3 false,
-    .rw 64 3 false, .rw 65 3 false, .slide 62 65, .rw 61 3 false, .rw 62 3 false,
-    .rw 63 3 false, .slide 60 63, .slide 59 62, .slide 58 61, .slide 57 60, .slide 56 59,
-    .slide 55 58, .slide 54 57, .rw 53 3 false, .rw 54 3 false, .rw 55 3 false,
-    .rw 56 0 true, .rw 57 1 true, .rw 61 0 true, .slide 16 10, .rw 0 5 false,
-    .rw 16 3 true, .slide 17 24, .rw 24 3 true, .swap 25, .rw 27 3 true, .rw 26 3 true,
-    .slide 29 27, .slide 30 28, .slide 31 29, .slide 32 30, .slide 33 31, .slide 34 32,
-    .slide 35 33, .rw 35 3 true, .rw 34 3 true, .slide 37 35, .rw 44 0 false,
-    .rw 87 0 false, .rw 40 1 false, .rw 39 0 false, .rw 38 3 true, .rw 37 3 true,
-    .rw 36 3 true, .slide 40 37, .slide 41 38, .slide 42 39, .slide 43 40, .slide 44 41,
-    .slide 45 42, .slide 46 43, .rw 46 3 true, .rw 45 3 true, .rw 44 3 true, .slide 48 45,
-    .rw 48 3 true, .rw 47 3 true, .rw 46 3 true, .slide 50 47, .slide 51 48, .slide 52 49,
-    .slide 53 50, .slide 54 51, .slide 55 52, .slide 56 53, .rw 56 3 true, .rw 55 3 true,
-    .rw 54 3 true, .slide 58 55, .rw 58 3 true, .rw 57 3 true, .rw 56 3 true, .slide 60 57,
-    .slide 61 58, .slide 62 59, .slide 63 60, .slide 64 61, .slide 65 62, .slide 66 63,
-    .rw 66 3 true, .rw 65 3 true, .rw 64 3 true, .slide 68 65, .rw 73 1 false,
-    .rw 72 0 false, .rw 71 3 true, .rw 70 3 true, .rw 69 3 true, .rw 68 3 true,
-    .rw 67 3 true, .rw 66 3 true, .slide 73 67, .slide 74 68, .slide 75 69, .slide 76 70,
-    .slide 77 71, .slide 78 72, .slide 79 73, .rw 79 3 true, .rw 78 3 true, .rw 77 3 true,
-    .rw 76 3 true, .rw 75 3 true, .rw 74 3 true, .slide 81 75, .rw 81 3 true,
-    .rw 80 3 true, .rw 79 3 true, .rw 78 3 true, .rw 77 3 true, .rw 76 3 true,
-    .slide 83 77, .slide 84 78, .slide 85 79, .slide 86 80, .slide 87 81, .slide 88 82,
-    .slide 89 83, .rw 89 3 true, .rw 88 3 true, .rw 87 3 true, .rw 86 3 true,
-    .rw 85 3 true, .rw 84 3 true, .slide 91 85, .rw 91 3 true, .rw 90 3 true,
-    .rw 89 3 true, .rw 88 3 true, .rw 87 3 true, .rw 86 3 true, .slide 93 87, .slide 94 88,
-    .slide 95 89, .slide 96 90, .slide 97 91, .slide 98 92, .slide 99 93, .rw 99 3 true,
-    .rw 98 3 true, .rw 97 3 true, .rw 96 3 true, .rw 95 3 true, .rw 94 3 true,
-    .slide 101 95, .rw 96 1 false, .rw 96 1 true, .swap 95, .rw 94 3 false, .slide 94 87,
-    .rw 86 3 false, .swap 85, .rw 84 3 false, .slide 84 77, .rw 76 3 false, .swap 75,
-    .rw 74 3 false, .slide 74 67, .rw 66 3 false, .swap 65, .rw 64 3 false, .slide 64 57,
-    .rw 56 3 false, .swap 55, .rw 54 3 false, .slide 54 47, .rw 46 3 false, .swap 45,
-    .rw 44 3 false, .slide 44 37, .rw 36 3 false, .swap 35, .rw 34 3 false, .slide 34 27,
-    .rw 26 3 false, .swap 25, .rw 24 3 false, .slide 24 17, .rw 16 3 false, .swap 96,
-    .rw 95 3 false, .slide 95 88, .rw 87 3 false, .swap 86, .rw 85 3 false, .slide 85 78,
-    .rw 77 3 false, .swap 76, .rw 75 3 false, .slide 75 68, .rw 67 3 false, .swap 66,
-    .rw 65 3 false, .slide 65 58, .rw 57 3 false, .swap 56, .rw 55 3 false, .slide 55 48,
-    .rw 47 3 false, .swap 46, .rw 45 3 false, .slide 45 38, .rw 37 3 false, .swap 36,
-    .rw 35 3 false, .slide 35 28, .rw 27 3 false, .swap 97, .rw 96 3 false, .slide 96 89,
-    .rw 88 3 false, .swap 87, .rw 86 3 false, .slide 86 79, .rw 78 3 false, .swap 77,
-    .rw 76 3 false, .slide 76 69, .rw 68 3 false, .swap 67, .rw 66 3 false, .slide 66 59,
-    .rw 58 3 false, .swap 57, .rw 56 3 false, .slide 56 49, .rw 48 3 false, .swap 47,
-    .rw 46 3 false, .slide 46 39, .rw 38 3 false, .swap 98, .rw 97 3 false, .slide 97 90,
-    .rw 89 3 false, .swap 88, .rw 87 3 false, .slide 87 80, .rw 79 3 false, .swap 78,
-    .rw 77 3 false, .slide 77 70, .rw 69 3 false, .swap 68, .rw 67 3 false, .slide 67 60,
-    .rw 59 3 false, .swap 58, .rw 57 3 false, .slide 57 50, .rw 49 3 false, .rw 6 6 false,
-    .swap 55, .rw 54 3 false, .slide 54 47, .rw 46 3 false, .swap 45, .rw 44 3 false,
-    .slide 44 37, .rw 36 3 false, .swap 35, .rw 34 3 false, .slide 34 27, .rw 26 3 false,
-    .swap 25, .rw 24 3 false, .slide 24 17, .rw 16 3 false, .swap 56, .rw 55 3 false,
-    .slide 55 48, .rw 47 3 false, .swap 46, .rw 45 3 false, .slide 45 38, .rw 37 3 false,
-    .swap 36, .rw 35 3 false, .slide 35 28, .rw 27 3 false, .swap 57, .rw 56 3 false,
-    .slide 56 49, .rw 48 3 false, .swap 47, .rw 46 3 false, .slide 46 39, .rw 38 3 false,
-    .swap 58, .rw 57 3 false, .slide 57 50, .rw 49 3 false, .rw 6 6 false]
+    [Step.rw 10 3 true, Step.slide 11 18, Step.rw 18 3 true, Step.swap 19, Step.rw 21 3 true, Step.rw 20 3 true,
+    Step.slide 23 21, Step.slide 24 22, Step.slide 25 23, Step.slide 26 24, Step.slide 27 25, Step.slide 28 26,
+    Step.slide 29 27, Step.rw 29 3 true, Step.rw 28 3 true, Step.slide 31 29, Step.slide 33 30, Step.slide 34 31,
+    Step.rw 29 2 true, Step.rw 29 2 true, Step.rw 29 2 false, Step.rw 29 2 false, Step.rw 29 2 true,
+    Step.rw 29 2 true, Step.slide 48 30, Step.rw 20 4 false, Step.slide 36 48, Step.slide 48 36,
+    Step.rw 26 4 false, Step.slide 42 48, Step.rw 19 2 false, Step.rw 19 2 true, Step.slide 48 41,
+    Step.rw 40 3 false, Step.slide 40 33, Step.rw 32 3 false, Step.slide 32 20, Step.rw 10 4 false,
+    Step.slide 26 32, Step.rw 32 3 true, Step.slide 33 40, Step.rw 40 3 true, Step.slide 41 48, Step.slide 48 41,
+    Step.rw 40 3 false, Step.slide 40 33, Step.rw 32 3 false, Step.slide 49 42, Step.rw 41 3 false,
+    Step.slide 41 34, Step.rw 33 3 false, Step.slide 50 44, Step.rw 34 5 false, Step.rw 50 3 true,
+    Step.slide 51 58, Step.rw 58 3 true, Step.swap 59, Step.rw 61 3 true, Step.rw 60 3 true, Step.slide 63 61,
+    Step.slide 64 62, Step.slide 65 63, Step.slide 66 64, Step.slide 67 65, Step.slide 68 66, Step.slide 69 67,
+    Step.rw 69 3 true, Step.rw 68 3 true, Step.slide 71 69, Step.slide 32 25, Step.rw 24 3 false, Step.slide 24 17,
+    Step.rw 16 3 false, Step.slide 33 27, Step.rw 17 5 false, Step.rw 33 3 true, Step.slide 34 41,
+    Step.rw 41 3 true, Step.swap 42, Step.rw 44 3 true, Step.rw 43 3 true, Step.slide 46 44, Step.slide 47 45,
+    Step.slide 48 46, Step.slide 49 47, Step.slide 50 48, Step.slide 51 49, Step.slide 52 50, Step.rw 52 3 true,
+    Step.rw 51 3 true, Step.slide 54 52, Step.rw 61 0 false, Step.rw 57 1 false, Step.rw 56 0 false,
+    Step.rw 55 3 true, Step.rw 54 3 true, Step.rw 53 3 true, Step.slide 57 54, Step.slide 58 55, Step.slide 59 56,
+    Step.slide 60 57, Step.slide 61 58, Step.slide 62 59, Step.slide 63 60, Step.rw 63 3 true, Step.rw 62 3 true,
+    Step.rw 61 3 true, Step.slide 65 62, Step.rw 65 3 true, Step.rw 64 3 true, Step.rw 63 3 true, Step.slide 67 64,
+    Step.slide 68 65, Step.slide 69 66, Step.slide 70 67, Step.slide 71 68, Step.slide 72 69, Step.slide 73 70,
+    Step.rw 73 3 true, Step.rw 72 3 true, Step.rw 71 3 true, Step.slide 75 72, Step.rw 75 3 true,
+    Step.rw 74 3 true, Step.rw 73 3 true, Step.slide 77 74, Step.slide 78 75, Step.slide 79 76, Step.slide 80 77,
+    Step.slide 81 78, Step.slide 82 79, Step.slide 83 80, Step.rw 83 3 true, Step.rw 82 3 true, Step.rw 81 3 true,
+    Step.slide 85 82, Step.slide 82 85, Step.rw 81 3 false, Step.rw 82 3 false, Step.rw 83 3 false,
+    Step.slide 80 83, Step.slide 79 82, Step.slide 78 81, Step.slide 77 80, Step.slide 76 79, Step.slide 75 78,
+    Step.slide 74 77, Step.rw 73 3 false, Step.rw 74 3 false, Step.rw 75 3 false, Step.slide 72 75,
+    Step.rw 71 3 false, Step.rw 72 3 false, Step.rw 73 3 false, Step.slide 70 73, Step.slide 69 72,
+    Step.slide 68 71, Step.slide 67 70, Step.slide 66 69, Step.slide 65 68, Step.slide 64 67, Step.rw 63 3 false,
+    Step.rw 64 3 false, Step.rw 65 3 false, Step.slide 62 65, Step.rw 61 3 false, Step.rw 62 3 false,
+    Step.rw 63 3 false, Step.slide 60 63, Step.slide 59 62, Step.slide 58 61, Step.slide 57 60, Step.slide 56 59,
+    Step.slide 55 58, Step.slide 54 57, Step.rw 53 3 false, Step.rw 54 3 false, Step.rw 55 3 false,
+    Step.rw 56 0 true, Step.rw 57 1 true, Step.rw 61 0 true, Step.slide 16 10, Step.rw 0 5 false,
+    Step.rw 16 3 true, Step.slide 17 24, Step.rw 24 3 true, Step.swap 25, Step.rw 27 3 true, Step.rw 26 3 true,
+    Step.slide 29 27, Step.slide 30 28, Step.slide 31 29, Step.slide 32 30, Step.slide 33 31, Step.slide 34 32,
+    Step.slide 35 33, Step.rw 35 3 true, Step.rw 34 3 true, Step.slide 37 35, Step.rw 44 0 false,
+    Step.rw 87 0 false, Step.rw 40 1 false, Step.rw 39 0 false, Step.rw 38 3 true, Step.rw 37 3 true,
+    Step.rw 36 3 true, Step.slide 40 37, Step.slide 41 38, Step.slide 42 39, Step.slide 43 40, Step.slide 44 41,
+    Step.slide 45 42, Step.slide 46 43, Step.rw 46 3 true, Step.rw 45 3 true, Step.rw 44 3 true, Step.slide 48 45,
+    Step.rw 48 3 true, Step.rw 47 3 true, Step.rw 46 3 true, Step.slide 50 47, Step.slide 51 48, Step.slide 52 49,
+    Step.slide 53 50, Step.slide 54 51, Step.slide 55 52, Step.slide 56 53, Step.rw 56 3 true, Step.rw 55 3 true,
+    Step.rw 54 3 true, Step.slide 58 55, Step.rw 58 3 true, Step.rw 57 3 true, Step.rw 56 3 true, Step.slide 60 57,
+    Step.slide 61 58, Step.slide 62 59, Step.slide 63 60, Step.slide 64 61, Step.slide 65 62, Step.slide 66 63,
+    Step.rw 66 3 true, Step.rw 65 3 true, Step.rw 64 3 true, Step.slide 68 65, Step.rw 73 1 false,
+    Step.rw 72 0 false, Step.rw 71 3 true, Step.rw 70 3 true, Step.rw 69 3 true, Step.rw 68 3 true,
+    Step.rw 67 3 true, Step.rw 66 3 true, Step.slide 73 67, Step.slide 74 68, Step.slide 75 69, Step.slide 76 70,
+    Step.slide 77 71, Step.slide 78 72, Step.slide 79 73, Step.rw 79 3 true, Step.rw 78 3 true, Step.rw 77 3 true,
+    Step.rw 76 3 true, Step.rw 75 3 true, Step.rw 74 3 true, Step.slide 81 75, Step.rw 81 3 true,
+    Step.rw 80 3 true, Step.rw 79 3 true, Step.rw 78 3 true, Step.rw 77 3 true, Step.rw 76 3 true,
+    Step.slide 83 77, Step.slide 84 78, Step.slide 85 79, Step.slide 86 80, Step.slide 87 81, Step.slide 88 82,
+    Step.slide 89 83, Step.rw 89 3 true, Step.rw 88 3 true, Step.rw 87 3 true, Step.rw 86 3 true,
+    Step.rw 85 3 true, Step.rw 84 3 true, Step.slide 91 85, Step.rw 91 3 true, Step.rw 90 3 true,
+    Step.rw 89 3 true, Step.rw 88 3 true, Step.rw 87 3 true, Step.rw 86 3 true, Step.slide 93 87, Step.slide 94 88,
+    Step.slide 95 89, Step.slide 96 90, Step.slide 97 91, Step.slide 98 92, Step.slide 99 93, Step.rw 99 3 true,
+    Step.rw 98 3 true, Step.rw 97 3 true, Step.rw 96 3 true, Step.rw 95 3 true, Step.rw 94 3 true,
+    Step.slide 101 95, Step.rw 96 1 false, Step.rw 96 1 true, Step.swap 95, Step.rw 94 3 false, Step.slide 94 87,
+    Step.rw 86 3 false, Step.swap 85, Step.rw 84 3 false, Step.slide 84 77, Step.rw 76 3 false, Step.swap 75,
+    Step.rw 74 3 false, Step.slide 74 67, Step.rw 66 3 false, Step.swap 65, Step.rw 64 3 false, Step.slide 64 57,
+    Step.rw 56 3 false, Step.swap 55, Step.rw 54 3 false, Step.slide 54 47, Step.rw 46 3 false, Step.swap 45,
+    Step.rw 44 3 false, Step.slide 44 37, Step.rw 36 3 false, Step.swap 35, Step.rw 34 3 false, Step.slide 34 27,
+    Step.rw 26 3 false, Step.swap 25, Step.rw 24 3 false, Step.slide 24 17, Step.rw 16 3 false, Step.swap 96,
+    Step.rw 95 3 false, Step.slide 95 88, Step.rw 87 3 false, Step.swap 86, Step.rw 85 3 false, Step.slide 85 78,
+    Step.rw 77 3 false, Step.swap 76, Step.rw 75 3 false, Step.slide 75 68, Step.rw 67 3 false, Step.swap 66,
+    Step.rw 65 3 false, Step.slide 65 58, Step.rw 57 3 false, Step.swap 56, Step.rw 55 3 false, Step.slide 55 48,
+    Step.rw 47 3 false, Step.swap 46, Step.rw 45 3 false, Step.slide 45 38, Step.rw 37 3 false, Step.swap 36,
+    Step.rw 35 3 false, Step.slide 35 28, Step.rw 27 3 false, Step.swap 97, Step.rw 96 3 false, Step.slide 96 89,
+    Step.rw 88 3 false, Step.swap 87, Step.rw 86 3 false, Step.slide 86 79, Step.rw 78 3 false, Step.swap 77,
+    Step.rw 76 3 false, Step.slide 76 69, Step.rw 68 3 false, Step.swap 67, Step.rw 66 3 false, Step.slide 66 59,
+    Step.rw 58 3 false, Step.swap 57, Step.rw 56 3 false, Step.slide 56 49, Step.rw 48 3 false, Step.swap 47,
+    Step.rw 46 3 false, Step.slide 46 39, Step.rw 38 3 false, Step.swap 98, Step.rw 97 3 false, Step.slide 97 90,
+    Step.rw 89 3 false, Step.swap 88, Step.rw 87 3 false, Step.slide 87 80, Step.rw 79 3 false, Step.swap 78,
+    Step.rw 77 3 false, Step.slide 77 70, Step.rw 69 3 false, Step.swap 68, Step.rw 67 3 false, Step.slide 67 60,
+    Step.rw 59 3 false, Step.swap 58, Step.rw 57 3 false, Step.slide 57 50, Step.rw 49 3 false, Step.rw 6 6 false,
+    Step.swap 55, Step.rw 54 3 false, Step.slide 54 47, Step.rw 46 3 false, Step.swap 45, Step.rw 44 3 false,
+    Step.slide 44 37, Step.rw 36 3 false, Step.swap 35, Step.rw 34 3 false, Step.slide 34 27, Step.rw 26 3 false,
+    Step.swap 25, Step.rw 24 3 false, Step.slide 24 17, Step.rw 16 3 false, Step.swap 56, Step.rw 55 3 false,
+    Step.slide 55 48, Step.rw 47 3 false, Step.swap 46, Step.rw 45 3 false, Step.slide 45 38, Step.rw 37 3 false,
+    Step.swap 36, Step.rw 35 3 false, Step.slide 35 28, Step.rw 27 3 false, Step.swap 57, Step.rw 56 3 false,
+    Step.slide 56 49, Step.rw 48 3 false, Step.swap 47, Step.rw 46 3 false, Step.slide 46 39, Step.rw 38 3 false,
+    Step.swap 58, Step.rw 57 3 false, Step.slide 57 50, Step.rw 49 3 false, Step.rw 6 6 false]
     (by decide +kernel)
 
 /-- (XCHX), Appendix D. -/
@@ -1024,15 +1024,15 @@ def dt_XCHX : DEqn Th 2 where
   rhs := tw 2 [(.T, 0), (.T, 0), (.H, 0), (.T, 0), (.CX, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.H, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0), (.T, 0)]
   proof := derive hsc
     [dt_CtrlH.place 0 0, dt_wCNOT.place 0 0, dt_X2.place 1 0]
-    [.slide 6 0, .slide 7 1, .slide 8 2, .slide 9 3, .slide 10 4, .slide 11 5, .slide 12 6,
-    .slide 13 7, .slide 14 8, .slide 15 9, .slide 16 10, .slide 17 11, .slide 18 12,
-    .slide 19 13, .slide 20 14, .slide 15 0, .slide 16 1, .slide 17 2, .slide 18 3,
-    .slide 19 4, .slide 20 5, .rw 6 0 false, .slide 6 0, .slide 7 1, .slide 8 2,
-    .slide 9 3, .slide 10 4, .slide 11 5, .slide 12 6, .slide 13 7, .slide 14 8,
-    .slide 15 9, .slide 16 10, .slide 17 11, .slide 18 12, .slide 19 13, .slide 20 14,
-    .slide 21 15, .slide 22 16, .slide 23 17, .slide 24 18, .slide 25 19, .slide 31 27,
-    .slide 32 28, .slide 33 29, .slide 34 30, .slide 35 31, .slide 36 32, .rw 20 1 true,
-    .rw 14 2 false]
+    [Step.slide 6 0, Step.slide 7 1, Step.slide 8 2, Step.slide 9 3, Step.slide 10 4, Step.slide 11 5, Step.slide 12 6,
+    Step.slide 13 7, Step.slide 14 8, Step.slide 15 9, Step.slide 16 10, Step.slide 17 11, Step.slide 18 12,
+    Step.slide 19 13, Step.slide 20 14, Step.slide 15 0, Step.slide 16 1, Step.slide 17 2, Step.slide 18 3,
+    Step.slide 19 4, Step.slide 20 5, Step.rw 6 0 false, Step.slide 6 0, Step.slide 7 1, Step.slide 8 2,
+    Step.slide 9 3, Step.slide 10 4, Step.slide 11 5, Step.slide 12 6, Step.slide 13 7, Step.slide 14 8,
+    Step.slide 15 9, Step.slide 16 10, Step.slide 17 11, Step.slide 18 12, Step.slide 19 13, Step.slide 20 14,
+    Step.slide 21 15, Step.slide 22 16, Step.slide 23 17, Step.slide 24 18, Step.slide 25 19, Step.slide 31 27,
+    Step.slide 32 28, Step.slide 33 29, Step.slide 34 30, Step.slide 35 31, Step.slide 36 32, Step.rw 20 1 true,
+    Step.rw 14 2 false]
     (by decide +kernel)
 
 /-- (HSTH), Appendix D. -/
@@ -1049,154 +1049,154 @@ def dt_HSTH : DEqn Th 2 where
     dt_phasegadgetCS_i.place 0 0, dt_C_m.place 0 0, dt_C_m_i.place 0 0, dT6CS.place 0 0,
     dt_SdCS.place 0 0, DEqn.inst (P := pres) (S := fun _ => True) Ax.HT2 trivial 0 0,
     dTCS.place 0 0, dT7CS.place 0 0]
-    [.rw 0 3 false, .rw 23 3 false, .rw 23 3 true, .rw 0 3 true, .rw 34 5 true,
-    .rw 44 4 true, .slide 45 52, .rw 52 4 true, .swap 53, .rw 55 4 true, .rw 54 4 true,
-    .slide 57 55, .slide 58 56, .slide 59 57, .slide 60 58, .slide 61 59, .slide 62 60,
-    .slide 63 61, .rw 63 4 true, .rw 62 4 true, .slide 65 63, .rw 66 4 true, .rw 65 4 true,
-    .rw 64 4 true, .slide 68 65, .slide 69 66, .slide 70 67, .slide 71 68, .slide 72 69,
-    .slide 73 70, .slide 74 71, .rw 74 4 true, .rw 73 4 true, .rw 72 4 true, .slide 76 73,
-    .slide 78 74, .slide 79 75, .slide 80 76, .slide 81 77, .slide 82 78, .slide 83 79,
-    .slide 84 80, .slide 85 81, .slide 86 82, .slide 87 83, .slide 88 84, .slide 89 85,
-    .slide 90 86, .slide 91 87, .slide 92 88, .slide 93 89, .rw 93 4 true, .rw 92 4 true,
-    .rw 91 4 true, .rw 90 4 true, .slide 95 91, .slide 96 92, .slide 97 93, .slide 98 94,
-    .rw 0 3 false, .rw 65 3 false, .rw 65 3 true, .rw 0 3 true, .slide 95 91,
-    .rw 90 4 false, .slide 90 73, .rw 72 4 false, .slide 72 65, .rw 64 4 false, .swap 63,
-    .rw 62 4 false, .slide 62 55, .rw 54 4 false, .swap 53, .rw 52 4 false, .slide 52 45,
-    .rw 44 4 false, .slide 96 92, .rw 91 4 false, .slide 91 74, .rw 73 4 false,
-    .slide 73 66, .rw 65 4 false, .swap 64, .rw 63 4 false, .slide 63 56, .rw 55 4 false,
-    .slide 97 93, .rw 92 4 false, .slide 92 75, .rw 74 4 false, .slide 74 67,
-    .rw 66 4 false, .slide 98 94, .rw 93 4 false, .slide 93 77, .rw 45 6 false,
-    .slide 68 61, .slide 69 62, .slide 70 63, .slide 71 64, .slide 72 65, .slide 73 66,
-    .slide 74 67, .slide 75 68, .slide 76 69, .slide 77 70, .slide 78 71, .slide 79 72,
-    .slide 80 73, .slide 81 74, .rw 0 3 false, .slide 67 53, .slide 68 54, .slide 69 55,
-    .slide 70 56, .slide 71 57, .slide 72 58, .slide 73 59, .rw 60 7 true, .slide 66 60,
-    .slide 67 61, .slide 68 62, .slide 69 63, .slide 70 64, .slide 71 65, .slide 72 66,
-    .slide 73 67, .slide 74 68, .slide 75 69, .slide 76 70, .slide 77 71, .slide 78 72,
-    .slide 79 73, .slide 80 74, .slide 60 53, .slide 61 54, .slide 62 55, .slide 63 56,
-    .slide 64 57, .slide 65 58, .slide 66 59, .slide 67 60, .slide 68 61, .slide 69 62,
-    .slide 70 63, .slide 71 64, .slide 72 65, .slide 73 66, .slide 74 67, .rw 74 0 false,
-    .rw 70 2 false, .rw 69 0 false, .rw 68 4 true, .slide 69 73, .rw 0 3 true,
-    .slide 81 77, .rw 76 4 false, .slide 76 61, .rw 51 8 true, .slide 51 44, .slide 52 45,
-    .slide 53 46, .slide 54 47, .slide 55 48, .slide 56 49, .slide 57 50, .slide 58 51,
-    .slide 59 52, .slide 60 53, .slide 61 54, .slide 62 55, .slide 63 56, .slide 64 57,
-    .slide 65 58, .rw 0 3 false, .slide 51 37, .slide 52 38, .slide 53 39, .slide 54 40,
-    .slide 55 41, .slide 56 42, .slide 57 43, .rw 44 7 true, .slide 50 44, .slide 51 45,
-    .slide 52 46, .slide 53 47, .slide 54 48, .slide 55 49, .slide 56 50, .slide 57 51,
-    .slide 58 52, .slide 59 53, .slide 60 54, .slide 61 55, .slide 62 56, .slide 63 57,
-    .slide 64 58, .slide 44 37, .slide 45 38, .slide 46 39, .slide 47 40, .slide 48 41,
-    .slide 49 42, .slide 50 43, .slide 51 44, .slide 52 45, .slide 53 46, .slide 54 47,
-    .slide 55 48, .slide 56 49, .slide 57 50, .slide 58 51, .rw 58 0 false, .rw 36 1 false,
-    .rw 52 2 false, .rw 51 0 false, .rw 50 4 true, .slide 51 55, .rw 0 3 true,
-    .rw 34 9 false, .rw 33 10 true, .slide 36 43, .rw 43 10 true, .rw 33 9 true,
-    .rw 0 3 false, .rw 34 3 false, .rw 34 3 true, .rw 0 3 true, .slide 63 59,
-    .rw 58 4 false, .slide 58 43, .rw 13 8 false, .slide 23 38, .rw 38 4 true,
-    .slide 39 58, .rw 58 4 true, .slide 59 63, .rw 0 3 false, .rw 33 3 false,
-    .rw 33 3 true, .rw 0 3 true, .rw 13 9 false, .rw 6 11 false, .slide 15 22,
-    .slide 14 21, .slide 13 20, .slide 12 19, .slide 11 18, .slide 10 17, .slide 9 16,
-    .rw 16 11 false, .rw 6 9 true, .rw 15 3 false, .rw 33 3 false, .rw 33 3 true,
-    .rw 15 3 true, .slide 63 59, .rw 58 4 false, .slide 58 39, .rw 38 4 false,
-    .slide 38 16, .rw 0 12 true, .slide 10 38, .rw 38 4 true, .slide 39 58, .rw 58 4 true,
-    .slide 59 63, .rw 9 3 false, .rw 33 3 false, .rw 33 3 true, .rw 9 3 true, .slide 63 59,
-    .rw 58 4 false, .slide 58 39, .rw 38 4 false, .slide 38 10, .rw 0 13 false,
-    .rw 16 4 true, .slide 17 24, .rw 24 4 true, .swap 25, .rw 27 4 true, .rw 26 4 true,
-    .slide 29 27, .slide 30 28, .slide 31 29, .slide 32 30, .slide 33 31, .slide 34 32,
-    .slide 35 33, .rw 35 4 true, .rw 34 4 true, .slide 37 35, .slide 45 36, .slide 46 37,
-    .slide 47 38, .slide 48 39, .slide 49 40, .slide 50 41, .slide 51 42, .slide 52 43,
-    .slide 53 44, .slide 54 45, .slide 55 46, .slide 56 47, .slide 57 48, .slide 58 49,
-    .slide 59 50, .slide 60 51, .slide 61 52, .slide 62 53, .slide 63 54, .slide 64 55,
-    .slide 65 56, .slide 66 57, .rw 35 3 false, .rw 62 3 false, .rw 62 3 true,
-    .rw 35 3 true, .slide 58 36, .slide 59 37, .slide 60 38, .slide 61 39, .slide 62 40,
-    .slide 63 41, .slide 64 42, .slide 65 43, .slide 66 44, .rw 45 14 false, .slide 45 36,
-    .slide 46 37, .slide 47 38, .slide 48 39, .slide 49 40, .slide 50 41, .slide 51 42,
-    .slide 52 43, .slide 53 44, .slide 54 45, .slide 55 46, .slide 56 47, .slide 57 48,
-    .slide 58 49, .rw 62 3 false, .rw 64 7 true, .slide 70 64, .slide 71 65, .slide 72 66,
-    .slide 73 67, .slide 74 68, .slide 75 69, .slide 76 70, .slide 77 71, .slide 78 72,
-    .slide 79 73, .slide 80 74, .slide 81 75, .slide 82 76, .slide 83 77, .slide 84 78,
-    .slide 96 90, .rw 96 0 false, .rw 63 1 false, .rw 90 2 false, .rw 89 0 false,
-    .slide 50 36, .slide 51 37, .slide 52 38, .slide 53 39, .slide 54 40, .slide 55 41,
-    .slide 56 42, .slide 57 43, .slide 58 44, .rw 45 7 true, .slide 51 45, .slide 52 46,
-    .slide 53 47, .slide 54 48, .slide 55 49, .slide 56 50, .slide 57 51, .slide 58 52,
-    .slide 59 53, .slide 60 54, .slide 61 55, .slide 62 56, .slide 63 57, .slide 64 58,
-    .slide 65 59, .slide 45 36, .slide 46 37, .slide 47 38, .slide 48 39, .slide 49 40,
-    .slide 50 41, .slide 51 42, .slide 52 43, .slide 53 44, .slide 54 45, .slide 55 46,
-    .slide 56 47, .slide 57 48, .slide 58 49, .slide 59 50, .slide 77 71, .slide 78 72,
-    .slide 79 73, .slide 80 74, .slide 81 75, .slide 82 76, .slide 83 77, .slide 84 78,
-    .slide 85 79, .slide 86 80, .slide 87 81, .slide 88 82, .slide 89 83, .rw 59 0 false,
-    .rw 87 0 false, .rw 55 2 false, .rw 54 0 false, .rw 53 4 true, .rw 52 4 true,
-    .rw 51 4 true, .slide 55 52, .slide 56 53, .slide 57 54, .slide 58 55, .slide 59 56,
-    .slide 60 57, .slide 61 58, .slide 62 59, .slide 63 60, .slide 64 61, .slide 65 62,
-    .slide 66 63, .slide 67 64, .slide 68 65, .slide 69 66, .slide 70 67, .slide 71 68,
-    .rw 73 2 false, .rw 72 0 false, .rw 71 4 true, .rw 70 4 true, .rw 69 4 true,
-    .slide 73 70, .slide 74 71, .slide 75 72, .slide 76 73, .slide 77 74, .rw 77 4 true,
-    .rw 76 4 true, .rw 75 4 true, .slide 79 76, .slide 80 77, .slide 81 78, .slide 82 79,
-    .slide 83 80, .slide 84 81, .slide 85 82, .rw 85 4 true, .rw 84 4 true, .rw 83 4 true,
-    .slide 87 84, .slide 84 87, .rw 83 4 false, .rw 84 4 false, .rw 85 4 false,
-    .slide 82 85, .slide 81 84, .slide 80 83, .slide 79 82, .slide 78 81, .slide 77 80,
-    .slide 76 79, .rw 75 4 false, .rw 76 4 false, .rw 77 4 false, .slide 74 77,
-    .slide 73 76, .slide 72 75, .slide 71 74, .slide 70 73, .rw 69 4 false, .rw 70 4 false,
-    .rw 71 4 false, .slide 68 71, .slide 67 70, .slide 66 69, .slide 65 68, .slide 64 67,
-    .slide 63 66, .slide 62 65, .slide 61 64, .slide 60 63, .slide 59 62, .slide 58 61,
-    .slide 57 60, .slide 56 59, .slide 55 58, .rw 58 7 true, .slide 64 58, .slide 65 59,
-    .slide 66 60, .slide 67 61, .slide 68 62, .slide 69 63, .slide 70 64, .slide 71 65,
-    .slide 72 66, .slide 73 67, .slide 74 68, .slide 75 69, .slide 76 70, .slide 77 71,
-    .slide 78 72, .slide 90 84, .slide 57 72, .slide 56 71, .slide 55 70, .rw 54 3 true,
-    .slide 78 52, .rw 51 4 false, .slide 51 36, .rw 26 8 true, .slide 56 78, .slide 78 55,
-    .rw 54 4 false, .slide 54 47, .rw 46 4 false, .slide 46 42, .rw 41 4 false,
-    .slide 41 26, .rw 16 8 true, .rw 46 4 true, .slide 47 54, .rw 54 4 true, .slide 55 78,
-    .slide 78 55, .rw 54 4 false, .slide 54 47, .rw 46 4 false, .swap 45, .rw 44 4 false,
-    .slide 44 37, .rw 36 4 false, .slide 36 32, .rw 31 4 false, .slide 31 16, .rw 6 8 true,
-    .slide 6 0, .slide 7 1, .slide 8 2, .slide 9 3, .slide 10 4, .slide 11 5, .slide 12 6,
-    .slide 13 7, .slide 14 8, .slide 15 9, .slide 16 10, .slide 17 11, .slide 18 12,
-    .slide 19 13, .slide 20 14, .rw 36 4 true, .slide 37 44, .rw 44 4 true, .swap 45,
-    .rw 46 4 true, .slide 47 54, .rw 54 4 true, .slide 55 78, .rw 55 3 false, .slide 15 1,
-    .slide 16 2, .slide 17 3, .slide 18 4, .slide 19 5, .slide 20 6, .rw 7 7 true,
-    .slide 13 7, .slide 14 8, .slide 15 9, .slide 16 10, .slide 17 11, .slide 18 12,
-    .slide 19 13, .slide 20 14, .slide 21 15, .slide 22 16, .slide 23 17, .slide 24 18,
-    .slide 25 19, .slide 26 20, .slide 27 21, .slide 7 1, .slide 8 2, .slide 9 3,
-    .slide 10 4, .slide 11 5, .slide 12 6, .slide 13 7, .slide 14 8, .slide 15 9,
-    .slide 16 10, .slide 17 11, .slide 18 12, .slide 19 13, .slide 20 14, .slide 21 15,
-    .rw 21 0 false, .rw 0 1 false, .rw 15 2 false, .rw 14 0 false, .rw 54 3 true,
-    .rw 92 6 true, .rw 102 4 true, .slide 103 110, .rw 110 4 true, .swap 111,
-    .rw 113 4 true, .rw 112 4 true, .slide 115 113, .slide 116 114, .slide 117 115,
-    .slide 118 116, .slide 119 117, .slide 120 118, .slide 121 119, .rw 121 4 true,
-    .rw 120 4 true, .slide 123 121, .slide 125 122, .slide 126 123, .rw 54 3 false,
-    .rw 54 3 true, .slide 77 54, .rw 53 4 false, .slide 53 46, .rw 45 4 false, .swap 44,
-    .rw 43 4 false, .slide 43 36, .rw 35 4 false, .slide 78 55, .rw 54 4 false,
-    .slide 54 47, .rw 46 4 false, .slide 79 57, .slide 80 58, .slide 81 59, .slide 82 60,
-    .slide 83 61, .slide 84 62, .slide 85 63, .rw 19 13 true, .slide 29 57, .rw 57 4 true,
-    .slide 58 63, .rw 63 4 true, .slide 64 71, .rw 71 4 true, .swap 72, .rw 73 4 true,
-    .slide 74 81, .rw 81 4 true, .swap 82, .rw 83 4 true, .slide 84 91, .rw 91 4 true,
-    .slide 92 95, .rw 28 3 false, .rw 28 3 true, .slide 95 92, .rw 91 4 false,
-    .slide 91 84, .rw 83 4 false, .swap 82, .rw 81 4 false, .slide 81 74, .rw 73 4 false,
-    .swap 72, .rw 71 4 false, .slide 71 64, .rw 63 4 false, .slide 63 58, .rw 57 4 false,
-    .slide 57 29, .rw 19 12 false, .slide 35 57, .rw 57 4 true, .slide 58 63,
-    .rw 63 4 true, .slide 64 71, .rw 71 4 true, .swap 72, .rw 73 4 true, .slide 74 81,
-    .rw 81 4 true, .swap 82, .rw 83 4 true, .slide 84 91, .rw 91 4 true, .slide 92 95,
-    .rw 17 3 false, .rw 26 3 false, .rw 26 3 true, .rw 17 3 true, .rw 17 3 false,
-    .rw 26 3 false, .rw 26 3 true, .rw 17 3 true, .slide 95 92, .rw 91 4 false,
-    .slide 91 84, .rw 83 4 false, .swap 82, .rw 81 4 false, .slide 81 74, .rw 73 4 false,
-    .rw 62 15 true, .swap 72, .rw 73 4 true, .slide 74 81, .rw 81 4 true, .swap 82,
-    .rw 83 4 true, .slide 84 91, .rw 91 4 true, .slide 92 95, .slide 95 92, .rw 91 4 false,
-    .slide 91 84, .rw 83 4 false, .rw 72 15 true, .swap 82, .rw 83 4 true, .slide 84 91,
-    .rw 91 4 true, .slide 92 95, .slide 95 93, .rw 82 15 true, .slide 92 95,
-    .rw 17 3 false, .rw 26 3 false, .rw 26 3 true, .rw 17 3 true, .slide 95 91,
-    .rw 90 4 false, .slide 90 83, .rw 82 4 false, .swap 81, .rw 80 4 false, .slide 80 73,
-    .rw 72 4 false, .swap 71, .rw 70 4 false, .slide 70 63, .rw 62 4 false, .slide 62 58,
-    .rw 57 4 false, .slide 57 35, .rw 25 16 false, .slide 42 57, .rw 57 4 true,
-    .slide 58 62, .rw 62 4 true, .slide 63 70, .rw 70 4 true, .swap 71, .rw 72 4 true,
-    .slide 73 80, .rw 80 4 true, .swap 81, .rw 82 4 true, .slide 83 90, .rw 90 4 true,
-    .slide 91 95, .rw 17 3 false, .rw 17 3 true, .rw 17 3 false, .rw 17 3 true,
-    .slide 95 91, .rw 90 4 false, .slide 90 83, .rw 82 4 false, .swap 81, .rw 80 4 false,
-    .slide 80 73, .rw 72 4 false, .swap 71, .rw 70 4 false, .slide 70 63, .rw 62 4 false,
-    .slide 62 58, .rw 57 4 false, .slide 57 42, .rw 32 8 true, .rw 62 4 true, .slide 63 70,
-    .rw 70 4 true, .swap 71, .rw 72 4 true, .slide 73 80, .rw 80 4 true, .swap 81,
-    .rw 82 4 true, .slide 83 90, .rw 90 4 true, .slide 91 95, .rw 17 3 false,
-    .rw 17 3 true, .slide 95 91, .rw 90 4 false, .slide 90 83, .rw 82 4 false, .swap 81,
-    .rw 80 4 false, .slide 80 73, .rw 72 4 false, .swap 71, .rw 70 4 false, .slide 70 63,
-    .rw 62 4 false, .slide 96 92, .rw 91 4 false, .slide 91 84, .rw 83 4 false, .swap 82,
-    .rw 81 4 false, .slide 81 74, .rw 73 4 false, .slide 97 93, .rw 92 4 false,
-    .slide 92 85, .rw 84 4 false, .slide 98 95, .rw 52 5 false, .rw 17 3 false,
-    .rw 17 3 true]
+    [Step.rw 0 3 false, Step.rw 23 3 false, Step.rw 23 3 true, Step.rw 0 3 true, Step.rw 34 5 true,
+    Step.rw 44 4 true, Step.slide 45 52, Step.rw 52 4 true, Step.swap 53, Step.rw 55 4 true, Step.rw 54 4 true,
+    Step.slide 57 55, Step.slide 58 56, Step.slide 59 57, Step.slide 60 58, Step.slide 61 59, Step.slide 62 60,
+    Step.slide 63 61, Step.rw 63 4 true, Step.rw 62 4 true, Step.slide 65 63, Step.rw 66 4 true, Step.rw 65 4 true,
+    Step.rw 64 4 true, Step.slide 68 65, Step.slide 69 66, Step.slide 70 67, Step.slide 71 68, Step.slide 72 69,
+    Step.slide 73 70, Step.slide 74 71, Step.rw 74 4 true, Step.rw 73 4 true, Step.rw 72 4 true, Step.slide 76 73,
+    Step.slide 78 74, Step.slide 79 75, Step.slide 80 76, Step.slide 81 77, Step.slide 82 78, Step.slide 83 79,
+    Step.slide 84 80, Step.slide 85 81, Step.slide 86 82, Step.slide 87 83, Step.slide 88 84, Step.slide 89 85,
+    Step.slide 90 86, Step.slide 91 87, Step.slide 92 88, Step.slide 93 89, Step.rw 93 4 true, Step.rw 92 4 true,
+    Step.rw 91 4 true, Step.rw 90 4 true, Step.slide 95 91, Step.slide 96 92, Step.slide 97 93, Step.slide 98 94,
+    Step.rw 0 3 false, Step.rw 65 3 false, Step.rw 65 3 true, Step.rw 0 3 true, Step.slide 95 91,
+    Step.rw 90 4 false, Step.slide 90 73, Step.rw 72 4 false, Step.slide 72 65, Step.rw 64 4 false, Step.swap 63,
+    Step.rw 62 4 false, Step.slide 62 55, Step.rw 54 4 false, Step.swap 53, Step.rw 52 4 false, Step.slide 52 45,
+    Step.rw 44 4 false, Step.slide 96 92, Step.rw 91 4 false, Step.slide 91 74, Step.rw 73 4 false,
+    Step.slide 73 66, Step.rw 65 4 false, Step.swap 64, Step.rw 63 4 false, Step.slide 63 56, Step.rw 55 4 false,
+    Step.slide 97 93, Step.rw 92 4 false, Step.slide 92 75, Step.rw 74 4 false, Step.slide 74 67,
+    Step.rw 66 4 false, Step.slide 98 94, Step.rw 93 4 false, Step.slide 93 77, Step.rw 45 6 false,
+    Step.slide 68 61, Step.slide 69 62, Step.slide 70 63, Step.slide 71 64, Step.slide 72 65, Step.slide 73 66,
+    Step.slide 74 67, Step.slide 75 68, Step.slide 76 69, Step.slide 77 70, Step.slide 78 71, Step.slide 79 72,
+    Step.slide 80 73, Step.slide 81 74, Step.rw 0 3 false, Step.slide 67 53, Step.slide 68 54, Step.slide 69 55,
+    Step.slide 70 56, Step.slide 71 57, Step.slide 72 58, Step.slide 73 59, Step.rw 60 7 true, Step.slide 66 60,
+    Step.slide 67 61, Step.slide 68 62, Step.slide 69 63, Step.slide 70 64, Step.slide 71 65, Step.slide 72 66,
+    Step.slide 73 67, Step.slide 74 68, Step.slide 75 69, Step.slide 76 70, Step.slide 77 71, Step.slide 78 72,
+    Step.slide 79 73, Step.slide 80 74, Step.slide 60 53, Step.slide 61 54, Step.slide 62 55, Step.slide 63 56,
+    Step.slide 64 57, Step.slide 65 58, Step.slide 66 59, Step.slide 67 60, Step.slide 68 61, Step.slide 69 62,
+    Step.slide 70 63, Step.slide 71 64, Step.slide 72 65, Step.slide 73 66, Step.slide 74 67, Step.rw 74 0 false,
+    Step.rw 70 2 false, Step.rw 69 0 false, Step.rw 68 4 true, Step.slide 69 73, Step.rw 0 3 true,
+    Step.slide 81 77, Step.rw 76 4 false, Step.slide 76 61, Step.rw 51 8 true, Step.slide 51 44, Step.slide 52 45,
+    Step.slide 53 46, Step.slide 54 47, Step.slide 55 48, Step.slide 56 49, Step.slide 57 50, Step.slide 58 51,
+    Step.slide 59 52, Step.slide 60 53, Step.slide 61 54, Step.slide 62 55, Step.slide 63 56, Step.slide 64 57,
+    Step.slide 65 58, Step.rw 0 3 false, Step.slide 51 37, Step.slide 52 38, Step.slide 53 39, Step.slide 54 40,
+    Step.slide 55 41, Step.slide 56 42, Step.slide 57 43, Step.rw 44 7 true, Step.slide 50 44, Step.slide 51 45,
+    Step.slide 52 46, Step.slide 53 47, Step.slide 54 48, Step.slide 55 49, Step.slide 56 50, Step.slide 57 51,
+    Step.slide 58 52, Step.slide 59 53, Step.slide 60 54, Step.slide 61 55, Step.slide 62 56, Step.slide 63 57,
+    Step.slide 64 58, Step.slide 44 37, Step.slide 45 38, Step.slide 46 39, Step.slide 47 40, Step.slide 48 41,
+    Step.slide 49 42, Step.slide 50 43, Step.slide 51 44, Step.slide 52 45, Step.slide 53 46, Step.slide 54 47,
+    Step.slide 55 48, Step.slide 56 49, Step.slide 57 50, Step.slide 58 51, Step.rw 58 0 false, Step.rw 36 1 false,
+    Step.rw 52 2 false, Step.rw 51 0 false, Step.rw 50 4 true, Step.slide 51 55, Step.rw 0 3 true,
+    Step.rw 34 9 false, Step.rw 33 10 true, Step.slide 36 43, Step.rw 43 10 true, Step.rw 33 9 true,
+    Step.rw 0 3 false, Step.rw 34 3 false, Step.rw 34 3 true, Step.rw 0 3 true, Step.slide 63 59,
+    Step.rw 58 4 false, Step.slide 58 43, Step.rw 13 8 false, Step.slide 23 38, Step.rw 38 4 true,
+    Step.slide 39 58, Step.rw 58 4 true, Step.slide 59 63, Step.rw 0 3 false, Step.rw 33 3 false,
+    Step.rw 33 3 true, Step.rw 0 3 true, Step.rw 13 9 false, Step.rw 6 11 false, Step.slide 15 22,
+    Step.slide 14 21, Step.slide 13 20, Step.slide 12 19, Step.slide 11 18, Step.slide 10 17, Step.slide 9 16,
+    Step.rw 16 11 false, Step.rw 6 9 true, Step.rw 15 3 false, Step.rw 33 3 false, Step.rw 33 3 true,
+    Step.rw 15 3 true, Step.slide 63 59, Step.rw 58 4 false, Step.slide 58 39, Step.rw 38 4 false,
+    Step.slide 38 16, Step.rw 0 12 true, Step.slide 10 38, Step.rw 38 4 true, Step.slide 39 58, Step.rw 58 4 true,
+    Step.slide 59 63, Step.rw 9 3 false, Step.rw 33 3 false, Step.rw 33 3 true, Step.rw 9 3 true, Step.slide 63 59,
+    Step.rw 58 4 false, Step.slide 58 39, Step.rw 38 4 false, Step.slide 38 10, Step.rw 0 13 false,
+    Step.rw 16 4 true, Step.slide 17 24, Step.rw 24 4 true, Step.swap 25, Step.rw 27 4 true, Step.rw 26 4 true,
+    Step.slide 29 27, Step.slide 30 28, Step.slide 31 29, Step.slide 32 30, Step.slide 33 31, Step.slide 34 32,
+    Step.slide 35 33, Step.rw 35 4 true, Step.rw 34 4 true, Step.slide 37 35, Step.slide 45 36, Step.slide 46 37,
+    Step.slide 47 38, Step.slide 48 39, Step.slide 49 40, Step.slide 50 41, Step.slide 51 42, Step.slide 52 43,
+    Step.slide 53 44, Step.slide 54 45, Step.slide 55 46, Step.slide 56 47, Step.slide 57 48, Step.slide 58 49,
+    Step.slide 59 50, Step.slide 60 51, Step.slide 61 52, Step.slide 62 53, Step.slide 63 54, Step.slide 64 55,
+    Step.slide 65 56, Step.slide 66 57, Step.rw 35 3 false, Step.rw 62 3 false, Step.rw 62 3 true,
+    Step.rw 35 3 true, Step.slide 58 36, Step.slide 59 37, Step.slide 60 38, Step.slide 61 39, Step.slide 62 40,
+    Step.slide 63 41, Step.slide 64 42, Step.slide 65 43, Step.slide 66 44, Step.rw 45 14 false, Step.slide 45 36,
+    Step.slide 46 37, Step.slide 47 38, Step.slide 48 39, Step.slide 49 40, Step.slide 50 41, Step.slide 51 42,
+    Step.slide 52 43, Step.slide 53 44, Step.slide 54 45, Step.slide 55 46, Step.slide 56 47, Step.slide 57 48,
+    Step.slide 58 49, Step.rw 62 3 false, Step.rw 64 7 true, Step.slide 70 64, Step.slide 71 65, Step.slide 72 66,
+    Step.slide 73 67, Step.slide 74 68, Step.slide 75 69, Step.slide 76 70, Step.slide 77 71, Step.slide 78 72,
+    Step.slide 79 73, Step.slide 80 74, Step.slide 81 75, Step.slide 82 76, Step.slide 83 77, Step.slide 84 78,
+    Step.slide 96 90, Step.rw 96 0 false, Step.rw 63 1 false, Step.rw 90 2 false, Step.rw 89 0 false,
+    Step.slide 50 36, Step.slide 51 37, Step.slide 52 38, Step.slide 53 39, Step.slide 54 40, Step.slide 55 41,
+    Step.slide 56 42, Step.slide 57 43, Step.slide 58 44, Step.rw 45 7 true, Step.slide 51 45, Step.slide 52 46,
+    Step.slide 53 47, Step.slide 54 48, Step.slide 55 49, Step.slide 56 50, Step.slide 57 51, Step.slide 58 52,
+    Step.slide 59 53, Step.slide 60 54, Step.slide 61 55, Step.slide 62 56, Step.slide 63 57, Step.slide 64 58,
+    Step.slide 65 59, Step.slide 45 36, Step.slide 46 37, Step.slide 47 38, Step.slide 48 39, Step.slide 49 40,
+    Step.slide 50 41, Step.slide 51 42, Step.slide 52 43, Step.slide 53 44, Step.slide 54 45, Step.slide 55 46,
+    Step.slide 56 47, Step.slide 57 48, Step.slide 58 49, Step.slide 59 50, Step.slide 77 71, Step.slide 78 72,
+    Step.slide 79 73, Step.slide 80 74, Step.slide 81 75, Step.slide 82 76, Step.slide 83 77, Step.slide 84 78,
+    Step.slide 85 79, Step.slide 86 80, Step.slide 87 81, Step.slide 88 82, Step.slide 89 83, Step.rw 59 0 false,
+    Step.rw 87 0 false, Step.rw 55 2 false, Step.rw 54 0 false, Step.rw 53 4 true, Step.rw 52 4 true,
+    Step.rw 51 4 true, Step.slide 55 52, Step.slide 56 53, Step.slide 57 54, Step.slide 58 55, Step.slide 59 56,
+    Step.slide 60 57, Step.slide 61 58, Step.slide 62 59, Step.slide 63 60, Step.slide 64 61, Step.slide 65 62,
+    Step.slide 66 63, Step.slide 67 64, Step.slide 68 65, Step.slide 69 66, Step.slide 70 67, Step.slide 71 68,
+    Step.rw 73 2 false, Step.rw 72 0 false, Step.rw 71 4 true, Step.rw 70 4 true, Step.rw 69 4 true,
+    Step.slide 73 70, Step.slide 74 71, Step.slide 75 72, Step.slide 76 73, Step.slide 77 74, Step.rw 77 4 true,
+    Step.rw 76 4 true, Step.rw 75 4 true, Step.slide 79 76, Step.slide 80 77, Step.slide 81 78, Step.slide 82 79,
+    Step.slide 83 80, Step.slide 84 81, Step.slide 85 82, Step.rw 85 4 true, Step.rw 84 4 true, Step.rw 83 4 true,
+    Step.slide 87 84, Step.slide 84 87, Step.rw 83 4 false, Step.rw 84 4 false, Step.rw 85 4 false,
+    Step.slide 82 85, Step.slide 81 84, Step.slide 80 83, Step.slide 79 82, Step.slide 78 81, Step.slide 77 80,
+    Step.slide 76 79, Step.rw 75 4 false, Step.rw 76 4 false, Step.rw 77 4 false, Step.slide 74 77,
+    Step.slide 73 76, Step.slide 72 75, Step.slide 71 74, Step.slide 70 73, Step.rw 69 4 false, Step.rw 70 4 false,
+    Step.rw 71 4 false, Step.slide 68 71, Step.slide 67 70, Step.slide 66 69, Step.slide 65 68, Step.slide 64 67,
+    Step.slide 63 66, Step.slide 62 65, Step.slide 61 64, Step.slide 60 63, Step.slide 59 62, Step.slide 58 61,
+    Step.slide 57 60, Step.slide 56 59, Step.slide 55 58, Step.rw 58 7 true, Step.slide 64 58, Step.slide 65 59,
+    Step.slide 66 60, Step.slide 67 61, Step.slide 68 62, Step.slide 69 63, Step.slide 70 64, Step.slide 71 65,
+    Step.slide 72 66, Step.slide 73 67, Step.slide 74 68, Step.slide 75 69, Step.slide 76 70, Step.slide 77 71,
+    Step.slide 78 72, Step.slide 90 84, Step.slide 57 72, Step.slide 56 71, Step.slide 55 70, Step.rw 54 3 true,
+    Step.slide 78 52, Step.rw 51 4 false, Step.slide 51 36, Step.rw 26 8 true, Step.slide 56 78, Step.slide 78 55,
+    Step.rw 54 4 false, Step.slide 54 47, Step.rw 46 4 false, Step.slide 46 42, Step.rw 41 4 false,
+    Step.slide 41 26, Step.rw 16 8 true, Step.rw 46 4 true, Step.slide 47 54, Step.rw 54 4 true, Step.slide 55 78,
+    Step.slide 78 55, Step.rw 54 4 false, Step.slide 54 47, Step.rw 46 4 false, Step.swap 45, Step.rw 44 4 false,
+    Step.slide 44 37, Step.rw 36 4 false, Step.slide 36 32, Step.rw 31 4 false, Step.slide 31 16, Step.rw 6 8 true,
+    Step.slide 6 0, Step.slide 7 1, Step.slide 8 2, Step.slide 9 3, Step.slide 10 4, Step.slide 11 5, Step.slide 12 6,
+    Step.slide 13 7, Step.slide 14 8, Step.slide 15 9, Step.slide 16 10, Step.slide 17 11, Step.slide 18 12,
+    Step.slide 19 13, Step.slide 20 14, Step.rw 36 4 true, Step.slide 37 44, Step.rw 44 4 true, Step.swap 45,
+    Step.rw 46 4 true, Step.slide 47 54, Step.rw 54 4 true, Step.slide 55 78, Step.rw 55 3 false, Step.slide 15 1,
+    Step.slide 16 2, Step.slide 17 3, Step.slide 18 4, Step.slide 19 5, Step.slide 20 6, Step.rw 7 7 true,
+    Step.slide 13 7, Step.slide 14 8, Step.slide 15 9, Step.slide 16 10, Step.slide 17 11, Step.slide 18 12,
+    Step.slide 19 13, Step.slide 20 14, Step.slide 21 15, Step.slide 22 16, Step.slide 23 17, Step.slide 24 18,
+    Step.slide 25 19, Step.slide 26 20, Step.slide 27 21, Step.slide 7 1, Step.slide 8 2, Step.slide 9 3,
+    Step.slide 10 4, Step.slide 11 5, Step.slide 12 6, Step.slide 13 7, Step.slide 14 8, Step.slide 15 9,
+    Step.slide 16 10, Step.slide 17 11, Step.slide 18 12, Step.slide 19 13, Step.slide 20 14, Step.slide 21 15,
+    Step.rw 21 0 false, Step.rw 0 1 false, Step.rw 15 2 false, Step.rw 14 0 false, Step.rw 54 3 true,
+    Step.rw 92 6 true, Step.rw 102 4 true, Step.slide 103 110, Step.rw 110 4 true, Step.swap 111,
+    Step.rw 113 4 true, Step.rw 112 4 true, Step.slide 115 113, Step.slide 116 114, Step.slide 117 115,
+    Step.slide 118 116, Step.slide 119 117, Step.slide 120 118, Step.slide 121 119, Step.rw 121 4 true,
+    Step.rw 120 4 true, Step.slide 123 121, Step.slide 125 122, Step.slide 126 123, Step.rw 54 3 false,
+    Step.rw 54 3 true, Step.slide 77 54, Step.rw 53 4 false, Step.slide 53 46, Step.rw 45 4 false, Step.swap 44,
+    Step.rw 43 4 false, Step.slide 43 36, Step.rw 35 4 false, Step.slide 78 55, Step.rw 54 4 false,
+    Step.slide 54 47, Step.rw 46 4 false, Step.slide 79 57, Step.slide 80 58, Step.slide 81 59, Step.slide 82 60,
+    Step.slide 83 61, Step.slide 84 62, Step.slide 85 63, Step.rw 19 13 true, Step.slide 29 57, Step.rw 57 4 true,
+    Step.slide 58 63, Step.rw 63 4 true, Step.slide 64 71, Step.rw 71 4 true, Step.swap 72, Step.rw 73 4 true,
+    Step.slide 74 81, Step.rw 81 4 true, Step.swap 82, Step.rw 83 4 true, Step.slide 84 91, Step.rw 91 4 true,
+    Step.slide 92 95, Step.rw 28 3 false, Step.rw 28 3 true, Step.slide 95 92, Step.rw 91 4 false,
+    Step.slide 91 84, Step.rw 83 4 false, Step.swap 82, Step.rw 81 4 false, Step.slide 81 74, Step.rw 73 4 false,
+    Step.swap 72, Step.rw 71 4 false, Step.slide 71 64, Step.rw 63 4 false, Step.slide 63 58, Step.rw 57 4 false,
+    Step.slide 57 29, Step.rw 19 12 false, Step.slide 35 57, Step.rw 57 4 true, Step.slide 58 63,
+    Step.rw 63 4 true, Step.slide 64 71, Step.rw 71 4 true, Step.swap 72, Step.rw 73 4 true, Step.slide 74 81,
+    Step.rw 81 4 true, Step.swap 82, Step.rw 83 4 true, Step.slide 84 91, Step.rw 91 4 true, Step.slide 92 95,
+    Step.rw 17 3 false, Step.rw 26 3 false, Step.rw 26 3 true, Step.rw 17 3 true, Step.rw 17 3 false,
+    Step.rw 26 3 false, Step.rw 26 3 true, Step.rw 17 3 true, Step.slide 95 92, Step.rw 91 4 false,
+    Step.slide 91 84, Step.rw 83 4 false, Step.swap 82, Step.rw 81 4 false, Step.slide 81 74, Step.rw 73 4 false,
+    Step.rw 62 15 true, Step.swap 72, Step.rw 73 4 true, Step.slide 74 81, Step.rw 81 4 true, Step.swap 82,
+    Step.rw 83 4 true, Step.slide 84 91, Step.rw 91 4 true, Step.slide 92 95, Step.slide 95 92, Step.rw 91 4 false,
+    Step.slide 91 84, Step.rw 83 4 false, Step.rw 72 15 true, Step.swap 82, Step.rw 83 4 true, Step.slide 84 91,
+    Step.rw 91 4 true, Step.slide 92 95, Step.slide 95 93, Step.rw 82 15 true, Step.slide 92 95,
+    Step.rw 17 3 false, Step.rw 26 3 false, Step.rw 26 3 true, Step.rw 17 3 true, Step.slide 95 91,
+    Step.rw 90 4 false, Step.slide 90 83, Step.rw 82 4 false, Step.swap 81, Step.rw 80 4 false, Step.slide 80 73,
+    Step.rw 72 4 false, Step.swap 71, Step.rw 70 4 false, Step.slide 70 63, Step.rw 62 4 false, Step.slide 62 58,
+    Step.rw 57 4 false, Step.slide 57 35, Step.rw 25 16 false, Step.slide 42 57, Step.rw 57 4 true,
+    Step.slide 58 62, Step.rw 62 4 true, Step.slide 63 70, Step.rw 70 4 true, Step.swap 71, Step.rw 72 4 true,
+    Step.slide 73 80, Step.rw 80 4 true, Step.swap 81, Step.rw 82 4 true, Step.slide 83 90, Step.rw 90 4 true,
+    Step.slide 91 95, Step.rw 17 3 false, Step.rw 17 3 true, Step.rw 17 3 false, Step.rw 17 3 true,
+    Step.slide 95 91, Step.rw 90 4 false, Step.slide 90 83, Step.rw 82 4 false, Step.swap 81, Step.rw 80 4 false,
+    Step.slide 80 73, Step.rw 72 4 false, Step.swap 71, Step.rw 70 4 false, Step.slide 70 63, Step.rw 62 4 false,
+    Step.slide 62 58, Step.rw 57 4 false, Step.slide 57 42, Step.rw 32 8 true, Step.rw 62 4 true, Step.slide 63 70,
+    Step.rw 70 4 true, Step.swap 71, Step.rw 72 4 true, Step.slide 73 80, Step.rw 80 4 true, Step.swap 81,
+    Step.rw 82 4 true, Step.slide 83 90, Step.rw 90 4 true, Step.slide 91 95, Step.rw 17 3 false,
+    Step.rw 17 3 true, Step.slide 95 91, Step.rw 90 4 false, Step.slide 90 83, Step.rw 82 4 false, Step.swap 81,
+    Step.rw 80 4 false, Step.slide 80 73, Step.rw 72 4 false, Step.swap 71, Step.rw 70 4 false, Step.slide 70 63,
+    Step.rw 62 4 false, Step.slide 96 92, Step.rw 91 4 false, Step.slide 91 84, Step.rw 83 4 false, Step.swap 82,
+    Step.rw 81 4 false, Step.slide 81 74, Step.rw 73 4 false, Step.slide 97 93, Step.rw 92 4 false,
+    Step.slide 92 85, Step.rw 84 4 false, Step.slide 98 95, Step.rw 52 5 false, Step.rw 17 3 false,
+    Step.rw 17 3 true]
     (by decide +kernel)
 
 /-- Both sides of `dt_HCh` inverted, letter by letter. -/
@@ -1207,20 +1207,20 @@ def dt_HCh_i : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0, dt_CX2.place 0 0,
     dt_HCh.place 0 0]
-    [.rw 18 1 true, .rw 18 1 true, .rw 18 1 true, .rw 18 1 true, .rw 18 1 true,
-    .rw 16 1 true, .rw 16 1 true, .rw 16 1 true, .rw 16 1 true, .rw 16 1 true,
-    .rw 16 1 true, .rw 1 1 true, .rw 117 0 true, .rw 118 0 true, .rw 119 1 true,
-    .rw 120 1 true, .rw 121 1 true, .rw 122 1 true, .rw 123 1 true, .rw 124 1 true,
-    .rw 125 0 true, .rw 126 1 true, .rw 127 1 true, .rw 128 1 true, .rw 129 1 true,
-    .rw 130 1 true, .rw 131 1 true, .rw 132 1 true, .rw 133 2 true, .rw 134 1 true,
-    .rw 135 0 true, .rw 136 1 true, .rw 137 1 true, .rw 117 3 true, .rw 116 0 false,
-    .rw 109 1 false, .rw 102 1 false, .rw 95 1 false, .rw 88 1 false, .rw 81 1 false,
-    .rw 74 1 false, .rw 73 0 false, .rw 66 1 false, .rw 59 1 false, .rw 52 1 false,
-    .rw 45 1 false, .rw 38 1 false, .rw 31 1 false, .rw 24 1 false, .rw 23 2 false,
-    .rw 16 1 false, .rw 15 0 false, .rw 8 1 false, .rw 1 1 false, .rw 0 0 false,
-    .rw 115 0 false, .rw 0 1 false, .rw 15 1 false, .rw 15 1 false, .rw 15 1 false,
-    .rw 15 1 false, .rw 15 1 false, .rw 15 1 false, .rw 17 1 false, .rw 17 1 false,
-    .rw 17 1 false, .rw 17 1 false, .rw 17 1 false]
+    [Step.rw 18 1 true, Step.rw 18 1 true, Step.rw 18 1 true, Step.rw 18 1 true, Step.rw 18 1 true,
+    Step.rw 16 1 true, Step.rw 16 1 true, Step.rw 16 1 true, Step.rw 16 1 true, Step.rw 16 1 true,
+    Step.rw 16 1 true, Step.rw 1 1 true, Step.rw 117 0 true, Step.rw 118 0 true, Step.rw 119 1 true,
+    Step.rw 120 1 true, Step.rw 121 1 true, Step.rw 122 1 true, Step.rw 123 1 true, Step.rw 124 1 true,
+    Step.rw 125 0 true, Step.rw 126 1 true, Step.rw 127 1 true, Step.rw 128 1 true, Step.rw 129 1 true,
+    Step.rw 130 1 true, Step.rw 131 1 true, Step.rw 132 1 true, Step.rw 133 2 true, Step.rw 134 1 true,
+    Step.rw 135 0 true, Step.rw 136 1 true, Step.rw 137 1 true, Step.rw 117 3 true, Step.rw 116 0 false,
+    Step.rw 109 1 false, Step.rw 102 1 false, Step.rw 95 1 false, Step.rw 88 1 false, Step.rw 81 1 false,
+    Step.rw 74 1 false, Step.rw 73 0 false, Step.rw 66 1 false, Step.rw 59 1 false, Step.rw 52 1 false,
+    Step.rw 45 1 false, Step.rw 38 1 false, Step.rw 31 1 false, Step.rw 24 1 false, Step.rw 23 2 false,
+    Step.rw 16 1 false, Step.rw 15 0 false, Step.rw 8 1 false, Step.rw 1 1 false, Step.rw 0 0 false,
+    Step.rw 115 0 false, Step.rw 0 1 false, Step.rw 15 1 false, Step.rw 15 1 false, Step.rw 15 1 false,
+    Step.rw 15 1 false, Step.rw 15 1 false, Step.rw 15 1 false, Step.rw 17 1 false, Step.rw 17 1 false,
+    Step.rw 17 1 false, Step.rw 17 1 false, Step.rw 17 1 false]
     (by decide +kernel)
 
 /-- The decoding of (C19), Appendix D. -/
@@ -1238,165 +1238,165 @@ def dt_C19dec : DEqn Th 2 where
     dt_HCh.place 0 0, dt_CHCH.place 0 0, dt_CSCSCSCS.place 0 0, dt_CSCS.place 0 0,
     dT6CS.place 0 0, dTCS.place 0 0, dT7CS.place 0 0, dt_HSTH.place 0 0, dT3CS.place 0 0,
     dCSdag.place 0 0, dt_C_m.place 0 0, dt_C_m_i.place 0 0, dt_HCh_i.place 0 0]
-    [.rw 17 7 true, .rw 29 6 true, .rw 22 0 false, .rw 18 2 false, .rw 17 0 false,
-    .rw 17 0 true, .rw 18 2 true, .rw 22 0 true, .rw 0 3 true, .slide 7 50, .rw 37 8 false,
-    .rw 23 8 true, .slide 36 7, .rw 0 3 false, .rw 15 0 false, .rw 40 0 false,
-    .rw 8 2 false, .rw 8 2 true, .rw 13 9 true, .rw 8 2 true, .rw 8 2 false, .rw 8 2 true,
-    .rw 7 4 true, .rw 0 4 true, .rw 12 2 false, .rw 0 4 false, .rw 7 4 false, .rw 0 4 true,
-    .rw 1 2 true, .rw 16 2 true, .rw 17 4 true, .rw 18 2 true, .rw 19 1 true,
-    .rw 8 17 true, .swap 18, .slide 27 19, .slide 28 20, .slide 29 21, .slide 30 22,
-    .slide 31 23, .slide 32 24, .slide 33 25, .rw 33 5 true, .rw 32 5 true, .rw 31 5 true,
-    .rw 30 5 true, .rw 29 5 true, .rw 28 5 true, .rw 27 5 true, .rw 26 5 true,
-    .slide 35 27, .slide 36 28, .slide 37 29, .slide 38 30, .slide 39 31, .slide 40 32,
-    .slide 41 33, .slide 42 34, .slide 43 35, .slide 44 36, .slide 45 37, .slide 46 38,
-    .slide 47 39, .slide 48 40, .slide 49 41, .slide 50 42, .slide 51 43, .slide 52 44,
-    .slide 53 45, .slide 54 46, .slide 55 47, .slide 56 48, .slide 57 49, .slide 58 50,
-    .slide 59 51, .slide 60 52, .slide 61 53, .slide 62 54, .slide 63 55, .rw 63 5 true,
-    .rw 62 5 true, .rw 61 5 true, .rw 60 5 true, .rw 59 5 true, .rw 58 5 true,
-    .rw 57 5 true, .rw 56 5 true, .slide 65 57, .slide 66 58, .slide 67 59, .slide 68 60,
-    .slide 69 61, .slide 70 62, .slide 71 63, .slide 72 64, .slide 73 65, .rw 73 5 true,
-    .rw 72 5 true, .rw 71 5 true, .rw 70 5 true, .rw 69 5 true, .rw 68 5 true,
-    .rw 67 5 true, .rw 66 5 true, .rw 67 1 false, .rw 17 2 false, .rw 19 2 false,
-    .rw 20 2 true, .rw 59 1 true, .rw 18 0 true, .rw 18 0 false, .rw 59 1 false,
-    .rw 20 2 false, .rw 20 2 true, .rw 59 1 true, .rw 18 0 true, .rw 60 5 false,
-    .rw 61 5 false, .rw 62 5 false, .rw 63 5 false, .rw 64 5 false, .rw 65 5 false,
-    .rw 66 5 false, .rw 67 5 false, .slide 59 67, .slide 58 66, .slide 57 65, .slide 56 64,
-    .slide 55 63, .slide 54 62, .slide 53 61, .slide 52 60, .slide 51 59, .rw 50 5 false,
-    .rw 51 5 false, .rw 52 5 false, .rw 53 5 false, .rw 54 5 false, .rw 55 5 false,
-    .rw 56 5 false, .rw 57 5 false, .slide 49 57, .slide 48 56, .slide 47 55, .slide 46 54,
-    .slide 45 53, .slide 44 52, .slide 43 51, .slide 42 50, .slide 41 49, .slide 40 48,
-    .slide 39 47, .slide 38 46, .slide 37 45, .slide 36 44, .slide 35 43, .slide 34 42,
-    .slide 33 41, .slide 32 40, .slide 31 39, .slide 30 38, .slide 29 37, .slide 28 36,
-    .slide 27 35, .slide 26 34, .slide 25 33, .slide 24 32, .slide 23 31, .slide 22 30,
-    .slide 21 29, .rw 20 5 false, .rw 21 5 false, .rw 22 5 false, .rw 23 5 false,
-    .rw 24 5 false, .rw 25 5 false, .rw 26 5 false, .rw 27 5 false, .slide 19 27,
-    .rw 27 11 false, .slide 31 59, .rw 19 1 false, .rw 23 2 false, .rw 23 2 true,
-    .rw 19 1 true, .rw 28 23 true, .slide 28 19, .slide 29 20, .slide 30 21, .slide 31 22,
-    .slide 32 23, .slide 33 24, .slide 34 25, .slide 25 34, .rw 34 22 true, .rw 34 23 true,
-    .slide 33 40, .slide 32 39, .slide 31 38, .slide 30 37, .slide 29 36, .slide 28 35,
-    .slide 27 34, .slide 26 33, .slide 25 32, .rw 32 1 false, .rw 19 2 false,
-    .rw 19 2 true, .rw 32 1 true, .slide 59 44, .rw 40 11 true, .slide 40 32,
-    .rw 40 5 true, .rw 39 5 true, .rw 38 5 true, .rw 37 5 true, .rw 36 5 true,
-    .rw 35 5 true, .rw 34 5 true, .rw 33 5 true, .slide 42 34, .slide 43 35, .slide 44 36,
-    .slide 45 37, .slide 46 38, .slide 47 39, .slide 48 40, .slide 49 41, .slide 50 42,
-    .slide 51 43, .slide 52 44, .slide 53 45, .slide 54 46, .slide 55 47, .slide 56 48,
-    .slide 57 49, .rw 57 5 true, .rw 56 5 true, .rw 55 5 true, .rw 54 5 true,
-    .rw 53 5 true, .rw 52 5 true, .rw 51 5 true, .rw 50 5 true, .slide 59 51, .slide 60 52,
-    .slide 61 53, .slide 62 54, .slide 63 55, .slide 64 56, .slide 65 57, .slide 66 58,
-    .slide 67 59, .rw 67 5 true, .rw 66 5 true, .rw 65 5 true, .rw 64 5 true,
-    .rw 63 5 true, .rw 62 5 true, .rw 61 5 true, .rw 60 5 true, .rw 34 0 false,
-    .rw 59 1 false, .rw 19 2 false, .rw 19 2 true, .rw 59 1 true, .rw 34 0 true,
-    .rw 32 15 true, .rw 42 5 true, .slide 43 50, .rw 50 5 true, .swap 51, .slide 54 52,
-    .slide 55 53, .slide 56 54, .slide 57 55, .slide 58 56, .slide 59 57, .slide 60 58,
-    .slide 61 59, .slide 62 60, .slide 63 61, .slide 64 62, .slide 65 63, .slide 66 64,
-    .slide 67 65, .slide 68 66, .rw 68 5 true, .rw 67 5 true, .slide 70 68, .slide 71 69,
-    .slide 72 70, .slide 73 71, .slide 74 72, .slide 75 73, .slide 76 74, .slide 77 75,
-    .slide 78 76, .rw 78 5 true, .rw 77 5 true, .rw 78 1 false, .rw 19 2 false,
-    .rw 19 2 true, .rw 78 1 true, .rw 77 5 false, .slide 77 68, .rw 67 5 false,
-    .slide 67 52, .rw 42 10 true, .slide 72 77, .rw 77 5 true, .rw 77 5 false,
-    .slide 77 71, .rw 70 5 false, .slide 70 63, .rw 62 5 false, .slide 62 58,
-    .rw 57 5 false, .slide 57 42, .rw 32 10 true, .rw 62 5 true, .slide 63 70,
-    .rw 70 5 true, .slide 71 77, .rw 77 5 true, .rw 78 1 false, .rw 19 2 false,
-    .rw 19 2 true, .rw 78 1 true, .rw 78 1 false, .rw 19 2 false, .rw 19 2 true,
-    .rw 78 1 true, .rw 77 5 false, .slide 77 71, .rw 70 5 false, .slide 70 63,
-    .rw 62 5 false, .rw 78 5 false, .slide 78 73, .rw 52 15 false, .rw 61 1 false,
-    .rw 19 2 false, .rw 44 11 false, .slide 48 53, .rw 45 22 false, .swap 44,
-    .rw 46 22 false, .swap 45, .rw 47 22 false, .swap 46, .slide 53 51, .rw 47 11 true,
-    .rw 49 0 false, .rw 19 2 true, .rw 59 1 true, .rw 57 0 true, .rw 57 0 false,
-    .rw 59 1 false, .rw 19 2 false, .rw 19 2 true, .rw 59 1 true, .rw 59 2 true,
-    .rw 67 1 false, .rw 19 2 false, .rw 51 2 false, .rw 51 2 true, .rw 19 2 true,
-    .rw 67 1 true, .slide 66 73, .rw 56 21 false, .rw 66 5 true, .slide 67 74,
-    .rw 74 5 true, .swap 75, .rw 77 5 true, .rw 76 5 true, .slide 79 77, .slide 80 78,
-    .slide 81 79, .slide 82 80, .slide 83 81, .slide 84 82, .slide 85 83, .rw 85 5 true,
-    .rw 84 5 true, .slide 87 85, .slide 89 86, .rw 19 2 false, .rw 19 2 true,
-    .rw 19 2 false, .rw 19 2 true, .rw 19 2 false, .rw 19 2 true, .rw 55 13 true,
-    .rw 19 2 false, .rw 42 2 false, .rw 56 2 false, .rw 55 0 false, .rw 54 2 false,
-    .rw 53 4 false, .rw 46 2 false, .rw 45 0 false, .rw 45 0 true, .rw 46 2 true,
-    .rw 53 4 true, .rw 54 2 true, .rw 55 0 true, .rw 56 2 true, .rw 42 2 true,
-    .rw 19 2 true, .rw 55 24 true, .rw 75 12 false, .rw 55 24 false, .rw 19 2 false,
-    .rw 42 2 false, .rw 42 2 true, .rw 19 2 true, .rw 19 19 false, .rw 36 2 false,
-    .rw 36 2 true, .slide 125 123, .rw 122 5 false, .slide 122 115, .rw 114 5 false,
-    .swap 113, .rw 112 5 false, .slide 112 105, .rw 104 5 false, .rw 74 10 false,
-    .slide 84 99, .rw 99 5 true, .slide 100 104, .rw 104 5 true, .slide 105 112,
-    .rw 112 5 true, .swap 113, .rw 114 5 true, .slide 115 122, .rw 122 5 true,
-    .slide 123 125, .slide 125 123, .rw 122 5 false, .slide 122 115, .rw 114 5 false,
-    .rw 84 10 false, .slide 94 109, .rw 109 5 true, .slide 110 114, .rw 114 5 true,
-    .slide 115 122, .rw 122 5 true, .slide 123 125, .swap 124, .rw 94 10 false,
-    .slide 104 119, .rw 119 5 true, .slide 120 125, .rw 36 2 false, .rw 36 2 true,
-    .slide 125 120, .rw 119 5 false, .slide 119 103, .rw 102 5 false, .slide 102 95,
-    .rw 94 5 false, .swap 93, .rw 92 5 false, .slide 92 85, .rw 84 5 false, .rw 71 20 true,
-    .slide 81 84, .rw 84 5 true, .slide 85 92, .rw 92 5 true, .swap 93, .rw 94 5 true,
-    .slide 95 102, .rw 102 5 true, .slide 103 119, .rw 119 5 true, .slide 120 125,
-    .rw 36 2 false, .rw 36 2 true, .slide 125 120, .rw 119 5 false, .slide 119 103,
-    .rw 102 5 false, .slide 102 95, .rw 94 5 false, .rw 81 20 true, .slide 91 94,
-    .rw 94 5 true, .slide 95 102, .rw 102 5 true, .slide 103 119, .rw 119 5 true,
-    .slide 120 125, .rw 36 2 false, .rw 36 2 true, .slide 125 120, .rw 119 5 false,
-    .slide 119 104, .rw 91 20 true, .slide 101 119, .rw 119 5 true, .slide 120 125,
-    .rw 36 2 false, .rw 36 2 true, .rw 36 2 false, .rw 36 2 true, .slide 125 120,
-    .rw 119 5 false, .slide 119 100, .rw 99 5 false, .slide 99 92, .rw 91 5 false,
-    .swap 90, .rw 89 5 false, .slide 89 82, .rw 81 5 false, .rw 51 10 false, .slide 61 76,
-    .rw 76 5 true, .slide 77 81, .rw 81 5 true, .slide 82 89, .rw 89 5 true, .swap 90,
-    .rw 91 5 true, .slide 92 99, .rw 99 5 true, .slide 100 119, .rw 119 5 true,
-    .slide 120 125, .slide 125 120, .rw 119 5 false, .slide 119 100, .rw 99 5 false,
-    .slide 99 92, .rw 91 5 false, .rw 61 10 false, .slide 71 86, .rw 86 5 true,
-    .slide 87 91, .rw 91 5 true, .slide 92 99, .rw 99 5 true, .slide 100 119,
-    .rw 119 5 true, .slide 120 125, .slide 125 120, .rw 119 5 false, .slide 119 101,
-    .rw 71 10 false, .slide 81 96, .rw 96 5 true, .slide 97 119, .rw 119 5 true,
-    .slide 120 125, .rw 36 2 false, .rw 36 2 true, .slide 125 120, .rw 119 5 false,
-    .slide 119 97, .rw 96 5 false, .slide 96 80, .rw 79 5 false, .slide 79 72,
-    .rw 71 5 false, .swap 70, .rw 69 5 false, .slide 69 62, .rw 61 5 false, .rw 44 18 true,
-    .slide 54 61, .rw 61 5 true, .slide 62 69, .rw 69 5 true, .swap 70, .rw 71 5 true,
-    .slide 72 79, .rw 79 5 true, .slide 80 96, .rw 96 5 true, .slide 97 119,
-    .rw 119 5 true, .slide 120 125, .slide 125 120, .rw 119 5 false, .slide 119 97,
-    .rw 96 5 false, .slide 96 80, .rw 79 5 false, .slide 79 72, .rw 71 5 false, .swap 70,
-    .rw 69 5 false, .slide 69 62, .rw 61 5 false, .slide 61 54, .rw 38 16 true,
-    .slide 48 61, .rw 61 5 true, .slide 62 69, .rw 69 5 true, .swap 70, .rw 71 5 true,
-    .slide 72 79, .rw 79 5 true, .slide 80 96, .rw 96 5 true, .slide 97 119,
-    .rw 119 5 true, .slide 120 125, .rw 47 2 false, .rw 47 2 true, .slide 125 120,
-    .rw 119 5 false, .slide 119 97, .rw 96 5 false, .slide 96 80, .rw 79 5 false,
-    .slide 79 72, .rw 71 5 false, .rw 54 18 true, .slide 64 71, .rw 71 5 true,
-    .slide 72 79, .rw 79 5 true, .slide 80 96, .rw 96 5 true, .slide 97 119,
-    .rw 119 5 true, .slide 120 125, .slide 125 120, .rw 119 5 false, .slide 119 97,
-    .rw 96 5 false, .slide 96 80, .rw 79 5 false, .slide 79 72, .rw 71 5 false,
-    .slide 71 64, .rw 48 16 true, .slide 58 71, .rw 71 5 true, .slide 72 79, .rw 79 5 true,
-    .slide 80 96, .rw 96 5 true, .slide 97 119, .rw 119 5 true, .slide 120 125,
-    .rw 57 2 false, .rw 57 2 true, .slide 125 120, .rw 119 5 false, .slide 119 97,
-    .rw 96 5 false, .slide 96 81, .rw 64 18 true, .slide 74 96, .rw 96 5 true,
-    .slide 97 119, .rw 119 5 true, .slide 120 125, .slide 125 120, .rw 119 5 false,
-    .slide 119 97, .rw 96 5 false, .slide 96 74, .rw 58 16 true, .slide 68 96,
-    .rw 96 5 true, .slide 97 119, .rw 119 5 true, .slide 120 125, .rw 67 2 false,
-    .rw 67 2 true, .rw 67 2 false, .rw 67 2 true, .rw 67 2 false, .rw 67 2 true,
-    .slide 125 120, .rw 119 5 false, .slide 119 97, .rw 96 5 false, .slide 96 67,
-    .rw 66 5 false, .slide 66 59, .rw 58 5 false, .swap 57, .rw 56 5 false, .slide 56 49,
-    .rw 48 5 false, .rw 18 10 false, .slide 28 43, .rw 43 5 true, .slide 44 48,
-    .rw 48 5 true, .slide 49 56, .rw 56 5 true, .swap 57, .rw 58 5 true, .slide 59 66,
-    .rw 66 5 true, .slide 67 96, .rw 96 5 true, .slide 97 119, .rw 119 5 true,
-    .slide 120 125, .slide 125 120, .rw 119 5 false, .slide 119 97, .rw 96 5 false,
-    .slide 96 67, .rw 66 5 false, .slide 66 59, .rw 58 5 false, .rw 28 10 false,
-    .slide 38 53, .rw 53 5 true, .slide 54 58, .rw 58 5 true, .slide 59 66, .rw 66 5 true,
-    .slide 67 96, .rw 96 5 true, .slide 97 119, .rw 119 5 true, .slide 120 125,
-    .slide 125 120, .rw 119 5 false, .slide 119 97, .rw 96 5 false, .slide 96 68,
-    .rw 38 10 false, .slide 48 63, .rw 63 5 true, .slide 64 96, .rw 96 5 true,
-    .slide 97 119, .rw 119 5 true, .slide 120 125, .rw 66 2 false, .rw 66 2 true,
-    .slide 125 120, .rw 119 5 false, .slide 119 97, .rw 96 5 false, .slide 96 64,
-    .rw 63 5 false, .slide 63 47, .rw 46 5 false, .slide 46 39, .rw 38 5 false, .swap 37,
-    .rw 36 5 false, .slide 36 29, .rw 28 5 false, .swap 27, .rw 26 5 false, .slide 26 19,
-    .rw 18 5 false, .slide 126 121, .rw 120 5 false, .slide 120 98, .rw 97 5 false,
-    .slide 97 65, .rw 64 5 false, .slide 64 48, .rw 47 5 false, .slide 47 40,
-    .rw 39 5 false, .swap 38, .rw 37 5 false, .slide 37 30, .rw 29 5 false, .slide 127 122,
-    .rw 121 5 false, .slide 121 99, .rw 98 5 false, .slide 98 66, .rw 65 5 false,
-    .slide 65 49, .rw 48 5 false, .slide 48 41, .rw 40 5 false, .slide 128 123,
-    .rw 122 5 false, .slide 122 100, .rw 99 5 false, .slide 99 67, .rw 66 5 false,
-    .slide 66 51, .rw 8 14 false, .rw 26 2 false, .rw 26 2 true, .rw 65 24 true,
-    .rw 64 12 true, .rw 64 24 false, .rw 26 2 false, .rw 51 2 false, .rw 51 2 true,
-    .rw 26 2 true, .rw 9 19 true, .rw 9 2 false, .rw 32 2 false, .rw 46 2 false,
-    .rw 45 0 false, .rw 44 2 false, .rw 43 4 false, .rw 36 2 false, .rw 35 0 false,
-    .rw 35 0 true, .rw 36 2 true, .rw 43 4 true, .rw 44 2 true, .rw 45 0 true,
-    .rw 46 2 true, .rw 32 2 true, .rw 9 2 true, .rw 45 13 false, .rw 9 2 false,
-    .rw 9 2 true, .rw 22 9 false, .rw 9 2 false, .rw 9 2 false, .rw 9 2 true,
-    .rw 41 0 true, .rw 16 0 true, .rw 0 3 true, .slide 7 37, .rw 24 8 false, .rw 38 8 true,
-    .slide 51 7, .rw 0 3 false, .rw 23 0 false, .rw 19 2 false, .rw 18 0 false,
-    .rw 18 0 true, .rw 19 2 true, .rw 23 0 true, .rw 18 7 false, .rw 18 6 false]
+    [Step.rw 17 7 true, Step.rw 29 6 true, Step.rw 22 0 false, Step.rw 18 2 false, Step.rw 17 0 false,
+    Step.rw 17 0 true, Step.rw 18 2 true, Step.rw 22 0 true, Step.rw 0 3 true, Step.slide 7 50, Step.rw 37 8 false,
+    Step.rw 23 8 true, Step.slide 36 7, Step.rw 0 3 false, Step.rw 15 0 false, Step.rw 40 0 false,
+    Step.rw 8 2 false, Step.rw 8 2 true, Step.rw 13 9 true, Step.rw 8 2 true, Step.rw 8 2 false, Step.rw 8 2 true,
+    Step.rw 7 4 true, Step.rw 0 4 true, Step.rw 12 2 false, Step.rw 0 4 false, Step.rw 7 4 false, Step.rw 0 4 true,
+    Step.rw 1 2 true, Step.rw 16 2 true, Step.rw 17 4 true, Step.rw 18 2 true, Step.rw 19 1 true,
+    Step.rw 8 17 true, Step.swap 18, Step.slide 27 19, Step.slide 28 20, Step.slide 29 21, Step.slide 30 22,
+    Step.slide 31 23, Step.slide 32 24, Step.slide 33 25, Step.rw 33 5 true, Step.rw 32 5 true, Step.rw 31 5 true,
+    Step.rw 30 5 true, Step.rw 29 5 true, Step.rw 28 5 true, Step.rw 27 5 true, Step.rw 26 5 true,
+    Step.slide 35 27, Step.slide 36 28, Step.slide 37 29, Step.slide 38 30, Step.slide 39 31, Step.slide 40 32,
+    Step.slide 41 33, Step.slide 42 34, Step.slide 43 35, Step.slide 44 36, Step.slide 45 37, Step.slide 46 38,
+    Step.slide 47 39, Step.slide 48 40, Step.slide 49 41, Step.slide 50 42, Step.slide 51 43, Step.slide 52 44,
+    Step.slide 53 45, Step.slide 54 46, Step.slide 55 47, Step.slide 56 48, Step.slide 57 49, Step.slide 58 50,
+    Step.slide 59 51, Step.slide 60 52, Step.slide 61 53, Step.slide 62 54, Step.slide 63 55, Step.rw 63 5 true,
+    Step.rw 62 5 true, Step.rw 61 5 true, Step.rw 60 5 true, Step.rw 59 5 true, Step.rw 58 5 true,
+    Step.rw 57 5 true, Step.rw 56 5 true, Step.slide 65 57, Step.slide 66 58, Step.slide 67 59, Step.slide 68 60,
+    Step.slide 69 61, Step.slide 70 62, Step.slide 71 63, Step.slide 72 64, Step.slide 73 65, Step.rw 73 5 true,
+    Step.rw 72 5 true, Step.rw 71 5 true, Step.rw 70 5 true, Step.rw 69 5 true, Step.rw 68 5 true,
+    Step.rw 67 5 true, Step.rw 66 5 true, Step.rw 67 1 false, Step.rw 17 2 false, Step.rw 19 2 false,
+    Step.rw 20 2 true, Step.rw 59 1 true, Step.rw 18 0 true, Step.rw 18 0 false, Step.rw 59 1 false,
+    Step.rw 20 2 false, Step.rw 20 2 true, Step.rw 59 1 true, Step.rw 18 0 true, Step.rw 60 5 false,
+    Step.rw 61 5 false, Step.rw 62 5 false, Step.rw 63 5 false, Step.rw 64 5 false, Step.rw 65 5 false,
+    Step.rw 66 5 false, Step.rw 67 5 false, Step.slide 59 67, Step.slide 58 66, Step.slide 57 65, Step.slide 56 64,
+    Step.slide 55 63, Step.slide 54 62, Step.slide 53 61, Step.slide 52 60, Step.slide 51 59, Step.rw 50 5 false,
+    Step.rw 51 5 false, Step.rw 52 5 false, Step.rw 53 5 false, Step.rw 54 5 false, Step.rw 55 5 false,
+    Step.rw 56 5 false, Step.rw 57 5 false, Step.slide 49 57, Step.slide 48 56, Step.slide 47 55, Step.slide 46 54,
+    Step.slide 45 53, Step.slide 44 52, Step.slide 43 51, Step.slide 42 50, Step.slide 41 49, Step.slide 40 48,
+    Step.slide 39 47, Step.slide 38 46, Step.slide 37 45, Step.slide 36 44, Step.slide 35 43, Step.slide 34 42,
+    Step.slide 33 41, Step.slide 32 40, Step.slide 31 39, Step.slide 30 38, Step.slide 29 37, Step.slide 28 36,
+    Step.slide 27 35, Step.slide 26 34, Step.slide 25 33, Step.slide 24 32, Step.slide 23 31, Step.slide 22 30,
+    Step.slide 21 29, Step.rw 20 5 false, Step.rw 21 5 false, Step.rw 22 5 false, Step.rw 23 5 false,
+    Step.rw 24 5 false, Step.rw 25 5 false, Step.rw 26 5 false, Step.rw 27 5 false, Step.slide 19 27,
+    Step.rw 27 11 false, Step.slide 31 59, Step.rw 19 1 false, Step.rw 23 2 false, Step.rw 23 2 true,
+    Step.rw 19 1 true, Step.rw 28 23 true, Step.slide 28 19, Step.slide 29 20, Step.slide 30 21, Step.slide 31 22,
+    Step.slide 32 23, Step.slide 33 24, Step.slide 34 25, Step.slide 25 34, Step.rw 34 22 true, Step.rw 34 23 true,
+    Step.slide 33 40, Step.slide 32 39, Step.slide 31 38, Step.slide 30 37, Step.slide 29 36, Step.slide 28 35,
+    Step.slide 27 34, Step.slide 26 33, Step.slide 25 32, Step.rw 32 1 false, Step.rw 19 2 false,
+    Step.rw 19 2 true, Step.rw 32 1 true, Step.slide 59 44, Step.rw 40 11 true, Step.slide 40 32,
+    Step.rw 40 5 true, Step.rw 39 5 true, Step.rw 38 5 true, Step.rw 37 5 true, Step.rw 36 5 true,
+    Step.rw 35 5 true, Step.rw 34 5 true, Step.rw 33 5 true, Step.slide 42 34, Step.slide 43 35, Step.slide 44 36,
+    Step.slide 45 37, Step.slide 46 38, Step.slide 47 39, Step.slide 48 40, Step.slide 49 41, Step.slide 50 42,
+    Step.slide 51 43, Step.slide 52 44, Step.slide 53 45, Step.slide 54 46, Step.slide 55 47, Step.slide 56 48,
+    Step.slide 57 49, Step.rw 57 5 true, Step.rw 56 5 true, Step.rw 55 5 true, Step.rw 54 5 true,
+    Step.rw 53 5 true, Step.rw 52 5 true, Step.rw 51 5 true, Step.rw 50 5 true, Step.slide 59 51, Step.slide 60 52,
+    Step.slide 61 53, Step.slide 62 54, Step.slide 63 55, Step.slide 64 56, Step.slide 65 57, Step.slide 66 58,
+    Step.slide 67 59, Step.rw 67 5 true, Step.rw 66 5 true, Step.rw 65 5 true, Step.rw 64 5 true,
+    Step.rw 63 5 true, Step.rw 62 5 true, Step.rw 61 5 true, Step.rw 60 5 true, Step.rw 34 0 false,
+    Step.rw 59 1 false, Step.rw 19 2 false, Step.rw 19 2 true, Step.rw 59 1 true, Step.rw 34 0 true,
+    Step.rw 32 15 true, Step.rw 42 5 true, Step.slide 43 50, Step.rw 50 5 true, Step.swap 51, Step.slide 54 52,
+    Step.slide 55 53, Step.slide 56 54, Step.slide 57 55, Step.slide 58 56, Step.slide 59 57, Step.slide 60 58,
+    Step.slide 61 59, Step.slide 62 60, Step.slide 63 61, Step.slide 64 62, Step.slide 65 63, Step.slide 66 64,
+    Step.slide 67 65, Step.slide 68 66, Step.rw 68 5 true, Step.rw 67 5 true, Step.slide 70 68, Step.slide 71 69,
+    Step.slide 72 70, Step.slide 73 71, Step.slide 74 72, Step.slide 75 73, Step.slide 76 74, Step.slide 77 75,
+    Step.slide 78 76, Step.rw 78 5 true, Step.rw 77 5 true, Step.rw 78 1 false, Step.rw 19 2 false,
+    Step.rw 19 2 true, Step.rw 78 1 true, Step.rw 77 5 false, Step.slide 77 68, Step.rw 67 5 false,
+    Step.slide 67 52, Step.rw 42 10 true, Step.slide 72 77, Step.rw 77 5 true, Step.rw 77 5 false,
+    Step.slide 77 71, Step.rw 70 5 false, Step.slide 70 63, Step.rw 62 5 false, Step.slide 62 58,
+    Step.rw 57 5 false, Step.slide 57 42, Step.rw 32 10 true, Step.rw 62 5 true, Step.slide 63 70,
+    Step.rw 70 5 true, Step.slide 71 77, Step.rw 77 5 true, Step.rw 78 1 false, Step.rw 19 2 false,
+    Step.rw 19 2 true, Step.rw 78 1 true, Step.rw 78 1 false, Step.rw 19 2 false, Step.rw 19 2 true,
+    Step.rw 78 1 true, Step.rw 77 5 false, Step.slide 77 71, Step.rw 70 5 false, Step.slide 70 63,
+    Step.rw 62 5 false, Step.rw 78 5 false, Step.slide 78 73, Step.rw 52 15 false, Step.rw 61 1 false,
+    Step.rw 19 2 false, Step.rw 44 11 false, Step.slide 48 53, Step.rw 45 22 false, Step.swap 44,
+    Step.rw 46 22 false, Step.swap 45, Step.rw 47 22 false, Step.swap 46, Step.slide 53 51, Step.rw 47 11 true,
+    Step.rw 49 0 false, Step.rw 19 2 true, Step.rw 59 1 true, Step.rw 57 0 true, Step.rw 57 0 false,
+    Step.rw 59 1 false, Step.rw 19 2 false, Step.rw 19 2 true, Step.rw 59 1 true, Step.rw 59 2 true,
+    Step.rw 67 1 false, Step.rw 19 2 false, Step.rw 51 2 false, Step.rw 51 2 true, Step.rw 19 2 true,
+    Step.rw 67 1 true, Step.slide 66 73, Step.rw 56 21 false, Step.rw 66 5 true, Step.slide 67 74,
+    Step.rw 74 5 true, Step.swap 75, Step.rw 77 5 true, Step.rw 76 5 true, Step.slide 79 77, Step.slide 80 78,
+    Step.slide 81 79, Step.slide 82 80, Step.slide 83 81, Step.slide 84 82, Step.slide 85 83, Step.rw 85 5 true,
+    Step.rw 84 5 true, Step.slide 87 85, Step.slide 89 86, Step.rw 19 2 false, Step.rw 19 2 true,
+    Step.rw 19 2 false, Step.rw 19 2 true, Step.rw 19 2 false, Step.rw 19 2 true, Step.rw 55 13 true,
+    Step.rw 19 2 false, Step.rw 42 2 false, Step.rw 56 2 false, Step.rw 55 0 false, Step.rw 54 2 false,
+    Step.rw 53 4 false, Step.rw 46 2 false, Step.rw 45 0 false, Step.rw 45 0 true, Step.rw 46 2 true,
+    Step.rw 53 4 true, Step.rw 54 2 true, Step.rw 55 0 true, Step.rw 56 2 true, Step.rw 42 2 true,
+    Step.rw 19 2 true, Step.rw 55 24 true, Step.rw 75 12 false, Step.rw 55 24 false, Step.rw 19 2 false,
+    Step.rw 42 2 false, Step.rw 42 2 true, Step.rw 19 2 true, Step.rw 19 19 false, Step.rw 36 2 false,
+    Step.rw 36 2 true, Step.slide 125 123, Step.rw 122 5 false, Step.slide 122 115, Step.rw 114 5 false,
+    Step.swap 113, Step.rw 112 5 false, Step.slide 112 105, Step.rw 104 5 false, Step.rw 74 10 false,
+    Step.slide 84 99, Step.rw 99 5 true, Step.slide 100 104, Step.rw 104 5 true, Step.slide 105 112,
+    Step.rw 112 5 true, Step.swap 113, Step.rw 114 5 true, Step.slide 115 122, Step.rw 122 5 true,
+    Step.slide 123 125, Step.slide 125 123, Step.rw 122 5 false, Step.slide 122 115, Step.rw 114 5 false,
+    Step.rw 84 10 false, Step.slide 94 109, Step.rw 109 5 true, Step.slide 110 114, Step.rw 114 5 true,
+    Step.slide 115 122, Step.rw 122 5 true, Step.slide 123 125, Step.swap 124, Step.rw 94 10 false,
+    Step.slide 104 119, Step.rw 119 5 true, Step.slide 120 125, Step.rw 36 2 false, Step.rw 36 2 true,
+    Step.slide 125 120, Step.rw 119 5 false, Step.slide 119 103, Step.rw 102 5 false, Step.slide 102 95,
+    Step.rw 94 5 false, Step.swap 93, Step.rw 92 5 false, Step.slide 92 85, Step.rw 84 5 false, Step.rw 71 20 true,
+    Step.slide 81 84, Step.rw 84 5 true, Step.slide 85 92, Step.rw 92 5 true, Step.swap 93, Step.rw 94 5 true,
+    Step.slide 95 102, Step.rw 102 5 true, Step.slide 103 119, Step.rw 119 5 true, Step.slide 120 125,
+    Step.rw 36 2 false, Step.rw 36 2 true, Step.slide 125 120, Step.rw 119 5 false, Step.slide 119 103,
+    Step.rw 102 5 false, Step.slide 102 95, Step.rw 94 5 false, Step.rw 81 20 true, Step.slide 91 94,
+    Step.rw 94 5 true, Step.slide 95 102, Step.rw 102 5 true, Step.slide 103 119, Step.rw 119 5 true,
+    Step.slide 120 125, Step.rw 36 2 false, Step.rw 36 2 true, Step.slide 125 120, Step.rw 119 5 false,
+    Step.slide 119 104, Step.rw 91 20 true, Step.slide 101 119, Step.rw 119 5 true, Step.slide 120 125,
+    Step.rw 36 2 false, Step.rw 36 2 true, Step.rw 36 2 false, Step.rw 36 2 true, Step.slide 125 120,
+    Step.rw 119 5 false, Step.slide 119 100, Step.rw 99 5 false, Step.slide 99 92, Step.rw 91 5 false,
+    Step.swap 90, Step.rw 89 5 false, Step.slide 89 82, Step.rw 81 5 false, Step.rw 51 10 false, Step.slide 61 76,
+    Step.rw 76 5 true, Step.slide 77 81, Step.rw 81 5 true, Step.slide 82 89, Step.rw 89 5 true, Step.swap 90,
+    Step.rw 91 5 true, Step.slide 92 99, Step.rw 99 5 true, Step.slide 100 119, Step.rw 119 5 true,
+    Step.slide 120 125, Step.slide 125 120, Step.rw 119 5 false, Step.slide 119 100, Step.rw 99 5 false,
+    Step.slide 99 92, Step.rw 91 5 false, Step.rw 61 10 false, Step.slide 71 86, Step.rw 86 5 true,
+    Step.slide 87 91, Step.rw 91 5 true, Step.slide 92 99, Step.rw 99 5 true, Step.slide 100 119,
+    Step.rw 119 5 true, Step.slide 120 125, Step.slide 125 120, Step.rw 119 5 false, Step.slide 119 101,
+    Step.rw 71 10 false, Step.slide 81 96, Step.rw 96 5 true, Step.slide 97 119, Step.rw 119 5 true,
+    Step.slide 120 125, Step.rw 36 2 false, Step.rw 36 2 true, Step.slide 125 120, Step.rw 119 5 false,
+    Step.slide 119 97, Step.rw 96 5 false, Step.slide 96 80, Step.rw 79 5 false, Step.slide 79 72,
+    Step.rw 71 5 false, Step.swap 70, Step.rw 69 5 false, Step.slide 69 62, Step.rw 61 5 false, Step.rw 44 18 true,
+    Step.slide 54 61, Step.rw 61 5 true, Step.slide 62 69, Step.rw 69 5 true, Step.swap 70, Step.rw 71 5 true,
+    Step.slide 72 79, Step.rw 79 5 true, Step.slide 80 96, Step.rw 96 5 true, Step.slide 97 119,
+    Step.rw 119 5 true, Step.slide 120 125, Step.slide 125 120, Step.rw 119 5 false, Step.slide 119 97,
+    Step.rw 96 5 false, Step.slide 96 80, Step.rw 79 5 false, Step.slide 79 72, Step.rw 71 5 false, Step.swap 70,
+    Step.rw 69 5 false, Step.slide 69 62, Step.rw 61 5 false, Step.slide 61 54, Step.rw 38 16 true,
+    Step.slide 48 61, Step.rw 61 5 true, Step.slide 62 69, Step.rw 69 5 true, Step.swap 70, Step.rw 71 5 true,
+    Step.slide 72 79, Step.rw 79 5 true, Step.slide 80 96, Step.rw 96 5 true, Step.slide 97 119,
+    Step.rw 119 5 true, Step.slide 120 125, Step.rw 47 2 false, Step.rw 47 2 true, Step.slide 125 120,
+    Step.rw 119 5 false, Step.slide 119 97, Step.rw 96 5 false, Step.slide 96 80, Step.rw 79 5 false,
+    Step.slide 79 72, Step.rw 71 5 false, Step.rw 54 18 true, Step.slide 64 71, Step.rw 71 5 true,
+    Step.slide 72 79, Step.rw 79 5 true, Step.slide 80 96, Step.rw 96 5 true, Step.slide 97 119,
+    Step.rw 119 5 true, Step.slide 120 125, Step.slide 125 120, Step.rw 119 5 false, Step.slide 119 97,
+    Step.rw 96 5 false, Step.slide 96 80, Step.rw 79 5 false, Step.slide 79 72, Step.rw 71 5 false,
+    Step.slide 71 64, Step.rw 48 16 true, Step.slide 58 71, Step.rw 71 5 true, Step.slide 72 79, Step.rw 79 5 true,
+    Step.slide 80 96, Step.rw 96 5 true, Step.slide 97 119, Step.rw 119 5 true, Step.slide 120 125,
+    Step.rw 57 2 false, Step.rw 57 2 true, Step.slide 125 120, Step.rw 119 5 false, Step.slide 119 97,
+    Step.rw 96 5 false, Step.slide 96 81, Step.rw 64 18 true, Step.slide 74 96, Step.rw 96 5 true,
+    Step.slide 97 119, Step.rw 119 5 true, Step.slide 120 125, Step.slide 125 120, Step.rw 119 5 false,
+    Step.slide 119 97, Step.rw 96 5 false, Step.slide 96 74, Step.rw 58 16 true, Step.slide 68 96,
+    Step.rw 96 5 true, Step.slide 97 119, Step.rw 119 5 true, Step.slide 120 125, Step.rw 67 2 false,
+    Step.rw 67 2 true, Step.rw 67 2 false, Step.rw 67 2 true, Step.rw 67 2 false, Step.rw 67 2 true,
+    Step.slide 125 120, Step.rw 119 5 false, Step.slide 119 97, Step.rw 96 5 false, Step.slide 96 67,
+    Step.rw 66 5 false, Step.slide 66 59, Step.rw 58 5 false, Step.swap 57, Step.rw 56 5 false, Step.slide 56 49,
+    Step.rw 48 5 false, Step.rw 18 10 false, Step.slide 28 43, Step.rw 43 5 true, Step.slide 44 48,
+    Step.rw 48 5 true, Step.slide 49 56, Step.rw 56 5 true, Step.swap 57, Step.rw 58 5 true, Step.slide 59 66,
+    Step.rw 66 5 true, Step.slide 67 96, Step.rw 96 5 true, Step.slide 97 119, Step.rw 119 5 true,
+    Step.slide 120 125, Step.slide 125 120, Step.rw 119 5 false, Step.slide 119 97, Step.rw 96 5 false,
+    Step.slide 96 67, Step.rw 66 5 false, Step.slide 66 59, Step.rw 58 5 false, Step.rw 28 10 false,
+    Step.slide 38 53, Step.rw 53 5 true, Step.slide 54 58, Step.rw 58 5 true, Step.slide 59 66, Step.rw 66 5 true,
+    Step.slide 67 96, Step.rw 96 5 true, Step.slide 97 119, Step.rw 119 5 true, Step.slide 120 125,
+    Step.slide 125 120, Step.rw 119 5 false, Step.slide 119 97, Step.rw 96 5 false, Step.slide 96 68,
+    Step.rw 38 10 false, Step.slide 48 63, Step.rw 63 5 true, Step.slide 64 96, Step.rw 96 5 true,
+    Step.slide 97 119, Step.rw 119 5 true, Step.slide 120 125, Step.rw 66 2 false, Step.rw 66 2 true,
+    Step.slide 125 120, Step.rw 119 5 false, Step.slide 119 97, Step.rw 96 5 false, Step.slide 96 64,
+    Step.rw 63 5 false, Step.slide 63 47, Step.rw 46 5 false, Step.slide 46 39, Step.rw 38 5 false, Step.swap 37,
+    Step.rw 36 5 false, Step.slide 36 29, Step.rw 28 5 false, Step.swap 27, Step.rw 26 5 false, Step.slide 26 19,
+    Step.rw 18 5 false, Step.slide 126 121, Step.rw 120 5 false, Step.slide 120 98, Step.rw 97 5 false,
+    Step.slide 97 65, Step.rw 64 5 false, Step.slide 64 48, Step.rw 47 5 false, Step.slide 47 40,
+    Step.rw 39 5 false, Step.swap 38, Step.rw 37 5 false, Step.slide 37 30, Step.rw 29 5 false, Step.slide 127 122,
+    Step.rw 121 5 false, Step.slide 121 99, Step.rw 98 5 false, Step.slide 98 66, Step.rw 65 5 false,
+    Step.slide 65 49, Step.rw 48 5 false, Step.slide 48 41, Step.rw 40 5 false, Step.slide 128 123,
+    Step.rw 122 5 false, Step.slide 122 100, Step.rw 99 5 false, Step.slide 99 67, Step.rw 66 5 false,
+    Step.slide 66 51, Step.rw 8 14 false, Step.rw 26 2 false, Step.rw 26 2 true, Step.rw 65 24 true,
+    Step.rw 64 12 true, Step.rw 64 24 false, Step.rw 26 2 false, Step.rw 51 2 false, Step.rw 51 2 true,
+    Step.rw 26 2 true, Step.rw 9 19 true, Step.rw 9 2 false, Step.rw 32 2 false, Step.rw 46 2 false,
+    Step.rw 45 0 false, Step.rw 44 2 false, Step.rw 43 4 false, Step.rw 36 2 false, Step.rw 35 0 false,
+    Step.rw 35 0 true, Step.rw 36 2 true, Step.rw 43 4 true, Step.rw 44 2 true, Step.rw 45 0 true,
+    Step.rw 46 2 true, Step.rw 32 2 true, Step.rw 9 2 true, Step.rw 45 13 false, Step.rw 9 2 false,
+    Step.rw 9 2 true, Step.rw 22 9 false, Step.rw 9 2 false, Step.rw 9 2 false, Step.rw 9 2 true,
+    Step.rw 41 0 true, Step.rw 16 0 true, Step.rw 0 3 true, Step.slide 7 37, Step.rw 24 8 false, Step.rw 38 8 true,
+    Step.slide 51 7, Step.rw 0 3 false, Step.rw 23 0 false, Step.rw 19 2 false, Step.rw 18 0 false,
+    Step.rw 18 0 true, Step.rw 19 2 true, Step.rw 23 0 true, Step.rw 18 7 false, Step.rw 18 6 false]
     (by decide +kernel)
 
 /-- The decoding of (C6), Appendix D. -/
@@ -1407,8 +1407,8 @@ def dt_C6dec : DEqn Th 1 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 1 0, dE_i.place 0 0]
-    [.rw 0 2 true, .slide 8 1, .rw 2 3 true, .rw 1 0 false, .rw 7 0 false, .rw 1 1 false,
-    .rw 1 1 true, .rw 7 0 true, .rw 1 0 true, .rw 9 0 false, .rw 3 1 false, .rw 1 0 false]
+    [Step.rw 0 2 true, Step.slide 8 1, Step.rw 2 3 true, Step.rw 1 0 false, Step.rw 7 0 false, Step.rw 1 1 false,
+    Step.rw 1 1 true, Step.rw 7 0 true, Step.rw 1 0 true, Step.rw 9 0 false, Step.rw 3 1 false, Step.rw 1 0 false]
     (by decide +kernel)
 
 /-- The decoding of (C7), Appendix D. -/
@@ -1417,9 +1417,9 @@ def dt_C7dec : DEqn Th 2 where
   rhs := tw 2 []
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dt_CX2.place 0 0]
-    [.rw 2 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 2 0 true,
-    .rw 2 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 1 1 false,
-    .rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+    [Step.rw 2 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 2 0 true,
+    Step.rw 2 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 1 1 false,
+    Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- The decoding of (dswap unfolded), Appendix D. -/
@@ -1431,44 +1431,44 @@ def dt_dswap : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dt_CX2.place 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0, dt_czrev.place 0 0]
-    [.rw 0 1 true, .rw 1 3 true, .rw 1 2 true, .rw 1 2 false, .rw 1 2 true, .rw 2 4 true,
-    .rw 2 0 true, .rw 7 0 true, .rw 2 1 true, .rw 12 1 true, .rw 9 1 true, .rw 4 0 false,
-    .rw 9 0 false, .rw 2 1 false, .rw 5 1 false, .rw 6 1 false, .rw 6 1 true, .rw 5 1 true,
-    .rw 2 1 true, .rw 9 0 true, .rw 4 0 true, .slide 11 9, .rw 5 5 true, .swap 4,
-    .rw 2 1 false, .rw 5 1 false, .rw 8 1 false, .rw 8 1 true, .rw 5 1 true, .rw 2 1 true,
-    .slide 14 12, .swap 9, .slide 5 3]
+    [Step.rw 0 1 true, Step.rw 1 3 true, Step.rw 1 2 true, Step.rw 1 2 false, Step.rw 1 2 true, Step.rw 2 4 true,
+    Step.rw 2 0 true, Step.rw 7 0 true, Step.rw 2 1 true, Step.rw 12 1 true, Step.rw 9 1 true, Step.rw 4 0 false,
+    Step.rw 9 0 false, Step.rw 2 1 false, Step.rw 5 1 false, Step.rw 6 1 false, Step.rw 6 1 true, Step.rw 5 1 true,
+    Step.rw 2 1 true, Step.rw 9 0 true, Step.rw 4 0 true, Step.slide 11 9, Step.rw 5 5 true, Step.swap 4,
+    Step.rw 2 1 false, Step.rw 5 1 false, Step.rw 8 1 false, Step.rw 8 1 true, Step.rw 5 1 true, Step.rw 2 1 true,
+    Step.slide 14 12, Step.swap 9, Step.slide 5 3]
     (by decide +kernel)
 
 /-- The steps of the decoding of c20. -/
 def steps_c20 : List Step :=
-  [.slide 15 0, .slide 40 18, .slide 48 43, .slide 49 44, .slide 50 45, .slide 51 46,
-    .slide 52 47, .slide 53 48, .slide 54 49, .slide 55 50, .slide 56 51, .slide 57 52,
-    .slide 58 53, .slide 59 54, .slide 60 55, .slide 61 56, .slide 62 57, .slide 63 58,
-    .rw 63 3 true, .rw 62 3 true, .slide 65 63, .slide 66 64, .slide 67 65, .slide 68 66,
-    .slide 69 67, .slide 70 68, .slide 71 69, .slide 72 70, .slide 73 71, .slide 74 72,
-    .slide 75 73, .slide 76 74, .slide 77 75, .slide 78 76, .slide 79 77, .slide 80 78,
-    .slide 81 79, .slide 82 80, .slide 83 81, .slide 84 82, .slide 85 83, .slide 86 84,
-    .slide 87 85, .slide 88 86, .rw 88 3 true, .rw 87 3 true, .slide 90 88, .slide 91 89,
-    .slide 92 90, .slide 93 91, .slide 94 92, .slide 95 93, .rw 17 0 false, .rw 55 0 false,
-    .rw 59 0 false, .rw 79 0 false, .rw 80 0 false, .slide 55 41, .slide 56 42,
-    .slide 57 43, .rw 24 0 true, .rw 46 1 true, .rw 47 1 true, .rw 25 5 false,
-    .slide 24 17, .slide 60 46, .slide 61 47, .slide 62 48, .slide 63 49, .slide 64 50,
-    .slide 65 51, .slide 66 52, .slide 67 53, .slide 68 54, .slide 69 55, .slide 70 56,
-    .slide 71 57, .slide 72 58, .slide 73 59, .rw 73 3 true, .rw 72 3 true, .rw 71 3 true,
-    .rw 70 3 true, .rw 69 3 true, .rw 68 3 true, .rw 67 3 true, .rw 66 3 true,
-    .rw 65 3 true, .rw 64 3 true, .rw 63 3 true, .rw 62 3 true, .rw 61 3 true,
-    .rw 60 3 true, .slide 75 61, .slide 76 62, .slide 77 63, .slide 78 64, .slide 79 65,
-    .slide 80 66, .slide 81 67, .slide 82 68, .slide 83 69, .slide 84 70, .slide 85 71,
-    .slide 86 72, .slide 87 73, .slide 88 74, .slide 89 75, .slide 90 76, .slide 91 77,
-    .slide 92 78, .slide 93 79, .slide 94 80, .rw 94 3 true, .rw 93 3 true, .rw 92 3 true,
-    .rw 91 3 true, .rw 90 3 true, .rw 89 3 true, .rw 88 3 true, .rw 87 3 true,
-    .rw 86 3 true, .rw 85 3 true, .rw 84 3 true, .rw 83 3 true, .rw 82 3 true,
-    .rw 81 3 true, .slide 96 82, .slide 97 83, .slide 98 84, .slide 99 85, .rw 86 1 false,
-    .rw 86 1 false, .rw 24 2 true, .rw 25 6 false, .rw 26 2 false, .slide 0 15,
-    .rw 0 4 false, .rw 0 7 false, .rw 40 4 true, .slide 55 40, .rw 66 2 true,
-    .rw 65 6 true, .rw 64 2 false, .rw 86 1 true, .rw 86 1 true, .slide 57 64,
-    .rw 65 5 true, .rw 87 1 false, .rw 86 1 false, .rw 64 0 false, .rw 57 0 true,
-    .rw 36 0 true, .rw 35 0 true, .rw 15 0 true, .rw 14 0 true, .slide 66 88, .slide 48 63]
+  [Step.slide 15 0, Step.slide 40 18, Step.slide 48 43, Step.slide 49 44, Step.slide 50 45, Step.slide 51 46,
+    Step.slide 52 47, Step.slide 53 48, Step.slide 54 49, Step.slide 55 50, Step.slide 56 51, Step.slide 57 52,
+    Step.slide 58 53, Step.slide 59 54, Step.slide 60 55, Step.slide 61 56, Step.slide 62 57, Step.slide 63 58,
+    Step.rw 63 3 true, Step.rw 62 3 true, Step.slide 65 63, Step.slide 66 64, Step.slide 67 65, Step.slide 68 66,
+    Step.slide 69 67, Step.slide 70 68, Step.slide 71 69, Step.slide 72 70, Step.slide 73 71, Step.slide 74 72,
+    Step.slide 75 73, Step.slide 76 74, Step.slide 77 75, Step.slide 78 76, Step.slide 79 77, Step.slide 80 78,
+    Step.slide 81 79, Step.slide 82 80, Step.slide 83 81, Step.slide 84 82, Step.slide 85 83, Step.slide 86 84,
+    Step.slide 87 85, Step.slide 88 86, Step.rw 88 3 true, Step.rw 87 3 true, Step.slide 90 88, Step.slide 91 89,
+    Step.slide 92 90, Step.slide 93 91, Step.slide 94 92, Step.slide 95 93, Step.rw 17 0 false, Step.rw 55 0 false,
+    Step.rw 59 0 false, Step.rw 79 0 false, Step.rw 80 0 false, Step.slide 55 41, Step.slide 56 42,
+    Step.slide 57 43, Step.rw 24 0 true, Step.rw 46 1 true, Step.rw 47 1 true, Step.rw 25 5 false,
+    Step.slide 24 17, Step.slide 60 46, Step.slide 61 47, Step.slide 62 48, Step.slide 63 49, Step.slide 64 50,
+    Step.slide 65 51, Step.slide 66 52, Step.slide 67 53, Step.slide 68 54, Step.slide 69 55, Step.slide 70 56,
+    Step.slide 71 57, Step.slide 72 58, Step.slide 73 59, Step.rw 73 3 true, Step.rw 72 3 true, Step.rw 71 3 true,
+    Step.rw 70 3 true, Step.rw 69 3 true, Step.rw 68 3 true, Step.rw 67 3 true, Step.rw 66 3 true,
+    Step.rw 65 3 true, Step.rw 64 3 true, Step.rw 63 3 true, Step.rw 62 3 true, Step.rw 61 3 true,
+    Step.rw 60 3 true, Step.slide 75 61, Step.slide 76 62, Step.slide 77 63, Step.slide 78 64, Step.slide 79 65,
+    Step.slide 80 66, Step.slide 81 67, Step.slide 82 68, Step.slide 83 69, Step.slide 84 70, Step.slide 85 71,
+    Step.slide 86 72, Step.slide 87 73, Step.slide 88 74, Step.slide 89 75, Step.slide 90 76, Step.slide 91 77,
+    Step.slide 92 78, Step.slide 93 79, Step.slide 94 80, Step.rw 94 3 true, Step.rw 93 3 true, Step.rw 92 3 true,
+    Step.rw 91 3 true, Step.rw 90 3 true, Step.rw 89 3 true, Step.rw 88 3 true, Step.rw 87 3 true,
+    Step.rw 86 3 true, Step.rw 85 3 true, Step.rw 84 3 true, Step.rw 83 3 true, Step.rw 82 3 true,
+    Step.rw 81 3 true, Step.slide 96 82, Step.slide 97 83, Step.slide 98 84, Step.slide 99 85, Step.rw 86 1 false,
+    Step.rw 86 1 false, Step.rw 24 2 true, Step.rw 25 6 false, Step.rw 26 2 false, Step.slide 0 15,
+    Step.rw 0 4 false, Step.rw 0 7 false, Step.rw 40 4 true, Step.slide 55 40, Step.rw 66 2 true,
+    Step.rw 65 6 true, Step.rw 64 2 false, Step.rw 86 1 true, Step.rw 86 1 true, Step.slide 57 64,
+    Step.rw 65 5 true, Step.rw 87 1 false, Step.rw 86 1 false, Step.rw 64 0 false, Step.rw 57 0 true,
+    Step.rw 36 0 true, Step.rw 35 0 true, Step.rw 15 0 true, Step.rw 14 0 true, Step.slide 66 88, Step.slide 48 63]
 
 /-- Appendix G.4: the decoding of every relation (C1)–(C20) of Bian and Selinger's
 presentation, read left to right as the paper draws it (the reversal of the
@@ -1479,171 +1479,171 @@ theorem BS.rel_derivable : ∀ {a b : Word QCert.CliffordT2.Gen}, QCert.Clifford
   | _, _, .c1 .H₀ _ =>
     derive hsc
       []
-      [.swap 0]
+      [Step.swap 0]
       (by decide +kernel)
   | _, _, .c1 .H₁ _ =>
     derive hsc
       []
-      [.swap 0]
+      [Step.swap 0]
       (by decide +kernel)
   | _, _, .c1 .S₀ _ =>
     derive hsc
       []
-      [.slide 2 0]
+      [Step.slide 2 0]
       (by decide +kernel)
   | _, _, .c1 .S₁ _ =>
     derive hsc
       []
-      [.slide 2 0]
+      [Step.slide 2 0]
       (by decide +kernel)
   | _, _, .c1 .T₀ _ =>
     derive hsc
       []
-      [.swap 0]
+      [Step.swap 0]
       (by decide +kernel)
   | _, _, .c1 .T₁ _ =>
     derive hsc
       []
-      [.swap 0]
+      [Step.swap 0]
       (by decide +kernel)
   | _, _, .c1 .CZ _ =>
     derive hsc
       []
-      [.slide 3 0]
+      [Step.slide 3 0]
       (by decide +kernel)
   | _, _, .c2 .H .H =>
     derive hsc
       []
-      [.swap 0]
+      [Step.swap 0]
       (by decide +kernel)
   | _, _, .c2 .H .S =>
     derive hsc
       []
-      [.slide 2 0]
+      [Step.slide 2 0]
       (by decide +kernel)
   | _, _, .c2 .H .T =>
     derive hsc
       []
-      [.swap 0]
+      [Step.swap 0]
       (by decide +kernel)
   | _, _, .c2 .S .H =>
     derive hsc
       []
-      [.slide 0 2]
+      [Step.slide 0 2]
       (by decide +kernel)
   | _, _, .c2 .S .S =>
     derive hsc
       []
-      [.slide 1 3, .slide 0 2]
+      [Step.slide 1 3, Step.slide 0 2]
       (by decide +kernel)
   | _, _, .c2 .S .T =>
     derive hsc
       []
-      [.slide 0 2]
+      [Step.slide 0 2]
       (by decide +kernel)
   | _, _, .c2 .T .H =>
     derive hsc
       []
-      [.swap 0]
+      [Step.swap 0]
       (by decide +kernel)
   | _, _, .c2 .T .S =>
     derive hsc
       []
-      [.slide 2 0]
+      [Step.slide 2 0]
       (by decide +kernel)
   | _, _, .c2 .T .T =>
     derive hsc
       []
-      [.swap 0]
+      [Step.swap 0]
       (by decide +kernel)
   | _, _, .c3 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 2 0]
-      [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+      [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, .c4 0 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1]
-      [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+      [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, .c4 1 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0]
-      [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+      [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, .c5 0 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 1]
-      [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+      [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, .c5 1 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0]
-      [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+      [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, .c6 0 =>
     derive hsc
       [DEqn.scal (Base := pres.Base fun _ => True) Gate.ω 1 0, dt_C6dec.place 0 1]
-      [.rw 0 1 false, .rw 0 0 false]
+      [Step.rw 0 1 false, Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, .c6 1 =>
     derive hsc
       [dt_C6dec.place 1 0]
-      [.rw 0 0 false]
+      [Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, .c7 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dt_CX2.place 0 0,
       dt_C7dec.place 0 0]
-      [.rw 2 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 2 0 true,
-      .rw 2 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 2 0 true,
-      .rw 0 2 false]
+      [Step.rw 2 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 2 0 true,
+      Step.rw 2 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 2 0 true,
+      Step.rw 0 2 false]
       (by decide +kernel)
   | _, _, .c8 =>
     derive hsc
       [dt_C.place 0 0]
-      [.slide 2 4, .rw 1 0 false, .rw 2 0 false, .slide 0 2]
+      [Step.slide 2 4, Step.rw 1 0 false, Step.rw 2 0 false, Step.slide 0 2]
       (by decide +kernel)
   | _, _, .c9 =>
     derive hsc
       [dt_czrev.place 0 0, dt_C_m.place 0 0]
-      [.rw 0 0 false, .slide 4 6, .rw 1 1 false, .swap 0, .rw 2 1 false, .swap 1, .rw 2 0 true]
+      [Step.rw 0 0 false, Step.slide 4 6, Step.rw 1 1 false, Step.swap 0, Step.rw 2 1 false, Step.swap 1, Step.rw 2 0 true]
       (by decide +kernel)
   | _, _, .c10 =>
     derive hsc
       [dt_C10dec.place 0 0]
-      [.rw 0 0 false, .slide 0 2, .slide 5 2, .slide 6 3, .slide 10 4, .slide 4 10,
-      .slide 3 9, .slide 2 8, .slide 1 7, .slide 0 6]
+      [Step.rw 0 0 false, Step.slide 0 2, Step.slide 5 2, Step.slide 6 3, Step.slide 10 4, Step.slide 4 10,
+      Step.slide 3 9, Step.slide 2 8, Step.slide 1 7, Step.slide 0 6]
       (by decide +kernel)
   | _, _, .c11 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dt_C.place 0 0,
       dt_C11dec.place 0 0]
-      [.rw 2 0 false, .rw 2 0 true, .rw 2 0 false, .rw 2 0 true, .rw 0 2 false, .slide 7 5,
-      .slide 10 6, .rw 10 1 true, .rw 9 1 true, .rw 8 1 true, .rw 7 1 true, .slide 12 8,
-      .rw 5 0 false, .rw 5 0 true, .rw 5 0 false, .rw 5 0 true, .slide 8 12, .rw 7 1 false,
-      .rw 8 1 false, .rw 9 1 false, .rw 10 1 false, .slide 6 10]
+      [Step.rw 2 0 false, Step.rw 2 0 true, Step.rw 2 0 false, Step.rw 2 0 true, Step.rw 0 2 false, Step.slide 7 5,
+      Step.slide 10 6, Step.rw 10 1 true, Step.rw 9 1 true, Step.rw 8 1 true, Step.rw 7 1 true, Step.slide 12 8,
+      Step.rw 5 0 false, Step.rw 5 0 true, Step.rw 5 0 false, Step.rw 5 0 true, Step.slide 8 12, Step.rw 7 1 false,
+      Step.rw 8 1 false, Step.rw 9 1 false, Step.rw 10 1 false, Step.slide 6 10]
       (by decide +kernel)
   | _, _, .c12 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dt_C.place 0 0,
       dt_C12dec.place 0 0]
-      [.swap 3, .rw 2 0 false, .rw 2 0 true, .rw 2 0 false, .rw 2 0 true, .rw 0 2 false,
-      .slide 13 0, .slide 14 1, .slide 15 2, .slide 16 3, .slide 17 4, .slide 18 5,
-      .slide 19 6, .slide 9 7, .slide 10 8, .slide 12 9, .rw 14 1 true, .rw 13 1 true,
-      .slide 16 14, .slide 14 16, .rw 13 1 false, .rw 14 1 false, .slide 9 14]
+      [Step.swap 3, Step.rw 2 0 false, Step.rw 2 0 true, Step.rw 2 0 false, Step.rw 2 0 true, Step.rw 0 2 false,
+      Step.slide 13 0, Step.slide 14 1, Step.slide 15 2, Step.slide 16 3, Step.slide 17 4, Step.slide 18 5,
+      Step.slide 19 6, Step.slide 9 7, Step.slide 10 8, Step.slide 12 9, Step.rw 14 1 true, Step.rw 13 1 true,
+      Step.slide 16 14, Step.slide 14 16, Step.rw 13 1 false, Step.rw 14 1 false, Step.slide 9 14]
       (by decide +kernel)
   | _, _, .c13 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dt_C.place 0 0,
       dt_C13dec.place 0 0]
-      [.rw 2 0 false, .rw 2 0 true, .rw 2 0 false, .rw 2 0 true, .rw 0 2 false, .slide 13 0,
-      .slide 14 1, .slide 15 2, .slide 16 3, .slide 17 4, .slide 18 5, .slide 19 6,
-      .slide 11 9, .slide 12 10, .slide 13 11, .slide 14 12, .rw 14 1 true, .rw 13 1 true,
-      .slide 16 14, .slide 17 15, .slide 18 16, .slide 19 17, .rw 14 0 false, .rw 14 0 true,
-      .rw 14 0 false, .rw 14 0 true, .slide 17 19, .slide 16 18, .slide 15 17, .slide 14 16,
-      .rw 13 1 false, .rw 14 1 false, .slide 12 14, .slide 11 13, .slide 10 12, .slide 9 11,
-      .slide 8 10, .slide 7 9]
+      [Step.rw 2 0 false, Step.rw 2 0 true, Step.rw 2 0 false, Step.rw 2 0 true, Step.rw 0 2 false, Step.slide 13 0,
+      Step.slide 14 1, Step.slide 15 2, Step.slide 16 3, Step.slide 17 4, Step.slide 18 5, Step.slide 19 6,
+      Step.slide 11 9, Step.slide 12 10, Step.slide 13 11, Step.slide 14 12, Step.rw 14 1 true, Step.rw 13 1 true,
+      Step.slide 16 14, Step.slide 17 15, Step.slide 18 16, Step.slide 19 17, Step.rw 14 0 false, Step.rw 14 0 true,
+      Step.rw 14 0 false, Step.rw 14 0 true, Step.slide 17 19, Step.slide 16 18, Step.slide 15 17, Step.slide 14 16,
+      Step.rw 13 1 false, Step.rw 14 1 false, Step.slide 12 14, Step.slide 11 13, Step.slide 10 12, Step.slide 9 11,
+      Step.slide 8 10, Step.slide 7 9]
       (by decide +kernel)
   | _, _, .c14 0 =>
     derive hsc
@@ -1660,44 +1660,44 @@ theorem BS.rel_derivable : ∀ {a b : Word QCert.CliffordT2.Gen}, QCert.Clifford
       [DEqn.scal (Base := pres.Base fun _ => True) Gate.ω 1 0,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 1,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.TX trivial 0 1, dt_X2.place 0 1]
-      [.rw 6 2 true, .rw 19 0 false, .slide 19 0, .rw 13 1 false, .rw 1 3 false]
+      [Step.rw 6 2 true, Step.rw 19 0 false, Step.slide 19 0, Step.rw 13 1 false, Step.rw 1 3 false]
       (by decide +kernel)
   | _, _, .c15 1 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.TX trivial 1 0, dt_X2.place 1 0]
-      [.rw 6 1 true, .slide 19 0, .rw 13 0 false, .rw 1 2 false]
+      [Step.rw 6 1 true, Step.slide 19 0, Step.rw 13 0 false, Step.rw 1 2 false]
       (by decide +kernel)
   | _, _, .c16 =>
     derive hsc
       [dt_C.place 0 0]
-      [.swap 2, .rw 1 0 false, .swap 0]
+      [Step.swap 2, Step.rw 1 0 false, Step.swap 0]
       (by decide +kernel)
   | _, _, .c17 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dt_C17dec.place 0 0]
-      [.slide 2 0, .swap 6, .rw 4 0 false, .rw 7 0 false, .rw 7 0 true, .rw 4 0 true,
-      .rw 4 0 false, .rw 7 0 false, .rw 7 0 true, .rw 4 0 true, .swap 0, .slide 7 4,
-      .rw 0 1 false, .rw 3 0 false, .rw 6 0 false, .rw 6 0 true, .rw 3 0 true, .rw 3 0 false,
-      .rw 6 0 false, .rw 6 0 true, .rw 3 0 true, .swap 5, .swap 0]
+      [Step.slide 2 0, Step.swap 6, Step.rw 4 0 false, Step.rw 7 0 false, Step.rw 7 0 true, Step.rw 4 0 true,
+      Step.rw 4 0 false, Step.rw 7 0 false, Step.rw 7 0 true, Step.rw 4 0 true, Step.swap 0, Step.slide 7 4,
+      Step.rw 0 1 false, Step.rw 3 0 false, Step.rw 6 0 false, Step.rw 6 0 true, Step.rw 3 0 true, Step.rw 3 0 false,
+      Step.rw 6 0 false, Step.rw 6 0 true, Step.rw 3 0 true, Step.swap 5, Step.swap 0]
       (by decide +kernel)
   | _, _, .c18 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dt_C18dec.place 0 0]
-      [.rw 14 0 false, .rw 16 0 false, .rw 25 0 false, .rw 26 0 false, .rw 26 0 true,
-      .rw 25 0 true, .rw 16 0 true, .rw 14 0 true, .rw 14 0 false, .rw 16 0 false,
-      .rw 28 0 false, .rw 25 0 false, .rw 0 1 false, .rw 15 0 true, .rw 19 0 true,
-      .rw 1 0 true, .rw 0 0 true, .rw 0 0 false, .rw 1 0 false, .rw 15 0 false,
-      .rw 17 0 false, .rw 17 0 true, .rw 15 0 true, .rw 1 0 true, .rw 0 0 true]
+      [Step.rw 14 0 false, Step.rw 16 0 false, Step.rw 25 0 false, Step.rw 26 0 false, Step.rw 26 0 true,
+      Step.rw 25 0 true, Step.rw 16 0 true, Step.rw 14 0 true, Step.rw 14 0 false, Step.rw 16 0 false,
+      Step.rw 28 0 false, Step.rw 25 0 false, Step.rw 0 1 false, Step.rw 15 0 true, Step.rw 19 0 true,
+      Step.rw 1 0 true, Step.rw 0 0 true, Step.rw 0 0 false, Step.rw 1 0 false, Step.rw 15 0 false,
+      Step.rw 17 0 false, Step.rw 17 0 true, Step.rw 15 0 true, Step.rw 1 0 true, Step.rw 0 0 true]
       (by decide +kernel)
   | _, _, .c19 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dt_C19dec.place 0 0]
-      [.rw 22 0 false, .rw 24 0 false, .rw 35 0 false, .rw 36 0 false, .rw 36 0 true,
-      .rw 35 0 true, .rw 24 0 true, .rw 22 0 true, .rw 22 0 false, .rw 24 0 false,
-      .rw 38 0 false, .rw 35 0 false, .rw 0 1 false, .rw 23 0 true, .rw 27 0 true,
-      .rw 1 0 true, .rw 0 0 true, .rw 0 0 false, .rw 1 0 false, .rw 23 0 false,
-      .rw 25 0 false, .rw 25 0 true, .rw 23 0 true, .rw 1 0 true, .rw 0 0 true]
+      [Step.rw 22 0 false, Step.rw 24 0 false, Step.rw 35 0 false, Step.rw 36 0 false, Step.rw 36 0 true,
+      Step.rw 35 0 true, Step.rw 24 0 true, Step.rw 22 0 true, Step.rw 22 0 false, Step.rw 24 0 false,
+      Step.rw 38 0 false, Step.rw 35 0 false, Step.rw 0 1 false, Step.rw 23 0 true, Step.rw 27 0 true,
+      Step.rw 1 0 true, Step.rw 0 0 true, Step.rw 0 0 false, Step.rw 1 0 false, Step.rw 23 0 false,
+      Step.rw 25 0 false, Step.rw 25 0 true, Step.rw 23 0 true, Step.rw 1 0 true, Step.rw 0 0 true]
       (by decide +kernel)
   | _, _, .c20 =>
     derive hsc
@@ -1732,22 +1732,22 @@ theorem BS.DE_gen : ∀ g : Gen Gate 2, Derivable (Lift Th 2) (BS.D (BS.e g)) (F
   | .gate2 .CX =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0]
-      [.rw 0 0 false, .rw 1 0 false, .rw 1 0 true, .rw 0 0 true, .rw 3 0 false, .rw 0 0 false]
+      [Step.rw 0 0 false, Step.rw 1 0 false, Step.rw 1 0 true, Step.rw 0 0 true, Step.rw 3 0 false, Step.rw 0 0 false]
       (by decide +kernel)
   | .gate2 .swap =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, dt_dswap.place 0 0,
       DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0]
-      [.swap 5, .slide 9 11, .rw 0 1 false, .rw 1 1 false, .rw 4 1 false, .rw 7 1 false,
-      .rw 7 1 true, .rw 4 1 true, .rw 1 1 true, .rw 0 1 true, .rw 13 0 true, .slide 15 13,
-      .slide 16 14, .slide 6 4, .swap 10, .slide 15 13, .rw 1 2 true, .rw 0 3 true,
-      .rw 1 0 false]
+      [Step.swap 5, Step.slide 9 11, Step.rw 0 1 false, Step.rw 1 1 false, Step.rw 4 1 false, Step.rw 7 1 false,
+      Step.rw 7 1 true, Step.rw 4 1 true, Step.rw 1 1 true, Step.rw 0 1 true, Step.rw 13 0 true, Step.slide 15 13,
+      Step.slide 16 14, Step.slide 6 4, Step.swap 10, Step.slide 15 13, Step.rw 1 2 true, Step.rw 0 3 true,
+      Step.rw 1 0 false]
       (by decide +kernel)
   | .up (.gate0 .ω) =>
     derive hsc
       [DEqn.scal (Base := pres.Base fun _ => True) Gate.ω 1 0]
-      [.rw 0 0 true]
+      [Step.rw 0 0 true]
       (by decide +kernel)
   | .up (.gate1 .H) =>
     derive hsc
@@ -1763,7 +1763,7 @@ theorem BS.DE_gen : ∀ g : Gen Gate 2, Derivable (Lift Th 2) (BS.D (BS.e g)) (F
     derive hsc
       [DEqn.scal (Base := pres.Base fun _ => True) Gate.ω 1 0,
       DEqn.scal (Base := pres.Base fun _ => True) Gate.ω 0 1]
-      [.rw 0 0 true, .rw 0 1 true]
+      [Step.rw 0 0 true, Step.rw 0 1 true]
       (by decide +kernel)
 
 /-- The decoding of every relation of Greylyn's presentation in dimension `2`
@@ -1778,14 +1778,14 @@ theorem GL.rel_derivable₁ : ∀ {a b : Word (QCert.Greylyn.Gen 2)}, QCert.Grey
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 1 0]
-          [.slide 8 1, .slide 16 2, .slide 24 3, .slide 32 4, .slide 40 5, .slide 48 6,
-          .slide 56 7, .rw 8 0 false, .rw 8 0 false, .rw 8 0 false, .rw 8 0 false, .rw 8 0 false,
-          .rw 8 0 false, .rw 8 0 false, .rw 0 1 false]
+          [Step.slide 8 1, Step.slide 16 2, Step.slide 24 3, Step.slide 32 4, Step.slide 40 5, Step.slide 48 6,
+          Step.slide 56 7, Step.rw 8 0 false, Step.rw 8 0 false, Step.rw 8 0 false, Step.rw 8 0 false, Step.rw 8 0 false,
+          Step.rw 8 0 false, Step.rw 8 0 false, Step.rw 0 1 false]
           (by decide +kernel)
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0]
-          [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+          [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
           (by decide +kernel)
     | r2 j k h =>
       fin_cases j <;> fin_cases k
@@ -1793,7 +1793,7 @@ theorem GL.rel_derivable₁ : ∀ {a b : Word (QCert.Greylyn.Gen 2)}, QCert.Grey
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0]
-          [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+          [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
           (by revert h; decide +kernel)
       · exfalso; revert h; decide
       · exfalso; revert h; decide
@@ -1804,8 +1804,8 @@ theorem GL.rel_derivable₁ : ∀ {a b : Word (QCert.Greylyn.Gen 2)}, QCert.Grey
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0, dt_X2.place 0 0]
-          [.rw 5 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 5 0 true,
-          .rw 0 2 false]
+          [Step.rw 5 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 5 0 true,
+          Step.rw 0 2 false]
           (by revert h; decide +kernel)
       · exfalso; revert h; decide
       · exfalso; revert h; decide
@@ -1815,12 +1815,12 @@ theorem GL.rel_derivable₁ : ∀ {a b : Word (QCert.Greylyn.Gen 2)}, QCert.Grey
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0]
-          [.rw 1 0 false, .rw 1 0 true, .rw 1 0 false, .rw 1 0 true, .swap 0]
+          [Step.rw 1 0 false, Step.rw 1 0 true, Step.rw 1 0 false, Step.rw 1 0 true, Step.swap 0]
           (by revert h; decide +kernel)
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0]
-          [.swap 0, .rw 1 0 false, .rw 1 0 true, .rw 1 0 false, .rw 1 0 true]
+          [Step.swap 0, Step.rw 1 0 false, Step.rw 1 0 true, Step.rw 1 0 false, Step.rw 1 0 true]
           (by revert h; decide +kernel)
       · exfalso; revert h; decide
     | r10 j k h =>
@@ -1830,7 +1830,7 @@ theorem GL.rel_derivable₁ : ∀ {a b : Word (QCert.Greylyn.Gen 2)}, QCert.Grey
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.TX trivial 0 0]
-          [.rw 0 0 true, .rw 7 1 true, .slide 20 0, .rw 14 0 false]
+          [Step.rw 0 0 true, Step.rw 7 1 true, Step.slide 20 0, Step.rw 14 0 false]
           (by revert h; decide +kernel)
       · exfalso; revert h; decide
       · exfalso; revert h; decide
@@ -1840,7 +1840,7 @@ theorem GL.rel_derivable₁ : ∀ {a b : Word (QCert.Greylyn.Gen 2)}, QCert.Grey
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.TX trivial 0 0]
-          [.slide 6 0, .slide 0 13, .rw 0 0 false]
+          [Step.slide 6 0, Step.slide 0 13, Step.rw 0 0 false]
           (by revert h; decide +kernel)
       · exfalso; revert h; decide
       · exfalso; revert h; decide
@@ -1850,8 +1850,8 @@ theorem GL.rel_derivable₁ : ∀ {a b : Word (QCert.Greylyn.Gen 2)}, QCert.Grey
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0]
-          [.rw 1 0 false, .rw 1 0 true, .rw 1 0 false, .rw 7 0 true, .rw 7 0 false, .rw 7 0 true,
-          .slide 0 6]
+          [Step.rw 1 0 false, Step.rw 1 0 true, Step.rw 1 0 false, Step.rw 7 0 true, Step.rw 7 0 false, Step.rw 7 0 true,
+          Step.slide 0 6]
           (by revert h; decide +kernel)
       · exfalso; revert h; decide
       · exfalso; revert h; decide
@@ -1861,8 +1861,8 @@ theorem GL.rel_derivable₁ : ∀ {a b : Word (QCert.Greylyn.Gen 2)}, QCert.Grey
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0]
-          [.rw 1 0 false, .rw 1 0 true, .rw 1 0 false, .rw 2 0 true, .rw 2 0 false, .rw 2 0 true,
-          .swap 0]
+          [Step.rw 1 0 false, Step.rw 1 0 true, Step.rw 1 0 false, Step.rw 2 0 true, Step.rw 2 0 false, Step.rw 2 0 true,
+          Step.swap 0]
           (by revert h; decide +kernel)
       · exfalso; revert h; decide
       · exfalso; revert h; decide
@@ -1872,7 +1872,7 @@ theorem GL.rel_derivable₁ : ∀ {a b : Word (QCert.Greylyn.Gen 2)}, QCert.Grey
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0]
-          [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+          [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
           (by revert h; decide +kernel)
       · exfalso; revert h; decide
       · exfalso; revert h; decide
@@ -1885,11 +1885,11 @@ theorem GL.rel_derivable₁ : ∀ {a b : Word (QCert.Greylyn.Gen 2)}, QCert.Grey
           DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 1 0,
           DEqn.inst (P := pres) (S := fun _ => True) Ax.E trivial 0 0, dt_XSX.place 0 0]
-          [.swap 0, .slide 9 1, .rw 3 1 false, .slide 2 0, .slide 2 8, .slide 1 7, .rw 1 4 true,
-          .rw 0 0 false, .rw 12 0 false, .rw 4 3 false, .slide 17 0, .rw 1 1 false,
-          .rw 4 1 false, .rw 0 2 true, .rw 12 1 true, .rw 12 1 true, .rw 12 1 true, .rw 9 1 true,
-          .rw 9 1 true, .rw 9 1 true, .rw 9 1 true, .rw 9 1 true, .slide 8 65, .slide 7 57,
-          .slide 6 49, .slide 5 40, .slide 4 32, .slide 3 24, .slide 2 16, .slide 1 8]
+          [Step.swap 0, Step.slide 9 1, Step.rw 3 1 false, Step.slide 2 0, Step.slide 2 8, Step.slide 1 7, Step.rw 1 4 true,
+          Step.rw 0 0 false, Step.rw 12 0 false, Step.rw 4 3 false, Step.slide 17 0, Step.rw 1 1 false,
+          Step.rw 4 1 false, Step.rw 0 2 true, Step.rw 12 1 true, Step.rw 12 1 true, Step.rw 12 1 true, Step.rw 9 1 true,
+          Step.rw 9 1 true, Step.rw 9 1 true, Step.rw 9 1 true, Step.rw 9 1 true, Step.slide 8 65, Step.slide 7 57,
+          Step.slide 6 49, Step.slide 5 40, Step.slide 4 32, Step.slide 3 24, Step.slide 2 16, Step.slide 1 8]
           (by revert h; decide +kernel)
       · exfalso; revert h; decide
       · exfalso; revert h; decide
@@ -1909,7 +1909,7 @@ theorem GL.DE₁_gen : ∀ g : Gen Gate 1, Derivable (Lift Th 1) (GL.D₁ (GL.e�
   | .gate0 .ω =>
       derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0]
-      [.rw 1 0 false, .rw 1 0 true, .rw 1 0 false]
+      [Step.rw 1 0 false, Step.rw 1 0 true, Step.rw 1 0 false]
       (by decide +kernel)
   | .gate1 .H => Derivable.refl _
   | .gate1 .T => Derivable.refl _
@@ -1917,7 +1917,7 @@ theorem GL.DE₁_gen : ∀ g : Gen Gate 1, Derivable (Lift Th 1) (GL.D₁ (GL.e�
       derive hsc
       [DEqn.scal (Base := pres.Base fun _ => True) Gate.ω 0 0,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0]
-      [.rw 1 1 false, .rw 1 1 true, .rw 1 1 false, .rw 0 0 true]
+      [Step.rw 1 1 false, Step.rw 1 1 true, Step.rw 1 1 false, Step.rw 0 0 true]
       (by decide +kernel)
 
 /-- The decoding of every relation of Greylyn's presentation in dimension `1`
@@ -1931,7 +1931,7 @@ theorem GL.rel_derivable₀ : ∀ {a b : Word (QCert.Greylyn.Gen 1)}, QCert.Grey
       · exact
           derive hsc
           [DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 0 0]
-          [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+          [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
           (by decide +kernel)
     | r2 j k h => exfalso; revert h; revert j k; decide
     | r3 j k h => exfalso; revert h; revert j k; decide

@@ -18,44 +18,44 @@ set_option maxRecDepth 8000
 
 /-- The derived generators of kind A. -/
 def bA : ℕ → ℕ → List Lt
-  | 2, a => [.H a]
+  | 2, a => [Lt.H a]
   | _, _ => []
 
 /-- The derived generators of kind B. -/
 def bB : ℕ → ℕ → List Lt
-  | 1, a => [.H a, .CZ a, .H a, .H (a + 1), .CZ a, .H a, .H (a + 1), .CZ a]
-  | 2, a => [.CZ a, .H a, .H (a + 1), .CZ a]
-  | 3, a => [.H (a + 1), .CZ a, .H a, .H (a + 1), .CZ a]
-  | 4, a => [.H a, .CZ a, .H a, .CZ a, .H a, .H (a + 1), .CZ a]
-  | 5, a => [.H a, .CZ a, .H a, .H (a + 1), .CZ a, .H a, .H (a + 1), .CZ a]
-  | 6, a => [.CZ a, .H a, .H (a + 1), .CZ a]
-  | 7, a => [.H (a + 1), .CZ a, .H a, .H (a + 1), .CZ a]
-  | 8, a => [.H a, .CZ a, .H a, .CZ a, .H a, .H (a + 1), .CZ a]
+  | 1, a => [Lt.H a, Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a]
+  | 2, a => [Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a]
+  | 3, a => [Lt.H (a + 1), Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a]
+  | 4, a => [Lt.H a, Lt.CZ a, Lt.H a, Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a]
+  | 5, a => [Lt.H a, Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a]
+  | 6, a => [Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a]
+  | 7, a => [Lt.H (a + 1), Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a]
+  | 8, a => [Lt.H a, Lt.CZ a, Lt.H a, Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a]
   | _, _ => []
 
 /-- The derived generators of kind C. -/
 def bC : ℕ → ℕ → List Lt
-  | 2, a => [.H a, .Z a, .H a]
+  | 2, a => [Lt.H a, Lt.Z a, Lt.H a]
   | _, _ => []
 
 /-- The derived generators of kind D. -/
 def bD : ℕ → ℕ → List Lt
-  | 1, a => [.CZ a, .H a, .H (a + 1), .CZ a, .H a, .H (a + 1), .CZ a, .H a]
-  | 2, a => [.H (a + 1), .CZ a, .H a, .H (a + 1), .CZ a, .H a]
-  | 3, a => [.H a, .H (a + 1), .CZ a, .H a, .H (a + 1), .CZ a, .H a]
-  | 4, a => [.H (a + 1), .CZ a, .H a, .H (a + 1), .CZ a, .H a, .CZ a]
+  | 1, a => [Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a, Lt.H a]
+  | 2, a => [Lt.H (a + 1), Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a, Lt.H a]
+  | 3, a => [Lt.H a, Lt.H (a + 1), Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a, Lt.H a]
+  | 4, a => [Lt.H (a + 1), Lt.CZ a, Lt.H a, Lt.H (a + 1), Lt.CZ a, Lt.H a, Lt.CZ a]
   | _, _ => []
 
 /-- The derived generators of kind E. -/
 def bE : ℕ → ℕ → List Lt
-  | 2, a => [.Z a]
+  | 2, a => [Lt.Z a]
   | _, _ => []
 
 /-- `X = HZH` on the wire `a`. -/
-def bX (a : ℕ) : List Lt := [.H a, .Z a, .H a]
+def bX (a : ℕ) : List Lt := [Lt.H a, Lt.Z a, Lt.H a]
 
 /-- `CXZ` with `XZ` on the wire `t` and its control on the wire `c`
 (adjacent): `H_t CZ H_t CZ`. -/
-def bCXZ (t c : ℕ) : List Lt := [.H t, .CZ (min t c), .H t, .CZ (min t c)]
+def bCXZ (t c : ℕ) : List Lt := [Lt.H t, Lt.CZ (min t c), Lt.H t, Lt.CZ (min t c)]
 
 end QCert.RealStabilizer

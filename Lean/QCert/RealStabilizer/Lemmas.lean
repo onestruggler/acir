@@ -16,7 +16,7 @@ set_option maxRecDepth 8000
 
 /-- Lemma 1 of the supplement. -/
 def eL1 : Eqn :=
-  ⟨1, [.H 0, .Z 0, .H 0, .H 0, .Z 0, .H 0],
+  ⟨1, [Lt.H 0, Lt.Z 0, Lt.H 0, Lt.H 0, Lt.Z 0, Lt.H 0],
     []⟩
 
 theorem hL1 : Holds eL1.k eL1.l eL1.r :=
@@ -25,7 +25,7 @@ theorem hL1 : Holds eL1.k eL1.l eL1.r :=
     (by decide +kernel)
 /-- Lemma 2 of the supplement. -/
 def eL2 : Eqn :=
-  ⟨2, [.H 1, .CZ 0, .H 1, .H 1, .CZ 0, .H 1],
+  ⟨2, [Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 1, Lt.CZ 0, Lt.H 1],
     []⟩
 
 theorem hL2 : Holds eL2.k eL2.l eL2.r :=
@@ -34,7 +34,7 @@ theorem hL2 : Holds eL2.k eL2.l eL2.r :=
     (by decide +kernel)
 /-- Lemma 2 of the supplement, upside down. -/
 def eML2 : Eqn :=
-  ⟨2, [.H 0, .CZ 0, .H 0, .H 0, .CZ 0, .H 0],
+  ⟨2, [Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 0, Lt.CZ 0, Lt.H 0],
     []⟩
 
 theorem hML2 : Holds eML2.k eML2.l eML2.r :=
@@ -43,7 +43,7 @@ theorem hML2 : Holds eML2.k eML2.l eML2.r :=
     (by decide +kernel)
 /-- Lemma 3 of the supplement. -/
 def eL3 : Eqn :=
-  ⟨2, [.H 0, .CZ 0, .H 0, .H 0, .CZ 0, .H 0],
+  ⟨2, [Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 0, Lt.CZ 0, Lt.H 0],
     []⟩
 
 theorem hL3 : Holds eL3.k eL3.l eL3.r :=
@@ -52,7 +52,7 @@ theorem hL3 : Holds eL3.k eL3.l eL3.r :=
     (by decide +kernel)
 /-- Lemma 3 of the supplement, upside down. -/
 def eML3 : Eqn :=
-  ⟨2, [.H 1, .CZ 0, .H 1, .H 1, .CZ 0, .H 1],
+  ⟨2, [Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 1, Lt.CZ 0, Lt.H 1],
     []⟩
 
 theorem hML3 : Holds eML3.k eML3.l eML3.r :=
@@ -61,8 +61,8 @@ theorem hML3 : Holds eML3.k eML3.l eML3.r :=
     (by decide +kernel)
 /-- Lemma 4 of the supplement. -/
 def eL4 : Eqn :=
-  ⟨2, [.H 0, .CZ 0, .H 0, .CZ 0, .H 1, .H 0, .CZ 0],
-    [.CZ 0, .H 0, .H 1, .CZ 0, .H 1, .CZ 0, .H 1, .H 1, .Z 1, .H 1]⟩
+  ⟨2, [Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 1, Lt.Z 1, Lt.H 1]⟩
 
 theorem hL4 : Holds eL4.k eL4.l eL4.r :=
   Holds.of_derives (db_ok_cons hR11 (db_ok_cons hR3 (db_ok_cons hR8 (db_ok_cons hR10 db_ok_nil))))
@@ -71,8 +71,8 @@ theorem hL4 : Holds eL4.k eL4.l eL4.r :=
     (by decide +kernel)
 /-- Lemma 4 of the supplement, upside down. -/
 def eML4 : Eqn :=
-  ⟨2, [.H 1, .CZ 0, .H 1, .CZ 0, .H 0, .H 1, .CZ 0],
-    [.CZ 0, .H 1, .H 0, .CZ 0, .H 0, .CZ 0, .H 0, .H 0, .Z 0, .H 0]⟩
+  ⟨2, [Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 0, Lt.Z 0, Lt.H 0]⟩
 
 theorem hML4 : Holds eML4.k eML4.l eML4.r :=
   Holds.of_derives (db_ok_cons hR10 (db_ok_cons hR3 (db_ok_cons hR9 (db_ok_cons hR11 db_ok_nil))))
@@ -81,8 +81,8 @@ theorem hML4 : Holds eML4.k eML4.l eML4.r :=
     (by decide +kernel)
 /-- Lemma 5 of the supplement. -/
 def eL5 : Eqn :=
-  ⟨2, [.H 1, .CZ 0, .H 1, .CZ 0, .H 1, .H 0, .CZ 0],
-    [.CZ 0, .H 1, .H 0, .CZ 0, .H 0, .CZ 0, .H 0, .H 0, .Z 0, .H 0]⟩
+  ⟨2, [Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 0, Lt.Z 0, Lt.H 0]⟩
 
 theorem hL5 : Holds eL5.k eL5.l eL5.r :=
   Holds.of_derives (db_ok_cons hR10 (db_ok_cons hR3 (db_ok_cons hR9 (db_ok_cons hR11 db_ok_nil))))
@@ -91,8 +91,8 @@ theorem hL5 : Holds eL5.k eL5.l eL5.r :=
     (by decide +kernel)
 /-- Lemma 5 of the supplement, upside down. -/
 def eML5 : Eqn :=
-  ⟨2, [.H 0, .CZ 0, .H 0, .CZ 0, .H 0, .H 1, .CZ 0],
-    [.CZ 0, .H 0, .H 1, .CZ 0, .H 1, .CZ 0, .H 1, .H 1, .Z 1, .H 1]⟩
+  ⟨2, [Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 1, Lt.Z 1, Lt.H 1]⟩
 
 theorem hML5 : Holds eML5.k eML5.l eML5.r :=
   Holds.of_derives (db_ok_cons hR11 (db_ok_cons hR3 (db_ok_cons hR8 (db_ok_cons hR10 db_ok_nil))))
@@ -101,16 +101,16 @@ theorem hML5 : Holds eML5.k eML5.l eML5.r :=
     (by decide +kernel)
 /-- A form of R12 (`Holds.variant`). -/
 def eR12_v0_8_8 : Eqn :=
-  ⟨2, [.H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0],
-    [.CZ 0, .H 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 0]⟩
+  ⟨2, [Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 0]⟩
 
 theorem hR12_v0_8_8 : Holds eR12_v0_8_8.k eR12_v0_8_8.l eR12_v0_8_8.r :=
   Holds.variant' hR12 (by decide) (by decide) 0 8 8 (by decide +kernel)
 
 /-- Lemma 6 of the supplement. -/
 def eL6 : Eqn :=
-  ⟨2, [.CZ 0, .H 0, .H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 0],
-    [.H 0, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 1]⟩
+  ⟨2, [Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 0],
+    [Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1]⟩
 
 theorem hL6 : Holds eL6.k eL6.l eL6.r :=
   Holds.of_derives (db_ok_cons hR3 (db_ok_cons hR12 (db_ok_cons hR12_v0_8_8 db_ok_nil)))
@@ -120,8 +120,8 @@ theorem hL6 : Holds eL6.k eL6.l eL6.r :=
     (by decide +kernel)
 /-- Lemma 6 of the supplement, upside down. -/
 def eML6 : Eqn :=
-  ⟨2, [.CZ 0, .H 1, .H 0, .CZ 0, .H 0, .H 1, .CZ 0, .H 1],
-    [.H 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 0, .H 1, .CZ 0, .H 0]⟩
+  ⟨2, [Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 1],
+    [Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0]⟩
 
 theorem hML6 : Holds eML6.k eML6.l eML6.r :=
   Holds.of_derives (db_ok_cons hR3 (db_ok_cons hR12_v0_8_8 (db_ok_cons hR12 db_ok_nil)))
@@ -131,16 +131,16 @@ theorem hML6 : Holds eML6.k eML6.l eML6.r :=
     (by decide +kernel)
 /-- A form of R8 (`Holds.variant`). -/
 def eR8_v0_4_5 : Eqn :=
-  ⟨2, [.H 1, .Z 0, .Z 1, .H 1, .CZ 0],
-    [.CZ 0, .H 1, .Z 1, .H 1]⟩
+  ⟨2, [Lt.H 1, Lt.Z 0, Lt.Z 1, Lt.H 1, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 1, Lt.Z 1, Lt.H 1]⟩
 
 theorem hR8_v0_4_5 : Holds eR8_v0_4_5.k eR8_v0_4_5.l eR8_v0_4_5.r :=
   Holds.variant' hR8 (by decide) (by decide) 0 4 5 (by decide +kernel)
 
 /-- Lemma 7 of the supplement. -/
 def eL7 : Eqn :=
-  ⟨2, [.H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 0, .CZ 0],
-    [.Z 1, .CZ 0, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0]⟩
+  ⟨2, [Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.CZ 0],
+    [Lt.Z 1, Lt.CZ 0, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0]⟩
 
 theorem hL7 : Holds eL7.k eL7.l eL7.r :=
   Holds.of_derives (db_ok_cons hR11 (db_ok_cons hR10 (db_ok_cons hR6 (db_ok_cons hR7 (db_ok_cons hR3 (db_ok_cons hR8_v0_4_5 (db_ok_cons hR2 db_ok_nil)))))))
@@ -150,16 +150,16 @@ theorem hL7 : Holds eL7.k eL7.l eL7.r :=
     (by decide +kernel)
 /-- A form of R9 (`Holds.variant`). -/
 def eR9_v0_4_5 : Eqn :=
-  ⟨2, [.H 0, .Z 1, .Z 0, .H 0, .CZ 0],
-    [.CZ 0, .H 0, .Z 0, .H 0]⟩
+  ⟨2, [Lt.H 0, Lt.Z 1, Lt.Z 0, Lt.H 0, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 0, Lt.Z 0, Lt.H 0]⟩
 
 theorem hR9_v0_4_5 : Holds eR9_v0_4_5.k eR9_v0_4_5.l eR9_v0_4_5.r :=
   Holds.variant' hR9 (by decide) (by decide) 0 4 5 (by decide +kernel)
 
 /-- Lemma 7 of the supplement, upside down. -/
 def eML7 : Eqn :=
-  ⟨2, [.H 0, .CZ 0, .H 0, .H 1, .CZ 0, .H 1, .CZ 0],
-    [.Z 0, .CZ 0, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1]⟩
+  ⟨2, [Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 0],
+    [Lt.Z 0, Lt.CZ 0, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1]⟩
 
 theorem hML7 : Holds eML7.k eML7.l eML7.r :=
   Holds.of_derives (db_ok_cons hR10 (db_ok_cons hR11 (db_ok_cons hR7 (db_ok_cons hR6 (db_ok_cons hR3 (db_ok_cons hR9_v0_4_5 (db_ok_cons hR2 db_ok_nil)))))))
@@ -169,24 +169,24 @@ theorem hML7 : Holds eML7.k eML7.l eML7.r :=
     (by decide +kernel)
 /-- A form of R11 (`Holds.variant`). -/
 def eR11_v0_4_5 : Eqn :=
-  ⟨2, [.Z 1, .H 0, .CZ 0, .H 0, .CZ 0],
-    [.CZ 0, .H 0, .CZ 0, .H 0]⟩
+  ⟨2, [Lt.Z 1, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 0, Lt.CZ 0, Lt.H 0]⟩
 
 theorem hR11_v0_4_5 : Holds eR11_v0_4_5.k eR11_v0_4_5.l eR11_v0_4_5.r :=
   Holds.variant' hR11 (by decide) (by decide) 0 4 5 (by decide +kernel)
 
 /-- A form of R10 (`Holds.variant`). -/
 def eR10_v0_4_5 : Eqn :=
-  ⟨2, [.Z 0, .H 1, .CZ 0, .H 1, .CZ 0],
-    [.CZ 0, .H 1, .CZ 0, .H 1]⟩
+  ⟨2, [Lt.Z 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 1, Lt.CZ 0, Lt.H 1]⟩
 
 theorem hR10_v0_4_5 : Holds eR10_v0_4_5.k eR10_v0_4_5.l eR10_v0_4_5.r :=
   Holds.variant' hR10 (by decide) (by decide) 0 4 5 (by decide +kernel)
 
 /-- Lemma 8 of the supplement. -/
 def eL8 : Eqn :=
-  ⟨2, [.CZ 0, .H 0, .CZ 0, .H 0, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0],
-    [.H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 0, .CZ 0]⟩
+  ⟨2, [Lt.CZ 0, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0],
+    [Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.CZ 0]⟩
 
 theorem hL8 : Holds eL8.k eL8.l eL8.r :=
   Holds.of_derives (db_ok_cons hR11_v0_4_5 (db_ok_cons hR10_v0_4_5 (db_ok_cons hR3 (db_ok_cons hR8_v0_4_5 (db_ok_cons hR2 (db_ok_cons hR6 db_ok_nil))))))
@@ -197,8 +197,8 @@ theorem hL8 : Holds eL8.k eL8.l eL8.r :=
     (by decide +kernel)
 /-- Lemma 8 of the supplement, upside down. -/
 def eML8 : Eqn :=
-  ⟨2, [.CZ 0, .H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1],
-    [.H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 1, .CZ 0]⟩
+  ⟨2, [Lt.CZ 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1],
+    [Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 0]⟩
 
 theorem hML8 : Holds eML8.k eML8.l eML8.r :=
   Holds.of_derives (db_ok_cons hR10_v0_4_5 (db_ok_cons hR11_v0_4_5 (db_ok_cons hR3 (db_ok_cons hR9_v0_4_5 (db_ok_cons hR2 (db_ok_cons hR7 db_ok_nil))))))
@@ -209,8 +209,8 @@ theorem hML8 : Holds eML8.k eML8.l eML8.r :=
     (by decide +kernel)
 /-- Lemma 9 of the supplement. -/
 def eL9 : Eqn :=
-  ⟨3, [.H 1, .CZ 1, .H 1, .H 1, .CZ 0, .H 1],
-    [.H 1, .CZ 0, .H 1, .H 1, .CZ 1, .H 1]⟩
+  ⟨3, [Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 1, Lt.CZ 0, Lt.H 1],
+    [Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 1, Lt.CZ 1, Lt.H 1]⟩
 
 theorem hL9 : Holds eL9.k eL9.l eL9.r :=
   Holds.of_derives (db_ok_cons hR3 (db_ok_cons hR13 db_ok_nil))
@@ -218,8 +218,8 @@ theorem hL9 : Holds eL9.k eL9.l eL9.r :=
     (by decide +kernel)
 /-- Lemma 9 of the supplement, upside down. -/
 def eML9 : Eqn :=
-  ⟨3, [.H 1, .CZ 0, .H 1, .H 1, .CZ 1, .H 1],
-    [.H 1, .CZ 1, .H 1, .H 1, .CZ 0, .H 1]⟩
+  ⟨3, [Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 1, Lt.CZ 1, Lt.H 1],
+    [Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 1, Lt.CZ 0, Lt.H 1]⟩
 
 theorem hML9 : Holds eML9.k eML9.l eML9.r :=
   Holds.of_derives (db_ok_cons hR3 (db_ok_cons hR13 db_ok_nil))
@@ -227,10 +227,10 @@ theorem hML9 : Holds eML9.k eML9.l eML9.r :=
     (by decide +kernel)
 /-- Lemma 10 of the supplement. -/
 def eL10 : Eqn :=
-  ⟨3, [.H 0, .CZ 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 0, .H 1, .CZ 0,
-       .H 0],
-    [.H 2, .CZ 1, .H 2, .H 1, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 2, .H 1, .CZ 1, .H 2,
-     .CZ 1]⟩
+  ⟨3, [Lt.H 0, Lt.CZ 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0,
+       Lt.H 0],
+    [Lt.H 2, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 2,
+     Lt.CZ 1]⟩
 
 theorem hL10 : Holds eL10.k eL10.l eL10.r :=
   Holds.of_derives (db_ok_cons hR14 (db_ok_cons hL2 (db_ok_cons hR13 (db_ok_cons hML8 db_ok_nil))))
@@ -240,10 +240,10 @@ theorem hL10 : Holds eL10.k eL10.l eL10.r :=
     (by decide +kernel)
 /-- Lemma 10 of the supplement, upside down. -/
 def eML10 : Eqn :=
-  ⟨3, [.H 2, .CZ 0, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 2, .H 1, .CZ 1,
-       .H 2],
-    [.H 0, .CZ 0, .H 0, .H 1, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0,
-     .CZ 0]⟩
+  ⟨3, [Lt.H 2, Lt.CZ 0, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1,
+       Lt.H 2],
+    [Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0,
+     Lt.CZ 0]⟩
 
 theorem hML10 : Holds eML10.k eML10.l eML10.r :=
   Holds.of_derives (db_ok_cons hR14 (db_ok_cons hML2 (db_ok_cons hR13 (db_ok_cons hL8 db_ok_nil))))
@@ -253,10 +253,10 @@ theorem hML10 : Holds eML10.k eML10.l eML10.r :=
     (by decide +kernel)
 /-- Lemma 11 of the supplement. -/
 def eL11 : Eqn :=
-  ⟨3, [.H 2, .CZ 0, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 2, .H 1, .CZ 1,
-       .H 2],
-    [.H 0, .CZ 0, .H 0, .H 1, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0,
-     .CZ 0]⟩
+  ⟨3, [Lt.H 2, Lt.CZ 0, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1,
+       Lt.H 2],
+    [Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0,
+     Lt.CZ 0]⟩
 
 theorem hL11 : Holds eL11.k eL11.l eL11.r :=
   Holds.of_derives (db_ok_cons hR14 (db_ok_cons hL3 (db_ok_cons hR13 (db_ok_cons hL8 db_ok_nil))))
@@ -266,10 +266,10 @@ theorem hL11 : Holds eL11.k eL11.l eL11.r :=
     (by decide +kernel)
 /-- Lemma 11 of the supplement, upside down. -/
 def eML11 : Eqn :=
-  ⟨3, [.H 0, .CZ 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 0, .H 1, .CZ 0,
-       .H 0],
-    [.H 2, .CZ 1, .H 2, .H 1, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 2, .H 1, .CZ 1, .H 2,
-     .CZ 1]⟩
+  ⟨3, [Lt.H 0, Lt.CZ 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0,
+       Lt.H 0],
+    [Lt.H 2, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 2,
+     Lt.CZ 1]⟩
 
 theorem hML11 : Holds eML11.k eML11.l eML11.r :=
   Holds.of_derives (db_ok_cons hR14 (db_ok_cons hML3 (db_ok_cons hR13 (db_ok_cons hML8 db_ok_nil))))
@@ -279,9 +279,9 @@ theorem hML11 : Holds eML11.k eML11.l eML11.r :=
     (by decide +kernel)
 /-- Lemma 12 of the supplement. -/
 def eL12 : Eqn :=
-  ⟨3, [.H 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 1, .H 0, .CZ 0,
-       .H 0],
-    [.H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 0, .H 1]⟩
+  ⟨3, [Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0,
+       Lt.H 0],
+    [Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 1]⟩
 
 theorem hL12 : Holds eL12.k eL12.l eL12.r :=
   Holds.of_derives (db_ok_cons hL3 (db_ok_cons hR13 (db_ok_cons hR12_v0_8_8 (db_ok_cons hR12 db_ok_nil))))
@@ -291,9 +291,9 @@ theorem hL12 : Holds eL12.k eL12.l eL12.r :=
     (by decide +kernel)
 /-- Lemma 12 of the supplement, upside down. -/
 def eML12 : Eqn :=
-  ⟨3, [.H 1, .H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 1, .H 2, .CZ 1,
-       .H 2],
-    [.H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 1, .H 2, .CZ 1, .H 2, .H 1]⟩
+  ⟨3, [Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1,
+       Lt.H 2],
+    [Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 2, Lt.H 1]⟩
 
 theorem hML12 : Holds eML12.k eML12.l eML12.r :=
   Holds.of_derives (db_ok_cons hML3 (db_ok_cons hR13 (db_ok_cons hR12 (db_ok_cons hR12_v0_8_8 db_ok_nil))))
@@ -303,18 +303,18 @@ theorem hML12 : Holds eML12.k eML12.l eML12.r :=
     (by decide +kernel)
 /-- A form of R14 (`Holds.variant`). -/
 def eR14_v0_6_7 : Eqn :=
-  ⟨3, [.CZ 1, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0],
-    [.H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0, .H 2, .CZ 1, .H 2, .H 1, .CZ 1, .H 1, .CZ 0, .H 1,
-     .CZ 1, .H 2, .H 1, .CZ 1, .H 2]⟩
+  ⟨3, [Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0],
+    [Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 2, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1,
+     Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 2]⟩
 
 theorem hR14_v0_6_7 : Holds eR14_v0_6_7.k eR14_v0_6_7.l eR14_v0_6_7.r :=
   Holds.variant' hR14 (by decide) (by decide) 0 6 7 (by decide +kernel)
 
 /-- Lemma 13 of the supplement. -/
 def eL13 : Eqn :=
-  ⟨3, [.CZ 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0],
-    [.H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 0, .H 1, .CZ 0, .H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1,
-     .H 0, .CZ 0, .H 1, .H 0, .CZ 1, .H 2, .H 1, .CZ 1, .H 2]⟩
+  ⟨3, [Lt.CZ 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0],
+    [Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1,
+     Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 2]⟩
 
 theorem hL13 : Holds eL13.k eL13.l eL13.r :=
   Holds.of_derives (db_ok_cons hR3 (db_ok_cons hR12_v0_8_8 (db_ok_cons hR14_v0_6_7 (db_ok_cons hL2 (db_ok_cons hL6 (db_ok_cons hML12 (db_ok_cons hR14 (db_ok_cons hML10 (db_ok_cons hR5 (db_ok_cons hR12 db_ok_nil))))))))))
@@ -328,18 +328,18 @@ theorem hL13 : Holds eL13.k eL13.l eL13.r :=
     (by decide +kernel)
 /-- A form of R14 (`Holds.variant`). -/
 def eR14_v0_19_7 : Eqn :=
-  ⟨3, [.CZ 0, .H 1, .CZ 1, .H 1, .H 2, .CZ 1, .H 2],
-    [.H 1, .CZ 1, .H 2, .H 1, .CZ 1, .H 2, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1, .H 1,
-     .CZ 0, .H 0, .H 1, .CZ 0, .H 0]⟩
+  ⟨3, [Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 2],
+    [Lt.H 1, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 2, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1,
+     Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0]⟩
 
 theorem hR14_v0_19_7 : Holds eR14_v0_19_7.k eR14_v0_19_7.l eR14_v0_19_7.r :=
   Holds.variant' hR14 (by decide) (by decide) 0 19 7 (by decide +kernel)
 
 /-- Lemma 13 of the supplement, upside down. -/
 def eML13 : Eqn :=
-  ⟨3, [.CZ 0, .H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .H 2, .CZ 1],
-    [.H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 2, .H 1, .CZ 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1,
-     .H 2, .CZ 1, .H 1, .H 2, .CZ 0, .H 0, .H 1, .CZ 0, .H 0]⟩
+  ⟨3, [Lt.CZ 0, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1],
+    [Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1,
+     Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0]⟩
 
 theorem hML13 : Holds eML13.k eML13.l eML13.r :=
   Holds.of_derives (db_ok_cons hR3 (db_ok_cons hR12 (db_ok_cons hR14_v0_19_7 (db_ok_cons hML2 (db_ok_cons hL6 (db_ok_cons hL12 (db_ok_cons hR14 (db_ok_cons hL10 (db_ok_cons hR5 (db_ok_cons hR12_v0_8_8 db_ok_nil))))))))))
@@ -352,9 +352,9 @@ theorem hML13 : Holds eML13.k eML13.l eML13.r :=
     (by decide +kernel)
 /-- Lemma 14 of the supplement. -/
 def eL14 : Eqn :=
-  ⟨3, [.CZ 0, .CZ 1, .H 2, .H 1, .CZ 1],
-    [.CZ 1, .H 2, .H 1, .CZ 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0,
-     .H 0, .H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 1]⟩
+  ⟨3, [Lt.CZ 0, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1],
+    [Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0,
+     Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1]⟩
 
 theorem hL14 : Holds eL14.k eL14.l eL14.r :=
   Holds.of_derives (db_ok_cons hR13 (db_ok_cons hR3 (db_ok_cons hR5 (db_ok_cons hL3 (db_ok_cons hL2 (db_ok_cons hR16 (db_ok_cons hR12_v0_8_8 (db_ok_cons hR12 db_ok_nil))))))))
@@ -367,9 +367,9 @@ theorem hL14 : Holds eL14.k eL14.l eL14.r :=
     (by decide +kernel)
 /-- Lemma 14 of the supplement, upside down. -/
 def eML14 : Eqn :=
-  ⟨3, [.CZ 1, .CZ 0, .H 0, .H 1, .CZ 0],
-    [.CZ 0, .H 0, .H 1, .CZ 0, .H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1,
-     .H 2, .H 1, .CZ 1, .H 1, .H 2, .CZ 1, .H 1]⟩
+  ⟨3, [Lt.CZ 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1,
+     Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1]⟩
 
 theorem hML14 : Holds eML14.k eML14.l eML14.r :=
   Holds.of_derives (db_ok_cons hR13 (db_ok_cons hR3 (db_ok_cons hR5 (db_ok_cons hML3 (db_ok_cons hML2 (db_ok_cons hR15 (db_ok_cons hR12 (db_ok_cons hR12_v0_8_8 db_ok_nil))))))))
@@ -383,9 +383,9 @@ theorem hML14 : Holds eML14.k eML14.l eML14.r :=
     (by decide +kernel)
 /-- Lemma 15 of the supplement. -/
 def eL15 : Eqn :=
-  ⟨3, [.CZ 1, .CZ 0, .H 0, .H 1, .CZ 0],
-    [.CZ 0, .H 0, .H 1, .CZ 0, .H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1,
-     .H 2, .H 1, .CZ 1, .H 1, .H 2, .CZ 1, .H 1]⟩
+  ⟨3, [Lt.CZ 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1,
+     Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1]⟩
 
 theorem hL15 : Holds eL15.k eL15.l eL15.r :=
   Holds.of_derives (db_ok_cons hR13 (db_ok_cons hR3 (db_ok_cons hR5 (db_ok_cons hL2 (db_ok_cons hL3 (db_ok_cons hR15 (db_ok_cons hR12 (db_ok_cons hR12_v0_8_8 db_ok_nil))))))))
@@ -399,9 +399,9 @@ theorem hL15 : Holds eL15.k eL15.l eL15.r :=
     (by decide +kernel)
 /-- Lemma 15 of the supplement, upside down. -/
 def eML15 : Eqn :=
-  ⟨3, [.CZ 0, .CZ 1, .H 2, .H 1, .CZ 1],
-    [.CZ 1, .H 2, .H 1, .CZ 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0,
-     .H 0, .H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 1]⟩
+  ⟨3, [Lt.CZ 0, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1],
+    [Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0,
+     Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1]⟩
 
 theorem hML15 : Holds eML15.k eML15.l eML15.r :=
   Holds.of_derives (db_ok_cons hR13 (db_ok_cons hR3 (db_ok_cons hR5 (db_ok_cons hML2 (db_ok_cons hML3 (db_ok_cons hR16 (db_ok_cons hR12_v0_8_8 (db_ok_cons hR12 db_ok_nil))))))))
@@ -414,8 +414,8 @@ theorem hML15 : Holds eML15.k eML15.l eML15.r :=
     (by decide +kernel)
 /-- Lemma 16 of the supplement. -/
 def eL16 : Eqn :=
-  ⟨3, [.CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 1],
-    [.H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0]⟩
+  ⟨3, [Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1],
+    [Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0]⟩
 
 theorem hL16 : Holds eL16.k eL16.l eL16.r :=
   Holds.of_derives (db_ok_cons hL3 (db_ok_cons hL2 (db_ok_cons hR13 (db_ok_cons hR3 (db_ok_cons hR16 (db_ok_cons hR5 (db_ok_cons hR12_v0_8_8 (db_ok_cons hR12 db_ok_nil))))))))
@@ -428,8 +428,8 @@ theorem hL16 : Holds eL16.k eL16.l eL16.r :=
     (by decide +kernel)
 /-- Lemma 16 of the supplement, upside down. -/
 def eML16 : Eqn :=
-  ⟨3, [.CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 1],
-    [.H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 2, .H 1, .CZ 1, .H 2]⟩
+  ⟨3, [Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1],
+    [Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 2]⟩
 
 theorem hML16 : Holds eML16.k eML16.l eML16.r :=
   Holds.of_derives (db_ok_cons hML3 (db_ok_cons hML2 (db_ok_cons hR13 (db_ok_cons hR3 (db_ok_cons hR15 (db_ok_cons hR5 (db_ok_cons hR12 (db_ok_cons hR12_v0_8_8 db_ok_nil))))))))
@@ -442,9 +442,9 @@ theorem hML16 : Holds eML16.k eML16.l eML16.r :=
     (by decide +kernel)
 /-- Lemma 17 of the supplement. -/
 def eL17 : Eqn :=
-  ⟨3, [.CZ 1, .H 1, .CZ 0, .H 1, .CZ 1],
-    [.H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 1, .H 0,
-     .CZ 0, .H 1]⟩
+  ⟨3, [Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1],
+    [Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0,
+     Lt.CZ 0, Lt.H 1]⟩
 
 theorem hL17 : Holds eL17.k eL17.l eL17.r :=
   Holds.of_derives (db_ok_cons hL3 (db_ok_cons hL2 (db_ok_cons hR13 (db_ok_cons hR3 (db_ok_cons hR16 (db_ok_cons hR5 (db_ok_cons hR12_v0_8_8 (db_ok_cons hR12 db_ok_nil))))))))
@@ -456,9 +456,9 @@ theorem hL17 : Holds eL17.k eL17.l eL17.r :=
     (by decide +kernel)
 /-- Lemma 17 of the supplement, upside down. -/
 def eML17 : Eqn :=
-  ⟨3, [.CZ 0, .H 1, .CZ 1, .H 1, .CZ 0],
-    [.H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 2, .H 1, .CZ 1, .H 1, .H 2,
-     .CZ 1, .H 1]⟩
+  ⟨3, [Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0],
+    [Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 2,
+     Lt.CZ 1, Lt.H 1]⟩
 
 theorem hML17 : Holds eML17.k eML17.l eML17.r :=
   Holds.of_derives (db_ok_cons hML3 (db_ok_cons hML2 (db_ok_cons hR13 (db_ok_cons hR3 (db_ok_cons hR15 (db_ok_cons hR5 (db_ok_cons hR12 (db_ok_cons hR12_v0_8_8 db_ok_nil))))))))
@@ -470,9 +470,9 @@ theorem hML17 : Holds eML17.k eML17.l eML17.r :=
     (by decide +kernel)
 /-- Lemma 18 of the supplement. -/
 def eL18 : Eqn :=
-  ⟨3, [.CZ 0, .H 1, .CZ 1, .H 1],
-    [.H 1, .CZ 1, .H 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 1, .H 0,
-     .CZ 0, .H 0, .CZ 0]⟩
+  ⟨3, [Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1],
+    [Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0,
+     Lt.CZ 0, Lt.H 0, Lt.CZ 0]⟩
 
 theorem hL18 : Holds eL18.k eL18.l eL18.r :=
   Holds.of_derives (db_ok_cons hR3 (db_ok_cons hR5 (db_ok_cons hR13 (db_ok_cons hL14 (db_ok_cons hL12 db_ok_nil)))))
@@ -482,9 +482,9 @@ theorem hL18 : Holds eL18.k eL18.l eL18.r :=
     (by decide +kernel)
 /-- Lemma 18 of the supplement, upside down. -/
 def eML18 : Eqn :=
-  ⟨3, [.CZ 1, .H 1, .CZ 0, .H 1],
-    [.H 1, .CZ 0, .H 1, .H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 1, .H 2,
-     .CZ 1, .H 2, .CZ 1]⟩
+  ⟨3, [Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1],
+    [Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 2,
+     Lt.CZ 1, Lt.H 2, Lt.CZ 1]⟩
 
 theorem hML18 : Holds eML18.k eML18.l eML18.r :=
   Holds.of_derives (db_ok_cons hR3 (db_ok_cons hR5 (db_ok_cons hR13 (db_ok_cons hML14 (db_ok_cons hML12 db_ok_nil)))))
@@ -494,10 +494,10 @@ theorem hML18 : Holds eML18.k eML18.l eML18.r :=
     (by decide +kernel)
 /-- Lemma 19 of the supplement. -/
 def eL19 : Eqn :=
-  ⟨3, [.H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 0,
-       .H 1, .CZ 0, .H 1],
-    [.H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1, .H 1, .CZ 0, .H 1, .H 0,
-     .CZ 0, .H 0]⟩
+  ⟨3, [Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 0,
+       Lt.H 1, Lt.CZ 0, Lt.H 1],
+    [Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0,
+     Lt.CZ 0, Lt.H 0]⟩
 
 theorem hL19 : Holds eL19.k eL19.l eL19.r :=
   Holds.of_derives (db_ok_cons hL12 (db_ok_cons hR14 (db_ok_cons hML10 db_ok_nil)))
@@ -507,10 +507,10 @@ theorem hL19 : Holds eL19.k eL19.l eL19.r :=
     (by decide +kernel)
 /-- Lemma 19 of the supplement, upside down. -/
 def eML19 : Eqn :=
-  ⟨3, [.H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 1, .H 2, .CZ 1, .H 2,
-       .H 1, .CZ 1, .H 1],
-    [.H 1, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0, .H 1, .CZ 1, .H 1, .H 2,
-     .CZ 1, .H 2]⟩
+  ⟨3, [Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 2,
+       Lt.H 1, Lt.CZ 1, Lt.H 1],
+    [Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 2,
+     Lt.CZ 1, Lt.H 2]⟩
 
 theorem hML19 : Holds eML19.k eML19.l eML19.r :=
   Holds.of_derives (db_ok_cons hML12 (db_ok_cons hR14 (db_ok_cons hL10 db_ok_nil)))

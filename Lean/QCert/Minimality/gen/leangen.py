@@ -37,9 +37,9 @@ def compress(steps):
 def lean_steps(steps):
     out = []
     for st in (compress(steps) if SLIDES else steps):
-        if st[0] == 'swap': out.append('.swap %d' % st[1])
-        elif st[0] == 'slide': out.append('.slide %d %d' % (st[1], st[2]))
-        else: out.append('.rw %d %d %s' % (st[1], st[2], 'true' if st[3] else 'false'))
+        if st[0] == 'swap': out.append('Step.swap %d' % st[1])
+        elif st[0] == 'slide': out.append('Step.slide %d %d' % (st[1], st[2]))
+        else: out.append('Step.rw %d %d %s' % (st[1], st[2], 'true' if st[3] else 'false'))
     return out
 
 class Gen:

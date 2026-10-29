@@ -108,12 +108,32 @@ both `theorem_2_1` and `theorem_2_1_U`.
 
 ## Building
 
-The equation files take about 30 minutes in all (`Eqs/Part09`,
-`Part10` and `Part12` 4.5 to 8.5 minutes each), about 2 GB resident
-each; the rest of the folder a few minutes.  Lemmas of 60 000 steps
+The equation files take about 9 minutes in all (`Eqs/Part09`,
+`Part10` and `Part12` 1.5 to 2.5 minutes each; they were 30 minutes
+before the rules were compiled, see "Typechecking cost"), about 2 GB
+resident each; the rest of the folder a few minutes.  Lemmas of 60 000 steps
 needed over 7 GB, hence the cut at 10 000.
 
 ## Paper errors
 
 None found: every relation of Figure 1 holds (decided), every translated
 Greylyn relation is derivable, and all 46 equations are proved.
+
+## Typechecking cost
+
+The certificate modules are kernel-bound: `by decide +kernel` makes the
+kernel replay the packed steps, and the kernel pays for every unfolding
+and almost nothing for arithmetic on literals (GMP).  `FastRewrite.lean`
+is written for that: the rules are compiled once to the codes and lengths
+of their sides (`compileRules`), where the first version recomputed
+`enc κ ρ.lhs` and `ρ.lhs.length` at every step; the rule is looked up by
+primitive recursion (`nthC`), where `rules[i]?` goes through `List.length`,
+a `Decidable` test and `brecOn`; and the tests are `Nat.beq`/`Nat.ble`
+under `bif` (`replaceB`), where an `if` on a `Nat` proposition unfolds a
+`Decidable` instance.  Together, on the 5 147 steps of `Eqs/Part04`, the
+kernel time went from 4.3 s to 1.3 s, and `Eqs/Part12` (290 000 steps)
+from 646 s to 139 s in a full build.  A balanced tree of rules, built
+lazily from the list, was slower than the list (4.2 s): the kernel's
+cache of weak head normal forms serves a list of compiled rules well, and
+the tree's construction costs more than the depth it saves.  Elaboration
+is about 20 s for `Part12`, mostly the 145 numerals of 15 000 digits.

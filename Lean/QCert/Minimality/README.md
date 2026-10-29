@@ -284,3 +284,17 @@ rest on source theorems that are proved: `#print axioms` gives `propext`,
 The kernel decisions for the three-wire encoding share a larger local
 heartbeat budget (`W3Enc.e_ok`); that check can take over a minute.
 `./check.sh QCert/Audit.lean` also reports the dependency distinction above.
+
+## Typechecking cost
+
+The derivation modules (`*/Derivations.lean`, `CliffordCS/W2Lemmas.lean`,
+`CliffordCS/W3Lemmas.lean`) spent nearly all their time elaborating the
+step lists: a list literal of 64 or more elements loses the expected type
+of its elements, so every `.rw i e b` was elaborated without one, postponed
+and retried, at about 0.1 s per element (a 675-step list took 52 s, and
+`QutritClifford/Derivations` 328 s with 16 jobs in parallel).  Written with
+qualified constructors (`Step.rw i e b`, which `gen/leangen.py` and
+`gen/gen_cnot.py` now emit) the same list elaborates in 0.16 s and the
+module builds in 37 s (`CliffordT/Derivations` 154 → 63 s).  Qualify dotted
+constructors wherever the expected type is not known at that point: long
+list literals, operands of `++`, arguments whose type is a metavariable.

@@ -153,3 +153,15 @@ asks a simple top wire for `CZ` and a double one for `CXZ`.  The labels are
 read off the picture of the labelled normal form: inside the `B`-ladder the
 wires below the current wire are labelled 1 again (the wire labels drawn at
 the position of `C`), as `SelingerClifford`'s `okB` has it.
+
+## Typechecking cost
+
+`Relations1.lean` took 190 s (with 16 jobs in parallel), nearly all of it
+elaborating its 143 statements: a dotted constructor with arguments as an
+operand of `++` (`[.CZ 0] ++ bA 2 1`) is elaborated before its type is
+known, fails and is retried, at about 0.14 s per attempt
+(`set_option trace.profiler true` shows `💥 expected type: ?m, term .CZ 0`).
+`gen/generate.py` and `gen/tables.py` now write the letters of such
+statements qualified (`Lt.CZ 0`), and the module builds in 9 s (`Lemmas`
+14 → 6 s, `Boxes` 7 → 4 s).  The kernel checks of the derivations
+(`by decide +kernel`) were never the cost here.

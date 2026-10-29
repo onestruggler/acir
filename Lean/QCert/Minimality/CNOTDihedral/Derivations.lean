@@ -55,7 +55,7 @@ def dCPhr : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.CPh trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0]
-    [.rw 3 2 true, .rw 2 1 false, .rw 1 0 false, .rw 0 2 false, .rw 1 1 false]
+    [Step.rw 3 2 true, Step.rw 2 1 false, Step.rw 1 0 false, Step.rw 0 2 false, Step.rw 1 1 false]
     (by decide +kernel)
 
 /-- R₄: `CX² = 1` (as Appendix D, the derivation of (CX²)). -/
@@ -66,8 +66,8 @@ def dR4 : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dCPhr.place 0 0]
-    [.rw 0 0 true, .rw 7 3 true, .rw 11 1 false, .rw 11 2 true, .rw 12 1 false,
-    .rw 7 3 false, .rw 0 0 false]
+    [Step.rw 0 0 true, Step.rw 7 3 true, Step.rw 11 1 false, Step.rw 11 2 true, Step.rw 12 1 false,
+    Step.rw 7 3 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- R₁₁. -/
@@ -77,7 +77,7 @@ def dR11 : DEqn Th 1 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.X2 trivial 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.TX trivial 0 0]
-    [.rw 1 1 true, .rw 0 0 false]
+    [Step.rw 1 1 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- R₂. -/
@@ -87,7 +87,7 @@ def dR2 : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.X2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.XC trivial 0 0, dR4.place 0 0]
-    [.rw 0 0 true, .rw 3 1 false, .rw 1 1 true, .rw 2 2 false, .swap 1, .rw 0 0 false]
+    [Step.rw 0 0 true, Step.rw 3 1 false, Step.rw 1 1 true, Step.rw 2 2 false, Step.swap 1, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- R₃. -/
@@ -97,7 +97,7 @@ def dR3 : DEqn Th 2 where
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.X2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.XC trivial 0 0, dR2.place 0 0]
-    [.rw 3 0 true, .rw 1 1 true, .rw 0 2 false]
+    [Step.rw 3 0 true, Step.rw 1 1 true, Step.rw 0 2 false]
     (by decide +kernel)
 
 /-- R₅. -/
@@ -106,7 +106,7 @@ def dR5 : DEqn Th 2 where
   rhs := seq [CX, σ, CX, σ, CX]
   proof := derive hsc
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0, dR4.place 0 0]
-    [.rw 0 1 true, .rw 1 0 true]
+    [Step.rw 0 1 true, Step.rw 1 0 true]
     (by decide +kernel)
 
 /-- The naturality of the swap for `X`, as Amy–Chen–Ross state it. -/
@@ -116,7 +116,7 @@ def dnat1X : DEqn Th 2 where
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.X) 0 0]
-    [.rw 2 0 true, .rw 1 1 true, .rw 0 0 false]
+    [Step.rw 2 0 true, Step.rw 1 1 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- The naturality of the swap for `T`, as Amy–Chen–Ross state it. -/
@@ -126,7 +126,7 @@ def dnat1T : DEqn Th 2 where
   proof := derive hsc
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.T) 0 0]
-    [.rw 2 0 true, .rw 1 1 true, .rw 0 0 false]
+    [Step.rw 2 0 true, Step.rw 1 1 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- R₈. -/
@@ -137,15 +137,15 @@ def dR8 : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.ZC trivial 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CPh trivial 0 0, dR4.place 0 0]
-    [.rw 2 3 false, .rw 3 3 false, .rw 4 3 false, .rw 6 0 true, .rw 1 1 true,
-    .rw 1 2 true, .rw 0 3 false, .rw 3 2 true, .rw 5 2 false, .rw 1 2 false]
+    [Step.rw 2 3 false, Step.rw 3 3 false, Step.rw 4 3 false, Step.rw 6 0 true, Step.rw 1 1 true,
+    Step.rw 1 2 true, Step.rw 0 3 false, Step.rw 3 2 true, Step.rw 5 2 false, Step.rw 1 2 false]
     (by decide +kernel)
 
 /-- Every relation of Amy, Chen and Ross is derivable from Figure 7. -/
 theorem rel_derivable : ∀ {k : ℕ} {w v : Circuit QCert.CNOTDihedral.Gate k},
     QCert.CNOTDihedral.Rel k w v → pres.Proves k (tr k w) (tr k v)
   | _, _, _, .R1 =>
-    derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.X2 trivial 0 0] [.rw 0 0 false]
+    derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.X2 trivial 0 0] [Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, _, .R2 =>
     dR2.proof
@@ -156,65 +156,65 @@ theorem rel_derivable : ∀ {k : ℕ} {w v : Circuit QCert.CNOTDihedral.Gate k},
   | _, _, _, .R5 =>
     dR5.proof
   | _, _, _, .R6 =>
-    derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.I trivial 0 0] [.rw 0 0 false]
+    derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.I trivial 0 0] [Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, _, .R7 =>
-    derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0] [.rw 0 0 false]
+    derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.T8 trivial 0 0] [Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, _, .R8 =>
     dR8.proof
   | _, _, _, .R9 =>
     derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.C2T trivial 0 0]
-      [.rw 0 0 false, .swap 33, .swap 32, .swap 31, .swap 30, .swap 29, .swap 28,
-      .swap 27, .swap 26, .swap 25, .swap 24, .swap 23, .swap 22, .swap 34, .swap 33,
-      .swap 32, .swap 31, .swap 30, .swap 29, .swap 28, .swap 27, .swap 26, .swap 25,
-      .swap 24, .swap 23, .swap 35, .swap 34, .swap 33, .swap 32, .swap 31, .swap 30,
-      .swap 29, .swap 28, .swap 27, .swap 26, .swap 25, .swap 24, .swap 36, .swap 35,
-      .swap 34, .swap 33, .swap 32, .swap 31, .swap 30, .swap 29, .swap 28, .swap 27,
-      .swap 26, .swap 25, .swap 37, .swap 36, .swap 35, .swap 34, .swap 33, .swap 32,
-      .swap 31, .swap 30, .swap 29, .swap 28, .swap 27, .swap 26, .swap 38, .swap 37,
-      .swap 36, .swap 35, .swap 34, .swap 33, .swap 32, .swap 31, .swap 30, .swap 29,
-      .swap 28, .swap 27, .swap 33, .swap 32, .swap 31, .swap 30, .swap 29, .swap 28,
-      .swap 34, .swap 33, .swap 32, .swap 31, .swap 30, .swap 29, .swap 35, .swap 34,
-      .swap 33, .swap 32, .swap 31, .swap 30, .swap 36, .swap 35, .swap 34, .swap 33,
-      .swap 32, .swap 31, .swap 37, .swap 36, .swap 35, .swap 34, .swap 33, .swap 32,
-      .swap 38, .swap 37, .swap 36, .swap 35, .swap 34, .swap 33]
+      [Step.rw 0 0 false, Step.swap 33, Step.swap 32, Step.swap 31, Step.swap 30, Step.swap 29, Step.swap 28,
+      Step.swap 27, Step.swap 26, Step.swap 25, Step.swap 24, Step.swap 23, Step.swap 22, Step.swap 34, Step.swap 33,
+      Step.swap 32, Step.swap 31, Step.swap 30, Step.swap 29, Step.swap 28, Step.swap 27, Step.swap 26, Step.swap 25,
+      Step.swap 24, Step.swap 23, Step.swap 35, Step.swap 34, Step.swap 33, Step.swap 32, Step.swap 31, Step.swap 30,
+      Step.swap 29, Step.swap 28, Step.swap 27, Step.swap 26, Step.swap 25, Step.swap 24, Step.swap 36, Step.swap 35,
+      Step.swap 34, Step.swap 33, Step.swap 32, Step.swap 31, Step.swap 30, Step.swap 29, Step.swap 28, Step.swap 27,
+      Step.swap 26, Step.swap 25, Step.swap 37, Step.swap 36, Step.swap 35, Step.swap 34, Step.swap 33, Step.swap 32,
+      Step.swap 31, Step.swap 30, Step.swap 29, Step.swap 28, Step.swap 27, Step.swap 26, Step.swap 38, Step.swap 37,
+      Step.swap 36, Step.swap 35, Step.swap 34, Step.swap 33, Step.swap 32, Step.swap 31, Step.swap 30, Step.swap 29,
+      Step.swap 28, Step.swap 27, Step.swap 33, Step.swap 32, Step.swap 31, Step.swap 30, Step.swap 29, Step.swap 28,
+      Step.swap 34, Step.swap 33, Step.swap 32, Step.swap 31, Step.swap 30, Step.swap 29, Step.swap 35, Step.swap 34,
+      Step.swap 33, Step.swap 32, Step.swap 31, Step.swap 30, Step.swap 36, Step.swap 35, Step.swap 34, Step.swap 33,
+      Step.swap 32, Step.swap 31, Step.swap 37, Step.swap 36, Step.swap 35, Step.swap 34, Step.swap 33, Step.swap 32,
+      Step.swap 38, Step.swap 37, Step.swap 36, Step.swap 35, Step.swap 34, Step.swap 33]
       (by decide +kernel)
   | _, _, _, .R10 =>
-    derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 0 0] [.rw 0 0 false]
+    derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.ω8 trivial 0 0] [Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, _, .R11 =>
     dR11.proof
   | _, _, _, .R12 =>
-    derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.CPh trivial 0 0] [.rw 0 0 false]
+    derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.CPh trivial 0 0] [Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, _, .R13 =>
     derive hsc [DEqn.inst (P := pres) (S := fun _ => True) Ax.C3T trivial 0 0]
-      [.rw 0 0 false, .swap 118, .swap 117, .swap 116, .swap 115, .swap 114,
-      .swap 113, .swap 112, .swap 111, .swap 110, .swap 109, .swap 108, .swap 107,
-      .swap 106, .swap 105, .swap 104, .swap 119, .swap 118, .swap 117, .swap 116,
-      .swap 115, .swap 114, .swap 113, .swap 112, .swap 111, .swap 110, .swap 109,
-      .swap 108, .swap 107, .swap 106, .swap 105, .swap 120, .swap 119, .swap 118,
-      .swap 117, .swap 116, .swap 115, .swap 114, .swap 113, .swap 112, .swap 111,
-      .swap 110, .swap 109, .swap 108, .swap 107, .swap 106, .swap 121, .swap 120,
-      .swap 119, .swap 118, .swap 117, .swap 116, .swap 115, .swap 114, .swap 113,
-      .swap 112, .swap 111, .swap 110, .swap 109, .swap 108, .swap 107, .swap 122,
-      .swap 121, .swap 120, .swap 119, .swap 118, .swap 117, .swap 116, .swap 115,
-      .swap 114, .swap 113, .swap 112, .swap 111, .swap 110, .swap 109, .swap 108,
-      .swap 118, .swap 117, .swap 116, .swap 115, .swap 114, .swap 113, .swap 112,
-      .swap 111, .swap 110, .swap 109, .swap 119, .swap 118, .swap 117, .swap 116,
-      .swap 115, .swap 114, .swap 113, .swap 112, .swap 111, .swap 110, .swap 120,
-      .swap 119, .swap 118, .swap 117, .swap 116, .swap 115, .swap 114, .swap 113,
-      .swap 112, .swap 111, .swap 121, .swap 120, .swap 119, .swap 118, .swap 117,
-      .swap 116, .swap 115, .swap 114, .swap 113, .swap 112, .swap 122, .swap 121,
-      .swap 120, .swap 119, .swap 118, .swap 117, .swap 116, .swap 115, .swap 114,
-      .swap 113, .swap 118, .swap 117, .swap 116, .swap 115, .swap 114, .swap 119,
-      .swap 118, .swap 117, .swap 116, .swap 115, .swap 120, .swap 119, .swap 118,
-      .swap 117, .swap 116, .swap 121, .swap 120, .swap 119, .swap 118, .swap 117,
-      .swap 122, .swap 121, .swap 120, .swap 119, .swap 118]
+      [Step.rw 0 0 false, Step.swap 118, Step.swap 117, Step.swap 116, Step.swap 115, Step.swap 114,
+      Step.swap 113, Step.swap 112, Step.swap 111, Step.swap 110, Step.swap 109, Step.swap 108, Step.swap 107,
+      Step.swap 106, Step.swap 105, Step.swap 104, Step.swap 119, Step.swap 118, Step.swap 117, Step.swap 116,
+      Step.swap 115, Step.swap 114, Step.swap 113, Step.swap 112, Step.swap 111, Step.swap 110, Step.swap 109,
+      Step.swap 108, Step.swap 107, Step.swap 106, Step.swap 105, Step.swap 120, Step.swap 119, Step.swap 118,
+      Step.swap 117, Step.swap 116, Step.swap 115, Step.swap 114, Step.swap 113, Step.swap 112, Step.swap 111,
+      Step.swap 110, Step.swap 109, Step.swap 108, Step.swap 107, Step.swap 106, Step.swap 121, Step.swap 120,
+      Step.swap 119, Step.swap 118, Step.swap 117, Step.swap 116, Step.swap 115, Step.swap 114, Step.swap 113,
+      Step.swap 112, Step.swap 111, Step.swap 110, Step.swap 109, Step.swap 108, Step.swap 107, Step.swap 122,
+      Step.swap 121, Step.swap 120, Step.swap 119, Step.swap 118, Step.swap 117, Step.swap 116, Step.swap 115,
+      Step.swap 114, Step.swap 113, Step.swap 112, Step.swap 111, Step.swap 110, Step.swap 109, Step.swap 108,
+      Step.swap 118, Step.swap 117, Step.swap 116, Step.swap 115, Step.swap 114, Step.swap 113, Step.swap 112,
+      Step.swap 111, Step.swap 110, Step.swap 109, Step.swap 119, Step.swap 118, Step.swap 117, Step.swap 116,
+      Step.swap 115, Step.swap 114, Step.swap 113, Step.swap 112, Step.swap 111, Step.swap 110, Step.swap 120,
+      Step.swap 119, Step.swap 118, Step.swap 117, Step.swap 116, Step.swap 115, Step.swap 114, Step.swap 113,
+      Step.swap 112, Step.swap 111, Step.swap 121, Step.swap 120, Step.swap 119, Step.swap 118, Step.swap 117,
+      Step.swap 116, Step.swap 115, Step.swap 114, Step.swap 113, Step.swap 112, Step.swap 122, Step.swap 121,
+      Step.swap 120, Step.swap 119, Step.swap 118, Step.swap 117, Step.swap 116, Step.swap 115, Step.swap 114,
+      Step.swap 113, Step.swap 118, Step.swap 117, Step.swap 116, Step.swap 115, Step.swap 114, Step.swap 119,
+      Step.swap 118, Step.swap 117, Step.swap 116, Step.swap 115, Step.swap 120, Step.swap 119, Step.swap 118,
+      Step.swap 117, Step.swap 116, Step.swap 121, Step.swap 120, Step.swap 119, Step.swap 118, Step.swap 117,
+      Step.swap 122, Step.swap 121, Step.swap 120, Step.swap 119, Step.swap 118]
       (by decide +kernel)
   | _, _, _, .swap_swap =>
-    derive hsc [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0] [.rw 0 0 false]
+    derive hsc [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0] [Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, _, .swap_nat1 .X =>
     dnat1X.proof
@@ -225,12 +225,12 @@ theorem rel_derivable : ∀ {k : ℕ} {w v : Circuit QCert.CNOTDihedral.Gate k},
       [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 1,
       DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0,
       DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat2 Gate.CX) 0 0]
-      [.rw 3 0 true, .rw 4 1 true, .rw 2 2 true, .rw 1 0 false, .rw 0 1 false]
+      [Step.rw 3 0 true, Step.rw 4 1 true, Step.rw 2 2 true, Step.rw 1 0 false, Step.rw 0 1 false]
       (by decide +kernel)
   | _, _, _, .swap_nat2 .SW =>
     derive hsc
       [DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat2 Gate.swap) 0 0]
-      [.rw 0 0 true]
+      [Step.rw 0 0 true]
       (by decide +kernel)
 
 end QCert.Minimality.CNOTDihedral

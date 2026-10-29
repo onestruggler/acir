@@ -57,9 +57,9 @@ def dCZr_m : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CZr trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0]
-    [.rw 0 0 true, .rw 3 0 true, .rw 2 2 true, .rw 1 0 false, .rw 2 2 false, .rw 3 0 false,
-    .rw 6 0 true, .rw 5 2 true, .rw 4 0 false, .rw 5 2 false, .rw 1 1 false, .rw 2 0 true,
-    .rw 0 0 false, .rw 0 0 false, .rw 1 0 false]
+    [Step.rw 0 0 true, Step.rw 3 0 true, Step.rw 2 2 true, Step.rw 1 0 false, Step.rw 2 2 false, Step.rw 3 0 false,
+    Step.rw 6 0 true, Step.rw 5 2 true, Step.rw 4 0 false, Step.rw 5 2 false, Step.rw 1 1 false, Step.rw 2 0 true,
+    Step.rw 0 0 false, Step.rw 0 0 false, Step.rw 1 0 false]
     (by decide +kernel)
 
 /-- Reversing three wires carries a gate to its mirror image. -/
@@ -71,7 +71,7 @@ def dR3_CX0 : DEqn Th 3 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat2 Gate.CX) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat2 Gate.swap) 0 0]
-    [.rw 0 3 true, .rw 4 3 true, .rw 3 2 true, .rw 2 0 false, .rw 1 1 false]
+    [Step.rw 0 3 true, Step.rw 4 3 true, Step.rw 3 2 true, Step.rw 2 0 false, Step.rw 1 1 false]
     (by decide +kernel)
 
 /-- Both sides of `dI` inverted, letter by letter. -/
@@ -83,8 +83,8 @@ def dI_i : DEqn Th 3 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.I trivial 0 0]
-    [.rw 5 1 true, .rw 6 0 true, .rw 5 3 true, .rw 4 2 false, .rw 3 0 false, .rw 2 2 false,
-    .rw 1 0 false, .rw 0 1 false]
+    [Step.rw 5 1 true, Step.rw 6 0 true, Step.rw 5 3 true, Step.rw 4 2 false, Step.rw 3 0 false, Step.rw 2 2 false,
+    Step.rw 1 0 false, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- (3CNOTtargetcommut), Appendix A. -/
@@ -95,8 +95,8 @@ def d3CNOTtargetcommut : DEqn Th 3 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.I trivial 0 0, dI_i.place 0 0]
-    [.rw 1 0 true, .rw 2 1 true, .rw 3 3 false, .rw 0 2 true, .rw 4 1 false, .rw 3 0 false,
-    .rw 4 0 true, .rw 5 1 true, .rw 6 0 true, .rw 6 0 false, .rw 5 1 false, .rw 4 0 false]
+    [Step.rw 1 0 true, Step.rw 2 1 true, Step.rw 3 3 false, Step.rw 0 2 true, Step.rw 4 1 false, Step.rw 3 0 false,
+    Step.rw 4 0 true, Step.rw 5 1 true, Step.rw 6 0 true, Step.rw 6 0 false, Step.rw 5 1 false, Step.rw 4 0 false]
     (by decide +kernel)
 
 /-- (3CNOTcontrolcommut), Appendix A. -/
@@ -113,18 +113,18 @@ def d3CNOTcontrolcommut : DEqn Th 3 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CZr trivial 0 1, dCZr_m.place 0 1,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 1 0, dR3_CX0.place 0 0,
     d3CNOTtargetcommut.place 0 0]
-    [.rw 2 7 true, .swap 8, .rw 7 5 true, .rw 8 8 false, .rw 9 5 false, .rw 0 2 true,
-    .swap 1, .rw 2 8 true, .rw 3 1 false, .rw 1 7 true, .swap 7, .rw 8 0 false,
-    .rw 6 5 true, .rw 7 8 false, .rw 8 5 false, .swap 7, .swap 8, .swap 9, .rw 10 8 true,
-    .swap 11, .rw 7 9 true, .rw 6 5 false, .rw 5 4 false, .rw 9 5 false, .swap 8,
-    .rw 8 3 true, .rw 9 5 true, .rw 6 10 false, .swap 11, .rw 5 5 false, .rw 4 3 false,
-    .rw 8 4 true, .swap 7, .rw 8 5 true, .rw 2 5 true, .swap 3, .rw 4 9 false,
-    .rw 8 1 true, .swap 9, .swap 8, .rw 11 0 true, .rw 11 0 false, .rw 9 1 false,
-    .rw 9 1 true, .rw 11 0 true, .swap 10, .rw 11 7 false, .swap 8, .rw 7 8 false, .swap 6,
-    .swap 5, .swap 4, .swap 3, .rw 1 5 true, .rw 2 8 false, .rw 3 5 false, .rw 2 2 false,
-    .rw 8 5 true, .rw 7 8 true, .rw 6 5 false, .rw 0 8 true, .rw 3 6 true, .swap 3,
-    .swap 2, .swap 6, .swap 7, .swap 8, .rw 3 0 false, .rw 7 0 false, .rw 1 1 false,
-    .rw 2 1 false]
+    [Step.rw 2 7 true, Step.swap 8, Step.rw 7 5 true, Step.rw 8 8 false, Step.rw 9 5 false, Step.rw 0 2 true,
+    Step.swap 1, Step.rw 2 8 true, Step.rw 3 1 false, Step.rw 1 7 true, Step.swap 7, Step.rw 8 0 false,
+    Step.rw 6 5 true, Step.rw 7 8 false, Step.rw 8 5 false, Step.swap 7, Step.swap 8, Step.swap 9, Step.rw 10 8 true,
+    Step.swap 11, Step.rw 7 9 true, Step.rw 6 5 false, Step.rw 5 4 false, Step.rw 9 5 false, Step.swap 8,
+    Step.rw 8 3 true, Step.rw 9 5 true, Step.rw 6 10 false, Step.swap 11, Step.rw 5 5 false, Step.rw 4 3 false,
+    Step.rw 8 4 true, Step.swap 7, Step.rw 8 5 true, Step.rw 2 5 true, Step.swap 3, Step.rw 4 9 false,
+    Step.rw 8 1 true, Step.swap 9, Step.swap 8, Step.rw 11 0 true, Step.rw 11 0 false, Step.rw 9 1 false,
+    Step.rw 9 1 true, Step.rw 11 0 true, Step.swap 10, Step.rw 11 7 false, Step.swap 8, Step.rw 7 8 false, Step.swap 6,
+    Step.swap 5, Step.swap 4, Step.swap 3, Step.rw 1 5 true, Step.rw 2 8 false, Step.rw 3 5 false, Step.rw 2 2 false,
+    Step.rw 8 5 true, Step.rw 7 8 true, Step.rw 6 5 false, Step.rw 0 8 true, Step.rw 3 6 true, Step.swap 3,
+    Step.swap 2, Step.swap 6, Step.swap 7, Step.swap 8, Step.rw 3 0 false, Step.rw 7 0 false, Step.rw 1 1 false,
+    Step.rw 2 1 false]
     (by decide +kernel)
 
 /-- Both sides of `dB` inverted, letter by letter. -/
@@ -135,8 +135,8 @@ def dB_i : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0]
-    [.rw 4 0 true, .rw 5 1 true, .rw 4 2 true, .rw 3 1 false, .rw 2 0 false, .rw 1 1 false,
-    .rw 0 0 false]
+    [Step.rw 4 0 true, Step.rw 5 1 true, Step.rw 4 2 true, Step.rw 3 1 false, Step.rw 2 0 false, Step.rw 1 1 false,
+    Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- `dCF` upside down (conjugated by the swap). -/
@@ -148,9 +148,9 @@ def dCF_m : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CF trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.Z) 0 0]
-    [.rw 0 0 true, .rw 1 2 false, .rw 2 3 false, .rw 3 0 false, .rw 4 2 false,
-    .rw 5 0 false, .rw 1 1 false, .rw 5 2 true, .rw 4 3 true, .rw 3 0 true, .rw 2 2 true,
-    .rw 1 0 true, .rw 0 0 false]
+    [Step.rw 0 0 true, Step.rw 1 2 false, Step.rw 2 3 false, Step.rw 3 0 false, Step.rw 4 2 false,
+    Step.rw 5 0 false, Step.rw 1 1 false, Step.rw 5 2 true, Step.rw 4 3 true, Step.rw 3 0 true, Step.rw 2 2 true,
+    Step.rw 1 0 true, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- Reversing three wires carries a gate to its mirror image. -/
@@ -161,7 +161,7 @@ def dR3_CX1 : DEqn Th 3 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 1,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat2 Gate.CX) 0 0]
-    [.rw 1 2 false, .rw 3 1 false, .rw 2 0 false]
+    [Step.rw 1 2 false, Step.rw 3 1 false, Step.rw 2 0 false]
     (by decide +kernel)
 
 /-- Reversing three wires carries a gate to its mirror image. -/
@@ -173,7 +173,7 @@ def dR3_H0 : DEqn Th 3 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 1,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 1 0]
-    [.rw 3 3 true, .rw 2 1 false, .rw 2 2 true, .swap 3, .rw 1 0 false, .rw 0 1 false]
+    [Step.rw 3 3 true, Step.rw 2 1 false, Step.rw 2 2 true, Step.swap 3, Step.rw 1 0 false, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- Reversing three wires carries a gate to its mirror image. -/
@@ -184,7 +184,7 @@ def dR3_H1 : DEqn Th 3 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 1,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 1 0]
-    [.rw 2 2 false, .swap 1, .rw 3 1 false, .rw 2 0 false, .rw 1 2 true, .rw 0 1 false]
+    [Step.rw 2 2 false, Step.swap 1, Step.rw 3 1 false, Step.rw 2 0 false, Step.rw 1 2 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- Reversing three wires carries a gate to its mirror image. -/
@@ -196,7 +196,7 @@ def dR3_H2 : DEqn Th 3 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 1,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 1 0]
-    [.swap 3, .rw 2 1 false, .rw 1 2 false, .rw 2 0 false, .rw 0 3 false, .rw 1 1 false]
+    [Step.swap 3, Step.rw 2 1 false, Step.rw 1 2 false, Step.rw 2 0 false, Step.rw 0 3 false, Step.rw 1 1 false]
     (by decide +kernel)
 
 /-- `dZC` upside down (conjugated by the swap). -/
@@ -207,8 +207,8 @@ def dZC_m : DEqn Th 2 where
     [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.ZC trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.Z) 0 0]
-    [.rw 0 0 true, .rw 1 2 false, .rw 2 0 false, .rw 3 2 false, .rw 1 1 false, .rw 2 0 true,
-    .rw 1 0 true, .rw 2 2 false, .rw 3 0 false, .rw 0 0 false]
+    [Step.rw 0 0 true, Step.rw 1 2 false, Step.rw 2 0 false, Step.rw 3 2 false, Step.rw 1 1 false, Step.rw 2 0 true,
+    Step.rw 1 0 true, Step.rw 2 2 false, Step.rw 3 0 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- Both sides of `dZC_m` inverted, letter by letter. -/
@@ -220,8 +220,8 @@ def dZC_m_i : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.Z2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, dZC_m.place 0 0]
-    [.rw 5 1 true, .rw 6 3 true, .rw 7 2 true, .rw 8 3 true, .rw 5 4 true, .rw 4 0 false,
-    .rw 3 3 false, .rw 2 2 false, .rw 1 3 false, .rw 0 0 false]
+    [Step.rw 5 1 true, Step.rw 6 3 true, Step.rw 7 2 true, Step.rw 8 3 true, Step.rw 5 4 true, Step.rw 4 0 false,
+    Step.rw 3 3 false, Step.rw 2 2 false, Step.rw 1 3 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- The decoding of Selinger's (C12), Appendix A, replayed in RCliff₂. -/
@@ -235,10 +235,10 @@ def dC12dec : DEqn Th 3 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CZr trivial 1 0,
     d3CNOTtargetcommut.place 0 0]
-    [.swap 1, .swap 0, .rw 6 0 true, .swap 5, .swap 0, .swap 1, .swap 2, .rw 2 4 false,
-    .rw 5 2 true, .rw 6 3 true, .rw 3 5 false, .rw 2 3 false, .rw 1 2 false, .rw 4 1 true,
-    .rw 4 1 false, .rw 0 1 true, .rw 0 1 false, .rw 1 4 true, .swap 1, .swap 0, .swap 4,
-    .rw 1 0 false, .swap 2]
+    [Step.swap 1, Step.swap 0, Step.rw 6 0 true, Step.swap 5, Step.swap 0, Step.swap 1, Step.swap 2, Step.rw 2 4 false,
+    Step.rw 5 2 true, Step.rw 6 3 true, Step.rw 3 5 false, Step.rw 2 3 false, Step.rw 1 2 false, Step.rw 4 1 true,
+    Step.rw 4 1 false, Step.rw 0 1 true, Step.rw 0 1 false, Step.rw 1 4 true, Step.swap 1, Step.swap 0, Step.swap 4,
+    Step.rw 1 0 false, Step.swap 2]
     (by decide +kernel)
 
 /-- The decoding of Selinger's (C13), Appendix A, replayed in RCliff₂. -/
@@ -262,34 +262,34 @@ def dC13dec : DEqn Th 3 where
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 1 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat2 Gate.CX) 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat2 Gate.swap) 0 0]
-    [.swap 8, .swap 7, .swap 6, .swap 5, .swap 4, .swap 3, .swap 2, .swap 1, .swap 0,
-    .swap 9, .swap 8, .swap 7, .swap 6, .swap 5, .swap 4, .swap 3, .swap 2, .swap 1,
-    .swap 5, .swap 6, .swap 13, .swap 18, .swap 19, .rw 4 1 false, .rw 7 1 false,
-    .rw 10 1 false, .rw 11 1 false, .rw 0 2 false, .rw 6 2 false, .rw 6 2 true,
-    .rw 0 2 true, .rw 11 1 true, .rw 10 1 true, .rw 7 1 true, .rw 4 1 true, .rw 4 1 false,
-    .rw 7 1 false, .rw 10 1 false, .rw 8 2 false, .rw 0 2 false, .rw 7 1 false,
-    .rw 6 1 true, .rw 8 0 true, .swap 11, .swap 7, .swap 8, .rw 8 7 false, .rw 5 1 true,
-    .swap 8, .swap 7, .swap 6, .swap 5, .swap 2, .rw 2 7 false, .rw 8 0 true,
-    .rw 8 0 false, .rw 0 2 true, .rw 9 2 true, .swap 10, .swap 9, .swap 1, .swap 2,
-    .swap 3, .swap 4, .swap 5, .swap 6, .rw 6 8 false, .rw 2 11 false, .rw 8 9 false,
-    .rw 7 3 true, .rw 8 6 true, .rw 5 12 false, .swap 10, .rw 11 3 false, .rw 4 6 false,
-    .rw 3 3 false, .rw 3 3 true, .rw 3 3 false, .rw 9 5 true, .rw 8 13 true, .rw 7 5 false,
-    .swap 6, .swap 5, .swap 4, .swap 3, .rw 1 13 true, .rw 2 0 false, .rw 6 0 true,
-    .rw 6 0 false, .swap 5, .rw 4 5 true, .rw 5 16 false, .rw 3 15 true, .rw 2 16 true,
-    .rw 1 5 false, .rw 7 6 true, .rw 6 14 true, .rw 5 6 false, .rw 7 0 true, .swap 6,
-    .rw 2 7 true, .rw 6 1 false, .rw 5 0 false, .swap 2, .rw 0 14 true, .rw 1 1 false,
-    .rw 1 2 true, .rw 1 2 false, .rw 4 1 true, .rw 3 14 false, .swap 2, .swap 1,
-    .rw 2 6 true, .rw 1 14 true, .rw 0 6 false, .rw 5 4 true, .swap 1, .rw 2 12 true,
-    .swap 1, .swap 2, .rw 1 10 true, .rw 9 6 true, .rw 10 4 true, .rw 7 10 false,
-    .rw 5 1 true, .rw 9 1 true, .rw 5 2 true, .rw 7 1 false, .rw 9 1 false, .rw 5 2 false,
-    .rw 5 2 true, .rw 9 1 true, .rw 7 1 true, .rw 1 8 true, .swap 1, .swap 0, .swap 4,
-    .rw 1 1 false, .rw 14 8 true, .swap 17, .swap 14, .swap 17, .swap 18, .rw 17 1 false,
-    .rw 7 1 false, .rw 9 1 false, .rw 5 2 false, .rw 5 2 true, .rw 9 1 true, .rw 7 1 true,
-    .rw 14 2 true, .rw 2 2 true, .rw 9 1 false, .rw 11 1 false, .rw 2 2 false,
-    .rw 5 2 false, .rw 8 2 false, .rw 8 2 true, .rw 5 2 true, .rw 2 2 true, .rw 11 1 true,
-    .rw 9 1 true, .swap 21, .swap 20, .swap 19, .swap 18, .swap 19, .swap 17, .swap 16,
-    .swap 15, .swap 14, .swap 8, .swap 9, .swap 10, .swap 11, .swap 12, .swap 13, .swap 14,
-    .swap 7, .swap 4]
+    [Step.swap 8, Step.swap 7, Step.swap 6, Step.swap 5, Step.swap 4, Step.swap 3, Step.swap 2, Step.swap 1, Step.swap 0,
+    Step.swap 9, Step.swap 8, Step.swap 7, Step.swap 6, Step.swap 5, Step.swap 4, Step.swap 3, Step.swap 2, Step.swap 1,
+    Step.swap 5, Step.swap 6, Step.swap 13, Step.swap 18, Step.swap 19, Step.rw 4 1 false, Step.rw 7 1 false,
+    Step.rw 10 1 false, Step.rw 11 1 false, Step.rw 0 2 false, Step.rw 6 2 false, Step.rw 6 2 true,
+    Step.rw 0 2 true, Step.rw 11 1 true, Step.rw 10 1 true, Step.rw 7 1 true, Step.rw 4 1 true, Step.rw 4 1 false,
+    Step.rw 7 1 false, Step.rw 10 1 false, Step.rw 8 2 false, Step.rw 0 2 false, Step.rw 7 1 false,
+    Step.rw 6 1 true, Step.rw 8 0 true, Step.swap 11, Step.swap 7, Step.swap 8, Step.rw 8 7 false, Step.rw 5 1 true,
+    Step.swap 8, Step.swap 7, Step.swap 6, Step.swap 5, Step.swap 2, Step.rw 2 7 false, Step.rw 8 0 true,
+    Step.rw 8 0 false, Step.rw 0 2 true, Step.rw 9 2 true, Step.swap 10, Step.swap 9, Step.swap 1, Step.swap 2,
+    Step.swap 3, Step.swap 4, Step.swap 5, Step.swap 6, Step.rw 6 8 false, Step.rw 2 11 false, Step.rw 8 9 false,
+    Step.rw 7 3 true, Step.rw 8 6 true, Step.rw 5 12 false, Step.swap 10, Step.rw 11 3 false, Step.rw 4 6 false,
+    Step.rw 3 3 false, Step.rw 3 3 true, Step.rw 3 3 false, Step.rw 9 5 true, Step.rw 8 13 true, Step.rw 7 5 false,
+    Step.swap 6, Step.swap 5, Step.swap 4, Step.swap 3, Step.rw 1 13 true, Step.rw 2 0 false, Step.rw 6 0 true,
+    Step.rw 6 0 false, Step.swap 5, Step.rw 4 5 true, Step.rw 5 16 false, Step.rw 3 15 true, Step.rw 2 16 true,
+    Step.rw 1 5 false, Step.rw 7 6 true, Step.rw 6 14 true, Step.rw 5 6 false, Step.rw 7 0 true, Step.swap 6,
+    Step.rw 2 7 true, Step.rw 6 1 false, Step.rw 5 0 false, Step.swap 2, Step.rw 0 14 true, Step.rw 1 1 false,
+    Step.rw 1 2 true, Step.rw 1 2 false, Step.rw 4 1 true, Step.rw 3 14 false, Step.swap 2, Step.swap 1,
+    Step.rw 2 6 true, Step.rw 1 14 true, Step.rw 0 6 false, Step.rw 5 4 true, Step.swap 1, Step.rw 2 12 true,
+    Step.swap 1, Step.swap 2, Step.rw 1 10 true, Step.rw 9 6 true, Step.rw 10 4 true, Step.rw 7 10 false,
+    Step.rw 5 1 true, Step.rw 9 1 true, Step.rw 5 2 true, Step.rw 7 1 false, Step.rw 9 1 false, Step.rw 5 2 false,
+    Step.rw 5 2 true, Step.rw 9 1 true, Step.rw 7 1 true, Step.rw 1 8 true, Step.swap 1, Step.swap 0, Step.swap 4,
+    Step.rw 1 1 false, Step.rw 14 8 true, Step.swap 17, Step.swap 14, Step.swap 17, Step.swap 18, Step.rw 17 1 false,
+    Step.rw 7 1 false, Step.rw 9 1 false, Step.rw 5 2 false, Step.rw 5 2 true, Step.rw 9 1 true, Step.rw 7 1 true,
+    Step.rw 14 2 true, Step.rw 2 2 true, Step.rw 9 1 false, Step.rw 11 1 false, Step.rw 2 2 false,
+    Step.rw 5 2 false, Step.rw 8 2 false, Step.rw 8 2 true, Step.rw 5 2 true, Step.rw 2 2 true, Step.rw 11 1 true,
+    Step.rw 9 1 true, Step.swap 21, Step.swap 20, Step.swap 19, Step.swap 18, Step.swap 19, Step.swap 17, Step.swap 16,
+    Step.swap 15, Step.swap 14, Step.swap 8, Step.swap 9, Step.swap 10, Step.swap 11, Step.swap 12, Step.swap 13, Step.swap 14,
+    Step.swap 7, Step.swap 4]
     (by decide +kernel)
 
 /-- The decoding of Selinger's (C14), Appendix A, replayed in RCliff₂. -/
@@ -308,20 +308,20 @@ def dC14dec : DEqn Th 3 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.I trivial 0 0, dI_i.place 0 0,
     d3CNOTtargetcommut.place 0 0, d3CNOTcontrolcommut.place 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat2 Gate.CX) 0 0]
-    [.swap 12, .swap 11, .swap 10, .swap 9, .swap 8, .swap 7, .swap 6, .swap 5, .swap 4,
-    .swap 3, .swap 4, .swap 5, .swap 9, .swap 10, .swap 25, .swap 24, .swap 23, .swap 22,
-    .swap 21, .swap 20, .swap 19, .swap 18, .swap 17, .swap 16, .swap 17, .swap 18,
-    .swap 22, .swap 23, .swap 29, .swap 30, .swap 34, .swap 35, .rw 4 1 false,
-    .rw 6 1 false, .rw 13 1 false, .rw 15 1 false, .rw 21 1 false, .rw 23 1 false,
-    .rw 2 2 false, .rw 9 2 false, .rw 23 0 true, .swap 4, .swap 8, .swap 7, .rw 4 7 false,
-    .swap 9, .swap 14, .swap 13, .swap 12, .rw 9 7 false, .swap 18, .swap 15,
-    .rw 15 7 false, .rw 14 8 false, .rw 3 8 false, .rw 5 9 true, .rw 8 10 true,
-    .rw 8 9 true, .rw 7 6 false, .rw 6 3 false, .rw 5 6 false, .rw 4 3 false, .rw 5 5 true,
-    .rw 6 13 false, .rw 8 6 false, .rw 7 5 false, .swap 10, .rw 11 6 true, .rw 9 13 true,
-    .rw 8 5 false, .rw 6 6 true, .rw 4 13 true, .rw 3 5 false, .swap 2, .swap 11,
-    .rw 8 12 true, .swap 2, .swap 1, .rw 2 11 false, .swap 1, .rw 7 3 false, .rw 5 4 false,
-    .rw 4 6 false, .rw 3 3 false, .swap 2, .swap 3, .rw 4 0 false, .rw 1 6 false,
-    .rw 0 2 false, .rw 0 2 true, .rw 2 0 true, .rw 0 2 false, .rw 0 0 false]
+    [Step.swap 12, Step.swap 11, Step.swap 10, Step.swap 9, Step.swap 8, Step.swap 7, Step.swap 6, Step.swap 5, Step.swap 4,
+    Step.swap 3, Step.swap 4, Step.swap 5, Step.swap 9, Step.swap 10, Step.swap 25, Step.swap 24, Step.swap 23, Step.swap 22,
+    Step.swap 21, Step.swap 20, Step.swap 19, Step.swap 18, Step.swap 17, Step.swap 16, Step.swap 17, Step.swap 18,
+    Step.swap 22, Step.swap 23, Step.swap 29, Step.swap 30, Step.swap 34, Step.swap 35, Step.rw 4 1 false,
+    Step.rw 6 1 false, Step.rw 13 1 false, Step.rw 15 1 false, Step.rw 21 1 false, Step.rw 23 1 false,
+    Step.rw 2 2 false, Step.rw 9 2 false, Step.rw 23 0 true, Step.swap 4, Step.swap 8, Step.swap 7, Step.rw 4 7 false,
+    Step.swap 9, Step.swap 14, Step.swap 13, Step.swap 12, Step.rw 9 7 false, Step.swap 18, Step.swap 15,
+    Step.rw 15 7 false, Step.rw 14 8 false, Step.rw 3 8 false, Step.rw 5 9 true, Step.rw 8 10 true,
+    Step.rw 8 9 true, Step.rw 7 6 false, Step.rw 6 3 false, Step.rw 5 6 false, Step.rw 4 3 false, Step.rw 5 5 true,
+    Step.rw 6 13 false, Step.rw 8 6 false, Step.rw 7 5 false, Step.swap 10, Step.rw 11 6 true, Step.rw 9 13 true,
+    Step.rw 8 5 false, Step.rw 6 6 true, Step.rw 4 13 true, Step.rw 3 5 false, Step.swap 2, Step.swap 11,
+    Step.rw 8 12 true, Step.swap 2, Step.swap 1, Step.rw 2 11 false, Step.swap 1, Step.rw 7 3 false, Step.rw 5 4 false,
+    Step.rw 4 6 false, Step.rw 3 3 false, Step.swap 2, Step.swap 3, Step.rw 4 0 false, Step.rw 1 6 false,
+    Step.rw 0 2 false, Step.rw 0 2 true, Step.rw 2 0 true, Step.rw 0 2 false, Step.rw 0 0 false]
     (by decide +kernel)
 
 /-- (czrev): the decoded `CZ` is symmetric. -/
@@ -332,8 +332,8 @@ def drealczrev : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CZr trivial 0 0]
-    [.rw 2 0 true, .swap 3, .swap 2, .rw 3 0 false, .rw 3 0 true, .rw 1 0 true, .swap 4,
-    .swap 0, .swap 1, .rw 1 2 false, .rw 0 1 true, .rw 0 1 false]
+    [Step.rw 2 0 true, Step.swap 3, Step.swap 2, Step.rw 3 0 false, Step.rw 3 0 true, Step.rw 1 0 true, Step.swap 4,
+    Step.swap 0, Step.swap 1, Step.rw 1 2 false, Step.rw 0 1 true, Step.rw 0 1 false]
     (by decide +kernel)
 
 /-- The decoding of Selinger's (C15), Appendix A, replayed in RCliff₂. -/
@@ -348,103 +348,103 @@ def dC15dec : DEqn Th 3 where
     DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 1 0, drealczrev.place 0 1,
     drealczrev.place 1 0, dR3_CX0.place 0 0, dR3_H2.place 0 0, dR3_H1.place 0 0,
     dR3_H0.place 0 0, dR3_CX1.place 0 0, dC14dec.place 0 0]
-    [.swap 2, .swap 1, .swap 0, .swap 3, .swap 2, .swap 1, .swap 9, .swap 12, .swap 15,
-    .swap 14, .swap 13, .swap 16, .swap 15, .swap 14, .swap 22, .swap 28, .swap 27,
-    .swap 26, .swap 30, .swap 29, .swap 28, .swap 27, .swap 35, .rw 4 1 false,
-    .rw 15 1 false, .rw 26 1 false, .rw 0 2 false, .rw 3 2 false, .rw 6 2 false,
-    .rw 10 2 false, .rw 13 2 false, .rw 17 2 false, .rw 17 2 true, .rw 13 2 true,
-    .rw 10 2 true, .rw 6 2 true, .rw 3 2 true, .rw 0 2 true, .rw 26 1 true, .rw 15 1 true,
-    .rw 4 1 true, .swap 35, .rw 36 6 false, .rw 4 1 false, .rw 15 1 false, .rw 26 1 false,
-    .rw 29 1 false, .rw 0 2 false, .rw 3 2 false, .rw 6 2 false, .rw 10 2 false,
-    .rw 13 2 false, .rw 17 2 false, .rw 17 2 true, .rw 13 2 true, .rw 10 2 true,
-    .rw 6 2 true, .rw 3 2 true, .rw 0 2 true, .rw 29 1 true, .rw 26 1 true, .rw 15 1 true,
-    .rw 4 1 true, .swap 27, .swap 28, .swap 29, .swap 30, .rw 31 6 false, .swap 35,
-    .rw 4 1 false, .rw 15 1 false, .rw 25 1 false, .rw 30 1 false, .rw 0 2 false,
-    .rw 3 2 false, .rw 6 2 false, .rw 10 2 false, .rw 13 2 false, .rw 13 2 true,
-    .rw 10 2 true, .rw 6 2 true, .rw 3 2 true, .rw 0 2 true, .rw 30 1 true, .rw 25 1 true,
-    .rw 15 1 true, .rw 4 1 true, .rw 27 5 false, .swap 31, .swap 32, .swap 33, .swap 34,
-    .swap 35, .swap 36, .swap 37, .swap 38, .swap 39, .swap 40, .swap 41, .swap 42,
-    .swap 43, .rw 4 1 false, .rw 15 1 false, .rw 27 1 false, .rw 31 1 false, .rw 0 2 false,
-    .rw 3 2 false, .rw 6 2 false, .rw 10 2 false, .rw 13 2 false, .rw 13 2 true,
-    .rw 10 2 true, .rw 6 2 true, .rw 3 2 true, .rw 0 2 true, .rw 31 1 true, .rw 27 1 true,
-    .rw 15 1 true, .rw 4 1 true, .swap 22, .rw 23 6 false, .swap 27, .rw 4 1 false,
-    .rw 15 1 false, .rw 18 1 false, .rw 27 1 false, .rw 31 1 false, .rw 0 2 false,
-    .rw 3 2 false, .rw 6 2 false, .rw 10 2 false, .rw 10 2 true, .rw 6 2 true,
-    .rw 3 2 true, .rw 0 2 true, .rw 31 1 true, .rw 27 1 true, .rw 18 1 true, .rw 15 1 true,
-    .rw 4 1 true, .swap 14, .swap 15, .swap 16, .swap 17, .rw 18 6 false, .swap 22,
-    .rw 4 1 false, .rw 14 1 false, .rw 19 1 false, .rw 29 1 false, .rw 33 1 false,
-    .rw 0 2 false, .rw 3 2 false, .rw 6 2 false, .rw 6 2 true, .rw 3 2 true, .rw 0 2 true,
-    .rw 33 1 true, .rw 29 1 true, .rw 19 1 true, .rw 14 1 true, .rw 4 1 true,
-    .rw 14 5 false, .swap 18, .swap 19, .swap 20, .swap 21, .swap 22, .swap 23, .swap 24,
-    .swap 25, .swap 26, .swap 27, .swap 28, .swap 29, .swap 30, .swap 31, .rw 32 0 false,
-    .rw 4 1 false, .rw 16 1 false, .rw 20 1 false, .rw 29 1 false, .rw 33 1 false,
-    .rw 0 2 false, .rw 3 2 false, .rw 6 2 false, .rw 6 2 true, .rw 3 2 true, .rw 0 2 true,
-    .rw 33 1 true, .rw 29 1 true, .rw 20 1 true, .rw 16 1 true, .rw 4 1 true,
-    .rw 32 0 true, .swap 9, .rw 10 6 false, .swap 14, .rw 34 0 false, .rw 4 1 false,
-    .rw 7 1 false, .rw 16 1 false, .rw 20 1 false, .rw 29 1 false, .rw 33 1 false,
-    .rw 0 2 false, .rw 3 2 false, .rw 3 2 true, .rw 0 2 true, .rw 33 1 true, .rw 29 1 true,
-    .rw 20 1 true, .rw 16 1 true, .rw 7 1 true, .rw 4 1 true, .rw 34 0 true, .swap 1,
-    .swap 2, .swap 3, .swap 4, .rw 5 6 false, .swap 9, .rw 36 0 false, .rw 3 1 false,
-    .rw 8 1 false, .rw 18 1 false, .rw 22 1 false, .rw 31 1 false, .rw 35 1 false,
-    .rw 35 1 true, .rw 31 1 true, .rw 22 1 true, .rw 18 1 true, .rw 8 1 true, .rw 3 1 true,
-    .rw 36 0 true, .rw 1 5 false, .swap 5, .swap 6, .swap 7, .swap 8, .swap 9, .swap 10,
-    .swap 11, .swap 12, .swap 13, .swap 14, .swap 15, .swap 16, .swap 17, .swap 18,
-    .rw 19 0 false, .rw 36 0 false, .rw 5 1 false, .rw 9 1 false, .rw 18 1 false,
-    .rw 22 1 false, .rw 31 1 false, .rw 35 1 false, .rw 35 1 true, .rw 31 1 true,
-    .rw 22 1 true, .rw 18 1 true, .rw 9 1 true, .rw 5 1 true, .rw 36 0 true, .rw 19 0 true,
-    .rw 19 0 false, .rw 36 0 false, .rw 5 1 false, .rw 9 1 false, .rw 18 1 false,
-    .rw 22 1 false, .rw 31 1 false, .rw 35 1 false, .rw 35 1 true, .rw 31 1 true,
-    .rw 22 1 true, .rw 18 1 true, .rw 9 1 true, .rw 5 1 true, .rw 36 0 true, .rw 19 0 true,
-    .swap 55, .swap 54, .swap 53, .swap 52, .swap 51, .swap 50, .swap 49, .swap 48,
-    .swap 49, .swap 47, .swap 46, .swap 45, .swap 44, .swap 43, .swap 37, .swap 36,
-    .swap 37, .swap 38, .swap 39, .swap 40, .swap 41, .swap 42, .swap 35, .swap 34,
-    .swap 33, .swap 32, .swap 31, .swap 30, .swap 29, .swap 30, .swap 28, .swap 27,
-    .swap 26, .swap 25, .swap 24, .swap 18, .swap 17, .swap 18, .swap 19, .swap 20,
-    .swap 21, .swap 22, .swap 23, .swap 16, .swap 15, .swap 14, .swap 13, .swap 12,
-    .swap 11, .swap 10, .swap 11, .swap 9, .swap 8, .swap 7, .swap 6, .swap 5, .swap 0,
-    .swap 1, .swap 2, .swap 3, .swap 4, .rw 56 9 true, .rw 53 11 true, .rw 59 4 false,
-    .rw 58 3 false, .rw 57 4 false, .rw 52 9 true, .rw 58 4 false, .rw 57 3 false,
-    .rw 56 4 false, .rw 51 9 true, .rw 57 4 false, .rw 56 3 false, .rw 55 4 false,
-    .rw 50 8 true, .rw 56 4 false, .rw 55 3 false, .rw 54 4 false, .rw 49 9 true,
-    .rw 55 4 false, .rw 54 3 false, .rw 53 4 false, .rw 46 11 true, .rw 52 4 false,
-    .rw 51 3 false, .rw 50 4 false, .rw 45 9 true, .rw 51 4 false, .rw 50 3 false,
-    .rw 49 4 false, .rw 44 9 true, .rw 50 4 false, .rw 49 3 false, .rw 48 4 false,
-    .rw 43 8 true, .rw 49 4 false, .rw 48 3 false, .rw 47 4 false, .rw 42 10 true,
-    .rw 48 4 false, .rw 47 3 false, .rw 46 4 false, .rw 39 7 true, .rw 45 4 false,
-    .rw 44 3 false, .rw 43 4 false, .rw 38 10 true, .rw 44 4 false, .rw 43 3 false,
-    .rw 42 4 false, .rw 37 9 true, .rw 43 4 false, .rw 42 3 false, .rw 41 4 false,
-    .rw 34 11 true, .rw 40 4 false, .rw 39 3 false, .rw 38 4 false, .rw 33 9 true,
-    .rw 39 4 false, .rw 38 3 false, .rw 37 4 false, .rw 32 9 true, .rw 38 4 false,
-    .rw 37 3 false, .rw 36 4 false, .rw 31 8 true, .rw 37 4 false, .rw 36 3 false,
-    .rw 35 4 false, .rw 30 9 true, .rw 36 4 false, .rw 35 3 false, .rw 34 4 false,
-    .rw 27 11 true, .rw 33 4 false, .rw 32 3 false, .rw 31 4 false, .rw 26 9 true,
-    .rw 32 4 false, .rw 31 3 false, .rw 30 4 false, .rw 25 9 true, .rw 31 4 false,
-    .rw 30 3 false, .rw 29 4 false, .rw 24 8 true, .rw 30 4 false, .rw 29 3 false,
-    .rw 28 4 false, .rw 23 10 true, .rw 29 4 false, .rw 28 3 false, .rw 27 4 false,
-    .rw 20 7 true, .rw 26 4 false, .rw 25 3 false, .rw 24 4 false, .rw 19 10 true,
-    .rw 25 4 false, .rw 24 3 false, .rw 23 4 false, .rw 18 9 true, .rw 24 4 false,
-    .rw 23 3 false, .rw 22 4 false, .rw 15 11 true, .rw 21 4 false, .rw 20 3 false,
-    .rw 19 4 false, .rw 14 9 true, .rw 20 4 false, .rw 19 3 false, .rw 18 4 false,
-    .rw 13 9 true, .rw 19 4 false, .rw 18 3 false, .rw 17 4 false, .rw 12 8 true,
-    .rw 18 4 false, .rw 17 3 false, .rw 16 4 false, .rw 11 9 true, .rw 17 4 false,
-    .rw 16 3 false, .rw 15 4 false, .rw 8 11 true, .rw 14 4 false, .rw 13 3 false,
-    .rw 12 4 false, .rw 7 9 true, .rw 13 4 false, .rw 12 3 false, .rw 11 4 false,
-    .rw 6 9 true, .rw 12 4 false, .rw 11 3 false, .rw 10 4 false, .rw 5 8 true,
-    .rw 11 4 false, .rw 10 3 false, .rw 9 4 false, .rw 4 10 true, .rw 10 4 false,
-    .rw 9 3 false, .rw 8 4 false, .rw 1 7 true, .rw 7 4 false, .rw 6 3 false,
-    .rw 5 4 false, .rw 0 10 true, .rw 6 4 false, .rw 5 3 false, .rw 4 4 false, .swap 15,
-    .swap 14, .swap 13, .swap 12, .swap 11, .swap 10, .swap 9, .swap 8, .swap 7, .swap 6,
-    .swap 7, .swap 8, .swap 12, .swap 13, .swap 28, .swap 27, .swap 26, .swap 25, .swap 24,
-    .swap 23, .swap 22, .swap 21, .swap 20, .swap 19, .swap 20, .swap 21, .swap 25,
-    .swap 26, .swap 32, .swap 33, .swap 37, .swap 38, .rw 7 1 false, .rw 9 1 false,
-    .rw 16 1 false, .rw 18 1 false, .rw 24 1 false, .rw 26 1 false, .rw 5 2 false,
-    .rw 12 2 false, .rw 12 2 true, .rw 5 2 true, .rw 26 1 true, .rw 24 1 true,
-    .rw 18 1 true, .rw 16 1 true, .rw 9 1 true, .rw 7 1 true, .swap 8, .swap 7, .swap 6,
-    .swap 7, .swap 8, .swap 9, .swap 10, .swap 13, .swap 12, .swap 11, .swap 12, .swap 13,
-    .swap 14, .swap 15, .swap 21, .swap 20, .swap 19, .swap 20, .swap 21, .swap 22,
-    .swap 23, .swap 26, .swap 25, .swap 24, .swap 25, .swap 26, .swap 27, .swap 28,
-    .swap 33, .swap 32, .swap 38, .swap 37, .rw 3 12 false, .rw 2 4 false, .rw 1 3 false,
-    .rw 0 4 false]
+    [Step.swap 2, Step.swap 1, Step.swap 0, Step.swap 3, Step.swap 2, Step.swap 1, Step.swap 9, Step.swap 12, Step.swap 15,
+    Step.swap 14, Step.swap 13, Step.swap 16, Step.swap 15, Step.swap 14, Step.swap 22, Step.swap 28, Step.swap 27,
+    Step.swap 26, Step.swap 30, Step.swap 29, Step.swap 28, Step.swap 27, Step.swap 35, Step.rw 4 1 false,
+    Step.rw 15 1 false, Step.rw 26 1 false, Step.rw 0 2 false, Step.rw 3 2 false, Step.rw 6 2 false,
+    Step.rw 10 2 false, Step.rw 13 2 false, Step.rw 17 2 false, Step.rw 17 2 true, Step.rw 13 2 true,
+    Step.rw 10 2 true, Step.rw 6 2 true, Step.rw 3 2 true, Step.rw 0 2 true, Step.rw 26 1 true, Step.rw 15 1 true,
+    Step.rw 4 1 true, Step.swap 35, Step.rw 36 6 false, Step.rw 4 1 false, Step.rw 15 1 false, Step.rw 26 1 false,
+    Step.rw 29 1 false, Step.rw 0 2 false, Step.rw 3 2 false, Step.rw 6 2 false, Step.rw 10 2 false,
+    Step.rw 13 2 false, Step.rw 17 2 false, Step.rw 17 2 true, Step.rw 13 2 true, Step.rw 10 2 true,
+    Step.rw 6 2 true, Step.rw 3 2 true, Step.rw 0 2 true, Step.rw 29 1 true, Step.rw 26 1 true, Step.rw 15 1 true,
+    Step.rw 4 1 true, Step.swap 27, Step.swap 28, Step.swap 29, Step.swap 30, Step.rw 31 6 false, Step.swap 35,
+    Step.rw 4 1 false, Step.rw 15 1 false, Step.rw 25 1 false, Step.rw 30 1 false, Step.rw 0 2 false,
+    Step.rw 3 2 false, Step.rw 6 2 false, Step.rw 10 2 false, Step.rw 13 2 false, Step.rw 13 2 true,
+    Step.rw 10 2 true, Step.rw 6 2 true, Step.rw 3 2 true, Step.rw 0 2 true, Step.rw 30 1 true, Step.rw 25 1 true,
+    Step.rw 15 1 true, Step.rw 4 1 true, Step.rw 27 5 false, Step.swap 31, Step.swap 32, Step.swap 33, Step.swap 34,
+    Step.swap 35, Step.swap 36, Step.swap 37, Step.swap 38, Step.swap 39, Step.swap 40, Step.swap 41, Step.swap 42,
+    Step.swap 43, Step.rw 4 1 false, Step.rw 15 1 false, Step.rw 27 1 false, Step.rw 31 1 false, Step.rw 0 2 false,
+    Step.rw 3 2 false, Step.rw 6 2 false, Step.rw 10 2 false, Step.rw 13 2 false, Step.rw 13 2 true,
+    Step.rw 10 2 true, Step.rw 6 2 true, Step.rw 3 2 true, Step.rw 0 2 true, Step.rw 31 1 true, Step.rw 27 1 true,
+    Step.rw 15 1 true, Step.rw 4 1 true, Step.swap 22, Step.rw 23 6 false, Step.swap 27, Step.rw 4 1 false,
+    Step.rw 15 1 false, Step.rw 18 1 false, Step.rw 27 1 false, Step.rw 31 1 false, Step.rw 0 2 false,
+    Step.rw 3 2 false, Step.rw 6 2 false, Step.rw 10 2 false, Step.rw 10 2 true, Step.rw 6 2 true,
+    Step.rw 3 2 true, Step.rw 0 2 true, Step.rw 31 1 true, Step.rw 27 1 true, Step.rw 18 1 true, Step.rw 15 1 true,
+    Step.rw 4 1 true, Step.swap 14, Step.swap 15, Step.swap 16, Step.swap 17, Step.rw 18 6 false, Step.swap 22,
+    Step.rw 4 1 false, Step.rw 14 1 false, Step.rw 19 1 false, Step.rw 29 1 false, Step.rw 33 1 false,
+    Step.rw 0 2 false, Step.rw 3 2 false, Step.rw 6 2 false, Step.rw 6 2 true, Step.rw 3 2 true, Step.rw 0 2 true,
+    Step.rw 33 1 true, Step.rw 29 1 true, Step.rw 19 1 true, Step.rw 14 1 true, Step.rw 4 1 true,
+    Step.rw 14 5 false, Step.swap 18, Step.swap 19, Step.swap 20, Step.swap 21, Step.swap 22, Step.swap 23, Step.swap 24,
+    Step.swap 25, Step.swap 26, Step.swap 27, Step.swap 28, Step.swap 29, Step.swap 30, Step.swap 31, Step.rw 32 0 false,
+    Step.rw 4 1 false, Step.rw 16 1 false, Step.rw 20 1 false, Step.rw 29 1 false, Step.rw 33 1 false,
+    Step.rw 0 2 false, Step.rw 3 2 false, Step.rw 6 2 false, Step.rw 6 2 true, Step.rw 3 2 true, Step.rw 0 2 true,
+    Step.rw 33 1 true, Step.rw 29 1 true, Step.rw 20 1 true, Step.rw 16 1 true, Step.rw 4 1 true,
+    Step.rw 32 0 true, Step.swap 9, Step.rw 10 6 false, Step.swap 14, Step.rw 34 0 false, Step.rw 4 1 false,
+    Step.rw 7 1 false, Step.rw 16 1 false, Step.rw 20 1 false, Step.rw 29 1 false, Step.rw 33 1 false,
+    Step.rw 0 2 false, Step.rw 3 2 false, Step.rw 3 2 true, Step.rw 0 2 true, Step.rw 33 1 true, Step.rw 29 1 true,
+    Step.rw 20 1 true, Step.rw 16 1 true, Step.rw 7 1 true, Step.rw 4 1 true, Step.rw 34 0 true, Step.swap 1,
+    Step.swap 2, Step.swap 3, Step.swap 4, Step.rw 5 6 false, Step.swap 9, Step.rw 36 0 false, Step.rw 3 1 false,
+    Step.rw 8 1 false, Step.rw 18 1 false, Step.rw 22 1 false, Step.rw 31 1 false, Step.rw 35 1 false,
+    Step.rw 35 1 true, Step.rw 31 1 true, Step.rw 22 1 true, Step.rw 18 1 true, Step.rw 8 1 true, Step.rw 3 1 true,
+    Step.rw 36 0 true, Step.rw 1 5 false, Step.swap 5, Step.swap 6, Step.swap 7, Step.swap 8, Step.swap 9, Step.swap 10,
+    Step.swap 11, Step.swap 12, Step.swap 13, Step.swap 14, Step.swap 15, Step.swap 16, Step.swap 17, Step.swap 18,
+    Step.rw 19 0 false, Step.rw 36 0 false, Step.rw 5 1 false, Step.rw 9 1 false, Step.rw 18 1 false,
+    Step.rw 22 1 false, Step.rw 31 1 false, Step.rw 35 1 false, Step.rw 35 1 true, Step.rw 31 1 true,
+    Step.rw 22 1 true, Step.rw 18 1 true, Step.rw 9 1 true, Step.rw 5 1 true, Step.rw 36 0 true, Step.rw 19 0 true,
+    Step.rw 19 0 false, Step.rw 36 0 false, Step.rw 5 1 false, Step.rw 9 1 false, Step.rw 18 1 false,
+    Step.rw 22 1 false, Step.rw 31 1 false, Step.rw 35 1 false, Step.rw 35 1 true, Step.rw 31 1 true,
+    Step.rw 22 1 true, Step.rw 18 1 true, Step.rw 9 1 true, Step.rw 5 1 true, Step.rw 36 0 true, Step.rw 19 0 true,
+    Step.swap 55, Step.swap 54, Step.swap 53, Step.swap 52, Step.swap 51, Step.swap 50, Step.swap 49, Step.swap 48,
+    Step.swap 49, Step.swap 47, Step.swap 46, Step.swap 45, Step.swap 44, Step.swap 43, Step.swap 37, Step.swap 36,
+    Step.swap 37, Step.swap 38, Step.swap 39, Step.swap 40, Step.swap 41, Step.swap 42, Step.swap 35, Step.swap 34,
+    Step.swap 33, Step.swap 32, Step.swap 31, Step.swap 30, Step.swap 29, Step.swap 30, Step.swap 28, Step.swap 27,
+    Step.swap 26, Step.swap 25, Step.swap 24, Step.swap 18, Step.swap 17, Step.swap 18, Step.swap 19, Step.swap 20,
+    Step.swap 21, Step.swap 22, Step.swap 23, Step.swap 16, Step.swap 15, Step.swap 14, Step.swap 13, Step.swap 12,
+    Step.swap 11, Step.swap 10, Step.swap 11, Step.swap 9, Step.swap 8, Step.swap 7, Step.swap 6, Step.swap 5, Step.swap 0,
+    Step.swap 1, Step.swap 2, Step.swap 3, Step.swap 4, Step.rw 56 9 true, Step.rw 53 11 true, Step.rw 59 4 false,
+    Step.rw 58 3 false, Step.rw 57 4 false, Step.rw 52 9 true, Step.rw 58 4 false, Step.rw 57 3 false,
+    Step.rw 56 4 false, Step.rw 51 9 true, Step.rw 57 4 false, Step.rw 56 3 false, Step.rw 55 4 false,
+    Step.rw 50 8 true, Step.rw 56 4 false, Step.rw 55 3 false, Step.rw 54 4 false, Step.rw 49 9 true,
+    Step.rw 55 4 false, Step.rw 54 3 false, Step.rw 53 4 false, Step.rw 46 11 true, Step.rw 52 4 false,
+    Step.rw 51 3 false, Step.rw 50 4 false, Step.rw 45 9 true, Step.rw 51 4 false, Step.rw 50 3 false,
+    Step.rw 49 4 false, Step.rw 44 9 true, Step.rw 50 4 false, Step.rw 49 3 false, Step.rw 48 4 false,
+    Step.rw 43 8 true, Step.rw 49 4 false, Step.rw 48 3 false, Step.rw 47 4 false, Step.rw 42 10 true,
+    Step.rw 48 4 false, Step.rw 47 3 false, Step.rw 46 4 false, Step.rw 39 7 true, Step.rw 45 4 false,
+    Step.rw 44 3 false, Step.rw 43 4 false, Step.rw 38 10 true, Step.rw 44 4 false, Step.rw 43 3 false,
+    Step.rw 42 4 false, Step.rw 37 9 true, Step.rw 43 4 false, Step.rw 42 3 false, Step.rw 41 4 false,
+    Step.rw 34 11 true, Step.rw 40 4 false, Step.rw 39 3 false, Step.rw 38 4 false, Step.rw 33 9 true,
+    Step.rw 39 4 false, Step.rw 38 3 false, Step.rw 37 4 false, Step.rw 32 9 true, Step.rw 38 4 false,
+    Step.rw 37 3 false, Step.rw 36 4 false, Step.rw 31 8 true, Step.rw 37 4 false, Step.rw 36 3 false,
+    Step.rw 35 4 false, Step.rw 30 9 true, Step.rw 36 4 false, Step.rw 35 3 false, Step.rw 34 4 false,
+    Step.rw 27 11 true, Step.rw 33 4 false, Step.rw 32 3 false, Step.rw 31 4 false, Step.rw 26 9 true,
+    Step.rw 32 4 false, Step.rw 31 3 false, Step.rw 30 4 false, Step.rw 25 9 true, Step.rw 31 4 false,
+    Step.rw 30 3 false, Step.rw 29 4 false, Step.rw 24 8 true, Step.rw 30 4 false, Step.rw 29 3 false,
+    Step.rw 28 4 false, Step.rw 23 10 true, Step.rw 29 4 false, Step.rw 28 3 false, Step.rw 27 4 false,
+    Step.rw 20 7 true, Step.rw 26 4 false, Step.rw 25 3 false, Step.rw 24 4 false, Step.rw 19 10 true,
+    Step.rw 25 4 false, Step.rw 24 3 false, Step.rw 23 4 false, Step.rw 18 9 true, Step.rw 24 4 false,
+    Step.rw 23 3 false, Step.rw 22 4 false, Step.rw 15 11 true, Step.rw 21 4 false, Step.rw 20 3 false,
+    Step.rw 19 4 false, Step.rw 14 9 true, Step.rw 20 4 false, Step.rw 19 3 false, Step.rw 18 4 false,
+    Step.rw 13 9 true, Step.rw 19 4 false, Step.rw 18 3 false, Step.rw 17 4 false, Step.rw 12 8 true,
+    Step.rw 18 4 false, Step.rw 17 3 false, Step.rw 16 4 false, Step.rw 11 9 true, Step.rw 17 4 false,
+    Step.rw 16 3 false, Step.rw 15 4 false, Step.rw 8 11 true, Step.rw 14 4 false, Step.rw 13 3 false,
+    Step.rw 12 4 false, Step.rw 7 9 true, Step.rw 13 4 false, Step.rw 12 3 false, Step.rw 11 4 false,
+    Step.rw 6 9 true, Step.rw 12 4 false, Step.rw 11 3 false, Step.rw 10 4 false, Step.rw 5 8 true,
+    Step.rw 11 4 false, Step.rw 10 3 false, Step.rw 9 4 false, Step.rw 4 10 true, Step.rw 10 4 false,
+    Step.rw 9 3 false, Step.rw 8 4 false, Step.rw 1 7 true, Step.rw 7 4 false, Step.rw 6 3 false,
+    Step.rw 5 4 false, Step.rw 0 10 true, Step.rw 6 4 false, Step.rw 5 3 false, Step.rw 4 4 false, Step.swap 15,
+    Step.swap 14, Step.swap 13, Step.swap 12, Step.swap 11, Step.swap 10, Step.swap 9, Step.swap 8, Step.swap 7, Step.swap 6,
+    Step.swap 7, Step.swap 8, Step.swap 12, Step.swap 13, Step.swap 28, Step.swap 27, Step.swap 26, Step.swap 25, Step.swap 24,
+    Step.swap 23, Step.swap 22, Step.swap 21, Step.swap 20, Step.swap 19, Step.swap 20, Step.swap 21, Step.swap 25,
+    Step.swap 26, Step.swap 32, Step.swap 33, Step.swap 37, Step.swap 38, Step.rw 7 1 false, Step.rw 9 1 false,
+    Step.rw 16 1 false, Step.rw 18 1 false, Step.rw 24 1 false, Step.rw 26 1 false, Step.rw 5 2 false,
+    Step.rw 12 2 false, Step.rw 12 2 true, Step.rw 5 2 true, Step.rw 26 1 true, Step.rw 24 1 true,
+    Step.rw 18 1 true, Step.rw 16 1 true, Step.rw 9 1 true, Step.rw 7 1 true, Step.swap 8, Step.swap 7, Step.swap 6,
+    Step.swap 7, Step.swap 8, Step.swap 9, Step.swap 10, Step.swap 13, Step.swap 12, Step.swap 11, Step.swap 12, Step.swap 13,
+    Step.swap 14, Step.swap 15, Step.swap 21, Step.swap 20, Step.swap 19, Step.swap 20, Step.swap 21, Step.swap 22,
+    Step.swap 23, Step.swap 26, Step.swap 25, Step.swap 24, Step.swap 25, Step.swap 26, Step.swap 27, Step.swap 28,
+    Step.swap 33, Step.swap 32, Step.swap 38, Step.swap 37, Step.rw 3 12 false, Step.rw 2 4 false, Step.rw 1 3 false,
+    Step.rw 0 4 false]
     (by decide +kernel)
 
 /-- The decoding of (R6), Appendix B. -/
@@ -456,12 +456,12 @@ def dR6dec : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.Z2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.ZC trivial 0 0]
-    [.rw 2 1 true, .rw 2 1 false, .rw 2 1 true, .swap 4, .swap 3, .rw 4 2 true,
-    .rw 4 2 false, .swap 3, .swap 4, .rw 2 1 false, .rw 2 1 true, .swap 4, .swap 3,
-    .rw 4 2 true, .rw 5 1 true, .rw 5 1 false, .rw 4 2 false, .swap 3, .swap 4,
-    .rw 2 1 false, .rw 2 1 true, .swap 4, .swap 3, .rw 4 2 true, .rw 5 1 true,
-    .rw 6 3 false, .swap 2, .rw 3 3 false, .rw 2 0 false, .rw 1 2 false, .rw 1 2 true,
-    .rw 2 0 true, .rw 2 0 false, .rw 1 2 false, .swap 0]
+    [Step.rw 2 1 true, Step.rw 2 1 false, Step.rw 2 1 true, Step.swap 4, Step.swap 3, Step.rw 4 2 true,
+    Step.rw 4 2 false, Step.swap 3, Step.swap 4, Step.rw 2 1 false, Step.rw 2 1 true, Step.swap 4, Step.swap 3,
+    Step.rw 4 2 true, Step.rw 5 1 true, Step.rw 5 1 false, Step.rw 4 2 false, Step.swap 3, Step.swap 4,
+    Step.rw 2 1 false, Step.rw 2 1 true, Step.swap 4, Step.swap 3, Step.rw 4 2 true, Step.rw 5 1 true,
+    Step.rw 6 3 false, Step.swap 2, Step.rw 3 3 false, Step.rw 2 0 false, Step.rw 1 2 false, Step.rw 1 2 true,
+    Step.rw 2 0 true, Step.rw 2 0 false, Step.rw 1 2 false, Step.swap 0]
     (by decide +kernel)
 
 /-- The decoding of (R10), Appendix B. -/
@@ -475,15 +475,15 @@ def dR10dec : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.Z2 trivial 1 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CZr trivial 0 0, dZC_m.place 0 0,
     dZC_m_i.place 0 0, dR6dec.place 0 0, dCF_m.place 0 0]
-    [.rw 2 1 false, .rw 2 1 true, .rw 0 0 true, .swap 1, .swap 0, .swap 5, .swap 4, .swap 0,
-    .swap 1, .rw 1 4 false, .rw 4 3 true, .rw 4 3 false, .rw 4 3 true, .rw 1 6 true,
-    .swap 5, .swap 6, .swap 6, .swap 5, .rw 1 6 false, .rw 4 3 false, .rw 0 3 true,
-    .swap 1, .rw 2 5 true, .swap 6, .swap 6, .rw 6 7 true, .rw 6 0 true, .swap 7, .swap 6,
-    .rw 10 0 true, .swap 11, .swap 10, .swap 10, .swap 6, .swap 7, .rw 7 4 false,
-    .rw 1 8 false, .rw 9 0 false, .rw 8 2 false, .rw 8 2 true, .rw 9 0 true, .rw 9 0 false,
-    .rw 8 2 false, .rw 1 4 true, .swap 1, .swap 4, .rw 5 0 false, .rw 5 4 true, .swap 8,
-    .swap 5, .swap 8, .swap 9, .rw 8 0 false, .rw 4 1 false, .rw 4 1 true, .swap 5,
-    .swap 4, .swap 1]
+    [Step.rw 2 1 false, Step.rw 2 1 true, Step.rw 0 0 true, Step.swap 1, Step.swap 0, Step.swap 5, Step.swap 4, Step.swap 0,
+    Step.swap 1, Step.rw 1 4 false, Step.rw 4 3 true, Step.rw 4 3 false, Step.rw 4 3 true, Step.rw 1 6 true,
+    Step.swap 5, Step.swap 6, Step.swap 6, Step.swap 5, Step.rw 1 6 false, Step.rw 4 3 false, Step.rw 0 3 true,
+    Step.swap 1, Step.rw 2 5 true, Step.swap 6, Step.swap 6, Step.rw 6 7 true, Step.rw 6 0 true, Step.swap 7, Step.swap 6,
+    Step.rw 10 0 true, Step.swap 11, Step.swap 10, Step.swap 10, Step.swap 6, Step.swap 7, Step.rw 7 4 false,
+    Step.rw 1 8 false, Step.rw 9 0 false, Step.rw 8 2 false, Step.rw 8 2 true, Step.rw 9 0 true, Step.rw 9 0 false,
+    Step.rw 8 2 false, Step.rw 1 4 true, Step.swap 1, Step.swap 4, Step.rw 5 0 false, Step.rw 5 4 true, Step.swap 8,
+    Step.swap 5, Step.swap 8, Step.swap 9, Step.rw 8 0 false, Step.rw 4 1 false, Step.rw 4 1 true, Step.swap 5,
+    Step.swap 4, Step.swap 1]
     (by decide +kernel)
 
 /-- The decoding of (R8), Appendix B. -/
@@ -494,10 +494,10 @@ def dR8dec : DEqn Th 2 where
     [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.Z2 trivial 0 1,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CZr trivial 0 0, dZC_m.place 0 0]
-    [.rw 0 0 true, .swap 1, .swap 0, .swap 4, .swap 0, .swap 1, .rw 1 2 false, .rw 1 1 true,
-    .rw 1 1 false, .rw 1 1 true, .rw 2 3 false, .swap 1, .swap 0, .rw 3 2 true, .swap 3,
-    .swap 2, .swap 1, .swap 6, .swap 6, .swap 7, .rw 6 0 false, .swap 1, .swap 2, .swap 0,
-    .swap 1]
+    [Step.rw 0 0 true, Step.swap 1, Step.swap 0, Step.swap 4, Step.swap 0, Step.swap 1, Step.rw 1 2 false, Step.rw 1 1 true,
+    Step.rw 1 1 false, Step.rw 1 1 true, Step.rw 2 3 false, Step.swap 1, Step.swap 0, Step.rw 3 2 true, Step.swap 3,
+    Step.swap 2, Step.swap 1, Step.swap 6, Step.swap 6, Step.swap 7, Step.rw 6 0 false, Step.swap 1, Step.swap 2, Step.swap 0,
+    Step.swap 1]
     (by decide +kernel)
 
 /-- The swap unfolded (Appendix A). -/
@@ -510,12 +510,12 @@ def ddswap : DEqn Th 2 where
     DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 0 0,
     DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
     DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0, drealczrev.place 0 0]
-    [.rw 0 1 true, .rw 1 3 true, .rw 1 2 true, .rw 1 2 false, .rw 1 2 true, .rw 2 4 true,
-    .rw 2 0 true, .rw 7 0 true, .rw 2 1 true, .rw 12 1 true, .rw 9 1 true, .rw 4 0 false,
-    .rw 9 0 false, .rw 2 1 false, .rw 5 1 false, .rw 6 1 false, .rw 6 1 true, .rw 5 1 true,
-    .rw 2 1 true, .rw 9 0 true, .rw 4 0 true, .swap 10, .swap 9, .rw 5 5 true, .swap 4,
-    .rw 2 1 false, .rw 5 1 false, .rw 8 1 false, .rw 8 1 true, .rw 5 1 true, .rw 2 1 true,
-    .swap 13, .swap 12, .swap 9, .swap 4, .swap 3]
+    [Step.rw 0 1 true, Step.rw 1 3 true, Step.rw 1 2 true, Step.rw 1 2 false, Step.rw 1 2 true, Step.rw 2 4 true,
+    Step.rw 2 0 true, Step.rw 7 0 true, Step.rw 2 1 true, Step.rw 12 1 true, Step.rw 9 1 true, Step.rw 4 0 false,
+    Step.rw 9 0 false, Step.rw 2 1 false, Step.rw 5 1 false, Step.rw 6 1 false, Step.rw 6 1 true, Step.rw 5 1 true,
+    Step.rw 2 1 true, Step.rw 9 0 true, Step.rw 4 0 true, Step.swap 10, Step.swap 9, Step.rw 5 5 true, Step.swap 4,
+    Step.rw 2 1 false, Step.rw 5 1 false, Step.rw 8 1 false, Step.rw 8 1 true, Step.rw 5 1 true, Step.rw 2 1 true,
+    Step.swap 13, Step.swap 12, Step.swap 9, Step.swap 4, Step.swap 3]
     (by decide +kernel)
 
 /-- Appendix G.2: the decoding of every relation of Makary, Ross and Selinger's presentation is derivable from Figure 3. -/
@@ -524,35 +524,35 @@ theorem rel_derivable : ∀ {k : ℕ} {w v : Circuit QCert.RealStabilizer.Gate k
   | _, _, _, .R1 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.minus2 trivial 0 0]
-      [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+      [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, _, .R2 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.Z2 trivial 0 0]
-      [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+      [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, _, .R3 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0]
-      [.rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+      [Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, _, .R4 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 0,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.Z2 trivial 0 0,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.F trivial 0 0]
-      [.rw 4 2 false, .swap 7, .swap 6, .swap 5, .swap 4, .swap 3, .swap 2, .swap 1, .swap 0,
-      .rw 4 1 false, .rw 3 0 false, .rw 2 1 false, .rw 1 0 false, .rw 1 0 true, .rw 2 1 true,
-      .rw 3 0 true, .rw 4 1 true, .rw 4 1 false, .rw 3 0 false, .rw 2 1 false, .rw 1 0 false]
+      [Step.rw 4 2 false, Step.swap 7, Step.swap 6, Step.swap 5, Step.swap 4, Step.swap 3, Step.swap 2, Step.swap 1, Step.swap 0,
+      Step.rw 4 1 false, Step.rw 3 0 false, Step.rw 2 1 false, Step.rw 1 0 false, Step.rw 1 0 true, Step.rw 2 1 true,
+      Step.rw 3 0 true, Step.rw 4 1 true, Step.rw 4 1 false, Step.rw 3 0 false, Step.rw 2 1 false, Step.rw 1 0 false]
       (by decide +kernel)
   | _, _, _, .R5 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 0 0]
-      [.rw 2 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 2 0 true,
-      .rw 2 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 2 0 true,
-      .rw 2 0 false, .rw 1 1 false, .rw 0 0 false, .rw 0 0 true, .rw 1 1 true, .rw 1 1 false,
-      .rw 0 0 false, .rw 0 0 true, .rw 0 0 false]
+      [Step.rw 2 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 2 0 true,
+      Step.rw 2 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 2 0 true,
+      Step.rw 2 0 false, Step.rw 1 1 false, Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 1 1 true, Step.rw 1 1 false,
+      Step.rw 0 0 false, Step.rw 0 0 true, Step.rw 0 0 false]
       (by decide +kernel)
   | _, _, _, .R6 =>
     derive hsc
@@ -560,32 +560,32 @@ theorem rel_derivable : ∀ {k : ℕ} {w v : Circuit QCert.RealStabilizer.Gate k
       DEqn.inst (P := pres) (S := fun _ => True) Ax.Z2 trivial 1 0,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 0 0,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.ZC trivial 0 0]
-      [.rw 2 1 true, .rw 2 1 false, .rw 2 1 true, .swap 4, .swap 3, .rw 4 2 true,
-      .rw 4 2 false, .swap 3, .swap 4, .rw 2 1 false, .rw 2 1 true, .swap 4, .swap 3,
-      .rw 4 2 true, .rw 5 1 true, .rw 5 1 false, .rw 4 2 false, .swap 3, .swap 4,
-      .rw 2 1 false, .rw 2 1 true, .swap 4, .swap 3, .rw 4 2 true, .rw 5 1 true,
-      .rw 6 3 false, .swap 2, .rw 3 3 false, .rw 2 0 false, .rw 1 2 false, .rw 1 2 true,
-      .rw 2 0 true, .rw 2 0 false, .rw 1 2 false, .swap 0]
+      [Step.rw 2 1 true, Step.rw 2 1 false, Step.rw 2 1 true, Step.swap 4, Step.swap 3, Step.rw 4 2 true,
+      Step.rw 4 2 false, Step.swap 3, Step.swap 4, Step.rw 2 1 false, Step.rw 2 1 true, Step.swap 4, Step.swap 3,
+      Step.rw 4 2 true, Step.rw 5 1 true, Step.rw 5 1 false, Step.rw 4 2 false, Step.swap 3, Step.swap 4,
+      Step.rw 2 1 false, Step.rw 2 1 true, Step.swap 4, Step.swap 3, Step.rw 4 2 true, Step.rw 5 1 true,
+      Step.rw 6 3 false, Step.swap 2, Step.rw 3 3 false, Step.rw 2 0 false, Step.rw 1 2 false, Step.rw 1 2 true,
+      Step.rw 2 0 true, Step.rw 2 0 false, Step.rw 1 2 false, Step.swap 0]
       (by decide +kernel)
   | _, _, _, .R7 =>
     derive hsc
       [DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, drealczrev.place 0 0,
       DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
       DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.Z) 0 0, dR6dec.place 0 0]
-      [.rw 0 1 false, .swap 4, .swap 4, .rw 0 0 true, .rw 1 2 false, .rw 2 0 false,
-      .rw 3 2 false, .rw 6 0 true, .rw 5 3 true, .rw 4 0 false, .rw 1 4 false, .swap 1,
-      .rw 4 2 true, .rw 3 0 true, .rw 2 0 true, .rw 3 3 false, .rw 4 0 false, .rw 1 2 true,
-      .rw 0 0 false, .swap 0, .rw 1 1 true]
+      [Step.rw 0 1 false, Step.swap 4, Step.swap 4, Step.rw 0 0 true, Step.rw 1 2 false, Step.rw 2 0 false,
+      Step.rw 3 2 false, Step.rw 6 0 true, Step.rw 5 3 true, Step.rw 4 0 false, Step.rw 1 4 false, Step.swap 1,
+      Step.rw 4 2 true, Step.rw 3 0 true, Step.rw 2 0 true, Step.rw 3 3 false, Step.rw 4 0 false, Step.rw 1 2 true,
+      Step.rw 0 0 false, Step.swap 0, Step.rw 1 1 true]
       (by decide +kernel)
   | _, _, _, .R8 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 1,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.Z2 trivial 0 1,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.CZr trivial 0 0, dZC_m.place 0 0]
-      [.rw 0 0 true, .swap 1, .swap 0, .swap 4, .swap 0, .swap 1, .rw 1 2 false, .rw 1 1 true,
-      .rw 1 1 false, .rw 1 1 true, .rw 2 3 false, .swap 1, .swap 0, .rw 3 2 true, .swap 3,
-      .swap 2, .swap 1, .swap 6, .swap 6, .swap 7, .rw 6 0 false, .swap 1, .swap 2, .swap 3,
-      .swap 0, .swap 1]
+      [Step.rw 0 0 true, Step.swap 1, Step.swap 0, Step.swap 4, Step.swap 0, Step.swap 1, Step.rw 1 2 false, Step.rw 1 1 true,
+      Step.rw 1 1 false, Step.rw 1 1 true, Step.rw 2 3 false, Step.swap 1, Step.swap 0, Step.rw 3 2 true, Step.swap 3,
+      Step.swap 2, Step.swap 1, Step.swap 6, Step.swap 6, Step.swap 7, Step.rw 6 0 false, Step.swap 1, Step.swap 2, Step.swap 3,
+      Step.swap 0, Step.swap 1]
       (by decide +kernel)
   | _, _, _, .R9 =>
     derive hsc
@@ -593,15 +593,15 @@ theorem rel_derivable : ∀ {k : ℕ} {w v : Circuit QCert.RealStabilizer.Gate k
       DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, drealczrev.place 0 0,
       DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
       DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.Z) 0 0, dR8dec.place 0 0]
-      [.rw 2 0 false, .rw 2 0 true, .rw 2 0 false, .rw 2 0 true, .rw 0 2 false, .swap 4,
-      .swap 5, .swap 6, .swap 6, .swap 5, .swap 4, .rw 0 1 true, .rw 1 3 false,
-      .rw 2 1 false, .rw 3 3 false, .rw 6 1 true, .rw 5 3 true, .rw 4 1 false, .rw 7 1 true,
-      .rw 6 4 true, .rw 5 1 false, .rw 8 1 true, .rw 7 3 true, .rw 6 1 false, .rw 1 5 false,
-      .swap 2, .swap 1, .swap 3, .swap 2, .swap 2, .swap 3, .swap 1, .swap 2, .rw 7 3 true,
-      .rw 6 1 true, .rw 5 1 true, .rw 6 3 false, .rw 7 1 false, .rw 4 3 true, .rw 3 4 true,
-      .rw 2 1 true, .rw 3 4 false, .rw 4 1 false, .rw 1 1 true, .rw 2 3 false, .rw 3 1 false,
-      .rw 0 1 false, .swap 3, .swap 2, .rw 4 2 true, .swap 3, .rw 2 0 false, .rw 2 0 true,
-      .rw 2 0 false, .rw 2 0 true, .swap 3, .swap 2, .swap 1]
+      [Step.rw 2 0 false, Step.rw 2 0 true, Step.rw 2 0 false, Step.rw 2 0 true, Step.rw 0 2 false, Step.swap 4,
+      Step.swap 5, Step.swap 6, Step.swap 6, Step.swap 5, Step.swap 4, Step.rw 0 1 true, Step.rw 1 3 false,
+      Step.rw 2 1 false, Step.rw 3 3 false, Step.rw 6 1 true, Step.rw 5 3 true, Step.rw 4 1 false, Step.rw 7 1 true,
+      Step.rw 6 4 true, Step.rw 5 1 false, Step.rw 8 1 true, Step.rw 7 3 true, Step.rw 6 1 false, Step.rw 1 5 false,
+      Step.swap 2, Step.swap 1, Step.swap 3, Step.swap 2, Step.swap 2, Step.swap 3, Step.swap 1, Step.swap 2, Step.rw 7 3 true,
+      Step.rw 6 1 true, Step.rw 5 1 true, Step.rw 6 3 false, Step.rw 7 1 false, Step.rw 4 3 true, Step.rw 3 4 true,
+      Step.rw 2 1 true, Step.rw 3 4 false, Step.rw 4 1 false, Step.rw 1 1 true, Step.rw 2 3 false, Step.rw 3 1 false,
+      Step.rw 0 1 false, Step.swap 3, Step.swap 2, Step.rw 4 2 true, Step.swap 3, Step.rw 2 0 false, Step.rw 2 0 true,
+      Step.rw 2 0 false, Step.rw 2 0 true, Step.swap 3, Step.swap 2, Step.swap 1]
       (by decide +kernel)
   | _, _, _, .R10 =>
     derive hsc
@@ -611,16 +611,16 @@ theorem rel_derivable : ∀ {k : ℕ} {w v : Circuit QCert.RealStabilizer.Gate k
       DEqn.inst (P := pres) (S := fun _ => True) Ax.Z2 trivial 1 0,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.CZr trivial 0 0, dZC_m.place 0 0,
       dZC_m_i.place 0 0, dR6dec.place 0 0, dCF_m.place 0 0]
-      [.swap 3, .rw 2 1 false, .rw 2 1 true, .rw 2 1 false, .rw 2 1 true, .rw 0 0 true,
-      .swap 1, .swap 0, .swap 5, .swap 4, .swap 0, .swap 1, .rw 1 4 false, .rw 4 3 true,
-      .rw 4 3 false, .rw 4 3 true, .rw 1 6 true, .swap 5, .swap 6, .swap 6, .swap 5,
-      .rw 1 6 false, .rw 4 3 false, .rw 0 3 true, .swap 1, .rw 2 5 true, .swap 6, .swap 6,
-      .rw 6 7 true, .rw 6 0 true, .swap 7, .swap 6, .rw 10 0 true, .swap 11, .swap 10,
-      .swap 10, .swap 6, .swap 7, .rw 7 4 false, .rw 1 8 false, .rw 9 0 false, .rw 8 2 false,
-      .rw 8 2 true, .rw 9 0 true, .rw 9 0 false, .rw 8 2 false, .rw 1 4 true, .swap 1,
-      .swap 4, .rw 5 0 false, .rw 5 4 true, .swap 8, .swap 5, .swap 8, .swap 9,
-      .rw 8 0 false, .rw 4 1 false, .rw 4 1 true, .rw 4 1 false, .rw 4 1 true, .swap 5,
-      .swap 1, .swap 0]
+      [Step.swap 3, Step.rw 2 1 false, Step.rw 2 1 true, Step.rw 2 1 false, Step.rw 2 1 true, Step.rw 0 0 true,
+      Step.swap 1, Step.swap 0, Step.swap 5, Step.swap 4, Step.swap 0, Step.swap 1, Step.rw 1 4 false, Step.rw 4 3 true,
+      Step.rw 4 3 false, Step.rw 4 3 true, Step.rw 1 6 true, Step.swap 5, Step.swap 6, Step.swap 6, Step.swap 5,
+      Step.rw 1 6 false, Step.rw 4 3 false, Step.rw 0 3 true, Step.swap 1, Step.rw 2 5 true, Step.swap 6, Step.swap 6,
+      Step.rw 6 7 true, Step.rw 6 0 true, Step.swap 7, Step.swap 6, Step.rw 10 0 true, Step.swap 11, Step.swap 10,
+      Step.swap 10, Step.swap 6, Step.swap 7, Step.rw 7 4 false, Step.rw 1 8 false, Step.rw 9 0 false, Step.rw 8 2 false,
+      Step.rw 8 2 true, Step.rw 9 0 true, Step.rw 9 0 false, Step.rw 8 2 false, Step.rw 1 4 true, Step.swap 1,
+      Step.swap 4, Step.rw 5 0 false, Step.rw 5 4 true, Step.swap 8, Step.swap 5, Step.swap 8, Step.swap 9,
+      Step.rw 8 0 false, Step.rw 4 1 false, Step.rw 4 1 true, Step.rw 4 1 false, Step.rw 4 1 true, Step.swap 5,
+      Step.swap 1, Step.swap 0]
       (by decide +kernel)
   | _, _, _, .R11 =>
     derive hsc
@@ -629,18 +629,18 @@ theorem rel_derivable : ∀ {k : ℕ} {w v : Circuit QCert.RealStabilizer.Gate k
       DEqn.sym (P := pres) (S := fun _ => True) Sym.invol 0 0, drealczrev.place 0 0,
       DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0,
       DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.Z) 0 0, dR10dec.place 0 0]
-      [.rw 2 1 false, .rw 4 1 false, .rw 4 1 true, .rw 2 1 true, .rw 2 1 false, .rw 4 1 false,
-      .rw 4 1 true, .rw 2 1 true, .rw 4 3 false, .swap 8, .rw 0 3 false, .swap 4,
-      .rw 5 0 false, .rw 5 0 true, .rw 5 0 false, .rw 5 0 true, .swap 10, .swap 4, .swap 5,
-      .rw 0 2 true, .rw 1 4 false, .rw 2 2 false, .rw 3 4 false, .rw 4 4 false, .rw 7 2 true,
-      .rw 6 4 true, .rw 5 2 false, .rw 6 2 false, .rw 7 4 false, .rw 10 2 true, .rw 9 4 true,
-      .rw 8 2 false, .rw 3 1 false, .rw 3 1 true, .rw 1 6 false, .swap 2, .swap 5, .swap 6,
-      .rw 5 1 false, .rw 5 1 true, .swap 6, .swap 5, .swap 2, .rw 9 4 true, .rw 8 2 true,
-      .rw 7 4 true, .rw 6 4 true, .rw 5 2 true, .rw 6 4 false, .rw 7 2 false, .rw 4 2 true,
-      .rw 3 4 true, .rw 2 2 true, .rw 3 4 false, .rw 4 2 false, .rw 1 5 true, .rw 0 2 false,
-      .swap 0, .rw 7 0 false, .rw 7 0 true, .rw 8 3 true, .swap 7, .swap 7, .swap 6,
-      .rw 2 3 true, .swap 1, .rw 0 1 false, .rw 2 1 false, .rw 2 1 true, .rw 0 1 true,
-      .rw 0 1 false, .rw 2 1 false, .rw 2 1 true, .rw 0 1 true, .swap 1, .swap 0]
+      [Step.rw 2 1 false, Step.rw 4 1 false, Step.rw 4 1 true, Step.rw 2 1 true, Step.rw 2 1 false, Step.rw 4 1 false,
+      Step.rw 4 1 true, Step.rw 2 1 true, Step.rw 4 3 false, Step.swap 8, Step.rw 0 3 false, Step.swap 4,
+      Step.rw 5 0 false, Step.rw 5 0 true, Step.rw 5 0 false, Step.rw 5 0 true, Step.swap 10, Step.swap 4, Step.swap 5,
+      Step.rw 0 2 true, Step.rw 1 4 false, Step.rw 2 2 false, Step.rw 3 4 false, Step.rw 4 4 false, Step.rw 7 2 true,
+      Step.rw 6 4 true, Step.rw 5 2 false, Step.rw 6 2 false, Step.rw 7 4 false, Step.rw 10 2 true, Step.rw 9 4 true,
+      Step.rw 8 2 false, Step.rw 3 1 false, Step.rw 3 1 true, Step.rw 1 6 false, Step.swap 2, Step.swap 5, Step.swap 6,
+      Step.rw 5 1 false, Step.rw 5 1 true, Step.swap 6, Step.swap 5, Step.swap 2, Step.rw 9 4 true, Step.rw 8 2 true,
+      Step.rw 7 4 true, Step.rw 6 4 true, Step.rw 5 2 true, Step.rw 6 4 false, Step.rw 7 2 false, Step.rw 4 2 true,
+      Step.rw 3 4 true, Step.rw 2 2 true, Step.rw 3 4 false, Step.rw 4 2 false, Step.rw 1 5 true, Step.rw 0 2 false,
+      Step.swap 0, Step.rw 7 0 false, Step.rw 7 0 true, Step.rw 8 3 true, Step.swap 7, Step.swap 7, Step.swap 6,
+      Step.rw 2 3 true, Step.swap 1, Step.rw 0 1 false, Step.rw 2 1 false, Step.rw 2 1 true, Step.rw 0 1 true,
+      Step.rw 0 1 false, Step.rw 2 1 false, Step.rw 2 1 true, Step.rw 0 1 true, Step.swap 1, Step.swap 0]
       (by decide +kernel)
   | _, _, _, .R12 =>
     derive hsc
@@ -651,40 +651,40 @@ theorem rel_derivable : ∀ {k : ℕ} {w v : Circuit QCert.RealStabilizer.Gate k
       DEqn.inst (P := pres) (S := fun _ => True) Ax.CZr trivial 0 0,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.B trivial 0 0,
       DEqn.sym (P := pres) (S := fun _ => True) (Sym.nat1 Gate.H) 0 0]
-      [.swap 3, .swap 4, .swap 8, .swap 9, .rw 2 1 false, .rw 5 1 false, .rw 8 1 false,
-      .rw 8 1 true, .rw 5 1 true, .rw 2 1 true, .rw 2 1 false, .rw 5 1 false, .rw 8 1 false,
-      .rw 8 1 true, .rw 5 1 true, .rw 2 1 true, .rw 12 1 false, .rw 7 1 false, .rw 2 1 false,
-      .swap 2, .swap 5, .rw 2 4 false, .rw 2 5 false, .rw 1 2 false, .rw 1 2 true,
-      .rw 1 2 false, .rw 0 0 true, .swap 1, .swap 0, .rw 1 0 false, .rw 2 1 true,
-      .rw 3 3 true, .rw 2 6 true, .rw 1 3 false, .rw 2 2 true, .rw 2 2 false, .rw 2 2 true,
-      .rw 3 5 true, .rw 3 4 true, .swap 3, .swap 6, .rw 6 1 true, .rw 3 1 true,
-      .rw 3 1 false, .rw 6 1 false, .rw 6 1 true, .rw 3 1 true, .rw 3 1 false, .rw 6 1 false,
-      .rw 6 1 true, .rw 3 1 true, .swap 10, .swap 9, .swap 5, .swap 4, .swap 0]
+      [Step.swap 3, Step.swap 4, Step.swap 8, Step.swap 9, Step.rw 2 1 false, Step.rw 5 1 false, Step.rw 8 1 false,
+      Step.rw 8 1 true, Step.rw 5 1 true, Step.rw 2 1 true, Step.rw 2 1 false, Step.rw 5 1 false, Step.rw 8 1 false,
+      Step.rw 8 1 true, Step.rw 5 1 true, Step.rw 2 1 true, Step.rw 12 1 false, Step.rw 7 1 false, Step.rw 2 1 false,
+      Step.swap 2, Step.swap 5, Step.rw 2 4 false, Step.rw 2 5 false, Step.rw 1 2 false, Step.rw 1 2 true,
+      Step.rw 1 2 false, Step.rw 0 0 true, Step.swap 1, Step.swap 0, Step.rw 1 0 false, Step.rw 2 1 true,
+      Step.rw 3 3 true, Step.rw 2 6 true, Step.rw 1 3 false, Step.rw 2 2 true, Step.rw 2 2 false, Step.rw 2 2 true,
+      Step.rw 3 5 true, Step.rw 3 4 true, Step.swap 3, Step.swap 6, Step.rw 6 1 true, Step.rw 3 1 true,
+      Step.rw 3 1 false, Step.rw 6 1 false, Step.rw 6 1 true, Step.rw 3 1 true, Step.rw 3 1 false, Step.rw 6 1 false,
+      Step.rw 6 1 true, Step.rw 3 1 true, Step.swap 10, Step.swap 9, Step.swap 5, Step.swap 4, Step.swap 0]
       (by decide +kernel)
   | _, _, _, .R13 =>
     derive hsc
       [dC12dec.place 0 0]
-      [.swap 2, .rw 0 0 true, .swap 1, .swap 0, .swap 0, .swap 1, .swap 2]
+      [Step.swap 2, Step.rw 0 0 true, Step.swap 1, Step.swap 0, Step.swap 0, Step.swap 1, Step.swap 2]
       (by decide +kernel)
   | _, _, _, .R14 =>
     derive hsc
       [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 0 2,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 1,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 2 0, dC13dec.place 0 0]
-      [.swap 4, .swap 5, .swap 13, .swap 12, .swap 11, .swap 10, .swap 9, .swap 17, .swap 18,
-      .rw 10 1 false, .rw 11 1 false, .rw 0 2 false, .rw 1 2 false, .rw 4 2 false,
-      .rw 6 2 false, .rw 9 2 false, .rw 9 2 true, .rw 0 2 true, .rw 13 0 true, .rw 6 0 true,
-      .swap 14, .swap 5, .swap 4, .swap 3, .swap 2, .swap 1, .rw 10 2 true, .rw 7 2 true,
-      .rw 4 2 true, .rw 13 1 true, .rw 11 1 true, .swap 23, .swap 22, .swap 21, .swap 20,
-      .swap 21, .swap 19, .swap 18, .swap 17, .swap 16, .swap 10, .swap 11, .swap 12,
-      .swap 13, .swap 14, .swap 15, .swap 16, .swap 9, .swap 6, .rw 2 3 true, .swap 10,
-      .swap 9, .swap 8, .swap 7, .swap 6, .swap 5, .swap 4, .swap 3, .swap 2, .swap 11,
-      .swap 10, .swap 9, .swap 8, .swap 7, .swap 6, .swap 5, .swap 4, .swap 3, .swap 7,
-      .swap 8, .swap 15, .swap 20, .swap 21, .rw 6 1 false, .rw 9 1 false, .rw 12 1 false,
-      .rw 13 1 false, .rw 2 2 false, .rw 8 2 false, .swap 12, .swap 11, .swap 10, .swap 9,
-      .swap 8, .swap 1, .rw 10 1 true, .rw 9 1 true, .rw 7 1 true, .rw 4 1 true, .swap 18,
-      .swap 17, .swap 6, .swap 5, .swap 1, .swap 0, .swap 1, .swap 2, .swap 3, .swap 4,
-      .swap 5, .swap 6, .swap 7, .swap 8, .swap 9]
+      [Step.swap 4, Step.swap 5, Step.swap 13, Step.swap 12, Step.swap 11, Step.swap 10, Step.swap 9, Step.swap 17, Step.swap 18,
+      Step.rw 10 1 false, Step.rw 11 1 false, Step.rw 0 2 false, Step.rw 1 2 false, Step.rw 4 2 false,
+      Step.rw 6 2 false, Step.rw 9 2 false, Step.rw 9 2 true, Step.rw 0 2 true, Step.rw 13 0 true, Step.rw 6 0 true,
+      Step.swap 14, Step.swap 5, Step.swap 4, Step.swap 3, Step.swap 2, Step.swap 1, Step.rw 10 2 true, Step.rw 7 2 true,
+      Step.rw 4 2 true, Step.rw 13 1 true, Step.rw 11 1 true, Step.swap 23, Step.swap 22, Step.swap 21, Step.swap 20,
+      Step.swap 21, Step.swap 19, Step.swap 18, Step.swap 17, Step.swap 16, Step.swap 10, Step.swap 11, Step.swap 12,
+      Step.swap 13, Step.swap 14, Step.swap 15, Step.swap 16, Step.swap 9, Step.swap 6, Step.rw 2 3 true, Step.swap 10,
+      Step.swap 9, Step.swap 8, Step.swap 7, Step.swap 6, Step.swap 5, Step.swap 4, Step.swap 3, Step.swap 2, Step.swap 11,
+      Step.swap 10, Step.swap 9, Step.swap 8, Step.swap 7, Step.swap 6, Step.swap 5, Step.swap 4, Step.swap 3, Step.swap 7,
+      Step.swap 8, Step.swap 15, Step.swap 20, Step.swap 21, Step.rw 6 1 false, Step.rw 9 1 false, Step.rw 12 1 false,
+      Step.rw 13 1 false, Step.rw 2 2 false, Step.rw 8 2 false, Step.swap 12, Step.swap 11, Step.swap 10, Step.swap 9,
+      Step.swap 8, Step.swap 1, Step.rw 10 1 true, Step.rw 9 1 true, Step.rw 7 1 true, Step.rw 4 1 true, Step.swap 18,
+      Step.swap 17, Step.swap 6, Step.swap 5, Step.swap 1, Step.swap 0, Step.swap 1, Step.swap 2, Step.swap 3, Step.swap 4,
+      Step.swap 5, Step.swap 6, Step.swap 7, Step.swap 8, Step.swap 9]
       (by decide +kernel)
   | _, _, _, .R15 =>
     derive hsc
@@ -693,20 +693,20 @@ theorem rel_derivable : ∀ {k : ℕ} {w v : Circuit QCert.RealStabilizer.Gate k
       DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 2 0,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 0 1,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 1 0, dC14dec.place 0 0]
-      [.swap 12, .swap 11, .swap 10, .swap 9, .swap 8, .swap 7, .swap 6, .swap 5, .swap 4,
-      .swap 3, .swap 4, .swap 5, .swap 9, .swap 10, .swap 16, .swap 17, .swap 21, .swap 22,
-      .rw 4 1 false, .rw 6 1 false, .rw 12 1 false, .rw 14 1 false, .rw 2 2 false, .swap 9,
-      .swap 10, .swap 11, .swap 12, .swap 13, .swap 14, .rw 15 4 true, .rw 18 0 true,
-      .swap 17, .swap 16, .rw 17 3 true, .rw 18 1 true, .rw 20 0 true, .swap 19,
-      .rw 20 3 true, .rw 16 2 true, .rw 23 1 true, .swap 17, .swap 18, .swap 19, .swap 20,
-      .swap 21, .swap 22, .rw 9 2 true, .rw 2 2 true, .rw 23 1 true, .rw 21 1 true,
-      .rw 15 1 true, .rw 13 1 true, .rw 6 1 true, .rw 4 1 true, .swap 35, .swap 34, .swap 30,
-      .swap 29, .swap 23, .swap 22, .swap 18, .swap 17, .swap 16, .swap 17, .swap 18,
-      .swap 19, .swap 20, .swap 21, .swap 22, .swap 23, .swap 24, .swap 25, .swap 10,
-      .swap 9, .swap 5, .swap 4, .swap 3, .swap 4, .swap 5, .swap 6, .swap 7, .swap 8,
-      .swap 9, .swap 10, .swap 11, .swap 12, .rw 0 5 false, .rw 6 1 true, .rw 3 1 true,
-      .swap 11, .swap 10, .swap 9, .swap 5, .swap 4, .swap 0, .swap 1, .swap 2, .swap 3,
-      .swap 4, .swap 5, .swap 6, .swap 7, .swap 8, .swap 9]
+      [Step.swap 12, Step.swap 11, Step.swap 10, Step.swap 9, Step.swap 8, Step.swap 7, Step.swap 6, Step.swap 5, Step.swap 4,
+      Step.swap 3, Step.swap 4, Step.swap 5, Step.swap 9, Step.swap 10, Step.swap 16, Step.swap 17, Step.swap 21, Step.swap 22,
+      Step.rw 4 1 false, Step.rw 6 1 false, Step.rw 12 1 false, Step.rw 14 1 false, Step.rw 2 2 false, Step.swap 9,
+      Step.swap 10, Step.swap 11, Step.swap 12, Step.swap 13, Step.swap 14, Step.rw 15 4 true, Step.rw 18 0 true,
+      Step.swap 17, Step.swap 16, Step.rw 17 3 true, Step.rw 18 1 true, Step.rw 20 0 true, Step.swap 19,
+      Step.rw 20 3 true, Step.rw 16 2 true, Step.rw 23 1 true, Step.swap 17, Step.swap 18, Step.swap 19, Step.swap 20,
+      Step.swap 21, Step.swap 22, Step.rw 9 2 true, Step.rw 2 2 true, Step.rw 23 1 true, Step.rw 21 1 true,
+      Step.rw 15 1 true, Step.rw 13 1 true, Step.rw 6 1 true, Step.rw 4 1 true, Step.swap 35, Step.swap 34, Step.swap 30,
+      Step.swap 29, Step.swap 23, Step.swap 22, Step.swap 18, Step.swap 17, Step.swap 16, Step.swap 17, Step.swap 18,
+      Step.swap 19, Step.swap 20, Step.swap 21, Step.swap 22, Step.swap 23, Step.swap 24, Step.swap 25, Step.swap 10,
+      Step.swap 9, Step.swap 5, Step.swap 4, Step.swap 3, Step.swap 4, Step.swap 5, Step.swap 6, Step.swap 7, Step.swap 8,
+      Step.swap 9, Step.swap 10, Step.swap 11, Step.swap 12, Step.rw 0 5 false, Step.rw 6 1 true, Step.rw 3 1 true,
+      Step.swap 11, Step.swap 10, Step.swap 9, Step.swap 5, Step.swap 4, Step.swap 0, Step.swap 1, Step.swap 2, Step.swap 3,
+      Step.swap 4, Step.swap 5, Step.swap 6, Step.swap 7, Step.swap 8, Step.swap 9]
       (by decide +kernel)
   | _, _, _, .R16 =>
     derive hsc
@@ -714,17 +714,17 @@ theorem rel_derivable : ∀ {k : ℕ} {w v : Circuit QCert.RealStabilizer.Gate k
       DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 2 0,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 0 1,
       DEqn.inst (P := pres) (S := fun _ => True) Ax.CX2 trivial 1 0, dC15dec.place 0 0]
-      [.swap 3, .swap 2, .swap 1, .swap 0, .swap 4, .swap 3, .swap 2, .swap 1, .swap 8,
-      .swap 9, .swap 16, .swap 15, .swap 14, .swap 13, .swap 17, .swap 16, .swap 15,
-      .swap 14, .swap 21, .swap 22, .rw 4 0 false, .rw 15 0 false, .rw 0 1 false,
-      .rw 3 1 false, .rw 6 1 false, .rw 10 1 false, .rw 14 0 true, .rw 15 2 true,
-      .rw 16 3 true, .rw 17 1 true, .rw 19 0 true, .swap 18, .rw 19 3 true, .rw 20 1 true,
-      .rw 17 1 true, .rw 13 1 true, .rw 10 1 true, .rw 6 1 true, .rw 3 1 true, .rw 0 1 true,
-      .rw 26 0 true, .rw 15 0 true, .rw 4 0 true, .swap 35, .swap 27, .swap 28, .swap 29,
-      .swap 30, .swap 26, .swap 27, .swap 28, .swap 22, .swap 14, .swap 15, .swap 16,
-      .swap 13, .swap 14, .swap 15, .swap 12, .swap 9, .swap 1, .swap 2, .swap 3, .swap 0,
-      .swap 1, .swap 2, .rw 0 4 false, .rw 5 1 true, .rw 2 1 true, .rw 9 0 true, .swap 8,
-      .swap 4, .swap 3]
+      [Step.swap 3, Step.swap 2, Step.swap 1, Step.swap 0, Step.swap 4, Step.swap 3, Step.swap 2, Step.swap 1, Step.swap 8,
+      Step.swap 9, Step.swap 16, Step.swap 15, Step.swap 14, Step.swap 13, Step.swap 17, Step.swap 16, Step.swap 15,
+      Step.swap 14, Step.swap 21, Step.swap 22, Step.rw 4 0 false, Step.rw 15 0 false, Step.rw 0 1 false,
+      Step.rw 3 1 false, Step.rw 6 1 false, Step.rw 10 1 false, Step.rw 14 0 true, Step.rw 15 2 true,
+      Step.rw 16 3 true, Step.rw 17 1 true, Step.rw 19 0 true, Step.swap 18, Step.rw 19 3 true, Step.rw 20 1 true,
+      Step.rw 17 1 true, Step.rw 13 1 true, Step.rw 10 1 true, Step.rw 6 1 true, Step.rw 3 1 true, Step.rw 0 1 true,
+      Step.rw 26 0 true, Step.rw 15 0 true, Step.rw 4 0 true, Step.swap 35, Step.swap 27, Step.swap 28, Step.swap 29,
+      Step.swap 30, Step.swap 26, Step.swap 27, Step.swap 28, Step.swap 22, Step.swap 14, Step.swap 15, Step.swap 16,
+      Step.swap 13, Step.swap 14, Step.swap 15, Step.swap 12, Step.swap 9, Step.swap 1, Step.swap 2, Step.swap 3, Step.swap 0,
+      Step.swap 1, Step.swap 2, Step.rw 0 4 false, Step.rw 5 1 true, Step.rw 2 1 true, Step.rw 9 0 true, Step.swap 8,
+      Step.swap 4, Step.swap 3]
       (by decide +kernel)
 
 /-- Appendix F.2 and Lemma 19: decoding the encoding of a circuit derives the
@@ -738,14 +738,14 @@ theorem DE {n : ℕ} (w : Circuit Gate n) : Derivable (Lift Th n) (D.map n (E.ma
   · cases c
     · exact derive hsc
         [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0]
-        [.rw 0 0 false, .rw 1 0 false, .rw 1 0 true, .rw 0 0 true, .rw 3 0 false, .rw 0 0 false]
+        [Step.rw 0 0 false, Step.rw 1 0 false, Step.rw 1 0 true, Step.rw 0 0 true, Step.rw 3 0 false, Step.rw 0 0 false]
         (by decide +kernel)
     · exact derive hsc
         [DEqn.inst (P := pres) (S := fun _ => True) Ax.H2 trivial 1 0, ddswap.place 0 0]
-        [.swap 3, .swap 4, .swap 8, .swap 9, .swap 13, .rw 2 0 false, .rw 5 0 false,
-        .rw 8 0 false, .rw 8 0 true, .rw 5 0 true, .rw 2 0 true, .rw 2 0 false, .rw 5 0 false,
-        .rw 8 0 false, .rw 8 0 true, .rw 5 0 true, .rw 2 0 true, .swap 4, .swap 3, .swap 9,
-        .swap 13, .swap 12, .rw 0 1 true]
+        [Step.swap 3, Step.swap 4, Step.swap 8, Step.swap 9, Step.swap 13, Step.rw 2 0 false, Step.rw 5 0 false,
+        Step.rw 8 0 false, Step.rw 8 0 true, Step.rw 5 0 true, Step.rw 2 0 true, Step.rw 2 0 false, Step.rw 5 0 false,
+        Step.rw 8 0 false, Step.rw 8 0 true, Step.rw 5 0 true, Step.rw 2 0 true, Step.swap 4, Step.swap 3, Step.swap 9,
+        Step.swap 13, Step.swap 12, Step.rw 0 1 true]
         (by decide +kernel)
 
 end QCert.Minimality.RealClifford
