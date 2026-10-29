@@ -3,6 +3,10 @@ import QCert.RealCliffordCH.Sec8.D.W4.B4
 import QCert.RealCliffordCH.Sec8.D.W4.HgMerge
 import QCert.RealCliffordCH.Sec8.D.W4.BoxCommLow
 
+-- Memory: the decided runs are checked one at a time (with the default
+-- asynchronous elaboration they ran in parallel and passed 4.5 GB).
+set_option Elab.async false
+
 namespace QCert.RealCliffordCH.Sec8.D.W4LowHg
 open Circuit WE WS Net
 open Eng (L)

@@ -8,10 +8,9 @@ without wire `4`.  Only the first two rotations of each expansion are
 checked (`rots2`, `srots2`); the other two are their inverses (`chkInvR`,
 `chkInvS`), and commutation passes to inverses (Lemma B.5, `Comm.inv`).
 
-Status: not built.  Its decided steps need too much memory as written (one
-declaration of four runs in `E337r1` passed 4.7 GB; `E322`, imported through
-`E322x`, needs about 11 GB): see `HANDOVER.md` before building.  Nothing
-imports it.
+Memory (2026-10-29): 21 s, peak 4.4 GB resident, about 1.5 GB of it above the
+mapped imports; the two-letter windows of `chkInvR`, `chkInvS` are decided
+together.
 -/
 import QCert.RealCliffordCH.Sec8.D.N13.E336x
 import QCert.RealCliffordCH.Sec8.D.N13.E322l

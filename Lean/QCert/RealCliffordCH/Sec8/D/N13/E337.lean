@@ -24,10 +24,9 @@ with every gate of the other, conjugated by `P ⊗ P`:
 * two boxes idle on wire `3`: a semantic step without wire `3`
   (`commBBpp`).
 
-Status: not built.  Its decided steps need too much memory as written (one
-declaration of four runs in `E337r1` passed 4.7 GB; `E322`, imported through
-`E322x`, needs about 11 GB): see `HANDOVER.md` before building.  Nothing
-imports it.
+Memory (2026-10-29): 10 s, peak 0.43 GB anonymous (3.1 GB resident with
+the mapped imports).  Its decided windows are in `E337r1`, `E337r2` (one per
+declaration, about 140 s and 1.0 GB each) and `E322` (127 s, 0.9 GB).
 -/
 import QCert.RealCliffordCH.Sec8.D.N13.E336x
 import QCert.RealCliffordCH.Sec8.D.N13.E322x
@@ -85,7 +84,7 @@ def Rw (one a α β : Bool) : Lt :=
 theorem wc_W322 (m : ℕ) (one a α β : Bool) :
     wc 4 (m + 5) (W322 one a α β) =
       (pp : Circ (m + 5)) * (Rr one a α β).circ 4 (m + 5) * pp := by
-  cases one <;> simp [W322, W0, W1, Rr, wc_append, wc_one', wc_ppL, mul_assoc]
+  cases one <;> simp [W322, W0, W1, Rr, wc_append, SE.wc_cons, wc_one', wc_ppL, mul_assoc]
 
 theorem rots_Rr {b1 b3 : Bool} {r : Lt} (hr : r ∈ rots b1 true b3) :
     ∃ one a β, r = Rr one a b3 β := by
@@ -467,9 +466,12 @@ theorem hg_relabel (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (tg : List ℕ) (htg : t
   have h := mc_swap_sym (k + 2) j hjN .hg tg (colOn 2 (k + 2) (y ∘ Net.tau j))
     (by rcases htg with rfl | rfl <;> rfl) (by rcases htg with rfl | rfl <;> decide)
     (by rcases htg with rfl | rfl <;> simp <;> omega) hsym
+  have t0 : Net.tau j 0 = 0 := by
+    unfold Net.tau; rw [if_neg (show (0 : ℕ) ≠ j by omega), if_neg (show (0 : ℕ) ≠ j + 1 by omega)]
+  have t1 : Net.tau j 1 = 1 := by
+    unfold Net.tau; rw [if_neg (show (1 : ℕ) ≠ j by omega), if_neg (show (1 : ℕ) ≠ j + 1 by omega)]
   have e1 : tg.map (Net.tau j) = tg := by
-    rcases htg with rfl | rfl <;> simp only [List.map_cons, List.map_nil, Net.tau] <;>
-      split_ifs <;> first | rfl | omega
+    rcases htg with rfl | rfl <;> simp only [List.map_cons, List.map_nil, t0, t1]
   rw [e1] at h
   have e2 : drawn [swAt (k + 2) j, mc (k + 2) .hg tg (colOn 2 (k + 2) (y ∘ Net.tau j)),
       swAt (k + 2) j] =

@@ -16,6 +16,10 @@ replaces each `sorry` by its proof and keeps the statements.
 import QCert.RealCliffordCH.Sec8.D.N13.E319
 import QCert.RealCliffordCH.Sec8.D.N13.Low
 import QCert.RealCliffordCH.Sec8.D.N13.E345
+import QCert.RealCliffordCH.Sec8.D.N13.E337
+import QCert.RealCliffordCH.Sec8.D.N13.LowHg
+import QCert.RealCliffordCH.Sec8.D.N13.LowHg338
+import QCert.RealCliffordCH.Sec8.D.N13.E338Merge
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -133,12 +137,19 @@ theorem eq336 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (c₁ c�
 theorem eq337 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : DiffOn 2 N x y)
     (c₁ : Bool) :
     Comm N (mc N .box [0] (ctlOr (ctlAt 1 c₁) (colOn 2 N x))) (mc N .hg [0, 1] (colOn 2 N y)) := by
-  sorry
+  rcases (by omega : N = 3 ∨ N = 4 ∨ 5 ≤ N) with rfl | rfl | h5
+  · exact N13.comm337_3 ih x y hxy c₁
+  · exact N13.comm337_4 ih x y hxy c₁
+  · exact N13.comm337_ge5 N h5 ih x y hxy c₁
 
 /-- (338) -/
 theorem eq338 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (c₁ : Bool) :
     Comm N (mc N .box [0] (ctlOr (ctlAt 1 c₁) (colOn 2 N x))) (mc N .hg [1, 0] (colOn 2 N y)) := by
-  sorry
+  refine N13.comm338_from_diff N hN ih (fun x y hxy c => ?_) (fun x y => eq335 N hN ih x y) x y c₁
+  rcases (by omega : N = 3 ∨ N = 4 ∨ 5 ≤ N) with rfl | rfl | h5
+  · exact N13.comm338_3 ih x y c
+  · exact N13.comm338_4 ih x y hxy c
+  · exact N13.comm338d_ge5 N h5 ih x y hxy c
 
 /-- (339) -/
 theorem eq339 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : DiffOn 3 N x y)
