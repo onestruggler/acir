@@ -5,8 +5,8 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 
 The decoding maps each rule of Figure 8 to a derivable equation (Appendix
 E.5), rule by rule (`E/Cheap`, `E/Rules1`, `E/Rule22`, `E/Rule24`, `E/Rule32`, `E/Rule38`,
-`E/Rule39`, `E/Rule40`, `E/Rule31`, `E/Rule43`, `E/Rule44`, `E/Rule3637`, `E/Core45`).
-Still open: (46).
+`E/Rule39`, `E/Rule40`, `E/Rule31`, `E/Rule43`, `E/Rule44`, `E/Rule3637`, `E/Core45`,
+`E/Rule46` with `E/Core46`).
 -/
 import QCert.RealCliffordCH.Sec8.Statement
 import QCert.RealCliffordCH.Sec8.E.Rule38
@@ -14,11 +14,11 @@ import QCert.RealCliffordCH.Sec8.E.Rule31
 import QCert.RealCliffordCH.Sec8.E.Rule43
 import QCert.RealCliffordCH.Sec8.E.Rule3637
 import QCert.RealCliffordCH.Sec8.E.Core45
+import QCert.RealCliffordCH.Sec8.E.Core46
 
 namespace QCert.RealCliffordCH.Sec8
 
-/-- Lemma 8.8 (Appendix E.5, with Appendix D).  The rule (46) is not yet
-proved. -/
+/-- Lemma 8.8 (Appendix E.5, with Appendix D). -/
 theorem lemma_8_8 (n : ℕ) (hn : 3 ≤ n) : Lemma88 n := by
   intro ih u v h
   obtain ⟨M, rfl⟩ : ∃ M, n = M + 3 := ⟨n - 3, by omega⟩
@@ -50,6 +50,6 @@ theorem lemma_8_8 (n : ℕ) (hn : 3 ≤ n) : Lemma88 n := by
   | r43 => exact E.dec43 ih'
   | r44 => exact E.dec44 ih'
   | r45 => exact E.dec45_of (E.core45 M ih')
-  | r46 => sorry
+  | r46 => exact E.dec46_of (E.C46.core46 ih')
 
 end QCert.RealCliffordCH.Sec8
