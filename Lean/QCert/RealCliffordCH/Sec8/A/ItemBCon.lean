@@ -10,7 +10,7 @@ contains every relation of Figure 6.
 
 Here: the parities of a word (`parL`), which decide the coset reached;
 the existence of tags for a frame away from any four indices
-(`exists_tags`); and, through `good_frame` and the images `img_*` of
+(`exists_tagsB`); and, through `good_frame` and the images `img_*` of
 `ItemBPhi.lean`, every relation (a1)–(d2) of Figure 6 in `GB n`
 (`gb_a1`, …, `gb_d2`).
 -/
@@ -66,7 +66,7 @@ theorem FT.tags {e f g : ℕ} (T : FT n e f g) : Tags n e f g :=
   ⟨T.he, T.hf, T.hg, T.hef, T.heg, T.hfg⟩
 
 /-- Tags away from at most four indices. -/
-theorem exists_tags (h8 : 8 ≤ 2 ^ n) (S : Finset ℕ) (hS : S.card ≤ 4) :
+theorem exists_tagsB (h8 : 8 ≤ 2 ^ n) (S : Finset ℕ) (hS : S.card ≤ 4) :
     ∃ e f g, FT n e f g ∧ e ∉ S ∧ f ∉ S ∧ g ∉ S := by
   obtain ⟨e, f, he, hf, hef, he', hf'⟩ := exists_fresh_pair (S ∪ {0, 1})
     ((Finset.card_union_le _ _).trans (by
@@ -103,7 +103,7 @@ theorem gb_of (hn : 3 ≤ n) {w w' : Word (HG (2 ^ n))} (S : Finset ℕ) (hS : S
   have h8 : 8 ≤ 2 ^ n := by
     calc 8 = 2 ^ 3 := by norm_num
       _ ≤ 2 ^ n := Nat.pow_le_pow_right (by norm_num) hn
-  obtain ⟨e, f, g, T, he, hf, hg⟩ := exists_tags h8 S hS
+  obtain ⟨e, f, g, T, he, hf, hg⟩ := exists_tagsB h8 S hS
   exact good_frame h8 (e65 n hn) T (hw.away he hf hg) (hw'.away he hf hg) (hpar_of hpar)
     (himg e f g T he hf hg)
 

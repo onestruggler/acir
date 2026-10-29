@@ -5,7 +5,7 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 
 Away from the indices `0` and `1`, the coset action `τ` writes `H_[a,b]` as
 `H_[a,b]H_[0,1]` or `H_[0,1]H_[a,b]` (by the `H`-parity of the coset), and
-`(-1)_[a]` as `(-1)_[1](-1)_[a]` or `(-1)_[a]X_[0,1]` (`psi`, `hstar_psi`):
+`(-1)_[a]` as `(-1)_[1](-1)_[a]` or `(-1)_[a]X_[0,1]` (`psi01`, `hstar_psi`):
 the pair `0, 1` is a frame, with no sign tag needed when the signs come in
 pairs.  So the relation `w46L ≈ w46R` of Figure 6 on the indices `2, …, 7`,
 whose two-letter images are Equation (46) renamed by the even permutation
@@ -27,9 +27,9 @@ def psiG (n : ℕ) (b : Bool) : HG (2 ^ n) → PG (2 ^ n)
   | .X x y _ => if b then Xx n x y 0 1 else Zx n 1 x y
 
 /-- The word `τ**` gives a list of generators away from `0, 1`. -/
-def psi (n : ℕ) : Bool → List (HG (2 ^ n)) → List (PG (2 ^ n))
+def psi01 (n : ℕ) : Bool → List (HG (2 ^ n)) → List (PG (2 ^ n))
   | _, [] => []
-  | b, y :: w => psiG n b y :: psi n (xor b (gbits y).1) w
+  | b, y :: w => psiG n b y :: psi01 n (xor b (gbits y).1) w
 
 /-- The `H`-parity of a coset. -/
 def Cos.isH : Cos → Bool
@@ -58,7 +58,7 @@ theorem tau_psi (c : Cos) (y : HG (2 ^ n)) (hy : ∀ i ∈ gix y, i ≠ 0 ∧ i 
 
 /-- `τ**` along a list away from `0, 1`. -/
 theorem hstar_psi (l : List (HG (2 ^ n))) (hl : ∀ y ∈ l, ∀ i ∈ gix y, i ≠ 0 ∧ i ≠ 1) (c : Cos) :
-    (hstar (tauA n) c (FreeMonoid.ofList l)).1.toList = psi n c.isH l := by
+    (hstar (tauA n) c (FreeMonoid.ofList l)).1.toList = psi01 n c.isH l := by
   induction l generalizing c with
   | nil => rfl
   | cons y l ih =>
@@ -192,34 +192,34 @@ abbrev T46R (n : ℕ) : List (PG (2 ^ n)) := [Hh n 2 4 3 5, Hh n 4 6 5 7, Zz n 5
   Hh n 4 5 6 7, Hh n 4 6 5 7, Hh n 2 4 3 5, Hh n 2 3 0 1]
 
 omit hn in
-theorem psiL_false (hn : 3 ≤ n) : psi n false (W46L.map (HadamardPi.Gen.map (f27 hn) (f27_mono hn))) =
+theorem psiL_false (hn : 3 ≤ n) : psi01 n false (W46L.map (HadamardPi.Gen.map (f27 hn) (f27_mono hn))) =
     [Hh n 2 3 0 1, Hh n 0 1 2 4, Hh n 3 5 0 1, Hh n 0 1 4 6, Hh n 5 7 0 1, Hh n 0 1 4 5,
       Hh n 6 7 0 1, Hh n 0 1 6 7, Zz n 1 5, Zz n 1 4, Hh n 4 6 0 1, Hh n 0 1 5 7, Hh n 2 4 0 1,
       Hh n 0 1 3 5] := by
-  simp [psi, psiG, W46L, W46R, W46L.hL', HadamardPi.Gen.map, gbits, f27_val]
+  simp [psi01, psiG, W46L, W46R, W46L.hL', HadamardPi.Gen.map, gbits, f27_val]
 
 omit hn in
-theorem psiL_true (hn : 3 ≤ n) : psi n true (W46L.map (HadamardPi.Gen.map (f27 hn) (f27_mono hn))) =
+theorem psiL_true (hn : 3 ≤ n) : psi01 n true (W46L.map (HadamardPi.Gen.map (f27 hn) (f27_mono hn))) =
     [Hh n 0 1 2 3, Hh n 2 4 0 1, Hh n 0 1 3 5, Hh n 4 6 0 1, Hh n 0 1 5 7, Hh n 4 5 0 1,
       Hh n 0 1 6 7, Hh n 6 7 0 1, Zx n 5 0 1, Zx n 4 0 1, Hh n 0 1 4 6, Hh n 5 7 0 1,
       Hh n 0 1 2 4, Hh n 3 5 0 1] := by
-  simp [psi, psiG, W46L, W46R, W46L.hL', HadamardPi.Gen.map, gbits, f27_val]
+  simp [psi01, psiG, W46L, W46R, W46L.hL', HadamardPi.Gen.map, gbits, f27_val]
 
 omit hn in
-theorem psiR_false (hn : 3 ≤ n) : psi n false (W46R.map (HadamardPi.Gen.map (f27 hn) (f27_mono hn))) =
+theorem psiR_false (hn : 3 ≤ n) : psi01 n false (W46R.map (HadamardPi.Gen.map (f27 hn) (f27_mono hn))) =
     [Hh n 2 4 0 1, Hh n 0 1 3 5, Hh n 4 6 0 1, Hh n 0 1 5 7, Zz n 1 5, Zz n 1 4, Hh n 6 7 0 1,
       Hh n 0 1 4 5, Hh n 6 7 0 1, Hh n 0 1 4 6, Hh n 5 7 0 1, Hh n 0 1 2 4, Hh n 3 5 0 1,
       Hh n 0 1 2 3] := by
-  simp [psi, psiG, W46L, W46R, W46L.hL', HadamardPi.Gen.map, gbits, f27_val]
+  simp [psi01, psiG, W46L, W46R, W46L.hL', HadamardPi.Gen.map, gbits, f27_val]
 
 omit hn in
-theorem psiR_true (hn : 3 ≤ n) : psi n true (W46R.map (HadamardPi.Gen.map (f27 hn) (f27_mono hn))) =
+theorem psiR_true (hn : 3 ≤ n) : psi01 n true (W46R.map (HadamardPi.Gen.map (f27 hn) (f27_mono hn))) =
     [Hh n 0 1 2 4, Hh n 3 5 0 1, Hh n 0 1 4 6, Hh n 5 7 0 1, Zx n 5 0 1, Zx n 4 0 1,
       Hh n 0 1 6 7, Hh n 4 5 0 1, Hh n 0 1 6 7, Hh n 4 6 0 1, Hh n 0 1 5 7, Hh n 2 4 0 1,
       Hh n 0 1 3 5, Hh n 2 3 0 1] := by
-  simp [psi, psiG, W46L, W46R, W46L.hL', HadamardPi.Gen.map, gbits, f27_val]
+  simp [psi01, psiG, W46L, W46R, W46L.hL', HadamardPi.Gen.map, gbits, f27_val]
 
-theorem imgL (b : Bool) : D8 n (psi n b (W46L.map (HadamardPi.Gen.map (f27 hn) (f27_mono hn)))) (T46L n) := by
+theorem imgL (b : Bool) : D8 n (psi01 n b (W46L.map (HadamardPi.Gen.map (f27 hn) (f27_mono hn)))) (T46L n) := by
   cases b
   · rw [psiL_false hn]
     exact DR.append (DR.refl [Hh n 2 3 0 1]) <| DR.append (hp2 hn 2 4 3 5) <|
@@ -232,7 +232,7 @@ theorem imgL (b : Bool) : D8 n (psi n b (W46L.map (HadamardPi.Gen.map (f27 hn) (
       DR.append (hfl hn 6 7).symm <| DR.append (zx1 hn) <|
       DR.append (hp2 hn 4 6 5 7) (hp2 hn 2 4 3 5)
 
-theorem imgR (b : Bool) : D8 n (psi n b (W46R.map (HadamardPi.Gen.map (f27 hn) (f27_mono hn)))) (T46R n) := by
+theorem imgR (b : Bool) : D8 n (psi01 n b (W46R.map (HadamardPi.Gen.map (f27 hn) (f27_mono hn)))) (T46R n) := by
   cases b
   · rw [psiR_false hn]
     exact DR.append (hp1 hn 2 4 3 5) <| DR.append (hp1 hn 4 6 5 7) <|
