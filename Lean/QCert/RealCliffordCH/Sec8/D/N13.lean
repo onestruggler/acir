@@ -27,7 +27,7 @@ import QCert.RealCliffordCH.Sec8.D.N13.Low342
 import QCert.RealCliffordCH.Sec8.D.N13.Low339W4
 import QCert.RealCliffordCH.Sec8.D.N13.Low344W4
 import QCert.RealCliffordCH.Sec8.D.N13.Low342W4
-import QCert.RealCliffordCH.Sec8.D.N13.E347
+import QCert.RealCliffordCH.Sec8.D.N13.E351t
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -248,8 +248,8 @@ theorem eq349 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (hxy : D
     Comm N (mc N .hg [0, 1] (colOn 2 N x))
       (mc N (Kind.sgnZX a) [1] (ctlOr (ctlAt 0 c₁) (colOn 2 N y))) := by
   rcases (by omega : N = 3 ∨ 4 ≤ N) with rfl | h4
-  · -- Three wires: open (the decomposition leaves no wire to spare).
-    sorry
+  · exact N13.R347.comm349_3 ih (mcSwapAll 3 ih) (eq333 3 hN ih) (eq334 3 hN ih) (eq337 3 hN ih)
+      x y hxy a c₁
   · exact N13.R347.comm349 h4 ih (mcSwapAll N ih) (eq333 N hN ih) (eq334 N hN ih)
       (eq339 N h4 ih) (eq340 N hN ih) x y hxy a c₁
 
@@ -266,8 +266,8 @@ theorem eq351 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) (x y : ℕ → Bool) (a b : B
     Comm N (mc N (Kind.sgnZX a) [0] (colOn 1 N x)) (mc N (Kind.sgnZX b) [0] (colOn 1 N y)) := by
   by_cases hd : DiffOn 1 N x y
   · rcases (by omega : N = 3 ∨ 4 ≤ N) with rfl | h4
-    · -- Three wires, different colourings: open.
-      sorry
+    · exact N13.R347.comm351_3 ih (mcSwapAll 3 ih) (eq333 3 hN ih) (eq334 3 hN ih)
+        (eq317 3 hN ih) (eq336 3 hN ih) (eq337 3 hN ih) x y hd a b
     · exact N13.R347.comm351 h4 ih (mcSwapAll N ih) (eq333 N hN ih) (eq334 N hN ih)
         (eq317 N hN ih) (eq335 N hN ih) (eq339 N h4 ih) (eq340 N hN ih) x y a b
   · exact N13.R347.comm351_same (eq317 N hN ih) x y hd a b
