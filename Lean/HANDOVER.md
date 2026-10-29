@@ -752,3 +752,25 @@ N ≥ 6 branch is the other session's `comm3xx_ge6`).
   goes fast with both as letters (`sw`), while `P ⊗ P` on the wires `0, 2`
   (interleaved) did not finish in 15 minutes; conjugation by one swap is done
   by `conj_step` (`Solver.conj_down`), which the search does not find alone.
+
+**Update (same session, later).**  Three wires done except (348):
+`N13/E347t` ((341) on three wires `c341`, from D.2's (135) `c135`; (349) on
+three wires `comm349_3`), `N13/E351t` ((351) on three wires `comm351_3`),
+`N13/E352t` ((352) on three wires `comm352_3`, given (348) on three wires as
+the hypothesis `H348 3`).  In `N13.lean`, `eq349`, `eq351` are proved at
+every width and `eq352` has no `sorry` of its own; `#print axioms` gives only
+`propext`, `Classical.choice`, `Quot.sound` for `eq347`, `eq349`, `eq350`,
+`eq351`, and `sorryAx` for `eq352` through `eq348`.  The only open branch of
+(347)–(352) is `eq348` at `N = 3`: `hg[0,1](2:x₂)` against
+`(-1)ᵃZX[0](1:c₁, 2:y₂)`, `x₂ ≠ y₂` (after (81) on wire 2 and (317): two
+instances, `c₁ = ●, ○`).  What is known about it: no decomposition of the
+rotation into boxes and `H` gates has all pairs commuting
+(`scratchpad`-style check: on three wires the `H` gate `hg[2,0](1:c₁)` of
+the `b = 1, h = 2` decomposition and the box `box[2](0:●,1:c₁)` of the
+`b = 2, h = 1` one never commute with `O`); `O` is `P⊗P · box[0](1:●,2:x₂) ·
+P⊗P` semantically, but `P⊗P R P⊗P` is no multi-controlled gate; and every
+three-wire relation available for `R` with `O`'s neighbours ((139), (140),
+(345), (338), the turnover by `CZ(0,1)`) keeps the wire 1 monomial, so `H₁`
+is never reached — a derivation must use a relation with `H` on a control of
+the rotation, as the paper's proof of (139) (page 70) uses (114), (18),
+(111), (112), (132).
