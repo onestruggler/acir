@@ -158,7 +158,7 @@ All of the following build, at every width `m + 5` unless noted:
 
 ## Remaining `sorry`s at the time of writing (`grep -cw sorry`)
 
-`CliffordCS3/Completeness.lean` (rsData) · `Sec8/Lemma88Proof.lean` 8 · `Sec8/D/N13.lean` 19 · `Sec8/D/N15.lean` 3 · `Sec8/D/N8.lean` 1 ·
+`CliffordCS3/Completeness.lean` (rsData) · `Sec8/Lemma88Proof.lean` 2 ((45), (46)) · `Sec8/D/N13.lean` 19 · `Sec8/D/N15.lean` 3 · `Sec8/D/N8.lean` 1 ·
 `Sec8/D/W3.lean` 6 · `Sec8/D/W4.lean` 5 · `Sec8/D/W5.lean` 3.
 
 ### Package (vi), second session (`rcch-e`, 2026-10-29)
@@ -578,3 +578,64 @@ times out when the context holds large `Derivable` hypotheses — prove
 control equalities in small lemmas.  `swBH`'s control functions cannot be
 left as `_` in a `have` (nothing determines them).  `dropW` is ambiguous
 between `Net` and `SE` when both are open.
+
+### Package (vi), fourth session (`rcch-e`, 2026-10-29): Lemma 8.5, rules (36), (37)
+
+Proved and wired (commits 55d00de7, 9b8cdce1, ee0eb1be); every step checked
+numerically first (`gen/sec8/e/m85.py`: 2008 cases at `n = 3, 4, 5`;
+`gen/sec8/e/m36.py`: the decoded swaps, negations and both rules at `n = 3, 4`, 143 cases).
+`lemma_8_8` is now open only at **(45), (46)**.
+
+* **Lemma 8.5 at every width**, `E/Lemma85.lean` (`lemma85`): for a state `s`
+  with bit `t` clear, `D((-1)_[G⁻¹(s)]X_[G⁻¹(s),G⁻¹(s⊕2^t)])` is
+  `mc .xz [t] (ctlOf s t)` and the sign on `G⁻¹(s⊕2^t)` gives `.zx`.
+  Induction along `dZXab` two levels at a time (`lemma85_of`; the five letters
+  are the paper's five factors); the step `Step85` at the canonical position
+  (`t = 0` the inner letter, `β = 1` the outer ones, wires above white,
+  `step85w`) is the paper's chain read algebraically in the quotient monoid
+  (`alg85`): the first two letters are `Mκ` ((354)), the last two its inverse
+  ((317) on full controls, `rot_inv`), the single-qubit `(-1)ᵏ XZ` on wire `1`
+  is `Mκ R` by (354) over every colouring of the other wires (`U85_split`,
+  `mergeListGen`), every factor of `R` passes the result by (352), and (359)
+  recolours the control.  Other colours above by (81) (`step85c`, `colr85`),
+  any two wires by the frame of `[t, β]` (`frame2_one`).  General tools there:
+  `comm_prod_left`, `conj_back`, `kind85`/`kindZX_eq`, `dist_odd`.
+* **Decoded swap and negation**, `E/Swap36.lean`: `dec_encSwap` (`D(E_{k,ℓ}(swap))`
+  is `swAt ℓ`) and `dec_encNeg` (`D(ℰ⁰_{k,ℓ}(X))` is `xAt ℓ`): the decoded `CZ`/`Z`
+  (`lemma86_CZ_*`, `lemma86_Z_*`), the products of mixed letters by Lemma 8.5
+  and (354) (`decode_zx_list`, the zx analogue of `decode_zz_list`), and a
+  two-wire (one-wire) identity by Lemma 5.1 through `placeG_mul2`,
+  `placeG_der2`, `placeG_swap`.
+* **Rules (36), (37)**, `E/Rule3637.lean` (`dec36`, `dec37`): the left side by
+  `dec_patt` (from `patt = some (k, u, w)` alone, `patt_bounds`); the right side
+  `wW` cut into blocks (`wW_eq`), the swaps decoded to `swW` of the network
+  `netW kind w (u - w - 1)` (`dec_net`), the negations to `X` gates
+  (`dec_neg`, `xOpt`, `prod_map_ite`) that colour the gadget by `recolour`,
+  and `placedBy_mc`; `pos_netW_zero/one/ge` say where the network carries
+  each wire, which is Definition 8.3's placement.
+
+**(45), what I found (no Lean yet).**  Decoded, (45) is (146) with every wire
+`≥ 3` a white control (`m45.py`): `E1 = hg[2,0](1○, C○)`, `E2 = hg[0,1](2○, C○)`,
+`Bw = box[0](1○, 2○, C○)`, `C` the wires `3, …`; as the letters are
+involutions it says `Bw` inverts `(E2 E1)²` (operator order).  Two shortcuts
+fail, for reasons worth not rediscovering:
+* merging over the colours of a wire `q ∈ C` only gives
+  `K(q idle) = K○ K●` with `K○`, `K●` commuting and `X_q`-conjugate, and
+  Lemma 5.1 gives `K(q idle)² = 1`; that is `J (X J X) = 1` for `J = K●²`,
+  which does not force `J = 1` (same with several wires);
+* no conjugation can turn the `C`-controlled gates into gates idle on a wire
+  (the multiplicities of their eigenvalues differ), and a multi-controlled
+  `H` with `N - 2` controls has no free wire for its box, so `E1` cannot be
+  split over the colour of wire `2`.
+So a real derivation with the controls `C` is needed.  The paper's (pages
+264–269) starts by inserting `box[0](1○, 2●)` twice ((311)) so that it
+merges with `Bw` ((309), wire `2` idle), and pairs `hg[0,1](2○, 3●)` ((312))
+so that the `H` gates merge over the auxiliary wire `3` ((310)), which then
+frees wire `3` as a box wire ((277), (274)); then `P ⊗ P` frames ((112),
+(246), (111), (130), (308)) and (307), (313), (336)–(339), (335) to a
+symmetric form (II); the right side reaches the mirror image.  About 25
+diagrams; `gen/sec8/figparse.py` reads page 264 partly (it misses the box
+wires drawn as dotted squares and the dashed ellipsis), so the chain must be
+transcribed by hand from the rendered pages (render at 200 dpi in halves;
+the wires bottom-up are `0, 1, 2, 3, 4`, the dashed segment the wires `5, …`).
+**(46)** is (147) with white controls, eight pages (269–277).
