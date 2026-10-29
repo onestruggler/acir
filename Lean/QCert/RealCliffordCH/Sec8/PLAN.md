@@ -196,7 +196,8 @@ editing the others; it may assume everything exported by the others (the
   `Decoding.lean` and preserves the semantics on every letter at `n = 3, 4`).
   **`lemma_8_7` proved** (`Lemma87Proof.lean`, `E/`), from the interface
   statements (274), (307), (309)–(311), (313), (336) and (353).  Lemma 8.8
-  (`Lemma88Proof.lean`, cases by rule): done (20)–(35), (38)–(44); open (36), (37), (45), (46).
+  (`Lemma88Proof.lean`, cases by rule): done (20)–(44); open (45), (46).  Lemma 8.5 at every width is
+  `E/Lemma85`; (36), (37) are `E/Rule3637` (with `E/Swap36`).
   (360) is `N15/E360`; (361) is `D.eq361` in `E/Eq361.lean` (its proof needs the E toolkit,
   which imports `N15.lean`); (43), (44) are `E/Rule43`, `E/Rule44` (see HANDOVER).
 
