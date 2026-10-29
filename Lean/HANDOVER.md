@@ -158,7 +158,7 @@ All of the following build, at every width `m + 5` unless noted:
 
 ## Remaining `sorry`s at the time of writing (`grep -cw sorry`)
 
-`CliffordCS3/Completeness.lean` (rsData) · `Sec8/Lemma88Proof.lean` 2 ((45), (46)) · `Sec8/D/N13.lean` 19 · `Sec8/D/N15.lean` 3 · `Sec8/D/N8.lean` 1 ·
+`CliffordCS3/Completeness.lean` (rsData) · `Sec8/Lemma88Proof.lean` 0 · `Sec8/D/N13.lean` 19 · `Sec8/D/N15.lean` 3 · `Sec8/D/N8.lean` 1 ·
 `Sec8/D/W3.lean` 6 · `Sec8/D/W4.lean` 5 · `Sec8/D/W5.lean` 3.
 
 ### Package (vi), second session (`rcch-e`, 2026-10-29)
@@ -816,3 +816,59 @@ vector data, is valid diagram by diagram at `N = 6, 7`).
   matches the wrong factor — give `(b := …)`; facts touching wire `3` need
   `1 ≤ M`; `show … from rfl` for `place2 2 0 ch = Circuit.pad 0 ch` failed in
   this file (use `congrArg shift (pad_zero2 ch)`).
+
+### Package (vi), sixth session (`rcch-e`, 2026-10-29): rule (46)
+
+Rule (46) of Lemma 8.8 is proved and wired (`lemma_8_8`'s case `r46` is
+`E.dec46_of (E.C46.core46 ih')`), by the paper's own chain (pages 269–277).
+
+* `E/Rule46.lean`: the decoded letters (`A46` … `Z46`; `gen/sec8/e/m46.py`
+  checks them at `n = 3, 4, 5`) and `dec46_of : Core46 M →` the case (46).
+  `Core46` is (147) with every wire above `2` a white control, monoid order
+  `A B Cc Dd F Z Cc B = B Cc Z F Dd Cc B A`.  Names carry `46` (`dec46_3245`):
+  `Rule43` already has `dec_3245`.
+* `E/Core46Three.lean`: `M = 0` is `D.eq147 0` once each letter is matched
+  with its group of `l147`/`r147`: the box wire of a three-wire gate is idle,
+  `placeG_shift_cons` for the two `H`s on wire `0` with box wire `2`, the
+  rest by unfolding (`placeG`, `netL_eq`, `netK` decided).
+* From four wires on (`E/Core46.lean`, `core46_words`), the paper's chain as
+  checked rewriting:
+  * `gen/sec8/e/c46_chain.json` is the chain read off the **vector
+    drawings** of the PDF (PyMuPDF `get_drawings`: wires, filled/hollow dots,
+    `H`/`P` boxes, the dotted box-wire squares, the dashed ellipsis; the
+    scratch parser `tools/parse.py` of this session, not `figparse.py`), the
+    wires `0, …, 3` explicit and `4, …` white throughout: 58 diagrams, every
+    consecutive pair equal at `N = 4, 5, 6`.  No paper error was found.
+  * `E/Core46Kit.lean`: gate descriptions `GD` (`mc N K tg (c4 a)`, `a` the
+    colours of the wires `0..3`; `P ⊗ P`), words `wI`, a rewriting checker
+    (`runW`, `run_sound`: a run of `(position, fact, direction)` steps that
+    `decide +kernel` accepts is a derivation), and frames `fr_eq` by any
+    permutation of the wires `0..3` (`perms4`, `GD.fr`, from `frameAt'`;
+    `pp_sym` normalises `P ⊗ P`).
+  * `E/Core46Canon.lean`: the equations the chain cites, at their canonical
+    wires with colour parameters: (311) `k_inv_box`, (312) `k_inv_hg`, (111)
+    `k_inv_pp`, (335)–(345) `k335`…`k345`, (274) `k274` (`move274`), (277)
+    `k277` (`move277`, new: (277) coloured), (112) `k112` (`D.N8.hgPP`) and
+    `k112i` (wire `3` idle: (310), (112), (111), (309) by a small run), (308)
+    `k308` (coloured through `colr43`), (130) `k_klein1/2`, `k_cpp` (`P ⊗ P`
+    on disjoint pairs commute, from (130)), the merges `k309`/`k310`
+    (`mergeAt`, `mergeHgAt`, any wires).
+  * `E/Core46Facts.lean`, `E/Core46Chain.lean`: written by
+    `gen/sec8/e/c46emit.py` (with `c46.py`): 100 facts (each a canonical
+    equation under a frame, or a merge; each checked numerically before
+    being written) and four runs, 3 + 97 + 45 + 7 steps.  The steps between
+    two diagrams are found by a bidirectional search over the facts the
+    diagram cites (split at common blocks; `P ⊗ P` segments separately).
+  * The paper's "same steps as from (III) to (IV), mirrored, in reverse
+    order" is `rev_eq`: every gate is an involution, so `WIII = WIV` gives
+    `WIII.reverse = WIV.reverse`.
+* To regenerate: `python c46emit.py FACTS.lean CHAIN.lean` (Windows `python`,
+  about two minutes), then move the outputs to `E/Core46Facts.lean`,
+  `E/Core46Chain.lean`.
+
+Pitfalls met: `List.Forall p [x]` is `p x`, not `p x ∧ True` (no trailing
+`trivial` in `⟨…⟩`); inside `namespace E.C46` use `Net.mc_congr` (`E` has
+another `mc_congr`); `split_ifs` also splits `if fwd then …` on a Bool
+variable — write `cond`; `TaskStop` on a backgrounded Windows `python` does not
+kill it — stop it by its command line (`Get-CimInstance Win32_Process`),
+never all `python.exe` (other agents').
