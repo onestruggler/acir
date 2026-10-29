@@ -6,10 +6,17 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 Work in progress (nothing imports it).  The frame is `E339a`'s; see the
 third-session section of `HANDOVER.md` for the plan.  Here: the
 conjugating word `uL … uL'` of the inner box of `B` (`M` followed by the
-swap of the wires `1, 2`), its inverse, and the first kind of pair — a
-rotation of `A` (conjugated by the swap of the wires `3, 4`) against a
-conjugated rotation of `B` — by `Sep.sep_sem` on the five wires `0–4` and
-completeness there, with no simulation in the kernel.
+swap of the wires `1, 2`), its inverse at every width (`inv_of_lcheck`: a
+four-wire decision lifted through the block form), and two of the four
+kinds of pairs, by `Sep` with no simulation in the kernel:
+* `commRR_s`: a rotation of `A` (conjugated by the swap of the wires
+  `3, 4`) against a conjugated rotation of `B`, on the five wires `0–4`
+  (completeness there; six wires at least);
+* `commAr_s`: the remainder `Ar` of `A` (idle on wire `4`) against a
+  conjugated rotation of `B`, a semantic step without wire `4`.
+
+Memory (2026-10-29): 24 s, peak 1.5 GB anonymous (4.3 GB resident with the
+mapped imports).
 -/
 import QCert.RealCliffordCH.Sec8.D.N13.E339a
 import QCert.RealCliffordCH.Sec8.D.N13.SepSem
@@ -157,5 +164,76 @@ theorem commRR_s (m : ℕ) (ih : IH (m + 6)) {b1 b3 c1 c3 : Bool} {r h : Lt}
   have l2 : ((uL ++ [h] ++ uL') ++ [.s (.S 3), r, .s (.S 3)]).all (isLoc 5) = true := by
     simp only [List.all_append, List.all_cons, List.all_nil, lr, lh, lu.1, lu.2]; decide
   exact der_loc l1 l2 d5 (m + 6) (by omega)
+
+/-! ## The remainder of `A` against a conjugated rotation of `B` -/
+
+/-- The remainder of `A`'s expansion with the triple `1, 2, 4`: the box on
+wire `0`, controls `1` (`c₂`), `2` (black), `3` (`c₁`), the bulk above `4`;
+idle on wire `4`. -/
+def Ar (c₁ c₂ : Bool) : Lt := .g .box [0] [(1, c₂), (2, true), (3, c₁)] true
+
+theorem uL_inv4 (N : ℕ) (hN : 4 ≤ N) :
+    opsQ.eval N (wc 4 N uL') * opsQ.eval N (wc 4 N uL) = 1 := by
+  have h := inv_of_lcheck (K := 4) (l := uL ++ uL') (fun x hx => by
+      rcases List.mem_append.1 hx with hx | hx
+      · exact uL_ok.1 x hx
+      · exact uL_ok.2 x hx) chkU_on chkU_off N hN
+  rwa [wc_append, map_mul] at h
+
+theorem rots_drop4 : ∀ b1 b2 b3 : Bool, ∀ r ∈ rots b1 b2 b3,
+    r.ok 5 = true ∧ r.avoids 4 = true ∧ r.drop 4 = r := by decide
+theorem uL_drop4 : (uL ++ uL').all (fun x => x.ok 5 && x.avoids 4 && x.drop 4 == x) = true := by
+  decide
+theorem Ar_drop4 : ∀ c₁ c₂ : Bool,
+    (Ar c₁ c₂).ok 5 = true ∧ (Ar c₁ c₂).avoids 4 = true ∧ (Ar c₁ c₂).drop 4 = Ar c₁ c₂ := by
+  decide
+
+/-- `Ar` passes a rotation of `B` conjugated by `uL … uL'`: both avoid wire
+`4`, and they are separated on wire `2`. -/
+theorem commAr_s (m : ℕ) (ih : IH (m + 6)) (c₁ c₂ : Bool) {c1 c3 : Bool} {h : Lt}
+    (hh : h ∈ rots c1 false c3) :
+    Derivable (theory (m + 6)) (wc 5 (m + 6) ([Ar c₁ c₂] ++ (uL ++ [h] ++ uL')))
+      (wc 5 (m + 6) ((uL ++ [h] ++ uL') ++ [Ar c₁ c₂])) := by
+  have hr := rots_drop4 _ _ _ h hh
+  have hu := List.all_eq_true.1 uL_drop4
+  have hA := Ar_drop4 c₁ c₂
+  have mem : ∀ x ∈ [Ar c₁ c₂] ++ (uL ++ [h] ++ uL'),
+      x.ok 5 = true ∧ x.avoids 4 = true ∧ x.drop 4 = x := by
+    intro x hx
+    simp only [List.mem_append, List.mem_singleton] at hx
+    rcases hx with rfl | (hx | rfl) | hx
+    · exact hA
+    · have := hu x (List.mem_append_left _ hx)
+      simp only [Bool.and_eq_true, beq_iff_eq] at this
+      exact ⟨this.1.1, this.1.2, this.2⟩
+    · exact hr
+    · have := hu x (List.mem_append_right _ hx)
+      simp only [Bool.and_eq_true, beq_iff_eq] at this
+      exact ⟨this.1.1, this.1.2, this.2⟩
+  have mem' : ∀ x ∈ (uL ++ [h] ++ uL') ++ [Ar c₁ c₂],
+      x.ok 5 = true ∧ x.avoids 4 = true ∧ x.drop 4 = x := fun x hx =>
+    mem x (by simp only [List.mem_append] at hx ⊢; tauto)
+  have e1 : ([Ar c₁ c₂] ++ (uL ++ [h] ++ uL')).map (Lt.drop 4) =
+      [Ar c₁ c₂] ++ (uL ++ [h] ++ uL') := by
+    rw [List.map_congr_left (g := id) (fun x hx => (mem x hx).2.2), List.map_id]
+  have e2 : ((uL ++ [h] ++ uL') ++ [Ar c₁ c₂]).map (Lt.drop 4) =
+      (uL ++ [h] ++ uL') ++ [Ar c₁ c₂] := by
+    rw [List.map_congr_left (g := id) (fun x hx => (mem' x hx).2.2), List.map_id]
+  have tA : Triv 2 0 (opsQ.eval (m + 1 + 4) (wc 4 (m + 1 + 4) [Ar c₁ c₂])) := by
+    have := triv_g (K := 4) (N := m + 1 + 4) (by omega) .box [0] [(1, c₂), (2, true), (3, c₁)] true
+      rfl (p := 2) (by omega) (by decide) (b := true) rfl
+    simpa [wc, drawn, Ar] using this
+  have tB : Triv 2 1 (opsQ.eval (m + 1 + 4) (wc 4 (m + 1 + 4) (uL ++ [h] ++ uL'))) := by
+    rw [wc_conj]
+    have hx : Triv 2 1 (opsQ.eval (m + 1 + 4) (h.circ 4 (m + 1 + 4))) := by
+      rw [← rots_rebase hh]
+      simpa using triv_rots (m + 1 + 4) (by omega) c1 false c3 h hh
+    exact triv_conj (K := 4) (by omega) uL_ok.1 uL_ok.2 (by omega) (by omega) rt_uL rt_uL'
+      (uL_inv4 (m + 1 + 4) (by omega)) hx
+  have hsem := sep_sem (K := 4) (M := m + 1 + 4) (by decide : (0 : Fin 2) ≠ 1) tA tB
+  rw [← e1, ← e2] at hsem
+  exact SE.Frame.window (frame 4) (m + 1) ih (q := 4) le_rfl
+    (fun x hx => ⟨(mem x hx).1, (mem x hx).2.1⟩) (fun x hx => ⟨(mem' x hx).1, (mem' x hx).2.1⟩)
+    hsem
 
 end QCert.RealCliffordCH.Sec8.D.N13

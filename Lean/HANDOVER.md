@@ -383,10 +383,38 @@ bulk ≥ 5) is idle on 4.  The four kinds of pairs:
   * `Ar` vs conjugated remainder: two boxes (box wire 0 with control 1, box
     wire 1 with control 0), idle on 4, resp. 3: split each idle wire by the
     merge (309) and use `eq336` (proved at every width).
-`E339a` itself does not build yet: `expBE` times out (200000 heartbeats at
-its `by`; try more heartbeats or explicit widths), `base_circ`'s `▸` fails,
-and `chkMM` (two 32-letter windows in one declaration) peaks at 3.9 GB:
-split it, or prove the inverse by cancellations (`swsw`, `pp_inv`).
+**Status of that plan.**  `E339a` builds now (71 s, 2.4 GB anonymous:
+`chkMM` split, `base_circ` repaired, more heartbeats for `expBE`).
+`N13/E339s.lean` (builds, 24 s, 1.5 GB; nothing imports it) has the word
+`uL … uL'` (`M` then `S₁`; `rt_uL`, `rt_uL'`: it carries wire 2 to wire 2),
+its inverse at every width (`uL_inv`, `uL_inv4`, from `inv_of_lcheck`: a
+four-wire decision lifted through `eval_wc_blk`), `triv_rots`, and two of
+the four kinds of pairs: `commRR_s` (`[S₃, r, S₃]` against
+`uL ++ [h] ++ uL'`, on five wires) and `commAr_s` (`Ar` against
+`uL ++ [h] ++ uL'`, without wire 4).  Still to do for N ≥ 6:
+  1. `A ≈ drawn` of its pieces: `box_relabel` with j = 3 (wires 3, 4 both
+     controls), `expX` on the relabeled colouring (1: c₂, 2: true,
+     3: x 4, 4: c₁), `conj_drawn` with `swsw _ 3`; the rotation pieces are
+     `[S₃, r, S₃]` (as in `commRR_s`); the remainder `S₃ · boxN · S₃` is
+     `Ar` (coloured by `x` above 4) by `mc_swap` (wire 3 idle there, so no
+     `CanonSym` needed), or keep it as `[S₃, P3', S₃]` and drop wire 4 after
+     `mc_swap`.
+  2. `B ≈ drawn` of `(uL ++ [g] ++ uL')` over `pcs4 c₃ false true`: `expBE`,
+     `box_relabel` with j = 1, `expX`, `conj_drawn` (inverse `uL_inv`
+     turned into derivations by `MM_inv` and `swsw`, or by completeness).
+  3. Pair rotation vs remainder of `B`: `remB` (after the S₁ relabel of the
+     remainder) makes it `swAt 0 · boxN y c₃ false · swAt 0`, the box on
+     wire 1 idle on 3; the rotation of `A` must first be made a single
+     letter on `{0, 1, 2, 4}` (`mc_swap` of `[S₃, r, S₃]`), then `sep_sem`
+     without wire 3 exactly as `commAr_s`.
+  4. Pair `Ar` vs remainder of `B` (box[1] (0: c₃, 2: ○, bulk ≥ 4), idle
+     on 3): merge each idle wire ((309): `Ar` = `Ar(4 ●) Ar(4 ○)`, the other
+     on wire 3) and apply `eq336` (proved at every width) to the four
+     products.
+  5. Assemble with `comm_drawn`, colour the bulk (`colour_wc` as in `gcl`),
+     and reuse `E339.comm339_core`/`comm339_ge6` (the frame and
+     `sep_reduce`), replacing `comm339E`.  `E339.lean`, `E339r1`–`r3` are
+     the predecessor's infeasible route and can be deleted then.
 
 **Widths 4, 5 of (339).**  At N = 5 every frame leaves one pair covering all
 five wires.  With `G`'s triple `3, 2, 1` instead, the pair "remainder of `A`
