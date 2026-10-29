@@ -227,6 +227,87 @@ Remaining sorries of package (vi): `N15.eq360`, `eq361`; `lemma_8_8` cases
 (45), (46) follow the paper's chains through (333)–(339), (309), (274),
 (311), (312).
 
+### Package (vi), third session (`rcch-e`, 2026-10-29)
+
+Proved and wired (commits 86062afb, 5fdd8135, 811d6077, 1cf7e73f); every
+step checked numerically first (`gen/sec8/e/m360b.py`, `m361.py`, `m43.py`,
+`m44.py`; the second session's `m31`, `m358`, `m40`, `m360` are there too):
+
+* **(360)**, `D/N15/E360.lean` (`eq360_ge4`, `eq360_3`), not the paper's
+  route: (333)/(334) one width down carried past the idle wire `0`
+  (`liftIdle`, `toTop_mc'`), box wires moved to wire `0` by (277)/(274) in
+  the frames `[0,3,1]`/`[0,2]`, then `P ⊗ P` on `0, 1` exchanges box and
+  multi-controlled `H` (Definition 2.4 one width down, past the idle wire
+  `3`, resp. `2`: `pp_box`, `pp_hg`), and the swap of the wires `2, 3`
+  matches the result with (334).  Three wires: (129) by a token run.
+  `N15.lean` now has no `sorry`.
+* **(361)** is `D.eq361` in **`E/Eq361.lean`**, no longer in `N15.lean`: its
+  proof needs `E/Rule31`'s toolkit, and `E/Transport` imports `D/N15.lean`,
+  so `N15.lean` cannot import it.  Lemma 8.5 for `D((-1)_[0]X_[0,3])` by the
+  paper's argument: `mergeListZ` over the wires `1, …` writes the
+  single-qubit `XZ` on wire `0` as `P · X₀ᵇ · X₀ʷ` (`x61`), every factor of
+  `P` commutes with the rotation by (352) (`f61_comm`, `bitsOn_black`), and
+  (359) under the swap of the wires `0, 1` recolours (`h359_61`); then
+  (355), `box_inv_rot`, (311), (317), (354) (`mergeAtZ`: (354) at any
+  target, from `mergeCZ`), assembled by `alg361` in the quotient monoid.
+* **Rule (44)**, `E/Rule44.lean` (`dec44`): (361), (338) for the box, and
+  for the `XZ` the paper's (112), (360), (354), (346) with black controls
+  (`xi_g_black`), coloured by (81) at the end (`xi_g_white`).  Tools:
+  `hg_pp44` (Definition 2.4 at every width; on three wires the rule (18)),
+  `sw_pp44` ((112), a two-wire step), `gadget_pp44` (`G = P Bq P`).
+* **Rule (43)**, `E/Rule43.lean` (`dec43`): the paper's chain in the frame of
+  `P = P ⊗ P₀₁` — `G = P Bg P`, `A = P A'' P` (`hg_frame`: Definition 2.4 in
+  the frames `[2,0]`, `[2,1]`; `klein43`: `P₂₀P₀₁ = P₀₁P₂₀ = P₂₁` from (130)
+  by two token runs on three wires), `Bg = R R`, `R A'' = A'' Ri` ((333),
+  (334) under the swap of the wires `0, 1`, coloured by (81) and (316) in
+  the frame `[2,1]`: `ra43`), (349) in the frame `[2,1]` (`a2_zw43`), (354),
+  (360) — so `G A = Zi A Xi`; then, not the paper's end, `B0 Zi B0 = Xi`
+  gives `Y = Xi B0 = B0 Zi` and `Y A Y = B0 G A B0 = G A` by (338)
+  (`alg43`).
+
+Reusable kit in `E/Rule43`: `colr43` ((81) on a list of wires),
+`conjP_colour` (colour an equation `P a P = b` by an involution commuting
+with `P`), `colour43` (black → white: `X` on wire `2`, then `U3` on `3, …`),
+`sw0_43` (the swap of wires `0, 1` on `mc`), `x2_81`, `u3_col`,
+`ctl_1_1`/`ctl_0_1`/`ctl_3_0` (`ctlOf` against `ctlOr`/`colOn`), the macro
+`ctl43` (pointwise control equalities: unfold, `split_ifs`, `omega`).
+
+**Lemma 8.8 is now open only at (36), (37), (45), (46).**
+
+* **(45)** (`gen/sec8/e/m45.py`): the decoded letters are
+  `E1 = D(H_[0,1]H_[7,6]) = hg[2,0](1○, 3…○)` (`H` on `0`, box wire `2`),
+  `E2 = D(H_[0,3]H_[1,2]) = hg[0,1](2…○)` and `Bw = D((-1)_[0](-1)_[1]) =
+  box[0](1…○)`; the decoded rule is `E1 E2 E1 Bw E2 = E2 Bw E1 E2 E1`
+  (monoid order) — exactly (146) with every wire above `2` a white control.
+  All letters are involutions, so it says `K = E1 E2 E1 Bw E2` is an
+  involution.  On the subspace `w₂ = 0` it is the two-qubit identity of
+  (146); on `w₂ = 1` it is trivial (`E2`, `Bw` act as the identity there).
+  No Lean yet.  The `P ⊗ P`-frame tools of `Rule43` (`hg_frame`,
+  `klein43`, `hg_pp44`, `gadget_pp44`, `p360w`) should carry over.
+* **(46)**, **(36)/(37)**: untouched this session; the second session's
+  notes above still apply.
+
+Pitfalls met (besides those above):
+
+* A lemma in a section with `include ih` takes `ih` even when unused, so
+  callers must pass it; mark helpers that do not use it `omit ih in`.
+* Give `(M := M)` when no argument pins the implicit width (controls such
+  as `ctlOr … (blackOn 2 (M + 3))` do not).
+* When a derivation's sides are `mc` gates, give `via_conj`/`colour43`
+  their lists explicitly (`(l := [Rb43 M])`) and present the derivation as
+  `drawn [x] = x` (`D.N15.drawn_one'`): otherwise Lean unifies `drawn ?l`
+  with `mc …` by unfolding `mc` into its `colourW` list.
+* `simp` does not decide `j + 1 + 1 + 1 < 3` inside `liftW`/`tau`; a macro
+  `simp only [defs]; split_ifs <;> first | rfl | (exfalso; omega)` does.
+* `omega` treats `2 ^ (M + 3)` and `2 ^ (M + 2 + 1)` as different atoms
+  (`tOf_eq` produces the second): state the bound in both forms.
+* Python heredocs passed through the Bash tool broke on some `'`; write the
+  script to a file first.
+* Memory (coordinator's note): one decided run per declaration,
+  `set_option Elab.async false` where a module decides several.  The runs of
+  this session are small (`E360.run360`, `Rule43.runK1`/`runK2`,
+  `Eq361.zx61`: two- and three-wire); every module here builds in under 10 s.
+
 ### Package (v), Lemmas D.12–D.13, continued (2026-10-29, second session)
 
 Nothing new is proved; no interface `sorry` was removed.  Written (all new
