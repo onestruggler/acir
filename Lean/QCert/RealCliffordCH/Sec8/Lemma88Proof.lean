@@ -13,6 +13,7 @@ import QCert.RealCliffordCH.Sec8.E.Rule38
 import QCert.RealCliffordCH.Sec8.E.Rule31
 import QCert.RealCliffordCH.Sec8.E.Rule43
 import QCert.RealCliffordCH.Sec8.E.Rule3637
+import QCert.RealCliffordCH.Sec8.E.Rule45
 
 namespace QCert.RealCliffordCH.Sec8
 
@@ -48,7 +49,7 @@ theorem lemma_8_8 (n : ℕ) (hn : 3 ≤ n) : Lemma88 n := by
   | r42 a b c d ha hb hc hd hab hcd h3 => rw [E.dec42 hn a b c d ha hb hc hd hab hcd h3]
   | r43 => exact E.dec43 ih'
   | r44 => exact E.dec44 ih'
-  | r45 => sorry
+  | r45 => exact E.dec45_of sorry -- `E.Core45 M`: (146) with white controls above
   | r46 => sorry
 
 end QCert.RealCliffordCH.Sec8
