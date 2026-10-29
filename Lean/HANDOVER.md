@@ -650,3 +650,60 @@ computed the same way (`dec_patt`): `H_[3,4]H_[2,5]` is `hg[0,2]` and
 `H_[3,2]H_[4,5]` is `hg[2,0]`, both black on `1`; `H_[7,6]H_[4,5]` is `hg[1,0]`
 (black on `2`), `(-1)_[2](-1)_[3]` the box on wire `0` black on `1`, white on
 `2`; every wire above `2` white.
+
+### Package (v), fifth session (2026-10-29): (347)–(352)
+
+Built and committed (all in `Sec8/D/N13/`, namespace `N13.R347`; no decided
+window anywhere, each module well under a minute):
+
+* `S353`: (353) for the black canonical rotation at every width, the
+  argument of `D/N15/E353*` with (333), (339), (317) as hypotheses
+  (`H333`, `H339`, `H317`); `sym353`, and `mcSwapAll : E.McSwapAll N`, so
+  rotations move along swap networks too.  `N13.lean` has
+  `D.mcSwapAll N ih` from `eq333`, `eq339`, `eq317` at every width `≤ N`.
+* `RotDec`: `dec_at` — any rotation `(-1)ᵃZX` with target `t` and a control
+  of any colour on every other wire is `HG B HG B` (`ZX`) / `B HG B HG`
+  (`XZ`) with `HG = mc .hg [h, t] (setCtl c h none)`, `B = mc .box [b]
+  (setCtl (setCtl c b none) t (some true))`, for any distinct `t, b, h`
+  (canonical coloured version `dec_canon` from (333)/(334) by (81), with
+  `x1_box` (315) and `x2_hg` (316) for the box wire and hole; then the frame
+  `[t, b, h]`).  Also `comm_frame`, `frm_ctl`, `diff_frm`, `rd` (colours read
+  through a frame), `x0_hole_hg` ((316) for coloured `hg[0,1]`).
+* `Framed`: `f335 f336 f338 f339 f340 f344 f345` — (335)–(345) on any wires,
+  control functions given pointwise by their values on the special wires and
+  "a control elsewhere".
+* `E347`: `comm347` (every `N ≥ 3`), `comm348`, `comm349`, `comm350`,
+  `comm351`, `comm352` (`N ≥ 4`), `comm351_same` ((351) with equal
+  colourings, (317)).  The choices of box wire/hole are in the module header;
+  `gen/sec8/n13/r347.py` checks them (and `dec` the decomposition).
+* `N13.lean`: `eq347`, `eq350` proved; `eq348`, `eq349`, `eq351` (different
+  colourings), `eq352` have one marked `sorry` branch, `N = 3`.
+
+**Three wires (open).**  The paper's argument (page 234) does not cover them
+(README records the gap): with only the separating wire to spare, some pair
+of factors never commutes (`r347.py` prints the uncovered cases).  Reductions
+found (not yet in Lean):
+* (349)₃ ⟸ (341)₃ + (337)₃: `dec_at` with `t = 1, b = 0, h = 2`; the box
+  `box[0](1:●, 2:y)` against `hg[0,1](2:x)` is (337), the `H` gate
+  `hg[2,1](0:c₁)` against it is (341) at three wires (same `H` wire, each hole
+  the other's control, every colour), which is D.2's (135) (`W3T.td135`:
+  `[S0, K1, S0]` is `mc 3 .hg [1,0] (ctlAt 2 true)`, `K0` is `hg[2,0](1:●)` by
+  `E333.hg_ch3`) under the swap of the wires 0, 1, coloured by `X₀`
+  (`x0_hole_hg`, (81)) and `X₂` ((81), and (316) for `hg[2,1]` = `x2_hg`
+  conjugated by `S₀`).
+* (351)₃: colourings differing on one wire are (136)+(137) (`drawn [R(●,○),
+  R(●,●)]` and `drawn [R(●,●), R(●,○)]` are both `ZX(1:●)`), with (81) on both
+  wires, the swap of the wires 1, 2 (`comm_zx_sw_3`) and (317) for the signs;
+  on both wires: decompose the black one with `b = 1, h = 2`, then (347)₃ and
+  (349)₃ moved by a frame (rotations move with `mcSwapAll 3`).
+* (352)₃: half-dots black is (139)/(140); `c₁ = ○`: decompose the second
+  rotation with `t = 1, b = 2, h = 0`: its `H` gate `hg[0,1](2:y)` against
+  the first is (348)₃, its box `box[2](0:c₂,1:●)` against the first is (347)₃
+  moved by the frame `[2, 0, 1]` (separated on wire 1); `c₂ = ○` by the swap
+  of the wires 0, 1.
+* (348)₃ itself has no reduction: neither decomposition of the rotation
+  works, and (139)/(140) (with `CZ(0,1)` turning the rotation over) do not
+  imply it algebraically.  It needs a three-wire derivation like the paper's
+  proof of (139) (page 70: (14), (9), (81), (132), (111), (112), (18), (114),
+  (17)).  The w4 solver (`gen/sec8/w4/proj.py`) fails at once on these
+  instances (`core`: `letters_util.decompose` only knows four-wire gadgets).
