@@ -298,3 +298,16 @@ qualified constructors (`Step.rw i e b`, which `gen/leangen.py` and
 module builds in 37 s (`CliffordT/Derivations` 154 → 63 s).  Qualify dotted
 constructors wherever the expected type is not known at that point: long
 list literals, operands of `++`, arguments whose type is a metavariable.
+
+`CliffordCS/W3Enc` (the fourteen decisions of `e_ok`, 155 s in a full
+build) is kernel-bound on products of 8 × 8 matrices over `QOmega`: a
+product costs 512 multiplications of four rationals, about 2 s each in
+the kernel.  The scalar letter times a gate is now rewritten to the
+scaled gate (`smul_mul_assoc`) and the swaps' three permutation matrices
+to one (`permMat_mul`) before the kernel compares entries, which removes
+seven products; what remains is the four CNOT lemmas `cx₁₂`…`cx₁₀` (four
+products each) and about a second per decision for the operator side.
+The next step, if it matters, is integer arithmetic: state the letters as
+`invSqrt2 ^ e • (M.map toQ)` with `M` over `ZOmega`, multiply over `ZOmega`
+(`Int` arithmetic is cheap in the kernel, `Rat` is not) and compare the
+exponents and the integer matrices.

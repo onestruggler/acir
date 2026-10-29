@@ -904,3 +904,33 @@ With it `QCert.RealCliffordCH.completeness` and `presentation` (and
 (`Theorem.lean` built in one run, 2530 jobs).  `Theorem.lean`'s module
 docstring still calls the four Section 8 statements "not yet proved"; only
 that comment is stale.
+
+## Typechecking speed (30 October)
+
+The user asked for faster typechecking.  `README.md` ("Typechecking cost")
+has the method — `lake env lean --profile -Dprofiler=true
+-Dprofiler.threshold=1000 QCert/X.lean` splits a module's time into the
+kernel (`type checking`) and elaboration — and the two causes found:
+
+* the kernel pays per unfolding and nothing for `Nat` arithmetic, so a
+  checked computation should precompute its data, look up by primitive
+  recursion and test with `Nat.beq`/`bif` (`CliffordT2/FastRewrite.lean`:
+  `Eqs/Part12` 646 → 139 s);
+* a dotted constructor application elaborated before its type is known
+  costs about 0.1 s per attempt — elements of list literals of 64 or more
+  elements, operands of `++` — and qualified names fix it
+  (`Minimality/QutritClifford/Derivations` 328 → 37 s,
+  `RealStabilizer/Relations1` 190 → 9 s, `SelingerClifford/Rules5`
+  70 → 27 s; the generators emit qualified names now).
+
+Each folder touched has a "Typechecking cost" section in its README.
+Still slow and not yet done (the kernel-bound matrix checks and the
+simp/typeclass-heavy proofs): `ToffoliHadamard` (`Soundness`,
+`MacroTable`, `Independence`), `HadamardPi` (`Case34`, `Switch`),
+`QutritClifford/Soundness`, `Greylyn`/`BianSelingerUn`/`PhaseAffine`
+`Soundness`, `BianSelingerUn/Case3222`, `CliffordCS3`
+(`Semantics`/`Eval`/`Soundness`, left alone while `rsData` is in
+progress) and `RealCliffordCH` (the largest folder, left alone while its
+uncommitted work is in progress).  Builds are serialized by `check.sh`'s
+lock; measure on an idle machine, a parallel build inflates every time
+about twofold.

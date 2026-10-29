@@ -24,6 +24,19 @@ theorem ofMat_eq_of {R : Type*} {k : ℕ} {M : Matrix (Fin (2 ^ k)) (Fin (2 ^ k)
 /-- The permutation matrix of `f` (`e_j ↦ e_{f j}`). -/
 def permMat (f : Fin 8 → Fin 8) : Matrix (Fin 8) (Fin 8) QOmega := fun i j => if f j = i then 1 else 0
 
+/-- Permutation matrices compose; the kernel then compares one permutation
+matrix with the operator instead of multiplying three (each product of two
+8 × 8 matrices over `QOmega` is 512 multiplications of four rationals). -/
+theorem permMat_mul (f g : Fin 8 → Fin 8) : permMat f * permMat g = permMat (f ∘ g) := by
+  apply Matrix.ext
+  intro i j
+  simp only [permMat, Matrix.mul_apply, Function.comp_apply, mul_ite, mul_one, mul_zero]
+  rw [Finset.sum_eq_single (g j)]
+  · simp
+  · intro b _ hb
+    simp [Ne.symm hb]
+  · simp
+
 /-- The CNOT with control qubit `1` and target qubit `2` (index `4 q₀ + 2 q₁ + q₂`). -/
 theorem cx₁₂ : FreeMonoid.lift (matR matS) (cxw .CS₁₂ .K₂) = permMat ![0, 1, 3, 2, 4, 5, 7, 6] := by
   decide +kernel
@@ -40,27 +53,36 @@ theorem cx₀₁ : FreeMonoid.lift (matR matS) (cxw .CS₀₁ .K₁) = permMat !
 theorem cx₁₀ : FreeMonoid.lift (matR matS) (cxw .CS₀₁ .K₀) = permMat ![0, 1, 6, 7, 4, 5, 2, 3] := by
   decide +kernel
 
--- The fourteen kernel decisions share one elaboration budget.
+-- The fourteen kernel decisions share one elaboration budget.  A scalar
+-- letter times a gate is rewritten to the scaled gate, and the swaps'
+-- three permutation matrices to one, before the kernel compares entries:
+-- the products were most of the module's time.
 set_option maxHeartbeats 1000000 in
 theorem e_ok : ∀ g : QCert.Gen Gate 3,
     ofMat (d := 2) (k := 3) (FreeMonoid.lift (matR matS) (e g)) =
       QOmega.invSqrt2 ^ scaled.exGen g • (scaled.ops.gen g).map ZOmega.toQ
   | .gate0 .ω => ofMat_eq_of (by decide +kernel)
-  | .gate1 .H => ofMat_eq_of (by decide +kernel)
+  | .gate1 .H => by
+    simp only [e, map_mul, FreeMonoid.lift_eval_of, matR, smul_mul_assoc, one_mul]
+    exact ofMat_eq_of (by decide +kernel)
   | .gate1 .S => ofMat_eq_of (by decide +kernel)
   | .gate2 .CS => ofMat_eq_of (by decide +kernel)
   | .gate2 .swap => by
-    simp only [e, map_mul, cx₁₂, cx₂₁]
+    simp only [e, map_mul, cx₁₂, cx₂₁, permMat_mul]
     exact ofMat_eq_of (by decide +kernel)
   | .up (.gate0 .ω) => ofMat_eq_of (by decide +kernel)
-  | .up (.gate1 .H) => ofMat_eq_of (by decide +kernel)
+  | .up (.gate1 .H) => by
+    simp only [e, map_mul, FreeMonoid.lift_eval_of, matR, smul_mul_assoc, one_mul]
+    exact ofMat_eq_of (by decide +kernel)
   | .up (.gate1 .S) => ofMat_eq_of (by decide +kernel)
   | .up (.gate2 .CS) => ofMat_eq_of (by decide +kernel)
   | .up (.gate2 .swap) => by
-    simp only [e, map_mul, cx₀₁, cx₁₀]
+    simp only [e, map_mul, cx₀₁, cx₁₀, permMat_mul]
     exact ofMat_eq_of (by decide +kernel)
   | .up (.up (.gate0 .ω)) => ofMat_eq_of (by decide +kernel)
-  | .up (.up (.gate1 .H)) => ofMat_eq_of (by decide +kernel)
+  | .up (.up (.gate1 .H)) => by
+    simp only [e, map_mul, FreeMonoid.lift_eval_of, matR, smul_mul_assoc, one_mul]
+    exact ofMat_eq_of (by decide +kernel)
   | .up (.up (.gate1 .S)) => ofMat_eq_of (by decide +kernel)
   | .up (.up (.up (.gate0 .ω))) => ofMat_eq_of (by decide +kernel)
 
