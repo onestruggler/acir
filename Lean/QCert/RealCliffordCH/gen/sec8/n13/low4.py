@@ -151,7 +151,7 @@ def run344(P):
     chain(P, 'L344DB', [
         [D, B], [CH, B], [CH, PP, Bin, PP], [PP, PP, CH, PP, Bin, PP], [PP, CZ, Bin, PP],
         [PP, Z1, XCZX, Bin, PP], [PP, Z1, Bin, XCZX, PP], [PP, Bin, Z1, XCZX, PP],
-        [PP, Bin, CZ, PP], [PP, Bin, PP, PP, CH, PP], [B, CH], [B, D]], names=['159', '154'])
+        [PP, Bin, CZ, PP], [PP, Bin, PP, PP, CZ, PP], [B, CH], [B, D]], names=["159", "154"])
     chain(P, 'L344b1', [[A1, B], [B, A1]], names=['205', '204'])
     chain(P, 'L344b0', [[A0, B], [A1, A1, A0, B], [A1, D, B], [A1, B, D], [B, A1, D],
                         [B, A1, A1, A0], [B, A0]], names=['167', '171a', 'L344b1', 'L344DB'])
