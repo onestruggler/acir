@@ -17,9 +17,9 @@ Completeness is proved here on zero and one wire (Lemma 7.1).  On two wires
 it is the back-and-forth argument of Section 7.2 (`TwoQubit`): proved from
 Theorem 4.4 (imported: Hadamard-Π's `QCert.HadamardPi.theorem_4_14` at
 `n = 4`) and Lemma 7.5 (`lemma_7_5`).  From three wires
-on it is the argument of Section 8, proved from four statements that are
-not yet proved (`Sec8.esem`, `Sec8.theorem_4_10`, `Sec8.lemma_8_7`,
-`Sec8.lemma_8_8`), by induction on the number of wires.  See `README.md`.
+on it is the argument of Section 8, from its four statements
+(`Sec8.esem`, `Sec8.theorem_4_10`, `Sec8.lemma_8_7`, `Sec8.lemma_8_8`, all
+proved), by induction on the number of wires.  See `README.md`.
 -/
 import QCert.RealCliffordCH.OneQubit
 import QCert.RealCliffordCH.TwoQubit
