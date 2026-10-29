@@ -106,15 +106,9 @@ theorem eq360 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
   · obtain ⟨m, rfl⟩ : ∃ m, N = m + 4 := ⟨N - 4, by omega⟩
     exact N15.eq360_ge4 ih
 
-/-! ## Equation (361) (Appendix E.5, decoding Equation (43)) -/
+/-! ## Equation (361) (Appendix E.5, decoding Equation (43))
 
-/-- (361): the decoding of `X_[0,3]X_[1,2]` is the box on wire `0` controlled
-by wire `1` (black) and the wires above (white), followed by the `XZ` on
-wire `1` controlled by the wires above (white). -/
-theorem eq361 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :
-    Derivable (theory N) (decW N (wordOf [Xx N 0 3 1 2]))
-      (drawn [mc N .box [0] (ctlOr (ctlAt 1 true) (colOn 2 N fun _ => false)),
-        mc N .xz [1] (colOn 2 N fun _ => false)]) := by
-  sorry
+(361), the decoding of `X_[0,3]X_[1,2]`, is `D.eq361` in `E/Eq361.lean`: its
+proof uses the Appendix E toolkit (`E/Rule31`), which imports this file. -/
 
 end QCert.RealCliffordCH.Sec8.D

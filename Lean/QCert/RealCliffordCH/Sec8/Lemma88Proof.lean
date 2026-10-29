@@ -11,6 +11,7 @@ Still open: (36), (37), (43)–(46).
 import QCert.RealCliffordCH.Sec8.Statement
 import QCert.RealCliffordCH.Sec8.E.Rule38
 import QCert.RealCliffordCH.Sec8.E.Rule31
+import QCert.RealCliffordCH.Sec8.E.Eq361
 
 namespace QCert.RealCliffordCH.Sec8
 
