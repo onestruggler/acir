@@ -639,3 +639,14 @@ wires drawn as dotted squares and the dashed ellipsis), so the chain must be
 transcribed by hand from the rendered pages (render at 200 dpi in halves;
 the wires bottom-up are `0, 1, 2, 3, 4`, the dashed segment the wires `5, …`).
 **(46)** is (147) with white controls, eight pages (269–277).
+
+`E/Rule45.lean` (commit 3e17ea84) states the decoded rule as `Core45 M`
+(`E1h45`, `E2h45`, `Bw45`, monoid order) and proves `dec45_of : Core45 M →`
+the case (45); `lemma_8_8`'s case `r45` is `E.dec45_of sorry`.  At `M = 0`
+`Core45` is (146) itself (`Small.eq146 0`), after rewriting the three gates
+by `placeG_shift_cons` (their box wire is idle on three wires: `mch 1 =
+shift ch`, `box 2 = shift cz`) — not done.  The decoded letters of (46),
+computed the same way (`dec_patt`): `H_[3,4]H_[2,5]` is `hg[0,2]` and
+`H_[3,2]H_[4,5]` is `hg[2,0]`, both black on `1`; `H_[7,6]H_[4,5]` is `hg[1,0]`
+(black on `2`), `(-1)_[2](-1)_[3]` the box on wire `0` black on `1`, white on
+`2`; every wire above `2` white.
