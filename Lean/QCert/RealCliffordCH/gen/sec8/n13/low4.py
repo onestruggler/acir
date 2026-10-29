@@ -54,12 +54,45 @@ def project():
     return P
 
 
+def conj_step(P, u, v):
+    """Steps carrying `u` to `v` when `v` is `u` with one token `t` replaced by
+    `[S j, t', S j]` (`t'` its relabeling), or the reverse; else None."""
+    S = P.solver([])
+    S.start(50)
+    for a, b, rev in [(u, v, False), (v, u, True)]:
+        if len(b) != len(a) + 2:
+            continue
+        for i in range(len(a)):
+            if a[:i] != b[:i] or a[i + 1:] != b[i + 3:]:
+                continue
+            sj = b[i]
+            if sj[0] != 's' or sj[1] != 'S' or b[i + 2] != sj:
+                continue
+            try:
+                st, t2 = S.conj_down(a[i], [sj[2]])
+            except solve2.Fail:
+                continue
+            if t2 != b[i + 1]:
+                continue
+            st = solve2.shift(st, i)
+            if rev:
+                st = S.reverse_steps(a, st)
+            ok, bad = S.verify(u, v, st)
+            if ok:
+                return st
+    return None
+
+
 def chain(P, name, ws, names=()):
     for i, (u, v) in enumerate(zip(ws, ws[1:])):
         assert tok.weq(4, u, v), (name, i)
     steps = []
     for i, (u, v) in enumerate(zip(ws, ws[1:])):
-        found = None
+        found = conj_step(P, u, v)
+        if found is not None:
+            log(f'  {name} step {i}: conjugation, {len(found)} steps')
+            steps += found
+            continue
         for ns in [[], list(names), None]:
             S = P.solver(ns)
             S.start(400)
@@ -178,12 +211,30 @@ def run342(P):
         P.derive_flip('171a', 3, '171af3')
     if '167f3' not in P.ctx.eqs:
         P.derive_flip('167', 3, '167f3')
+    if '164f2' not in P.ctx.eqs:
+        P.derive_flip('164', 2, '164f2')
+    S1 = ('s', 'S', 1)
+    DAp = G('hg', [0, 2], [(3, T)])
+    hg01w = G('hg', [0, 1], [(3, F), (2, T)])
+    Bin01 = G('box', [0], [(3, F), (2, T), (1, T)])
+    CH23 = ('s', 'K', 2)
+    CHX = P2(XL + XL + (('K', 0),) + XL + XL, [2, 3])
+    P01L = [('s', k, j) for k, j in PPL]
+    X3L = [('s', 'H', 3), ('s', 'Z', 3), ('s', 'H', 3)]
+    CH23wL = X3L + [CH23] + X3L
     chain(P, 'L342DA', [
-        [DA, B1], [CH13, B1], [CH13, P02, Bin, P02], [P02, CH13, Bin, P02], [P02, Bin, CH13, P02],
-        [P02, Bin, P02, CH13], [B1, CH13], [B1, DA]], names=['164'])
+        [DA, B1], [CH13, B1], [S1, CH23, S1, B1], [S1, CH23, S1, S1, hg01w, S1],
+        [S1, CH23, hg01w, S1],
+        [S1, CH23] + P01L + [Bin01] + P01L + [S1], [S1] + P01L + [CH23, Bin01] + P01L + [S1],
+        [S1] + P01L + [CHX, Bin01] + P01L + [S1], [S1] + P01L + [Bin01, CHX] + P01L + [S1],
+        [S1] + P01L + [Bin01, CH23] + P01L + [S1], [S1] + P01L + [Bin01] + P01L + [CH23, S1],
+        [S1, hg01w, CH23, S1], [S1, hg01w, S1, S1, CH23, S1], [B1, S1, CH23, S1], [B1, CH13],
+        [B1, DA]],
+        names=['164f2'])
     chain(P, 'L342DB', [
-        [A1, DB], [A1, CH23w], [P01, Ain, P01, CH23w], [P01, Ain, CH23w, P01],
-        [P01, CH23w, Ain, P01], [CH23w, P01, Ain, P01], [CH23w, A1], [DB, A1]], names=['164'])
+        [A1, DB], [A1, CH23w], P01L + [Ain] + P01L + CH23wL, P01L + [Ain] + CH23wL + P01L,
+        P01L + [Ain, CH23w] + P01L, P01L + [CH23w, Ain] + P01L, P01L + CH23wL + [Ain] + P01L,
+        CH23wL + P01L + [Ain] + P01L, [CH23w, A1], [DB, A1]], names=['164'])
     chain(P, 'L342DD', [[DA, DB], [CH13, DB], [CH13, CH23w], [CH23w, CH13], [DB, CH13],
                         [DB, DA]])
     chain(P, 'L342b11', [[A1, B1], [B1, A1]], names=['203'])
