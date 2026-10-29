@@ -5,8 +5,8 @@ from supp import frame_size
 
 
 def lt(a):
-    if a[0] == 'w': return '.om'
-    return {'H': '.H', 'S': '.S', 'Z': '.CZ'}[a[0]] + f' {a[1]}'
+    if a[0] == 'w': return 'Lt.om'
+    return {'H': 'Lt.H', 'S': 'Lt.S', 'Z': 'Lt.CZ'}[a[0]] + f' {a[1]}'
 
 def wrap_items(items, indent, width=92, first=0):
     out = []; line = ''
@@ -27,10 +27,10 @@ def steps_lean(st, indent=4):
     items = []
     for s in st:
         if s[0] == 'mv':
-            items.append(f'.mv {s[1]} {s[2]}')
+            items.append(f'Step.mv {s[1]} {s[2]}')
         else:
             _, e, pos, sh, rev = s
-            items.append(f'.rw {e} {pos} {sh} {"true" if rev else "false"}')
+            items.append(f'Step.rw {e} {pos} {sh} {"true" if rev else "false"}')
     return '[' + wrap_items(items, indent + 1) + ']'
 
 def localize(st):
@@ -142,10 +142,10 @@ guided by the steps of the supplement's proof.''',
 def box_expr(tok, k):
     """Lean expression (List Lt) for one supplement token in frame k."""
     name, args = tok
-    if name == 'H': return f'[.H {k-1-args[0]}]'
-    if name == 'S': return f'[.S {k-1-args[0]}]'
+    if name == 'H': return f'[Lt.H {k-1-args[0]}]'
+    if name == 'S': return f'[Lt.S {k-1-args[0]}]'
     if name == 'X': return f'bX {k-1-args[0]}'
-    if name == 'ZZ': return f'[.CZ {k-2-min(args)}]'
+    if name == 'ZZ': return f'[Lt.CZ {k-2-min(args)}]'
     if name in 'ACE':
         return f'b{name} {args[0]} {k-1-args[1]}'
     if name in 'BD':
@@ -164,7 +164,7 @@ def word_expr(toks, ph, k):
             if cur: parts.append('[' + ', '.join(cur) + ']'); cur = []
             parts.append(e)
     for _ in range(ph % 8):
-        cur.append('.om')
+        cur.append('Lt.om')
     if cur: parts.append('[' + ', '.join(cur) + ']')
     if not parts: return '[]'
     return ' ++ '.join(parts)

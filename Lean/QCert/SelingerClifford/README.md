@@ -116,3 +116,18 @@ repository): parse the supplement, convert its top-down wire numbering to
 ours, find each step's lemma instance modulo commutation, and print the
 steps.  `python gen/generate.py --check` reproduces them byte for byte
 (about ten minutes); `gen/README.md` says which script writes what.
+
+## Typechecking cost
+
+`Rules1`–`Rules5` and `Lemmas` spent about half their time elaborating
+the step lists and the statements: a dotted constructor with arguments
+is elaborated before its type is known when it is an element of a list
+literal of 64 or more elements (the longer `steps := [.mv …, .rw …]`
+lists) or an operand of `++` (`[.CZ 0] ++ bD 4 0`), and each such attempt
+is postponed and retried at about 0.1 s.  `gen/genlean.py` now writes
+them qualified (`Step.mv`, `Step.rw`, `Lt.H`, …), which took `Rules5`
+from 70 to 27 s and `Rules3` from 50 to 23 s in a lone run; what remains
+is the kernel's replay of the derivations (`by decide +kernel`, 16 s of
+`Rules5`).  The existing `Rules*.lean`/`Lemmas.lean` were transformed by
+the same substitution rather than regenerated (the generator needs the
+supplement's PDF); the generator produces the same text.
