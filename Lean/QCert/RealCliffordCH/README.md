@@ -177,7 +177,7 @@ that it uses; `QCert/Audit.lean` reports transitive axiom dependencies.
 
 | Declaration | Stands for |
 | --- | --- |
-| `Sec8/Lemma88Proof.lean`: `lemma_8_8` | Lemma 8.8 (Appendix E.5), given completeness on fewer wires: the cases of the rules (36), (37), (43)–(46); the other rules have proof terms, including (31), (38)–(40). |
+| `Sec8/Lemma88Proof.lean`: `lemma_8_8` | Lemma 8.8 (Appendix E.5), given completeness on fewer wires: the cases of the rules (36), (37), (43), (45), (46); the other rules have proof terms, including (31), (38)–(40) and (44) (`E/Rule44`: (361), (338), and the paper's (112), (360), (354), (346) with black controls coloured by (81); `gen/sec8/e/m44.py`). |
 | `Sec8/D/N13.lean`: `eq333`, `eq334`, `eq339`, `eq342`, `eq344`, `eq346`–`eq352` | Remaining interface statements of Lemmas D.12–D.13 (package (v)); each checked numerically at 3–6 wires. |
 
 The induction on the number of wires (`completeness_at`) and the
