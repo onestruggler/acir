@@ -9,9 +9,9 @@ in the conventions of `MC` (see `PLAN.md`): `mc N K tg c` is the
 multi-controlled gate of kind `K` with special wires `tg` (box wire; target;
 box wire then `H` wire) and controls `c`.  Every statement here was checked
 numerically against the definitions at `N = 3, …, 6` (scratch
-`r87/iface.py`). The proofs of the involution, merge, control permutation
-and lower-circuit commutation laws are connected below. The remaining
-open interface statement is (295).
+`r87/iface.py`). Every statement is proved, by cases on the width where
+needed: three and four wires in `N8/Low`, `MoreLow`, `ControlFour` and
+`Four295`, five wires on in `N8/IFive`.
 -/
 import QCert.RealCliffordCH.Sec8.D.Colour
 import QCert.RealCliffordCH.Sec8.D.N8.I277
@@ -22,6 +22,7 @@ import QCert.RealCliffordCH.Sec8.D.N8.Below
 import QCert.RealCliffordCH.Sec8.D.N8.MergeHg
 import QCert.RealCliffordCH.Sec8.D.N8.MoreLow
 import QCert.RealCliffordCH.Sec8.D.N8.ControlFour
+import QCert.RealCliffordCH.Sec8.D.N8.Four295
 import QCert.RealCliffordCH.Sec8.D.W4.B1
 
 namespace QCert.RealCliffordCH.Sec8.D
@@ -97,7 +98,10 @@ theorem eq295 (N : ℕ) (hN : 4 ≤ N) (ih : IH N) :
         mc N .zx [1] (ctlOr (ctlAt 0 true) (blackOn 2 4)),
         mc N .box [0] (ctlOr (ctlAt 1 true) (blackOn 4 N)),
         mc N .xz [1] (ctlOr (ctlAt 0 true) (blackOn 2 4))]) := by
-  sorry
+  rcases (by omega : N = 4 ∨ 5 ≤ N) with rfl | h5
+  · exact N8.eq295_4 ih
+  · obtain ⟨m, rfl⟩ : ∃ m, N = m + 5 := ⟨N - 5, by omega⟩
+    exact N8.eq295_5 m ih
 
 /-- (300): (269) with the factors rotated, `B W B V`. -/
 theorem eq300 (N : ℕ) (hN : 3 ≤ N) (ih : IH N) :

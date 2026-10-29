@@ -124,6 +124,17 @@ Formalized from the paper only.
   commute with it. These proofs use the stated induction hypothesis `IH`.
 * The fixed-width interfaces (160), (172)–(174), and (209) are connected to
   the kernel-checked runs of `D/W4/B1` and `B3`.
+* All interface statements of Lemmas D.8–D.11 (`Sec8/D/N8.lean`) are proved.
+  (295) on four wires (`D/N8/Four295`) follows the paper's proof with the
+  steps that use the fifth wire replaced by equations of D.3 at width four:
+  (293) from (269), (216), (217) and (291) under the swap of the wires 0, 1;
+  then (209), (218), (221)–(226), and the colours on wire 3 by (223), (224),
+  (240) relabelled, (290) under `X` on wire 3, and (208).
+* (148b) on three wires (`D/W3/E148b`), which the paper takes from Lemma D.3
+  (Corollary D.4), is derived from (117), (118), (123), (128), (136), (138),
+  (143), (148a), (15), (12), (f3) and completeness on two wires, in the
+  labelling where the doubly controlled `ZX` of D.2 is native, then
+  relabelled. Lemma D.2 at width 3, (117)–(148), has no `sorry`.
 * Equations (141)–(144) and (148a) on three wires, and (214), (215), and
   (221)–(226) on four wires have kernel-checked derivations. `W4/Expansion`
   supplies the prerequisite expansions (210)–(213); `W4/AvailFull` proves
@@ -162,9 +173,7 @@ that it uses; `QCert/Audit.lean` reports transitive axiom dependencies.
 | --- | --- |
 | `Sec8/Thm410Proof.lean`: `item_b` | Hypothesis (b) (`ItemB`: for each relation of Hadamard-Π's Figure 6 and each coset of Definition A.2, the two words of `τ**` are equal by Figure 8). |
 | `Sec8/Lemma88Proof.lean`: `lemma_8_8` | Lemma 8.8 (Appendix E.5), given completeness on fewer wires: the cases of the rules (31), (36), (37), (40), (43)–(46); the other rules have proof terms, including (38), (39). |
-| `Sec8/D/N8.lean`: `eq295` | Remaining interface statement of Lemmas D.8–D.11 (package (iv)). The case from five wires on is proved in `N8/IFive`; the four-wire case remains to be connected. |
 | `Sec8/D/N13.lean`: `eq333`, `eq334`, `eq337`–`eq339`, `eq342`, `eq344`, `eq346`–`eq352` | Remaining interface statements of Lemmas D.12–D.13 (package (v)); each checked numerically at 3–6 wires. |
-| `Sec8/D/W3.lean`: `d148b` | Lemma D.2 (and (148)) at width 3, from Figure 4 and completeness on two wires (package (i)); All of Lemma D.2, (117)–(147), and (148a) are proved. |
 | `Sec8/D/N15.lean`: `eq358`, `eq360`, `eq361` | Remaining statements of Lemmas D.14–D.15 and of Equation (361) of Appendix E.5 (package (vi)); each checked numerically at 2–6 wires for every colouring (`gen/sec8/e/iface_n15.py`). |
 
 The induction on the number of wires (`completeness_at`) and the
