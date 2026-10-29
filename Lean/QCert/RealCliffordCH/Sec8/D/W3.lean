@@ -1,5 +1,6 @@
 /- Appendix D.2, combining the primitive-word and token certificates. -/
 import QCert.RealCliffordCH.Sec8.D.W3.Tokens
+import QCert.RealCliffordCH.Sec8.D.W3.E148b
 
 namespace QCert.RealCliffordCH.Sec8.D
 
@@ -19,6 +20,6 @@ theorem d147 (ih : IH 3) : Derivable (theory 3) l147 r147 := by
   exact W3T.e147 ih
 
 theorem d148b (ih : IH 3) : Derivable (theory 3) l148b r148b := by
-  sorry
+  exact W3B.e148b ih
 
 end QCert.RealCliffordCH.Sec8.D
