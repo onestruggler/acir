@@ -774,3 +774,45 @@ three-wire relation available for `R` with `O`'s neighbours ((139), (140),
 is never reached — a derivation must use a relation with `H` on a control of
 the rotation, as the paper's proof of (139) (page 70) uses (114), (18),
 (111), (112), (132).
+
+### Package (vi), fifth session (`rcch-e`, 2026-10-29): rule (45)
+
+Proved and wired (commits 17af109f, acac8323): `lemma_8_8`'s case `r45` is
+`E.dec45_of (E.core45 M ih')`; Lemma 8.8 is open only at **(46)**.  Every
+fact was checked numerically on the circuits at `N = 4, 5, 6`
+(`gen/sec8/e/m45b.py`; the paper's chain itself, transcribed from the PDF's
+vector data, is valid diagram by diagram at `N = 6, 7`).
+
+* **Width 3** (`E/Core45.core45_zero`): (146) (`D.eq146`) with the gates
+  rewritten by `placeG_shift_cons` (their box wire is idle).
+* **Width ≥ 4** (`E/Core45.core45_pos`): not the paper's diagram-by-diagram
+  chain but its content regrouped as one identity of the quotient monoid
+  (`E/Core45Alg.alg45`, abstract, 14 involutions, 37 facts, 13 box
+  commutations).  With `T = a b a w b` (monoid order, `a = E1`, `b = E2`,
+  `w = Bw`), every letter an involution, the rule is `T T = 1`:
+  - `T = k V`, `V = a e a v e`, `k = B[0](1○2●3○)`: `w = k v` ((309)),
+    `b = f e` with `f = H[0,1](2○3●)` ((310)), `f` passes `a` ((344)), `w`,
+    `k` ((337)), `b` ((340)); `k` passes `a` ((338)), `b`, `f` ((337)), `w`.
+  - `V = P₀₁ X P₀₁`, `X = q h₁ z₀ h₀ z₀ p`: Definition 2.4 for `b`, `f`
+    (frame `[0,1]`), `a` (`[2,0]`), `h₀`, `h₁` (`[2,1]`); Klein (130);
+    (308) for `v`, `p`, `q`; merges (309) and box moves (274).
+  - `X X = 1`: `h₁` passes `z₀` ((339)) and `h₀` ((340)); `p`, `q` pass
+    `h₀`, `h₁`, `z₀` (boxes commute, (308)).
+  The paper's (246), (111), (313), (335)–(338) chain steps are not needed in
+  this form; the frame `[0,1]` for `e` replaces the paper's `[3,1]`.
+* **Tools** (`E/Core45Kit`): `ctlF s l` (special/idle wires `l`, colours the
+  bits of `s`), `frameFI`/`frameF` (a canonical gate coloured through a frame
+  is the framed gate, for any colours), `commF` and its instances
+  `comm337F`, `comm338F`, `comm339F`, `comm340F`, `comm344F`, `hgInvF`,
+  `hgFrameF` (coloured Definition 2.4 at any wires, from `N13.hg_box`),
+  `c308`/`c308F` (coloured (308)), `move274F`, `ppSymm12`.  In
+  `E/Core45Facts`: `ctlF16` (compare colourings on the local wires),
+  `setCtl_someF`/`setCtl_noneF`, `m45box` ((309) in `ctlF` form).  These
+  apply to any statement whose gates have full colourings on a few local
+  wires, which may help (46).
+* Dependencies: `eq339`, `eq344` at four wires (open in `N13.lean`, other
+  agents).  Builds: each file under a minute.
+* Pitfalls met: `rw` with a `setCtl_someF` whose `b` is left to `by decide`
+  matches the wrong factor — give `(b := …)`; facts touching wire `3` need
+  `1 ≤ M`; `show … from rfl` for `place2 2 0 ch = Circuit.pad 0 ch` failed in
+  this file (use `congrArg shift (pad_zero2 ch)`).

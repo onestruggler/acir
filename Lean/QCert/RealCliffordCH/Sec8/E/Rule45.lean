@@ -8,8 +8,7 @@ wire `2` (`E1`), `D(H_[0,3]H_[1,2])` the one on wire `1` with its box on wire
 `0` (`E2`) and `D((-1)_[0](-1)_[1])` the box on wire `0` (`Bw`), every other
 control white: the decoded rule is (146) with every wire above `2` a white
 control (`Core45`, `gen/sec8/e/m45.py`).  `dec45_of` reduces the rule to that
-statement; `Core45` itself is the open part of (45) (see `HANDOVER.md`,
-package (vi), fourth session).
+statement; `Core45` is proved in `Core45` (`core45`).
 -/
 import QCert.RealCliffordCH.Sec8.E.Rule3637
 import QCert.RealCliffordCH.Sec8.E.Rule39
