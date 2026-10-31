@@ -65,28 +65,28 @@ def r28 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.c16))
 def r29 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.c17))
 
 
-def r30 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i .K₀ (by decide)))
+def r30 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i Gen.K₀ (by decide)))
 
 
-def r31 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i .K₁ (by decide)))
+def r31 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i Gen.K₁ (by decide)))
 
 
-def r32 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i .K₂ (by decide)))
+def r32 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i Gen.K₂ (by decide)))
 
 
-def r33 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i .S₀ (by decide)))
+def r33 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i Gen.S₀ (by decide)))
 
 
-def r34 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i .S₁ (by decide)))
+def r34 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i Gen.S₁ (by decide)))
 
 
-def r35 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i .S₂ (by decide)))
+def r35 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i Gen.S₂ (by decide)))
 
 
-def r36 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i .CS₀₁ (by decide)))
+def r36 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i Gen.CS₀₁ (by decide)))
 
 
-def r37 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i .CS₁₂ (by decide)))
+def r37 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_i Gen.CS₁₂ (by decide)))
 
 
 def r38 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_loc .K .K 0 1 (by decide)))
@@ -135,2887 +135,2921 @@ def r53 : Rule Rel := Rule.ofDerivable _ _ (Derivable.of (Rel.comm_2_01 .S))
 
 
 def r76 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1, r0]
-    [.K₀, .K₀, .i]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1, r0]
+    [Gen.K₀, Gen.K₀, Gen.i]
     []
-    [(2, 100663297)] (by decide +kernel)
+    [(2, 12884901889)] (by decide +kernel)
 
 
 def r77 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r30, r76]
-    [.K₀, .i, .K₀]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r30, r76]
+    [Gen.K₀, Gen.i, Gen.K₀]
     []
-    [(2, 100671489)] (by decide +kernel)
+    [(2, 12884910081)] (by decide +kernel)
 
 
 def r78 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r2, r0]
-    [.K₁, .K₁, .i]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r2, r0]
+    [Gen.K₁, Gen.K₁, Gen.i]
     []
-    [(2, 100663297)] (by decide +kernel)
+    [(2, 12884901889)] (by decide +kernel)
 
 
 def r79 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r31, r78]
-    [.K₁, .i, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r31, r78]
+    [Gen.K₁, Gen.i, Gen.K₁]
     []
-    [(2, 100671489)] (by decide +kernel)
+    [(2, 12884910081)] (by decide +kernel)
 
 
 def r80 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r3, r0]
-    [.K₂, .K₂, .i]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r3, r0]
+    [Gen.K₂, Gen.K₂, Gen.i]
     []
-    [(2, 100663297)] (by decide +kernel)
+    [(2, 12884901889)] (by decide +kernel)
 
 
 def r81 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r32, r80]
-    [.K₂, .i, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r32, r80]
+    [Gen.K₂, Gen.i, Gen.K₂]
     []
-    [(2, 100671489)] (by decide +kernel)
+    [(2, 12884910081)] (by decide +kernel)
 
 
 def r82 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r25]
-    [.K₀, .CS₀₁, .CS₀₁, .K₀, .i, .K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .i, .K₀,
-    .CS₀₁, .CS₀₁, .K₀, .i]
-    [.K₂, .CS₁₂, .CS₁₂, .K₂, .i, .K₁, .CS₁₂, .CS₁₂, .K₁, .i, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .i, .K₂,
-    .CS₁₂, .CS₁₂, .K₂, .i]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r25]
+    [Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i]
+    [Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.i, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.i, Gen.CS₀₁,
+    Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.i, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.i]
     [(1, 1)] (by decide +kernel)
 
 
 def r83 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r26]
-    [.CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .i]
-    [.CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .i, .CS₀₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .i]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r26]
+    [Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i]
+    [Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.i, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.i]
     [(1, 1)] (by decide +kernel)
 
 
 def r84 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r27]
-    [.K₀, .CS₀₁, .CS₀₁, .K₀, .i, .K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁,
-    .i, .K₀, .CS₀₁, .CS₀₁, .K₀, .i]
-    [.K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .CS₁₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r27]
+    [Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i]
+    [Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁, Gen.i, Gen.CS₁₂, Gen.CS₁₂]
     [(1, 1)] (by decide +kernel)
 
 
-def r85 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
+def r85 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
 
 
-def r86 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
+def r86 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
 
 
-def r87 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .CS, .CS, .Kl, .i, .Kl, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
+def r87 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
 
 
-def r88 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .CS, .CS, .Ku, .i, .Ku, .CS, .CS, .Ku, .i])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
+def r88 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.i])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
 
 
-def r89 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .CS, .CS, .Kl, .i, .Kl, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
+def r89 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
 
 
-def r90 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .CS, .CS, .Ku, .i, .Ku, .CS, .CS, .Ku, .i])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
+def r90 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.i])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
 
 
-def r91 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl])) (by decide +kernel)))
+def r91 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r97 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .i])) (v := (FreeMonoid.ofList [.i, .Kl])) (by decide +kernel)))
+def r97 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r98 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .i])) (v := (FreeMonoid.ofList [.i, .Sl])) (by decide +kernel)))
+def r98 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r100 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl])) (by decide +kernel)))
+def r100 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r101 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r101 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r102 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r102 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r104 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r52]
-    [.CS₀₁, .CS₀₁, .K₂]
-    [.K₂, .CS₀₁, .CS₀₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r52]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
     [(2, 8192)] (by decide +kernel)
 
 
 def r105 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r53]
-    [.CS₀₁, .CS₀₁, .S₂]
-    [.S₂, .CS₀₁, .CS₀₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r53]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.S₂]
+    [Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
     [(2, 8192)] (by decide +kernel)
 
 
-def r106 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .i])) (v := (FreeMonoid.ofList [.Ku, .Ku])) (by decide +kernel)))
+def r106 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku])) (by decide +kernel)))
 
 
 def r107 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r91, r106]
-    [.K₂, .K₂]
-    [.K₀, .K₀]
-    [(2, 100663296)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r91, r106]
+    [Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀]
+    [(2, 12884901888)] (by decide +kernel)
 
 
 def r108 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r100, r107]
-    [.S₂, .K₂, .K₂]
-    [.K₀, .K₀, .S₂]
-    [(2, 100663297)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r100, r107]
+    [Gen.S₂, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.S₂]
+    [(2, 12884901889)] (by decide +kernel)
 
 
 def r109 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39]
-    [.K₂, .K₀]
-    [.K₀, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39]
+    [Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.K₂]
     [(1, 0)] (by decide +kernel)
 
 
 def r110 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42]
-    [.S₂, .K₀]
-    [.K₀, .S₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42]
+    [Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.S₂]
     [(1, 0)] (by decide +kernel)
 
 
 def r111 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r40]
-    [.K₂, .K₁]
-    [.K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r40]
+    [Gen.K₂, Gen.K₁]
+    [Gen.K₁, Gen.K₂]
     [(1, 0)] (by decide +kernel)
 
 
 def r112 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43]
-    [.S₂, .K₁]
-    [.K₁, .S₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43]
+    [Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.S₂]
     [(1, 0)] (by decide +kernel)
 
 
 def r113 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45]
-    [.K₂, .S₀]
-    [.S₀, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45]
+    [Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.K₂]
     [(1, 0)] (by decide +kernel)
 
 
 def r114 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48]
-    [.S₂, .S₀]
-    [.S₀, .S₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48]
+    [Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.S₂]
     [(1, 0)] (by decide +kernel)
 
 
 def r115 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46]
-    [.K₂, .S₁]
-    [.S₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46]
+    [Gen.K₂, Gen.S₁]
+    [Gen.S₁, Gen.K₂]
     [(1, 0)] (by decide +kernel)
 
 
 def r116 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49]
-    [.S₂, .S₁]
-    [.S₁, .S₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49]
+    [Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.S₂]
     [(1, 0)] (by decide +kernel)
 
 
 def r117 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104]
-    [.K₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104]
+    [Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
     [(1, 0)] (by decide +kernel)
 
 
 def r118 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105]
-    [.S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .S₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105]
+    [Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.S₂]
     [(1, 0)] (by decide +kernel)
 
 
 def r119 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6]
-    [.K₂, .S₂, .S₂, .S₂, .S₂]
-    [.K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [Gen.K₂]
     [(1, 8193)] (by decide +kernel)
 
 
 def r120 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r97]
-    [.K₂, .S₂, .i]
-    [.i, .K₂, .S₂]
-    [(2, 100671489)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r97]
+    [Gen.K₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.K₂, Gen.S₂]
+    [(2, 12884910081)] (by decide +kernel)
 
 
 def r121 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r100, r107]
-    [.K₂, .S₂, .K₂, .K₂]
-    [.K₀, .K₀, .K₂, .S₂]
-    [(2, 100671489)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r100, r107]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.K₂, Gen.S₂]
+    [(2, 12884910081)] (by decide +kernel)
 
 
 def r122 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r101, r107]
-    [.K₂, .S₂, .K₂, .S₂, .K₂]
-    [.K₀, .K₀, .S₂, .S₂, .S₂]
-    [(2, 100671489)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r101, r107]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884910081)] (by decide +kernel)
 
 
 def r123 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r102, r107]
-    [.K₂, .S₂, .S₂, .S₂, .K₂]
-    [.K₀, .K₀, .S₂, .K₂, .S₂]
-    [(2, 100671489)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r102, r107]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884910081)] (by decide +kernel)
 
 
 def r124 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r109]
-    [.K₂, .S₂, .K₀]
-    [.K₀, .K₂, .S₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r109]
+    [Gen.K₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.K₂, Gen.S₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r125 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r111]
-    [.K₂, .S₂, .K₁]
-    [.K₁, .K₂, .S₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r111]
+    [Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.K₂, Gen.S₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r126 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r113]
-    [.K₂, .S₂, .S₀]
-    [.S₀, .K₂, .S₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r113]
+    [Gen.K₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.K₂, Gen.S₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r127 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r115]
-    [.K₂, .S₂, .S₁]
-    [.S₁, .K₂, .S₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r115]
+    [Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.K₂, Gen.S₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r128 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r117]
-    [.K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r117]
+    [Gen.K₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r129 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r98]
-    [.S₂, .K₂, .i]
-    [.i, .S₂, .K₂]
-    [(2, 100671489)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r98]
+    [Gen.S₂, Gen.K₂, Gen.i]
+    [Gen.i, Gen.S₂, Gen.K₂]
+    [(2, 12884910081)] (by decide +kernel)
 
 
 def r130 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98]
-    [.S₂, .S₂, .i]
-    [.i, .S₂, .S₂]
-    [(2, 33562625)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98]
+    [Gen.S₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.S₂, Gen.S₂]
+    [(2, 4294975489)] (by decide +kernel)
 
 
 def r131 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r100, r108]
-    [.S₂, .S₂, .K₂, .K₂]
-    [.K₀, .K₀, .S₂, .S₂]
-    [(2, 100671489)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r100, r108]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.S₂, Gen.S₂]
+    [(2, 12884910081)] (by decide +kernel)
 
 
 def r132 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r101]
-    [.S₂, .S₂, .K₂, .S₂, .K₂]
-    [.S₂, .K₂, .S₂, .S₂, .S₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r101]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.K₂]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
     [(1, 8193)] (by decide +kernel)
 
 
 def r133 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r110]
-    [.S₂, .K₂, .K₀]
-    [.K₀, .S₂, .K₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r110]
+    [Gen.S₂, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.S₂, Gen.K₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r134 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r110]
-    [.S₂, .S₂, .K₀]
-    [.K₀, .S₂, .S₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r110]
+    [Gen.S₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.S₂, Gen.S₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r135 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r40, r112]
-    [.S₂, .K₂, .K₁]
-    [.K₁, .S₂, .K₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r40, r112]
+    [Gen.S₂, Gen.K₂, Gen.K₁]
+    [Gen.K₁, Gen.S₂, Gen.K₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r136 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r112]
-    [.S₂, .S₂, .K₁]
-    [.K₁, .S₂, .S₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r112]
+    [Gen.S₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.S₂, Gen.S₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r137 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r114]
-    [.S₂, .K₂, .S₀]
-    [.S₀, .S₂, .K₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r114]
+    [Gen.S₂, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.S₂, Gen.K₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r138 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r114]
-    [.S₂, .S₂, .S₀]
-    [.S₀, .S₂, .S₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r114]
+    [Gen.S₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.S₂, Gen.S₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r139 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r116]
-    [.S₂, .K₂, .S₁]
-    [.S₁, .S₂, .K₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r116]
+    [Gen.S₂, Gen.K₂, Gen.S₁]
+    [Gen.S₁, Gen.S₂, Gen.K₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r140 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r116]
-    [.S₂, .S₂, .S₁]
-    [.S₁, .S₂, .S₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r116]
+    [Gen.S₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.S₂, Gen.S₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r141 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r118]
-    [.S₂, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .S₂, .K₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r118]
+    [Gen.S₂, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.K₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r142 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r118]
-    [.S₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .S₂, .S₂]
-    [(2, 100671488)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r118]
+    [Gen.S₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂]
+    [(2, 12884910080)] (by decide +kernel)
 
 
 def r143 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r120]
-    [.K₂, .S₂, .K₂, .i]
-    [.i, .K₂, .S₂, .K₂]
-    [(2, 100679681)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r120]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.i]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918273)] (by decide +kernel)
 
 
 def r144 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r120]
-    [.K₂, .S₂, .S₂, .i]
-    [.i, .K₂, .S₂, .S₂]
-    [(2, 100679681)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r120]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918273)] (by decide +kernel)
 
 
 def r145 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r100, r121]
-    [.K₂, .S₂, .S₂, .K₂, .K₂]
-    [.K₀, .K₀, .K₂, .S₂, .S₂]
-    [(2, 100679681)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r100, r121]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918273)] (by decide +kernel)
 
 
 def r146 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r101]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .K₂]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .S₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r101]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.K₂]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
     [(1, 16385)] (by decide +kernel)
 
 
 def r147 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r124]
-    [.K₂, .S₂, .K₂, .K₀]
-    [.K₀, .K₂, .S₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r124]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.K₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r148 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r124]
-    [.K₂, .S₂, .S₂, .K₀]
-    [.K₀, .K₂, .S₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r124]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r149 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r40, r125]
-    [.K₂, .S₂, .K₂, .K₁]
-    [.K₁, .K₂, .S₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r40, r125]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.K₁]
+    [Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r150 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r125]
-    [.K₂, .S₂, .S₂, .K₁]
-    [.K₁, .K₂, .S₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r125]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r151 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r126]
-    [.K₂, .S₂, .K₂, .S₀]
-    [.S₀, .K₂, .S₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r126]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.K₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r152 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r126]
-    [.K₂, .S₂, .S₂, .S₀]
-    [.S₀, .K₂, .S₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r126]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r153 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r127]
-    [.K₂, .S₂, .K₂, .S₁]
-    [.S₁, .K₂, .S₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r127]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₁]
+    [Gen.S₁, Gen.K₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r154 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r127]
-    [.K₂, .S₂, .S₂, .S₁]
-    [.S₁, .K₂, .S₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r127]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r155 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r128]
-    [.K₂, .S₂, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .K₂, .S₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r128]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r156 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r128]
-    [.K₂, .S₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .K₂, .S₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r128]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r157 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6]
-    [.S₂, .K₂, .S₂, .S₂, .S₂, .S₂]
-    [.S₂, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [Gen.S₂, Gen.K₂]
     [(1, 16385)] (by decide +kernel)
 
 
 def r158 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r129]
-    [.S₂, .K₂, .S₂, .i]
-    [.i, .S₂, .K₂, .S₂]
-    [(2, 100679681)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r129]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884918273)] (by decide +kernel)
 
 
 def r159 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r102, r108]
-    [.S₂, .K₂, .S₂, .S₂, .S₂, .K₂]
-    [.K₀, .K₀, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100679681)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r102, r108]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884918273)] (by decide +kernel)
 
 
 def r160 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r133]
-    [.S₂, .K₂, .S₂, .K₀]
-    [.K₀, .S₂, .K₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r133]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r161 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r135]
-    [.S₂, .K₂, .S₂, .K₁]
-    [.K₁, .S₂, .K₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r135]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r162 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r137]
-    [.S₂, .K₂, .S₂, .S₀]
-    [.S₀, .S₂, .K₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r137]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r163 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r139]
-    [.S₂, .K₂, .S₂, .S₁]
-    [.S₁, .S₂, .K₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r139]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r164 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r141]
-    [.S₂, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .S₂, .K₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r141]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r165 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r130]
-    [.S₂, .S₂, .K₂, .i]
-    [.i, .S₂, .S₂, .K₂]
-    [(2, 100679681)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r130]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.i]
+    [Gen.i, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918273)] (by decide +kernel)
 
 
 def r166 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r130]
-    [.S₂, .S₂, .S₂, .i]
-    [.i, .S₂, .S₂, .S₂]
-    [(2, 100679681)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r130]
+    [Gen.S₂, Gen.S₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918273)] (by decide +kernel)
 
 
 def r167 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r101, r102]
-    [.S₂, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r101, r102]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r168 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r134]
-    [.S₂, .S₂, .K₂, .K₀]
-    [.K₀, .S₂, .S₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r134]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r169 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r134]
-    [.S₂, .S₂, .S₂, .K₀]
-    [.K₀, .S₂, .S₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r134]
+    [Gen.S₂, Gen.S₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r170 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r40, r136]
-    [.S₂, .S₂, .K₂, .K₁]
-    [.K₁, .S₂, .S₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r40, r136]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.K₁]
+    [Gen.K₁, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r171 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r136]
-    [.S₂, .S₂, .S₂, .K₁]
-    [.K₁, .S₂, .S₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r136]
+    [Gen.S₂, Gen.S₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r172 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r138]
-    [.S₂, .S₂, .K₂, .S₀]
-    [.S₀, .S₂, .S₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r138]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r173 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r138]
-    [.S₂, .S₂, .S₂, .S₀]
-    [.S₀, .S₂, .S₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r138]
+    [Gen.S₂, Gen.S₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r174 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r140]
-    [.S₂, .S₂, .K₂, .S₁]
-    [.S₁, .S₂, .S₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r140]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₁]
+    [Gen.S₁, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r175 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r140]
-    [.S₂, .S₂, .S₂, .S₁]
-    [.S₁, .S₂, .S₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r140]
+    [Gen.S₂, Gen.S₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r176 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r142]
-    [.S₂, .S₂, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .S₂, .S₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r142]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r177 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r142]
-    [.S₂, .S₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .S₂, .S₂, .S₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r142]
+    [Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r178 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .S₂, .S₂]
-    [.K₂, .S₂, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [Gen.K₂, Gen.S₂, Gen.K₂]
     [(1, 24577)] (by decide +kernel)
 
 
 def r179 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r143]
-    [.K₂, .S₂, .K₂, .S₂, .i]
-    [.i, .K₂, .S₂, .K₂, .S₂]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r143]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r180 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r102, r121]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .S₂, .K₂]
-    [.K₀, .K₀, .K₂, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r102, r121]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r181 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r147]
-    [.K₂, .S₂, .K₂, .S₂, .K₀]
-    [.K₀, .K₂, .S₂, .K₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r147]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r182 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r149]
-    [.K₂, .S₂, .K₂, .S₂, .K₁]
-    [.K₁, .K₂, .S₂, .K₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r149]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r183 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r151]
-    [.K₂, .S₂, .K₂, .S₂, .S₀]
-    [.S₀, .K₂, .S₂, .K₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r151]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r184 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r153]
-    [.K₂, .S₂, .K₂, .S₂, .S₁]
-    [.S₁, .K₂, .S₂, .K₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r153]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r185 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r155]
-    [.K₂, .S₂, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .K₂, .S₂, .K₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r155]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r186 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r144]
-    [.K₂, .S₂, .S₂, .K₂, .i]
-    [.i, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r144]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.i]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r187 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r144]
-    [.K₂, .S₂, .S₂, .S₂, .i]
-    [.i, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r144]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r188 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r101, r123]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [.K₀, .K₀, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r101, r123]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [Gen.K₀, Gen.K₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r189 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r148]
-    [.K₂, .S₂, .S₂, .K₂, .K₀]
-    [.K₀, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r148]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r190 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r148]
-    [.K₂, .S₂, .S₂, .S₂, .K₀]
-    [.K₀, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r148]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r191 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r40, r150]
-    [.K₂, .S₂, .S₂, .K₂, .K₁]
-    [.K₁, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r40, r150]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.K₁]
+    [Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r192 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r150]
-    [.K₂, .S₂, .S₂, .S₂, .K₁]
-    [.K₁, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r150]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r193 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r152]
-    [.K₂, .S₂, .S₂, .K₂, .S₀]
-    [.S₀, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r152]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r194 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r152]
-    [.K₂, .S₂, .S₂, .S₂, .S₀]
-    [.S₀, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r152]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r195 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r154]
-    [.K₂, .S₂, .S₂, .K₂, .S₁]
-    [.S₁, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r154]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₁]
+    [Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r196 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r154]
-    [.K₂, .S₂, .S₂, .S₂, .S₁]
-    [.S₁, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r154]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r197 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r156]
-    [.K₂, .S₂, .S₂, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r156]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r198 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r156]
-    [.K₂, .S₂, .S₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r156]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r199 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r158]
-    [.S₂, .K₂, .S₂, .S₂, .i]
-    [.i, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r158]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r200 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r100, r101, r123]
-    [.S₂, .K₂, .S₂, .S₂, .K₂, .K₂]
-    [.K₀, .K₀, .S₂, .K₂, .S₂, .S₂]
-    [(3, 5629499634900993)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r100, r101, r123]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(3, 92233720381432684545)] (by decide +kernel)
 
 
-def r201 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .i, .Ku, .i])) (v := (FreeMonoid.ofList [.i])) (by decide +kernel)))
+def r201 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i])) (by decide +kernel)))
 
 
 def r202 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r80, r101, r119, r77, r145, r201]
-    [.S₂, .K₂, .S₂, .S₂, .K₂, .S₂]
-    [.i, .K₂, .S₂, .S₂, .K₂]
-    [(9, 17679457085653851494475811774461182021144975516086757283119104)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r80, r101, r119, r77, r145, r201]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(9, 1273714748484503080449047561175595295728879948094370858459619767758624361857024)] (by decide +kernel)
 
 
 def r203 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r160]
-    [.S₂, .K₂, .S₂, .S₂, .K₀]
-    [.K₀, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r160]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r204 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r161]
-    [.S₂, .K₂, .S₂, .S₂, .K₁]
-    [.K₁, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r161]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r205 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r162]
-    [.S₂, .K₂, .S₂, .S₂, .S₀]
-    [.S₀, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r162]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r206 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r163]
-    [.S₂, .K₂, .S₂, .S₂, .S₁]
-    [.S₁, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r163]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r207 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r164]
-    [.S₂, .K₂, .S₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r164]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r208 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r167, r6]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .K₂, .S₂]
-    [.S₂, .S₂, .K₂]
-    [(2, 824734384128)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r167, r6]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 105566001168384)] (by decide +kernel)
 
 
 def r209 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r165]
-    [.S₂, .S₂, .K₂, .S₂, .i]
-    [.i, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r165]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r210 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r167, r102, r131]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .K₂, .K₂]
-    [.K₀, .K₀, .K₂, .S₂, .K₂, .S₂, .S₂]
-    [(4, 619083356443909333203288064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r167, r102, r131]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(4, 1298311899121341933971339263082496)] (by decide +kernel)
 
 
 def r211 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r168]
-    [.S₂, .S₂, .K₂, .S₂, .K₀]
-    [.K₀, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r168]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r212 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r170]
-    [.S₂, .S₂, .K₂, .S₂, .K₁]
-    [.K₁, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r170]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r213 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r172]
-    [.S₂, .S₂, .K₂, .S₂, .S₀]
-    [.S₀, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r172]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r214 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r174]
-    [.S₂, .S₂, .K₂, .S₂, .S₁]
-    [.S₁, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r174]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r215 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r176]
-    [.S₂, .S₂, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r176]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r216 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r179]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .i]
-    [.i, .K₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r179]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934657)] (by decide +kernel)
 
 
 def r217 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r181]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .K₀]
-    [.K₀, .K₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r181]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r218 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r182]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .K₁]
-    [.K₁, .K₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r182]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r219 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r183]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .S₀]
-    [.S₀, .K₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r183]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r220 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r184]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .S₁]
-    [.S₁, .K₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r184]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r221 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r185]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .K₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r185]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r222 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r186]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .i]
-    [.i, .K₂, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r186]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884934657)] (by decide +kernel)
 
 
 def r223 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r189]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .K₀]
-    [.K₀, .K₂, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r189]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r224 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r191]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .K₁]
-    [.K₁, .K₂, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r191]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r225 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r193]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .S₀]
-    [.S₀, .K₂, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r193]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r226 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r195]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .S₁]
-    [.S₁, .K₂, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r195]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r227 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r197]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r197]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r228 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r199]
-    [.S₂, .K₂, .S₂, .S₂, .K₂, .i]
-    [.i, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r199]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.i]
+    [Gen.i, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884934657)] (by decide +kernel)
 
 
 def r229 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r199]
-    [.S₂, .K₂, .S₂, .S₂, .S₂, .i]
-    [.i, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r199]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934657)] (by decide +kernel)
 
 
-def r230 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .i, .Ku, .i, .i])) (v := (FreeMonoid.ofList [.i, .i])) (by decide +kernel)))
+def r230 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.i, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i])) (by decide +kernel)))
 
 
 def r231 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r159, r101, r202, r230]
-    [.S₂, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [.i, .i, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(6, 382859210036954320625056303640890834944)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r159, r101, r202, r230]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [Gen.i, Gen.i, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(6, 13153525888732707290284303458448059337401322962944)] (by decide +kernel)
 
 
 def r232 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r203]
-    [.S₂, .K₂, .S₂, .S₂, .K₂, .K₀]
-    [.K₀, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r203]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r233 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r203]
-    [.S₂, .K₂, .S₂, .S₂, .S₂, .K₀]
-    [.K₀, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r203]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r234 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r40, r204]
-    [.S₂, .K₂, .S₂, .S₂, .K₂, .K₁]
-    [.K₁, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r40, r204]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.K₁]
+    [Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r235 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r204]
-    [.S₂, .K₂, .S₂, .S₂, .S₂, .K₁]
-    [.K₁, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r204]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r236 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r205]
-    [.S₂, .K₂, .S₂, .S₂, .K₂, .S₀]
-    [.S₀, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r205]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r237 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r205]
-    [.S₂, .K₂, .S₂, .S₂, .S₂, .S₀]
-    [.S₀, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r205]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r238 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r206]
-    [.S₂, .K₂, .S₂, .S₂, .K₂, .S₁]
-    [.S₁, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r206]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₁]
+    [Gen.S₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r239 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r206]
-    [.S₂, .K₂, .S₂, .S₂, .S₂, .S₁]
-    [.S₁, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r206]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r240 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r207]
-    [.S₂, .K₂, .S₂, .S₂, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r207]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r241 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r207]
-    [.S₂, .K₂, .S₂, .S₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r207]
+    [Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r242 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r209]
-    [.S₂, .S₂, .K₂, .S₂, .S₂, .i]
-    [.i, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r209]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934657)] (by decide +kernel)
 
 
-def r243 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .i, .i, .i, .i, .Ku, .Ku])) (v := (FreeMonoid.ofList [.i])) (by decide +kernel)))
+def r243 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.i, Two.Gen2.i, Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i])) (by decide +kernel)))
 
 
 def r244 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r0, r231, r100, r132, r159, r243]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [.i, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(7, 15701815697507900162568094611192367396346134528)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r0, r231, r100, r132, r159, r243]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [Gen.i, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(7, 69048190938135497954652927423815532026184881588458179526656)] (by decide +kernel)
 
 
 def r246 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r212]
-    [.S₂, .S₂, .K₂, .S₂, .S₂, .K₁]
-    [.K₁, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r212]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r247 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r213]
-    [.S₂, .S₂, .K₂, .S₂, .S₂, .S₀]
-    [.S₀, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r213]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r248 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r214]
-    [.S₂, .S₂, .K₂, .S₂, .S₂, .S₁]
-    [.S₁, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r214]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r249 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r215]
-    [.S₂, .S₂, .K₂, .S₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r215]
+    [Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r250 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r216]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .K₂, .i]
-    [.i, .K₂, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r216]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.i]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r251 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r216]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .S₂, .i]
-    [.i, .K₂, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r216]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r252 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r217]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .K₂, .K₀]
-    [.K₀, .K₂, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r217]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r253 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r217]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .S₂, .K₀]
-    [.K₀, .K₂, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r217]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r254 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r40, r218]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .K₂, .K₁]
-    [.K₁, .K₂, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r40, r218]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.K₁]
+    [Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r255 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r218]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .S₂, .K₁]
-    [.K₁, .K₂, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r218]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r256 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r219]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .K₂, .S₀]
-    [.S₀, .K₂, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r219]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r257 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r219]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .S₂, .S₀]
-    [.S₀, .K₂, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r219]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r258 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r220]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .K₂, .S₁]
-    [.S₁, .K₂, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r220]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₁]
+    [Gen.S₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r259 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r220]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .S₂, .S₁]
-    [.S₁, .K₂, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r220]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r260 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r221]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .K₂, .S₂, .K₂, .S₂, .S₂, .K₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r221]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r261 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r221]
-    [.K₂, .S₂, .K₂, .S₂, .S₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .K₂, .S₂, .K₂, .S₂, .S₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r221]
+    [Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r262 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r222]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .i]
-    [.i, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r222]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r263 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r223]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .K₀]
-    [.K₀, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r223]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r264 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r43, r224]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .K₁]
-    [.K₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r43, r224]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r265 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r225]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .S₀]
-    [.S₀, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r225]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r266 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r49, r226]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .S₁]
-    [.S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r49, r226]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₁]
+    [Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r267 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r227]
-    [.K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r227]
+    [Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
-def r268 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl])) (by decide +kernel)))
+def r268 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r269 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i])) (by decide +kernel)))
+def r269 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i])) (by decide +kernel)))
 
 
-def r274 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl])) (v := (FreeMonoid.ofList [.Ku, .Ku])) (by decide +kernel)))
+def r274 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r276 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .i])) (v := (FreeMonoid.ofList [.i, .Kl])) (by decide +kernel)))
+def r276 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r277 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .i])) (v := (FreeMonoid.ofList [.i, .Sl])) (by decide +kernel)))
+def r277 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r278 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .i])) (v := (FreeMonoid.ofList [.i, .CS, .CS])) (by decide +kernel)))
+def r278 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r279 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Su, .CS, .CS])) (by decide +kernel)))
+def r279 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r280 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Sl, .CS, .CS])) (by decide +kernel)))
+def r280 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r281 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Kl])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
+def r281 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
 
 
-def r282 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl])) (by decide +kernel)))
+def r282 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r283 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Ku, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Ku])) (by decide +kernel)))
+def r283 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r284 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Ku])) (v := (FreeMonoid.ofList [.Ku, .Ku, .CS, .CS])) (by decide +kernel)))
+def r284 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r285 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Sl])) (v := (FreeMonoid.ofList [.Sl, .CS, .CS, .Ku])) (by decide +kernel)))
+def r285 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r286 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r286 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r287 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r287 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r288 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r288 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r289 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Su, .Sl])) (v := (FreeMonoid.ofList [.Sl, .CS, .CS, .Ku, .Su])) (by decide +kernel)))
+def r289 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r290 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Ku, .CS, .CS, .Ku, .CS, .CS])) (v := (FreeMonoid.ofList [.Ku, .Sl, .CS, .CS, .Ku, .Su])) (by decide +kernel)))
+def r290 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r291 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r291 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r292 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Su, .Ku, .Su])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .Ku])) (by decide +kernel)))
+def r292 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r293 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Su, .Ku, .Sl])) (v := (FreeMonoid.ofList [.Sl, .CS, .CS, .Ku, .Su, .Ku])) (by decide +kernel)))
+def r293 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r294 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Su, .Ku, .CS, .CS])) (v := (FreeMonoid.ofList [.Ku, .Su, .Sl, .CS, .CS, .Ku])) (by decide +kernel)))
+def r294 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r295 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Su, .Su, .Su])) (v := (FreeMonoid.ofList [.Su, .CS, .CS, .Ku, .Su, .Ku])) (by decide +kernel)))
+def r295 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r296 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Su, .Su, .Sl])) (v := (FreeMonoid.ofList [.Sl, .CS, .CS, .Ku, .Su, .Su])) (by decide +kernel)))
+def r296 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r297 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .CS, .CS, .Ku, .Su])) (v := (FreeMonoid.ofList [.Su, .Ku, .Sl, .CS, .CS, .Ku])) (by decide +kernel)))
+def r297 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r298 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .CS, .CS, .Ku, .CS, .CS])) (v := (FreeMonoid.ofList [.Ku, .Sl, .Sl, .CS, .CS, .Ku])) (by decide +kernel)))
+def r298 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r299 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r299 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r300 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .Sl, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r300 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r301 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Sl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r301 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r302 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Su, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r302 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r303 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r303 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 1 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r304 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .Ku, .Ku])) (v := (FreeMonoid.ofList [.i, .i])) (by decide +kernel)))
+def r304 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i])) (by decide +kernel)))
 
 
-def r309 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl])) (v := (FreeMonoid.ofList [.Ku, .Ku])) (by decide +kernel)))
+def r309 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r311 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .i])) (v := (FreeMonoid.ofList [.i, .Ku])) (by decide +kernel)))
+def r311 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r312 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Ku])) (v := (FreeMonoid.ofList [.Ku, .Kl])) (by decide +kernel)))
+def r312 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r313 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .i])) (v := (FreeMonoid.ofList [.i, .Su])) (by decide +kernel)))
+def r313 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r314 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Ku])) (v := (FreeMonoid.ofList [.Ku, .Sl])) (by decide +kernel)))
+def r314 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r315 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Su])) (v := (FreeMonoid.ofList [.Su, .Sl])) (by decide +kernel)))
+def r315 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r316 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .i])) (v := (FreeMonoid.ofList [.i, .CS, .CS])) (by decide +kernel)))
+def r316 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r317 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Su, .CS, .CS])) (by decide +kernel)))
+def r317 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r318 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Sl, .CS, .CS])) (by decide +kernel)))
+def r318 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r319 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Ku, .Ku])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
+def r319 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [])) (by decide +kernel)))
 
 
-def r320 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Ku, .Ku])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Su])) (by decide +kernel)))
+def r320 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r321 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Ku, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Ku])) (by decide +kernel)))
+def r321 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r322 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.Su, .Sl, .Kl])) (by decide +kernel)))
+def r322 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r323 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Ku])) (v := (FreeMonoid.ofList [.Ku, .Ku, .CS, .CS])) (by decide +kernel)))
+def r323 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r324 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Sl])) (v := (FreeMonoid.ofList [.Sl, .CS, .CS, .Ku])) (by decide +kernel)))
+def r324 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r325 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r325 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r326 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Ku, .Su, .Ku])) (v := (FreeMonoid.ofList [.Ku, .Su, .Su, .Su])) (by decide +kernel)))
+def r326 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r327 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .Ku])) (v := (FreeMonoid.ofList [.Ku, .Su, .Ku, .Su])) (by decide +kernel)))
+def r327 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r328 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Su, .Sl])) (v := (FreeMonoid.ofList [.Sl, .CS, .CS, .Ku, .Su])) (by decide +kernel)))
+def r328 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r329 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Ku, .CS, .CS, .Ku, .CS, .CS])) (v := (FreeMonoid.ofList [.Ku, .Sl, .CS, .CS, .Ku, .Su])) (by decide +kernel)))
+def r329 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r330 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r330 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r331 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Su, .Ku, .Su])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .Ku])) (by decide +kernel)))
+def r331 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r332 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Su, .Ku, .Sl])) (v := (FreeMonoid.ofList [.Sl, .CS, .CS, .Ku, .Su, .Ku])) (by decide +kernel)))
+def r332 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r333 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Su, .Ku, .CS, .CS])) (v := (FreeMonoid.ofList [.Ku, .Su, .Sl, .CS, .CS, .Ku])) (by decide +kernel)))
+def r333 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r335 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .Su, .Su, .Sl])) (v := (FreeMonoid.ofList [.Sl, .CS, .CS, .Ku, .Su, .Su])) (by decide +kernel)))
+def r335 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r336 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .CS, .CS, .Ku, .Su])) (v := (FreeMonoid.ofList [.Su, .Ku, .Sl, .CS, .CS, .Ku])) (by decide +kernel)))
+def r336 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r337 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Ku, .CS, .CS, .Ku, .CS, .CS])) (v := (FreeMonoid.ofList [.Ku, .Sl, .Sl, .CS, .CS, .Ku])) (by decide +kernel)))
+def r337 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r338 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r338 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r339 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .Sl, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r339 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r340 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Sl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r340 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r341 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Su, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r341 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r342 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r342 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
 def r343 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r50]
-    [.K₀, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₀]
-    [(2, 274911461377)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r50]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [(2, 35188667056129)] (by decide +kernel)
 
 
 def r344 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r51]
-    [.S₀, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .S₀]
-    [(2, 274911461377)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r51]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.S₀]
+    [(2, 35188667056129)] (by decide +kernel)
 
 
 def r345 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r24]
-    [.CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
-    [(4, 309522807201077999536447489)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r24]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(4, 649116335781617619551640883306497)] (by decide +kernel)
 
 
 def r346 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r27]
-    [.K₀, .CS₀₁, .CS₀₁, .K₀, .i, .K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁,
-    .i, .K₀, .CS₀₁, .CS₀₁, .K₀, .i]
-    [.K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .CS₁₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r27]
+    [Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i]
+    [Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁, Gen.i, Gen.CS₁₂, Gen.CS₁₂]
     [(1, 1)] (by decide +kernel)
 
 
 def r347 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r346]
-    [.K₀, .CS₀₁, .CS₀₁, .K₀, .i, .K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁,
-    .i, .K₀, .CS₀₁, .CS₀₁, .K₀, .i]
-    [.K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .CS₁₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r346]
+    [Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i]
+    [Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁, Gen.i, Gen.CS₁₂, Gen.CS₁₂]
     [(1, 1)] (by decide +kernel)
 
 
 def r348 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r87, r88, r82, r89, r90]
-    [.K₀, .CS₀₁, .CS₀₁, .K₀, .i, .K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁,
-    .i, .K₀, .CS₀₁, .CS₀₁, .K₀, .i]
-    [.K₂, .CS₁₂, .CS₁₂, .K₂, .i, .K₁, .CS₁₂, .CS₁₂, .K₁, .i, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₁,
-    .i, .K₂, .CS₁₂, .CS₁₂, .K₂, .i]
-    [(6, 3833323564822616434913030506526284007432192)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r87, r88, r82, r89, r90]
+    [Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i]
+    [Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.i, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.i, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.i, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.i]
+    [(6, 131711989102502174278694149056006408262824889770139648)] (by decide +kernel)
 
 
 def r349 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r348]
-    [.K₀, .CS₀₁, .CS₀₁, .K₀, .i, .K₁, .CS₀₁, .CS₀₁, .K₁, .i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁,
-    .i, .K₀, .CS₀₁, .CS₀₁, .K₀, .i]
-    [.K₂, .CS₁₂, .CS₁₂, .K₂, .i, .K₁, .CS₁₂, .CS₁₂, .K₁, .i, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₁,
-    .i, .K₂, .CS₁₂, .CS₁₂, .K₂, .i]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r348]
+    [Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i]
+    [Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.i, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.i, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.i, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.i]
     [(1, 1)] (by decide +kernel)
 
 
 def r350 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r309]
-    [.CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂]
-    [(2, 100663297)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r309]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884901889)] (by decide +kernel)
 
 
-def r351 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Sl, .Kl, .Sl])) (by decide +kernel)))
+def r351 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r352 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r79, r5, r290, r276, r351]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [.S₁, .K₁, .S₁, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(5, 11408855666552710144404091830272)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r79, r5, r290, r276, r351]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(5, 3062541302843044064441092879929837617152)] (by decide +kernel)
 
 
-def r353 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Ku, .Ku])) (v := (FreeMonoid.ofList [.Sl])) (by decide +kernel)))
+def r353 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r354 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r291, r115, r97, r196, r123, r353]
-    [.CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [.S₁, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [(8, 718380687361651619011637849371813852748000328465514496)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r291, r115, r97, r196, r123, r353]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂]
+    [(8, 404399302932896764044107641949192815013518654588808781042432755105792)] (by decide +kernel)
 
 
 def r355 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343]
-    [.CS₁₂, .CS₁₂, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂]
     [(1, 0)] (by decide +kernel)
 
 
 def r356 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344]
-    [.CS₁₂, .CS₁₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂]
     [(1, 0)] (by decide +kernel)
 
 
 def r357 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r350]
-    [.CS₁₂, .CS₁₂, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂]
-    [(2, 100679681)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r350]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884918273)] (by decide +kernel)
 
 
 def r358 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r276, r278]
-    [.CS₁₂, .CS₁₂, .K₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100679681)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r276, r278]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884918273)] (by decide +kernel)
 
 
 def r359 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r278]
-    [.CS₁₂, .CS₁₂, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100679681)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r278]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884918273)] (by decide +kernel)
 
 
 def r360 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111]
-    [.CS₁₂, .CS₁₂, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
     [(1, 16385)] (by decide +kernel)
 
 
-def r361 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Ku])) (v := (FreeMonoid.ofList [.Ku, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r361 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r362 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Kl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .Ku, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r362 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r363 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Ku, .Kl, .Sl, .Kl, .Ku])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl])) (by decide +kernel)))
+def r363 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r364 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r364 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
 def r365 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r289, r78, r294, r86, r77, r350, r171, r175, r169, r361, r166, r362, r363, r364]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₁₂, .CS₁₂]
-    [.i, .K₁, .S₁, .K₁, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(20, 2829156141746986089771047412959043110351228552707997881680912696111736109476815100281792942739751625400182647497108178704637983066386365656596480)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r289, r78, r294, r86, r77, r350, r171, r175, r169, r361, r166, r362, r363, r364]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(20, 30806009667453037562449374491177384778512680891655822232345885160327612512681583513788185478046663412647412959043878937576212409423478398189686516325240507537216314083243525540820287488)] (by decide +kernel)
 
 
-def r366 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r366 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r367 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r367 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r368 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r368 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r369 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r79, r116, r112, r352, r285, r279, r297, r86, r140, r136, r288, r130, r366, r367, r368]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₁]
-    [.K₁, .S₁, .S₁, .K₁, .S₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(31, 195448880536390971989022889895978702234539007920946585031472430399651197656009031747845560279131057856430156222499232442654541734936781188936741203801802212593905974388653894413712980751319359910101927606980487134844715349835776)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r79, r116, r112, r352, r285, r279, r297, r86, r140, r136, r288, r130, r366, r367, r368]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₁]
+    [Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(31, 321595492542366665314823325567812188281515322438317493386962016130832634859551260689644865761552023637126613457063806408505463438981417927390424054344686873212868001675177846955163704536686392409998490496720529903704966589097483440424953145170074460274732646650611600900421594327650865774592)] (by decide +kernel)
 
 
-def r370 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .Ku])) (v := (FreeMonoid.ofList [.Ku, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r370 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r371 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Sl, .Sl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .Ku, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r371 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r372 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Ku, .Sl, .Sl, .Sl, .Ku])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Sl])) (by decide +kernel)))
+def r372 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r373 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r373 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r374 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r5, r286, r80, r300, r86, r77, r357, r147, r370, r143, r371, r372, r373]
-    [.CS₁₂, .CS₁₂, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [.i, .S₁, .S₁, .S₁, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(17, 64558139710654018123995419685354651562838581137701506970571306175742903852054636233490265118118755007190139580426018095104)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r5, r286, r80, r300, r86, r77, r357, r147, r370, r143, r371, r372, r373]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(17, 335195275027970522527896853378541668655563028979928113272103412392530886403725667702176852159261853365452990506631113603698580126596885226404703822956986368)] (by decide +kernel)
 
 
-def r375 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.i])) (by decide +kernel)))
+def r375 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i])) (by decide +kernel)))
 
 
 def r378 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312, r355]
-    [.CS₁₂, .CS₁₂, .K₁, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100679681)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312, r355]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884918273)] (by decide +kernel)
 
 
 def r379 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r44, r356]
-    [.CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r44, r356]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884918272)] (by decide +kernel)
 
 
-def r380 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r380 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
 def r381 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r5, r287, r279, r369, r380]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(6, 3484533972577684148324405316556523999109120)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r5, r287, r279, r369, r380]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(6, 119727675631787960504115945331576337162420748497756160)] (by decide +kernel)
 
 
-def r382 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Kl, .CS, .CS])) (by decide +kernel)))
+def r382 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r383 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Kl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r383 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
 def r384 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r4, r379, r339, r345, r369, r382, r383]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₁]
-    [.K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [(7, 18554220473117667348417574723441880940186435584)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r4, r379, r339, r345, r369, r382, r383]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(7, 81602322576103381881533486933534026044016661269450271490048)] (by decide +kernel)
 
 
-def r385 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Su, .Sl, .CS, .CS])) (by decide +kernel)))
+def r385 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
 def r386 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r345, r341, r356, r279, r317, r385]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(7, 18554220473096898160673950393884167474318934016)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r345, r341, r356, r279, r317, r385]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(7, 81602322576103376306347186651841133192136358798108544466944)] (by decide +kernel)
 
 
-def r387 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Su, .Su, .CS, .CS])) (by decide +kernel)))
+def r387 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
 def r388 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r345, r342, r379, r317, r387]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₀₁, .CS₀₁]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(7, 15699725002614384133021562132682722350204977152)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r345, r342, r379, r317, r387]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(7, 69048119102407011503333237235176553767572332655005073932288)] (by decide +kernel)
 
 
 def r389 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r355]
-    [.CS₁₂, .CS₁₂, .K₂, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r355]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r390 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r356]
-    [.CS₁₂, .CS₁₂, .K₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r356]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r391 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r345]
-    [.CS₁₂, .CS₁₂, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100679680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r345]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884918272)] (by decide +kernel)
 
 
 def r392 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r350]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r350]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r393 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r358]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r358]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r394 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r350]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r350]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r395 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r277, r358]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r277, r358]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r396 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂]
     [(1, 24576)] (by decide +kernel)
 
 
 def r397 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r396, r283, r369]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .K₁]
-    [.K₁, .S₁, .S₁, .K₁, .S₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
-    [(3, 5630324235042816)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r396, r283, r369]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.K₁]
+    [Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₂]
+    [(3, 92233825930253959168)] (by decide +kernel)
 
 
-def r398 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r398 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r399 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl])) (by decide +kernel)))
+def r399 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r400 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r79, r352, r286, r365, r175, r171, r288, r166, r366, r367, r398, r399]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(25, 169968311271050718943029539586467119552441160436327296099397414801477784101915295619866169652790324779987209463005381273739477072112143543792772148232976109104804124200064539289293160448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r79, r352, r286, r365, r175, r171, r288, r166, r366, r367, r398, r399]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(25, 63592693590579533844573243791761640846445856699353199720222584906956953329737894526974580099013789172729077259105875991797116760751500231204108376328231216670584211816419811306261141469656647045704428489841163167113785866196997453643776)] (by decide +kernel)
 
 
 def r403 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
     [(1, 24577)] (by decide +kernel)
 
 
 def r404 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r314, r378]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r314, r378]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r405 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r315, r379]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r315, r379]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r406 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r316, r358]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r316, r358]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r407 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r317, r379]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r317, r379]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r408 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r318]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r318]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
     [(1, 24577)] (by decide +kernel)
 
 
 def r409 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r323, r378]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₀]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(3, 9226749736675991553)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r323, r378]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(3, 151171067684062660419585)] (by decide +kernel)
 
 
 def r410 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r324]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r324]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
     [(1, 24577)] (by decide +kernel)
 
 
 def r411 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r325, r379]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r325, r379]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r412 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r378, r329, r379, r311]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .S₀]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁]
-    [(6, 382848820370778015565042916000129875968)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r378, r329, r379, r311]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [(6, 13153523099778424112208469487690205043928558731264)] (by decide +kernel)
 
 
-def r413 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r413 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r414 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Kl, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r414 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r415 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Kl, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Kl])) (by decide +kernel)))
+def r415 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r416 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Su, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r416 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r417 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .Su, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Su])) (by decide +kernel)))
+def r417 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r418 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS])) (by decide +kernel)))
+def r418 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r419 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .Ku, .i])) (v := (FreeMonoid.ofList [.i, .Su, .Su, .Su, .CS, .CS, .Ku])) (by decide +kernel)))
+def r419 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r420 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Su, .Su, .CS, .CS, .Ku, .Ku])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS])) (by decide +kernel)))
+def r420 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r421 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.i, .Su, .Su, .Su, .CS, .CS])) (by decide +kernel)))
+def r421 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r422 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.CS, .CS])) (by decide +kernel)))
+def r422 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r424 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl])) (by decide +kernel)))
+def r424 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r425 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r425 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r426 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Su])) (by decide +kernel)))
+def r426 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r427 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Kl])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Su])) (by decide +kernel)))
+def r427 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r428 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r428 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r429 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r429 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r430 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r430 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r431 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Su, .Su, .Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r431 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r432 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Sl, .Sl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r432 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r433 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .Sl, .Sl, .Sl, .CS, .CS, .Ku])) (v := (FreeMonoid.ofList [.Ku, .Su, .CS, .CS, .Ku, .Su, .CS, .CS])) (by decide +kernel)))
+def r433 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r434 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Su, .CS, .CS, .Ku, .Su, .CS, .CS, .Ku, .Su])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r434 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r435 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .Sl, .Sl, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Ku, .Ku, .CS, .CS])) (by decide +kernel)))
+def r435 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r436 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Ku, .Ku])) (by decide +kernel)))
+def r436 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku])) (by decide +kernel)))
 
 
 def r437 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r4, r386, r338, r381, r384, r136, r424, r138, r425, r140, r426, r427, r142, r6, r408,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r4, r386, r338, r381, r384, r136, r424, r138, r425, r140, r426, r427, r142, r6, r408,
     r318, r428, r429, r430, r431, r432, r433, r434, r435, r436]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(32, 10532283040209730662769315368292821746234730659443908919674940456900972456167839306302448664808508013811437022684485156826398164697466751894847588030771978492135885696320978661132204926213178610753438709950276532530438078360134336118784)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(32, 2218357663812330077593617566465170805820521462471642221390360221343152530371203986188220919264502426645632582577707200026101342035501091530107134972764284434082475943139308947245090486810695305605740960187304806060065995763940518704074822028393264635270147627758270953818167817513752933758113186578432)] (by decide +kernel)
 
 
-def r438 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Su, .Su, .Sl, .CS, .CS])) (by decide +kernel)))
+def r438 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r439 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Su, .Su, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r439 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r440 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Sl, .Sl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Su, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r440 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r441 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r441 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r442 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r442 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r443 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.i, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r443 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r444 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .CS, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r444 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r445 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r445 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r446 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r446 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r447 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Sl, .Kl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r447 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r448 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r448 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r449 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Kl, .Sl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Sl, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r449 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r450 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Sl, .Kl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.i, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r450 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r451 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .Su, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r451 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r452 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r452 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r453 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r453 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r454 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Kl, .CS, .CS])) (by decide +kernel)))
+def r454 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r455 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Kl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .CS, .CS])) (by decide +kernel)))
+def r455 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r456 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r456 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
 def r457 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r384, r78, r340, r386, r438, r439, r440, r441, r142, r140, r318, r428,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r384, r78, r340, r386, r438, r439, r440, r441, r142, r140, r318, r428,
     r429, r136, r130, r442, r443, r444, r138, r445, r446, r447, r448, r449, r450, r451, r452, r453,
     r454, r455, r456]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(63, 2803897195514404109349655968552181199865483664739865891603545660209074445376835901713877798345304685242568904984264361138167829474933748710365045352067760211784373420272129045480925586365091868765594895812402873913063895621340909520133021162856774530972709630282877604093368996317056055501685096459724724298442737883671439707633512396968670132506950889591243496292610644393618008872545887025047429016068041778120428157809437361982311716689927434520051999014908460007424)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [(63, 124385520478650352343402658384522948561245927418328011530618262261026280905392393919268922348690059923287065563034022644937765146593832669774629874386780739180431284226037454451202224851689273860078799941729775434596764409923802819686638767150239925477678473466527147415050567696885544206060661501725974701144991350688344412215406456358843045690726568399444158255238460828246432895948112727898367133618502056916688358759188226888333557244153780489950997944355740616605546855966424994729297781783137858719306316011911566335025118084257514460081649669138573732368049083350367437724459576472586384572416)] (by decide +kernel)
 
 
 def r458 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r378]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r378]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r459 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r379]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r379]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r460 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
     [(1, 24576)] (by decide +kernel)
 
 
 def r461 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r285]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₂]
-    [.S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂]
+    [Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r462 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r352]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
-    [.S₁, .K₁, .S₁, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [(2, 100687872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r352]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884926464)] (by decide +kernel)
 
 
 def r463 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r359]
-    [.CS₁₂, .CS₁₂, .K₂, .S₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r359]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂]
+    [(2, 12884926465)] (by decide +kernel)
 
 
 def r464 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r360]
-    [.CS₁₂, .CS₁₂, .K₂, .S₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂]
-    [(2, 100687873)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r360]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(2, 12884926465)] (by decide +kernel)
 
 
-def r466 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Sl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r466 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r467 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.i, .i])) (by decide +kernel)))
+def r467 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i])) (by decide +kernel)))
 
 
-def r468 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Ku, .Ku])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl])) (by decide +kernel)))
+def r468 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r469 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r5, r354, r280, r374, r102, r179, r178, r153, r143, r466, r467, r121, r468]
-    [.CS₁₂, .CS₁₂, .K₂, .S₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(21, 94931526933550483530663336153763889573285673309666226434804789929813010649730478648712173237997987530094648157184152612900026587443809882566554961313792)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r5, r354, r280, r374, r102, r179, r178, r153, r143, r466, r467, r121, r468]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(21, 132310812748384616275439204790989673456933836483306335599917523903181933760645852380542637441107916036825984573157724797992863757716711723847287540217627564885892393291979303486429091014335528960)] (by decide +kernel)
 
 
-def r470 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Sl, .Sl, .Ku])) (v := (FreeMonoid.ofList [.i, .Ku, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r470 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r471 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r5, r464, r354, r284, r360, r394, r102, r179, r178, r153, r147, r470, r372, r122]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [(24, 2026254314182659711435114619180225035469394806725230458191044849341369639759613417561466588963341927885195539275263195233871400458799283087984811936471080350642564853443004989440)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r5, r464, r354, r284, r360, r394, r102, r179, r178, r153, r147, r470, r372, r122]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂]
+    [(24, 5922747995322179419408692963616958079833094219271291901627018147000219444615457130360266254075180936350126769343828738218180076321669054824406691631513109213723335177134874412448499170816782043638139223653513662522671249752064)] (by decide +kernel)
 
 
 def r472 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r5, r464, r354, r285, r374, r360, r102, r179, r178, r153, r143, r466, r467, r121, r468]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(23, 121625438492218749853399857071685803248062276243188983924627454089852115049983120558704682629666720494316157329247342022175605039608740813179779900531332416951409442816)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r5, r464, r354, r285, r374, r360, r102, r179, r178, r153, r143, r466, r467, r121, r468]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(23, 2777352398731436149055417786288031477350837459813741488757345999992192208055437685719606360501307796505634514465660081970116980644515315884146943179900790761068862439749997592281105778384294735151620906434055634944)] (by decide +kernel)
 
 
 def r473 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r5, r464, r354, r297, r286, r360, r102, r179, r178, r153, r375]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [.i, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(17, 64558770450637698865301995266134916070653887340407763378959551889138011535249291969593839012020343682443208608435996196864)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r5, r464, r354, r297, r286, r360, r102, r179, r178, r153, r375]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(17, 335195300613821658780557665913296807946256151861884795873581262257753078100054287188564464443497089764369439141664017235356832905096536636049079516799172608)] (by decide +kernel)
 
 
-def r474 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Ku, .Ku])) (v := (FreeMonoid.ofList [.i, .Sl])) (by decide +kernel)))
+def r474 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r475 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r5, r464, r354, r298, r360, r472, r102, r179, r178, r153, r143, r466, r467, r121, r474,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r5, r464, r354, r298, r360, r472, r102, r179, r178, r153, r143, r466, r467, r121, r474,
     r123, r353]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [.S₁, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(24, 4575672939644090966617172064931537808380337445381395518992370497734795455159844649391562530595107737396637314095302993797066122753582075727560064652785052131143992552034664448)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(24, 13374531490300859946561546032192869249908569175650433007426578794191263508492362342068339243256506251398909985755703737596221974520087247721064157451054066814205954293048828432409648329629363812826477991292424244172360253440)] (by decide +kernel)
 
 
-def r479 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl])) (by decide +kernel)))
+def r479 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r480 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r480 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r481 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Ku, .Ku])) (by decide +kernel)))
+def r481 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku])) (by decide +kernel)))
 
 
 def r483 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r395]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r395]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂]
+    [(2, 12884934657)] (by decide +kernel)
 
 
-def r484 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.i, .Kl])) (by decide +kernel)))
+def r484 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r485 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r485 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r486 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r486 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r487 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .Kl, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r487 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r488 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r488 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r489 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r489 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r491 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r491 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r492 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r492 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r493 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r493 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r494 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .Sl, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.Sl, .Kl, .Sl])) (by decide +kernel)))
+def r494 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r495 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r495 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r496 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl])) (by decide +kernel)))
+def r496 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r497 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .i])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Sl, .Sl])) (by decide +kernel)))
+def r497 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r498 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .Sl, .Sl, .i])) (v := (FreeMonoid.ofList [.Sl, .Sl])) (by decide +kernel)))
+def r498 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r499 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r365, r299, r289, r166, r171, r175, r81, r472, r112, r98, r276, r116, r351,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r365, r299, r289, r166, r171, r175, r81, r472, r112, r98, r276, r116, r351,
     r491, r492, r493, r494, r495, r484, r281, r102, r179, r178, r180, r319, r222, r226, r375, r496,
     r497, r498]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .K₂]
-    [.S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂]
-    [(73, 4930005951202571974545581000083669589498006630918350690119186580473233138529425314925277952434990572045798541570210047862443541681590812426037805222837405931718606292942726137297533475152053717721580955003922929037443857213402528206755930095920208504596958725042159369056054873173024518390727312295246720165955416708913797317607005845401189738739159384524275203461893190673543399853240643429274582380578735125845851472548575279712489770646271156789436412928735847650604490867965818530723158333358079817922820077054611563081007313185547854282752)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₂]
+    [Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.S₂]
+    [(73, 258201730512565487454870069298743200885176559849589537890352101128625336309422193980278911048369995714653443562309923292247148779382792432666689356285843825048388143208226909854226113245848272839818181744456057884484604224410791272604333559429424828944662787251253684998796944931868405247795084794333314774058062454773555816448186515222812909905102212375956292351606400932474677498616702368491508189638209756552372374235438547858404609287222971941449850870118987712828559132034610455317446212377092091382182547263808716261046259843610186065656939264937015636566889691744733373390289007768078110309636237269641424269675730780337753653031199024668157964921218867356843217468414756835502341362810880)] (by decide +kernel)
 
 
-def r500 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .Sl, .Sl, .Ku, .Ku])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r500 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r501 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r501 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r502 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .Sl, .Kl, .Sl, .Sl, .Sl, .i, .i])) (v := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r502 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.i, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r503 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl, .Sl, .Sl, .Ku, .Ku])) (v := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r503 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r504 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r504 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r505 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r400, r300, r365, r499, r175, r102, r180, r500, r136, r130, r276, r140, r484,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r400, r300, r365, r499, r175, r102, r180, r500, r136, r130, r276, r140, r484,
     r485, r486, r487, r488, r424, r501, r231, r502, r188, r503, r202, r504]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₂]
-    [.i, .S₁, .K₁, .S₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(49, 981474375888955922354017810296702905474244754927697826156775974485063783644496024511955865788529356219572176773809419110959536736136688329351923871887526699398401037113486935406172150407064375362776403775259352282892694790851347680648915054655502225395788708464421728459881836208229404430685215942982616672220503790826805512658573967429908303585583376415917604864)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [Gen.i, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(49, 137387831351895120907225390603153522479275220411356365700280392745665851674945500791471234468714654435410333895142189394457067313088250548994020208093971528388752307023937435513684734845112183610848104965718358582168443486103949478032748451198914239394281825994054303357659553864429926053933014618334123255190773007623786845339506874693989754768504370361212991184148745384910145556516407474355926675801990251001261403483643006132126185924368747147424640827574452224)] (by decide +kernel)
 
 
 def r506 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r365, r303, r400, r396, r112, r98, r276, r116, r351, r491, r492, r493, r494,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r365, r303, r400, r396, r112, r98, r276, r116, r351, r491, r492, r493, r494,
     r495, r484]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [.i, .K₁, .S₁, .K₁, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(37, 207877562600605611879044114644345844036352854627173852625331483902009532916384408705747370046748314044200983416608790626042424098618390289811302400909440713372042725521146593758262159268487922297157460586949194721709523548312176544137267043198289391617551359313578313063071744)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(37, 1504411050265269474169527276722245977811979027679992562779465573832288302541738615135882890123770270927362075346128833009122233689634913259333756170811954218140174312063943300984687795207245079025511061194954216588321835941538536449241979944507697593166012371638530899118193820977952741274238611854943258230418480117113903513570186212234538261969633280)] (by decide +kernel)
 
 
 def r507 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r316, r395]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r316, r395]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884934657)] (by decide +kernel)
 
 
 def r508 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r317, r405]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r317, r405]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884934657)] (by decide +kernel)
 
 
 def r510 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r324, r381]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r324, r381]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀]
+    [(2, 12884934657)] (by decide +kernel)
 
 
-def r511 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Ku, .Su, .Su, .Su, .Ku])) (v := (FreeMonoid.ofList [.Su, .Ku, .Su])) (by decide +kernel)))
+def r511 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r512 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Ku, .Su, .i])) (v := (FreeMonoid.ofList [.i, .Su, .Ku, .Su])) (by decide +kernel)))
+def r512 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r513 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Ku, .Su, .i])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Ku, .Su])) (by decide +kernel)))
+def r513 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r514 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Ku, .Su, .i])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Su, .Ku, .Su])) (by decide +kernel)))
+def r514 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r515 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .Su, .Ku, .Su, .i])) (v := (FreeMonoid.ofList [.Su, .Ku, .Su])) (by decide +kernel)))
+def r515 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r516 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Ku, .Su, .Kl])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Ku, .Su])) (by decide +kernel)))
+def r516 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
 def r517 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r4, r0, r412, r328, r381, r311, r511, r512, r513, r514, r515, r516]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .S₁]
-    [.i, .K₁, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀]
-    [(15, 57337466561728782183074337775118864762513065841955911049285602412974749150797892986133906734731573722087424)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r4, r0, r412, r328, r381, r311, r511, r512, r513, r514, r515, r516]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀]
+    [(15, 18170968110267087840814503242548575685065821265485732546606224818763163703470371535055353450121379563659460498906772429757050516498546688)] (by decide +kernel)
 
 
-def r518 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Ku, .Su, .Su, .Su, .i])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Su, .Su, .Su])) (by decide +kernel)))
+def r518 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r519 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Su, .Su, .Su, .Ku])) (v := (FreeMonoid.ofList [.i, .Su, .Ku, .Su])) (by decide +kernel)))
+def r519 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su])) (by decide +kernel)))
 
 
 def r520 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r4, r404, r405, r329, r381, r311, r518, r519, r516]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁]
-    [.i, .K₁, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀]
-    [(12, 1153459685516301148318965823238493389425283805317154654767268743174869342165579857920)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r4, r404, r405, r329, r381, r311, r518, r519, r516]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀]
+    [(12, 174305894851557214500537707991326074402467064489508394674317044097824653419164939736185125752510665226977280)] (by decide +kernel)
 
 
 def r521 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r404]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r404]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r522 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r405]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r405]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r523 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
     [(1, 32768)] (by decide +kernel)
 
 
 def r524 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r289]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₂]
-    [.S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r289]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂]
+    [Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884934657)] (by decide +kernel)
 
 
 def r525 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r365]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
-    [.i, .K₁, .S₁, .K₁, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r365]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r526 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r437]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r437]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r527 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r276, r406]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r276, r406]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r528 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r406]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r406]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r529 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂]
     [(1, 40961)] (by decide +kernel)
 
 
 def r530 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r408]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r408]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r531 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r461]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .S₂]
-    [.S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r461]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₂]
+    [Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r532 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r530, r283, r408, r384]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .K₁]
-    [.K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁,
-    .K₂]
-    [(4, 264452528671574122823680)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r530, r283, r408, r384]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.K₁]
+    [Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(4, 554597137692084259453805789184)] (by decide +kernel)
 
 
 def r533 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r79, r462, r286, r408, r525, r175, r171, r288, r166, r366, r367, r398, r399]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(26, 5703190142707603948710088954806569013699246819741214741198199752871389393176243970063336078176822070384115107979062481874897163839355096245499530533026331381867727991903488938067054719756402688)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r79, r462, r286, r408, r525, r175, r171, r288, r166, r366, r367, r398, r399]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂]
+    [(26, 273128539236091016585552553527695177249787745074417341403376588471649947407007868037787387156364497761162446764716243804191299792013353126274873431959341141501567995878259855480850001127201263522416660512275564104203278509344568475210392895750144)] (by decide +kernel)
 
 
-def r534 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r534 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r535 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Kl, .Sl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r535 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r536 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .Kl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r536 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r537 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .CS, .CS, .Kl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .Kl, .CS, .CS, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r537 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r538 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .CS, .CS, .Kl, .Sl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .Sl, .Kl, .CS, .CS])) (by decide +kernel)))
+def r538 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r539 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .Sl, .Sl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r539 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r540 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Sl, .Sl, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Su, .Su, .CS, .CS])) (by decide +kernel)))
+def r540 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
 def r541 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r4, r531, r386, r294, r462, r384, r112, r287, r114, r534, r116, r426, r118, r457,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r4, r531, r386, r294, r462, r384, r112, r287, r114, r534, r116, r426, r118, r457,
     r166, r535, r171, r175, r536, r537, r538, r177, r318, r428, r429, r173, r430, r431, r432, r539,
     r540]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₁]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂]
-    [(54, 41999084248236964631775249530979761459249579076239434521035804979075254448082966813580101330341159563925962038663777943613495002550395443109027579564189544365385682442669319829178245285227046870351681764476561406121513428131095324750238441023235088060600132863791921348078585556857334156731123271777057765722228756272060491410950019337161217184915632199463997632942105209411960488180899279184191467552768)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(54, 202007829931465710235183900109747773896888420919405682587926662144114957532052340580043337398641103093625406236507199225678170877660666702870079022033240807706441874247332822445584817979891143899105635900249746838812198612169841722980968759150620804704798497397708387442504021316927487893688467397436125820248644145961285948589607952338979329944018445521960786580083080131346859087366438606718521940889324390900637434807470199552384394906977052663980415517518753936965069281814953244501577735225545128447776902873088)] (by decide +kernel)
 
 
 def r542 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r79, r462, r302, r408, r524, r175, r171, r288, r166, r366, r367]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [.i, .K₁, .S₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(20, 3196768070238462262045454672378835258154061437058088183657796713094833474779124056280577678913996126263040490921616560069930191459480315368377942016)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r79, r462, r302, r408, r524, r175, r171, r288, r166, r366, r367]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.S₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(20, 34809721773231465377258140408213824130488626129547278040505764750311165623246257152660254045459582964835668873172262722578749000351562716695617848889336384592831960223038071878328038457344)] (by decide +kernel)
 
 
 def r543 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r79, r462, r303, r530, r533, r175, r171, r288, r166, r366, r367, r398, r399, r351]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [.S₁, .K₁, .S₁, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(28, 3852795364177651982715450090236739522811426007145377182417094385281029305180974381303348993361588880079283558363869621011174209343737458098360860822414227328003296246058659821552996041588323069096845721468928)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r79, r462, r303, r530, r533, r175, r171, r288, r166, r366, r367, r398, r399, r351]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(28, 3023048558208406404266694672974938971865139298586122969058464329256728608965731318518667665308812852284397641127213151857888907905329700514904907407696699431117527220753279626857529519838838972711007347938270458196125943810732529082658093545129311939989721690669056)] (by decide +kernel)
 
 
 def r544 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r311, r406]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r311, r406]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r545 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁]
     [(1, 40961)] (by decide +kernel)
 
 
-def r546 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Kl])) (v := (FreeMonoid.ofList [.i, .Kl, .Su])) (by decide +kernel)))
+def r546 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r547 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r547 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r548 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r548 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r549 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r549 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r550 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Su, .Sl, .Sl, .Ku])) (v := (FreeMonoid.ofList [.i, .Ku, .Kl, .Su, .Ku, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r550 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r551 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Ku, .Kl, .Su, .Ku, .Su, .Sl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r551 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r552 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Su, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Su, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r552 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r553 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Su, .Su, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Su, .Su, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r553 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r554 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Su, .Su, .Su, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Sl, .Sl])) (by decide +kernel)))
+def r554 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r555 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r555 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r556 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Su, .Su, .Su, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Ku, .Kl, .Su, .Ku, .Su, .Su, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r556 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r557 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .Ku, .Kl, .Su, .Ku, .Su, .Su, .Su, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.Ku, .Kl, .Su, .Ku, .Su, .Su, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r557 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r558 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Kl, .Su, .Ku, .Su, .Su, .Su, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .Ku, .Kl, .Su, .Ku, .Su, .Su, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r558 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r559 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Ku, .Kl, .Su, .Ku, .Su, .Su, .Su, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Su, .Su, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r559 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r560 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Su, .Su, .Su, .Sl, .Sl, .Kl, .Ku])) (v := (FreeMonoid.ofList [.i, .Ku, .Kl, .Su, .Su, .Ku, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r560 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
 def r561 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r4, r77, r0, r546, r313, r520, r410, r407, r336, r403, r378, r136, r130, r276, r140,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r4, r77, r0, r546, r313, r520, r410, r407, r336, r403, r378, r136, r130, r276, r140,
     r484, r138, r547, r548, r549, r134, r550, r551, r552, r553, r554, r555, r556, r557, r558, r559,
     r560]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₀]
-    [.i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .S₀]
-    [(63, 2724964307695801358174473652252523857515670384219343621003442469294665394458758820060479849788691547102567436012681482327280466570388181105323388858966398910845890159102271515381067489787920566779463264773792998694052826598342838937670871212250807543146182675669457541164581949980515495936628632081607158463271172662545080561850085082144564081649182545969036319769397960001906294857077387712493017782609825727635051789471741991210994502652113474747277985006037686550528)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀]
+    [(63, 120881720375234597237920712276820447919429525842957814396589813037865437790784480914848740484964616832486714881706646491831496789871460501084548623737914054462306803497308992462337624509248281023734385567407643504228529268189481905420774443521698924272698994401471918161611399253877294135344985655279105219911311131924416438142464879820766538159513940308223821486478675291099872594789778687383429697897465929003477389590313155604297523660935416043878738543592323542802496120283437739619869870301427931180490305586846306516434474058787277939655197150509342435653287992980426602301778909398692303732736)] (by decide +kernel)
 
 
-def r562 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Ku])) (v := (FreeMonoid.ofList [.i, .Ku, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r562 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
 def r563 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r510, r410, r337, r403, r378, r136, r130, r276, r140, r484, r485, r486, r487,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r510, r410, r337, r403, r378, r136, r130, r276, r140, r484, r485, r486, r487,
     r488, r134, r562]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₀]
-    [.i, .K₀, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁]
-    [(34, 8726189406248051472832265320311811613786461984200135623608141845418521608530761247392781154329802267870935959735358335252342487293281496524528004679805564314448758824535105872053846963146177327750991943617400217497449663187635942127977873572056006656)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁]
+    [(34, 30112036937664265713921366130702483150328181653013514840542782795631771644640636471426373737172278986002763613856379279521595410281397154372597297355338347513550279135568053873475978333449441463792695269284755957891234207446496531546165741154998942083925562806362039630566250197022149465815547660980764690192438325673984)] (by decide +kernel)
 
 
 def r564 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
     [(1, 40960)] (by decide +kernel)
 
 
 def r565 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r461]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₂]
-    [.S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r461]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₂]
+    [Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r566 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r462]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₁₂, .CS₁₂]
-    [.S₁, .K₁, .S₁, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r462]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r567 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r407]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r407]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r568 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r403]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r403]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r571 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r116, r396]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r116, r396]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂]
+    [(2, 12884934657)] (by decide +kernel)
 
 
 def r572 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r393]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r393]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884934657)] (by decide +kernel)
 
 
 def r573 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r396]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r396]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884934657)] (by decide +kernel)
 
 
 def r574 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r280]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r280]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
     [(1, 32769)] (by decide +kernel)
 
 
 def r576 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r394, r360]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(3, 18452373573344460801)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r394, r360]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(3, 302323688624038726369281)] (by decide +kernel)
 
 
 def r577 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
     [(1, 32769)] (by decide +kernel)
 
 
 def r578 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r286, r396]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r286, r396]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884934657)] (by decide +kernel)
 
 
 def r579 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r289, r473, r577]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [.i, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(5, 114231799776533148939261032961998848)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r289, r473, r577]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(5, 30663864932943151556317667633650857188327424)] (by decide +kernel)
 
 
-def r580 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl])) (by decide +kernel)))
+def r580 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r581 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r581 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r582 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .Ku, .Ku])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl])) (by decide +kernel)))
+def r582 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
 def r583 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r582, r122, r178, r146, r367, r226, r581, r224, r580, r222, r505, r499, r291, r392,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r582, r122, r178, r146, r367, r226, r581, r224, r580, r222, r505, r499, r291, r392,
     r365, r76, r112, r98, r276, r116, r351, r491, r495, r484, r281]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂]
-    [(44, 404805170146818496224820741558179862240567435131444927597967265070759904266318204624911188408700590718413082655196232047161550524451810938930270147181031117197312773049832985794532154327785657914285350374430170171968904174737034341831969089606644421088564498630959661198596484873545588320931412501934492440397690229074427904)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(44, 1649202707831802040543632553294527160529893245437091066842504118699915545316084447213215534415711287770051359613393331664877874451411115618403899504777784468141554335892627134257421869750307768319171702402458877054524276043136475387452182343399983447542658063330033875206772204778347431831426002719456481987515473447831869907414511966815921307320165412646493727293316189237782350810748470134924971108751841884635136)] (by decide +kernel)
 
 
 def r584 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r396, r400, r292, r579, r576, r147, r319, r573, r136, r130, r276, r140, r484,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r396, r400, r292, r579, r576, r147, r319, r573, r136, r130, r276, r140, r484,
     r485, r486, r487, r488, r132]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .K₂, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂]
-    [(38, 11629515514398872582789534524190873379633993895092717258990438519302385962238610916421864364621873473677240886584011760674610401677004946694576968524229009577382415679319745557990932002607223611447261001677619897900588015662946069978725332519662627132268853335359117756139298602614784)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(38, 10772847185521687335190818388173601472263901926961292250933494361041338979209941689511421137309158344773101633504864499225405249287424456229422189724086043970282959801830472696221228528843110444681990317339386199876478344354269802526137112874074761347846409807044286471648674147300869109487893915613640276593178940073800673870247981988933349275233286656079429632)] (by decide +kernel)
 
 
 def r585 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r0, r473, r293, r579, r576, r147, r319, r574, r97, r123, r158, r106, r76, r101, r119,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r0, r473, r293, r579, r576, r147, r319, r574, r97, r123, r158, r106, r76, r101, r119,
     r107]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(24, 4328282147401168707161482206901621370026806911478417987243669036136360790380703414544038455806132327541846168796585490057521452675177938630456733929197223535157757809027710976)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(24, 12651582537790166142957010355553796743498237219887384580577951481335335781175033416657573106961881813231905887092565757580774332479306557772846327582150570571956094048913731165937424380233864063636556376070891478407628980224)] (by decide +kernel)
 
 
-def r586 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Ku])) (v := (FreeMonoid.ofList [.i])) (by decide +kernel)))
+def r586 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i])) (by decide +kernel)))
 
 
-def r587 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Kl])) (by decide +kernel)))
+def r587 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r588 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Kl])) (by decide +kernel)))
+def r588 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r589 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .Kl, .Ku, .Ku])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r589 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
 def r590 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r0, r584, r396, r78, r295, r579, r143, r121, r586, r186, r145, r123, r319,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r0, r584, r396, r78, r295, r579, r143, r121, r586, r186, r145, r123, r319,
     r129, r235, r229, r587, r239, r588, r486, r487, r488, r485, r157, r108, r589]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(51, 1143819211349583390251173785388141383226140789469249366032942690581683828653698508941744264823937113702965097036932589786083668847329442791657472589153187520085803914738027622564838074650584413120932778681540286544526236266723348386215660702841335377867252533759167892403648126435128148882471973257509374750648728421006930076026906466910198287564963549007394783024670252216614912)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(51, 2623283081570600569602816816970770633710446235108648852190306720588128817140597166933313839117504965762026039099042788289094171814177525797951840855412327003504384530050098086257310052316756172495598010161023723609861279940882210415879134319075033429214705540642114511281579695723589892675506344975130937200970676569324100578369800085928287417089597178290142084629013699827203864644765705247546230086866866601452628705349092590847037127595685069632190441014722217389430406918757679104)] (by decide +kernel)
 
 
 def r591 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r78, r86, r298, r394, r469, r76, r354, r195, r146, r178, r464, r77, r583, r585, r147, r370, r143,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r78, r86, r298, r394, r469, r76, r354, r195, r146, r178, r464, r77, r583, r585, r147, r370, r143,
     r371, r372, r373]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [.i, .S₁, .S₁, .S₁, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(25, 161834150463283787565102031320096881535766047577651352969154724926426613189767165307015585221389481874688370908002911101902848503429726738631322143994419721913602894411950313269436416)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(25, 60548214495236065734791322256794844573752090146222413198762044135162067027214365777405372005549321596646732341216008911032223469374579192102818288259996800840125490858068453068845559733488099285413719444203699330266622836458479755264)] (by decide +kernel)
 
 
-def r592 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r592 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r593 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r593 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r594 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Kl, .Ku, .Ku])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r594 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r595 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Kl])) (by decide +kernel)))
+def r595 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r597 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r597 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r600 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl, .Sl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r600 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r601 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl])) (by decide +kernel)))
+def r601 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r602 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Sl])) (by decide +kernel)))
+def r602 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r605 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r529, r460, r325, r459]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂]
-    [(6, 348491689411302773029257887259889540005888)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r529, r460, r325, r459]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂]
+    [(6, 11974082917440701605760435140269016681835242350182400)] (by decide +kernel)
 
 
 def r606 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r4, r77, r6, r142, r417, r140, r416, r136, r415, r414, r138, r413, r532, r523, r397, r396,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r4, r77, r6, r142, r417, r140, r416, r136, r415, r414, r138, r413, r532, r523, r397, r396,
     r330, r394, r390, r391, r360, r317, r387, r418, r419, r420, r421, r422]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
-    [(36, 251910890849454055311385165554195088429066622601472836394181432550995158517536304445116359898475999447985207083697698243386769829256240715782931253649441291422717377377054251373568173869210862148459279090465211967480544962646857390910211497800148154484988273754112)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂]
+    [(36, 14242792572985923740497655354424982535551685743404957724948357117360916274711028182610114621719279395132127212230996962480831384830491248312994069111302327071524699070219991515242219237805989794686461072493286461004185160487940758764818778508117525800583413143693625341794348094138972693351549997782633487198452003268943559205022523719680)] (by decide +kernel)
 
 
 def r608 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r458]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r458]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r609 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r459]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r459]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r610 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r459]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r459]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r611 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r460]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100696064)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r460]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(2, 12884934656)] (by decide +kernel)
 
 
 def r612 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r460]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100696065)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r460]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884934657)] (by decide +kernel)
 
 
-def r613 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Sl])) (by decide +kernel)))
+def r613 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r614 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .i])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Sl])) (by decide +kernel)))
+def r614 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r615 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .Sl, .i])) (v := (FreeMonoid.ofList [.Sl])) (by decide +kernel)))
+def r615 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r616 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Sl, .Ku, .Ku])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r616 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Ku, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 def r617 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r571, r464, r178, r146, r195, r354, r469, r293, r374, r360, r396, r397, r149,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r571, r464, r178, r146, r195, r354, r469, r293, r374, r360, r396, r397, r149,
     r581, r153, r368, r97, r123, r319, r158, r163, r375, r613, r614, r615, r161, r380, r101, r119,
     r107, r616]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂, .K₁]
-    [.K₁, .S₁, .S₁, .K₁, .S₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂]
-    [(58, 64062243563048775745768198292093355420901246637157708257685991211072899121774466248570643151526435994413493510661578080329225187931520260279711692872670270394339705429508401840284872488986686271185657625843470501692564168812378236719481110765295710434504449662349646547837321727141898973665520532935567309906256309352533653193829944371415865625751954932245463198606682914265740814647247666084609947322665175569601972018401249329152)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₂, Gen.S₂]
+    [(58, 82710615743923876687216159500846388239906031031226295075757265948364133316740290941878009894290459336237416387994310040163066745283213358328588460492289957279070482262103615474945381512154608249773626175590189580832333951468143818884212015797612802926397604330080585806473405452346842670700943248278407911507788279769536185260705069314203835742561473288324133094363734078758264757629966270321941312246259816164760390254737254415176264472664563868679334601743604700618461205180889016558296478586191067062598895039344235343820715386527201504202602840064)] (by decide +kernel)
 
 
-def r619 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r619 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r620 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r620 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r622 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Kl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r622 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r623 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Kl, .Sl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r623 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r624 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl])) (by decide +kernel)))
+def r624 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r626 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r626 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r627 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r627 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
 def r628 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r571, r464, r178, r146, r195, r354, r469, r296, r374, r360, r396, r400, r143,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r571, r464, r178, r146, r195, r354, r469, r296, r374, r360, r396, r400, r143,
     r466, r149, r592, r153, r626, r97, r123, r319, r158, r163, r375, r613, r614, r615, r277, r161,
     r627, r101, r119, r107, r589]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂]
-    [(60, 78399512573809280186247958992160421844914374907209106854726527630142319066008424923187828580518501575882389085532809503803149506262439844946121986997416885554009807575684975643491276740438768454820916193885741647795828355535572844700326381608558994951299653456948109553301495967827917211143889278693935969111434163293972061403257090058799405883654410141294767204079127545006273860523435714412128023094237983079799941373900441864311595493318721536)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.S₂]
+    [(60, 1658414718003915492672376336084340450994310436230599263634425580799809186432694810214056790019438217493694335578581453337121440913231491641205440714145144271921881401207596561051780235209921570545878139345133978688844210242866074100457236389443192842289897388287640526345658700092830616347164272852361597956838787929938460922021465598617040186116903154047805471509921869965668964507419452685663812941235387923067032724730675617213641718703485017897881539869904471128802645050471183089224461920161933491351950036087265836042665205427219716924539292109959499953241606586368)] (by decide +kernel)
 
 
-def r629 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r629 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r630 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r630 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r631 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r631 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
 def r632 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r384, r136, r138, r629, r140, r630, r338, r631, r435, r142, r436, r6]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [(17, 42372138251298170246293756936513265595918143993500986577302858385234563482702972221019179108021028976354436957109112241438721)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r384, r136, r138, r629, r140, r630, r338, r631, r435, r142, r436, r6]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(17, 220008720322499876047399758947813375554808032746552244798558182424945681960880747631386863413987007007854817558719681836255892713183394600138558590325847277569)] (by decide +kernel)
 
 
 def r633 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r507]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r507]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
-def r634 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r634 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r635 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r635 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r636 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .Sl, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r636 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r637 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.CS, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r637 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r638 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r638 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r639 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .CS, .CS, .Kl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r639 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r640 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r640 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r641 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.CS, .CS])) (by decide +kernel)))
+def r641 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r642 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r642 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r643 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r643 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r644 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r644 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
 def r645 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r142, r637, r136, r636, r635, r138, r634, r541, r457, r290, r384, r524, r525,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r142, r637, r136, r636, r635, r138, r634, r541, r457, r290, r384, r524, r525,
     r166, r449, r171, r175, r638, r639, r386, r640, r140, r318, r428, r429, r641, r130, r642, r643,
     r644]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(64, 1325083388477302292273547329392141090752329166878701559848548571544297417777547010332621330184253017764014859197199718805373737680798370870082709512271045299675065828171327267216744221264046328523766344767674178535324829046192382846764767749999403231700652045397883848823659873992981213440915421819337228512403278276427257818335104116775256512358205408125840713391903365535987402917177709488778409034747683260096979742128210352711219220661462223538262517525552857652301660160)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(64, 7524389329805086365294991434777647328360194503491853841914327033878949704895834997681800995100710889071849392376632787112341147591990167051434587585928906961418120660754805599069878215926417383857366943896945270115066227406994769961620134063792261359996213221431044223190854635579230614394375089655023695698880601160318132615742155582151033809447423883712670523537606037125893410546575759098395816074163185305446952857989164995839589754279667256912307197772382494631066719373899200873806857457059060726283875934775153433285180003697476231590041335455730106888778857789742277922723350664782529085800181661696)] (by decide +kernel)
 
 
 def r646 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r533, r291, r524, r543, r116, r112, r136, r130, r276, r140, r484, r485, r486,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r533, r291, r524, r543, r116, r112, r136, r130, r276, r140, r484, r485, r486,
     r487, r488, r489, r367]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [.i, .K₁, .S₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(40, 10464270576893126869996736572315560557382338897887685247645197766118265498643103914661176607580813987964531489472554400008780621088213697729188725289459648937657887699252889441993686355589702900414183891007498544094333397897722975454869514808660633072551979480542334433875844605765761950046027251712)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [(40, 158817288506336998313483483200096343691309613555842877332005785817894407739180758105057258734576983984864174860735782149806532812418516202439593922703026621148056749686333619495942671223156364506559131277235623494713203571410251410835356811255212473361556045457903066665457858667642922689270386572413318023484602956803370020624692801900881177908470814657916628036536566413204127744)] (by decide +kernel)
 
 
-def r647 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Kl])) (by decide +kernel)))
+def r647 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r648 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .Kl])) (by decide +kernel)))
+def r648 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r649 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .Kl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r649 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r650 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .Kl, .Sl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r650 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r651 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r651 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r652 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Kl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r652 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r653 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .Kl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.i, .CS, .CS, .Kl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r653 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r654 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .CS, .CS, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r654 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r655 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Kl, .Sl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r655 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r656 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r656 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r657 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Su])) (by decide +kernel)))
+def r657 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su])) (by decide +kernel)))
 
 
 def r658 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r79, r85, r4, r650, r177, r649, r171, r648, r173, r647, r541, r525, r297, r457, r531,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r79, r85, r4, r650, r177, r649, r171, r648, r173, r647, r541, r525, r297, r457, r531,
     r634, r635, r636, r637, r116, r112, r288, r98, r366, r118, r114, r651, r652, r653, r654, r655,
     r656, r657]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂]
-    [(70, 61973455946389228034830682608475463750275992404462461429195039559210040480298719438941133363877254438688961485595274483869340823154075187177107985381651304351444659019636907530854643540720178790176562578700896822194393829425973831534488119692570173133085158822333619943651723271533141539401159150439053254773921191585573394239100413357090459859802304370974733750087653605842407173111183850647994245141750473282541320999675571824265411900625228019706818588699097933405620684684956032524798421774442144664474343228497559814144)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(70, 1547724347113667273554749329343292668821027811422897529915419028645389762898969426704594938254918814231707613740778345069211774264335330192709620894660206294172437659834652390506266304111386936405989873562812018403183527260102009406879334319997807696021640680051691052534772745666811455628748363371260518247819100684954286769716510377297070471267429927482894662206772926314675372575145521636895051287246484419854647843889909008331311710810536432942707853220698599732682899894426067195237967977172359058906260235572004036867521293795348121287138463025513414180858667457161864985806541640999484418247686457564597852969751149694928106494969439206053109128324491486859100160)] (by decide +kernel)
 
 
 def r659 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r525, r303, r533, r530, r112, r98, r276, r116, r351, r491, r492, r493, r494,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r525, r303, r533, r530, r112, r98, r276, r116, r351, r491, r492, r493, r494,
     r495, r484]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [.i, .K₁, .S₁, .K₁, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(37, 207877562600605611879044114644345844036352854627173852625331483902009532916384408705747370046748314044200983416608790626042424098618390289811302400909440713372042725521146593758262159268487922297157460586949194748037596465451473218616773964115897471341325209450856126640816128)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(37, 1504411050265269474169527276722245977811979027679992562779465573832288302541738615135882890123770270927362075346128833009122233689634913259333756170811954218140174312063943300984687795207245079025511061194954216588321835941538536449241979944507697593166012371638530899120090958568016929820058398873325600912686455545875758514792659268620186977990344704)] (by decide +kernel)
 
 
 def r660 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r311, r507]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r311, r507]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r661 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312, r384]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₁]
-    [.K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁,
-    .K₀]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312, r384]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁]
+    [Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12884951040)] (by decide +kernel)
 
 
-def r662 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Ku, .Su, .Ku])) (v := (FreeMonoid.ofList [.i, .Ku, .Su, .Su, .Su])) (by decide +kernel)))
+def r662 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r663 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Ku, .Su, .Su, .Ku, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Su, .Ku])) (by decide +kernel)))
+def r663 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Ku])) (by decide +kernel)))
 
 
-def r664 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Su, .Ku, .Sl, .Sl, .Kl, .Ku])) (v := (FreeMonoid.ofList [.i, .Ku, .Kl, .Su, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r664 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r665 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Ku, .Kl, .Su, .Su, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r665 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r666 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Su, .Sl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Su, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r666 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r667 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Su, .Su, .Sl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r667 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r668 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Sl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r668 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r669 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Sl, .Sl, .Kl, .Ku])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r669 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r670 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.Ku, .Ku, .Ku, .Kl, .Su, .Ku, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r670 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r671 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Ku, .Ku, .Kl, .Su, .Ku, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.Ku, .Kl, .Su, .Ku, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r671 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r672 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Ku, .Kl, .Su, .Ku, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .Ku, .Kl, .Su, .Ku, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r672 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r673 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Ku, .Kl, .Su, .Ku, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Ku, .Kl, .Su, .Ku, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r673 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
 def r674 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r4, r0, r412, r326, r508, r313, r662, r563, r518, r519, r516, r311, r511, r512, r513, r514,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r4, r0, r412, r326, r508, r313, r662, r563, r518, r519, r516, r311, r511, r512, r513, r514,
     r515, r663, r134, r664, r130, r665, r138, r666, r667, r668, r669, r670, r671, r672, r673]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .S₀]
-    [.i, .i, .K₀, .K₁, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀]
-    [(50, 36399775948613937621831316390368313274769050156723743988434626787499337292346225743424067908361267259499563307965524218700327164257856573269694255430037362442863863943840394531637980233068353944498226984887131953138345968306389910657064853652059756675492404095169734247869936509926245124271524214077735373269354555042249703656623557494417382437940580249126073014503342080)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(50, 652189580012276816466243909835387149120326003803163444666824765553729289304695235374043379454537644104640404701259896305320522574383378437674696321903197875476853751826455592502036753247940397613298263453298206276378002028469819984227387933885112020005302143094497425870108746832373752040968686954526902823565318769922237601331873191559350947456182671832988071849540845494547142982559457934954112893619921303209177960865537269347215602009006007233266810645160848374903078912)] (by decide +kernel)
 
 
-def r675 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Ku, .Su, .Sl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Ku, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r675 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r676 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Ku, .Su, .Sl, .Sl, .Kl, .Ku])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Ku, .Su, .Su, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r676 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Ku])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Ku, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
 end QCert.CliffordCS3.Cert

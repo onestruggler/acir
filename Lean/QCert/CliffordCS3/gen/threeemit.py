@@ -17,11 +17,11 @@ from twoemit import AXNAME
 ROOT = Path(__file__).resolve().parent.parent
 CACHE = ROOT.parents[1] / '.handover-scratch/cs3/phase-c-current.pkl'
 FMT = dict(zip(['i', 'K0', 'K1', 'K2', 'S0', 'S1', 'S2', 'C01', 'C12'],
-               ['.i', '.K₀', '.K₁', '.K₂', '.S₀', '.S₁', '.S₂', '.CS₀₁', '.CS₁₂']))
+               ['Gen.i', 'Gen.K₀', 'Gen.K₁', 'Gen.K₂', 'Gen.S₀', 'Gen.S₁', 'Gen.S₂', 'Gen.CS₀₁', 'Gen.CS₁₂']))
 
 
 def word2(w):
-    return '(FreeMonoid.ofList [' + ', '.join('.' + z for z in w) + '])'
+    return '(FreeMonoid.ofList [' + ', '.join('Two.Gen2.' + z for z in w) + '])'
 
 
 def ax_term(nm):
@@ -58,6 +58,15 @@ def needed(T, targets):
     return sorted(seen)
 
 
+def write_source(path, content):
+    """Replace generated sources atomically, also on Windows-mounted trees."""
+    if path.exists() and path.read_text(encoding='utf-8') == content:
+        return
+    tmp = path.with_suffix(path.suffix + '.tmp')
+    tmp.write_text(content, encoding='utf-8', newline='\n')
+    tmp.replace(path)
+
+
 def dependency_imports(dest):
     """Allow derivation batches to overlap the independent pair checks."""
     files = sorted(dest.glob('Pair*.lean')) + sorted(dest.glob('Part*.lean'))
@@ -80,8 +89,7 @@ def dependency_imports(dest):
         imports = ['import QCert.CliffordCS3.Cert.Part%03d' % (i - 1)]
         imports += ['import QCert.CliffordCS3.Cert.Pair%03d' % j for j in sorted(lanes.values())]
         content = source[:source.index('import ')] + '\n\n'.join(imports) + '\n\n' + body
-        if content != source:
-            path.write_text(content, encoding='utf-8', newline='\n')
+        write_source(path, content)
 
 
 def main(per=600):
@@ -117,22 +125,17 @@ def main(per=600):
             wl = word2([PAIR[pair][z] for z in el])
             wr = word2([PAIR[pair][z] for z in er])
             return ('Rule.ofDerivable _ _ (Two.derivable_embed %d '
-                    '(Two.derivable_of_check2 (w := %s) (v := %s) (by decide +kernel)))'
+                    '(Two.Fast.derivable_of_check (w := %s) (v := %s) (by decide +kernel)))'
                     % (pair, wl, wr))
         assert j[0] == 'face', j
         _, s, x, u, v, _ = j
         tag = 'face%d%d' % (s, x)
         return ('Rule.ofDerivable _ _ ((rs_claimB %s %s_hb '
-                '(Two.derivable_of_check2 (w := %s) (v := %s) (by decide +kernel))) false).2'
+                '(Two.Fast.derivable_of_check (w := %s) (v := %s) (by decide +kernel))) false).2'
                 % (tag, tag, word2(u), word2(v)))
 
-    adjusted = {}
-    original_steps = steps
-    def checked_steps(k):
-        return adjusted[k] if k in adjusted else original_steps(k)
-
     R = RuleEmitter('r', 'Rule Rel', 'gcode3_bounds', 'gcode3_inj',
-                    lambda z: FMT[z], lambda k: expanded(A, k), checked_steps, leaf)
+                    lambda z: FMT[z], lambda k: expanded(A, k), steps, leaf, wide=True)
 
     def face_code(s, x):
         F = faces[s, x]
@@ -190,33 +193,11 @@ def main(per=600):
             if j[0] == 'face' and j[1:3] not in emitted_faces:
                 src.append(face_code(*j[1:3]))
                 emitted_faces.add(j[1:3])
-            st = original_steps(k)
-            if st is not None and any(pos >= 4096 for pos, _, _ in st):
-                current = expanded(A, k)[0]
-                fixed = []
-                for si, (pos, ref, forward) in enumerate(st):
-                    lref, rref = expanded(A, ref)
-                    if pos >= 4096:
-                        aux = ('context', k, si)
-                        nm = 'r%d_ctx%d' % (k, si)
-                        src.append('def %s : Rule Rel := Rule.ofDerivable _ _ '
-                                   '((Derivable.refl (FreeMonoid.ofList %s)).mul %s.sound)' %
-                                   (nm, R.word(current[:pos]), R.name(ref)))
-                        R.names[aux] = nm
-                        fixed.append((0, aux, forward))
-                    else:
-                        fixed.append((pos, ref, forward))
-                    old, new = (lref, rref) if forward else (rref, lref)
-                    assert current[pos:pos+len(old)] == old
-                    current = current[:pos]+new+current[pos+len(old):]
-                assert current == expanded(A,k)[1]
-                adjusted[k] = fixed
             src.append(R.emit(k))
         src.append('end QCert.CliffordCS3.Cert\n')
         path = dest / (mod + '.lean')
         content = '\n\n'.join(src)
-        if not path.exists() or path.read_text(encoding='utf-8') != content:
-            path.write_text(content, encoding='utf-8', newline='\n')
+        write_source(path, content)
     print('rules', len(live), 'parts', pi + 1, 'pair batches', npairs, 'missing', len(missing), flush=True)
     dependency_imports(dest)
     (CACHE.parent / 'cert-modules.txt').write_text('\n'.join(mod for mod, _, _ in batches))

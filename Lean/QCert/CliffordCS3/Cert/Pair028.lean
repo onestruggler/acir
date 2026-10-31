@@ -8,1204 +8,1204 @@ set_option maxHeartbeats 0
 
 namespace QCert.CliffordCS3.Cert
 
-def r37435 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .CS, .CS, .Kl, .i, .Ku, .CS, .CS, .Ku, .i, .Kl, .CS, .CS, .Kl, .i, .Sl, .Kl, .CS, .CS, .Kl, .i, .Ku, .CS, .CS, .Ku, .i, .Kl, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.Su])) (by decide +kernel)))
+def r37435 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i, Two.Gen2.Ku, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Ku, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r37448 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r37448 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37449 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r37449 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r37451 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37451 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37452 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .i])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r37452 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37514 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su])) (by decide +kernel)))
+def r37514 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r37515 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su])) (by decide +kernel)))
+def r37515 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r37516 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37516 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37517 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Su, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37517 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37518 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37518 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37519 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37519 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37520 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37520 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37521 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.CS, .CS, .Kl])) (by decide +kernel)))
+def r37521 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37522 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .CS, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37522 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37523 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su])) (by decide +kernel)))
+def r37523 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r37533 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r37533 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37538 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37538 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37539 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r37539 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37540 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37540 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37541 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37541 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37542 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .CS, .CS, .Kl, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37542 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37543 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r37543 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37544 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .CS, .CS])) (by decide +kernel)))
+def r37544 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37575 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r37575 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37579 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .CS, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Sl, .CS])) (by decide +kernel)))
+def r37579 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37580 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .CS, .Kl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r37580 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37583 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .CS, .CS, .CS, .Kl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37583 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37584 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37584 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37592 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37592 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37593 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37593 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37595 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su])) (by decide +kernel)))
+def r37595 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r37596 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su])) (by decide +kernel)))
+def r37596 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r37607 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37607 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37609 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .CS, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37609 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37610 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37610 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37611 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37611 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37612 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .CS, .Kl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Kl, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37612 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37615 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .CS, .CS])) (by decide +kernel)))
+def r37615 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37616 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37616 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37630 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Su, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37630 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37631 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37631 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37632 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .CS, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37632 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37633 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .CS, .CS, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37633 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37634 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .Kl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r37634 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37635 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .CS, .CS])) (by decide +kernel)))
+def r37635 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37650 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r37650 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37651 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .Kl, .Sl, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r37651 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37656 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37656 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37666 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r37666 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37673 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r37673 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37674 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r37674 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37676 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r37676 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37677 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37677 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37678 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r37678 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37679 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r37679 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37680 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r37680 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37682 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r37682 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37684 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .CS, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r37684 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37686 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .CS, .Kl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .CS, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r37686 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37689 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r37689 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37692 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .CS, .Kl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r37692 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37693 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .CS, .Kl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r37693 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37695 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .CS, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r37695 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r37710 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .CS, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r37710 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r37712 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .CS, .CS, .CS, .Kl, .Sl, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .CS, .CS, .CS, .Kl, .Sl, .CS])) (by decide +kernel)))
+def r37712 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37713 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .CS, .CS, .CS, .Kl, .Sl, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .CS, .CS, .CS, .Kl, .Sl, .CS, .Kl])) (by decide +kernel)))
+def r37713 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37715 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .Kl, .CS, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .CS, .Kl, .CS, .CS, .CS])) (by decide +kernel)))
+def r37715 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37716 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .CS, .Kl, .CS, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .CS, .Kl, .CS])) (by decide +kernel)))
+def r37716 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37722 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .CS, .CS, .Kl, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37722 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37723 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .CS, .CS, .CS])) (by decide +kernel)))
+def r37723 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37725 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .CS, .Kl, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .CS, .Kl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r37725 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37726 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .CS, .Kl, .Sl, .Kl, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .Sl, .CS, .Kl, .CS])) (by decide +kernel)))
+def r37726 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37727 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .Sl, .CS, .Kl, .CS, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .Sl, .CS, .Kl, .CS])) (by decide +kernel)))
+def r37727 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37728 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .Sl, .CS, .Kl, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .Kl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r37728 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37730 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .CS, .Kl, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Su, .Su, .Sl, .Kl, .CS, .Kl, .CS])) (by decide +kernel)))
+def r37730 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37736 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .CS])) (by decide +kernel)))
+def r37736 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37741 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .Kl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .Kl])) (by decide +kernel)))
+def r37741 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37745 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Sl, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl, .Sl, .CS])) (by decide +kernel)))
+def r37745 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37746 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .CS, .Kl])) (by decide +kernel)))
+def r37746 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37747 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .CS])) (by decide +kernel)))
+def r37747 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37748 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37748 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37754 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .CS, .CS, .CS])) (by decide +kernel)))
+def r37754 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37772 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .CS, .CS])) (by decide +kernel)))
+def r37772 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37773 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su])) (by decide +kernel)))
+def r37773 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r37783 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .CS, .Kl, .Sl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .Su, .Su, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r37783 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37789 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Sl, .Kl, .CS, .Kl])) (by decide +kernel)))
+def r37789 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37790 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Sl, .Kl, .CS, .Kl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r37790 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37799 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .CS, .Kl, .Sl, .Sl, .Kl, .CS])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r37799 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37803 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .CS, .CS, .Kl, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .CS, .CS, .Kl, .CS, .Kl])) (by decide +kernel)))
+def r37803 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37804 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .CS, .CS, .Kl, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Su, .Su, .CS, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37804 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37807 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .CS, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .CS, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37807 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37812 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .i])) (v := (FreeMonoid.ofList [.Su, .Su, .Su])) (by decide +kernel)))
+def r37812 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su])) (by decide +kernel)))
 
 
-def r37817 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r37817 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37820 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Sl, .Kl, .CS, .CS])) (by decide +kernel)))
+def r37820 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37822 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Sl, .Sl, .Kl, .CS, .CS])) (by decide +kernel)))
+def r37822 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37823 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .CS, .CS, .Kl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37823 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37833 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .Sl, .Kl, .CS, .Kl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .CS])) (by decide +kernel)))
+def r37833 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37841 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.CS, .Kl, .CS, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37841 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37842 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .Kl, .CS, .CS, .CS, .Kl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .Kl, .CS, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r37842 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37843 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .CS, .CS, .Kl, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r37843 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37858 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r37858 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r37862 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .Sl, .Kl, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r37862 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37864 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r37864 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37865 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r37865 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37887 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .CS, .Su])) (v := (FreeMonoid.ofList [.i, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .CS])) (by decide +kernel)))
+def r37887 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37891 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37891 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37892 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .CS, .CS, .Kl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r37892 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37893 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .CS, .CS, .Kl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37893 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37905 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .CS, .Kl, .Sl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .CS, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r37905 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37934 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r37934 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37935 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS, .CS])) (by decide +kernel)))
+def r37935 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37946 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Sl, .CS, .Kl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r37946 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37947 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .CS, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r37947 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37949 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37949 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37950 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .Kl, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37950 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37951 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .Kl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .Kl, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r37951 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37956 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Sl, .Kl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37956 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37971 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Sl, .CS, .CS, .CS])) (by decide +kernel)))
+def r37971 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r37982 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37982 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37983 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37983 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37984 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37984 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r37985 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r37985 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38005 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Sl, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .Sl, .CS, .Kl])) (by decide +kernel)))
+def r38005 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38007 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38007 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38018 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .CS, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .CS, .Kl])) (by decide +kernel)))
+def r38018 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38019 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .CS, .CS, .Kl, .CS, .Kl])) (by decide +kernel)))
+def r38019 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38021 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .Kl])) (by decide +kernel)))
+def r38021 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38033 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38033 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38035 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38035 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38038 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38038 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38041 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .Kl, .Sl, .Sl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38041 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38042 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Kl, .Sl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38042 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38045 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38045 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38047 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38047 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38051 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38051 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38056 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38056 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38057 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38057 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38058 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38058 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38061 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38061 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38063 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38063 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38066 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38066 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38069 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38069 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38070 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38070 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38086 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .Sl, .CS, .Kl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r38086 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38087 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .Sl, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38087 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38095 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Kl, .CS, .Kl, .Sl, .CS, .i])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .CS, .Kl, .Sl, .CS])) (by decide +kernel)))
+def r38095 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38104 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Su, .Sl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38104 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38105 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .CS, .CS, .Kl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Su, .Su, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38105 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38118 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38118 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38119 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Sl, .CS, .CS, .Kl, .CS, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r38119 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38120 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .Sl, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38120 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38122 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .CS, .CS, .Kl, .CS, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38122 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38129 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .CS, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38129 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38133 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r38133 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38137 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38137 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38138 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38138 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38139 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38139 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38140 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38140 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38141 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .CS, .CS, .Kl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38141 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38142 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38142 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38143 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38143 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38144 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38144 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38145 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38145 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38156 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38156 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38159 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .Sl, .CS, .Kl, .Sl, .Kl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38159 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38175 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .Kl, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .Sl, .CS, .Kl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r38175 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38189 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Sl, .Kl, .CS, .Kl, .Sl, .Sl, .CS, .Sl])) (v := (FreeMonoid.ofList [.Su, .Su, .CS, .Kl, .CS, .Kl])) (by decide +kernel)))
+def r38189 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38194 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r38194 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38195 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r38195 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38196 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .CS, .CS, .Kl, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r38196 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38198 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .CS, .CS, .Kl, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .CS, .CS, .Kl, .Sl, .CS])) (by decide +kernel)))
+def r38198 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38199 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .CS, .CS, .Kl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38199 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38201 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38201 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38203 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38203 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38204 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38204 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38205 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38205 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38207 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38207 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38208 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38208 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38211 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38211 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38212 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .CS, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.i, .Su, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38212 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38227 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .CS, .Kl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .CS, .Kl])) (by decide +kernel)))
+def r38227 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38234 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38234 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38235 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl, .Sl, .Kl, .CS, .Kl])) (by decide +kernel)))
+def r38235 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38237 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .CS, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .CS, .CS, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38237 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38249 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .CS, .Kl, .Sl, .Sl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38249 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38265 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38265 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38266 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Kl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38266 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38269 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38269 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38272 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38272 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38273 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38273 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38274 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38274 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38275 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38275 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38278 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38278 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38279 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r38279 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38281 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38281 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38282 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38282 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38283 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Sl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r38283 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38284 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38284 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38287 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38287 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38289 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38289 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38291 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38291 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38294 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Sl, .Kl, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38294 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38299 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl, .Sl, .Kl, .Sl, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .CS, .Kl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38299 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38303 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .CS, .Kl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .CS, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38303 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38304 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .CS, .CS, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .CS, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38304 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38305 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .CS, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .CS, .CS, .CS])) (by decide +kernel)))
+def r38305 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38310 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Su, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38310 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38315 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38315 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38336 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38336 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38337 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38337 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38338 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38338 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38355 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.CS, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38355 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38356 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .CS, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.i, .i, .CS, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38356 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38357 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .CS, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS, .CS])) (by decide +kernel)))
+def r38357 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38358 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .CS, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .Kl, .Sl, .CS, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38358 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38366 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Sl, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .i])) (v := (FreeMonoid.ofList [.Su, .Su, .Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38366 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38373 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .CS, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38373 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38375 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r38375 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38376 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .Sl, .CS])) (by decide +kernel)))
+def r38376 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38377 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .CS, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38377 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38389 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .CS, .Kl, .CS, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .Kl, .Sl, .CS, .Kl, .Sl, .CS])) (by decide +kernel)))
+def r38389 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38392 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .Kl, .Sl, .CS, .CS, .Kl, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .CS, .Kl, .Sl, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r38392 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38393 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .CS, .Kl, .Sl, .CS, .CS, .Kl, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .CS, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .CS])) (by decide +kernel)))
+def r38393 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38414 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .CS, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38414 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38415 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .CS, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .Sl, .CS, .CS, .CS])) (by decide +kernel)))
+def r38415 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38430 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .Sl, .Kl, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38430 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38431 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38431 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38432 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .CS, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38432 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38433 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .CS, .CS, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38433 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38434 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .CS, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38434 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38440 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .CS, .CS, .Kl, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .CS, .Kl])) (by decide +kernel)))
+def r38440 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38441 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .Kl])) (by decide +kernel)))
+def r38441 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38442 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .Sl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .Kl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38442 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38451 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38451 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38466 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .Kl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38466 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38467 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .Kl, .Sl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38467 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38468 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .Kl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .CS, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38468 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38470 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Su, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38470 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38471 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38471 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38479 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38479 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38489 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .CS])) (by decide +kernel)))
+def r38489 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38498 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .CS, .Kl, .Sl, .Sl, .Kl, .Sl, .Sl, .CS])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .Sl, .Sl, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38498 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38500 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .Sl, .Sl, .Kl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Su, .Sl, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38500 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38501 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Su, .Sl, .Kl, .Sl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38501 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38504 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .Sl, .Sl, .Sl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38504 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38507 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .CS, .CS, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38507 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38508 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .CS, .CS, .Kl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38508 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38537 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .CS, .Kl, .Sl, .CS, .Kl, .Sl, .Sl, .CS])) (v := (FreeMonoid.ofList [.Su, .Sl, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38537 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38551 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Su, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38551 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38552 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38552 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38553 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38553 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38554 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38554 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38555 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38555 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38556 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38556 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38558 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl])) (by decide +kernel)))
+def r38558 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38580 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38580 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38599 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .CS, .Kl, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38599 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38602 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Su, .Su, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38602 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38603 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .Sl, .Sl, .Kl, .CS])) (v := (FreeMonoid.ofList [.i, .Su, .Su, .Su, .Sl, .Sl, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38603 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38610 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .CS, .CS, .Kl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .CS, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38610 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38611 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .CS, .CS, .CS, .Kl, .Sl, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .CS, .Kl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38611 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38612 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .CS, .Kl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .CS, .Kl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38612 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38616 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Sl, .Sl, .CS, .Kl, .Sl, .Sl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r38616 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38618 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Sl, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38618 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38619 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .Kl, .CS, .Kl, .Sl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r38619 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38620 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Sl, .Kl, .Sl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r38620 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38625 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .Sl, .CS, .Kl, .Sl, .Kl, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .CS, .Kl, .CS])) (by decide +kernel)))
+def r38625 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38627 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r38627 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38628 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .Kl, .Sl, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .Kl])) (by decide +kernel)))
+def r38628 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38631 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Kl, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r38631 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38636 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38636 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38638 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38638 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38650 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .CS, .Kl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r38650 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38655 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Sl, .CS, .Kl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Sl, .CS, .Kl])) (by decide +kernel)))
+def r38655 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38658 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .CS, .CS, .Kl, .Sl, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38658 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38661 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38661 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38662 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38662 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38664 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38664 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38667 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .CS, .CS, .Kl, .CS, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r38667 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38674 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38674 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38685 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Sl, .Sl, .Kl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38685 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38704 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r38704 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38713 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38713 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38730 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Su, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38730 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38731 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Su, .Sl, .CS, .CS, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38731 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38735 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Kl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38735 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38736 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38736 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38737 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38737 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38738 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38738 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38740 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .CS, .CS, .Kl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38740 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38741 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .CS, .CS, .Kl, .CS, .CS, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38741 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38743 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38743 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38762 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38762 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38764 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r38764 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38775 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38775 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38776 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38776 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38778 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Sl, .Kl, .CS, .CS, .CS, .Kl, .Sl, .CS, .Kl])) (by decide +kernel)))
+def r38778 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38791 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .CS, .CS, .Kl, .Sl, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .CS, .Kl, .Sl, .CS, .Kl])) (by decide +kernel)))
+def r38791 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38792 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .CS, .Kl, .Sl, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Sl, .Kl, .CS, .CS, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38792 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38794 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .CS, .CS, .CS, .Kl, .Sl, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .CS, .CS, .Kl, .Sl, .CS, .Kl])) (by decide +kernel)))
+def r38794 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38798 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.CS, .CS, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Su, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r38798 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38799 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .Sl, .Kl, .Sl])) (by decide +kernel)))
+def r38799 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38810 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .Sl])) (by decide +kernel)))
+def r38810 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38821 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .CS, .CS, .Kl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38821 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38822 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38822 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38837 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .CS, .CS, .Kl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38837 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38838 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Su, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38838 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38839 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Su, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38839 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38840 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Su, .Sl, .Sl])) (by decide +kernel)))
+def r38840 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38841 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38841 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38842 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Su, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Sl, .Kl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38842 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38843 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38843 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38844 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38844 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38845 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38845 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38846 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38846 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38847 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.i, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38847 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38848 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38848 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38849 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38849 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38850 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38850 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38851 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Su, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38851 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38852 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38852 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38853 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38853 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38854 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .CS, .CS, .CS, .Kl, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .CS, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r38854 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38855 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38855 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38856 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38856 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38857 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .CS, .CS])) (by decide +kernel)))
+def r38857 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38858 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS])) (by decide +kernel)))
+def r38858 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38859 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .CS, .Kl])) (by decide +kernel)))
+def r38859 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38860 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38860 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38861 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38861 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38862 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38862 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38863 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38863 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38864 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .CS, .Kl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38864 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38865 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .Kl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .Kl])) (by decide +kernel)))
+def r38865 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38866 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .Kl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38866 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38867 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .CS, .Kl, .Sl, .Kl, .CS, .i])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .CS, .Kl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r38867 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38868 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .CS, .Kl, .Sl, .Kl, .CS, .Su])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .CS, .Kl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r38868 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38869 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .CS, .Kl, .Sl, .Kl, .CS, .Su])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .CS, .CS, .CS, .Kl, .Sl, .CS])) (by decide +kernel)))
+def r38869 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38870 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .CS, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38870 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38871 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Sl, .CS, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .CS, .CS, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38871 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38872 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .CS, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .CS, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38872 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38873 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl])) (by decide +kernel)))
+def r38873 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38874 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .Sl, .Sl, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38874 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38875 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .Sl, .Sl, .Kl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38875 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38876 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Sl, .CS, .CS, .CS, .Kl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .Kl, .Sl, .Sl, .CS, .Kl])) (by decide +kernel)))
+def r38876 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38877 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38877 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38878 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38878 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38879 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38879 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38880 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .Su, .Su, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38880 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38881 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Su, .Sl, .CS, .CS, .Kl, .Sl, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38881 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38882 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .CS, .CS, .CS, .Kl, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Kl, .CS, .CS, .CS, .Kl, .CS])) (by decide +kernel)))
+def r38882 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38883 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .CS, .CS])) (by decide +kernel)))
+def r38883 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38884 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl])) (by decide +kernel)))
+def r38884 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38885 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38885 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38888 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.i, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38888 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38889 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl])) (by decide +kernel)))
+def r38889 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38890 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38890 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38891 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38891 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38892 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38892 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38893 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38893 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38894 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38894 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38895 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Su, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38895 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38896 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38896 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38897 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.Su, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38897 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38898 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl])) (by decide +kernel)))
+def r38898 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38899 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .Su])) (v := (FreeMonoid.ofList [.Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38899 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38900 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38900 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38901 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38901 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38902 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38902 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38903 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .i])) (v := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38903 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38904 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .CS, .Kl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38904 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38905 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .Kl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38905 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38906 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Sl, .Sl, .Kl, .Sl, .Sl, .Kl, .CS, .Kl, .CS, .CS, .Kl])) (v := (FreeMonoid.ofList [.Sl, .Kl, .Sl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .CS])) (by decide +kernel)))
+def r38906 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38907 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Su, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38907 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38908 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38908 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38909 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Su, .Sl, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38909 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38910 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .Sl])) (v := (FreeMonoid.ofList [.i, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38910 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38911 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Sl, .CS, .CS, .Kl, .Sl, .Sl, .Kl, .CS])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .CS, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38911 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38912 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Sl, .CS, .Kl, .Sl, .Sl, .Kl, .CS])) (v := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Sl, .Kl, .Sl, .Sl, .Kl])) (by decide +kernel)))
+def r38912 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38913 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .Kl, .Sl, .Sl, .Sl, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .Kl])) (by decide +kernel)))
+def r38913 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38914 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .Kl, .CS, .Kl, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .Kl, .CS, .Kl, .Sl, .CS])) (by decide +kernel)))
+def r38914 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38915 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .Kl, .CS, .Kl, .Sl, .CS, .Kl, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .Kl])) (by decide +kernel)))
+def r38915 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38916 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .Kl, .i])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .Kl])) (by decide +kernel)))
+def r38916 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl])) (by decide +kernel)))
 
 
-def r38917 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS])) (by decide +kernel)))
+def r38917 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38918 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl, .Kl, .i])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38918 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38919 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl, .Kl, .CS, .CS, .Kl, .Sl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Sl, .Kl, .Sl, .Sl, .CS, .CS, .Kl, .Sl])) (by decide +kernel)))
+def r38919 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38920 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38920 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38921 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38921 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38922 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .CS, .CS, .CS, .Kl, .CS, .CS, .Kl, .Kl])) (v := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .CS, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38922 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Kl])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38923 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .i, .Su, .Su, .Su, .CS, .Kl, .Sl, .Sl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.Kl, .Sl, .Sl, .Kl, .CS, .CS, .CS, .Kl, .CS, .CS])) (by decide +kernel)))
+def r38923 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Kl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38924 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.i, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .i])) (v := (FreeMonoid.ofList [.i, .i, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38924 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.i, Two.Gen2.i, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38925 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Su, .Sl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38925 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38926 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Sl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38926 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38927 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Sl, .Sl, .CS, .CS, .Su])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38927 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38928 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl, .Sl, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38928 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38929 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl, .Sl, .Sl, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .CS, .CS])) (by decide +kernel)))
+def r38929 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38930 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .CS, .CS, .Sl])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl, .CS, .CS])) (by decide +kernel)))
+def r38930 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.Sl])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS])) (by decide +kernel)))
 
 
-def r38931 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl, .CS, .CS, .CS, .CS])) (v := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl])) (by decide +kernel)))
+def r38931 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS, Two.Gen2.CS])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38932 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Kl, .Kl, .Su, .Su, .Sl, .i])) (v := (FreeMonoid.ofList [.Kl, .Su, .Su, .Sl])) (by decide +kernel)))
+def r38932 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.i])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl])) (by decide +kernel)))
 
 
-def r38933 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.derivable_of_check2 (w := (FreeMonoid.ofList [.Kl, .Su, .Su, .Su, .Sl, .Su])) (v := (FreeMonoid.ofList [.Kl, .Sl])) (by decide +kernel)))
+def r38933 : Rule Rel := Rule.ofDerivable _ _ (Two.derivable_embed 0 (Two.Fast.derivable_of_check (w := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Su, Two.Gen2.Sl, Two.Gen2.Su])) (v := (FreeMonoid.ofList [Two.Gen2.Kl, Two.Gen2.Sl])) (by decide +kernel)))
 
 
 end QCert.CliffordCS3.Cert

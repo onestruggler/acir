@@ -10,6 +10,24 @@ evaluator changes build successfully as well. Validation logs are
 `.lake-full-final.log` (4204 jobs). The Clifford+CS README gives the
 regeneration commands. The notes below are historical.
 
+**Performance update, 2026-10-31:** the Clifford+CS certificates now use
+the proved direct Gaussian-integer evaluator in `Two/FastCheck.lean` and
+32-bit rewrite steps in `Replay.lean`, avoiding expanded two-level gates
+and copied long prefixes. All 58 certificate modules plus `Code` and
+`Cosets` rebuilt in 1240.25 seconds (20 minutes 40 seconds; other
+dependencies cached), versus the earlier recorded run of about 51
+minutes. A controlled 400-equation comparison was 181.95 → 16.12 seconds;
+the final batch's Lake build was 740 → 428 seconds. The generator emits
+explicit constructor names and replaces generated sources atomically.
+The build log is `.handover-scratch/cs3/optimized-cert-build.log`.
+The follow-up audit passed all 105 declarations with only `propext`,
+`Classical.choice` and `Quot.sound` (4205 jobs, 163.96 seconds), and the
+full library build passed (4206 jobs, 12.52 seconds). Their logs are
+`optimized-audit.log` and `optimized-full.log` in the same scratch folder.
+The remaining bottleneck is the sequential rewrite batches: every
+`PartNNN` uses results from the preceding batch. Further parallelism
+requires restructuring the dependencies between individual rules.
+
 State of the Lean formalization of Table 1 of `qcert.pdf`, written when the
 Claude session that ran eight parallel work streams on 2026-10-28 stopped (all
 of its agents hit the account's session limit around 19:30). Someone else

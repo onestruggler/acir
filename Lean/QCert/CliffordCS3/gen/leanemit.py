@@ -1,21 +1,24 @@
-"""Lean emission helpers: word literals, packed certificates (`QCert.CliffordT2.FastRewrite`:
-a step is 2 (4096 pos + rule) + dir, 25 bits, chunks of at most 2000 steps), and rule tables."""
+"""Lean emission helpers: word literals, packed certificates and rule tables.
+
+A step is 2 (4096 pos + rule) + dir, in 25 bits (FastRewrite), or 32 bits
+(CliffordCS3.Replay) for long words, in chunks of at most 2000 steps.
+"""
 
 CHUNK = 2000
 import sys
 sys.set_int_max_str_digits(0)
 
 
-def pack(steps):
+def pack(steps, bits=25):
     """steps: [(pos, rule_index, forward)] -> [(n, code)] chunks."""
     out = []
     for i in range(0, len(steps), CHUNK):
         ch = steps[i:i + CHUNK]
         code = 0
         for j, (p, r, d) in enumerate(ch):
-            assert p < 4096 and r < 4096, (p, r)
+            assert 0 <= p < 2 ** (bits - 13) and 0 <= r < 4096, (p, r)
             s = 2 * (4096 * p + r) + (1 if d else 0)
-            code |= s << (25 * j)
+            code |= s << (bits * j)
         out.append((len(ch), code))
     return out
 
@@ -51,7 +54,8 @@ class RuleEmitter:
     sides(k) -> (lhs, rhs) on the emitted alphabet; steps(k) -> [(pos, k', fwd)] on it (or
     None for an axiom); axiom(k) -> a Lean term of type `Rule Γ`."""
 
-    def __init__(self, prefix, rule_type, bounds, inj, fmt_letter, sides, steps, axiom):
+    def __init__(self, prefix, rule_type, bounds, inj, fmt_letter, sides, steps, axiom,
+                 wide=False):
         self.prefix = prefix
         self.rule_type = rule_type
         self.bounds = bounds
@@ -61,6 +65,7 @@ class RuleEmitter:
         self.steps = steps
         self.axiom = axiom
         self.names = {}
+        self.wide = wide
 
     def word(self, w):
         return '[' + ', '.join(self.fmt_letter(a) for a in w) + ']'
@@ -85,6 +90,8 @@ class RuleEmitter:
             packed.append((p, idx[kk], d))
         l, r = self.sides(k)
         reflist = wrap(', '.join(self.names[kk] for kk in refs), 4)
-        return ('def %s : %s :=\n  Rule.byChunks %s %s [%s]\n    %s\n    %s\n    %s (by decide +kernel)\n'
-                % (nm, self.rule_type, self.bounds, self.inj, reflist,
-                   wrap(self.word(l), 4), wrap(self.word(r), 4), fmt_chunks(pack(packed))))
+        replay = 'Rule.byWideChunks' if self.wide else 'Rule.byChunks'
+        return ('def %s : %s :=\n  %s %s %s [%s]\n    %s\n    %s\n    %s (by decide +kernel)\n'
+                % (nm, self.rule_type, replay, self.bounds, self.inj, reflist,
+                   wrap(self.word(l), 4), wrap(self.word(r), 4),
+                   fmt_chunks(pack(packed, 32 if self.wide else 25))))

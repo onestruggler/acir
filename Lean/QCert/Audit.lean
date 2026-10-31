@@ -32,6 +32,8 @@ import QCert.RealCliffordCH.Sec8.D.W4.ConjCommBase
 #print axioms QCert.CliffordCS3.rsData
 #print axioms QCert.CliffordCS3.Cosets.hyp_a
 #print axioms QCert.CliffordCS3.Cosets.hyp_b
+#print axioms QCert.CliffordCS3.Two.Fast.derivable_of_check
+#print axioms QCert.runWideChunks_sound
 #print axioms QCert.RealCliffordCH.presentation
 #print axioms QCert.ToffoliHadamard.theorem_5_2
 #print axioms QCert.ToffoliHadamard.rK_independent

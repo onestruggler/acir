@@ -15,4001 +15,4619 @@ set_option maxHeartbeats 0
 namespace QCert.CliffordCS3.Cert
 
 def r687 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r6, r683, r136, r682, r140, r681, r138, r680, r134, r679, r678, r677, r676, r675, r130,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r6, r683, r136, r682, r140, r681, r138, r680, r134, r679, r678, r677, r676, r675, r130,
     r561, r546, r313, r520, r508, r329, r510, r563, r485, r684, r685, r674, r311, r686, r586]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .CS₀₁, .CS₀₁]
-    [.i, .i, .K₀, .K₁, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀]
-    [(47, 902291856498570955264192188725116918245697251156858474977775371831782612976754664431453926827566458210613313795444502400181263430276221359250501073584047966684072872933758872023262880784073891266020512929814677888890916882973615154550877637790979893983407941393481207729939658044218929038773736712598835635230158452524551107696251884599130783219712)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(47, 7709134612162024968192313309025082342837669906258978320586659766639467005272875578473934239345563986948999635538655286929597841396660584920859277391073306816932587734023861334786456370212059646045079239645461884426353422198118534497438265439962656299823097116631659358396313443553808286312329157966923394101491150215068527338513297005830499809300567438168152744798782925120986984178504301396419186049078652394394893825042076927983778474586275840)] (by decide +kernel)
 
 
 def r688 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
     [(1, 49152)] (by decide +kernel)
 
 
 def r689 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r524]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .S₂]
-    [.S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r524]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₂]
+    [Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r690 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r525]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .CS₁₂, .CS₁₂]
-    [.i, .K₁, .S₁, .K₁, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r525]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r691 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r508]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r508]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(2, 12884951040)] (by decide +kernel)
 
 
 def r694 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r483]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r483]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r695 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r280]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r280]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
     [(1, 40961)] (by decide +kernel)
 
 
 def r696 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285, r584, r695]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .K₂, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂, .CS₁₂,
-    .CS₁₂]
-    [(3, 92239349868182675456)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285, r584, r695]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(3, 1511249508238667901083648)] (by decide +kernel)
 
 
 def r697 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r286, r400]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r286, r400]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r698 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r0, r696, r289, r584, r590, r229, r485, r235, r597, r239, r484, r281, r157,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r0, r696, r289, r584, r590, r229, r485, r235, r597, r239, r484, r281, r157,
     r574, r129, r587, r588, r486, r487, r488, r108, r589]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(50, 29466418367630297330332861292031225871873054106439903939405798576835594026542216746268415060710360607096409581724716802411967082954776655521519268852789611076219912235493094048509413959255987905611373226950300532436105318538192336902281417374961985401615693200666011188168108712763719311017988391151417628977341399276158625739217978722724807081159484695204896429263814656)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(50, 527962983974961216611673503996896600360495339927868471871426230024403586324255653650891836628333569231325201761672914381258161823727303399811061060165186347109968058473460399244433698175733865569869729557121504744616756559463958356654810197027700095245776535719295720532610560297933885551314386034041989284581640945372984068674036454336816321442241686573506110519848526984575742090892408972775517856076485690124607275957895854538891396741536673745766754641186514585620840448)] (by decide +kernel)
 
 
 def r699 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r157, r281, r235, r484, r239, r597, r485, r229, r698, r696, r296, r584, r590, r573,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r157, r281, r235, r484, r239, r597, r485, r229, r698, r696, r296, r584, r590, r573,
     r695, r102, r179, r178, r122, r319]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(36, 251910785746048657053639672447503370607334705904437817946777363351064386234705289671731281043185741809988273016754190329881940556324605729744325827430626010024332013554464060164472282983678289170353509390923730573774007903657622498734741193339923885001394343641088)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(36, 14242792526559710801685152415480903320971184469313997021104589652543888725994087972650158495470871843182976707351022758026947831866837945542087866449405308477194133718738714292024384739819948825273814110628032419461914337317864125542812734679251197042212437480263781003241834910367798814938671801446525275687952432682570003097521909399552)] (by decide +kernel)
 
 
 def r702 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r688, r523, r324, r400, r460, r564]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
-    [(6, 2439611967047368071646870835726936166105088)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r688, r523, r324, r400, r460, r564]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(6, 83824426428630151463589481873350607173742888413560832)] (by decide +kernel)
 
 
 def r708 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r4, r529, r6, r704, r136, r703, r140, r638, r449, r130, r533, r532, r523, r338, r400,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r4, r529, r6, r704, r136, r703, r140, r638, r449, r130, r533, r532, r523, r338, r400,
     r396, r485, r597, r484, r281, r460, r318, r428, r429, r641, r705, r438, r706, r707]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂]
-    [(55, 1351626973857715799027247766013116564211932581526904401287418619053900253586363619555925465694681649078846960836130002527324257027290179538773747712395461752188532723494934025720042473409311380446169429142483785293303660938294815096755179397406894419962445944697642125342491283195955468318532927011793070274980445612558005817281058210323436411726870240647469732154327237808421223577939442352953772956142534656)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂]
+    [(55, 832137697696638479217349944907790227152638927708941211537300056188244143532447317709312080190301301510626357265621755045482081269562186312254920655476724930369576547271581123450089633910889107750676669319055191775504678290926087693402800768975324223814143963764092934195486077135095204601989211249114710636167481014817647750335095624293864637511318445692743402052989603369017996843455610647810624014151398122983058690847689053414319071248248774109205970472808054355907149396355124673345685179663447700099159727384798691328)] (by decide +kernel)
 
 
 def r714 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r4, r529, r6, r704, r136, r703, r140, r638, r449, r130, r533, r532, r523, r339, r397,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r4, r529, r6, r704, r136, r703, r140, r638, r449, r130, r533, r532, r523, r339, r397,
     r522, r138, r709, r400, r710, r711, r712, r656, r460, r318, r428, r429, r641, r705, r438, r706,
     r707, r439, r713, r540]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₀₁, .CS₀₁]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂]
-    [(61, 2560450408278440515782589768020253985238616080012539316130540394182201855651370010407972163051594145832190917003688046046101357479528621648375995590178338075145249693271126531694557410071671076120915831494380069804837856348001509395485052050084124930967886337586216082372457744713065592116881213872064721450960453177296628208737961162251346604159959002130527072188536420718429445627886257926936724575872621588043935077196199267184148691517670746245562368)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂]
+    [(61, 6932893599767573016084704029816520138799974433983187289439556354299859574352703024049598305447066468947990931308502646268125529147491973837015195182571612464577453562432661753067725445591522808900269959110174019576671891404248670998362751645849311370393490396054853252190698155484551054591362408003455499856113640612561475882306253382794310758339179696854005506465875193288236215462187881585733222116702874921743148078654109582326895497375508734042588691095654377470166743779268167563511875677032588962241754576268435545902491228067981194741948910379289171494288254052593599250432)] (by decide +kernel)
 
 
 def r722 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r0, r142, r140, r634, r138, r708, r529, r460, r400, r340, r523, r532, r533,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r0, r142, r140, r634, r138, r708, r529, r460, r400, r340, r523, r532, r533,
     r130, r449, r136, r638, r703, r704, r530, r715, r716, r717, r718, r448, r318, r428, r429, r442,
     r443, r444, r445, r446, r447, r719, r720, r721, r629, r630, r338, r631, r435, r436]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(88, 90092163216185610392392245803075084372549317746256046859074127626918775688990852382696549035998305329308858250835278771767806118053972741325743677539105200731578643735341285468080978628185300734624869392865873268649112811949257327276193704009782046697147253681824751179933092143671837909299311533374059806201477554178966884824889921652448600631021880213361233922214028334115298946755520326352643940765426948676998695972274405010369332018773284129309951046409909104018869089180097831324815160508743708301721263314040294012507888540870657779139525423326629847545843213489769417960294052762419312069346345317972390763647267690497293385508344983826225519262695424)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(88, 191405482923846041433696657533235305823905461757976736017518661423469108561139822276260964273950257564025254620088953526600222400467164022034590092812211771550063047411902527743649833696715539356936826475945291169968674250929770913880133668085203384581072298771637310103430175543062168311143391693084769926228069229956302966908551977732571355354112925505262977186587638121594124352288435157346124717187185821026984291128117609677979615589781820418917486231928861220194663119803315233632795877198748855568475337711922965671125309490996097832033662661896505783001033655143521614572578073127785280836022932075355368166531305112279994189546167366802878654412401580214965809133694401503575865097470914571289533755810081045262236474037962855406602794707343110758575302995424206338245988941358831250956576556242035095191088013042847500151853487751168)] (by decide +kernel)
 
 
 def r723 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r521]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r521]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r724 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r521]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r521]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r725 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r522]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r522]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r726 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r522]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r522]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r727 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r523]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r523]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r728 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r523]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r523]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r729 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r268, r544, r106]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(5, 6338872084506812036229126733824)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r268, r544, r106]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(5, 1701413132916591589737640866626215657472)] (by decide +kernel)
 
 
 def r730 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r729]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r729]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r731 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r276, r544]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r276, r544]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r732 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r544]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r544]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r733 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂]
     [(1, 49153)] (by decide +kernel)
 
 
 def r734 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r410]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r410]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(2, 12884951040)] (by decide +kernel)
 
 
 def r735 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r565]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₂]
-    [.S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r565]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₂]
+    [Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁]
+    [(2, 12884951040)] (by decide +kernel)
 
 
 def r736 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r734, r283, r410, r661]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .K₁]
-    [.K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂]
-    [(4, 264452528671849000730624)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r734, r283, r410, r661]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.K₁]
+    [Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(4, 554597137692084294638177878016)] (by decide +kernel)
 
 
 def r740 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r78, r5, r288, r410, r510, r661, r136, r424, r138, r425, r140, r426, r427, r142, r6, r77, r729,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r78, r5, r288, r410, r510, r661, r136, r424, r138, r425, r140, r426, r427, r142, r6, r77, r729,
     r737, r738, r739]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁]
-    [(28, 6113806544562118355570861662312515805949193964130578526335773538050513139003221514751844982571004484813893223234801615097745295334210539738906308667435690252656035312998564662124349753999560676762978418688)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁]
+    [(28, 4797123074261951579363004745571444994913099710455568542213796265480701004360323363612775210427877929790742615947096903994898659174373116053304941509713422853923221323459300996479663624003461733802961238478561357263068617815138609076571444332554897507338625810432)] (by decide +kernel)
 
 
 def r741 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r79, r566, r302, r410, r689, r175, r171, r288, r166, r366, r367]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [.i, .K₁, .S₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(20, 3196768070238462262045454672378835258154061437058088183657796713094833474779124056280577678913996126263040839370760287110916777955078325499026472960)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r79, r566, r302, r410, r689, r175, r171, r288, r166, r366, r367]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.S₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(20, 34809721773231465377258140408213824130488626129547278040505764750311165623246257152660254045459582964835668873172262722578749000351562728668239261904093090517418109834828568899727430516736)] (by decide +kernel)
 
 
 def r742 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r79, r566, r303, r734, r702, r175, r171, r288, r166, r366, r367, r398, r399, r351]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [.S₁, .K₁, .S₁, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(28, 3852795364177651982715450090236739522811426007145377182417094385281029305180974381303348993361588880079283558363869621011174209343737458098360860822414227328003296246407108965280037028174818667106976369999872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r79, r566, r303, r734, r702, r175, r171, r288, r166, r366, r367, r398, r399, r351]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(28, 3023048558208406404266694672974938971865139298586122969058464329256728608965731318518667665308812852284397641127213151857888907905329700514904907407696699431117527220753279626857529519838838972711007347938270458208098565223747285788582679694741102437011121082728448)] (by decide +kernel)
 
 
 def r743 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
     [(1, 49153)] (by decide +kernel)
 
 
 def r744 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312, r409]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₀]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312, r409]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r746 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r44]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r44]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀]
     [(1, 49153)] (by decide +kernel)
 
 
 def r747 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r315, r410, r412]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .S₁]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁]
-    [(3, 5629499634925568)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r315, r410, r412]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.S₁]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [(3, 92233720381432709120)] (by decide +kernel)
 
 
 def r754 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r4, r0, r747, r322, r410, r661, r412, r130, r449, r134, r138, r311, r511, r512, r513, r514,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r4, r0, r747, r322, r410, r661, r412, r130, r449, r134, r138, r311, r511, r512, r513, r514,
     r515, r516, r750, r751, r752, r753]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .S₀, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁]
-    [(26, 6265558887932311276505824636409654553924929807034505578252704200343769673589117990427920195250635638603163311974049653662672463674333448478129017793301328504771800511403552256292627815596032)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.S₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [(26, 300060649546351720317344240052445769102681877382779828126251166605314776461607055550799672399532398714047727012449611423656616890014185642107312845150595827086703597049643182515953265029093579949955690788931596847783839358532731967288083742720)] (by decide +kernel)
 
 
 def r768 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r4, r77, r0, r561, r76, r326, r409, r407, r136, r130, r276, r140, r484, r138, r547,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r4, r77, r0, r561, r76, r326, r409, r407, r136, r130, r276, r140, r484, r138, r547,
     r548, r549, r134, r550, r551, r552, r553, r554, r555, r556, r755, r756, r757, r758, r759, r760,
     r560, r761, r762, r763, r764, r765, r766, r767]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .S₀]
-    [.i, .i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(87, 13601295332499173441328591319986040778669578990846209768823147655911511628341160360299739551650239305208711881792692758813205060853534903185642562674887944081924353340262304351726316287235530902878562919350402492100150264163227507787193486997396719073839110913818398108966687295758337103813170722091773094913836723145393521914703934277812825101430986482439704143490228646409625598653363304590040353058645358507930603399822715964841802926454267279457312295281873579478133992763721813334488361122798409496280452084177242442546771082439897223578680775954543367186262153637806644178231366509372524186841805454713702277781663983266973647384341294214021120)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(87, 225749215359879101672936731944896841667316796210198197693124771526425873897095059909597487888566862024956203807347825178006917505988215685385015302568410839806340627916727641603095479587941814417737035702235329824366298954058399063201701178207111920535309144830268030283142022572217231000915366072306924745809114763126617519640324083726782111754395081132871923640153917492510177148424134053254866598579363883218574726011049494823637802621062085726022915091604194299962004186380241827234775779391867563370436880849581108945424796472084008394122242504842756211151725809958220330606433799273710571497074437496730227709147498036074265289471935630801278958839307302106654920996339431114824609101718709927338313864806486354793677695444767100458118089971778019769123082781617984421371391621658783262007412876891064506165422906928466493440)] (by decide +kernel)
 
 
 def r784 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r77, r4, r746, r6, r776, r136, r775, r140, r774, r773, r138, r772, r134, r771, r770,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r77, r4, r746, r6, r776, r136, r775, r140, r774, r773, r138, r772, r134, r771, r770,
     r769, r130, r517, r754, r338, r410, r510, r520, r485, r597, r547, r777, r679, r778, r779, r318,
     r428, r429, r641, r780, r781, r782, r783, r705]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀]
-    [(62, 95329742312208758147936702296051872844313521444771740896296025742363061406325652820961913916001139374427502750085368944566448987130914419515631912015567956197231376586113995317959435454300061590064580860202597815941027939695034735223888390852325246418227550194965641763275589725903080834982723840101953768182256519064266945371552524458122622713105656924351848251169219494327918986305598150133481779020804034535706048313391830512241379897569614956457596725231616)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀]
+    [(62, 33039734979330467425466396768794037502489669765631560312207612726343065292360548524278793185603637746253384145483670231731115439658337944280850833781081133646743097113683242914969633022018099309381234724755306162305101676930442779747126420021826015662480150471796886807847086619714857189017701044091974982115409293984720139267993157213825649855276362458877445179468465484392601993600865077233805421647455214050862158887121428329954719072709963687210072174462170905082831611896149443784482335852904706212123560030878951146336066608463220055816703224207285447754246990106561940577427897974784)] (by decide +kernel)
 
 
 def r787 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r4, r784, r339, r754, r517, r130, r769, r136, r770, r138, r771, r134, r772, r773, r140,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r4, r784, r339, r754, r517, r130, r769, r136, r770, r138, r771, r134, r772, r773, r140,
     r774, r775, r776, r6, r746, r318, r428, r429, r430, r431, r432, r539, r785, r324, r786]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₁]
-    [.S₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀,
-    .CS₀₁, .CS₀₁]
-    [(35, 472973573862924156549269500881639228606241425708952210089594242745212140969315161574050814908297219174497952925344744571824046198212684034996412237074954674252880880348653558738412560229490022283374044130412189390952154689766632107988544941260968880060235776)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁]
+    [Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁]
+    [(35, 208917986692877864446217188566325446170398643827959481948684980005363380987550712819454044629354304314630069834126753416294707436740010176131407550761665191147488684591048344283437356102414401368119539681881848430801849383892311272506595935373410542778246409328817048785750632370484010027846013945706769276904774046909799348568064)] (by decide +kernel)
 
 
 def r808 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂]
     [(1, 49152)] (by decide +kernel)
 
 
 def r813 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r566, r412, r98, r491, r110, r810, r114, r811, r812]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .CS₁₂, .CS₁₂]
-    [.i, .K₀, .S₀, .K₀, .S₁, .K₁, .S₁, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁]
-    [(11, 34378427356044267090090151655826027387871392865703927085876775283305249554433)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r566, r412, r98, r491, r110, r810, r114, r811, r812]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁]
+    [(11, 40583778132399563181814567323997145828384122485597370923137174227300792251383515867106092288884737)] (by decide +kernel)
 
 
 def r814 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
     [(1, 49152)] (by decide +kernel)
 
 
 def r819 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r566, r520, r98, r491, r112, r495, r114, r816, r110, r817, r818, r116, r778]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
-    [.i, .K₁, .S₀, .K₀, .S₀, .S₁, .K₁, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀]
-    [(17, 126951153910471108850549559245800305308001229139932983978716896895622182240673561370231726663624278863008899268776667761393664)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r566, r520, r98, r491, r112, r495, r114, r816, r110, r817, r818, r116, r778]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀]
+    [(17, 659168061387712765541078357246619666549070237897718783844598812061807292505874773008157552366373741344550882924030162824648948255841356335782984332165022531584)] (by decide +kernel)
 
 
 def r820 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r437]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r437]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r821 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r527]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r527]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r822 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r527]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r527]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r823 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r280, r531]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .S₂]
-    [.S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r280, r531]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.S₂]
+    [Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r824 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r286, r386]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r286, r386]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r825 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r531, r291, r708, r173, r175, r177]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂,
-    .K₂, .S₂]
-    [(7, 23402580766216656162679776136440177514649789399040)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r531, r291, r708, r173, r175, r177]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂]
+    [(7, 102925637167124102415643898353610887274221456196535753478504448)] (by decide +kernel)
 
 
 def r838 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r545]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r545]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂]
+    [(2, 12884951040)] (by decide +kernel)
 
 
 def r839 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r411]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r411]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884951040)] (by decide +kernel)
 
 
 def r840 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r388]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r388]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r866 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r545, r0, r78, r85, r86, r76, r347, r437, r403, r350, r304, r278, r106, r841, r77, r79, r855,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r545, r0, r78, r85, r86, r76, r347, r437, r403, r350, r304, r278, r106, r841, r77, r79, r855,
     r355, r345, r852, r854, r853, r851, r850, r645, r849, r822, r848, r847, r846, r845, r541, r844,
     r843, r842, r840, r856, r857, r858, r859, r860, r861, r862, r863, r864, r865]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [.i, .i, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂]
-    [(88, 489362389896012466128306605092074831074037097739329161407195816098869667653111835966168480740840574279482929935751036147899916025003931492117884174148986511815708350551207826166296599127575449611772499915585355331779520604280018780449932935390019543313568676455375303907729431856095228969271955086736644961127865807195478677478960586767258158208438896657170529590133926883058220447337750583666572121631526089848515370259631338682180445545305087274899030503971810507161456836151574536947958705172745470068990287593805122069338240741338062762505721346993117316806181906822528274351023434450211226889259870618462567641798086537985549649620762678375394136031232)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(88, 1039675800065697989963339664197271894916861872619302938756844496081125619880748575484293657422757473494904484091782907740836227023851407672598166220853801749941078392397043175078545809770972675404518798614313610621010945553270742709864240028504454652102671570454966943315615468184344753635031656433309755331059917852081327687766577970660805014240492724687588924147625156190074398249121106831333952721937918103438975942823694801037356761366226059263733677839828186245206904450697649385804306370281791681375119309474629425518003924095044845917627791742903720662165575346656780540671019969114953919588811863424123230159215113200971004227160427640307513459369689913022800495627172175976718421478859238500690607797235990832245084429150588646583303576007748331934990916200678341559068078421448834476610049333609815026315807644969258099363211640832)] (by decide +kernel)
 
 
 def r867 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
     [(1, 49153)] (by decide +kernel)
 
 
 def r869 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r529]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r529]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r870 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r116, r530]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r116, r530]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r871 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r528]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r528]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r872 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r530]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r530]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r873 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r280]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r280]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
     [(1, 49153)] (by decide +kernel)
 
 
 def r874 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r529, r722]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(3, 5629499634925569)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r529, r722]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(3, 92233720381432709121)] (by decide +kernel)
 
 
 def r875 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
     [(1, 49153)] (by decide +kernel)
 
 
 def r876 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r286, r530]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r286, r530]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r877 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r529, r290, r530, r532]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [.K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(4, 264452528671849000730624)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r529, r290, r530, r532]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁]
+    [Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(4, 554597137692084294638177878016)] (by decide +kernel)
 
 
 def r878 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r79, r5, r0, r646, r86, r300, r526, r408, r524, r525, r98, r76, r112, r116, r6, r867, r276, r351,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r79, r5, r0, r646, r86, r300, r526, r408, r524, r525, r98, r76, r112, r116, r6, r867, r276, r351,
     r491, r492, r493, r494, r287, r595, r309]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(28, 7681449250691861251614128844471354444859116729266941368642838409555001224256403467151918131490147259283340795845490023343129791371847507820457993808479119908111575446746589041098056611814577061691849179136)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(28, 6027154631779702704292908762631994121570923238971405741496307023561048159354295906366292725598260573337338329100675310342085859916016541964126116517625488679128366468146333232146793445105670491835924064410079306819845102513295112529351709153139021040481371947008)] (by decide +kernel)
 
 
 def r879 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r814, r702, r734, r564, r337, r568, r458, r460, r136, r130, r276, r140, r484,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r814, r702, r734, r564, r337, r568, r458, r460, r136, r130, r276, r140, r484,
     r485, r486, r487, r488, r134, r562]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .K₀]
-    [.i, .K₀, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂]
-    [(39, 428272499157115920958424789001695552191182572071800696925321285921510211648158698191924896439257650843335709692462160250291595161118609848790453784326013881235072942120814892542262726816959839877941482179605683419563052235289396019882776425530404561961973729139004450016000294984670511104)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(39, 50779372907263530384442200101801136530936699929199567383274174293478113428693836051019199109874705799720646977837172062643570806177142518786479485959542638981526205161289917657107323397653753810125484831009845102164351654172544369858575922873875279256057929733419279750159123084000019332284808674289767351042503732125760381840116843845912340433208011671907688043773952)] (by decide +kernel)
 
 
 def r880 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r564]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r564]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂]
+    [(2, 12884951040)] (by decide +kernel)
 
 
 def r881 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r564]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r564]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884951040)] (by decide +kernel)
 
 
 def r883 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r567]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r567]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884951040)] (by decide +kernel)
 
 
 def r884 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r568]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r568]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(2, 12884951040)] (by decide +kernel)
 
 
 def r885 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r568]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r568]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r887 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285, r472]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285, r472]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r895 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r869, r611, r325, r609]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂]
-    [(6, 348491689411302773029267110631926394781696)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r869, r611, r325, r609]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(6, 11974082917440701605760435140420132409287070997020672)] (by decide +kernel)
 
 
 def r897 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r609]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100704256)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r609]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884942848)] (by decide +kernel)
 
 
 def r898 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r611, r104, r499]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₂]
-    [.S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(4, 2166432847686909312259588096)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r611, r104, r499]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₂]
+    [Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(4, 4543338979380580673198081125122048)] (by decide +kernel)
 
 
 def r899 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r611, r105, r472, r460]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(4, 2166659521278087055229845504)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r611, r105, r472, r460]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂]
+    [(4, 4543814348355666259223642388824064)] (by decide +kernel)
 
 
 def r900 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r611]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100704257)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r611]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884942849)] (by decide +kernel)
 
 
 def r901 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r276, r572]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r276, r572]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r902 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r572]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r572]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r903 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
     [(1, 49153)] (by decide +kernel)
 
 
 def r904 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r578, r283, r573, r584]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .K₂, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂,
-    .K₂]
-    [(4, 264452528671849000730624)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r578, r283, r573, r584]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(4, 554597137692084294638177878016)] (by decide +kernel)
 
 
 def r905 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312, r608]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312, r608]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r906 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r44, r610]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r44, r610]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884951040)] (by decide +kernel)
 
 
 def r908 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r612, r325, r610]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(4, 309522788758839174788808704)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r612, r325, r610]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(4, 649116335479459951835393250295808)] (by decide +kernel)
 
 
 def r911 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r4, r906, r330, r573, r584, r728, r909, r910]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .S₁]
-    [.i, .K₁, .S₀, .S₀, .S₀, .S₁, .S₁, .K₁, .S₂, .K₂, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁,
-    .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(8, 718357303339635714320824862785767322416662764243124224)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r4, r906, r330, r573, r584, r728, r909, r910]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(8, 404399200088862075140186971803478824425055352555935051409420732858368)] (by decide +kernel)
 
 
 def r912 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r608]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r608]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884951040)] (by decide +kernel)
 
 
 def r914 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r612]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100712448)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r612]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884951040)] (by decide +kernel)
 
 
 def r915 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r661, r136, r138, r629, r140, r630, r338, r631, r435, r142, r436, r6]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀]
-    [(17, 42372138251298170246293756936513265595918143993500986577302858385234563482702972221019179108021028976354436957109112241446913)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r661, r136, r138, r629, r140, r630, r338, r631, r435, r142, r436, r6]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(17, 220008720322499876047399758947813375554808032746552244798558182424945681960880747631386863413987007007854817558719681836255892713183394600138558590325847285761)] (by decide +kernel)
 
 
 def r916 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r660]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r660]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r917 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r702, r291, r689, r742, r116, r112, r136, r130, r276, r140, r484, r485, r486,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r702, r291, r689, r742, r116, r112, r136, r130, r276, r140, r484, r485, r486,
     r487, r488, r489, r367]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [.i, .K₁, .S₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(40, 10464270576893126869996736572315560557382338897887685247645197766118265498643103914661176607580813987964531489472554400008780621088213697729188725289459648937657887699252889441993686355589702900414183891007498544094333397897722975454882678845119202720889219234002793237915706492690830588952816123904)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.S₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(40, 158817288506336998313483483200096343691309613555842877332005785817894407739180758105057258734576983984864174860735782149806532812418516202439593922703026621148056749686333619495942671223156364506559131277235623494713203571410251410835356811255212473361556045457903066665457858667642922689270386572414266592279635051076279914133883973242015165622851742158527864564729390771214483456)] (by decide +kernel)
 
 
 def r967 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r412]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₀]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r412]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₀]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r968 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r520]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₀₁, .CS₀₁]
-    [.i, .K₁, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀,
-    .K₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r520]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r969 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
     [(1, 57345)] (by decide +kernel)
 
 
 def r971 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r532]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₁]
-    [.K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂,
-    .S₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r532]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r972 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r116, r533]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r116, r533]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r973 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r633]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r633]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r974 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r533]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r533]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r984 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r5, r139, r533, r898, r140, r231, r976, r188, r977, r6, r79, r0, r972, r202, r978, r224, r979,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r5, r139, r533, r898, r140, r231, r976, r188, r977, r6, r79, r0, r972, r202, r978, r224, r979,
     r222, r980, r226, r981, r982, r983, r580, r496, r497, r498]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₂]
-    [.S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(49, 912596244070063341908375551547035731354298128641283662780172909660651110166067556562732174038837339580131380536681599493750137381680148099833021810540775145302799551115458400663112729739481130985449800827837832330854727278926893737294355628353723555220758653694835452301953189717418618257847320400039122595890920007450231220397145174861400236815470456353272700928)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₂]
+    [Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(49, 127746577035680986538494377954864883378462861258795088483726323094454990337625808601661982945730618084073542919667511378142429881457913228673840342023997293549341587903732794508905357070188238993890481652128416987310945902462713059292381956280113682577936810447114176345776291458449687305230216555932116229179411297674191903756599424946148014720272221803629596587016695264111776512057624341344468594376683716822009522814503537496552154867102159298062353366725500928)] (by decide +kernel)
 
 
 def r986 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
     [(1, 57345)] (by decide +kernel)
 
 
 def r987 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r286, r533]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r286, r533]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r991 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r5, r984, r80, r101, r632, r524, r77, r102, r179, r178, r180, r319, r222, r226, r375,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r5, r984, r80, r101, r632, r524, r77, r102, r179, r178, r180, r319, r222, r226, r375,
     r223, r891, r892, r188, r988, r202, r498, r189, r989, r186, r990, r580]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂]
-    [(47, 871713158253980557113907893767452762731607966156200335376209823151696549705522384558694790468368756162375256195579905273042761003874776871379222770885195266230449058371416976620011482997237647264390831141920960075448213609976730000871263880789604046259070205689935106328792974449085679478464697432350582689695548907030207443627928755658926621458432)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(47, 7447808513517603391049456403887639263861161642870385301272998556384502772169320289638417893498565509229012291001876217868990186739352303025005412684638605627497948018176321179045737883340416902145441761148840002740296589573875428537740368439557330123169422028263272923074467954143652771468614899082534237451210116009930972286615432479221428271058732939839341963436600836621874557049394716249568035310184143325171929168539137104938569820314533888)] (by decide +kernel)
 
 
 def r995 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r532, r290, r533, r529, r142, r140, r318, r428, r429, r136, r130, r442,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r532, r290, r533, r529, r142, r140, r318, r428, r429, r136, r130, r442,
     r443, r444, r138, r445, r446, r447, r448, r449, r719, r992, r993, r994]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [.i, .S₀, .S₀, .S₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(52, 47960402049880783052712230692649624969617953912086059169560158706881213872504472994926444081918633291826662325561188638115240068219303204775160622925352765938380938245369949011880271306719522715209175424651401730511812420110304408965828054763097096815523056097710647642312659508980865978716693455338585683435856106919073971377639598302481827538456584347161742244873307303417190429562503168)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(52, 14079630812315430137538702840668424811858872662959460391830328879155284450406605232044721064518972588877372328221656819381362725007379990779826539110983971799469898541258715198149042083146674297267341132948893770591782500638409398906131012469839683842068838753795836480028450386067640422492683169358513893548256808750311355863154180505690032490214620838901960709027590234759767794349782595816071334152185053214251038738055197242211895632792288355089211079629705460780963040457033600077283360505856)] (by decide +kernel)
 
 
 def r1006 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r977, r188, r976, r231, r140, r898, r533, r302, r543, r878, r110, r997, r998,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r977, r188, r976, r231, r140, r898, r533, r302, r543, r878, r110, r997, r998,
     r873, r97, r119, r186, r586, r234, r228, r587, r238, r588, r486, r999, r1000, r1001, r232, r1002,
     r1003, r1004, r1005, r202, r504]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₂]
-    [.i, .S₁, .K₁, .S₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂,
-    .CS₁₂, .CS₁₂]
-    [(66, 111895159194103668343322380474782105210470912458982229135975626950738412029162996438902589176130126152643408837482779385622528155047828449500117064754697094308746432975346478644073354907215017501879185406876467960793953709272874685344001209152920891359888993157028415520754814012134746316855477840931601927386055068085371675461066877878703708687643847941057472012841617287188116312023412107072685389529086302866350313446685139435031291984039893212523446835692681476113200614196286494789861376)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [Gen.i, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(66, 10410037639632276886151568272631450683892050697102824391923486987700784547912873987805607589393178255947318138379782039302578771272368323017486169243376887726834410455730460525534644215002907199726191075777464510638781042252118930918403966115640101176957942640504795061651739913095981110786291250863661390578598138871823577803580921184383216742837898207828937481723752408641203215764224425895540942517947873905442993636652557666063534065843422116993761386786938764760926647233048080848858259442133739876977237488773168304380571821087517533739091295451797919709371912692414550630039367103840322087532938995981805635880287840763904)] (by decide +kernel)
 
 
 def r1007 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r4, r0, r967, r688, r326, r691, r313, r662, r879, r518, r519, r516, r311, r511, r512, r513,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r4, r0, r967, r688, r326, r691, r313, r662, r879, r518, r519, r516, r311, r511, r512, r513,
     r514, r515, r663, r134, r664, r130, r665, r138, r666, r667, r668, r669, r670, r671, r672, r673]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₀]
-    [.i, .i, .K₀, .K₁, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂]
-    [(52, 42283495912742437880220602357853832251469758154641503498992831944435382627457755701318242680160505946860537154705347484733172853971735964772964505060544123244365034908203391694499988906894735808349824969010665236224157388007071862122844943358159144231290058327238965515817603559286062715235378447688799961519213768730710648360450730598579703750879570645152636899385370928645388432834560)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(52, 12412703519456014544313632405392643539353723006276624265048604581033950940203814659889505664797408604844910078591215860850100599767103846499521656719639311990653229682058028342132945317117269317926048841810046758437290910323278242959257039928816721906956616238097904056206005504784664299355203770689216100734306237924077234386345165429853663542083987765322778393688150824626201906545622460992680130469486408896817876718875830607704389297553331180369040435061945430248027324183725657218913140736)] (by decide +kernel)
 
 
 def r1012 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r4, r77, r6, r779, r136, r778, r140, r679, r138, r777, r134, r547, r597, r485, r130, r968, r734,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r4, r77, r6, r779, r136, r778, r140, r679, r138, r777, r134, r547, r597, r485, r130, r968, r734,
     r702, r688, r337, r606, r521, r523, r311, r327, r1008, r1009, r920, r1010, r1011]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .K₀]
-    [.i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .S₀, .K₂]
-    [(36, 14862717740266465901317436781300240457078849587607398213548512282757164270590392790279082829132475297461182601254891464651510588511492134027116463164122589050213711154320262166598041714743745882779709199387574231687196835096285787715371228568281421504453219446685696)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂]
+    [(36, 840324750842949437191313731777643899317542649978326123744660855411835183146603967567782322107903704895686977357123566919801653779060987299269340886538347419276383298044836774677661667765609582468205984940665356251734570675178318548391897563984714110007100383015298440640786928919681223157603573006902241144636818095109158952665724577906688)] (by decide +kernel)
 
 
 def r1013 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r688]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r688]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1014 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r688]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r688]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1016 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r691]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r691]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1017 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r606]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r606]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1018 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r606]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r606]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1021 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1013, r727, r324, r628, r611, r880]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂]
-    [(6, 2439611967047368071646880059098973020880896)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1013, r727, r324, r628, r611, r880]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂]
+    [(6, 83824426428630151463589481873501722901194717060399104)] (by decide +kernel)
 
 
 def r1022 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r4, r869, r6, r704, r136, r703, r140, r638, r449, r130, r972, r971, r727, r338, r628,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r4, r869, r6, r704, r136, r703, r140, r638, r449, r130, r972, r971, r727, r338, r628,
     r571, r485, r597, r484, r281, r611, r318, r428, r429, r641, r705, r438, r706, r707]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂]
-    [(55, 1351626973857715799027247766013116564211932581526904401287418619053900253586363619555925465694681649078846960836130002527324257027290179538773747712395461752188532723494934025720042473409311380446169429142483785293303660938294815096755179397406895319745204853336918687450192820392327242257956587395119690426094967980074140114855122018460657189898300224829596436333351879461632322437877244055989945988913561600)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.S₂]
+    [(55, 832137697696638479217349944907790227152638927708941211537300056188244143532447317709312080190301301510626357265621755045482081269562186312254920655476724930369576547271581123450089633910889107750676669319055191775504678290926087693402800768975324223814143963764092934195486077135095204601989211249114710636167481014978174358658715421267771799464447372253727893105942907186714557606051196411271342462444444274032510937764893913527179719228578127447334750475487948479804880413055065808857300114711780155065062964423777320960)] (by decide +kernel)
 
 
 def r1023 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r4, r869, r6, r704, r136, r703, r140, r638, r449, r130, r972, r971, r727, r339, r617,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r4, r869, r6, r704, r136, r703, r140, r638, r449, r130, r972, r971, r727, r339, r617,
     r725, r138, r709, r628, r710, r711, r712, r656, r611, r318, r428, r429, r641, r705, r438, r706,
     r707, r439, r713, r540]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂]
-    [(61, 2560450408278440515782589768020253985238616080012539316130540394182201855651370010407972163051594145832190917003688046046101357479528621648375995590178338075145249693271126531694557410071671076120915831494380069804837856348001509395485052050084124930967886337586216082372457744713065592116882113654823630090237015284998165405109735101675006987486579153245049439704670718292493253765107036098366708757999325767068576730407298127121950394553843779016589312)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.S₂]
+    [(61, 6932893599767573016084704029816520138799974433983187289439556354299859574352703024049598305447066468947990931308502646268125529147491973837015195182571612464577453562432661753067725445591522808900269959110174019576671891404248670998362751645849311370393490396054853252190698155484551054591362408003455499856113640612561475882306253382794310758339179696854005506465875193288396742070511501382707129278656003848304132569707062886144592058138104319806049409543947423621216196026185372423624736325012918315579883356271115440026388959084681135877460525314337503949254157289632577880064)] (by decide +kernel)
 
 
 def r1024 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r0, r142, r140, r634, r138, r1022, r869, r611, r628, r340, r727, r971,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r0, r142, r140, r634, r138, r1022, r869, r611, r628, r340, r727, r971,
     r972, r130, r449, r136, r638, r703, r704, r870, r715, r716, r717, r718, r448, r318, r428, r429,
     r442, r443, r444, r445, r446, r447, r719, r720, r721, r629, r630, r338, r631, r435, r436]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(88, 90092163216185610392392245803075084372549317746256046859074127626918775688990852382696549035998305329308858250835278771767806118053972741325743677539105200731578643735341285468080978628185300734624869392865873268649112811949257327276193704009782046697147253681824751179933092143671837909299311533374059806201477554178966884824889921652448600631021880213361233922214028334115298946755520326352643940765426948676998695972274405010369332018773284129309951046409909104018869089180097831324815160508743708301721263314040294036324939858589104368659767960200762429245963320491807617264164899513607504969169496870600740552251783985563601379638463509888051685707743232)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(88, 191405482923846041433696657533235305823905461757976736017518661423469108561139822276260964273950257564025254620088953526600222400467164022034590092812211771550063047411902527743649833696715539356936826475945291169968674250929770913880133668085203384581072298771637310103430175543062168311143391693084769926228069229956302966908551977732571355354112925505262977186587638121594124352288435157346124717187185821026984291128117609677979615589781820418917486231928861220194663119803315233632795877198748855568475337711922965671125309490996097832033662661896505783001033655143521614572578073127785280836022932075355368166531305112279994189546167366802878654412401580214967835264343269175918888734123107521070301551821918172654812478593475869474675503763202342716069006019978990462567913154826797633317617462154089233293682721874420342829295631073280)] (by decide +kernel)
 
 
 def r1027 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r727]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100712449)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r727]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884951041)] (by decide +kernel)
 
 
 def r1028 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r694]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r694]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1029 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1014, r728, r323, r724]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(6, 697025903735144596632559916643975507738624)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1014, r728, r323, r724]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(6, 23949627333731481246989112413853440425681166620688384)] (by decide +kernel)
 
 
 def r1030 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1014, r728, r324, r590, r612, r881]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(6, 2439611967047368071646889282471009875656704)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1014, r728, r324, r590, r612, r881]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(6, 83824426428630151463589481873652838628646545707237376)] (by decide +kernel)
 
 
 def r1031 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r728, r325, r726]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(4, 309522788758839449666715648)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r728, r325, r726]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(4, 649116335479459951870577622384640)] (by decide +kernel)
 
 
 def r1034 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r590, r330, r584, r726, r237, r634, r728, r136, r130, r276, r140, r484, r485,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r590, r330, r584, r726, r237, r634, r728, r136, r130, r276, r140, r484, r485,
     r486, r487, r488, r597, r138, r547, r1032, r1033, r102, r178]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₀₁, .CS₀₁]
-    [.S₀, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(47, 126091463801537826487525348635955766541256792298147525575807290076776573331511550035899592194361305674300735173399111016235448832336796295042540400606209173874615249032717112871039396208701595622110056490927586145316389487072676126799898354407084584805017561801795557123329999369597086289312621292012685836525190064128275217094185895062937314229485568)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.S₀, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(47, 1077318896233457131538131173620198053671227956241392861525781506090105013447894561123274730287805443519189953616832210694008825926082587475315704283005932470076751418032618421581178841968992464544805440743638189045903342627275921083876629682874778539237740537904784982161768342000007899783439232536736457805476562873471548920349363457769097666349965420573183186343600053955530071632325507763635339770372627525964142672791714039414261584993898725376)] (by decide +kernel)
 
 
 def r1035 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r724]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r724]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1037 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r728]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r728]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1038 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r729]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r729]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1040 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r729]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r729]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1041 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r740]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r740]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.K₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1042 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁]
     [(1, 57345)] (by decide +kernel)
 
 
 def r1044 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r316, r731]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r316, r731]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1045 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r317]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r317]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁]
     [(1, 57345)] (by decide +kernel)
 
 
 def r1046 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r318, r740]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r318, r740]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1058 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r79, r77, r0, r866, r323, r744, r545, r1047, r1048, r1049, r1050, r1051, r1052, r1053,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r79, r77, r0, r866, r323, r744, r545, r1047, r1048, r1049, r1050, r1051, r1052, r1053,
     r1054, r1055, r864, r865, r862, r863, r1056, r1057]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₀]
-    [.K₀, .K₀, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁]
-    [(33, 300060658024653253329776179956277189195954170848525187648005671497770126403844154357919933723547421211456375896328003521156071232958417657403043573698300157550237101954545452163499080047867718474880355887788288420200383387229047809246400348160)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [(33, 8089619108680221198795123995734722251179823849114285037862218552937633189764291852288897876454874921485748532779194482015995039830766715688666985796912263344064838695037715437725077871404881225229923911683384714627485920695955587408266263332718216465838407556707563309177994544888341705991684445578249119989760)] (by decide +kernel)
 
 
 def r1059 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r4, r325, r787, r1045]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [.S₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁,
-    .CS₀₁]
-    [(5, 166154769290336454688602027062280192)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r4, r325, r787, r1045]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(5, 44601830683971902341728051914860572369305600)] (by decide +kernel)
 
 
 def r1098 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r744]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .K₀]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r744]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1108 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r76, r343, r744, r85, r79, r77, r0, r866, r1099, r1100, r1101, r1102, r1103, r1104, r1105, r1106,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r76, r343, r744, r85, r79, r77, r0, r866, r1099, r1100, r1101, r1102, r1103, r1104, r1105, r1106,
     r1107, r863, r864, r865, r862]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₁₂, .CS₁₂]
-    [.K₀, .K₀, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁]
-    [(32, 7750170535893446478510118332195912367819756435681878446512813711621322322502445723193101451881573986299240107468040337976801078072106023346722271722135533405678123781218104697300411054874400601391621845278915439128470516176830033108992)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.K₀, Gen.K₀, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [(32, 1632376394120905740258581522357998491439929401935141083615421184726729898474660998928955181375510570578562937312153054517484810182304591438766965222221034830147028067179797471255401521176124804161414536713721733522234483060582513815520710886828424498404287534779736199738399528964302042311801824157696)] (by decide +kernel)
 
 
 def r1109 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂]
     [(1, 57344)] (by decide +kernel)
 
 
 def r1112 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
     [(1, 57344)] (by decide +kernel)
 
 
 def r1113 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r735]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .S₂]
-    [.S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r735]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂]
+    [Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1114 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1108, r1042]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
-    [.K₀, .K₀, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁]
-    [(3, 129132838015601795072)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1108, r1042]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [Gen.K₀, Gen.K₀, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁]
+    [(3, 2115712418045982488453120)] (by decide +kernel)
 
 
 def r1117 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r746]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r746]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1118 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r747]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₁]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r747]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₁]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1122 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r4, r0, r1118, r283, r747, r754, r920, r921, r1119, r1120, r1121, r919, r311, r511, r512,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r4, r0, r1118, r283, r747, r754, r920, r921, r1119, r1120, r1121, r919, r311, r511, r512,
     r513, r514, r515, r516, r750, r751, r752, r753]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .K₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .S₀, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂]
-    [(26, 6544028172209259850235986219196565666599775402921530178307051308082169873027557917707983527882270769718891051636988226760845686585126372912854485379953588408460674333685035285479308706971648)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.K₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.S₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂]
+    [(26, 313396678415216465050828309077783871702004110020255896511280137915472826922549112228018344569106918547698455432809446550807195633252978647287288979907338956685645802369602560549871379518564263863284718737557337149979721245609703784490102423552)] (by decide +kernel)
 
 
 def r1134 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r79, r77, r4, r0, r813, r286, r747, r819, r920, r921, r922, r923, r175, r171, r288, r166,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r79, r77, r4, r0, r813, r286, r747, r819, r920, r921, r922, r923, r175, r171, r288, r166,
     r366, r367, r169, r1123, r1124, r173, r1125, r1126, r1127, r1128, r1129, r1130, r1131, r1132,
     r1133]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₁]
-    [.i, .K₁, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀,
-    .K₂]
-    [(54, 47998849028317177130590670821994528512338357205023264254270794294618400302121999174195527876401202439597416621286781872406162710256151475047793367093597611010238389110984243855776754735027820837797629169081349793375333511772875721769056874857659093122436661031279185163204238037643328125861870427932103230887900017162276648373252128687097698290667147195212628865523569071083863864382668130743592578711552)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂]
+    [(54, 230865588119499208397773075655330247730096475549929256524757069983810317628992320187668045438629021416002230493678291114890368707201506318810345628163177848257117140807325764612673173258949159337418566519480010352132180147662139876534529526953029441172709458742641439544846805828217001801416047268808703609946182480619115935189682121698344131725290448905226319893392075187445191820775964289938922679955431096769904896743295734853616917160492288278529822269451839509825138685230620201203817877388576211728660258881536)] (by decide +kernel)
 
 
 def r1141 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r768]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₀]
-    [.i, .i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r768]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1142 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r687]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₀₁, .CS₀₁]
-    [.i, .i, .K₀, .K₁, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r687]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1212 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r743]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r743]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1213 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
     [(1, 57345)] (by decide +kernel)
 
 
 def r1215 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r733]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r733]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1216 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r116, r734]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r116, r734]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1217 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r732]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r732]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1218 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r734]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r734]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1219 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r280]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r280]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
     [(1, 57345)] (by decide +kernel)
 
 
 def r1220 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r733, r1040]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(3, 5629499634933761)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r733, r1040]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(3, 92233720381432717313)] (by decide +kernel)
 
 
 def r1221 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
     [(1, 57345)] (by decide +kernel)
 
 
 def r1222 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r286, r734]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r286, r734]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1223 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r733, r290, r734, r736]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [.K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(4, 264452528672123878637568)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r733, r290, r734, r736]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(4, 554597137692084329822549966848)] (by decide +kernel)
 
 
 def r1224 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r79, r5, r0, r917, r86, r300, r730, r410, r689, r690, r98, r76, r112, r116, r6, r1213, r276,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r79, r5, r0, r917, r86, r300, r730, r410, r689, r690, r98, r76, r112, r116, r6, r1213, r276,
     r351, r491, r492, r493, r494, r287, r595, r309]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(28, 7681449250691861251614128844471354444859116729266941368642838409578818275574121913741438374027021391865040915952492061542433662218598696013357816960031748269592193410138022421762651978566501055236403101696)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(28, 6027154631779702704292908762631994121570923238971405741496307023561048159354295906368318856247128245680361965752868260122853655927853669356702121073138502747201075524005565189640496469660454616157848329300063117441196238782892911473735848306998161788693636972544)] (by decide +kernel)
 
 
 def r1225 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1109, r733, r321, r808, r1012, r1117]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .K₀]
-    [.i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₁, .S₀, .K₂]
-    [(6, 4181857612990416985091780471968814602387456)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1109, r733, r321, r808, r1012, r1117]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂]
+    [(6, 143687533474190782944498117372868019178442152640249856)] (by decide +kernel)
 
 
 def r1226 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r77, r4, r1117, r6, r776, r136, r775, r140, r774, r773, r138, r772, r134, r771, r770,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r77, r4, r1117, r6, r776, r136, r775, r140, r774, r773, r138, r772, r134, r771, r770,
     r769, r130, r1134, r1122, r814, r338, r734, r702, r968, r485, r597, r547, r777, r679, r778, r779,
     r318, r428, r429, r641, r780, r781, r782, r783, r705]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂]
-    [(63, 3277716475951700740506378477209637865400296402351270542727770108715766431924709696119765094536041563071899681061322736564864521908461185957334324523785368744971059400128597406759667427074176904794580675795703908895487281253207116944550882274976368534724681875931201204414422726936216199463846654501040674843294241302596395012196670643243906486061146705673638207877356358765820886416613190530253297111709199896348283994091448810808654273752386551667662690912700523872256)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.K₂]
+    [(63, 145408398024621652568632767989656467377089278703290738097911650579638726702674009881734719268176489973685192834315273934875460771358931615703567431057664282214451496585809827769155981466395793255353015505872926113888248665030443268525152369890269307462035200073424565969107171148942777030329848184525724593794878694342819097800240472602367539930867542610521712194842970340243711631803010108010923125725897718592786867820920628354909283170927516681944200193853978697825433974776565120307442291542753993489158692119325298144446459980871675930279239992581703830492078292187534492234784688097267822886912)] (by decide +kernel)
 
 
 def r1227 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r79, r85, r77, r4, r0, r750, r142, r140, r788, r138, r1226, r1117, r968, r734, r340,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r79, r85, r77, r4, r0, r750, r142, r140, r788, r138, r1226, r1117, r968, r734, r340,
     r814, r1122, r1134, r130, r769, r136, r770, r771, r134, r772, r773, r774, r775, r776, r1118,
     r789, r790, r791, r792, r793, r794, r795, r796, r797, r288, r366, r367, r368, r798, r799, r800,
     r801, r802, r803, r804, r805, r806, r413, r479, r480, r481]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂]
-    [(101, 6157942165594994411730967820955347618119682186825136073603451622633435829513427511010239934434840584124447731061170573768679918245814652283411405232617282850578564762094294680705446410683725881154304564679768652206967023375104117771063668550290365279534904518529926145515772982007284686731772027037761956705164327980190263510441296715646850021013142032337978053264609565667168329916670770124152927283703921657607264692156118103196964040322814029703026853038809925552690874937340961682124359732846306468817492915296622190531995130683971886091961708306059424525367805765817099599041082950764295799304563434126392366458168042539622547169788930110040887101282742717976828215203373063532873542924529281926961698423002105705560965454507619445662491165475888693248)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂]
+    [(101, 32391612658182243747329827374342351080606889692706111114430572209528811473565365044364802719659765513362141748110695733813964587932556464703773636787582763566645162542154465519631998948229104784502144559700590315510401320225246660961371469204566629358132937583282652627338569107796941213528073600986200927922784561774904048846594075988890876462923512204960353908859623498291547619236090839846480020244423464541192174012257730663822695978974789236313834862634355683965198325695697664865722389097992516262614132607654334362166950350536905283045120618024386850078534993738658319630283354699078280457212021965695541996165459996065197681867953138746618978326935079328945607258084197161783557195967187775162528423812034257806702295742988670051066654721260369611365858630950497533074426221138882123110091890548647689514000074486700519780019620746093552175010286522749275853008632982762788784138042013790459299825728809723083043153569423703100302410322409823639201293614972928)] (by decide +kernel)
 
 
 def r1228 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r808]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r808]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1229 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r808]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r808]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1230 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r814]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r814]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1231 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r814]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r814]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1232 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂]
     [(1, 57345)] (by decide +kernel)
 
 
 def r1233 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r98, r821]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r98, r821]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1234 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r821]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r821]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1235 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r708]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r708]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1237 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r722, r529]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(3, 18452373573344485377)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r722, r529]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(3, 302323688624038726393857)] (by decide +kernel)
 
 
 def r1238 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
     [(1, 57345)] (by decide +kernel)
 
 
 def r1239 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r286, r708]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r286, r708]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1240 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r289, r877]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₂]
-    [.K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r289, r877]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.S₂]
+    [Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1241 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r722, r290, r708, r738, r311, r319]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(10, 700958634236111736870339047368856702904092681496364616313152527663104)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r722, r290, r708, r738, r311, r319]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(10, 6465202074832523508401639385498314440714801144843716928391833226503393187507606952869888)] (by decide +kernel)
 
 
 def r1242 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1109, r838, r4, r326, r605, r1225, r313, r826, r663]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₀]
-    [.i, .i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₁, .K₂]
-    [(13, 333758165510402709752850464194482077873820577930983175625223477983374226617145867864352613203968)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1109, r838, r4, r326, r605, r1225, r313, r826, r663]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂]
+    [(13, 6455821706150093798321047596497209068380343666747691658763555982875292353207656749169196045971420812092869844601069895680)] (by decide +kernel)
 
 
 def r1243 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r838]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r838]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1244 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r838]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r838]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1245 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r605]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r605]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1246 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r714]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r714]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1251 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r541, r1247, r1248, r1249, r1250, r436]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂]
-    [(8, 622576329176492351291308831031120722918099849872211969)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r541, r1247, r1248, r1249, r1250, r436]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(8, 350479306742006436433078199271808985245243082679280275655379344490497)] (by decide +kernel)
 
 
 def r1252 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r822]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r822]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1253 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r541]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .K₁]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂,
-    .K₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r541]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₁]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1254 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r4, r823, r658, r302, r645, r177, r175, r318, r428, r429, r173, r430, r431, r432]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [.S₀, .S₀, .S₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁,
-    .K₂, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [(21, 108027486867950277429895313791322526593858407357557438897897683511697491682630963688618887845276899546369992075398227345929261477706847988348869586976768)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r4, r823, r658, r302, r645, r177, r175, r318, r428, r429, r173, r430, r431, r432]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.S₂]
+    [(21, 150560601325368014004316346106532493744646325351969755832464691467790675714310911530459772984801818044235873859733649223145756328939575640138848506183933197518150408263363085097610197776331702272)] (by decide +kernel)
 
 
 def r1255 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r1058]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .K₀]
-    [.K₀, .K₀, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r1058]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1256 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r839]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r839]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1257 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r840]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₀₁, .CS₀₁]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r840]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1258 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
     [(1, 57345)] (by decide +kernel)
 
 
 def r1259 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r869, r111, r898]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .K₂]
-    [.S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂]
-    [(4, 2166432847686909861981847552)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r869, r111, r898]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₂]
+    [Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(4, 4543338979380580673268445574332416)] (by decide +kernel)
 
 
 def r1260 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r869, r112, r899, r529]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂]
-    [(4, 2166659521278087604952104960)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r869, r112, r899, r529]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₁, Gen.K₂]
+    [(4, 4543814348355666259294006838034432)] (by decide +kernel)
 
 
 def r1262 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r870]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r870]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1265 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285, r899]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285, r899]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1269 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r4, r1241, r289, r899, r318, r428, r429, r430, r431, r432, r715, r1267, r1268]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .S₂]
-    [.i, .S₀, .S₀, .S₀, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(15, 66511461709204923798280921808515713647810817677609446607875520769964471669677209154273347641965532804022272)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r4, r1241, r289, r899, r318, r428, r429, r430, r431, r432, r715, r1267, r1268]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.S₂]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(15, 21078323009141818683193638899828633958401031196561731037531162911796903605571157763666748859961602276937716919178486326486543457648115712)] (by decide +kernel)
 
 
 def r1273 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r971, r870, r290, r869, r1260, r142, r140, r318, r428, r429, r136, r130,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r971, r870, r290, r869, r1260, r142, r140, r318, r428, r429, r136, r130,
     r442, r443, r444, r138, r445, r446, r447, r448, r449, r719, r1270, r1271, r231, r1272]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [.K₀, .K₀, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂,
-    .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(51, 1182605980274863590391448933891210103251204854297652652128638413997142346470959937407798497854761698743341936635412491521586576870293275763119585097059339989980982252431782648869021710040440704215049730977856463177174206194018200297474873356878457907952365226117141617448028074937967392801426808202001513341457207371815342781278759149506669690245407561284094708421542349448937472)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.K₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(51, 2712208168961480803845427340101800583392970165153954449875683024934813263954118096498638962695303026772667791088840925455320916066149023932688569711073661993695664742291474986365753227536207161515369424087504048078516177920587453425681636244967808370611883115283204366947502305693923856406812762174845570784718839535398423713550324791668625367627653409368821343908444603704667383445166602655211184431577414401041609038585317456549394183092264128503167410666474768315688307219689897984)] (by decide +kernel)
 
 
 def r1276 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r880, r39, r898]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .K₂]
-    [.S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂]
-    [(4, 2166432847686909862015401984)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r880, r39, r898]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.K₂]
+    [Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂]
+    [(4, 4543338979380580673268449869299712)] (by decide +kernel)
 
 
 def r1277 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r880, r42, r899, r564]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
-    [(4, 2166659521278087604985659392)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r880, r42, r899, r564]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(4, 4543814348355666259294011133001728)] (by decide +kernel)
 
 
 def r1281 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r276, r871]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r276, r871]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1283 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
     [(1, 65537)] (by decide +kernel)
 
 
 def r1284 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r876, r283, r872]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(3, 5631698624577536)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r876, r283, r872]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂]
+    [(3, 92234001852114403328)] (by decide +kernel)
 
 
 def r1296 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r85, r79, r5, r4, r77, r1273, r986, r872, r297, r867, r529, r165, r167, r208, r231,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r85, r79, r5, r4, r77, r1273, r986, r872, r297, r867, r529, r165, r167, r208, r231,
     r106, r262, r76, r267, r264, r1047, r266, r1285, r1286, r1287, r1288, r1289, r265, r1290, r1291,
     r1292, r263, r1293, r1294, r1295]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₁]
-    [.i, .i, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(62, 85917043906100737772343422445232119076031668656108196609907480851461224037265456510768973317027378283680279009058525230059252913130287976709862342520257139820174682829709707608979584208675910779778034563282036410514241216112701211950916832737492435990483692589097475348019484830957687768116506570606996614799283530207822510800589250141347910476240100045934492575497188814025797599810161009177088131145873828195495106677291830443456507313000136985119768419762176)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₁]
+    [Gen.i, Gen.i, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(62, 29776558276453012258495097358272337175422115210890170757741129579076284957728418458464042584980811632896668286770292546447852622772069955018668469009714417686394968660856461837913706312471668351333988489002745388535058280896411772015906245943478406533841163078402724637450062521904814019794172297948298940248664201713067167360961581923365195545775256957058311181232038856374582531910359847880156010066942688501507811523933913082800522657536911226547205708870742233467651399498098148797555066894028394099744374327296487511936345526624482473617129392552376644797840965493428742362814918688768)] (by decide +kernel)
 
 
 def r1297 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1265, r875, r298, r867, r529, r97, r119, r186, r195, r467, r497, r498, r580]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₁]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₁₂, .CS₁₂]
-    [(28, 5173297428560488377040293546218713917608801491943034863381125251887004707602876953060451718017319876167675131175821489136506931265856565776951449389350589615351180405336699812266360902767085395540344569856)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1265, r875, r298, r867, r529, r97, r119, r186, r195, r467, r497, r498, r580]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(28, 4059104608741991473364362752773265172661731640792203937265526323582703918169099514427512248362041778527341900948135833652785274558271326352194125668946308928426660286801791961758968714356555141308303290727308385716918618533924443004414478261343991253884467150848)] (by decide +kernel)
 
 
 def r1303 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312, r881]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312, r881]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1304 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r1231, r1030, r1218, r881, r337, r885, r608, r612, r136, r130, r276, r140, r484,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r1231, r1030, r1218, r881, r337, r885, r608, r612, r136, r130, r276, r140, r484,
     r485, r486, r487, r488, r134, r562]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.i, .K₀, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂]
-    [(39, 428272499157115920958424789001695552191182572071800696925321285921510211648158698191924896439257650843335709692462160250291595161118609848790453784326013881235072942120814892542262726816959839877941483174252156239136336546053892313524456626442706156657408610066958236334994320051421577216)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(39, 50779372907263530384442200101801136530936699929199567383274174293478113428693836051019199109874705799720646977837172062643570806177142518786479485959542638981526205161289917657107323397653753810125484831009845102164351654172544369858575922873875279256057929883726005047684449668926777526802378426333450481174975457392382559901494451180852722109943908297104682087612416)] (by decide +kernel)
 
 
 def r1306 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r4, r908, r78, r339, r885, r579, r576, r147, r319, r612, r77, r874, r327, r143, r1008, r1305,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r4, r908, r78, r339, r885, r579, r576, r147, r319, r612, r77, r874, r327, r143, r1008, r1305,
     r909]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [.i, .S₀, .S₀, .S₀, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(23, 121624538270032370307706203241185233192196039227394876149411037735953871934520775679282121299480695315337030688646276072402431872500915257604146600336510830701776470016)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(23, 2777352238126445580375062265745608201267848817052228615750913960283304965055253711736015653662523519865317872144845730384389539207330250004066039436147195414234200201105118167301162932581820480493360377236729888768)] (by decide +kernel)
 
 
 def r1307 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r4, r872, r883, r341, r885, r911, r909, r910, r923]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [.i, .K₁, .S₀, .S₀, .S₁, .S₁, .K₁, .S₂, .K₂, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁,
-    .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(9, 27317947470760138020364578453354219638622061629534582343729152)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r4, r872, r883, r341, r885, r911, r909, r910, r923]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [(9, 1968465517438774522289568700561667275161501509687301074574428008847065292472320)] (by decide +kernel)
 
 
 def r1308 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r881]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r881]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1312 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r505]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [.i, .S₁, .K₁, .S₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂,
-    .K₁]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r505]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [Gen.i, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1314 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r44, r897]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r44, r897]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1333 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r85, r5, r4, r0, r1320, r1319, r1318, r1297, r1241, r900, r338, r699, r698, r1027, r97,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r85, r5, r4, r0, r1320, r1319, r1318, r1297, r1241, r900, r338, r699, r698, r1027, r97,
     r119, r186, r197, r195, r1321, r1322, r1323, r1324, r193, r1325, r1326, r1327, r1328, r1329,
     r1330, r1331, r191, r1332]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .i, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂,
-    .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(62, 81209978162860076801675088556258190645259343076657642050381305309012838932646144552540287962311508568106152408245570849329342967979359769209332285786302789773658830366069469087491439475684437116132443193927796418192172478284358723867325560505244165314663271252880350214292107553899929893836466527520603978334276210257744739460588546856427685862930597791698672319414573916968420846102517127996454354953065405122760435016715603890515346880067791533602058732044288)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.i, Gen.i, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(62, 28144967984848761587501887529146408433166859320437813115646956871421196242702700724569934081596826128627866160020707848259805082625711218106663305167140592613447995838514027848418974273843329512680809261748398618288079868190975273585551568568458398158082483315434619106034559665111785870969275047849035931429064846512849920042641927309981228800639465248357736026776471334956935159019192540050433575122672553818273615816589295893139642194745148502123625766244429612533999558222757250368990053243922807870141554874794843896419682117886184553836904689026170652568051997872300450020279290167296)] (by decide +kernel)
 
 
 def r1336 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r85, r5, r4, r0, r1320, r1319, r1318, r1297, r1241, r900, r339, r1314, r473, r313, r97,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r85, r5, r4, r0, r1320, r1319, r1318, r1297, r1241, r900, r339, r1314, r473, r313, r97,
     r119, r186, r197, r195, r1321, r1322, r1323, r1324, r193, r1325, r1326, r1327, r1328, r1329,
     r1330, r1331, r1334, r145, r1335, r123, r783]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.S₁, .CS₀₁, .CS₀₁, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁]
-    [(62, 88269429240043601255495836432927089547413243762042562543710043139153636737705856651875306170976775412499051745493299110867364049122695124786760348175091241343884815246966841886192414242316350136098212002218250751628795339473762197105240346559227088060941793607455037885065651974815308790243689749363817714702941218387677376026160314244834751185313922782652490161532816235487577460346017056488296840176732139819108988676823627295315391263092722778559907643785216)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(62, 30592350315084181619497099307954774417638590239986391286830937638886955099528082565284278669848966622317075776995083892164713375370642535440876050129099558626491663412930090429648224216510726937180065954236114667743187598830100319011420047230373976237308865217966350819343446498479945115007888358642770578959660406281185469047287308101804357105408392542256187689266919599090781042143349663414140699134107250271839146622237383410412012523190005057955734057612975851922774800187827096516750624054524193216003416720583993825952956184562764706320209115757896492830705638208205746190414195458048)] (by decide +kernel)
 
 
 def r1354 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r576]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r576]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1355 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r901]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r901]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1356 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r576]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r576]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1357 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r579]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₁]
-    [.i, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r579]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₁]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1358 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r80, r6, r102, r577, r887, r1312, r186, r496, r195, r191, r592, r593, r145, r594, r119, r107,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r80, r6, r102, r577, r887, r1312, r186, r496, r195, r191, r592, r593, r145, r594, r119, r107,
     r582, r77, r1354, r361, r362, r363, r364]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂]
-    [.i, .K₁, .S₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(31, 266507401058516238001194388713628476805649901371661371361351118237849851290854120410966397609484331058331729466040542149590420953294147117341294283852588982925475372159215119420802392783743882267802195640939213174197673487572992)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂]
+    [(31, 438539130610567291194545730044087430461988460542922305611483453391576462943896139532671853166069360451017726069737596089073883649076452290912957042988765297536880447687164295550051653830900846886564398037101595497237861967118973959101972953080090980328349239449049955158384814563599853887488)] (by decide +kernel)
 
 
 def r1365 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
     [(1, 57345)] (by decide +kernel)
 
 
 def r1366 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r316, r901]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r316, r901]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1367 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r317, r906]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r317, r906]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1368 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r318, r579]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₁]
-    [.i, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r318, r579]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₁]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1369 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r323, r905]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₀]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(3, 9226749736676024321)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r323, r905]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [(3, 151171067684062660452353)] (by decide +kernel)
 
 
 def r1370 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r324, r579]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₁]
-    [.i, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r324, r579]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.S₁]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1371 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r325, r906]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r325, r906]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1372 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r328, r579]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .S₁]
-    [.i, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r328, r579]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.S₀, Gen.S₁]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1373 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r4, r905, r906, r329, r579, r311, r518, r519]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁]
-    [.i, .S₀, .K₀, .S₀, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .S₀]
-    [(11, 30757274512460535316062029038606354744629977967805156333858166105802962632704)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r4, r905, r906, r329, r579, r311, r518, r519]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.S₀, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀]
+    [(11, 36311779618115319948367466901928125312719029270260292312781294285889078000939610068384248613568512)] (by decide +kernel)
 
 
 def r1374 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r612, r319, r147, r576, r579, r330, r610, r97, r123, r158, r160, r162]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [.S₀, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(21, 88381547096126032659199258472890518782954838396039971177325190255904401173996571830942669385121795962164336574393485852869303758157447891402116973985792)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r612, r319, r147, r576, r579, r330, r610, r97, r123, r158, r160, r162]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [Gen.S₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(21, 123185896683235206861190930980919355579892469344820389985392018832532624642294672711379675913661765344417657035581131807398481083713982827406349985991828614987210511086902709233789098914289287168)] (by decide +kernel)
 
 
 def r1378 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r4, r77, r6, r320, r108, r157, r1033, r235, r1032, r239, r547, r237, r1377, r1376, r1375, r229,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r4, r77, r6, r320, r108, r157, r1033, r235, r1032, r239, r547, r237, r1377, r1376, r1375, r229,
     r1307, r911, r338, r579, r143, r121, r586, r186, r145, r123, r319, r327, r1008, r1305, r909]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₁]
-    [.i, .S₀, .S₀, .S₀, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(38, 17301184469570488539653797332287733263609619144416767663104591967715318074395576264281660793350107255849159747028474896082482874955390228172396547946858409205929958561521967511900978647408183182988697551252404621155062718207896110327483186791521002481429915550676159767355531984896)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.S₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(38, 16026721909729937398910782443189947245746263411334281448778651088506816394958632950468202166375861495938630834951959547946265252790254711787732549919468283400683269559413238691043227396978507811775710326381714432174668390685855486740469640589103994275315778757647477998357518814450103457678219545665248673399174880297736097792235743488601981050366707418267648)] (by decide +kernel)
 
 
 def r1380 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r4, r77, r6, r320, r108, r157, r1033, r235, r1032, r239, r547, r237, r1377, r1376, r1375, r229,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r4, r77, r6, r320, r108, r157, r1033, r235, r1032, r239, r547, r237, r1377, r1376, r1375, r229,
     r1307, r911, r339, r576, r610, r573, r728, r327, r1008, r1305, r909, r1379]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(34, 223741776931832641009773411039822237413867703826797987846280442129582825563123632572697809964520459222765783393101691334665273022130468272328799664805503171812626904894013476240769908552821423677863871086466094268830972686584874862602314000231301120)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(34, 772103331415971418751672344711894479756509716728004805729203343756810752499667072847890479631682329511972950231292464973611570121069647473730091572965754374790998013006409997745319823378907737429864790871858258445398541211798463129493010204652108925499941934345380847326487104108586397410206926768349797900879602384896)] (by decide +kernel)
 
 
 def r1386 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r1034, r85, r342, r576, r610, r612, r0, r1306, r97, r123, r319, r158, r162, r160,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r1034, r85, r342, r576, r610, r612, r0, r1306, r97, r123, r319, r158, r162, r160,
     r1379, r1305, r101, r187, r313, r119, r186, r1381, r193, r1382, r1383, r1384, r1385]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₁]
-    [.i, .S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(57, 1632486301487403177054210571703308493962854519006567083422490899839796167832722698413533071964821222777178270065313181184129229618535649235381471074758257316361052491406179313071996207885647446661860413214518961395513820089881302554874942418669265209304131989073822051519157710082288425440431007321729454747710361142774284743645119681659537848108918040252138908506908780599330460714434976814188284141379032632500473909215232)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(57, 16466612653760798425601726742114198165296669913190993071382759792890725067767840730687658728133418051419160692196186594337033878386792593513178685794310363885613638313288745351230804400824748432968712786321556423755098061083903769648602606742814426223252438837254698768590840667827827916352947842765599334477696863906661210236368868513279704982490067333222032378964100964817870041701827889209835201970747963592070510795226345723388086421167323735077224888169985193560125217366329535366709619346320721222942580016861442688338248910450618007552)] (by decide +kernel)
 
 
 def r1387 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r905]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r905]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1389 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
     [(1, 57344)] (by decide +kernel)
 
 
 def r1390 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r577]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100720641)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r577]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884959233)] (by decide +kernel)
 
 
 def r1391 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r591]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
-    [.i, .S₁, .S₁, .S₁, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100720640)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r591]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884959232)] (by decide +kernel)
 
 
 def r1392 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r0, r149, r153, r143, r1358, r1357, r903, r294, r506, r904, r166, r398, r171,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r0, r149, r153, r143, r1358, r1357, r903, r294, r506, r904, r166, r398, r171,
     r399, r175, r351, r697, r187, r491, r192, r495, r196, r484, r119, r97, r123, r319, r158, r161,
     r587, r163, r1362, r492, r493, r494, r281, r101]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [.K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(74, 131857487247976883665624299886154013997114724736620927491005968204834471674819165082101107088961813449720609614093038935239756660026961003650164273124655053523788166460104407712007944471939801087840902847293708820128667026174544572238315245950756957437576354908130903722399369142212001022217700559258091420238732359367304510454648674816551464476322042050054290851326136348549194242842780436077434955053042124453084109793152115872666473754630583977155309818282542581739862897029807306114231632965071229687218549487675129074779558619144997644371524321280)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(74, 883959893078357633153976004943980284026601385207612488418024104928929001933198215781480704751931829043671025970771398670607182525107934044406185453906479357360838839483808754864485832594283235460667780255962152031177365081652616087973327795448925605715763782573062605177185691373919590301087593912143154234687498724268909852297841195311537468166013941001019561502169689016380138333943749680820396892165552983784249095386799977220221405031936221312201034003882960698404543677083631195166451455660582743268077168120867721096895559653224750978750159712283804480919603502761154594027561251596771734531133275037853751923628687513028016777370288757620416913948312917310598794340419778338861266835907777786806272)] (by decide +kernel)
 
 
 def r1394 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1037, r578, r324, r914, r1308, r1222]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(6, 467888265925146053833295847246820016128)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1037, r578, r324, r914, r1308, r1222]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂]
+    [(6, 16076518013702473403083577526533214185359935537152)] (by decide +kernel)
 
 
 def r1396 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
     [(1, 65537)] (by decide +kernel)
 
 
 def r1398 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r736]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .K₁]
-    [.K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂, .S₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r736]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1399 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r916]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r916]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1401 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r5, r139, r702, r1276, r140, r231, r976, r188, r977, r6, r79, r0, r1021, r202, r978, r224, r979,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r5, r139, r702, r1276, r140, r231, r976, r188, r977, r6, r79, r0, r1021, r202, r978, r224, r979,
     r222, r980, r226, r981, r982, r983, r580, r496, r497, r498]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .K₂]
-    [.S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂]
-    [(49, 912596244070063341908375551547035731354298128641283662780172909660651110166067556562732174038837339580131380536681599493750137381680148099833021810540775145302799551115458400663112729739481130985449800827837832330854727278950710788612074074943243797757632786276535572408955227916722489104598508592938945747443548357238835736692211482855530355341532282794595663872)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.K₂]
+    [Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂]
+    [(49, 127746577035680986538494377954864883378462861258795088483726323094454990337625808601661982945730618084073542919667511378142429881457913228673840342023997293549341587903732794508905357070188238993890481652128416987310945902462713059292381956280113682577936810447114176345776291458449687307256347204799788572203047949867141684524395436783275407296276777316643664659725751123343734005760648896128592916300897184788391883855409449550690257461810990870905065993240920064)] (by decide +kernel)
 
 
 def r1402 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r736, r136, r138, r629, r140, r630, r338, r631, r435, r142, r436, r6]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(17, 42372138251298170246293756936513265595918143993500986577302858385234563482702972221019179108021028976354436957109112241455105)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r736, r136, r138, r629, r140, r630, r338, r631, r435, r142, r436, r6]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(17, 220008720322499876047399758947813375554808032746552244798558182424945681960880747631386863413987007007854817558719681836255892713183394600138558590325847293953)] (by decide +kernel)
 
 
 def r1403 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
     [(1, 65537)] (by decide +kernel)
 
 
 def r1404 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r286, r702]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r286, r702]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1405 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r5, r1401, r80, r101, r915, r689, r77, r102, r179, r178, r180, r319, r222, r226, r375,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r5, r1401, r80, r101, r915, r689, r77, r102, r179, r178, r180, r319, r222, r226, r375,
     r223, r891, r892, r188, r988, r202, r498, r189, r989, r186, r990, r580]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
-    [(47, 871713158253980557113907893767452762731607966156200335376209823151696549705522384558694790468368756162375256195579905273042761003874776871379222770885195266230449058371416976620011482997237647264390831141920960075448923413418424929475315954820744675687149933581231315372036617663434801891895478557321528563141298054698153674425712669087601117888512)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(47, 7447808513517603391049456403887639263861161642870385301272998556384502772169320289638417893498565509229012291001876217868990186739352303025005412684638605627497948018176321179045737883340416902145441761148840002740296589573875428537740368439557330123169422028263272923074467954615398074571307568112728560074743727374546124838670486026247215801761753238862022546156059024796789485382670244926342755909973082281424216638038417661745073046866100224)] (by decide +kernel)
 
 
 def r1406 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r736, r290, r702, r733, r142, r140, r318, r428, r429, r136, r130, r442,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r736, r290, r702, r733, r142, r140, r318, r428, r429, r136, r130, r442,
     r443, r444, r138, r445, r446, r447, r448, r449, r719, r992, r993, r994]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [.i, .S₀, .S₀, .S₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(52, 47960402049880783052712230692649624969617953912086059169560158706881213872504472994926444081918633291826662325561188638115240068219303204775160622925352765938380938245369949011880271306719522715209175424651401730511812420110304408965828054763097096815523056097710647642312659508980865978716693455338585683435870928306496347850653815388562939590661802905198944237070357874170203310156414976)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(52, 14079630812315430137538702840668424811858872662959460391830328879155284450406605232044721064518972588877372328221656819381362725007379990779826539110983971799469898541258715198149042083146674297267341132948893770591782500638409398906131012469839683842068838753795836480028450386067640422492683169358513893548256808750311355863154180505690032490214620838901960709027590234759767794349782595816071351650190851478346433718073014183182818458147735500788702485794556740404956635464419388182699544936448)] (by decide +kernel)
 
 
 def r1407 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r79, r5, r0, r741, r86, r300, r915, r510, r76, r565, r566, r175, r171, r413, r479, r6, r1396,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r79, r5, r0, r741, r86, r300, r915, r510, r76, r565, r566, r175, r171, r413, r479, r6, r1396,
     r276, r351, r491, r492, r493, r494, r287, r595, r309]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(29, 268266938660416299561151735641015406414421774803098596101353694717722263386530630069375974377514351506534481137495852489879224574979183579176981903920505537740002059165125314961020860338478213284136449032899788800)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(29, 26943021093946082195749031735035255695093207749413120867497401901856676053954015992749700254106078726147605081056978589209198020707180725073748536900261674203504915403092020376685722131680405299821502339946095735499506165881128894352345374620528067066688364677075031818240)] (by decide +kernel)
 
 
 def r1408 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r977, r188, r976, r231, r140, r1276, r702, r302, r742, r1224, r110, r997, r998,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r977, r188, r976, r231, r140, r1276, r702, r302, r742, r1224, r110, r997, r998,
     r1219, r97, r119, r186, r586, r234, r228, r587, r238, r588, r486, r999, r1000, r1001, r232,
     r1002, r1003, r1004, r1005, r202, r504]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₂]
-    [.i, .S₁, .K₁, .S₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂,
-    .CS₁₂, .CS₁₂]
-    [(66, 111895159194103668343322380474782105210470912458982229135975626950738412029162996438902589176130126152643408837482779385622528155047828449500117064754697094308746432975346478644073354907215017501879185406876467960793953709272874685344001209152920891359888993157028415520754814012134746316855477840931601927386055068085371675461066877878703708688443015569938366024075306178015166886295053231594918004149030484530445478584545138185829654368293837829439141202772776937347882388094087533200146432)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂]
+    [Gen.i, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(66, 10410037639632276886151568272631450683892050697102824391923486987700784547912873987805607589393178255947318138379782039302578771272368323017486169243376887726834410455730460525534644215002907199726191075777464510638781042252118930918403966115640101176957942640504795061651739913095981110786291250863661390578598138871823577803580921184383216742837898207828937481723752408641203215764224425895540942517947873905442993636652557666063534065843430819158635696699083694974102802879038248902499099133163439569737512900697928507525610259524631050355490378226100582382007351048282652585449852679172433854707186727523172718380903674413056)] (by decide +kernel)
 
 
 def r1410 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r967]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r967]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.S₀]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1411 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r968]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.i, .K₁, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂,
-    .S₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r968]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1412 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r968]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.i, .K₁, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂,
-    .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r968]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1416 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285, r991]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285, r991]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1421 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r4, r0, r995, r289, r991, r318, r428, r429, r641, r705, r438, r706, r707, r1318, r1417,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r4, r0, r995, r289, r991, r318, r428, r429, r641, r705, r438, r706, r707, r1318, r1417,
     r1418, r739, r1419, r1420]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .S₂]
-    [.S₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(35, 307808198706908993805698179323084847996562331497361997051879726555293049478682963073346320223404058035563381093350576681491107390865660832563397942876283316852799706639493547240594116648512199738371852249802174010949363022470300131781961974926337801390653440)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.S₂]
+    [Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(35, 135962499275778093588891819504227795258948298060223847989829318565130791556362400280249402197043677650694228512114879778906577885298664088970340410389466726673585537566379605238384137743649384182293733094879795442020826555631680377423263234494615290277876050122292110530243310678863273527717093371906520388225745070589279731712000)] (by decide +kernel)
 
 
 def r1430 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r869, r972, r290, r971, r991, r130, r449, r140, r1343, r1344, r231, r1422, r136,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r869, r972, r290, r971, r991, r130, r449, r140, r1343, r1344, r231, r1422, r136,
     r276, r484, r485, r486, r487, r488, r138, r1423, r1424, r1425, r1426, r142, r1427, r188, r1428,
     r202, r1429]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [.S₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(61, 2350070934543432210781215963294857213783820821643761870360925934896724364728052773490535887081333356320277349057095691973301039624822439861949494914625113914308063047800517209196991370714236280808701997272289526981015938074838260813342014550906882653565190505835950091518355191446982240703354915119692753229657614064618453793079350495124832146068346322442907925213100591290510442327938360112948754190190208610108355211818159855994415864080370380549652480)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(61, 6363068177694836348180001119546323964572885150176037217138455051961277332136524232443615701977496885295581561244331264920693614180462690936395589378624586908969841817881612018894813900370428221884332596857391446325830457874228999414209850731895225608880178840863254383442211639847753697101773899696544372495901932790812998845457076860914871878813348182664295802346574151158528327397587964667613113649860186162243947833302775933457473039564510528599528182941225950649600671428787903260304179735995641369115948805874112294342349225969467963663923213172124346678650596025721623150592)] (by decide +kernel)
 
 
 def r1446 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r4, r0, r995, r6, r293, r991, r1386, r186, r496, r193, r1431, r1432, r145, r1433, r119,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r4, r0, r995, r6, r293, r991, r1386, r186, r496, r193, r1431, r1432, r145, r1433, r119,
     r107, r1434, r81, r1269, r318, r428, r429, r641, r705, r438, r706, r707, r1318, r1417, r1418,
     r1435, r1436, r1437, r1438, r97, r1439, r715, r197, r1440, r195, r1441, r1442, r1443, r1444,
     r1445, r497, r498]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₁]
-    [.S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂,
-    .CS₁₂]
-    [(96, 857069047387940932078208068291928646932302556394062725927073476019943192901076354290370490203740228687714070468897435504096519548911221447063430406913135543310530471041253827716882851779751304992904986088106157841164271256338929503826136247999184439084321263045141213038066744891443042136001931712446017275301155864910636983789868078414899130253377069842148252060489420410545846857840904553057612364789718593402390897834629807516067081136373172987576570295485689976031243240896927928964697643218317134478731631771719522467954841545668388713124477185093260161890951485701804895583385620292756287786399257061376332203060592292770824375574186749361353935777434553467831953573603461442794140311866612070312029582597816320)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(96, 131207477743821817841923756531378147910525035451526380794160246417644015865349096408252680713715281500815879076244607968886246250034224925728577393254182695471750078184571162948694481714390730578664204880850257989671823124165714643824827909187412008357543968847067454421082367119094380839104288458810450808190919822962594647171980521248920848669718628281350231756634765841842464265560668277312331898146020803564666053884056081093045120325479213154518252733606174613201182461365341315361010150629790822038817351731847020018976807754238075388821850882649976033081945597375098524465041895366866619535654483477467425255270311994168677733664640431037666320006886034852844034955295045657396394179750848787606115460780264617234489671745117346833169069702225146856496554172196513460294557130770360595757473468936714986855904785890626585601382536410492626828034016562697977078065527162649964761375298365927558504475277773504512)] (by decide +kernel)
 
 
 def r1466 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r991, r296, r995, r1333, r1456, r1457, r434, r435, r1458, r1416, r262, r1459,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r991, r296, r995, r1333, r1456, r1457, r434, r435, r1458, r1416, r262, r1459,
     r266, r244, r1460, r167, r208, r131, r1461, r97, r119, r186, r195, r467, r497, r498, r580, r191,
     r193, r1462, r1463, r1464, r1465]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₁]
-    [.K₀, .K₀, .K₁, .S₀, .S₀, .S₁, .S₁, .K₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁,
-    .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(55, 1794031597246944443076103133736778265822950435068670708132195842934546216156913900339154817432885798208929766332534605826077066561227130730749758424404365960711586567862747470600025970730568951284185785047004387805830617630761700793305175318517872408321511985307809418016948642650949540965955075531099400889119202397328296323217557221535072431348699895651533953298072546423142026484861108758021868121692831744)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.S₁]
+    [Gen.K₀, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(55, 1104473931109582371014350830476398095049990924289266361878036862904398409194701761625520309339466517140322426100115108587159167877343311711760876006603748759380447068552369935635429642613607981774122122310679886598123434177336128876048289588907142716830428585198116079228387745846959365428332701580627079895977339866606160741853704360578097883141468392197879501475156923524286925750754626222358574362844189566378612310438553210510984308204479061658060184991813555652868644201601924559330750772294735020445446076514336505856)] (by decide +kernel)
 
 
 def r1475 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r319, r131, r208, r167, r244, r85, r267, r1472, r264, r1286, r266, r1285, r1471, r1470,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r319, r131, r208, r167, r244, r85, r267, r1472, r264, r1286, r266, r1285, r1471, r1470,
     r1469, r265, r1468, r262, r1467, r1296, r1273, r297, r972, r869, r1260, r130, r485, r140, r1473,
     r231, r1474]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₁]
-    [.K₁, .S₁, .S₁, .K₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(37, 532533284654362741613666032146421533436289050483167984093643845649475373190222514224340882922115992690754917684852963063360495372086881749589265120429070495566376347373861973137022723034489992904894542807248437274939887955415711136435060460637411867380345210704373879930880)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.S₁]
+    [Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(37, 3853857332979906968997735362909676758810203591256880263127038100688137107428344729474186481975896607209142535553323701508273921486159011261521395194199924142824951561888422029792152779575949057604646098191624604498273534939941300734881465673557143721677804958832402254320976507843862659865372391732590482961225694301239480780743584097529248524271616)] (by decide +kernel)
 
 
 def r1478 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r4, r77, r6, r779, r136, r778, r140, r679, r138, r777, r134, r547, r597, r485, r130, r1411,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r4, r77, r6, r779, r136, r778, r140, r679, r138, r777, r134, r547, r597, r485, r130, r1411,
     r1216, r1021, r1013, r337, r1017, r723, r727, r311, r327, r1008, r1009, r920, r1010, r1011]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂, .K₀]
-    [.i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .S₀, .K₂, .S₂]
-    [(36, 14862717740266465901317436781300240457078849587607398213548512282757164270590392790279083842197799731297354113073217561126400972409498052590812751166400345557247747508848191782576788566256023274841870161494308214878377355549241814784422525922697207925791940518346752)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂]
+    [(36, 840324750842949437191313731777643899317542649978326123744660855411835183146603967567782322107903704895686977357126528113062420206931068208022664446404788928555856977799359197540717947811474406546443286593246850541038326875391047188387799778119149409673398843546611728641283707362103803696449141254948350238923284692082037349178505428992000)] (by decide +kernel)
 
 
 def r1482 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r276, r973]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r276, r973]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1492 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r974, r287, r1466, r136, r130, r276, r140, r484, r485, r486, r487, r488, r134,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r974, r287, r1466, r136, r130, r276, r140, r484, r485, r486, r487, r488, r134,
     r562, r1484, r1485, r138, r1486, r1487, r1488, r1489, r231, r1490, r188, r1491, r202, r1384]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₁]
-    [.S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .S₁]
-    [(51, 1182582315376894942471714438784925588371889912812160610629457483041826111532707030858828077739919068331030920438525966623899279451321849868790708908768983258137291607411339052758261617067001319636064577625428845160154079948230193057213784376884520650807458162017614617339788819686628327471705963154975993357372211719230772010614218467445018526025242352240259548523753656710856704)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₁]
+    [Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(51, 2712207744934834408218933663063909132288755636516545634150423440301892024148850612636562606014638713907439282735404329813934856188519716350353602215333966547916544919584292715974333315366573473798006734315334387700238965775839700022137795313756003822498691295688403104990193562103267395158913458788532090239954851175328865194727249730238817647624696178435512171937830003666779093186754519744632179372468001222458069037397862372338056280092347085795506665138431894248065356736476741632)] (by decide +kernel)
 
 
 def r1495 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r5, r79, r1474, r231, r1473, r140, r485, r130, r1297, r974, r290, r986, r1273, r1296,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r5, r79, r1474, r231, r1473, r140, r485, r130, r1297, r974, r290, r986, r1273, r1296,
     r262, r1467, r1468, r265, r1469, r266, r1470, r264, r1471, r1285, r1286, r1472, r267, r85, r244,
     r167, r208, r131, r319, r1475, r165, r106, r76, r1494, r981, r982, r619, r620, r983]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(96, 8835692538430821521553959770354987424103555343340791012515927323053374326676362493263140144803723301086058722445181454437924084874639769271125358638297532129277028046468229509232740486482537175519055912115153594095245689587251476773902874170935213356499683004774370298709663613029087281423257586248355290119336433354489871965145593288420551009987925408293465315260194088029125668576771228170322029148494929990530283983397163738757825158511399551766528680681354037130359974540822432335648882347308341589950604200249412783876575084202150182281068543022520312893356252432383814933481173840930708417265635578171959137547253227821577350437964881638214820606638483456566561169116599509103904361388568053824391781990531072)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(96, 1352654325008184553608791684441847426156209803304689020729384213714052399755223044585036534693433614295658060566332514112307696296977418440767709193263364014806324425818065958718469241143989989506631101736397678913678784584126951660205617555871670302609867494485393464820442689246411594976989601129602697560384724527259090247222425408303870319008364041950322780226223878858912370424460587452629433214157558041983193761705179757992439291863236585022051164542767442859167710168584411536281542209112511384118748403355673612068368039044738985806515591663720756828009301100025972521521389756336875792572107765732308597042104610399575870614887522029866110229036114422906272746943254644816968298401253953057342532492817350316327653649414268303146762044497199047277139518322405583338619882146303473173453539601258756226456959014965305518993596392524818118865995458275996390478859713605203314748640461747129468473326365048832)] (by decide +kernel)
 
 
 def r1498 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86, r78, r294, r969, r532, r533, r130, r449, r136, r140, r638, r703, r704, r6, r529, r77, r1237,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86, r78, r294, r969, r532, r533, r130, r449, r136, r140, r638, r703, r704, r6, r529, r77, r1237,
     r1495, r433, r1496, r1497, r715]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₂]
-    [.i, .S₀, .S₀, .S₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(27, 200893390983760819245622197912172200064187203661193462460864114574666609825724335493108815495849773927972189359197732870607597111481304601800641632704916539808226469368728051124902659728896319127552)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.S₂]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(27, 1231472868767811923598629939998394173646899627855999002737438617125893961096873027794650527335203005005700844391057032311049623035671178031795485249455215821822189636318806538050097336681552381456142323032135838444562832665531517786076445937500042657792)] (by decide +kernel)
 
 
 def r1503 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r875, r974, r78, r297, r969, r532, r81, r4, r1492, r136, r130, r276, r140, r484,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r875, r974, r78, r297, r969, r532, r81, r4, r1492, r136, r130, r276, r140, r484,
     r485, r486, r487, r488, r424, r138, r425, r426, r427, r142, r97, r739, r119, r186, r1318, r193,
     r1499, r1500, r1501, r1502]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [.i, .S₀, .S₀, .S₀, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(70, 134279538942012677529049241687663572910357123888196703088595530847621378083291431556741102691679832080222706864615269114237663294696134101177947515761491920087175857368054756286243252674423986674964170168981528063994998360606972514078732068753051621218782418169225724350447058112031705093365695129853271474887707415096875269155155281284918838204533414319669039011024886186743700123709821685412688105385396707803300803596342568817638843097709460527332425852679657792456615767399392202222247613323615007677114492238128218112)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(70, 3353426908623398766333866882827973488064031113506021680626746823827838887509427678690202882866701260752787913551126911829671902664978904608230301993061896741157000497621102299178659076563178327765787340307543735873643595110945181645362526226949624597260537803184474488806763456731001560297001635859721090831024367615792097130360368605171658664363750306036993009548797339178654342490039821968383388017902644964869446452288247105001708780435833194244670846602118818930767323806016792107486656139102491291119819029438885101376553250252500378884844359335106164245305256369205686471360884861308185004069400107720227316669891747930261404763603970942680468578630614445457408)] (by decide +kernel)
 
 
 def r1505 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1416, r986, r298, r969, r532, r97, r119, r186, r195, r467, r497, r498, r580,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1416, r986, r298, r969, r532, r97, r119, r186, r195, r467, r497, r498, r580,
     r191, r193, r1462, r1504, r197]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₁]
-    [.i, .i, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂,
-    .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(37, 554320432927861480228725404566854352193053571298002095904036742052840691457850283617361508567897249709543921056679385579545852922562582673694028775751049047768157059233493452785378772230446188029523194421947451540316194256057028342143948441533206013925819895824697262969192448)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [Gen.i, Gen.i, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(37, 4011620064654001923611565576781630942967115055257114739174326539444780057255477719503118872790675754227464267277762926840568513906007572168049079035625938802384963704803712426459795290299253091053056580546333535948649178015021020487035841478249916479908398256736313243134442271569282643040139079317392800481190329992458666830231408211502101748401569792)] (by decide +kernel)
 
 
 def r1506 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312, r1014]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312, r1014]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1507 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r4, r0, r1410, r1014, r326, r1016, r313, r662, r1304, r518, r519, r516, r311, r511, r512,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r4, r0, r1410, r1014, r326, r1016, r313, r662, r1304, r518, r519, r516, r311, r511, r512,
     r513, r514, r515, r663, r134, r664, r130, r665, r138, r666, r667, r668, r669, r670, r671, r672,
     r673]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.i, .i, .K₀, .K₁, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂, .CS₁₂, .CS₁₂]
-    [(52, 42283495912742437880220602357853832251469758154641503498992831944435382627457755701318242680160505946860537154705347484733172853971735964772964505060544123244365034908203391694499988906894735808349824969010665236224217771405869006784480808231454956533544729066765628562671622860089992701833652829322177989122056309011374142360943736754716340466251141247642779763033767388088831683067904)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(52, 12412703519456014544313632405392643539353723006276624265048604581033950940203814659889505664797408604844910078591215860850100599767103846499521656719639311990653229682058028342132945317117269317926048841810046758437290910323278242959257039928816721906956616238097904056206005506163577365130700595371398152592034686826105511657623253654171012596133709621376733425853151310578348864991845848826662834631252456689000956614654147557237340268332713624416841598620316282456702046280756340535368613888)] (by decide +kernel)
 
 
 def r1524 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r4, r0, r132, r208, r1508, r219, r635, r1492, r102, r634, r138, r1374, r974,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r4, r0, r132, r208, r1508, r219, r635, r1492, r102, r634, r138, r1374, r974,
     r330, r1031, r1307, r313, r546, r1378, r229, r1375, r237, r1509, r1510, r1511, r157, r108, r1512,
     r129, r235, r587, r239, r588, r1513, r1514, r1515, r1516, r1517, r1518, r1519, r1520, r1521,
     r1522, r1523]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [.i, .S₀, .S₀, .S₀, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(96, 290048682537377304862960521291588502669607991637059310742274314148748452426956187249535165154724694595561083554540426244037962605701583669671544716716468201926622901977771183500580977060759845134719411563896346783984006011091267723355703856606878040930497514768274370511833478231244618964511123995712648210173877641554062125572875197491814012400176791341599053314431381222127931873742442706905781896132567429889003652767962044710131589862672026677416665114477142050074987818466744574490852487435817563038709143517871616734154966299278377816875542080160926935858859744815111232309631578150868027784549252688304774865049700652737515877106003331761645175716791555372782407236220616186042671339303818642292745200813159219200)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(96, 44403582813716054778499817593486218902325932930328196566644070990900351938624907033009986719077731105532912548852417921062835855710865073196529170572852813777470705664826900866839124763842767528436270149946241350107017501362658339254006284791551448157342693132921603767225261827701484613311376625293120272063257167966969904469492139217342598279228779062213060798526247112906401625515051677715064361675288209467616542305580793514042862372854503604088672562798156698251532240782472113081572966891483196307048738219019605426369069367646707554511850103648056746432696736862353940453841142080500589366394229756223218174639579846740240644191215118907039435285723979074196194363640219357047762870680468129228707963318331440635090282320242593093543177471298506482811067694824198949413641574418316830503388227962239914112222268574232516924709313948471196825527727717254863656302736232930863424154059585740827167866515782277005312)] (by decide +kernel)
 
 
 def r1527 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r0, r1526, r313, r1524, r1031, r339, r1018, r584, r590, r229, r485, r235, r597, r239,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r0, r1526, r313, r1524, r1031, r339, r1018, r584, r590, r229, r485, r235, r597, r239,
     r484, r281, r157, r102, r179, r178, r143, r106, r76, r122]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(32, 3256065144922472556756056511627540042560415822612580007449695586835989557234618522003890124219043861470783165602066454798939355189827830442644975964619723450463868785318576016965332795219878539451817985364473356863630354403044146534154240)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [(32, 685807364404676309988909160592617721896481461502761039553852783305477886937637422547372833997870129162497124794532147172051624491447274101755182401611156144053660292798626832301377435675125074945907246876497661056483511887519112068583183681486276080287087276812301820274053232506610596749314348642467840)] (by decide +kernel)
 
 
 def r1529 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r1018]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r1018]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1537 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r85, r5, r4, r0, r1268, r1267, r1446, r995, r1027, r338, r698, r699, r130, r485, r136,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r85, r5, r4, r0, r1268, r1267, r1446, r995, r1027, r338, r698, r699, r130, r485, r136,
     r597, r140, r484, r281, r900, r97, r119, r186, r197, r195, r1321, r1322, r1323, r193, r1447,
     r1448, r1449, r1450, r1451, r1429, r1452]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .S₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂,
-    .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(64, 99383188223958695737986922518268336897809137722208427343207516380941201245426879555541476071654838275114942610520369287078161649774964165546539214105573188484487711003845054261051299396079141673873021547290156651107215745286725472665520894334065746073251922737718898240335840272954319413088009006508255887342637322559144359597122552644648400647581080711336613799508806663139062183213291678391027029700590877410450910408362538458683627840519056885552612904934309447071208308736)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.S₁]
+    [Gen.i, Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(64, 564329285536847241417107495328738354414671011426197221570377030503155039835795184598504002946611716385092888888716188997868788807389586319538819629754733816577770652209172975854132768736198624803162220387218892023827517468949707194933219976113319557500692916361424488783632142366597271702811591244260441236731655644713803024178479175317591781823405324236844400460514108987400180503980034758866141563279126038098510339881198313912314932910393760569194933952212438972092544885108415802387643731376967475223455502929479599262656788036326821483077079330429883240580033395260375780298805294569716143500265070264320)] (by decide +kernel)
 
 
 def r1546 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1394, r1037, r323, r1035]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₀]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(6, 697025903735144596632569140016012362514432)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1394, r1037, r323, r1035]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [(6, 23949627333731481246989112414004556153132995267526656)] (by decide +kernel)
 
 
 def r1581 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂]
     [(1, 65536)] (by decide +kernel)
 
 
 def r1585 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r1059, r1582, r1583, r1584, r323, r436]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁]
-    [(8, 622576329176492351291308831031120722918099849872220161)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r1059, r1582, r1583, r1584, r323, r436]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [(8, 350479306742006436433078199271808985245243082679280275655379344498689)] (by decide +kernel)
 
 
 def r1586 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r1044]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r1044]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1587 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r1059]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .K₁]
-    [.S₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁,
-    .CS₀₁, .K₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r1059]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.K₁]
+    [Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1588 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r1046]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r1046]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1589 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r79, r77, r1114, r302, r1046, r1113, r1047, r1048, r1049, r1050, r1051, r1052, r1053, r1054,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r79, r77, r1114, r302, r1046, r1113, r1047, r1048, r1049, r1050, r1051, r1052, r1053, r1054,
     r1055, r864, r1550, r1551, r1552, r865, r1574, r1575, r1572]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [.K₀, .K₀, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .S₁, .S₂, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(32, 9339949109788466012372498603784803512134186682587455923575034996707526648654741819980021374918184373961408670177000223728465693737443552540529102578711107787381868114512237882635477688086695320278174857938136645237595370452991552258048)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.S₂]
+    [Gen.K₀, Gen.K₀, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(32, 1967222833944576790164316404703142804121666573434499054124268038690945383626677779313751374800243039220994897574255260806742691382068117001870414972600249754353923677270746898781180859559934581734364666266279392568521478183357167682652990931542890637234422352376955062102133234188396266996059481309184)] (by decide +kernel)
 
 
 def r1590 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r79, r77, r1114, r303, r1588, r438, r439, r440, r1047, r1048, r1049, r1050, r1051, r1052,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r79, r77, r1114, r303, r1588, r438, r439, r440, r1047, r1048, r1049, r1050, r1051, r1052,
     r1053, r1054, r1055, r864, r1550, r1551, r1552, r865, r1574, r1577, r1578, r1579]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [.K₀, .K₀, .K₀, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .S₀, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(36, 13351254917695465855158864777740245825496221009313455910499096778432572434247934323781658756874986070765301641293562615125452364080102930807250774765629996021702720592744242761419487294253060152244318145249448341348992931916240413530818756371899857874363488881606656)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.K₀, Gen.K₀, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(36, 754867996519263157100048365735960371002150697160057970915841402318610995567710385785543488507349061861197061486272023613217648169949707222641800673043552784130482554557939336664440707353511790211833596524269878878090201476261494368146615429659525692695523710460779619981129453635428843582311977367297159739499992790424485565427920047964160)] (by decide +kernel)
 
 
 def r1591 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r866]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .K₀]
-    [.i, .i, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r866]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.K₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1592 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r1045]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r1045]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1593 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r1042]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r1042]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1594 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂]
     [(1, 65537)] (by decide +kernel)
 
 
 def r1596 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r1040]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r1040]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1601 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r1040, r733]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(3, 18452373573344493569)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r1040, r733]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(3, 302323688624038726402049)] (by decide +kernel)
 
 
 def r1602 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
     [(1, 65537)] (by decide +kernel)
 
 
 def r1603 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r286, r1041]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r286, r1041]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1604 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r289, r1223]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₂]
-    [.K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r289, r1223]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.S₂]
+    [Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1605 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r1040, r290, r1041, r738, r311, r319]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂,
-    .CS₁₂]
-    [(10, 700958634236111736870339047368856702904092990981374437658221252444160)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r1040, r290, r1041, r738, r311, r319]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(10, 6465202074832523508401639385498314440714801144843716929040870333820246641073918994022400)] (by decide +kernel)
 
 
 def r1606 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1581, r1109, r325, r1112, r1587, r1592]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .K₁]
-    [.S₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀,
-    .CS₀₁, .CS₀₁, .K₂]
-    [(6, 2439611894355212052159311705290198214508544)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1581, r1109, r325, r1112, r1587, r1592]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.K₁]
+    [Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(6, 83824426409116999414875186624960182420786984326791168)] (by decide +kernel)
 
 
 def r1626 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r1098]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .K₀]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r1098]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1627 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r1098]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r1098]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1628 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r1109]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r1109]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1629 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r1109]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r1109]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1630 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r1112]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r1112]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1631 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1112]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1112]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1632 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂]
     [(1, 65537)] (by decide +kernel)
 
 
 def r1634 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r1117]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r1117]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1635 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r116, r1118]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂, .S₁]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r116, r1118]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1637 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r1118]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r1118]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.S₁]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1640 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
     [(1, 65537)] (by decide +kernel)
 
 
 def r1642 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1117, r290, r1118, r1122, r920, r921, r1119, r1120, r1121, r919]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [.i, .K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₀, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(10, 1024478000669671782957484592625976956617524849352833332061514554671104)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1117, r290, r1118, r1122, r920, r921, r1119, r1120, r1121, r919]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀,
+    Gen.K₀, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(10, 9449141493754411718391037237079164626552469892904058569290193985124403962680600199954432)] (by decide +kernel)
 
 
 def r1649 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r1141]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.i, .i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r1141]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1650 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r1142]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.i, .i, .K₀, .K₁, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂, .S₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r1142]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1651 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1142]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.i, .i, .K₀, .K₁, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1142]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1652 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
     [(1, 73729)] (by decide +kernel)
 
 
 def r1654 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r1122]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₁]
-    [.i, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .S₀, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r1122]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.K₁]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.S₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1655 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r116, r1134]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₁]
-    [.i, .K₁, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂,
-    .S₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r116, r1134]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1657 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r1134]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .K₁, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂,
-    .CS₁₂, .CS₁₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r1134]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1659 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r1122, r130, r769, r136, r770, r140, r1143, r1144, r1145, r142, r1146, r134, r1147, r138,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r1122, r130, r769, r136, r770, r140, r1143, r1144, r1145, r142, r1146, r134, r1147, r138,
     r1148, r1149, r436, r6]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(24, 2030706261423921234658506231908235189600105055574848528673663685086391837938141011973829435229148049791649000050037472081561849444927843258021682909657391967218361188049263599617)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(24, 5935761051644243534974753514780580770039923202938805797876546532718762268717559954482595871624407532240700499941694936986261325926533248277171517176325551268892394802633316629185890127302156878541819541376796838796164316864513)] (by decide +kernel)
 
 
 def r1660 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
     [(1, 73729)] (by decide +kernel)
 
 
 def r1673 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r4, r77, r79, r5, r0, r1122, r290, r1134, r1117, r142, r138, r317, r387, r418, r422,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r4, r77, r79, r5, r0, r1122, r290, r1134, r1117, r142, r138, r317, r387, r418, r422,
     r134, r130, r1662, r136, r1663, r140, r1664, r1665, r1666, r1667, r1668, r1669, r769, r1670,
     r1671, r1672, r932, r939, r940, r941]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [.i, .S₀, .K₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(72, 139549685145277193692588354299504542501723210824164143858832161728267700498944457132380981753727907007098998318063614729531693855470753837681984194503368035054170296105459240118896463736294776551739467498908881832110247539259406701139596096143874798991834915591830210716502277564281416571033144100879330925615277524374009290109114463105919459040020900810582962546905562055560992155719174099380489239130150558191709934633507200822597071462763965715230367522136376721367363983909550584181108324235136457119721677597897813269057736823124525056)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [Gen.i, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(72, 57100078584296012088008473009958045935545933966040118753062716723320909169973160123135967331900064473642474597821978018828639419001544028733376600998478241833563583277906192855427756782217735043630217525407246134728203809058263532746768331150013987079055543194706060589885011252696217191696112356243109661598980144293723128324332410166104820816856956761594875254628549077069483005393022350876237753532728511602171679135943856664797825832078847759323071604715696527977023342776931427858638519779591180205170770977995379348921376968901220903833136649965005512020819838138274210472826620704992444686132206716748698672051665191995652752550540319964303815388603037066795912756880640354346336256)] (by decide +kernel)
 
 
 def r1691 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r77, r4, r85, r5, r79, r0, r919, r142, r134, r140, r1606, r1581, r1117, r1134, r330, r1122,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r77, r4, r85, r5, r79, r0, r919, r142, r134, r140, r1606, r1581, r1117, r1134, r330, r1122,
     r1007, r130, r769, r1667, r1677, r136, r1678, r138, r1679, r1680, r1681, r1682, r1683, r968,
     r1684, r1685, r1686, r1687, r1688, r1226, r1689, r1690, r311, r511, r512, r924, r925, r926, r927,
     r928, r929, r930, r931, r932, r933, r934, r935, r936, r937, r938, r961, r962, r963, r964, r662,
     r965, r319]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂]
-    [(127, 1755852318114659635381014560545533646088205512462602035598435189446630350108343253496931295373219040053868512081880497596090479216649636396828211641554081700679436421561332284280634803552202209995779907071947270322031861539896647197512996816383689945838020369578474579064567539867292823806048312361780698323434879844949520274647038142018649987177372692333718301742930730904835425511927638056227388633879624792267251405872717439415281069935540501001414645479740777547319941132036628362457483483361497798643586015592786839638878142679109273317440096612262726012524048874237355798174233131554899925574919373960738302923996992346378563636961943883565496660612629158728191989638525347850430010458711398435845457742294186589503017701492411419709783553499310884441047582086542715065201872105483871053426046176791188124122326615596697219029056690567723361660818630145930520301311711220994844892608145562715309569343037392436127986650597229286775090881495040)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂]
+    [(127, 56616436381511539494938331807346522700222004428007290249982080381323410832079319168003429927477454239718248765888378574445218241627799133361824811678115801288752218582662928870613310477685977133907971350641254752870893175929417022170695194123556316648278634761691844287807178091020776976093848177606200910378142194647125284400310510686506127284907808378382398732177260734411911179246210028059879415408066194462851660692461042792095367655511152421648659087818732056892735621512172664423824217968075537908211917460143481717804949270101005901329996269065116022534766548418351837657967785755229889434074791506243257474060797741478275873769005747409866463225518024771201628846605581515038569187864441387199495550761806704249434894209991386068856167953102888446449143312688278824106600235153824373919511614718366400049002931240654989267979341425095075430742589513564501312610149255468565202250175865428219849098930694052290766699516723613716021220823108814861610513014237533392245043655170930894248637621489169968255225326911190011432053200295140398497689753025435712304902325325081503263921954506620740104805038340060683240840459107586212952028994012624496893217118056516237334636411385717856267852198149484333959741440)] (by decide +kernel)
 
 
 def r1692 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r1212]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r1212]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1693 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1212]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1212]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1695 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1215, r111, r1276]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .K₂]
-    [.S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂]
-    [(4, 2166432847686910136859754496)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1215, r111, r1276]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₂]
+    [Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(4, 4543338979380580673303629946421248)] (by decide +kernel)
 
 
 def r1696 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1215, r112, r1277, r733]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂]
-    [(4, 2166659521278087879830011904)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1215, r112, r1277, r733]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂]
+    [(4, 4543814348355666259329191210123264)] (by decide +kernel)
 
 
 def r1698 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r1216]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r1216]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1701 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285, r1277]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285, r1277]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1704 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r1398, r1216, r290, r1215, r1696, r142, r140, r318, r428, r429, r136, r130,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r1398, r1216, r290, r1215, r1696, r142, r140, r318, r428, r429, r136, r130,
     r442, r443, r444, r138, r445, r446, r447, r448, r449, r719, r1270, r1271, r231, r1272]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [.K₀, .K₀, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂,
-    .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(51, 1182605980274863590391448933891210103251204854297652652128638413997142346470959937407798497854761698743341936635412491521586576870293275763119585097059339989980982252431782648869021710040440704215049730977856463177174206194018200297474873356878457907952365226117141617448028074937967392801427305525237923128099362754063489602118859605657467037962848025260987867918554882824470528)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.K₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(51, 2712208168961480803845427340101800583392970165153954449875683024934813263954118096498638962695303026772667791088840925455320916066149023932688569711073661993695664742291474986365753227536207161515369424087504048078516177920587453425681636244967808370611883115283204366947502305693923856406812762174845570784718839535398423713550324791668625367627653409368821343908444603704742536807815365318503647810674673185917630880150383692412027494181294817306834880857313136264000905716711817216)] (by decide +kernel)
 
 
 def r1706 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1628, r1215, r321, r1228, r1478, r1634]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂, .K₀]
-    [.i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₁, .S₀, .K₂, .S₂]
-    [(6, 4181857612990416985091789695340851457163264)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1628, r1215, r321, r1228, r1478, r1634]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂]
+    [(6, 143687533474190782944498117373019134905893981287088128)] (by decide +kernel)
 
 
 def r1707 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r77, r4, r1634, r6, r776, r136, r775, r140, r774, r773, r138, r772, r134, r771, r770,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r77, r4, r1634, r6, r776, r136, r775, r140, r774, r773, r138, r772, r134, r771, r770,
     r769, r130, r1655, r1654, r1230, r338, r1216, r1021, r1411, r485, r597, r547, r777, r679, r778,
     r779, r318, r428, r429, r641, r780, r781, r782, r783, r705]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂]
-    [(63, 3277716475951700740506378477209637865400296402351270542727770108715766431924709696119765094536041563071899681061322736564864521908461185957334324523785368744971059400128597406759667427074176904794580675795703908895487281253207116944550882274976368534724681875932485417281011685312007456759471685913528550771717867733137967498297435329351592233647491074882033825852693997646723771600455825356958327351730639049339465842225048339892747193232773211307389916809012352909312)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂]
+    [(63, 145408398024621652568632767989656467377089278703290738097911650579638726702674009881734719268176489973685192834315273934875460771358931615703567431057664282214451496585809827769155981466395793255353015505872926113888248665030443268525152369890269307462035200073424565969107171148942777030329848184525724593794878694342819097800240472603375181782551474431109518486263938599137387104131427928231795449766642314228629876767181568692390186595523149222183779735789608655983327226673497681157470476258762530779741509518791846446956609084082569386187421000249299298539338078485135998977331678471906534621184)] (by decide +kernel)
 
 
 def r1708 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r79, r85, r77, r4, r0, r750, r142, r140, r788, r138, r1707, r1634, r1411, r1216, r340,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r79, r85, r77, r4, r0, r750, r142, r140, r788, r138, r1707, r1634, r1411, r1216, r340,
     r1230, r1654, r1655, r130, r769, r136, r770, r771, r134, r772, r773, r774, r775, r776, r1635,
     r789, r790, r791, r792, r793, r794, r795, r796, r797, r288, r366, r367, r368, r798, r799, r800,
     r801, r802, r803, r804, r805, r806, r413, r479, r480, r481]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂]
-    [(101, 6157942165594994411730967820955347618119682186825136073603451622633435829513427511010239934434840584124447731061170573768679918245814652283411405232617282850578564762094294680705446410683725881154304564679768652206967023375104117771063668550290365279534904518529926145515772982007284686731772027037761956705164327980190263510441296715646850021013142032337978053264609565667168329916670770124152927283703921657607264692156118103196964040322814029703026853038809925552690874937340961682124359732846306468817492915296622190531995130683971886091961708306059424525367805765817099599041082950764295799304563460942008226343362241687672543581481185068772528286069498165099715658731433210626827146673125615733817078486718478677662672962273243338802384032773900861440)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂]
+    [(101, 32391612658182243747329827374342351080606889692706111114430572209528811473565365044364802719659765513362141748110695733813964587932556464703773636787582763566645162542154465519631998948229104784502144559700590315510401320225246660961371469204566629358132937583282652627338569107796941213528073600986200927922784561774904048846594075988890876462923512204960353908859623498291547619236090839846480020244423464541192174012257730663822695978974789236313834862634355683965198325695697664865722389097992516262614132607654334362166950350536905283045120618024386850078534993738658319630283354699078280457212021965695541996165459996065197681867953138746618978326935079328945607258084197161783557195967187775162528423812034257806702295742988670051066654721260369611365858630950497570449939760699905354218569684445434223039328005866903471084764727376955721948495436779187026164915139969400588811023426702952328377333316891408884574317948053863440674769612880902544584177793105920)] (by decide +kernel)
 
 
 def r1710 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1228, r48, r1277, r808]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂]
-    [(4, 2166659521278087879863566336)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1228, r48, r1277, r808]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂]
+    [(4, 4543814348355666259329195505090560)] (by decide +kernel)
 
 
 def r1711 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r1228]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r1228]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1713 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1230, r105, r1277, r814]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂]
-    [(4, 2166659521278087879863566336)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1230, r105, r1277, r814]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(4, 4543814348355666259329195505090560)] (by decide +kernel)
 
 
 def r1714 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1230]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1230]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1716 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r1217]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r1217]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1717 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂]
     [(1, 73729)] (by decide +kernel)
 
 
 def r1718 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1222, r283, r1218]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(3, 5631973502484480)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1222, r283, r1218]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂]
+    [(3, 92234037036486492160)] (by decide +kernel)
 
 
 def r1719 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r85, r79, r5, r4, r77, r1704, r1403, r1218, r297, r1213, r733, r165, r167, r208, r231,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r85, r79, r5, r4, r77, r1704, r1403, r1218, r297, r1213, r733, r165, r167, r208, r231,
     r106, r262, r76, r267, r264, r1047, r266, r1285, r1286, r1287, r1288, r1289, r265, r1290, r1291,
     r1292, r263, r1293, r1294, r1295]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₁]
-    [.i, .i, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(62, 85917043906100737772343422445232119076031668656108196609907480851461224037265456510768973317027378283680279009058525230059252913130287976709862342520257139820174682829709707608979584208675910779778034563282036410514241216112701211950916832737492435990483692589097475348019484830957687768116506570606996614799283530207822534617640567859794499996482636920067074275617295816063996903681007760365281030969025380823844895281808125509764501443118663046945934864809984)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.K₁]
+    [Gen.i, Gen.i, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(62, 29776558276453012258495097358272337175422115210890170757741129579076284957728418458464042584980811632896668286770292546447852622772069955018668469009714417686394968660856461837913706312471668351333988489002745388535058280896411772015906245943478406533841163078402724637450062521904814019794172297948298940248664201713067167360961581923365195545775256957058311181232038856374582531910359847880156010066942688501509837654582780755143546294189104176327973504882579360860227404053611162865627775949887626057238077351851271636258269740092448855978170298464430782900435674325001585040257062010880)] (by decide +kernel)
 
 
 def r1720 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1701, r1221, r298, r1213, r733, r97, r119, r186, r195, r467, r497, r498, r580]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₁]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂,
-    .K₁, .CS₁₂, .CS₁₂]
-    [(28, 5173297428560488377040293546218713917608801491943034863381125251887004707602876953060451718017319876167675131175821489136506931265857007488717643985432985439726366134965656683240579807506615797090667724800)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1701, r1221, r298, r1213, r733, r97, r119, r186, r195, r467, r497, r498, r580]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(28, 4059104608741991473364362752773265172661731640792203937265526323582703918169099514427512248362041778527341900948135833652785274558271326352194125668946308928426660286801796035830921383328727678199680109483630488653705950406425715285313187023943517927296833945600)] (by decide +kernel)
 
 
 def r1723 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r44, r1229]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r44, r1229]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1725 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1218, r322, r1229, r1637]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(4, 264452528672673668005888)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1218, r322, r1229, r1637]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₀]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(4, 554597137692084400195589111808)] (by decide +kernel)
 
 
 def r1726 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1231, r325, r1229, r1651]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.i, .i, .K₀, .K₁, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(4, 264452528672673668005888)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1231, r325, r1229, r1651]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(4, 554597137692084400195589111808)] (by decide +kernel)
 
 
 def r1727 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1231, r341, r1229, r1637]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁,
-    .S₁]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₁]
-    [(4, 264452528672673668005888)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1231, r341, r1229, r1637]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₁]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(4, 554597137692084400195589111808)] (by decide +kernel)
 
 
 def r1730 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂]
     [(1, 65537)] (by decide +kernel)
 
 
 def r1731 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r1233]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r1233]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1733 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r280, r1260]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r280, r1260]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1734 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r1024, r869]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(3, 18452373573344493569)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r1024, r869]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(3, 302323688624038726402049)] (by decide +kernel)
 
 
 def r1735 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285, r1260]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285, r1260]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1737 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r877, r289, r1260, r142, r140, r318, r428, r429, r136, r130, r442, r443,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r79, r4, r877, r289, r1260, r142, r140, r318, r428, r429, r136, r130, r442, r443,
     r444, r138, r445, r446, r447, r448, r449, r719, r1270, r1271, r231, r1272]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .S₂]
-    [.K₀, .K₀, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂,
-    .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(49, 981491190810300049074792169800966477666067089725573038459646113859373420570646722628793790339244749740746518470817178198238481200285992181976943979682663569880645221556750478019978800875254021320271073102267608767847558580450382299480922304189572733567388555616616442792272352664931326067077818710423575592771720333729516187262945362069794688196739798655584698368)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.S₂]
+    [Gen.K₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(49, 137387849741119569462466698266014232716889009882249978980141055156569047264705479893551462792001711699079546823281516485399066779973450325743451536372488994962926798066000867512587479669131918225540111672423791454105155216446337937812868722164751545594792160082204446993392329781998796746865317291540056958932901219035684646919442446521428683508128303546994965267497690385115205408701241056420184999001829099865697169176143283982363436615936296859290379074913959936)] (by decide +kernel)
 
 
 def r1746 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r85, r5, r4, r227, r226, r1738, r225, r1022, r1259, r291, r1260, r820, r189, r891, r892,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r85, r5, r4, r227, r226, r1738, r225, r1022, r1259, r291, r1260, r820, r189, r891, r892,
     r102, r179, r178, r180, r319, r222, r1739, r1740, r1741, r1742, r1502, r1499, r1500, r1743,
     r1744, r146, r122, r1745]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [.S₀, .S₀, .S₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁,
-    .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [(62, 81209403499587494209842914131884791509858988120051309142880063117364709634195476250163388870524225213569865382814117662610370855520138890995339309896715622446822166445819287096461878263418709861415750067150395596491480617180755530345098566116304589493134568354617942773444852300348214465456626562238780503699391032504050097950906844841575511314114511317057491746720862705351969286105152155857673219435264389478281049191426559150828468923847821436561495567630336)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.S₂]
+    [Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(62, 28144966428841518764265286439114129598975848994847486400943105718298389956945414303572546536836734231318625484344496571304142343796273561537889880563539021177933007662363792532939506706411404881116805512884710285888455671496361653713586292520686377866806379308641687167542715791264274372854685109530654817477614452527079048176941469763904897446163379572274716184017063963192786144702838465548562010773553512965298879928721495876943294901070628947395799095152759644378618201820782492034782166276234500029345819538814765205521639462700715131059595107954208435037112728838019165583931001012224)] (by decide +kernel)
 
 
 def r1756 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r498, r202, r988, r188, r1753, r231, r1752, r142, r1751, r136, r1750, r140, r1749,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r498, r202, r988, r188, r1753, r231, r1752, r142, r1751, r136, r1750, r140, r1749,
     r1748, r1288, r1747, r138, r719, r130, r449, r1505, r877, r292, r1022, r438, r439, r440, r441,
     r97, r119, r186, r195, r467, r193, r1431, r1432, r1754, r1755, r197]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .i, .S₀, .S₀, .S₀, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(61, 1726901031895095687550758546919930156557309173628173402851128762852616696955586791132246675347246581902104910964422864716384978713290060864017329356455230863798288537134031585285597550156513788585566735681531450451148008458244430659685238367784019408173929748075822813931047227948972611058724616457529891694333505171768342556609626355755610507785488327130283943025149073897031194037902339426949298632444016846229844863469241749189280478747194496298067689472)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.i, Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(61, 4675904333883394537992212032407485326633630482141254118954463204656238156948866717388216383736127675231769662916229517655170963199879564792640687856540486275945068480326460602119619902552385717084930581825437266737802615287958008910486742602134824941497084172711863984697942054075308978402336842877846245052075383856476637787969724535966960593368548986198129571515011299162576346266806068998657188056460551344848484823762435227350163586766008301495660070086826208909752832647002390805588129987750016969035952611153213975152604984739374512250736030632980958980229223219766662684213248)] (by decide +kernel)
 
 
 def r1757 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r498, r202, r988, r188, r1753, r231, r1752, r142, r1751, r136, r1750, r140, r1749,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r498, r202, r988, r188, r1753, r231, r1752, r142, r1751, r136, r1750, r140, r1749,
     r1748, r1288, r1747, r138, r719, r130, r449, r1505, r877, r294, r1024, r870, r991, r76, r97,
     r119, r186, r195, r467, r145, r586, r107, r319]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(55, 1892283755548514929545138306565604652870110066637767698690046108152770206607233422052874012848085204021769969234244952973232181575482405933650406652221617924861764801536778114259875933953671513891495985224719478562889500874542074826751957963310719114684835729795418141466365402680640788278402573486088868332470780917938878767789080831339068483170121389995917056609982947520051155845775819810112259906219278336)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(55, 1164992805596416226409894614518021023758084864804403374488221747808213865163419664900872121545677213537890807111976075268015505425301972856773166326289328522772443252497850649994993893564542673055806126548774684305123539962753337233666591237169820290113687193391045285820137920422469433020815795666896249654981167019524028173543505752623829140455006064470622506728506914247625967772325311095965440895708682563262541703327815885012530211860542919204735358706535440475103180430436503400220700271123662580319586934719294472192)] (by decide +kernel)
 
 
 def r1769 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r85, r4, r1759, r107, r119, r1745, r145, r1758, r193, r1539, r1452, r186, r1386, r1430,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r85, r4, r1759, r107, r119, r1745, r145, r1758, r193, r1539, r1452, r186, r1386, r1430,
     r298, r1024, r899, r76, r311, r1760, r1761, r1762, r1763, r1764, r1765, r1766, r1767, r1768,
     r1318, r1319, r1320]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₁₂, .CS₁₂]
-    [.i, .S₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂,
-    .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(37, 532520902751289249446624419899476188524570105584120851794946556559509790092264419295916938394936609707466076250061633261072102916747471070911366064099940573584978567715421885904704016467655228037878430908981072423517409213498218916530888107602109205151019309854140928098304)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(37, 3853856632918175712355552334865029642767094674592776974413392221457272713081075274136129301021895380023113466716842317717095515576034885398020024742134924988331267430946480833359315548128458277571297789950313337053135642030390558332890871702472876280289719366603240208933764463207312400162903418182183982631489734686028566261675172095658449864491008)] (by decide +kernel)
 
 
 def r1773 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r4, r440, r177, r439, r175, r1770, r540, r431, r173, r430, r539, r1254, r1746, r299,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r4, r440, r177, r439, r175, r1770, r540, r431, r173, r430, r539, r1254, r1746, r299,
     r1260, r186, r496, r195, r467, r145, r586, r119, r107, r319, r140, r138, r1738, r1771, r441,
     r1772]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₂, .S₂]
-    [.S₀, .S₀, .S₁, .S₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(56, 48652084565711578691733256186881185412434611758131269396380886085090883053654449675290417627664349428430601844547345430704993307820927782342402495721866601018806587713056933844403942114802776826223278977654075580984102782153240683645744430447684591623569137773969922200817567728764198403617522207944112558287225672633547222688962929013305820747601445717449305901966275607629225373702298157102489066867425088454524928)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.S₂, Gen.S₂]
+    [Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(56, 3833932147038246777254557195605868319283123906950891312853057447943788902189262100752785807030785547843385731587920545967161566660510383783308794175130664729171562275102448303822527969563361141021182101605101646622807419013896344523873768022734059552945836335923207850954953483417432698451880903441030409579180075357570643802463960481184496546028177358589464039031314052978627366515345078730198163080554758926762862279603591584587377617094888189031694198769050064300438340246516076762353097926115076912790749094302305054591111135232)] (by decide +kernel)
 
 
 def r1777 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1628, r1243, r4, r326, r895, r1706, r313, r826, r663]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂, .S₀]
-    [.i, .i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₁, .K₂, .S₂]
-    [(13, 350445564228534819771561571273931703769154207011894525390434740544485627709826166878512584065024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1628, r1243, r4, r326, r895, r1706, r313, r826, r663]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(13, 6778602940910957372028037492997585552671556890851344597867388402442873305959761898497902364168545508991538759238351323136)] (by decide +kernel)
 
 
 def r1778 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r1243]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r1243]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1779 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r895]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r895]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1780 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1023]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1023]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1782 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r276, r1234]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r276, r1234]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1784 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r4, r441, r825, r440, r439, r438, r1239, r303, r1232, r820, r118, r116, r318, r428,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r4, r441, r825, r440, r439, r438, r1239, r303, r1232, r820, r118, r116, r318, r428,
     r429, r641, r114, r705, r706, r707, r110, r738]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₂, .K₂]
-    [.K₀, .K₀, .S₀, .S₁, .CS₀₁, .CS₀₁, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂,
-    .CS₁₂, .CS₁₂]
-    [(62, 57670046177372701036234769166452322458035225828101695150199027315551524996492569220713907480809183433559922409690237060781818342595134553779426213219067433639148213007873703933261652698468057380070674298789772480830310740089065620827122534192990299695652064716557442642480726905998045857956057591949003669861593998698568128075557401175274091203411525039748343756255781839415066320132239072613653873054248824598923358411782828514157534181714471599996675268018176)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.S₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(62, 19987004062624462274844144811925478024759251391035823118792744364818046182628882354838804920317333104168170651025642391367568791938359533430607661762057388198969000582970404275143827909741460530970702891644309637277974262565503653398998429833207084189585084479791717462092779107483454255230817088846291440678075551643919719280428644389053425798057050870735869738865806822727431825770218834856787772153923902092549611908962531041497744861717884106779541580995577182388210781630920224055049885300442609154160328435123180695727353939465434461466103974708987608493709170241446368315174293602304)] (by decide +kernel)
 
 
 def r1785 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312, r1244]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312, r1244]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1786 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r44, r1245]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r44, r1245]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1788 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r4, r1629, r1244, r1246, r328, r1235, r438, r706, r1787, r317, r387, r418, r422, r385]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂]
-    [(24, 3586290898755732499755473578741978343492377283975612315486044911963912134746838129699847106234579437160393052221479265857702161871061544474837427310307912840584309435248148480)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r4, r1629, r1244, r1246, r328, r1235, r438, r706, r1787, r317, r387, r418, r422, r385]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(24, 10482739816492309012124424918361605228063304023910141537776493777123647551893079274884064947679004251925727390753818195878044314815096788353770319338279702311040272753509273143626657999681889303987928759889639646613867593728)] (by decide +kernel)
 
 
 def r1794 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r4, r1786, r339, r1246, r1296, r828, r1789, r1790, r1791, r1332, r1792, r909, r1793, r1382]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₁]
-    [.i, .i, .S₁, .K₁, .S₁, .S₁, .K₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [(14, 1845492849961567115889219355956975190110279352115850199360045565700583952210330799984253032288223232)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r4, r1786, r339, r1246, r1296, r828, r1789, r1790, r1791, r1332, r1792, r909, r1793, r1382]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [Gen.i, Gen.i, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(14, 4569218857263248471076502514639449143644009335160623489750801617390793998309367771021782352042760382315316689966548667548565504)] (by decide +kernel)
 
 
 def r1795 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r1244]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r1244]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1798 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
     [(1, 73729)] (by decide +kernel)
 
 
 def r1801 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r116, r824]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .S₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r116, r824]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂,
+    Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1802 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r1252]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r1252]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1803 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r824]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r824]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1804 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r1253, r1247, r1248, r1249, r1250, r436]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [(8, 622576329176492351291308831031120722918099849872220161)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r1253, r1247, r1248, r1249, r1250, r436]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(8, 350479306742006436433078199271808985245243082679280275655379344498689)] (by decide +kernel)
 
 
 def r1806 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r1255]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .S₂, .K₀]
-    [.K₀, .K₀, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r1255]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂,
+    Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1807 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r1255]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.K₀, .K₀, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r1255]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1809 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r1256]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r1256]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1810 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r1257]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r1257]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1811 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1257]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1257]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1813 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r1006]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [.i, .S₁, .K₁, .S₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂,
-    .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r1006]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂]
+    [Gen.i, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1814 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1262, r283, r1006]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [.i, .S₁, .K₁, .S₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂,
-    .CS₁₂, .CS₁₂, .K₁]
-    [(4, 3094887877150945617945559040)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1262, r283, r1006]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂]
+    [Gen.i, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(4, 6490450301331141034037754736934912)] (by decide +kernel)
 
 
 def r1818 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r874]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r874]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1819 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r1281]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r1281]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1820 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r874]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r874]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1821 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r277, r1281]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r277, r1281]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1822 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₂]
     [(1, 73728)] (by decide +kernel)
 
 
 def r1823 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r116, r875, r1241]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₂]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(3, 5629499634950144)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r116, r875, r1241]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.S₂]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(3, 92233720381432733696)] (by decide +kernel)
 
 
 def r1825 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1822, r283, r1492]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .K₁]
-    [.S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁,
-    .K₂]
-    [(3, 5631973502484480)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1822, r283, r1492]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₂, Gen.K₁]
+    [Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂]
+    [(3, 92234037036486492160)] (by decide +kernel)
 
 
 def r1829 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r4, r1823, r139, r875, r1813, r1241, r193, r1826, r195, r1827, r197, r318, r428, r429,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r4, r1823, r139, r875, r1813, r1241, r193, r1826, r195, r1827, r197, r318, r428, r429,
     r430, r431, r432, r715, r1828, r1742]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₂]
-    [.i, .CS₀₁, .CS₀₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(22, 4722980924378878212280517690058536457117520727341120849610453464027434722634087920409512570147996655817300267640442499257483276071546752446542252259897331679232)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [Gen.i, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(22, 842607929620122964518969036454229106365844072183312269980057642234572482946514793525572649042272150032526473137642859476890152819366693660175694960929467944383245876725614105487239872531150906083602595840)] (by decide +kernel)
 
 
 def r1830 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r80, r6, r102, r875, r1265, r1813, r186, r496, r195, r191, r592, r593, r145, r594, r119, r107,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r80, r6, r102, r875, r1265, r1813, r186, r496, r195, r191, r592, r593, r145, r594, r119, r107,
     r582, r77, r1818, r361, r362, r363, r364]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂]
-    [.i, .K₁, .S₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(31, 266507401058516238001194388790173530815891185760069143203837539908655385340935029679518480877460595731665410658104419915185611138288481221117510338493196146140563273238226640082957700079419353476391359705841304886526189892624384)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.S₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(31, 438539130610567291194545730044087430931208262452464818452984341787429308515058201877935544561261911673614486721381563940191104920154308773027128741565020366398608825796496625711234637972568144950435650174256068363534748361049636865479869429108367939344361516609859741260668979284529712816128)] (by decide +kernel)
 
 
 def r1834 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r1492, r78, r86, r290, r874, r873, r1258, r869, r1022, r77, r1730, r1734, r97, r119,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r1492, r78, r86, r290, r874, r873, r1258, r869, r1022, r77, r1730, r1734, r97, r119,
     r186, r193, r1382, r189, r1831, r195, r197, r1832, r1833, r1331]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₁₂, .CS₁₂]
-    [.i, .i, .S₀, .S₀, .S₀, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(44, 21455331077395682208695854956806702633647178526639124582903751565469531922702854088516572959604887787858372138293915362163546766791612800546736252212821322621636833881434302572194695836093796434705875223661540993545970168473209690460467816143661013196181401679545728933995046511920849196869718579608441250089017298218366533632)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(44, 87407764428440280037739179528091891792771975949115544216328263529220946427341788393357064855800064302875745459329448128647405064034277935508304871762029290009651684897019023686072155274103914461346864218543396632811408383390143489037820419393050534864125927241557633001759794860547042781665311104458325706536785024199988462529312217938302503395015673134338860604028327125021676898505034231703258764942944432352657408)] (by decide +kernel)
 
 
 def r1848 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r5, r79, r85, r4, r1842, r107, r119, r1841, r145, r1840, r197, r1839, r195, r1838, r193, r1837,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r5, r79, r85, r4, r1842, r107, r119, r1841, r145, r1840, r197, r1839, r195, r1838, r193, r1837,
     r1836, r1835, r186, r1269, r1829, r299, r875, r1265, r1503, r496, r1431, r1432, r1754, r1843,
     r1745, r288, r366, r651, r652, r653, r654, r1844, r1845, r1846, r1847]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂]
-    [.i, .K₁, .S₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
-    [(63, 3198735355992531545079388017497116435832735153397800139701085031562916573190681790510556234901574889156435050963598968357253796449790107411518889042518890352652065664560961086168613832390827251459247390487086781919778339445024092076970925243106214050215342326675692377543597651654582801428674710981125209142301306143190050402338190293690878114225175846239764230480955855129117634585906535564520467692958704694452118686022450264984125011244778527369601281704755961266176)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₂, Gen.S₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂]
+    [(63, 141904581204731593568771491668930464432990650221234728552644178603329802320597819932813799163934419736476110151288899694121510463663000062114674270634348929604574691388479860455179317758404982066994936517226723293869438910837027166356051659079652230253325831310132679265141045377519081128542451944581494400624884944913373948843845217869418528948551863971949131136546514345597082326259884575895025396769003095805740007005232438860769969773123221929447800175461890452333349793775455147307454667511007067993459041949675429295985166087613148387780377414966710448528298125013469404480008436470266082623488)] (by decide +kernel)
 
 
 def r1853 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r79, r5, r0, r1848, r1822, r300, r1829, r1269, r186, r1835, r193, r1836, r1837, r1838, r195,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r79, r5, r0, r1848, r1822, r300, r1829, r1269, r186, r1835, r193, r1836, r1837, r1838, r195,
     r1839, r197, r1840, r145, r1841, r119, r107, r1842, r276, r351, r491, r492, r493, r494, r1849,
     r1850, r1851, r1852]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂,
-    .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂]
-    [(36, 16374180562837465947476008784860235088661455031578215287541385355256342435700691510725887561153125236507675396333676047705558871010499522299819553762213117764413316368129196382593815735969277850839363482885883576893395219459576001254770644110819870289823614105550848)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(36, 925781505166635717282579097819327427632934602796594276276076926731617352011480116484142991407694606987688786703989032903753481805511102275736331830705289139173839683938976292224154563502593582558373343521222669425373812517966094080302096773649765116063993407457465033564203060950626633736419867344554060247197916079145803777435521146421248)] (by decide +kernel)
 
 
 def r1877 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r314, r1303]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r314, r1303]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1881 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r1492, r322, r908, r97, r119, r186, r193, r1382, r145, r1879, r107, r1880]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(29, 152546513803347805165504543261577256137961018147016793780828996900124072591792064484658315556878623327766265052158861022232445304072834367198340134518275416841093221826782031326939974148046591676484855587403726848)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r1492, r322, r908, r97, r119, r186, r193, r1382, r145, r1879, r107, r1880]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁]
+    [(29, 15320543421539081186255557928761034708706155825243295589751587881655893748208558546697713825724196846854024527893053932946872268228698094533757029061516352527580639241298468356446259630619850211952641384232443709374275456232309951727723656515682296921103955352771713040384)] (by decide +kernel)
 
 
 def r1883 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r4, r1877, r1374, r324, r1306, r1303, r102, r179, r178, r151, r143, r1793, r1382, r121,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r4, r1877, r1374, r324, r1306, r1303, r102, r179, r178, r151, r143, r1793, r1382, r121,
     r1831]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₁]
-    [.i, .S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(23, 121625438492218749853399857071685803248062276243188983924627454089852115049983120558704682629666720494316157329247342092327683631492080886956651870912917360436171505664)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.S₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(23, 2777352398731436149055417786288031477350837459813741488757345999992192208055437685719606360501307796505634514465660081970116980644515315884146943179901099293173360165882901649002835281603978998126427202658433499136)] (by decide +kernel)
 
 
 def r1887 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r1303]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r1303]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1891 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1284, r876, r282, r1283, r1820]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(6, 697025893353086180763379565130049965260800)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1284, r876, r282, r1283, r1820]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [(6, 23949627330944568661906626398390633845718642262540288)] (by decide +kernel)
 
 
 def r1892 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1284, r876, r283, r878, r872]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(5, 20780596289805900117753987072000000)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1284, r876, r283, r878, r872]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(5, 5578248840935498830052833570778966057287680)] (by decide +kernel)
 
 
 def r1893 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r1284, r659, r285, r646, r398, r399, r112, r98, r276, r116, r351, r491, r492,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r1284, r659, r285, r646, r398, r399, r112, r98, r276, r116, r351, r491, r492,
     r493, r494, r495, r484]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂]
-    [.i, .K₁, .S₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(42, 11781721530819623346280144847167974033380547730686000259634268135659287006290638526824639756997934180303936020306115064676972149150067821322621020564156672252808928220471421367352126355104088014331613915246836132698757048647015056327739090001928430515707357248067692907739465139999226406498360549327064419576840192)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂, Gen.S₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(42, 2929661876068046476034114498391224998964697437133592087959552981621142667714194730308602455630069882580663522639629657773262034699964412829725178036286226199743738828387552217102958907470702560749041613398812494909455738862166218632765940510261325212336500216857764647525303248350580379895783491856285978452306054953766055375215976820254883996424767453070335374618927117698818572972358059813110808576)] (by decide +kernel)
 
 
 def r1895 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r1825, r1822, r1283, r288, r876, r987, r1284, r97, r119, r186, r193, r1382, r1383,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r1825, r1822, r1283, r288, r876, r987, r1284, r97, r119, r186, r193, r1382, r1383,
     r191, r1894, r195]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₁]
-    [.K₀, .K₀, .K₁, .S₀, .S₀, .S₁, .S₁, .K₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁,
-    .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(31, 339808780127892292884213067933820194936385420874537394273574278227381309104177443377243518077315305342951455338044776304480672316303132485656151123915708957268894473792106848487427219988272820201929042727835884902426574124583223296)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₂, Gen.S₁]
+    [Gen.K₀, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(31, 559156882143707968677081925302917162349248335212889527820539882487880535745508422204988275322621546012973579207757685934976713365869369716422969576695742161501245303893480595947035100276124674130480476688054122688820660565618305209658721318883596183486371626654082655977111310943264137357033472)] (by decide +kernel)
 
 
 def r1905 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r318, r473]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₁]
-    [.i, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r318, r473]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.S₁]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1913 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r1312]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [.i, .S₁, .K₁, .S₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r1312]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂]
+    [Gen.i, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1914 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r887]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r887]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1915 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r475]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
-    [.S₁, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r475]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1916 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r1527]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r1527]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1917 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r276, r1366]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r276, r1366]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1919 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂]
     [(1, 73729)] (by decide +kernel)
 
 
 def r1920 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46, r1368]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₁]
-    [.i, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46, r1368]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₁]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1921 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r1390]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r1390]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1922 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1391, r284, r1527, r76, r97, r123, r319, r158, r163, r375, r613, r614, r615,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1391, r284, r1527, r76, r97, r123, r319, r158, r163, r375, r613, r614, r615,
     r101, r119, r107]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(40, 12454043883622265479183673009285691244873682023786336946836402585282324053275803207980359645435282110924752288534041400022489011240626905564798197971664206754885906519495837061331128064823230455614771437103087775157261373366555943384617620597288614176696593042087571430053421889067835150882045952)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [(40, 189016273096936349588653552042977719913531732090307844096386760172746552012105928410970705804495993184774572749192365509549667163710105392327155268260932165177928038635265852145963586411588433638943063305015931452565141201818955629517706119615450592985292698044276833425083172867671109680334398115425552163836474510104993231463081575243545112298470811994760113900847969586905088)] (by decide +kernel)
 
 
 def r1924 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r80, r6, r102, r1390, r1914, r1913, r186, r496, r195, r191, r592, r593, r145, r594, r119, r107,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r80, r6, r102, r1390, r1914, r1913, r186, r496, r195, r191, r592, r593, r145, r594, r119, r107,
     r582, r77, r1916, r361, r362, r363, r364]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [.i, .K₁, .S₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(31, 266507401058516238001194388790173530815891185760069143203837539908655385340935029679518480877460595731665410658104419915185611138288481221117510338493196146140563273238226640082957700079419353476391359705841304886526189892624384)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(31, 438539130610567291194545730044087430931208262452464818452984341787429308515058201877935544561261911673614486721381563940191104920154308773027128741565020366398608825796496625711234637972568144950435650174256068363534748361049636865479869429108367939344361516609859741260668979284529712816128)] (by decide +kernel)
 
 
 def r1949 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r0, r149, r153, r143, r1924, r1920, r300, r1391, r1913, r466, r467, r121,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r0, r149, r153, r143, r1924, r1920, r300, r1391, r1913, r466, r467, r121,
     r1359, r123, r1360, r1914, r158, r1361, r163, r484, r101, r119, r97, r319, r161, r587, r1362,
     r492, r493, r494, r491, r495, r107, r1363]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [.K₁, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(73, 5358661185585612495029567954119824005588873569669561305138410329666252539906083173446598865064487601787526305154761138589278915215970054287793823969832653234171908850357512022170915927507659762082377164054425047732846851317721546445555542270036382469968676299020569680008800187057225670612532374534869841598771303693373212506575306835808580098460821460536434954612358114212536262416063495750258162909209090826015336309394557916953351081332766435790030038100326708852243919333926083272729410933214502165518235959852607639385542987883975393935360)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(73, 280654038155314168130917299371569380581574127813897425205224648791470998772938611612665298852207553384548628724075178555295201587144614020148274222874130104598465650581070386857760547295818719285491835862522670036002662758527384531711439301944487248332184929908707109426824628999318848693645979910563970603137070576287391484795160293939961439278629186508810486349004047764559288681149886992603227558670807194503765891083845030735423474417026019244987278887614727303783779605059676135942341476612814180692229621158041940627504613337854692096908172599642807063011097539237740696289658297905494038880404998629249534874355787895487038956900705535149146024093330669461143186953746110172393169735385088)] (by decide +kernel)
 
 
 def r1950 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r311, r1366]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r311, r1366]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1951 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁]
     [(1, 73729)] (by decide +kernel)
 
 
 def r1954 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r0, r1372, r76, r333, r1365, r905, r906, r77, r1369, r97, r123, r319, r158, r106, r160,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r0, r1372, r76, r333, r1365, r905, r906, r77, r1369, r97, r123, r319, r158, r106, r160,
     r162, r1952, r1953, r1643]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .CS₀₁, .CS₀₁]
-    [.i, .K₀, .S₀, .K₀, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(34, 9173562977884894443863762936910878916832036480150929683573327180909648061879483984058699421834817547440188867772822155707176265311243007126377185223094130555134814927590665355700168993125630864999213616669695811814099036400010815859442417210159529984)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.S₀, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(34, 31656240635381152590598510733989419215818438059738681070545435378101062672684963736338235919815002093036014724998741633634726964094067554521502390570714805993784375233539888696579559886522116163772462398758994043734429234094397829489536205705984900401268344023390688415338819916707471908490718958544558289549894828949504)] (by decide +kernel)
 
 
 def r1963 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r77, r0, r1955, r121, r151, r147, r1381, r143, r1373, r313, r1370, r1367, r336,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r77, r0, r1955, r121, r151, r147, r1381, r143, r1373, r313, r1370, r1367, r336,
     r1365, r905, r97, r119, r186, r193, r189, r1956, r1957, r1958, r1959, r1960, r1961, r1962]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₀]
-    [.i, .K₀, .S₀, .S₀, .K₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₀, .S₀]
-    [(48, 30276892806924248395777685440489044781801454921111863486327499073080043081885196973220670842042481060770514723725241590728190105432796672672059691731883562083455716542352645541767444458117358778765060546492632344868120294404476194902599158121666826643055926951300276690290924623642945150081620045528112068127616601023099936037098141301817728133099866292224)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.S₀, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀]
+    [(48, 33110489601279510316362094889758835075338480669505365223475929423096552441590018020215581817651213163763315201946914339348673975264336679216184025762782449575497364549127872767530269085484992111266980969893428557207839039189716001064502902457832722589047027662283559181361571288240045833821102596935328279345328448339564927749868453236605384668455323668302142768414223796400776964355413319858294837374626412350802686184739559509905406010358494835089866752)] (by decide +kernel)
 
 
 def r1964 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₂]
     [(1, 73728)] (by decide +kernel)
 
 
 def r1965 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r1390]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r1390]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1966 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r1391]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₁₂, .CS₁₂]
-    [.i, .S₁, .S₁, .S₁, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₀]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r1391]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1968 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104, r1365]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104, r1365]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r1969 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r1355]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r1355]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1971 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1964, r1389, r324, r1357]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₁]
-    [.i, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
-    [(6, 1393839151746206883997747345961406880022528)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1964, r1389, r324, r1357]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₂, Gen.S₁]
+    [Gen.i, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(6, 47891947164847751172983177267784745434949890678456320)] (by decide +kernel)
 
 
 def r1973 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r1387]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100728832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r1387]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₀]
+    [Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884967424)] (by decide +kernel)
 
 
 def r1975 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1389]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100728833)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1389]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884967425)] (by decide +kernel)
 
 
 def r1978 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285, r1405]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂,
-    .K₁]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285, r1405]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r1980 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r1215, r1021, r290, r1398, r1405, r130, r449, r140, r1343, r1344, r231, r1422,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r1215, r1021, r290, r1398, r1405, r130, r449, r140, r1343, r1344, r231, r1422,
     r136, r276, r484, r485, r486, r487, r488, r138, r1423, r1424, r1425, r1426, r142, r1427, r188,
     r1428, r202, r1429]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [.S₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(61, 2350070934543432210781215963294857213783820821643761870360925934896724364728052773490535887081333356320277349057095691973301039624822439861949494914625113914308063047800517209196991370714236280808701997272289526981015938074838260813342014550906882653565190505835950091518355191446982240703354915119692753229657614064618453793079350495124832146068346322442907925213100591290510442328380071879143350272586032985294084840775030830213320603610771930872807424)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁]
+    [(61, 6363068177694836348180001119546323964572885150176037217138455051961277332136524232443615701977496885295581561244331264920693614180462690936395589378624586908969841817881612018894813900370428221884332596857391446325830457874228999414209850731895225608880178840863254383442211639847753697101773899696544372495901932790812998845457076860914871878813348182664295802346574151158528327397587964667613113649860186162243947833302775933457473039564510528599528182941225950649600671428787903260304183810067594038088121342765489113098671328906255295536424485453023055441250122699133989945344)] (by decide +kernel)
 
 
 def r1994 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r4, r0, r1406, r295, r1021, r1605, r138, r634, r140, r142, r1720, r130, r719, r1270,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r4, r0, r1406, r295, r1021, r1605, r138, r634, r140, r142, r1720, r130, r719, r1270,
     r1271, r231, r1272, r318, r428, r429, r641, r705, r438, r706, r707, r1318, r1417, r1418, r1981,
     r1326, r1982, r1983, r1984, r1985, r267, r266, r1986, r1987, r1988, r1989, r265, r1990, r1991,
     r1992, r1993, r262, r1467, r1468, r1295]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .i, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂,
-    .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(106, 1614616744029023708981008118057050289561638856086416993903899430061781721354488832439011158298787443082996991901101696324706639728261002647821715202304940423389484413976277637541659106752208260818884297574623316096139376017530276253220844100010594768051751218496898608774296190820781498243046247326462843152962219625056179201962577110733038620763530577639784599564537570765301882721116036425968610721122350469265225008650297695837160328617354974274489114720209636840887907962972427915619590680797323922754891101063401287697314607886387647508559261387470635601932039026283249042271041380281380198164016743568503569794506282262750013948786281874447949540077787697165781668529405017432663719228302055408526530685662826371263999202494228793088539163739595504377740165925993783857359663025367285760)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.i, Gen.i, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(106, 291814507305397574178512127971439581595514876479575723349152754640291934743503549867515477916386241002982980696076686741737802575396653365515912482404659874131180357782293241984863024359798565489384254169127790380397373645569747252285589722028864967104366437535448301161463556071985929964909130427901520440415321357306736006156197730454291414212861546216091493846071886988606111835976625194323589189721407339403502534302665978870349333231850168780246356079291115861532162229071314637590660198377415747607782054349169816546264720184884324617141597954625097219440647630718524057547605850224948912054886426656375919254320513676279274850258212965364688616049764812446544101578070554007074993274295061232334320584241588972115970175855500028202989727013847735339080980362403676727423120367850709824312030095481332838793561322840367948531870601529263085114681929012706837020807149601732371787456774665501896691167627300724246017352009153410914728554926002996457141199046373135445330434602872187190712250639625309017604096)] (by decide +kernel)
 
 
 def r1995 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1405, r296, r1406, r1994, r1456, r1457, r434, r435, r1458, r1978, r262, r1459,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1405, r296, r1406, r1994, r1456, r1457, r434, r435, r1458, r1978, r262, r1459,
     r266, r244, r1460, r167, r208, r131, r1461, r97, r119, r186, r195, r467, r497, r498, r580, r191,
     r193, r1462, r1463, r1464, r1465]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₁]
-    [.K₀, .K₀, .K₁, .S₀, .S₀, .S₁, .S₁, .K₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁,
-    .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(55, 1794031597246944443076103133736778265822950435068670708132195842934546216156913900339154817432885798208929766332534605826077066561227130730749758424404365960711586567862747470600025970730568951284185785047004387805830617630761700793305175318517872408321511985307809418016948642650949540965955075531099400889119202397328296323217557221535072431361863932110103601635312299883600830524722995683090507028481703936)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.S₁]
+    [Gen.K₀, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(55, 1104473931109582371014350830476398095049990924289266361878036862904398409194701761625520309339466517140322426100115108587159167877343311711760876006603748759380447068552369935635429642613607981774122122310679886598123434177336128876048289588907142716830428585198116079228387745846959365428332701580627079895977339866606160741853704360578097883141468392197879501475156923524286925750754626222358574362844189566378612310438553210510984308204480010226855217086086465546377835372943058547045131699795346256973638900872346861568)] (by decide +kernel)
 
 
 def r1996 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r319, r131, r208, r167, r244, r85, r267, r1472, r264, r1286, r266, r1285, r1471, r1470,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r319, r131, r208, r167, r244, r85, r267, r1472, r264, r1286, r266, r1285, r1471, r1470,
     r1469, r265, r1468, r262, r1467, r1719, r1704, r297, r1021, r1215, r1696, r130, r485, r140,
     r1473, r231, r1474]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₁]
-    [.K₁, .S₁, .S₁, .K₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(37, 532533284654362741613666032146421533436289050483167984093643845649475373228495040088851370710771073951705227095182898865093823194222940738779267982277119289428968603693254236291339830262020626826596296742616207470586148723328034853719249001933325309765144322777772288114688)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.S₁]
+    [Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(37, 3853857332979906968997735362909676758810203591256880263127038100688137107428344729474186481976131217110042682435510300186258585763075003748819817179721108498786283798220273020665509348281584413256163411291146650205122994023263245836811511326889640757929046425163367959862746143777898454000371759480024940028548517396385875065720603281505485951336448)] (by decide +kernel)
 
 
 def r2000 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r276, r1399]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r276, r1399]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2002 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r1030, r287, r1995, r136, r130, r276, r140, r484, r485, r486, r487, r488, r134,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r1030, r287, r1995, r136, r130, r276, r140, r484, r485, r486, r487, r488, r134,
     r562, r1484, r1485, r138, r1486, r1487, r1488, r1489, r231, r1490, r188, r1491, r202, r1384]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₁]
-    [.S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .S₁]
-    [(51, 1182582315376894942471714438784925588371889912812160610629457483041826111532707030858828077739919068331030920438525966623899279451321849868790708908768983258137291607411339052758261617067001319636064577625428845160154079948230193057213784376884520650807458162017614617339788819686628327471705963154975993357372211732394808469183866804684771986484046392102146473592392563499728896)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₁]
+    [Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(51, 2712207744934834408218933663063909132288755636516545634150423440301892024148850612636562606014638713907439282735404329813934856188519716350353602215333966547916544919584292715974333315366573473798006734315334387700238965775839700022137795313756003822498691295688403104990193562103267395158913458788532090239954851175328865194727249730238817647624696178435512171937830003666779093186754519744632179372468949791253101131670772265847247451433481073509887592639043130776258181094487097344)] (by decide +kernel)
 
 
 def r2003 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r5, r288, r1030, r1218, r130, r485, r136, r597, r140, r484, r281, r6, r81, r4, r0, r1883, r97,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r5, r288, r1030, r1218, r130, r485, r136, r597, r140, r484, r281, r6, r81, r4, r0, r1883, r97,
     r119, r186, r193, r1382, r1383, r1384, r1385]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₁]
-    [.i, .S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .S₁]
-    [(40, 15008875404850892074626032054014596067271788377533995298426249872400203709906615668989086933651523706187784254392580034824430241521329948633998852601975585598253092746400644596436404048791193363387479884710683706501624910277007231335311282765555185390991392962230644666827965689715445183784525824)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.K₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(40, 227788860416970591105603380119144471810280846257136268495283796725149624169900721717724439392719357049981504603016901640254464934674367888925787090617729194681764036757168732006351381865688682769245556037964204991612622682011901838699315734190349496888730591605398806034947617757708877718049888842066544354392454538281076315669895896994543427537812305619563356538757068028485632)] (by decide +kernel)
 
 
 def r2004 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r5, r79, r1474, r231, r1473, r140, r485, r130, r1720, r1030, r290, r1403, r1704, r1719,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r5, r79, r1474, r231, r1473, r140, r485, r130, r1720, r1030, r290, r1403, r1704, r1719,
     r262, r1467, r1468, r265, r1469, r266, r1470, r264, r1471, r1285, r1286, r1472, r267, r85, r244,
     r167, r208, r131, r319, r1996, r165, r106, r76, r1494, r981, r982, r619, r620, r983]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(96, 8835692538430821521553959770354987424103555343340791012515927323053374326676362493263140144803723301086058722445181454437924084874639769271125358638297532129277028046468229509232740486482537175519055912115153594095245689587251476773902874170935213356499683004774370298709663613029087281423257586248355290119336433354489871965145593288420551009987925408293465315260194088029125668576771228170322029148494929990530283983397163738757825158511399551766528680681354037130359974540822432335648882347308341589950604200249412783876575084202150182281068543022521212676115161071660377041182711037302482356689295961498579288661775595337711648012028689775435598778068467638693265348141241162315003221326369756860564814761558016)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(96, 1352654325008184553608791684441847426156209803304689020729384213714052399755223044585036534693433614295658060566332514112307696296977418440767709193263364014806324425818065958718469241143989989506631101736397678913678784584126951660205617555871670302609867494485393464820442689246411594976989601129602697560384724527259090247222425408303870319008364041950322780226223878858912370424460587452629433214157558041983193761705179757992439291863236585022051164542767442859167710168584411536281542209112511384118748403355673612068368039044738985806515591663720756828009301100025972521521389756336875792572107765732308597042104610399575870614887522029866110229036114422906272746943254644816968298401253953057342532492977876924651273446388175465099890971058183538330092822140102144101215467909764191621746585752308208473374163875078166166973925745862946898868675352399894121495559654740714929683688794202095371710365343678464)] (by decide +kernel)
 
 
 def r2005 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86, r78, r294, r1396, r736, r702, r130, r449, r136, r140, r638, r703, r704, r6, r733, r77,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86, r78, r294, r1396, r736, r702, r130, r449, r136, r140, r638, r703, r704, r6, r733, r77,
     r1601, r2004, r433, r1496, r1497, r715]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₂]
-    [.i, .S₀, .S₀, .S₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(27, 200893390983760819245622197942363900362542293387765175670877967239198351362995282580501792517965881749476896310184320735837004472591223032030934518607260241489278021528079462938076487623435985461248)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.S₂]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(27, 1231472868767811923598629939998394174336356160904274023402149440028665347501016092991274062500314983350422266081679595590592841726940297662068049190289412034015933308195227431336115054303115602345371131070983269954252199673993797590341025753064376737792)] (by decide +kernel)
 
 
 def r2007 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1978, r1403, r298, r1396, r736, r97, r119, r186, r195, r467, r497, r498, r580,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1978, r1403, r298, r1396, r736, r97, r119, r186, r195, r467, r497, r498, r580,
     r191, r193, r1462, r1504, r197]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₁]
-    [.i, .i, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂,
-    .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(37, 554320432927861480228725404566854352193053571298002095904036742052840691457850283617361508567897249709543921056679385579545852922562582673694028775751049047768157059233493452785378772230446188029523194422389163306510790338452852717329678070490076988144724635355098813292347392)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [Gen.i, Gen.i, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(37, 4011620064654001923611565576781630942967115055257114739174326539444780057255477719503118872790675754227464267277762926840568513906007572168049079035625938802384963704803712426459795290299253091053056580546333535948649178015021020487035841478249916479908398256740387315087111243741819534416957835639495737268522202493730947728940170811028775160768364544)] (by decide +kernel)
 
 
 def r2008 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312, r1029]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₀]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312, r1029]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2011 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r4, r0, r1725, r321, r1410, r1304, r920, r1010, r1011, r311, r511, r512, r513, r514, r515,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r4, r0, r1725, r321, r1410, r1304, r920, r1010, r1011, r311, r511, r512, r513, r514, r515,
     r662, r2009, r2010]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₀]
-    [.i, .K₀, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁]
-    [(21, 121115455906569822041318295024631272864095537954223966099483589590034348132947466246766044831381969074826221230289809298861456036346046083213599384272896)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(21, 168810302889200882595058949569234055518388306763334716484006789696627224349631864407930332870561775438041233656273631016451747634439643308222992345207149510603779851544763934400046868768827113472)] (by decide +kernel)
 
 
 def r2014 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r1030, r330, r1725, r1727, r920, r1010, r136, r130, r276, r140, r484, r485,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r0, r1030, r330, r1725, r1727, r920, r1010, r136, r130, r276, r140, r484, r485,
     r486, r487, r488, r134, r684, r138, r668, r2012, r2013]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₀₁, .CS₀₁]
-    [.i, .i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(43, 591168128181819584508028310172165388538865815831519138070878932639118119620048157438213542485409640586325516428921657068757067027858918199692270183707794517196151323041686098285396681951984156832880365669172491443137092568959083629044287058657018989241035425644612818100537327754906345333349014815968812951035998896128)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(43, 18815267825111439446565163508655477403139390888417809429352839494209148011779594522582938596156739792458721357127440611499261959306656283524795784846957341742143072907852248981154546070760962544316526858656535822549376430211192237295397597012584430834569707870128195218885008839571434606485683764002809997319058970564661217423482607117120860891824996268630885971260865406736886317613963442561435604801814528)] (by decide +kernel)
 
 
 def r2031 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r1482]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r1482]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2033 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₂]
     [(1, 81920)] (by decide +kernel)
 
 
 def r2035 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r2033, r283, r1386]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .K₁]
-    [.i, .S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁,
-    .K₂]
-    [(3, 5632248380391424)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r2033, r283, r1386]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₂, Gen.K₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂]
+    [(3, 92234072220858580992)] (by decide +kernel)
 
 
 def r2040 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r4, r0, r1498, r139, r986, r1814, r995, r186, r600, r193, r2036, r2037, r2038, r195,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r4, r0, r1498, r139, r986, r1814, r995, r186, r600, r193, r2036, r2037, r2038, r195,
     r2039, r197, r318, r428, r429, r641, r705, r438, r706, r707, r1318, r1417, r1418, r739, r1499,
     r1500, r1501, r1740]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₂]
-    [.i, .S₁, .S₁, .CS₀₁, .CS₀₁, .K₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(53, 1462410102081849631011739383588364270528438923732904835397270012331938779885578391936050183746499258180361704867210566377586891940127316176133542867315135776497935406069870919827318517108415714910817225421591397236369704563158831935448133616337234563984659298014768802061864932106643975203012074940922733130434604732730903451290465134969198958665084634664856156388888949011670585586715027570688)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(53, 54952516795072613256839558958670124612838039021825839634829239947476866605815080082493482840970962467856239160203923757611330804600066720694012064015535606124226887225571747879755324220331523874568394276332415431906616146798449812627612212051264874246049096057216671698792865152976693281667348905986728177203130215793804929982788681173100169929719346959573654058562109360078483868938663977439701890285731561505050881365100924704194299291057609900317992068206792074957567603240589544627551127962608730112)] (by decide +kernel)
 
 
 def r2041 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r286, r1834]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₂, .S₁]
-    [.i, .i, .S₀, .S₀, .S₀, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r286, r1834]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₁]
+    [Gen.i, Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2042 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r314, r1506]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r314, r1506]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2045 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r323, r1506, r2008]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₀]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(3, 5629499634958337)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r323, r1506, r2008]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(3, 92233720381432741889)] (by decide +kernel)
 
 
 def r2046 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r324, r1524, r1951]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₁]
-    [.i, .S₀, .S₀, .S₀, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₁]
-    [(3, 64569233757618388993)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r324, r1524, r1951]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁]
+    [(3, 1057902325883181960609793)] (by decide +kernel)
 
 
 def r2047 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r328, r1524, r1951]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .S₁]
-    [.i, .S₀, .S₀, .S₀, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₁, .S₀]
-    [(3, 64569233757618388993)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r328, r1524, r1951]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.S₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀]
+    [(3, 1057902325883181960609793)] (by decide +kernel)
 
 
 def r2048 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1506, r329, r1031]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .CS₀₁, .CS₀₁]
-    [(4, 309522788758840274266882048)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1506, r329, r1031]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁]
+    [(4, 649116335479459951976126443683840)] (by decide +kernel)
 
 
 def r2049 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r1506]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r1506]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2053 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r986]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r986]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2054 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2055 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r0, r2035, r2033, r1284, r288, r987, r876, r130, r485, r136, r597, r140, r484, r281,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r0, r2035, r2033, r1284, r288, r987, r876, r130, r485, r136, r597, r140, r484, r281,
     r1283, r97, r119, r186, r193, r1382, r1383, r1384, r1385]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₁]
-    [.i, .S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(41, 546474634733330257265169790943878859662157944020014461099531971008764081614996083116465250697911497793098516173456990151667421930639315329907572765610855468701057975256608792602663173145015625907880083358168728118980533151523961044910736500014513250961225163199039813580321713497739456442169297851121664)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₂, Gen.S₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(41, 1061609163460699089268186995411439582205998077471541133975726907564909786117382382041883675718313198418894107586404662315083440853193234815109470437115382401635212240418205530384221929575140563371040811776879070103344364382373546567795689074370609431782596163724329919843300902663010840422924303787671270654594982323689611773594631956106153309779943611310339018254863925275976078010089472)] (by decide +kernel)
 
 
 def r2062 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r79, r4, r1850, r114, r1849, r1825, r1822, r1283, r543, r293, r542, r889, r97, r119,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r79, r4, r1850, r114, r1849, r1825, r1822, r1283, r543, r293, r542, r889, r97, r119,
     r186, r188, r586, r238, r234, r581, r228, r1544, r593, r236, r2056, r2057, r2058, r2059, r202,
     r2060, r145, r2061, r107, r594]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₂]
-    [.i, .K₁, .S₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
-    [(67, 3654458046185151245271317972478744938096147893495924049651814604942209373226987384064293299686068521347181318122710734550334874426203148189069335508670919931218037068076771795957596758273647131612392137523371685365371092717305708687449729563241892942737755407909166527582235934119385811832010030034208124196258161884270610862514056303641042339530928741234828073151607587879339855040182295689152712131565839994163987125043127444174379067647159703390903231349837029363943463179656494098635099096481792)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₂, Gen.S₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂]
+    [(67, 43518484131620078141542475383164725483258975992633696055368219014674977024561630074729574962933571420989144937565105173235629948158049687233318910691623958662833570123571671890335650751902212695120692206282291587193287606178596267405717799529156973230802550502884332670984792136580520856263277354237866135087524855238182707910971730187591920415969028099405187272215215214313555366023466478066353217888995345977243352503191280778278836107451321523475559921502546408995972096939991561577289592078743367304920240166832890917775763388902231759584543199505163856823360509332206541694681695467540118871404211177056960268574705265984053199241216)] (by decide +kernel)
 
 
 def r2080 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r1227, r1117]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂]
-    [(3, 18452373573344501761)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r1227, r1117]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(3, 302323688624038726410241)] (by decide +kernel)
 
 
 def r2081 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
     [(1, 73729)] (by decide +kernel)
 
 
 def r2083 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r289, r1642]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₂]
-    [.i, .K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₀, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r289, r1642]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.S₂]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀,
+    Gen.K₀, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r2084 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r1227, r290, r1226, r738, r311, r319]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₁₂, .CS₁₂]
-    [(10, 700958634236111736870339047368856702904093300466384259003289977225216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r1227, r290, r1226, r738, r311, r319]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(10, 6465202074832523508401639385498314440714801144843716929689907441137100094640231035174912)] (by decide +kernel)
 
 
 def r2085 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r1225]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r1225]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r2086 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r1242]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.i, .i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r1242]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r2087 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r1581]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r1581]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.S₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r2088 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1581]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1581]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r2089 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2091 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r1587]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₁]
-    [.S₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁,
-    .CS₀₁, .K₂, .S₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r1587]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.K₁]
+    [Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2092 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r116, r1588]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r116, r1588]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2093 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r1586]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r1586]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2094 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r1588]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂,
-    .CS₁₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r1588]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2095 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r280]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r280]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2096 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r1587, r1582, r1583, r1584, r323, r436]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(8, 622576329176492351291308831031120722918099849872228353)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r1587, r1582, r1583, r1584, r323, r436]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(8, 350479306742006436433078199271808985245243082679280275655379344506881)] (by decide +kernel)
 
 
 def r2097 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2099 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r1591]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₀]
-    [.i, .i, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .S₂]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r1591]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.K₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂, Gen.S₂]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2100 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r1591]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.i, .i, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r1591]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2101 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r48, r1592]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r48, r1592]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.S₂]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2102 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r1592]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r1592]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2103 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r1593]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r1593]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2108 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r280, r1696]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r280, r1696]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r2109 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r284, r1596, r1215]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(3, 18452373573344501761)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r284, r1596, r1215]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(3, 302323688624038726410241)] (by decide +kernel)
 
 
 def r2110 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285, r1696]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂,
-    .K₁]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285, r1696]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r2115 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r2087, r1628, r325, r1630, r2091, r2101]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₁]
-    [.S₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀,
-    .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(6, 2439611894355212052159320928662235069284352)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r2087, r1628, r325, r1630, r2091, r2101]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.S₂, Gen.K₁]
+    [Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(6, 83824426409116999414875186625111298148238812973629440)] (by decide +kernel)
 
 
 def r2120 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1628, r48, r1696, r1109]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂]
-    [(4, 2166659521278088154741473280)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1628, r48, r1696, r1109]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂]
+    [(4, 4543814348355666259364379877179392)] (by decide +kernel)
 
 
 def r2121 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r344, r1628]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100737024)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r344, r1628]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975616)] (by decide +kernel)
 
 
 def r2122 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1630, r104, r1695]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₂]
-    [.S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂,
-    .S₂]
-    [(4, 2166432847686910411771215872)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1630, r104, r1695]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.K₂]
+    [Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(4, 4543338979380580673338818613477376)] (by decide +kernel)
 
 
 def r2123 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1630, r105, r1696, r1112]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(4, 2166659521278088154741473280)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1630, r105, r1696, r1112]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(4, 4543814348355666259364379877179392)] (by decide +kernel)
 
 
 def r2124 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1630]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1630]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r2128 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2162 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r79, r77, r1057, r2154, r2153, r2152, r2151, r2150, r2149, r2148, r2147, r1590, r440, r439,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r79, r77, r1057, r2154, r2153, r2152, r2151, r2150, r2149, r2148, r2147, r1590, r440, r439,
     r438, r1603, r303, r1594, r1038, r1108, r304, r1047, r1048, r1049, r1050, r1051, r1052, r1053,
     r1054, r1055, r864, r1550, r1551, r1552, r865, r862, r863, r2155, r2156, r2157, r2158, r2159,
     r2160, r2161, r1250, r436]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(56, 76687927168465542978840833352946905062068630837374099817411682048967326992897220358745856912620248784745921414780700710879129739553627315905547834531159115409127971279537244669446560731464825794511197338931072213988386179516020093988833874200527035456527134186058982345680809421879637983212774872132343088602174902492920491514972381880498400815401567883378018821164428356017298312659667646694276545993079168455147520)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(56, 6043316188106225664969895002793444778783904364751321970046215701124719847422569624563115561484432778887777896306393517307193038478227021917184341132817526971975869978284699354079951963755624261213526021963445614670267467246509442516771492954740320167351100378991165390382427435816853090449383800761057028740526215276467365093423156939044602185336360529480300656892266925344461223656420602594960134348716118041597462334612786310165477437288287521038339794103269675581598679386478803840541282856893734505355657671932002855903767298048)] (by decide +kernel)
 
 
 def r2163 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312, r1627]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₀]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312, r1627]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2164 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r44, r1629]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r44, r1629]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2165 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r2164, r321, r1629, r2085]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₀]
-    [.i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(4, 264452528672948512358400)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r2164, r321, r1629, r2085]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(4, 554597137692084435375666233344)] (by decide +kernel)
 
 
 def r2166 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1631, r325, r1629, r2088]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(4, 264452528672948545912832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1631, r325, r1629, r2088]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(4, 554597137692084435379961200640)] (by decide +kernel)
 
 
 def r2167 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r77, r4, r0, r2088, r1629, r2086, r331, r1631, r2100, r1809, r1060, r1807, r1607,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r77, r4, r0, r2088, r1629, r2086, r331, r1631, r2100, r1809, r1060, r1807, r1607,
     r1608, r1609, r1610, r1611, r1612, r1613, r1614, r1615, r1616, r1617, r2102, r136, r130, r276,
     r140, r484, r134, r1618, r1619, r138, r1620, r1621, r1622, r1623, r1092, r1093, r1094, r1095,
     r767, r1096, r664, r766]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₁, .S₁, .K₁, .S₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(85, 10739461838726456699028269390744823611743771747768219904615857191621587265656393096335912869528705128327628442899635395030466792097671101782010145022441791245539911749145819886743711810772369118306274563987091412234883499852177128395464787879080109868661151395990894511689277999341793894705482579012540333851644412498619658409858407136117994512132251834358109782699286916611024774818763473843035680086336801678432255665789998301898261236428575301469382723430235582898482255931981871315940323993622404035183991870623694581314004847427066209008070579069297627578579398125815720903411197884416949002711859986133620620518502127257107474415616)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(85, 10879776391480025644609143905040735743215052367478693645515801050398630738673645300736865408274256366182847606836256920862678713888547739234787823352762902508950170543480982327025698845137865983758552842473272771930672786963695952557888079992179051859454469004164044658010931818025747540800200217177963591747941085552913332015026850355758784504887272632386429690359789935544942763504006318738193452763369167983855802716247849004846923526166745922286249223213362897650418502107039118287698980522833002031364708863277537893080545470097373577563945342120572631918610457264205483354009517971959812126670627172307589338703338374616382863451740234152000445161169725440363401113700420281432565140137103853617049988402380835376820388338053923974905066860962115104972239719166755874527043961753869809673325479087232312672256)] (by decide +kernel)
 
 
 def r2169 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1631, r341, r1629, r1788]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₁]
-    [(4, 264452528672948545912832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1631, r341, r1629, r1788]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(4, 554597137692084435379961200640)] (by decide +kernel)
 
 
 def r2171 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r1629]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r1629]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2175 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r1635]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r1635]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.S₁]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r2178 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285, r1710]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₁₂, .CS₁₂,
-    .K₁]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285, r1710]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r2183 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r77, r4, r85, r5, r79, r0, r919, r1121, r1120, r1119, r921, r920, r1654, r1635, r290, r1634,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r77, r4, r85, r5, r79, r0, r919, r1121, r1120, r1119, r921, r920, r1654, r1635, r290, r1634,
     r2120, r134, r130, r311, r138, r511, r512, r142, r140, r924, r925, r926, r136, r927, r928, r929,
     r930, r931, r932, r933, r934, r935, r936, r937, r2180, r2181, r231, r2182]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [.K₀, .K₀, .S₀, .K₀, .S₁, .CS₀₁, .CS₀₁, .K₁, .S₁, .S₁, .K₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂,
-    .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(77, 8061088591078791133031807373336550609522459835759839412178123024974035615990027244774532762122678442208492745557842219106863224815905080391635497239631251079931543564618686569119359259231877072618176364980469823608495993465020105444652870806255986193394964920605882518990483015306671949503885724578415914824885450383966494673380031462455139915042879240210198239257440459921455382199398290500437935164876112957683224575879982668991587831926780895575799800219937539616541836262942447361501556998742399476864298988873404052714652575640440292465243069038272135044012698878607360)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.K₀, Gen.K₀, Gen.S₀, Gen.K₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁,
+    Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(77, 113328608052003759027359977263037708696191351675697629269428120453228982023809495876706552527572205681683753552863137507070300247562753704945429448656974388355535325783759876999828663401676611256528907983694108609501281957146536957639946994006307067363401853985059003004496915326374762966040798859195779990475510091238090283909638123491866626851710172164779049067484005284928878475804805383369302602839991381691408853930703859603734790895033216889034460727285151715581308061653426982153710044542437657917433795646053390592970601946217468095276102705076584112552324253696337506626776833967766450068909487668586272195489453714890897615159193690873663742435292452114694032310868856767006253819673457302360056221372781866680691204762370048)] (by decide +kernel)
 
 
 def r2188 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1650]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.i, .i, .K₀, .K₁, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100737025)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1650]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884975617)] (by decide +kernel)
 
 
 def r2203 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r85, r79, r5, r4, r77, r2202, r2201, r2200, r2199, r2198, r2183, r1660, r1637, r297,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r85, r79, r5, r4, r77, r2202, r2201, r2200, r2199, r2198, r2183, r1660, r1637, r297,
     r1632, r1117, r165, r167, r208, r231, r106, r262, r76, r267, r264, r1047, r266, r1285, r1286,
     r1287, r1288, r1289, r265, r1290, r1291, r1292, r263, r1293, r1294, r1295]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₁]
-    [.i, .i, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(67, 4155109203016962009576598015773130111104607191531721463479664910542326714050213926183994372258741621545649960502566796322904407999191941403716907822959612055141329150780475715766219005868676288695386097499436921908977979709386250874104284079856767004282114166636366112753336877869081269855729728502552569608596068250105736336073327154036017261873591847623754501329774807451470064728995418696153791196848090320320193853478763100778535379958565484944637776318890421013758769398912003037825309794631680)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₁]
+    [Gen.i, Gen.i, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(67, 49479924078763050070707374112907992420373211974806534552290368994928596031044673245543263357630483295909428269310697248014206370864033046092441409409947386318439411993791480045470762213399120452635390110879749428422484355728792294449714706114612385421813121779411766689207606686269928461143940303062668313790914440860912171454916858778851726294857262633701984101381486795182559274068696227288554877921240807265973878841954330136623854325707054243944943253564739061553313166737734445571309963541810105207431681761523395528315773993298023311323672423740196192090350595499008698675381006911811219885753802241341089221973177391433115466989568)] (by decide +kernel)
 
 
 def r2204 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r2178, r1640, r298, r1632, r1117, r97, r119, r186, r195, r467, r497, r498, r580]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₁]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂,
-    .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(28, 5173297428560488377040293546218713917608801491943034863381125251887004707602876953060451718017319876167675131175821489136506931265857449200483838581515381264101551864594613554214798712246146198640990879744)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r2178, r1640, r298, r1632, r1117, r97, r119, r186, r195, r467, r497, r498, r580]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(28, 4059104608741991473364362752773265172661731640792203937265526323582703918169099514427512248362041778527341900948135833652785274558271326352194125668946308928426660286801800109902874052300900215091056928239952591590493282278926987566211895786543044600709200740352)] (by decide +kernel)
 
 
 def r2240 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r77, r4, r0, r1651, r341, r1649, r1218, r136, r130, r276, r140, r484, r134, r1618,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r77, r4, r0, r1651, r341, r1649, r1218, r136, r130, r276, r140, r484, r134, r1618,
     r1619, r138, r1620, r1621, r1622, r2233, r2234, r2235, r2236, r1674, r1194, r2237, r2238, r1623,
     r2239, r1210, r2016]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .S₁]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁,
-    .CS₀₁, .K₁]
-    [(75, 2636059245217900995675842950259036264755870037910627550547269614331485602101227289496558896880346498153080116671164522209096121606508394524820146270258619681974993386826375858336045767550842721602645102833053839366556625874232233520603441158672427588127208444442844939608880516203972776878673370230873922352600597006576407861424877541417077918185772268594656953907346797976689191465549055400757029929226154859877263923205540285197832044056873993571737836551407485823131861829704199865621821311866567351180470209128974417207236452954077607988986235065179586953216)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₁]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(75, 2262001667180428840475574798205404061188992946977011703056273423430590535578457142610507116993791486216614119628071166935581079140771563515942603655493627636586200197386431854405073629346229576350317617746134121938483794212206339766584832890012821681385370711512535896978718847749364099576854028623039513994695289656999140793104125760532821547746864779187488859679454799440275051267761061132312925695688717070839236715608082920495137247478925559350416476331327043131524640597551337333772062940495576971383923040117798527719364523370307494365051713414468057091764954112157103630564001222209510944999469812265216693805195535125369760765130544028418400732067519751545464025113280703663669573204993824824316932229582290944)] (by decide +kernel)
 
 
 def r2247 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285, r1713]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285, r1713]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2265 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r4, r77, r0, r1634, r1655, r290, r1654, r1713, r130, r769, r140, r2255, r2256, r231,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r4, r77, r0, r1634, r1655, r290, r1654, r1713, r130, r769, r140, r2255, r2256, r231,
     r2257, r136, r276, r484, r138, r547, r548, r549, r134, r550, r551, r552, r553, r554, r670, r671,
     r672, r673, r2258, r2259, r2260, r142, r2261, r2262, r188, r2263, r202, r2264]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [.i, .S₀, .K₀, .S₀, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(80, 304537645873572124939628705390118428663968689748634001904132511072401417016436739485550444501220853954854229619907258087408998470877554970736509696626398606734888729188327293115459734979556357553845237164598252481359348098635288351540930060594079502445723842513874743385917184011617623582729932456845291016805993475754259420660264953404467321734032790469003311673651024484903053889260251770729240299561185011425171111576735477777414258875090210224343001034487333691866985735094218086170548793606109762335312749117931829386538199543918103734517080095631019346971126458004175888651061235590354698240)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.S₀, Gen.K₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(80, 8978816991411623777374290495738147822377078327646519797850890777748213266483180456581163980377042914197951390511519918107722264910570583614248181145063924583711360760289211878951555280893420954456546162473352389594532783377254647209715826232708854888353871052276157638122487974760461289400210417437366490383245225663456631967242864821197461303551803211475171564301732306687312892567805013120536837986965183681814837646801091752256161588492062885583680019401234085883982075123298333628075411390813422338100256225839645007144788361073952268036475560761047644489987521936451215340387119371924821249670595305437689469734365196115596012726627609575180468061246722451134176420644623815285906851841294545836066532169196487659001620868829313790509222376001089701006016512)] (by decide +kernel)
 
 
 def r2275 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r5, r77, r4, r0, r1673, r295, r1655, r2084, r138, r788, r140, r142, r750, r2204, r130, r934,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r5, r77, r4, r0, r1673, r295, r1655, r2084, r138, r788, r140, r142, r750, r2204, r130, r934,
     r2180, r2181, r231, r2182, r318, r428, r429, r641, r780, r781, r2248, r2249, r2250, r2266, r2267,
     r2268, r1322, r1752, r2269, r267, r266, r1986, r1987, r1988, r1989, r263, r262, r2270, r265,
     r2271, r2272, r2273, r2274]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .S₁]
-    [.K₁, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂,
-    .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(87, 16223322678554037300875049023884603356727832294295602561964419480938296318295453400647326917470648890013585929580817152997847602580877624016403977471129241815022513459794400873159177794765353965761519876226140883599626885212043183647363722125618953381058679004383252916246869092481148991329010281210303480985919719981666251960002486726717185568541438700929647148668623928127545737257933682086604730565064032404708907839112659077000209445081212029676976797780317912854932454992190666889749456959808719990127643825339837959989803393206995520099588231180927991823546994402479383770222136430508735449448206787847139844765921280299153097435642039648649216)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(87, 269267148179861785934804190418068804033840705200231544341293992828723430146428906566300995966214814313616679849395674031658478738831309994517171803977944511790199356527047772977783403093774214249600789935651280263448185793540863548978069701822996643357291173499224477412711269291943954694119376392018673725665658373602363431891861376716898478180315287639163543590600025013691568060761398022842546273541423082790144703738603185337353220504324341921580023731697605178373539038551147354516115520139962801104544919647392250825195052981881637031208872543582209386798287647173759355056688660126041144023878388294064545666409649260785525054191075491161691038688549815868521461323967152529636319165602202290221048786926316505328771285660816064778794065433031721970769570213676227851509267438181461250125369176774736308603709403994106363904)] (by decide +kernel)
 
 
 def r2287 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1713, r296, r1673, r2275, r2276, r2277, r2278, r2279, r2280, r2281, r2247,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1713, r296, r1673, r2275, r2276, r2277, r2278, r2279, r2280, r2281, r2247,
     r262, r2282, r266, r2283, r244, r2284, r167, r208, r131, r2285, r97, r119, r186, r195, r467,
     r497, r498, r580, r197, r189, r191, r193, r2286]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₁]
-    [.i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₀, .S₀, .S₁, .S₁, .K₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂,
-    .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(57, 747138163701026704831779681588760438085510250738107687053526763601814771806782052634329096944624661091030849082817324571468056987576558045984232625850317339056845948964121181994831410063414347290605213807276438549429284245119735229537869760043254355795814365399932569580742346817357182896939071323874573498741419013067881072870108121061810076443225697822404036504699145984775502201322000668033260309895222999701219216195584)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.S₁]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(57, 7535573873954277802140436332702520408427359990068512676191742687165525609609050078258575478085295272445775648634861079758262666160486588822979564213183080425687677323772741782455649354848549296895202059895365738164314815142676164010770176598335594883002453484399270038155310712205502046479867736580391067652304349218313306192423117365844324365992640955051770491130111776982356800208372929715139728624479342756760614187268472859497383958590123969109816510522990793343695675491007540257053577887548497048178871572890644483568763465685631238144)] (by decide +kernel)
 
 
 def r2300 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r4, r77, r6, r2297, r131, r208, r167, r512, r244, r2296, r267, r2295, r264, r2294, r266, r2293,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r4, r77, r6, r2297, r131, r208, r167, r512, r244, r2296, r267, r2295, r264, r2294, r266, r2293,
     r2292, r2291, r2290, r265, r2289, r262, r2288, r2203, r2183, r297, r1655, r1634, r2120, r130,
     r1194, r140, r2298, r231, r2299, r327, r1008, r1009, r1644, r1645, r1646]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₁]
-    [.K₁, .S₁, .S₁, .K₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(47, 1238739667735933349361790977037815426373091776167237123804129204315958025073193102577594199073838876675432242478137751639854408456841040818298120308052389146119235529805231908031784681882341345824989918754354528369716439761013146671395962248993170007129592919862230304338331752629110574631920172882806582109945104545752991728716031514037792773505024)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.S₁]
+    [Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(47, 10583727179431569482975737057194849768772062751201750353270654804439112655970356459907042887460872549679500867670861917468346742214162893609429125903688694083386911841779637029788074650206515845019400467517278609299156258842105362996026680148461350597936707310537134088504581289108128470405423551326676677959950721190525859985488538985511862589145556853267132298242898567842193294765835866149266310513345056674335204150372575344566417036314411008)] (by decide +kernel)
 
 
 def r2307 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1692]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1692]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2313 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r4, r77, r0, r1657, r287, r2287, r136, r130, r276, r140, r484, r138, r547, r548,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r4, r77, r0, r1657, r287, r2287, r136, r130, r276, r140, r484, r138, r547, r548,
     r549, r134, r550, r551, r552, r553, r554, r670, r671, r672, r673, r2310, r2311, r2312, r2223,
     r2224, r2225, r2226, r2227, r2228, r231, r2229, r188, r2230, r202, r2231]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₁]
-    [.i, .S₀, .K₀, .S₀, .S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁,
-    .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(76, 229438896521421833801344822707030604850256583222469515257260403975053034609981611306534284040949823767789755273469907514563862319025711374892803699355190524463956847539301881434720801932149171727431048840707166884793982170694988917212886562505649587699148500823018258257404530565073298733657813196860964865620222063216499850601328682483195930816605478590189220087521201698415375777042340373515696053435411659485630355551108567227099340109543430051061984782939377021674054519886795336140354269561054469796620169422583393759535814202110917099289856369231348617827057664)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.K₁]
+    [Gen.i, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁]
+    [(76, 25200465790293322091922999748825321046911049490790978083070300807970297799234043206278653958838735254001395462137415945954337673045196009818933741384338746822764476546007410546198537344318671611703639069679998703719735006571064585690043242867874264511783696516364927045267541601534338314156664395777715743853126101210049170165739294319372206558396589973766612955469716264569397342858554131060046585873683132582988805827140675780361762826872670287909574722028999562327500643269494034458212168886253719060528920168605545179731839303287313528725999270472811177322724089988170575797955858468107195105479241802228077301412893312505580587983029060367270425316905176983542791613153479472319556378159336930411849730844303361371537408)] (by decide +kernel)
 
 
 def r2342 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r2247, r1660, r298, r1652, r1122, r97, r119, r186, r195, r467, r497, r498, r580,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r2247, r1660, r298, r1652, r1122, r97, r119, r186, r195, r467, r497, r498, r580,
     r496, r191, r2269, r197, r189, r193]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₁]
-    [.K₁, .S₁, .S₁, .K₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .S₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂,
-    .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂,
-    .CS₁₂]
-    [(40, 28788959408130777934421641314465445394881399198268717870465828035046138382724633487756587345530482546408589561983570322180717674535423280593941931898975363546805817243480917528953011029333926615757915350181736283323420397552689947826198714139129752846949307853672265951813750609984763460835753328640)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.S₀,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂]
+    [(40, 436932924829518501992920881986355845817868137937835645051804371940765305619137102129612880675714678320930607878623757951146994016094220707477908703144854348850235213662254892523575477562111452914816343588177976600624355122963791651369461058051990667648641143653283704404761998560216293739147928609223200897927511283879739360503831894833221639477919462824690643648615102847624675328)] (by decide +kernel)
 
 
 def r2345 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r77, r4, r0, r1726, r339, r1693, r2002, r136, r130, r276, r140, r484, r134, r1618,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r77, r4, r0, r1726, r339, r1693, r2002, r136, r130, r276, r140, r484, r134, r1618,
     r1619, r138, r1620, r1621, r1622, r2233, r2234, r2235, r2236, r1674, r1194, r788, r2343, r231,
     r2344]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₁]
-    [.K₀, .K₀, .K₁, .S₀, .K₀, .S₀, .S₀, .S₀, .S₁, .S₁, .K₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂,
-    .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [(61, 2209789408220328990155203044296354024760425241084181094760414848452271428146372439382800412046480287886055938271911682096300419747069294687639623805900546154820409364205350904403281109204841463637235393614673027406715870368528852878746247561080105237390813839213076873051149325715088595730788226133812535373884700274433560824802389918732318808706323993320459636504007394733309443755024843744372594124488688847550016045222954913893158888535835874028421120)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(61, 5983183959169398845524809170956972195133017559601978129442373424865520997910659611013870096292928605472282287151840542986950976251239667763759865964090744060454065107705598395464313369639977899774941156088647096042814390429404080955346256085417858537597786780343706942748472824835277117555900245600122512510713665838583689722579636081288080412830635704519666606068666964893664478003596810826607045141874106328072254389780279105981089006559022849318894817617974108230033345354518201876345487270819301359990578529206443099950674434086063802974532646032271924117664202626422538240000)] (by decide +kernel)
 
 
 def r2346 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1693, r341, r1507, r1030, r130, r670, r136, r2015, r140, r1210, r2016, r6]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .S₁]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁]
-    [(14, 2241316828679022740609736954922130610256633483569259690739499751309090761313294982013911900385666138112)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1693, r341, r1507, r1030, r130, r670, r136, r2015, r140, r1210, r2016, r6]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₁]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(14, 5549231685786694145488620967503970269861228450053137670625779496823708386903847547569861451314877446312769236858447728770717581312)] (by decide +kernel)
 
 
 def r2349 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1698, r283, r1408]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [.i, .S₁, .K₁, .S₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂,
-    .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(4, 3094887877150945892823465984)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1698, r283, r1408]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [Gen.i, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(4, 6490450301331141034072939109023744)] (by decide +kernel)
 
 
 def r2361 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1714, r325, r1711, r2188]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.i, .i, .K₀, .K₁, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(4, 264452528672948545912832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1714, r325, r1711, r2188]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(4, 554597137692084435379961200640)] (by decide +kernel)
 
 
 def r2362 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1714, r341, r1711, r2175]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁, .S₁]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(4, 264452528672948545912832)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1714, r341, r1711, r2175]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₁]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(4, 554597137692084435379961200640)] (by decide +kernel)
 
 
 def r2366 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r1220]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r1220]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2368 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₂]
     [(1, 81920)] (by decide +kernel)
 
 
 def r2371 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r2368, r283, r2002]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .K₁]
-    [.S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .S₁, .K₂]
-    [(3, 5632248380391424)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r2368, r283, r2002]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₂, Gen.K₁]
+    [Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂]
+    [(3, 92234072220858580992)] (by decide +kernel)
 
 
 def r2379 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r315, r1723]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r315, r1723]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.S₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2386 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r2002, r322, r1723, r2313, r97, r119, r186, r193, r1382, r1383, r189, r2383, r1958,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r2002, r322, r1723, r2313, r97, r119, r186, r193, r1382, r1383, r189, r2383, r1958,
     r145, r2384, r107, r2385]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .S₀]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .S₁]
-    [(34, 8726189406256187561692360359443527231004379271813309842569815118284799523290460292120886321538768824031747491843139864822318770603912820154326195486834001254307313836586649762680436472338009413578809185737939275337568018439811579312084510173565026304)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.S₀]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(34, 30112036937664267427581732820104337421309385662401402817145525212086092144921409503600084099635946639456926606788658342558878051946624943533750677466753045664557000895922401025444146367904231367818776226273925050271170205981383486736510579704666688642524008445447326426089097262456414565157972400692445354014923739365376)] (by decide +kernel)
 
 
 def r2430 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r2371, r2368, r1717, r288, r1222, r1404, r1718, r97, r119, r186, r193, r1382, r1383,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r2371, r2368, r1717, r288, r1222, r1404, r1718, r97, r119, r186, r193, r1382, r1383,
     r191, r1894, r195]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .S₁]
-    [.K₀, .K₀, .K₁, .S₀, .S₀, .S₁, .S₁, .K₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁,
-    .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(31, 339808780127892292884213067933820194936385420874537394273574278227381309104177443377243518077315305342951455338044776304480672316303132485656151123915708957269336185558301444569823044363458549830885913702054789641956975674906378240)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₁]
+    [Gen.K₀, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(31, 559156882143707968677081925302917162349248335212889527820539882487880535745508422204988275322621546012973579207757685934976713365869369716422969576695742161501245303893480595947035100276124674130480476692128194641489632738155196586477477640986532970818244127926363554685873910469937549723828224)] (by decide +kernel)
 
 
 def r2434 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r1734]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r1734]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2437 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2440 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r85, r5, r4, r1746, r101, r1733, r1784, r189, r891, r892, r193, r1738, r195, r197, r118,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r85, r5, r4, r1746, r101, r1733, r1784, r189, r891, r892, r193, r1738, r195, r197, r118,
     r116, r318, r428, r429, r641, r114, r705, r438, r706, r707, r439, r713, r540, r2438, r202, r1385,
     r188, r2439, r227, r226, r2353, r2354, r2355, r2351, r225, r1500, r1501, r1502, r1499]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .S₂]
-    [.i, .S₀, .S₀, .S₀, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₂]
-    [(131, 184744567923956107622727802690370212088829146396762788636404968550158195655967419531230158013484369850365236731647296358014252614841793131738397622995179276633672497320407689329707641142720281747938619746055441905796831134008762263033403194074748487453023888965355189271492328401870819495719384904316573917461703219966718249222822585605747557090365726325845437352632751944515848356583071783201756726064971327070862785663780399529905906137680361481706013046986458204984791086104387842620082321808807594914483536092788087704190716595988172604214455277192765907237149675430129977761927884618266141113165456588534920332563628857071720711711667090543097477986268864809211432800807706731161779789713453708385820476403075649223879583612362573274247823885444734585339601478104997691366431872102491181554990411486686376288403429725680464040676005224551797712201083586496381798107080662503669093260716697415408653268154728678465607949265313288499775704095495806323596301684362124390607880192)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.S₂]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [(131, 1599042896775403108762173027327044171638874811899598331220171450770144082458599380229775956335563553121122141224569027183001736740512952197756667204891735878951012607998290877559772250192301213578790792370551208321815669744555508093381761069507839952783049276840150968928669778423849235829959980285416039096098798850592197574707606660428254746069130885038228787549089712570608633479963570164119625573225773959783615462159689636763286757827860888278015154637245940102367053754804275869168959889522107244875664135938981705560970063850905220033281790311769572527894474365764152288689990811404644163382840671991693491212558014309349690640457300721896582010973845212757277436362420617251950322741089761149548881306977174753802101324321682938159267895456592865047507597231689396116531344763609844181758624290347177354517480513389729676989325418471144290757271884275981693135208948907520817470603609243948910629124728253282679324379857528186121170986986417268291692303628865755623832997000032228635975131744489052933231107323362947641220346128309409968629019528305352905165667981395155504951045055051253048004199175522059614551006739684849510677391221069454283970801939084300867128324280060190183362433976902484481205915834914241085551765707683864458821715886080)] (by decide +kernel)
 
 
 def r2441 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312, r1778]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312, r1778]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2442 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r44, r1779]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r44, r1779]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2459 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r5, r79, r85, r2054, r2444, r44, r877, r2442, r339, r1780, r2445, r382, r383, r831, r1505,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r5, r79, r85, r2054, r2444, r44, r877, r2442, r339, r1780, r2445, r382, r383, r831, r1505,
     r130, r710, r1939, r138, r2446, r140, r2447, r136, r2448, r2449, r2450, r2451, r142, r231, r2452,
     r188, r2453, r202, r2454, r288, r366, r367, r368, r798, r2455, r450, r2456, r2457, r2458]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁]
-    [.i, .i, .S₀, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁,
-    .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
-    [(76, 240237181750578407535729121327202710075862236049979640251242750837499011357229361563158453965284010827283847138849349133375882964757785767667076462110067972412919984590552172087035121873806628398205147294272521833674508930760495490535249782634271971157990330097196127095501063885050970160640353827453953963369428572730660528799499772424842336857522978267020516437093140867956345889743175560956932246354246666479460335856448793059777414530453945891487950053508337610602231735658545467569653608686678727398919550890706263374025665329105720694256935710981342791165018112)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [Gen.i, Gen.i, Gen.S₀, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂,
+    Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(76, 26386371058762864920980302237827512929835966902451437028247478351742120319869251443952664458449867541928565310189785617159527787796744289434285933690484454941573440820264838828341219878685869173008756263967045797577856427267159115543568626761991242300014175015185713115517828641236443725602439554283166315893724353880831240227263149699620451313850702861564737988606160789786795330503985109144481755717798536821327594138611988295848967977701516040400168832079266943353755848759610022366537795001116801588553292856873368811413495543077906375170922260661548555903430390502101339528473502655909484887410652414193766301736451956373485290680465351764553816595039548356967543380671277605664336886106629732566497846140646826040098816)] (by decide +kernel)
 
 
 def r2460 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r45, r1779]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₂, .S₀]
-    [.S₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r45, r1779]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.S₀]
+    [Gen.S₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2464 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1238, r139, r1240]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₁]
-    [.K₁, .S₀, .S₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₂]
-    [(3, 5632248413945856)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1238, r139, r1240]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂, Gen.S₁]
+    [Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [(3, 92234072225153548288)] (by decide +kernel)
 
 
 def r2501 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r85, r4, r0, r191, r195, r1452, r186, r2062, r1430, r1238, r301, r2040, r1421,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r85, r4, r0, r191, r195, r1452, r186, r2062, r1430, r1238, r301, r2040, r1421,
     r193, r2465, r2466, r2467, r2468, r197, r2469, r145, r2470, r119, r107, r2471, r1498, r2472,
     r2473, r2474, r2475, r2476, r2477, r2478, r2479, r2480, r2481, r2482, r97, r2483, r2484, r493,
     r2485, r2486, r2487, r2488, r2489, r2490, r2491, r2492, r2493, r2494, r2495, r2496, r2497, r2498,
     r2499, r2500, r588, r1542, r319]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(116, 1590743787855740109498778149232555940781718490303510864002242816158142805092669365126372856491731496890050357807522188688781226628295817866749591643269280944018218332700836422862701689429120239722288477436743532219545895348853938202167326583350085902617381700710905297410398072062764106859109678091463739277893852198732042738328214655473492593287940205164541196166235877070188401694757676898602304970131400306926271833089445920246378685609803461611554863699117237470201854477376371483710600257486544864976252980775952715521714034571876247993433337891024492704342873341160365279642330597007019403015764562464982473693225285156399354860731328148260146241368498566558140076323190429464916442106628257666823962124585515763594880188678787963773031561515503021746074975751364274174379276110451189373541342450304097480787232650721021978637576480228125167441551727385093603328)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(116, 339427271494231429913894752822782262459962784217789121790794650725631207350000412475846770192956283337657877796343190563351863182862289503032169020013393557380397004722054633331360688493839531647226098665572018476498844683899749854926925291748817834167993751323416180054858202397342136828521392579873371605752805953652615882087587221200144588054290625466725306585561284970400403254263900720412663538290107905117420912621245777747868774675325592384242869053401350967661462156146710718837893081455397031766405782007465545297984235502433807478056615036815916944583799922994717847452808903726503194987111252249946734056455604826355999030236648087492996605762122353774844029307841738455767972427233504949939340185070311605521202302940802418925917896532738244968308803457851908833409771249107770306965501572120360991715033482409846862023104658082626261685192516363510912791414039125235568709665484255086628712392330468838229039045308950871945109661569194475420745801722689834406240393254891286546093924980344959898596659123942548340448638286538871501694526975635339670309664235333714414898260201312328960329994207232)] (by decide +kernel)
 
 
 def r2502 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2503 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r314, r1785]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r314, r1785]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2505 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r316, r1782]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r316, r1782]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2507 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r318]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r318]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2508 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r2164, r1785, r4, r326, r1786, r2165, r313, r826, r663]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₀]
-    [.i, .i, .K₀, .K₁, .S₀, .S₀, .K₀, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(13, 383820361664799039808983785432830955559821465173717224920857265666708429895186764906832525787136)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r2164, r1785, r4, r326, r1786, r2165, r313, r826, r663]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
+    [(13, 7424165410432684519442017285998338521253983339058650476075053241578035211463972197155315000562794902788876588512914178048)] (by decide +kernel)
 
 
 def r2521 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r4, r77, r6, r2517, r131, r208, r167, r2516, r244, r2515, r264, r2514, r266, r2513, r2512,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r4, r77, r6, r2517, r131, r208, r167, r2516, r244, r2515, r264, r2514, r266, r2513, r2512,
     r2511, r1467, r262, r2510, r1794, r1296, r330, r1237, r1245, r1246, r317, r387, r418, r422,
     r2518, r2519, r2520]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(50, 577757313953009811231547133489114740256981050484776292137843000275386307297984149096901574811016832487265405961625445549631503923353749477423662151907094123284527093621166658822031055778604511109449031565409378293225926638137136979637108059118404753078996297291961309897966529249408244651585773085366940281550283587597532639798102942148718248212292996259875505655775232)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁]
+    [(50, 10352213188976658162830838476887330076896825640784940066224788884827685646093331114841074857932023747386639480374454094471605096214905741109353258598838370606579416789772928924614555950962741128490419693582109896102729649758860781927222286931188996422024427880748354853379189781271754827401570119745702602599956541521252372700157475544274060721136063407398498829906479002298720642581498998335638329582920385044237064108501238516944602375654205465939752728567981386588225536)] (by decide +kernel)
 
 
 def r2524 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1336]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
-    [.S₁, .CS₀₁, .CS₀₁, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1336]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2526 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r1795, r1589]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂, .S₂, .K₀]
-    [.K₀, .K₀, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .S₁, .S₂, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [(3, 5629499634958336)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r1795, r1589]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.S₂, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(3, 92233720381432741888)] (by decide +kernel)
 
 
 def r2560 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r5, r79, r77, r85, r2101, r2531, r2530, r2529, r1147, r1806, r1810, r328, r1801, r438, r706,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r5, r79, r77, r85, r2101, r2531, r2530, r2529, r1147, r1806, r1810, r328, r1801, r438, r706,
     r1787, r2532, r2533, r2534, r2535, r2536, r2537, r1494, r2538, r2539, r2540, r2541, r2542, r2543,
     r2544, r2545, r2546, r2547, r2548, r2549, r2550, r2551, r2552, r2553, r2554, r2555, r2556, r2557,
     r2558, r2559, r1768]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .S₂]
-    [(60, 95122884067349694829267674886759577546954594655708390885243732213060991635173473807600783992144398598882424903002955089859306213730803196896857913463428857330894400317813068443696095576727399645848881711665049630053612959305417417080694300925039104334786966309663372832264659740330588561440408860424687537027139088662782155080188695785388687739836921074866711057174365598640112672623680135668763205662147253733262982410175889009735285425523654656)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.S₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂]
+    [(60, 2012209550808136591914487287181136673855329379008067674411842465520212991119675844548209424235924405948010514630570579997939279643236787958386465013827217335097246432546839699127610994198942651264791527221776198609718262627390638957656635084951584610437021086641279246617599694560215973591624722130029162293702129900626334755563710701416731770614313853923805385921995015500552146267721672027951067363329691093319351410940411050069400215979522754875179602583773554568465446836282444812959720602573575848538549093709543172776128997406664867024862885037058918815465063055360)] (by decide +kernel)
 
 
 def r2577 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r76, r39, r1806, r2122, r2561, r2562, r85, r79, r77, r227, r2531, r224, r2563, r222, r2564, r223,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r76, r39, r1806, r2122, r2561, r2562, r85, r79, r77, r227, r2531, r224, r2563, r222, r2564, r223,
     r2565, r2566, r2567, r2568, r2569, r2570, r2571, r2572, r2573, r2574, r2575, r1383, r2576, r1491,
     r1384]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .S₂, .K₂]
-    [.S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂,
-    .S₂]
-    [(56, 50301487883010570681938763458592754841343195337819468639901052299015522119506163611732212358402882970507358678628025353417029090874870369650939344177040044675029609129979839820727196589532790868319549296770402364871785682966022251648832400469203299890990797165761051589609186354488350243711389324840568276786780722304405508655078975779386486667781500720004703125934118816688792156383718761150755014691717186672746496)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂,
+    Gen.K₂]
+    [Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂]
+    [(56, 3963896059519663561345312100880790700225334408103963062484627099069068532149353104371056942262526560550605291751290185045511516563120205496305680920854150386390619141698829587912577061708646395969880212686055446872841021223551965885010069212672403089709364886223640956068529247968732264700460936284678606795365265178389061107550266160401948744929465640597744143675513193376919250055740028732507805020656501379267311372510369612727346262181729551942079388206493309065558781091869408110077363715060995463137321217676772222799662112768)] (by decide +kernel)
 
 
 def r2613 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r4, r2577, r80, r0, r78, r86, r85, r349, r1806, r2103, r1626, r1553, r1552, r1233, r865,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r4, r2577, r80, r0, r78, r86, r85, r349, r1806, r2103, r1626, r1553, r1552, r1233, r865,
     r1024, r884, r471, r1550, r1055, r463, r864, r374, r2561, r2562, r2594, r360, r460, r529, r821,
     r143, r2595, r838, r1112, r1591, r2596, r2597, r147, r2598, r149, r2599, r155, r2600, r2601,
     r2602, r2603, r2604, r2605, r2606, r1252, r909, r5, r2608, r2607, r820, r867, r874, r1539, r2350,
@@ -4017,689 +4635,826 @@ def r2613 : Rule Rel :=
     r1386, r1430, r76, r1731, r2434, r102, r179, r178, r180, r319, r222, r225, r1526, r2409, r1382,
     r146, r121, r1879, r1381, r227, r226, r2609, r2610, r2611, r2612, r1326, r1327, r1334, r1325,
     r1328, r1329, r1330]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .S₂, .CS₁₂, .CS₁₂]
-    [.i, .S₀, .S₀, .S₀, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₂]
-    [(209, 48345944956577011544460990156029624570057116713383288106171055830225518186606367348876607057156567749341946346418368183243373978341832219928278792391406102162308930378686152187490870789061276341184121415283044617886265868489832021175947136796010181911149378158154960842204017442066504033508992169142463883321184146922235938806091112291623071253981847357339250547835586742412876428220562131742287376416315509681640534205630301535045233108929160565381927881814358234293511428982075011014876585792804721510853442310557139203008100330681328714794102819932544072598827807284916094685439304525959081152732109981384610695773743424382081229601565112123294234001329203181737892965333566916694735023049912880260839466573972450423008356870654524668349676108084675761513890721534462525213414822447796467681443126641924726119621866293403681644927210945542167830895633743130041208311661126093432677849557737440680878849730505893525973189493747871964391012482439957186458775430857069336150346486492261288202291858636434714050723029034301107264506572346451529869229109431680301610536927012157306416590210053072616576419596832595331808883620504268061329542452297250737618893632398237239653539251155278144971639150102293000085929474194831843569764756983497112279617481730117819155688224371755860676446704669734797771807627726272232949242067678985152990445740219832444919749475680320794754838152821774232004742096530028657355213350884402024697543378734524992558797385562422600494203668055346947977744080488319684508671619069429589775648056335481645609511466355379071762500705420985761792)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [(209, 96389730566906346439978970837515332038806792083443363452055513237497803848494837989978640981717973457634171502735589443595902510264886597597798862383410053831465216887208850120144223607009327456363629070680082471993284646105996810240728799448101986885602381687804999512060822291036543032818854453757961053095188083536169064212985405302460601441104246642813093147897494348653926586568100719889536873269045172867427664152300915750330359907098960051796930330383805895423155497166171946830538708545126207489575036647963103892866210814573489195877275806299533521405515271249342263546228986572672986530821758693384355634650710202067890591109291078798353273357055977865428538546223396042857788075789388523719478795788404686049421720398825381627693146649304288477101714210399745283810573211987902925282164499065470060590028473189594414201965734395786792585040024583443419451179091690199366973832459084674340110490276774935211517906823247439605408350356974924543367361561545789681246119175394345645979207428527107655384767280529219892415235241120721730468991389338762495381691983649310316972141926847377488217375159274839955749058363667394965215104267663743215510560774898656467635668006134647725159796071198040143019009460405216721468122544251346314598664115131489072326449615899232845603792436853382753166643061482031006327596725597181474140117196284913589887302253357387603041336407015840244918064185647009076794998516497286455473798762492131327231281459885409310423127849720103777274685874308995962244967407707978309563849743940454296172706331956418466231561315449027122346306308322322700768015648632675132050575082940996535497197325386611262971599077333757407563967641649086675183001565616439672955886293799633984530000647444204842797186507428596382904476695653632032906729073704803649372828996659217790107208524075976242410691850882543733304475162933270910512319145495000737310974778649326921874044773520444623216505078059257047907241451778549092739386872460637856220757949234620329845092097018769668451598336)] (by decide +kernel)
 
 
 def r2614 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r276, r1802]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100753409)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r276, r1802]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884992001)] (by decide +kernel)
 
 
 def r2615 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r112, r2440, r2437]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.i, .S₀, .S₀, .S₀, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [(3, 110686093941892276224)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r112, r2440, r2437]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₂]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂]
+    [(3, 1813480963142325194809344)] (by decide +kernel)
 
 
 def r2617 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312, r1807]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₀]
-    [.K₀, .K₀, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(2, 100753409)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312, r1807]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(2, 12884992001)] (by decide +kernel)
 
 
 def r2619 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r5, r79, r77, r85, r2102, r2531, r2530, r2529, r1147, r1807, r1811, r328, r1803, r438, r706,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r5, r79, r77, r85, r2102, r2531, r2530, r2529, r1147, r1807, r1811, r328, r1803, r438, r706,
     r1787, r2532, r2533, r2534, r2535, r2536, r2537, r1494, r2538, r2539, r2540, r2541, r2542, r2543,
     r2544, r2545, r2546, r2547, r2548, r2549, r2550, r2551, r2552, r2553, r2554, r2555, r2556, r2557,
     r2558, r2559, r1768]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.S₀, .S₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂]
-    [(60, 95122884067349694829267674886759577546954594655708390885243732213060991635173473807600783992144398598882424903002955089859306213730803196896857913463428857330894400317813068443696095576727399645848881711665049630053612959305417417080694300925039104334786966309663372832264659740330588561440408860425486704656019982674015843971015746359660328864359153689486655238838460763777972671374478498053017150279062948100343077871410570783633086463933939712)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.S₀, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(60, 2012209550808136591914487287181136673855329379008067674411842465520212991119675844548209424235924405948010514630570579997939279643236787958386465013827217335097246432546839699127610994198942651264791527221776198609718262627390638957656635084951584610437021086641279246617599694560215973591624722130029162293702129900626334755563710701416731770614313853923805385921995015500552146267730374192825377275474621306495507056930579103710239907009222447635455014508533757713503885273395961429358803376876238521173987449577645128186614572738776634199110616578426001316080896704512)] (by decide +kernel)
 
 
 def r2626 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r85, r5, r4, r0, r2440, r42, r1807, r2095, r102, r179, r178, r180, r319, r222, r227,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r85, r5, r4, r0, r2440, r42, r1807, r2095, r102, r179, r178, r180, r319, r222, r227,
     r226, r1739, r1740, r1741, r225, r2350, r1539, r1758, r1828, r1453, r1451, r1429, r223, r1428,
     r224, r2620, r2621, r2622, r2623, r2624, r2625]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₂, .K₀]
-    [.K₀, .K₀, .K₀, .K₁, .S₁, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₁, .K₂,
-    .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂,
-    .CS₁₂]
-    [(70, 141849504150040959796303638239220314754349775620737673134757230077664397482343831585872578845300763096799653946973768507210453431037159032089534554066481329765063632079744315525377939772539420234126244376466220366676113658595876416620087873184309692308126002872785020949147784512106299865164341697921002461976912482976954852914740121312298220487031841078193780354011967994699929303598295395315999644690094641463986847668298972546661415149956224142453786157632891737338311050099712178162928441581075670547298105381057724416)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₂, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.K₀, Gen.K₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂]
+    [(70, 3542353328350231204183349494205215519575978294017098657722855585434547191545182389246396336016663486852367964178177987074311003761915010301297582638794347270263818775568176282334240518738179118027944018320339829072065456887556647832324036649120409245843353100342983982079866975200305598373803421742182473064124514039195300128047201360348327670081942046319722052587516904392806168149070503855111039143270292256901143767135087953528752115533441404318164901028740196521229935510381520062294848253262691912300735978067453545226029050482087405046261733069766327367886001666125926972343915024157050953274432969787475582955252775388550884639343688683292079170672936328626176)] (by decide +kernel)
 
 
 def r2655 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r85, r79, r5, r4, r0, r197, r191, r2627, r1502, r193, r1501, r1853, r1503, r303, r1813,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r85, r79, r5, r4, r0, r197, r191, r2627, r1502, r193, r1501, r1853, r1503, r303, r1813,
     r1241, r1826, r195, r1827, r1537, r186, r1871, r2643, r2644, r2645, r2646, r2647, r145, r2648,
     r119, r107, r2649, r2650, r2651, r2652, r97, r1860, r2629, r2630, r2631, r2632, r2633, r2634,
     r2635, r2636, r2637, r2653, r2654, r1454, r586, r319]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
-    [(89, 19372281787919329611306986819746028731063521800566408834718122536312225772089094163962956013341033367924058296437176484446597197997546744479799787110817516663294798589831133625689011234594281552024184057737448739653898415765618665685129424970844511697410814376968010035254509994104726207841325662492971461593614762994160428999287096276110982773409902413184659972637998617795419992728732954808793131366740965965270439186161333506739965006326177936269224091827883600415311981961844042988224524330873731701895120088249807211351451363184879743491223133625532310074804097643682255938920187790415176602771848211507761630957191153392991108390495284780294723874349696155648)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₂]
+    [(89, 5268137440999944710339579699242886579683024562842240540600955689832021667060858480736738487388701986511559647579762035376082860087255163020488946822001373338057285002092568762015472653204502022699761239709542239935368984534976479413426829880472493324183759195616005635115320119835828563270052884567104531355735736999142605011126794361800453190166915094544660767152951418610040670309808291833214598344352580089401803638289129410558879766898185401500193784667120790548802749667025324692501827304470666313530851072282900858111966235242091743723182047799611757849736656384300160571367153950916750904573735597156480871101265699839511535070363482871244927350663369536708889610239676661036443866018448449680909690444155281063784475318635725397158210812104378713181344757877798894551293201500252512158315087744838344532267917714674954261224888748813401980928)] (by decide +kernel)
 
 
 def r2709 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r4, r0, r191, r195, r2690, r2409, r186, r1830, r2055, r300, r1769, r1813,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r4, r0, r191, r195, r2690, r2409, r186, r1830, r2055, r300, r1769, r1813,
     r1453, r2612, r2691, r145, r2692, r119, r107, r2693, r1265, r2694, r2695, r97, r2483, r193,
     r2696, r2697, r2698, r2699, r2700, r2701, r2702, r2703, r2704, r2705, r197, r2706, r2707, r2708]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [.S₀, .S₀, .CS₀₁, .CS₀₁, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂,
-    .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(89, 16051642172054358756331321609177809033813555911975220538127600779324634329529648662088938304660140413472939282486001314973741055098424235364326522179285773763107236959936012325369240807073445899143686210877081705305284389183206963993834804992472610307416281775508308244196971591524454929014419931838101120768393459153771157219364444919625765291535896608746427343928180529901582597202801238580009203324793705993404890070942803061245332662707859955045743112704921848339710931979484266291493561749635439660257172812068699656771413675016120902725888639136263548645972114387232297064303524319704959665846605233242944501140975009835102459286682924837433546510314716004352)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [Gen.S₀, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(89, 4365028851579974478084856108093320919697981447500677812157685979041249508317255239829455500390167749510112334276542201701563517182469425526473840903043410538372477261890032695548546464264955184388506239898018014055272178449543771500646862362941858542875887758174100707884290239851983895727435220013180525198970690771137083361934810438167974316546270381333057140172486581841490086416423854640217078725251040925013052713252103494780048572497636177478505518274665627197913820728622378199321969881881235712537051761003644784116383972335573250590343625530071574954393594251459093502535364979057427786135788042303832983957120085638681165201272164083221209696216877365422145483470916863262776636131184507010208089073874910322483972643395055347849546125420900174925295196959753336396132003242097598504742029294547820596075189193111766132228962192373070168064)] (by decide +kernel)
 
 
 def r2733 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2734 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r278, r1819]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r278, r1819]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2735 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r1822]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r1822]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2741 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r1887]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r1887]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2756 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r1913]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂]
-    [.i, .S₁, .K₁, .S₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₁]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r1913]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁, Gen.K₂]
+    [Gen.i, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2767 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r0, r191, r1949, r1914, r291, r1913, r1905, r186, r600, r145, r2757, r123,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r0, r191, r1949, r1914, r291, r1913, r1905, r186, r600, r145, r2757, r123,
     r503, r1915, r163, r2758, r202, r2759, r1924, r2760, r602, r195, r97, r119, r2483, r2761, r2762,
     r2763, r2764, r2765, r2766, r586, r107, r319]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(63, 2961801637365018413366187958648709980182466100431593636716030177375620419479823662513126306113813943969361161370276688127552430272790903487439485108866932119408492657476440415772308952303419076308488280028097901978064208638655057285937895933395807158932396198958325684631545160971498945255826014155684322164958854789373769131589162162140826731839943550850268095172072687172167418020735212332777463542375884328760259811765709260173239252219595759953208601297800619098112)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
+    [(63, 131393134086561527089040919175444228597694317815741114858742955223585123015896366490151671005945714029752940445334748630210187467343506249813919327129154080375930087265253184877536200485994589741752579969094760560244119976156828628787978062414365769755209448468189080938068705479304637590950274994235866762356978558247135085985062560553172921571820134280609539821531235648050718179180431205954334052606386312330669491408999405866294619800988346370213206468136536449605654993811879803178447640322290967801935942250426913893773422145084458547328841021280832307457232502298907997618413691331100180217856)] (by decide +kernel)
 
 
 def r2770 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.K₁]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2773 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r1913]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
-    [.i, .S₁, .K₁, .S₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r1913]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.K₂]
+    [Gen.i, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2774 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r42, r1914]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r42, r1914]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2775 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r1915]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₁₂, .CS₁₂]
-    [.S₁, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r1915]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.S₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2776 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r268, r1950, r106]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(5, 6338872084506812036229126766592)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r268, r1950, r106]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀]
+    [(5, 1701413132916591589737640866626215690240)] (by decide +kernel)
 
 
 def r2777 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r2776]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r2776]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₀]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2778 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r276, r1950]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r276, r1950]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.K₁]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2779 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r1950]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r1950]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.K₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2780 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₂, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.K₂]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2783 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1966, r285, r1965, r2775, r97, r123, r319, r158, r163, r375, r613, r614, r615,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r5, r0, r1966, r285, r1965, r2775, r97, r123, r319, r158, r163, r375, r613, r614, r615,
     r202, r580]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₂]
-    [.i, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀,
-    .K₁]
-    [(35, 277781796276480554586565736416124024497440367806670394661978387996375232292376513264626656541045672076011214646531402801781558203818293672315478732739428791838950213721181635481481251501577571106615755480461371625190588866231363339422080699311621880542134272)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.K₁, Gen.S₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁]
+    [(35, 122697877850082604792978370095299533942422086326947425040670507782588778509123295426864535219617501446965434523854756124882419093837530377558491170454515823643340452311261780815762240533574839033334887747957756168248505351341704636735947397744557553716046152780853872563124551190830558207902306846084572698760090173645200853827584)] (by decide +kernel)
 
 
 def r2784 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r80, r6, r102, r1965, r2774, r2773, r186, r496, r195, r191, r592, r593, r145, r594, r119, r107,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r80, r6, r102, r1965, r2774, r2773, r186, r496, r195, r191, r592, r593, r145, r594, r119, r107,
     r582, r77, r2777, r361, r362, r363, r364]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂]
-    [.i, .K₁, .S₁, .K₁, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂]
-    [(31, 266507401058516238001194388828446057821011827954273029125080750744058152365975484313794522511448728068332251254136358797983206230785648273005618365813499727748107223777732400414035353727257089080685941738292350742690448095150080)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₂, Gen.S₂]
+    [Gen.i, Gen.K₁, Gen.S₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂]
+    [(31, 438539130610567291194545730044087431165818163407236074873734785985355731300639233050567390258858187284912867047203547865749715555693237014084214590853147900829473014851162790791826130043401793982371276242833304796683191558014968318668817667122506418852367655190264634311811061644994642280448)] (by decide +kernel)
 
 
 def r2785 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r0, r149, r153, r143, r2784, r1971, r300, r1966, r2773, r466, r467, r121,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r79, r5, r0, r149, r153, r143, r2784, r1971, r300, r1966, r2773, r466, r467, r121,
     r1359, r123, r1360, r2774, r158, r1361, r163, r484, r101, r119, r97, r319, r161, r587, r1362,
     r492, r493, r494, r491, r495, r107, r1363]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₂]
-    [.K₁, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(73, 5358661185585612495029567954119824005588873569669561305138410329666252539906083173446598865064487601787526305154761138589278915215970054287793823969832653234171908850357512022170915927507659762082377164054425047732846851317721546445555542270036382469968676299020569680008800187057225670612532374534869841598771303693373212506575306835808580098460821460536434954612358114212536262416063495750258162909209090826015336309394557916953351100121107097980695861216171483166940138339386474539288376591542274423190436876720155348977530066033599649415168)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(73, 280654038155314168130917299371569380581574127813897425205224648791470998772938611612665298852207553384548628724075178555295201587144614020148274222874130104598465650581070386857760547295818719285491835862522670036002662758527384531711439301944487248332184929908707109426824628999318848693645979910563970603137070576287391484795160293939961439278629186508810486349004047764559288681149886992603227558670807194503765891083845030735423474417026019244987278887614727303783779605059676135942341476612814180692229621158041940627504613337854692096908172599642807068965360368667352343669718932124027184305435025379759084700323499583284087181856493423306233471244459743227720185486275741687849711346647040)] (by decide +kernel)
 
 
 def r2788 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r44]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r44]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.S₀, Gen.K₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2791 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r77, r0, r1373, r317, r1954, r97, r123, r319, r158, r162, r160, r1379, r2789, r2410,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r77, r0, r1373, r317, r1954, r97, r123, r319, r158, r162, r160, r1379, r2789, r2410,
     r2018, r2790, r1643, r920, r1010, r202, r2413]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .S₀]
-    [.i, .i, .K₀, .S₀, .S₀, .K₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₀]
-    [(39, 447306316153160337776174908988304833181884667678972372581698816741315688974812168662947921495327365712514983285769818143914958415017208771827782225991554772888653208826001511662018960321153817461845227849908421212506638519630113819474073318722497788812417611577021709491983660513673347072)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.S₀, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.S₀, Gen.S₀, Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(39, 53036233447096391785095901689809258497147651532575339648996878999839429745380380991638386099495455222365277678270332694276885701433434843750292311055220559465330449703640321842637788143158621481255238616562706120157130055486874887757588714060941103547309027220455631018531622980412020979445635367941261566086496724508631172527008369595920340657053635145354923453972480)] (by decide +kernel)
 
 
 def r2792 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r321, r1963, r2788]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .K₀]
-    [.i, .K₀, .S₀, .S₀, .K₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀]
-    [(3, 92239349868182716416)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r321, r1963, r2788]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.S₀, Gen.K₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁,
+    Gen.S₀]
+    [(3, 1511249508238667901124608)] (by decide +kernel)
 
 
 def r2793 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r77, r0, r2788, r1373, r325, r1954, r97, r123, r319, r158, r162, r160, r1379, r2789,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r77, r0, r2788, r1373, r325, r1954, r97, r123, r319, r158, r162, r160, r1379, r2789,
     r2410, r2018, r2790, r1643, r920, r1010, r202, r2413]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .S₀]
-    [.i, .i, .K₀, .S₀, .S₀, .K₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₀, .K₁]
-    [(40, 15647778286616647474505305052000744871732611885412885629229021754526833564439238870817409501142464782170749723928191241122916545314481495020076322308536186554577718204079001923975416039932384274088468187946269968317439265458501259034581067929202461693519454907726365825699179939548826756012048384)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.S₀]
+    [Gen.i, Gen.i, Gen.K₀, Gen.S₀, Gen.S₀, Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁]
+    [(40, 237482030368515385293462361967724815845160880480842848242759407072169916164379518165502350707722549780660954780435232924359520758104390504358359646684439644245463317393954773783370666504562357171822977768773026100942802443828510274083653673234503986937855544323662844367004289265248389722461841353010809705698486246033962379264232031758915556539891665829358653410850897567678464)] (by decide +kernel)
 
 
 def r2798 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r1527]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r1527]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₁]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2799 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
     [(1, 81921)] (by decide +kernel)
 
 
 def r2800 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r97, r1917]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r97, r1917]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁, Gen.K₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2801 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r1527]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r1527]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2804 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r911]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .K₁, .S₀, .S₀, .S₀, .S₁, .S₁, .K₁, .S₂, .K₂, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁,
-    .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r911]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2826 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r1951, r314, r911]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₁]
-    [.i, .K₁, .S₀, .S₀, .S₀, .S₁, .S₁, .K₁, .S₂, .K₂, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁,
-    .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(3, 5632248380391424)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r1951, r314, r911]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(3, 92234072220858580992)] (by decide +kernel)
 
 
 def r2860 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r77, r0, r662, r147, r151, r313, r143, r2386, r2042, r1034, r5, r332, r911, r1380,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r77, r0, r662, r147, r151, r313, r143, r2386, r2042, r1034, r5, r332, r911, r1380,
     r1506, r1725, r229, r1375, r233, r2828, r237, r2829, r2830, r2011, r2831, r2832, r235, r2833,
     r239, r2834, r2835, r157, r79, r2287, r97, r123, r319, r158, r162, r1526, r160, r2836, r2415,
     r2837, r2838, r1880, r202, r2839, r188, r2840, r244, r2841, r242, r2842, r167, r208, r131, r2843,
     r130, r136, r2844, r2845, r140, r2846, r138, r2847, r2848, r2849, r2850, r134, r2851, r2852,
     r2853, r2854, r425, r2855, r488, r562, r2856, r2857, r2858, r2859]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₀]
-    [.i, .K₀, .K₁, .S₁, .S₁, .K₁, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(163, 2508258485192918730858438978199622733930155569522682559162035902917476746377922841309387525590338593449583353695568439684739885357372454271345841152146636084622990722545055571439731714418228186364558017533078678997290775420569334681066232286996977314002968917777313675638801968874421400589891403913365980522646557739302306544675195586961214989187503098979633747151959994479971804960173645105196937722622901377186608585148329829920629851299354135928923851167372577708632234636805873310606856577826766922388425061434535640603798774016554558595537034046824550788492236074585743286999600922356379258476099982587778634757146426364921460689068921569120442799550942632556355346494848518875407248943732505122780334564539222454108189151173301073673064216994744002849207285241725540765084312672576798433225673833990699152198806082165895814942661767422447082962453478738659836840204290569659287234790454071359896985946424407326957352321766975694576437986335188560926243661997560205085451620243744734810558370141999045902810857563522403811884590769771047135106316936504830884502718652827384186624213616441345988469263315690024425700887359950771672992613531672489895145637828489468540101577452842777888439143487757200243387908147380224)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₀]
+    [Gen.i, Gen.K₀, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁]
+    [(163, 585307718560611406281959127364870877283559732171636762476316264855994282607660428689949889222097645359682013395858845702094320858533513245331632636910062191419326943284181947305710651834670441242092688161646957213001276734794079467415101645145473880687868756870561059730440351397898211870735861330604360320891254244766078104250978590169713964238983211362484211565429690525902306634523837104945211076841156007272018511420663483225339105141146112935197461199249687965240768073473338348721753913537814433293551828467775291149299752136374124493170704478764740835446540918149253647271651210506526294994719542691771493538880109381425128708873248100700650176308172155810370979444417959779038939371258723566070116510035483467304975377705193556807438945665231522008212882354971780286946224130377154536624614481071748127238160075403012056613591200121533214613972714408627861941540865068733602381224082069641096019437333785068318930920995332154806417297347925274928782576965973493053328478591801591510005582870803864093579700899819152336368133603343984383703350454483914628978785595711605492455264736095620048614039391440306584259338949728625654374579304388280386157763142869009040713644109407925746543282086561512029946551535935821656614527018199276116764069931571957300426134034145419276304597577918139114148297191760948146187901043213328427510726882401998692775425779793037846375175480567049076498436631607629233760708859982913135392596131666151304507747781425580531767554857227391078265993228530244487580745477048465574159446570289930608721191871459410028703247681716224)] (by decide +kernel)
 
 
 def r2866 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r0, r923, r546, r313, r2826, r1951, r1371, r336, r1034, r2042, r2048, r151,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r0, r923, r546, r313, r2826, r1951, r1371, r336, r1034, r2042, r2048, r151,
     r129, r235, r229, r587, r239, r588, r486, r487, r488, r485, r237, r1510, r1511, r159, r1512,
     r231, r2865]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁,
-    .K₀]
-    [.K₀, .K₀, .K₁, .S₀, .S₀, .S₁, .S₁, .K₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁,
-    .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁]
-    [(51, 1260141654290366799372138477337678266977717695144009973610841289017062329120907832900375216807717237406866194289887596702839099697151593316443221373561283030180221599134962101126857299031749498512315200597981574693322170693082594643976597925040721984234213975804675038066352901114519817636022125485816040649963543658739508259547275579185941604197523181537896775286025080352538624)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁]
+    [(51, 2890057665300607276271611283314575602589531820813732227858597105864340993198368950485139528023480303592419245762308391975693006052405602938474103803488104482303515798287627289208266240051951851579781120831623070526870651322464332918625014888062462126055222382723727177356803448240313256846693681376957104436395204750372186210004722038388138847665372309532305971603893147359893544698757641310898061866234495240559823720924929895107899544663361584120557125186135826884995724318383013888)] (by decide +kernel)
 
 
 def r2869 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r2042, r1034, r337, r1951, r2826, r2046, r229, r1375, r237, r1509, r1510, r1511,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r2042, r1034, r337, r1951, r2826, r2046, r229, r1375, r237, r1509, r1510, r1511,
     r157, r108, r1512, r97, r123, r319, r158, r162, r1793, r161, r2867, r2868, r163]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀,
-    .CS₀₁, .CS₀₁]
-    [.i, .i, .K₁, .S₀, .S₁, .S₁, .K₁, .S₂, .K₂, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂,
-    .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(38, 13954681536037263027488364865759607543991301266319023739555110837519744412503369824962737948144439112700762416979576169093648486142207875084702912801049996143412533349050384394098705093217070672625924510975508906330194726610733933565063936695972544802067700766265220287211214108360704)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.i, Gen.K₁, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(38, 12926733518952392988165426137701564539909278505418350754957646693610092614603387195562798684844121163837808827086256769305462763151265515248148002648560831665138116113367936807667266201375995367088540039553492913287564162382364168876265929965974372191789595210184015291282314104317954228744503468785186588973459392865247472362880180201975727811607294787029303296)] (by decide +kernel)
 
 
 def r2870 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r39, r1951]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .K₂]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r39, r1951]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.K₂]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2871 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r1951]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₁₂, .CS₁₂]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r1951]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2888 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r343, r1964]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100745216)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r343, r1964]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983808)] (by decide +kernel)
 
 
 def r2890 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1968]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [(2, 100745217)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1968]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12884983809)] (by decide +kernel)
 
 
 def r2891 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r2888, r1975, r323, r1973]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₀]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂]
-    [(6, 697025903735144596632587586760086072066048)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r2888, r1975, r323, r1973]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(6, 23949627333731481246989112414306787608036652561203200)] (by decide +kernel)
 
 
 def r2925 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r46]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r46]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.K₂]
     [(1, 90112)] (by decide +kernel)
 
 
 def r2929 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁]
     [(1, 90113)] (by decide +kernel)
 
 
 def r2930 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r316, r2000]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .i]
-    [.i, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100753409)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r316, r2000]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.i]
+    [Gen.i, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884992001)] (by decide +kernel)
 
 
 def r2931 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r317, r1725]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₀]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁]
-    [(2, 100753409)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r317, r1725]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₀]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884992001)] (by decide +kernel)
 
 
 def r2932 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r318]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r318]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
     [(1, 90113)] (by decide +kernel)
 
 
 def r2933 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r4, r0, r1725, r322, r2003, r2379, r311, r511, r512, r513, r514, r515]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₁]
-    [.i, .S₀, .K₀, .S₀, .S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .S₁]
-    [(15, 43576475412601034309162393496431899897139017245245251450757026833846540493810813871922421238853842463883264)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r4, r0, r1725, r322, r2003, r2379, r311, r511, r512, r513, r514, r515]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₁]
+    [Gen.i, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁]
+    [(15, 13809935765847289121600989525874071029795088190930396975628131564528838720166033755998486859556953485447379452860182267587634062092664832)] (by decide +kernel)
 
 
 def r2935 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r324]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r324]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
     [(1, 90113)] (by decide +kernel)
 
 
 def r2936 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r325, r1725]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .S₀]
-    [.i, .K₀, .S₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₁]
-    [(2, 100753409)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r325, r1725]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₀]
+    [Gen.i, Gen.K₀, Gen.S₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁]
+    [(2, 12884992001)] (by decide +kernel)
 
 
 def r2950 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r77, r4, r0, r2240, r5, r338, r1995, r2345, r263, r2945, r2946, r264, r2881, r265, r549, r550,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r77, r4, r0, r2240, r5, r338, r1995, r2345, r263, r2945, r2946, r264, r2881, r265, r549, r550,
     r2947, r2948, r2949, r266, r2259, r2260, r244, r1643, r167, r208, r131, r2411, r6, r2932, r311,
     r511, r512, r513, r514, r515, r326, r1896]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₁]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(47, 1146981173762046525934569687388395548523230143161072546739639642337507776777380175442635451369701115101332668144135487604707974486661343406309623308381140612365484925822189116245695936648515142730393782816508821681118119068858832886824133538348507818701527356899625835155637505976198358711282219761798687595690786608180868200648281087080996016226304)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₁]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(47, 9799747388358057310918033776316441504343519407774088799221400616552882984295370976177597387251651934382240896144510474236505249722739427884095485577362587103485920904669638405208756240624256712101651332479993143490071116470292554289369219344263367927233341839717576390885720991570327961168165561154189649778313164429333856934876581577355159074707797568826686631569046028401970488676766527764300291343648226636134397818814937087800265535733628928)] (by decide +kernel)
 
 
 def r2962 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r4, r77, r2345, r78, r340, r2240, r920, r1010, r2413, r2414, r511, r165, r167,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r4, r77, r2345, r78, r340, r2240, r920, r1010, r2413, r2414, r511, r165, r167,
     r208, r231, r106, r262, r76, r264, r276, r266, r484, r265, r547, r548, r549, r1377, r263, r777,
     r2951, r2952, r2953, r2954, r2955, r2956, r2957, r2958, r2959, r2905, r2960, r2961]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₁]
-    [.K₀, .K₀, .K₁, .S₀, .S₀, .S₁, .S₁, .K₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁,
-    .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(92, 620352432041019357154993802941013134238384904377782364981058347491481714655787127508299178399541223255221755833304234260922073027961676689157231971006461004093402994016831857636110937971683997514955383196857965538626765593762348682678407693102864355772683958512783478233095403729437326082665989721483224248462727627292064032264125852883409433879910540737383566384634047138649194919588564304398631795294428847175724771318962851262991191258822789624987781433442824326578433429701745995424879694102245535485450745167436455372334025067099635768678356188338508683094159292738901517038858086839640658493759069698983180787438944658026463688181470282546166260449517191421587729649719402779639808)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₁]
+    [Gen.K₀, Gen.K₀, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(92, 353783395118535440255695238478509337021912855322033316181537178967525324905339947119352217817785060541556847318299872212131982110073557711438617716040669437523898912241648859225510561701304591982596319513159073102343229664631231957365410592135375448665688176130762808802794899040527490950479320912965106357084728302093471082738401030528885949311878974470180895393751994419811854512841326768490226583728083535709338299654868130826985478018638986008802820071061391520870977089599010642707523533146243570891554549804338030387008536808942545666833018302377690260433831660805693677143403025904004931057232925010102273148822357869686194252315601766729986999901484074080201085300355411154299648979016297272078218969795719966758988206790716071920301838856801704489320689595062701099184181010256041055608509130105541525971969446745155132480012849020941665411980664064617869087153915428864)] (by decide +kernel)
 
 
 def r2966 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r104]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r104]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂]
     [(1, 90112)] (by decide +kernel)
 
 
 def r2967 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r105, r1403]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(2, 100753409)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r105, r1403]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.S₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884992001)] (by decide +kernel)
 
 
 def r2968 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .CS₀₁, .CS₀₁]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂]
     [(1, 90113)] (by decide +kernel)
 
 
 def r2991 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r77, r0, r2856, r229, r2031, r1284, r1037, r311, r904, r1897, r1028, r1035,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r77, r0, r2856, r229, r2031, r1284, r1037, r311, r904, r1897, r1028, r1035,
     r1529, r1546, r78, r85, r76, r349, r1407, r1396, r915, r304, r660, r106, r661, r690, r130, r721,
     r136, r140, r2971, r731, r98, r2972, r1059, r116, r2513, r118, r2973, r110, r2974, r1114, r2975,
     r112, r2976, r2977, r2978, r2979, r2980, r2981, r729, r2982, r2983, r544, r2984, r1716, r2985,
     r1308, r914, r912, r902, r1356, r1968, r2801, r129, r235, r587, r239, r588, r486, r233, r2685,
     r2858, r2859, r2857, r2986, r237, r1510, r241, r992, r2987, r2988, r157, r133, r2989, r2990]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [.i, .i, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₁, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁,
-    .CS₀₁, .K₁, .K₂]
-    [(162, 79175195140734586951191953152798308858479493285070678209996297343981028181232895926805259161891482781557609417175630075154129351600838444166825934093182361084594119952610514093783926550855885367737002849379626454399184904089832697358467392604008600874546049064978289859128378682895854618933434229673927642407782922666968529979629009725916115562428356354297333723630390754635192860197922507087435353699256974973554796057271894911257593110669493630717236553795695964179989145094777400771860463963857461119909642547936601836949525290554477627590134134065794804380403793251140278885971022056673153072732716057306967526570972257241705825735745724673279717426268479561235745059224710540828872624471954039811517944700973717738038616707815982740968829761169629522662481205562790303219899221334158276401725411464263785524086476009974607055877901606212201456346292282036816381117577581423679353010798656959316881546196118160147622856850561657888017638195274616463603111740951049949572271138271490206760229816306081079719399450511237563714044235767008848056466969872277298148381496966801660877717282707031513948184868098079545859539693802410607986686848138059960765953473665656580366877262936277859309819794441315837718560768)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.i, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂]
+    [(162, 144341335639290938367104380464605831222977103503744494587176495572237661151314890161817543285745416537610161795827145148850989060820064949903508079136346606441117836164049056803097892896227548123158419438726635617395202387705146487615952626538955072756227508512699116760208666309217114727300743816196142536234441520861675971395779290235469611086116775904127367983175975492426408770046354065628498555404806471857243290909655517621755252660865616499845183755452044189095950234940279215715488609394897548164912095257969535740242876654358575862824191310831481239275603067845991948182967129004346956860722486771351817720614096213503771677382801559625818474691287463830304976541058202964693511005380916377569233735154921820805167458177866574836254084182451466406531682921517907704577399327182661307756381739112891940055246329368615399217310117540724339443256060794087669741290041590396013134962069686128522426664436834697034704219819002004123710901612527828455855731782445298647102950975976071335139472997923370098709512083960921627482337842679952518373842749742392696478253924089293509532918762567661628587367073020981796194198740658868449129758041437260376949428034829839325250135182744797334900899950309213075951064637759462160755392831656969426416904602193286553885552003231499149717963056942468586030536980369660378191046922524627627666488043650833719847736222605397065095052158242199789869693779052350661051227734617144075559632172529467805322526232505575666328237255853113071524178799185977723228377473378217846329151713837353399744884008927535709552640)] (by decide +kernel)
 
 
 def r2997 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r345, r1273]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂]
-    [.K₀, .K₀, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂,
-    .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [(2, 100753408)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r345, r1273]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.K₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(2, 12884992000)] (by decide +kernel)
 
 
 def r3026 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r85, r5, r79, r4, r0, r1495, r3000, r1791, r2999, r1456, r2040, r1498, r86, r291, r1895,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r85, r5, r79, r4, r0, r1495, r3000, r1791, r2999, r1456, r2040, r1498, r86, r291, r1895,
     r2991, r262, r1459, r3001, r264, r3002, r266, r267, r188, r3003, r200, r3004, r2798, r203, r3005,
     r1921, r2524, r97, r119, r186, r197, r195, r1321, r1322, r1323, r1324, r191, r3006, r1749, r193,
     r3007, r3008, r3009, r3010, r3011, r3012, r3013, r3014, r3015, r3016, r3017, r3018, r3019, r3020,
     r3021, r146, r178, r121, r3022, r120, r3023, r117, r3024, r115, r536, r537, r3025]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂]
-    [.i, .K₁, .CS₀₁, .CS₀₁, .K₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁,
-    .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(134, 12361144979549608939518041143907405101780526323396511415098834194271029711092082832637817402836552589171336407848377617654514362628755183776964701617240850430774829408606486187157898333088245735616934416253505691910448773467885299556144291194762713416126825314703622308086004894852336633002159355773211653950022121032622839121325859445572192457035131948687797694909469248933551376705963729396817189017024076441091534409865577354480680119715194399915412545617399301326968289225970611935268516440756448724217260599187387565249672147265432676491340145077036963674260961353858225474690850809830342301663759794021820116505774363256009795021463784141845043635761172067092393498256397632073920928694281433236487971820310270285536798748202338752383414323337481039796803214427360647426212442327921092627294856394149275745137753994840777607238020116262197972563585563038814917994063543618306426726584502409851544175689790054951017286474293590093419034211428124536135759658077704634111438764964235913235957798666240)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.K₂]
+    [Gen.i, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁]
+    [(134, 224377304189500267380707791150006426568794763367743668109153107730826111629933663306799120796051683572693426659620627171501306767065774295477080273271921573655006320272384641737769449812585064006064621114211074252620663231783866806054152817870784026136656475081826161709488409913975215437902168480436837145777893879877003071774888091765826129726630921973233183689690150101898522789580186983652956266573269580184593756919232101681268461812437423868243459652981584997258149629789817977645300618450554806120278527280579240392655309702092120750747668651847630895167854429781606469941941463736132469195660764324171904601446463544682645861632701229540374930851161174114156234257905124118076151482454629099472400002795112599259516038880319147880023508071259457865539315273958654447472002768597681407000461047271102782647938300937268631871172200243444484667404122945843432664280385124161209906389926145173424134662361765928451029101831802144954198429989505261546377428098845109739390856896913411879683713742469915932413865714334088213707332781377098993632182137623260989982835703243084346045196276919788151429369009475778464276551181785325500260385472280347012074243929132493333588872607157477997036592605105724582920148529353025952920364736952741985976531614885514145644166121075893277294592)] (by decide +kernel)
 
 
 def r3029 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r4, r0, r1951, r1524, r328, r1466, r102, r179, r178, r151, r1526, r143, r1381, r2710,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r4, r0, r1951, r1524, r328, r1466, r102, r179, r178, r151, r1526, r143, r1381, r2710,
     r2711, r147, r320, r149, r3027, r153, r121, r3028, r123, r2877]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .S₁]
-    [.i, .K₁, .S₀, .S₀, .S₀, .S₁, .S₁, .K₁, .S₂, .K₂, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁,
-    .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀]
-    [(45, 692762115077271857082331132073336925152037434231533888877520108174750963810613867042790179606216631390796123304836237538807370143757286013199277859238210460897776857893755796012544672960856128300027766562428567700824805421174434393570358676387771514318957130286089445922282643924333879849330804829899151563760726920879858303669108736)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.S₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂,
+    Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀]
+    [(45, 361246973472436634248335130571275267050455174270764978096563558755443359954173951888120918942937034337647498427194373595736381674341888539078761963456534294931737161121401337674832563977200525118262965410960114349401245794042404259370807093010360362459744482082957037883758798681242265698171774881801117330800243708734083467474531997469080347370317406390373986357952729319353458189070875094842946923852850458653025530317635584)] (by decide +kernel)
 
 
 def r3033 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r4, r77, r1995, r2042, r329, r1881, r2869, r313, r1381, r3030, r165, r167,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r4, r77, r1995, r2042, r329, r1881, r2869, r313, r1381, r3030, r165, r167,
     r208, r231, r106, r262, r76, r264, r276, r266, r484, r265, r547, r548, r549, r1377, r2880, r263,
     r3031, r3032, r2946, r2879, r1459, r3001, r3002, r2853, r2854, r595, r309, r188, r304, r200,
     r586, r157]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀]
-    [.i, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .CS₀₁,
-    .CS₀₁, .K₀]
-    [(84, 35944987899748119191034638904289330433820146227867199686980298509816854260821780349149883098574882792083776786996120539723310500869972749298364867774979653232253937827846812998456722217593888484260609182529619537525271265975935289829545409523844581969438114979400640693217172826990596482304160499330758721148486153334924009290823624008926371753917421053448560231231987465936695333966167626809281990738922144036646243733634802566683096488095732048717963839174811359461545754242001817504222421372880217380228543331516520297827572531697590462117159447934566638913417761338221949590062754823267534320459140473330951881552749559545856)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀]
+    [Gen.i, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(84, 284489225127693213381137374988427553021355460075007047480308620371229989035943708669520172111387766763243053154176612176233693293320028007375047489629846297142686690275044728458522590154769114776194167092506407895571554673066716598199735076211890231497477637688162004943929664768289165996199762228187259794706446912017110015204553695151647260892924864917836130765623266935631976377176672086239845133324484931924718290494702642535495077922529982743377464892893183993272820053066684249842237785692184702217376260204388496533493673739537569107300199958028589730238983210169209899092906659718555469372168772398418888705305248997683025585960482287909631083246739260450464077725125783270052101173106174954622930231060376607263639327111915284067778270902695305546906118521282225736780594024411489180080232464384)] (by decide +kernel)
 
 
 def r3047 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r4, r77, r1466, r332, r1524, r1951, r2792, r158, r1793, r160, r1956, r162,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r79, r5, r4, r77, r1466, r332, r1524, r1951, r2792, r158, r1793, r160, r1956, r162,
     r1962, r101, r119, r3029, r143, r3034, r149, r3035, r151, r3036, r663, r153, r122, r2712, r165,
     r167, r208, r231, r106, r262, r76, r264, r276, r266, r484, r265, r547, r548, r549, r1377, r2880,
     r263, r3031, r3032, r2946, r2879, r1459, r3037, r3038, r3039, r3040, r3041, r3042, r3043, r3044,
     r188, r3045, r202, r3046]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀, .K₀]
-    [.K₀, .K₀, .S₀, .K₀, .S₀, .S₀, .K₀, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁,
-    .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .S₀]
-    [(110, 2614169003433447639266753900359350867356111046525679556165208242935249475629898221205091651999232447142523457914744877333645682283595993625495522462304577572548494715972291023204480382697508111162473633002445989898020721618576756589995101917869043338958645421314298718399670314608602811681599618968963021509934330899502210153983711985543582455644153877345924670782565292567952508996173549373166593697426202985536328431102873858692772093454205721313991522005283562522465214357100896082329515592148015982795470452128038572613425277012793424116088495991478241668929379006331929998449967281100158410819703368762600010072914312746055707860794009483219714694424872136253312185921188692459838534909020443321978993079324058829603619053127623809690110788463594135731927281752895909085823713415939010518530689677019264260939811127296)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀, Gen.K₀]
+    [Gen.K₀, Gen.K₀, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₀, Gen.K₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.S₀]
+    [(110, 126827850294408074235907977579401207656916739686576990176509324204873494584270384995392507251262312879483341011801090688032557117141620352189465225235705017174358192277697160825791399686704569229391725777830976061806374771494103773905300675655971010170874629129979961973277623888343106086748676432227419261648039488389391774216716895135743118851517401850595777056123857011549097337546038370629333976535455047455736035869157416327218764125933065860999471137537584777077557369762189813836960049574063102515754264812901675446117838136314399489632829602042783905886109297409000397445018176718014926552745157717480250346175030601808602165205649466095070105928362201070047205754635508795532682358522404581820735554426933305605736832262504440874590300949786967272984290500000802242195526594846741299576081472703589720401324965656603441644840199884747170909281486922726081828399359675571000367011137981184984079005021417878114482472742735945837588560042640007743366887935159433964398943602457934625529132026041248502012224328117883382397409672224011021442875392)] (by decide +kernel)
 
 
 def r3060 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r77, r0, r119, r101, r162, r1962, r160, r1956, r1793, r158, r2792, r1951, r1524,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r77, r0, r119, r101, r162, r1962, r160, r1956, r1793, r158, r2792, r1951, r1524,
     r333, r2042, r2386, r2287, r920, r1010, r1011, r3048, r97, r123, r319, r1526, r3049, r3050,
     r3051, r3052, r3053, r3034, r3054, r3055, r161, r3056, r3057, r3058, r3059, r163]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁]
-    [.i, .i, .K₁, .S₀, .K₀, .S₀, .S₁, .S₁, .K₁, .K₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁,
-    .CS₀₁, .K₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(79, 7519497190424329202234390889251172889240014607042668636932851454048507278399941833745409816100405015945591279341971970981110989955714482301108540414828216357243269032842060775414154622375248362616705990217001454888659885395445293329901084062310261406331527674877052533855365340064900605165263887486723960358348967688742629983313875126980657336523349031721992116217250702356309993947125723056070070251039155073791321330502199797822008164165150057884010003573693234608937977945770946862763879695358495613550351385048278328512868091061090461723993372383118853028999108415286311393709547371626496)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀,
+    Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.i, Gen.K₁, Gen.S₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(79, 1732073914249139944735891577404424001787653895891135548548003591194591917242097255715142686824827480580261291172521587950302503820613886410074693669881776161846471610125804119821146159513172876680950823104105785317498137728364975954210441211995672519131649652067237348555803939614911505471743592473890836213354468342695955765533391691140257753939308948603811433839809333615458179207786709180152856776033182097844133743332492581841241344295424426411062088119040213766410297327434131642150652666594273335375524481110822353039499017077990520971515496240878451275061404044269848519153139220733155915311592447894121363296363827445025004361099603881995706023063398391321485615185681537187058222743029605051816671417893436122939797343429336492779837152115698958336)] (by decide +kernel)
 
 
 def r3079 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r85, r5, r4, r0, r1834, r345, r1524, r97, r119, r186, r197, r195, r1321, r1322, r1323,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r85, r5, r4, r0, r1834, r345, r1524, r97, r119, r186, r197, r195, r1321, r1322, r1323,
     r193, r1447, r1448, r1449, r1450, r1451, r1429, r1452, r1453, r1539, r1758, r1828, r146, r178]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [.i, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁,
-    .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂]
-    [(64, 65211324909207285029690241617456017021501964166932049272479907130155143304905312515235639404489804685654586604526872529196590121884848476078036036215006316998727978367608369073966694771187831984864633653403298156091670064979840375812694917833670853610983615559274647082066749848048061644693040582909371069183137517468586551724331053802551731351688377265661814604528013280114097438153009060032207754484806956357245773612476479619582485025434398330936969405155819297834858643980288)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(64, 370297771915260545290210136940819402649951231676457326142663364924076175621536924843473017598042157527297186694918497152397819060172917736627112062164917156405927439454692793580351285289758817797133570326529677949516148109792000192480071250938662728541857015982358760796343595370523290626962527897611985166352089150044447222419800666226973523088748723407863107984246625068124479143400941859630204500513873813596314402106224001447081937925354227153275758096081354153939776320155346228158313334426255226823131008349195562994251990989295621455155378832411018042833134264103397797893974604122570803566097334028730368)] (by decide +kernel)
 
 
 def r3083 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r279, r1378]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .S₁]
-    [.i, .S₀, .S₀, .S₀, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁,
-    .CS₁₂, .CS₁₂]
-    [(2, 100761601)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r279, r1378]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.S₁]
+    [Gen.i, Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(2, 12885000193)] (by decide +kernel)
 
 
 def r3084 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r280, r2053, r2997]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .CS₁₂, .CS₁₂, .S₂]
-    [.K₀, .K₀, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂,
-    .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [(3, 5629499634974721)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r280, r2053, r2997]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.CS₁₂, Gen.CS₁₂, Gen.S₂]
+    [Gen.K₀, Gen.K₀, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(3, 92233720381432758273)] (by decide +kernel)
 
 
 def r3107 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r85, r4, r6, r420, r131, r208, r167, r421, r244, r2605, r264, r3089, r266, r3088, r3087, r3086,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r85, r4, r6, r420, r131, r208, r167, r421, r244, r2605, r264, r3089, r266, r3088, r3087, r3086,
     r1468, r262, r1467, r1794, r2997, r2053, r5, r296, r2459, r3083, r3090, r265, r3091, r3092,
     r3093, r188, r3094, r200, r3095, r2804, r229, r2821, r235, r3096, r237, r3097, r3098, r3099,
     r239, r1300, r1301, r157, r108, r3100, r3084, r3101, r3102, r3103, r3104, r2507, r317, r387,
     r418, r422, r3105, r3106, r1988, r1989, r1985]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .S₁]
-    [.K₁, .S₁, .S₁, .K₁, .S₁, .S₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁,
-    .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(85, 18775029039427171659190661695680467043487501825517800312090944306396485101656858171249380320108789327168890633985007333457186642920004443201895183628982328181917382498811541124213864813035543439911263845762913466384082209479690391498796100445177616674496635709190653584302976384514238311448049283844552832867830731760867756224101753716581456240370020326067175164244272352731159337662215085528060510375052749338822579074279433588229337982319170899206278955772297484683085298084081219681038625444159484071181332994780123289230625722181905001265925376363626645036792771126278082746631889296850998593594053308621397954065435873598244913152)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₁]
+    [Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [(85, 19020330331380179394611120661419360122113516478231205997806221506402153564375376837136011839333798458910076063745614200275178633401148110098153627226235921156702823584931609763842976818926223272762899778175331091058273575564399817036640059061972446539775515273752782383567182494220136725352405350561448201472549687889526552911269673051561616091404511518191156731922513905969982792144042847955194689366003792871415751429310397731530669783945679652516972379974206181952818239525538069837415805569339396943029891310680457851806645554545857487748672129428269190016352530103323478816499269888073833641715096263360178185393619628318215171268507234412629709140766873769675600817006979655322637195750238263383014128609105190832280431490633266983047715003413578199217470284367909361621694569584308402245631640224414040064)] (by decide +kernel)
 
 
 def r3109 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r312, r1307]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁]
-    [.i, .K₁, .S₀, .S₀, .S₁, .S₁, .K₁, .S₂, .K₂, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁,
-    .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀]
-    [(2, 100761600)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r312, r1307]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₀₁, Gen.CS₀₁, Gen.K₀]
+    [(2, 12885000192)] (by decide +kernel)
 
 
 def r3144 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r4, r0, r2035, r2033, r86, r290, r1891, r542, r76, r543, r480, r481, r1283, r1822,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r4, r0, r2035, r2033, r86, r290, r1891, r542, r76, r543, r480, r481, r1283, r1822,
     r2655, r97, r119, r186, r193, r1382, r1383, r1384, r1385, r189, r2439]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [.S₀, .S₀, .K₂, .S₂, .S₂, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁,
-    .K₂, .CS₁₂, .CS₁₂]
-    [(40, 16925038160272092586648210913499627584974875914199803355005627895553629815848343649414021235709252296334415089056002429328039949018512947712684970188274337604140780197539493962586092188319991198929414421909404299455917729167123418554127864619772162196124620797237649741301852424512806492716400640)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [Gen.S₀, Gen.S₀, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(40, 256868305544844686976544274891600694437790566514867807833637967633234609651326756402155871534111285306807486057517046836230527164244579402925000163501629686160359182622832557519013944878461483197857040410786862600597011272272417352778584918758984917650933502208817333533699606551610022749703346206967274034182124596908042260510261749134213598452641591521235887511758457911902208)] (by decide +kernel)
 
 
 def r3147 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r79, r85, r5, r0, r2989, r133, r2988, r2801, r2991, r297, r2033, r2035, r1848, r186,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r79, r85, r5, r0, r2989, r133, r2988, r2801, r2991, r297, r2033, r2035, r1848, r186,
     r2409, r191, r2690, r195, r3144, r193, r2058, r2059, r145, r594, r119, r107, r582, r2735, r97,
     r192, r187, r587, r198, r196, r3126, r3127, r3128, r3129, r3130, r3131, r3132, r3133, r3145,
     r3146]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [.i, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂,
-    .CS₁₂, .CS₁₂]
-    [(63, 1619626326813221066661219124143145696129615830576884411606804528422457449180294540283550357471484510657883853122174929836801332877573842675454728051404046636721059853763595371338360526015431576904978876558932402698691071071271097033036929704143277852970426287667687657234500249172086013656115780210222536521051928199033477582482911777510876609849114612184208225486761887662992893740873450214593961219405987623604200179540684947432784655023918804069342006556687986279317504)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [Gen.i, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [(63, 71851019613738073746651636068469778912663986716840092817955301307551327128477967179999921259099156332701094188097094997130565149997786128993847491859844468318725374602115492864085031661344879276034061793621290780985787179647710117922610270021872617883189507054766115063718837788228371222410710961264741493356960041917347898995097534842112198447103339053355430650875482717659171995554327244194495580124492026649164672292502715717339771387483853420164719141509067449980197730463786209879970719642988077647339095699551270285707876241877970580739130174349383484688176418289205381857740441373402303278612480)] (by decide +kernel)
 
 
 def r3159 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r5, r79, r85, r0, r102, r3149, r108, r139, r3148, r135, r2990, r129, r2756, r1921,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r5, r79, r85, r0, r102, r3149, r108, r139, r3148, r135, r2990, r129, r2756, r1921,
     r2989, r133, r2988, r2798, r2991, r300, r1892, r1498, r76, r1495, r3026, r715, r716, r3150,
     r3151, r179, r178, r121, r319, r120, r127, r375, r125, r3152, r128, r3153, r3154, r3155, r3156,
     r3157, r3158, r624]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂]
-    [.i, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁]
-    [(75, 2642494799271527465279739573801112116141242883994015199943441559567405420533128908742615814800914107950209725544992879141994575162174405169189049144258539773155508093284209450540747340605907776140351816808291913382569939768499612843665498985353901663022068336084652137029621031372913510122350658058212859260807141543303454101936737536851717672377489165995352194719137361004668096560310086647676511857002969568827081972228068754770564767874344120411352735995507723650458048857125793229448530627128447891937419240884990334705687715296933567338376116903516984836096)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁]
+    [(75, 2267523964056158508669988938014559773670635239158845594050217518123055277039738277607427704526252227165214542616725047892307059471731718040395112867805879207635657310552029628138644667773280339100561312923450788503052806058168769422507580624389807007962603647352181478266688052174296691876827538519796472538935756065904731164494877498480502283033552329583421726153232997105024289425019715097875111826950402275658006537686780429052680819310694422058849385273762744556720486587753178020815081775663286714509543398736539579247041807128224502183409120173378487453235903722656125548993908391290030163784974720643514021453847301273187778843373643089917204554761701260483904662690352117639645365917255961667765227822709211136)] (by decide +kernel)
 
 
 def r3177 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r79, r85, r5, r0, r2989, r133, r2988, r2798, r2991, r302, r2033, r2062, r2501, r1123,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r79, r85, r5, r0, r2989, r133, r2988, r2798, r2991, r302, r2033, r2062, r2501, r1123,
     r363, r1834, r364, r398, r2056, r2057, r2058, r3160, r4, r2615, r97, r192, r187, r587, r198,
     r196, r3126, r3127, r3128, r3129, r3130, r3131, r3132, r3133, r3161, r2638, r3162, r123, r3163,
     r159, r3164, r167, r208, r131, r3165, r130, r3166, r3167, r117, r3168, r115, r3169, r3170, r3171,
     r113, r3172, r3173, r3174, r3175, r3176, r841, r854]
-    [.CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂]
-    [.i, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂,
-    .CS₁₂, .K₁]
-    [(120, 4949644590416317359789730235770758678056853545785598543555690440146761272238243742325024071887621455151487389218624888673480225788987546159543682160849486082352290135285475111888267385799337496160524675915174396232309465861389478988774641666138070990238076429543127475943762433163668790528562335335658593571364601778530018685291366014471277145936725769122588504890489428710140105642497503652246903525298502029331730397306496572781905138966057944811639535734255947229436496049291108346699198749779428021578074846627689051419699601743602483294243553557835381039074654435271973278077874334985115738607629231524343270096645085926860868497102391106459597063093507894032168496156982186135971663145533483749553109731597662358856418381029733840744472926355310748584681755469855192695299965592721945275650507966721647191419468626038069121149623587726781713288088005505294150622208992918683557029582502625280)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [Gen.i, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁,
+    Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
+    [(120, 283502753640778110128640050233877001774118226980387979092712269212449277770148663106550642192424484850301244639344215075541387149801165889475340762233253000180339828095347439077891295864528574899909202368738116961340129237067355839910441142257566733270054343928332905038891834922811861029366716434771670537945737055931586656826392306296145426957630343103441942290422091715942119496384092884667611383740511756037668211161668617350163122247307413982276599283004316679175315392166879771374626933332241741772862515994575028030883403046013077323255615878008551010183685921017461289634345067006616561020476162766694979884728058129321319005320440141541619087086767058406047611646857742242814518568103935390993738701763583976750094329841095632984735801165413049299218607581835465628018256266908354048257771017838664226117184464135005648510776238437162231360195442134050576231781974379616376399616672234208538666101356650074159312297914789718352801930392320432108037056420940700777960735794783254350525231461160106429619662582147069147244898907361352217914255678630600297728353410592024123670659503556692378219955082236565317565556863491338401345117922263040)] (by decide +kernel)
 
 
 def r3183 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r79, r5, r582, r108, r135, r3179, r141, r3178, r2990, r129, r3177, r2989, r133, r2988, r2798,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r79, r5, r582, r108, r135, r3179, r141, r3178, r2990, r129, r3177, r2989, r133, r2988, r2798,
     r2991, r303, r1892, r1466, r304, r171, r166, r276, r175, r351, r491, r492, r493, r3180, r173,
     r2696, r2697, r1488, r102, r180, r3181, r188, r3182]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [.i, .K₁, .S₀, .S₀, .S₁, .K₁, .S₂, .K₂, .S₂, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂,
-    .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₂]
-    [(53, 1680717568794841462413856040753352436172768033527088827922373373253087123952901071776620486659576375495675091243021896232785216123949102530799388314708259151337761145414287799137321738413767066648794121950591669368378230542854449878379119360987862628824261639161765431059060441688195153500651336706761254374042952531966772587649671408857330213725842999694489837768658882724938576391071040798720)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.K₁, Gen.S₀, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₂]
+    [(53, 63154395924174101468033564067869435167144014869522349484192040934649500276038023793832772558411156133886154746248520664792642025580476328429131006454626842037595116658017687221207740084577134035316137297859885037988566487927586740621917984665240506160980163515398229773588037907331721379484013713907505662634744613361637253487911828219234378873976210423514725329244819137157223289468838741637515461652662446104448427958651462988233020077729668750929683439995154891342705862696472587987343013272700846080)] (by decide +kernel)
 
 
 def r3186 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r2049, r343, r2991, r2870]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₀, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂]
-    [.i, .i, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₁, .S₂, .K₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁,
-    .CS₀₁, .K₀, .K₁, .K₂]
-    [(4, 2785629540920778841946849280)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r2049, r343, r2991, r2870]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.i, Gen.i, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₂, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.K₂]
+    [(4, 5841888562989373166567372703662080)] (by decide +kernel)
 
 
 def r3193 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r274, r1505, r262, r2510, r1467, r265, r3190, r266, r3191, r264, r637, r340, r3192, r1250, r267,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r274, r1505, r262, r2510, r1467, r265, r3190, r266, r3191, r264, r637, r340, r3192, r1250, r267,
     r436, r244, r76, r167, r208, r131, r6]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₂, .K₂]
-    [.K₀, .K₀, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂]
-    [(27, 76745945120004736396555784719088315520912968087509984943642835849135342817541463403690169502283732514684828885149854924625198219219578303037199148144628499521082486500873091268496336896693160510586881)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₂]
+    [Gen.K₀, Gen.K₀, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂]
+    [(27, 470451274669061576296795985909326947989087778945472399729889788919846368231939992888108248684114652388109963885148021248609679058834663617504887929731234331953232464854026816055834954454513421624545203490427533327777584713562267289596050195073561075482625)] (by decide +kernel)
 
 
 def r3195 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r111, r1505]
-    [.CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₂, .K₁]
-    [.i, .i, .S₀, .S₁, .K₁, .S₁, .S₁, .K₁, .CS₀₁, .CS₀₁, .K₂, .S₂, .S₂, .K₂, .S₂, .S₂, .CS₁₂, .CS₁₂,
-    .K₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₁₂, .CS₁₂, .K₂]
-    [(2, 100761601)] (by decide +kernel)
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r111, r1505]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.K₁]
+    [Gen.i, Gen.i, Gen.S₀, Gen.S₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂,
+    Gen.S₂, Gen.S₂, Gen.K₂, Gen.S₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂]
+    [(2, 12885000193)] (by decide +kernel)
 
 
 def r3218 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r6, r81, r85, r79, r5, r4, r77, r1737, r139, r1756, r1735, r186, r1328, r195, r1437, r1438, r145,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r6, r81, r85, r79, r5, r4, r77, r1737, r139, r1756, r1735, r186, r1328, r195, r1437, r1438, r145,
     r3197, r119, r107, r1843, r3026, r1456, r3198, r3199, r3148, r3107, r165, r167, r208, r231, r106,
     r262, r76, r267, r264, r1047, r266, r1285, r1286, r1287, r1288, r1289, r265, r1290, r1291, r1292,
     r263, r1293, r1294, r1295, r2510, r1467, r3200, r3201, r3202, r244, r3203, r131, r3204, r130,
     r97, r3205, r115, r3206, r3207, r3208, r3209, r111, r3210, r3211, r3212, r3213, r3214, r3215,
     r3216, r3217]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .K₂]
-    [.i, .K₁, .CS₀₁, .CS₀₁, .K₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁,
-    .K₂, .CS₁₂, .CS₁₂, .K₁, .S₁, .CS₀₁, .CS₀₁]
-    [(149, 990104289210200362561556719934617339546275706463896406015495580621546799291858649664597548870641013638986318965317538975598833237614032836418732962029587579668184943587560865980641482945979334332196186263648511756493708958659958748042241669846642942976308104020755345206553609053620487358903164418457686020423470268549336321341277189059521731338061580408567311949925894802652585482240333794859645267891918999460428532316628056865529794430060211695340932719227084880459715321756056558377485837947366812219398674306675421186094094143036715877455957847830193779704662940519584622756551744218809622459178791407427999202211811407982543917626259267034382989677512479677438316074403126159256561784026299241042618732221074240418784016918584986940715895327194863344108583147832697142957210485628278868283790171839398331068635788268535813826265427045833503182127873891393419864153579088390150953586713738654762349939765621948999673347094197080170018251763756026103307742859010963555278821630222344955738234626847098093371043458046008328424729135117828215798122263058430529072380188440004233590253323811392503718460489444884480)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁,
+    Gen.S₁, Gen.K₂]
+    [Gen.i, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₁,
+    Gen.CS₀₁, Gen.CS₀₁]
+    [(149, 729039297576327406570911290132591971848247392709764629502739979307366193617926449154590926447964144309357393944345995033953545378591720949879483356606111943928504557918358035285025262101410048001216809355389176502705132812764454677650290423603352209879666688224276041947966260204205863130222727237714212185272898601606012770542097436979710138064765601195695046585977109579822607272753189786859032662583465144882373935648976294704814807208403358442592585897302180541959818613138417516008509264690319586430443031526785747431288111727703811613934464174115830958055933416781420800852377563321325388532907011233923666005023704274534608270712115470873905439296972624289978256278895634878565737972848532797180061252190626953777326664165686934362189113641356331514837941093818439263160736100355250109215993223427429711168147488715755953229019368251515275968987924588392629368259634230976547877979841581487568803149061533148458686747908174284067755032164404039284395077615393641159126043473793130850645274799870213852862587971583306560018086507556222834258459877850568843515211746703793971999041870486318877969149765025913653056424759533102451474165233614727680368391031280972312361891319576988044694964463905699367407386080639000429731833594527953788156192861772266813504777697470330063832762221594715646447621836510087248680928462260282800407521356926047408953248537922961770930597591022748422950360712577860810853930893393080929484800)] (by decide +kernel)
 
 
 def r3231 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r81, r6, r85, r5, r4, r0, r2041, r86, r80, r300, r1757, r1893, r1892, r1123, r363, r79, r3220,
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r81, r6, r85, r5, r4, r0, r2041, r86, r80, r300, r1757, r1893, r1892, r1123, r363, r79, r3220,
     r232, r3219, r3193, r3183, r97, r119, r186, r197, r195, r1321, r1322, r1323, r193, r1447, r1448,
     r1449, r1450, r1451, r1429, r1452, r1453, r191, r145, r3221, r144, r3011, r107, r171, r3222,
     r166, r3223, r175, r3224, r3225, r173, r3226, r3227, r3228, r3229, r3230, r1439]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .K₂, .S₂]
-    [.S₀, .S₀, .S₀, .S₁, .S₁, .S₁, .CS₀₁, .CS₀₁, .S₂, .S₂, .S₂, .CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₁,
-    .CS₁₂, .CS₁₂, .K₂, .CS₁₂, .CS₁₂, .K₁]
-    [(115, 99127417285459109013083784989375275458940835817519278244440930771869577629401073445763524995670766127312289367897963224763115188465544486035753667527391166540419131855248032989146179504850225016669440764573302049841244717103620156137204910238587373944191752086556831912321881284526073662913490594743559193751457257465505303744879805219293291160367479780560442102071125056228721092090786768935229745786934069944402291532025530361758380790817774516046033984935636223762928937895887992895687583126324330483590319831058362801407204479766121366953561926517289974839515619669522258389879790820574455053186368580554625143563815737026135066024887939810783015457876017371964844317051767343795498742430608390682248144384923295540801018784367250668772017167799538208710633058452068400545832742141906834092622214809092137774763457348872612126632716261251646810737671667712)] (by decide +kernel)
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂,
+    Gen.K₁, Gen.K₂, Gen.S₂]
+    [Gen.S₀, Gen.S₀, Gen.S₀, Gen.S₁, Gen.S₁, Gen.S₁, Gen.CS₀₁, Gen.CS₀₁, Gen.S₂, Gen.S₂, Gen.S₂,
+    Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₁, Gen.CS₁₂, Gen.CS₁₂, Gen.K₂, Gen.CS₁₂,
+    Gen.CS₁₂, Gen.K₁]
+    [(115, 165242625769074239195004136594670093018103058611319772510669769905712326859051586297939253287337398239075123357184308348502319725122546866184232659804146705102831914796299199913450886475889085886267308960151111685654701125524810035090081223233179539275740768554862493497588048793941203293749990865021994405814689927124893868234536606041944664771626076465731593094732529336340662162189388488376114451859538667842899996960420823782900103997327597457682242017714607093369736438983613358948655026583866863239806420012377101253701877037853469158951565284782131667937246684249243761286300871335496259541551161151115980111324055319624170411760075143014259611774335377309697889236001171380592080047411679662010612954883691544169442166673880806634240549849368000791841469420229588852021434167892390763911088553188125926756355462995715726565020623821330613440829345714576805053365567164920065180270808243342727181047996595827014696623326133808864331731685121384031909689993801708537231263632573448671507200334572050228886367530309528695320866507769651906050523130879554623853438680304497512590199985127257276416)] (by decide +kernel)
 
 
 def r3240 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r86]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .CS₁₂, .CS₁₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r86]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂, Gen.CS₁₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂]
     [(1, 90113)] (by decide +kernel)
 
 
 def r3245 : Rule Rel :=
-  Rule.byChunks gcode3_bounds gcode3_inj [r285]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .CS₁₂, .CS₁₂, .K₁, .S₂]
-    [.CS₁₂, .CS₁₂, .K₁, .CS₀₁, .CS₀₁, .K₀, .K₁, .S₀, .CS₀₁, .CS₀₁, .K₂, .S₂, .CS₁₂, .CS₁₂, .K₁]
+  Rule.byWideChunks gcode3_bounds gcode3_inj [r285]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.S₂]
+    [Gen.CS₁₂, Gen.CS₁₂, Gen.K₁, Gen.CS₀₁, Gen.CS₀₁, Gen.K₀, Gen.K₁, Gen.S₀, Gen.CS₀₁, Gen.CS₀₁,
+    Gen.K₂, Gen.S₂, Gen.CS₁₂, Gen.CS₁₂, Gen.K₁]
     [(1, 90113)] (by decide +kernel)
 
 

@@ -1,5 +1,6 @@
 /- Copyright (c) 2026 QCert contributors. All rights reserved. -/
-import QCert.CliffordCS3.Two.Completeness
+import QCert.CliffordCS3.Two.FastCheck
+import QCert.CliffordCS3.Replay
 
 namespace QCert.CliffordCS3
 

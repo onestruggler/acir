@@ -52,6 +52,12 @@ Theorem 3.1. There are no unfinished proofs in this development.
 * `Two/Completeness.lean` proves completeness on a pair of qubits from the
   presentation of U₄. It supplies the checked two-qubit equalities used
   in the three-qubit derivations.
+* `Two/FastCheck.lean` checks those equalities directly on four-component
+  Gaussian-integer vectors, with a shared power of `1 + i` as denominator.
+  It avoids expanding each gate into two-level gates and aligns only the
+  difference of denominator exponents. Its soundness theorem connects
+  the calculation to the existing matrix semantics and completeness
+  proof; the checks still use `decide +kernel`.
 * `Macro8.lean` proves that all relations of U₈ follow over a macro
   alphabet: the seven transpositions along the Gray path
   `6, 4, 0, 2, 3, 1, 5, 7`, the phase on state 7, and the two-level K on
@@ -62,6 +68,10 @@ Theorem 3.1. There are no unfinished proofs in this development.
   calculus produce rewrite certificates. The face actions transport the
   proved two-qubit theorem only after checking every relation of that
   action.
+  `Replay.lean` uses 32-bit packed steps, allowing positions beyond 4095
+  without copying long prefixes into auxiliary rules. Generated word
+  literals use explicit constructor names to avoid repeated elaboration
+  attempts on long lists.
 * `Cosets.b2OK_true` and `Cosets.aOK_true` check that the certificate
   endpoints are exactly those of the action. `hyp_b` transports the
   macro derivations; `hyp_a` checks the translation of each generator.
@@ -80,11 +90,27 @@ From `Lean/`:
 ./check.sh QCert/CliffordCS3/Theorem.lean QCert/Audit.lean
 ```
 
-The certificate checks are substantial on a first build. In the 31 October
-WSL check, the pair batches took roughly three minutes each, with four
-running at once. The largest final derivation batch took about twelve
-minutes and 17 GB of resident memory. Subsequent builds reuse these
-checked modules.
+The certificate checks are substantial on a first build. The 31 October
+optimisation replaces the expanded two-level evaluator and the copied
+prefix rules described above. Rebuilding all 58 certificate modules,
+`Code` and `Cosets`, with their other dependencies cached, took **20 minutes
+40 seconds** (2268 Lake jobs), against the earlier recorded run of about
+51 minutes. Peak resident memory of an individual build process was
+7.9 GiB. Subsequent builds reuse checked modules.
+
+An isolated profile of the same 400 equations from `Pair020` took
+182 seconds with the old checker and 16 seconds with the direct checker;
+kernel time fell from 169 to 5.3 seconds. In the full Lake rebuild, pair
+batches took 20–29 seconds, and the largest final derivation batch took
+428 seconds, down from 740 seconds. An isolated profile of that final
+batch took 299 seconds and 6.8 GiB; this excludes Lake's output artifacts
+and is not the full-build timing.
+
+To profile a single batch with its dependencies already built:
+
+```sh
+lake env lean --profile QCert/CliffordCS3/Cert/Pair020.lean
+```
 
 The generated Lean certificate files suffice to build. Regenerating them
 requires Python 3 and NumPy, from `QCert/CliffordCS3/gen/`:
