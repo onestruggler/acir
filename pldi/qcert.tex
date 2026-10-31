@@ -1,11 +1,10 @@
-%% main.tex -- PLanQC 2027 talk proposal (extended abstract)
-%% "Human-Made Scaffolds for Machine-Written Proofs: Sixteen
-%% Completeness Theorems for Quantum Circuits in Agda"
+%% qcert.tex -- QCert paper draft
+%% "QCert: Verifying Sixteen Quantum Circuit Completeness Results
+%% in One Agda Framework"
 %%
-%% Derived from the OOPSLA draft in ../oopsla.  PLanQC asks for 2-5
-%% pages in single-column 11pt acmsmall, not counting references.
+%% Shares styles, figures, and bibliography with ../planqc/.
 %%
-%% Build: make   (latexmk -pdf main.tex)
+%% Build from pldi/: latexmk -pdf qcert.tex
 \documentclass[acmsmall,nonacm,11pt,screen]{acmart}
 
 \settopmatter{printacmref=false, printccs=false, printfolios=true}
@@ -37,10 +36,10 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-%% This file lives in the repository root; the style file, the figures
-%% and the bibliography are in planqc/.
+%% This file lives in pldi/; the style file, the figures
+%% and the bibliography are in ../planqc/.
 \makeatletter
-\def\input@path{{planqc/}}
+\def\input@path{{../planqc/}}
 \makeatother
 \usepackage{agda-style}
 \usepackage{subcaption}
@@ -48,7 +47,7 @@
 
 %% TikZiT figures. A subset of tikzit.sty (the layer stack, the blank
 %% node style and \tikzfig), which would load enumitem, which clashes
-%% with acmart. proofs.tikzstyles has the styles of planqc/figures/*.tikz.
+%% with acmart. proofs.tikzstyles has the styles of ../planqc/figures/*.tikz.
 \usepackage{tikz}
 \usetikzlibrary{backgrounds,arrows,shapes,shapes.geometric,shapes.misc}
 \pgfdeclarelayer{edgelayer}
@@ -58,7 +57,7 @@
 \tikzstyle{none}=[inner sep=0mm]
 \tikzstyle{tikzfig}=[baseline=-0.25em,scale=0.7]
 \newcommand{\tikzfig}[1]{{\tikzstyle{every picture}=[tikzfig]\input{#1.tikz}}}
-\input{planqc/proofs.tikzstyles}
+\input{../planqc/proofs.tikzstyles}
 
 \citestyle{acmnumeric}
 %% Table 1 keeps author-year citations: ``Greylyn [2014]''.
@@ -144,13 +143,13 @@ C_1\rewrites{\mathcal{R}}N\rewrites{\mathcal{R}}C_2.
 \centering
 \begin{subfigure}[b]{0.42\linewidth}
   \centering
-  \scalebox{.8}{\tikzfig{planqc/figures/normalform}}
+  \scalebox{.8}{\tikzfig{../planqc/figures/normalform}}
   \caption{The rewrites from $C_1$ and $C_2$ to their common normal form $N$ using $\mathcal{R}$ give rewrites from $C_1$ to $C_2$ using $\mathcal{R}$.}
   \label{fig:normalform}
 \end{subfigure}\hfill
 \begin{subfigure}[b]{0.52\linewidth}
   \centering
-  \scalebox{.8}{\tikzfig{planqc/figures/translation}}
+  \scalebox{.8}{\tikzfig{../planqc/figures/translation}}
   \caption{Completeness of $\mathcal{R}'$ gives rewrites between $C_1'=E(C_1)$ and $C_2'=E(C_2)$. Translating this proof back gives rewrites between $C_1$ and $C_2$ using $\mathcal{R}$.}
   \label{fig:translation}
 \end{subfigure}
@@ -261,19 +260,19 @@ The completeness proofs follow the two strategies of \Cref{fig:strategies}. For 
 \centering
 \begin{subfigure}[b]{0.26\linewidth}
   \centering
-  \tikzfig{planqc/figures/mainlemma}
+  \tikzfig{../planqc/figures/mainlemma}
   \caption{The Main Lemma.}
   \label{fig:mainlemma}
 \end{subfigure}\hfill
 \begin{subfigure}[b]{0.38\linewidth}
   \centering
-  \tikzfig{planqc/figures/levelinduction}
+  \tikzfig{../planqc/figures/levelinduction}
   \caption{Induction on the level.}
   \label{fig:level}
 \end{subfigure}\hfill
 \begin{subfigure}[b]{0.32\linewidth}
   \centering
-  \tikzfig{planqc/figures/lengthinduction}
+  \tikzfig{../planqc/figures/lengthinduction}
   \caption{Induction on length.}
   \label{fig:length}
 \end{subfigure}
@@ -303,6 +302,6 @@ At the moment, not every completeness result fits into QCert, as its scope is li
 We plan to extend the infrastructure of QCert to more families of quantum circuits, including the two above. Completeness is still open for many discrete gate sets in higher-dimensional quantum systems, and their case analyses are often too large to check by hand. In particular, we plan to study the completeness of Clifford circuits in all dimensions with the help of QCert. Beyond completeness, the exact synthesis libraries can be reused for T-count optimization of multi-qubit Clifford+T circuits. Finally, we are translating the formalizations from Agda into Lean, to make them available to its larger community. This will also allow us to take advantage of Lean's rich mathematical library Mathlib~\cite{mathlib2020}.
 
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{planqc/refs}
+\bibliography{../planqc/refs}
 
 \end{document}
