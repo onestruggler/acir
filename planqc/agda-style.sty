@@ -136,6 +136,12 @@
 
 %% Display environment for Agda code blocks.
 \lstnewenvironment{agdacode}[1][]{\lstset{language=Agda,#1}}{}
+%% acmart warns about every \vspace outside the environments it knows,
+%% lstlisting among them; the skips listings puts around agdacode are
+%% exempt in the same way.
+\@ifclassloaded{acmart}{%
+  \AtBeginEnvironment{agdacode}{\let\@vspace\@vspace@orig
+    \let\@vspacer\@vspacer@orig}}{}
 
 %% ------------------------------------------------------------------
 %% Unicode in RUNNING TEXT (\aid arguments, prose): mirror the literate

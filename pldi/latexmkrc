@@ -1,0 +1,7 @@
+# latexmkrc -- build settings for qcert.tex (latexmk -pdf qcert.tex).
+#
+# The style file agda-style.sty lives in ../planqc/.  Found only through
+# qcert.tex's \input@path, it is loaded under the name
+# `../planqc/agda-style', and LaTeX warns that the package provides
+# `agda-style'.  On TEXINPUTS it is found under its own name.
+ensure_path('TEXINPUTS', '../planqc/');
