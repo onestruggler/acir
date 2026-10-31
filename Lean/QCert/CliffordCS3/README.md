@@ -43,68 +43,32 @@ operators*, QPL 2023, arXiv:2306.08530.  Table 1 of qcert.tex:
   `QCert/CliffordT2/ReidemeisterSchreier.lean`), any coset data satisfying
   hypotheses (a) and (b) gives completeness (`complete_of_rsData`).
 
-## Remaining `sorry`
+## Complete coset certificate
 
-* `Completeness.rsData`: the existence of the Reidemeister–Schreier coset
-  data with hypotheses (a) and (b).  What the paper's proof consists of
-  (Sections 3.1, 4 and 6): `CliffordCS(3)` is the subgroup of `U₈(ℤ[1/2, i])`
-  of determinant `±1`, of index 2; the Reidemeister–Schreier theorem is
-  applied "recursively", "through a number of intermediate
-  representations" (the folders `Step1` – `Step8` of their code), and the
-  resulting thousands of relations, "some … more than 50,000 generators",
-  are reduced to Figure 2 by rewriting to an almost-normal form built from
-  normal forms of the finite subgroups of Section 4 (`W`, `Q`, `C`, `CQ`,
-  `P`, `D`, `PD`, `QD`, `CQD`, `K₀D`, `K₀CD`, `K₀W`) and the relations of
-  Figure 4.  The paper prints none of the coset tables, translations or
-  intermediate presentations: all of them live only in the authors' Agda
-  code, cited as "[6] Agda code accompanying this paper", available from
-  https://www.mathstat.dal.ca/~selinger/papers/downloads/cliffordcs3/ (not
-  part of the arXiv source).  It was not reproduced here.  Everything else
-  in the completeness argument is proved.
+`Completeness.rsData` is proved by an independently constructed two-coset
+action, with representatives 1 and i_[7]. No Agda formalization is used.
 
-### What porting `rsData` would involve
+* `Three/Certificate.lean` assembles derivations of all 49 macro axioms
+  in both cosets. Its kernel check compares the exact residual words
+  and coset endpoints, covering all 98 cases.
+* `Three/GeneratorRecovery.lean` recovers all nine generators using short
+  ambient preimages, permutation identities, pair-phase identities, and
+  a checked identity removing the controls from the residual Hadamard.
+* `Three/RestrictedGauge.lean` changes the representative used for the
+  four-point calculations. The last Hadamard relation reduces to two
+  controlled Hadamards commuting by the structural rules and C12.
 
-The current task excludes consulting Agda formalizations. Completing this
-row therefore requires independently constructing and verifying suitable
-coset data, or another completeness proof. The historical inventory below
-is not a Lean proof and does not discharge `rsData`.
+`rsData`, `theorem_3_1`, and `theorem_3_1_U` use only Lean's standard
+axioms. This also completes the three-wire Clifford+CS transfer in
+`QCert/Minimality`.
 
-**Source.** All the data is in the authors' Agda code (CC BY 2.0), at
-https://www.mathstat.dal.ca/~selinger/papers/downloads/cliffordcs3/cliffordcs3.tgz
-(SHA-256 `ff650f651355240ab99e54777c1befe02715386853b9e341b4e67ab320d8620b`;
-118 Agda files, 4.5 MB).
+Build and audit from `Lean/`:
 
-**How their proof is assembled.** `Completeness.agda` composes nine
-presentations by the Reidemeister–Schreier theorem.  Only Step 3 uses it
-with cosets (two, `I` and `I₁`, the index-2 subgroup).  Every other step
-uses the simplified version, a Tietze transformation given by
-translations both ways.  Each step proves hypothesis (a) for the
-generators and hypothesis (b) for the relations of one presentation,
-translated into the other; those hypothesis-(b) proofs are the
-derivations a port would have to replay.
+```sh
+bash check.sh QCert/CliffordCS3/Theorem.lean
+bash check.sh QCert/Audit.lean
+```
 
-**The stages.** Counts are the constructors of each relation type,
-measured on the files.  Lengths are letters on both sides together.
-
-| Stage | Files | Generators | Relations | Length |
-|---|---|---|---|---|
-| Statement | `Theorem.agda` (`TwoLevel.Rel`) | one- and two-level, 8 indices | 19 families | ≤ 9 |
-| Step 1 | `Step1/` | the same, indices ordered | 33 families | ≤ 9 |
-| Step 2 | `Step2/Theorem.agda`; (b) in `Step2/hypB/ax*.agda` (28 files, 0.84 MB) | 9 (`i₀`, `K₀₁`, `X₀₁` … `X₆₇`) | 48 | ≤ 8 |
-| Step 3 | `Step3/Rel.agda` (0.5 MB); `Step3/Main.agda` (2 cosets: 28 cases of (a), 96 of (b)); `Step3/PD3`–`PD7` (normal forms of the finite subgroups, 0.73 MB) | 28 gates of `Gate.agda` | 3192 | ≤ 32 (median 10; 35 369 letters in all) |
-| Step 4 | `Step4/` (`Main.agda` 0.3 MB) | 28 gates | 508 | ≤ 16 |
-| Step 5 | `Step5/` | 28 gates | 401 | ≤ 18 |
-| Step 6 | `Step6/` | 28 gates | 203 | ≤ 18 |
-| Step 7 | `Step7/` | 28 gates | 115 | ≤ 18 |
-| Step 8 | `Step8/` (`Swap*.agda`, `Monoidal.agda`; 0.43 MB) | Figure 2's 9 | 54 (`Theorem.agda`, `CliffordCS.Rel`) | ≤ 18 |
-
-**Word lengths.** No stated relation is longer than 32 letters.  The
-paper's "more than 50,000 generators" must therefore count words that
-arise inside the hypothesis-(b) derivations, where a relation is
-translated and rewritten.  Those words were not measured.
-
-**Cost.** The authors report about 120 minutes to check it with Agda 2.6.4.
-A port would replay the derivations of Steps 1–8 as certificates.  At the
-cost measured for CliffordT2 (about a millisecond per rewriting step in
-the kernel), the size of the job is set by the number of steps those
-derivations take, which has not been measured.
+The certificate exporters and retained proof DAGs are in `gen/`; see
+its README for regeneration commands. All certificates are checked by
+`decide +kernel`.

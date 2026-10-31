@@ -11,20 +11,18 @@ the presentation of `G` (their Theorem 2.1,
 theorem (`QCert.reidemeister_schreier`, Theorem 4.3 of their earlier
 paper arXiv:2204.02217), with the translation `f` of `Translation.lean`.
 
-The coset data and the verification of the two hypotheses of the
-Reidemeister–Schreier theorem are not given in the paper; the authors'
-code obtains them through "a sequence of multiple applications of the
-Reidemeister–Schreier theorem passing through a number of intermediate
-representations", whose relations reach "more than 50,000 generators".
-Here they are the structure `RSData`, and its existence (`rsData`) is
-the one remaining `sorry`; everything else of the argument is proved:
-given any such data, the relations of Figure 2 are complete
-(`complete_of_rsData`).
+The independently constructed two-coset action is verified through the
+49 macro axioms of `Macro8`, in both cosets. `Three.Certificate` supplies
+their derivations, and `Three.GeneratorRecovery` proves recovery of all
+nine circuit generators. Together they construct `RSData` without any
+additional hypotheses.
 -/
 import QCert.CliffordCS3.Soundness
 import QCert.CliffordCS3.Translation
 import QCert.CliffordT2.ReidemeisterSchreier
 import QCert.BianSelingerUn.Theorem
+import QCert.CliffordCS3.Three.Certificate
+import QCert.CliffordCS3.Three.GeneratorRecovery
 
 namespace QCert.CliffordCS3
 
@@ -46,10 +44,15 @@ structure RSData where
   hb : ∀ (c : C) (w w' : Word (BianSelingerUn.Gen 8)), BianSelingerUn.Rel 8 w w' →
     (hstar h c w).2 = (hstar h c w').2 ∧ Derivable Rel (hstar h c w).1 (hstar h c w').1
 
-/-- The Reidemeister–Schreier data of the authors' proof (their Agda
-Steps 1–8, not reproduced here). -/
+/-- The independently verified two-coset Reidemeister–Schreier data. -/
 theorem rsData : Nonempty RSData := by
-  sorry
+  exact ⟨{
+    C := Bool
+    I := false
+    h := Three.encodedAction Three.h
+    ha := Three.GeneratorRecovery.hyp_a Three.Certificate.hyp_b
+    hb := Three.Certificate.hyp_b
+  }⟩
 
 theorem coe_lift_semU (w : Word Gen) :
     ((FreeMonoid.lift semU w : U_ZHalfI 8) : unitaryGroup (Fin 8) ℂ) = FreeMonoid.lift sem w := by

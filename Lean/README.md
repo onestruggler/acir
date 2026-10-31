@@ -37,15 +37,14 @@ serialized to avoid races on Lake's output files.
 | `QCert/Exact/*` | `Quartic p q` = ℚ[x]/(x⁴ - p x² - q), computable, with homomorphisms to ℂ and ℝ (ω = e^{iπ/4}, √2). |
 
 The framework has no `sorry`. No development uses `native_decide`.
-Completed proofs use only Lean's standard axioms; unfinished results
-additionally depend on `sorryAx`, as reported by the audit.
+All sixteen result rows use only Lean's standard axioms, as reported by
+the audit; none depends on `sorryAx`.
 
 ## The sixteen results
 
 Each row has a folder with `Syntax.lean` (the relations, as printed),
 `Semantics.lean` (the matrices and the target group), `Theorem.lean` (the
-main result) and a `README.md` listing what is proved and every remaining
-`sorry`.
+main result) and a `README.md` describing the proofs.
 
 | Source | Object | Folder | Status |
 | --- | --- | --- | --- |
@@ -60,15 +59,17 @@ main result) and a `README.md` listing what is proved and every remaining
 | Amy, Chen, Ross [2018] | CNOT-dihedral | `QCert/CNOTDihedral` | **proved** (sub-presentation at every n; no `sorry`) |
 | Blake [2026] | phase-affine, prime d | `QCert/PhaseAffine` | **proved** (Theorems 1 and 2 at all four levels; no `sorry`) |
 | Bian, Selinger [2023] | two-qubit Clifford+T | `QCert/CliffordT2` | **proved** (Theorem 2.1, sub-presentation in U₄(ℤ[1/√2,i]); no `sorry`) |
-| Bian, Selinger [2023] | three-qubit Clifford+CS | `QCert/CliffordCS3` | all but the Reidemeister–Schreier coset data (`rsData`, the authors' Steps 1–8), deferred |
+| Bian, Selinger [2023] | three-qubit Clifford+CS | `QCert/CliffordCS3` | **proved** (Theorem 3.1; independently constructed two-coset certificate, all 98 macro cases and all nine generator recoveries; no `sorry`) |
 | Clément [2026] | real Clifford+CH | `QCert/RealCliffordCH` | **proved** (Theorem 8.9 at every width, with Theorem 4.10, Lemmas 8.7, 8.8 and Appendix D; no `sorry`) |
 | Amy, Ross, Wesley [2024] | three-qubit Toffoli–Hadamard | `QCert/ToffoliHadamard` | **proved** (Theorem 5.2 with (r_K) restored, Theorem 6.3; no `sorry`); (r_K) proved independent |
 | Li et al. [2025] | qutrit Clifford | `QCert/QutritClifford` | **proved** (Theorem 4.4 at every width, by a stabiliser chain; Proposition 3.9, Corollary 3.10; no `sorry`) |
-| Blake [2026] | six fragments, minimality | `QCert/Minimality` | Theorem 37 proved; Theorem 22 transferred for all six fragments in the stated ranges. No local `sorry`; the three-wire Clifford+CS case still inherits `CliffordCS3.rsData`. The two-wire Clifford+CS case is proved. |
+| Blake [2026] | six fragments, minimality | `QCert/Minimality` | **proved** (Theorem 37; Theorem 22 transferred for all six fragments in the stated ranges, including Clifford+CS through three wires; no `sorry`) |
 
-Thirteen rows currently have complete proofs without `sorryAx`. The open
-rows are three-qubit Clifford+CS, real Clifford+CH, and the Clifford+CS
-completeness dependency in the final minimality row.
+All sixteen rows have complete proofs without `sorryAx`.
+`QCert/CliffordCS3/Three/Certificate.lean` checks all 49 macro axioms in
+both cosets, and `GeneratorRecovery.lean` proves recovery of the nine
+generators. These discharge `CliffordCS3.rsData` and its dependent
+Clifford+CS completeness result in the minimality row.
 
 ## Typechecking cost
 

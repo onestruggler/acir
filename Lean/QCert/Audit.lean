@@ -3,7 +3,7 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 
 # Axiom audit of Table 1
 
-Run `./check.sh QCert/Audit.lean`. Each result should eventually depend
+Run `./check.sh QCert/Audit.lean`. Each result depends
 only on Lean's standard axioms (propext, Classical.choice, Quot.sound).
 `sorryAx` marks an unfinished proof, including any inherited dependency.
 Keep the individual statements here: a single conjunction would hide
@@ -28,6 +28,7 @@ import QCert.RealCliffordCH.Sec8.D.W4.ConjCommBase
 #print axioms QCert.PhaseAffine.theorem2_quadℂ
 #print axioms QCert.PhaseAffine.theorem2_cubeℂ
 #print axioms QCert.CliffordT2.theorem_2_1_U
+#print axioms QCert.CliffordCS3.rsData
 #print axioms QCert.CliffordCS3.theorem_3_1_U
 #print axioms QCert.RealCliffordCH.presentation
 #print axioms QCert.ToffoliHadamard.theorem_5_2
