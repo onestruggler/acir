@@ -3,7 +3,7 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 
 # Axiom audit of Table 1
 
-Run `./check.sh QCert/Audit.lean`. Each result should eventually depend
+Run `./check.sh QCert/Audit.lean`. Each result should depend
 only on Lean's standard axioms (propext, Classical.choice, Quot.sound).
 `sorryAx` marks an unfinished proof, including any inherited dependency.
 Keep the individual statements here: a single conjunction would hide
@@ -29,6 +29,9 @@ import QCert.RealCliffordCH.Sec8.D.W4.ConjCommBase
 #print axioms QCert.PhaseAffine.theorem2_cubeℂ
 #print axioms QCert.CliffordT2.theorem_2_1_U
 #print axioms QCert.CliffordCS3.theorem_3_1_U
+#print axioms QCert.CliffordCS3.rsData
+#print axioms QCert.CliffordCS3.Cosets.hyp_a
+#print axioms QCert.CliffordCS3.Cosets.hyp_b
 #print axioms QCert.RealCliffordCH.presentation
 #print axioms QCert.ToffoliHadamard.theorem_5_2
 #print axioms QCert.ToffoliHadamard.rK_independent
@@ -53,7 +56,7 @@ import QCert.RealCliffordCH.Sec8.D.W4.ConjCommBase
 #print axioms QCert.Minimality.cliffordT_independent_two
 #print axioms QCert.Minimality.cliffordCS_independent_I
 
--- Completed auxiliary results, audited separately from the open main theorem.
+-- Auxiliary results, audited separately from the main theorems.
 #print axioms QCert.RealCliffordCH.Sec8.item_a
 #print axioms QCert.RealCliffordCH.Sec8.D.d139
 #print axioms QCert.RealCliffordCH.Sec8.D.d140
@@ -105,6 +108,7 @@ import QCert.RealCliffordCH.Sec8.D.W4.ConjCommBase
 #print axioms QCert.RealCliffordCH.Sec8.D.N13.comm340_ge5
 #print axioms QCert.RealCliffordCH.Sec8.D.eq335
 #print axioms QCert.RealCliffordCH.Sec8.D.eq336
+#print axioms QCert.RealCliffordCH.Sec8.D.eq337
 #print axioms QCert.RealCliffordCH.Sec8.D.eq340
 #print axioms QCert.RealCliffordCH.Sec8.D.eq345
 #print axioms QCert.RealCliffordCH.Sec8.D.d267

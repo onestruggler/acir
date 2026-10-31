@@ -6,13 +6,16 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 Every rule of Figure 1 holds for the matrices of §2.1, at every width, and
 every generator has an inverse modulo the rules.
 
-The rules are decided over `ℚ(ζ)` (`QutritClifford.ops`) by evaluating
-circuits on tries (`QutritClifford.Vec`).  To keep the evaluations short,
-the derived gates `S'`, `SWAP`, `CX` and `XC` are first evaluated once on
-their own wires, and the rules are then decided for circuits over an
-extended gate set (`XGate`) in which they are single gates: `expandC`
-writes an extended circuit out in the generators, and evaluation commutes
-with it (`eval_expandC`).
+The rules are decided by evaluating circuits on tries
+(`QutritClifford.Vec`) over `ℤ[ω]` (`QutritClifford.Zω`), with the
+Hadamard gate scaled by `c = ω² - ω` so that every entry is an Eisenstein
+integer: two circuits with `h` and `h'` Hadamard gates have the same
+matrix when their scaled evaluations, multiplied by `c^{h'}` and `c^h`,
+send every basis vector to the same trie (`checkZ`, `evalX_eq`).  To keep
+the evaluations short, the derived gates `S'`, `SWAP`, `CX` and `XC` are
+first evaluated once on their own wires, and the rules are then decided
+for circuits over an extended gate set (`XGate`) in which they are single
+gates (`Sim`), each gate acting on a trie directly (`TrieZ.lean`).
 
 As printed, (D6) is `-SWAP`, not `SWAP`: the circuit `(H ⊗ H) CZ (H ⊗ H) CZ
 (H ⊗ H) CZ` sends `|x, y⟩` to `-|y, x⟩` (`swapX`).  The rules use the
@@ -21,6 +24,7 @@ they hold as printed.
 -/
 import QCert.QutritClifford.Semantics
 import QCert.QutritClifford.Trie
+import QCert.QutritClifford.TrieZ
 
 namespace QCert.QutritClifford
 
@@ -127,23 +131,132 @@ def opsX : GateOps XGate Q 3 where
     | .XC => xcX
   gate3 g := nomatch g
 
-set_option maxRecDepth 100000
+/-! ### The extended gates over `ℤ[ω]`, acting on tries -/
 
-theorem eval_S' : ops.eval 1 S' = SpX :=
-  (Vec.eval_eq_of_cols' ops opsX (w' := FreeMonoid.of (Gen.gate1 XGate.Sp))
-    (by decide +kernel)).trans (evalOfGate1 opsX XGate.Sp)
+open Zω Vec
 
-theorem eval_SWAP : ops.eval 2 SWAP = swapX :=
-  (Vec.eval_eq_of_cols' ops opsX (w' := FreeMonoid.of (Gen.gate2 XGate.SWAP))
-    (by decide +kernel)).trans (evalOfGate2 opsX XGate.SWAP)
+/-- The matrices of the extended gates over `ℤ[ω]`, `H` scaled by `c`. -/
+def opsZ : GateOps XGate Zω 3 where
+  scalar
+    | .negω => Zω.negω
+  gate1
+    | .H => HZ
+    | .S => SZ
+    | .Sp => SpZ
+  gate2
+    | .CZ => CZZ
+    | .SWAP => swapZ
+    | .CX => cxZ
+    | .XC => xcZ
+  gate3 g := nomatch g
 
-theorem eval_CX : ops.eval 2 CX = cxX :=
-  (Vec.eval_eq_of_cols' ops opsX (w' := FreeMonoid.of (Gen.gate2 XGate.CX))
-    (by decide +kernel)).trans (evalOfGate2 opsX XGate.CX)
+/-- A generator applied to a trie, each gate by its direct action. -/
+def actZ : {n : ℕ} → Gen XGate n → Vec Zω n → Vec Zω n
+  | _, .gate0 .negω, v => mulNegω v
+  | _, .gate1 .H, v => actH v
+  | _, .gate1 .S, v => actS v
+  | _, .gate1 .Sp, v => actSp v
+  | _, .gate2 .CZ, v => actCZ v
+  | _, .gate2 .SWAP, v => actSWAP v
+  | _, .gate2 .CX, v => actCX v
+  | _, .gate2 .XC, v => actXC v
+  | _, .gate3 g, _ => nomatch g
+  | _, .up g, node a b c => node (actZ g a) (actZ g b) (actZ g c)
 
-theorem eval_XC : ops.eval 2 XC = xcX :=
-  (Vec.eval_eq_of_cols' ops opsX (w' := FreeMonoid.of (Gen.gate2 XGate.XC))
-    (by decide +kernel)).trans (evalOfGate2 opsX XGate.XC)
+theorem actZ_eq : ∀ {n : ℕ} (g : Gen XGate n) (v : Vec Zω n), actZ g v = act opsZ g v
+  | _, .gate0 .negω, v => (smul_negω v).symm
+  | _, .gate1 .H, v => actH_eq v
+  | _, .gate1 .S, v => actS_eq v
+  | _, .gate1 .Sp, v => actSp_eq v
+  | _, .gate2 .CZ, v => actCZ_eq v
+  | _, .gate2 .SWAP, v => actSWAP_eq v
+  | _, .gate2 .CX, v => actCX_eq v
+  | _, .gate2 .XC, v => actXC_eq v
+  | _, .gate3 g, _ => nomatch g
+  | _, .up g, node a b c => by
+    simp only [actZ, act, actZ_eq g]
+
+/-- A circuit applied to a trie, in operator order, by the direct actions. -/
+def actWZ {n : ℕ} (w : Circuit XGate n) (v : Vec Zω n) : Vec Zω n := w.toList.foldr actZ v
+
+theorem actWZ_eq {n : ℕ} (w : Circuit XGate n) (v : Vec Zω n) : actWZ w v = actW opsZ w v := by
+  have : @actZ n = act opsZ := funext fun g => funext fun v => actZ_eq g v
+  rw [actWZ, actW, this]
+
+/-- The number of Hadamard gates of a generator. -/
+def wtX : {n : ℕ} → Gen XGate n → ℕ
+  | _, .gate1 .H => 1
+  | _, .up g => wtX g
+  | _, _ => 0
+
+/-- The number of Hadamard gates of a circuit. -/
+def hcount {n : ℕ} (w : Circuit XGate n) : ℕ := ((FreeMonoid.toList w).map wtX).sum
+
+/-- `w` and `v`, scaled by `c` to the number of Hadamard gates of the other,
+send every basis vector to the same trie. -/
+def checkZ {n : ℕ} (w v : Circuit XGate n) : Bool :=
+  (allStates n).all fun t =>
+    beq (smul (c ^ hcount v) (actWZ w (basis t))) (smul (c ^ hcount w) (actWZ v (basis t)))
+
+theorem HZ_map : HZ.map toQ = toQ c • ofMat (k := 1) HQ := op_ext_of_all (by decide +kernel)
+theorem SZ_map : SZ.map toQ = ofMat (k := 1) SQ := op_ext_of_all (by decide +kernel)
+theorem SpZ_map : SpZ.map toQ = SpX := op_ext_of_all (by decide +kernel)
+theorem CZZ_map : CZZ.map toQ = ofMat (k := 2) CZQ := op_ext_of_all (by decide +kernel)
+theorem swapZ_map : swapZ.map toQ = swapX := op_ext_of_all (by decide +kernel)
+theorem cxZ_map : cxZ.map toQ = cxX := op_ext_of_all (by decide +kernel)
+theorem xcZ_map : xcZ.map toQ = xcX := op_ext_of_all (by decide +kernel)
+
+/-- Each extended gate over `ℤ[ω]`, read in `ℚ(ζ)`, is the gate times `c`
+to its number of Hadamards. -/
+theorem opsZ_gen {n : ℕ} (g : Gen XGate n) :
+    (opsZ.map toQ).gen g = toQ c ^ wtX g • opsX.gen g := by
+  induction g with
+  | gate0 g =>
+    cases g
+    show toQ Zω.negω • (1 : Op Q 3 _) = toQ c ^ 0 • (negωQ • 1)
+    rw [pow_zero, one_smul, toQ_negω]
+  | gate1 g =>
+    cases g
+    · show onBottom (HZ.map toQ) = toQ c ^ 1 • onBottom (ofMat HQ)
+      rw [pow_one, ← onBottom_smul, HZ_map]
+    · show onBottom (SZ.map toQ) = toQ c ^ 0 • onBottom (ofMat SQ)
+      rw [pow_zero, one_smul, SZ_map]
+    · show onBottom (SpZ.map toQ) = toQ c ^ 0 • onBottom SpX
+      rw [pow_zero, one_smul, SpZ_map]
+  | gate2 g =>
+    cases g
+    · show onBottom (CZZ.map toQ) = toQ c ^ 0 • onBottom (ofMat CZQ)
+      rw [pow_zero, one_smul, CZZ_map]
+    · show onBottom (swapZ.map toQ) = toQ c ^ 0 • onBottom swapX
+      rw [pow_zero, one_smul, swapZ_map]
+    · show onBottom (cxZ.map toQ) = toQ c ^ 0 • onBottom cxX
+      rw [pow_zero, one_smul, cxZ_map]
+    · show onBottom (xcZ.map toQ) = toQ c ^ 0 • onBottom xcX
+      rw [pow_zero, one_smul, xcZ_map]
+  | gate3 g => exact nomatch g
+  | up g ih =>
+    show onTop 1 ((opsZ.map toQ).gen g) = _ • onTop 1 (opsX.gen g)
+    rw [ih, onTop_smul]
+    rfl
+
+theorem evalZ_weight {n : ℕ} (w : Circuit XGate n) :
+    (opsZ.map toQ).eval n w = toQ c ^ hcount w • opsX.eval n w :=
+  eval_weight opsX (opsZ.map toQ) (toQ c) wtX opsZ_gen w
+
+/-- Extended circuits passing the check have the same matrix over `ℚ(ζ)`. -/
+theorem evalX_eq {n : ℕ} {w v : Circuit XGate n} (h : checkZ w v = true) :
+    opsX.eval n w = opsX.eval n v := by
+  have h1 : ∀ t ∈ allStates n, smul (c ^ hcount v) (actW opsZ w (basis t)) =
+      smul (c ^ hcount w) (actW opsZ v (basis t)) := by
+    intro t ht
+    rw [← actWZ_eq, ← actWZ_eq]
+    exact eq_of_beq (List.all_eq_true.1 h t ht)
+  have h3 := congrArg (fun M => M.map toQ) (eval_eq_of_cols_smul opsZ opsZ h1)
+  dsimp only at h3
+  rw [map_smul_hom, map_smul_hom, map_pow, map_pow, ← GateOps.eval_map, ← GateOps.eval_map,
+    evalZ_weight, evalZ_weight, smul_smul, smul_smul, ← pow_add, ← pow_add,
+    add_comm (hcount w)] at h3
+  exact smul_cancel h3
 
 /-! ### Circuits and extended circuits with the same evaluation -/
 
@@ -160,6 +273,10 @@ theorem seq {a b : Circ n} {aX bX : Circuit XGate n} (ha : Sim a aX) (hb : Sim b
     Sim (a ⨾ b) (bX * aX) := by
   simp only [Sim, seq_def, map_mul] at *; rw [ha, hb]
 
+theorem mul {a b : Circ n} {aX bX : Circuit XGate n} (ha : Sim a aX) (hb : Sim b bX) :
+    Sim (a * b) (aX * bX) := by
+  simp only [Sim, map_mul] at *; rw [ha, hb]
+
 theorem pow {c : Circ n} {cX : Circuit XGate n} (h : Sim c cX) (k : ℕ) : Sim (c ^ k) (cX ^ k) := by
   simp only [Sim, map_pow] at *; rw [h]
 
@@ -175,6 +292,10 @@ theorem bot2 {c : Circ 2} {cX : Circuit XGate 2} (h : Sim c cX) :
     Sim (QutritClifford.bot2 (n := n) c) (Circuit.pad n cX) := by
   simp only [Sim, QutritClifford.bot2] at *; rw [evalPad, evalPad, h]
 
+theorem par {a b : Circ 1} {aX bX : Circuit XGate 1} (ha : Sim a aX) (hb : Sim b bX) :
+    Sim (QutritClifford.par a b) (Circuit.shift aX * Circuit.pad 1 bX) :=
+  ha.top.mul hb.bot
+
 theorem negω : Sim (QutritClifford.negω : Circ n) (FreeMonoid.of (Gen.gate0 XGate.negω)) := by
   simp only [Sim, QutritClifford.negω, Circuit.g0, GateOps.eval, FreeMonoid.lift_eval_of]; rfl
 
@@ -184,11 +305,46 @@ theorem H : Sim QutritClifford.H (FreeMonoid.of (Gen.gate1 XGate.H)) := by
 theorem S : Sim QutritClifford.S (FreeMonoid.of (Gen.gate1 XGate.S)) := by
   simp only [Sim, QutritClifford.S, Circuit.g1]; rw [evalOfGate1, evalOfGate1]; rfl
 
-theorem Sp : Sim S' (FreeMonoid.of (Gen.gate1 XGate.Sp)) := by
-  simp only [Sim]; rw [eval_S', evalOfGate1]; rfl
-
 theorem CZ : Sim QutritClifford.CZ (FreeMonoid.of (Gen.gate2 XGate.CZ)) := by
   simp only [Sim, QutritClifford.CZ, Circuit.g2]; rw [evalOfGate2, evalOfGate2]; rfl
+
+/-- Two circuits simulated by extended circuits that pass `checkZ` evaluate
+alike. -/
+theorem eval_eq {w v : Circ n} {wX vX : Circuit XGate n} (hw : Sim w wX) (hv : Sim v vX)
+    (h : checkZ wX vX = true) : ops.eval n w = ops.eval n v :=
+  hw.trans ((evalX_eq h).trans hv.symm)
+
+end Sim
+
+/-! ### The derived gates -/
+
+set_option maxRecDepth 100000
+
+theorem eval_S' : ops.eval 1 S' = SpX :=
+  ((((Sim.H.pow 2).seq Sim.S).seq (Sim.H.pow 2)).trans
+    (evalX_eq (v := FreeMonoid.of (Gen.gate1 XGate.Sp)) (by decide +kernel))).trans
+    (evalOfGate1 opsX XGate.Sp)
+
+theorem eval_SWAP : ops.eval 2 SWAP = swapX :=
+  ((((((Sim.par Sim.H Sim.H).seq Sim.CZ).seq (Sim.par Sim.H Sim.H)).seq Sim.CZ).seq
+      (Sim.par Sim.H Sim.H)).seq Sim.CZ).trans
+    (evalX_eq (v := FreeMonoid.of (Gen.gate2 XGate.SWAP)) (by decide +kernel)) |>.trans
+    (evalOfGate2 opsX XGate.SWAP)
+
+theorem eval_CX : ops.eval 2 CX = cxX :=
+  (((Sim.H.bot.seq Sim.CZ).seq (Sim.H.pow 3).bot).trans
+    (evalX_eq (v := FreeMonoid.of (Gen.gate2 XGate.CX)) (by decide +kernel))).trans
+    (evalOfGate2 opsX XGate.CX)
+
+theorem eval_XC : ops.eval 2 XC = xcX :=
+  (((Sim.H.top.seq Sim.CZ).seq (Sim.H.pow 3).top).trans
+    (evalX_eq (v := FreeMonoid.of (Gen.gate2 XGate.XC)) (by decide +kernel))).trans
+    (evalOfGate2 opsX XGate.XC)
+
+namespace Sim
+
+theorem Sp : Sim S' (FreeMonoid.of (Gen.gate1 XGate.Sp)) := by
+  simp only [Sim]; rw [eval_S', evalOfGate1]; rfl
 
 theorem SWAP : Sim QutritClifford.SWAP (FreeMonoid.of (Gen.gate2 XGate.SWAP)) := by
   simp only [Sim]; rw [eval_SWAP, evalOfGate2]; rfl
@@ -198,13 +354,6 @@ theorem CX : Sim QutritClifford.CX (FreeMonoid.of (Gen.gate2 XGate.CX)) := by
 
 theorem XC : Sim QutritClifford.XC (FreeMonoid.of (Gen.gate2 XGate.XC)) := by
   simp only [Sim]; rw [eval_XC, evalOfGate2]; rfl
-
-/-- Two circuits simulated by extended circuits that send every basis vector
-to the same trie evaluate alike. -/
-theorem eval_eq {w v : Circ n} {wX vX : Circuit XGate n} (hw : Sim w wX) (hv : Sim v vX)
-    (h : ∀ t ∈ Vec.allStates n, Vec.actW opsX wX (Vec.basis t) = Vec.actW opsX vX (Vec.basis t)) :
-    ops.eval n w = ops.eval n v := by
-  rw [hw, hv]; exact Vec.eval_eq_of_cols opsX h
 
 end Sim
 

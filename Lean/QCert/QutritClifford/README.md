@@ -37,8 +37,10 @@ Conventions:
 * `Soundness.lean`: every rule holds at every width (`rule_sound`,
   `theory_sound`, `sound`), and every generator has an inverse modulo the
   rules (`grouplike`: `(-ω)⁵`, `H³`, `S²`, `CZ²`). The rules are decided
-  over `ℚ(ζ₁₂)` (`Quartic 1 (-1)`, carried to `ℂ` by `toC`) by
-  `decide +kernel`.
+  over the Eisenstein integers `ℤ[ω]` by `decide +kernel`, with Hadamard
+  denominators cleared. `Eisenstein.lean` supplies the ring and its map
+  to `ℚ(ζ₁₂)` (`Quartic 1 (-1)`, carried to `ℂ` by `toC`), and proves
+  that the scaling factors can be cancelled.
 * `Trie.lean`: the evaluator behind those decisions. A vector on `n`
   qutrits is a trie of nested triples; a gate acts on it by recursion on
   the wires (`Vec.act`, with `get_act : get (act g v) = gen g *ᵥ get v`),
@@ -49,6 +51,10 @@ Conventions:
   To keep the evaluations short, the derived gates `S'`, `SWAP`, `CX`, `XC`
   are evaluated once on their own wires (`eval_S'`, `eval_SWAP`, …) and the
   rules are decided over an extended gate set (`XGate`, `Sim`).
+  `TrieZ.lean` implements each gate directly as sums, rotations, or
+  permutations of the sub-tries over `ℤ[ω]`, and proves these operations
+  agree with the generic matrix evaluator. `checkZ` compares all columns
+  after scaling both sides to clear their Hadamard denominators.
 * `Semantics.lean`: unitarity of the gate matrices; `cliffordGroup n` is a
   subgroup (closure under inverses: conjugation by a unitary permutes the
   finite set `𝒫ₙ`).
@@ -185,7 +191,9 @@ of the gadgets to those of the generator.
 **Build times** (from scratch, with Mathlib): the three-wire library takes
 about 1 min 50 s in all (31 chunks of 12 lemmas, 2–5 s each), `Facts`
 15 s, `Cert1` 16 s, `Cert2` 11 s, `Stage1` 19 s, `Stage2` 11 s; the
-slowest module of the folder remains `Soundness` (about 210 s).
+integer evaluator builds `Soundness` in about 19 s with its dependencies
+already built (31 October), compared with the earlier recorded 210 s for
+the rational evaluator. `Eisenstein` and `TrieZ` are checked separately.
 
 ## Remaining `sorry`s
 

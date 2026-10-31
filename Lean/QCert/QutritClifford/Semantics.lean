@@ -163,8 +163,18 @@ theorem Hmat_mem : Hmat ∈ unitaryGroup (Fin 3) ℂ := HQ_map ▸ map_mem_unita
 
 theorem Smat_mem : Smat ∈ unitaryGroup (Fin 3) ℂ := SQ_map ▸ map_mem_unitaryGroup _ (by decide +kernel)
 
+/-- `CZ` is unitary: diagonal, with each entry times its conjugate `1`
+(deciding the `9 × 9` product entry by entry over `ℚ(ζ)` took the kernel
+several seconds). -/
+theorem CZQ_unitary : CZQ * CZQ.transpose.map conjQ = 1 := by
+  rw [CZQ, diagonal_transpose, diagonal_map (by decide +kernel : conjQ 0 = 0), diagonal_mul_diagonal,
+    ← diagonal_one]
+  congr 1
+  funext i
+  fin_cases i <;> decide +kernel
+
 theorem CZmat_mem : CZmat ∈ unitaryGroup (Fin 9) ℂ :=
-  CZQ_map ▸ map_mem_unitaryGroup _ (by decide +kernel)
+  CZQ_map ▸ map_mem_unitaryGroup _ CZQ_unitary
 
 theorem negω_mem : -ωℂ ∈ unitary ℂ := by
   rw [Unitary.mem_iff, ← toC_negωQ, ← toC_conjQ, ← map_mul, ← map_mul]

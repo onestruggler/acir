@@ -43,68 +43,64 @@ operators*, QPL 2023, arXiv:2306.08530.  Table 1 of qcert.tex:
   `QCert/CliffordT2/ReidemeisterSchreier.lean`), any coset data satisfying
   hypotheses (a) and (b) gives completeness (`complete_of_rsData`).
 
-## Remaining `sorry`
+## Checked coset construction
 
-* `Completeness.rsData`: the existence of the Reidemeister–Schreier coset
-  data with hypotheses (a) and (b).  What the paper's proof consists of
-  (Sections 3.1, 4 and 6): `CliffordCS(3)` is the subgroup of `U₈(ℤ[1/2, i])`
-  of determinant `±1`, of index 2; the Reidemeister–Schreier theorem is
-  applied "recursively", "through a number of intermediate
-  representations" (the folders `Step1` – `Step8` of their code), and the
-  resulting thousands of relations, "some … more than 50,000 generators",
-  are reduced to Figure 2 by rewriting to an almost-normal form built from
-  normal forms of the finite subgroups of Section 4 (`W`, `Q`, `C`, `CQ`,
-  `P`, `D`, `PD`, `QD`, `CQD`, `K₀D`, `K₀CD`, `K₀W`) and the relations of
-  Figure 4.  The paper prints none of the coset tables, translations or
-  intermediate presentations: all of them live only in the authors' Agda
-  code, cited as "[6] Agda code accompanying this paper", available from
-  https://www.mathstat.dal.ca/~selinger/papers/downloads/cliffordcs3/ (not
-  part of the arXiv source).  It was not reproduced here.  Everything else
-  in the completeness argument is proved.
+`Cosets.lean` supplies the two cosets and proves both hypotheses of
+Reidemeister–Schreier. `Completeness.rsData` packages this data, completing
+Theorem 3.1. There are no unfinished proofs in this development.
 
-### What porting `rsData` would involve
+* `Two/Completeness.lean` proves completeness on a pair of qubits from the
+  presentation of U₄. It supplies the checked two-qubit equalities used
+  in the three-qubit derivations.
+* `Macro8.lean` proves that all relations of U₈ follow over a macro
+  alphabet: the seven transpositions along the Gray path
+  `6, 4, 0, 2, 3, 1, 5, 7`, the phase on state 7, and the two-level K on
+  states 5 and 7.
+* `Cert/` derives the 98 macro-relation/coset obligations and nine
+  generator round trips from Figure 2. The finite block groups,
+  disjoint-support commutations, controlled-face actions, and permutation
+  calculus produce rewrite certificates. The face actions transport the
+  proved two-qubit theorem only after checking every relation of that
+  action.
+* `Cosets.b2OK_true` and `Cosets.aOK_true` check that the certificate
+  endpoints are exactly those of the action. `hyp_b` transports the
+  macro derivations; `hyp_a` checks the translation of each generator.
 
-The current task excludes consulting Agda formalizations. Completing this
-row therefore requires independently constructing and verifying suitable
-coset data, or another completeness proof. The historical inventory below
-is not a Lean proof and does not discharge `rsData`.
+This is an independent construction from the paper and the existing Lean
+results. It does not import the authors' Agda proof. Python uses numerical
+matrices to find candidate words, but every equality used by the theorem
+is rechecked in Lean: either by an exact two-qubit evaluator or by replay
+of derivations. No Python result is admitted as an axiom.
 
-**Source.** All the data is in the authors' Agda code (CC BY 2.0), at
-https://www.mathstat.dal.ca/~selinger/papers/downloads/cliffordcs3/cliffordcs3.tgz
-(SHA-256 `ff650f651355240ab99e54777c1befe02715386853b9e341b4e67ab320d8620b`;
-118 Agda files, 4.5 MB).
+## Building and regeneration
 
-**How their proof is assembled.** `Completeness.agda` composes nine
-presentations by the Reidemeister–Schreier theorem.  Only Step 3 uses it
-with cosets (two, `I` and `I₁`, the index-2 subgroup).  Every other step
-uses the simplified version, a Tietze transformation given by
-translations both ways.  Each step proves hypothesis (a) for the
-generators and hypothesis (b) for the relations of one presentation,
-translated into the other; those hypothesis-(b) proofs are the
-derivations a port would have to replay.
+From `Lean/`:
 
-**The stages.** Counts are the constructors of each relation type,
-measured on the files.  Lengths are letters on both sides together.
+```sh
+./check.sh QCert/CliffordCS3/Theorem.lean QCert/Audit.lean
+```
 
-| Stage | Files | Generators | Relations | Length |
-|---|---|---|---|---|
-| Statement | `Theorem.agda` (`TwoLevel.Rel`) | one- and two-level, 8 indices | 19 families | ≤ 9 |
-| Step 1 | `Step1/` | the same, indices ordered | 33 families | ≤ 9 |
-| Step 2 | `Step2/Theorem.agda`; (b) in `Step2/hypB/ax*.agda` (28 files, 0.84 MB) | 9 (`i₀`, `K₀₁`, `X₀₁` … `X₆₇`) | 48 | ≤ 8 |
-| Step 3 | `Step3/Rel.agda` (0.5 MB); `Step3/Main.agda` (2 cosets: 28 cases of (a), 96 of (b)); `Step3/PD3`–`PD7` (normal forms of the finite subgroups, 0.73 MB) | 28 gates of `Gate.agda` | 3192 | ≤ 32 (median 10; 35 369 letters in all) |
-| Step 4 | `Step4/` (`Main.agda` 0.3 MB) | 28 gates | 508 | ≤ 16 |
-| Step 5 | `Step5/` | 28 gates | 401 | ≤ 18 |
-| Step 6 | `Step6/` | 28 gates | 203 | ≤ 18 |
-| Step 7 | `Step7/` | 28 gates | 115 | ≤ 18 |
-| Step 8 | `Step8/` (`Swap*.agda`, `Monoidal.agda`; 0.43 MB) | Figure 2's 9 | 54 (`Theorem.agda`, `CliffordCS.Rel`) | ≤ 18 |
+The certificate checks are substantial on a first build. In the 31 October
+WSL check, the pair batches took roughly three minutes each, with four
+running at once. The largest final derivation batch took about twelve
+minutes and 17 GB of resident memory. Subsequent builds reuse these
+checked modules.
 
-**Word lengths.** No stated relation is longer than 32 letters.  The
-paper's "more than 50,000 generators" must therefore count words that
-arise inside the hypothesis-(b) derivations, where a relation is
-translated and rewritten.  Those words were not measured.
+The generated Lean certificate files suffice to build. Regenerating them
+requires Python 3 and NumPy, from `QCert/CliffordCS3/gen/`:
 
-**Cost.** The authors report about 120 minutes to check it with Agda 2.6.4.
-A port would replay the derivations of Steps 1–8 as certificates.  At the
-cost measured for CliffordT2 (about a millisecond per rewriting step in
-the kernel), the size of the job is set by the number of steps those
-derivations take, which has not been measured.
+```sh
+python3 build_w.py
+python3 pc.py
+python3 complete3.py
+python3 roundtrip3.py
+python3 run_b1_8.py
+python3 threeemit.py
+python3 finalize3.py
+```
+
+The first two commands build reusable finite-group search caches. The
+remaining commands construct the action obligations, round trips, macro
+presentation, and Lean certificate files. The generated two-qubit
+certificates have their own generator, `twoemit.py`. Search caches and
+logs are not needed for Lean verification.

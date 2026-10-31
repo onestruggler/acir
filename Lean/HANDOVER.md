@@ -1,5 +1,15 @@
 # Handover (2026-10-29)
 
+**Completed, 2026-10-31:** all sixteen rows build and pass the axiom audit
+without `sorryAx`. The Clifford+CS construction checks all 98 macro-action
+obligations and nine generator round trips. `Cosets.lean` and `Cert/`
+assemble the independent two-coset proof used by `Completeness.rsData`,
+also closing the inherited minimality dependency. The qutrit integer
+evaluator changes build successfully as well. Validation logs are
+`.lake-cs3-cosets.log`, `.lake-audit-final.log` (4203 jobs), and
+`.lake-full-final.log` (4204 jobs). The Clifford+CS README gives the
+regeneration commands. The notes below are historical.
+
 State of the Lean formalization of Table 1 of `qcert.pdf`, written when the
 Claude session that ran eight parallel work streams on 2026-10-28 stopped (all
 of its agents hit the account's session limit around 19:30). Someone else

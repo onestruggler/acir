@@ -11,20 +11,17 @@ the presentation of `G` (their Theorem 2.1,
 theorem (`QCert.reidemeister_schreier`, Theorem 4.3 of their earlier
 paper arXiv:2204.02217), with the translation `f` of `Translation.lean`.
 
-The coset data and the verification of the two hypotheses of the
-Reidemeister–Schreier theorem are not given in the paper; the authors'
-code obtains them through "a sequence of multiple applications of the
-Reidemeister–Schreier theorem passing through a number of intermediate
-representations", whose relations reach "more than 50,000 generators".
-Here they are the structure `RSData`, and its existence (`rsData`) is
-the one remaining `sorry`; everything else of the argument is proved:
-given any such data, the relations of Figure 2 are complete
-(`complete_of_rsData`).
+The two cosets and their action are constructed in `Cosets.lean`. The
+action is checked through the macro presentation `Macro8`: 98 decoded
+relation obligations and nine generator round trips, all derived from
+Figure 2 by kernel-checked certificates. This construction uses the
+proved two-qubit completeness theorem and finite-group calculations.
 -/
 import QCert.CliffordCS3.Soundness
 import QCert.CliffordCS3.Translation
 import QCert.CliffordT2.ReidemeisterSchreier
 import QCert.BianSelingerUn.Theorem
+import QCert.CliffordCS3.Cosets
 
 namespace QCert.CliffordCS3
 
@@ -46,10 +43,15 @@ structure RSData where
   hb : ∀ (c : C) (w w' : Word (BianSelingerUn.Gen 8)), BianSelingerUn.Rel 8 w w' →
     (hstar h c w).2 = (hstar h c w').2 ∧ Derivable Rel (hstar h c w).1 (hstar h c w').1
 
-/-- The Reidemeister–Schreier data of the authors' proof (their Agda
-Steps 1–8, not reproduced here). -/
+/-- The checked two-coset data for Figure 2. -/
 theorem rsData : Nonempty RSData := by
-  sorry
+  exact ⟨{
+    C := Bool
+    I := false
+    h := Cosets.hact
+    ha := Cosets.hyp_a
+    hb := Cosets.hyp_b
+  }⟩
 
 theorem coe_lift_semU (w : Word Gen) :
     ((FreeMonoid.lift semU w : U_ZHalfI 8) : unitaryGroup (Fin 8) ℂ) = FreeMonoid.lift sem w := by

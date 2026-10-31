@@ -60,15 +60,15 @@ main result) and a `README.md` listing what is proved and every remaining
 | Amy, Chen, Ross [2018] | CNOT-dihedral | `QCert/CNOTDihedral` | **proved** (sub-presentation at every n; no `sorry`) |
 | Blake [2026] | phase-affine, prime d | `QCert/PhaseAffine` | **proved** (Theorems 1 and 2 at all four levels; no `sorry`) |
 | Bian, Selinger [2023] | two-qubit Clifford+T | `QCert/CliffordT2` | **proved** (Theorem 2.1, sub-presentation in U₄(ℤ[1/√2,i]); no `sorry`) |
-| Bian, Selinger [2023] | three-qubit Clifford+CS | `QCert/CliffordCS3` | all but the Reidemeister–Schreier coset data (`rsData`, the authors' Steps 1–8), deferred |
+| Bian, Selinger [2023] | three-qubit Clifford+CS | `QCert/CliffordCS3` | **proved** (Theorem 3.1, with independently constructed and checked two-coset data; no `sorry`) |
 | Clément [2026] | real Clifford+CH | `QCert/RealCliffordCH` | **proved** (Theorem 8.9 at every width, with Theorem 4.10, Lemmas 8.7, 8.8 and Appendix D; no `sorry`) |
 | Amy, Ross, Wesley [2024] | three-qubit Toffoli–Hadamard | `QCert/ToffoliHadamard` | **proved** (Theorem 5.2 with (r_K) restored, Theorem 6.3; no `sorry`); (r_K) proved independent |
 | Li et al. [2025] | qutrit Clifford | `QCert/QutritClifford` | **proved** (Theorem 4.4 at every width, by a stabiliser chain; Proposition 3.9, Corollary 3.10; no `sorry`) |
-| Blake [2026] | six fragments, minimality | `QCert/Minimality` | Theorem 37 proved; Theorem 22 transferred for all six fragments in the stated ranges. No local `sorry`; the three-wire Clifford+CS case still inherits `CliffordCS3.rsData`. The two-wire Clifford+CS case is proved. |
+| Blake [2026] | six fragments, minimality | `QCert/Minimality` | Theorem 37 proved; Theorem 22 transferred for all six fragments in the stated ranges. All six fragments have complete source proofs, including Clifford+CS on two and three wires; no `sorry`. |
 
-Thirteen rows currently have complete proofs without `sorryAx`. The open
-rows are three-qubit Clifford+CS, real Clifford+CH, and the Clifford+CS
-completeness dependency in the final minimality row.
+All sixteen rows have complete proofs without `sorryAx`. The final
+Clifford+CS gap is closed by the checked two-coset construction in
+`QCert/CliffordCS3/Cosets.lean`.
 
 ## Typechecking cost
 

@@ -17,45 +17,45 @@ open QCert.CliffordCS3.Macro
 /-- The macro data: the Gray path, the frames, the palindromic paths of the
 transpositions, and the macro axioms. -/
 def D : Data where
-  gray := [5, 1, 0, 4, 6, 2, 3, 7]
-  fz := [[.T 2, .T 3, .T 4, .T 5, .T 6], [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6], [.T 5, .T 6], [.T 6],
-    [.T 3, .T 4, .T 5, .T 6], [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6], [.T 4, .T 5, .T 6], []]
-  fk := [[[], [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5], [.T 5, .T 6, .T 2, .T 3,
-    .T 4, .T 5], [.T 6, .T 2, .T 3, .T 4, .T 5], [.T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5],
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5], [.T 4, .T 5, .T 6,
-    .T 2, .T 3, .T 4, .T 5], [.T 2, .T 3, .T 4, .T 5]], [[.T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2,
-    .T 3, .T 4, .T 5], [], [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5], [.T 6, .T 1, .T 2, .T 3, .T 4,
-    .T 5], [.T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5], [.T 0, .T 1, .T 2, .T 3, .T 4,
-    .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5], [.T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4,
-    .T 5], [.T 1, .T 2, .T 3, .T 4, .T 5]], [[.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5], [.T 1, .T 2,
-    .T 3, .T 4, .T 5, .T 6, .T 4, .T 5], [], [.T 6, .T 5], [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5],
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5], [.T 4, .T 5, .T 6, .T 4, .T 5], [.T 5]],
-    [[.T 2, .T 3, .T 4, .T 5, .T 6, .T 5], [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5], [.T 5, .T 6,
-    .T 5], [], [.T 3, .T 4, .T 5, .T 6, .T 5], [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5],
-    [.T 4, .T 5, .T 6, .T 5], []], [[.T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5], [.T 1,
-    .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5], [.T 5, .T 6, .T 3, .T 4, .T 5], [.T 6,
-    .T 3, .T 4, .T 5], [], [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5], [.T 4,
-    .T 5, .T 6, .T 3, .T 4, .T 5], [.T 3, .T 4, .T 5]], [[.T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1,
-    .T 2, .T 3, .T 4, .T 5], [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4,
-    .T 5], [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5], [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4,
-    .T 5], [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5], [], [.T 4, .T 5, .T 6, .T 0,
-    .T 1, .T 2, .T 3, .T 4, .T 5], [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5]], [[.T 2, .T 3, .T 4, .T 5,
-    .T 6, .T 3, .T 4, .T 5], [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5], [.T 5, .T 6,
-    .T 4, .T 5], [.T 6, .T 4, .T 5], [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5], [.T 0, .T 1, .T 2,
-    .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5], [], [.T 4, .T 5]], [[.T 2, .T 3, .T 4, .T 5, .T 6],
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6], [.T 5, .T 6], [.T 6], [.T 3, .T 4, .T 5, .T 6], [.T 0,
-    .T 1, .T 2, .T 3, .T 4, .T 5, .T 6], [.T 4, .T 5, .T 6], []]]
-  xp := [[[], [1], [2, 3, 4, 3, 2], [2, 3, 4, 5, 4, 3, 2], [2], [0, 1, 0], [2, 3, 2], [2, 3, 4, 5, 6, 5,
-    4, 3, 2]], [[1], [], [1, 2, 3, 4, 3, 2, 1], [1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2, 1], [0], [1, 2,
-    3, 2, 1], [1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1]], [[2, 3, 4, 3, 2], [1, 2, 3, 4, 3, 2, 1], [], [5],
-    [3, 4, 3], [0, 1, 2, 3, 4, 3, 2, 1, 0], [4], [5, 6, 5]], [[2, 3, 4, 5, 4, 3, 2], [1, 2, 3, 4, 5,
-    4, 3, 2, 1], [5], [], [3, 4, 5, 4, 3], [0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0], [4, 5, 4], [6]], [[2],
-    [1, 2, 1], [3, 4, 3], [3, 4, 5, 4, 3], [], [0, 1, 2, 1, 0], [3], [3, 4, 5, 6, 5, 4, 3]], [[0, 1,
-    0], [0], [0, 1, 2, 3, 4, 3, 2, 1, 0], [0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0], [0, 1, 2, 1, 0], [], [0,
-    1, 2, 3, 2, 1, 0], [0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0]], [[2, 3, 2], [1, 2, 3, 2, 1], [4],
-    [4, 5, 4], [3], [0, 1, 2, 3, 2, 1, 0], [], [4, 5, 6, 5, 4]], [[2, 3, 4, 5, 6, 5, 4, 3, 2], [1, 2,
-    3, 4, 5, 6, 5, 4, 3, 2, 1], [5, 6, 5], [6], [3, 4, 5, 6, 5, 4, 3], [0, 1, 2, 3, 4, 5, 6, 5, 4, 3,
-    2, 1, 0], [4, 5, 6, 5, 4], []]]
+  gray := [6, 4, 0, 2, 3, 1, 5, 7]
+  fz := [[.T 2, .T 3, .T 4, .T 5, .T 6], [.T 5, .T 6], [.T 3, .T 4, .T 5, .T 6], [.T 4, .T 5, .T 6],
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6], [.T 6], [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6], []]
+  fk := [[[], [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5], [.T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5],
+    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5], [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2,
+    .T 3, .T 4, .T 5], [.T 6, .T 2, .T 3, .T 4, .T 5], [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6,
+    .T 1, .T 2, .T 3, .T 4, .T 5], [.T 2, .T 3, .T 4, .T 5]], [[.T 2, .T 3, .T 4, .T 5, .T 6, .T 4,
+    .T 5], [], [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5], [.T 4, .T 5, .T 6, .T 4, .T 5], [.T 1, .T 2,
+    .T 3, .T 4, .T 5, .T 6, .T 4, .T 5], [.T 6, .T 5], [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6,
+    .T 4, .T 5], [.T 5]], [[.T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5], [.T 5, .T 6, .T 3,
+    .T 4, .T 5], [], [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5], [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2,
+    .T 3, .T 4, .T 5], [.T 6, .T 3, .T 4, .T 5], [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2,
+    .T 3, .T 4, .T 5], [.T 3, .T 4, .T 5]], [[.T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5], [.T 5,
+    .T 6, .T 4, .T 5], [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5], [], [.T 1, .T 2, .T 3, .T 4, .T 5,
+    .T 6, .T 3, .T 4, .T 5], [.T 6, .T 4, .T 5], [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3,
+    .T 4, .T 5], [.T 4, .T 5]], [[.T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5], [.T 5,
+    .T 6, .T 1, .T 2, .T 3, .T 4, .T 5], [.T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5],
+    [.T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5], [], [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5],
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5], [.T 1, .T 2,
+    .T 3, .T 4, .T 5]], [[.T 2, .T 3, .T 4, .T 5, .T 6, .T 5], [.T 5, .T 6, .T 5], [.T 3, .T 4, .T 5,
+    .T 6, .T 5], [.T 4, .T 5, .T 6, .T 5], [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5], [], [.T 0,
+    .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5], []], [[.T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2,
+    .T 3, .T 4, .T 5], [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5], [.T 3, .T 4, .T 5, .T 6,
+    .T 0, .T 1, .T 2, .T 3, .T 4, .T 5], [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5],
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5], [.T 6, .T 0, .T 1,
+    .T 2, .T 3, .T 4, .T 5], [], [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5]], [[.T 2, .T 3, .T 4, .T 5,
+    .T 6], [.T 5, .T 6], [.T 3, .T 4, .T 5, .T 6], [.T 4, .T 5, .T 6], [.T 1, .T 2, .T 3, .T 4, .T 5,
+    .T 6], [.T 6], [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6], []]]
+  xp := [[[], [2, 3, 4, 3, 2], [2], [2, 3, 2], [1], [2, 3, 4, 5, 4, 3, 2], [0, 1, 0], [2, 3, 4, 5, 6, 5,
+    4, 3, 2]], [[2, 3, 4, 3, 2], [], [3, 4, 3], [4], [1, 2, 3, 4, 3, 2, 1], [5], [0, 1, 2, 3, 4, 3,
+    2, 1, 0], [5, 6, 5]], [[2], [3, 4, 3], [], [3], [1, 2, 1], [3, 4, 5, 4, 3], [0, 1, 2, 1, 0], [3,
+    4, 5, 6, 5, 4, 3]], [[2, 3, 2], [4], [3], [], [1, 2, 3, 2, 1], [4, 5, 4], [0, 1, 2, 3, 2, 1, 0],
+    [4, 5, 6, 5, 4]], [[1], [1, 2, 3, 4, 3, 2, 1], [1, 2, 1], [1, 2, 3, 2, 1], [], [1, 2, 3, 4, 5, 4,
+    3, 2, 1], [0], [1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1]], [[2, 3, 4, 5, 4, 3, 2], [5], [3, 4, 5, 4, 3],
+    [4, 5, 4], [1, 2, 3, 4, 5, 4, 3, 2, 1], [], [0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0], [6]], [[0, 1, 0],
+    [0, 1, 2, 3, 4, 3, 2, 1, 0], [0, 1, 2, 1, 0], [0, 1, 2, 3, 2, 1, 0], [0], [0, 1, 2, 3, 4, 5, 4,
+    3, 2, 1, 0], [], [0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0]], [[2, 3, 4, 5, 6, 5, 4, 3, 2], [5, 6,
+    5], [3, 4, 5, 6, 5, 4, 3], [4, 5, 6, 5, 4], [1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1], [6], [0, 1, 2, 3,
+    4, 5, 6, 5, 4, 3, 2, 1, 0], []]]
   ax := [([.T 0, .T 0], []), ([.T 1, .T 1], []), ([.T 2, .T 2], []), ([.T 3, .T 3], []), ([.T 4, .T 4],
     []), ([.T 5, .T 5], []), ([.T 6, .T 6], []), ([.T 0, .T 1, .T 0], [.T 1, .T 0, .T 1]), ([.T 1,
     .T 2, .T 1], [.T 2, .T 1, .T 2]), ([.T 2, .T 3, .T 2], [.T 3, .T 2, .T 3]), ([.T 3, .T 4, .T 3],
@@ -72,10 +72,10 @@ def D : Data where
     .T 6, .T 5, .K], [.K, .T 5, .T 6, .Z, .T 6, .T 5]), ([.K, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5,
     .T 4, .T 6, .T 5, .T 4], [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .K]),
     ([.K, .Z, .Z], [.T 6, .K]), ([.K, .Z, .Z, .Z], [.Z, .K, .Z, .K]), ([.K, .T 6, .Z, .T 6, .Z],
-    [.T 6, .Z, .T 6, .Z, .K]), ([.K, .K, .T 6, .Z, .T 6, .Z], []), ([.T 6, .T 5, .K, .T 5, .T 6,
-    .T 4, .T 5, .K, .T 5, .T 4, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .K],
-    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .K, .T 6, .T 5, .K, .T 5, .T 6,
-    .T 4, .T 5, .K, .T 5, .T 4])]
+    [.T 6, .Z, .T 6, .Z, .K]), ([.K, .K, .T 6, .Z, .T 6, .Z], []), ([.T 4, .T 5, .T 6, .T 4, .T 5,
+    .K, .T 5, .T 4, .T 6, .T 5, .T 4, .K, .T 6, .T 5, .K, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4],
+    [.T 6, .T 5, .K, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5,
+    .T 4, .T 6, .T 5, .T 4, .K])]
 
 /-- The generators by indices. -/
 def S : List AG := [.i 0, .i 1, .i 2, .i 3, .i 4, .i 5, .i 6, .i 7, .x 0 1, .x 0 2, .x 0 3, .x 0 4, .x 0 5, .x 0 6,
@@ -264,41 +264,41 @@ def m64 : Rule (MRel D) :=
     [(12, 2984728701821219273606878077684750358757387612517051065058793201045450987084506900463617)] (by decide +kernel)
 
 def m65 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [] (by decide +kernel)
-
-def m66 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m16, m17, m28, m0]
     [.T 0, .T 5, .T 6, .Z, .T 6, .T 5, .T 0]
     [.T 5, .T 6, .Z, .T 6, .T 5]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
 
-def m67 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m28, m0]
-    [.T 0, .T 6, .Z, .T 6, .T 0]
-    [.T 6, .Z, .T 6]
-    [(4, 619158923527629584560291841)] (by decide +kernel)
-
-def m68 : Rule (MRel D) :=
+def m66 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m15, m16, m17, m28, m0]
     [.T 0, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 0]
     [.T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3]
     [(10, 2209152002468661418887845355145021694297472452098564142811028129639825409)] (by decide +kernel)
 
+def m67 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m16, m17, m28, m0]
+    [.T 0, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 0]
+    [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
+    [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
+
+def m68 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [] (by decide +kernel)
+
 def m69 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m28, m0]
+    [.T 0, .T 6, .Z, .T 6, .T 0]
+    [.T 6, .Z, .T 6]
+    [(4, 619158923527629584560291841)] (by decide +kernel)
+
+def m70 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m0]
     [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 0]
     [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(2, 3573446344705)] (by decide +kernel)
-
-def m70 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m16, m17, m28, m0]
-    [.T 0, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 0]
-    [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
-    [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
 
 def m71 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m28, m0]
@@ -307,40 +307,40 @@ def m71 : Rule (MRel D) :=
     [(2, 274978570240)] (by decide +kernel)
 
 def m72 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 0, .T 1, .T 0]
-    [.T 0, .T 1, .T 0]
-    [] (by decide +kernel)
-
-def m73 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m14, m15, m0]
     [.T 0, .T 2, .T 3, .T 4, .T 3, .T 2, .T 0]
     [.T 2, .T 3, .T 4, .T 3, .T 2]
     [(6, 297757455650157270790890879356999081984)] (by decide +kernel)
 
-def m74 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m13, m14, m15, m16, m0]
-    [.T 0, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 0]
-    [.T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2]
-    [(8, 431026062882326872025835396064251682883312160706977792)] (by decide +kernel)
-
-def m75 : Rule (MRel D) :=
+def m73 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m0]
     [.T 0, .T 2, .T 0]
     [.T 2]
     [(2, 100671488)] (by decide +kernel)
 
-def m76 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m0]
-    [.T 0, .T 0, .T 1, .T 0, .T 0]
-    [.T 1]
-    [(2, 274911461377)] (by decide +kernel)
-
-def m77 : Rule (MRel D) :=
+def m74 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m14, m0]
     [.T 0, .T 2, .T 3, .T 2, .T 0]
     [.T 2, .T 3, .T 2]
     [(4, 188903882687372486270976)] (by decide +kernel)
+
+def m75 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 0, .T 1, .T 0]
+    [.T 0, .T 1, .T 0]
+    [] (by decide +kernel)
+
+def m76 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m13, m14, m15, m16, m0]
+    [.T 0, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 0]
+    [.T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2]
+    [(8, 431026062882326872025835396064251682883312160706977792)] (by decide +kernel)
+
+def m77 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m0]
+    [.T 0, .T 0, .T 1, .T 0, .T 0]
+    [.T 1]
+    [(2, 274911461377)] (by decide +kernel)
 
 def m78 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m14, m15, m16, m17, m0]
@@ -349,152 +349,138 @@ def m78 : Rule (MRel D) :=
     [(10, 593131990714557378663987960562189787191526160988702155148472625471488)] (by decide +kernel)
 
 def m79 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [] (by decide +kernel)
-
-def m80 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [] (by decide +kernel)
-
-def m81 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 0, .T 1, .T 2, .T 1, .T 0]
-    [.T 0, .T 1, .T 2, .T 1, .T 0]
-    [] (by decide +kernel)
-
-def m82 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m0]
-    [.T 0, .T 0, .T 0]
-    [.T 0]
-    [(1, 1)] (by decide +kernel)
-
-def m83 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0]
-    [.T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0]
-    [] (by decide +kernel)
-
-def m84 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [] (by decide +kernel)
-
-def m85 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m16, m0]
-    [.T 0, .T 5, .T 0]
-    [.T 5]
-    [(2, 100671488)] (by decide +kernel)
-
-def m86 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m15, m0]
     [.T 0, .T 3, .T 4, .T 3, .T 0]
     [.T 3, .T 4, .T 3]
     [(4, 188903882687372486270976)] (by decide +kernel)
 
-def m87 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m0]
-    [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
-    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
-    [(2, 1924178903041)] (by decide +kernel)
-
-def m88 : Rule (MRel D) :=
+def m80 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m15, m0]
     [.T 0, .T 4, .T 0]
     [.T 4]
     [(2, 100671488)] (by decide +kernel)
 
-def m89 : Rule (MRel D) :=
+def m81 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [] (by decide +kernel)
+
+def m82 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m16, m0]
+    [.T 0, .T 5, .T 0]
+    [.T 5]
+    [(2, 100671488)] (by decide +kernel)
+
+def m83 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m0]
+    [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
+    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
+    [(2, 1924178903041)] (by decide +kernel)
+
+def m84 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m16, m17, m0]
     [.T 0, .T 5, .T 6, .T 5, .T 0]
     [.T 5, .T 6, .T 5]
     [(4, 188903882687372486270976)] (by decide +kernel)
 
-def m90 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m14, m15, m16, m0]
-    [.T 0, .T 3, .T 4, .T 5, .T 4, .T 3, .T 0]
-    [.T 3, .T 4, .T 5, .T 4, .T 3]
-    [(6, 297757455650157270790890879356999081984)] (by decide +kernel)
-
-def m91 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m0]
-    [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(2, 2473934716929)] (by decide +kernel)
-
-def m92 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m16, m0]
-    [.T 0, .T 4, .T 5, .T 4, .T 0]
-    [.T 4, .T 5, .T 4]
-    [(4, 188903882687372486270976)] (by decide +kernel)
-
-def m93 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m0]
-    [.T 0, .T 6, .T 0]
-    [.T 6]
-    [(2, 100671488)] (by decide +kernel)
-
-def m94 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m0]
-    [.T 0, .T 0, .T 1, .T 2, .T 1, .T 0, .T 0]
-    [.T 1, .T 2, .T 1]
-    [(2, 824667275265)] (by decide +kernel)
-
-def m95 : Rule (MRel D) :=
+def m85 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m0]
     [.T 0, .T 3, .T 0]
     [.T 3]
     [(2, 100671488)] (by decide +kernel)
 
-def m96 : Rule (MRel D) :=
+def m86 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 0, .T 1, .T 2, .T 1, .T 0]
+    [.T 0, .T 1, .T 2, .T 1, .T 0]
+    [] (by decide +kernel)
+
+def m87 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m14, m15, m16, m0]
+    [.T 0, .T 3, .T 4, .T 5, .T 4, .T 3, .T 0]
+    [.T 3, .T 4, .T 5, .T 4, .T 3]
+    [(6, 297757455650157270790890879356999081984)] (by decide +kernel)
+
+def m88 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m0]
+    [.T 0, .T 0, .T 1, .T 2, .T 1, .T 0, .T 0]
+    [.T 1, .T 2, .T 1]
+    [(2, 824667275265)] (by decide +kernel)
+
+def m89 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m15, m16, m17, m0]
     [.T 0, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 0]
     [.T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3]
     [(8, 431026062882326872025835396064251682883312160706977792)] (by decide +kernel)
 
-def m97 : Rule (MRel D) :=
+def m90 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0]
+    [.T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0]
+    [] (by decide +kernel)
+
+def m91 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m16, m0]
+    [.T 0, .T 4, .T 5, .T 4, .T 0]
+    [.T 4, .T 5, .T 4]
+    [(4, 188903882687372486270976)] (by decide +kernel)
+
+def m92 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m0]
     [.T 0, .T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0, .T 0]
     [.T 1, .T 2, .T 3, .T 2, .T 1]
     [(2, 1374423089153)] (by decide +kernel)
 
-def m98 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m0]
-    [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(2, 3023690530817)] (by decide +kernel)
-
-def m99 : Rule (MRel D) :=
+def m93 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m15, m16, m17, m0]
     [.T 0, .T 4, .T 5, .T 6, .T 5, .T 4, .T 0]
     [.T 4, .T 5, .T 6, .T 5, .T 4]
     [(6, 297757455650157270790890879356999081984)] (by decide +kernel)
 
-def m100 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(20, 4795103447021542935090204149037499310141473271916242370438971138450115448660339280306790620661411444582011825317457260989266098504316944700720332800)] (by decide +kernel)
+def m94 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [] (by decide +kernel)
 
-def m101 : Rule (MRel D) :=
+def m95 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m0]
+    [.T 0, .T 0, .T 0]
+    [.T 0]
+    [(1, 1)] (by decide +kernel)
+
+def m96 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [] (by decide +kernel)
+
+def m97 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m0]
+    [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(2, 2473934716929)] (by decide +kernel)
+
+def m98 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m0]
+    [.T 0, .T 6, .T 0]
+    [.T 6]
+    [(2, 100671488)] (by decide +kernel)
+
+def m99 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m0]
+    [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(2, 3023690530817)] (by decide +kernel)
+
+def m100 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m23, m26, m25, m27, m13, m14, m16, m15, m17, m29, m0]
     [.T 0, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 0]
     [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
     [(24, 7094301751877707697568232036706088539029676227131258230251148359532102874131252953075574975414781522274235981346587846191273754005049931839106532301371696528740038675518218846208)] (by decide +kernel)
 
-def m102 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m13, m14, m15, m17, m16, m29, m0]
-    [.T 0, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 0]
-    [.T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6]
-    [(18, 4260467028610731276726728172786212490512711026609433343732207500158169005465819664978522345190997968723714913201997890347597958225920)] (by decide +kernel)
-
-def m103 : Rule (MRel D) :=
+def m101 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m26, m25, m27, m14, m13, m15, m16, m17, m29, m0]
     [.T 0, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
     .T 4, .T 3, .T 0]
@@ -502,20 +488,34 @@ def m103 : Rule (MRel D) :=
     .T 3]
     [(30, 13017469188381950094439590664221297511068127492666767649725711497361822743642752521687916219351007615125604251178757198157387566621298211975892426474975913676723005043910677673640056404204659706973831024685762404791550509056)] (by decide +kernel)
 
+def m102 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m26, m25, m27, m13, m15, m14, m16, m17, m29, m0]
+    [.T 0, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
+    .T 0]
+    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
+    [(28, 10277622307370666862084777099952752785399412837433374236977692396002031330165733784706214769053563234739842796673013052409809336645758752355111201593674376409006955003694771692716382557539360885060631068172288)] (by decide +kernel)
+
+def m103 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(20, 4795103447021542935090204149037499310141473271916242370438971138450115448660339280306790620661411444582011825317457260989266098504316944700720332800)] (by decide +kernel)
+
 def m104 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m13, m14, m15, m17, m16, m29, m0]
+    [.T 0, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 0]
+    [.T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6]
+    [(18, 4260467028610731276726728172786212490512711026609433343732207500158169005465819664978522345190997968723714913201997890347597958225920)] (by decide +kernel)
+
+def m105 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m0, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
     [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
     .T 3, .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
     [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
     .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(22, 20695113425749168119091936473188367947590418981466914606259109745643601366067760980620799529305247223564713440660547734764434133872746315352254953974470173203103745)] (by decide +kernel)
-
-def m105 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m26, m25, m27, m13, m15, m14, m16, m17, m29, m0]
-    [.T 0, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
-    .T 0]
-    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
-    [(28, 10277622307370666862084777099952752785399412837433374236977692396002031330165733784706214769053563234739842796673013052409809336645758752355111201593674376409006955003694771692716382557539360885060631068172288)] (by decide +kernel)
 
 def m106 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m14, m15, m16, m29, m0]
@@ -524,65 +524,25 @@ def m106 : Rule (MRel D) :=
     [(10, 2209152002468661418887845355145021694297472452098564142811028129639825409)] (by decide +kernel)
 
 def m107 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m24, m23, m22, m26, m25, m27, m13, m14, m15, m16, m17]
-    [.T 0, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 0]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(30, 24585160296799451910029499024056495995382706111068792709655344349678888678136797194184587445494817452092909328956327030477928302926053080186038141079192586699142821613491810793887288553826566457010761059625985658973094715392)] (by decide +kernel)
-
-def m108 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m24, m23, m26, m25, m27, m16, m17]
-    [.T 0, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
-    .T 0]
-    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
-    .T 5]
-    [(18, 9938634835919078013511738773940341278756334323237429207739259400344837669046951179186599928922572032046977560048498635675301283119104)] (by decide +kernel)
-
-def m109 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m17]
-    [.T 0, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 0]
-    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
-    [(10, 5742684319690886316147534797764347848635487217995947737849456490362970112)] (by decide +kernel)
-
-def m110 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m24, m23, m22, m26, m25, m27, m14, m15, m16, m17]
-    [.T 0, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 6, .T 5, .T 4, .T 3, .T 0]
-    [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0, .T 6, .T 5, .T 4, .T 3]
-    [(28, 20551482387082887692911220100792367695187651018535434560723532633596452897712161326943520547459895437670745875396024648134661769159408391203338202506020520016712230719706893227573782268638371619281727094030336)] (by decide +kernel)
-
-def m111 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m0, m17, m16, m15, m14, m13, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5,
-    .T 4, .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(32, 40698529243722243666326697762423670029526480470229615889964891207648139170209874975894764058438665138073619549705718098747882763783593836624510298430388073252692082162317409624347944674418532027922474752304669019881043303455293518500593665)] (by decide +kernel)
-
-def m112 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m24, m23, m22, m26, m25, m27, m15, m16, m17]
-    [.T 0, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
-    .T 5, .T 4, .T 0]
-    [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
-    .T 6, .T 5, .T 4]
-    [(24, 15198700984064662601603046115139115826278998847391002371928559627236404302837114502788340591544638223104818754273258443202671518094175153393511147995557580446780135208980020486144)] (by decide +kernel)
-
-def m113 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [] (by decide +kernel)
-
-def m114 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m27, m13, m14, m15, m16, m17, m29, m0]
     [.T 0, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
     .T 0]
     [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
     [(18, 5679727370586077646439485223876196414757958218302382489486153563219621418596104010844039120183532980205633305225613044439596308406272)] (by decide +kernel)
 
-def m115 : Rule (MRel D) :=
+def m108 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m14, m15, m16, m17, m29, m0]
+    [.T 0, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 0]
+    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
+    [(16, 4414025248312745439552641478776620973181283679307466034539166254878758350084713012169827222900311718383707486846746624)] (by decide +kernel)
+
+def m109 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m15, m16, m17, m29, m0]
+    [.T 0, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 0]
+    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
+    [(14, 3360369064156643836161999505495489813819885676777180462443030926883892471299240841987891928658448769024)] (by decide +kernel)
+
+def m110 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m27]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
     .T 2, .T 1, .T 0]
@@ -590,19 +550,13 @@ def m115 : Rule (MRel D) :=
     .T 2, .T 1, .T 0]
     [(2, 1649301045248)] (by decide +kernel)
 
-def m116 : Rule (MRel D) :=
+def m111 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m17, m16, m29, m0]
     [.T 0, .T 6, .T 5, .K, .T 5, .T 6, .T 0]
     [.T 6, .T 5, .K, .T 5, .T 6]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
 
-def m117 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m14, m15, m16, m17, m29, m0]
-    [.T 0, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 0]
-    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
-    [(16, 4414025248312745439552641478776620973181283679307466034539166254878758350084713012169827222900311718383707486846746624)] (by decide +kernel)
-
-def m118 : Rule (MRel D) :=
+def m112 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m0, m27]
     [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4,
     .T 3, .T 2, .T 1, .T 0, .T 0]
@@ -610,64 +564,13 @@ def m118 : Rule (MRel D) :=
     .T 1]
     [(4, 5261282992014968383934038017)] (by decide +kernel)
 
-def m119 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m15, m16, m17, m29, m0]
-    [.T 0, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 0]
-    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
-    [(14, 3360369064156643836161999505495489813819885676777180462443030926883892471299240841987891928658448769024)] (by decide +kernel)
-
-def m120 : Rule (MRel D) :=
+def m113 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m16, m29, m0]
     [.T 0, .T 5, .K, .T 5, .T 0]
     [.T 5, .K, .T 5]
     [(4, 619158923527629584560291841)] (by decide +kernel)
 
-def m121 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m13, m14, m15, m16, m17, m29, m0]
-    [.T 0, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 0]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(14, 3920441969562867114576080395704562382077556962807461138166794471880978390013062551969555971503378399233)] (by decide +kernel)
-
-def m122 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0]
-    [] (by decide +kernel)
-
-def m123 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m16, m17, m29, m0]
-    [.T 0, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 0]
-    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
-    [(8, 1569610702327984633104988065931477809181284417919166447617)] (by decide +kernel)
-
-def m124 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m14, m15, m16, m17, m29, m0]
-    [.T 0, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 0]
-    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
-    [(12, 2984607285011836662535599906871382177186864844273038573923745937362371758611618594816001)] (by decide +kernel)
-
-def m125 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m0]
-    [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 0, .T 0]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(2, 4123202158593)] (by decide +kernel)
-
-def m126 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m16, m17, m29, m0]
-    [.T 0, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 0]
-    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
-    [(10, 2209044162678778940048586763925353584295302199921889810853743910608437249)] (by decide +kernel)
-
-def m127 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m29, m0]
-    [.T 0, .K, .T 0]
-    [.K]
-    [(2, 274978570240)] (by decide +kernel)
-
-def m128 : Rule (MRel D) :=
+def m114 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m26, m25, m27, m13, m14, m15, m16, m17, m29, m0]
     [.T 0, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
     .T 5, .T 4, .T 3, .T 2, .T 0]
@@ -675,7 +578,19 @@ def m128 : Rule (MRel D) :=
     .T 4, .T 3, .T 2]
     [(32, 16284300606194465863492499057043916617245577212148674144945884092314877608273914399126163404340747202083161630593370862840733161325066346428807987405543322533843662587142537462068693502817367870789149699130263803725813715950958703674433536)] (by decide +kernel)
 
-def m129 : Rule (MRel D) :=
+def m115 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m14, m16, m15, m17, m29, m0]
+    [.T 0, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 0]
+    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
+    [(18, 4260293736749684225580088444606393769465187147647374884177309883936589328359508790868061637678351769362440205152453700727193349406720)] (by decide +kernel)
+
+def m116 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m15, m14, m16, m17, m29, m0]
+    [.T 0, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 0]
+    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
+    [(20, 5595831974026630003674160470770301851170863016992919894220533022738982969003664275055378377869147238715992274635669727133115726299512302138071998464)] (by decide +kernel)
+
+def m117 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m26, m25, m27]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
     .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
@@ -683,19 +598,13 @@ def m129 : Rule (MRel D) :=
     .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(12, 2984000200973968540147880394373390193905268933747384844515887908880057897789163619532800)] (by decide +kernel)
 
-def m130 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m14, m16, m15, m17, m29, m0]
-    [.T 0, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 0]
-    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
-    [(18, 4260293736749684225580088444606393769465187147647374884177309883936589328359508790868061637678351769362440205152453700727193349406720)] (by decide +kernel)
-
-def m131 : Rule (MRel D) :=
+def m118 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m27, m14, m15, m17, m16, m29, m0]
     [.T 0, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 0]
     [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
     [(14, 2800706268273539588827412617120558576919415145846728707793452661066671616208015047693949041189811396608)] (by decide +kernel)
 
-def m132 : Rule (MRel D) :=
+def m119 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m0, m24, m23, m22, m26, m25, m27]
     [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
     .T 2, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
@@ -703,71 +612,13 @@ def m132 : Rule (MRel D) :=
     .T 5, .T 4, .T 3, .T 2, .T 1]
     [(14, 11758728331461728262735294295879787054672369240677861341563648235371299527437698291366562834512772857857)] (by decide +kernel)
 
-def m133 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m15, m14, m16, m17, m29, m0]
-    [.T 0, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 0]
-    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
-    [(20, 5595831974026630003674160470770301851170863016992919894220533022738982969003664275055378377869147238715992274635669727133115726299512302138071998464)] (by decide +kernel)
-
-def m134 : Rule (MRel D) :=
+def m120 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m15, m16, m29, m0]
     [.T 0, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 0]
     [.T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3]
     [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
 
-def m135 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m13, m0, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 0, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 0]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(32, 26049118148686152717523196568990033795659009046920613954846618209980224502763590240761105031903668015722185526286472217667760108937648168747836002324146446335424278196609246311646870073736117473500589600325498016101351409005581927719149568)] (by decide +kernel)
-
-def m136 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m13, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(30, 8675547597495015486982648195490051465054177530349557983398966357433497898955742029776059425970979577054695918562911237543186517019625224368274469438145346437924035434377382081349360822812985069246220005212836413345099726848)] (by decide +kernel)
-
-def m137 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m0, m21, m20, m24, m23, m26, m25, m27]
-    [.T 0, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
-    .T 6, .T 5, .T 0]
-    [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
-    [(20, 10389667282101338115107299660280571001053100647248839001927143294635801430942645274339269852744419266803013999225269112073282725224926092249612173312)] (by decide +kernel)
-
-def m138 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m0, m21, m24, m26, m27]
-    [.T 0, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
-    .T 0]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [(12, 5968061154804122359128747504095050186733975466161034770397818668505459728293309685178368)] (by decide +kernel)
-
-def m139 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m0, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 0, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 0]
-    [.T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
-    .T 5, .T 4, .T 3]
-    [(30, 21690016400187438468592551591295756776918710591210250547685906038636359495962845527658327182643091894037437434379871420072310743749651127251487219263277696673670775709331845250302830241005217421145382980430973772481830092800)] (by decide +kernel)
-
-def m140 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m0, m21, m20, m19, m24, m23, m22, m26, m25, m27]
-    [.T 0, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0, .T 6, .T 5, .T 4, .T 0]
-    [.T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
-    .T 4]
-    [(26, 15969517314036095288793782162316893088659383617540370645730801777337747489928939138904644049223460552627754074805786342198146070302892188419108094982279461060809866769346951734372287975887233024)] (by decide +kernel)
-
-def m141 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m0]
-    [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(2, 3023690530817)] (by decide +kernel)
-
-def m142 : Rule (MRel D) :=
+def m121 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m13, m14, m15, m16, m17, m29, m0]
     [.T 0, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
     .T 3, .T 2, .T 0]
@@ -775,7 +626,20 @@ def m142 : Rule (MRel D) :=
     .T 2]
     [(24, 9119937800311092387292348077562026430082086862426323237729021984513860148250258447172966218399956321275706880765459213804655602288364739237668678818342505362480758859819930132480)] (by decide +kernel)
 
-def m143 : Rule (MRel D) :=
+def m122 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m16, m15, m17, m29, m0]
+    [.T 0, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 0]
+    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
+    [(12, 2487284033780662156184125495992063419715813071329258471079837062661842127997672039137280)] (by decide +kernel)
+
+def m123 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m14, m15, m16, m17, m29, m0]
+    [.T 0, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
+    .T 0]
+    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
+    [(22, 7200129483987815419530686613331129139204215475803862190563712590344453034611739367292761532019324902893929586936204168755324901901134559337035903887865604179263488)] (by decide +kernel)
+
+def m124 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
     .T 4, .T 3, .T 2, .T 1, .T 0]
@@ -783,26 +647,13 @@ def m143 : Rule (MRel D) :=
     .T 4, .T 3, .T 2, .T 1, .T 0]
     [(6, 2090737449584884740559895460235665213538304)] (by decide +kernel)
 
-def m144 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m16, m15, m17, m29, m0]
-    [.T 0, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 0]
-    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
-    [(12, 2487284033780662156184125495992063419715813071329258471079837062661842127997672039137280)] (by decide +kernel)
-
-def m145 : Rule (MRel D) :=
+def m125 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m27, m15, m17, m16, m29, m0]
     [.T 0, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 0]
     [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
     [(10, 1767440223110028485603502486184048468343097709078905484768401782913114112)] (by decide +kernel)
 
-def m146 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m14, m15, m16, m17, m29, m0]
-    [.T 0, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
-    .T 0]
-    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
-    [(22, 7200129483987815419530686613331129139204215475803862190563712590344453034611739367292761532019324902893929586936204168755324901901134559337035903887865604179263488)] (by decide +kernel)
-
-def m147 : Rule (MRel D) :=
+def m126 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m0, m26, m25, m27]
     [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6,
     .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
@@ -810,11 +661,160 @@ def m147 : Rule (MRel D) :=
     .T 3, .T 2, .T 1]
     [(8, 7454106259721684096405371950121517124788771035422203576321)] (by decide +kernel)
 
-def m148 : Rule (MRel D) :=
+def m127 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m15, m16, m29, m0]
     [.T 0, .T 4, .T 5, .K, .T 5, .T 4, .T 0]
     [.T 4, .T 5, .K, .T 5, .T 4]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
+
+def m128 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m24, m23, m22, m26, m25, m27, m13, m14, m15, m16, m17]
+    [.T 0, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 0]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(30, 24585160296799451910029499024056495995382706111068792709655344349678888678136797194184587445494817452092909328956327030477928302926053080186038141079192586699142821613491810793887288553826566457010761059625985658973094715392)] (by decide +kernel)
+
+def m129 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m24, m23, m26, m25, m27, m16, m17]
+    [.T 0, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
+    .T 0]
+    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
+    .T 5]
+    [(18, 9938634835919078013511738773940341278756334323237429207739259400344837669046951179186599928922572032046977560048498635675301283119104)] (by decide +kernel)
+
+def m130 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m24, m23, m22, m26, m25, m27, m14, m15, m16, m17]
+    [.T 0, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 6, .T 5, .T 4, .T 3, .T 0]
+    [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0, .T 6, .T 5, .T 4, .T 3]
+    [(28, 20551482387082887692911220100792367695187651018535434560723532633596452897712161326943520547459895437670745875396024648134661769159408391203338202506020520016712230719706893227573782268638371619281727094030336)] (by decide +kernel)
+
+def m131 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m24, m23, m22, m26, m25, m27, m15, m16, m17]
+    [.T 0, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
+    .T 5, .T 4, .T 0]
+    [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
+    .T 6, .T 5, .T 4]
+    [(24, 15198700984064662601603046115139115826278998847391002371928559627236404302837114502788340591544638223104818754273258443202671518094175153393511147995557580446780135208980020486144)] (by decide +kernel)
+
+def m132 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m17]
+    [.T 0, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 0]
+    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
+    [(10, 5742684319690886316147534797764347848635487217995947737849456490362970112)] (by decide +kernel)
+
+def m133 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m0, m17, m16, m15, m14, m13, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5,
+    .T 4, .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(32, 40698529243722243666326697762423670029526480470229615889964891207648139170209874975894764058438665138073619549705718098747882763783593836624510298430388073252692082162317409624347944674418532027922474752304669019881043303455293518500593665)] (by decide +kernel)
+
+def m134 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [] (by decide +kernel)
+
+def m135 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m13, m14, m15, m16, m17, m29, m0]
+    [.T 0, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 0]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(14, 3920441969562867114576080395704562382077556962807461138166794471880978390013062551969555971503378399233)] (by decide +kernel)
+
+def m136 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m16, m17, m29, m0]
+    [.T 0, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 0]
+    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
+    [(8, 1569610702327984633104988065931477809181284417919166447617)] (by decide +kernel)
+
+def m137 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m14, m15, m16, m17, m29, m0]
+    [.T 0, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 0]
+    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
+    [(12, 2984607285011836662535599906871382177186864844273038573923745937362371758611618594816001)] (by decide +kernel)
+
+def m138 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m16, m17, m29, m0]
+    [.T 0, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 0]
+    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
+    [(10, 2209044162678778940048586763925353584295302199921889810853743910608437249)] (by decide +kernel)
+
+def m139 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0]
+    [] (by decide +kernel)
+
+def m140 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m0]
+    [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 0, .T 0]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(2, 4123202158593)] (by decide +kernel)
+
+def m141 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m29, m0]
+    [.T 0, .K, .T 0]
+    [.K]
+    [(2, 274978570240)] (by decide +kernel)
+
+def m142 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m13, m0, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 0, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 0]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(32, 26049118148686152717523196568990033795659009046920613954846618209980224502763590240761105031903668015722185526286472217667760108937648168747836002324146446335424278196609246311646870073736117473500589600325498016101351409005581927719149568)] (by decide +kernel)
+
+def m143 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m0, m21, m20, m24, m23, m26, m25, m27]
+    [.T 0, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
+    .T 6, .T 5, .T 0]
+    [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
+    [(20, 10389667282101338115107299660280571001053100647248839001927143294635801430942645274339269852744419266803013999225269112073282725224926092249612173312)] (by decide +kernel)
+
+def m144 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m0, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 0, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 0]
+    [.T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
+    .T 5, .T 4, .T 3]
+    [(30, 21690016400187438468592551591295756776918710591210250547685906038636359495962845527658327182643091894037437434379871420072310743749651127251487219263277696673670775709331845250302830241005217421145382980430973772481830092800)] (by decide +kernel)
+
+def m145 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m0, m21, m20, m19, m24, m23, m22, m26, m25, m27]
+    [.T 0, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0, .T 6, .T 5, .T 4, .T 0]
+    [.T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
+    .T 4]
+    [(26, 15969517314036095288793782162316893088659383617540370645730801777337747489928939138904644049223460552627754074805786342198146070302892188419108094982279461060809866769346951734372287975887233024)] (by decide +kernel)
+
+def m146 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m13, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(30, 8675547597495015486982648195490051465054177530349557983398966357433497898955742029776059425970979577054695918562911237543186517019625224368274469438145346437924035434377382081349360822812985069246220005212836413345099726848)] (by decide +kernel)
+
+def m147 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m0, m21, m24, m26, m27]
+    [.T 0, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
+    .T 0]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [(12, 5968061154804122359128747504095050186733975466161034770397818668505459728293309685178368)] (by decide +kernel)
+
+def m148 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m0]
+    [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 0]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(2, 3023690530817)] (by decide +kernel)
 
 def m149 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m14, m15, m16, m17, m29, m0]
@@ -823,41 +823,41 @@ def m149 : Rule (MRel D) :=
     [(12, 2984728701821219273606878077684750358757387612517051065058793201045450987084506900463617)] (by decide +kernel)
 
 def m150 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [] (by decide +kernel)
-
-def m151 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m16, m17, m29, m0]
     [.T 0, .T 5, .T 6, .K, .T 6, .T 5, .T 0]
     [.T 5, .T 6, .K, .T 6, .T 5]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
 
-def m152 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m29, m0]
-    [.T 0, .T 6, .K, .T 6, .T 0]
-    [.T 6, .K, .T 6]
-    [(4, 619158923527629584560291841)] (by decide +kernel)
-
-def m153 : Rule (MRel D) :=
+def m151 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m15, m16, m17, m29, m0]
     [.T 0, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 0]
     [.T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3]
     [(10, 2209152002468661418887845355145021694297472452098564142811028129639825409)] (by decide +kernel)
 
+def m152 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m16, m17, m29, m0]
+    [.T 0, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 0]
+    [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
+    [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
+
+def m153 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [] (by decide +kernel)
+
 def m154 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m29, m0]
+    [.T 0, .T 6, .K, .T 6, .T 0]
+    [.T 6, .K, .T 6]
+    [(4, 619158923527629584560291841)] (by decide +kernel)
+
+def m155 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m0]
     [.T 0, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 0]
     [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(2, 3573446344705)] (by decide +kernel)
-
-def m155 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m16, m17, m29, m0]
-    [.T 0, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 0]
-    [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
-    [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
 
 def m156 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
@@ -866,41 +866,41 @@ def m156 : Rule (MRel D) :=
     [] (by decide +kernel)
 
 def m157 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m1]
-    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(2, 3023690530817)] (by decide +kernel)
-
-def m158 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m20, m21, m30, m1]
     [.T 1, .T 5, .T 6, .Z, .T 6, .T 5, .T 1]
     [.T 5, .T 6, .Z, .T 6, .T 5]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
 
-def m159 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m30, m1]
-    [.T 1, .T 6, .Z, .T 6, .T 1]
-    [.T 6, .Z, .T 6]
-    [(4, 619158923527629584560291841)] (by decide +kernel)
-
-def m160 : Rule (MRel D) :=
+def m158 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m18, m19, m20, m21, m30, m1]
     [.T 1, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 1]
     [.T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3]
     [(10, 2209152002468661418887845355145021694297472452098564142811028129639825409)] (by decide +kernel)
 
+def m159 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m20, m21, m30, m1]
+    [.T 1, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 1]
+    [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
+    [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
+
+def m160 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m1]
+    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(2, 3023690530817)] (by decide +kernel)
+
 def m161 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m30, m1]
+    [.T 1, .T 6, .Z, .T 6, .T 1]
+    [.T 6, .Z, .T 6]
+    [(4, 619158923527629584560291841)] (by decide +kernel)
+
+def m162 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m15, m16, m17, m28, m0]
     [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 1]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(14, 4480514874969090393111578080822234651269301297054431784072513344380305059182524591821218351129445793792)] (by decide +kernel)
-
-def m162 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m20, m21, m30, m1]
-    [.T 1, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 1]
-    [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
-    [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
 
 def m163 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m30, m1]
@@ -909,40 +909,40 @@ def m163 : Rule (MRel D) :=
     [(2, 274978570240)] (by decide +kernel)
 
 def m164 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
+    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
+    [] (by decide +kernel)
+
+def m165 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 1, .T 2, .T 1]
+    [.T 1, .T 2, .T 1]
+    [] (by decide +kernel)
+
+def m166 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 1, .T 2, .T 3, .T 2, .T 1]
+    [.T 1, .T 2, .T 3, .T 2, .T 1]
+    [] (by decide +kernel)
+
+def m167 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m1]
     [.T 1, .T 1, .T 1]
     [.T 1]
     [(1, 1)] (by decide +kernel)
 
-def m165 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
-    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
-    [] (by decide +kernel)
-
-def m166 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [] (by decide +kernel)
-
-def m167 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 1, .T 2, .T 1]
-    [.T 1, .T 2, .T 1]
-    [] (by decide +kernel)
-
 def m168 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [] (by decide +kernel)
+
+def m169 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m7, m0, m1]
     [.T 1, .T 0, .T 1, .T 0, .T 1]
     [.T 0]
     [(3, 9229002086245466112)] (by decide +kernel)
-
-def m169 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 1, .T 2, .T 3, .T 2, .T 1]
-    [.T 1, .T 2, .T 3, .T 2, .T 1]
-    [] (by decide +kernel)
 
 def m170 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
@@ -951,152 +951,138 @@ def m170 : Rule (MRel D) :=
     [] (by decide +kernel)
 
 def m171 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m1]
-    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 1]
-    [.T 2, .T 3, .T 4, .T 3, .T 2]
-    [(2, 1374423089153)] (by decide +kernel)
-
-def m172 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m1]
-    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
-    [.T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2]
-    [(2, 1924178903041)] (by decide +kernel)
-
-def m173 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m1]
-    [.T 1, .T 1, .T 2, .T 1, .T 1]
-    [.T 2]
-    [(2, 274911461377)] (by decide +kernel)
-
-def m174 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m7]
-    [.T 1, .T 0, .T 1]
-    [.T 0, .T 1, .T 0]
-    [(1, 0)] (by decide +kernel)
-
-def m175 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m1]
-    [.T 1, .T 1, .T 2, .T 3, .T 2, .T 1, .T 1]
-    [.T 2, .T 3, .T 2]
-    [(2, 824667275265)] (by decide +kernel)
-
-def m176 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m1]
-    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(2, 2473934716929)] (by decide +kernel)
-
-def m177 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m1]
-    [.T 1, .T 5, .T 1]
-    [.T 5]
-    [(2, 100671488)] (by decide +kernel)
-
-def m178 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m18, m19, m1]
     [.T 1, .T 3, .T 4, .T 3, .T 1]
     [.T 3, .T 4, .T 3]
     [(4, 188903882687372486270976)] (by decide +kernel)
 
-def m179 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m15, m0]
-    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(8, 785068766373098812014736941853658472199341101631070535680)] (by decide +kernel)
-
-def m180 : Rule (MRel D) :=
+def m172 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m19, m1]
     [.T 1, .T 4, .T 1]
     [.T 4]
     [(2, 100671488)] (by decide +kernel)
 
-def m181 : Rule (MRel D) :=
+def m173 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m1]
+    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 1]
+    [.T 2, .T 3, .T 4, .T 3, .T 2]
+    [(2, 1374423089153)] (by decide +kernel)
+
+def m174 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m1]
+    [.T 1, .T 5, .T 1]
+    [.T 5]
+    [(2, 100671488)] (by decide +kernel)
+
+def m175 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m15, m0]
+    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(8, 785068766373098812014736941853658472199341101631070535680)] (by decide +kernel)
+
+def m176 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m20, m21, m1]
     [.T 1, .T 5, .T 6, .T 5, .T 1]
     [.T 5, .T 6, .T 5]
     [(4, 188903882687372486270976)] (by decide +kernel)
 
-def m182 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m19, m20, m1]
-    [.T 1, .T 3, .T 4, .T 5, .T 4, .T 3, .T 1]
-    [.T 3, .T 4, .T 5, .T 4, .T 3]
-    [(6, 297757455650157270790890879356999081984)] (by decide +kernel)
-
-def m183 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m15, m16, m0]
-    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(10, 884016690711194300131648674883215489161721955716330364857149651207323648)] (by decide +kernel)
-
-def m184 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m20, m1]
-    [.T 1, .T 4, .T 5, .T 4, .T 1]
-    [.T 4, .T 5, .T 4]
-    [(4, 188903882687372486270976)] (by decide +kernel)
-
-def m185 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m1]
-    [.T 1, .T 6, .T 1]
-    [.T 6]
-    [(2, 100671488)] (by decide +kernel)
-
-def m186 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m7, m13, m0]
-    [.T 1, .T 0, .T 1, .T 2, .T 1, .T 0, .T 1]
-    [.T 0, .T 1, .T 2, .T 1, .T 0]
-    [(4, 619158941974373933147750400)] (by decide +kernel)
-
-def m187 : Rule (MRel D) :=
+def m177 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m18, m1]
     [.T 1, .T 3, .T 1]
     [.T 3]
     [(2, 100671488)] (by decide +kernel)
 
-def m188 : Rule (MRel D) :=
+def m178 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m1]
+    [.T 1, .T 1, .T 2, .T 1, .T 1]
+    [.T 2]
+    [(2, 274911461377)] (by decide +kernel)
+
+def m179 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m19, m20, m1]
+    [.T 1, .T 3, .T 4, .T 5, .T 4, .T 3, .T 1]
+    [.T 3, .T 4, .T 5, .T 4, .T 3]
+    [(6, 297757455650157270790890879356999081984)] (by decide +kernel)
+
+def m180 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m7, m13, m0]
+    [.T 1, .T 0, .T 1, .T 2, .T 1, .T 0, .T 1]
+    [.T 0, .T 1, .T 2, .T 1, .T 0]
+    [(4, 619158941974373933147750400)] (by decide +kernel)
+
+def m181 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m18, m19, m20, m21, m1]
     [.T 1, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 1]
     [.T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3]
     [(8, 431026062882326872025835396064251682883312160706977792)] (by decide +kernel)
 
-def m189 : Rule (MRel D) :=
+def m182 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m1]
+    [.T 1, .T 1, .T 2, .T 3, .T 2, .T 1, .T 1]
+    [.T 2, .T 3, .T 2]
+    [(2, 824667275265)] (by decide +kernel)
+
+def m183 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m20, m1]
+    [.T 1, .T 4, .T 5, .T 4, .T 1]
+    [.T 4, .T 5, .T 4]
+    [(4, 188903882687372486270976)] (by decide +kernel)
+
+def m184 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m0]
     [.T 1, .T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0, .T 1]
     [.T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0]
     [(6, 697196065681455484829145010733472376946688)] (by decide +kernel)
 
-def m190 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m15, m16, m17, m0]
-    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(12, 995435726524822523726720882999343683181392196496941045419261196282997620701102920957952)] (by decide +kernel)
-
-def m191 : Rule (MRel D) :=
+def m185 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m19, m20, m21, m1]
     [.T 1, .T 4, .T 5, .T 6, .T 5, .T 4, .T 1]
     [.T 4, .T 5, .T 6, .T 5, .T 4]
     [(6, 297757455650157270790890879356999081984)] (by decide +kernel)
 
-def m192 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m1, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(22, 18895547881116272906914874173019886452032518811658533018932059729990560726639040955564184695364704376633846916042441726896437494935935154077545124735487694241529857)] (by decide +kernel)
+def m186 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m1]
+    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
+    [.T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2]
+    [(2, 1924178903041)] (by decide +kernel)
 
-def m193 : Rule (MRel D) :=
+def m187 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m7]
+    [.T 1, .T 0, .T 1]
+    [.T 0, .T 1, .T 0]
+    [(1, 0)] (by decide +kernel)
+
+def m188 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m1]
+    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(2, 2473934716929)] (by decide +kernel)
+
+def m189 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m15, m16, m0]
+    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(10, 884016690711194300131648674883215489161721955716330364857149651207323648)] (by decide +kernel)
+
+def m190 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m1]
+    [.T 1, .T 6, .T 1]
+    [.T 6]
+    [(2, 100671488)] (by decide +kernel)
+
+def m191 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m15, m16, m17, m0]
+    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(12, 995435726524822523726720882999343683181392196496941045419261196282997620701102920957952)] (by decide +kernel)
+
+def m192 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m23, m26, m25, m27, m20, m21]
     [.T 1, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 1]
     [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
     [(14, 6720054662511760454737187301303571837678626370998353714395445291435044235450300460322002680343945035776)] (by decide +kernel)
 
-def m194 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m21]
-    [.T 1, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 1]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [(8, 4315794786002246461638688933587687824203964480396155953152)] (by decide +kernel)
-
-def m195 : Rule (MRel D) :=
+def m193 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m26, m25, m27, m18, m19, m20, m21]
     [.T 1, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
     .T 4, .T 3, .T 1]
@@ -1104,21 +1090,35 @@ def m195 : Rule (MRel D) :=
     .T 5, .T 4, .T 3]
     [(20, 11190103145194367705101884059290695997716434019589369624750065498187182304987956128391405043660917110407861118669879850477193921925851726980545806336)] (by decide +kernel)
 
-def m196 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m7, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27, m13, m14, m15, m16, m17]
-    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(32, 30936693651857954876517781358520394963554692363473421396729938919588143447851647211338051296051561711964316817290571314042687375921723857756110021318763357482332858948178898390981194790742312807816550456136153126965006461263594778886406144)] (by decide +kernel)
-
-def m197 : Rule (MRel D) :=
+def m194 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m26, m25, m27, m19, m20, m21]
     [.T 1, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
     .T 1]
     [.T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
     .T 4]
     [(18, 9228831373070367233836349933207863342107272956691454042554561541764649373776996632599380340691675201137733634861765804425091378864128)] (by decide +kernel)
+
+def m195 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m1, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(22, 18895547881116272906914874173019886452032518811658533018932059729990560726639040955564184695364704376633846916042441726896437494935935154077545124735487694241529857)] (by decide +kernel)
+
+def m196 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m21]
+    [.T 1, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 1]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [(8, 4315794786002246461638688933587687824203964480396155953152)] (by decide +kernel)
+
+def m197 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m7, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27, m13, m14, m15, m16, m17]
+    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(32, 30936693651857954876517781358520394963554692363473421396729938919588143447851647211338051296051561711964316817290571314042687375921723857756110021318763357482332858948178898390981194790742312807816550456136153126965006461263594778886406144)] (by decide +kernel)
 
 def m198 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
@@ -1127,56 +1127,6 @@ def m198 : Rule (MRel D) :=
     [] (by decide +kernel)
 
 def m199 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(20, 3995935794323596896334605819969970426848571310885081187719254541633333544054444042399053529356426810648566084086650155313490885221043175585312972800)] (by decide +kernel)
-
-def m200 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m1, m24, m23, m26, m25, m27]
-    [.T 1, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
-    .T 1]
-    [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
-    [(16, 6935138101242285231792290297336984356266357138660015517231545988201464447778900727459200775054297358098306863678373888)] (by decide +kernel)
-
-def m201 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m1, m24, m26, m27]
-    [.T 1, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 1]
-    [.T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6]
-    [(10, 4417279566430364772302607593849931383809048720392835348103795281953300480)] (by decide +kernel)
-
-def m202 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m1, m24, m23, m22, m26, m25, m27]
-    [.T 1, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 6, .T 5, .T 4, .T 3, .T 1]
-    [.T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
-    .T 3]
-    [(22, 11698164772094003429208999884038808785565916893916963649330336194265927151056159246764988191858899925429983944942475356731301497693102318167044577318367086870822912)] (by decide +kernel)
-
-def m203 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m7, m17, m16, m15, m14, m13, m0, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5,
-    .T 4, .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(34, 32994926990638854457947211819851222223846874030752141741520199462227140507558921900078915490999123915801937411413874007749554397768075192376841753529825719793405572094658518857261315378682013608410035739743567156910722170126906832498777839815391147196416)] (by decide +kernel)
-
-def m204 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m1, m24, m23, m22, m26, m25, m27]
-    [.T 1, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
-    .T 5, .T 4, .T 1]
-    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
-    [(20, 9590694738687786825866479980160065172018506058983882004606643515305706665938608029236852335985965083752068932165280853900963043690602734952485249024)] (by decide +kernel)
-
-def m205 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m1]
-    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
-    [.T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2]
-    [(2, 2473934716929)] (by decide +kernel)
-
-def m206 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m27]
     [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
     .T 1]
@@ -1184,26 +1134,32 @@ def m206 : Rule (MRel D) :=
     .T 1]
     [(2, 1374423130112)] (by decide +kernel)
 
-def m207 : Rule (MRel D) :=
+def m200 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m18, m19, m20, m21, m31, m1]
+    [.T 1, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 1]
+    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
+    [(16, 4414025248312745439552641478776620973181283679307466034539166254878758350084713012169827222900311718383707486846746624)] (by decide +kernel)
+
+def m201 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m19, m20, m21, m31, m1]
+    [.T 1, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 1]
+    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
+    [(14, 3360369064156643836161999505495489813819885676777180462443030926883892471299240841987891928658448769024)] (by decide +kernel)
+
+def m202 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m1, m27]
     [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
     .T 2, .T 1, .T 1]
     [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
     [(4, 4642312963148905934751793153)] (by decide +kernel)
 
-def m208 : Rule (MRel D) :=
+def m203 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m21, m20, m31, m1]
     [.T 1, .T 6, .T 5, .K, .T 5, .T 6, .T 1]
     [.T 6, .T 5, .K, .T 5, .T 6]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
 
-def m209 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m18, m19, m20, m21, m31, m1]
-    [.T 1, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 1]
-    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
-    [(16, 4414025248312745439552641478776620973181283679307466034539166254878758350084713012169827222900311718383707486846746624)] (by decide +kernel)
-
-def m210 : Rule (MRel D) :=
+def m204 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m7, m27, m13, m14, m15, m16, m17, m29, m0]
     [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4,
     .T 3, .T 2, .T 1, .T 0, .T 1]
@@ -1211,64 +1167,13 @@ def m210 : Rule (MRel D) :=
     .T 2, .T 1, .T 0]
     [(20, 7993334932120468119940955463137388565051554901732741949002391152394828855184210565254790574297232875019714578731813740950082325975683396626227920896)] (by decide +kernel)
 
-def m211 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m19, m20, m21, m31, m1]
-    [.T 1, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 1]
-    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
-    [(14, 3360369064156643836161999505495489813819885676777180462443030926883892471299240841987891928658448769024)] (by decide +kernel)
-
-def m212 : Rule (MRel D) :=
+def m205 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m20, m31, m1]
     [.T 1, .T 5, .K, .T 5, .T 1]
     [.T 5, .K, .T 5]
     [(4, 619158923527629584560291841)] (by decide +kernel)
 
-def m213 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [] (by decide +kernel)
-
-def m214 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m1]
-    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 1]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(2, 3573446344705)] (by decide +kernel)
-
-def m215 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m21, m31, m1]
-    [.T 1, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 1]
-    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
-    [(8, 1569610702327984633104988065931477809181284417919166447617)] (by decide +kernel)
-
-def m216 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m19, m20, m21, m31, m1]
-    [.T 1, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 1]
-    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
-    [(12, 2984607285011836662535599906871382177186864844273038573923745937362371758611618594816001)] (by decide +kernel)
-
-def m217 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m15, m16, m17, m29, m0]
-    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 0, .T 1]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0]
-    [(16, 5675043398265342881902413162458209284079096002840710191183392146593091260254170224771743259986629209944575930154352640)] (by decide +kernel)
-
-def m218 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m20, m21, m31, m1]
-    [.T 1, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 1]
-    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
-    [(10, 2209044162678778940048586763925353584295302199921889810853743910608437249)] (by decide +kernel)
-
-def m219 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m31, m1]
-    [.T 1, .K, .T 1]
-    [.K]
-    [(2, 274978570240)] (by decide +kernel)
-
-def m220 : Rule (MRel D) :=
+def m206 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m26, m25, m27]
     [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
     .T 5, .T 4, .T 3, .T 2, .T 1]
@@ -1276,7 +1181,19 @@ def m220 : Rule (MRel D) :=
     .T 5, .T 4, .T 3, .T 2, .T 1]
     [(12, 2486676949742794033904245773376549988349894471253553559902202683190756487562262311116800)] (by decide +kernel)
 
-def m221 : Rule (MRel D) :=
+def m207 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m18, m20, m19, m21, m31, m1]
+    [.T 1, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 1]
+    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
+    [(18, 4260293736749684225580088444606393769465187147647374884177309883936589328359508790868061637678351769362440205152453700727193349406720)] (by decide +kernel)
+
+def m208 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m19, m18, m20, m21, m31, m1]
+    [.T 1, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 1]
+    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
+    [(20, 5595831974026630003674160470770301851170863016992919894220533022738982969003664275055378377869147238715992274635669727133115726299512302138071998464)] (by decide +kernel)
+
+def m209 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m1, m24, m23, m22, m26, m25, m27]
     [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
     .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
@@ -1284,19 +1201,13 @@ def m221 : Rule (MRel D) :=
     .T 4, .T 3, .T 2]
     [(14, 10638855943685426942001211905709951592527299599886701937827841425846856417051300521713459563921269587969)] (by decide +kernel)
 
-def m222 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m18, m20, m19, m21, m31, m1]
-    [.T 1, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 1]
-    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
-    [(18, 4260293736749684225580088444606393769465187147647374884177309883936589328359508790868061637678351769362440205152453700727193349406720)] (by decide +kernel)
-
-def m223 : Rule (MRel D) :=
+def m210 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m27, m18, m19, m21, m20, m31, m1]
     [.T 1, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 1]
     [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
     [(14, 2800706268273539588827412617120558576919415145846728707793452661066671616208015047693949041189811396608)] (by decide +kernel)
 
-def m224 : Rule (MRel D) :=
+def m211 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m7, m24, m23, m22, m26, m25, m27, m13, m14, m15, m16, m17, m29, m0]
     [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
     .T 2, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
@@ -1304,72 +1215,13 @@ def m224 : Rule (MRel D) :=
     .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(34, 22000719829212243606288098626345892555300120834388087418897115673108724314427417813209307758965303316139643845738537721812424801232660769555456210284962233129634031933016228164269802502510133415274827488773348509189573652848336511068640996717244308258816)] (by decide +kernel)
 
-def m225 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m19, m18, m20, m21, m31, m1]
-    [.T 1, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 1]
-    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
-    [(20, 5595831974026630003674160470770301851170863016992919894220533022738982969003664275055378377869147238715992274635669727133115726299512302138071998464)] (by decide +kernel)
-
-def m226 : Rule (MRel D) :=
+def m212 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m18, m19, m20, m31, m1]
     [.T 1, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 1]
     [.T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3]
     [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
 
-def m227 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m13, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(30, 7229652407545373538847523835477711966530787637822494446005190370342133057410693100237067980224359631809528698046331891057088693564398463117796582409006425542494778475716644858642595502429890168880021909801722463939568115712)] (by decide +kernel)
-
-def m228 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m1, m17, m16, m15, m14, m13, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(32, 37442662772901435491268800957187998721186826581544114800234744322838816780591654953158070498717971704660150121726081444858847068078710002917452723523565682321323241261385218773314876520942641203407513019135199049005435808310768595422412801)] (by decide +kernel)
-
-def m229 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m21, m20, m7, m24, m23, m26, m25, m27, m13, m14, m15, m29, m0]
-    [.T 1, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
-    .T 6, .T 5, .T 1]
-    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
-    .T 5]
-    [(34, 16502497595878985665342191568714488105506459684575984548473187288801883450750742684187276758461190893241093544057199028274799061015338813260586997163800141211267611983443437439638918019820901625573878087604629375880635231637462395009115313856065042399232)] (by decide +kernel)
-
-def m230 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m7, m24, m26, m27, m13, m14, m15, m16, m29, m0]
-    [.T 1, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
-    .T 1]
-    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
-    [(24, 8107367106503244167874513955239294909142455852269620444073240213554698199112367953364380063129026856177652277626280992025881986082303446961141965289846100716514998008912390660096)] (by decide +kernel)
-
-def m231 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m21, m20, m19, m18, m7, m24, m23, m22, m26, m25, m27, m13, m29, m0]
-    [.T 1, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 1]
-    [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0, .T 6, .T 5, .T 4, .T 3]
-    [(48, 46258995223299620935635947414729290388650193577472989040675669745944856862782947262248276907671910772289256700045870371776624405757429517368573989897861873759782200989057634209951806770318938679093946269446120986595306844522011217785776958537646423846972167172086510987535027325388974153367203579110849534308372854569967891344859174664469058902419938830483456)] (by decide +kernel)
-
-def m232 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m21, m20, m19, m7, m24, m23, m22, m26, m25, m27, m13, m14, m29, m0]
-    [.T 1, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0, .T 6, .T 5, .T 4, .T 1]
-    [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
-    .T 6, .T 5, .T 4]
-    [(42, 29465269886597622382180520379407453931287383306151571469171417132942216255506491917704825534511436588472994536508325184370801609982799895113138519619314684084952839913274269091078425553324357933430692970685236222743402577350868098797183476611829252574969446877730941561941889482214789126164953902617846086035857408)] (by decide +kernel)
-
-def m233 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m15, m16, m29, m0]
-    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(12, 3482051953052393779850512698681590564312762075010882349672478426734752397311408208871424)] (by decide +kernel)
-
-def m234 : Rule (MRel D) :=
+def m213 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27]
     [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
     .T 3, .T 2, .T 1]
@@ -1377,7 +1229,20 @@ def m234 : Rule (MRel D) :=
     .T 3, .T 2, .T 1]
     [(6, 1742288295473249727418725560447161449095168)] (by decide +kernel)
 
-def m235 : Rule (MRel D) :=
+def m214 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m20, m19, m21, m31, m1]
+    [.T 1, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 1]
+    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
+    [(12, 2487284033780662156184125495992063419715813071329258471079837062661842127997672039137280)] (by decide +kernel)
+
+def m215 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m18, m19, m20, m21, m31, m1]
+    [.T 1, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
+    .T 1]
+    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
+    [(22, 7200129483987815419530686613331129139204215475803862190563712590344453034611739367292761532019324902893929586936204168755324901901134559337035903887865604179263488)] (by decide +kernel)
+
+def m216 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m1, m26, m25, m27]
     [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
     .T 4, .T 3, .T 2, .T 1, .T 1]
@@ -1385,26 +1250,13 @@ def m235 : Rule (MRel D) :=
     .T 2]
     [(8, 6669468531106335553829520814956067019875812659112974483457)] (by decide +kernel)
 
-def m236 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m20, m19, m21, m31, m1]
-    [.T 1, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 1]
-    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
-    [(12, 2487284033780662156184125495992063419715813071329258471079837062661842127997672039137280)] (by decide +kernel)
-
-def m237 : Rule (MRel D) :=
+def m217 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m27, m19, m21, m20, m31, m1]
     [.T 1, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 1]
     [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
     [(10, 1767440223110028485603502486184048468343097709078905484768401782913114112)] (by decide +kernel)
 
-def m238 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m18, m19, m20, m21, m31, m1]
-    [.T 1, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
-    .T 1]
-    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
-    [(22, 7200129483987815419530686613331129139204215475803862190563712590344453034611739367292761532019324902893929586936204168755324901901134559337035903887865604179263488)] (by decide +kernel)
-
-def m239 : Rule (MRel D) :=
+def m218 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m7, m26, m25, m27, m13, m14, m15, m16, m17, m29, m0]
     [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6,
     .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
@@ -1412,11 +1264,159 @@ def m239 : Rule (MRel D) :=
     .T 4, .T 3, .T 2, .T 1, .T 0]
     [(26, 12549635965861823823230318054569356519451572096413513173895105551404980851299083086448229809979152837432892442713737845041243546204424357949681241163159502983541254949716696855881156739712679936)] (by decide +kernel)
 
-def m240 : Rule (MRel D) :=
+def m219 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m19, m20, m31, m1]
     [.T 1, .T 4, .T 5, .K, .T 5, .T 4, .T 1]
     [.T 4, .T 5, .K, .T 5, .T 4]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
+
+def m220 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(20, 3995935794323596896334605819969970426848571310885081187719254541633333544054444042399053529356426810648566084086650155313490885221043175585312972800)] (by decide +kernel)
+
+def m221 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m1, m24, m23, m26, m25, m27]
+    [.T 1, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
+    .T 1]
+    [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
+    [(16, 6935138101242285231792290297336984356266357138660015517231545988201464447778900727459200775054297358098306863678373888)] (by decide +kernel)
+
+def m222 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m1, m24, m23, m22, m26, m25, m27]
+    [.T 1, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 6, .T 5, .T 4, .T 3, .T 1]
+    [.T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
+    .T 3]
+    [(22, 11698164772094003429208999884038808785565916893916963649330336194265927151056159246764988191858899925429983944942475356731301497693102318167044577318367086870822912)] (by decide +kernel)
+
+def m223 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m1, m24, m23, m22, m26, m25, m27]
+    [.T 1, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
+    .T 5, .T 4, .T 1]
+    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
+    [(20, 9590694738687786825866479980160065172018506058983882004606643515305706665938608029236852335985965083752068932165280853900963043690602734952485249024)] (by decide +kernel)
+
+def m224 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m1, m24, m26, m27]
+    [.T 1, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 1]
+    [.T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6]
+    [(10, 4417279566430364772302607593849931383809048720392835348103795281953300480)] (by decide +kernel)
+
+def m225 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m7, m17, m16, m15, m14, m13, m0, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5,
+    .T 4, .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(34, 32994926990638854457947211819851222223846874030752141741520199462227140507558921900078915490999123915801937411413874007749554397768075192376841753529825719793405572094658518857261315378682013608410035739743567156910722170126906832498777839815391147196416)] (by decide +kernel)
+
+def m226 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m1]
+    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
+    [.T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2]
+    [(2, 2473934716929)] (by decide +kernel)
+
+def m227 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [] (by decide +kernel)
+
+def m228 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m21, m31, m1]
+    [.T 1, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 1]
+    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
+    [(8, 1569610702327984633104988065931477809181284417919166447617)] (by decide +kernel)
+
+def m229 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m19, m20, m21, m31, m1]
+    [.T 1, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 1]
+    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
+    [(12, 2984607285011836662535599906871382177186864844273038573923745937362371758611618594816001)] (by decide +kernel)
+
+def m230 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m20, m21, m31, m1]
+    [.T 1, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 1]
+    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
+    [(10, 2209044162678778940048586763925353584295302199921889810853743910608437249)] (by decide +kernel)
+
+def m231 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m1]
+    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 1]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(2, 3573446344705)] (by decide +kernel)
+
+def m232 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m15, m16, m17, m29, m0]
+    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 0, .T 1]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0]
+    [(16, 5675043398265342881902413162458209284079096002840710191183392146593091260254170224771743259986629209944575930154352640)] (by decide +kernel)
+
+def m233 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m31, m1]
+    [.T 1, .K, .T 1]
+    [.K]
+    [(2, 274978570240)] (by decide +kernel)
+
+def m234 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m13, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(30, 7229652407545373538847523835477711966530787637822494446005190370342133057410693100237067980224359631809528698046331891057088693564398463117796582409006425542494778475716644858642595502429890168880021909801722463939568115712)] (by decide +kernel)
+
+def m235 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m21, m20, m7, m24, m23, m26, m25, m27, m13, m14, m15, m29, m0]
+    [.T 1, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
+    .T 6, .T 5, .T 1]
+    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
+    .T 5]
+    [(34, 16502497595878985665342191568714488105506459684575984548473187288801883450750742684187276758461190893241093544057199028274799061015338813260586997163800141211267611983443437439638918019820901625573878087604629375880635231637462395009115313856065042399232)] (by decide +kernel)
+
+def m236 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m21, m20, m19, m18, m7, m24, m23, m22, m26, m25, m27, m13, m29, m0]
+    [.T 1, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 1]
+    [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0, .T 6, .T 5, .T 4, .T 3]
+    [(48, 46258995223299620935635947414729290388650193577472989040675669745944856862782947262248276907671910772289256700045870371776624405757429517368573989897861873759782200989057634209951806770318938679093946269446120986595306844522011217785776958537646423846972167172086510987535027325388974153367203579110849534308372854569967891344859174664469058902419938830483456)] (by decide +kernel)
+
+def m237 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m21, m20, m19, m7, m24, m23, m22, m26, m25, m27, m13, m14, m29, m0]
+    [.T 1, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0, .T 6, .T 5, .T 4, .T 1]
+    [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
+    .T 6, .T 5, .T 4]
+    [(42, 29465269886597622382180520379407453931287383306151571469171417132942216255506491917704825534511436588472994536508325184370801609982799895113138519619314684084952839913274269091078425553324357933430692970685236222743402577350868098797183476611829252574969446877730941561941889482214789126164953902617846086035857408)] (by decide +kernel)
+
+def m238 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m1, m17, m16, m15, m14, m13, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(32, 37442662772901435491268800957187998721186826581544114800234744322838816780591654953158070498717971704660150121726081444858847068078710002917452723523565682321323241261385218773314876520942641203407513019135199049005435808310768595422412801)] (by decide +kernel)
+
+def m239 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m7, m24, m26, m27, m13, m14, m15, m16, m29, m0]
+    [.T 1, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
+    .T 1]
+    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
+    [(24, 8107367106503244167874513955239294909142455852269620444073240213554698199112367953364380063129026856177652277626280992025881986082303446961141965289846100716514998008912390660096)] (by decide +kernel)
+
+def m240 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m15, m16, m29, m0]
+    [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 1]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(12, 3482051953052393779850512698681590564312762075010882349672478426734752397311408208871424)] (by decide +kernel)
 
 def m241 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
@@ -1425,41 +1425,41 @@ def m241 : Rule (MRel D) :=
     [] (by decide +kernel)
 
 def m242 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m1]
-    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(2, 3023690530817)] (by decide +kernel)
-
-def m243 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m20, m21, m31, m1]
     [.T 1, .T 5, .T 6, .K, .T 6, .T 5, .T 1]
     [.T 5, .T 6, .K, .T 6, .T 5]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
 
-def m244 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m31, m1]
-    [.T 1, .T 6, .K, .T 6, .T 1]
-    [.T 6, .K, .T 6]
-    [(4, 619158923527629584560291841)] (by decide +kernel)
-
-def m245 : Rule (MRel D) :=
+def m243 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m18, m19, m20, m21, m31, m1]
     [.T 1, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 1]
     [.T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3]
     [(10, 2209152002468661418887845355145021694297472452098564142811028129639825409)] (by decide +kernel)
 
+def m244 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m20, m21, m31, m1]
+    [.T 1, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 1]
+    [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
+    [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
+
+def m245 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m1]
+    [.T 1, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 1]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(2, 3023690530817)] (by decide +kernel)
+
 def m246 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m31, m1]
+    [.T 1, .T 6, .K, .T 6, .T 1]
+    [.T 6, .K, .T 6]
+    [(4, 619158923527629584560291841)] (by decide +kernel)
+
+def m247 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m7, m13, m14, m15, m16, m17, m29, m0]
     [.T 1, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 1]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(14, 4480514874969090393111578080822234651269301297054431784072513344380305059182524591821218351129445793792)] (by decide +kernel)
-
-def m247 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m20, m21, m31, m1]
-    [.T 1, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 1]
-    [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
-    [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
 
 def m248 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m2]
@@ -1468,41 +1468,41 @@ def m248 : Rule (MRel D) :=
     [(2, 2473934716929)] (by decide +kernel)
 
 def m249 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m20, m21, m30, m1]
-    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(12, 3482051953052393779850512698681590564312762075010882349672478426734752397311408208871424)] (by decide +kernel)
-
-def m250 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m24, m32, m2]
     [.T 2, .T 5, .T 6, .Z, .T 6, .T 5, .T 2]
     [.T 5, .T 6, .Z, .T 6, .T 5]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
 
-def m251 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m32, m2]
-    [.T 2, .T 6, .Z, .T 6, .T 2]
-    [.T 6, .Z, .T 6]
-    [(4, 619158923527629584560291841)] (by decide +kernel)
-
-def m252 : Rule (MRel D) :=
+def m250 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
     [.T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2]
     [.T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2]
     [] (by decide +kernel)
 
+def m251 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m22, m23, m24, m32, m2]
+    [.T 2, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 2]
+    [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
+    [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
+
+def m252 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m20, m21, m30, m1]
+    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(12, 3482051953052393779850512698681590564312762075010882349672478426734752397311408208871424)] (by decide +kernel)
+
 def m253 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m32, m2]
+    [.T 2, .T 6, .Z, .T 6, .T 2]
+    [.T 6, .Z, .T 6]
+    [(4, 619158923527629584560291841)] (by decide +kernel)
+
+def m254 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m8, m18, m19, m20, m21, m49, m30, m1]
     [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 2]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(13, 133533822838767272332594404649256658374710518910480867563880592725290925304440576010893756727296)] (by decide +kernel)
-
-def m254 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m22, m23, m24, m32, m2]
-    [.T 2, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 2]
-    [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
-    [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
 
 def m255 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m32, m2]
@@ -1511,40 +1511,40 @@ def m255 : Rule (MRel D) :=
     [(2, 274978570240)] (by decide +kernel)
 
 def m256 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8]
-    [.T 2, .T 1, .T 2]
-    [.T 1, .T 2, .T 1]
-    [(1, 0)] (by decide +kernel)
-
-def m257 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m2]
     [.T 2, .T 2, .T 3, .T 4, .T 3, .T 2, .T 2]
     [.T 3, .T 4, .T 3]
     [(2, 824667275265)] (by decide +kernel)
 
-def m258 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m2]
-    [.T 2, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 2]
-    [.T 3, .T 4, .T 5, .T 4, .T 3]
-    [(2, 1374423089153)] (by decide +kernel)
-
-def m259 : Rule (MRel D) :=
+def m257 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m2]
     [.T 2, .T 2, .T 2]
     [.T 2]
     [(1, 1)] (by decide +kernel)
 
-def m260 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m13, m49]
-    [.T 2, .T 0, .T 1, .T 0, .T 2]
-    [.T 0, .T 1, .T 2, .T 1, .T 0]
-    [(2, 274945015808)] (by decide +kernel)
-
-def m261 : Rule (MRel D) :=
+def m258 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m2]
     [.T 2, .T 2, .T 3, .T 2, .T 2]
     [.T 3]
     [(2, 274911461377)] (by decide +kernel)
+
+def m259 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8]
+    [.T 2, .T 1, .T 2]
+    [.T 1, .T 2, .T 1]
+    [(1, 0)] (by decide +kernel)
+
+def m260 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m2]
+    [.T 2, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 2]
+    [.T 3, .T 4, .T 5, .T 4, .T 3]
+    [(2, 1374423089153)] (by decide +kernel)
+
+def m261 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m13, m49]
+    [.T 2, .T 0, .T 1, .T 0, .T 2]
+    [.T 0, .T 1, .T 2, .T 1, .T 0]
+    [(2, 274945015808)] (by decide +kernel)
 
 def m262 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m2]
@@ -1553,152 +1553,138 @@ def m262 : Rule (MRel D) :=
     [(2, 1924178903041)] (by decide +kernel)
 
 def m263 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m1]
-    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 2]
-    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
-    [(6, 697196065681455484829145010733472376946688)] (by decide +kernel)
-
-def m264 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m20, m1]
-    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(8, 785068766373098812014736941853658472199341101631070535680)] (by decide +kernel)
-
-def m265 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8, m1, m2]
-    [.T 2, .T 1, .T 2, .T 1, .T 2]
-    [.T 1]
-    [(3, 9229002086245466112)] (by decide +kernel)
-
-def m266 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m13, m2]
-    [.T 2, .T 0, .T 2]
-    [.T 0]
-    [(2, 274978570240)] (by decide +kernel)
-
-def m267 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m1]
-    [.T 2, .T 1, .T 2, .T 3, .T 2, .T 1, .T 2]
-    [.T 1, .T 2, .T 3, .T 2, .T 1]
-    [(4, 619158941974373933147750400)] (by decide +kernel)
-
-def m268 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m20, m21, m1]
-    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(10, 884016690711194300131648674883215489161721955716330364857149651207323648)] (by decide +kernel)
-
-def m269 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m23, m2]
-    [.T 2, .T 5, .T 2]
-    [.T 5]
-    [(2, 100671488)] (by decide +kernel)
-
-def m270 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
     [.T 2, .T 3, .T 4, .T 3, .T 2]
     [.T 2, .T 3, .T 4, .T 3, .T 2]
     [] (by decide +kernel)
 
-def m271 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m13, m8, m49, m18, m19, m1]
-    [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(7, 35091740414613274212046374611333867787563804131328)] (by decide +kernel)
-
-def m272 : Rule (MRel D) :=
+def m264 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m2]
     [.T 2, .T 4, .T 2]
     [.T 4]
     [(2, 100671488)] (by decide +kernel)
 
-def m273 : Rule (MRel D) :=
+def m265 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m1]
+    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 2]
+    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
+    [(6, 697196065681455484829145010733472376946688)] (by decide +kernel)
+
+def m266 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m23, m2]
+    [.T 2, .T 5, .T 2]
+    [.T 5]
+    [(2, 100671488)] (by decide +kernel)
+
+def m267 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m13, m8, m49, m18, m19, m1]
+    [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(7, 35091740414613274212046374611333867787563804131328)] (by decide +kernel)
+
+def m268 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m24, m2]
     [.T 2, .T 5, .T 6, .T 5, .T 2]
     [.T 5, .T 6, .T 5]
     [(4, 188903882687372486270976)] (by decide +kernel)
 
-def m274 : Rule (MRel D) :=
+def m269 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 2, .T 3, .T 2]
+    [.T 2, .T 3, .T 2]
+    [] (by decide +kernel)
+
+def m270 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8, m1, m2]
+    [.T 2, .T 1, .T 2, .T 1, .T 2]
+    [.T 1]
+    [(3, 9229002086245466112)] (by decide +kernel)
+
+def m271 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
     [.T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2]
     [.T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2]
     [] (by decide +kernel)
 
-def m275 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m13, m8, m49, m18, m19, m20, m1]
-    [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(9, 39513001139847147117369416906518823495578327369176964551877328896)] (by decide +kernel)
-
-def m276 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m22, m23, m2]
-    [.T 2, .T 4, .T 5, .T 4, .T 2]
-    [.T 4, .T 5, .T 4]
-    [(4, 188903882687372486270976)] (by decide +kernel)
-
-def m277 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m2]
-    [.T 2, .T 6, .T 2]
-    [.T 6]
-    [(2, 100671488)] (by decide +kernel)
-
-def m278 : Rule (MRel D) :=
+def m272 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m8, m1, m2]
     [.T 2, .T 0, .T 1, .T 2, .T 1, .T 0, .T 2]
     [.T 0, .T 1, .T 0]
     [(5, 31162655324380610695429477390876672)] (by decide +kernel)
 
-def m279 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 2, .T 3, .T 2]
-    [.T 2, .T 3, .T 2]
-    [] (by decide +kernel)
-
-def m280 : Rule (MRel D) :=
+def m273 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
     [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
     [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
     [] (by decide +kernel)
 
-def m281 : Rule (MRel D) :=
+def m274 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m1]
+    [.T 2, .T 1, .T 2, .T 3, .T 2, .T 1, .T 2]
+    [.T 1, .T 2, .T 3, .T 2, .T 1]
+    [(4, 619158941974373933147750400)] (by decide +kernel)
+
+def m275 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m22, m23, m2]
+    [.T 2, .T 4, .T 5, .T 4, .T 2]
+    [.T 4, .T 5, .T 4]
+    [(4, 188903882687372486270976)] (by decide +kernel)
+
+def m276 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m8, m49, m18, m1]
     [.T 2, .T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0, .T 2]
     [.T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0]
     [(5, 31165191244777778833718525019815936)] (by decide +kernel)
 
-def m282 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m13, m8, m49, m18, m19, m20, m21, m1]
-    [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(11, 44491302805215064997383946548232168918452102981780623565368448339642788817666048)] (by decide +kernel)
-
-def m283 : Rule (MRel D) :=
+def m277 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m23, m24, m2]
     [.T 2, .T 4, .T 5, .T 6, .T 5, .T 4, .T 2]
     [.T 4, .T 5, .T 6, .T 5, .T 4]
     [(6, 297757455650157270790890879356999081984)] (by decide +kernel)
 
-def m284 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8, m21, m20, m19, m18, m1, m24, m23, m22, m26, m25, m27]
-    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(24, 15197340666790221341879611513042381692417493324816613905111397968882411234696467760060072862802789756897571055251698769704576759339392979872487383989386115123596322360556928368640)] (by decide +kernel)
+def m278 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m20, m1]
+    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(8, 785068766373098812014736941853658472199341101631070535680)] (by decide +kernel)
 
-def m285 : Rule (MRel D) :=
+def m279 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m13, m2]
+    [.T 2, .T 0, .T 2]
+    [.T 0]
+    [(2, 274978570240)] (by decide +kernel)
+
+def m280 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m20, m21, m1]
+    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(10, 884016690711194300131648674883215489161721955716330364857149651207323648)] (by decide +kernel)
+
+def m281 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m13, m8, m49, m18, m19, m20, m1]
+    [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(9, 39513001139847147117369416906518823495578327369176964551877328896)] (by decide +kernel)
+
+def m282 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m2]
+    [.T 2, .T 6, .T 2]
+    [.T 6]
+    [(2, 100671488)] (by decide +kernel)
+
+def m283 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m13, m8, m49, m18, m19, m20, m21, m1]
+    [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(11, 44491302805215064997383946548232168918452102981780623565368448339642788817666048)] (by decide +kernel)
+
+def m284 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m23, m2, m26, m25, m27]
     [.T 2, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 2]
     [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
     [(12, 4476212817916369132267782643925723770599625152501983145209663068677219889671578316718080)] (by decide +kernel)
 
-def m286 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m2, m26, m27]
-    [.T 2, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 2]
-    [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
-    [(8, 3138694644378414447036062790096104027710408421777724153856)] (by decide +kernel)
-
-def m287 : Rule (MRel D) :=
+def m285 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m26, m25, m27]
     [.T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
     .T 4, .T 3, .T 2]
@@ -1706,20 +1692,34 @@ def m287 : Rule (MRel D) :=
     .T 4, .T 3, .T 2]
     [(12, 1989353698511619527660611152379709782794520008759722275288517457501455077335361002700800)] (by decide +kernel)
 
+def m286 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m2, m26, m25, m27]
+    [.T 2, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
+    .T 2]
+    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
+    [(14, 5599840500101948677705718800583664860749171679519287411134470153102063740596721415357235385296633225216)] (by decide +kernel)
+
+def m287 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8, m21, m20, m19, m18, m1, m24, m23, m22, m26, m25, m27]
+    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(24, 15197340666790221341879611513042381692417493324816613905111397968882411234696467760060072862802789756897571055251698769704576759339392979872487383989386115123596322360556928368640)] (by decide +kernel)
+
 def m288 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m2, m26, m27]
+    [.T 2, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 2]
+    [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
+    [(8, 3138694644378414447036062790096104027710408421777724153856)] (by decide +kernel)
+
+def m289 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m8, m21, m20, m19, m18, m1, m24, m23, m22, m26, m25, m27, m49]
     [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
     .T 3, .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
     .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(25, 543939265569370681617479441717531559518090529623090632324249469781840855354327304818752192910525566144143913460185314893825369208988605297692985664204954537875053902171742457653060698112)] (by decide +kernel)
-
-def m289 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m2, m26, m25, m27]
-    [.T 2, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
-    .T 2]
-    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
-    [(14, 5599840500101948677705718800583664860749171679519287411134470153102063740596721415357235385296633225216)] (by decide +kernel)
 
 def m290 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m2]
@@ -1728,64 +1728,25 @@ def m290 : Rule (MRel D) :=
     [(2, 1924178903041)] (by decide +kernel)
 
 def m291 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m2, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 2, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 2]
-    [.T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
-    .T 5, .T 4, .T 3]
-    [(22, 17095982336483377694737811872851404956474618641850151431605009714337520087210320930507569861424161529702980391424335719028440855999123992802835295496505215279955969)] (by decide +kernel)
-
-def m292 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m24, m23, m8, m26, m25, m27, m18, m19, m31, m1]
-    [.T 2, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
-    .T 2]
-    [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
-    [(28, 10277308778829440911556167990494010727438071737776994625193013908541658261598181392819878600323825684875405815506131058979834685141437189043772286847891905652092974410046722778156599539625325546503459204775936)] (by decide +kernel)
-
-def m293 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m8, m26, m27, m18, m19, m20, m31, m1]
-    [.T 2, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 2]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [(20, 5596027083316839463329570402980159794410898008841461739060379936407612310111133285945028553710940280557254350322212016597844825918734711362760482816)] (by decide +kernel)
-
-def m294 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 6, .T 5, .T 4, .T 3, .T 2]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(20, 3196768141625650857579007490902441543555669349853920004999537944816551639448548804491316438051442176715120342855843049637715671937769406469905612800)] (by decide +kernel)
-
-def m295 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m13, m8, m17, m16, m15, m14, m21, m20, m19, m18, m7, m24, m23, m22, m26, m25, m27, m49, m29, m0]
-    [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5,
-    .T 4, .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(53, 2504148113039384792080167091092267234695584636225472192428763087008490776745854973183324964765089366912304925975385161409632847775609135542038791027231381518791496663364469119820038328771069058414731382381857384333436612795830768992783300261997145044369837378991254443837756937638834156486288723811099372582330698896704691476376747148155611253337007746714082389132479538126735199755487376589193216)] (by decide +kernel)
-
-def m296 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m24, m23, m22, m8, m26, m25, m27, m18, m31, m1]
-    [.T 2, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
-    .T 5, .T 4, .T 2]
-    [.T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
-    .T 4]
-    [(34, 16501602630104861265073033946172510575981837877471424881799084812901229749461049354002534111923893610257953575119965967500809861565267422940895960469268904601536959442450834769148356381724806578957872485669039369916924147303250476440146967528323191693312)] (by decide +kernel)
-
-def m297 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m20, m31, m1]
-    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(10, 2650863781827294352172188221251499619827443681150309713971229616978788352)] (by decide +kernel)
-
-def m298 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m2, m27]
     [.T 2, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
     .T 2]
     [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
     [(4, 4023342934282843485569548289)] (by decide +kernel)
 
-def m299 : Rule (MRel D) :=
+def m292 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(2, 1099545214976)] (by decide +kernel)
+
+def m293 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m22, m23, m24, m33, m2]
+    [.T 2, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 2]
+    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
+    [(14, 3360369064156643836161999505495489813819885676777180462443030926883892471299240841987891928658448769024)] (by decide +kernel)
+
+def m294 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m8, m27, m18, m19, m20, m21, m31, m1]
     [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
     .T 2, .T 1, .T 2]
@@ -1793,19 +1754,13 @@ def m299 : Rule (MRel D) :=
     .T 1]
     [(18, 6389530833434797882211632352131005223219055952518231305378870410158038750718745642522879536449947302895630342992840056224052445970432)] (by decide +kernel)
 
-def m300 : Rule (MRel D) :=
+def m295 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m23, m33, m2]
     [.T 2, .T 6, .T 5, .K, .T 5, .T 6, .T 2]
     [.T 6, .T 5, .K, .T 5, .T 6]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
 
-def m301 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(2, 1099545214976)] (by decide +kernel)
-
-def m302 : Rule (MRel D) :=
+def m296 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m8, m27, m18, m19, m20, m21, m49, m31, m1]
     [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4,
     .T 3, .T 2, .T 1, .T 0, .T 2]
@@ -1813,64 +1768,13 @@ def m302 : Rule (MRel D) :=
     .T 2, .T 1, .T 0]
     [(19, 238225759309848474837833096626062549007200247806056965606952261769591675511894957972789386771058445875321147989518114681771824063603789529088)] (by decide +kernel)
 
-def m303 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m22, m23, m24, m33, m2]
-    [.T 2, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 2]
-    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
-    [(14, 3360369064156643836161999505495489813819885676777180462443030926883892471299240841987891928658448769024)] (by decide +kernel)
-
-def m304 : Rule (MRel D) :=
+def m297 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m33, m2]
     [.T 2, .T 5, .K, .T 5, .T 2]
     [.T 5, .K, .T 5]
     [(4, 619158923527629584560291841)] (by decide +kernel)
 
-def m305 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m2]
-    [.T 2, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 2]
-    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
-    [(2, 3023690530817)] (by decide +kernel)
-
-def m306 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m20, m21, m31, m1]
-    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 2]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(14, 4480378171794717382670802215732286774692215229289958158177604006164473532604420085277439868776979890176)] (by decide +kernel)
-
-def m307 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m23, m24, m33, m2]
-    [.T 2, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 2]
-    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
-    [(8, 1569610702327984633104988065931477809181284417919166447617)] (by decide +kernel)
-
-def m308 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [] (by decide +kernel)
-
-def m309 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m13, m8, m18, m19, m20, m21, m49, m31, m1]
-    [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 0, .T 2]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0]
-    [(15, 169134059916634397061729916050488415713939853592331069017316139694021439619084697668906613343003152932235378688)] (by decide +kernel)
-
-def m310 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m22, m23, m24, m33, m2]
-    [.T 2, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 2]
-    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
-    [(10, 2209044162678778940048586763925353584295302199921889810853743910608437249)] (by decide +kernel)
-
-def m311 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m33, m2]
-    [.T 2, .K, .T 2]
-    [.K]
-    [(2, 274978570240)] (by decide +kernel)
-
-def m312 : Rule (MRel D) :=
+def m298 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m2, m24, m23, m22, m26, m25, m27]
     [.T 2, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
     .T 5, .T 4, .T 3, .T 2, .T 2]
@@ -1878,7 +1782,19 @@ def m312 : Rule (MRel D) :=
     .T 3]
     [(14, 9518983555909125621267129515540116130382229959095542534092034616322413306664902752060356293329766318081)] (by decide +kernel)
 
-def m313 : Rule (MRel D) :=
+def m299 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m23, m24]
+    [.T 2, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 2]
+    [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
+    [(10, 4417549165906678299476516917916738212185360914556869904478971154636226560)] (by decide +kernel)
+
+def m300 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m22, m23, m24]
+    [.T 2, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 2]
+    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
+    [(12, 5471162862407602426292713991998398136505347495868519899812984276978399140086248032460800)] (by decide +kernel)
+
+def m301 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m8, m24, m23, m22, m26, m25, m27, m18, m19, m20, m21]
     [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
     .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
@@ -1886,19 +1802,13 @@ def m313 : Rule (MRel D) :=
     .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(22, 14398721333713875255671596067970334949823964130935882151617876159136006337829303890915053928605690395472323183609906245347331583461467719986435583187458563833331712)] (by decide +kernel)
 
-def m314 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m23, m24]
-    [.T 2, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 2]
-    [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
-    [(10, 4417549165906678299476516917916738212185360914556869904478971154636226560)] (by decide +kernel)
-
-def m315 : Rule (MRel D) :=
+def m302 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m27, m24]
     [.T 2, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 2]
     [.T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6]
     [(6, 3136212434733167911034140419732724376412160)] (by decide +kernel)
 
-def m316 : Rule (MRel D) :=
+def m303 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m8, m24, m23, m22, m26, m25, m27, m18, m19, m20, m21, m49]
     [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
     .T 2, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
@@ -1906,99 +1816,26 @@ def m316 : Rule (MRel D) :=
     .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(23, 513339987197987304369728114565110783299253886169058236333730431735211283438738487518863897461557516256504655854757509155076695094341361679527139812157020970149965962674176)] (by decide +kernel)
 
-def m317 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27, m22, m23, m24]
-    [.T 2, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 2]
-    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
-    [(12, 5471162862407602426292713991998398136505347495868519899812984276978399140086248032460800)] (by decide +kernel)
-
-def m318 : Rule (MRel D) :=
+def m304 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
     [.T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2]
     [.T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2]
     [] (by decide +kernel)
 
-def m319 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m2, m17, m16, m15, m14, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 2, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 2]
-    [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0, .T 6, .T 5, .T 4, .T 3]
-    [(30, 30363974714192056684157442838014453390583589361498223234514074674393362454895574801099625335196399911773958818231303764351420688144872452534334989869579185235072381757275253705563837111971099743800863889261028381830053625857)] (by decide +kernel)
-
-def m320 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8, m17, m16, m15, m14, m21, m20, m19, m18, m7, m13, m24, m23, m22, m26, m25, m27, m29, m0]
-    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(52, 69299266937294904868581003846299275624908773204865408431322045698934518559539996653093118284341027489128010514762708195237007408476912992431583681527922367361872376525100682787879315353656078192625317216886155382536470961458030589881647672439897213122474753150208193122432502936921054901984676311978328293094020653913910134115908901020505168692877962844314862374030695387837915955604750336)] (by decide +kernel)
-
-def m321 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m13, m21, m20, m24, m23, m8, m26, m25, m27, m18, m19, m49, m31, m1]
-    [.T 2, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
-    .T 6, .T 5, .T 2]
-    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
-    .T 5]
-    [(33, 491826089583815570672425753344552395958714709814434939153838321088225998198447581748789457411708677927389049631320957954997408546118934380807172042857480367698281959605745856186127608148481109184501984618346598279111747620451252863074560305545216)] (by decide +kernel)
-
-def m322 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m13, m21, m24, m8, m26, m27, m18, m19, m20, m49, m31, m1]
-    [.T 2, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
-    .T 2]
-    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
-    [(23, 241625739243986853741692126712617616135582535164214702994482840173236108163229262530247698187540459926993163384512487572723231539560961323112729596989739840563588139851776)] (by decide +kernel)
-
-def m323 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m13, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(30, 5783757217595731590712399475465372468007397745295430908611414383250768215865644170698076534477739686564361477529752544570990870109171701867318695379867504647065521517055907635935830182046795268513823814390608514534036504576)] (by decide +kernel)
-
-def m324 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m13, m21, m20, m19, m24, m23, m22, m8, m26, m25, m27, m18, m49, m31, m1]
-    [.T 2, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0, .T 6, .T 5, .T 4, .T 2]
-    [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
-    .T 6, .T 5, .T 4]
-    [(41, 878154902573615237571061048514915857170364684941772441490039704300770195269771284730636730087833428060175424332984910170510177625354887502546501867748942841845402256571654015557367904489753425258278840502198327652429792868855415232952849425299572111529585047585801768086107439365724993153170114757882044416)] (by decide +kernel)
-
-def m325 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m13, m8, m18, m19, m20, m49, m31, m1]
-    [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(11, 103776853378468048295560815815858651027857069316551633008682019137131541478506496)] (by decide +kernel)
-
-def m326 : Rule (MRel D) :=
+def m305 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m2, m26, m25, m27]
     [.T 2, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
     .T 3, .T 2, .T 2]
     [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
     [(8, 5884830802490987011253669679790616914962854282803745390593)] (by decide +kernel)
 
-def m327 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8, m26, m25, m27, m18, m19, m20, m21, m31, m1]
-    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
-    .T 4, .T 3, .T 2, .T 1, .T 2]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 1]
-    [(24, 10133003154936628857159282945846873583326734626965380481309293837278278277389515845675641611603666615027869998053098506355993305337575435177147489734565076149208591820895847186432)] (by decide +kernel)
-
-def m328 : Rule (MRel D) :=
+def m306 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m27, m23, m22, m24, m33, m2]
     [.T 2, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 2]
     [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
     [(12, 2487284033780662156184125495992063419715813071329258471079837062661842127997672039137280)] (by decide +kernel)
 
-def m329 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m22, m24, m23, m33, m2]
-    [.T 2, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 2]
-    [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
-    [(10, 1767440223110028485603502486184048468343097709078905484768401782913114112)] (by decide +kernel)
-
-def m330 : Rule (MRel D) :=
+def m307 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27]
     [.T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
     .T 2]
@@ -2006,7 +1843,21 @@ def m330 : Rule (MRel D) :=
     .T 2]
     [(6, 1393839141361614714277555660658657684652032)] (by decide +kernel)
 
-def m331 : Rule (MRel D) :=
+def m308 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8, m26, m25, m27, m18, m19, m20, m21, m31, m1]
+    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
+    .T 4, .T 3, .T 2, .T 1, .T 2]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 1]
+    [(24, 10133003154936628857159282945846873583326734626965380481309293837278278277389515845675641611603666615027869998053098506355993305337575435177147489734565076149208591820895847186432)] (by decide +kernel)
+
+def m309 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m22, m24, m23, m33, m2]
+    [.T 2, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 2]
+    [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
+    [(10, 1767440223110028485603502486184048468343097709078905484768401782913114112)] (by decide +kernel)
+
+def m310 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m8, m26, m25, m27, m18, m19, m20, m21, m49, m31, m1]
     [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6,
     .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
@@ -2014,11 +1865,160 @@ def m331 : Rule (MRel D) :=
     .T 4, .T 3, .T 2, .T 1, .T 0]
     [(25, 374016595934215211020610267141700336809475415838719753517882252197662025837711388910389780570114739591068708296787329512947732478807864070091600479593497639250735950847739124862523801600)] (by decide +kernel)
 
-def m332 : Rule (MRel D) :=
+def m311 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m23, m33, m2]
     [.T 2, .T 4, .T 5, .K, .T 5, .T 4, .T 2]
     [.T 4, .T 5, .K, .T 5, .T 4]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
+
+def m312 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m2, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 2, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 2]
+    [.T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
+    .T 5, .T 4, .T 3]
+    [(22, 17095982336483377694737811872851404956474618641850151431605009714337520087210320930507569861424161529702980391424335719028440855999123992802835295496505215279955969)] (by decide +kernel)
+
+def m313 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m24, m23, m8, m26, m25, m27, m18, m19, m31, m1]
+    [.T 2, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
+    .T 2]
+    [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
+    [(28, 10277308778829440911556167990494010727438071737776994625193013908541658261598181392819878600323825684875405815506131058979834685141437189043772286847891905652092974410046722778156599539625325546503459204775936)] (by decide +kernel)
+
+def m314 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 6, .T 5, .T 4, .T 3, .T 2]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(20, 3196768141625650857579007490902441543555669349853920004999537944816551639448548804491316438051442176715120342855843049637715671937769406469905612800)] (by decide +kernel)
+
+def m315 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m24, m23, m22, m8, m26, m25, m27, m18, m31, m1]
+    [.T 2, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
+    .T 5, .T 4, .T 2]
+    [.T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
+    .T 4]
+    [(34, 16501602630104861265073033946172510575981837877471424881799084812901229749461049354002534111923893610257953575119965967500809861565267422940895960469268904601536959442450834769148356381724806578957872485669039369916924147303250476440146967528323191693312)] (by decide +kernel)
+
+def m316 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m8, m26, m27, m18, m19, m20, m31, m1]
+    [.T 2, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 2]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [(20, 5596027083316839463329570402980159794410898008841461739060379936407612310111133285945028553710940280557254350322212016597844825918734711362760482816)] (by decide +kernel)
+
+def m317 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m13, m8, m17, m16, m15, m14, m21, m20, m19, m18, m7, m24, m23, m22, m26, m25, m27, m49, m29, m0]
+    [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5,
+    .T 4, .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(53, 2504148113039384792080167091092267234695584636225472192428763087008490776745854973183324964765089366912304925975385161409632847775609135542038791027231381518791496663364469119820038328771069058414731382381857384333436612795830768992783300261997145044369837378991254443837756937638834156486288723811099372582330698896704691476376747148155611253337007746714082389132479538126735199755487376589193216)] (by decide +kernel)
+
+def m318 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m20, m31, m1]
+    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(10, 2650863781827294352172188221251499619827443681150309713971229616978788352)] (by decide +kernel)
+
+def m319 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m2]
+    [.T 2, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 2]
+    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
+    [(2, 3023690530817)] (by decide +kernel)
+
+def m320 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m23, m24, m33, m2]
+    [.T 2, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 2]
+    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
+    [(8, 1569610702327984633104988065931477809181284417919166447617)] (by decide +kernel)
+
+def m321 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [] (by decide +kernel)
+
+def m322 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m22, m23, m24, m33, m2]
+    [.T 2, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 2]
+    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
+    [(10, 2209044162678778940048586763925353584295302199921889810853743910608437249)] (by decide +kernel)
+
+def m323 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m20, m21, m31, m1]
+    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 2]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(14, 4480378171794717382670802215732286774692215229289958158177604006164473532604420085277439868776979890176)] (by decide +kernel)
+
+def m324 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m13, m8, m18, m19, m20, m21, m49, m31, m1]
+    [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 0, .T 2]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0]
+    [(15, 169134059916634397061729916050488415713939853592331069017316139694021439619084697668906613343003152932235378688)] (by decide +kernel)
+
+def m325 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m33, m2]
+    [.T 2, .K, .T 2]
+    [.K]
+    [(2, 274978570240)] (by decide +kernel)
+
+def m326 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m2, m17, m16, m15, m14, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 2, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 2]
+    [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0, .T 6, .T 5, .T 4, .T 3]
+    [(30, 30363974714192056684157442838014453390583589361498223234514074674393362454895574801099625335196399911773958818231303764351420688144872452534334989869579185235072381757275253705563837111971099743800863889261028381830053625857)] (by decide +kernel)
+
+def m327 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m13, m21, m20, m24, m23, m8, m26, m25, m27, m18, m19, m49, m31, m1]
+    [.T 2, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
+    .T 6, .T 5, .T 2]
+    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
+    .T 5]
+    [(33, 491826089583815570672425753344552395958714709814434939153838321088225998198447581748789457411708677927389049631320957954997408546118934380807172042857480367698281959605745856186127608148481109184501984618346598279111747620451252863074560305545216)] (by decide +kernel)
+
+def m328 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m13, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(30, 5783757217595731590712399475465372468007397745295430908611414383250768215865644170698076534477739686564361477529752544570990870109171701867318695379867504647065521517055907635935830182046795268513823814390608514534036504576)] (by decide +kernel)
+
+def m329 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m13, m21, m20, m19, m24, m23, m22, m8, m26, m25, m27, m18, m49, m31, m1]
+    [.T 2, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0, .T 6, .T 5, .T 4, .T 2]
+    [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
+    .T 6, .T 5, .T 4]
+    [(41, 878154902573615237571061048514915857170364684941772441490039704300770195269771284730636730087833428060175424332984910170510177625354887502546501867748942841845402256571654015557367904489753425258278840502198327652429792868855415232952849425299572111529585047585801768086107439365724993153170114757882044416)] (by decide +kernel)
+
+def m330 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8, m17, m16, m15, m14, m21, m20, m19, m18, m7, m13, m24, m23, m22, m26, m25, m27, m29, m0]
+    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(52, 69299266937294904868581003846299275624908773204865408431322045698934518559539996653093118284341027489128010514762708195237007408476912992431583681527922367361872376525100682787879315353656078192625317216886155382536470961458030589881647672439897213122474753150208193122432502936921054901984676311978328293094020653913910134115908901020505168692877962844314862374030695387837915955604750336)] (by decide +kernel)
+
+def m331 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m13, m21, m24, m8, m26, m27, m18, m19, m20, m49, m31, m1]
+    [.T 2, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
+    .T 2]
+    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
+    [(23, 241625739243986853741692126712617616135582535164214702994482840173236108163229262530247698187540459926993163384512487572723231539560961323112729596989739840563588139851776)] (by decide +kernel)
+
+def m332 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m13, m8, m18, m19, m20, m49, m31, m1]
+    [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 2]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(11, 103776853378468048295560815815858651027857069316551633008682019137131541478506496)] (by decide +kernel)
 
 def m333 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m2]
@@ -2027,41 +2027,41 @@ def m333 : Rule (MRel D) :=
     [(2, 2473934716929)] (by decide +kernel)
 
 def m334 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m20, m21, m31, m1]
-    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(12, 3482051953052393779850512698681590564312762075010882349672478426734752397311408208871424)] (by decide +kernel)
-
-def m335 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m24, m33, m2]
     [.T 2, .T 5, .T 6, .K, .T 6, .T 5, .T 2]
     [.T 5, .T 6, .K, .T 6, .T 5]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
 
-def m336 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m33, m2]
-    [.T 2, .T 6, .K, .T 6, .T 2]
-    [.T 6, .K, .T 6]
-    [(4, 619158923527629584560291841)] (by decide +kernel)
-
-def m337 : Rule (MRel D) :=
+def m335 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
     [.T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2]
     [.T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2]
     [] (by decide +kernel)
 
+def m336 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m22, m23, m24, m33, m2]
+    [.T 2, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 2]
+    [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
+    [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
+
+def m337 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m8, m18, m19, m20, m21, m31, m1]
+    [.T 2, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 2]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(12, 3482051953052393779850512698681590564312762075010882349672478426734752397311408208871424)] (by decide +kernel)
+
 def m338 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m33, m2]
+    [.T 2, .T 6, .K, .T 6, .T 2]
+    [.T 6, .K, .T 6]
+    [(4, 619158923527629584560291841)] (by decide +kernel)
+
+def m339 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m13, m8, m18, m19, m20, m21, m49, m31, m1]
     [.T 2, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 2]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(13, 133533822838767272332594404649256658374710518910480867563880592725290925304440576010893756727296)] (by decide +kernel)
-
-def m339 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m22, m23, m24, m33, m2]
-    [.T 2, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 2]
-    [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
-    [(8, 1569706483302143246714188565843260507175851386702579892225)] (by decide +kernel)
 
 def m340 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m9, m22, m23, m24, m32, m2]
@@ -2070,41 +2070,41 @@ def m340 : Rule (MRel D) :=
     [(10, 2650863781827294352172188221251499619827443681150309713971229616978788352)] (by decide +kernel)
 
 def m341 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m22, m23, m24, m50, m32, m2]
-    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 3]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(11, 103776853378468048295560815815858651027857069316551633008682019137131541478506496)] (by decide +kernel)
-
-def m342 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m25, m26, m34, m3]
     [.T 3, .T 5, .T 6, .Z, .T 6, .T 5, .T 3]
     [.T 5, .T 6, .Z, .T 6, .T 5]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
 
-def m343 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m34, m3]
-    [.T 3, .T 6, .Z, .T 6, .T 3]
-    [.T 6, .Z, .T 6]
-    [(4, 619158923527629584560291841)] (by decide +kernel)
-
-def m344 : Rule (MRel D) :=
+def m342 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m3]
     [.T 3, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 3]
     [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
     [(2, 1924178903041)] (by decide +kernel)
 
+def m343 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3]
+    [.T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3]
+    [] (by decide +kernel)
+
+def m344 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m22, m23, m24, m50, m32, m2]
+    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 3]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(11, 103776853378468048295560815815858651027857069316551633008682019137131541478506496)] (by decide +kernel)
+
 def m345 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m34, m3]
+    [.T 3, .T 6, .Z, .T 6, .T 3]
+    [.T 6, .Z, .T 6]
+    [(4, 619158923527629584560291841)] (by decide +kernel)
+
+def m346 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m22, m23, m24, m54, m32, m2]
     [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 3]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(12, 3979618037902333507913184304513235639772144018188731811920931584443433445924733167075328)] (by decide +kernel)
-
-def m346 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3]
-    [.T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3]
-    [] (by decide +kernel)
 
 def m347 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m34, m3]
@@ -2113,40 +2113,40 @@ def m347 : Rule (MRel D) :=
     [(2, 274978570240)] (by decide +kernel)
 
 def m348 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m3]
-    [.T 3, .T 1, .T 3]
-    [.T 1]
-    [(2, 274978570240)] (by decide +kernel)
-
-def m349 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m9, m22, m2]
     [.T 3, .T 2, .T 3, .T 4, .T 3, .T 2, .T 3]
     [.T 2, .T 3, .T 4, .T 3, .T 2]
     [(4, 619158941974373933147750400)] (by decide +kernel)
 
-def m350 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m9, m22, m23, m2]
-    [.T 3, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 3]
-    [.T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2]
-    [(6, 697196065681455484829145010733472376946688)] (by decide +kernel)
-
-def m351 : Rule (MRel D) :=
+def m349 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m9]
     [.T 3, .T 2, .T 3]
     [.T 2, .T 3, .T 2]
     [(1, 0)] (by decide +kernel)
 
-def m352 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m3]
-    [.T 3, .T 0, .T 1, .T 0, .T 3]
-    [.T 0, .T 1, .T 0]
-    [(4, 928643942570094340637458432)] (by decide +kernel)
-
-def m353 : Rule (MRel D) :=
+def m350 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m9, m2, m3]
     [.T 3, .T 2, .T 3, .T 2, .T 3]
     [.T 2]
     [(3, 9229002086245466112)] (by decide +kernel)
+
+def m351 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m3]
+    [.T 3, .T 1, .T 3]
+    [.T 1]
+    [(2, 274978570240)] (by decide +kernel)
+
+def m352 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m9, m22, m23, m2]
+    [.T 3, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 3]
+    [.T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2]
+    [(6, 697196065681455484829145010733472376946688)] (by decide +kernel)
+
+def m353 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m3]
+    [.T 3, .T 0, .T 1, .T 0, .T 3]
+    [.T 0, .T 1, .T 0]
+    [(4, 928643942570094340637458432)] (by decide +kernel)
 
 def m354 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m9, m22, m23, m24, m2]
@@ -2155,132 +2155,153 @@ def m354 : Rule (MRel D) :=
     [(8, 785068766373098812014736941853658472199341101631070535680)] (by decide +kernel)
 
 def m355 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m50, m22, m2]
-    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 3]
-    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
-    [(5, 31165191244777778833718525019815936)] (by decide +kernel)
-
-def m356 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m50, m22, m23, m2]
-    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 3]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(7, 35091740414613274212046374611333867787563804131328)] (by decide +kernel)
-
-def m357 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m50]
-    [.T 3, .T 1, .T 2, .T 1, .T 3]
-    [.T 1, .T 2, .T 3, .T 2, .T 1]
-    [(2, 274945015808)] (by decide +kernel)
-
-def m358 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m14, m3]
-    [.T 3, .T 0, .T 3]
-    [.T 0]
-    [(2, 274978570240)] (by decide +kernel)
-
-def m359 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m2, m3]
-    [.T 3, .T 1, .T 2, .T 3, .T 2, .T 1, .T 3]
-    [.T 1, .T 2, .T 1]
-    [(5, 31162655324380610695429477390876672)] (by decide +kernel)
-
-def m360 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m50, m22, m23, m24, m2]
-    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 3]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(9, 39513001139847147117369416906518823495578327369176964551877328896)] (by decide +kernel)
-
-def m361 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m25, m3]
-    [.T 3, .T 5, .T 3]
-    [.T 5]
-    [(2, 100671488)] (by decide +kernel)
-
-def m362 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m3]
     [.T 3, .T 3, .T 4, .T 3, .T 3]
     [.T 4]
     [(2, 274911461377)] (by decide +kernel)
 
-def m363 : Rule (MRel D) :=
+def m356 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 3, .T 4, .T 3]
+    [.T 3, .T 4, .T 3]
+    [] (by decide +kernel)
+
+def m357 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m50, m22, m2]
+    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 3]
+    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
+    [(5, 31165191244777778833718525019815936)] (by decide +kernel)
+
+def m358 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m25, m3]
+    [.T 3, .T 5, .T 3]
+    [.T 5]
+    [(2, 100671488)] (by decide +kernel)
+
+def m359 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m54, m22, m2]
     [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 3]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(6, 1394264515095791884020097623138781794140160)] (by decide +kernel)
 
-def m364 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 3, .T 4, .T 3]
-    [.T 3, .T 4, .T 3]
-    [] (by decide +kernel)
-
-def m365 : Rule (MRel D) :=
+def m360 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m25, m26, m3]
     [.T 3, .T 5, .T 6, .T 5, .T 3]
     [.T 5, .T 6, .T 5]
     [(4, 188903882687372486270976)] (by decide +kernel)
 
-def m366 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m3]
-    [.T 3, .T 3, .T 4, .T 5, .T 4, .T 3, .T 3]
-    [.T 4, .T 5, .T 4]
-    [(2, 824667275265)] (by decide +kernel)
-
-def m367 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m54, m22, m23, m2]
-    [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 3]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(8, 1569898068631632524205707864674349008024404866449646026752)] (by decide +kernel)
-
-def m368 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 3, .T 4, .T 5, .T 4, .T 3]
-    [.T 3, .T 4, .T 5, .T 4, .T 3]
-    [] (by decide +kernel)
-
-def m369 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m3]
-    [.T 3, .T 6, .T 3]
-    [.T 6]
-    [(2, 100671488)] (by decide +kernel)
-
-def m370 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m54]
-    [.T 3, .T 0, .T 1, .T 2, .T 1, .T 0, .T 3]
-    [.T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0]
-    [(3, 18451247948281937920)] (by decide +kernel)
-
-def m371 : Rule (MRel D) :=
+def m361 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m3]
     [.T 3, .T 3, .T 3]
     [.T 3]
     [(1, 1)] (by decide +kernel)
 
-def m372 : Rule (MRel D) :=
+def m362 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m50]
+    [.T 3, .T 1, .T 2, .T 1, .T 3]
+    [.T 1, .T 2, .T 3, .T 2, .T 1]
+    [(2, 274945015808)] (by decide +kernel)
+
+def m363 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m3]
+    [.T 3, .T 3, .T 4, .T 5, .T 4, .T 3, .T 3]
+    [.T 4, .T 5, .T 4]
+    [(2, 824667275265)] (by decide +kernel)
+
+def m364 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m54]
+    [.T 3, .T 0, .T 1, .T 2, .T 1, .T 0, .T 3]
+    [.T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0]
+    [(3, 18451247948281937920)] (by decide +kernel)
+
+def m365 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m3]
     [.T 3, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 3]
     [.T 4, .T 5, .T 6, .T 5, .T 4]
     [(2, 1374423089153)] (by decide +kernel)
 
-def m373 : Rule (MRel D) :=
+def m366 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m2, m3]
+    [.T 3, .T 1, .T 2, .T 3, .T 2, .T 1, .T 3]
+    [.T 1, .T 2, .T 1]
+    [(5, 31162655324380610695429477390876672)] (by decide +kernel)
+
+def m367 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 3, .T 4, .T 5, .T 4, .T 3]
+    [.T 3, .T 4, .T 5, .T 4, .T 3]
+    [] (by decide +kernel)
+
+def m368 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m2, m3]
     [.T 3, .T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0, .T 3]
     [.T 0, .T 1, .T 2, .T 1, .T 0]
     [(7, 58472912116267076431558554842291247937882035322880)] (by decide +kernel)
 
-def m374 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m54, m22, m23, m24, m2]
-    [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 3]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(10, 1767655929011439000371588607345959672069644106066625635503663825687674880)] (by decide +kernel)
-
-def m375 : Rule (MRel D) :=
+def m369 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
     [.T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3]
     [.T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3]
     [] (by decide +kernel)
 
+def m370 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m50, m22, m23, m2]
+    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 3]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(7, 35091740414613274212046374611333867787563804131328)] (by decide +kernel)
+
+def m371 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m14, m3]
+    [.T 3, .T 0, .T 3]
+    [.T 0]
+    [(2, 274978570240)] (by decide +kernel)
+
+def m372 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m50, m22, m23, m24, m2]
+    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 3]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(9, 39513001139847147117369416906518823495578327369176964551877328896)] (by decide +kernel)
+
+def m373 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m54, m22, m23, m2]
+    [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 3]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(8, 1569898068631632524205707864674349008024404866449646026752)] (by decide +kernel)
+
+def m374 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m3]
+    [.T 3, .T 6, .T 3]
+    [.T 6]
+    [(2, 100671488)] (by decide +kernel)
+
+def m375 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m54, m22, m23, m24, m2]
+    [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 3]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(10, 1767655929011439000371588607345959672069644106066625635503663825687674880)] (by decide +kernel)
+
 def m376 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m23, m26, m25, m9, m27, m22, m33, m2]
+    [.T 3, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 3]
+    [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
+    [(22, 6300346698263559483135294888750265719617554687180069308669119314268248972571550404163122462532724151063806017477497945774916250122827616462074029990480945837260800)] (by decide +kernel)
+
+def m377 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m3, m24, m23, m22, m26, m25, m27]
+    [.T 3, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
+    .T 4, .T 3, .T 3]
+    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
+    [(14, 8399111168132824300533047125370280668237160318304383130356227806797970196278504982407253022738263048193)] (by decide +kernel)
+
+def m378 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m26, m25, m27]
+    [.T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
+    .T 3]
+    [.T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
+    .T 3]
+    [(12, 1492030447280445021416976531382869577239145546265890990674832231812153667108459694284800)] (by decide +kernel)
+
+def m379 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m18, m9, m21, m20, m19, m24, m23, m22, m8, m26, m25, m27, m50, m31, m1]
     [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
     .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 3]
@@ -2288,40 +2309,19 @@ def m376 : Rule (MRel D) :=
     .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(39, 935826160998091678078212636680605686043251630095410025810403160026086200943104606060322341079053231484336097469896171317463131083708783432242686892484087556476922729024860757825638010317771106920904893999956761772492227905384426283742010710092401716614471208942368368452538449078656843120640)] (by decide +kernel)
 
-def m377 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m23, m26, m25, m9, m27, m22, m33, m2]
-    [.T 3, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 3]
-    [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
-    [(22, 6300346698263559483135294888750265719617554687180069308669119314268248972571550404163122462532724151063806017477497945774916250122827616462074029990480945837260800)] (by decide +kernel)
-
-def m378 : Rule (MRel D) :=
+def m380 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m26, m9, m27, m22, m23, m33, m2]
     [.T 3, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 3]
     [.T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6]
     [(16, 3783747044473384213469118238977843264111231611668443635059121014418909410456134542417384712805395220172605334549962752)] (by decide +kernel)
 
-def m379 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m3, m24, m23, m22, m26, m25, m27]
-    [.T 3, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
-    .T 4, .T 3, .T 3]
-    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
-    [(14, 8399111168132824300533047125370280668237160318304383130356227806797970196278504982407253022738263048193)] (by decide +kernel)
-
-def m380 : Rule (MRel D) :=
+def m381 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m21, m20, m19, m24, m23, m22, m8, m26, m25, m27, m54, m31, m1]
     [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
     .T 3, .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 3]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
     .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(40, 34017741840425466635374996438305924127482105328348238821789496383758896193242229513244311368291813710793761635161383426898764400396538821396053612739806655556771671600183332117783268290078246820259395506183408865219358474820882142657443449716551829327284999813082517284505847624920603529910247489536)] (by decide +kernel)
-
-def m381 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m26, m25, m27]
-    [.T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
-    .T 3]
-    [.T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
-    .T 3]
-    [(12, 1492030447280445021416976531382869577239145546265890990674832231812153667108459694284800)] (by decide +kernel)
 
 def m382 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m9, m22, m23, m33, m2]
@@ -2330,6 +2330,150 @@ def m382 : Rule (MRel D) :=
     [(8, 1962025353455824241550302862058231461082412547732806828032)] (by decide +kernel)
 
 def m383 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m9, m27, m22, m23, m24, m33, m2]
+    [.T 3, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
+    .T 3]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(16, 5044457366243398329075974175345031663099075754364766187147950521509300672248908995827179986037445581587267141492539392)] (by decide +kernel)
+
+def m384 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m3, m27]
+    [.T 3, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 3]
+    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
+    [(4, 3404372905416781036387303425)] (by decide +kernel)
+
+def m385 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27]
+    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
+    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
+    [(2, 824667299840)] (by decide +kernel)
+
+def m386 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m27, m22, m23, m24, m50, m33, m2]
+    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 3]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
+    .T 1]
+    [(17, 190428022304053453591362530594969570764736138391020944878904407166014631733902227524948428882859643789228299717018593160855552)] (by decide +kernel)
+
+def m387 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m35, m3]
+    [.T 3, .T 6, .T 5, .K, .T 5, .T 6, .T 3]
+    [.T 6, .T 5, .K, .T 5, .T 6]
+    [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
+
+def m388 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m27, m22, m23, m24, m54, m33, m2]
+    [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 0, .T 3]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 0]
+    [(18, 7099680880005612219507488507809118896937377685488968062622480569622593689713740246358298522297262530261532978773188923347932410806272)] (by decide +kernel)
+
+def m389 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m25, m35, m3]
+    [.T 3, .T 5, .K, .T 5, .T 3]
+    [.T 5, .K, .T 5]
+    [(4, 619158923527629584560291841)] (by decide +kernel)
+
+def m390 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m9, m24, m23, m22, m2, m26, m25, m27]
+    [.T 3, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 3]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
+    .T 2]
+    [(16, 7565878047350934450553369171382096348511986369390515593182199342524118125124531623956234971537870462543510811864727552)] (by decide +kernel)
+
+def m391 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m3, m27]
+    [.T 3, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 3]
+    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
+    [(8, 2746471555196041054617437657978870463959340960010073030656)] (by decide +kernel)
+
+def m392 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27]
+    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
+    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
+    [(6, 1045389987249979701136385760870153920208896)] (by decide +kernel)
+
+def m393 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m24, m23, m22, m2, m26, m25, m27, m50]
+    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 3]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 1]
+    [(17, 275027696591759871163135542753868588799460815493746260688761897548784304660077101278346538913211685956811641685651975810580480)] (by decide +kernel)
+
+def m394 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m3, m27]
+    [.T 3, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 3]
+    [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
+    [(6, 2090822540941997291119253816783904949936128)] (by decide +kernel)
+
+def m395 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m24, m23, m22, m2, m26, m25, m27, m54]
+    [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 3]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
+    .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(18, 9938374898114605643883151163730069192450320502054321686642868660361892651577316067825280174239228065234840831192443894398107326087168)] (by decide +kernel)
+
+def m396 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m3]
+    [.T 3, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 3]
+    [.T 4, .T 5, .K, .T 5, .T 4]
+    [(2, 1374423089153)] (by decide +kernel)
+
+def m397 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m9, m26, m25, m27, m22, m23, m24]
+    [.T 3, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 3]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
+    .T 4, .T 3, .T 2]
+    [(14, 7279990864743617187730662735057386751180928289951779328628765144516208730997811612670550364585283551232)] (by decide +kernel)
+
+def m398 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m25, m26]
+    [.T 3, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 3]
+    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
+    [(6, 2787763384463667426424954727774792447967232)] (by decide +kernel)
+
+def m399 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m3, m26, m25, m27]
+    [.T 3, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
+    .T 3]
+    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
+    [(8, 5100193073875638468677818544625166810049895906494516297729)] (by decide +kernel)
+
+def m400 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m26, m25, m27, m22, m23, m24, m50]
+    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
+    .T 4, .T 3, .T 2, .T 1, .T 3]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(15, 263068886651156451732102102738520923553911998815771697060512351276464347724003520993812233351671242139149271040)] (by decide +kernel)
+
+def m401 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m26]
+    [.T 3, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 3]
+    [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
+    [(4, 2166470626616519370028883968)] (by decide +kernel)
+
+def m402 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m26, m25, m27, m22, m23, m24, m54]
+    [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 3]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(16, 9457713100473881433832541202361747947025823784261016625323631007298554374096113070329142641802485055016758943034638336)] (by decide +kernel)
+
+def m403 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3]
+    [.T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3]
+    [] (by decide +kernel)
+
+def m404 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m9, m21, m20, m19, m24, m23, m22, m8, m18, m26, m25, m27, m31, m1]
     [.T 3, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
     .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 3]
@@ -2337,20 +2481,14 @@ def m383 : Rule (MRel D) :=
     .T 6, .T 5, .T 4, .T 3, .T 2]
     [(38, 25565761708212850365658003646073711604822075403827714507874491600211474215395998076861873050189060918000202352444964663440783854777987754481937026883437188524608997800253541434183289388167704850853184433964036121709314806040227379776996784424656142828938724989407495004895561769811968)] (by decide +kernel)
 
-def m384 : Rule (MRel D) :=
+def m405 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m21, m20, m18, m24, m23, m26, m25, m9, m27, m22, m50, m33, m2]
     [.T 3, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
     .T 3]
     [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
     [(27, 306297013383229579350126705666221070660821483703930396182582311659239874276766095401769450954655423378327177616128640393233752719980875669260183310771001828668792368082084818348347197063501290200383488)] (by decide +kernel)
 
-def m385 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m18, m24, m26, m9, m27, m22, m23, m50, m33, m2]
-    [.T 3, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 3]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [(19, 166780417937250403244447607038361338363526842222821273337590619001312370681245662212727442805078259603989580642094848732684975724507888099328)] (by decide +kernel)
-
-def m386 : Rule (MRel D) :=
+def m406 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m3, m21, m20, m19, m24, m23, m22, m26, m25, m27]
     [.T 3, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
     .T 6, .T 5, .T 4, .T 3, .T 3]
@@ -2358,7 +2496,21 @@ def m386 : Rule (MRel D) :=
     .T 4]
     [(20, 13585947293260220976095053633412990267947812479244492094262471480607184254697636248942144421983389488087083160909962642020390204562894616326997803009)] (by decide +kernel)
 
-def m387 : Rule (MRel D) :=
+def m407 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
+    .T 5, .T 4, .T 3]
+    [.T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
+    .T 5, .T 4, .T 3]
+    [(20, 2397600488927704818823409161834912660262767388822758822279821347999769734842653566583579346746457542781674601625035943961940458654495637354498252800)] (by decide +kernel)
+
+def m408 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m18, m24, m26, m9, m27, m22, m23, m50, m33, m2]
+    [.T 3, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 3]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [(19, 166780417937250403244447607038361338363526842222821273337590619001312370681245662212727442805078259603989580642094848732684975724507888099328)] (by decide +kernel)
+
+def m409 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m17, m16, m15, m13, m21, m20, m19, m24, m23, m22, m8, m26, m25, m27, m54, m49, m31,
     m1]
     [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5,
@@ -2367,93 +2519,44 @@ def m387 : Rule (MRel D) :=
     .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(51, 2224169086304358694286955527876728199965082813943955252628013866705440908815617959520789124723992168546180654730476649406091607031815056674261150303561680545902186334559434280302257911298860293333834562395760174108263957381710979615518594222198877937625160707051087507586352525714808451402293328635981697661269412556869447370511112162422684242451795669884036023671446836518678691840)] (by decide +kernel)
 
-def m388 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
-    .T 5, .T 4, .T 3]
-    [.T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
-    .T 5, .T 4, .T 3]
-    [(20, 2397600488927704818823409161834912660262767388822758822279821347999769734842653566583579346746457542781674601625035943961940458654495637354498252800)] (by decide +kernel)
-
-def m389 : Rule (MRel D) :=
+def m410 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m18, m9, m22, m23, m50, m33, m2]
     [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 3]
     [.T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(9, 79005110908066535914536859687058087518343241708848326197502803968)] (by decide +kernel)
 
-def m390 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m9, m27, m22, m23, m24, m33, m2]
-    [.T 3, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
-    .T 3]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(16, 5044457366243398329075974175345031663099075754364766187147950521509300672248908995827179986037445581587267141492539392)] (by decide +kernel)
-
-def m391 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m27, m22, m23, m24, m50, m33, m2]
-    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 3]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
-    .T 1]
-    [(17, 190428022304053453591362530594969570764736138391020944878904407166014631733902227524948428882859643789228299717018593160855552)] (by decide +kernel)
-
-def m392 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m35, m3]
-    [.T 3, .T 6, .T 5, .K, .T 5, .T 6, .T 3]
-    [.T 6, .T 5, .K, .T 5, .T 6]
-    [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
-
-def m393 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m3, m27]
-    [.T 3, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 3]
-    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
-    [(4, 3404372905416781036387303425)] (by decide +kernel)
-
-def m394 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m27, m22, m23, m24, m54, m33, m2]
-    [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 0, .T 3]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 0]
-    [(18, 7099680880005612219507488507809118896937377685488968062622480569622593689713740246358298522297262530261532978773188923347932410806272)] (by decide +kernel)
-
-def m395 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27]
-    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
-    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
-    [(2, 824667299840)] (by decide +kernel)
-
-def m396 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m25, m35, m3]
-    [.T 3, .T 5, .K, .T 5, .T 3]
-    [.T 5, .K, .T 5]
-    [(4, 619158923527629584560291841)] (by decide +kernel)
-
-def m397 : Rule (MRel D) :=
+def m411 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m9, m22, m23, m24, m33, m2]
     [.T 3, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 3]
     [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
     [(12, 3481930536243011168779234527868222382742239306766869858537431163051673168838519903223808)] (by decide +kernel)
 
-def m398 : Rule (MRel D) :=
+def m412 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m25, m26, m35, m3]
+    [.T 3, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 3]
+    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
+    [(8, 1569610702327984633104988065931477809181284417919166447617)] (by decide +kernel)
+
+def m413 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m3]
+    [.T 3, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 3]
+    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
+    [(2, 2473934716929)] (by decide +kernel)
+
+def m414 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
+    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
+    [] (by decide +kernel)
+
+def m415 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m18, m9, m22, m23, m24, m50, m33, m2]
     [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
     .T 3]
     [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(13, 133529748766693186547420754113615111035238759478982536527553634579488857210095682525172844199936)] (by decide +kernel)
 
-def m399 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m25, m26, m35, m3]
-    [.T 3, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 3]
-    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
-    [(8, 1569610702327984633104988065931477809181284417919166447617)] (by decide +kernel)
-
-def m400 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m3]
-    [.T 3, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 3]
-    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
-    [(2, 2473934716929)] (by decide +kernel)
-
-def m401 : Rule (MRel D) :=
+def m416 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m22, m23, m24, m54, m33, m2]
     [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2,
     .T 1, .T 0, .T 3]
@@ -2461,67 +2564,13 @@ def m401 : Rule (MRel D) :=
     .T 0]
     [(14, 5040587780375313671282825352266085616169567513237712424486150168680258528036519544240164631319056220160)] (by decide +kernel)
 
-def m402 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
-    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
-    [] (by decide +kernel)
-
-def m403 : Rule (MRel D) :=
+def m417 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m35, m3]
     [.T 3, .K, .T 3]
     [.K]
     [(2, 274978570240)] (by decide +kernel)
 
-def m404 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m9, m24, m23, m22, m2, m26, m25, m27]
-    [.T 3, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 3]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
-    .T 2]
-    [(16, 7565878047350934450553369171382096348511986369390515593182199342524118125124531623956234971537870462543510811864727552)] (by decide +kernel)
-
-def m405 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m24, m23, m22, m2, m26, m25, m27, m50]
-    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 3]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 1]
-    [(17, 275027696591759871163135542753868588799460815493746260688761897548784304660077101278346538913211685956811641685651975810580480)] (by decide +kernel)
-
-def m406 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m3, m27]
-    [.T 3, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 3]
-    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
-    [(8, 2746471555196041054617437657978870463959340960010073030656)] (by decide +kernel)
-
-def m407 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m3, m27]
-    [.T 3, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 3]
-    [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
-    [(6, 2090822540941997291119253816783904949936128)] (by decide +kernel)
-
-def m408 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m24, m23, m22, m2, m26, m25, m27, m54]
-    [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 3]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
-    .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(18, 9938374898114605643883151163730069192450320502054321686642868660361892651577316067825280174239228065234840831192443894398107326087168)] (by decide +kernel)
-
-def m409 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27]
-    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
-    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
-    [(6, 1045389987249979701136385760870153920208896)] (by decide +kernel)
-
-def m410 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m3]
-    [.T 3, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 3]
-    [.T 4, .T 5, .K, .T 5, .T 4]
-    [(2, 1374423089153)] (by decide +kernel)
-
-def m411 : Rule (MRel D) :=
+def m418 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m9, m17, m16, m15, m13, m14, m21, m20, m19, m24, m23, m22, m8, m18, m26, m25, m27, m49, m31, m1]
     [.T 3, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
     .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 3]
@@ -2529,7 +2578,31 @@ def m411 : Rule (MRel D) :=
     .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2]
     [(49, 1693316971438852622575518293309311651010958797260925212206510438071511947897031074303275195717739749398255924020079399945384601223782711199501226862144541553701475930635672340659613423648717956047553587140905212892073145277875072869654849176780866693325804699861229821579005505539534182684427123933505991074893416440515920668944552612955744326005757262796759500849152)] (by decide +kernel)
 
-def m412 : Rule (MRel D) :=
+def m419 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m14, m21, m20, m18, m24, m23, m26, m25, m9, m27, m22, m54, m33, m2]
+    [.T 3, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
+    .T 6, .T 5, .T 3]
+    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
+    .T 5]
+    [(32, 14657559680456387123702766670994447214725026251173884702314313526686064937512972057500748208942289324618814797920851911236239705207236499011781712586002915761061967509933768224447793365590282572339560288444544770238187524243141321033793536)] (by decide +kernel)
+
+def m420 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m3, m17, m16, m15, m21, m20, m19, m24, m23, m22, m26, m25, m27]
+    [.T 3, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 3]
+    [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
+    .T 6, .T 5, .T 4]
+    [(26, 21671732236341528888076366084950234393145079832997008351523252308361667401271926434986409820343985376885410982825012198699399394937206852349063651782699490638003822037875998238032216713672523777)] (by decide +kernel)
+
+def m421 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
+    [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0, .T 6, .T 5, .T 4, .T 3]
+    [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0, .T 6, .T 5, .T 4, .T 3]
+    [(28, 3852795440591884850236392803654027279433729415315151089401178325160498865568834537966320364261645258325544042747876403494851965062137845166589248113736536456584085065584657206063182221462044053633441908940800)] (by decide +kernel)
+
+def m422 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m18, m9, m17, m16, m15, m13, m14, m21, m20, m19, m24, m23, m22, m8, m26, m25, m27, m50, m49, m31,
     m1]
     [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
@@ -2538,91 +2611,18 @@ def m412 : Rule (MRel D) :=
     .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(50, 61552424420004850802843977627861965722844914833292300015807895468061386353089783460703830436951844058883467569975803686675766339600678205984588398429846453294210204805091597028590149359379786007184390944134768498651737831600308881606877137446044686386159996027061816604567701308153043293865225141228424324436129986154451079169419736479000177210008922112524502039914306600960)] (by decide +kernel)
 
-def m413 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m14, m21, m20, m18, m24, m23, m26, m25, m9, m27, m22, m54, m33, m2]
-    [.T 3, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
-    .T 6, .T 5, .T 3]
-    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
-    .T 5]
-    [(32, 14657559680456387123702766670994447214725026251173884702314313526686064937512972057500748208942289324618814797920851911236239705207236499011781712586002915761061967509933768224447793365590282572339560288444544770238187524243141321033793536)] (by decide +kernel)
-
-def m414 : Rule (MRel D) :=
+def m423 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m17, m14, m21, m18, m24, m26, m9, m27, m22, m23, m54, m33, m2]
     [.T 3, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
     .T 3]
     [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
     [(22, 7201008178114499263217810592431355523521913939930965709620625299146856811617580831001169967712856498452703584417931097410028106096563263425879237186270091364278272)] (by decide +kernel)
 
-def m415 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m3, m17, m16, m15, m21, m20, m19, m24, m23, m22, m26, m25, m27]
-    [.T 3, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 3]
-    [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
-    .T 6, .T 5, .T 4]
-    [(26, 21671732236341528888076366084950234393145079832997008351523252308361667401271926434986409820343985376885410982825012198699399394937206852349063651782699490638003822037875998238032216713672523777)] (by decide +kernel)
-
-def m416 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m14, m21, m20, m19, m18, m24, m23, m22, m26, m25, m27]
-    [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0, .T 6, .T 5, .T 4, .T 3]
-    [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0, .T 6, .T 5, .T 4, .T 3]
-    [(28, 3852795440591884850236392803654027279433729415315151089401178325160498865568834537966320364261645258325544042747876403494851965062137845166589248113736536456584085065584657206063182221462044053633441908940800)] (by decide +kernel)
-
-def m417 : Rule (MRel D) :=
+def m424 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m22, m23, m54, m33, m2]
     [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 3]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(10, 3092791240765692242847705358739455330051555876262953242189211926458793984)] (by decide +kernel)
-
-def m418 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m9, m26, m25, m27, m22, m23, m24]
-    [.T 3, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 3]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
-    .T 4, .T 3, .T 2]
-    [(14, 7279990864743617187730662735057386751180928289951779328628765144516208730997811612670550364585283551232)] (by decide +kernel)
-
-def m419 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m26, m25, m27, m22, m23, m24, m50]
-    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
-    .T 4, .T 3, .T 2, .T 1, .T 3]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(15, 263068886651156451732102102738520923553911998815771697060512351276464347724003520993812233351671242139149271040)] (by decide +kernel)
-
-def m420 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m25, m26]
-    [.T 3, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 3]
-    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
-    [(6, 2787763384463667426424954727774792447967232)] (by decide +kernel)
-
-def m421 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m26]
-    [.T 3, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 3]
-    [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
-    [(4, 2166470626616519370028883968)] (by decide +kernel)
-
-def m422 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m3, m26, m25, m27]
-    [.T 3, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
-    .T 3]
-    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
-    [(8, 5100193073875638468677818544625166810049895906494516297729)] (by decide +kernel)
-
-def m423 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m26, m25, m27, m22, m23, m24, m54]
-    [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 3]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(16, 9457713100473881433832541202361747947025823784261016625323631007298554374096113070329142641802485055016758943034638336)] (by decide +kernel)
-
-def m424 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3]
-    [.T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3]
-    [] (by decide +kernel)
 
 def m425 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m9, m22, m23, m24, m33, m2]
@@ -2631,41 +2631,41 @@ def m425 : Rule (MRel D) :=
     [(10, 2650863781827294352172188221251499619827443681150309713971229616978788352)] (by decide +kernel)
 
 def m426 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m22, m23, m24, m50, m33, m2]
-    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 3]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(11, 103776853378468048295560815815858651027857069316551633008682019137131541478506496)] (by decide +kernel)
-
-def m427 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m25, m26, m35, m3]
     [.T 3, .T 5, .T 6, .K, .T 6, .T 5, .T 3]
     [.T 5, .T 6, .K, .T 6, .T 5]
     [(6, 1045645199026438055470883944506515347472385)] (by decide +kernel)
 
-def m428 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m35, m3]
-    [.T 3, .T 6, .K, .T 6, .T 3]
-    [.T 6, .K, .T 6]
-    [(4, 619158923527629584560291841)] (by decide +kernel)
-
-def m429 : Rule (MRel D) :=
+def m427 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m3]
     [.T 3, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 3]
     [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
     [(2, 1924178903041)] (by decide +kernel)
 
+def m428 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3]
+    [.T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3]
+    [] (by decide +kernel)
+
+def m429 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m18, m9, m22, m23, m24, m50, m33, m2]
+    [.T 3, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 3]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(11, 103776853378468048295560815815858651027857069316551633008682019137131541478506496)] (by decide +kernel)
+
 def m430 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m35, m3]
+    [.T 3, .T 6, .K, .T 6, .T 3]
+    [.T 6, .K, .T 6]
+    [(4, 619158923527629584560291841)] (by decide +kernel)
+
+def m431 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m14, m18, m9, m22, m23, m24, m54, m33, m2]
     [.T 3, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 3]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(12, 3979618037902333507913184304513235639772144018188731811920931584443433445924733167075328)] (by decide +kernel)
-
-def m431 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3]
-    [.T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3]
-    [] (by decide +kernel)
 
 def m432 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m10, m25, m26, m51, m34, m3]
@@ -2674,41 +2674,41 @@ def m432 : Rule (MRel D) :=
     [(9, 79005110908066535914536859687058087518343241708848326197502803968)] (by decide +kernel)
 
 def m433 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m25, m26, m55, m34, m3]
-    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(10, 3092791240765692242847705358739455330051555876262953242189211926458793984)] (by decide +kernel)
-
-def m434 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
     [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
     [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
     [] (by decide +kernel)
 
-def m435 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m36, m4]
-    [.T 4, .T 6, .Z, .T 6, .T 4]
-    [.T 6, .Z, .T 6]
-    [(4, 619158923527629584560291841)] (by decide +kernel)
-
-def m436 : Rule (MRel D) :=
+def m434 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m10, m25, m26, m34, m3]
     [.T 4, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 4]
     [.T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3]
     [(8, 1962025353455824241550302862058231461082412547732806828032)] (by decide +kernel)
 
+def m435 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m4]
+    [.T 4, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 4]
+    [.T 5, .T 6, .Z, .T 6, .T 5]
+    [(2, 1374423089153)] (by decide +kernel)
+
+def m436 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m25, m26, m55, m34, m3]
+    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(10, 3092791240765692242847705358739455330051555876262953242189211926458793984)] (by decide +kernel)
+
 def m437 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m36, m4]
+    [.T 4, .T 6, .Z, .T 6, .T 4]
+    [.T 6, .Z, .T 6]
+    [(4, 619158923527629584560291841)] (by decide +kernel)
+
+def m438 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m25, m26, m58, m34, m3]
     [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 4]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(11, 118601859745452806589400300518072722168114913235747291832732529003749252322557952)] (by decide +kernel)
-
-def m438 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m4]
-    [.T 4, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 4]
-    [.T 5, .T 6, .Z, .T 6, .T 5]
-    [(2, 1374423089153)] (by decide +kernel)
 
 def m439 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m36, m4]
@@ -2717,40 +2717,40 @@ def m439 : Rule (MRel D) :=
     [(2, 274978570240)] (by decide +kernel)
 
 def m440 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m4]
-    [.T 4, .T 1, .T 4]
-    [.T 1]
-    [(2, 274978570240)] (by decide +kernel)
-
-def m441 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m10, m3, m4]
     [.T 4, .T 2, .T 3, .T 4, .T 3, .T 2, .T 4]
     [.T 2, .T 3, .T 2]
     [(5, 31162655324380610695429477390876672)] (by decide +kernel)
 
-def m442 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m22, m10, m51, m25, m3]
-    [.T 4, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 4]
-    [.T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2]
-    [(5, 31165191244777778833718525019815936)] (by decide +kernel)
-
-def m443 : Rule (MRel D) :=
+def m441 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m4]
     [.T 4, .T 2, .T 4]
     [.T 2]
     [(2, 274978570240)] (by decide +kernel)
 
-def m444 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m4]
-    [.T 4, .T 0, .T 1, .T 0, .T 4]
-    [.T 0, .T 1, .T 0]
-    [(4, 928643942570094340637458432)] (by decide +kernel)
-
-def m445 : Rule (MRel D) :=
+def m442 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m51]
     [.T 4, .T 2, .T 3, .T 2, .T 4]
     [.T 2, .T 3, .T 4, .T 3, .T 2]
     [(2, 274945015808)] (by decide +kernel)
+
+def m443 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m4]
+    [.T 4, .T 1, .T 4]
+    [.T 1]
+    [(2, 274978570240)] (by decide +kernel)
+
+def m444 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m22, m10, m51, m25, m3]
+    [.T 4, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 4]
+    [.T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2]
+    [(5, 31165191244777778833718525019815936)] (by decide +kernel)
+
+def m445 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m4]
+    [.T 4, .T 0, .T 1, .T 0, .T 4]
+    [.T 0, .T 1, .T 0]
+    [(4, 928643942570094340637458432)] (by decide +kernel)
 
 def m446 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m10, m51, m25, m26, m3]
@@ -2759,152 +2759,138 @@ def m446 : Rule (MRel D) :=
     [(7, 35091740414613274212046374611333867787563804131328)] (by decide +kernel)
 
 def m447 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m3, m4]
-    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 4]
-    [.T 1, .T 2, .T 3, .T 2, .T 1]
-    [(7, 58472912116267076431558554842291247937882035322880)] (by decide +kernel)
-
-def m448 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m55, m25, m3]
-    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(6, 1394264515095791884020097623138781794140160)] (by decide +kernel)
-
-def m449 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m4]
-    [.T 4, .T 1, .T 2, .T 1, .T 4]
-    [.T 1, .T 2, .T 1]
-    [(4, 928643942570094340637458432)] (by decide +kernel)
-
-def m450 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m4]
-    [.T 4, .T 0, .T 4]
-    [.T 0]
-    [(2, 274978570240)] (by decide +kernel)
-
-def m451 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m55]
-    [.T 4, .T 1, .T 2, .T 3, .T 2, .T 1, .T 4]
-    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
-    [(3, 18451247948281937920)] (by decide +kernel)
-
-def m452 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m55, m25, m26, m3]
-    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(8, 1569898068631632524205707864674349008024404866449646026752)] (by decide +kernel)
-
-def m453 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 4, .T 5, .T 4]
-    [.T 4, .T 5, .T 4]
-    [] (by decide +kernel)
-
-def m454 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m10, m3, m4]
     [.T 4, .T 3, .T 4, .T 3, .T 4]
     [.T 3]
     [(3, 9229002086245466112)] (by decide +kernel)
 
-def m455 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m3, m4]
-    [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 4]
-    [.T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0]
-    [(9, 92165933882387596486635904832945088682830749102950874822316392448)] (by decide +kernel)
-
-def m456 : Rule (MRel D) :=
+def m448 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m4]
     [.T 4, .T 4, .T 4]
     [.T 4]
     [(1, 1)] (by decide +kernel)
 
-def m457 : Rule (MRel D) :=
+def m449 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m3, m4]
+    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 4]
+    [.T 1, .T 2, .T 3, .T 2, .T 1]
+    [(7, 58472912116267076431558554842291247937882035322880)] (by decide +kernel)
+
+def m450 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 4, .T 5, .T 4]
+    [.T 4, .T 5, .T 4]
+    [] (by decide +kernel)
+
+def m451 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m3, m4]
+    [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 4]
+    [.T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0]
+    [(9, 92165933882387596486635904832945088682830749102950874822316392448)] (by decide +kernel)
+
+def m452 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
     [.T 4, .T 5, .T 6, .T 5, .T 4]
     [.T 4, .T 5, .T 6, .T 5, .T 4]
     [] (by decide +kernel)
 
-def m458 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m10, m25, m3]
-    [.T 4, .T 3, .T 4, .T 5, .T 4, .T 3, .T 4]
-    [.T 3, .T 4, .T 5, .T 4, .T 3]
-    [(4, 619158941974373933147750400)] (by decide +kernel)
-
-def m459 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m58, m25, m3]
-    [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 4]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(7, 58478621804361582229796396595691111642903540137984)] (by decide +kernel)
-
-def m460 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m4]
-    [.T 4, .T 4, .T 5, .T 4, .T 4]
-    [.T 5]
-    [(2, 274911461377)] (by decide +kernel)
-
-def m461 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m4]
-    [.T 4, .T 6, .T 4]
-    [.T 6]
-    [(2, 100671488)] (by decide +kernel)
-
-def m462 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m4]
-    [.T 4, .T 0, .T 1, .T 2, .T 1, .T 0, .T 4]
-    [.T 0, .T 1, .T 2, .T 1, .T 0]
-    [(6, 1742543507244636550897235250085195453300736)] (by decide +kernel)
-
-def m463 : Rule (MRel D) :=
+def m453 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m10]
     [.T 4, .T 3, .T 4]
     [.T 3, .T 4, .T 3]
     [(1, 0)] (by decide +kernel)
 
-def m464 : Rule (MRel D) :=
+def m454 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m4]
+    [.T 4, .T 1, .T 2, .T 1, .T 4]
+    [.T 1, .T 2, .T 1]
+    [(4, 928643942570094340637458432)] (by decide +kernel)
+
+def m455 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m10, m25, m3]
+    [.T 4, .T 3, .T 4, .T 5, .T 4, .T 3, .T 4]
+    [.T 3, .T 4, .T 5, .T 4, .T 3]
+    [(4, 619158941974373933147750400)] (by decide +kernel)
+
+def m456 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m4]
+    [.T 4, .T 0, .T 1, .T 2, .T 1, .T 0, .T 4]
+    [.T 0, .T 1, .T 2, .T 1, .T 0]
+    [(6, 1742543507244636550897235250085195453300736)] (by decide +kernel)
+
+def m457 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m10, m25, m26, m3]
     [.T 4, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 4]
     [.T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3]
     [(6, 697196065681455484829145010733472376946688)] (by decide +kernel)
 
-def m465 : Rule (MRel D) :=
+def m458 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m55]
+    [.T 4, .T 1, .T 2, .T 3, .T 2, .T 1, .T 4]
+    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
+    [(3, 18451247948281937920)] (by decide +kernel)
+
+def m459 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m4]
+    [.T 4, .T 4, .T 5, .T 4, .T 4]
+    [.T 5]
+    [(2, 274911461377)] (by decide +kernel)
+
+def m460 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m58]
     [.T 4, .T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0, .T 4]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(4, 928681721506460897426538496)] (by decide +kernel)
 
-def m466 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m58, m25, m26, m3]
-    [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 4]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(9, 65844288717904264028079224301968339230909590812414688584861220864)] (by decide +kernel)
-
-def m467 : Rule (MRel D) :=
+def m461 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m4]
     [.T 4, .T 4, .T 5, .T 6, .T 5, .T 4, .T 4]
     [.T 5, .T 6, .T 5]
     [(2, 824667275265)] (by decide +kernel)
 
-def m468 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m21, m20, m18, m24, m23, m26, m25, m9, m27, m55, m50, m33, m2]
-    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(37, 831197506214820199323963997837300205734623429450684183312667427845745472906885339801704569786705633482117429101137174808758651926140892540933033502667238929573646042471592680549244038089910632203994536973591679933183722758333837707317664605440108225057973213994693478504726528)] (by decide +kernel)
+def m462 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m55, m25, m3]
+    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(6, 1394264515095791884020097623138781794140160)] (by decide +kernel)
 
-def m469 : Rule (MRel D) :=
+def m463 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m4]
+    [.T 4, .T 0, .T 4]
+    [.T 0]
+    [(2, 274978570240)] (by decide +kernel)
+
+def m464 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m55, m25, m26, m3]
+    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(8, 1569898068631632524205707864674349008024404866449646026752)] (by decide +kernel)
+
+def m465 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m58, m25, m3]
+    [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 4]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(7, 58478621804361582229796396595691111642903540137984)] (by decide +kernel)
+
+def m466 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m4]
+    [.T 4, .T 6, .T 4]
+    [.T 6]
+    [(2, 100671488)] (by decide +kernel)
+
+def m467 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m58, m25, m26, m3]
+    [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 4]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(9, 65844288717904264028079224301968339230909590812414688584861220864)] (by decide +kernel)
+
+def m468 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m23, m22, m26, m25, m27]
     [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
     [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
     [(12, 994707196049270515173341910386029371683771083772059706061147006122852256881558385868800)] (by decide +kernel)
 
-def m470 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m22, m26, m27, m10, m25, m51, m35, m3]
-    [.T 4, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 4]
-    [.T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6]
-    [(15, 112769036250253792900905649517494284062319829770687651455555455534004000279598783545009371569185733511433166848)] (by decide +kernel)
-
-def m471 : Rule (MRel D) :=
+def m469 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m10, m24, m23, m26, m25, m9, m22, m27, m33, m2]
     [.T 4, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
     .T 4, .T 3, .T 4]
@@ -2912,20 +2898,34 @@ def m471 : Rule (MRel D) :=
     .T 3]
     [(26, 10268137119780784157669782608274796217744439552542628495087113547028051962188603978160241180581578903755552979538351832377086020184956373195668681258685973050192622728113413909905868385127759872)] (by decide +kernel)
 
+def m470 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m4, m24, m23, m26, m25, m27]
+    [.T 4, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
+    .T 4]
+    [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
+    [(12, 6465262796556923578882533475964207724270297821794588024805995919106784317591800233590785)] (by decide +kernel)
+
+def m471 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m21, m20, m18, m24, m23, m26, m25, m9, m27, m55, m50, m33, m2]
+    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(37, 831197506214820199323963997837300205734623429450684183312667427845745472906885339801704569786705633482117429101137174808758651926140892540933033502667238929573646042471592680549244038089910632203994536973591679933183722758333837707317664605440108225057973213994693478504726528)] (by decide +kernel)
+
 def m472 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m22, m26, m27, m10, m25, m51, m35, m3]
+    [.T 4, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 4]
+    [.T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6]
+    [(15, 112769036250253792900905649517494284062319829770687651455555455534004000279598783545009371569185733511433166848)] (by decide +kernel)
+
+def m473 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m21, m20, m18, m24, m23, m26, m25, m9, m27, m58, m50, m33, m2]
     [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
     .T 3, .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 4]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
     .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(38, 30214391441546296914222091508812598669260495187767114203161773716189929624151614617812724013588130464109518646704246578217875587024312152246218374149044625470649798489618748627728166636300630143389676910239784173944337122365924429827834494533943774680491753636713990472039216032251904)] (by decide +kernel)
-
-def m473 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m4, m24, m23, m26, m25, m27]
-    [.T 4, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
-    .T 4]
-    [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
-    [(12, 6465262796556923578882533475964207724270297821794588024805995919106784317591800233590785)] (by decide +kernel)
 
 def m474 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m10, m25, m51, m35, m3]
@@ -2934,6 +2934,150 @@ def m474 : Rule (MRel D) :=
     [(7, 58475766611992801874558990704375508191743725010944)] (by decide +kernel)
 
 def m475 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m22, m10, m27, m25, m26, m51]
+    [.T 4, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
+    .T 4]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
+    .T 2]
+    [(9, 144817261256734000096208704319956656812702032968282254358117089280)] (by decide +kernel)
+
+def m476 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m10, m27, m25, m26]
+    [.T 4, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 4]
+    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
+    [(8, 3923476056148445088838347108168044223408356363535682371584)] (by decide +kernel)
+
+def m477 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m4, m27]
+    [.T 4, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 4]
+    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
+    [(4, 2785402876550718587205058561)] (by decide +kernel)
+
+def m478 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m27, m25, m26, m55]
+    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 4]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 1]
+    [(10, 5301080564413830960344048915788615336336405921179823343147429041188896768)] (by decide +kernel)
+
+def m479 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27]
+    [.T 4, .T 6, .T 5, .K, .T 5, .T 6, .T 4]
+    [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
+    [(2, 1374389534721)] (by decide +kernel)
+
+def m480 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m27, m25, m26, m58]
+    [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 0, .T 4]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
+    .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(11, 192699753692130269112198570651716882256119486698107355288168160021196684541296640)] (by decide +kernel)
+
+def m481 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 4, .T 5, .K, .T 5, .T 4]
+    [.T 4, .T 5, .K, .T 5, .T 4]
+    [] (by decide +kernel)
+
+def m482 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m22, m10, m24, m23, m26, m25, m9, m27, m51, m33, m2]
+    [.T 4, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 4]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
+    .T 4, .T 3, .T 2]
+    [(27, 382823379636144212652329162205697264975369397682942987025511991933002135532086725862640660621390168653662928992084266537112363950583106325786143384681096235110918007471080452557322143655231313936384000)] (by decide +kernel)
+
+def m483 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27]
+    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
+    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
+    [(6, 696940833138344687995215861081650155765760)] (by decide +kernel)
+
+def m484 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m4, m26, m25, m27]
+    [.T 4, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 4]
+    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
+    [(8, 4315555345260289926101967409459716705136937530185287204865)] (by decide +kernel)
+
+def m485 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m24, m23, m26, m25, m9, m27, m55, m33, m2]
+    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(28, 14129947493413897055127376200019924960495367765629128010546095045210144441304078849478790343258211978196299817107303796850561719506219317760120305853015899527985091282740413334792046909602389494138859794989056)] (by decide +kernel)
+
+def m486 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m27, m10, m25, m35, m3]
+    [.T 4, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 4]
+    [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
+    [(12, 2487284033780662156399805069329660665264438706201615313040760773953079271391740869746688)] (by decide +kernel)
+
+def m487 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m24, m23, m26, m25, m9, m27, m58, m33, m2]
+    [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 4]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(29, 517223917193140862512315796633564430189450058644481235849753135301456555347901714071764678031545848036024941949982501592288205667981942730849934631554256616799355166721512991408307787929322603892616672843027753992192)] (by decide +kernel)
+
+def m488 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m10, m25, m35, m3]
+    [.T 4, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 4]
+    [.T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3]
+    [(6, 1394094353138073068612053844295019111907328)] (by decide +kernel)
+
+def m489 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m22, m10, m26, m25, m3, m27, m51]
+    [.T 4, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 4]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(11, 148230162345358993424130643774539433739585189175538502526257236919429064860631040)] (by decide +kernel)
+
+def m490 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27]
+    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
+    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
+    [(2, 549789384704)] (by decide +kernel)
+
+def m491 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m10, m26, m25, m3, m27]
+    [.T 4, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
+    .T 4]
+    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
+    [(10, 3975783466648287628003691392940894205574169631215138536491111837469769728)] (by decide +kernel)
+
+def m492 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m26, m25, m3, m27, m55]
+    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
+    .T 4, .T 3, .T 2, .T 1, .T 4]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
+    .T 1]
+    [(12, 5471223570806865977645511854004488772979600818484956314041282034404726498018641194254336)] (by decide +kernel)
+
+def m493 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m4]
+    [.T 4, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 4]
+    [.T 6, .T 5, .K, .T 5, .T 6]
+    [(4, 1238053422197829330758803456)] (by decide +kernel)
+
+def m494 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m26, m25, m3, m27, m58]
+    [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 4]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 0]
+    [(13, 200275272550965616611460608788286999234845197314880371387394945700420219810479873984480151601152)] (by decide +kernel)
+
+def m495 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m4]
+    [.T 4, .T 4, .T 5, .K, .T 5, .T 4, .T 4]
+    [.T 5, .K, .T 5]
+    [(2, 824667275265)] (by decide +kernel)
+
+def m496 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m10, m21, m20, m18, m19, m24, m23, m26, m25, m9, m27, m51, m50, m33, m2]
     [.T 4, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
     .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 4]
@@ -2941,7 +3085,7 @@ def m475 : Rule (MRel D) :=
     .T 6, .T 5, .T 4, .T 3, .T 2]
     [(36, 22707965474312177610510529699307760352837079771140249719259131222067817728444486097469161412155072637322627738204856042501833479212161540383786650712982976783096354104834976700093753063738223920849218573686476409513860936904655020888013750786146590974974825782684155904)] (by decide +kernel)
 
-def m476 : Rule (MRel D) :=
+def m497 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m21, m20, m19, m24, m23, m22, m26, m25, m27]
     [.T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
     .T 4]
@@ -2949,13 +3093,7 @@ def m476 : Rule (MRel D) :=
     .T 4]
     [(18, 1419693550479336234875567377794033149627317966602333182399355918707733607715729883384435960135146117019937362838397382865784808685568)] (by decide +kernel)
 
-def m477 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m19, m24, m22, m26, m27, m10, m25, m55, m35, m3]
-    [.T 4, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 4]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [(18, 4970443783320498563183772782869513721065940707101925859422649035671625287704517073907172216653906274761052142422078548321755878924288)] (by decide +kernel)
-
-def m478 : Rule (MRel D) :=
+def m498 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m10, m21, m20, m18, m19, m24, m23, m26, m25, m9, m22, m27, m50, m33, m2]
     [.T 4, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
     .T 6, .T 5, .T 4, .T 3, .T 4]
@@ -2963,7 +3101,20 @@ def m478 : Rule (MRel D) :=
     .T 5, .T 4, .T 3]
     [(35, 615233513105542914494076570266752795606728787303781586499632509138502845983653453143939779382107836308567601005460578643542521568359760978007620119710518355931912538057952847809942321432778989436381788604711016652520923644794204949037851478270516108957661003776)] (by decide +kernel)
 
-def m479 : Rule (MRel D) :=
+def m499 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m4, m21, m20, m24, m23, m26, m25, m27]
+    [.T 4, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
+    .T 5, .T 4, .T 4]
+    [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
+    [(16, 9456558462973248502294608458989871724616616240230775175614385436530463769899745847749061125499679826896548735209177089)] (by decide +kernel)
+
+def m500 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m19, m24, m22, m26, m27, m10, m25, m55, m35, m3]
+    [.T 4, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 4]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [(18, 4970443783320498563183772782869513721065940707101925859422649035671625287704517073907172216653906274761052142422078548321755878924288)] (by decide +kernel)
+
+def m501 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m17, m16, m14, m13, m21, m20, m18, m24, m23, m26, m25, m9, m27, m58, m54,
     m33, m2]
     [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5,
@@ -2972,93 +3123,44 @@ def m479 : Rule (MRel D) :=
     .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(49, 1975458984219676756332887063244379234466988196259628497370541737424161992520521644657784055110730251822626987573039834351378612295462441166820850117005353448087164908572941333239903266750739353915801628983215845929448666060295571277528036894112821759964886501036500678199701341290474496693997861605045970624445097024330526740054867705264147376139631424146183286685696)] (by decide +kernel)
 
-def m480 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m4, m21, m20, m24, m23, m26, m25, m27]
-    [.T 4, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
-    .T 5, .T 4, .T 4]
-    [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
-    [(16, 9456558462973248502294608458989871724616616240230775175614385436530463769899745847749061125499679826896548735209177089)] (by decide +kernel)
-
-def m481 : Rule (MRel D) :=
+def m502 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m25, m55, m35, m3]
     [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
     [.T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(8, 2354535785557822463349606390510420404134912537370101284864)] (by decide +kernel)
 
-def m482 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m22, m10, m27, m25, m26, m51]
-    [.T 4, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
-    .T 4]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
-    .T 2]
-    [(9, 144817261256734000096208704319956656812702032968282254358117089280)] (by decide +kernel)
-
-def m483 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m27, m25, m26, m55]
-    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 4]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 1]
-    [(10, 5301080564413830960344048915788615336336405921179823343147429041188896768)] (by decide +kernel)
-
-def m484 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27]
-    [.T 4, .T 6, .T 5, .K, .T 5, .T 6, .T 4]
-    [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
-    [(2, 1374389534721)] (by decide +kernel)
-
-def m485 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m10, m27, m25, m26]
-    [.T 4, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 4]
-    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
-    [(8, 3923476056148445088838347108168044223408356363535682371584)] (by decide +kernel)
-
-def m486 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m27, m25, m26, m58]
-    [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 0, .T 4]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
-    .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(11, 192699753692130269112198570651716882256119486698107355288168160021196684541296640)] (by decide +kernel)
-
-def m487 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m4, m27]
-    [.T 4, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 4]
-    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
-    [(4, 2785402876550718587205058561)] (by decide +kernel)
-
-def m488 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 4, .T 5, .K, .T 5, .T 4]
-    [.T 4, .T 5, .K, .T 5, .T 4]
-    [] (by decide +kernel)
-
-def m489 : Rule (MRel D) :=
+def m503 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m10, m25, m26, m51, m35, m3]
     [.T 4, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 4]
     [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
     [(11, 103773234875571542371357474486362500368220642666874831916260033061317863656128512)] (by decide +kernel)
 
-def m490 : Rule (MRel D) :=
+def m504 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
+    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
+    [] (by decide +kernel)
+
+def m505 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m10, m25, m26, m35, m3]
+    [.T 4, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 4]
+    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
+    [(10, 2650755942037411873332929630031831509825273428973635382013945397947400192)] (by decide +kernel)
+
+def m506 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m4]
+    [.T 4, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 4]
+    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
+    [(2, 1924178903041)] (by decide +kernel)
+
+def m507 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m25, m26, m55, m35, m3]
     [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
     .T 4]
     [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(12, 3979496621092950896841906133699867458201618395449163767687732337357596548763843024650240)] (by decide +kernel)
 
-def m491 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
-    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
-    [] (by decide +kernel)
-
-def m492 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m10, m25, m26, m35, m3]
-    [.T 4, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 4]
-    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
-    [(10, 2650755942037411873332929630031831509825273428973635382013945397947400192)] (by decide +kernel)
-
-def m493 : Rule (MRel D) :=
+def m508 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m25, m26, m58, m35, m3]
     [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2,
     .T 1, .T 0, .T 4]
@@ -3066,67 +3168,13 @@ def m493 : Rule (MRel D) :=
     .T 0]
     [(13, 150221222054222633578861515291514564042376791003930636824667914432231697133046298128775045447680)] (by decide +kernel)
 
-def m494 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m4]
-    [.T 4, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 4]
-    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
-    [(2, 1924178903041)] (by decide +kernel)
-
-def m495 : Rule (MRel D) :=
+def m509 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m37, m4]
     [.T 4, .K, .T 4]
     [.K]
     [(2, 274978570240)] (by decide +kernel)
 
-def m496 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m22, m10, m24, m23, m26, m25, m9, m27, m51, m33, m2]
-    [.T 4, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 4]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
-    .T 4, .T 3, .T 2]
-    [(27, 382823379636144212652329162205697264975369397682942987025511991933002135532086725862640660621390168653662928992084266537112363950583106325786143384681096235110918007471080452557322143655231313936384000)] (by decide +kernel)
-
-def m497 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m24, m23, m26, m25, m9, m27, m55, m33, m2]
-    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(28, 14129947493413897055127376200019924960495367765629128010546095045210144441304078849478790343258211978196299817107303796850561719506219317760120305853015899527985091282740413334792046909602389494138859794989056)] (by decide +kernel)
-
-def m498 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27]
-    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
-    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
-    [(6, 696940833138344687995215861081650155765760)] (by decide +kernel)
-
-def m499 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m27, m10, m25, m35, m3]
-    [.T 4, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 4]
-    [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
-    [(12, 2487284033780662156399805069329660665264438706201615313040760773953079271391740869746688)] (by decide +kernel)
-
-def m500 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m24, m23, m26, m25, m9, m27, m58, m33, m2]
-    [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 4]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(29, 517223917193140862512315796633564430189450058644481235849753135301456555347901714071764678031545848036024941949982501592288205667981942730849934631554256616799355166721512991408307787929322603892616672843027753992192)] (by decide +kernel)
-
-def m501 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m4, m26, m25, m27]
-    [.T 4, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 4]
-    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
-    [(8, 4315555345260289926101967409459716705136937530185287204865)] (by decide +kernel)
-
-def m502 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m10, m25, m35, m3]
-    [.T 4, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 4]
-    [.T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3]
-    [(6, 1394094353138073068612053844295019111907328)] (by decide +kernel)
-
-def m503 : Rule (MRel D) :=
+def m510 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m10, m17, m16, m14, m15, m13, m21, m20, m18, m19, m24, m23, m26, m25, m9, m27, m51, m54,
     m33, m2]
     [.T 4, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
@@ -3135,7 +3183,31 @@ def m503 : Rule (MRel D) :=
     .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2]
     [(47, 1503998177908620177928305382092598526569033003476971790555594774533584055677052940103272599883940003363614717454808593448779057532787584101580852040877029335169464167456283035486952596121609218688749485362660017610625842454201205051279264433027610998727345205271179877301631708405777146498935207541267070916161036853967105997378117322173173748018970624)] (by decide +kernel)
 
-def m504 : Rule (MRel D) :=
+def m511 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m21, m20, m19, m24, m23, m22, m26, m25, m27]
+    [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
+    .T 6, .T 5, .T 4]
+    [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
+    .T 6, .T 5, .T 4]
+    [(24, 2026254344271164824953731363389653333032986971489444634208575974804820614230822459224154707919802615041826904448262852006833867814988224872205468756880197308556219710912709279744)] (by decide +kernel)
+
+def m512 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m10, m17, m16, m14, m15, m21, m20, m18, m19, m24, m23, m26, m25, m9, m22, m27, m54, m33, m2]
+    [.T 4, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 4]
+    [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0, .T 6, .T 5, .T 4, .T 3]
+    [(44, 36492722455503957586042044529077517710413893444302735532605784054902814278645064970753665509861699521550492850447863818647686278490910242644284926533569016652998705876590746310560703806462915964293249082035593225124750793968909032959468688768062117415333079000023337605439948485357532438917114921498052109139128367994332367552512)] (by decide +kernel)
+
+def m513 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m4, m17, m16, m21, m20, m24, m23, m26, m25, m27]
+    [.T 4, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0, .T 6, .T 5, .T 4, .T 4]
+    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
+    .T 5]
+    [(20, 13585947269443168948573207656544885390730485397381991926963453304765892593006171271850467622046625624083743977863278365178583915712647077503076139009)] (by decide +kernel)
+
+def m514 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m17, m16, m14, m15, m13, m21, m20, m18, m24, m23, m26, m25, m9, m27, m55, m54,
     m33, m2]
     [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
@@ -3144,90 +3216,18 @@ def m504 : Rule (MRel D) :=
     .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(48, 54669535050071305810125805981284236805248181495621108636908493338387205689355748606393014815798300740955256516184185950809939330809271654211768400108197228104658627440406076627452268169996458404827445181250045347010193450270686134627730198855823446972406293026305795696865299106545570646869516602595811617702683094140755709844718962858291850333442007598366720)] (by decide +kernel)
 
-def m505 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m15, m21, m20, m19, m24, m23, m22, m26, m25, m27]
-    [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
-    .T 6, .T 5, .T 4]
-    [.T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
-    .T 6, .T 5, .T 4]
-    [(24, 2026254344271164824953731363389653333032986971489444634208575974804820614230822459224154707919802615041826904448262852006833867814988224872205468756880197308556219710912709279744)] (by decide +kernel)
-
-def m506 : Rule (MRel D) :=
+def m515 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m17, m15, m21, m19, m24, m22, m26, m27, m10, m25, m58, m35, m3]
     [.T 4, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
     .T 4]
     [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
     [(21, 214606767240598775840336400391567164833113734449329572839725339552477307170198979703906680580613047158125883342843806165958067157557253615603050721048535040)] (by decide +kernel)
 
-def m507 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m10, m17, m16, m14, m15, m21, m20, m18, m19, m24, m23, m26, m25, m9, m22, m27, m54, m33, m2]
-    [.T 4, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 4]
-    [.T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0, .T 6, .T 5, .T 4, .T 3]
-    [(44, 36492722455503957586042044529077517710413893444302735532605784054902814278645064970753665509861699521550492850447863818647686278490910242644284926533569016652998705876590746310560703806462915964293249082035593225124750793968909032959468688768062117415333079000023337605439948485357532438917114921498052109139128367994332367552512)] (by decide +kernel)
-
-def m508 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m4, m17, m16, m21, m20, m24, m23, m26, m25, m27]
-    [.T 4, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0, .T 6, .T 5, .T 4, .T 4]
-    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
-    .T 5]
-    [(20, 13585947269443168948573207656544885390730485397381991926963453304765892593006171271850467622046625624083743977863278365178583915712647077503076139009)] (by decide +kernel)
-
-def m509 : Rule (MRel D) :=
+def m516 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m25, m58, m35, m3]
     [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 4]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(9, 92172361635139353360167305602035040038844684941793481952222773248)] (by decide +kernel)
-
-def m510 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m22, m10, m26, m25, m3, m27, m51]
-    [.T 4, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 4]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(11, 148230162345358993424130643774539433739585189175538502526257236919429064860631040)] (by decide +kernel)
-
-def m511 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m26, m25, m3, m27, m55]
-    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
-    .T 4, .T 3, .T 2, .T 1, .T 4]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
-    .T 1]
-    [(12, 5471223570806865977645511854004488772979600818484956314041282034404726498018641194254336)] (by decide +kernel)
-
-def m512 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27]
-    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
-    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
-    [(2, 549789384704)] (by decide +kernel)
-
-def m513 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m4]
-    [.T 4, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 4]
-    [.T 6, .T 5, .K, .T 5, .T 6]
-    [(4, 1238053422197829330758803456)] (by decide +kernel)
-
-def m514 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m10, m26, m25, m3, m27]
-    [.T 4, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
-    .T 4]
-    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
-    [(10, 3975783466648287628003691392940894205574169631215138536491111837469769728)] (by decide +kernel)
-
-def m515 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m26, m25, m3, m27, m58]
-    [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 4]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 0]
-    [(13, 200275272550965616611460608788286999234845197314880371387394945700420219810479873984480151601152)] (by decide +kernel)
-
-def m516 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m4]
-    [.T 4, .T 4, .T 5, .K, .T 5, .T 4, .T 4]
-    [.T 5, .K, .T 5]
-    [(2, 824667275265)] (by decide +kernel)
 
 def m517 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m22, m10, m25, m26, m51, m35, m3]
@@ -3236,41 +3236,41 @@ def m517 : Rule (MRel D) :=
     [(9, 79005110908066535914536859687058087518343241708848326197502803968)] (by decide +kernel)
 
 def m518 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m25, m26, m55, m35, m3]
-    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(10, 3092791240765692242847705358739455330051555876262953242189211926458793984)] (by decide +kernel)
-
-def m519 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
     [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
     [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
     [] (by decide +kernel)
 
-def m520 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m37, m4]
-    [.T 4, .T 6, .K, .T 6, .T 4]
-    [.T 6, .K, .T 6]
-    [(4, 619158923527629584560291841)] (by decide +kernel)
-
-def m521 : Rule (MRel D) :=
+def m519 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m10, m25, m26, m35, m3]
     [.T 4, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 4]
     [.T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3]
     [(8, 1962025353455824241550302862058231461082412547732806828032)] (by decide +kernel)
 
+def m520 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m4]
+    [.T 4, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 4]
+    [.T 5, .T 6, .K, .T 6, .T 5]
+    [(2, 1374423089153)] (by decide +kernel)
+
+def m521 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m19, m22, m10, m25, m26, m55, m35, m3]
+    [.T 4, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 4]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(10, 3092791240765692242847705358739455330051555876262953242189211926458793984)] (by decide +kernel)
+
 def m522 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m37, m4]
+    [.T 4, .T 6, .K, .T 6, .T 4]
+    [.T 6, .K, .T 6]
+    [(4, 619158923527629584560291841)] (by decide +kernel)
+
+def m523 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m15, m19, m22, m10, m25, m26, m58, m35, m3]
     [.T 4, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 4]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(11, 118601859745452806589400300518072722168114913235747291832732529003749252322557952)] (by decide +kernel)
-
-def m523 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m4]
-    [.T 4, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 4]
-    [.T 5, .T 6, .K, .T 6, .T 5]
-    [(2, 1374423089153)] (by decide +kernel)
 
 def m524 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m27, m56, m36, m4]
@@ -3279,41 +3279,41 @@ def m524 : Rule (MRel D) :=
     [(8, 2354535785557822463349606390510420404134912537370101284864)] (by decide +kernel)
 
 def m525 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m27, m59, m36, m4]
-    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(9, 92172361635139353360167305602035040038844684941793481952222773248)] (by decide +kernel)
-
-def m526 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m5]
     [.T 5, .T 5, .T 6, .Z, .T 6, .T 5, .T 5]
     [.T 6, .Z, .T 6]
     [(2, 824667275265)] (by decide +kernel)
 
-def m527 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 5, .T 6, .Z, .T 6, .T 5]
-    [.T 5, .T 6, .Z, .T 6, .T 5]
-    [] (by decide +kernel)
-
-def m528 : Rule (MRel D) :=
+def m526 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m25, m11, m27, m52, m36, m4]
     [.T 5, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 5]
     [.T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3]
     [(7, 58475766611992801874558990704375508191743725010944)] (by decide +kernel)
 
+def m527 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m11, m27, m36, m4]
+    [.T 5, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 5]
+    [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
+    [(6, 1394094353138073068612053844295019111907328)] (by decide +kernel)
+
+def m528 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m27, m59, m36, m4]
+    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(9, 92172361635139353360167305602035040038844684941793481952222773248)] (by decide +kernel)
+
 def m529 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 5, .T 6, .Z, .T 6, .T 5]
+    [.T 5, .T 6, .Z, .T 6, .T 5]
+    [] (by decide +kernel)
+
+def m530 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m27, m61, m36, m4]
     [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 5]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(10, 3534610859914207654875525853323227264967950159124671630690371814706642944)] (by decide +kernel)
-
-def m530 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m11, m27, m36, m4]
-    [.T 5, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 5]
-    [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
-    [(6, 1394094353138073068612053844295019111907328)] (by decide +kernel)
 
 def m531 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m38, m5]
@@ -3322,39 +3322,39 @@ def m531 : Rule (MRel D) :=
     [(2, 274978570240)] (by decide +kernel)
 
 def m532 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m5]
-    [.T 5, .T 1, .T 5]
-    [.T 1]
-    [(2, 274978570240)] (by decide +kernel)
-
-def m533 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m25, m56]
     [.T 5, .T 2, .T 3, .T 4, .T 3, .T 2, .T 5]
     [.T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2]
     [(3, 18451247948281937920)] (by decide +kernel)
 
-def m534 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m4, m5]
-    [.T 5, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 5]
-    [.T 2, .T 3, .T 4, .T 3, .T 2]
-    [(7, 58472912116267076431558554842291247937882035322880)] (by decide +kernel)
-
-def m535 : Rule (MRel D) :=
+def m533 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m5]
     [.T 5, .T 2, .T 5]
     [.T 2]
     [(2, 274978570240)] (by decide +kernel)
 
-def m536 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m5]
-    [.T 5, .T 0, .T 1, .T 0, .T 5]
-    [.T 0, .T 1, .T 0]
-    [(4, 928643942570094340637458432)] (by decide +kernel)
-
-def m537 : Rule (MRel D) :=
+def m534 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m25, m5]
     [.T 5, .T 2, .T 3, .T 2, .T 5]
     [.T 2, .T 3, .T 2]
+    [(4, 928643942570094340637458432)] (by decide +kernel)
+
+def m535 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m5]
+    [.T 5, .T 1, .T 5]
+    [.T 1]
+    [(2, 274978570240)] (by decide +kernel)
+
+def m536 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m4, m5]
+    [.T 5, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 5]
+    [.T 2, .T 3, .T 4, .T 3, .T 2]
+    [(7, 58472912116267076431558554842291247937882035322880)] (by decide +kernel)
+
+def m537 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m5]
+    [.T 5, .T 0, .T 1, .T 0, .T 5]
+    [.T 0, .T 1, .T 0]
     [(4, 928643942570094340637458432)] (by decide +kernel)
 
 def m538 : Rule (MRel D) :=
@@ -3364,152 +3364,138 @@ def m538 : Rule (MRel D) :=
     [(6, 1394264515095791884020097623138781794140160)] (by decide +kernel)
 
 def m539 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m59]
-    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 5]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(4, 928681721506460897426538496)] (by decide +kernel)
-
-def m540 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m4, m5]
-    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
-    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
-    [(9, 92165933882387596486635904832945088682830749102950874822316392448)] (by decide +kernel)
-
-def m541 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m5]
-    [.T 5, .T 1, .T 2, .T 1, .T 5]
-    [.T 1, .T 2, .T 1]
-    [(4, 928643942570094340637458432)] (by decide +kernel)
-
-def m542 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m16, m5]
-    [.T 5, .T 0, .T 5]
-    [.T 0]
-    [(2, 274978570240)] (by decide +kernel)
-
-def m543 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m5]
-    [.T 5, .T 1, .T 2, .T 3, .T 2, .T 1, .T 5]
-    [.T 1, .T 2, .T 3, .T 2, .T 1]
-    [(6, 1742543507244636550897235250085195453300736)] (by decide +kernel)
-
-def m544 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m59, m27, m4]
-    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(7, 58478621804361582229796396595691111642903540137984)] (by decide +kernel)
-
-def m545 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m5]
-    [.T 5, .T 5, .T 5]
-    [.T 5]
-    [(1, 1)] (by decide +kernel)
-
-def m546 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m25, m52]
     [.T 5, .T 3, .T 4, .T 3, .T 5]
     [.T 3, .T 4, .T 5, .T 4, .T 3]
     [(2, 274945015808)] (by decide +kernel)
 
-def m547 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m61]
-    [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 5]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(5, 41548517001762168369916841685942272)] (by decide +kernel)
-
-def m548 : Rule (MRel D) :=
+def m540 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m11]
     [.T 5, .T 4, .T 5]
     [.T 4, .T 5, .T 4]
     [(1, 0)] (by decide +kernel)
 
-def m549 : Rule (MRel D) :=
+def m541 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m59]
+    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 5]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(4, 928681721506460897426538496)] (by decide +kernel)
+
+def m542 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m5]
+    [.T 5, .T 5, .T 5]
+    [.T 5]
+    [(1, 1)] (by decide +kernel)
+
+def m543 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m61]
+    [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 5]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(5, 41548517001762168369916841685942272)] (by decide +kernel)
+
+def m544 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m5]
     [.T 5, .T 5, .T 6, .T 5, .T 5]
     [.T 6]
     [(2, 274911461377)] (by decide +kernel)
 
-def m550 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m25, m11, m4, m5]
-    [.T 5, .T 3, .T 4, .T 5, .T 4, .T 3, .T 5]
-    [.T 3, .T 4, .T 3]
-    [(5, 31162655324380610695429477390876672)] (by decide +kernel)
-
-def m551 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m4, m5]
-    [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 5]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(11, 133416010603208808688389286933760883538037997712211330225904007761571832620122112)] (by decide +kernel)
-
-def m552 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m11, m4, m5]
-    [.T 5, .T 4, .T 5, .T 4, .T 5]
-    [.T 4]
-    [(3, 9229002086245466112)] (by decide +kernel)
-
-def m553 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 5, .T 6, .T 5]
-    [.T 5, .T 6, .T 5]
-    [] (by decide +kernel)
-
-def m554 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m5]
-    [.T 5, .T 0, .T 1, .T 2, .T 1, .T 0, .T 5]
-    [.T 0, .T 1, .T 2, .T 1, .T 0]
-    [(6, 1742543507244636550897235250085195453300736)] (by decide +kernel)
-
-def m555 : Rule (MRel D) :=
+def m545 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m25, m5]
     [.T 5, .T 3, .T 5]
     [.T 3]
     [(2, 274978570240)] (by decide +kernel)
 
-def m556 : Rule (MRel D) :=
+def m546 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m5]
+    [.T 5, .T 1, .T 2, .T 1, .T 5]
+    [.T 1, .T 2, .T 1]
+    [(4, 928643942570094340637458432)] (by decide +kernel)
+
+def m547 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m25, m11, m4, m5]
+    [.T 5, .T 3, .T 4, .T 5, .T 4, .T 3, .T 5]
+    [.T 3, .T 4, .T 3]
+    [(5, 31162655324380610695429477390876672)] (by decide +kernel)
+
+def m548 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m5]
+    [.T 5, .T 0, .T 1, .T 2, .T 1, .T 0, .T 5]
+    [.T 0, .T 1, .T 2, .T 1, .T 0]
+    [(6, 1742543507244636550897235250085195453300736)] (by decide +kernel)
+
+def m549 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m25, m11, m52, m27, m4]
     [.T 5, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 5]
     [.T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3]
     [(5, 31165191244777778833718525019815936)] (by decide +kernel)
 
-def m557 : Rule (MRel D) :=
+def m550 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m5]
+    [.T 5, .T 1, .T 2, .T 3, .T 2, .T 1, .T 5]
+    [.T 1, .T 2, .T 3, .T 2, .T 1]
+    [(6, 1742543507244636550897235250085195453300736)] (by decide +kernel)
+
+def m551 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m11, m4, m5]
+    [.T 5, .T 4, .T 5, .T 4, .T 5]
+    [.T 4]
+    [(3, 9229002086245466112)] (by decide +kernel)
+
+def m552 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m5]
     [.T 5, .T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0, .T 5]
     [.T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0]
     [(8, 2746663093754621699633742001913178961483544234181949128704)] (by decide +kernel)
 
-def m558 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m61, m27, m4]
-    [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 5]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(8, 2354631589916007622702355770346969210675819875182936326144)] (by decide +kernel)
-
-def m559 : Rule (MRel D) :=
+def m553 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m11, m27, m4]
     [.T 5, .T 4, .T 5, .T 6, .T 5, .T 4, .T 5]
     [.T 4, .T 5, .T 6, .T 5, .T 4]
     [(4, 619158941974373933147750400)] (by decide +kernel)
 
-def m560 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m21, m19, m18, m24, m22, m26, m27, m10, m59, m55, m35, m3]
-    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(35, 738251687528564026096312775599283214647183778337714857473074417539405450782201854945520671895137575825752245975205468891733717927138410912609315240366644313064751743018205321755949148787072701348042683959691508031530040003009304145773732405828424078500672045056)] (by decide +kernel)
+def m554 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m4, m5]
+    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
+    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
+    [(9, 92165933882387596486635904832945088682830749102950874822316392448)] (by decide +kernel)
 
-def m561 : Rule (MRel D) :=
+def m555 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m16, m5]
+    [.T 5, .T 0, .T 5]
+    [.T 0]
+    [(2, 274978570240)] (by decide +kernel)
+
+def m556 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m59, m27, m4]
+    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(7, 58478621804361582229796396595691111642903540137984)] (by decide +kernel)
+
+def m557 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m4, m5]
+    [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 5]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(11, 133416010603208808688389286933760883538037997712211330225904007761571832620122112)] (by decide +kernel)
+
+def m558 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 5, .T 6, .T 5]
+    [.T 5, .T 6, .T 5]
+    [] (by decide +kernel)
+
+def m559 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m61, m27, m4]
+    [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 5]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(8, 2354631589916007622702355770346969210675819875182936326144)] (by decide +kernel)
+
+def m560 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m5, m24, m26, m27]
     [.T 5, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 5]
     [.T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6]
     [(8, 4315555333568277175903887790871224629911494754830452260865)] (by decide +kernel)
 
-def m562 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m23, m26, m25, m27]
-    [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
-    [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
-    [(10, 441765686092751982685371733642798394532483988833771145362823073419501568)] (by decide +kernel)
-
-def m563 : Rule (MRel D) :=
+def m561 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m25, m11, m24, m22, m23, m26, m27, m10, m52, m51, m35, m3]
     [.T 5, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
     .T 4, .T 3, .T 5]
@@ -3517,20 +3503,34 @@ def m563 : Rule (MRel D) :=
     .T 3]
     [(24, 9120432461128780635764387103954905820460723044219842865204957880110015490099926361409393286701007031063206660492541248395997290717946384662691436609727069203095601987219875692544)] (by decide +kernel)
 
+def m562 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m11, m24, m22, m23, m26, m27, m10, m25, m51, m35, m3]
+    [.T 5, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
+    .T 5]
+    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
+    [(23, 241610997202825547532443011686739844053667144840774605065209634221829116068111906434206006776346388925396722697022143391429221698545705333509879725788876054551724627591168)] (by decide +kernel)
+
+def m563 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m21, m19, m18, m24, m22, m26, m27, m10, m59, m55, m35, m3]
+    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(35, 738251687528564026096312775599283214647183778337714857473074417539405450782201854945520671895137575825752245975205468891733717927138410912609315240366644313064751743018205321755949148787072701348042683959691508031530040003009304145773732405828424078500672045056)] (by decide +kernel)
+
 def m564 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m23, m26, m25, m27]
+    [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
+    [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
+    [(10, 441765686092751982685371733642798394532483988833771145362823073419501568)] (by decide +kernel)
+
+def m565 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m21, m19, m18, m24, m22, m26, m27, m10, m61, m55, m35, m3]
     [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
     .T 3, .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 5]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
     .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(36, 26835770442753578734332175645772507209818326046605712748427010090806751793570929895723293990649549902255508490265258035354885009055004503621659080069183062992739090522217125521565461461550755180577728516597079021609008664727132496876521177481834937671517611014905397248)] (by decide +kernel)
-
-def m565 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m11, m24, m22, m23, m26, m27, m10, m25, m51, m35, m3]
-    [.T 5, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
-    .T 5]
-    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
-    [(23, 241610997202825547532443011686739844053667144840774605065209634221829116068111906434206006776346388925396722697022143391429221698545705333509879725788876054551724627591168)] (by decide +kernel)
 
 def m566 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m56, m37, m4]
@@ -3539,6 +3539,149 @@ def m566 : Rule (MRel D) :=
     [(6, 1742713648438239153536937964087919784230912)] (by decide +kernel)
 
 def m567 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m27, m4, m56]
+    [.T 5, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
+    .T 5]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(8, 3138981987300893772057385645503187180599585247727605252096)] (by decide +kernel)
+
+def m568 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m25, m11, m27, m4, m52]
+    [.T 5, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 5]
+    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
+    [(7, 81854085212142889609847707705836500780283823390720)] (by decide +kernel)
+
+def m569 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m11, m27, m4]
+    [.T 5, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 5]
+    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
+    [(6, 2090907611536265302626778478555318504652800)] (by decide +kernel)
+
+def m570 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m27, m4, m59]
+    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 5]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(9, 118494008369185521059353492484700493331587745803740044510439145472)] (by decide +kernel)
+
+def m571 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
+    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
+    [] (by decide +kernel)
+
+def m572 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m27, m4, m61]
+    [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 0, .T 5]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
+    .T 0]
+    [(10, 4417818765379781873798465216416917196228473288288718951683789117783539712)] (by decide +kernel)
+
+def m573 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m5]
+    [.T 5, .T 5, .K, .T 5, .T 5]
+    [.K]
+    [(2, 274911461377)] (by decide +kernel)
+
+def m574 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m24, m22, m26, m27, m10, m56, m51, m35, m3]
+    [.T 5, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 5]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
+    .T 4, .T 3, .T 2]
+    [(25, 340023763380876762034714030548604251806591439128284045481699902871497898720431938921189632306121884941080364387459568447205318292995180882384930956925499703614457557273676621075542179840)] (by decide +kernel)
+
+def m575 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m5, m26, m27]
+    [.T 5, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 5]
+    [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
+    [(6, 3136084828843037258060991700657086000005121)] (by decide +kernel)
+
+def m576 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m11, m26, m27, m10, m25, m35, m3]
+    [.T 5, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 5]
+    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
+    [(16, 4414025248312745439689344653150128251541146026962068998832316199041787272884009074303725288674805582765762124269486080)] (by decide +kernel)
+
+def m577 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m24, m22, m26, m27, m10, m59, m51, m35, m3]
+    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(26, 12550192904430377718646465582167038890783992002361286067223266735712506597856908887225655584197263846644573909724525522014123769982792531385102478793061987071432406167422999648625841555990642688)] (by decide +kernel)
+
+def m578 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27]
+    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
+    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
+    [(6, 348491679026709674854045961293146391322624)] (by decide +kernel)
+
+def m579 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m24, m22, m26, m27, m10, m61, m51, m35, m3]
+    [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 5]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(27, 459396465282375643621759126370035107387105032094334191997204204099454035168957104251047467387569042444568721866772084066247072926901217593691611759328850805995577744448500505208154339528475951581102080)] (by decide +kernel)
+
+def m580 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m25, m11, m52, m37, m4]
+    [.T 5, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 5]
+    [.T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3]
+    [(5, 41549784652362424269434448953475072)] (by decide +kernel)
+
+def m581 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m26, m27, m10, m56, m35, m3]
+    [.T 5, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 5]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
+    .T 2]
+    [(18, 6389704125295844932434787569257382464484987492857087014128908132071891570088050738334053464517742758486832503038318250936780839714816)] (by decide +kernel)
+
+def m582 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m5, m27]
+    [.T 5, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 5]
+    [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
+    [(4, 2166432847684656138022813697)] (by decide +kernel)
+
+def m583 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m25, m11, m26, m27, m10, m52, m35, m3]
+    [.T 5, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
+    .T 5]
+    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
+    [(17, 169269066172423292572016384650620507354800002603299041301649025893260495421128716472094217022574845293020690667493610219372544)] (by decide +kernel)
+
+def m584 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m26, m27, m10, m59, m35, m3]
+    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
+    .T 4, .T 3, .T 2, .T 1, .T 5]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 1]
+    [(19, 238225759309848474822339597665388054632821769730662080582323967027732342977340481040394886361607488648471043718405686836235975484432896229376)] (by decide +kernel)
+
+def m585 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27]
+    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
+    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
+    [(2, 274911469568)] (by decide +kernel)
+
+def m586 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m26, m27, m10, m61, m35, m3]
+    [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 5]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
+    .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(20, 8792892803398833076967622505836458618250977682721150153933451481228838643384423123467023877499077403493483189300745550551584513437274930967098687488)] (by decide +kernel)
+
+def m587 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m11, m37, m4]
+    [.T 5, .T 4, .T 5, .K, .T 5, .T 4, .T 5]
+    [.T 4, .T 5, .K, .T 5, .T 4]
+    [(4, 928643942572346965017755648)] (by decide +kernel)
+
+def m588 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m21, m19, m20, m18, m24, m22, m26, m27, m10, m56, m55, m35, m3]
     [.T 5, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
     .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 5]
@@ -3546,20 +3689,14 @@ def m567 : Rule (MRel D) :=
     .T 6, .T 5, .T 4, .T 3, .T 2]
     [(34, 20168724889579594623812426439645398270303604961951970034631287994478622485927456334709929459380270780013831082836505589748313163872822931549758963028435931259227724203111880321093166940372332528844159825705892828336550390304060503376899492031206432702464)] (by decide +kernel)
 
-def m568 : Rule (MRel D) :=
+def m589 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m5, m21, m24, m26, m27]
     [.T 5, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
     .T 5]
     [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
     [(10, 5742306880427904579116417466217104849501442358769623744192556677625544705)] (by decide +kernel)
 
-def m569 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m24, m23, m26, m25, m27]
-    [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
-    [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
-    [(14, 560004537135712624641030337132576067767411651222772808891922438907928167382241887000967944148648730624)] (by decide +kernel)
-
-def m570 : Rule (MRel D) :=
+def m590 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m25, m11, m21, m19, m20, m18, m24, m22, m23, m26, m27, m10, m52, m55, m35, m3]
     [.T 5, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
     .T 6, .T 5, .T 4, .T 3, .T 5]
@@ -3567,7 +3704,21 @@ def m570 : Rule (MRel D) :=
     .T 5, .T 4, .T 3]
     [(33, 546450465445900596506808810070129590475268420280881075711213063992844457991349986563440429429870405442219755473910901689600997093296711850386765477843305209453300111882983034138814060186941668101268669674930661992633469665805361454934547064946688)] (by decide +kernel)
 
-def m571 : Rule (MRel D) :=
+def m591 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m11, m21, m19, m20, m24, m22, m23, m26, m27, m10, m25, m55, m35, m3]
+    [.T 5, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
+    .T 5, .T 4, .T 5]
+    [.T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
+    .T 4]
+    [(30, 13017822190137308893743334609758182527455925509750239535575954222544892462819131484598629454665068098762887162584837630987520787814718426574976767647935471404698742177953882739442092171928993546476376225179559280947383762944)] (by decide +kernel)
+
+def m592 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m20, m24, m23, m26, m25, m27]
+    [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
+    [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
+    [(14, 560004537135712624641030337132576067767411651222772808891922438907928167382241887000967944148648730624)] (by decide +kernel)
+
+def m593 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m17, m15, m14, m13, m21, m19, m18, m24, m22, m26, m27, m10, m61, m58,
     m35, m3]
     [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5,
@@ -3576,73 +3727,37 @@ def m571 : Rule (MRel D) :=
     .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(47, 1754560038786647130189077263039749102793413778404060612782343357032391642173627819190316054281223747257342461576412533431832535463247563133143835455577070066820601395809815240320105035517666526262921778954890197473671649520498521004989077138863344274819299307246402577703093516951071927992110419694792478214011859372664024718852438600429929182472962048)] (by decide +kernel)
 
-def m572 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m11, m21, m19, m20, m24, m22, m23, m26, m27, m10, m25, m55, m35, m3]
-    [.T 5, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
-    .T 5, .T 4, .T 5]
-    [.T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
-    .T 4]
-    [(30, 13017822190137308893743334609758182527455925509750239535575954222544892462819131484598629454665068098762887162584837630987520787814718426574976767647935471404698742177953882739442092171928993546476376225179559280947383762944)] (by decide +kernel)
-
-def m573 : Rule (MRel D) :=
+def m594 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m59, m37, m4]
     [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
     [.T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(7, 70170634554559661848384888670925777790020351950848)] (by decide +kernel)
 
-def m574 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m27, m4, m56]
-    [.T 5, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
-    .T 5]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(8, 3138981987300893772057385645503187180599585247727605252096)] (by decide +kernel)
-
-def m575 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m27, m4, m59]
-    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 5]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(9, 118494008369185521059353492484700493331587745803740044510439145472)] (by decide +kernel)
-
-def m576 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
-    [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
-    [] (by decide +kernel)
-
-def m577 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m25, m11, m27, m4, m52]
-    [.T 5, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 5]
-    [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
-    [(7, 81854085212142889609847707705836500780283823390720)] (by decide +kernel)
-
-def m578 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m27, m4, m61]
-    [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 0, .T 5]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
-    .T 0]
-    [(10, 4417818765379781873798465216416917196228473288288718951683789117783539712)] (by decide +kernel)
-
-def m579 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m11, m27, m4]
-    [.T 5, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 5]
-    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
-    [(6, 2090907611536265302626778478555318504652800)] (by decide +kernel)
-
-def m580 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m5]
-    [.T 5, .T 5, .K, .T 5, .T 5]
-    [.K]
-    [(2, 274911461377)] (by decide +kernel)
-
-def m581 : Rule (MRel D) :=
+def m595 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m27, m56]
     [.T 5, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 5]
     [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
     [(6, 3136297609174639196828946578537573186011136)] (by decide +kernel)
 
-def m582 : Rule (MRel D) :=
+def m596 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m5]
+    [.T 5, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 5]
+    [.T 6, .T 5, .K, .T 5, .T 6]
+    [(2, 1374423089153)] (by decide +kernel)
+
+def m597 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m25, m11, m27, m52]
+    [.T 5, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 5]
+    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
+    [(5, 83081823124549944633123174617186304)] (by decide +kernel)
+
+def m598 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m11, m27]
+    [.T 5, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 5]
+    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
+    [(4, 2166470700400118240091570176)] (by decide +kernel)
+
+def m599 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m27, m59]
     [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
     .T 5]
@@ -3650,19 +3765,7 @@ def m582 : Rule (MRel D) :=
     .T 1]
     [(7, 116931552801379867025823647867890890283623557103616)] (by decide +kernel)
 
-def m583 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m5]
-    [.T 5, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 5]
-    [.T 6, .T 5, .K, .T 5, .T 6]
-    [(2, 1374423089153)] (by decide +kernel)
-
-def m584 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m25, m11, m27, m52]
-    [.T 5, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 5]
-    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
-    [(5, 83081823124549944633123174617186304)] (by decide +kernel)
-
-def m585 : Rule (MRel D) :=
+def m600 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m27, m61]
     [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2,
     .T 1, .T 0, .T 5]
@@ -3670,67 +3773,13 @@ def m585 : Rule (MRel D) :=
     .T 2, .T 1, .T 0]
     [(8, 4315986488256149862647286043306910173490912115495081607168)] (by decide +kernel)
 
-def m586 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m11, m27]
-    [.T 5, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 5]
-    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
-    [(4, 2166470700400118240091570176)] (by decide +kernel)
-
-def m587 : Rule (MRel D) :=
+def m601 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
     [.T 5, .K, .T 5]
     [.T 5, .K, .T 5]
     [] (by decide +kernel)
 
-def m588 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m24, m22, m26, m27, m10, m56, m51, m35, m3]
-    [.T 5, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 5]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
-    .T 4, .T 3, .T 2]
-    [(25, 340023763380876762034714030548604251806591439128284045481699902871497898720431938921189632306121884941080364387459568447205318292995180882384930956925499703614457557273676621075542179840)] (by decide +kernel)
-
-def m589 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m24, m22, m26, m27, m10, m59, m51, m35, m3]
-    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(26, 12550192904430377718646465582167038890783992002361286067223266735712506597856908887225655584197263846644573909724525522014123769982792531385102478793061987071432406167422999648625841555990642688)] (by decide +kernel)
-
-def m590 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m5, m26, m27]
-    [.T 5, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 5]
-    [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
-    [(6, 3136084828843037258060991700657086000005121)] (by decide +kernel)
-
-def m591 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m25, m27]
-    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
-    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
-    [(6, 348491679026709674854045961293146391322624)] (by decide +kernel)
-
-def m592 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m24, m22, m26, m27, m10, m61, m51, m35, m3]
-    [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 5]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(27, 459396465282375643621759126370035107387105032094334191997204204099454035168957104251047467387569042444568721866772084066247072926901217593691611759328850805995577744448500505208154339528475951581102080)] (by decide +kernel)
-
-def m593 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m11, m26, m27, m10, m25, m35, m3]
-    [.T 5, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 5]
-    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
-    [(16, 4414025248312745439689344653150128251541146026962068998832316199041787272884009074303725288674805582765762124269486080)] (by decide +kernel)
-
-def m594 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m25, m11, m52, m37, m4]
-    [.T 5, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 5]
-    [.T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3]
-    [(5, 41549784652362424269434448953475072)] (by decide +kernel)
-
-def m595 : Rule (MRel D) :=
+def m602 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m17, m15, m16, m14, m13, m21, m19, m20, m18, m24, m22, m26, m27, m10, m56, m58,
     m35, m3]
     [.T 5, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
@@ -3739,31 +3788,14 @@ def m595 : Rule (MRel D) :=
     .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2]
     [(45, 1335818724886746069584013447939599858903421397720271605685389555202431511369857117441201347913292361068761186298937321316309207783251932599321502311542424252934079793846523137553623951962698323274165843547222740276138080197842757278363876337509239539282188269818478411883604004539012853096751071996317603814376620242838661736612642160640)] (by decide +kernel)
 
-def m596 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m17, m15, m16, m14, m13, m21, m19, m18, m24, m22, m26, m27, m10, m59, m58,
-    m35, m3]
-    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(46, 48556301246512939152398064483923319357142546544735723432229598560491123099694307953726829704231889178420150989639541897044800486340197442206707165243280272294372087247652546921708710873924724305084448980139537530644901770076031491470678534714699340029777145697238740794659916819915251424859566043787930257262241991678803225959844970911051546624)] (by decide +kernel)
-
-def m597 : Rule (MRel D) :=
+def m603 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m5, m17, m21, m24, m26, m27]
     [.T 5, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 6, .T 5, .T 5]
     [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
     [(12, 7459909254555109882528591152637630356912148452442930240875664752436830483097220120838145)] (by decide +kernel)
 
-def m598 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m21, m20, m24, m23, m26, m25, m27]
-    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
-    .T 5]
-    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
-    .T 5]
-    [(18, 709890087630617890399698888134684212298785623474038888046785991084119982633604314996427965721670747118081051372841765984824119533568)] (by decide +kernel)
-
-def m599 : Rule (MRel D) :=
+def m604 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m25, m11, m17, m15, m16, m14, m21, m19, m20, m18, m24, m22, m23, m26, m27, m10, m52, m58, m35,
     m3]
     [.T 5, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
@@ -3772,7 +3804,7 @@ def m599 : Rule (MRel D) :=
     .T 0, .T 6, .T 5, .T 4, .T 3]
     [(42, 32412767638360153776972904003904820548647917314022301430775731599832356858186905046626582839566191452206353194272415436968271157926574697311141029695334458045605800491043176246084043114808486376149402261717406077306959658915733927278384680332602669168645020955571341790147756124093813356922846542851666477718700032)] (by decide +kernel)
 
-def m600 : Rule (MRel D) :=
+def m605 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m11, m17, m15, m16, m21, m19, m20, m24, m22, m23, m26, m27, m10, m25, m58, m35, m3]
     [.T 5, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
     .T 0, .T 6, .T 5, .T 4, .T 5]
@@ -3780,60 +3812,28 @@ def m600 : Rule (MRel D) :=
     .T 6, .T 5, .T 4]
     [(37, 692725165942991383787447559763034389085985744626417341048724592067902353443101308037869539523872402362047511925000175081764353772775850819217551842239564032640214881335551668249628024055552093967119647882421277012157580128472575520743501633170384876992525639948860091699036160)] (by decide +kernel)
 
-def m601 : Rule (MRel D) :=
+def m606 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m17, m15, m16, m14, m13, m21, m19, m18, m24, m22, m26, m27, m10, m59, m58,
+    m35, m3]
+    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(46, 48556301246512939152398064483923319357142546544735723432229598560491123099694307953726829704231889178420150989639541897044800486340197442206707165243280272294372087247652546921708710873924724305084448980139537530644901770076031491470678534714699340029777145697238740794659916819915251424859566043787930257262241991678803225959844970911051546624)] (by decide +kernel)
+
+def m607 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m16, m21, m20, m24, m23, m26, m25, m27]
+    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
+    .T 5]
+    [.T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
+    .T 5]
+    [(18, 709890087630617890399698888134684212298785623474038888046785991084119982633604314996427965721670747118081051372841765984824119533568)] (by decide +kernel)
+
+def m608 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m61, m37, m4]
     [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 5]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(8, 2746950436685662071794869263667969699951952933214478139392)] (by decide +kernel)
-
-def m602 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m26, m27, m10, m56, m35, m3]
-    [.T 5, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 5]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
-    .T 2]
-    [(18, 6389704125295844932434787569257382464484987492857087014128908132071891570088050738334053464517742758486832503038318250936780839714816)] (by decide +kernel)
-
-def m603 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m26, m27, m10, m59, m35, m3]
-    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
-    .T 4, .T 3, .T 2, .T 1, .T 5]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 1]
-    [(19, 238225759309848474822339597665388054632821769730662080582323967027732342977340481040394886361607488648471043718405686836235975484432896229376)] (by decide +kernel)
-
-def m604 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m5, m27]
-    [.T 5, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 5]
-    [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
-    [(4, 2166432847684656138022813697)] (by decide +kernel)
-
-def m605 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27]
-    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
-    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
-    [(2, 274911469568)] (by decide +kernel)
-
-def m606 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m25, m11, m26, m27, m10, m52, m35, m3]
-    [.T 5, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
-    .T 5]
-    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
-    [(17, 169269066172423292572016384650620507354800002603299041301649025893260495421128716472094217022574845293020690667493610219372544)] (by decide +kernel)
-
-def m607 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m26, m27, m10, m61, m35, m3]
-    [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 5]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
-    .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(20, 8792892803398833076967622505836458618250977682721150153933451481228838643384423123467023877499077403493483189300745550551584513437274930967098687488)] (by decide +kernel)
-
-def m608 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m11, m37, m4]
-    [.T 5, .T 4, .T 5, .K, .T 5, .T 4, .T 5]
-    [.T 4, .T 5, .K, .T 5, .T 4]
-    [(4, 928643942572346965017755648)] (by decide +kernel)
 
 def m609 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m23, m25, m11, m27, m56, m37, m4]
@@ -3842,41 +3842,41 @@ def m609 : Rule (MRel D) :=
     [(8, 2354535785557822463349606390510420404134912537370101284864)] (by decide +kernel)
 
 def m610 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m27, m59, m37, m4]
-    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(9, 92172361635139353360167305602035040038844684941793481952222773248)] (by decide +kernel)
-
-def m611 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m5]
     [.T 5, .T 5, .T 6, .K, .T 6, .T 5, .T 5]
     [.T 6, .K, .T 6]
     [(2, 824667275265)] (by decide +kernel)
 
-def m612 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 5, .T 6, .K, .T 6, .T 5]
-    [.T 5, .T 6, .K, .T 6, .T 5]
-    [] (by decide +kernel)
-
-def m613 : Rule (MRel D) :=
+def m611 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m25, m11, m27, m52, m37, m4]
     [.T 5, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 5]
     [.T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3]
     [(7, 58475766611992801874558990704375508191743725010944)] (by decide +kernel)
 
+def m612 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m11, m27, m37, m4]
+    [.T 5, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 5]
+    [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
+    [(6, 1394094353138073068612053844295019111907328)] (by decide +kernel)
+
+def m613 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m20, m23, m25, m11, m27, m59, m37, m4]
+    [.T 5, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 5]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(9, 92172361635139353360167305602035040038844684941793481952222773248)] (by decide +kernel)
+
 def m614 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 5, .T 6, .K, .T 6, .T 5]
+    [.T 5, .T 6, .K, .T 6, .T 5]
+    [] (by decide +kernel)
+
+def m615 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m16, m20, m23, m25, m11, m27, m61, m37, m4]
     [.T 5, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 5]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(10, 3534610859914207654875525853323227264967950159124671630690371814706642944)] (by decide +kernel)
-
-def m615 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m11, m27, m37, m4]
-    [.T 5, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 5]
-    [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
-    [(6, 1394094353138073068612053844295019111907328)] (by decide +kernel)
 
 def m616 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m12, m60, m38, m5]
@@ -3885,41 +3885,41 @@ def m616 : Rule (MRel D) :=
     [(7, 70170634554559661848384888670925777790020351950848)] (by decide +kernel)
 
 def m617 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m62, m38, m5]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(8, 2746950436685662071794869263667969699951952933214478139392)] (by decide +kernel)
-
-def m618 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m12, m38, m5]
     [.T 6, .T 5, .T 6, .Z, .T 6, .T 5, .T 6]
     [.T 5, .T 6, .Z, .T 6, .T 5]
     [(4, 928643942572346965017755648)] (by decide +kernel)
 
-def m619 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m6]
-    [.T 6, .T 6, .Z, .T 6, .T 6]
-    [.Z]
-    [(2, 274911461377)] (by decide +kernel)
-
-def m620 : Rule (MRel D) :=
+def m618 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m27, m12, m57, m38, m5]
     [.T 6, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 6]
     [.T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3]
     [(6, 1742713648438239153536937964087919784230912)] (by decide +kernel)
 
+def m619 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m53, m38, m5]
+    [.T 6, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 6]
+    [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
+    [(5, 41549784652362424269434448953475072)] (by decide +kernel)
+
+def m620 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m62, m38, m5]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(8, 2746950436685662071794869263667969699951952933214478139392)] (by decide +kernel)
+
 def m621 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m6]
+    [.T 6, .T 6, .Z, .T 6, .T 6]
+    [.Z]
+    [(2, 274911461377)] (by decide +kernel)
+
+def m622 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m63, m38, m5]
     [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 6]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(9, 105339612362212170808650504401524653171985451345406707699856441344)] (by decide +kernel)
-
-def m622 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m53, m38, m5]
-    [.T 6, .T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4, .T 6]
-    [.T 4, .T 5, .T 6, .Z, .T 6, .T 5, .T 4]
-    [(5, 41549784652362424269434448953475072)] (by decide +kernel)
 
 def m623 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
@@ -3928,39 +3928,39 @@ def m623 : Rule (MRel D) :=
     [] (by decide +kernel)
 
 def m624 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m6]
-    [.T 6, .T 1, .T 6]
-    [.T 1]
-    [(2, 274978570240)] (by decide +kernel)
-
-def m625 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m6]
     [.T 6, .T 2, .T 3, .T 4, .T 3, .T 2, .T 6]
     [.T 2, .T 3, .T 4, .T 3, .T 2]
     [(6, 1742543507244636550897235250085195453300736)] (by decide +kernel)
 
-def m626 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m60]
-    [.T 6, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 6]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(4, 928681721506460897426538496)] (by decide +kernel)
-
-def m627 : Rule (MRel D) :=
+def m625 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m6]
     [.T 6, .T 2, .T 6]
     [.T 2]
     [(2, 274978570240)] (by decide +kernel)
 
-def m628 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m6]
-    [.T 6, .T 0, .T 1, .T 0, .T 6]
-    [.T 0, .T 1, .T 0]
-    [(4, 928643942570094340637458432)] (by decide +kernel)
-
-def m629 : Rule (MRel D) :=
+def m626 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m26, m6]
     [.T 6, .T 2, .T 3, .T 2, .T 6]
     [.T 2, .T 3, .T 2]
+    [(4, 928643942570094340637458432)] (by decide +kernel)
+
+def m627 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m6]
+    [.T 6, .T 1, .T 6]
+    [.T 1]
+    [(2, 274978570240)] (by decide +kernel)
+
+def m628 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m60]
+    [.T 6, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 6]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(4, 928681721506460897426538496)] (by decide +kernel)
+
+def m629 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m6]
+    [.T 6, .T 0, .T 1, .T 0, .T 6]
+    [.T 0, .T 1, .T 0]
     [(4, 928643942570094340637458432)] (by decide +kernel)
 
 def m630 : Rule (MRel D) :=
@@ -3970,152 +3970,138 @@ def m630 : Rule (MRel D) :=
     [(9, 92165933882387596486635904832945088682830749102950874822316392448)] (by decide +kernel)
 
 def m631 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m6]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
-    [(8, 2746663093754621699633742001913178961483544234181949128704)] (by decide +kernel)
-
-def m632 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m62]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(5, 41548517001762168369916841685942272)] (by decide +kernel)
-
-def m633 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m6]
-    [.T 6, .T 1, .T 2, .T 1, .T 6]
-    [.T 1, .T 2, .T 1]
-    [(4, 928643942570094340637458432)] (by decide +kernel)
-
-def m634 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m6]
-    [.T 6, .T 0, .T 6]
-    [.T 0]
-    [(2, 274978570240)] (by decide +kernel)
-
-def m635 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m6]
-    [.T 6, .T 1, .T 2, .T 3, .T 2, .T 1, .T 6]
-    [.T 1, .T 2, .T 3, .T 2, .T 1]
-    [(6, 1742543507244636550897235250085195453300736)] (by decide +kernel)
-
-def m636 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m5, m6]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(11, 133416010603208808688389286933760883538037997712211330225904007761571832620122112)] (by decide +kernel)
-
-def m637 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m12]
-    [.T 6, .T 5, .T 6]
-    [.T 5, .T 6, .T 5]
-    [(1, 0)] (by decide +kernel)
-
-def m638 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m27, m6]
     [.T 6, .T 3, .T 4, .T 3, .T 6]
     [.T 3, .T 4, .T 3]
     [(4, 928643942570094340637458432)] (by decide +kernel)
 
-def m639 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m6]
-    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(10, 3975999119890336470522949109687786163098232660337141820947834733844234240)] (by decide +kernel)
-
-def m640 : Rule (MRel D) :=
+def m632 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m27, m6]
     [.T 6, .T 4, .T 6]
     [.T 4]
     [(2, 274978570240)] (by decide +kernel)
 
-def m641 : Rule (MRel D) :=
+def m633 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m6]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [.T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1]
+    [(8, 2746663093754621699633742001913178961483544234181949128704)] (by decide +kernel)
+
+def m634 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m12]
+    [.T 6, .T 5, .T 6]
+    [.T 5, .T 6, .T 5]
+    [(1, 0)] (by decide +kernel)
+
+def m635 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m6]
+    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(10, 3975999119890336470522949109687786163098232660337141820947834733844234240)] (by decide +kernel)
+
+def m636 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m12, m5, m6]
     [.T 6, .T 5, .T 6, .T 5, .T 6]
     [.T 5]
     [(3, 9229002086245466112)] (by decide +kernel)
 
-def m642 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m27, m57]
-    [.T 6, .T 3, .T 4, .T 5, .T 4, .T 3, .T 6]
-    [.T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3]
-    [(3, 18451247948281937920)] (by decide +kernel)
-
-def m643 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m63]
-    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(6, 1742671113142373107773975578226784638861312)] (by decide +kernel)
-
-def m644 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m53]
-    [.T 6, .T 4, .T 5, .T 4, .T 6]
-    [.T 4, .T 5, .T 6, .T 5, .T 4]
-    [(2, 274945015808)] (by decide +kernel)
-
-def m645 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m6]
-    [.T 6, .T 6, .T 6]
-    [.T 6]
-    [(1, 1)] (by decide +kernel)
-
-def m646 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m6]
-    [.T 6, .T 0, .T 1, .T 2, .T 1, .T 0, .T 6]
-    [.T 0, .T 1, .T 2, .T 1, .T 0]
-    [(6, 1742543507244636550897235250085195453300736)] (by decide +kernel)
-
-def m647 : Rule (MRel D) :=
+def m637 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m6]
     [.T 6, .T 3, .T 6]
     [.T 3]
     [(2, 274978570240)] (by decide +kernel)
 
-def m648 : Rule (MRel D) :=
+def m638 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m6]
+    [.T 6, .T 1, .T 2, .T 1, .T 6]
+    [.T 1, .T 2, .T 1]
+    [(4, 928643942570094340637458432)] (by decide +kernel)
+
+def m639 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m27, m57]
+    [.T 6, .T 3, .T 4, .T 5, .T 4, .T 3, .T 6]
+    [.T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3]
+    [(3, 18451247948281937920)] (by decide +kernel)
+
+def m640 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m6]
+    [.T 6, .T 0, .T 1, .T 2, .T 1, .T 0, .T 6]
+    [.T 0, .T 1, .T 2, .T 1, .T 0]
+    [(6, 1742543507244636550897235250085195453300736)] (by decide +kernel)
+
+def m641 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m27, m12, m5, m6]
     [.T 6, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 6]
     [.T 3, .T 4, .T 5, .T 4, .T 3]
     [(7, 58472912116267076431558554842291247937882035322880)] (by decide +kernel)
 
-def m649 : Rule (MRel D) :=
+def m642 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m6]
+    [.T 6, .T 1, .T 2, .T 3, .T 2, .T 1, .T 6]
+    [.T 1, .T 2, .T 3, .T 2, .T 1]
+    [(6, 1742543507244636550897235250085195453300736)] (by decide +kernel)
+
+def m643 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m53]
+    [.T 6, .T 4, .T 5, .T 4, .T 6]
+    [.T 4, .T 5, .T 6, .T 5, .T 4]
+    [(2, 274945015808)] (by decide +kernel)
+
+def m644 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m6]
     [.T 6, .T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0, .T 6]
     [.T 0, .T 1, .T 2, .T 3, .T 2, .T 1, .T 0]
     [(8, 2746663093754621699633742001913178961483544234181949128704)] (by decide +kernel)
 
-def m650 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m5, m6]
-    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(13, 183591946412330724991091464199919054055112250611640495993041957215171566983693869030777838108672)] (by decide +kernel)
-
-def m651 : Rule (MRel D) :=
+def m645 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m27, m12, m5, m6]
     [.T 6, .T 4, .T 5, .T 6, .T 5, .T 4, .T 6]
     [.T 4, .T 5, .T 4]
     [(5, 31162655324380610695429477390876672)] (by decide +kernel)
 
-def m652 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m20, m19, m18, m23, m22, m25, m11, m62, m59, m37, m4]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(33, 655699217170070648424320939946427311947211762365095949046513322963821672317871958285197544795112291661145525763568863079437455564024321791806231814314185581286997350799297476390953440291691429618821766175494775054803917456794295216898189532594176)] (by decide +kernel)
+def m646 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m62]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(5, 41548517001762168369916841685942272)] (by decide +kernel)
 
-def m653 : Rule (MRel D) :=
+def m647 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m6]
+    [.T 6, .T 0, .T 6]
+    [.T 0]
+    [(2, 274978570240)] (by decide +kernel)
+
+def m648 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m5, m6]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(11, 133416010603208808688389286933760883538037997712211330225904007761571832620122112)] (by decide +kernel)
+
+def m649 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m63]
+    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(6, 1742671113142373107773975578226784638861312)] (by decide +kernel)
+
+def m650 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m6]
+    [.T 6, .T 6, .T 6]
+    [.T 6]
+    [(1, 1)] (by decide +kernel)
+
+def m651 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m5, m6]
+    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(13, 183591946412330724991091464199919054055112250611640495993041957215171566983693869030777838108672)] (by decide +kernel)
+
+def m652 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m12, m23, m24, m25, m26, m11, m27, m56, m37, m4]
     [.T 6, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 6]
     [.T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5]
     [(18, 4970270491459451512498931643122982080162339982389477292679611547468904563311963940065258630038822698895838067049597914608409690243072)] (by decide +kernel)
 
-def m654 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m6]
-    [.T 6, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 6]
-    [.T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2]
-    [(2, 2473934716929)] (by decide +kernel)
-
-def m655 : Rule (MRel D) :=
+def m653 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m27, m12, m23, m24, m22, m25, m11, m57, m56, m37, m4]
     [.T 6, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
     .T 4, .T 3, .T 6]
@@ -4123,20 +4109,34 @@ def m655 : Rule (MRel D) :=
     .T 3]
     [(22, 8100571290307084238106164937644607634292412894339064051444744718297161575620389589870462124810599753045537422264041822151892239448208210498241476368196691552108544)] (by decide +kernel)
 
+def m654 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m23, m24, m22, m25, m26, m11, m53, m56, m37, m4]
+    [.T 6, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
+    .T 6]
+    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
+    [(21, 214600220459187874272203753561178515470522376928932278728800931981389752039040017541369004434554328550219506828844227259706023752124379423982524838719782912)] (by decide +kernel)
+
+def m655 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m20, m19, m18, m23, m22, m25, m11, m62, m59, m37, m4]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(33, 655699217170070648424320939946427311947211762365095949046513322963821672317871958285197544795112291661145525763568863079437455564024321791806231814314185581286997350799297476390953440291691429618821766175494775054803917456794295216898189532594176)] (by decide +kernel)
+
 def m656 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m6]
+    [.T 6, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 6]
+    [.T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2]
+    [(2, 2473934716929)] (by decide +kernel)
+
+def m657 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m20, m19, m18, m23, m22, m25, m11, m63, m59, m37, m4]
     [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
     .T 3, .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
     .T 2, .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(34, 23834952183280203587449635574646695346189194623660976187119497295999344320666064445173230564810460542939582545248010281844714961397707714057196785629836192721660539773785395836336561564354400017574814952149003495327459783634339569167896032032791031971840)] (by decide +kernel)
-
-def m657 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m23, m24, m22, m25, m26, m11, m53, m56, m37, m4]
-    [.T 6, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4,
-    .T 6]
-    [.T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5, .T 4]
-    [(21, 214600220459187874272203753561178515470522376928932278728800931981389752039040017541369004434554328550219506828844227259706023752124379423982524838719782912)] (by decide +kernel)
 
 def m658 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27]
@@ -4145,6 +4145,150 @@ def m658 : Rule (MRel D) :=
     [(6, 42545684262405337205620344283279130624)] (by decide +kernel)
 
 def m659 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m12, m11, m60, m37, m4]
+    [.T 6, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
+    .T 6]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
+    [(11, 118598241242556300668411227691652130948106713685920277254854410176375531365203968)] (by decide +kernel)
+
+def m660 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m27, m12, m11, m57, m37, m4]
+    [.T 6, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 6]
+    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
+    [(10, 3092683400975809764104239433689059864558109301162918332408050414698627072)] (by decide +kernel)
+
+def m661 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m11, m53, m37, m4]
+    [.T 6, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 6]
+    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
+    [(9, 79001897031882236959827510857955706482853009744855166969500925952)] (by decide +kernel)
+
+def m662 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m11, m62, m37, m4]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 6]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
+    .T 1]
+    [(12, 4476941289133508014156832095971540407799526133204894868211314339847155235986611195871232)] (by decide +kernel)
+
+def m663 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m6]
+    [.T 6, .T 6, .T 5, .K, .T 5, .T 6, .T 6]
+    [.T 5, .K, .T 5]
+    [(2, 824667275265)] (by decide +kernel)
+
+def m664 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m11, m63, m37, m4]
+    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 0, .T 6]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 0]
+    [(13, 166912695341752080613921221077593979555899213532729148647471611131191424813471941581774178484224)] (by decide +kernel)
+
+def m665 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj []
+    [.T 6, .T 5, .K, .T 5, .T 6]
+    [.T 6, .T 5, .K, .T 5, .T 6]
+    [] (by decide +kernel)
+
+def m666 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m12, m23, m22, m25, m11, m60, m56, m37, m4]
+    [.T 6, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 6]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
+    .T 4, .T 3, .T 2]
+    [(23, 302001768820116433727993492443840953531327125958750964205575884837771234009311596574468440884289977990772077216085409144691142872249486356204385429085232904037679014871040)] (by decide +kernel)
+
+def m667 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m12, m25, m26, m11, m27, m52, m37, m4]
+    [.T 6, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 6]
+    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
+    [(13, 100154950335782464054887416036846808080088993677511969378798314141355204276437758011579668889600)] (by decide +kernel)
+
+def m668 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m25, m26, m11, m53, m52, m37, m4]
+    [.T 6, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 6]
+    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
+    [(14, 3920715375911613135336244966510163969570120074782237000307001298864144164710997378505491548353939374080)] (by decide +kernel)
+
+def m669 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m23, m22, m25, m11, m62, m56, m37, m4]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(24, 11146810500788697702590112614079799602588746301360540695223060366201047859044951297902562550775838556782735124596401019489182471436613121118873967524828488281090350029644901646336)] (by decide +kernel)
+
+def m670 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m6]
+    [.T 6, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 6]
+    [.T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3]
+    [(2, 1924178903041)] (by decide +kernel)
+
+def m671 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m23, m22, m25, m11, m63, m56, m37, m4]
+    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
+    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(25, 408026026550323844766547422598216728240511604667918681821855981901703685424008728543800441127955305564852540005051296270254845992789058297196889656958934182939640958018513892803348529152)] (by decide +kernel)
+
+def m672 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m27]
+    [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
+    [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
+    [(4, 37788158612968682029056)] (by decide +kernel)
+
+def m673 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m12, m25, m11, m60, m52, m37, m4]
+    [.T 6, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 6]
+    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
+    .T 2]
+    [(16, 5675351226447926208645362268269779002770509144550207016924631913366485211162270315165739393071824656939905686425305088)] (by decide +kernel)
+
+def m674 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m12, m11, m27, m37, m4]
+    [.T 6, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 6]
+    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
+    [(8, 1962025353455824241465242652384246508222829183205201936384)] (by decide +kernel)
+
+def m675 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m27, m12, m25, m11, m57, m52, m37, m4]
+    [.T 6, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
+    .T 6]
+    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
+    [(15, 150345718694507529014912941733144079617012258128436873201804235045139997994768266611815743328217398602866098176)] (by decide +kernel)
+
+def m676 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m25, m11, m62, m52, m37, m4]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
+    .T 4, .T 3, .T 2, .T 1, .T 6]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
+    .T 3, .T 2, .T 1]
+    [(17, 211592142935593702514593774867855715466782307021516035412579522211649116944074254971324842601024897993699458335856105688662016)] (by decide +kernel)
+
+def m677 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m6]
+    [.T 6, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 6]
+    [.T 4, .T 5, .K, .T 5, .T 4]
+    [(2, 1374423089153)] (by decide +kernel)
+
+def m678 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m25, m11, m63, m52, m37, m4]
+    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6,
+    .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
+    .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(18, 7809830926576426557265124514039066483084346111661448704268525927513512920553463249609869542807305717228174566610186156511362516254720)] (by decide +kernel)
+
+def m679 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27]
+    [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
+    [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
+    [(2, 33554432)] (by decide +kernel)
+
+def m680 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m12, m20, m21, m19, m18, m23, m22, m25, m11, m60, m59, m37, m4]
     [.T 6, .T 2, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
     .T 1, .T 6, .T 5, .T 4, .T 3, .T 2, .T 6]
@@ -4152,20 +4296,14 @@ def m659 : Rule (MRel D) :=
     .T 6, .T 5, .T 4, .T 3, .T 2]
     [(32, 17913426199793387131171190482429216251753162598171169857239312502503644196458258729965202546496575560378677908680246051001315237612535714685652276012456823229796780491232748710668129834374219576795797392077716483350693293916383589353652224)] (by decide +kernel)
 
-def m660 : Rule (MRel D) :=
+def m681 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m12, m20, m21, m23, m24, m25, m26, m11, m27, m59, m37, m4]
     [.T 6, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
     .T 6]
     [.T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5]
     [(23, 241618368223406200643617545524850254327492803870419205741620373671428397011774918515471206707470111232738755103026198000583184497766788285293831570615478879077588807974912)] (by decide +kernel)
 
-def m661 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m6]
-    [.T 6, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 6]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(2, 3023690530817)] (by decide +kernel)
-
-def m662 : Rule (MRel D) :=
+def m682 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m27, m12, m20, m21, m19, m18, m23, m24, m22, m25, m11, m57, m59, m37, m4]
     [.T 6, .T 3, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
     .T 6, .T 5, .T 4, .T 3, .T 6]
@@ -4173,7 +4311,21 @@ def m662 : Rule (MRel D) :=
     .T 5, .T 4, .T 3]
     [(31, 485345510844137881055357157984006455816805720204748115212571556399684742053145041560046814351174221784448239694581586518206937230309005001448860362073131854610348361342516422027971563681748263327459641974610842804241404218209992704)] (by decide +kernel)
 
-def m663 : Rule (MRel D) :=
+def m683 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m20, m21, m19, m23, m24, m22, m25, m26, m11, m53, m59, m37, m4]
+    [.T 6, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
+    .T 5, .T 4, .T 6]
+    [.T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
+    .T 4]
+    [(28, 11562462269314604140433964251527062549090805983263054600027162684292308392725151008946984188576974164609291580532788439033327195657165797311821649110696136853404666802163401491104533540900379677314203223326720)] (by decide +kernel)
+
+def m684 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m6]
+    [.T 6, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 6]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(2, 3023690530817)] (by decide +kernel)
+
+def m685 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m16, m15, m14, m13, m20, m19, m18, m23, m22, m25, m11, m63, m61,
     m37, m4]
     [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5,
@@ -4182,160 +4334,57 @@ def m663 : Rule (MRel D) :=
     .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(45, 1558362362518514681572220050163991792176006154447795238213257788430977512564075179765849580292163287781350664419789383029441708524321675475243809582133299771175937904532025083028444587805980117091861661548237929286795845470981050808409396121060071144630074705499432478903620807588410954231762513432355152522266512812150499560961601437696)] (by decide +kernel)
 
-def m664 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m20, m21, m19, m23, m24, m22, m25, m26, m11, m53, m59, m37, m4]
-    [.T 6, .T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6,
-    .T 5, .T 4, .T 6]
-    [.T 4, .T 5, .T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6, .T 5,
-    .T 4]
-    [(28, 11562462269314604140433964251527062549090805983263054600027162684292308392725151008946984188576974164609291580532788439033327195657165797311821649110696136853404666802163401491104533540900379677314203223326720)] (by decide +kernel)
-
-def m665 : Rule (MRel D) :=
+def m686 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27]
     [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
     [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
     [(8, 47902181947597863160019680445771741289332512653312000)] (by decide +kernel)
 
-def m666 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m12, m11, m60, m37, m4]
-    [.T 6, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
-    .T 6]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2]
-    [(11, 118598241242556300668411227691652130948106713685920277254854410176375531365203968)] (by decide +kernel)
-
-def m667 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m11, m62, m37, m4]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 6]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 2,
-    .T 1]
-    [(12, 4476941289133508014156832095971540407799526133204894868211314339847155235986611195871232)] (by decide +kernel)
-
-def m668 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m6]
-    [.T 6, .T 6, .T 5, .K, .T 5, .T 6, .T 6]
-    [.T 5, .K, .T 5]
-    [(2, 824667275265)] (by decide +kernel)
-
-def m669 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m27, m12, m11, m57, m37, m4]
-    [.T 6, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3, .T 6]
-    [.T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3]
-    [(10, 3092683400975809764104239433689059864558109301162918332408050414698627072)] (by decide +kernel)
-
-def m670 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m11, m63, m37, m4]
-    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 0, .T 6]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 0]
-    [(13, 166912695341752080613921221077593979555899213532729148647471611131191424813471941581774178484224)] (by decide +kernel)
-
-def m671 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m11, m53, m37, m4]
-    [.T 6, .T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .T 6]
-    [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4]
-    [(9, 79001897031882236959827510857955706482853009744855166969500925952)] (by decide +kernel)
-
-def m672 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj []
-    [.T 6, .T 5, .K, .T 5, .T 6]
-    [.T 6, .T 5, .K, .T 5, .T 6]
-    [] (by decide +kernel)
-
-def m673 : Rule (MRel D) :=
+def m687 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m12, m5, m60]
     [.T 6, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 6]
     [.T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2]
     [(7, 70164926260687104695022845160956891109247504351232)] (by decide +kernel)
 
-def m674 : Rule (MRel D) :=
+def m688 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m12, m5]
+    [.T 6, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 6]
+    [.T 5, .T 6, .K, .T 6, .T 5]
+    [(4, 928568403153112774935052288)] (by decide +kernel)
+
+def m689 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m26, m27, m12, m5, m57]
+    [.T 6, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 6]
+    [.T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3]
+    [(6, 1742543528023965499512276080079008929153024)] (by decide +kernel)
+
+def m690 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m5, m53]
+    [.T 6, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 6]
+    [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
+    [(5, 41544714668931512548900425787506688)] (by decide +kernel)
+
+def m691 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m5, m62]
     [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
     .T 6]
     [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
     [(8, 2746758898127079336126269003331677369706254710986799841280)] (by decide +kernel)
 
-def m675 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m12, m5]
-    [.T 6, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 6]
-    [.T 5, .T 6, .K, .T 6, .T 5]
-    [(4, 928568403153112774935052288)] (by decide +kernel)
-
-def m676 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m27, m12, m5, m57]
-    [.T 6, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 6]
-    [.T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3]
-    [(6, 1742543528023965499512276080079008929153024)] (by decide +kernel)
-
-def m677 : Rule (MRel D) :=
+def m692 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m5, m63]
     [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2,
     .T 1, .T 0, .T 6]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
     [(9, 105333185394672828388284482430888235044634627055147187727981608960)] (by decide +kernel)
 
-def m678 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m5, m53]
-    [.T 6, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 6]
-    [.T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4]
-    [(5, 41544714668931512548900425787506688)] (by decide +kernel)
-
-def m679 : Rule (MRel D) :=
+def m693 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj []
     [.T 6, .K, .T 6]
     [.T 6, .K, .T 6]
     [] (by decide +kernel)
 
-def m680 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m12, m23, m22, m25, m11, m60, m56, m37, m4]
-    [.T 6, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 6]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6, .T 5,
-    .T 4, .T 3, .T 2]
-    [(23, 302001768820116433727993492443840953531327125958750964205575884837771234009311596574468440884289977990772077216085409144691142872249486356204385429085232904037679014871040)] (by decide +kernel)
-
-def m681 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m23, m22, m25, m11, m62, m56, m37, m4]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(24, 11146810500788697702590112614079799602588746301360540695223060366201047859044951297902562550775838556782735124596401019489182471436613121118873967524828488281090350029644901646336)] (by decide +kernel)
-
-def m682 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m12, m25, m26, m11, m27, m52, m37, m4]
-    [.T 6, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 6]
-    [.T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5]
-    [(13, 100154950335782464054887416036846808080088993677511969378798314141355204276437758011579668889600)] (by decide +kernel)
-
-def m683 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m6]
-    [.T 6, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 6]
-    [.T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3]
-    [(2, 1924178903041)] (by decide +kernel)
-
-def m684 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m23, m22, m25, m11, m63, m56, m37, m4]
-    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
-    .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(25, 408026026550323844766547422598216728240511604667918681821855981901703685424008728543800441127955305564852540005051296270254845992789058297196889656958934182939640958018513892803348529152)] (by decide +kernel)
-
-def m685 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m25, m26, m11, m53, m52, m37, m4]
-    [.T 6, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 6]
-    [.T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4]
-    [(14, 3920715375911613135336244966510163969570120074782237000307001298864144164710997378505491548353939374080)] (by decide +kernel)
-
-def m686 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m27]
-    [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
-    [.T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6]
-    [(4, 37788158612968682029056)] (by decide +kernel)
-
-def m687 : Rule (MRel D) :=
+def m694 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m12, m16, m17, m15, m14, m13, m20, m21, m19, m18, m23, m22, m25, m11, m60, m61,
     m37, m4]
     [.T 6, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
@@ -4344,16 +4393,7 @@ def m687 : Rule (MRel D) :=
     .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2]
     [(43, 1186445364075746473625912415053452965242586354453629404983180366475549356601970900615196808382521794297813265603465684515122740811257889548665408720921529064672626949995701868643341347655180368745323456362982965772148528726939780446375860255736041043414222121411118727921997180480793083435758934173855917177093712833937408)] (by decide +kernel)
 
-def m688 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m16, m17, m15, m14, m13, m20, m19, m18, m23, m22, m25, m11, m62, m61,
-    m37, m4]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
-    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
-    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(44, 43126658907611083262658538133345074110496955448180918657396646653789654446031463802553659754391968571287031490907837079788892969165726146973171954829022167277928679256828686492831870261702287567972608798559343670090233579290863251621083626786488646986793171095868158253282688748248843249903225342208835472463430466189174876667904)] (by decide +kernel)
-
-def m689 : Rule (MRel D) :=
+def m695 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m12, m16, m17, m20, m21, m23, m24, m25, m26, m11, m27, m61, m37, m4]
     [.T 6, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 6, .T 5, .T 6]
@@ -4361,14 +4401,7 @@ def m689 : Rule (MRel D) :=
     .T 5]
     [(28, 11562148740773378191854673958856862981097312210635437428670928511235531116995723540715961441153615982631705474536493080637036042811142784066988050008630199699747534764787582874259202607434732107145034751541248)] (by decide +kernel)
 
-def m690 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m6]
-    [.T 6, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
-    .T 6]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(2, 3573446344705)] (by decide +kernel)
-
-def m691 : Rule (MRel D) :=
+def m696 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m27, m12, m16, m17, m15, m14, m20, m21, m19, m18, m23, m24, m22, m25, m11, m57, m61, m37,
     m4]
     [.T 6, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2,
@@ -4377,7 +4410,7 @@ def m691 : Rule (MRel D) :=
     .T 0, .T 6, .T 5, .T 4, .T 3]
     [(40, 28788320739146081617426156179520438757395863685390823488581207250741611575299801643271764193180486869034571370933505548947737484737557608101565190494330848795642428298489776754630038340945629233711812794372438386702885374460481293920791668018856936680022376077398863413303872212109631017845532917760)] (by decide +kernel)
 
-def m692 : Rule (MRel D) :=
+def m697 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m27, m12, m16, m17, m15, m20, m21, m19, m23, m24, m22, m25, m26, m11, m53, m61, m37, m4]
     [.T 6, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1,
     .T 0, .T 6, .T 5, .T 4, .T 6]
@@ -4385,60 +4418,27 @@ def m692 : Rule (MRel D) :=
     .T 6, .T 5, .T 4]
     [(35, 615278558207858191436667312066520867838523610424393237259486831103950168673052379967219190140522494514716776094298922566027141137371376702284653035491180365292560457814827791239312392096133593503110010801153076043408847017308388765933519455869745548142693056512)] (by decide +kernel)
 
-def m693 : Rule (MRel D) :=
+def m698 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m16, m17, m15, m14, m13, m20, m19, m18, m23, m22, m25, m11, m62, m61,
+    m37, m4]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4,
+    .T 3, .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3,
+    .T 2, .T 1, .T 0, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(44, 43126658907611083262658538133345074110496955448180918657396646653789654446031463802553659754391968571287031490907837079788892969165726146973171954829022167277928679256828686492831870261702287567972608798559343670090233579290863251621083626786488646986793171095868158253282688748248843249903225342208835472463430466189174876667904)] (by decide +kernel)
+
+def m699 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m6]
+    [.T 6, .T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6,
+    .T 6]
+    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0]
+    [(2, 3573446344705)] (by decide +kernel)
+
+def m700 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27]
     [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
     [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
     [(10, 53933062192358859219079723367969635219948756702961927136460440338432)] (by decide +kernel)
-
-def m694 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m12, m25, m11, m60, m52, m37, m4]
-    [.T 6, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 6]
-    [.T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
-    .T 2]
-    [(16, 5675351226447926208645362268269779002770509144550207016924631913366485211162270315165739393071824656939905686425305088)] (by decide +kernel)
-
-def m695 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m25, m11, m62, m52, m37, m4]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
-    .T 4, .T 3, .T 2, .T 1, .T 6]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4,
-    .T 3, .T 2, .T 1]
-    [(17, 211592142935593702514593774867855715466782307021516035412579522211649116944074254971324842601024897993699458335856105688662016)] (by decide +kernel)
-
-def m696 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m12, m11, m27, m37, m4]
-    [.T 6, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 6]
-    [.T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5]
-    [(8, 1962025353455824241465242652384246508222829183205201936384)] (by decide +kernel)
-
-def m697 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m6]
-    [.T 6, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 6]
-    [.T 4, .T 5, .K, .T 5, .T 4]
-    [(2, 1374423089153)] (by decide +kernel)
-
-def m698 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m26, m27, m12, m25, m11, m57, m52, m37, m4]
-    [.T 6, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3,
-    .T 6]
-    [.T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5, .T 4, .T 3]
-    [(15, 150345718694507529014912941733144079617012258128436873201804235045139997994768266611815743328217398602866098176)] (by decide +kernel)
-
-def m699 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m25, m11, m63, m52, m37, m4]
-    [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6,
-    .T 5, .T 4, .T 3, .T 2, .T 1, .T 0, .T 6]
-    [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 3, .T 4, .T 5, .K, .T 5, .T 4, .T 3, .T 6, .T 5,
-    .T 4, .T 3, .T 2, .T 1, .T 0]
-    [(18, 7809830926576426557265124514039066483084346111661448704268525927513512920553463249609869542807305717228174566610186156511362516254720)] (by decide +kernel)
-
-def m700 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27]
-    [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
-    [.T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6]
-    [(2, 33554432)] (by decide +kernel)
 
 def m701 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m24, m26, m27, m12, m60]
@@ -4447,42 +4447,42 @@ def m701 : Rule (MRel D) :=
     [(5, 72702298152971134141099819661262848)] (by decide +kernel)
 
 def m702 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m62]
-    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
-    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
-    [(6, 2788018544323496067533462372257176584454144)] (by decide +kernel)
-
-def m703 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m12]
     [.T 6, .T 5, .T 6, .K, .T 6, .T 5, .T 6]
     [.T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5]
     [(2, 1099511627776)] (by decide +kernel)
 
-def m704 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m6]
-    [.T 6, .T 6, .K, .T 6, .T 6]
-    [.K]
-    [(2, 274911461377)] (by decide +kernel)
-
-def m705 : Rule (MRel D) :=
+def m703 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m26, m27, m12, m57]
     [.T 6, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 6]
     [.T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3]
     [(4, 1857136750970496103600881664)] (by decide +kernel)
 
+def m704 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m53]
+    [.T 6, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 6]
+    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
+    [(3, 46121364058846265344)] (by decide +kernel)
+
+def m705 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m21, m24, m26, m27, m12, m62]
+    [.T 6, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 6]
+    [.T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1]
+    [(6, 2788018544323496067533462372257176584454144)] (by decide +kernel)
+
 def m706 : Rule (MRel D) :=
+  Rule.byChunks mcode_bounds mcode_inj [m6]
+    [.T 6, .T 6, .K, .T 6, .T 6]
+    [.K]
+    [(2, 274911461377)] (by decide +kernel)
+
+def m707 : Rule (MRel D) :=
   Rule.byChunks mcode_bounds mcode_inj [m17, m21, m24, m26, m27, m12, m63]
     [.T 6, .T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1, .T 0,
     .T 6]
     [.T 0, .T 1, .T 2, .T 3, .T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4, .T 3, .T 2, .T 1,
     .T 0]
     [(7, 105245246602808594771611115161181349583648374915072)] (by decide +kernel)
-
-def m707 : Rule (MRel D) :=
-  Rule.byChunks mcode_bounds mcode_inj [m27, m12, m53]
-    [.T 6, .T 4, .T 5, .T 6, .K, .T 6, .T 5, .T 4, .T 6]
-    [.T 4, .T 5, .T 6, .T 5, .K, .T 5, .T 6, .T 5, .T 4]
-    [(3, 46121364058846265344)] (by decide +kernel)
 
 /-- The transport table. -/
 def adjTable : List (Fin 7 × AG × Rule (MRel D)) :=
@@ -4663,12 +4663,12 @@ def C : Checks D 8 where
   hinv := tokInv_of_ok inv_ok
   hadj := adj_of_ok adj_ok
   z := 7
-  s3 := (3, 7)
-  s4 := (7, 3)
-  s6 := (2, 3, 7)
-  s9 := (3, 7, 2, 6)
-  s15 := (3, 7)
-  s19 := (2, 3, 6, 7)
+  s3 := (5, 7)
+  s4 := (7, 5)
+  s6 := (1, 5, 7)
+  s9 := (5, 7, 1, 3)
+  s15 := (5, 7)
+  s19 := (1, 3, 5, 7)
   ax1 := Derivable.of (MRel.ax (e := ([.Z, .Z, .Z, .Z], [])) (by decide))
   ax3 := Derivable.of (MRel.ax (e := ([.K, .K, .K, .K, .K, .K, .K, .K], [])) (by decide))
   ax4 := Derivable.of (MRel.ax (e := ([.Z, .T 6, .Z, .T 6], [.T 6, .Z, .T 6, .Z])) (by decide))
@@ -4678,9 +4678,9 @@ def C : Checks D 8 where
   ax16 := Derivable.of (MRel.ax (e := ([.K, .Z, .Z, .Z], [.Z, .K, .Z, .K])) (by decide))
   ax17 := Derivable.of (MRel.ax (e := ([.K, .T 6, .Z, .T 6, .Z], [.T 6, .Z, .T 6, .Z, .K])) (by decide))
   ax18 := Derivable.of (MRel.ax (e := ([.K, .K, .T 6, .Z, .T 6, .Z], [])) (by decide))
-  ax19 := Derivable.of (MRel.ax (e := ([.T 6, .T 5, .K, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 4, .T 5, .T 6, .T 4, .T 5, .K,
-      .T 5, .T 4, .T 6, .T 5, .T 4, .K], [.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .K, .T 6, .T 5, .K, .T 5,
-      .T 6, .T 4, .T 5, .K, .T 5, .T 4])) (by decide))
+  ax19 := Derivable.of (MRel.ax (e := ([.T 4, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 6, .T 5, .T 4, .K, .T 6, .T 5, .K, .T 5,
+      .T 6, .T 4, .T 5, .K, .T 5, .T 4], [.T 6, .T 5, .K, .T 5, .T 6, .T 4, .T 5, .K, .T 5, .T 4, .T 4, .T 5, .T 6, .T 4, .T 5, .K,
+      .T 5, .T 4, .T 6, .T 5, .T 4, .K])) (by decide))
   c1 := by decide +kernel
   c2 := by decide +kernel
   c3 := by decide +kernel

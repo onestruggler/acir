@@ -14,7 +14,7 @@ The main statements are in [`Theorems.lean`](Theorems.lean).
 | real Clifford RCliff₂ | Figure 3, 10 rules | proved | **transferred** from Makary–Ross–Selinger (`realClifford_complete_of_source`, proved; `realClifford_complete` through `QCert.RealStabilizer.presentation`) | **proved**, all arities |
 | qutrit Clifford Cliff₃ | Figure 4, 10 rules, (E) corrected | proved | **transferred** from Li–Mosca–Ross–van de Wetering–Zhao refined by `ω₁₂` (Lemma 50 proved; `qutritClifford_complete_of_source`, proved; `qutritClifford_complete` through `QCert.QutritClifford.complete`) | **proved** up to 2 wires |
 | Clifford+T CliffT₂ | Figure 5, 11 rules | proved | **transferred** up to 2 qubits: two from Bian–Selinger, one and none from Greylyn (`cliffordT_complete_of_source`, proved; `cliffordT_complete` through `QCert.CliffordT2.theorem_2_1` and `QCert.Greylyn.presentation`) | **proved** up to 1 wire, and (CPh), (B), (CZ) independent |
-| Clifford+CS CliffCS₂ | Figure 6, 14 rules | proved | **transferred** up to 3 wires (`cliffordCS_complete_of_source`); widths 0–2 proved, width 3 inherits the unfinished `QCert.CliffordCS3.rsData` | **proved** up to 2 wires, and (I) independent |
+| Clifford+CS CliffCS₂ | Figure 6, 14 rules | proved | **proved** up to 3 wires (`cliffordCS_complete`), with complete source proofs on two and three wires | **proved** up to 2 wires, and (I) independent |
 | CNOT-dihedral CNOTdihe₂ | Figure 7, 11 rules | proved | **transferred** from Amy–Chen–Ross (`complete_of_source`, proved; `complete` through `QCert.CNOTDihedral.presentation`) | **proved**, all arities |
 
 Every rule of every figure, and every law of the symmetry, is checked
@@ -260,16 +260,16 @@ in `gen/figures.json` and `gen/derivations.json`, the derivations found in
 `run_cliff3.py`/`gen_cliff3.py`, `run_tcliff.py`/`gen_tcliff.py`,
 `run_cs.py`/`gen_cs.py`) reproduces the generated files byte for byte.
 
-## Remaining proof dependency
+## Proof dependencies
 
 There is no local `sorry` in this folder. `CliffordCS/W2Complete.lean`
 proves the two-wire case using the presentation of `U₄(ℤ[½,i])` and its
 scalar refinement, with all decoded relations checked.
 `CliffordCS/W3Complete.lean` proves the three-wire transfer from
 `QCert.CliffordCS3.theorem_3_1`; the encoding, decoding and relation
-derivations are checked. The source theorem still depends on
-`QCert.CliffordCS3.rsData`, so `cliffordCS_complete` inherits `sorryAx`.
-The conditional transfer `cliffordCS_complete_of_source` does not.
+derivations are checked. The source theorem's coset data
+(`QCert.CliffordCS3.rsData`) is proved by the checked two-coset
+construction, so `cliffordCS_complete` has no unfinished dependency.
 
 The other completeness statements have no unfinished dependency.
 `clifford_complete`, `realClifford_complete`, `cliffordT_complete`,
@@ -283,7 +283,7 @@ rest on source theorems that are proved: `#print axioms` gives `propext`,
 `./check.sh QCert/Minimality/Theorems.lean` builds this development.
 The kernel decisions for the three-wire encoding share a larger local
 heartbeat budget (`W3Enc.e_ok`); that check can take over a minute.
-`./check.sh QCert/Audit.lean` also reports the dependency distinction above.
+`./check.sh QCert/Audit.lean` checks the axioms of these results.
 
 ## Typechecking cost
 
