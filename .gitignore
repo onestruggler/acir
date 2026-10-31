@@ -7,26 +7,38 @@ _build/
 .\#*
 \#*\#
 
-# LaTeX build artifacts
-paper/*.aux
-paper/*.bbl
-paper/*.blg
-paper/*.fdb_latexmk
-paper/*.fls
-paper/*.log
-paper/*.out
-paper/*.pdf
-paper/*.synctex.gz
+# LaTeX auxiliary files in any directory (keep PDFs such as qcert.pdf)
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex
+*.synctex.gz
+*.synctex(busy)
+*.synctex.gz(busy)
+*.toc
+*.lof
+*.lot
+*.loa
+*.lol
+*.nav
+*.snm
+*.vrb
+*.ptb
+*.idx
+*.ilg
+*.ind
+*.xdv
+*.dvi
 
-planqc/*.aux
-planqc/*.bbl
-planqc/*.blg
-planqc/*.fdb_latexmk
-planqc/*.fls
-planqc/*.log
-planqc/*.out
+# PDFs generated only for local paper builds
+paper/*.pdf
 planqc/*.pdf
-planqc/*.synctex.gz
 
 # Haskell / GHC build artifacts (Cir2Tikz tool)
 *.hi
