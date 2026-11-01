@@ -5,32 +5,41 @@
 %% Shares styles, figures, and bibliography with ../planqc/.
 %%
 %% Build from pldi/: latexmk -pdf qcert.tex
-\documentclass[acmsmall,nonacm,11pt,screen]{acmart}
+%% `anonymous' for double-blind review; remove it for the camera-ready version.
+% \documentclass[acmsmall,nonacm,11pt,screen]{acmart}
+\documentclass[acmsmall,nonacm,11pt,screen,anonymous]{acmart}
 
 \settopmatter{printacmref=false, printccs=false, printfolios=true}
+%% No ``Anon.'' in the running head of even pages (double-blind review);
+%% remove this with the `anonymous' option for the camera-ready version.
+\makeatletter
+\def\@shortauthors{}
+\makeatother
 \setcopyright{none}
 \renewcommand\footnotetextcopyrightpermission[1]{}
 
 %% The contact footnote lists the e-mail addresses only; the names and
 %% affiliations stay in the title block.
-\makeatletter
-\def\@mkauthorsaddresses{%
-  Contact:
-  \bgroup
-  \def\position##1{\unskip\ignorespaces}%
-  \def\institution##1{\unskip\ignorespaces}%
-  \def\city##1{\unskip\ignorespaces}%
-  \def\state##1{\unskip\ignorespaces}%
-  \renewcommand\department[2][0]{\unskip\ignorespaces}%
-  \def\country##1{\unskip\ignorespaces}%
-  \def\and{\unskip, }%
-  \def\@author##1{\ignorespaces}%
-  \def\email##1##2{\unskip\ \mbox{\nolinkurl{##2}}}%
-  \addresses
-  \egroup}
-%% No final period, which would read as part of the last address.
-\def\@setauthorsaddresses{\@authorsaddresses\unskip}
-\makeatother
+%% Commented out for double-blind review (it prints ``Contact:'' even
+%% with no authors); restore with the authors for the camera-ready version.
+% \makeatletter
+% \def\@mkauthorsaddresses{%
+%   Contact:
+%   \bgroup
+%   \def\position##1{\unskip\ignorespaces}%
+%   \def\institution##1{\unskip\ignorespaces}%
+%   \def\city##1{\unskip\ignorespaces}%
+%   \def\state##1{\unskip\ignorespaces}%
+%   \renewcommand\department[2][0]{\unskip\ignorespaces}%
+%   \def\country##1{\unskip\ignorespaces}%
+%   \def\and{\unskip, }%
+%   \def\@author##1{\ignorespaces}%
+%   \def\email##1##2{\unskip\ \mbox{\nolinkurl{##2}}}%
+%   \addresses
+%   \egroup}
+% %% No final period, which would read as part of the last address.
+% \def\@setauthorsaddresses{\@authorsaddresses\unskip}
+% \makeatother
 
 \usepackage{mathtools}
 \usepackage{booktabs}
@@ -87,38 +96,40 @@
 \title[QCert: Verifying and Extending Quantum Circuit Completeness in Agda and Lean]{QCert: Verifying and Extending Quantum Circuit Completeness in Agda and Lean}
 %QCert: Verifying Sixteen Quantum Circuit Completeness Results in One Agda Framework
 
-\author{Xiaoning Bian}
-\affiliation{%
-  \institution{Tsinghua University}
-  \city{Beijing}
-  \country{China}}
-\email{bian@dal.ca}
-\author{Yuan Feng}
-\affiliation{%
-  \institution{Tsinghua University}
-  \city{Beijing}
-  \country{China}}
-\email{yuan\_feng@tsinghua.edu.cn}
-\author{Sarah Meng Li}
-\affiliation{%
-  \institution{University of Amsterdam and QuSoft}
-  \city{Amsterdam}
-  \country{The Netherlands}}
-\email{sarah.li@uva.nl}
-\author{John van de Wetering}
-\affiliation{%
-  \institution{University of Amsterdam and QuSoft}
-  \city{Amsterdam}
-  \country{The Netherlands}}
-\email{john@vdwetering.name}
+%% Authors omitted for double-blind review; restore for the camera-ready version.
+% \author{Xiaoning Bian}
+% \affiliation{%
+%   \institution{Tsinghua University}
+%   \city{Beijing}
+%   \country{China}}
+% \email{bian@dal.ca}
+% \author{Yuan Feng}
+% \affiliation{%
+%   \institution{Tsinghua University}
+%   \city{Beijing}
+%   \country{China}}
+% \email{yuan\_feng@tsinghua.edu.cn}
+% \author{Sarah Meng Li}
+% \affiliation{%
+%   \institution{University of Amsterdam and QuSoft}
+%   \city{Amsterdam}
+%   \country{The Netherlands}}
+% \email{sarah.li@uva.nl}
+% \author{John van de Wetering}
+% \affiliation{%
+%   \institution{University of Amsterdam and QuSoft}
+%   \city{Amsterdam}
+%   \country{The Netherlands}}
+% \email{john@vdwetering.name}
 
 \begin{abstract}
 % An equational theory for a family of quantum circuits is a set of rewrite rules. The theory 
 
-A set of circuit equations is complete if every equation between circuits denoting the same linear map follows from it, and minimal if no equation depends on the other equations. Establishing these properties takes long case analyses spanning hundreds of pages, making the details hard to check by hand. To this end, we extend our earlier formalization framework to QCert in Agda and Lean. In QCert, humans set up a unified framework of circuits, matrix semantics, and group presentations, and state each paper's main theorem in it. LLM coding agents then write the proofs following the papers' arguments, and the proof assistant checks them. A human therefore need only review each paper's relations, gate semantics, and theorem statement.
-
-Using QCert, we verify the main circuit completeness theorems to date and prove a new one. These are sixteen results, fifteen on completeness and one on minimality, over discrete gate sets such as Clifford, Clifford+T, and Toffoli--Hadamard, on qubits and on qudits of every odd prime dimension. We verify fourteen of them directly, while identifying and fixing errors in each of the other two. We then generalize the completeness of Toffoli--Hadamard circuits from three qubits to any number of qubits. We expect QCert to help with other open completeness problems, such as those for quantum circuits in higher dimensions.
-
+A set of circuit equations is complete if every equation between circuits denoting the same linear map follows from it, and minimal if no equation can be derived from the others. Establishing these properties takes long case analyses spanning hundreds of pages, making the details hard to check by hand.
+% To this end, we extend our earlier formalization framework to QCert in Agda and Lean.
+To address this, we extend an existing formalization library to QCert in Agda and Lean.
+In QCert, humans set up a unified framework of circuits, matrix semantics, and group presentations, and state each paper's main theorem in it. LLM coding agents then write the proofs following the papers' arguments, and the proof assistant checks them. A human therefore need only review each paper's relations, gate semantics, and theorem statement. Using QCert, we first check sixteen published results, fifteen on completeness and one on minimality. They cover discrete gate sets such as Clifford, Clifford+T, and Toffoli--Hadamard, on qubits or qudits of every odd prime dimension. We verify fourteen of them directly and correct an error in each of the other two. We then prove a new result, generalizing the completeness of Toffoli--Hadamard circuits from three to any number of qubits. We expect QCert to help with other open completeness problems, such as those for quantum circuits in higher dimensions.
+%which include the main circuit completeness theorems to date.
 \end{abstract}
 
 \maketitle
@@ -137,9 +148,15 @@ Completeness and minimality proofs typically require long case distinctions over
 
 The length of these proofs and their error-prone nature make it desirable to formally verify their correctness using a proof assistant like Lean or Agda. This would not have been feasible in the past due to  the sheer number of lemmas and lengthy rewrites in these papers. Recent LLMs can write correct code for proof assistants, which brings this closer to reality. For example, Anthropic reports that LLMs wrote a 13-million-line Lean proof of Fermat's Last Theorem within 11 days~\cite{anthropic2026flt}. However, care must still be taken. It is important to manually verify the \emph{alignment} between the machine-verified statement and the intended natural-language result. For instance, \cite{bastounis2026navier} showed that a claimed verification of OpenAI's natural-language proof about the Navier--Stokes equations contained mistranslations, so the formal verification was verifying a weaker result by a different proof. A way to solve this is to use a hybrid approach, where humans write and carefully review the definitions and theorem statements~\cite{hales2026reliability}, coding agents write the proofs, and Agda checks them.
 
-\paragraph{Our contributions} In this work we present QCert, a framework in Agda~\cite{norell2007thesis,bove2009agda} and Lean~\cite{moura2021lean4} for representing and verifying quantum circuit completeness and minimality results, and use it to verify the correctness of sixteen completeness results. This is based on our formalization of qudit Clifford completeness~\cite{bian2026qupit}, where we built the framework~\cite{bian2027popl} by hand and carried out the main verification steps by hand. Since all sixteen completeness results use the same framework of quantum circuits, gates, and matrices over a finitely generated ring, this makes it possible to efficiently check the alignment of the formalized results with the natural-language statements from the original papers. Of these sixteen results, we fully verify fourteen directly, and find fixes to verify the remaining two. For one result, we find a gap in its proof, which we fix, so the original completeness claim still holds. For another result, we find that the theorem is missing one relation, and we show that this relation is independent of the others, so completeness fails without it.
+\paragraph{Our contributions} In this work we present QCert, a framework in Agda~\cite{norell2007thesis,bove2009agda} and Lean~\cite{moura2021lean4} for representing and verifying quantum circuit completeness and minimality results, and use it to verify the correctness of sixteen completeness results.
+% This is based on our formalization of qudit Clifford completeness~\cite{bian2026qupit}, where we built the framework~\cite{bian2027popl} by hand and carried out the main verification steps by hand.
+This is based on the formalization of qudit Clifford completeness in~\cite{bian2026qupit}, where the framework~\cite{bian2027popl} was built and the main verification steps were carried out by hand.
+Since all sixteen completeness results use the same framework of quantum circuits, gates, and matrices over a finitely generated ring, this makes it possible to efficiently check the alignment of the formalized results with the natural-language statements from the original papers. Of these sixteen results, we fully verify fourteen directly, and find fixes to verify the remaining two. For one result, we find a gap in its proof, which we fix, so the original completeness claim still holds. For another result, we find that the theorem is missing one relation, and we show that this relation is independent of the others, so completeness fails without it.
 
-\paragraph{Orientation} In \Cref{sec:background}, we review the two main strategies for proving completeness of a rule set and how minimality is shown. In \Cref{sec:form}, we describe the QCert framework, which adds matrix semantics to our earlier library of circuits and presentations~\cite{bian2027popl}, together with our formalization workflow and a comparison of the Agda and Lean formalizations. In \Cref{sec:corpus}, we use QCert to machine-check the completeness and minimality results of sixteen papers. In \Cref{sec:findings}, we describe the issues these formalizations found in the source papers. In \Cref{sec:toffoli-hadamard}, we use QCert to prove a new result, the completeness of Toffoli--Hadamard circuits on any number of qubits. In \Cref{sec:conclusion}, we discuss the current limitations of QCert and our plans to extend it.
+\paragraph{Orientation} In \Cref{sec:background}, we review the two main strategies for proving completeness of a rule set and how minimality is shown. In \Cref{sec:form}, we describe the QCert framework, which adds matrix semantics to
+% our earlier library of circuits and presentations~\cite{bian2027popl},
+the library of circuits and presentations of~\citet{bian2027popl},
+together with our formalization workflow and a comparison of the Agda and Lean formalizations. In \Cref{sec:corpus}, we use QCert to machine-check the completeness and minimality results of sixteen papers. In \Cref{sec:findings}, we describe the issues these formalizations found in the source papers. In \Cref{sec:toffoli-hadamard}, we use QCert to prove a new result, the completeness of Toffoli--Hadamard circuits on any number of qubits. In \Cref{sec:conclusion}, we discuss the current limitations of QCert and our plans to extend it.
 
 
 \section{Background}\label{sec:background}
