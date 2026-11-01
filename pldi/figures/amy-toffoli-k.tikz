@@ -1,0 +1,38 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (1) at (-2.95, 1.65) {$U_{1}$};
+		\node [style=none] (2) at (-2.95, -1.65) {$U_{2}$};
+		\node [style=none] (3) at (3.2, 1.65) {$F_{1}$};
+		\node [style=none] (4) at (3.2, -1.65) {$F_{2}$};
+		\node [style=rule label] (5) at (0, 2.12) {$E_0$};
+		\node [style=rule label] (6) at (0, -1.17) {$E_0$};
+		\node [style=rule label] (7) at (-1.9, 0) {$\mathcal R_0^{*}$};
+		\node [style=rule label] (8) at (2.15, 0) {$\mathcal R_{E_8}^{*}$};
+		\node [style=rule label] (9) at (0, 0.48) {$D_0$};
+		\node [style=none] (10) at (-4.1, 0) {$\equiv_u$};
+		\node [style=none] (11) at (4.35, 0) {$\equiv_u$};
+		\node [style=none] (12) at (-2.25, 1.65) {};
+		\node [style=none] (13) at (2.5, 1.65) {};
+		\node [style=none] (14) at (-2.25, -1.65) {};
+		\node [style=none] (15) at (2.5, -1.65) {};
+		\node [style=none] (16) at (-2.7, 1.08) {};
+		\node [style=none] (17) at (-2.7, -1.08) {};
+		\node [style=none] (18) at (2.95, 1.08) {};
+		\node [style=none] (19) at (2.95, -1.08) {};
+		\node [style=none] (20) at (1.2, 0) {};
+		\node [style=none] (21) at (-1.2, 0) {};
+		\node [style=none] (22) at (-3.25, 1.08) {};
+		\node [style=none] (23) at (-3.25, -1.08) {};
+		\node [style=none] (24) at (3.5, 1.08) {};
+		\node [style=none] (25) at (3.5, -1.08) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=translate] (12.center) to (13.center);
+		\draw [style=translate] (14.center) to (15.center);
+		\draw [<->, >=stealth] (16.center) to (17.center);
+		\draw [<->, >=stealth] (18.center) to (19.center);
+		\draw [style=translate back] (20.center) to (21.center);
+		\draw [dashed] (22.center) to (23.center);
+		\draw [dashed] (24.center) to (25.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
