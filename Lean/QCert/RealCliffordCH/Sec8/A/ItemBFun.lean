@@ -233,8 +233,18 @@ theorem d3img_small (hm : m ≤ 3) : D3img n e f g (inF F) := by
   have hbc' : (b : ℕ) ≠ c := fun e => hbc (Fin.ext e)
   have d1 := i1 ia ib (by omega); have d2 := i1 ia ic (by omega); have d3 := i1 ia id (by omega)
   have d4 := i1 ib ic (by omega); have d5 := i1 ib id (by omega); have d6 := i1 ic id (by omega)
-  simp only [Fin.ext_iff] at d1 d2 d3 d4 d5 d6
-  have := ia.2; have := ib.2; have := ic.2; have := id.2
+  have hcard : ({ia, ib, ic, id} : Finset (Fin m)).card = 4 := by
+    rw [Finset.card_insert_of_notMem (by
+      simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+      exact ⟨d1, d2, d3⟩)]
+    rw [Finset.card_insert_of_notMem (by
+      simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+      exact ⟨d4, d5⟩)]
+    rw [Finset.card_insert_of_notMem (by
+      simp only [Finset.mem_singleton]
+      exact d6), Finset.card_singleton]
+  have hbound := Finset.card_le_univ ({ia, ib, ic, id} : Finset (Fin m))
+  simp only [Fintype.card_fin, hcard] at hbound
   omega
 
 theorem d4img_small (hm : m ≤ 3) : D4img n e f g (inF F) := by
@@ -247,8 +257,18 @@ theorem d4img_small (hm : m ≤ 3) : D4img n e f g (inF F) := by
   have hcd' : (c : ℕ) ≠ d := fun e => hcd (Fin.ext e)
   have d1 := i1 ia ib (by omega); have d2 := i1 ia ic (by omega); have d3 := i1 ia id (by omega)
   have d4 := i1 ib ic (by omega); have d5 := i1 ib id (by omega); have d6 := i1 ic id (by omega)
-  simp only [Fin.ext_iff] at d1 d2 d3 d4 d5 d6
-  have := ia.2; have := ib.2; have := ic.2; have := id.2
+  have hcard : ({ia, ib, ic, id} : Finset (Fin m)).card = 4 := by
+    rw [Finset.card_insert_of_notMem (by
+      simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+      exact ⟨d1, d2, d3⟩)]
+    rw [Finset.card_insert_of_notMem (by
+      simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+      exact ⟨d4, d5⟩)]
+    rw [Finset.card_insert_of_notMem (by
+      simp only [Finset.mem_singleton]
+      exact d6), Finset.card_singleton]
+  have hbound := Finset.card_le_univ ({ia, ib, ic, id} : Finset (Fin m))
+  simp only [Fintype.card_fin, hcard] at hbound
   omega
 
 /-- The functor on at most three indices away from the tags. -/

@@ -89,6 +89,7 @@ theorem stepS1 : D8 n [Hh n x y p q] [Hh n x y 0 1, Hh n 0 1 p q] := by
   obtain ⟨xy, y2, p2, q2, g2, pq, -⟩ := st
   exact (e71 h8 hE (by omega) y2 (by omega) (by omega) p2 q2 (by omega) (by norm_num) pq).symm
 
+set_option maxHeartbeats 1000000 in
 theorem stepS2 : D8 n [Zx n g x y] (w2 n x y ++ [Zz n 1 g]) := by
   obtain ⟨xy, y2, p2, q2, g2, pq, p0, p1, px, py, q0, q1, qx, qy, g0, g1, gx, gy, gp, gq⟩ := st
   have hN : 4 ≤ 2 ^ n := by omega
