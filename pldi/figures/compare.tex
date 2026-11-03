@@ -16,36 +16,21 @@
   xmajorgrids, grid style={cmpGrid},
   clip=false,
 ]
-% (a) Proof development: code lines, written and generated.
+% (a) Proof development: code lines.
 \nextgroupplot[
   title={(a) Proof development},
   xbar, bar width=3.1pt,
-  xmin=0, xmax=140, xtick={0,20,...,120},
+  xmin=0, xmax=150, xtick={0,25,...,125},
   xlabel={Code lines (thousands)},
-  legend to name=cmpLegend, legend columns=4,
+  legend to name=cmpLegend, legend columns=2,
   legend style={font=\scriptsize, draw=none, column sep=6pt},
   legend image code/.code={\draw[#1] (0pt,-2.5pt) rectangle (9pt,2.5pt);},
 ]
-% Each system's total, hatched, with its written part drawn over it.
-\addplot[forget plot, bar shift=1.9pt, draw=cmpAgda, pattern=north east lines,
-         pattern color=cmpAgda]
-  coordinates {(7.21,0) (7.71,1) (13.58,2) (9.73,3) (9.09,4) (10.75,5) (57.83,6) (11.06,7) (5.04,8) (10.73,9) (11.03,10) (56.24,11) (60.17,12) (28.57,13) (53.85,14) (23.09,15) (13.12,16)};
-\addplot[forget plot, bar shift=1.9pt, fill=cmpAgda, draw=cmpAgda]
-  coordinates {(7.21,0) (7.71,1) (11.87,2) (7.64,3) (7.14,4) (3.89,5) (57.6,6) (5.1,7) (4.96,8) (10.59,9) (0.63,10) (0.72,11) (58.57,12) (6,13) (4.46,14) (8.62,15) (10.83,16)};
-\addplot[forget plot, bar shift=-1.9pt, draw=cmpLean, pattern=north west lines,
-         pattern color=cmpLean]
-  coordinates {(4.43,0) (3.92,1) (9.85,2) (13.51,3) (2.43,4) (5.43,5) (6.37,6) (5.04,7) (3.65,8) (7.02,9) (5.88,10) (138.85,11) (105.89,12) (3.74,13) (10.21,14) (13.37,15) (1.22,16)};
-\addplot[forget plot, bar shift=-1.9pt, fill=cmpLean, draw=cmpLean]
-  coordinates {(4.43,0) (3.92,1) (6.2,2) (6.65,3) (1.18,4) (4.97,5) (5.95,6) (2.41,7) (2.75,8) (6.24,9) (0.76,10) (1.53,11) (44.15,12) (1.19,13) (5.14,14) (5.52,15) (1.12,16)};
-\addlegendimage{fill=cmpAgda, draw=cmpAgda}
-\addlegendentry{Agda, written}
-\addlegendimage{draw=cmpAgda, pattern=north east lines, pattern color=cmpAgda}
-\addlegendentry{Agda, generated or ported}
-\addlegendimage{fill=cmpLean, draw=cmpLean}
-\addlegendentry{Lean, written}
-\addlegendimage{draw=cmpLean, pattern=north west lines, pattern color=cmpLean}
-\addlegendentry{Lean, generated}
-\draw[cmpAxis, densely dotted] (axis cs:0,15.5) -- (axis cs:140,15.5);
+\addplot[bar shift=1.9pt, fill=cmpAgda, draw=cmpAgda] coordinates {(7.21,0) (7.71,1) (13.58,2) (9.73,3) (9.09,4) (10.75,5) (57.83,6) (11.06,7) (5.04,8) (10.73,9) (11.03,10) (56.24,11) (60.17,12) (28.57,13) (53.85,14) (23.09,15) (13.12,16)};
+\addlegendentry{Agda}
+\addplot[bar shift=-1.9pt, fill=cmpLean, draw=cmpLean] coordinates {(4.43,0) (3.92,1) (9.85,2) (13.51,3) (2.43,4) (5.43,5) (6.37,6) (5.04,7) (3.65,8) (7.02,9) (5.88,10) (138.85,11) (105.89,12) (3.74,13) (10.21,14) (13.37,15) (1.22,16)};
+\addlegendentry{Lean}
+\draw[cmpAxis, densely dotted] (axis cs:0,15.5) -- (axis cs:150,15.5);
 % (b) Verification time: check time per row, log scale.
 \nextgroupplot[
   title={(b) Verification time},

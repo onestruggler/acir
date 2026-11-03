@@ -2,1388 +2,273 @@
  "Greylyn": {
   "agda": {
    "files": 31,
-   "gen_files": 0,
-   "ported_files": 0,
-   "bytes": 511356,
-   "all": {
-    "lines": 9879,
-    "blank": 1389,
-    "comment": 1276,
-    "code": 7214
-   },
-   "generated": {},
-   "ported": {},
-   "gen_list": [],
-   "ported_list": []
+   "lines": 9879,
+   "blank": 1389,
+   "comment": 1276,
+   "code": 7214
   },
   "lean": {
    "files": 23,
-   "gen_files": 0,
-   "ported_files": 0,
-   "bytes": 272654,
-   "all": {
-    "lines": 5964,
-    "blank": 676,
-    "comment": 857,
-    "code": 4431
-   },
-   "generated": {},
-   "ported": {},
-   "gen_list": [],
-   "ported_list": []
+   "lines": 5964,
+   "blank": 676,
+   "comment": 857,
+   "code": 4431
   }
  },
  "BianSelingerUn": {
   "agda": {
    "files": 38,
-   "gen_files": 0,
-   "ported_files": 0,
-   "bytes": 533302,
-   "all": {
-    "lines": 10469,
-    "blank": 1436,
-    "comment": 1320,
-    "code": 7713
-   },
-   "generated": {},
-   "ported": {},
-   "gen_list": [],
-   "ported_list": []
+   "lines": 10469,
+   "blank": 1436,
+   "comment": 1320,
+   "code": 7713
   },
   "lean": {
    "files": 25,
-   "gen_files": 0,
-   "ported_files": 0,
-   "bytes": 231895,
-   "all": {
-    "lines": 5126,
-    "blank": 575,
-    "comment": 630,
-    "code": 3921
-   },
-   "generated": {},
-   "ported": {},
-   "gen_list": [],
-   "ported_list": []
+   "lines": 5126,
+   "blank": 575,
+   "comment": 630,
+   "code": 3921
   }
  },
  "LiRossSelinger": {
   "agda": {
    "files": 68,
-   "gen_files": 2,
-   "ported_files": 0,
-   "bytes": 941461,
-   "all": {
-    "lines": 17707,
-    "blank": 2179,
-    "comment": 1945,
-    "code": 13583
-   },
-   "generated": {
-    "lines": 1957,
-    "blank": 161,
-    "comment": 84,
-    "code": 1712
-   },
-   "ported": {},
-   "gen_list": [
-    "Examples\\Groups\\CCX+HH-TwoLevel\\Rel6.agda",
-    "Examples\\Groups\\CCX+HH-TwoLevel\\Scaled\\Table2.agda"
-   ],
-   "ported_list": []
+   "lines": 17707,
+   "blank": 2179,
+   "comment": 1945,
+   "code": 13583
   },
   "lean": {
    "files": 36,
-   "gen_files": 7,
-   "ported_files": 0,
-   "bytes": 863784,
-   "all": {
-    "lines": 11707,
-    "blank": 836,
-    "comment": 1026,
-    "code": 9845
-   },
-   "generated": {
-    "lines": 4039,
-    "blank": 191,
-    "comment": 206,
-    "code": 3642
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\LiRossSelinger\\CaseK4.lean",
-    "Lean\\QCert\\LiRossSelinger\\Checker.lean",
-    "Lean\\QCert\\LiRossSelinger\\Derive.lean",
-    "Lean\\QCert\\LiRossSelinger\\Rel1223.lean",
-    "Lean\\QCert\\LiRossSelinger\\Rel323.lean",
-    "Lean\\QCert\\LiRossSelinger\\Rel325.lean",
-    "Lean\\QCert\\LiRossSelinger\\Soundness.lean"
-   ],
-   "ported_list": []
+   "lines": 11707,
+   "blank": 836,
+   "comment": 1026,
+   "code": 9845
   }
  },
  "HadamardPi": {
   "agda": {
    "files": 44,
-   "gen_files": 4,
-   "ported_files": 0,
-   "bytes": 663137,
-   "all": {
-    "lines": 12951,
-    "blank": 1746,
-    "comment": 1477,
-    "code": 9728
-   },
-   "generated": {
-    "lines": 2496,
-    "blank": 276,
-    "comment": 133,
-    "code": 2087
-   },
-   "ported": {},
-   "gen_list": [
-    "Examples\\Groups\\Real-Clifford+CH-TwoLevel\\Diamond.agda",
-    "Examples\\Groups\\Real-Clifford+CH-TwoLevel\\Equivalence\\Four.agda",
-    "Examples\\Groups\\Real-Clifford+CH-TwoLevel\\Equivalence\\Places.agda",
-    "Examples\\Groups\\Real-Clifford+CH-TwoLevel\\Equivalence\\Six.agda"
-   ],
-   "ported_list": []
+   "lines": 12951,
+   "blank": 1746,
+   "comment": 1477,
+   "code": 9728
   },
   "lean": {
    "files": 36,
-   "gen_files": 5,
-   "ported_files": 0,
-   "bytes": 1067742,
-   "all": {
-    "lines": 16792,
-    "blank": 1509,
-    "comment": 1770,
-    "code": 13513
-   },
-   "generated": {
-    "lines": 8243,
-    "blank": 659,
-    "comment": 722,
-    "code": 6862
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\HadamardPi\\Case34.lean",
-    "Lean\\QCert\\HadamardPi\\Case34Der.lean",
-    "Lean\\QCert\\HadamardPi\\Check.lean",
-    "Lean\\QCert\\HadamardPi\\Derived.lean",
-    "Lean\\QCert\\HadamardPi\\Switch.lean"
-   ],
-   "ported_list": []
+   "lines": 16792,
+   "blank": 1509,
+   "comment": 1770,
+   "code": 13513
   }
  },
  "Clement2019": {
   "agda": {
    "files": 40,
-   "gen_files": 6,
-   "ported_files": 0,
-   "bytes": 828826,
-   "all": {
-    "lines": 11835,
-    "blank": 1408,
-    "comment": 1340,
-    "code": 9087
-   },
-   "generated": {
-    "lines": 2106,
-    "blank": 83,
-    "comment": 75,
-    "code": 1948
-   },
-   "ported": {},
-   "gen_list": [
-    "Examples\\Groups\\Real-Clifford+CH-TwoLevel-Clement\\NFs.agda",
-    "Examples\\Groups\\Real-Clifford+CH-TwoLevel-Clement\\Thesis\\Rel1142.agda",
-    "Examples\\Groups\\Real-Clifford+CH-TwoLevel-Clement\\Thesis\\Steps1142.agda",
-    "Examples\\Groups\\Real-Clifford+CH-TwoLevel-Clement\\TreeNF341.agda",
-    "Examples\\Groups\\Real-Clifford+CH-TwoLevel-Clement\\TreeNF38.agda",
-    "Examples\\Groups\\Real-Clifford+CH-TwoLevel-Clement\\TreeTop.agda"
-   ],
-   "ported_list": []
+   "lines": 11835,
+   "blank": 1408,
+   "comment": 1340,
+   "code": 9087
   },
   "lean": {
    "files": 15,
-   "gen_files": 3,
-   "ported_files": 0,
-   "bytes": 189004,
-   "all": {
-    "lines": 3134,
-    "blank": 268,
-    "comment": 440,
-    "code": 2426
-   },
-   "generated": {
-    "lines": 1474,
-    "blank": 102,
-    "comment": 127,
-    "code": 1245
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\Clement2019\\ConjLemmas.lean",
-    "Lean\\QCert\\Clement2019\\DerivedC.lean",
-    "Lean\\QCert\\Clement2019\\Tables.lean"
-   ],
-   "ported_list": []
+   "lines": 3134,
+   "blank": 268,
+   "comment": 440,
+   "code": 2426
   }
  },
  "SelingerClifford": {
   "agda": {
    "files": 31,
-   "gen_files": 7,
-   "ported_files": 0,
-   "bytes": 1220587,
-   "all": {
-    "lines": 12550,
-    "blank": 995,
-    "comment": 808,
-    "code": 10747
-   },
-   "generated": {
-    "lines": 7094,
-    "blank": 159,
-    "comment": 80,
-    "code": 6855
-   },
-   "ported": {},
-   "gen_list": [
-    "Examples\\Groups\\Qubit-Clifford\\Relations\\Lemmas.agda",
-    "Examples\\Groups\\Qubit-Clifford\\Relations\\Rules\\Figure3.agda",
-    "Examples\\Groups\\Qubit-Clifford\\Relations\\Rules\\Figure4.agda",
-    "Examples\\Groups\\Qubit-Clifford\\Relations\\Rules\\Figure5.agda",
-    "Examples\\Groups\\Qubit-Clifford\\Relations\\Rules\\Figure6.agda",
-    "Examples\\Groups\\Qubit-Clifford\\Relations\\Rules\\Figure7.agda",
-    "Examples\\Groups\\Qubit-Clifford\\Relations\\Rules\\Identity.agda"
-   ],
-   "ported_list": []
+   "lines": 12550,
+   "blank": 995,
+   "comment": 808,
+   "code": 10747
   },
   "lean": {
    "files": 24,
-   "gen_files": 3,
-   "ported_files": 0,
-   "bytes": 410517,
-   "all": {
-    "lines": 7028,
-    "blank": 763,
-    "comment": 834,
-    "code": 5431
-   },
-   "generated": {
-    "lines": 627,
-    "blank": 74,
-    "comment": 90,
-    "code": 463
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\SelingerClifford\\Lemmas.lean",
-    "Lean\\QCert\\SelingerClifford\\Tables.lean",
-    "Lean\\QCert\\SelingerClifford\\Theorem.lean"
-   ],
-   "ported_list": []
+   "lines": 7028,
+   "blank": 763,
+   "comment": 834,
+   "code": 5431
   }
  },
  "QuditClifford": {
   "agda": {
    "files": 215,
-   "gen_files": 3,
-   "ported_files": 0,
-   "bytes": 4054277,
-   "all": {
-    "lines": 81764,
-    "blank": 11612,
-    "comment": 12324,
-    "code": 57828
-   },
-   "generated": {
-    "lines": 423,
-    "blank": 106,
-    "comment": 93,
-    "code": 224
-   },
-   "ported": {},
-   "gen_list": [
-    "Examples\\Groups\\Clifford+MinusOne\\Qupit\\Semantics.agda",
-    "Examples\\Groups\\Symplectic\\BR\\Three\\Lemmas5.agda",
-    "Examples\\Groups\\Symplectic\\Lemmas\\Ex-Rewriting.agda"
-   ],
-   "ported_list": []
+   "lines": 81764,
+   "blank": 11612,
+   "comment": 12324,
+   "code": 57828
   },
   "lean": {
    "files": 37,
-   "gen_files": 4,
-   "ported_files": 0,
-   "bytes": 394612,
-   "all": {
-    "lines": 8688,
-    "blank": 1211,
-    "comment": 1106,
-    "code": 6371
-   },
-   "generated": {
-    "lines": 634,
-    "blank": 107,
-    "comment": 107,
-    "code": 420
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\QuditClifford\\OneQudit.lean",
-    "Lean\\QCert\\QuditClifford\\Pauli.lean",
-    "Lean\\QCert\\QuditClifford\\Stab.lean",
-    "Lean\\QCert\\QuditClifford\\Width1.lean"
-   ],
-   "ported_list": []
+   "lines": 8688,
+   "blank": 1211,
+   "comment": 1106,
+   "code": 6371
   }
  },
  "RealStabilizer": {
   "agda": {
    "files": 30,
-   "gen_files": 4,
-   "ported_files": 0,
-   "bytes": 1243341,
-   "all": {
-    "lines": 13459,
-    "blank": 1449,
-    "comment": 954,
-    "code": 11056
-   },
-   "generated": {
-    "lines": 6292,
-    "blank": 295,
-    "comment": 40,
-    "code": 5957
-   },
-   "ported": {},
-   "gen_list": [
-    "Examples\\Groups\\Real-Clifford\\Relations\\Derived.agda",
-    "Examples\\Groups\\Real-Clifford\\Relations\\Lemmas.agda",
-    "Examples\\Groups\\Real-Clifford\\Relations\\Rules.agda",
-    "Examples\\Groups\\Real-Clifford\\Relations\\Typed.agda"
-   ],
-   "ported_list": []
+   "lines": 13459,
+   "blank": 1449,
+   "comment": 954,
+   "code": 11056
   },
   "lean": {
    "files": 19,
-   "gen_files": 6,
-   "ported_files": 0,
-   "bytes": 309344,
-   "all": {
-    "lines": 6605,
-    "blank": 651,
-    "comment": 909,
-    "code": 5045
-   },
-   "generated": {
-    "lines": 3260,
-    "blank": 217,
-    "comment": 405,
-    "code": 2638
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\RealStabilizer\\Boxes.lean",
-    "Lean\\QCert\\RealStabilizer\\Lemmas.lean",
-    "Lean\\QCert\\RealStabilizer\\Relations1.lean",
-    "Lean\\QCert\\RealStabilizer\\Tables.lean",
-    "Lean\\QCert\\RealStabilizer\\Theorem.lean",
-    "Lean\\QCert\\RealStabilizer\\Typed1.lean"
-   ],
-   "ported_list": []
+   "lines": 6605,
+   "blank": 651,
+   "comment": 909,
+   "code": 5045
   }
  },
  "CNOTDihedral": {
   "agda": {
    "files": 30,
-   "gen_files": 1,
-   "ported_files": 0,
-   "bytes": 310934,
-   "all": {
-    "lines": 6978,
-    "blank": 994,
-    "comment": 941,
-    "code": 5043
-   },
-   "generated": {
-    "lines": 143,
-    "blank": 25,
-    "comment": 36,
-    "code": 82
-   },
-   "ported": {},
-   "gen_list": [
-    "Examples\\Groups\\CNOT+Dihedral\\Soundness.agda"
-   ],
-   "ported_list": []
+   "lines": 6978,
+   "blank": 994,
+   "comment": 941,
+   "code": 5043
   },
   "lean": {
    "files": 15,
-   "gen_files": 3,
-   "ported_files": 0,
-   "bytes": 221834,
-   "all": {
-    "lines": 4922,
-    "blank": 645,
-    "comment": 624,
-    "code": 3653
-   },
-   "generated": {
-    "lines": 1202,
-    "blank": 182,
-    "comment": 121,
-    "code": 899
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\CNOTDihedral\\Diagonal.lean",
-    "Lean\\QCert\\CNOTDihedral\\Fans.lean",
-    "Lean\\QCert\\CNOTDihedral\\Theorem.lean"
-   ],
-   "ported_list": []
+   "lines": 4922,
+   "blank": 645,
+   "comment": 624,
+   "code": 3653
   }
  },
  "PhaseAffine": {
   "agda": {
    "files": 56,
-   "gen_files": 1,
-   "ported_files": 0,
-   "bytes": 774735,
-   "all": {
-    "lines": 15218,
-    "blank": 2470,
-    "comment": 2015,
-    "code": 10733
-   },
-   "generated": {
-    "lines": 207,
-    "blank": 29,
-    "comment": 38,
-    "code": 140
-   },
-   "ported": {},
-   "gen_list": [
-    "Examples\\Groups\\Qupit-Phase-Affine\\Soundness.agda"
-   ],
-   "ported_list": []
+   "lines": 15218,
+   "blank": 2470,
+   "comment": 2015,
+   "code": 10733
   },
   "lean": {
    "files": 32,
-   "gen_files": 2,
-   "ported_files": 0,
-   "bytes": 427481,
-   "all": {
-    "lines": 9373,
-    "blank": 1159,
-    "comment": 1197,
-    "code": 7017
-   },
-   "generated": {
-    "lines": 973,
-    "blank": 123,
-    "comment": 72,
-    "code": 778
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\PhaseAffine\\CubeDiag.lean",
-    "Lean\\QCert\\PhaseAffine\\QuadDiag.lean"
-   ],
-   "ported_list": []
+   "lines": 9373,
+   "blank": 1159,
+   "comment": 1197,
+   "code": 7017
   }
  },
  "CliffordT2": {
   "agda": {
    "files": 62,
-   "gen_files": 1,
-   "ported_files": 56,
-   "bytes": 2415552,
-   "all": {
-    "lines": 13394,
-    "blank": 1023,
-    "comment": 1342,
-    "code": 11029
-   },
-   "generated": {
-    "lines": 47,
-    "blank": 8,
-    "comment": 15,
-    "code": 24
-   },
-   "ported": {
-    "lines": 12450,
-    "blank": 896,
-    "comment": 1177,
-    "code": 10377
-   },
-   "gen_list": [
-    "Examples\\Groups\\Clifford+T-2qubit\\Circuits\\Presentation.agda"
-   ],
-   "ported_list": [
-    "Examples\\Groups\\Clifford+T-2qubit\\Clifford-Lemmas.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\CliffordT-Lemmas.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Completeness.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation1.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation10.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation11.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation12.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation13.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation14.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation15.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation16.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation17.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation18.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation19.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation2.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation20.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation21.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation22.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation23.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation24.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation25.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation26.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation27.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation28.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation29.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation3.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation30.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation31.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation32.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation33.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation34.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation35.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation36.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation37.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation38.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation39.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation4.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation40.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation41.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation42.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation43.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation43b.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation44.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation44b.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation45.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation46.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation46b.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation5.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation6.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation7.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation8.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Equations\\Equation9.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Generator.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Greylyn-Lemmas.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\Greylyn-Simplified.agda",
-    "Examples\\Groups\\Clifford+T-2qubit\\PauliRotations.agda"
-   ]
+   "lines": 13394,
+   "blank": 1023,
+   "comment": 1342,
+   "code": 11029
   },
   "lean": {
    "files": 34,
-   "gen_files": 21,
-   "ported_files": 0,
-   "bytes": 8304957,
-   "all": {
-    "lines": 7529,
-    "blank": 885,
-    "comment": 763,
-    "code": 5881
-   },
-   "generated": {
-    "lines": 6229,
-    "blank": 703,
-    "comment": 404,
-    "code": 5122
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\CliffordT2\\Cert\\Axioms.lean",
-    "Lean\\QCert\\CliffordT2\\Cert\\Clifford.lean",
-    "Lean\\QCert\\CliffordT2\\Cert\\Code.lean",
-    "Lean\\QCert\\CliffordT2\\Cert\\Rotations.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part00.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part01.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part02.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part03.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part04.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part05.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part06.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part07.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part08.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part09.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part10.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part11.lean",
-    "Lean\\QCert\\CliffordT2\\Eqs\\Part12.lean",
-    "Lean\\QCert\\CliffordT2\\Equations.lean",
-    "Lean\\QCert\\CliffordT2\\FastRewrite.lean",
-    "Lean\\QCert\\CliffordT2\\Rewrite.lean",
-    "Lean\\QCert\\CliffordT2\\SimplifiedGreylyn.lean"
-   ],
-   "ported_list": []
+   "lines": 7529,
+   "blank": 885,
+   "comment": 763,
+   "code": 5881
   }
  },
  "CliffordCS3": {
   "agda": {
    "files": 123,
-   "gen_files": 1,
-   "ported_files": 118,
-   "bytes": 4776968,
-   "all": {
-    "lines": 65184,
-    "blank": 7440,
-    "comment": 1506,
-    "code": 56238
-   },
-   "generated": {
-    "lines": 47,
-    "blank": 8,
-    "comment": 15,
-    "code": 24
-   },
-   "ported": {
-    "lines": 64149,
-    "blank": 7311,
-    "comment": 1344,
-    "code": 55494
-   },
-   "gen_list": [
-    "Examples\\Groups\\Clifford+CS-3qubit\\Circuits\\Presentation.agda"
-   ],
-   "ported_list": [
-    "Examples\\Groups\\Clifford+CS-3qubit\\Completeness.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\CosetNF.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Gate.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Index.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\MaybeEq-Instances.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Proof.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Soundness.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Soundness\\Long1.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Soundness\\Long2.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step1\\Completeness.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step1\\Proof.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step1\\Soundness.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step1\\Theorem.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\Completeness.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\Lafont-S8.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\Proof.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\Soundness.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\Theorem.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\TwoLevel-Less-Lemmas.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\TwoLevel-Simplified-Lemmas.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax1.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax10.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax11.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax12.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax13.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax14.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax15.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax16.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax17.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax18.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax19a.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax2.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax3.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax4.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax5.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax6.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax7a.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax7b.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax7c.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax8a.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax8b.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax8c.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax8d.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax8e.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax8f.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax9a.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax9b.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step2\\hypB\\ax9c.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\Lemmas.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\Main.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\PD3.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\PD4-1.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\PD4-2.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\PD4.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\PD5.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\PD6-1.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\PD6-2.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\PD6-3.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\PD6.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\PD7.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step3\\Rel.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step4\\HypB1.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step4\\HypB2.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step4\\HypB3.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step4\\HypB4.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step4\\HypB5.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step4\\KD.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step4\\Lemmas.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step4\\Main.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step4\\Rel.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step4\\S8.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step4\\S8D.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step4\\Simple.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step5\\Basis-Change.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step5\\Comm.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step5\\KD.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step5\\Lemmas.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step5\\Main.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step5\\Order.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step5\\Rel.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step5\\S8.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step5\\S8D.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step6\\Basis-Change.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step6\\Comm.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step6\\KD.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step6\\Lemmas.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step6\\Main.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step6\\Order.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step6\\PLemmas.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step6\\Rel.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step6\\S8.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step6\\S8D.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step7\\Basis-Change.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step7\\Comm.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step7\\Lemmas.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step7\\Main.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step7\\MvI.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step7\\Order.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step7\\PLemmas.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step7\\Rel.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step7\\S7.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step7\\S8D.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Basis-Change.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Comm.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Main.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Monoidal.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Swap.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Swap2.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Swap3.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Swap4.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Swap5.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Swap6.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Swap7.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Swap8.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Swap9.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Step8\\Swap9a.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\Theorem.agda",
-    "Examples\\Groups\\Clifford+CS-3qubit\\TwoLevel-Lemmas.agda"
-   ]
+   "lines": 65184,
+   "blank": 7440,
+   "comment": 1506,
+   "code": 56238
   },
   "lean": {
    "files": 86,
-   "gen_files": 74,
-   "ported_files": 0,
-   "bytes": 22611879,
-   "all": {
-    "lines": 193684,
-    "blank": 54198,
-    "comment": 632,
-    "code": 138854
-   },
-   "generated": {
-    "lines": 191487,
-    "blank": 53926,
-    "comment": 242,
-    "code": 137319
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair000.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair001.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair002.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair003.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair004.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair005.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair006.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair007.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair008.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair009.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair010.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair011.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair012.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair013.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair014.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair015.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair016.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair017.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair018.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair019.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair020.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair021.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair022.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair023.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair024.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair025.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair026.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair027.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair028.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair029.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair030.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair031.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair032.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair033.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair034.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair035.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair036.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair037.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair038.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair039.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair040.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair041.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair042.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Pair043.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part000.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part001.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part002.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part003.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part004.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part005.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part006.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part007.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part008.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part009.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part010.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part011.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Part012.lean",
-    "Lean\\QCert\\CliffordCS3\\Cert\\Targets.lean",
-    "Lean\\QCert\\CliffordCS3\\Code.lean",
-    "Lean\\QCert\\CliffordCS3\\Completeness.lean",
-    "Lean\\QCert\\CliffordCS3\\Cosets.lean",
-    "Lean\\QCert\\CliffordCS3\\Macro8.lean",
-    "Lean\\QCert\\CliffordCS3\\Replay.lean",
-    "Lean\\QCert\\CliffordCS3\\Two\\Cert\\Part00.lean",
-    "Lean\\QCert\\CliffordCS3\\Two\\Cert\\Part01.lean",
-    "Lean\\QCert\\CliffordCS3\\Two\\Cert\\Part02.lean",
-    "Lean\\QCert\\CliffordCS3\\Two\\Cert\\Part03.lean",
-    "Lean\\QCert\\CliffordCS3\\Two\\Cert\\Part04.lean",
-    "Lean\\QCert\\CliffordCS3\\Two\\Cert\\Part05.lean",
-    "Lean\\QCert\\CliffordCS3\\Two\\Cert\\Part06.lean",
-    "Lean\\QCert\\CliffordCS3\\Two\\Cert\\Part07.lean",
-    "Lean\\QCert\\CliffordCS3\\Two\\Cert\\Targets.lean",
-    "Lean\\QCert\\CliffordCS3\\Two\\Code.lean",
-    "Lean\\QCert\\CliffordCS3\\Two\\Macro4.lean"
-   ],
-   "ported_list": []
+   "lines": 193684,
+   "blank": 54198,
+   "comment": 632,
+   "code": 138854
   }
  },
  "RealCliffordCH": {
   "agda": {
    "files": 346,
-   "gen_files": 12,
-   "ported_files": 0,
-   "bytes": 4448366,
-   "all": {
-    "lines": 88181,
-    "blank": 13759,
-    "comment": 14250,
-    "code": 60172
-   },
-   "generated": {
-    "lines": 2210,
-    "blank": 261,
-    "comment": 348,
-    "code": 1601
-   },
-   "ported": {},
-   "gen_list": [
-    "Examples\\Groups\\Real-Clifford+CH\\Auxiliary\\Bridge\\TwoQubit.agda",
-    "Examples\\Groups\\Real-Clifford+CH\\Auxiliary\\Checks8\\R42.agda",
-    "Examples\\Groups\\Real-Clifford+CH\\Auxiliary\\Checks8\\R42Hi.agda",
-    "Examples\\Groups\\Real-Clifford+CH\\Auxiliary\\Cosets.agda",
-    "Examples\\Groups\\Real-Clifford+CH\\Auxiliary\\LemmaA1\\Base.agda",
-    "Examples\\Groups\\Real-Clifford+CH\\Auxiliary\\LemmaA1\\D3.agda",
-    "Examples\\Groups\\Real-Clifford+CH\\Auxiliary\\LemmaA1\\D4.agda",
-    "Examples\\Groups\\Real-Clifford+CH\\Auxiliary\\P.agda",
-    "Examples\\Groups\\Real-Clifford+CH\\GeneralN\\Locals.agda",
-    "Examples\\Groups\\Real-Clifford+CH\\GeneralN\\Locals2.agda",
-    "Examples\\Groups\\Real-Clifford+CH\\Soundness.agda",
-    "Examples\\Groups\\Real-Clifford+CH\\Syntactics.agda"
-   ],
-   "ported_list": []
+   "lines": 88181,
+   "blank": 13759,
+   "comment": 14250,
+   "code": 60172
   },
   "lean": {
    "files": 274,
-   "gen_files": 45,
-   "ported_files": 0,
-   "bytes": 8468600,
-   "all": {
-    "lines": 130395,
-    "blank": 16780,
-    "comment": 7728,
-    "code": 105887
-   },
-   "generated": {
-    "lines": 72569,
-    "blank": 9803,
-    "comment": 1033,
-    "code": 61733
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\RealCliffordCH\\AuxEq.lean",
-    "Lean\\QCert\\RealCliffordCH\\Lemma75.lean",
-    "Lean\\QCert\\RealCliffordCH\\Lemma75Fam.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\N13\\E322.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\N13\\E337r1.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\N13\\E337r2.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\N13\\E348t.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\N13\\Low339W4.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\N13\\Low342W4.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\N13\\Low344W4.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\N8\\IFive.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\N8\\S285.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\SmallDefs.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W3.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W3\\Base.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W3\\Tokens.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\A.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\B1.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\B2.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\B3.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\B4.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\BoxHgLow.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\CommuteLate.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\ConjComm242.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\ConjComm243.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\ConjComm244.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\ConjComm245.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\ConjCommBase.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\ConjRotation.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\Expansion.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\FullRotation.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\HgLate.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\HgMerge.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\Inverse.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\Late.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\MergeZX.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\Opposite.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\SameRotation.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W4\\WhiteCZ.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W5.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W5\\Base.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W5\\Family267.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\D\\W5\\Family268.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\E\\Core46Chain.lean",
-    "Lean\\QCert\\RealCliffordCH\\Sec8\\E\\Core46Facts.lean"
-   ],
-   "ported_list": []
+   "lines": 130395,
+   "blank": 16780,
+   "comment": 7728,
+   "code": 105887
   }
  },
  "ToffoliHadamard": {
   "agda": {
    "files": 201,
-   "gen_files": 76,
-   "ported_files": 0,
-   "bytes": 2908575,
-   "all": {
-    "lines": 40603,
-    "blank": 11354,
-    "comment": 681,
-    "code": 28568
-   },
-   "generated": {
-    "lines": 33160,
-    "blank": 10384,
-    "comment": 204,
-    "code": 22572
-   },
-   "ported": {},
-   "gen_list": [
-    "Examples\\Groups\\CCX+HH-3qubit\\Circuits\\Iso.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Circuits\\Syntactics.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Engine.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Evaluation\\E00.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Evaluation\\E01.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Evaluation\\E02.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Evaluation\\E03.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Evaluation\\E04.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Evaluation\\E05.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Evaluation\\E06.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Evaluation\\E07.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Evaluation\\E08.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Evaluation\\E09.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Evaluation\\E10.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Evaluation\\E11.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\FrameEvaluation\\E00.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\FrameEvaluation\\E01.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Kit.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E00.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E01.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E02.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E03.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E04.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E05.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E06.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E07.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E08.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E09.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E10.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E11.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E12.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E13.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E14.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Evaluations\\E15.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\MissingK\\Model.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B000.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B001.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B002.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B003.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B004.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B005.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B006.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B007.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B008.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B009.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B010.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B011.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B012.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B013.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B014.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B015.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B016.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B017.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B018.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B019.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B020.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B021.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B022.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B023.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B024.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B025.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PermProofs\\B026.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\PrimitiveFrames.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Proofs\\B000.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Repaired\\DecodingMatrices.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Repaired\\Even.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Repaired\\KMatrix.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Tietze\\B000.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Tietze\\B001.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Tietze\\B002.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Tietze\\B003.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Tietze\\B004.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Tietze\\B005.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Tietze\\B006.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Tietze\\B007.agda",
-    "Examples\\Groups\\CCX+HH-3qubit\\Tietze\\B008.agda"
-   ],
-   "ported_list": []
+   "lines": 40603,
+   "blank": 11354,
+   "comment": 681,
+   "code": 28568
   },
   "lean": {
    "files": 19,
-   "gen_files": 7,
-   "ported_files": 0,
-   "bytes": 494267,
-   "all": {
-    "lines": 4800,
-    "blank": 447,
-    "comment": 612,
-    "code": 3741
-   },
-   "generated": {
-    "lines": 2964,
-    "blank": 186,
-    "comment": 223,
-    "code": 2555
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\ToffoliHadamard\\Engine.lean",
-    "Lean\\QCert\\ToffoliHadamard\\Eval.lean",
-    "Lean\\QCert\\ToffoliHadamard\\Families.lean",
-    "Lean\\QCert\\ToffoliHadamard\\MacroTable.lean",
-    "Lean\\QCert\\ToffoliHadamard\\Micro.lean",
-    "Lean\\QCert\\ToffoliHadamard\\RoundTable.lean",
-    "Lean\\QCert\\ToffoliHadamard\\Translation.lean"
-   ],
-   "ported_list": []
+   "lines": 4800,
+   "blank": 447,
+   "comment": 612,
+   "code": 3741
   }
  },
  "QutritClifford": {
   "agda": {
    "files": 89,
-   "gen_files": 63,
-   "ported_files": 0,
-   "bytes": 4833230,
-   "all": {
-    "lines": 69083,
-    "blank": 13566,
-    "comment": 1668,
-    "code": 53849
-   },
-   "generated": {
-    "lines": 62834,
-    "blank": 12648,
-    "comment": 798,
-    "code": 49388
-   },
-   "ported": {},
-   "gen_list": [
-    "Examples\\Groups\\Qutrit-Clifford\\Axioms.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box1.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Part1.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Part10.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Part11.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Part2.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Part3.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Part4.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Part5.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Part6.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Part7.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Part8.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Part9.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Relations1.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Relations2.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box2\\Relations3.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part1.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part10.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part11.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part12.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part13.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part14.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part15.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part16.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part17.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part18.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part19.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part2.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part20.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part21.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part22.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part23.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part24.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part25.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part26.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part27.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part28.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part29.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part3.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part4.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part5.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part6.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part7.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part8.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Part9.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Sem1.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Sem10.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Sem11.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Sem2.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Sem3.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Sem4.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Sem5.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Sem6.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Sem7.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Sem8.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Sem9.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Steps1.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Steps2.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Steps3.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Box3\\Steps4.agda",
-    "Examples\\Groups\\Qutrit-Clifford\\Tables.agda"
-   ],
-   "ported_list": []
+   "lines": 69083,
+   "blank": 13566,
+   "comment": 1668,
+   "code": 53849
   },
   "lean": {
    "files": 73,
-   "gen_files": 51,
-   "ported_files": 0,
-   "bytes": 662535,
-   "all": {
-    "lines": 14888,
-    "blank": 1840,
-    "comment": 2841,
-    "code": 10207
-   },
-   "generated": {
-    "lines": 7573,
-    "blank": 760,
-    "comment": 1748,
-    "code": 5065
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\QutritClifford\\Cert1.lean",
-    "Lean\\QCert\\QutritClifford\\Cert1Data.lean",
-    "Lean\\QCert\\QutritClifford\\Cert2.lean",
-    "Lean\\QCert\\QutritClifford\\Cert2Data.lean",
-    "Lean\\QCert\\QutritClifford\\Coset.lean",
-    "Lean\\QCert\\QutritClifford\\CosetCheck.lean",
-    "Lean\\QCert\\QutritClifford\\Facts3Data.lean",
-    "Lean\\QCert\\QutritClifford\\Lib2.lean",
-    "Lean\\QCert\\QutritClifford\\Lib2Chk0.lean",
-    "Lean\\QCert\\QutritClifford\\Lib2Chk1.lean",
-    "Lean\\QCert\\QutritClifford\\Lib2Chk2.lean",
-    "Lean\\QCert\\QutritClifford\\Lib2Chk3.lean",
-    "Lean\\QCert\\QutritClifford\\Lib2Chk4.lean",
-    "Lean\\QCert\\QutritClifford\\Lib2Chk5.lean",
-    "Lean\\QCert\\QutritClifford\\Lib2Data.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk0.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk1.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk10.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk11.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk12.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk13.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk14.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk15.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk16.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk17.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk18.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk19.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk2.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk20.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk21.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk22.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk23.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk24.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk25.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk26.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk27.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk28.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk29.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk3.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk30.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk4.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk5.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk6.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk7.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk8.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Chk9.lean",
-    "Lean\\QCert\\QutritClifford\\Lib3Data.lean",
-    "Lean\\QCert\\QutritClifford\\S12Data.lean",
-    "Lean\\QCert\\QutritClifford\\Sections.lean",
-    "Lean\\QCert\\QutritClifford\\Theorem.lean"
-   ],
-   "ported_list": []
+   "lines": 14888,
+   "blank": 1840,
+   "comment": 2841,
+   "code": 10207
   }
  },
  "Minimality": {
   "agda": {
    "files": 73,
-   "gen_files": 8,
-   "ported_files": 0,
-   "bytes": 1408652,
-   "all": {
-    "lines": 28478,
-    "blank": 3172,
-    "comment": 2221,
-    "code": 23085
-   },
-   "generated": {
-    "lines": 15652,
-    "blank": 1071,
-    "comment": 112,
-    "code": 14469
-   },
-   "ported": {},
-   "gen_list": [
-    "Examples\\Independence\\Clifford+CS\\Derivations.agda",
-    "Examples\\Independence\\Clifford+CS\\TwoWire.agda",
-    "Examples\\Independence\\Clifford+T\\Derivations.agda",
-    "Examples\\Independence\\Clifford\\AppendixA.agda",
-    "Examples\\Independence\\Clifford\\Decodings.agda",
-    "Examples\\Independence\\Qutrit-Clifford\\Derivations.agda",
-    "Examples\\Independence\\Real-Clifford\\Derivations.agda",
-    "Examples\\Independence\\Real-Clifford\\Projective.agda"
-   ],
-   "ported_list": []
+   "lines": 28478,
+   "blank": 3172,
+   "comment": 2221,
+   "code": 23085
   },
   "lean": {
    "files": 68,
-   "gen_files": 12,
-   "ported_files": 0,
-   "bytes": 934250,
-   "all": {
-    "lines": 17612,
-    "blank": 1755,
-    "comment": 2486,
-    "code": 13371
-   },
-   "generated": {
-    "lines": 9216,
-    "blank": 596,
-    "comment": 771,
-    "code": 7849
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\Minimality\\CNOTDihedral\\Derivations.lean",
-    "Lean\\QCert\\Minimality\\CliffordCS\\Derivations.lean",
-    "Lean\\QCert\\Minimality\\CliffordCS\\W2Blocks.lean",
-    "Lean\\QCert\\Minimality\\CliffordCS\\W2Data.lean",
-    "Lean\\QCert\\Minimality\\CliffordCS\\W2Lemmas.lean",
-    "Lean\\QCert\\Minimality\\CliffordCS\\W2Rels.lean",
-    "Lean\\QCert\\Minimality\\CliffordCS\\W3Lemmas.lean",
-    "Lean\\QCert\\Minimality\\CliffordCS\\W3Rels.lean",
-    "Lean\\QCert\\Minimality\\CliffordT\\Derivations.lean",
-    "Lean\\QCert\\Minimality\\Clifford\\Derivations.lean",
-    "Lean\\QCert\\Minimality\\QutritClifford\\Derivations.lean",
-    "Lean\\QCert\\Minimality\\RealClifford\\Derivations.lean"
-   ],
-   "ported_list": []
+   "lines": 17612,
+   "blank": 1755,
+   "comment": 2486,
+   "code": 13371
   }
  },
  "(shared)": {
   "agda": {
    "files": 91,
-   "gen_files": 10,
-   "ported_files": 0,
-   "bytes": 930014,
-   "all": {
-    "lines": 20969,
-    "blank": 3252,
-    "comment": 4594,
-    "code": 13123
-   },
-   "generated": {
-    "lines": 3707,
-    "blank": 502,
-    "comment": 908,
-    "code": 2297
-   },
-   "ported": {},
-   "gen_list": [
-    "Circuit\\Prop.agda",
-    "Examples\\Groups\\Cyclic\\Soundness.agda",
-    "Examples\\Groups\\Symmetric\\Soundness.agda",
-    "Examples\\Groups\\Symmetric\\SubPresentation\\Interpretation.agda",
-    "Presentation\\Base.agda",
-    "Presentation\\Definitions.agda",
-    "Presentation\\Independence.agda",
-    "Presentation\\Tactics\\Judgement.agda",
-    "Presentation\\Tactics\\Words.agda",
-    "Presentation\\Units.agda"
-   ],
-   "ported_list": []
+   "lines": 20969,
+   "blank": 3252,
+   "comment": 4594,
+   "code": 13123
   },
   "lean": {
    "files": 12,
-   "gen_files": 1,
-   "ported_files": 0,
-   "bytes": 78076,
-   "all": {
-    "lines": 1845,
-    "blank": 247,
-    "comment": 383,
-    "code": 1215
-   },
-   "generated": {
-    "lines": 170,
-    "blank": 31,
-    "comment": 43,
-    "code": 96
-   },
-   "ported": {},
-   "gen_list": [
-    "Lean\\QCert\\Presentation.lean"
-   ],
-   "ported_list": []
+   "lines": 1845,
+   "blank": 247,
+   "comment": 383,
+   "code": 1215
   }
  }
 }

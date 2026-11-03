@@ -31,28 +31,22 @@ ROWS = [
     ('Minimality', 'minimality, six fragments', 183, 300.20),
 ]
 
-def k(x):
-    return round(x / 1000, 2)
-
 lines = []
-tot = dict(aw=0, ag=0, ap=0, lw=0, lg=0, af=0, lf=0)
+tot = dict(ac=0, lc=0, af=0, lf=0)
 for i, (key, label, at, lt) in enumerate(ROWS + [('(shared)', 'shared library', None, None)]):
     a, l = loc[key]['agda'], loc[key]['lean']
-    ac, ag, ap = a['all']['code'], a['generated'].get('code', 0), a['ported'].get('code', 0)
-    lc, lg = l['all']['code'], l['generated'].get('code', 0)
-    aw, lw = ac - ag - ap, lc - lg
-    lines.append((i, key, label, aw, ag + ap, lw, lg, at, lt, a['files'], l['files']))
+    lines.append((i, key, label, a['code'], l['code'], at, lt, a['files'], l['files']))
     if key != '(shared)':
-        tot['aw'] += aw; tot['ag'] += ag; tot['ap'] += ap; tot['lw'] += lw; tot['lg'] += lg
+        tot['ac'] += a['code']; tot['lc'] += l['code']
         tot['af'] += a['files']; tot['lf'] += l['files']
 
-print(f"{'row':18} {'Agda w':>7} {'Agda g+p':>8} {'Lean w':>7} {'Lean g':>7}  {'Agda s':>6} {'Lean s':>8}")
-for i, key, label, aw, agp, lw, lg, at, lt, af, lf in lines:
-    print(f"{key:18} {aw:7} {agp:8} {lw:7} {lg:7}  {at or '':>6} {lt or '':>8}")
+print(f"{'row':18} {'Agda':>7} {'Lean':>7}  {'Agda s':>6} {'Lean s':>8}")
+for i, key, label, ac, lc, at, lt, af, lf in lines:
+    print(f"{key:18} {ac:7} {lc:7}  {at or '':>6} {lt or '':>8}")
 print('totals (16 rows)', tot)
-print('Lean written < Agda written in',
-      sum(1 for r in lines[:-1] if r[5] < r[3]), 'of 16 rows')
-print('Lean faster in', [r[1] for r in lines[:-1] if r[8] < r[7]])
+print('Lean shorter in', sum(1 for r in lines[:-1] if r[4] < r[3]), 'of 16 rows; longer in',
+      [r[1] for r in lines[:-1] if r[4] > r[3]])
+print('Lean faster in', [r[1] for r in lines[:-1] if r[6] < r[5]])
 
 sumf = lambda lang, k: sum(feat[r[0]][lang].get(k, 0) for r in ROWS)
 print('lean by', sumf('lean', 'by'), 'automation', sumf('lean', 'automation'),
