@@ -189,6 +189,8 @@ Completeness and minimality proofs typically require long case distinctions over
 
 The length of these proofs and their error-prone nature make it desirable to formally verify their correctness using a proof assistant like Lean or Agda. This would not have been feasible in the past due to  the sheer number of lemmas and lengthy rewrites in these papers. Recent LLMs can write correct code for proof assistants, which brings this closer to reality. For example, Anthropic reports that LLMs wrote a 13-million-line Lean proof of Fermat's Last Theorem within 11 days~\cite{anthropic2026flt}. However, care must still be taken. It is important to manually verify the \emph{alignment} between the machine-verified statement and the intended natural-language result. For instance, \cite{bastounis2026navier} showed that a claimed verification of OpenAI's natural-language proof about the Navier--Stokes equations contained mistranslations, so the formal verification was verifying a weaker result by a different proof. A way to solve this is to use a hybrid approach, where humans write and carefully review the definitions and theorem statements~\cite{hales2026reliability}, coding agents write the proofs, and Agda checks them.
 
+Related human-supervised, AI-assisted workflows have been used to formalize quantum program logics~\cite{ren2026qedia}, algorithm correctness and resource bounds~\cite{zhang2026leanquantumalg}, and the quantum soundness of a low individual-degree test underlying $\mathrm{MIP}^{*}=\mathrm{RE}$~\cite{lu2026formalflow}. Lean-QuantumAlg also makes explicit the human review of problem specifications and execution models, while FormalFlow corrects side conditions and intermediate error bounds in the published proof.
+
 \paragraph{Our contributions} In this work we present QCert, a framework in Agda~\cite{norell2007thesis,bove2009agda} and Lean~\cite{moura2021lean4} for representing and verifying quantum circuit completeness and minimality results, and use it to verify the correctness of sixteen completeness results.
 % This is based on our formalization of qudit Clifford completeness~\cite{bian2026qupit}, where we built the framework~\cite{bian2027popl} by hand and carried out the main verification steps by hand.
 This is based on our formalization of the qudit Clifford completeness result of~\cite{bian2026qupit} (\Cref{sec:qudit}), where the framework~\cite{bian2027popl} was built and the main verification steps were carried out by hand.
@@ -680,11 +682,25 @@ groupoid~\cite{choudhury2022symmetries} and its square-root
 extension~\cite{carette2024squareroots} are coherence arguments.
 Verified compilers and
 logics~\cite{paykin2017qwire,hietala2021voqc,lehmann2025vyzx,zhou2023coqq,chareton2021qbricks,li2022vqo,peduri2025qbc}
-prove soundness of rewrites, never completeness, and
-mathlib~\cite{mathlib2020,mathlib-doc-presented}, the
+establish program correctness or soundness of circuit transformations,
+rather than completeness of the circuit equations studied here.
+Mathlib~\cite{mathlib2020,mathlib-doc-presented}, the
 AFP~\cite{breitner2010freegroups,kharim2023freegroups} and
 MathComp~\cite{gonthier2013oddorder} have no verified coset enumeration
 against a given concrete group.
+
+Recent formalizations also address quantum-information theory and
+cryptographic security. Lean-Quantum~\cite{kasaura2026leanquantum}
+provides operator-theoretic infrastructure and formalizes data processing
+for sandwiched R\'enyi relative entropy, while
+Lean-QIT~\cite{zhu2026leanqit} formalizes quantum source coding and
+classical communication capacity theorems. FVQKD~\cite{deng2026fvqkd}
+mechanizes composable finite-key BB84 security in Rocq, and
+\citet{benshahar2026cryptography} give an LLM-assisted Lean formalization
+of composable finite-key security for entanglement-based BB84. These
+developments share QCert's concern with reusable foundations and faithful
+specifications; QCert's target is completeness and minimality of circuit
+equational theories.
 
 \emph{Next}: a verified matrix semantics over
 $U_{p^n}(\mathbb{Z}[1/p,\omega])$, which would close the chain and
