@@ -10,3 +10,8 @@ package QCert where
 
 @[default_target]
 lean_lib QCert where
+
+/-- The execution benchmark of the paper's comparison with Agda
+(`pldi/compare/README.md`); not part of the default build. -/
+lean_exe cliffordbench where
+  root := `Bench.CliffordBench

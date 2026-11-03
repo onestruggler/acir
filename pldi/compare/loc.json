@@ -1,0 +1,274 @@
+{
+ "Greylyn": {
+  "agda": {
+   "files": 31,
+   "lines": 9879,
+   "blank": 1389,
+   "comment": 1276,
+   "code": 7214
+  },
+  "lean": {
+   "files": 23,
+   "lines": 5964,
+   "blank": 676,
+   "comment": 857,
+   "code": 4431
+  }
+ },
+ "BianSelingerUn": {
+  "agda": {
+   "files": 38,
+   "lines": 10469,
+   "blank": 1436,
+   "comment": 1320,
+   "code": 7713
+  },
+  "lean": {
+   "files": 25,
+   "lines": 5126,
+   "blank": 575,
+   "comment": 630,
+   "code": 3921
+  }
+ },
+ "LiRossSelinger": {
+  "agda": {
+   "files": 68,
+   "lines": 17707,
+   "blank": 2179,
+   "comment": 1945,
+   "code": 13583
+  },
+  "lean": {
+   "files": 36,
+   "lines": 11707,
+   "blank": 836,
+   "comment": 1026,
+   "code": 9845
+  }
+ },
+ "HadamardPi": {
+  "agda": {
+   "files": 44,
+   "lines": 12951,
+   "blank": 1746,
+   "comment": 1477,
+   "code": 9728
+  },
+  "lean": {
+   "files": 36,
+   "lines": 16792,
+   "blank": 1509,
+   "comment": 1770,
+   "code": 13513
+  }
+ },
+ "Clement2019": {
+  "agda": {
+   "files": 40,
+   "lines": 11835,
+   "blank": 1408,
+   "comment": 1340,
+   "code": 9087
+  },
+  "lean": {
+   "files": 15,
+   "lines": 3134,
+   "blank": 268,
+   "comment": 440,
+   "code": 2426
+  }
+ },
+ "SelingerClifford": {
+  "agda": {
+   "files": 31,
+   "lines": 12550,
+   "blank": 995,
+   "comment": 808,
+   "code": 10747
+  },
+  "lean": {
+   "files": 24,
+   "lines": 7028,
+   "blank": 763,
+   "comment": 834,
+   "code": 5431
+  }
+ },
+ "QuditClifford": {
+  "agda": {
+   "files": 215,
+   "lines": 81764,
+   "blank": 11612,
+   "comment": 12324,
+   "code": 57828
+  },
+  "lean": {
+   "files": 37,
+   "lines": 8688,
+   "blank": 1211,
+   "comment": 1106,
+   "code": 6371
+  }
+ },
+ "RealStabilizer": {
+  "agda": {
+   "files": 30,
+   "lines": 13459,
+   "blank": 1449,
+   "comment": 954,
+   "code": 11056
+  },
+  "lean": {
+   "files": 19,
+   "lines": 6605,
+   "blank": 651,
+   "comment": 909,
+   "code": 5045
+  }
+ },
+ "CNOTDihedral": {
+  "agda": {
+   "files": 30,
+   "lines": 6978,
+   "blank": 994,
+   "comment": 941,
+   "code": 5043
+  },
+  "lean": {
+   "files": 15,
+   "lines": 4922,
+   "blank": 645,
+   "comment": 624,
+   "code": 3653
+  }
+ },
+ "PhaseAffine": {
+  "agda": {
+   "files": 56,
+   "lines": 15218,
+   "blank": 2470,
+   "comment": 2015,
+   "code": 10733
+  },
+  "lean": {
+   "files": 32,
+   "lines": 9373,
+   "blank": 1159,
+   "comment": 1197,
+   "code": 7017
+  }
+ },
+ "CliffordT2": {
+  "agda": {
+   "files": 62,
+   "lines": 13394,
+   "blank": 1023,
+   "comment": 1342,
+   "code": 11029
+  },
+  "lean": {
+   "files": 34,
+   "lines": 7529,
+   "blank": 885,
+   "comment": 763,
+   "code": 5881
+  }
+ },
+ "CliffordCS3": {
+  "agda": {
+   "files": 123,
+   "lines": 65184,
+   "blank": 7440,
+   "comment": 1506,
+   "code": 56238
+  },
+  "lean": {
+   "files": 86,
+   "lines": 193684,
+   "blank": 54198,
+   "comment": 632,
+   "code": 138854
+  }
+ },
+ "RealCliffordCH": {
+  "agda": {
+   "files": 346,
+   "lines": 88181,
+   "blank": 13759,
+   "comment": 14250,
+   "code": 60172
+  },
+  "lean": {
+   "files": 274,
+   "lines": 130395,
+   "blank": 16780,
+   "comment": 7728,
+   "code": 105887
+  }
+ },
+ "ToffoliHadamard": {
+  "agda": {
+   "files": 201,
+   "lines": 40603,
+   "blank": 11354,
+   "comment": 681,
+   "code": 28568
+  },
+  "lean": {
+   "files": 19,
+   "lines": 4800,
+   "blank": 447,
+   "comment": 612,
+   "code": 3741
+  }
+ },
+ "QutritClifford": {
+  "agda": {
+   "files": 89,
+   "lines": 69083,
+   "blank": 13566,
+   "comment": 1668,
+   "code": 53849
+  },
+  "lean": {
+   "files": 73,
+   "lines": 14888,
+   "blank": 1840,
+   "comment": 2841,
+   "code": 10207
+  }
+ },
+ "Minimality": {
+  "agda": {
+   "files": 73,
+   "lines": 28478,
+   "blank": 3172,
+   "comment": 2221,
+   "code": 23085
+  },
+  "lean": {
+   "files": 68,
+   "lines": 17612,
+   "blank": 1755,
+   "comment": 2486,
+   "code": 13371
+  }
+ },
+ "(shared)": {
+  "agda": {
+   "files": 91,
+   "lines": 20969,
+   "blank": 3252,
+   "comment": 4594,
+   "code": 13123
+  },
+  "lean": {
+   "files": 12,
+   "lines": 1845,
+   "blank": 247,
+   "comment": 383,
+   "code": 1215
+  }
+ }
+}
