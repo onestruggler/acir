@@ -63,19 +63,23 @@ namespace Cert
 
 variable (C : Cert)
 
-def repW (c : ℕ) : List Lt := decW (C.rep.getD c 0)
-def del (c i : ℕ) : ℕ := (C.dl.getD c []).getD i 0
-def ordOf (c i : ℕ) : ℕ := (C.ord.getD c []).getD i 0
+/-! The lookups go through `nthX` (primitive recursion), which the kernel
+evaluates about twice as fast as `List.getD` in the checks of `Cert1.lean`
+and `Cert2.lean`. -/
+
+noncomputable def repW (c : ℕ) : List Lt := decW ((nthX C.rep c).getD 0)
+noncomputable def del (c i : ℕ) : ℕ := (nthX ((nthX C.dl c).getD []) i).getD 0
+noncomputable def ordOf (c i : ℕ) : ℕ := (nthX ((nthX C.ord c).getD []) i).getD 0
 def idx (x : Lt) : ℕ := C.letters.idxOf x
-def letter (i : ℕ) : Lt := C.letters.getD i (.H 0)
+noncomputable def letter (i : ℕ) : Lt := (nthX C.letters i).getD (.H 0)
 
 /-- The coset reached from `d` along a word. -/
-def walk : ℕ → List Lt → ℕ
+noncomputable def walk : ℕ → List Lt → ℕ
   | d, [] => d
   | d, x :: w => walk (C.del d (C.idx x)) w
 
 /-- Every edge along `w` from `d` is below `o`, except the one at position `skip`. -/
-def below (o : ℕ) (skip : ℕ) : ℕ → ℕ → List Lt → Bool
+noncomputable def below (o : ℕ) (skip : ℕ) : ℕ → ℕ → List Lt → Bool
   | _, _, [] => true
   | t, d, x :: w => (t == skip || decide (C.ordOf d (C.idx x) < o)) && below o skip (t + 1) (C.del d (C.idx x)) w
 
@@ -88,13 +92,13 @@ def EqV (l r : List Lt) (d : ℕ) : Prop :=
   ∃ μ, LocW C.loc μ ∧ E C.k (C.repW d ++ l) (μ ++ C.repW d ++ r)
 
 /-- The check of the deduction of an edge. -/
-def dedOk (c i : ℕ) : Bool :=
+noncomputable def dedOk (c i : ℕ) : Bool :=
   let o := C.ordOf c i
-  match (C.ded.getD c []).getD i (0, 0, 0, 0, 0) with
+  match (nthX ((nthX C.ded c).getD []) i).getD (0, 0, 0, 0, 0) with
   | (0, _, _, _, _) => C.repW (C.del c i) == C.repW c ++ [C.letter i]
   | (1, _, _, _, _) => c == 0 && C.del 0 i == 0 && C.loc.contains (C.letter i) && C.repW 0 == []
   | (_, e, d, side, j) =>
-    match C.eqs[e]? with
+    match nthX C.eqs e with
     | none => false
     | some (lc, rc, ac) =>
       let l := decW lc
@@ -130,7 +134,7 @@ structure Ok : Prop where
 variable {C}
 
 theorem letter_idx {x : Lt} (hx : x ∈ C.letters) : C.letter (C.idx x) = x := by
-  simp [letter, idx, List.getD_eq_getElem?_getD, List.getElem?_idxOf hx]
+  simp [letter, idx, nthX_eq, List.getElem?_idxOf hx]
 
 theorem idx_lt {x : Lt} (hx : x ∈ C.letters) : C.idx x < C.letters.length :=
   List.idxOf_lt_length_iff.2 hx
@@ -170,7 +174,7 @@ theorem walk_lt (hC : C.Ok) : ∀ (d : ℕ) (w : List Lt), d < C.dl.length → (
       (fun y hy => hw y (List.mem_cons_of_mem _ hy))
 
 theorem idx_letter (hC : C.Ok) {i : ℕ} (hi : i < C.letters.length) : C.idx (C.letter i) = i := by
-  simp only [idx, letter, List.getD_eq_getElem?_getD, List.getElem?_eq_getElem hi, Option.getD_some]
+  simp only [idx, letter, nthX_eq, List.getElem?_eq_getElem hi, Option.getD_some]
   exact hC.nodup.idxOf_getElem i hi
 
 theorem below_spec (o skip : ℕ) : ∀ (t0 d : ℕ) (w : List Lt), C.below o skip t0 d w = true →
@@ -309,7 +313,7 @@ theorem edges (hC : C.Ok) : ∀ n c i, c < C.dl.length → i < C.letters.length 
     · rename_i lc rc ac he
       simp only [Bool.and_eq_true, Bool.or_eq_true, beq_iff_eq, decide_eq_true_eq] at hd
       obtain ⟨⟨⟨⟨⟨⟨hat, hdl⟩, hwc⟩, hwj⟩, hend⟩, hbl⟩, hbr⟩ := hd
-      have hmem : (lc, rc, ac) ∈ C.eqs := List.mem_of_getElem? he
+      have hmem : (lc, rc, ac) ∈ C.eqs := List.mem_of_getElem? (nthX_eq C.eqs e ▸ he)
       have hEq := hC.eqs_valid _ hmem d (by rcases hat with h | h <;> simp [h])
       have hletl := fun x hx => hC.eqs_letters _ hmem x (List.mem_append_left _ hx)
       have hletr := fun x hx => hC.eqs_letters _ hmem x (List.mem_append_right _ hx)

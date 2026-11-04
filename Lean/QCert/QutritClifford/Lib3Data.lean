@@ -15,1676 +15,1484 @@ import QCert.QutritClifford.Run
 namespace QCert.QutritClifford
 
 set_option maxRecDepth 100000 in
-def lib3D : List (Nat × Nat × List (Nat × Nat × Nat × Nat × Nat)) := [
+noncomputable def lib3D : List LX := [
   -- R1
-  (1104061500587425402, 1291473619941675855, [
-    (1, 0, 0, 143497068910317840, 1104061500587425402),
-    (0, 2, 1, 370391016, 316641745),
-    (1, 1291473619941675855, 122673500002355050, 0, 0)]),
+  (nat_lit 33968748991394830554929, nat_lit 19, nat_lit 39319611135457057126483, nat_lit 19, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 2457475695969527216211, nat_lit 18, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 2, nat_lit 1, nat_lit 35760978003, nat_lit 9, nat_lit 30894397233, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 39319611135457057126483, nat_lit 19, nat_lit 2123046811956780668721, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- D0C0
-  (9936553505286828625, 10560023524298370025, [
-    (1, 0, 137832289, 316641745, 25647981424),
-    (0, 0, 0, 316641745, 316641745),
-    (1, 3416005657, 137832289, 316641745, 7)]),
+  (nat_lit 543499983862317288878871, nat_lit 20, nat_lit 562873795072795094488881, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 13274018583, nat_lit 9, nat_lit 30894397233, nat_lit 9, nat_lit 7908965691783, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 30894397233, nat_lit 9, nat_lit 30894397233, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 580650211121, nat_lit 10, nat_lit 13274018583, nat_lit 9, nat_lit 30894397233, nat_lit 9, nat_lit 7, nat_lit 0, nat_lit 0)]),
   -- D1b
-  (34837055568971061666987, 76260225783936017587683, [
-    (1, 3082334439, 9991169961348, 21871219142876, 0),
-    (2, 789258, 0, 0, 0),
-    (0, 0, 0, 176646713511, 3333519149),
-    (2, 14, 0, 0, 0),
-    (1, 3, 1682823571889, 2430135458841, 3333519151)]),
+  (nat_lit 17393081759997983136525138003, nat_lit 24, nat_lit 41229600565973019133459268403, nat_lit 24, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 516797315155, nat_lit 10, nat_lit 15818915708221523, nat_lit 14, nat_lit 37498103270835541, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 93837846722643, nat_lit 12, nat_lit 572175648053, nat_lit 9, nat_lit 4, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 3, nat_lit 1, nat_lit 1553977237328773, nat_lit 13, nat_lit 2343631454418995, nat_lit 13, nat_lit 572175648055, nat_lit 13, nat_lit 2)]),
   -- D0b
-  (34836868156851707416534, 65193727548186882588486, [
-    (0, 4, 0, 0, 25788),
-    (0, 6, 0, 0, 0),
-    (0, 4, 1, 25788, 0)]),
+  (nat_lit 17393076409135839074298566449, nat_lit 24, nat_lit 35618814942400825843965461299, nat_lit 24, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 230195, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 6, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 1, nat_lit 230195, nat_lit 5, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- D1H1
-  (5344028772960652122, 11623262579475082698, [
-    (1, 3082334439, 1532652483, 3333519149, 0),
-    (2, 10, 0, 0, 0),
-    (1, 3, 256388162, 370391016, 3333519151)]),
+  (nat_lit 265993202313200027383891, nat_lit 20, nat_lit 629113778167312914023731, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 516797315155, nat_lit 10, nat_lit 241919408211, nat_lit 10, nat_lit 572175648053, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 3, nat_lit 1, nat_lit 23709897605, nat_lit 9, nat_lit 35760978003, nat_lit 9, nat_lit 572175648055, nat_lit 9, nat_lit 2)]),
   -- D0H1
-  (5156616653606401669, 9936553505286828621, [
-    (0, 4, 0, 0, 3),
-    (0, 8, 0, 0, 0),
-    (0, 4, 1, 3, 0)]),
+  (nat_lit 260642340169137800812337, nat_lit 20, nat_lit 543499983862317288878867, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 8, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 1, nat_lit 3, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- D1S1
-  (6694880490633644211, 11623262579475082699, [
-    (1, 3082334439, 1920072972, 3333519150, 0),
-    (2, 10, 0, 0, 0),
-    (1, 0, 2694913950, 3333519148, 3333519151)]),
+  (nat_lit 341551066039114350803027, nat_lit 20, nat_lit 629113778167312914023732, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 516797315155, nat_lit 10, nat_lit 310638884947, nat_lit 10, nat_lit 572175648054, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 448077838419, nat_lit 10, nat_lit 572175648052, nat_lit 10, nat_lit 572175648055, nat_lit 9, nat_lit 2)]),
   -- D0S1
-  (6507468371279393758, 9936553505286828622, [
-    (0, 4, 0, 0, 4),
-    (0, 10, 0, 0, 0),
-    (0, 4, 1, 4, 0)]),
+  (nat_lit 336200203895052124231473, nat_lit 20, nat_lit 543499983862317288878868, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 1, nat_lit 4, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- I1
-  (232099, 586743547933681943503413, [
-    (1, 0, 0, 1310205000, 232099),
-    (0, 3, 0, 25788, 25788),
-    (0, 7, 0, 11792052039, 0),
-    (1, 439131, 1522777800, 0, 1104061500587425402)]),
+  (nat_lit 3683127, nat_lit 6, nat_lit 569901039078413213503451267891, nat_lit 25, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 219986232115, nat_lit 10, nat_lit 3683127, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 3, nat_lit 0, nat_lit 230195, nat_lit 5, nat_lit 230195, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 7, nat_lit 0, nat_lit 3519783600947, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 7570227, nat_lit 6, nat_lit 241377162115, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0)]),
   -- T1
-  (694143183, 29544773909829528445624493503354, [
-    (2, 15658418220213700917190375137018885, 0, 0, 0),
-    (0, 3, 0, 91, 1),
-    (0, 4, 0, 145580662, 1),
-    (1, 5194, 0, 820, 156026668860808527447444),
-    (2, 62227198538486915404600905150549520005715760517221935035304140559906399174656920385352971596329196199983437220110745863944, 0, 0, 0)]),
+  (nat_lit 99070718851, nat_lit 10, nat_lit 2833276576897854972252390409130629755153, nat_lit 33, nat_lit 5, nat_lit 28, [
+    (nat_lit 0, nat_lit 3, nat_lit 0, nat_lit 273, nat_lit 3, nat_lit 1, nat_lit 0, nat_lit 8, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 0, nat_lit 13749154065, nat_lit 9, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 28945, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 4369, nat_lit 4, nat_lit 120457763080237356727003198339, nat_lit 0, nat_lit 0)]),
   -- T2
-  (196659344357254462953742239, 500343340443183262131864951, [
-    (1, 4554498239211, 8596456200948, 21871219140716, 0),
-    (2, 986382, 0, 0, 0),
-    (0, 0, 0, 1447773337920, 2430135460072),
-    (2, 20547016083169471343796728585499065829127248022284, 0, 0, 0),
-    (1, 3, 1589842654529, 2430135458441, 21871219115539)]),
+  (nat_lit 1038857099017540765027434703960147, nat_lit 28, nat_lit 2702023102662901851894750985270147, nat_lit 28, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 6492720642472019, nat_lit 14, nat_lit 14417038382807123, nat_lit 14, nat_lit 37498103270823301, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 1426171061680211, nat_lit 13, nat_lit 2343631454426449, nat_lit 12, nat_lit 4, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 3, nat_lit 1, nat_lit 1501406837625733, nat_lit 13, nat_lit 2343631454417720, nat_lit 13, nat_lit 37498103270568209, nat_lit 9, nat_lit 10)]),
   -- T3
-  (500343340443183262131868551, 228565921588003466899086639, [
-    (1, 500343340443183262131868551, 0, 1522777800, 0),
-    (0, 14, 0, 25788, 25788),
-    (1, 3, 1307839800, 0, 25396213509778162988787404)]),
+  (nat_lit 2702023102662901851894750985290547, nat_lit 28, nat_lit 1139873006223227795459203240638547, nat_lit 28, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 2702023102662901851894750985290547, nat_lit 28, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 14, nat_lit 0, nat_lit 230195, nat_lit 5, nat_lit 230195, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 3, nat_lit 1, nat_lit 219907569715, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 71242062888951737216200202539909, nat_lit 0, nat_lit 0)]),
   -- T4
-  (500343340443183262131854518, 89917890276171, [
-    (1, 188902, 0, 1331459000, 941484267196515252176),
-    (0, 15, 0, 1310190967, 0),
-    (0, 13, 1, 0, 25788)]),
+  (nat_lit 2702023102662901851894750985154833, nat_lit 28, nat_lit 253102178226615171, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 3240209, nat_lit 6, nat_lit 0, nat_lit 0, nat_lit 221244502840, nat_lit 10, nat_lit 161053127209121099227353989, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 15, nat_lit 0, nat_lit 219986096401, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 13, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 230195, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- B1
-  (1104061498694187112, 589951278101960751, [
-    (1, 360505900, 2849775708, 704062234, 0),
-    (1, 16132132, 0, 122673500002355050, 6336560114),
-    (0, 4, 0, 13630388870100277, 1),
-    (1, 11755, 230831832378, 35571906244, 2642325337614667944),
-    (2, 54615689830100521516819818056574982327552849839589542687767546059653478192770555252753, 0, 0, 0),
-    (1, 1, 2077486490251, 1078742963955, 8473358404768637269587),
-    (1, 0, 9708686675596, 77127375, 8473358404768637269587),
-    (0, 16, 0, 2820, 0)]),
+  (nat_lit 33968748991055557390609, nat_lit 19, nat_lit 16587304352259451860851, nat_lit 19, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 35218616593, nat_lit 9, nat_lit 494310355731, nat_lit 10, nat_lit 99613873969, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 858878225, nat_lit 8, nat_lit 0, nat_lit 0, nat_lit 2123046811956780668721, nat_lit 18, nat_lit 1593821983512, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 0, nat_lit 132690425746226770193, nat_lit 17, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 94481, nat_lit 5, nat_lit 126543451067187, nat_lit 12, nat_lit 18791311546161, nat_lit 12, nat_lit 114877474861371380545619, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 2024695217067793, nat_lit 13, nat_lit 971089741558131, nat_lit 13, nat_lit 2576850035345937587637663827, nat_lit 14, nat_lit 23),
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 15537435864930097, nat_lit 14, nat_lit 6191921011, nat_lit 9, nat_lit 2576850035345937587637663827, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 16, nat_lit 0, nat_lit 14195, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- B2
-  (7243747492932801159022, 8473358404768637269587, [
-    (1, 1, 11786937249, 25647981355, 25647981380),
-    (1, 2490268124044, 2849775708, 704062234, 0),
-    (0, 4, 0, 91, 1),
-    (2, 27311669007602431359269420119102465616155257246793981730251876740029035219533428752899, 0, 0, 0)]),
+  (nat_lit 2226175933877817033853441841, nat_lit 23, nat_lit 2576850035345937587637663827, nat_lit 23, nat_lit 0, nat_lit 23, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 3519509115251, nat_lit 11, nat_lit 7908965691665, nat_lit 11, nat_lit 7908965691704, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 2378343264751889, nat_lit 13, nat_lit 494310355731, nat_lit 10, nat_lit 99613873969, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 0, nat_lit 273, nat_lit 3, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- B3
-  (7243747504812904062484, 3870763128539069436669, [
-    (1, 0, 0, 143497068910317840, 7243747504812904062484),
-    (0, 18, 1, 370391016, 316641745),
-    (1, 3870763128539069436669, 122673500002355050, 0, 0)]),
+  (nat_lit 2226175933899496226282369297, nat_lit 23, nat_lit 1087067275570989941614000211, nat_lit 23, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 2457475695969527216211, nat_lit 18, nat_lit 2226175933899496226282369297, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 18, nat_lit 1, nat_lit 35760978003, nat_lit 9, nat_lit 30894397233, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 1087067275570989941614000211, nat_lit 23, nat_lit 2123046811956780668721, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1a((0, 1), 'H')
-  (1, 1, [
+  (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 0, nat_lit 0, [
     ]),
   -- S1a((0, 1), 'S')
-  (2, 2, [
+  (nat_lit 2, nat_lit 1, nat_lit 2, nat_lit 1, nat_lit 0, nat_lit 0, [
     ]),
   -- S1a((0, 2), 'H')
-  (91, 91, [
+  (nat_lit 273, nat_lit 3, nat_lit 273, nat_lit 3, nat_lit 0, nat_lit 0, [
     ]),
   -- S1a((0, 2), 'S')
-  (172, 2107559377547552, [
-    (1, 0, 172, 2107559377547552, 0)]),
+  (nat_lit 529, nat_lit 3, nat_lit 19748603297960960274, nat_lit 17, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 529, nat_lit 3, nat_lit 19748603297960960274, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1a((1, 0), 'H')
-  (820, 0, [
-    (1, 0, 820, 0, 0)]),
+  (nat_lit 4369, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 4369, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1a((1, 0), 'S')
-  (1549, 1549, [
+  (nat_lit 8465, nat_lit 4, nat_lit 8465, nat_lit 4, nat_lit 0, nat_lit 0, [
     ]),
   -- S1a((1, 1), 'H')
-  (73720, 2890984965067, [
-    (1, 1, 1630, 38791015193, 1)]),
+  (nat_lit 1188113, nat_lit 6, nat_lit 4821432058122529, nat_lit 14, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 8721, nat_lit 4, nat_lit 19864526922002, nat_lit 12, nat_lit 1, nat_lit 0, nat_lit 0)]),
   -- S1a((1, 1), 'S')
-  (132769, 91, [
-    (1, 91, 182, 0, 0)]),
+  (nat_lit 2236689, nat_lit 6, nat_lit 273, nat_lit 3, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 273, nat_lit 3, nat_lit 546, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1a((1, 2), 'H')
-  (8110, 27185916240319348631, [
-    (1, 0, 8110, 27185916240319348631, 0)]),
+  (nat_lit 74001, nat_lit 5, nat_lit 2574004634158441413288226, nat_lit 21, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 74001, nat_lit 5, nat_lit 2574004634158441413288226, nat_lit 21, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1a((1, 2), 'S')
-  (14671, 14671, [
+  (nat_lit 139537, nat_lit 5, nat_lit 139537, nat_lit 5, nat_lit 0, nat_lit 0, [
     ]),
   -- S1a((2, 0), 'H')
-  (10, 10, [
+  (nat_lit 17, nat_lit 2, nat_lit 17, nat_lit 2, nat_lit 0, nat_lit 0, [
     ]),
   -- S1a((2, 0), 'S')
-  (19, 321220078561, [
-    (1, 19, 0, 3965679982, 0)]),
+  (nat_lit 33, nat_lit 2, nat_lit 301339487899937, nat_lit 13, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 33, nat_lit 2, nat_lit 0, nat_lit 0, nat_lit 1177107374609, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1a((2, 1), 'H')
-  (598600, 2290852698261400, [
-    (1, 1, 7462, 48648056601062, 1)]),
+  (nat_lit 17899793, nat_lit 7, nat_lit 20829747588022538529, nat_lit 17, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 70161, nat_lit 5, nat_lit 148937719644561682, nat_lit 15, nat_lit 1, nat_lit 0, nat_lit 0)]),
   -- S1a((2, 1), 'S')
-  (1130041, 20637761261866274, [
-    (1, 0, 1130041, 20637761261866274, 0)]),
+  (nat_lit 34677009, nat_lit 7, nat_lit 333343252550772658706, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 34677009, nat_lit 7, nat_lit 333343252550772658706, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1a((2, 2), 'H')
-  (829, 7409482471, [
-    (1, 829, 0, 1129322, 0)]),
+  (nat_lit 4385, nat_lit 4, nat_lit 2272325144865, nat_lit 11, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 4385, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 34672930, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1a((2, 2), 'S')
-  (1558, 483743359, [
-    (1, 100, 2, 663571, 0)]),
+  (nat_lit 8481, nat_lit 4, nat_lit 77865292065, nat_lit 10, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 289, nat_lit 3, nat_lit 2, nat_lit 1, nat_lit 19010081, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((0, 0), 'H')
-  (704062234, 2849775708, [
-    (1, 0, 704062234, 2849775708, 0)]),
+  (nat_lit 99613873969, nat_lit 10, nat_lit 494310355731, nat_lit 10, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 99613873969, nat_lit 10, nat_lit 494310355731, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((0, 0), 'S')
-  (1091482723, 2849775709, [
-    (1, 0, 1091482723, 2849775709, 0)]),
+  (nat_lit 168333350705, nat_lit 10, nat_lit 494310355732, nat_lit 10, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 168333350705, nat_lit 10, nat_lit 494310355732, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((0, 0), 'S1')
-  (1866323701, 2849775707, [
-    (1, 0, 1866323701, 2849775707, 0)]),
+  (nat_lit 305772304177, nat_lit 10, nat_lit 494310355730, nat_lit 10, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 305772304177, nat_lit 10, nat_lit 494310355730, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((0, 0), 'X1')
-  (720304887246193, 1514487651104395, [
-    (1, 1, 80033876360688, 168276405678266, 0)]),
+  (nat_lit 3765911125069338417, nat_lit 16, nat_lit 8293151609104503073, nat_lit 16, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 235369445316833651, nat_lit 15, nat_lit 518321975569031442, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((0, 0), 'Z1')
-  (901087684869241, 1514487651571027, [
-    (1, 1, 100120853874360, 168276405730114, 0)]),
+  (nat_lit 4842569403662014257, nat_lit 16, nat_lit 8293151609120170513, nat_lit 16, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 302660587728875891, nat_lit 15, nat_lit 518321975570010657, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((0, 1), 'H')
-  (70804, 70804, [
+  (nat_lit 1143057, nat_lit 6, nat_lit 1143057, nat_lit 6, nat_lit 0, nat_lit 0, [
     ]),
   -- S1b((0, 1), 'S')
-  (129853, 937691219582949863755727606, [
-    (1, 0, 129853, 937691219582949863755727606, 0)]),
+  (nat_lit 2191633, nat_lit 6, nat_lit 7485576180220222259362810636079634, nat_lit 29, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2191633, nat_lit 6, nat_lit 7485576180220222259362810636079634, nat_lit 29, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((0, 1), 'S1')
-  (247951, 105799, [
-    (1, 0, 247951, 105799, 0)]),
+  (nat_lit 4288785, nat_lit 6, nat_lit 1511700, nat_lit 6, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 4288785, nat_lit 6, nat_lit 1511700, nat_lit 6, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((0, 1), 'X1')
-  (109785802123, 268925587957749853, [
-    (1, 1, 12198422458, 29880620884194428, 0)]),
+  (nat_lit 57463243108625, nat_lit 12, nat_lit 6808088252887699951905, nat_lit 19, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 3591452694289, nat_lit 11, nat_lit 425505515805481246994, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((0, 1), 'Z1')
-  (137339955091, 937717808397443571184077718, [
-    (1, 1, 15259995010, 104190867599715952353786413, 0)]),
+  (nat_lit 73891744674065, nat_lit 12, nat_lit 7485591035500694111785601770590497, nat_lit 29, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 4618234042129, nat_lit 11, nat_lit 467849439718793381986600110661906, nat_lit 28, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((0, 2), 'H')
-  (5385214, 5385214, [
+  (nat_lit 286355729, nat_lit 8, nat_lit 286355729, nat_lit 8, nat_lit 0, nat_lit 0, [
     ]),
   -- S1b((0, 2), 'S')
-  (10168183, 10043758194682429518374, [
-    (1, 0, 10168183, 10043758194682429518374, 0)]),
+  (nat_lit 554791185, nat_lit 8, nat_lit 5289131118198481149391675666, nat_lit 24, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 554791185, nat_lit 8, nat_lit 5289131118198481149391675666, nat_lit 24, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((0, 2), 'S1')
-  (19734121, 5420209, [
-    (1, 0, 19734121, 5420209, 0)]),
+  (nat_lit 1091662097, nat_lit 8, nat_lit 286724372, nat_lit 8, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 1091662097, nat_lit 8, nat_lit 286724372, nat_lit 8, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((0, 2), 'X1')
-  (8892649622053, 13777442764687670743, [
-    (1, 1, 988072180228, 1530826973854185638, 0)]),
+  (nat_lit 14710590229541137, nat_lit 14, nat_lit 1291291771593431198077217, nat_lit 21, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 919411889346321, nat_lit 13, nat_lit 80705735724589449879826, nat_lit 20, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((0, 2), 'Z1')
-  (11124536012461, 48039004780859891920400114608, [
-    (1, 1, 1236059556940, 5337667197873321324488901623, 0)]),
+  (nat_lit 18916286630293777, nat_lit 14, nat_lit 1419790336556973809072080603318456609, nat_lit 31, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 1182267914393361, nat_lit 13, nat_lit 88736896034810863067005037707403538, nat_lit 30, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((1, 0), 'H')
-  (48431935, 11755, [
-    (0, 24, 0, 5194, 1)]),
+  (nat_lit 4581323025, nat_lit 9, nat_lit 94481, nat_lit 5, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 24, nat_lit 0, nat_lit 28945, nat_lit 4, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((1, 0), 'S')
-  (91478656, 91478656, [
+  (nat_lit 8876290321, nat_lit 9, nat_lit 8876290321, nat_lit 9, nat_lit 0, nat_lit 0, [
     ]),
   -- S1c((1, 0), 'S1')
-  (177572098, 48466930, [
-    (1, 0, 177572098, 48466930, 0)]),
+  (nat_lit 17466224913, nat_lit 9, nat_lit 4581691668, nat_lit 9, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 17466224913, nat_lit 9, nat_lit 4581691668, nat_lit 9, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((1, 0), 'X1')
-  (80033846563486, 123196431896200029952, [
-    (1, 1, 8892649618165, 13688492432911114439, 0)]),
+  (nat_lit 235369443672289553, nat_lit 15, nat_lit 20634104885427497993376033, nat_lit 22, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 14710590229518097, nat_lit 14, nat_lit 1289631555339218624586002, nat_lit 21, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((1, 0), 'Z1')
-  (100120824077158, 429559429257805723549050013417, [
-    (1, 1, 11124536008573, 47728825473089524838783334824, 0)]),
+  (nat_lit 302660586084331793, nat_lit 15, nat_lit 22687438269115627775532993567803969825, nat_lit 32, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 18916286630270737, nat_lit 14, nat_lit 1417964891819726735970812097987748114, nat_lit 31, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((1, 1), 'H')
-  (4353104035, 13827483529136912761, [
-    (1, 0, 866319634, 1669818070079983960, 1)]),
+  (nat_lit 1245826871569, nat_lit 11, nat_lit 1294243267760282333680151, nat_lit 21, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 146315243793, nat_lit 10, nat_lit 85317448145653158973975, nat_lit 20, nat_lit 1, nat_lit 0, nat_lit 0)]),
   -- S1b((1, 1), 'S')
-  (7839888436, 5385214, [
-    (0, 27, 0, 11755, 0)]),
+  (nat_lit 2345338499345, nat_lit 11, nat_lit 286355729, nat_lit 8, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 27, nat_lit 0, nat_lit 94481, nat_lit 5, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((1, 1), 'S1')
-  (14813457238, 7796876710, [
-    (1, 0, 14813457238, 7796876710, 0)]),
+  (nat_lit 4544361754897, nat_lit 11, nat_lit 2341043900692, nat_lit 11, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 4544361754897, nat_lit 11, nat_lit 2341043900692, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((1, 1), 'X1')
-  (6482742001759666, 19818614475568424687572, [
-    (1, 1, 720304666862185, 2202068275063158298619, 0)]),
+  (nat_lit 60254577653114302737, nat_lit 17, nat_lit 10543124438811159834635931937, nat_lit 24, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 3765911103319643921, nat_lit 16, nat_lit 658945277425697489664745746, nat_lit 23, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((1, 1), 'Z1')
-  (8109787180367098, 69103235835108055416706031799037, [
-    (1, 1, 901087464485233, 7678137315012006157411781311004, 0)]),
+  (nat_lit 77481110110597116177, nat_lit 17, nat_lit 11592287913581023385530269646247923159329, nat_lit 34, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 4842569381912319761, nat_lit 16, nat_lit 724517994598813961595641852890495197458, nat_lit 33, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((1, 2), 'H')
-  (478899145, 10532424296918394418819961864, [
-    (1, 0, 478899145, 10532424296918394418819961864, 0)]),
+  (nat_lit 77595767057, nat_lit 10, nat_lit 176884276024890126396149669603385634, nat_lit 30, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 77595767057, nat_lit 10, nat_lit 176884276024890126396149669603385634, nat_lit 30, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((1, 2), 'S')
-  (866319634, 866319634, [
+  (nat_lit 146315243793, nat_lit 10, nat_lit 146315243793, nat_lit 10, nat_lit 0, nat_lit 0, [
     ]),
   -- S1c((1, 2), 'S1')
-  (1641160612, 823307908, [
-    (1, 0, 1641160612, 823307908, 0)]),
+  (nat_lit 283754197265, nat_lit 10, nat_lit 142020645140, nat_lit 10, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 283754197265, nat_lit 10, nat_lit 142020645140, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((1, 2), 'X1')
-  (720304662083104, 2092738236263422495714, [
-    (1, 1, 80033851342567, 232526470695935832857, 0)]),
+  (nat_lit 3765911103051231505, nat_lit 16, nat_lit 639604124528117635442938145, nat_lit 23, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 235369443940701969, nat_lit 15, nat_lit 39975257783007352215183634, nat_lit 22, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((1, 2), 'Z1')
-  (901087459706152, 7296927069842830692864748191979, [
-    (1, 1, 100120828856239, 810769674426981188096083132442, 0)]),
+  (nat_lit 4842569381643907345, nat_lit 16, nat_lit 703252172110992554702282208431340392737, nat_lit 33, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 302660586352744209, nat_lit 15, nat_lit 43953260756937034668892638026958774546, nat_lit 32, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((2, 0), 'H')
-  (602245, 602245, [
+  (nat_lit 17920273, nat_lit 7, nat_lit 17920273, nat_lit 7, nat_lit 0, nat_lit 0, [
     ]),
   -- S1b((2, 0), 'S')
-  (1133686, 18967741464991564, [
-    (1, 1, 125965, 2107526829443507, 0)]),
+  (nat_lit 34697489, nat_lit 7, nat_lit 315977360292987408673, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 2168593, nat_lit 6, nat_lit 19748585018311713042, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((2, 0), 'S1')
-  (2196568, 637240, [
-    (1, 0, 2196568, 637240, 0)]),
+  (nat_lit 68251921, nat_lit 7, nat_lit 18288916, nat_lit 7, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 68251921, nat_lit 7, nat_lit 18288916, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((2, 0), 'X1')
-  (988072184116, 1619777305630741942, [
-    (1, 1, 109785798235, 179975256181193549, 0)]),
+  (nat_lit 919411889369361, nat_lit 13, nat_lit 82365951978802023371041, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 57463243085585, nat_lit 12, nat_lit 5147871998675126460690, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((2, 0), 'Z1')
-  (1236059560828, 5647846505643688406105681407, [
-    (1, 1, 137339951203, 627538500627076489567297934, 0)]),
+  (nat_lit 1182267914416401, nat_lit 13, nat_lit 90562340772057936168273543038112033, nat_lit 30, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 73891744651025, nat_lit 12, nat_lit 5660146298253621010517096439882002, nat_lit 29, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((2, 1), 'H')
-  (35346743155, 135354091636060040755, [
-    (1, 1, 440631505, 2881678056060853505, 1)]),
+  (nat_lit 18769293439249, nat_lit 12, nat_lit 21843030695434447998816545, nat_lit 22, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 73569212177, nat_lit 10, nat_lit 156263598850023825219858, nat_lit 20, nat_lit 1, nat_lit 0, nat_lit 0)]),
   -- S1b((2, 1), 'S')
-  (66727802764, 98673139391207436277976, [
-    (1, 0, 66727802764, 98673139391207436277976, 0)]),
+  (nat_lit 36361479483665, nat_lit 12, nat_lit 89469053789604339842281443858, nat_lit 25, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 36361479483665, nat_lit 12, nat_lit 89469053789604339842281443858, nat_lit 25, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((2, 1), 'S1')
-  (129489921982, 35691151918, [
-    (1, 0, 129489921982, 35691151918, 0)]),
+  (nat_lit 71545851572497, nat_lit 12, nat_lit 18833718317332, nat_lit 12, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 71545851572497, nat_lit 12, nat_lit 18833718317332, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((2, 1), 'X1')
-  (58344674184643834, 90722119432788433455004, [
-    (1, 1, 6482741576071537, 10080235492532048161667, 0)]),
+  (nat_lit 964073241285892337937, nat_lit 18, nat_lit 84819526795933976328583385377, nat_lit 25, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 60254577580368271121, nat_lit 17, nat_lit 5301220424745873520536461586, nat_lit 24, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((2, 1), 'Z1')
-  (72988080792110722, 316328470896168954312071166227269, [
-    (1, 1, 8109786754678969, 35147607877352106034674574025252, 0)]),
+  (nat_lit 1239697760605617352977, nat_lit 18, nat_lit 93260055974606254616740175429872293908769, nat_lit 35, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 77481110037851084561, nat_lit 17, nat_lit 5828753498412890913546260964367018369298, nat_lit 34, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((2, 2), 'H')
-  (48963376, 437539576473154, [
-    (1, 1, 5440375, 48615508497017, 0)]),
+  (nat_lit 4598100241, nat_lit 9, nat_lit 2382711039925031201, nat_lit 16, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 287381265, nat_lit 8, nat_lit 148919439995314450, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1b((2, 2), 'S')
-  (92010097, 179975531153543416, [
-    (1, 0, 92010097, 179975531153543416, 0)]),
+  (nat_lit 8893067537, nat_lit 9, nat_lit 5147872277873216790903, nat_lit 19, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 8893067537, nat_lit 9, nat_lit 5147872277873216790903, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((2, 2), 'S1')
-  (178103539, 53249899, [
-    (1, 0, 178103539, 53249899, 0)]),
+  (nat_lit 17483002129, nat_lit 9, nat_lit 4850127124, nat_lit 9, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 17483002129, nat_lit 9, nat_lit 4850127124, nat_lit 9, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((2, 2), 'X1')
-  (80033847094927, 135354097355256958753, [
-    (1, 1, 8892649677214, 15039344150584106528, 0)]),
+  (nat_lit 235369443689066769, nat_lit 15, nat_lit 21843030705042127168082209, nat_lit 22, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 14710590230566673, nat_lit 14, nat_lit 1365189419065132948005138, nat_lit 21, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1c((2, 2), 'Z1')
-  (100120824608599, 471950587533021927063344446618, [
-    (1, 1, 11124536067622, 52438954170335769673704938513, 0)]),
+  (nat_lit 302660586101109009, nat_lit 15, nat_lit 24016666264900543648436800628084314401, nat_lit 32, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 18916286631319313, nat_lit 14, nat_lit 1501041641556283978027300039255269650, nat_lit 31, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1d((0, 0),)
-  (3416005657, 427736046411697174373831160, [
-    (1, 3416005657, 0, 122673500002355050, 0),
-    (0, 4, 0, 0, 316641745)]),
+  (nat_lit 580650211121, nat_lit 10, nat_lit 2334314656064598154970679394777171, nat_lit 28, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 580650211121, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 2123046811956780668721, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 30894397233, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1d((0, 1),)
-  (484147, 105803, [
-    (2, 5, 0, 0, 0),
-    (0, 0, 0, 91, 1),
-    (2, 66051, 0, 0, 0)]),
+  (nat_lit 8483089, nat_lit 6, nat_lit 1511704, nat_lit 6, nat_lit 0, nat_lit 4, [
+    (nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 273, nat_lit 3, nat_lit 1, nat_lit 4, nat_lit 2, nat_lit 0, nat_lit 0)]),
   -- S1d((0, 2),)
-  (38865997, 5420213, [
-    (2, 329223, 0, 0, 0),
-    (0, 0, 0, 91, 91),
-    (2, 66051, 0, 0, 0)]),
+  (nat_lit 2165403921, nat_lit 8, nat_lit 286724376, nat_lit 8, nat_lit 0, nat_lit 4, [
+    (nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 273, nat_lit 3, nat_lit 273, nat_lit 4, nat_lit 4, nat_lit 0, nat_lit 0)]),
   -- S1d((1, 0),)
-  (349758982, 48466934, [
-    (2, 84281096, 0, 0, 0),
-    (0, 0, 0, 91, 820),
-    (2, 66051, 0, 0, 0)]),
+  (nat_lit 34646094097, nat_lit 9, nat_lit 4581691672, nat_lit 9, nat_lit 0, nat_lit 4, [
+    (nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 273, nat_lit 3, nat_lit 4369, nat_lit 4, nat_lit 5, nat_lit 0, nat_lit 0)]),
   -- S1d((1, 1),)
-  (28760594842, 7796876714, [
-    (2, 5523445909770, 0, 0, 0),
-    (0, 0, 0, 91, 132040),
-    (2, 66051, 0, 0, 0)]),
+  (nat_lit 8942408266001, nat_lit 11, nat_lit 2341043900696, nat_lit 11, nat_lit 0, nat_lit 4, [
+    (nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 273, nat_lit 3, nat_lit 2232593, nat_lit 4, nat_lit 7, nat_lit 0, nat_lit 0)]),
   -- S1d((1, 2),)
-  (3190842568, 823307912, [
-    (2, 21575960585, 0, 0, 0),
-    (0, 0, 0, 91, 13942),
-    (2, 66051, 0, 0, 0)]),
+  (nat_lit 558632104209, nat_lit 10, nat_lit 142020645144, nat_lit 10, nat_lit 0, nat_lit 4, [
+    (nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 273, nat_lit 3, nat_lit 135441, nat_lit 4, nat_lit 6, nat_lit 0, nat_lit 0)]),
   -- S1d((2, 0),)
-  (4322332, 637244, [
-    (2, 1286, 0, 0, 0),
-    (0, 0, 0, 91, 10),
-    (2, 66051, 0, 0, 0)]),
+  (nat_lit 135360785, nat_lit 7, nat_lit 18288920, nat_lit 7, nat_lit 0, nat_lit 4, [
+    (nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 273, nat_lit 3, nat_lit 17, nat_lit 4, nat_lit 3, nat_lit 0, nat_lit 0)]),
   -- S1d((2, 1),)
-  (255014160418, 35691151922, [
-    (2, 1414002152901131, 0, 0, 0),
-    (0, 0, 0, 91, 604432),
-    (2, 66051, 0, 0, 0)]),
+  (nat_lit 141914595750161, nat_lit 12, nat_lit 18833718317336, nat_lit 12, nat_lit 0, nat_lit 4, [
+    (nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 273, nat_lit 3, nat_lit 17961233, nat_lit 4, nat_lit 8, nat_lit 0, nat_lit 0)]),
   -- S1d((2, 2),)
-  (350290423, 53249903, [
-    (2, 84281096, 0, 0, 0),
-    (0, 0, 0, 91, 901),
-    (2, 66051, 0, 0, 0)]),
+  (nat_lit 34662871313, nat_lit 9, nat_lit 4850127128, nat_lit 9, nat_lit 0, nat_lit 4, [
+    (nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 273, nat_lit 3, nat_lit 4625, nat_lit 4, nat_lit 5, nat_lit 0, nat_lit 0)]),
   -- S1e((0, 1),)
-  (316641745, 316641745, [
+  (nat_lit 30894397233, nat_lit 9, nat_lit 30894397233, nat_lit 9, nat_lit 0, nat_lit 0, [
     ]),
   -- S1e((0, 2),)
-  (25647981355, 11939256415, [
-    (1, 1, 2849775706, 1326584046, 0)]),
+  (nat_lit 7908965691665, nat_lit 11, nat_lit 3535587710769, nat_lit 11, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 494310355729, nat_lit 10, nat_lit 220974231923, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1e((1, 0),)
-  (230831832196, 106082435242, [
-    (1, 1, 25647981355, 11786937249, 0)]),
+  (nat_lit 126543451066641, nat_lit 12, nat_lit 56312145844017, nat_lit 12, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 7908965691665, nat_lit 11, nat_lit 3519509115251, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1e((1, 1),)
-  (18697378415176, 11403263894482, [
-    (1, 1, 2077486490575, 1267029321609, 0)]),
+  (nat_lit 32395123473129745, nat_lit 14, nat_lit 19196610562168625, nat_lit 14, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 2024695217070609, nat_lit 13, nat_lit 1199788160135539, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1e((1, 2),)
-  (2077486490494, 1235800581166, [
-    (1, 1, 230831832277, 137311175685, 0)]),
+  (nat_lit 2024695217070353, nat_lit 13, nat_lit 1182212052686641, nat_lit 13, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 126543451066897, nat_lit 12, nat_lit 73888253292915, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1e((2, 0),)
-  (2849775706, 1478903212, [
-    (1, 1, 316641745, 164322579, 0)]),
+  (nat_lit 494310355729, nat_lit 10, nat_lit 237052827441, nat_lit 10, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 30894397233, nat_lit 9, nat_lit 14815801715, nat_lit 9, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1e((2, 1),)
-  (168276405671704, 77491775431036, [
-    (1, 1, 18697378407967, 8610197270115, 0)]),
+  (nat_lit 518321975568965905, nat_lit 15, nat_lit 230865793048581937, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 32395123473060369, nat_lit 14, nat_lit 14429112065536371, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1e((2, 2),)
-  (230831832205, 109569219643, [
-    (1, 1, 25647981356, 12174357738, 0)]),
+  (nat_lit 126543451066657, nat_lit 12, nat_lit 57411657471793, nat_lit 12, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 7908965691666, nat_lit 11, nat_lit 3588228591987, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 0), (0, 1))
-  (122673500002355050, 0, [
-    (1, 0, 122673500002355050, 0, 0)]),
+  (nat_lit 2123046811956780668721, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2123046811956780668721, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 0), (0, 2))
-  (9936553486482034120, 10, [
-    (1, 1, 1104061498498003791, 1, 0)]),
+  (nat_lit 543499983856562473211697, nat_lit 20, nat_lit 17, nat_lit 2, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 33968748991035154575731, nat_lit 19, nat_lit 1, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 0), (1, 0))
-  (89428981376967434587, 91, [
-    (1, 1, 9936553486329714954, 10, 0)]),
+  (nat_lit 8695999741704742313858865, nat_lit 21, nat_lit 273, nat_lit 3, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 543499983856546394616179, nat_lit 20, nat_lit 17, nat_lit 2, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 0), (1, 1))
-  (7243747494344948841427, 14671, [
-    (1, 1, 804860832704994315714, 1630, 0)]),
+  (nat_lit 2226175933881194733573969713, nat_lit 23, nat_lit 139537, nat_lit 5, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 139135995867574670848373107, nat_lit 22, nat_lit 8721, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 0), (1, 2))
-  (804860832673765575271, 1549, [
-    (1, 1, 89428981408196175030, 172, 0)]),
+  (nat_lit 139135995867557094740924209, nat_lit 22, nat_lit 8465, nat_lit 4, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 8695999741722318421307763, nat_lit 21, nat_lit 529, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 0), (2, 0))
-  (1104061498650322957, 1, [
-    (1, 1, 122673499850035884, 0, 0)]),
+  (nat_lit 33968748991051233171249, nat_lit 19, nat_lit 1, nat_lit 1, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 2123046811940702073203, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 0), (2, 1))
-  (65193727423966939953541, 67159, [
-    (1, 1, 7243747491551882217060, 7462, 0)]),
+  (nat_lit 35618814942022835761237399345, nat_lit 24, nat_lit 1122577, nat_lit 6, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 2226175933876427235077337459, nat_lit 23, nat_lit 70161, nat_lit 5, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 0), (2, 2))
-  (89428981380454218988, 100, [
-    (1, 1, 9936553486717135443, 11, 0)]),
+  (nat_lit 8695999741705841825486641, nat_lit 21, nat_lit 289, nat_lit 3, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 1, nat_lit 1, nat_lit 543499983856615114092915, nat_lit 20, nat_lit 18, nat_lit 2, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 1), (0, 1))
-  (18697378412260, 77127375, [
-    (1, 0, 18697378412260, 77127375, 0)]),
+  (nat_lit 32395123473084689, nat_lit 14, nat_lit 6191921011, nat_lit 9, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 32395123473084689, nat_lit 14, nat_lit 6191921011, nat_lit 9, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 1), (0, 2))
-  (1514487652224130, 3951332265, [
-    (1, 0, 1514487652224130, 3951332265, 0)]),
+  (nat_lit 8293151609139065105, nat_lit 16, nat_lit 1174423025523, nat_lit 11, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 8293151609139065105, nat_lit 16, nat_lit 1174423025523, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 1), (1, 0))
-  (13630388870100277, 35332391874, [
-    (1, 0, 13630388870100277, 35332391874, 0)]),
+  (nat_lit 132690425746226770193, nat_lit 17, nat_lit 18766609069939, nat_lit 12, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 132690425746226770193, nat_lit 17, nat_lit 18766609069939, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 1), (1, 1))
-  (1104061498909420717, 5683923121494, [
-    (1, 0, 1104061498909420717, 5683923121494, 0)]),
+  (nat_lit 33968748991107096998161, nat_lit 19, nat_lit 9588915817232243, nat_lit 14, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 33968748991107096998161, nat_lit 19, nat_lit 9588915817232243, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 1), (1, 2))
-  (122673499874032321, 600191464836, [
-    (1, 0, 122673499874032321, 600191464836, 0)]),
+  (nat_lit 2123046811943925018897, nat_lit 18, nat_lit 581716562491251, nat_lit 13, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2123046811943925018897, nat_lit 18, nat_lit 581716562491251, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 1), (2, 0))
-  (168276405793447, 464547864, [
-    (1, 0, 168276405793447, 464547864, 0)]),
+  (nat_lit 518321975571083537, nat_lit 15, nat_lit 74911397747, nat_lit 10, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 518321975571083537, nat_lit 15, nat_lit 74911397747, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 1), (2, 1))
-  (9936553486353711391, 26018849748126, [
-    (1, 0, 9936553486353711391, 26018849748126, 0)]),
+  (nat_lit 543499983856549617561873, nat_lit 20, nat_lit 77142910227789683, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 543499983856549617561873, nat_lit 20, nat_lit 77142910227789683, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 1), (2, 2))
-  (13630388870631718, 38819176275, [
-    (1, 0, 13630388870631718, 38819176275, 0)]),
+  (nat_lit 132690425746243547409, nat_lit 17, nat_lit 19866120697715, nat_lit 12, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 132690425746243547409, nat_lit 17, nat_lit 19866120697715, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 2), (0, 1))
-  (1514487651043150, 11699742045, [
-    (1, 0, 1514487651043150, 11699742045, 0)]),
+  (nat_lit 8293151609103413521, nat_lit 16, nat_lit 3510885234547, nat_lit 11, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 8293151609103413521, nat_lit 16, nat_lit 3510885234547, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 2), (0, 2))
-  (122673499829804620, 945383120535, [
-    (1, 0, 122673499829804620, 945383120535, 0)]),
+  (nat_lit 2123046811939594400017, nat_lit 18, nat_lit 898375911290739, nat_lit 13, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2123046811939594400017, nat_lit 18, nat_lit 898375911290739, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 2), (1, 0))
-  (1104061498477772527, 8508218486304, [
-    (1, 0, 1104061498477772527, 8508218486304, 0)]),
+  (nat_lit 33968748991034046902545, nat_lit 19, nat_lit 14373990421313395, nat_lit 14, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 33968748991034046902545, nat_lit 19, nat_lit 14373990421313395, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 2), (1, 1))
-  (89428981411662728167, 691987696770324, [
-    (1, 0, 89428981411662728167, 691987696770324, 0)]),
+  (nat_lit 8695999741723416825262353, nat_lit 21, nat_lit 3684526211751556979, nat_lit 16, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 8695999741723416825262353, nat_lit 21, nat_lit 3684526211751556979, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 2), (1, 2))
-  (9936553489796268091, 76856166314706, [
-    (1, 0, 9936553489796268091, 76856166314706, 0)]),
+  (nat_lit 543499983857644798570769, nat_lit 20, nat_lit 230265297558386547, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 543499983857644798570769, nat_lit 20, nat_lit 230265297558386547, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 2), (2, 0))
-  (13630388868919297, 105068079894, [
-    (1, 0, 13630388868919297, 105068079894, 0)]),
+  (nat_lit 132690425746191118609, nat_lit 17, nat_lit 56150004414323, nat_lit 12, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 132690425746191118609, nat_lit 17, nat_lit 56150004414323, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 2), (2, 1))
-  (804860832394650272761, 6202752812587596, [
-    (1, 0, 804860832394650272761, 6202752812587596, 0)]),
+  (nat_lit 139135995867276702089572625, nat_lit 22, nat_lit 58876139645176985459, nat_lit 17, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 139135995867276702089572625, nat_lit 22, nat_lit 58876139645176985459, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((0, 2), (2, 2))
-  (1104061498520819248, 8511705270705, [
-    (1, 0, 1104061498520819248, 8511705270705, 0)]),
+  (nat_lit 33968748991038341869841, nat_lit 19, nat_lit 14375089932941171, nat_lit 14, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 33968748991038341869841, nat_lit 19, nat_lit 14375089932941171, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 0), (0, 1))
-  (13630388859353359, 105842920872, [
-    (1, 0, 13630388859353359, 105842920872, 0)]),
+  (nat_lit 132690425745654247697, nat_lit 17, nat_lit 56287443367795, nat_lit 12, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 132690425745654247697, nat_lit 17, nat_lit 56287443367795, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 0), (0, 2))
-  (1104061498468206589, 8570980605522, [
-    (1, 0, 1104061498468206589, 8570980605522, 0)]),
+  (nat_lit 33968748991033510031633, nat_lit 19, nat_lit 14409174793402227, nat_lit 14, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 33968748991033510031633, nat_lit 19, nat_lit 14409174793402227, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 0), (1, 0))
-  (9936553486299917752, 77138595851187, [
-    (1, 0, 9936553486299917752, 77138595851187, 0)]),
+  (nat_lit 543499983856544750072081, nat_lit 20, nat_lit 230546772535097203, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 543499983856544750072081, nat_lit 20, nat_lit 230546772535097203, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 0), (1, 1))
-  (804860832704964518512, 6251048263325847, [
-    (1, 0, 804860832704964518512, 6251048263325847, 0)]),
+  (nat_lit 139135995867574669203829009, nat_lit 22, nat_lit 59024758432880211827, nat_lit 17, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 139135995867574669203829009, nat_lit 22, nat_lit 59024758432880211827, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 0), (1, 2))
-  (89428981408166377828, 694529562598653, [
-    (1, 0, 89428981408166377828, 694529562598653, 0)]),
+  (nat_lit 8695999741722316776763665, nat_lit 21, nat_lit 3689029811378927475, nat_lit 16, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 8695999741722316776763665, nat_lit 21, nat_lit 3689029811378927475, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 0), (2, 0))
-  (122673499820238682, 952356689337, [
-    (1, 0, 122673499820238682, 952356689337, 0)]),
+  (nat_lit 2123046811939057529105, nat_lit 18, nat_lit 900574934546291, nat_lit 13, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2123046811939057529105, nat_lit 18, nat_lit 900574934546291, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 0), (2, 1))
-  (7243747491551852419858, 56234297911587303, [
-    (1, 0, 7243747491551852419858, 56234297911587303, 0)]),
+  (nat_lit 2226175933876427233432793361, nat_lit 23, nat_lit 944319855183235463027, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2226175933876427233432793361, nat_lit 23, nat_lit 944319855183235463027, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 0), (2, 2))
-  (9936553486687338241, 77142082635588, [
-    (1, 0, 9936553486687338241, 77142082635588, 0)]),
+  (nat_lit 543499983856613469548817, nat_lit 20, nat_lit 230547872046724979, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 543499983856613469548817, nat_lit 20, nat_lit 230547872046724979, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 1), (0, 1))
-  (1104061498037739379, 11403024380112, [
-    (1, 0, 1104061498037739379, 11403024380112, 0)]),
+  (nat_lit 33968748990960495587601, nat_lit 19, nat_lit 19196585859692403, nat_lit 14, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 33968748990960495587601, nat_lit 19, nat_lit 19196585859692403, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 1), (0, 2))
-  (89428981376354851009, 923642678803962, [
-    (1, 0, 89428981376354851009, 923642678803962, 0)]),
+  (nat_lit 8695999741704651576275217, nat_lit 21, nat_lit 4914325569372501875, nat_lit 16, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 8695999741704651576275217, nat_lit 21, nat_lit 4914325569372501875, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 1), (1, 0))
-  (804860832390723455212, 8312783879637147, [
-    (1, 0, 804860832390723455212, 8312783879637147, 0)]),
+  (nat_lit 139135995867275529026629905, nat_lit 22, nat_lit 78629209085800691571, nat_lit 17, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 139135995867275529026629905, nat_lit 22, nat_lit 78629209085800691571, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 1), (1, 1))
-  (65193727449102556116772, 673338316249988607, [
-    (1, 0, 65193727449102556116772, 673338316249988607, 0)]),
+  (nat_lit 35618814942099115389188403473, nat_lit 24, nat_lit 20129082310628872370035, nat_lit 19, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 35618814942099115389188403473, nat_lit 24, nat_lit 20129082310628872370035, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 1), (1, 2))
-  (7243747494061906721368, 74815337116672293, [
-    (1, 0, 7243747494061906721368, 74815337116672293, 0)]),
+  (nat_lit 2226175933880913167859675409, nat_lit 23, nat_lit 1258067626823628437363, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2226175933880913167859675409, nat_lit 23, nat_lit 1258067626823628437363, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 1), (2, 0))
-  (9936553485869450542, 102626989822497, [
-    (1, 0, 9936553485869450542, 102626989822497, 0)]),
+  (nat_lit 543499983856471735628049, nat_lit 20, nat_lit 307145349595740019, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 543499983856471735628049, nat_lit 20, nat_lit 307145349595740019, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 1), (2, 1))
-  (586743546815700476125798, 6060019709791552143, [
-    (1, 0, 586743546815700476125798, 6060019709791552143, 0)]),
+  (nat_lit 569901039072365371831803277585, nat_lit 25, nat_lit 322065240690319109994355, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 569901039072365371831803277585, nat_lit 25, nat_lit 322065240690319109994355, nat_lit 20, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 1), (2, 2))
-  (804860832422104514821, 8312787366421548, [
-    (1, 0, 804860832422104514821, 8312787366421548, 0)]),
+  (nat_lit 139135995867293121212674321, nat_lit 22, nat_lit 78629210185312319347, nat_lit 17, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 139135995867293121212674321, nat_lit 22, nat_lit 78629210185312319347, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 2), (0, 1))
-  (122673499777191961, 1235561066796, [
-    (1, 0, 122673499777191961, 1235561066796, 0)]),
+  (nat_lit 2123046811934762561809, nat_lit 18, nat_lit 1182187350210419, nat_lit 13, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2123046811934762561809, nat_lit 18, nat_lit 1182187350210419, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 2), (0, 2))
-  (9936553486256871031, 100078150425366, [
-    (1, 0, 9936553486256871031, 100078150425366, 0)]),
+  (nat_lit 543499983856540455104785, nat_lit 20, nat_lit 302639550945113971, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 543499983856540455104785, nat_lit 20, nat_lit 302639550945113971, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 2), (1, 0))
-  (89428981376742271498, 900703124229783, [
-    (1, 0, 89428981376742271498, 900703124229783, 0)]),
+  (nat_lit 8695999741704720295751953, nat_lit 21, nat_lit 4842232790962485107, nat_lit 16, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 8695999741704720295751953, nat_lit 21, nat_lit 4842232790962485107, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 2), (1, 1))
-  (7243747494344723678338, 72959775061992123, [
-    (1, 0, 7243747494344723678338, 72959775061992123, 0)]),
+  (nat_lit 2226175933881194711555862801, nat_lit 23, nat_lit 1239616379150291515251, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2226175933881194711555862801, nat_lit 23, nat_lit 1239616379150291515251, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 2), (1, 2))
-  (804860832673540412182, 8106610318006017, [
-    (1, 0, 804860832673540412182, 8106610318006017, 0)]),
+  (nat_lit 139135995867557072722817297, nat_lit 22, nat_lit 77476006106217133939, nat_lit 17, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 139135995867557072722817297, nat_lit 22, nat_lit 77476006106217133939, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 2), (2, 0))
-  (1104061498425159868, 11119820002653, [
-    (1, 0, 1104061498425159868, 11119820002653, 0)]),
+  (nat_lit 33968748991029215064337, nat_lit 19, nat_lit 18914973444028275, nat_lit 14, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 33968748991029215064337, nat_lit 19, nat_lit 18914973444028275, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 2), (2, 1))
-  (65193727423966714790452, 656612839099583787, [
-    (1, 0, 65193727423966714790452, 656612839099583787, 0)]),
+  (nat_lit 35618814942022835739219292433, nat_lit 24, nat_lit 19833785786661816317811, nat_lit 19, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 35618814942022835739219292433, nat_lit 24, nat_lit 19833785786661816317811, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((1, 2), (2, 2))
-  (89428981380229055899, 900706611014184, [
-    (1, 0, 89428981380229055899, 900706611014184, 0)]),
+  (nat_lit 8695999741705819807379729, nat_lit 21, nat_lit 4842233890474112883, nat_lit 16, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 8695999741705819807379729, nat_lit 21, nat_lit 4842233890474112883, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 0), (0, 1))
-  (168276405675349, 1239388842, [
-    (1, 0, 168276405675349, 1239388842, 0)]),
+  (nat_lit 518321975568986385, nat_lit 15, nat_lit 212350351219, nat_lit 10, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 518321975568986385, nat_lit 15, nat_lit 212350351219, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 0), (0, 2))
-  (13630388869982179, 98094511092, [
-    (1, 0, 13630388869982179, 98094511092, 0)]),
+  (nat_lit 132690425746224673041, nat_lit 17, nat_lit 53950981158771, nat_lit 12, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 132690425746224673041, nat_lit 17, nat_lit 53950981158771, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 0), (1, 0))
-  (122673499830867502, 882621001317, [
-    (1, 0, 122673499830867502, 882621001317, 0)]),
+  (nat_lit 2123046811939627954449, nat_lit 18, nat_lit 863191539201907, nat_lit 13, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2123046811939627954449, nat_lit 18, nat_lit 863191539201907, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 0), (1, 1))
-  (9936553490184751462, 74314300486377, [
-    (1, 0, 9936553490184751462, 74314300486377, 0)]),
+  (nat_lit 543499983857713551601937, nat_lit 20, nat_lit 225761697931016051, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 543499983857713551601937, nat_lit 20, nat_lit 225761697931016051, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 0), (1, 2))
-  (1104061498866255898, 8225788949823, [
-    (1, 0, 1104061498866255898, 8225788949823, 0)]),
+  (nat_lit 33968748991102799933713, nat_lit 19, nat_lit 14092515444602739, nat_lit 14, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 33968748991102799933713, nat_lit 19, nat_lit 14092515444602739, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 0), (2, 0))
-  (1514487652106032, 10924901067, [
-    (1, 0, 1514487652106032, 10924901067, 0)]),
+  (nat_lit 8293151609136967953, nat_lit 16, nat_lit 3373446281075, nat_lit 11, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 8293151609136967953, nat_lit 16, nat_lit 3373446281075, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 0), (2, 1))
-  (89428981377183367528, 643692246032073, [
-    (1, 0, 89428981377183367528, 643692246032073, 0)]),
+  (nat_lit 8695999741704793880621329, nat_lit 21, nat_lit 3535907424048330611, nat_lit 16, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 8695999741704793880621329, nat_lit 21, nat_lit 3535907424048330611, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 0), (2, 2))
-  (122673499835650471, 886107785718, [
-    (1, 0, 122673499835650471, 886107785718, 0)]),
+  (nat_lit 2123046811939896389905, nat_lit 18, nat_lit 864291050829683, nat_lit 13, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2123046811939896389905, nat_lit 18, nat_lit 864291050829683, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 1), (0, 1))
-  (9936553478508461251, 77491535916666, [
-    (1, 0, 9936553478508461251, 77491535916666, 0)]),
+  (nat_lit 543499983854203992895761, nat_lit 20, nat_lit 230865768346105715, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 543499983854203992895761, nat_lit 20, nat_lit 230865768346105715, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 1), (0, 2))
-  (804860832383362465921, 6276812113264836, [
-    (1, 0, 804860832383362465921, 6276812113264836, 0)]),
+  (nat_lit 139135995867273261283897617, nat_lit 22, nat_lit 59101636285894309747, nat_lit 17, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 139135995867273261283897617, nat_lit 22, nat_lit 59101636285894309747, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 1), (1, 0))
-  (7243747491512679903748, 56491308789785013, [
-    (1, 0, 7243747491512679903748, 56491308789785013, 0)]),
+  (nat_lit 2226175933876407300489572625, nat_lit 23, nat_lit 945626180550149617523, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2226175933876407300489572625, nat_lit 23, nat_lit 945626180550149617523, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 1), (1, 1))
-  (586743547041919173857788, 4575798833971965753, [
-    (1, 0, 586743547041919173857788, 4575798833971965753, 0)]),
+  (nat_lit 569901039073585845063077949713, nat_lit 25, nat_lit 242080307005502197413747, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 569901039073585845063077949713, nat_lit 25, nat_lit 242080307005502197413747, nat_lit 20, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 1), (1, 2))
-  (65193727446553329299152, 508422061308003087, [
-    (1, 0, 65193727446553329299152, 508422061308003087, 0)]),
+  (nat_lit 35618814942094609521818300689, nat_lit 24, nat_lit 15130019170253211252595, nat_lit 19, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 35618814942094609521818300689, nat_lit 24, nat_lit 15130019170253211252595, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 1), (2, 0))
-  (89428981368993861718, 697423593651483, [
-    (1, 0, 89428981368993861718, 697423593651483, 0)]),
+  (nat_lit 8695999741702383833542929, nat_lit 21, nat_lit 3693852269378353011, nat_lit 16, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 8695999741702383833542929, nat_lit 21, nat_lit 3693852269378353011, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 1), (2, 1))
-  (5280691921341300453939022, 41182164369289346457, [
-    (1, 0, 5280691921341300453939022, 41182164369289346457, 0)]),
+  (nat_lit 9118416625157845948144915935505, nat_lit 26, nat_lit 3873284835808292310693747, nat_lit 21, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 9118416625157845948144915935505, nat_lit 26, nat_lit 3873284835808292310693747, nat_lit 21, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 1), (2, 2))
-  (7243747491795109440229, 56491312276569414, [
-    (1, 0, 7243747491795109440229, 56491312276569414, 0)]),
+  (nat_lit 2226175933876688775466283281, nat_lit 23, nat_lit 945626181649661245299, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2226175933876688775466283281, nat_lit 23, nat_lit 945626181649661245299, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 2), (0, 1))
-  (13630388859884800, 109329705273, [
-    (1, 0, 13630388859884800, 109329705273, 0)]),
+  (nat_lit 132690425745671024913, nat_lit 17, nat_lit 57386954995571, nat_lit 12, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 132690425745671024913, nat_lit 17, nat_lit 57386954995571, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 2), (0, 2))
-  (1104061498468738030, 8853410142003, [
-    (1, 0, 1104061498468738030, 8853410142003, 0)]),
+  (nat_lit 33968748991033526808849, nat_lit 19, nat_lit 14690649770112883, nat_lit 14, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 33968748991033526808849, nat_lit 19, nat_lit 14690649770112883, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 2), (1, 0))
-  (9936553486300449193, 79680461679516, [
-    (1, 0, 9936553486300449193, 79680461679516, 0)]),
+  (nat_lit 543499983856544766849297, nat_lit 20, nat_lit 235050372162467699, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 543499983856544766849297, nat_lit 20, nat_lit 235050372162467699, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 2), (1, 1))
-  (804860832704965049953, 6456939395420496, [
-    (1, 0, 804860832704965049953, 6456939395420496, 0)]),
+  (nat_lit 139135995867574669220606225, nat_lit 22, nat_lit 60177679937487058803, nat_lit 17, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 139135995867574669220606225, nat_lit 22, nat_lit 60177679937487058803, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 2), (1, 2))
-  (89428981408166909269, 717406355053614, [
-    (1, 0, 89428981408166909269, 717406355053614, 0)]),
+  (nat_lit 8695999741722316793540881, nat_lit 21, nat_lit 3761087405416855411, nat_lit 16, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 8695999741722316793540881, nat_lit 21, nat_lit 3761087405416855411, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 2), (2, 0))
-  (122673499820770123, 983737748946, [
-    (1, 0, 122673499820770123, 983737748946, 0)]),
+  (nat_lit 2123046811939074306321, nat_lit 18, nat_lit 918167120590707, nat_lit 13, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2123046811939074306321, nat_lit 18, nat_lit 918167120590707, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 2), (2, 1))
-  (7243747491551852951299, 58087318100439144, [
-    (1, 0, 7243747491551852951299, 58087318100439144, 0)]),
+  (nat_lit 2226175933876427233449570577, nat_lit 23, nat_lit 962766599256945014643, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2226175933876427233449570577, nat_lit 23, nat_lit 962766599256945014643, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1f((2, 2), (2, 2))
-  (9936553486687869682, 79683948463917, [
-    (1, 0, 9936553486687869682, 79683948463917, 0)]),
+  (nat_lit 543499983856613486326033, nat_lit 20, nat_lit 235051471674095475, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 543499983856613486326033, nat_lit 20, nat_lit 235051471674095475, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 0), (0, 0))
-  (47526227379077463793474714, 55593704586478466234401257, [
-    (0, 1, 1, 0, 0)]),
+  (nat_lit 145894666004037384685666056738609, nat_lit 27, nat_lit 168876443918128905615358537578579, nat_lit 27, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 1, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 0), (0, 1))
-  (7243747492932801159022, 8473358404768637269587, [
-    (0, 18, 0, 0, 0)]),
+  (nat_lit 2226175933877817033853441841, nat_lit 23, nat_lit 2576850035345937587637663827, nat_lit 23, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 0), (0, 2))
-  (586743546814571370563452, 686342030650667684249277, [
-    (1, 9991116212077, 25647981375, 4190846635, 0),
-    (0, 18, 0, 0, 10),
-    (2, 1399605400310703160947254505746199857141271, 0, 0, 0)]),
+  (nat_lit 569901039072362275697797044017, nat_lit 25, nat_lit 659673609048129357770056349779, nat_lit 25, nat_lit 14, nat_lit 11, [
+    (nat_lit 1, nat_lit 15818910841640753, nat_lit 14, nat_lit 7908965691699, nat_lit 11, nat_lit 1199125501745, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 0), (1, 0))
-  (5280691921319843782739335, 6177078275842449964784766, [
-    (1, 9991116212077, 230831832378, 35571906244, 0),
-    (0, 18, 0, 0, 91),
-    (2, 7022439010762998254857604015934467380941456448030006332322289175, 0, 0, 0)]),
+  (nat_lit 9118416625157775300284241876785, nat_lit 26, nat_lit 10554777744770044391105302444115, nat_lit 26, nat_lit 14, nat_lit 12, [
+    (nat_lit 1, nat_lit 15818910841640753, nat_lit 14, nat_lit 126543451067187, nat_lit 12, nat_lit 18791311546161, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 273, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 0), (1, 1))
-  (427736045793566177875234495, 500343340509874672209644466, [
-    (1, 9991116212077, 18697378429938, 5684162635864, 0),
-    (0, 18, 0, 0, 14671),
-    (2, 175025564876924195653228063018658704786237003286898884205835444907538857445752615635380029133797598413788695, 0, 0, 0)]),
+  (nat_lit 2334314656045407632375846234429233, nat_lit 28, nat_lit 2702023102666148447846341238143059, nat_lit 28, nat_lit 14, nat_lit 14, [
+    (nat_lit 1, nat_lit 15818910841640753, nat_lit 14, nat_lit 32395123473269555, nat_lit 14, nat_lit 9588940519708465, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 139537, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 0), (1, 2))
-  (47526227308544477191988851, 55593704499245672189270736, [
-    (1, 9991116212077, 2077486492134, 600430979206, 0),
-    (0, 18, 0, 0, 1549),
-    (2, 35112817814030457118571185773138018547867965251412991232813039976856597012936605898263, 0, 0, 0)]),
+  (nat_lit 145894666002819531598846712026929, nat_lit 27, nat_lit 168876443916615832829648592779347, nat_lit 27, nat_lit 14, nat_lit 13, [
+    (nat_lit 1, nat_lit 15818910841640753, nat_lit 14, nat_lit 2024695217079091, nat_lit 13, nat_lit 581741264967473, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 8465, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 0), (2, 0))
-  (65193727425096658099465, 76260225629358541967556, [
-    (0, 36, 1, 9991116212077, 0),
-    (0, 18, 0, 0, 1),
-    (2, 277858887558004807191, 0, 0, 0)]),
+  (nat_lit 35618814942023961661144241969, nat_lit 24, nat_lit 41229600565509668186603468883, nat_lit 24, nat_lit 14, nat_lit 10, [
+    (nat_lit 0, nat_lit 36, nat_lit 1, nat_lit 15818910841640753, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 0), (2, 1))
-  (3849624410657815131054454081, 4503090063104589319423016826, [
-    (1, 9991116212077, 168276405804564, 26019089262496, 0),
-    (0, 18, 0, 0, 67159),
-    (2, 870027719167106595845166847053739432682598118297148723497158321812652638687392826425025732847436007247720158970532101793273681431, 0, 0, 0)]),
+  (nat_lit 37349034496646537014599054624233265, nat_lit 29, nat_lit 43232369642578390057904639595329619, nat_lit 29, nat_lit 14, nat_lit 15, [
+    (nat_lit 1, nat_lit 15818910841640753, nat_lit 14, nat_lit 518321975571202867, nat_lit 15, nat_lit 77142934930265905, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 1122577, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 0), (2, 2))
-  (5280691921525734914833984, 6177078276048341096879415, [
-    (1, 9991116212077, 230831832387, 39058690645, 0),
-    (0, 18, 0, 0, 100),
-    (2, 7022439010762998254857604015934467380941456448030006332322289175, 0, 0, 0)]),
+  (nat_lit 9118416625158928221788848723761, nat_lit 26, nat_lit 10554777744771197312609909291091, nat_lit 26, nat_lit 14, nat_lit 12, [
+    (nat_lit 1, nat_lit 15818910841640753, nat_lit 14, nat_lit 126543451067203, nat_lit 12, nat_lit 19890823173937, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 289, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 1), (0, 0))
-  (7243747504812904062484, 3870763128539069436669, [
-    (0, 19, 0, 0, 0)]),
+  (nat_lit 2226175933899496226282369297, nat_lit 23, nat_lit 1087067275570989941614000211, nat_lit 23, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 1), (0, 1))
-  (1104061498694187112, 589951278101960751, [
-    (0, 17, 0, 0, 0)]),
+  (nat_lit 33968748991055557390609, nat_lit 19, nat_lit 16587304352259451860851, nat_lit 19, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 1), (0, 2))
-  (89428981377011298742, 47785917952309251801, [
-    (1, 1522767367, 25647981375, 4190846635, 0),
-    (0, 17, 0, 0, 10),
-    (2, 75872760781939552621075, 0, 0, 0)]),
+  (nat_lit 8695999741704746638078225, nat_lit 21, nat_lit 4246349483519367509653363, nat_lit 21, nat_lit 14, nat_lit 7, [
+    (nat_lit 1, nat_lit 241377046801, nat_lit 10, nat_lit 7908965691699, nat_lit 11, nat_lit 1199125501745, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 1), (1, 0))
-  (804860832391379902945, 430073248013388309306, [
-    (1, 1522767367, 230831832378, 35571906244, 0),
-    (0, 17, 0, 0, 91),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 139135995867275624088432913, nat_lit 22, nat_lit 67941591710976994732881779, nat_lit 22, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 241377046801, nat_lit 10, nat_lit 126543451067187, nat_lit 12, nat_lit 18791311546161, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 273, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 1), (1, 1))
-  (65193727449103212564505, 34836099725327500150446, [
-    (1, 1522767367, 18697378429938, 5684162635864, 0),
-    (0, 17, 0, 0, 14671),
-    (2, 119757351210716351830391849047313937428029184898338691027475, 0, 0, 0)]),
+  (nat_lit 35618814942099115484250206481, nat_lit 24, nat_lit 17393052495093839648449050483, nat_lit 24, nat_lit 14, nat_lit 10, [
+    (nat_lit 1, nat_lit 241377046801, nat_lit 10, nat_lit 32395123473269555, nat_lit 14, nat_lit 9588940519708465, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 139537, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 1), (1, 2))
-  (7243747494062563169101, 3870675895744799493420, [
-    (1, 1522767367, 2077486492134, 600430979206, 0),
-    (0, 17, 0, 0, 1549),
-    (2, 103187297454581185369312791942459185026886078995, 0, 0, 0)]),
+  (nat_lit 2226175933880913262921478417, nat_lit 23, nat_lit 1087065762498204209657362291, nat_lit 23, nat_lit 14, nat_lit 9, [
+    (nat_lit 1, nat_lit 241377046801, nat_lit 10, nat_lit 2024695217079091, nat_lit 13, nat_lit 581741264967473, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 8465, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 1), (2, 0))
-  (9936553486525898275, 5309547945522689856, [
-    (0, 36, 1, 1522767367, 0),
-    (0, 17, 0, 0, 1),
-    (2, 64694063635, 0, 0, 0)]),
+  (nat_lit 543499983856566797431057, nat_lit 20, nat_lit 265396844303265808201587, nat_lit 20, nat_lit 14, nat_lit 6, [
+    (nat_lit 0, nat_lit 36, nat_lit 1, nat_lit 241377046801, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 1), (2, 1))
-  (586743546815701132573531, 313523413245218836072470, [
-    (1, 1522767367, 168276405804564, 26019089262496, 0),
-    (0, 17, 0, 0, 67159),
-    (2, 138603412186575622452851704114887243812680195217072023634570836125487635, 0, 0, 0)]),
+  (nat_lit 569901039072365371926865080593, nat_lit 25, nat_lit 278288759936393797885147428723, nat_lit 25, nat_lit 14, nat_lit 11, [
+    (nat_lit 1, nat_lit 241377046801, nat_lit 10, nat_lit 518321975571202867, nat_lit 15, nat_lit 77142934930265905, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 1122577, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 1), (2, 2))
-  (804860832422760962554, 430073453904520403955, [
-    (1, 1522767367, 230831832387, 39058690645, 0),
-    (0, 17, 0, 0, 100),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 139135995867293216274477329, nat_lit 22, nat_lit 67941592863898499339728755, nat_lit 22, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 241377046801, nat_lit 10, nat_lit 126543451067203, nat_lit 12, nat_lit 19890823173937, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 289, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 2), (0, 0))
-  (586743547889845228711294, 269758906718114102314539, [
-    (2, 1224693591448981053644770343068493433800199, 0, 0, 0),
-    (0, 91, 0, 21871219115539, 0),
-    (0, 19, 0, 0, 30)]),
+  (nat_lit 569901039078271033928280273169, nat_lit 25, nat_lit 253626835289788566021035341907, nat_lit 25, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 91, nat_lit 0, nat_lit 37498103270568209, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 11, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 51, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 2), (0, 1))
-  (89428981394228806162, 41115502808291723421, [
-    (2, 47427230355438231356935, 0, 0, 0),
-    (0, 91, 0, 1522767367, 0),
-    (0, 17, 0, 0, 30)]),
+  (nat_lit 8695999741710222685729041, nat_lit 21, nat_lit 3870038354373889946236787, nat_lit 21, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 91, nat_lit 0, nat_lit 241377046801, nat_lit 10, nat_lit 0, nat_lit 5, nat_lit 7, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 51, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 2), (0, 2))
-  (7243747491537914848192, 3330355591897680028071, [
-    (2, 47427230355438231356935, 0, 0, 0),
-    (1, 5009551768, 230831832376, 105069181656, 0),
-    (0, 17, 0, 0, 2440),
-    (2, 75872760781939552621075, 0, 0, 0)]),
+  (nat_lit 2226175933876415139341758737, nat_lit 23, nat_lit 990729818289056774069892979, nat_lit 23, nat_lit 14, nat_lit 7, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 126543451067185, nat_lit 12, nat_lit 56150038360435, nat_lit 12, nat_lit 0, nat_lit 5, nat_lit 7),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 13073, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 2), (1, 0))
-  (65193727423701771788635, 29973200313521725295736, [
-    (2, 47427230355438231356935, 0, 0, 0),
-    (1, 5009551768, 2077486491403, 945384222297, 0),
-    (0, 17, 0, 0, 21961),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 35618814942022559766632558865, nat_lit 24, nat_lit 15851677092599575499696715635, nat_lit 24, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 2024695217074993, nat_lit 13, nat_lit 898375945236851, nat_lit 13, nat_lit 0, nat_lit 5, nat_lit 7),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 209169, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 2), (1, 1))
-  (5280691923377360217374995, 2427829392031502796051276, [
-    (2, 47427230355438231356935, 0, 0, 0),
-    (1, 5009551768, 168276405869443, 76887548476077, 0),
-    (0, 17, 0, 0, 1786141),
-    (2, 119757351210716351830391849047313937428029184898338691027475, 0, 0, 0)]),
+  (nat_lit 9118416625177373563968046592273, nat_lit 26, nat_lit 4058029340722575056919190517619, nat_lit 26, nat_lit 14, nat_lit 10, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 518321975572312881, nat_lit 15, nat_lit 230282889778377075, nat_lit 15, nat_lit 0, nat_lit 5, nat_lit 7),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 53616913, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 2), (1, 2))
-  (586743547019067616347271, 269758819485319832371290, [
-    (2, 47427230355438231356935, 0, 0, 0),
-    (1, 5009551768, 18697378429207, 8539600647675, 0),
-    (0, 17, 0, 0, 198379),
-    (2, 103187297454581185369312791942459185026886078995, 0, 0, 0)]),
+  (nat_lit 569901039073513795307892207889, nat_lit 25, nat_lit 253626833776715780289078703987, nat_lit 25, nat_lit 14, nat_lit 9, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 32395123473265457, nat_lit 14, nat_lit 14391582641303923, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 7),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 3350801, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 2), (2, 0))
-  (804860832408597410365, 370039511717230553886, [
-    (2, 47427230355438231356935, 0, 0, 0),
-    (1, 5009551768, 25647981373, 11700843807, 0),
-    (0, 17, 0, 0, 271),
-    (2, 64694063635, 0, 0, 0)]),
+  (nat_lit 139135995867281100136083729, nat_lit 22, nat_lit 61920613644649353718216563, nat_lit 22, nat_lit 14, nat_lit 6, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 7908965691697, nat_lit 11, nat_lit 3510919180659, nat_lit 11, nat_lit 0, nat_lit 5, nat_lit 7),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 817, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 2), (2, 1))
-  (47526227292071791738106101, 21850463044000796499179940, [
-    (2, 47427230355438231356935, 0, 0, 0),
-    (1, 5009551768, 1514487652241077, 689194783566885, 0),
-    (0, 17, 0, 0, 16010389),
-    (2, 138603412186575622452851704114887243812680195217072023634570836125487635, 0, 0, 0)]),
+  (nat_lit 145894666002525535213277454364945, nat_lit 27, nat_lit 64928469371576093274217010902899, nat_lit 27, nat_lit 14, nat_lit 11, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 8293151609139245873, nat_lit 16, nat_lit 3679758729367466355, nat_lit 16, nat_lit 0, nat_lit 5, nat_lit 7),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 856760593, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((0, 2), (2, 2))
-  (65193727426243637616964, 29973200519412857390385, [
-    (2, 47427230355438231356935, 0, 0, 0),
-    (1, 5009551768, 2077486491484, 945771642786, 0),
-    (0, 17, 0, 0, 21970),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 35618814942027063366259929361, nat_lit 24, nat_lit 15851677093752497004303562611, nat_lit 24, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 2024695217075249, nat_lit 13, nat_lit 898444664713587, nat_lit 13, nat_lit 0, nat_lit 5, nat_lit 7),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 209185, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 0), (0, 0))
-  (5280691931008607058366655, 2423452869793671868625286, [
-    (2, 5783470775021508065767329659962377345953916357874241013018920712, 0, 0, 0),
-    (0, 92, 0, 21871219115539, 0),
-    (0, 19, 0, 0, 273)]),
+  (nat_lit 9118416625252336542852484002065, nat_lit 26, nat_lit 4056578635974476770511144958035, nat_lit 26, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 92, nat_lit 0, nat_lit 37498103270568209, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 12, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 819, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 0), (0, 1))
-  (804860832548059220467, 369372470202828801048, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (0, 92, 0, 1522767367, 0),
-    (0, 17, 0, 0, 273)]),
+  (nat_lit 139135995867363562971296017, nat_lit 22, nat_lit 61898477695876090332133235, nat_lit 22, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 92, nat_lit 0, nat_lit 241377046801, nat_lit 10, nat_lit 0, nat_lit 5, nat_lit 8, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 819, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 0), (0, 2))
-  (65193727423841233598737, 29919169950855183315858, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 2077486491385, 952357791099, 0),
-    (0, 17, 0, 0, 22123),
-    (2, 75872760781939552621075, 0, 0, 0)]),
+  (nat_lit 35618814942022642229467771153, nat_lit 24, nat_lit 15846010289713620072859383667, nat_lit 24, nat_lit 14, nat_lit 7, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 2024695217074961, nat_lit 13, nat_lit 900574968492403, nat_lit 13, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 209681, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 0), (1, 0))
-  (586743546813315946062724, 269272529544139254885819, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 18697378422628, 8570981707284, 0),
-    (0, 17, 0, 0, 199108),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 569901039072360956266120573201, nat_lit 25, nat_lit 253536164635392588280328566643, nat_lit 25, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 32395123473199889, nat_lit 14, nat_lit 14409174827348339, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 3354897, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 0), (1, 1))
-  (47526227310396241956339964, 21811075059711522692847999, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 1514487652824988, 694560944760024, 0),
-    (0, 17, 0, 0, 16135048),
-    (2, 119757351210716351830391849047313937428029184898338691027475, 0, 0, 0)]),
+  (nat_lit 145894666002837977023488745107729, nat_lit 27, nat_lit 64905258151677586328760944375667, nat_lit 27, nat_lit 14, nat_lit 10, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 8293151609157006097, nat_lit 16, nat_lit 3689047403598918003, nat_lit 16, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 858923281, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 0), (1, 2))
-  (5280691923171608547090448, 2423452782560877598682037, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 168276405862864, 77169978012558, 0),
-    (0, 17, 0, 0, 1792702),
-    (2, 103187297454581185369312791942459185026886078995, 0, 0, 0)]),
+  (nat_lit 9118416625176220724926274957585, nat_lit 26, nat_lit 4056578634461403984779188320115, nat_lit 26, nat_lit 14, nat_lit 9, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 518321975572247313, nat_lit 15, nat_lit 230564364755087731, nat_lit 15, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 53682449, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 0), (2, 0))
-  (7243747491677376658294, 3324352218268064252529, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 230831832358, 105844022634, 0),
-    (0, 17, 0, 0, 2458),
-    (2, 64694063635, 0, 0, 0)]),
+  (nat_lit 2226175933876497602176971025, nat_lit 23, nat_lit 990375643108684559892559731, nat_lit 23, nat_lit 14, nat_lit 6, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 126543451067153, nat_lit 12, nat_lit 56287477313907, nat_lit 12, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 13105, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 0), (2, 1))
-  (427736045628646125642919918, 196299674053120975570350447, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 13630388870169694, 6248255350122408, 0),
-    (0, 17, 0, 0, 145150552),
-    (2, 138603412186575622452851704114887243812680195217072023634570836125487635, 0, 0, 0)]),
+  (nat_lit 2334314656040408563412439269470481, nat_lit 28, nat_lit 1038484130346856273623685072631667, nat_lit 28, nat_lit 14, nat_lit 11, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 132690425746227933969, nat_lit 17, nat_lit 59019990950496121203, nat_lit 17, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 13741662481, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 0), (2, 2))
-  (586743546836192738517685, 269272529750030386980468, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 18697378423357, 8571369127773, 0),
-    (0, 17, 0, 0, 199117),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 569901039072433013860158501137, nat_lit 25, nat_lit 253536164636545509784935413619, nat_lit 25, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 32395123473203985, nat_lit 14, nat_lit 14409243546825075, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 3354913, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 1), (0, 0))
-  (427736046411697172157816355, 260866728438860603825914926, [
-    (2, 128975710312681128744765447849677093940474716670913710740829520190162030845341256654568502394471594630580490, 0, 0, 0),
-    (0, 93, 0, 21871219115539, 0),
-    (0, 19, 0, 0, 29433)]),
+  (nat_lit 2334314656064598154970308912705809, nat_lit 28, nat_lit 1383260431684288065598924232407123, nat_lit 28, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 93, nat_lit 0, nat_lit 37498103270568209, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 14, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 279347, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 1), (0, 1))
-  (65193727436393226975127, 39760208557547278116288, [
-    (2, 63041890825104930340675539905861139691951432176593061546250, 0, 0, 0),
-    (0, 93, 0, 1522767367, 0),
-    (0, 17, 0, 0, 29433)]),
+  (nat_lit 35618814942045072193659957521, nat_lit 24, nat_lit 21106879145547340763617245043, nat_lit 24, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 93, nat_lit 0, nat_lit 241377046801, nat_lit 10, nat_lit 0, nat_lit 5, nat_lit 10, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 279347, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 1), (0, 2))
-  (5280691921331140351614997, 3220576893025755577850298, [
-    (2, 63041890825104930340675539905861139691951432176593061546250, 0, 0, 0),
-    (1, 5009551768, 168276405803005, 102626990924259, 0),
-    (0, 17, 0, 0, 2384083),
-    (2, 75872760781939552621075, 0, 0, 0)]),
+  (nat_lit 9118416625157796410816757592337, nat_lit 26, nat_lit 5403361061259688576433848006515, nat_lit 26, nat_lit 14, nat_lit 7, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 518321975571194385, nat_lit 15, nat_lit 307145349629686131, nat_lit 15, nat_lit 0, nat_lit 5, nat_lit 10),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 71512849, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 1), (1, 0))
-  (47526227291878592061197944, 28985192037218242805695779, [
-    (2, 63041890825104930340675539905861139691951432176593061546250, 0, 0, 0),
-    (1, 5009551768, 1514487652233688, 923642679905724, 0),
-    (0, 17, 0, 0, 21456748),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 145894666002524404804199874916625, nat_lit 27, nat_lit 86453776980154991890056146532211, nat_lit 27, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 8293151609139175953, nat_lit 16, nat_lit 4914325569406447987, nat_lit 16, nat_lit 0, nat_lit 5, nat_lit 10),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 1144205585, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 1), (1, 1))
-  (3849624412142095598893654384, 2347800555181313910308454759, [
-    (2, 63041890825104930340675539905861139691951432176593061546250, 0, 0, 0),
-    (1, 5009551768, 122673499878824848, 74815368498833664, 0),
-    (0, 17, 0, 0, 1738003888),
-    (2, 119757351210716351830391849047313937428029184898338691027475, 0, 0, 0)]),
+  (nat_lit 37349034496726522118013191755755793, nat_lit 29, nat_lit 22132166906924695007583370343561075, nat_lit 29, nat_lit 14, nat_lit 10, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 2123046811944193565201, nat_lit 18, nat_lit 1258067644415848427891, nat_lit 18, nat_lit 0, nat_lit 5, nat_lit 10),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 292916699409, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 1), (1, 2))
-  (427736045776900292744443588, 260866728351627809555971677, [
-    (2, 63041890825104930340675539905861139691951432176593061546250, 0, 0, 0),
-    (1, 5009551768, 13630388874892804, 8312815261798518, 0),
-    (0, 17, 0, 0, 193111462),
-    (2, 103187297454581185369312791942459185026886078995, 0, 0, 0)]),
+  (nat_lit 2334314656045112505581199397318929, nat_lit 28, nat_lit 1383260431682774992813192275769203, nat_lit 28, nat_lit 14, nat_lit 9, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 132690425746495316497, nat_lit 17, nat_lit 78629226678020682099, nat_lit 17, nat_lit 0, nat_lit 5, nat_lit 10),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 18307293457, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 1), (2, 0))
-  (586743546825867939439114, 357841877004368108089689, [
-    (2, 63041890825104930340675539905861139691951432176593061546250, 0, 0, 0),
-    (1, 5009551768, 18697378421818, 11403025481874, 0),
-    (0, 17, 0, 0, 264898),
-    (2, 64694063635, 0, 0, 0)]),
+  (nat_lit 569901039072383386230312759569, nat_lit 25, nat_lit 337710066328732119332454348659, nat_lit 25, nat_lit 14, nat_lit 6, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 32395123473195537, nat_lit 14, nat_lit 19196585893638515, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 10),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 4469553, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 1), (2, 1))
-  (34646619695920336177506630658, 21130204995147542464110811287, [
-    (2, 63041890825104930340675539905861139691951432176593061546250, 0, 0, 0),
-    (1, 5009551768, 1104061498483746034, 673335523336785168, 0),
-    (0, 17, 0, 0, 15641970112),
-    (2, 138603412186575622452851704114887243812680195217072023634570836125487635, 0, 0, 0)]),
+  (nat_lit 597584551946344592233584525992620305, nat_lit 30, nat_lit 354114670510715135013697435459598195, nat_lit 30, nat_lit 14, nat_lit 11, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 33968748991034351100433, nat_lit 19, nat_lit 20129077543146488279411, nat_lit 19, nat_lit 0, nat_lit 5, nat_lit 10),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 4686666080529, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 1), (2, 2))
-  (47526227293731612250049785, 28985192037424133937790428, [
-    (2, 63041890825104930340675539905861139691951432176593061546250, 0, 0, 0),
-    (1, 5009551768, 1514487652292737, 923643067326213, 0),
-    (0, 17, 0, 0, 21456757),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 145894666002542851548273584468241, nat_lit 27, nat_lit 86453776980156144811560753379187, nat_lit 27, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 8293151609140224529, nat_lit 16, nat_lit 4914325638125924723, nat_lit 16, nat_lit 0, nat_lit 5, nat_lit 10),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 1144205601, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 2), (0, 0))
-  (47526227379077463568311625, 28267780426700365064354250, [
-    (2, 27311669005331998236446258007821973758707727107828343662731151063529967566519041198089, 0, 0, 0),
-    (0, 94, 0, 21871219115539, 0),
-    (0, 19, 0, 0, 3189)]),
+  (nat_lit 145894666004037384685644038631697, nat_lit 27, nat_lit 85186217050581158466300150102099, nat_lit 27, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 94, nat_lit 0, nat_lit 37498103270568209, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 13, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 17203, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 2), (0, 1))
-  (7243747492932575995933, 4308456078937273732572, [
-    (2, 57336265688539382182428105499642118101277280265, 0, 0, 0),
-    (0, 94, 0, 1522767367, 0),
-    (0, 17, 0, 0, 3189)]),
+  (nat_lit 2226175933877817011835334929, nat_lit 23, nat_lit 1299838516981256365231257459, nat_lit 23, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 94, nat_lit 0, nat_lit 241377046801, nat_lit 10, nat_lit 0, nat_lit 5, nat_lit 9, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 17203, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 2), (0, 2))
-  (586743546814571145400363, 348984942258345222769302, [
-    (2, 57336265688539382182428105499642118101277280265, 0, 0, 0),
-    (1, 5009551768, 18697378422547, 11119821104415, 0),
-    (0, 17, 0, 0, 258319),
-    (2, 75872760781939552621075, 0, 0, 0)]),
+  (nat_lit 569901039072362275675778937105, nat_lit 25, nat_lit 332758660346770970447035185011, nat_lit 25, nat_lit 14, nat_lit 7, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 32395123473199633, nat_lit 14, nat_lit 18914973477974387, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 9),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 4403985, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 2), (1, 0))
-  (5280691921319843557576246, 3140864480311549609966815, [
-    (2, 57336265688539382182428105499642118101277280265, 0, 0, 0),
-    (1, 5009551768, 168276405803734, 100078151527128, 0),
-    (0, 17, 0, 0, 2324872),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 9118416625157775300262223769873, nat_lit 26, nat_lit 5324138565548310194267141388147, nat_lit 26, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 518321975571198481, nat_lit 15, nat_lit 302639550979060083, nat_lit 15, nat_lit 0, nat_lit 5, nat_lit 9),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 70463761, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 2), (1, 1))
-  (427736045793566177650071406, 254410023071871761454408675, [
-    (2, 57336265688539382182428105499642118101277280265, 0, 0, 0),
-    (1, 5009551768, 13630388875424974, 8106641700167388, 0),
-    (0, 17, 0, 0, 188321932),
-    (2, 119757351210716351830391849047313937428029184898338691027475, 0, 0, 0)]),
+  (nat_lit 2334314656045407632375824216322321, nat_lit 28, nat_lit 1362979472785384493461385026680691, nat_lit 28, nat_lit 14, nat_lit 10, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 132690425746512097809, nat_lit 17, nat_lit 77476023698437124467, nat_lit 17, nat_lit 0, nat_lit 5, nat_lit 9),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 18038792465, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 2), (1, 2))
-  (47526227308544476966825762, 28267780339467570794411001, [
-    (2, 57336265688539382182428105499642118101277280265, 0, 0, 0),
-    (1, 5009551768, 1514487652765858, 900734506391154, 0),
-    (0, 17, 0, 0, 20924578),
-    (2, 103187297454581185369312791942459185026886078995, 0, 0, 0)]),
+  (nat_lit 145894666002819531598824693920017, nat_lit 27, nat_lit 85186217049068085680568193464179, nat_lit 27, nat_lit 14, nat_lit 9, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 8293151609155957265, nat_lit 16, nat_lit 4842250383182475635, nat_lit 16, nat_lit 0, nat_lit 5, nat_lit 9),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 1127424273, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 2), (2, 0))
-  (65193727425096432936376, 38776104696878068636245, [
-    (2, 57336265688539382182428105499642118101277280265, 0, 0, 0),
-    (1, 5009551768, 2077486491304, 1235562168558, 0),
-    (0, 17, 0, 0, 28702),
-    (2, 64694063635, 0, 0, 0)]),
+  (nat_lit 35618814942023961639126135057, nat_lit 24, nat_lit 20797416271674768958278547315, nat_lit 24, nat_lit 14, nat_lit 6, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 2024695217074705, nat_lit 13, nat_lit 1182187384156531, nat_lit 13, nat_lit 0, nat_lit 5, nat_lit 9),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 275249, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 2), (2, 1))
-  (3849624410657815130829290992, 2289690206162563124424396531, [
-    (2, 57336265688539382182428105499642118101277280265, 0, 0, 0),
-    (1, 5009551768, 122673499831527328, 72956982148788684, 0),
-    (0, 17, 0, 0, 1694832508),
-    (2, 138603412186575622452851704114887243812680195217072023634570836125487635, 0, 0, 0)]),
+  (nat_lit 37349034496646537014599032606126353, nat_lit 29, nat_lit 21807671564486166787745670389512051, nat_lit 29, nat_lit 14, nat_lit 11, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 2123046811939646943761, nat_lit 18, nat_lit 1239611611667907424627, nat_lit 18, nat_lit 0, nat_lit 5, nat_lit 9),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 288619569425, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((1, 2), (2, 2))
-  (5280691921525734689670895, 3140864480517440742061464, [
-    (2, 57336265688539382182428105499642118101277280265, 0, 0, 0),
-    (1, 5009551768, 168276405810295, 100078538947617, 0),
-    (0, 17, 0, 0, 2324881),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 9118416625158928221766830616849, nat_lit 26, nat_lit 5324138565549463115771748235123, nat_lit 26, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 518321975571264017, nat_lit 15, nat_lit 302639619698536819, nat_lit 15, nat_lit 0, nat_lit 5, nat_lit 9),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 70463777, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 0), (0, 0))
-  (65193727543316136527365, 30459577487496572724456, [
-    (2, 259194555591876413190, 0, 0, 0),
-    (0, 95, 0, 21871219115539, 0),
-    (0, 19, 0, 0, 3)]),
+  (nat_lit 35618814942391939620517540113, nat_lit 24, nat_lit 15942347746995553240403490899, nat_lit 24, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 95, nat_lit 0, nat_lit 37498103270568209, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 10, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 0), (0, 1))
-  (9936553488247649017, 4642506431120937018, [
-    (2, 43101193990, 0, 0, 0),
-    (0, 95, 0, 1522767367, 0),
-    (0, 17, 0, 0, 3)]),
+  (nat_lit 543499983856888917881105, nat_lit 20, nat_lit 243260895530002422118259, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 95, nat_lit 0, nat_lit 241377046801, nat_lit 10, nat_lit 0, nat_lit 5, nat_lit 6, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 0), (0, 2))
-  (804860832393101653687, 376042885346846329428, [
-    (2, 43101193990, 0, 0, 0),
-    (1, 99152730595, 2849775708, 1214000314, 0),
-    (0, 17, 0, 0, 253),
-    (2, 75872760781939552621075, 0, 0, 0)]),
+  (nat_lit 139135995867275946208882961, nat_lit 22, nat_lit 62274788825021567895549811, nat_lit 22, nat_lit 14, nat_lit 7, [
+    (nat_lit 1, nat_lit 54117446807825, nat_lit 12, nat_lit 494310355731, nat_lit 10, nat_lit 210842514199, nat_lit 10, nat_lit 0, nat_lit 5, nat_lit 6),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 785, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 0), (1, 0))
-  (7243747491522419091514, 3384385954564222007949, [
-    (2, 43101193990, 0, 0, 0),
-    (1, 99152730595, 25647981375, 10899512539, 0),
-    (0, 17, 0, 0, 2278),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 2226175933876409985414557969, nat_lit 23, nat_lit 996396621175012200907224947, nat_lit 23, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 54117446807825, nat_lit 12, nat_lit 7908965691699, nat_lit 11, nat_lit 3371938444055, nat_lit 11, nat_lit 0, nat_lit 5, nat_lit 6),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 12561, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 0), (1, 1))
-  (586743547041928913045554, 274135428955945029740529, [
-    (2, 43101193990, 0, 0, 0),
-    (1, 99152730595, 2077486492215, 917463456799, 0),
-    (0, 17, 0, 0, 191818),
-    (2, 119757351210716351830391849047313937428029184898338691027475, 0, 0, 0)]),
+  (nat_lit 569901039073585847748002935057, nat_lit 25, nat_lit 255077540037886852429080901491, nat_lit 25, nat_lit 14, nat_lit 10, [
+    (nat_lit 1, nat_lit 54117446807825, nat_lit 12, nat_lit 2024695217079347, nat_lit 13, nat_lit 881881729037079, nat_lit 13, nat_lit 0, nat_lit 5, nat_lit 6),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 3285265, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 0), (1, 2))
-  (65193727446563068486918, 30459490254702302781207, [
-    (2, 43101193990, 0, 0, 0),
-    (1, 99152730595, 230831832459, 101555906965, 0),
-    (0, 17, 0, 0, 21232),
-    (2, 103187297454581185369312791942459185026886078995, 0, 0, 0)]),
+  (nat_lit 35618814942094612206743286033, nat_lit 24, nat_lit 15942346233922767508446852979, nat_lit 24, nat_lit 14, nat_lit 9, [
+    (nat_lit 1, nat_lit 54117446807825, nat_lit 12, nat_lit 126543451067443, nat_lit 12, nat_lit 55048984949527, nat_lit 12, nat_lit 0, nat_lit 5, nat_lit 6),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 205073, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 0), (2, 0))
-  (89428981378733049484, 41782544322693476259, [
-    (2, 43101193990, 0, 0, 0),
-    (1, 99152730595, 316641745, 137832289, 0),
-    (0, 17, 0, 0, 28),
-    (2, 64694063635, 0, 0, 0)]),
+  (nat_lit 8695999741705068758528273, nat_lit 21, nat_lit 3892174303147153332320115, nat_lit 21, nat_lit 14, nat_lit 6, [
+    (nat_lit 1, nat_lit 54117446807825, nat_lit 12, nat_lit 30894397233, nat_lit 9, nat_lit 13274018583, nat_lit 9, nat_lit 0, nat_lit 5, nat_lit 6),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 49, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 0), (2, 1))
-  (5280691921341310193126788, 2467217376320776602383217, [
-    (2, 43101193990, 0, 0, 0),
-    (1, 99152730595, 18697378422729, 7946820809215, 0),
-    (0, 17, 0, 0, 1661482),
-    (2, 138603412186575622452851704114887243812680195217072023634570836125487635, 0, 0, 0)]),
+  (nat_lit 9118416625157845950829840920849, nat_lit 26, nat_lit 4081240560621082002375257044851, nat_lit 26, nat_lit 14, nat_lit 11, [
+    (nat_lit 1, nat_lit 54117446807825, nat_lit 12, nat_lit 32395123473200179, nat_lit 14, nat_lit 13812138471682839, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 6),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 51454225, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 0), (2, 2))
-  (7243747491804848627995, 3384386160455354102598, [
-    (2, 43101193990, 0, 0, 0),
-    (1, 99152730595, 25647981376, 10942559260, 0),
-    (0, 17, 0, 0, 2287),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 2226175933876691460391268625, nat_lit 23, nat_lit 996396622327933705514071923, nat_lit 23, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 54117446807825, nat_lit 12, nat_lit 7908965691700, nat_lit 11, nat_lit 3376233411351, nat_lit 11, nat_lit 0, nat_lit 5, nat_lit 6),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 12577, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 1), (0, 0))
-  (3849624417705274545589154035, 1772759890517902155776059320, [
-    (2, 609070571485146468614179279383383962768170338459903579338751332787867128456723673496870926675906561180096857887143143554920548875, 0, 0, 0),
-    (0, 96, 0, 21871219115539, 0),
-    (0, 19, 0, 0, 200019)]),
+  (nat_lit 37349034497033570479523778666787089, nat_lit 29, nat_lit 16635632453630344224407257199491155, nat_lit 29, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 96, nat_lit 0, nat_lit 37498103270568209, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 15, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 3359539, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 1), (0, 1))
-  (586743546927535211582983, 270196599668512306610442, [
-    (2, 69315291999225639679206370767092885148979833779550017291575958302165515, 0, 0, 0),
-    (0, 96, 0, 1522767367, 0),
-    (0, 17, 0, 0, 200019)]),
+  (nat_lit 569901039072721153934622814481, nat_lit 25, nat_lit 253839606531198832444652599155, nat_lit 25, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 96, nat_lit 0, nat_lit 241377046801, nat_lit 10, nat_lit 0, nat_lit 5, nat_lit 11, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 3359539, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 1), (0, 2))
-  (47526227291980259333341813, 21885924573013922885876772, [
-    (2, 69315291999225639679206370767092885148979833779550017291575958302165515, 0, 0, 0),
-    (1, 5009551768, 1514487652219837, 697423594753245, 0),
-    (0, 17, 0, 0, 16201549),
-    (2, 75872760781939552621075, 0, 0, 0)]),
+  (nat_lit 145894666002524742571904184971537, nat_lit 27, nat_lit 64982939271986470446778898659187, nat_lit 27, nat_lit 14, nat_lit 7, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 8293151609139040785, nat_lit 16, nat_lit 3693852269412299123, nat_lit 16, nat_lit 0, nat_lit 5, nat_lit 11),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 860042001, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 1), (1, 0))
-  (427736045626907324719588336, 196973321157111748577934045, [
-    (2, 69315291999225639679206370767092885148979833779550017291575958302165515, 0, 0, 0),
-    (1, 5009551768, 13630388870095984, 6276812114366598, 0),
-    (0, 17, 0, 0, 145813942),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 2334314656040390476866034062160145, nat_lit 28, nat_lit 1039727028351783501815576956974963, nat_lit 28, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 132690425746226745873, nat_lit 17, nat_lit 59101636285928255859, nat_lit 17, nat_lit 0, nat_lit 5, nat_lit 11),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 13760672017, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 1), (1, 1))
-  (34646619709278860386211696296, 15954839013892687877859754305, [
-    (2, 69315291999225639679206370767092885148979833779550017291575958302165515, 0, 0, 0),
-    (1, 5009551768, 1104061498909416424, 508422092690164458, 0),
-    (0, 17, 0, 0, 11810936602),
-    (2, 119757351210716351830391849047313937428029184898338691027475, 0, 0, 0)]),
+  (nat_lit 597584551947624353888209904155586833, nat_lit 30, nat_lit 266170119258061593548516697816905587, nat_lit 30, nat_lit 14, nat_lit 10, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 33968748991107096973841, nat_lit 19, nat_lit 15130019187845431243123, nat_lit 19, nat_lit 0, nat_lit 5, nat_lit 11),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 3522732106001, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 1), (1, 2))
-  (3849624411992102630868799132, 1772759890430669361506116071, [
-    (2, 69315291999225639679206370767092885148979833779550017291575958302165515, 0, 0, 0),
-    (1, 5009551768, 122673499874028028, 56491340171946384, 0),
-    (0, 17, 0, 0, 1312326208),
-    (2, 103187297454581185369312791942459185026886078995, 0, 0, 0)]),
+  (nat_lit 37349034496721800089298026420597009, nat_lit 29, nat_lit 16635632453628831151621525242853235, nat_lit 29, nat_lit 14, nat_lit 9, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 2123046811943924994577, nat_lit 18, nat_lit 945626198142369608051, nat_lit 18, nat_lit 0, nat_lit 5, nat_lit 11),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 220170756369, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 1), (2, 0))
-  (5280691921432807623758866, 2431769397003053364537075, [
-    (2, 69315291999225639679206370767092885148979833779550017291575958302165515, 0, 0, 0),
-    (1, 5009551768, 168276405789154, 77491537018428, 0),
-    (0, 17, 0, 0, 1800172),
-    (2, 64694063635, 0, 0, 0)]),
+  (nat_lit 9118416625158134178521067647249, nat_lit 26, nat_lit 4061433704499155986229020014451, nat_lit 26, nat_lit 14, nat_lit 6, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 518321975571059217, nat_lit 15, nat_lit 230865768380051827, nat_lit 15, nat_lit 0, nat_lit 5, nat_lit 11),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 53752625, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 1), (2, 1))
-  (311819577263283025593728482762, 143593551123549908172072507201, [
-    (2, 69315291999225639679206370767092885148979833779550017291575958302165515, 0, 0, 0),
-    (1, 5009551768, 9936553486353707098, 4575796041058762314, 0),
-    (0, 17, 0, 0, 106298364538),
-    (2, 138603412186575622452851704114887243812680195217072023634570836125487635, 0, 0, 0)]),
+  (nat_lit 9561352831141513475737351251945419025, nat_lit 31, nat_lit 4258721908128905511668630675033110387, nat_lit 31, nat_lit 14, nat_lit 11, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 543499983856549617537553, nat_lit 20, nat_lit 242080302238019813323123, nat_lit 20, nat_lit 0, nat_lit 5, nat_lit 11),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 56363712586001, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 1), (2, 2))
-  (427736045643584506419254905, 196973321157317639710028694, [
-    (2, 69315291999225639679206370767092885148979833779550017291575958302165515, 0, 0, 0),
-    (1, 5009551768, 13630388870627425, 6276812501787087, 0),
-    (0, 17, 0, 0, 145813951),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 2334314656040685624771213414986001, nat_lit 28, nat_lit 1039727028351784654737081563821939, nat_lit 28, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 132690425746243523089, nat_lit 17, nat_lit 59101636354647732595, nat_lit 17, nat_lit 0, nat_lit 5, nat_lit 11),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 13760672033, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 2), (0, 0))
-  (5280691931008607058898096, 2503219312870544378488647, [
-    (2, 5783470775021508065767329659962377345953916357874241013018920712, 0, 0, 0),
-    (0, 97, 0, 21871219115539, 0),
-    (0, 19, 0, 0, 282)]),
+  (nat_lit 9118416625252336542852500779281, nat_lit 26, nat_lit 4135806798488741108104688908371, nat_lit 26, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 97, nat_lit 0, nat_lit 37498103270568209, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 12, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 835, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 2), (0, 1))
-  (804860832548059751908, 381530135661885729849, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (0, 97, 0, 1522767367, 0),
-    (0, 17, 0, 0, 282)]),
+  (nat_lit 139135995867363562988073233, nat_lit 22, nat_lit 63107403515490719506839411, nat_lit 22, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 97, nat_lit 0, nat_lit 241377046801, nat_lit 10, nat_lit 0, nat_lit 5, nat_lit 8, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 835, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 2), (0, 2))
-  (65193727423841234130178, 30903940853038794548739, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 2077486491386, 983738850708, 0),
-    (0, 17, 0, 0, 22852),
-    (2, 75872760781939552621075, 0, 0, 0)]),
+  (nat_lit 35618814942022642229484548369, nat_lit 24, nat_lit 16155495299534965141584164723, nat_lit 24, nat_lit 14, nat_lit 7, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 2024695217074962, nat_lit 13, nat_lit 918167154536819, nat_lit 13, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 213777, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 2), (1, 0))
-  (586743546813315946594165, 278135467663791755981748, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 18697378422629, 8853411243765, 0),
-    (0, 17, 0, 0, 205669),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 569901039072360956266137350417, nat_lit 25, nat_lit 258487924792534109379925063539, nat_lit 25, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 32395123473199890, nat_lit 14, nat_lit 14690649804058995, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 3420433, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 2), (1, 1))
-  (47526227310396241956871405, 22528973047403375281618248, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 1514487652824989, 717437737214985, 0),
-    (0, 17, 0, 0, 16666489),
-    (2, 119757351210716351830391849047313937428029184898338691027475, 0, 0, 0)]),
+  (nat_lit 145894666002837977023488761884945, nat_lit 27, nat_lit 66172908751905815730257647581043, nat_lit 27, nat_lit 14, nat_lit 10, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 8293151609157006098, nat_lit 16, nat_lit 3761104997636845939, nat_lit 16, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 875700497, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 2), (1, 2))
-  (5280691923171608547621889, 2503219225637750108545398, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 168276405862865, 79711843840887, 0),
-    (0, 17, 0, 0, 1851751),
-    (2, 103187297454581185369312791942459185026886078995, 0, 0, 0)]),
+  (nat_lit 9118416625176220724926291734801, nat_lit 26, nat_lit 4135806796975668322372732270451, nat_lit 26, nat_lit 14, nat_lit 9, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 518321975572247314, nat_lit 15, nat_lit 235067964382458227, nat_lit 15, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 54731025, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 2), (2, 0))
-  (7243747491677377189735, 3433771207399576611738, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 230831832359, 109330807035, 0),
-    (0, 17, 0, 0, 2539),
-    (2, 64694063635, 0, 0, 0)]),
+  (nat_lit 2226175933876497602193748241, nat_lit 23, nat_lit 1009718456222518626687858547, nat_lit 23, nat_lit 14, nat_lit 6, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 126543451067154, nat_lit 12, nat_lit 57386988941683, nat_lit 12, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 13361, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 2), (2, 1))
-  (427736045628646125643451359, 202760755942347648869282688, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 13630388870169695, 6454146482217057, 0),
-    (0, 17, 0, 0, 149933521),
-    (2, 138603412186575622452851704114887243812680195217072023634570836125487635, 0, 0, 0)]),
+  (nat_lit 2334314656040408563412439286247697, nat_lit 28, nat_lit 1058766539950507944047632323917683, nat_lit 28, nat_lit 14, nat_lit 11, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 132690425746227933970, nat_lit 17, nat_lit 60172912455102968179, nat_lit 17, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 14010097937, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1g((2, 2), (2, 2))
-  (586743546836192739049126, 278135467869682888076397, [
-    (2, 52147028626445056676876398828586760, 0, 0, 0),
-    (1, 5009551768, 18697378423358, 8853798664254, 0),
-    (0, 17, 0, 0, 205678),
-    (2, 88635641518209082174654292172018195, 0, 0, 0)]),
+  (nat_lit 569901039072433013860175278353, nat_lit 25, nat_lit 258487924793687030884531910515, nat_lit 25, nat_lit 14, nat_lit 8, [
+    (nat_lit 1, nat_lit 1340888674577, nat_lit 11, nat_lit 32395123473203986, nat_lit 14, nat_lit 14690718523535731, nat_lit 14, nat_lit 0, nat_lit 5, nat_lit 8),
+    (nat_lit 0, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 3420449, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S1h()
-  (7, 193843261945935271620472478055147930, [
-    (1, 7, 0, 143497068910317840, 0),
-    (0, 98, 1, 3333519151, 370391016),
-    (0, 2, 0, 0, 143497068856568569)]),
+  (nat_lit 7, nat_lit 1, nat_lit 185681613745444288289340914966422240348158035, nat_lit 37, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 7, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2457475695969527216211, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 98, nat_lit 1, nat_lit 572175648055, nat_lit 10, nat_lit 35760978003, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 2, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 2457475695964660635441, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2a(0, 'S0')
-  (2, 1640, [
-    (1, 2, 0, 182, 0)]),
+  (nat_lit 2, nat_lit 1, nat_lit 8738, nat_lit 4, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 2, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 546, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2b(0, 'S0')
-  (25, 47567, [
-    (1, 0, 25, 47567, 0)]),
+  (nat_lit 39, nat_lit 2, nat_lit 467490, nat_lit 5, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 39, nat_lit 2, nat_lit 467490, nat_lit 5, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2a(0, 'X0')
-  (663490, 663490, [
+  (nat_lit 19009825, nat_lit 7, nat_lit 19009825, nat_lit 7, nat_lit 0, nat_lit 0, [
     ]),
   -- S2b(0, 'X0')
-  (5971417, 171541026010513, [
-    (1, 0, 5971417, 171541026010513, 0)]),
+  (nat_lit 304157207, nat_lit 8, nat_lit 523599820361961761, nat_lit 15, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 304157207, nat_lit 8, nat_lit 523599820361961761, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2a(0, 'Z0')
-  (1130122, 1130122, [
+  (nat_lit 34677265, nat_lit 7, nat_lit 34677265, nat_lit 7, nat_lit 0, nat_lit 0, [
     ]),
   -- S2b(0, 'Z0')
-  (10171105, 34610905, [
-    (1, 0, 10171105, 34610905, 0)]),
+  (nat_lit 554836247, nat_lit 8, nat_lit 1913725457, nat_lit 8, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 554836247, nat_lit 8, nat_lit 1913725457, nat_lit 8, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2a(1, 'S0')
-  (182, 0, [
-    (1, 0, 182, 0, 0)]),
+  (nat_lit 546, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 546, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2b(1, 'S0')
-  (2045, 7, [
-    (1, 0, 2045, 7, 0)]),
+  (nat_lit 10018, nat_lit 4, nat_lit 7, nat_lit 1, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 10018, nat_lit 4, nat_lit 7, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2a(1, 'X0')
-  (53742710, 2214233354478371775130, [
-    (1, 0, 53742710, 2214233354478371775130, 0)]),
+  (nat_lit 4866515234, nat_lit 9, nat_lit 660154406163382525589852449, nat_lit 23, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 4866515234, nat_lit 9, nat_lit 660154406163382525589852449, nat_lit 23, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2b(1, 'X0')
-  (483684797, 307465935616097732855084204233, [
-    (1, 0, 483684797, 307465935616097732855084204233, 0)]),
+  (nat_lit 77864245026, nat_lit 10, nat_lit 9482517328969954648431378040480731425, nat_lit 31, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 77864245026, nat_lit 10, nat_lit 9482517328969954648431378040480731425, nat_lit 31, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2a(1, 'Z0')
-  (91539902, 96789502, [
-    (1, 0, 5446460, 10696060, 2)]),
+  (nat_lit 8877379874, nat_lit 9, nat_lit 9161482769, nat_lit 9, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 287445282, nat_lit 8, nat_lit 571548177, nat_lit 8, nat_lit 2, nat_lit 0, nat_lit 0)]),
   -- S2b(1, 'Z0')
-  (823859525, 2808732925, [
-    (1, 0, 823859525, 2808732925, 0)]),
+  (nat_lit 142038079266, nat_lit 10, nat_lit 490197819921, nat_lit 10, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 142038079266, nat_lit 10, nat_lit 490197819921, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2a(2, 'S0')
-  (14762, 20, [
-    (0, 252, 1, 0, 2)]),
+  (nat_lit 139810, nat_lit 5, nat_lit 34, nat_lit 2, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 252, nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 2, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2b(2, 'S0')
-  (165665, 587, [
-    (0, 259, 0, 20, 0)]),
+  (nat_lit 2564642, nat_lit 6, nat_lit 1826, nat_lit 3, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 259, nat_lit 0, nat_lit 34, nat_lit 2, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2a(2, 'X0')
-  (4353159530, 37523344965291748, [
-    (1, 0, 4353159530, 37523344965291748, 0)]),
+  (nat_lit 1245827899938, nat_lit 11, nat_lit 629648565310876422433, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 1245827899938, nat_lit 11, nat_lit 629648565310876422433, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2b(2, 'X0')
-  (39178468577, 5204787598506596168387035, [
-    (1, 0, 39178468577, 5204787598506596168387035, 0)]),
+  (nat_lit 19933246726690, nat_lit 12, nat_lit 9042576855651035634653464760609, nat_lit 26, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 19933246726690, nat_lit 12, nat_lit 9042576855651035634653464760609, nat_lit 26, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2a(2, 'Z0')
-  (7414732082, 7845199282, [
-    (1, 0, 441163280, 871630480, 2)]),
+  (nat_lit 2272609247778, nat_lit 11, nat_lit 2345623691793, nat_lit 11, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 73585992226, nat_lit 10, nat_lit 146600436241, nat_lit 10, nat_lit 2, nat_lit 0, nat_lit 0)]),
   -- S2b(2, 'Z0')
-  (66732621545, 227512616545, [
-    (1, 0, 66732621545, 227512616545, 0)]),
+  (nat_lit 36361748292130, nat_lit 12, nat_lit 125490926002705, nat_lit 12, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 36361748292130, nat_lit 12, nat_lit 125490926002705, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2c('S1',)
-  (43, 67, [
-    (1, 0, 43, 67, 0)]),
+  (nat_lit 71, nat_lit 2, nat_lit 116, nat_lit 2, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 71, nat_lit 2, nat_lit 116, nat_lit 2, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2c('X1',)
-  (16733095, 808466193915548186755, [
-    (1, 0, 16733095, 808466193915548186755, 0)]),
+  (nat_lit 876819511, nat_lit 8, nat_lit 139348535797632658171830801, nat_lit 22, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 876819511, nat_lit 8, nat_lit 139348535797632658171830801, nat_lit 22, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2c('Z1',)
-  (20932783, 35806647, [
-    (1, 0, 20932783, 35806647, 0)]),
+  (nat_lit 1127498551, nat_lit 8, nat_lit 1949516851, nat_lit 8, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 1127498551, nat_lit 8, nat_lit 1949516851, nat_lit 8, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2d()
-  (79, 71, [
-    (0, 0, 0, 0, 0)]),
+  (nat_lit 135, nat_lit 2, nat_lit 120, nat_lit 2, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2e(0, 'X0')
-  (663490, 663490, [
+  (nat_lit 19009825, nat_lit 7, nat_lit 19009825, nat_lit 7, nat_lit 0, nat_lit 0, [
     ]),
   -- S2e(0, 'Z0')
-  (1130122, 1130122, [
+  (nat_lit 34677265, nat_lit 7, nat_lit 34677265, nat_lit 7, nat_lit 0, nat_lit 0, [
     ]),
   -- S2e(1, 'X0')
-  (53742710, 2214233354478371775130, [
-    (0, 260, 0, 0, 0)]),
+  (nat_lit 4866515234, nat_lit 9, nat_lit 660154406163382525589852449, nat_lit 23, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 260, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2e(1, 'Z0')
-  (91539902, 96789502, [
-    (0, 262, 0, 0, 0)]),
+  (nat_lit 8877379874, nat_lit 9, nat_lit 9161482769, nat_lit 9, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 262, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2e(2, 'X0')
-  (4353159530, 37523344965291748, [
-    (0, 266, 0, 0, 0)]),
+  (nat_lit 1245827899938, nat_lit 11, nat_lit 629648565310876422433, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 266, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2e(2, 'Z0')
-  (7414732082, 7845199282, [
-    (0, 268, 0, 0, 0)]),
+  (nat_lit 2272609247778, nat_lit 11, nat_lit 2345623691793, nat_lit 11, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 268, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(0, (0, 1))
-  (70, 22467, [
-    (1, 0, 70, 22467, 0)]),
+  (nat_lit 119, nat_lit 2, nat_lit 210739, nat_lit 5, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 119, nat_lit 2, nat_lit 210739, nat_lit 5, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(0, (0, 2))
-  (5380, 30, [
-    (1, 0, 5380, 30, 0)]),
+  (nat_lit 29495, nat_lit 4, nat_lit 51, nat_lit 2, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 29495, nat_lit 4, nat_lit 51, nat_lit 2, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(0, (1, 0))
-  (48391, 6060159586476915454, [
-    (1, 0, 48391, 6060159586476915454, 0)]),
+  (nat_lit 471863, nat_lit 5, nat_lit 322065677578110843822609, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 471863, nat_lit 5, nat_lit 322065677578110843822609, nat_lit 20, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(0, (1, 1))
-  (3984991, 656752715784947098, [
-    (1, 0, 3984991, 656752715784947098, 0)]),
+  (nat_lit 121910071, nat_lit 7, nat_lit 19834222674453550146065, nat_lit 19, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 121910071, nat_lit 7, nat_lit 19834222674453550146065, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(0, (1, 2))
-  (442051, 56374174596950614, [
-    (1, 0, 442051, 56374174596950614, 0)]),
+  (nat_lit 7615287, nat_lit 6, nat_lit 944756742974969291281, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 7615287, nat_lit 6, nat_lit 944756742974969291281, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(0, (2, 0))
-  (601, 143593815908535447104854177618, [
-    (1, 0, 601, 143593815908535447104854177618, 0)]),
+  (nat_lit 1847, nat_lit 3, nat_lit 4258722195001123789591033736779080209, nat_lit 31, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 1847, nat_lit 3, nat_lit 4258722195001123789591033736779080209, nat_lit 31, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(0, (2, 1))
-  (35280961, 16445068911221486600599352416, [
-    (1, 0, 35280961, 16445068911221486600599352416, 0)]),
+  (nat_lit 1932800823, nat_lit 8, nat_lit 271117673533272253356340537642263057, nat_lit 30, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 1932800823, nat_lit 8, nat_lit 271117673533272253356340537642263057, nat_lit 30, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(0, (2, 2))
-  (48472, 416400476317897964293, [
-    (1, 0, 48472, 416400476317897964293, 0)]),
+  (nat_lit 472119, nat_lit 5, nat_lit 66652112565688086689817105, nat_lit 22, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 472119, nat_lit 5, nat_lit 66652112565688086689817105, nat_lit 22, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(1, (0, 1))
-  (5690, 1819047, [
-    (0, 280, 0, 20, 0),
-    (2, 33751298, 0, 0, 0)]),
+  (nat_lit 30498, nat_lit 4, nat_lit 53944883, nat_lit 7, nat_lit 0, nat_lit 4, [
+    (nat_lit 0, nat_lit 280, nat_lit 0, nat_lit 34, nat_lit 2, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(1, (0, 2))
-  (435800, 1650, [
-    (0, 281, 0, 20, 0),
-    (2, 33751298, 0, 0, 0)]),
+  (nat_lit 7550754, nat_lit 6, nat_lit 8755, nat_lit 4, nat_lit 0, nat_lit 4, [
+    (nat_lit 0, nat_lit 281, nat_lit 0, nat_lit 34, nat_lit 2, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(1, (1, 0))
-  (3919691, 490872923401445114194, [
-    (1, 0, 3919691, 490872923401445114194, 0)]),
+  (nat_lit 120796962, nat_lit 7, nat_lit 82448813454930930796929553, nat_lit 22, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 120796962, nat_lit 7, nat_lit 82448813454930930796929553, nat_lit 22, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(1, (1, 1))
-  (322784291, 53196966875395677358, [
-    (1, 0, 322784291, 53196966875395677358, 0)]),
+  (nat_lit 31208978210, nat_lit 9, nat_lit 5077560999594663615734289, nat_lit 21, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 31208978210, nat_lit 9, nat_lit 5077560999594663615734289, nat_lit 21, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(1, (1, 2))
-  (35806151, 4566305039167962154, [
-    (1, 0, 35806151, 4566305039167962154, 0)]),
+  (nat_lit 1949513506, nat_lit 8, nat_lit 241857721136146916909585, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 1949513506, nat_lit 8, nat_lit 241857721136146916909585, nat_lit 20, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(1, (2, 0))
-  (48701, 21885966616647374660592298, [
-    (1, 0, 48701, 21885966616647374660592298, 0)]),
+  (nat_lit 472866, nat_lit 5, nat_lit 64982943734920397437879115129361, nat_lit 27, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 472866, nat_lit 5, nat_lit 64982943734920397437879115129361, nat_lit 27, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(1, (2, 1))
-  (2857757861, 2506720806079222982556376, [
-    (1, 0, 2857757861, 2506720806079222982556376, 0)]),
+  (nat_lit 494797010722, nat_lit 10, nat_lit 4136967370837805760756713595409, nat_lit 26, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 494797010722, nat_lit 10, nat_lit 4136967370837805760756713595409, nat_lit 26, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(1, (2, 2))
-  (3926252, 63900286666328413, [
-    (1, 0, 3926252, 63900286666328413, 0)]),
+  (nat_lit 120862498, nat_lit 7, nat_lit 1019408091462044295697, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 120862498, nat_lit 7, nat_lit 1019408091462044295697, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(2, (0, 1))
-  (460910, 147342027, [
-    (0, 280, 0, 1640, 0),
-    (2, 144964032544244484, 0, 0, 0)]),
+  (nat_lit 7807522, nat_lit 6, nat_lit 13809885747, nat_lit 9, nat_lit 0, nat_lit 6, [
+    (nat_lit 0, nat_lit 280, nat_lit 0, nat_lit 8738, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(2, (0, 2))
-  (35299820, 132870, [
-    (0, 281, 0, 1640, 0),
-    (2, 144964032544244484, 0, 0, 0)]),
+  (nat_lit 1932993058, nat_lit 8, nat_lit 2236979, nat_lit 6, nat_lit 0, nat_lit 6, [
+    (nat_lit 0, nat_lit 281, nat_lit 0, nat_lit 8738, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(2, (1, 0))
-  (317494991, 74816823329159914, [
-    (1, 0, 317494991, 74816823329159914, 0)]),
+  (nat_lit 30924022306, nat_lit 9, nat_lit 1258069072826390880785, nat_lit 18, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 30924022306, nat_lit 9, nat_lit 1258069072826390880785, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(2, (1, 1))
-  (26145527591, 8108096530493638, [
-    (1, 0, 26145527591, 8108096530493638, 0)]),
+  (nat_lit 7989498421794, nat_lit 11, nat_lit 77477452108979577361, nat_lit 17, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 7989498421794, nat_lit 11, nat_lit 77477452108979577361, nat_lit 17, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(2, (1, 2))
-  (2900298251, 696015775086274, [
-    (1, 0, 2900298251, 696015775086274, 0)]),
+  (nat_lit 499075457570, nat_lit 10, nat_lit 3690475814141370897, nat_lit 16, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 499075457570, nat_lit 10, nat_lit 3690475814141370897, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(2, (2, 0))
-  (3944801, 1772763161030291273809294558, [
-    (1, 0, 3944801, 1772763161030291273809294558, 0)]),
+  (nat_lit 121053730, nat_lit 7, nat_lit 16635633574308417942938252102148625, nat_lit 29, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 121053730, nat_lit 7, nat_lit 16635633574308417942938252102148625, nat_lit 29, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(2, (2, 1))
-  (231478386761, 203025771908706142221785596, [
-    (1, 0, 231478386761, 203025771908706142221785596, 0)]),
+  (nat_lit 126668034744866, nat_lit 12, nat_lit 1059053452063061212572351191917073, nat_lit 28, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 126668034744866, nat_lit 12, nat_lit 1059053452063061212572351191917073, nat_lit 28, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2f(2, (2, 2))
-  (318026432, 5141175604120372753, [
-    (1, 0, 318026432, 5141175604120372753, 0)]),
+  (nat_lit 30940799522, nat_lit 9, nat_lit 260362183023744630465041, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 30940799522, nat_lit 9, nat_lit 260362183023744630465041, nat_lit 20, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (0, 0))
-  (27741009958, 5309689248460194087, [
-    (1, 0, 0, 143497068910317840, 27741009958),
-    (0, 4, 1, 370391016, 7),
-    (0, 5, 1, 370391016, 0),
-    (1, 370391016, 0, 1522777800, 9936553505286828625),
-    (0, 12, 1, 8596456200948, 0)]),
+  (nat_lit 8268757042487, nat_lit 11, nat_lit 265397284573169787942995, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 2457475695969527216211, nat_lit 18, nat_lit 8268757042487, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 1, nat_lit 35760978003, nat_lit 9, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 35760978003, nat_lit 9, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 35760978003, nat_lit 9, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 543499983862317288878871, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 14417038382807123, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (0, 1))
-  (3952186, 4568390778023990679, [
-    (0, 12, 0, 0, 7),
-    (0, 5, 1, 439131, 0),
-    (0, 280, 0, 25788, 1104061500587425402),
-    (1, 1797258, 0, 1522777800, 804860833928233118335),
-    (0, 9, 1, 574307576801748804, 0),
-    (0, 9, 1, 124023670910751441, 3),
-    (0, 12, 1, 106126313430, 30)]),
+  (nat_lit 121123639, nat_lit 7, nat_lit 241877398769215764398899, nat_lit 20, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 7570227, nat_lit 6, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 280, nat_lit 0, nat_lit 230195, nat_lit 5, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 53707571, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 139135995868753225952990007, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 16297928973444785079091, nat_lit 19, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 2130829524835849438003, nat_lit 18, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 56316470199091, nat_lit 12, nat_lit 51, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (0, 2))
-  (317502376, 6177078288498817424310753, [
-    (0, 12, 0, 0, 597),
-    (0, 9, 0, 439131, 66),
-    (0, 9, 0, 2033454, 7),
-    (0, 5, 1, 16382361, 0),
-    (0, 281, 0, 25788, 1104061500587425402),
-    (1, 1797258, 0, 143497068910317840, 1104061500587425402),
-    (0, 4, 0, 686342032188914010664218, 0),
-    (1, 1771568749203762, 143497068910317840, 0, 3333519151)]),
+  (nat_lit 30924092215, nat_lit 9, nat_lit 10554777744889092898165567488819, nat_lit 26, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 1843, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 7570227, nat_lit 6, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 57901875, nat_lit 7, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 863208243, nat_lit 8, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 281, nat_lit 0, nat_lit 230195, nat_lit 5, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 53707571, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 2457475695969527216211, nat_lit 18, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 0, nat_lit 659673609056497400388064084787, nat_lit 25, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 9599514437294981939, nat_lit 16, nat_lit 2457475695969527216211, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 572175648055, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (1, 0)).0
-  (2857258915, 2337369204625913506734222970374778180950770663782, [
-    (0, 12, 0, 0, 5376),
-    (0, 9, 0, 439131, 597),
-    (0, 9, 0, 2033454, 66),
-    (0, 9, 0, 16382361, 7),
-    (0, 5, 1, 145522524, 0),
-    (1, 25788, 48391, 8312980369848328, 1104061500587425402),
-    (2, 41600043924232953377690272701550540982935981270959610247502260368245765, 0, 0, 0),
-    (1, 717761300244796, 0, 1522777800, 586743547933681943329186),
-    (0, 11, 1, 185487560613926590218010949224, 0),
-    (0, 11, 1, 15922927513061776160833216420, 4)]),
+  (nat_lit 494780560183, nat_lit 10, nat_lit 6874638900241861304191263159503048818500570678725126143418897, nat_lit 51, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 29491, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 7570227, nat_lit 6, nat_lit 1843, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 57901875, nat_lit 7, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 863208243, nat_lit 8, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 13748110131, nat_lit 9, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 230195, nat_lit 5, nat_lit 471863, nat_lit 5, nat_lit 78629317051648385553, nat_lit 17, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 3761406752374989329, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 569901039078413213503448167223, nat_lit 0, nat_lit 11),
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 5582839108075875320010957244299551249, nat_lit 31, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 265927124936211828395729003178172945, nat_lit 30, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (1, 0)).1
-  (2337369204625913506734222970374778180950770663782, 1247717475246175674879970957848490, [
-    (0, 9, 1, 1792541421323041656068405353, 40),
-    (0, 9, 1, 222498522240960044427870790, 363),
-    (0, 9, 1, 48049311231839865356700283, 3270),
-    (0, 12, 1, 41115529711544892904, 29433),
-    (0, 258, 1, 67240, 3220576894311037427420652),
-    (2, 152460719043408020829045099099047886692344407428341242740601179182073865, 0, 0, 0)]),
+  (nat_lit 6874638900241861304191263159503048818500570678725126143418897, nat_lit 51, nat_lit 371316144745923995433875594107583345009169, nat_lit 35, nat_lit 7, nat_lit 17, [
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 16696875726540102226265179375608337, nat_lit 29, nat_lit 68, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 1119985150935619340673690387948049, nat_lit 28, nat_lit 1091, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 146429489960339160324222326219281, nat_lit 27, nat_lit 17459, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 3870038434350647756268049, nat_lit 21, nat_lit 279347, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 258, nat_lit 1, nat_lit 1122833, nat_lit 6, nat_lit 5403361061266758227434967106355, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (1, 0))
-  (2857258915, 1247717475246175674879970957848490, [
-    (0, 307, 0, 0, 0),
-    (0, 308, 0, 0, 0)]),
+  (nat_lit 494780560183, nat_lit 10, nat_lit 371316144745923995433875594107583345009169, nat_lit 35, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 307, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 308, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (1, 1)).0
-  (235309552315, 421222012352768319191742755744523325243147095442, [
-    (0, 12, 0, 0, 442776),
-    (0, 9, 0, 439131, 49197),
-    (0, 9, 0, 2033454, 5466),
-    (0, 9, 0, 16382361, 607),
-    (0, 11, 0, 145522524, 67),
-    (0, 11, 0, 1695204480, 7),
-    (0, 5, 1, 15642342084, 0),
-    (1, 25788, 3984991, 900899614440964, 1104061500587425402),
-    (2, 41600043924232953377690272701550540982935981270959610247502260368245765, 0, 0, 0),
-    (1, 717761300244796, 0, 1522777800, 65193727548186882591406)]),
+  (nat_lit 127831970951991, nat_lit 12, nat_lit 722435394258442130206789600854833220985392961665298942992913, nat_lit 50, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 7619379, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 7570227, nat_lit 6, nat_lit 476211, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 57901875, nat_lit 7, nat_lit 29763, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 863208243, nat_lit 8, nat_lit 1860, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 13748110131, nat_lit 9, nat_lit 116, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 288626017075, nat_lit 10, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 4686672528179, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 230195, nat_lit 5, nat_lit 121910071, nat_lit 7, nat_lit 4842340756810179089, nat_lit 16, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 3761406752374989329, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 35618814942400825843965506359, nat_lit 0, nat_lit 11)]),
   -- S2g(0, (1, 1)).1
-  (421222012352768319191742755744523325243147095442, 135203917471401629850827852921446, [
-    (0, 11, 1, 15922927513061776160833216420, 0),
-    (0, 9, 1, 1792541421323041656068405353, 4),
-    (0, 9, 1, 222498522240960044427870790, 39),
-    (0, 9, 1, 48049311231839865356700283, 354),
-    (0, 12, 1, 41115529711544892904, 3189),
-    (0, 258, 1, 67240, 348984943543627072339656),
-    (2, 152460719043408020829045099099047886692344407428341242740601179182073865, 0, 0, 0)]),
+  (nat_lit 722435394258442130206789600854833220985392961665298942992913, nat_lit 50, nat_lit 22867001018883008847379996097452696478225, nat_lit 34, nat_lit 7, nat_lit 17, [
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 265927124936211828395729003178172945, nat_lit 30, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 16696875726540102226265179375608337, nat_lit 29, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 1119985150935619340673690387948049, nat_lit 28, nat_lit 67, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 146429489960339160324222326219281, nat_lit 27, nat_lit 1075, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 3870038434350647756268049, nat_lit 21, nat_lit 17203, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 258, nat_lit 1, nat_lit 1122833, nat_lit 6, nat_lit 332758660353840621448154284851, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (1, 1))
-  (235309552315, 135203917471401629850827852921446, [
-    (0, 310, 0, 0, 0),
-    (0, 311, 0, 0, 0)]),
+  (nat_lit 127831970951991, nat_lit 12, nat_lit 22867001018883008847379996097452696478225, nat_lit 34, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 310, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 311, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (1, 2)).0
-  (26102488255, 24288328080849411262479437525365764534234562294, [
-    (0, 12, 0, 0, 49116),
-    (0, 9, 0, 439131, 5457),
-    (0, 9, 0, 2033454, 606),
-    (0, 9, 0, 16382361, 67),
-    (0, 11, 0, 145522524, 7),
-    (0, 5, 1, 1695204480, 0),
-    (1, 25788, 442051, 77335086062368, 1104061500587425402),
-    (2, 41600043924232953377690272701550540982935981270959610247502260368245765, 0, 0, 0),
-    (1, 717761300244796, 0, 1522777800, 7243747505354098064986),
-    (0, 9, 1, 1792541421323041656068405353, 0)]),
+  (nat_lit 7985203524407, nat_lit 11, nat_lit 21653318464982081862627635036872652136495515062274817597969, nat_lit 49, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 475955, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 7570227, nat_lit 6, nat_lit 29747, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 57901875, nat_lit 7, nat_lit 1859, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 863208243, nat_lit 8, nat_lit 116, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 13748110131, nat_lit 9, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 288626017075, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 230195, nat_lit 5, nat_lit 7615287, nat_lit 6, nat_lit 230654738382791185, nat_lit 15, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 3761406752374989329, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 2226175933900051615247840055, nat_lit 0, nat_lit 11),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 16696875726540102226265179375608337, nat_lit 29, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (1, 2)).1
-  (24288328080849411262479437525365764534234562294, 11591299940871180403145285707330, [
-    (0, 9, 1, 222498522240960044427870790, 3),
-    (0, 9, 1, 48049311231839865356700283, 30),
-    (0, 12, 1, 41115529711544892904, 273),
-    (0, 258, 1, 67240, 29919171236137032886212),
-    (2, 152460719043408020829045099099047886692344407428341242740601179182073865, 0, 0, 0)]),
+  (nat_lit 21653318464982081862627635036872652136495515062274817597969, nat_lit 49, nat_lit 1088929535942947185724021221819530945041, nat_lit 33, nat_lit 7, nat_lit 17, [
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 1119985150935619340673690387948049, nat_lit 28, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 146429489960339160324222326219281, nat_lit 27, nat_lit 51, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 3870038434350647756268049, nat_lit 21, nat_lit 819, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 258, nat_lit 1, nat_lit 1122833, nat_lit 6, nat_lit 15846010296783271073978483507, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (1, 2))
-  (26102488255, 11591299940871180403145285707330, [
-    (0, 313, 0, 0, 0),
-    (0, 314, 0, 0, 0)]),
+  (nat_lit 7985203524407, nat_lit 11, nat_lit 1088929535942947185724021221819530945041, nat_lit 33, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 313, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 314, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (2, 0)).0
-  (35307205, 15714670625922083267261407165945391180449652086738, [
-    (0, 12, 0, 0, 66),
-    (0, 9, 0, 439131, 7),
-    (0, 5, 1, 2033454, 0),
-    (1, 25788, 601, 56491505323160284, 1104061500587425402),
-    (2, 31533301721987473957499812605054029838574902886734378501125, 0, 0, 0),
-    (1, 720301444321654, 0, 1522777800, 5280691931403137489378716),
-    (0, 9, 1, 1330048834044764087644104722509, 0),
-    (0, 9, 1, 185487560613926592758155026082, 3),
-    (0, 11, 1, 15922927513061778700977293278, 30),
-    (0, 9, 1, 1792541421323044196212482211, 274)]),
+  (nat_lit 1933062967, nat_lit 8, nat_lit 82377228086738233703388184867521456031399398950933685133709841, nat_lit 52, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 7570227, nat_lit 6, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 57901875, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 230195, nat_lit 5, nat_lit 1847, nat_lit 3, nat_lit 945626288520294371857, nat_lit 18, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 3765910029881905681, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 9118416625254611416055152915255, nat_lit 0, nat_lit 10),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 69385782905751837219398199415263007249, nat_lit 32, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 5582839108075875320015460521806467601, nat_lit 31, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 265927124936211828400232280685089297, nat_lit 30, nat_lit 51, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 16696875726540102230768456882524689, nat_lit 29, nat_lit 820, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (2, 0)).1
-  (15714670625922083267261407165945391180449652086738, 29564638804018656156150881945419656796987438, [
-    (0, 9, 1, 222498522240962584571947648, 2469),
-    (0, 9, 1, 48049311231842405500777141, 22224),
-    (0, 12, 1, 41115532251688969762, 200019),
-    (1, 172, 10, 51472352490752, 196973321168692842662041698),
-    (2, 1577595362829843614090907432411668201455510623573329155852094004797925999439335278463057015934784587701885571697744605863670235166468896511390508867653906, 0, 0, 0)]),
+  (nat_lit 82377228086738233703388184867521456031399398950933685133709841, nat_lit 52, nat_lit 4909972070022648220965585275119917351732751274173604369, nat_lit 46, nat_lit 14, nat_lit 20, [
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 1119985150935619345176967894864401, nat_lit 28, nat_lit 13123, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 146429489960339164827499833135633, nat_lit 27, nat_lit 209971, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 3870038438853925263184401, nat_lit 21, nat_lit 3359539, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 529, nat_lit 3, nat_lit 17, nat_lit 2, nat_lit 153722794265354514, nat_lit 15, nat_lit 1039727028351896641564484578804531, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (2, 0))
-  (35307205, 29564638804018656156150881945419656796987438, [
-    (0, 316, 0, 0, 0),
-    (0, 317, 0, 0, 0)]),
+  (nat_lit 1933062967, nat_lit 8, nat_lit 4909972070022648220965585275119917351732751274173604369, nat_lit 46, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 316, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 317, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (2, 1)).0
-  (2083305284845, 1087247639999670536666620520447073057712, [
-    (0, 12, 0, 0, 3920106),
-    (0, 9, 0, 439131, 435567),
-    (0, 9, 0, 2033454, 48396),
-    (0, 9, 0, 16382361, 5377),
-    (0, 11, 0, 145522524, 597),
-    (0, 9, 0, 1695204480, 66),
-    (0, 9, 0, 12155557683, 7),
-    (0, 5, 1, 106298736510, 0),
-    (1, 25788, 35280961, 6470284554508186, 1104061500587425402),
-    (2, 31533301721987473957499812605054029838574902886734378501125, 0, 0, 0)]),
+  (nat_lit 2026688552121143, nat_lit 13, nat_lit 10512818615220634531677763966442187502105849303569, nat_lit 41, nat_lit 0, nat_lit 10, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 120800051, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 7570227, nat_lit 6, nat_lit 7550003, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 57901875, nat_lit 7, nat_lit 471875, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 863208243, nat_lit 8, nat_lit 29492, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 13748110131, nat_lit 9, nat_lit 1843, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 288626017075, nat_lit 10, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 3587160900403, nat_lit 11, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 56363719033651, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 230195, nat_lit 5, nat_lit 1932800823, nat_lit 8, nat_lit 60200798482951377425, nat_lit 17, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (2, 1)).1
-  (1087247639999670536666620520447073057712, 3381478106121002137748336007557291759564380, [
-    (1, 72985829373251605, 0, 1522777800, 7243747505354098065067),
-    (0, 9, 1, 187587013402397424819888689923, 0),
-    (0, 11, 1, 18022380301532610762710957119, 3),
-    (0, 9, 1, 3891994209793876257946146052, 31),
-    (0, 12, 1, 3330372753799189748353, 282),
-    (1, 172, 10, 51472352490752, 22528973818836001000845840),
-    (2, 31041344196056652507861917015904893329130876197413605702941100812075016504715160044224807987670957975086779703110382033166648427067126585603752819447629928303375770572558610, 0, 0, 0)]),
+  (nat_lit 10512818615220634531677763966442187502105849303569, nat_lit 41, nat_lit 312492726475588091698249401021684938620935435227046417, nat_lit 45, nat_lit 14, nat_lit 22, [
+    (nat_lit 1, nat_lit 1239693540843771204113, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 2226175933900051615247840311, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 5603628181779182319601105216210014737, nat_lit 31, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 286716198639518827985876975088636433, nat_lit 30, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 37485949429847101816413151286071825, nat_lit 29, nat_lit 52, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 990730115967178061378556433, nat_lit 23, nat_lit 835, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 529, nat_lit 3, nat_lit 17, nat_lit 2, nat_lit 153722794265354514, nat_lit 15, nat_lit 66172908775852507984464266363699, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (2, 1))
-  (2083305284845, 3381478106121002137748336007557291759564380, [
-    (0, 319, 0, 0, 0),
-    (0, 320, 0, 0, 0)]),
+  (nat_lit 2026688552121143, nat_lit 13, nat_lit 312492726475588091698249401021684938620935435227046417, nat_lit 45, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 319, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 320, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (2, 2)).0
-  (2862041884, 30459577820952477081259, [
-    (0, 12, 0, 0, 5385),
-    (0, 9, 0, 439131, 598),
-    (0, 11, 0, 2033454, 66),
-    (0, 9, 0, 21165330, 7),
-    (0, 5, 1, 150305493, 0),
-    (1, 25788, 48472, 164931319, 1104061500587425402),
-    (2, 31533301721987473957499812605054029838574902886734378501125, 0, 0, 0),
-    (1, 137507354713, 0, 1522777800, 89428981547581457596),
-    (0, 9, 1, 7323473743640342906680, 0),
-    (0, 12, 1, 6266684062795141, 3)]),
+  (nat_lit 495048995639, nat_lit 10, nat_lit 15942347749036194181894181393, nat_lit 24, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 29507, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 7570227, nat_lit 6, nat_lit 1844, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 57901875, nat_lit 7, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 1131643699, nat_lit 8, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 14016545587, nat_lit 9, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 230195, nat_lit 5, nat_lit 472119, nat_lit 5, nat_lit 14834274833, nat_lit 9, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 73908656083473, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 8695999741797076622061879, nat_lit 0, nat_lit 10),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 2234336699834293252489548305, nat_lit 23, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 59052116647668158993, nat_lit 17, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (2, 2)).1
-  (30459577820952477081259, 77424154677939068990747992165689433, [
-    (1, 172, 10, 51472352490752, 515835625005545853),
-    (2, 4018065406791156458475195182213054503557390882683085767269935895717341101924872123863375648296751241992126050865426, 0, 0, 0)]),
+  (nat_lit 15942347749036194181894181393, nat_lit 24, nat_lit 71797951293254932416092212163753078615515665, nat_lit 37, nat_lit 14, nat_lit 16, [
+    (nat_lit 1, nat_lit 529, nat_lit 3, nat_lit 17, nat_lit 2, nat_lit 153722794265354514, nat_lit 15, nat_lit 15203807591472810918707, nat_lit 0, nat_lit 0)]),
   -- S2g(0, (2, 2))
-  (2862041884, 77424154677939068990747992165689433, [
-    (0, 322, 0, 0, 0),
-    (0, 323, 0, 0, 0)]),
+  (nat_lit 495048995639, nat_lit 10, nat_lit 71797951293254932416092212163753078615515665, nat_lit 37, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 322, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 323, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (0, 0))
-  (2247021806618, 430084598944628744427, [
-    (1, 20, 0, 143497068910317840, 27741009958),
-    (0, 4, 1, 30001672316, 7),
-    (0, 5, 1, 30001672316, 0),
-    (1, 30001672316, 0, 1522777800, 9936553505286828625),
-    (0, 12, 1, 696312952276808, 0),
-    (2, 1480563703819243228373216831839399927471561968588559931370182476034, 0, 0, 0)]),
+  (nat_lit 2116801802876706, nat_lit 13, nat_lit 67941703624344875387140179, nat_lit 22, nat_lit 0, nat_lit 16, [
+    (nat_lit 1, nat_lit 34, nat_lit 2, nat_lit 0, nat_lit 0, nat_lit 2457475695969527216211, nat_lit 18, nat_lit 8268757042487, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 1, nat_lit 9154810368802, nat_lit 11, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 9154810368802, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 9154810368802, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 543499983862317288878871, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 3690761825998623522, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (0, 1))
-  (320127086, 370039650178428900219, [
-    (0, 12, 0, 20, 7),
-    (0, 5, 1, 35569631, 0),
-    (0, 280, 0, 2088848, 1104061500587425402),
-    (1, 145577918, 0, 1522777800, 804860833928233118335),
-    (0, 9, 1, 46518913720941653144, 0),
-    (0, 9, 1, 10045917343770866741, 3),
-    (0, 12, 1, 8596231387850, 30),
-    (2, 295488429657170570625171450592182759412851050518929408258, 0, 0, 0)]),
+  (nat_lit 31007651618, nat_lit 9, nat_lit 61920614080128684993512243, nat_lit 22, nat_lit 0, nat_lit 14, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 34, nat_lit 2, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 1937978146, nat_lit 8, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 280, nat_lit 0, nat_lit 58929954, nat_lit 7, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 13749138210, nat_lit 9, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 139135995868753225952990007, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 4172269817201864980247330, nat_lit 21, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 545492358357977456128802, nat_lit 20, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 14417016370967330, nat_lit 14, nat_lit 51, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (0, 2))
-  (25717692476, 500343341263739115209906853, [
-    (0, 12, 0, 20, 597),
-    (0, 9, 0, 35569631, 66),
-    (0, 9, 0, 164709794, 7),
-    (0, 5, 1, 1326971261, 0),
-    (0, 281, 0, 2088848, 1104061500587425402),
-    (1, 145577918, 0, 143497068910317840, 1104061500587425402),
-    (0, 4, 0, 55593704607302034863801678, 0),
-    (1, 143497068685504742, 143497068910317840, 0, 3333519151),
-    (2, 7267145936468406984262394084939016235133718740149876059790213372807848591618, 0, 0, 0)]),
+  (nat_lit 7916567607074, nat_lit 11, nat_lit 2702023102689787095047381181498163, nat_lit 28, nat_lit 0, nat_lit 18, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 34, nat_lit 2, nat_lit 1843, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 1937978146, nat_lit 8, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 14822880034, nat_lit 9, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 220981310242, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 281, nat_lit 0, nat_lit 58929954, nat_lit 7, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 13749138210, nat_lit 9, nat_lit 0, nat_lit 0, nat_lit 2457475695969527216211, nat_lit 18, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 0, nat_lit 168876443918463334499344405705506, nat_lit 27, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 2457475695947515376418, nat_lit 18, nat_lit 2457475695969527216211, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 572175648055, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (1, 0)).0
-  (231437972135, 189326905574698994045472060600357032657012423766362, [
-    (0, 12, 0, 20, 5376),
-    (0, 9, 0, 35569631, 597),
-    (0, 9, 0, 164709794, 66),
-    (0, 9, 0, 1326971261, 7),
-    (0, 5, 1, 11787324464, 0),
-    (1, 2088848, 48391, 8312980369848328, 1104061500587425402),
-    (2, 55457667961710477531284762903455784244328011834689955017083485476423175, 0, 0, 0),
-    (1, 58138665319828496, 0, 1522777800, 586743547933681943329186),
-    (0, 11, 1, 15024492409728053807658886887164, 0),
-    (0, 11, 1, 1289757128558003869027490530040, 4)]),
+  (nat_lit 126663823406882, nat_lit 12, nat_lit 1759907558461916493872963368832780497536146093753632292715237666, nat_lit 53, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 34, nat_lit 2, nat_lit 29491, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 1937978146, nat_lit 8, nat_lit 1843, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 14822880034, nat_lit 9, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 220981310242, nat_lit 10, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 3519516193570, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 58929954, nat_lit 7, nat_lit 471863, nat_lit 5, nat_lit 78629317051648385553, nat_lit 17, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 962920128607997268258, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 569901039078413213503448167223, nat_lit 2, nat_lit 11),
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 1429206811667424081922805054540685119778, nat_lit 33, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 68077343983670228069306624813612273954, nat_lit 32, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (1, 0)).1
-  (189326905574698994045472060600357032657012423766362, 101065115494930321901929007445497470, [
-    (0, 9, 1, 145195855127166374141540833613, 40),
-    (0, 9, 1, 18022380301517763598657534010, 363),
-    (0, 9, 1, 3891994209779029093892722943, 3270),
-    (0, 12, 1, 3330357906635136325244, 29433),
-    (1, 0, 5446460, 7845199282, 3220576894311037427420652),
-    (2, 269375334331354295064813142678288251993666642625304658222008094477975830158585901822880699973146962953750195600232096725313211065291551298619915, 0, 0, 0)]),
+  (nat_lit 1759907558461916493872963368832780497536146093753632292715237666, nat_lit 53, nat_lit 95056933054956537563805673866630823129719313, nat_lit 37, nat_lit 7, nat_lit 19, [
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 4274400185994266169923885920155734306, nat_lit 31, nat_lit 68, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 286716198639518551212464739314700578, nat_lit 30, nat_lit 1091, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 37485949429846825043000915512135970, nat_lit 29, nat_lit 17459, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 990729839193765825604620578, nat_lit 23, nat_lit 279347, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 287445282, nat_lit 8, nat_lit 2345623691793, nat_lit 11, nat_lit 5403361061266758227434967106355, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (1, 0))
-  (231437972135, 101065115494930321901929007445497470, [
-    (0, 328, 0, 0, 0),
-    (0, 329, 0, 0, 0)]),
+  (nat_lit 126663823406882, nat_lit 12, nat_lit 95056933054956537563805673866630823129719313, nat_lit 37, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 328, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 329, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (1, 1)).0
-  (19060073737535, 34118983000574233854531163215306389344694914730822, [
-    (0, 12, 0, 20, 442776),
-    (0, 9, 0, 35569631, 49197),
-    (0, 9, 0, 164709794, 5466),
-    (0, 9, 0, 1326971261, 607),
-    (0, 11, 0, 11787324464, 67),
-    (0, 11, 0, 137311562900, 7),
-    (0, 5, 1, 1267029708824, 0),
-    (1, 2088848, 3984991, 900899614440964, 1104061500587425402),
-    (2, 55457667961710477531284762903455784244328011834689955017083485476423175, 0, 0, 0),
-    (1, 58138665319828496, 0, 1522777800, 65193727548186882591406)]),
+  (nat_lit 32724984563709730, nat_lit 14, nat_lit 184943460930161185332938137818837304572260598186316529406185762, nat_lit 52, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 34, nat_lit 2, nat_lit 7619379, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 1937978146, nat_lit 8, nat_lit 476211, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 14822880034, nat_lit 9, nat_lit 29763, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 220981310242, nat_lit 10, nat_lit 1860, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 3519516193570, nat_lit 11, nat_lit 116, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 73888260371234, nat_lit 12, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 1199788167213858, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 58929954, nat_lit 7, nat_lit 121910071, nat_lit 7, nat_lit 4842340756810179089, nat_lit 16, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 962920128607997268258, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 35618814942400825843965506359, nat_lit 2, nat_lit 11)]),
   -- S2g(1, (1, 1)).1
-  (34118983000574233854531163215306389344694914730822, 10951517315173624254568415946406906, [
-    (0, 11, 1, 1289757128558003869027490530040, 0),
-    (0, 9, 1, 145195855127166374141540833613, 4),
-    (0, 9, 1, 18022380301517763598657534010, 39),
-    (0, 9, 1, 3891994209779029093892722943, 354),
-    (0, 12, 1, 3330357906635136325244, 3189),
-    (1, 0, 5446460, 7845199282, 348984943543627072339656),
-    (2, 269375334331354295064813142678288251993666642625304658222008094477975830158585901822880699973146962953750195600232096725313211065291551298619915, 0, 0, 0)]),
+  (nat_lit 184943460930161185332938137818837304572260598186316529406185762, nat_lit 52, nat_lit 5853952260834044997662800776037377105797649, nat_lit 36, nat_lit 7, nat_lit 19, [
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 68077343983670228069306624813612273954, nat_lit 32, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 4274400185994266169923885920155734306, nat_lit 31, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 286716198639518551212464739314700578, nat_lit 30, nat_lit 67, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 37485949429846825043000915512135970, nat_lit 29, nat_lit 1075, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 990729839193765825604620578, nat_lit 23, nat_lit 17203, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 287445282, nat_lit 8, nat_lit 2345623691793, nat_lit 11, nat_lit 332758660353840621448154284851, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (1, 1))
-  (19060073737535, 10951517315173624254568415946406906, [
-    (0, 331, 0, 0, 0),
-    (0, 332, 0, 0, 0)]),
+  (nat_lit 32724984563709730, nat_lit 14, nat_lit 5853952260834044997662800776037377105797649, nat_lit 36, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 331, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 332, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (1, 2)).0
-  (2114301548675, 1967354574548802312260834439554626927272999545834, [
-    (0, 12, 0, 20, 49116),
-    (0, 9, 0, 35569631, 5457),
-    (0, 9, 0, 164709794, 606),
-    (0, 9, 0, 1326971261, 67),
-    (0, 11, 0, 11787324464, 7),
-    (0, 5, 1, 137311562900, 0),
-    (1, 2088848, 442051, 77335086062368, 1104061500587425402),
-    (2, 55457667961710477531284762903455784244328011834689955017083485476423175, 0, 0, 0),
-    (1, 58138665319828496, 0, 1522777800, 7243747505354098064986),
-    (0, 9, 1, 145195855127166374141540833613, 0)]),
+  (nat_lit 2044212102248226, nat_lit 13, nat_lit 5543249527035412956832674569439398946942851855942353305080098, nat_lit 51, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 34, nat_lit 2, nat_lit 475955, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 1937978146, nat_lit 8, nat_lit 29747, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 14822880034, nat_lit 9, nat_lit 1859, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 220981310242, nat_lit 10, nat_lit 116, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 3519516193570, nat_lit 11, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 73888260371234, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 58929954, nat_lit 7, nat_lit 7615287, nat_lit 6, nat_lit 230654738382791185, nat_lit 15, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 962920128607997268258, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 2226175933900051615247840055, nat_lit 2, nat_lit 11),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 4274400185994266169923885920155734306, nat_lit 31, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (1, 2)).1
-  (1967354574548802312260834439554626927272999545834, 938895295200657849306128002063510, [
-    (0, 9, 1, 18022380301517763598657534010, 3),
-    (0, 9, 1, 3891994209779029093892722943, 30),
-    (0, 12, 1, 3330357906635136325244, 273),
-    (1, 0, 5446460, 7845199282, 29919171236137032886212),
-    (2, 269375334331354295064813142678288251993666642625304658222008094477975830158585901822880699973146962953750195600232096725313211065291551298619915, 0, 0, 0)]),
+  (nat_lit 5543249527035412956832674569439398946942851855942353305080098, nat_lit 51, nat_lit 278765961201389212278871207875286729302545, nat_lit 35, nat_lit 7, nat_lit 19, [
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 286716198639518551212464739314700578, nat_lit 30, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 37485949429846825043000915512135970, nat_lit 29, nat_lit 51, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 990729839193765825604620578, nat_lit 23, nat_lit 819, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 287445282, nat_lit 8, nat_lit 2345623691793, nat_lit 11, nat_lit 15846010296783271073978483507, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (1, 2))
-  (2114301548675, 938895295200657849306128002063510, [
-    (0, 334, 0, 0, 0),
-    (0, 335, 0, 0, 0)]),
+  (nat_lit 2044212102248226, nat_lit 13, nat_lit 278765961201389212278871207875286729302545, nat_lit 35, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 334, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 335, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (2, 0)).0
-  (2859883625, 1272888320699688744648173980441576685616421819025798, [
-    (0, 12, 0, 20, 66),
-    (0, 9, 0, 35569631, 7),
-    (0, 5, 1, 164709794, 0),
-    (1, 2088848, 601, 56491505323160284, 1104061500587425402),
-    (2, 44136737363234456510770103525376873779925514602677851719175, 0, 0, 0),
-    (1, 58344416990053994, 0, 1522777800, 5280691931403137489378716),
-    (0, 9, 1, 107733955557625891099172482523249, 0),
-    (0, 9, 1, 15024492409728054013410557112662, 3),
-    (0, 11, 1, 1289757128558004074779160755538, 30),
-    (0, 9, 1, 145195855127166579893211059111, 274)]),
+  (nat_lit 494864119586, nat_lit 10, nat_lit 21088570390204987828067375326085492744038246131439023394229719330, nat_lit 54, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 34, nat_lit 2, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 1937978146, nat_lit 8, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 14822880034, nat_lit 9, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 58929954, nat_lit 7, nat_lit 1847, nat_lit 3, nat_lit 945626288520294371857, nat_lit 18, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 964072967649767854370, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 9118416625254611416055152915255, nat_lit 2, nat_lit 10),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 17762760423872470328165939050307329855778, nat_lit 34, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 1429206811667424081923957893582455705890, nat_lit 33, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 68077343983670228070459463855382860066, nat_lit 32, nat_lit 51, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 4274400185994266171076724961926320418, nat_lit 31, nat_lit 820, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (2, 0)).1
-  (1272888320699688744648173980441576685616421819025798, 4506117787540562245697918616243308586118, [
-    (0, 9, 1, 18022380301517969350327759508, 2469),
-    (0, 9, 1, 3891994209779234845562948441, 22224),
-    (0, 12, 1, 3330358112386806550742, 200019),
-    (1, 0, 604442, 5405339622340, 196973321168692842662041698)]),
+  (nat_lit 21088570390204987828067375326085492744038246131439023394229719330, nat_lit 54, nat_lit 74920228119242157516618075898630620444906686063121, nat_lit 42, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 286716198639518552365303781085286690, nat_lit 30, nat_lit 13123, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 37485949429846826195839957282722082, nat_lit 29, nat_lit 209971, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 990729840346604867375206690, nat_lit 23, nat_lit 3359539, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 17961250, nat_lit 7, nat_lit 9308607477785105, nat_lit 14, nat_lit 1039727028351896641564484578804531, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (2, 0))
-  (2859883625, 4506117787540562245697918616243308586118, [
-    (0, 337, 0, 0, 0),
-    (0, 338, 0, 0, 0)]),
+  (nat_lit 494864119586, nat_lit 10, nat_lit 74920228119242157516618075898630620444906686063121, nat_lit 42, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 337, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 338, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (2, 1)).0
-  (168747728072465, 88067058839973313469996262156212917674692, [
-    (0, 12, 0, 20, 3920106),
-    (0, 9, 0, 35569631, 435567),
-    (0, 9, 0, 164709794, 48396),
-    (0, 9, 0, 1326971261, 5377),
-    (0, 11, 0, 11787324464, 597),
-    (0, 9, 0, 137311562900, 66),
-    (0, 9, 0, 984600172343, 7),
-    (0, 5, 1, 8610197657330, 0),
-    (1, 2088848, 35280961, 6470284554508186, 1104061500587425402),
-    (2, 44136737363234456510770103525376873779925514602677851719175, 0, 0, 0)]),
+  (nat_lit 518832269343012642, nat_lit 15, nat_lit 2691281565496482440109507575409200000539097421713698, nat_lit 43, nat_lit 2, nat_lit 10, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 34, nat_lit 2, nat_lit 120800051, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 1937978146, nat_lit 8, nat_lit 7550003, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 14822880034, nat_lit 9, nat_lit 471875, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 220981310242, nat_lit 10, nat_lit 29492, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 3519516193570, nat_lit 11, nat_lit 1843, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 73888260371234, nat_lit 12, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 918313190503202, nat_lit 13, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 14429112072614690, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 58929954, nat_lit 7, nat_lit 1932800823, nat_lit 8, nat_lit 60200798482951377425, nat_lit 17, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (2, 1)).1
-  (88067058839973313469996262156212917674692, 515390658276761334599587962496443834580, [
-    (1, 5911852179233380025, 0, 1522777800, 7243747505354098065067),
-    (0, 9, 1, 15194548085594191410410983883783, 0),
-    (0, 11, 1, 1459812804424141471779587526659, 3),
-    (0, 9, 1, 315251530993303976893637830232, 31),
-    (0, 12, 1, 269760193057734369616613, 282),
-    (1, 0, 604442, 5405339622340, 22528973818836001000845840)]),
+  (nat_lit 2691281565496482440109507575409200000539097421713698, nat_lit 43, nat_lit 4768260596879218873210656681417537877742806180369, nat_lit 41, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 317361546456005428252962, nat_lit 20, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 2226175933900051615247840311, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 1434528814535470673817882935349763772706, nat_lit 33, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 73399346851716819964384505622690926882, nat_lit 32, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 9596403054040858065001766729234387234, nat_lit 31, nat_lit 52, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 253626909687597583712910446882, nat_lit 25, nat_lit 835, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 17961250, nat_lit 7, nat_lit 9308607477785105, nat_lit 14, nat_lit 66172908775852507984464266363699, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (2, 1))
-  (168747728072465, 515390658276761334599587962496443834580, [
-    (0, 340, 0, 0, 0),
-    (0, 341, 0, 0, 0)]),
+  (nat_lit 518832269343012642, nat_lit 15, nat_lit 4768260596879218873210656681417537877742806180369, nat_lit 41, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 340, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 341, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (2, 2)).0
-  (231825392624, 2467225803497150643581999, [
-    (0, 12, 0, 20, 5385),
-    (0, 9, 0, 35569631, 598),
-    (0, 11, 0, 164709794, 66),
-    (0, 9, 0, 1714391750, 7),
-    (0, 5, 1, 12174744953, 0),
-    (1, 2088848, 48472, 164931319, 1104061500587425402),
-    (2, 44136737363234456510770103525376873779925514602677851719175, 0, 0, 0),
-    (1, 11138095731773, 0, 1522777800, 89428981547581457596),
-    (0, 9, 1, 593201373234867775441100, 0),
-    (0, 12, 1, 507601409086406441, 3)]),
+  (nat_lit 126732542883618, nat_lit 12, nat_lit 4081241023753265710564910436642, nat_lit 26, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 34, nat_lit 2, nat_lit 29507, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 1937978146, nat_lit 8, nat_lit 1844, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 14822880034, nat_lit 9, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 289700786978, nat_lit 10, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 3588235670306, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 58929954, nat_lit 7, nat_lit 472119, nat_lit 5, nat_lit 14834274833, nat_lit 9, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 18920615957369122, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 8695999741797076622061879, nat_lit 2, nat_lit 10),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 571990195157579072637324366114, nat_lit 25, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 15117341861803048702242, nat_lit 19, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (2, 2)).1
-  (2467225803497150643581999, 11800664534126963119097062449073, [
-    (1, 0, 604442, 5405339622340, 515835625005545853)]),
+  (nat_lit 4081241023753265710564910436642, nat_lit 26, nat_lit 1095549795257114712504660237830298083857, nat_lit 33, nat_lit 0, nat_lit 0, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 17961250, nat_lit 7, nat_lit 9308607477785105, nat_lit 14, nat_lit 15203807591472810918707, nat_lit 0, nat_lit 0)]),
   -- S2g(1, (2, 2))
-  (231825392624, 11800664534126963119097062449073, [
-    (0, 343, 0, 0, 0),
-    (0, 344, 0, 0, 0)]),
+  (nat_lit 126732542883618, nat_lit 12, nat_lit 1095549795257114712504660237830298083857, nat_lit 33, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 343, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 344, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (0, 0))
-  (182008766336078, 34836852284334281321967, [
-    (1, 1640, 0, 143497068910317840, 27741009958),
-    (0, 4, 1, 2430135457616, 7),
-    (0, 5, 1, 2430135457616, 0),
-    (1, 2430135457616, 0, 1522777800, 9936553505286828625),
-    (0, 12, 1, 56401349134421468, 0),
-    (2, 39916048969532388125924807648720634089888939750958707621630434983063765655291138914315257941541188728801764063069571030373013976646404, 0, 0, 0)]),
+  (nat_lit 541901261536436770, nat_lit 15, nat_lit 17393076126605901508781619283, nat_lit 24, nat_lit 0, nat_lit 18, [
+    (nat_lit 1, nat_lit 8738, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 2457475695969527216211, nat_lit 18, nat_lit 8268757042487, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 1, nat_lit 2343631454413346, nat_lit 13, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 2343631454413346, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 2343631454413346, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 543499983862317288878871, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 944835027455647621666, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (0, 1))
-  (25930293986, 29973211661611226572959, [
-    (0, 12, 0, 1640, 7),
-    (0, 5, 1, 2881140131, 0),
-    (0, 280, 0, 169196708, 1104061500587425402),
-    (1, 11791811378, 0, 1522777800, 804860833928233118335),
-    (0, 9, 1, 3768032011396273904684, 0),
-    (0, 9, 1, 813719304845440206041, 3),
-    (0, 12, 1, 696294742415870, 30),
-    (2, 1854818007773420344859875333577718843670660099206551440402186453915615200744633109903376716656010775438036671005444, 0, 0, 0)]),
+  (nat_lit 7937958814242, nat_lit 11, nat_lit 15851677204508152807646528307, nat_lit 24, nat_lit 0, nat_lit 16, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 8738, nat_lit 4, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 496122405410, nat_lit 10, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 280, nat_lit 0, nat_lit 15086068258, nat_lit 9, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 3519779381794, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 139135995868753225952990007, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 1068101073203677434943316514, nat_lit 23, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 139646043739642228768973346, nat_lit 22, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 3690756190967636514, nat_lit 16, nat_lit 51, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (0, 2))
-  (2083133090576, 40527810642258203235843190953, [
-    (0, 12, 0, 1640, 597),
-    (0, 9, 0, 2881140131, 66),
-    (0, 9, 0, 13341493334, 7),
-    (0, 5, 1, 107484672161, 0),
-    (0, 281, 0, 169196708, 1104061500587425402),
-    (1, 11791811378, 0, 143497068910317840, 1104061500587425402),
-    (0, 4, 0, 4503090073191464823967935938, 0),
-    (1, 11623262563525884122, 143497068910317840, 0, 3333519151),
-    (2, 841480417656524557643706059961151159162525833423158539035898474554378170337258189540601172113856556377726959875741450130522963168950261298645132059476740, 0, 0, 0)]),
+  (nat_lit 2026641307410978, nat_lit 13, nat_lit 691717914288583675645246578367890227, nat_lit 30, nat_lit 0, nat_lit 20, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 8738, nat_lit 4, nat_lit 1843, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 496122405410, nat_lit 10, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 3794657288738, nat_lit 11, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 56571215421986, nat_lit 12, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 281, nat_lit 0, nat_lit 15086068258, nat_lit 9, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 3519779381794, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 2457475695969527216211, nat_lit 18, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 4, nat_lit 0, nat_lit 43232369643126613631832167860609570, nat_lit 29, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 629113778162563936363042, nat_lit 20, nat_lit 2457475695969527216211, nat_lit 18, nat_lit 0, nat_lit 0, nat_lit 572175648055, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (1, 0)).0
-  (18746475742955, 15335479351550618517683236908628919645218006325075342, [
-    (0, 12, 0, 1640, 5376),
-    (0, 9, 0, 2881140131, 597),
-    (0, 9, 0, 13341493334, 66),
-    (0, 9, 0, 107484672161, 7),
-    (0, 5, 1, 954773281604, 0),
-    (1, 169196708, 48391, 8312980369848328, 1104061500587425402),
-    (2, 69315291999188001684879253105361027505720042398420299786664710584600585, 0, 0, 0),
-    (1, 4709231890906108196, 0, 1522777800, 586743547933681943329186),
-    (0, 11, 1, 1216983885187972358420369837860304, 0),
-    (0, 11, 1, 104470327413198313391226732933260, 4)]),
+  (nat_lit 32425938792161826, nat_lit 14, nat_lit 450536334966250622431478622421191807369253400000929866935100842530, nat_lit 55, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 8738, nat_lit 4, nat_lit 29491, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 496122405410, nat_lit 10, nat_lit 1843, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 3794657288738, nat_lit 11, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 56571215421986, nat_lit 12, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 900996145553954, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 15086068258, nat_lit 9, nat_lit 471863, nat_lit 5, nat_lit 78629317051648385553, nat_lit 17, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 246507552923647300674082, nat_lit 20, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 569901039078413213503448167223, nat_lit 4, nat_lit 11),
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 365876943786860564972238093962415390663202, nat_lit 35, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 17427800059819578385742495952284742132258, nat_lit 34, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (1, 0)).1
-  (15335479351550618517683236908628919645218006325075342, 15403919447605968373192729605910, [
-    (0, 9, 1, 11760864265300476305464807522673, 40),
-    (0, 9, 1, 1459812804422938851491260254830, 363),
-    (0, 9, 1, 315251530992101356605310558403, 3270),
-    (0, 12, 1, 269758990437446042344784, 29433),
-    (1, 0, 441163280, 1130122, 3220576894311037427420652)]),
+  (nat_lit 450536334966250622431478622421191807369253400000929866935100842530, nat_lit 55, nat_lit 1450453690413786182423257105539439600145, nat_lit 33, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 1094246447614532139500514795559867982370, nat_lit 33, nat_lit 68, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 73399346851716749110390973264563348002, nat_lit 32, nat_lit 1091, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 9596403054040787211008234371106808354, nat_lit 31, nat_lit 17459, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 253626838833604051354782868002, nat_lit 25, nat_lit 279347, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 73585992226, nat_lit 10, nat_lit 34677265, nat_lit 7, nat_lit 5403361061266758227434967106355, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (1, 0))
-  (18746475742955, 15403919447605968373192729605910, [
-    (0, 349, 0, 0, 0),
-    (0, 350, 0, 0, 0)]),
+  (nat_lit 32425938792161826, nat_lit 14, nat_lit 1450453690413786182423257105539439600145, nat_lit 33, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 349, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 350, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (1, 1)).0
-  (1543865972740355, 2763637623046512942217024220439817536920288093196602, [
-    (0, 12, 0, 1640, 442776),
-    (0, 9, 0, 2881140131, 49197),
-    (0, 9, 0, 13341493334, 5466),
-    (0, 9, 0, 107484672161, 607),
-    (0, 11, 0, 954773281604, 67),
-    (0, 11, 0, 11122236594920, 7),
-    (0, 5, 1, 102629406414764, 0),
-    (1, 169196708, 3984991, 900899614440964, 1104061500587425402),
-    (2, 69315291999188001684879253105361027505720042398420299786664710584600585, 0, 0, 0),
-    (1, 4709231890906108196, 0, 1522777800, 65193727548186882591406)]),
+  (nat_lit 8377596048309690914, nat_lit 16, nat_lit 47345525998121263445232163281622349970498713135697031527983555106, nat_lit 54, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 8738, nat_lit 4, nat_lit 7619379, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 496122405410, nat_lit 10, nat_lit 476211, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 3794657288738, nat_lit 11, nat_lit 29763, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 56571215421986, nat_lit 12, nat_lit 1860, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 900996145553954, nat_lit 13, nat_lit 116, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 18915394655035938, nat_lit 14, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 307145770806747682, nat_lit 15, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 15086068258, nat_lit 9, nat_lit 121910071, nat_lit 7, nat_lit 4842340756810179089, nat_lit 16, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 246507552923647300674082, nat_lit 20, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 35618814942400825843965506359, nat_lit 4, nat_lit 11)]),
   -- S2g(2, (1, 1)).1
-  (2763637623046512942217024220439817536920288093196602, 1669184166435918434561333248786, [
-    (0, 11, 1, 104470327413198313391226732933260, 0),
-    (0, 9, 1, 11760864265300476305464807522673, 4),
-    (0, 9, 1, 1459812804422938851491260254830, 39),
-    (0, 9, 1, 315251530992101356605310558403, 354),
-    (0, 12, 1, 269758990437446042344784, 3189),
-    (1, 0, 441163280, 1130122, 348984943543627072339656)]),
+  (nat_lit 47345525998121263445232163281622349970498713135697031527983555106, nat_lit 54, nat_lit 89324222730032328569758675812366754321, nat_lit 32, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 17427800059819578385742495952284742132258, nat_lit 34, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 1094246447614532139500514795559867982370, nat_lit 33, nat_lit 4, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 73399346851716749110390973264563348002, nat_lit 32, nat_lit 67, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 9596403054040787211008234371106808354, nat_lit 31, nat_lit 1075, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 253626838833604051354782868002, nat_lit 25, nat_lit 17203, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 73585992226, nat_lit 10, nat_lit 34677265, nat_lit 7, nat_lit 332758660353840621448154284851, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (1, 1))
-  (1543865972740355, 1669184166435918434561333248786, [
-    (0, 352, 0, 0, 0),
-    (0, 353, 0, 0, 0)]),
+  (nat_lit 8377596048309690914, nat_lit 16, nat_lit 89324222730032328569758675812366754321, nat_lit 32, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 352, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 353, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (1, 2)).0
-  (171258425442695, 159355720538452987293127589603924781109112963212574, [
-    (0, 12, 0, 1640, 49116),
-    (0, 9, 0, 2881140131, 5457),
-    (0, 9, 0, 13341493334, 606),
-    (0, 9, 0, 107484672161, 67),
-    (0, 11, 0, 954773281604, 7),
-    (0, 5, 1, 11122236594920, 0),
-    (1, 169196708, 442051, 77335086062368, 1104061500587425402),
-    (2, 69315291999188001684879253105361027505720042398420299786664710584600585, 0, 0, 0),
-    (1, 4709231890906108196, 0, 1522777800, 7243747505354098064986),
-    (0, 9, 1, 11760864265300476305464807522673, 0)]),
+  (nat_lit 523318298175545890, nat_lit 15, nat_lit 1419071878921065716949164689776486130417370075121242446100505122, nat_lit 53, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 8738, nat_lit 4, nat_lit 475955, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 496122405410, nat_lit 10, nat_lit 29747, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 3794657288738, nat_lit 11, nat_lit 1859, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 56571215421986, nat_lit 12, nat_lit 116, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 900996145553954, nat_lit 13, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 18915394655035938, nat_lit 14, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 15086068258, nat_lit 9, nat_lit 7615287, nat_lit 6, nat_lit 230654738382791185, nat_lit 15, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 246507552923647300674082, nat_lit 20, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 2226175933900051615247840055, nat_lit 4, nat_lit 11),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 1094246447614532139500514795559867982370, nat_lit 33, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (1, 2)).1
-  (159355720538452987293127589603924781109112963212574, 143102468528135108046733653550, [
-    (0, 9, 1, 1459812804422938851491260254830, 3),
-    (0, 9, 1, 315251530992101356605310558403, 30),
-    (0, 12, 1, 269758990437446042344784, 273),
-    (1, 0, 441163280, 1130122, 29919171236137032886212)]),
+  (nat_lit 1419071878921065716949164689776486130417370075121242446100505122, nat_lit 53, nat_lit 4253630999797712703915023954424701457, nat_lit 31, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 73399346851716749110390973264563348002, nat_lit 32, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 9596403054040787211008234371106808354, nat_lit 31, nat_lit 51, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 253626838833604051354782868002, nat_lit 25, nat_lit 819, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 73585992226, nat_lit 10, nat_lit 34677265, nat_lit 7, nat_lit 15846010296783271073978483507, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (1, 2))
-  (171258425442695, 143102468528135108046733653550, [
-    (0, 355, 0, 0, 0),
-    (0, 356, 0, 0, 0)]),
+  (nat_lit 523318298175545890, nat_lit 15, nat_lit 4253630999797712703915023954424701457, nat_lit 31, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 355, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 356, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (2, 0)).0
-  (231650573645, 103103953976674788316502092415767711534930167341089658, [
-    (0, 12, 0, 1640, 66),
-    (0, 9, 0, 2881140131, 7),
-    (0, 5, 1, 13341493334, 0),
-    (1, 169196708, 601, 56491505323160284, 1104061500587425402),
-    (2, 56740173004481439064040394445699717721276126318621324937225, 0, 0, 0),
-    (1, 4725897776194373534, 0, 1522777800, 5280691931403137489378716),
-    (0, 9, 1, 8726450400167697179032971084383189, 0),
-    (0, 9, 1, 1216983885187972375086255126125642, 3),
-    (0, 11, 1, 104470327413198330057112021198598, 30),
-    (0, 9, 1, 11760864265300492971350095788011, 274)]),
+  (nat_lit 126685214614050, nat_lit 12, nat_lit 5398674019892476883985248083477886142473791009648389988922808148514, nat_lit 56, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 8738, nat_lit 4, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 496122405410, nat_lit 10, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 3794657288738, nat_lit 11, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 15086068258, nat_lit 9, nat_lit 1847, nat_lit 3, nat_lit 945626288520294371857, nat_lit 18, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 246802679718340570718754, nat_lit 20, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 9118416625254611416055152915255, nat_lit 4, nat_lit 10),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 4547266668511352404010480396878676443079202, nat_lit 36, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 365876943786860564972533220757108660707874, nat_lit 35, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 17427800059819578386037622746978012176930, nat_lit 34, nat_lit 51, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 1094246447614532139795641590253138027042, nat_lit 33, nat_lit 820, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (2, 0)).1
-  (103103953976674788316502092415767711534930167341089658, 364995540790359045098200162845553229176378, [
-    (0, 9, 1, 1459812804422955517376548520168, 2469),
-    (0, 9, 1, 315251530992118022490598823741, 22224),
-    (0, 12, 1, 269759007103331330610122, 200019),
-    (1, 0, 48959822, 462941188721560, 196973321168692842662041698),
-    (2, 13624358678909296144772173654043450391783835545322299183525139553634451787536, 0, 0, 0)]),
+  (nat_lit 5398674019892476883985248083477886142473791009648389988922808148514, nat_lit 56, nat_lit 19179578398525969701516885223929831869909133796909585, nat_lit 44, nat_lit 14, nat_lit 18, [
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 73399346851716749405517767957833392674, nat_lit 32, nat_lit 13123, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 9596403054040787506135029064376853026, nat_lit 31, nat_lit 209971, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 253626839128730846048052912674, nat_lit 25, nat_lit 3359539, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 4598080034, nat_lit 9, nat_lit 2459266804767334929, nat_lit 16, nat_lit 1039727028351896641564484578804531, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (2, 0))
-  (231650573645, 364995540790359045098200162845553229176378, [
-    (0, 358, 0, 0, 0),
-    (0, 359, 0, 0, 0)]),
+  (nat_lit 126685214614050, nat_lit 12, nat_lit 19179578398525969701516885223929831869909133796909585, nat_lit 44, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 358, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 359, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (2, 1)).0
-  (13668565973869685, 7133431766037838391069697234653246331650072, [
-    (0, 12, 0, 1640, 3920106),
-    (0, 9, 0, 2881140131, 435567),
-    (0, 9, 0, 13341493334, 48396),
-    (0, 9, 0, 107484672161, 5377),
-    (0, 11, 0, 954773281604, 597),
-    (0, 9, 0, 11122236594920, 66),
-    (0, 9, 0, 79752613959803, 7),
-    (0, 5, 1, 697426010243750, 0),
-    (1, 169196708, 35280961, 6470284554508186, 1104061500587425402),
-    (2, 56740173004481439064040394445699717721276126318621324937225, 0, 0, 0)]),
+  (nat_lit 132821060951811236386, nat_lit 17, nat_lit 688968080767099504668033939304755200138008939958706722, nat_lit 45, nat_lit 4, nat_lit 10, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 8738, nat_lit 4, nat_lit 120800051, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 496122405410, nat_lit 10, nat_lit 7550003, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 3794657288738, nat_lit 11, nat_lit 471875, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 56571215421986, nat_lit 12, nat_lit 29492, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 900996145553954, nat_lit 13, nat_lit 1843, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 18915394655035938, nat_lit 14, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 235088176768819746, nat_lit 15, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 3693852690589360674, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 15086068258, nat_lit 9, nat_lit 1932800823, nat_lit 8, nat_lit 60200798482951377425, nat_lit 17, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (2, 1)).1
-  (7133431766037838391069697234653246331650072, 41746643285870973242084178445359801343480, [
-    (1, 478860026517903782045, 0, 1522777800, 7243747505354098065067),
-    (0, 9, 1, 1230758394933129504243289694586443, 0),
-    (0, 11, 1, 118244837158355459214146589659399, 3),
-    (0, 9, 1, 25535374010457622128384664248812, 31),
-    (0, 12, 1, 21850575637676483938945673, 282),
-    (1, 0, 48959822, 462941188721560, 22528973818836001000845840),
-    (2, 62416749358103204771825424063159797125909616853286680909555929136642357362532828647184, 0, 0, 0)]),
+  (nat_lit 688968080767099504668033939304755200138008939958706722, nat_lit 45, nat_lit 1220674712795288605952495444093882600457733827273233, nat_lit 43, nat_lit 14, nat_lit 20, [
+    (nat_lit 1, nat_lit 81244555892737389632758306, nat_lit 22, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 2226175933900051615247840311, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 367239376521080492497378031449539525812770, nat_lit 35, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 1, nat_lit 18790232794039505910882433439408877281826, nat_lit 34, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 2456679181834459664640452282684003131938, nat_lit 33, nat_lit 52, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 64928488880024981430505074401826, nat_lit 27, nat_lit 835, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 4598080034, nat_lit 9, nat_lit 2459266804767334929, nat_lit 16, nat_lit 66172908775852507984464266363699, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (2, 1))
-  (13668565973869685, 41746643285870973242084178445359801343480, [
-    (0, 361, 0, 0, 0),
-    (0, 362, 0, 0, 0)]),
+  (nat_lit 132821060951811236386, nat_lit 17, nat_lit 1220674712795288605952495444093882600457733827273233, nat_lit 43, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 361, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 362, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (2, 2)).0
-  (18777856802564, 199845290083269202130141939, [
-    (0, 12, 0, 1640, 5385),
-    (0, 9, 0, 2881140131, 598),
-    (0, 11, 0, 13341493334, 66),
-    (0, 9, 0, 138865731770, 7),
-    (0, 5, 1, 986154341213, 0),
-    (1, 169196708, 48472, 164931319, 1104061500587425402),
-    (2, 56740173004481439064040394445699717721276126318621324937225, 0, 0, 0),
-    (1, 902185754273633, 0, 1522777800, 89428981547581457596),
-    (0, 9, 1, 48049311232024289810729120, 0),
-    (0, 12, 1, 41115714135998921741, 3)]),
+  (nat_lit 32443530978206242, nat_lit 14, nat_lit 1044797702080836021904617071780386, nat_lit 28, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 12, nat_lit 0, nat_lit 8738, nat_lit 4, nat_lit 29507, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 496122405410, nat_lit 10, nat_lit 1844, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 11, nat_lit 0, nat_lit 3794657288738, nat_lit 11, nat_lit 115, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 9, nat_lit 0, nat_lit 74163401466402, nat_lit 12, nat_lit 7, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 5, nat_lit 1, nat_lit 918588331598370, nat_lit 13, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 15086068258, nat_lit 9, nat_lit 472119, nat_lit 5, nat_lit 14834274833, nat_lit 9, nat_lit 33968748991394830554929, nat_lit 0, nat_lit 0),
+    (nat_lit 1, nat_lit 4843677685086495266, nat_lit 16, nat_lit 0, nat_lit 0, nat_lit 241377162115, nat_lit 10, nat_lit 8695999741797076622061879, nat_lit 4, nat_lit 10),
+    (nat_lit 0, nat_lit 9, nat_lit 1, nat_lit 146429489960340242595155037725218, nat_lit 27, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 12, nat_lit 1, nat_lit 3870039516621580467773986, nat_lit 21, nat_lit 3, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (2, 2)).1
-  (199845290083269202130141939, 955853762258577475651156758830053, [
-    (1, 0, 48959822, 462941188721560, 515835625005545853),
-    (2, 640113622972517749816155967944760523434156839626758754064, 0, 0, 0)]),
+  (nat_lit 1044797702080836021904617071780386, nat_lit 28, nat_lit 280460747240625501099196129123103637840401, nat_lit 35, nat_lit 14, nat_lit 14, [
+    (nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 4598080034, nat_lit 9, nat_lit 2459266804767334929, nat_lit 16, nat_lit 15203807591472810918707, nat_lit 0, nat_lit 0)]),
   -- S2g(2, (2, 2))
-  (18777856802564, 955853762258577475651156758830053, [
-    (0, 364, 0, 0, 0),
-    (0, 365, 0, 0, 0)])]
+  (nat_lit 32443530978206242, nat_lit 14, nat_lit 280460747240625501099196129123103637840401, nat_lit 35, nat_lit 0, nat_lit 0, [
+    (nat_lit 0, nat_lit 364, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0),
+    (nat_lit 0, nat_lit 365, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)])]
 
 theorem lib3_upto_0 : ∀ i < 0, libLemOk fo3 base3 lib3D i = true := upto_zero
 

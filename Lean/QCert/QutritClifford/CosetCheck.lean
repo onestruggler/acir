@@ -75,7 +75,7 @@ namespace Cert
 
 /-- Every equation of the certificate is an entry of `A` (at every coset),
 or a stabiliser fact at its coset found in `S`. -/
-def eqsOk (C : Cert) (A S : Tbl) : Bool :=
+noncomputable def eqsOk (C : Cert) (A S : Tbl) : Bool :=
   C.eqs.all fun e =>
     (e.2.2 == 0 && A.contains (decW e.1, decW e.2.1)) ||
     (e.2.2 != 0 && decW e.2.1 == [] && S.any (stabMatch C.loc (C.repW (e.2.2 - 1)) (decW e.1)))
@@ -111,7 +111,7 @@ theorem eqs_letters_of {C : Cert}
   simpa using this
 
 theorem repW_of_le (C : Cert) {c : ℕ} (h : C.rep.length ≤ c) : C.repW c = [] := by
-  simp only [repW, List.getD_eq_getElem?_getD, List.getElem?_eq_none h, Option.getD_none]
+  simp only [repW, nthX_eq, List.getElem?_eq_none h, Option.getD_none]
   rfl
 
 end Cert

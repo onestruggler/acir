@@ -10,6 +10,15 @@ move of one letter past letters on disjoint wires (`Step.mv i j`).  `run`
 executes the steps; `run_sound` says that a successful run is a derivation,
 given that every equation of the database holds.  The check is a Boolean
 computation, so `decide +kernel` verifies long derivations.
+
+The kernel pays for every unfolding, so the steps are written for it: a
+rewrite walks to its position once and strips the equation's side from the
+word there (`replaceAt`, through `stripPrefix`), where a first version
+took, dropped, compared and re-appended the word several times through
+`Decidable` instances on `List Lt`; a move carries the letter past the
+letters it crosses in one pass (`moveFwd`, `pullBack`); the equation is
+looked up by primitive recursion (`nthE`), and the tests are `Lt.beq`,
+`Nat.ble` and `Lt.disj` under `bif`.
 -/
 import QCert.SelingerClifford.Letters
 
@@ -32,42 +41,132 @@ inductive Step
   | mv (i j : ℕ)
   deriving DecidableEq
 
+namespace Lt
+
+/-- Boolean equality of letters, by `Nat.beq` on the wire. -/
+def beq : Lt → Lt → Bool
+  | om, om => true
+  | H i, H j => i.beq j
+  | S i, S j => i.beq j
+  | CZ i, CZ j => i.beq j
+  | _, _ => false
+
+theorem eq_of_beq : ∀ {a b : Lt}, beq a b = true → a = b
+  | om, om, _ => rfl
+  | H _, H _, h => congrArg H (Nat.eq_of_beq_eq_true h)
+  | S _, S _, h => congrArg S (Nat.eq_of_beq_eq_true h)
+  | CZ _, CZ _, h => congrArg CZ (Nat.eq_of_beq_eq_true h)
+  | om, H _, h | om, S _, h | om, CZ _, h | H _, om, h | H _, S _, h | H _, CZ _, h
+  | S _, om, h | S _, H _, h | S _, CZ _, h | CZ _, om, h | CZ _, H _, h | CZ _, S _, h =>
+    nomatch h
+
+end Lt
+
+/-- Boolean equality of words. -/
+def eqL : List Lt → List Lt → Bool
+  | [], [] => true
+  | a :: l, b :: m => a.beq b && eqL l m
+  | _, _ => false
+
+theorem eq_of_eqL : ∀ {l m : List Lt}, eqL l m = true → l = m
+  | [], [], _ => rfl
+  | a :: l, b :: m, h => by
+    simp only [eqL, Bool.and_eq_true] at h
+    rw [Lt.eq_of_beq h.1, eq_of_eqL h.2]
+  | [], _ :: _, h => nomatch h
+  | _ :: _, [], h => nomatch h
+
 /-- A list of letters moved up `s` wires. -/
 def upN : ℕ → List Lt → List Lt
   | 0, l => l
   | s + 1, l => (upN s l).map Lt.up
 
+/-- The equation `e` of the database, by primitive recursion. -/
+def nthE (db : List Eqn) : ℕ → Option Eqn :=
+  List.rec (motive := fun _ => ℕ → Option Eqn) (fun _ => none)
+    (fun q _ ih e => Nat.rec (motive := fun _ => Option Eqn) (some q) (fun e' _ => ih e') e) db
+
+theorem nthE_mem : ∀ {db : List Eqn} {e : ℕ} {q : Eqn}, nthE db e = some q → q ∈ db
+  | [], e, q, h => nomatch h
+  | q' :: db, 0, q, h => by
+    have h' : some q' = some q := h
+    cases h'; exact List.mem_cons_self
+  | q' :: db, e + 1, q, h =>
+    List.mem_cons_of_mem _ (nthE_mem (db := db) (e := e) (show nthE db e = some q from h))
+
+/-- The word `w` with its prefix `l` stripped. -/
+def stripPrefix : List Lt → List Lt → Option (List Lt)
+  | [], w => some w
+  | a :: l, b :: w => bif a.beq b then stripPrefix l w else none
+  | _ :: _, [] => none
+
+theorem stripPrefix_eq : ∀ {l w rest : List Lt}, stripPrefix l w = some rest → w = l ++ rest
+  | [], w, rest, h => by simp only [stripPrefix, Option.some.injEq] at h; rw [h]; rfl
+  | a :: l, b :: w, rest, h => by
+    simp only [stripPrefix] at h
+    cases hab : a.beq b with
+    | false => rw [hab] at h; exact nomatch h
+    | true =>
+      rw [hab] at h
+      rw [Lt.eq_of_beq hab, stripPrefix_eq h]; rfl
+  | _ :: _, [], rest, h => nomatch h
+
 /-- Replace the segment `l` at position `pos` of `w` by `r`. -/
-def replaceAt (l r w : List Lt) (pos : ℕ) : Option (List Lt) :=
-  if (w.drop pos).take l.length = l ∧ pos + l.length ≤ w.length then
-    some (w.take pos ++ r ++ w.drop (pos + l.length))
-  else none
+def replaceAt (l r : List Lt) : List Lt → ℕ → Option (List Lt)
+  | w, 0 => (stripPrefix l w).map (r ++ ·)
+  | [], _ + 1 => none
+  | a :: w, pos + 1 => (replaceAt l r w pos).map (a :: ·)
 
 /-- All letters of `u` are on wires disjoint from `a`. -/
 def allDisj (a : Lt) (u : List Lt) : Bool := u.all fun b => a.disj b
 
+/-- `a` moved past the next `d` letters, each on wires disjoint from it. -/
+def moveFwd (a : Lt) : ℕ → List Lt → Option (List Lt)
+  | 0, w => some (a :: w)
+  | _ + 1, [] => none
+  | d + 1, b :: w => bif a.disj b then (moveFwd a d w).map (b :: ·) else none
+
+/-- The letter at position `d` brought to the front, past the `d` letters
+before it, each on wires disjoint from it. -/
+def pullBack : ℕ → List Lt → Option (Lt × List Lt)
+  | 0, a :: w => some (a, w)
+  | 0, [] => none
+  | _ + 1, [] => none
+  | d + 1, b :: w =>
+    match pullBack d w with
+    | some (a, w') => bif a.disj b then some (a, b :: w') else none
+    | none => none
+
+/-- Move the letter at position `i` to position `j`, both relative to the
+start of `w`, one of them `0`. -/
+def moveFrom (w : List Lt) (i j : ℕ) : Option (List Lt) :=
+  bif Nat.blt i j then
+    match w with
+    | a :: rest => moveFwd a j rest
+    | [] => none
+  else
+    match pullBack i w with
+    | some (a, w') => some (a :: w')
+    | none => none
+
+/-- Walk `p` letters into the word, then move. -/
+def moveWalk : ℕ → List Lt → ℕ → ℕ → Option (List Lt)
+  | 0, w, i, j => moveFrom w i j
+  | _ + 1, [], _, _ => none
+  | p + 1, a :: w, i, j => (moveWalk p w i j).map (a :: ·)
+
 /-- Move the letter at position `i` to position `j`. -/
 def moveAt (w : List Lt) (i j : ℕ) : Option (List Lt) :=
-  match w[i]? with
-  | none => none
-  | some a =>
-    if i < j then
-      if allDisj a ((w.drop (i + 1)).take (j - i)) && decide (j < w.length) then
-        some (w.take i ++ (w.drop (i + 1)).take (j - i) ++ [a] ++ w.drop (j + 1))
-      else none
-    else
-      if allDisj a ((w.drop j).take (i - j)) then
-        some (w.take j ++ [a] ++ (w.drop j).take (i - j) ++ w.drop (i + 1))
-      else none
+  moveWalk (min i j) w (i - min i j) (j - min i j)
 
 /-- Execute one step at width bound `k`. -/
 def exec (k : ℕ) (db : List Eqn) : Step → List Lt → Option (List Lt)
   | .rw e pos s rev, w =>
-    match db[e]? with
+    match nthE db e with
     | none => none
     | some q =>
-      if q.k + s ≤ k then
-        if rev then replaceAt (upN s q.r) (upN s q.l) w pos
+      bif Nat.ble (q.k + s) k then
+        bif rev then replaceAt (upN s q.r) (upN s q.l) w pos
         else replaceAt (upN s q.l) (upN s q.r) w pos
       else none
   | .mv i j, w => moveAt w i j
@@ -82,7 +181,9 @@ def run (k : ℕ) (db : List Eqn) : List Step → List Lt → Option (List Lt)
 
 /-- The derivation `steps` turns `w` into `v`. -/
 def derives (k : ℕ) (db : List Eqn) (steps : List Step) (w v : List Lt) : Bool :=
-  decide (run k db steps w = some v)
+  match run k db steps w with
+  | some w' => eqL w' v
+  | none => false
 
 /-! ### Soundness -/
 
@@ -91,22 +192,18 @@ theorem holds_upN {k : ℕ} {l r : List Lt} (h : Holds k l r) :
   | 0 => h
   | s + 1 => (holds_upN h s).up
 
-theorem replaceAt_sound {k : ℕ} {l r w w' : List Lt} {pos : ℕ} (h : Holds k l r)
-    (hw : replaceAt l r w pos = some w') : Holds k w w' := by
-  unfold replaceAt at hw
-  split_ifs at hw with hc
-  obtain ⟨h1, h2⟩ := hc
-  cases hw
-  have e : w = w.take pos ++ l ++ w.drop (pos + l.length) := by
-    conv_lhs => rw [← List.take_append_drop pos w]
-    rw [List.append_assoc]
-    congr 1
-    conv_lhs => rw [← List.take_append_drop l.length (w.drop pos)]
-    rw [h1, List.drop_drop, Nat.add_comm]
-  rw [e]
-  have := Holds.congr (w.take pos) (w.drop (pos + l.length)) h
-  convert this using 1
-  rw [← e]
+theorem replaceAt_sound {k : ℕ} {l r : List Lt} (h : Holds k l r) :
+    ∀ {w w' : List Lt} {pos : ℕ}, replaceAt l r w pos = some w' → Holds k w w'
+  | w, w', 0, hw => by
+    simp only [replaceAt, Option.map_eq_some_iff] at hw
+    obtain ⟨rest, hr, rfl⟩ := hw
+    rw [stripPrefix_eq hr]
+    simpa using Holds.congr [] rest h
+  | [], w', _ + 1, hw => nomatch hw
+  | a :: w, w', pos + 1, hw => by
+    simp only [replaceAt, Option.map_eq_some_iff] at hw
+    obtain ⟨w'', hw'', rfl⟩ := hw
+    simpa using Holds.congr [a] [] (replaceAt_sound h hw'')
 
 theorem allDisj_move {a : Lt} : ∀ {u : List Lt}, allDisj a u = true →
     Holds 0 (a :: u) (u ++ [a])
@@ -119,78 +216,104 @@ theorem allDisj_move {a : Lt} : ∀ {u : List Lt}, allDisj a u = true →
       simpa using Holds.congr [b] [] (allDisj_move h.2)
     exact h1.trans h2
 
-theorem split_fwd (w : List Lt) {i j : ℕ} (hi : i < w.length) (hij : i ≤ j) :
-    w = w.take i ++ w[i] :: ((w.drop (i + 1)).take (j - i) ++ w.drop (j + 1)) := by
-  have h2 : w.drop (i + 1) = (w.drop (i + 1)).take (j - i) ++ w.drop (j + 1) := by
-    conv_lhs => rw [← List.take_append_drop (j - i) (w.drop (i + 1))]
-    rw [List.drop_drop]
-    congr 2
-    omega
-  rw [← h2, ← List.drop_eq_getElem_cons hi, List.take_append_drop]
+theorem moveFwd_sound (a : Lt) : ∀ {d : ℕ} {w w' : List Lt}, moveFwd a d w = some w' →
+    Holds 0 (a :: w) w'
+  | 0, w, w', h => by
+    simp only [moveFwd, Option.some.injEq] at h; rw [h]; exact Holds.refl _ _
+  | _ + 1, [], w', h => nomatch h
+  | d + 1, b :: w, w', h => by
+    simp only [moveFwd] at h
+    cases hab : a.disj b with
+    | false => rw [hab] at h; exact nomatch h
+    | true =>
+      rw [hab] at h
+      simp only [cond_true, Option.map_eq_some_iff] at h
+      obtain ⟨w'', hw'', rfl⟩ := h
+      have h1 : Holds 0 (a :: b :: w) (b :: a :: w) := by
+        simpa using Holds.congr [] w (Holds.comm hab)
+      have h2 : Holds 0 (b :: a :: w) (b :: w'') := by
+        simpa using Holds.congr [b] [] (moveFwd_sound a hw'')
+      exact h1.trans h2
 
-theorem split_bwd (w : List Lt) {i j : ℕ} (hi : i < w.length) (hij : j ≤ i) :
-    w = w.take j ++ ((w.drop j).take (i - j) ++ w[i] :: w.drop (i + 1)) := by
-  have h2 : w.drop j = (w.drop j).take (i - j) ++ w[i] :: w.drop (i + 1) := by
-    conv_lhs => rw [← List.take_append_drop (i - j) (w.drop j)]
-    rw [List.drop_drop, show j + (i - j) = i by omega, List.drop_eq_getElem_cons hi]
-  rw [← h2, List.take_append_drop]
+theorem pullBack_sound : ∀ {d : ℕ} {w : List Lt} {a : Lt} {w' : List Lt},
+    pullBack d w = some (a, w') → Holds 0 w (a :: w')
+  | 0, b :: w, a, w', h => by
+    simp only [pullBack, Option.some.injEq, Prod.mk.injEq] at h
+    obtain ⟨rfl, rfl⟩ := h; exact Holds.refl _ _
+  | 0, [], _, _, h => nomatch h
+  | _ + 1, [], _, _, h => nomatch h
+  | d + 1, b :: w, a, w', h => by
+    simp only [pullBack] at h
+    match hp : pullBack d w with
+    | none => rw [hp] at h; exact nomatch h
+    | some (a', w'') =>
+      rw [hp] at h
+      dsimp only at h
+      cases hab : a'.disj b with
+      | false => rw [hab] at h; exact nomatch h
+      | true =>
+        rw [hab] at h
+        simp only [cond_true, Option.some.injEq, Prod.mk.injEq] at h
+        obtain ⟨ha, hw⟩ := h
+        subst hw
+        rw [← ha]
+        have h1 : Holds 0 (b :: w) (b :: a' :: w'') := by
+          simpa using Holds.congr [b] [] (pullBack_sound hp)
+        have h2 : Holds 0 (b :: a' :: w'') (a' :: b :: w'') := by
+          simpa using Holds.congr [] w'' (Holds.comm hab).symm
+        exact h1.trans h2
+
+theorem moveFrom_sound {w w' : List Lt} {i j : ℕ} (h : moveFrom w i j = some w') :
+    Holds 0 w w' := by
+  unfold moveFrom at h
+  cases hij : Nat.blt i j with
+  | true =>
+    rw [hij, cond_true] at h
+    cases w with
+    | nil => exact nomatch h
+    | cons a rest => exact moveFwd_sound a h
+  | false =>
+    rw [hij, cond_false] at h
+    match hp : pullBack i w with
+    | none => rw [hp] at h; exact nomatch h
+    | some (a, w'') =>
+      rw [hp] at h
+      simp only [Option.some.injEq] at h
+      rw [← h]
+      exact pullBack_sound hp
+
+theorem moveWalk_sound : ∀ {p : ℕ} {w w' : List Lt} {i j : ℕ}, moveWalk p w i j = some w' →
+    Holds 0 w w'
+  | 0, w, w', i, j, h => moveFrom_sound h
+  | _ + 1, [], _, _, _, h => nomatch h
+  | p + 1, a :: w, w', i, j, h => by
+    simp only [moveWalk, Option.map_eq_some_iff] at h
+    obtain ⟨w'', hw'', rfl⟩ := h
+    simpa using Holds.congr [a] [] (moveWalk_sound hw'')
 
 theorem moveAt_sound {w w' : List Lt} {i j : ℕ} (hw : moveAt w i j = some w') :
-    Holds 0 w w' := by
-  unfold moveAt at hw
-  match ha : w[i]? with
-  | none => rw [ha] at hw; cases hw
-  | some a =>
-    rw [ha] at hw
-    dsimp only at hw
-    have hi : i < w.length := by
-      rcases List.getElem?_eq_some_iff.1 ha with ⟨hi, _⟩; exact hi
-    have hai : w[i] = a := by
-      rcases List.getElem?_eq_some_iff.1 ha with ⟨_, h⟩; exact h
-    by_cases hij : i < j
-    · rw [if_pos hij] at hw
-      by_cases hc : (allDisj a ((w.drop (i + 1)).take (j - i)) && decide (j < w.length)) = true
-      swap
-      · rw [if_neg hc] at hw; cases hw
-      rw [if_pos hc] at hw
-      cases hw
-      simp only [Bool.and_eq_true, decide_eq_true_eq] at hc
-      obtain ⟨hd, hj⟩ := hc
-      have e := split_fwd w hi hij.le
-      rw [hai] at e
-      have h2 := Holds.congr (w.take i) (w.drop (j + 1)) (allDisj_move hd)
-      rw [List.append_assoc, List.cons_append, ← e] at h2
-      simpa [List.append_assoc] using h2
-    · rw [if_neg hij] at hw
-      by_cases hc : allDisj a ((w.drop j).take (i - j)) = true
-      swap
-      · rw [if_neg hc] at hw; cases hw
-      rw [if_pos hc] at hw
-      cases hw
-      have e := split_bwd w hi (by omega : j ≤ i)
-      rw [hai] at e
-      have h2 := Holds.congr (w.take j) (w.drop (i + 1)) (allDisj_move hc).symm
-      rw [List.append_assoc, List.append_assoc, List.singleton_append, ← e] at h2
-      simpa [List.append_assoc] using h2
+    Holds 0 w w' :=
+  moveWalk_sound hw
 
 theorem exec_sound {k : ℕ} {db : List Eqn} (hdb : ∀ q ∈ db, Holds q.k q.l q.r)
     {s : Step} {w w' : List Lt} (h : exec k db s w = some w') : Holds k w w' := by
   cases s with
   | rw e pos sh rev =>
     simp only [exec] at h
-    match hq : db[e]? with
-    | none => rw [hq] at h; cases h
+    match hq : nthE db e with
+    | none => rw [hq] at h; exact nomatch h
     | some q =>
       rw [hq] at h
       dsimp only at h
-      have hq' := hdb q (List.mem_of_getElem? hq)
-      by_cases hk : q.k + sh ≤ k
-      swap
-      · rw [if_neg hk] at h; cases h
-      rw [if_pos hk] at h
-      cases rev
-      · exact replaceAt_sound ((holds_upN hq' sh).mono hk) h
-      · exact replaceAt_sound ((holds_upN hq' sh).symm.mono hk) h
+      have hq' := hdb q (nthE_mem hq)
+      cases hk : Nat.ble (q.k + sh) k with
+      | false => rw [hk] at h; exact nomatch h
+      | true =>
+        rw [hk] at h
+        have hle : q.k + sh ≤ k := Nat.le_of_ble_eq_true hk
+        cases rev
+        · exact replaceAt_sound ((holds_upN hq' sh).mono hle) h
+        · exact replaceAt_sound ((holds_upN hq' sh).symm.mono hle) h
   | mv i j => exact (moveAt_sound h).mono (Nat.zero_le _)
 
 theorem run_sound {k : ℕ} {db : List Eqn} (hdb : ∀ q ∈ db, Holds q.k q.l q.r) :
@@ -199,15 +322,21 @@ theorem run_sound {k : ℕ} {db : List Eqn} (hdb : ∀ q ∈ db, Holds q.k q.l q
   | s :: ss, w, w', h => by
     simp only [run] at h
     match he : exec k db s w with
-    | none => rw [he] at h; cases h
+    | none => rw [he] at h; exact nomatch h
     | some w'' =>
       rw [he] at h
       exact (exec_sound hdb he).trans (run_sound hdb h)
 
 /-- A derivation checked by `derives` is sound. -/
 theorem Holds.of_derives {k : ℕ} {db : List Eqn} (hdb : ∀ q ∈ db, Holds q.k q.l q.r)
-    {steps : List Step} {w v : List Lt} (h : derives k db steps w v = true) : Holds k w v :=
-  run_sound hdb (of_decide_eq_true h)
+    {steps : List Step} {w v : List Lt} (h : derives k db steps w v = true) : Holds k w v := by
+  unfold derives at h
+  match hr : run k db steps w with
+  | none => rw [hr] at h; exact nomatch h
+  | some w' =>
+    rw [hr] at h
+    rw [← eq_of_eqL h]
+    exact run_sound hdb hr
 
 end QCert.SelingerClifford
 

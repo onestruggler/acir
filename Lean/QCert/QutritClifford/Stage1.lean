@@ -165,11 +165,13 @@ def let2 : ℕ → Lt
   | 3 => .S 1
   | _ => .C 0
 
-/-- The K-word of the condition on two wires. -/
-def kS12 (i : ℕ) (p q : Fin 3 × Fin 3) : List Tok := k12.getD (81 * i + 9 * pidx p + pidx q) []
+/-- The K-word of the condition on two wires (looked up by `nthX`, which the
+kernel evaluates faster than `List.getD`). -/
+noncomputable def kS12 (i : ℕ) (p q : Fin 3 × Fin 3) : List Tok :=
+  (nthX k12 (81 * i + 9 * pidx p + pidx q)).getD []
 
 /-- The check of the condition on two wires. -/
-def chk12 (i : ℕ) (p q : Fin 3 × Fin 3) : Bool :=
+noncomputable def chk12 (i : ℕ) (p q : Fin 3 × Fin 3) : Bool :=
   let l := sigma [p, q] ++ [let2 i]
   let r := kw (kS12 i p q) ++ sigma (ptAct (let2 i) [p, q])
   K1b 2 (kS12 i p q) && l.all in2 && r.all in2 && same2 l r

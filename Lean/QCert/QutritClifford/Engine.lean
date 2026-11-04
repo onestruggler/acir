@@ -4,22 +4,26 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 # A rewriting engine for derivations on two and three wires
 
 Toward Theorem 4.4.  A derivation on `k` wires is checked as a run over
-letter lists (`Lt`: `H`, `S` on a wire, `CZ` on two adjacent wires), read
-in time order (`cw`), up to a phase (`E`, i.e. `PEq`):
+words of letters (`Lt`: `H`, `S` on a wire, `CZ` on two adjacent wires),
+read in time order (`cw`), up to a phase (`E`, i.e. `PEq`); the words are
+stored as base-16 codes (`dec16`, with `decS` its specification by
+recursion on the code, and `decS_add`: a code split at a power of `16`
+splits its word):
 
-* `canon` puts a word in a normal form for commuting adjacent letters on
-  disjoint wires (repeatedly the least letter that commutes with every
-  letter before it), and `canon_E` says it is equal to the word;
-* a `rule` step replaces an occurrence (up to `canon`) of one side of an
-  equation of a table by the other side;
-* a `free` step replaces a segment lying on the bottom `k - 1` wires, or on
+* `sameTr` tests whether two words are equal up to commuting adjacent
+  letters on disjoint wires, and `sameTr_E` says they are then equal;
+  `sameH` compares two codes, equal or equal up to commuting letters on a
+  window (`sameH_E`);
+* a rule step replaces an occurrence (up to `sameH`) of one side of an
+  equation of a table by the other side (`ruleX_E`, `stepX_E`);
+* a free step replaces a segment lying on the bottom `k - 1` wires, or on
   the top `k - 1` wires, by another one acting alike on the Paulis there:
   with completeness on `k - 1` wires they are derivably equal up to a phase
   (`pcomplete_gens`), and a derivation on `k - 1` wires holds on the bottom
   or top wires of `k` (`PEq.pad`, `PEq.shift`).
 
-`Lib.check` runs a list of lemmas, each derived from the base rules and the
-lemmas before it, and `Lib.sound` makes every one of them an equation.
+`runX_E` makes a run an equation; `Local.lean` checks a library lemma by
+lemma, each over the table so far (`validUpTo_all`).
 -/
 import QCert.QutritClifford.Proj
 import QCert.QutritClifford.Run
@@ -163,125 +167,138 @@ theorem E.move_left {k : ℕ} (x : Lt) : ∀ (p : List Lt), (∀ y ∈ p, Lt.dis
     refine h1.trans ?_
     exact (E.swap (h y List.mem_cons_self)).append (E.refl p)
 
-/-! ### Canonical forms -/
+/-! ### Equality up to commuting letters
 
-namespace Bl
+`sameTr` takes the letters of the second word out of the first in order;
+each is taken from behind letters on disjoint wires only, so the two words
+are equal (`sameTr_E`). -/
 
-/-- `bl` blocks every wire of the letters of `pre`. -/
-def Inv (bl : Bl) (pre : List Lt) : Prop := ∀ w, bl.get w = false → ∀ y ∈ pre, onw y w = false
+theorem Lt.eq_of_beq : ∀ {a b : Lt}, Lt.beq a b = true → a = b
+  | .H _, .H _, h => congrArg Lt.H (Nat.eq_of_beq_eq_true h)
+  | .S _, .S _, h => congrArg Lt.S (Nat.eq_of_beq_eq_true h)
+  | .C _, .C _, h => congrArg Lt.C (Nat.eq_of_beq_eq_true h)
+  | .H _, .S _, h | .H _, .C _, h | .S _, .H _, h | .S _, .C _, h | .C _, .H _, h
+  | .C _, .S _, h => nomatch h
 
-theorem inv_nil : Inv ⟨false, false, false⟩ [] := fun _ _ _ h => nomatch h
+theorem extract_E {k : ℕ} (t : Lt) : ∀ {w w' : List Lt}, extract t w = some w' →
+    E k w (t :: w')
+  | [], _, h => nomatch h
+  | y :: w, w', h => by
+    simp only [extract] at h
+    cases hb : Lt.beq t y with
+    | true =>
+      rw [hb, cond_true, Option.some.injEq] at h
+      rw [← h, Lt.eq_of_beq hb]
+    | false =>
+      rw [hb, cond_false] at h
+      cases hd : Lt.disj y t with
+      | false => rw [hd] at h; exact nomatch h
+      | true =>
+        rw [hd, cond_true, Option.map_eq_some_iff] at h
+        obtain ⟨w'', hw'', rfl⟩ := h
+        have h1 : E k (y :: w) (y :: t :: w'') := (E.refl [y]).append (extract_E t hw'')
+        have h2 : E k (y :: t :: w'') (t :: y :: w'') := (E.swap hd).append (E.refl w'')
+        exact h1.trans h2
 
-theorem inv_add {bl : Bl} {pre : List Lt} (h : Inv bl pre) (x : Lt) :
-    Inv (bl.add x) (pre ++ [x]) := by
-  intro w hw y hy
-  have hw' : bl.get w = false ∧ onw x w = false := by
-    match w, hw with
-    | 0, hw => simp_all [get, add]
-    | 1, hw => simp_all [get, add]
-    | 2, hw => simp_all [get, add]
-  rcases List.mem_append.1 hy with hy | hy
-  · exact h w hw'.1 y hy
-  · rw [List.mem_singleton.1 hy]; exact hw'.2
-
-theorem disj_of_free {bl : Bl} {pre : List Lt} (h : Inv bl pre) {x : Lt}
-    (hx : free bl x = true) : ∀ y ∈ pre, Lt.disj y x = true := by
-  intro y hy
-  simp only [free, Bool.and_eq_true, Bool.not_eq_true'] at hx
-  have h1 := h _ hx.1 y hy
-  have h2 := h _ hx.2 y hy
-  cases x <;> cases y <;> simp_all [onw, Lt.disj, Lt.lo, Lt.hi] <;> omega
-
-end Bl
-
-/-- The specification of a choice `(j, x)` in `orig`. -/
-def PickSpec (orig : List Lt) (j : ℕ) (x : Lt) : Prop :=
-  orig.take j ++ x :: orig.drop (j + 1) = orig ∧ ∀ y ∈ orig.take j, Lt.disj y x = true
-
-theorem pickI_spec : ∀ (bl : Bl) (pre : List Lt) (best : Option (ℕ × Lt)) (w : List Lt)
-    (orig : List Lt), Bl.Inv bl pre → pre ++ w = orig →
-    (∀ j x, best = some (j, x) → PickSpec orig j x) →
-    ∀ j x, pickI bl pre.length best w = some (j, x) → PickSpec orig j x
-  | _, _, _, [], _, _, _, hb => fun j x h => hb j x h
-  | bl, pre, best, y :: rest, orig, hi, ho, hb => by
-    intro j x h
-    simp only [pickI] at h
-    rw [show pre.length + 1 = (pre ++ [y]).length by simp] at h
-    refine pickI_spec (bl.add y) (pre ++ [y]) _ rest orig (Bl.inv_add hi y)
-      (by rw [← ho]; simp) ?_ j x h
-    intro j' x' h'
-    split_ifs at h' with hc
-    · cases h'
-      have hpre : orig.take pre.length = pre := by rw [← ho]; simp
-      have hpost : orig.drop (pre.length + 1) = rest := by rw [← ho]; simp
-      refine ⟨by rw [hpre, hpost, ← ho], ?_⟩
-      rw [hpre]
-      exact Bl.disj_of_free hi (Bool.and_eq_true _ _ ▸ hc).1
-    · exact hb j' x' h'
-
-theorem pick_spec {w : List Lt} {p : List Lt} {x : Lt} {s : List Lt}
-    (h : pick w = some (p, x, s)) : p ++ x :: s = w ∧ ∀ y ∈ p, Lt.disj y x = true := by
-  unfold pick at h
-  cases hp : pickI ⟨false, false, false⟩ 0 none w with
-  | none => rw [hp] at h; exact nomatch h
-  | some iy =>
-    obtain ⟨i, y⟩ := iy
-    rw [hp] at h
-    simp only [Option.some.injEq, Prod.mk.injEq] at h
-    obtain ⟨rfl, rfl, rfl⟩ := h
-    exact pickI_spec ⟨false, false, false⟩ [] none w w Bl.inv_nil rfl
-      (fun _ _ h => nomatch h) i y hp
-
-theorem canonF_E {k : ℕ} : ∀ (n : ℕ) (w : List Lt), E k w (canonF n w)
-  | 0, w => E.refl w
-  | n + 1, w => by
-    unfold canonF
-    split
-    · exact E.refl w
-    · rename_i p x s h
-      obtain ⟨hw, hd⟩ := pick_spec h
-      subst hw
-      have h1 : E k (p ++ x :: s) (x :: (p ++ s)) := by
-        have := (E.move_left (k := k) x p hd).append (E.refl s)
-        simpa using this
-      exact h1.trans ((E.refl [x]).append (canonF_E n (p ++ s)))
-
-theorem canon_E {k : ℕ} (w : List Lt) : E k w (canon w) := canonF_E _ w
-
-theorem E_of_canon {k : ℕ} {a b : List Lt} (h : canon a = canon b) : E k a b :=
-  (canon_E a).trans (h ▸ (canon_E b).symm)
-
-theorem E_of_canonOr {k : ℕ} {a b : List Lt} (h : (a == b || canon a == canon b) = true) :
-    E k a b := by
-  rcases Bool.or_eq_true _ _ ▸ h with h | h
-  · rw [beq_iff_eq.1 h]
-  · exact E_of_canon (beq_iff_eq.1 h)
-
-/-! ### Runs -/
-
-theorem swapAt_E {k : ℕ} : ∀ (i : ℕ) (w w' : List Lt), swapAt i w = some w' → E k w w'
-  | 0, x :: y :: r, w', h => by
-    simp only [swapAt] at h
-    split_ifs at h with hd
-    cases h
-    exact (E.swap hd).append (E.refl r)
-  | i + 1, x :: r, w', h => by
-    simp only [swapAt, Option.map_eq_some_iff] at h
-    obtain ⟨r', hr, rfl⟩ := h
-    exact (E.refl [x]).append (swapAt_E i r r' hr)
-  | 0, [], _, h => nomatch h
-  | 0, [_], _, h => nomatch h
-  | _ + 1, [], _, h => nomatch h
-
-theorem swapsAt_E {k : ℕ} : ∀ (ps : List ℕ) (w w' : List Lt), swapsAt ps w = some w' → E k w w'
-  | [], w, w', h => by cases h; exact E.refl w
-  | i :: ps, w, w', h => by
-    simp only [swapsAt, Option.bind_eq_some_iff] at h
-    obtain ⟨v, hv, h⟩ := h
-    exact (swapAt_E i w v hv).trans (swapsAt_E ps v w' h)
+theorem sameTr_E {k : ℕ} : ∀ {w v : List Lt}, sameTr w v = true → E k w v
+  | [], [], _ => E.refl _
+  | _ :: _, [], h => nomatch h
+  | w, t :: ts, h => by
+    simp only [sameTr] at h
+    match he : extract t w with
+    | none => rw [he] at h; exact nomatch h
+    | some w' =>
+      rw [he] at h
+      exact (extract_E t he).trans ((E.refl [t]).append (sameTr_E h))
 
 /-- Every equation of the table holds. -/
 def Valid (k : ℕ) (T : Tbl) : Prop := ∀ e ∈ T, E k e.1 e.2
+
+/-! ### Codes
+
+`dec16` reads a code digit by digit; `decS` is the same by recursion on the
+code, and splitting a code at a power of `16` splits its word
+(`decS_add`), whatever the digits, since a digit that is no letter stands
+for none. -/
+
+/-- The word of a code, by recursion on the code. -/
+def decS (n : ℕ) : List Lt :=
+  if n = 0 then [] else dig16 (n % 16) ++ decS (n / 16)
+decreasing_by omega
+
+theorem decS_zero : decS 0 = [] := by rw [decS]; rfl
+
+theorem decS_eq (n : ℕ) : decS n = dig16 (n % 16) ++ decS (n / 16) := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · rw [decS_zero]; rfl
+  · rw [decS, if_neg (by omega)]
+
+theorem dec16F_eq : ∀ f n, n ≤ f → dec16F f n = decS n
+  | 0, n, h => by
+    obtain rfl : n = 0 := by omega
+    rw [decS_zero]; rfl
+  | f + 1, n, h => by
+    show (bif n.beq 0 then [] else dig16 (n % 16) ++ dec16F f (n / 16)) = decS n
+    cases n with
+    | zero => rw [decS_zero]; rfl
+    | succ m =>
+      rw [show (m + 1).beq 0 = false from rfl, cond_false, dec16F_eq f _ (by omega), ← decS_eq]
+
+theorem dec16_eq (n : ℕ) : dec16 n = decS n := dec16F_eq n n le_rfl
+
+theorem decS_add : ∀ (k a b : ℕ), a < 16 ^ k → decS (a + 16 ^ k * b) = decS a ++ decS b
+  | 0, a, b, h => by
+    obtain rfl : a = 0 := by simpa using h
+    rw [decS_zero, pow_zero, one_mul, zero_add, List.nil_append]
+  | k + 1, a, b, h => by
+    rw [pow_succ] at h
+    have e : 16 ^ (k + 1) * b = 16 * (16 ^ k * b) := by rw [pow_succ]; ring
+    have h1 : a / 16 < 16 ^ k := by generalize 16 ^ k = P at h ⊢; omega
+    have ih := decS_add k (a / 16) b h1
+    rw [e, decS_eq (a + 16 * (16 ^ k * b)), decS_eq a]
+    generalize 16 ^ k * b = c at ih ⊢
+    rw [show (a + 16 * c) % 16 = a % 16 by omega, show (a + 16 * c) / 16 = a / 16 + c by omega, ih,
+      List.append_assoc]
+
+theorem decS_split (n k : ℕ) : decS n = decS (n % 16 ^ k) ++ decS (n / 16 ^ k) := by
+  conv_lhs => rw [← Nat.mod_add_div n (16 ^ k)]
+  exact decS_add k _ _ (Nat.mod_lt _ (by positivity))
+
+theorem dec16_cat3 {u lu a la : ℕ} (v : ℕ) (hu : u < 16 ^ lu) (ha : a < 16 ^ la) :
+    dec16 (cat3 u lu a la v) = dec16 u ++ dec16 a ++ dec16 v := by
+  simp only [dec16_eq, cat3]
+  rw [decS_add lu u _ hu, decS_add la a v ha, List.append_assoc]
+
+theorem sameH_E {k : ℕ} {c d p w : ℕ} (h : sameH c d p w = true) : E k (dec16 c) (dec16 d) := by
+  simp only [sameH, Bool.or_eq_true, Bool.and_eq_true] at h
+  rcases h with h | ⟨⟨h1, h2⟩, h3⟩
+  · rw [Nat.eq_of_beq_eq_true h]
+  · have split : ∀ x : ℕ, dec16 x =
+        decS (x % 16 ^ p) ++ dec16 (x / 16 ^ p % 16 ^ w) ++ decS (x / 16 ^ (p + w)) := by
+      intro x
+      rw [dec16_eq, dec16_eq, decS_split x p, decS_split (x / 16 ^ p) w, Nat.div_div_eq_div_mul,
+        ← pow_add, List.append_assoc]
+    rw [split c, split d, Nat.eq_of_beq_eq_true h1, Nat.eq_of_beq_eq_true h2]
+    exact E.append3 (sameTr_E h3)
+
+/-! ### Runs on codes -/
+
+theorem ruleX_E {k : ℕ} {sm : ℕ → ℕ → ℕ → ℕ → Bool}
+    (hsm : ∀ c d p w, sm c d p w = true → E k (dec16 c) (dec16 d))
+    {cur u lu v p w x lx y ly nxt : ℕ} (hxy : E k (dec16 x) (dec16 y))
+    (h : ruleX sm cur u lu v p w x lx y ly = some nxt) : E k (dec16 cur) (dec16 nxt) := by
+  unfold ruleX at h
+  cases hc : (Nat.blt u (16 ^ lu) && Nat.blt x (16 ^ lx) && Nat.blt y (16 ^ ly) &&
+      sm cur (cat3 u lu x lx v) p w)
+  · rw [hc] at h; exact nomatch h
+  · rw [hc] at h
+    cases h
+    simp only [Bool.and_eq_true, Nat.blt_eq] at hc
+    obtain ⟨⟨⟨hu, hx⟩, hy⟩, hs⟩ := hc
+    have h1 := hsm _ _ _ _ hs
+    rw [dec16_cat3 v hu hx] at h1
+    rw [dec16_cat3 v hu hy]
+    exact h1.trans (E.append3 hxy)
 
 section Run
 
@@ -290,66 +307,39 @@ variable (fo : List Lt → List Lt → Bool)
 variable {k : ℕ} (hfo : ∀ s t, fo s t = true → E k s t)
 include hfo
 
-theorem runStep_E {T : Tbl} (hT : Valid k T) {cur nxt : List Lt} {st : Step}
-    (h : runStep fo T cur st = some nxt) : E k cur nxt := by
-  cases st with
-  | rule i rev u v =>
-    simp only [runStep] at h
+theorem stepX_E {T : ℕ → Option (ℕ × ℕ × ℕ × ℕ)}
+    (hT : ∀ j e, T j = some e → E k (dec16 e.1) (dec16 e.2.2.1))
+    {cur nxt : ℕ} {st : SX} (h : stepX fo T cur st = some nxt) : E k (dec16 cur) (dec16 nxt) := by
+  obtain ⟨kk, a1, a2, a3, a4, a5, a6, a7, a8, a9⟩ := st
+  simp only [stepX] at h
+  cases hk : kk.beq 0
+  · rw [hk, cond_false] at h
+    cases hk1 : kk.beq 1
+    · rw [hk1, cond_false] at h; exact nomatch h
+    · rw [hk1, cond_true] at h
+      cases hf : fo (dec16 a3) (dec16 a5)
+      · rw [hf, cond_false] at h; exact nomatch h
+      · rw [hf, cond_true] at h
+        exact ruleX_E (fun _ _ _ _ => sameH_E) (hfo _ _ hf) h
+  · rw [hk, cond_true] at h
     split at h
     · exact nomatch h
-    · rename_i e he
-      have hv := hT e (List.mem_of_getElem? he)
-      by_cases hc : (cur == u ++ (if rev then e.2 else e.1) ++ v ||
-          canon cur == canon (u ++ (if rev then e.2 else e.1) ++ v)) = true
-      · rw [if_pos hc] at h
-        cases h
-        refine (E_of_canonOr hc).trans (E.append3 ?_)
-        cases rev
-        · exact hv
-        · exact hv.symm
-      · rw [if_neg hc] at h; exact nomatch h
-  | free u s t v =>
-    simp only [runStep] at h
-    split_ifs at h with hc
-    cases h
-    rw [Bool.and_eq_true] at hc
-    exact (E_of_canonOr hc.1).trans (E.append3 (hfo s t hc.2))
-  | swaps ps =>
-    simp only [runStep] at h
-    exact swapsAt_E ps cur nxt h
+    · rename_i l ll r lr he
+      have hlr := hT _ _ he
+      cases hr : a2.beq 1
+      · rw [hr, cond_false] at h; exact ruleX_E (fun _ _ _ _ => sameH_E) hlr h
+      · rw [hr, cond_true] at h; exact ruleX_E (fun _ _ _ _ => sameH_E) hlr.symm h
 
-theorem runSteps_E {T : Tbl} (hT : Valid k T) :
-    ∀ {cur fin : List Lt} {sts : List Step}, runSteps fo T cur sts = some fin → E k cur fin := by
-  intro cur fin sts h
-  induction sts generalizing cur with
-  | nil => cases h; exact E.refl _
-  | cons st sts ih =>
-    simp only [runSteps] at h
+theorem runX_E {T : ℕ → Option (ℕ × ℕ × ℕ × ℕ)}
+    (hT : ∀ j e, T j = some e → E k (dec16 e.1) (dec16 e.2.2.1)) :
+    ∀ {sts : List SX} {cur fin : ℕ}, runX fo T sts cur = some fin → E k (dec16 cur) (dec16 fin)
+  | [], cur, fin, h => by cases h; exact E.refl _
+  | st :: sts, cur, fin, h => by
+    simp only [runX] at h
     split at h
+    · rename_i c' hc
+      exact (stepX_E fo hfo hT hc).trans (runX_E hT h)
     · exact nomatch h
-    · rename_i nxt hn
-      exact (runStep_E fo hfo hT hn).trans (ih h)
-
-theorem lemOk_E {T : Tbl} (hT : Valid k T) {l r : List Lt} {sts : List Step}
-    (h : lemOk fo T l r sts = true) : E k l r := by
-  unfold lemOk at h
-  split at h
-  · exact nomatch h
-  · rename_i c hc
-    exact (runSteps_E fo hfo hT hc).trans (E_of_canonOr h)
-
-theorem libOk_valid : ∀ (T : Tbl) (L : List (List Lt × List Lt × List Step)),
-    Valid k T → libOk fo T L = true → Valid k (libTbl T L)
-  | T, [], hT, _ => by simpa [libTbl] using hT
-  | T, (l, r, sts) :: rest, hT, h => by
-    simp only [libOk, Bool.and_eq_true] at h
-    have h1 : Valid k (T ++ [(l, r)]) := by
-      intro e he
-      rcases List.mem_append.1 he with he | he
-      · exact hT e he
-      · rw [List.mem_singleton.1 he]; exact lemOk_E fo hfo hT h.1
-    have := libOk_valid (T ++ [(l, r)]) rest h1 h.2
-    simpa [libTbl] using this
 
 end Run
 

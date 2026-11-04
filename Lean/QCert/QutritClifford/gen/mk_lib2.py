@@ -11,5 +11,5 @@ The lemmas of `gen/facts2.py` over (C6)-(C14) with free one-wire segments:
 the swap lemmas, `X` and the other generators of `P` passing `CZ`, and the
 stabiliser facts of the width-2 coset table.'''
 files = mk_lib.write_lib('lib2', 'Lib2', E, 2, 'base2', 'fo2', 'fo2_sound', '(hc : Complete 1)',
-                         doc, 'mk_lib2.py', chunk=20)
+                         doc, 'mk_lib2.py', chunk=105)
 print(files, len(E.lemmas))

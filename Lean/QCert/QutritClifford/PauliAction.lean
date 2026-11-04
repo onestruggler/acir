@@ -304,12 +304,14 @@ theorem conj_one_of {G : Matrix (Fin 3) (Fin 3) Q} {f : PD 1 → PD 1}
 theorem conj_gate1 (g : Gate 1) (P : PD 1) :
     (gateSem.gate1 g : Op ℂ 3 1) * P.op * star (gateSem.gate1 g : Op ℂ 3 1) = (act1 g P).op := by
   cases g
+  -- `f` and the Pauli data are given explicitly: left to unification, Lean
+  -- compared the two sides' `3 × 3` matrices entry by entry (3 s each).
   · show ofMat (d := 3) (k := 1) Hmat * P.op * star (ofMat (d := 3) (k := 1) Hmat) = _
     rw [← HQ_map]
-    exact conj_one_of (fun P => HQ_conj _ _ _) P
+    exact conj_one_of (f := act1 Gate.H) (fun P => HQ_conj P.c (P.a 0) (P.b 0)) P
   · show ofMat (d := 3) (k := 1) Smat * P.op * star (ofMat (d := 3) (k := 1) Smat) = _
     rw [← SQ_map]
-    exact conj_one_of (fun P => SQ_conj _ _ _) P
+    exact conj_one_of (f := act1 Gate.S) (fun P => SQ_conj P.c (P.a 0) (P.b 0)) P
 
 theorem conj_CZ (P : PD 2) :
     (gateSem.gate2 Gate.CZ : Op ℂ 3 2) * P.op * star (gateSem.gate2 Gate.CZ : Op ℂ 3 2) =

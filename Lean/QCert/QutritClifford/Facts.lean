@@ -63,7 +63,7 @@ abbrev nlib3 : ℕ := base3.length + 363
 
 /-- An entry of the table, checked: its index is below `nlib3`, it is the
 equation `l = kw k ++ r`, and `k` is a list of tokens of the given kind. -/
-def entOk (e : ℕ × List Tok) (l r : List Lt) (kind : Bool) : Bool :=
+noncomputable def entOk (e : ℕ × List Tok) (l r : List Lt) (kind : Bool) : Bool :=
   decide (e.1 < nlib3) && lib3T[e.1]? == some (l, kw e.2 ++ r) &&
     (if kind then K1b 3 e.2 else K2b 3 e.2)
 

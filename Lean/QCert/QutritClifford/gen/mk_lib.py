@@ -1,8 +1,9 @@
 """Lean files for a stored lemma library, checked lemma by lemma.
 
 write_lib writes
-  <Name>Data.lean     the data (words as base-9 numbers), importing only
-                      `Run` (no Mathlib);
+  <Name>Data.lean     the data (words as base-16 numbers with their
+                      lengths, `emit.lib_lines`), importing only `Run`
+                      (no Mathlib);
   <Name>Chk<j>.lean   chunks of `chunk` lemmas, each `<name>_upto_<n>`
                       saying that the lemmas below n check (`libLemOk`),
                       decided by the kernel, again without Mathlib;
@@ -35,8 +36,8 @@ def write_lib(name, Name, E, k, base, fo, sound, hyp, doc, script, chunk=20, out
     files = {}
     data = HDR % (doc + '\n\nThe data.', script, imports(pre + 'Run'))
     data += 'set_option maxRecDepth 100000 in\n'
-    data += 'def %sD : List (Nat × Nat × List (Nat × Nat × Nat × Nat × Nat)) := [\n' % name
-    data += emit.lib_lines(lem) + ']\n\n'
+    data += 'noncomputable def %sD : List LX := [\n' % name
+    data += emit.lib_lines(E) + ']\n\n'
     data += 'theorem %s_upto_0 : ∀ i < 0, libLemOk %s %s %sD i = true := upto_zero\n\n' % (
         name, fo, base, name)
     data += 'end QCert.QutritClifford\n'
@@ -60,10 +61,10 @@ def write_lib(name, Name, E, k, base, fo, sound, hyp, doc, script, chunk=20, out
     hc = hyp.split(':')[0].strip('( ') if hyp else ''
     src = HDR % (doc + '\n\nThe table and its validity.', script, imports(pre + 'Local', prev_mod))
     src += '/-- The table: the base rules and the lemmas. -/\n'
-    src += 'def %sT : Tbl := libTbl %s (decLib %sD)\n\n' % (name, base, name)
+    src += 'noncomputable def %sT : Tbl := libTbl %s %sD\n\n' % (name, base, name)
     src += ('theorem %s_valid %s : ValidUpTo %d %sT (%s.length + %d) :=\n'
-            '  validUpTo_all %s (%s %s) %s_valid %sD %d %s_upto_%d\n\n') % (
-        name, hyp, k, name, base, len(lem), fo, sound, hc, base, name, len(lem), name, len(lem))
+            '  validUpTo_all %s (%s %s) %s_valid %s_codes %sD %d %s_upto_%d\n\n') % (
+        name, hyp, k, name, base, len(lem), fo, sound, hc, base, base, name, len(lem), name, len(lem))
     src += 'end QCert.QutritClifford\n'
     files['%s.lean' % Name] = src
     for f, s in files.items():
