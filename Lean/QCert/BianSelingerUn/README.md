@@ -103,3 +103,34 @@ reduction of the general to the special case in Case 3.2.2.2).
 ```
 wsl --exec bash -lc 'cd /mnt/d/work2/acir/Lean && ./check.sh QCert/BianSelingerUn/Theorem.lean'
 ```
+
+## Typechecking cost
+
+Single `lake env lean` runs (November 2026, other builds running on the
+machine), before → after the changes below; about 4–6 s of each is the
+import.
+
+* `Soundness` (35.2 → 9.5 s): the nineteen relations were checked by
+  `decide +kernel` on products of level matrices over `ℚ(ω)`, which the
+  kernel evaluated entry by entry through `Finset.sum` and rational
+  arithmetic, every sub-product again for every entry (26 s of kernel
+  time).  `LevelCheck.lean` evaluates each side once, on tables over
+  `ℤ[ω]` with every letter scaled by `2`, and compares the two by one
+  Boolean whose soundness is proved once; the tactic `level_check` reifies
+  the goal (1.8 s of kernel time in all).  `QCert.Greylyn.Soundness` uses
+  it too.
+* `Algorithm`: shortcut instances `Monoid`, `Group` and `Semigroup` for the
+  states `St n`.  Found through `Subgroup`, `unitary` and the matrix ring,
+  `Monoid (St n)` cost about 40 ms a search and was asked hundreds of times
+  per module (again at every round while the width was a metavariable, as
+  in `FreeMonoid.lift (sem _) w`); and the `Semigroup` found from scratch,
+  `MulMemClass.toSemigroup`, multiplies with an instance that is not
+  syntactically `Subgroup.mul`, so that each `mul_assoc` step was checked
+  against the products elaborated elsewhere by unfolding both down to the
+  matrices.  `Special` 20.1 → 7.0 s from these alone.
+* `Case3222` (44.6 → 9.6 s): the instances above, and three `omega` calls
+  in `case_3222_odd'` that took 4 s with the whole context in scope now get
+  only the facts they need (`clear * -`).
+* `Normal` (8.2 → 7.0 s): `split_ifs <;> simp_all` in `level_syl_lt` tried
+  `IsEmpty` lemmas whose `Nonempty (Fin n)` searches fail slowly;
+  `simp_all only` on the lemmas `simp_all?` reports.

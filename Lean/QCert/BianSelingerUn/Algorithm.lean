@@ -37,6 +37,22 @@ variable {n : ℕ}
 /-- The states: elements of `Uₙ(ℤ[1/2, i])`. -/
 abbrev St (n : ℕ) := ↥(U_ZHalfI n)
 
+/-- Shortcuts for instance search.  Found through `Subgroup`, `unitary` and
+the matrix ring, `Monoid (St n)` costs about 40 ms a time, and it is asked
+hundreds of times per module (and retried at every round while the width is
+still a metavariable, as in `FreeMonoid.lift (sem _) w`): `Case3222` spent
+25 s of its 51 s on it.  These answer it at once. -/
+instance (priority := high) St.instMonoid (n : ℕ) : Monoid (St n) := inferInstance
+
+instance (priority := high) St.instGroup (n : ℕ) : Group (St n) := inferInstance
+
+/-- The semigroup through `St.instMonoid`.  Found from scratch, `Semigroup (St n)`
+is `MulMemClass.toSemigroup`, whose multiplication is not syntactically the
+`Subgroup.mul` of the products elaborated elsewhere, so that a `mul_assoc` step
+was checked against them by unfolding both down to the matrices (0.4 s at a
+time in `Case3222`). -/
+instance (priority := high) St.instSemigroup (n : ℕ) : Semigroup (St n) := Monoid.toSemigroup
+
 /-- The matrix of a state. -/
 def sm (s : St n) : Matrix (Fin n) (Fin n) ℂ :=
   ((s : unitaryGroup (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)

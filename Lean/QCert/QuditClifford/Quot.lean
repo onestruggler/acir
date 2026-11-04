@@ -22,6 +22,20 @@ variable (p : ℕ) [hp : Fact p.Prime] (g : ZMod p) [OddGen p g]
 /-- Circuits modulo the rules and the Pauli group. -/
 abbrev Gh (n : ℕ) := CG p g n ⧸ PauliN p g n
 
+/-! Shortcut instances.  `Gh p g n` is a quotient of a quotient, and an
+instance search for its `Inv`, `Mul`, `One` or `DivisionMonoid` structure
+from scratch costs up to 0.1 s; `Width3` asked for them hundreds of times
+(5 s for `Inv` alone).  These answer at once, with the same structures. -/
+noncomputable instance (priority := high) Gh.instGroup (n : ℕ) : Group (Gh p g n) :=
+  inferInstance
+noncomputable instance (priority := high) Gh.instDivisionMonoid (n : ℕ) :
+    DivisionMonoid (Gh p g n) := inferInstance
+noncomputable instance (priority := high) Gh.instMonoid (n : ℕ) : Monoid (Gh p g n) :=
+  inferInstance
+noncomputable instance (priority := high) Gh.instMul (n : ℕ) : Mul (Gh p g n) := inferInstance
+noncomputable instance (priority := high) Gh.instInv (n : ℕ) : Inv (Gh p g n) := inferInstance
+noncomputable instance (priority := high) Gh.instOne (n : ℕ) : One (Gh p g n) := inferInstance
+
 /-- The class of a circuit modulo the rules and the Paulis. -/
 noncomputable def qh (n : ℕ) : Circ n →* Gh p g n := (QuotientGroup.mk' (PauliN p g n)).comp (mk p g n)
 

@@ -150,3 +150,23 @@ None.
 
 None found in Figure 1, Figure 2 or Definition 2.11: every rule holds as
 printed for `p = 3, 5, 7`.
+
+## Typechecking cost
+
+Single `lake env lean` runs (November 2026, other builds running on the
+machine).  The modules below spend 4–7 s importing, which varies by a few
+seconds from run to run, so the figures are the time beyond the import,
+before → after.
+
+* `Quot`, `Projective`: shortcut instances (`Group`, `DivisionMonoid`,
+  `Monoid`, `Mul`, `Inv`, `One`) for `Gh p g n` and `Gs p g n`.  These are
+  quotients of a quotient, and a search from scratch for one of their
+  structures took up to 0.1 s; the modules on `Gh` asked hundreds of times.
+  `Width3` 4.3 → 2.5 s, `Width2` 4.8 → 3.3 s, `Width2Kit` 5.1 → 2.8 s,
+  `PauliTwo` 4.0 → 2.8 s, `Step2` 3.1 → 2.6 s.
+* `Transport` (4.8 → 1.9 s): in `padh1_J`, `padh2_J`, `padh3_J` the
+  membership of a generator in a `Subgroup.comap` was left to `exact`,
+  which unfolded it through the quotients (2–4 s per theorem); each now
+  goes through `Subgroup.mem_comap` and its `padh_*` lemma (`padh_S0h2`
+  added).  In `s₁h_two`, `erw [padh_ιh m 1]` met `2` against `1 + 1` the
+  same way (2.5 s); `padh_ιh_one` states that instance with `2`.

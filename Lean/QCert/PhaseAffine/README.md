@@ -228,3 +228,24 @@ from the rules of Figure 1.
   Lafont [17] after deriving Lafont's rules (Lemma 16). The normal form used
   here instead (stairs and fans, `LinearNF`) needs only (2), (4), (5), (7),
   (8) and the symmetry rules.
+
+## Typechecking cost
+
+`Soundness` took 27.2 s in a single `lake env lean` run (November
+2026, other builds running on the machine) and takes 17.9 s, about 5 s
+of it the import:
+
+* the evaluation macros used `simp` with the default simp set; they use
+  `simp only` on the lemmas `simp?` reports over all the rules (`pa_simp`,
+  `pa_entry`), which also drops most of the instance searches the default
+  set ran;
+* `pa_simp` rewrites with `MonoidHom.map_mul`, `map_one`, `map_pow` rather
+  than the generic `map_mul`, which searches a `MulHomClass` instance at
+  every use;
+* `sem_CCZ` evaluated the twenty-two factors of Definition 18 at once
+  (8 s of kernel time, 6 s of `simp`); it now evaluates the seven
+  conjugates of `T` separately (`e1` … `e7`) and adds their phases.
+
+What remains is `rules_sound`, about 0.3 s per rule over some forty rules:
+the symbolic evaluation of both sides (`pa_simp`, then `ring` on each wire
+and on the phase).

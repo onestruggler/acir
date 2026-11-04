@@ -308,9 +308,11 @@ theorem case_3222_odd' {s : St n} (hs : s ≠ 1) {a b p : Fin n} (hab : a < b)
   rw [← hq'] at hsylr
   obtain ⟨m, hm⟩ : ∃ m, m = ((Ea + 8 - Ej - q) % 4) / 2 := ⟨_, rfl⟩
   obtain ⟨m', hm'⟩ : ∃ m', m' = ((Eb + 8 - Ej - q') % 4) / 2 := ⟨_, rfl⟩
-  have hmE : (Ej + 2 * m + q) % 4 = Ea % 4 := by omega
-  have hmE' : (Ej + 2 * m' + q') % 4 = Eb % 4 := by omega
-  have hm2 : m' < 2 := by omega
+  -- `omega` with only the facts it needs: with the whole context, whose
+  -- arithmetic facts it all takes in, these three took 4 s
+  have hmE : (Ej + 2 * m + q) % 4 = Ea % 4 := by clear * - hq hm hEj; omega
+  have hmE' : (Ej + 2 * m' + q') % 4 = Eb % 4 := by clear * - hq' hm' hEj; omega
+  have hm2 : m' < 2 := by clear * - hm'; omega
   ---- the words
   obtain ⟨Dw, hDw⟩ : ∃ D : Word (Gen n), D = i j ^ Ej * i a ^ Ea * i b ^ Eb * i d ^ Ed :=
     ⟨_, rfl⟩

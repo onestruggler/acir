@@ -11,6 +11,7 @@ indices `0, …, m - 1` (`transferHom`), checked there by computation over
 -/
 import QCert.BianSelingerUn.Semantics
 import QCert.BianSelingerUn.Transfer
+import QCert.BianSelingerUn.LevelCheck
 
 namespace QCert.BianSelingerUn
 
@@ -61,88 +62,88 @@ theorem lift_sem_eq {w w' : Word (Gen n)} (h : matOf w = matOf w') :
 theorem matOf_sound {w w' : Word (Gen n)} (h : Rel n w w') : matOf w = matOf w' := by
   cases h with
   | r1 j =>
-    have key : oneLevel (0 : Fin 1) QOmega.I ^ 4 = 1 := by decide +kernel
+    have key : oneLevel (0 : Fin 1) QOmega.I ^ 4 = 1 := by level_check
     simpa [mat, QOmega.toC_I] using congrArg (transferHom (injective_single j)) key
   | r2 j k hjk =>
-    have key : twoLevel (0 : Fin 2) 1 qX ^ 2 = 1 := by decide +kernel
+    have key : twoLevel (0 : Fin 2) 1 qX ^ 2 = 1 := by level_check
     simpa [mat] using congrArg (transferHom (injective_pair hjk.ne)) key
   | r3 j k hjk =>
-    have key : twoLevel (0 : Fin 2) 1 qK ^ 8 = 1 := by decide +kernel
+    have key : twoLevel (0 : Fin 2) 1 qK ^ 8 = 1 := by level_check
     simpa [mat] using congrArg (transferHom (injective_pair hjk.ne)) key
   | r4 j k hjk =>
     have key : oneLevel (0 : Fin 2) QOmega.I * oneLevel 1 QOmega.I =
-        oneLevel 1 QOmega.I * oneLevel 0 QOmega.I := by decide +kernel
+        oneLevel 1 QOmega.I * oneLevel 0 QOmega.I := by level_check
     simpa [mat, QOmega.toC_I] using congrArg (transferHom (injective_pair hjk)) key
   | r5 j k l hkl hjk hjl =>
     have key : oneLevel (0 : Fin 3) QOmega.I * twoLevel 1 2 qX =
-        twoLevel 1 2 qX * oneLevel 0 QOmega.I := by decide +kernel
+        twoLevel 1 2 qX * oneLevel 0 QOmega.I := by level_check
     simpa [mat, QOmega.toC_I] using
       congrArg (transferHom (injective_three hjk hjl hkl.ne)) key
   | r6 j k l hkl hjk hjl =>
     have key : oneLevel (0 : Fin 3) QOmega.I * twoLevel 1 2 qK =
-        twoLevel 1 2 qK * oneLevel 0 QOmega.I := by decide +kernel
+        twoLevel 1 2 qK * oneLevel 0 QOmega.I := by level_check
     simpa [mat, QOmega.toC_I] using
       congrArg (transferHom (injective_three hjk hjl hkl.ne)) key
   | r7 j k l m hjk hlm hjl hjm hkl hkm =>
     have key : twoLevel (0 : Fin 4) 1 qX * twoLevel 2 3 qX =
-        twoLevel 2 3 qX * twoLevel 0 1 qX := by decide +kernel
+        twoLevel 2 3 qX * twoLevel 0 1 qX := by level_check
     simpa [mat] using
       congrArg (transferHom (injective_four hjk.ne hjl hjm hkl hkm hlm.ne)) key
   | r8 j k l m hjk hlm hjl hjm hkl hkm =>
     have key : twoLevel (0 : Fin 4) 1 qX * twoLevel 2 3 qK =
-        twoLevel 2 3 qK * twoLevel 0 1 qX := by decide +kernel
+        twoLevel 2 3 qK * twoLevel 0 1 qX := by level_check
     simpa [mat] using
       congrArg (transferHom (injective_four hjk.ne hjl hjm hkl hkm hlm.ne)) key
   | r9 j k l m hjk hlm hjl hjm hkl hkm =>
     have key : twoLevel (0 : Fin 4) 1 qK * twoLevel 2 3 qK =
-        twoLevel 2 3 qK * twoLevel 0 1 qK := by decide +kernel
+        twoLevel 2 3 qK * twoLevel 0 1 qK := by level_check
     simpa [mat] using
       congrArg (transferHom (injective_four hjk.ne hjl hjm hkl hkm hlm.ne)) key
   | r10 j k hjk =>
     have key : oneLevel (1 : Fin 2) QOmega.I * twoLevel 0 1 qX =
-        twoLevel 0 1 qX * oneLevel 0 QOmega.I := by decide +kernel
+        twoLevel 0 1 qX * oneLevel 0 QOmega.I := by level_check
     simpa [mat, QOmega.toC_I] using congrArg (transferHom (injective_pair hjk.ne)) key
   | r11 j k l hjk hkl =>
     have key : twoLevel (1 : Fin 3) 2 qX * twoLevel 0 1 qX =
-        twoLevel 0 1 qX * twoLevel 0 2 qX := by decide +kernel
+        twoLevel 0 1 qX * twoLevel 0 2 qX := by level_check
     simpa [mat] using
       congrArg (transferHom (injective_three hjk.ne (hjk.trans hkl).ne hkl.ne)) key
   | r12 j k l hjk hkl =>
     have key : twoLevel (0 : Fin 3) 2 qX * twoLevel 1 2 qX =
-        twoLevel 1 2 qX * twoLevel 0 1 qX := by decide +kernel
+        twoLevel 1 2 qX * twoLevel 0 1 qX := by level_check
     simpa [mat] using
       congrArg (transferHom (injective_three hjk.ne (hjk.trans hkl).ne hkl.ne)) key
   | r13 j k l hjk hkl =>
     have key : twoLevel (1 : Fin 3) 2 qK * twoLevel 0 1 qX =
-        twoLevel 0 1 qX * twoLevel 0 2 qK := by decide +kernel
+        twoLevel 0 1 qX * twoLevel 0 2 qK := by level_check
     simpa [mat] using
       congrArg (transferHom (injective_three hjk.ne (hjk.trans hkl).ne hkl.ne)) key
   | r14 j k l hjk hkl =>
     have key : twoLevel (0 : Fin 3) 2 qK * twoLevel 1 2 qX =
-        twoLevel 1 2 qX * twoLevel 0 1 qK := by decide +kernel
+        twoLevel 1 2 qX * twoLevel 0 1 qK := by level_check
     simpa [mat] using
       congrArg (transferHom (injective_three hjk.ne (hjk.trans hkl).ne hkl.ne)) key
   | r15 j k hjk =>
     have key : twoLevel (0 : Fin 2) 1 qK * oneLevel 1 QOmega.I ^ 2 =
-        twoLevel 0 1 qX * twoLevel 0 1 qK := by decide +kernel
+        twoLevel 0 1 qX * twoLevel 0 1 qK := by level_check
     simpa [mat, QOmega.toC_I] using congrArg (transferHom (injective_pair hjk.ne)) key
   | r16 j k hjk =>
     have key : twoLevel (0 : Fin 2) 1 qK * oneLevel 1 QOmega.I ^ 3 =
         oneLevel 1 QOmega.I * twoLevel 0 1 qK * oneLevel 1 QOmega.I * twoLevel 0 1 qK := by
-      decide +kernel
+      level_check
     simpa [mat, QOmega.toC_I] using congrArg (transferHom (injective_pair hjk.ne)) key
   | r17 j k hjk =>
     have key : twoLevel (0 : Fin 2) 1 qK * oneLevel 0 QOmega.I * oneLevel 1 QOmega.I =
-        oneLevel 0 QOmega.I * oneLevel 1 QOmega.I * twoLevel 0 1 qK := by decide +kernel
+        oneLevel 0 QOmega.I * oneLevel 1 QOmega.I * twoLevel 0 1 qK := by level_check
     simpa [mat, QOmega.toC_I] using congrArg (transferHom (injective_pair hjk.ne)) key
   | r18 j k hjk =>
     have key : twoLevel (0 : Fin 2) 1 qK ^ 2 * oneLevel 0 QOmega.I * oneLevel 1 QOmega.I = 1 := by
-      decide +kernel
+      level_check
     simpa [mat, QOmega.toC_I] using congrArg (transferHom (injective_pair hjk.ne)) key
   | r19 j k l m hjk hlm hjl hkm hkl =>
     have key : twoLevel (0 : Fin 4) 1 qK * twoLevel 2 3 qK * twoLevel 0 2 qK * twoLevel 1 3 qK =
         twoLevel 0 2 qK * twoLevel 1 3 qK * twoLevel 0 1 qK * twoLevel 2 3 qK := by
-      decide +kernel
+      level_check
     simpa [mat] using
       congrArg (transferHom (injective_four hjk.ne hjl.ne (hjk.trans hkm).ne hkl hkm.ne hlm.ne))
         key

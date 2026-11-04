@@ -54,6 +54,20 @@ variable (p g) in
 /-- Circuits modulo the rules and the scalars. -/
 abbrev Gs (n : ℕ) := CG p g n ⧸ Sc p g n
 
+/-! Shortcut instances.  `Gs p g n` is a quotient of a quotient, and an
+instance search for its `Inv`, `Mul`, `One` or `DivisionMonoid` structure
+from scratch costs up to 0.1 s; `PauliTwo` asked for them hundreds of times
+(3 s for `Inv` alone).  These answer at once, with the same structures. -/
+noncomputable instance (priority := high) Gs.instGroup (n : ℕ) : Group (Gs p g n) :=
+  inferInstance
+noncomputable instance (priority := high) Gs.instDivisionMonoid (n : ℕ) :
+    DivisionMonoid (Gs p g n) := inferInstance
+noncomputable instance (priority := high) Gs.instMonoid (n : ℕ) : Monoid (Gs p g n) :=
+  inferInstance
+noncomputable instance (priority := high) Gs.instMul (n : ℕ) : Mul (Gs p g n) := inferInstance
+noncomputable instance (priority := high) Gs.instInv (n : ℕ) : Inv (Gs p g n) := inferInstance
+noncomputable instance (priority := high) Gs.instOne (n : ℕ) : One (Gs p g n) := inferInstance
+
 variable (p g) in
 /-- The class of a circuit modulo the rules and the scalars. -/
 noncomputable def qs (n : ℕ) : Circ n →* Gs p g n := (QuotientGroup.mk' (Sc p g n)).comp (mk p g n)

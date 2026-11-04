@@ -72,6 +72,8 @@ theorem padh_CZh (m : ℕ) : padh m 2 (CZh p g 0) = CZh p g m := rfl
 
 theorem padh_CZh1 (m : ℕ) : padh m 3 (CZh p g 1) = CZh p g (m + 1) := rfl
 
+theorem padh_S0h2 (m : ℕ) : padh m 3 (S0h p g 2) = S0h p g (m + 2) := rfl
+
 theorem ιh_S0h (m : ℕ) : ιh (m + 1) (S0h p g m) = padh m 2 (ιh 1 (S0h p g 0)) := rfl
 
 theorem ιh_CZh (m : ℕ) : ιh (m + 2) (CZh p g m) = padh m 3 (ιh 2 (CZh p g 0)) := rfl
@@ -96,12 +98,18 @@ theorem S0h_mem_J (m : ℕ) : S0h p g m ∈ J p g m := by
 theorem CZh_mem_J (m : ℕ) : CZh p g m ∈ J p g (m + 1) :=
   J_one_mem_of (Set.mem_union_right _ (Or.inr rfl))
 
+/-! In `padh1_J`, `padh2_J`, `padh3_J` each generator is taken through
+`Subgroup.mem_comap` and its `padh_*` lemma before the `exact`: left to
+`exact`, the membership in the comap was unfolded through the quotients
+(2–4 s per theorem). -/
+
 theorem padh1_J {m : ℕ} {x : Gh p g 1} (hx : x ∈ J p g 0) : padh (m + 1) 1 x ∈ J p g (m + 1) := by
   refine (Subgroup.closure_le ((J p g (m + 1)).comap (padh (m + 1) 1))).2 ?_ hx
   rintro _ (⟨z, rfl⟩ | h)
   · rw [Gh_zero_trivial z, map_one, SetLike.mem_coe, Subgroup.mem_comap, map_one]
     exact Subgroup.one_mem _
   · rw [Set.mem_singleton_iff] at h; subst h
+    rw [SetLike.mem_coe, Subgroup.mem_comap, padh_S0h]
     exact S0h_mem_J (m + 1)
 
 theorem padh2_J {m : ℕ} {x : Gh p g 2} (hx : x ∈ J p g 1) : padh m 2 x ∈ J p g (m + 1) := by
@@ -110,8 +118,10 @@ theorem padh2_J {m : ℕ} {x : Gh p g 2} (hx : x ∈ J p g 1) : padh m 2 x ∈ J
   · rw [SetLike.mem_coe, Subgroup.mem_comap, padh_ιh]
     exact ιh_mem_J _
   · subst h
+    rw [SetLike.mem_coe, Subgroup.mem_comap, padh_S0h1]
     exact S0h_mem_J (m + 1)
   · rw [Set.mem_singleton_iff] at h; subst h
+    rw [SetLike.mem_coe, Subgroup.mem_comap, padh_CZh]
     exact CZh_mem_J m
 
 theorem padh3_J {m : ℕ} {x : Gh p g 3} (hx : x ∈ J p g 2) : padh m 3 x ∈ J p g (m + 2) := by
@@ -120,8 +130,10 @@ theorem padh3_J {m : ℕ} {x : Gh p g 3} (hx : x ∈ J p g 2) : padh m 3 x ∈ J
   · rw [SetLike.mem_coe, Subgroup.mem_comap, padh_ιh]
     exact ιh_mem_J _
   · subst h
+    rw [SetLike.mem_coe, Subgroup.mem_comap, padh_S0h2]
     exact S0h_mem_J (m + 2)
   · rw [Set.mem_singleton_iff] at h; subst h
+    rw [SetLike.mem_coe, Subgroup.mem_comap, padh_CZh1]
     exact CZh_mem_J (m + 1)
 
 theorem padh_Kst {n k : ℕ} {x : Gh p g (k + 1)} (hx : x ∈ Kst p g k) :
@@ -235,6 +247,11 @@ omit hp in
 theorem tail_low2 {m : ℕ} (u : V p (m + 2)) : Fin.tail (low p (n := m) (k := 2) u) = fun _ => u 1 := by
   funext i; rw [Subsingleton.elim i 0]; rfl
 
+/-- `padh_ιh` at `k = 1`, with the width written `2`: `erw [padh_ιh m 1]` met
+`2` against `1 + 1` by unfolding the quotients (2.5 s in `s₁h_two`). -/
+theorem padh_ιh_one (m : ℕ) (x : Gh p g 1) : padh m 2 (ιh 1 x) = ιh (m + 1) (padh m 1 x) :=
+  padh_ιh m 1 x
+
 /-- A vector supported on wires 0, 1: its section is placed from two wires. -/
 theorem s₁h_two (m : ℕ) (u : V p (m + 2)) (ht : Fin.tail (Fin.tail u) = 0) :
     s₁h p g (m + 1) u = padh m 2 (s₁h p g 1 (low p (n := m) (k := 2) u)) := by
@@ -248,8 +265,7 @@ theorem s₁h_two (m : ℕ) (u : V p (m + 2)) (ht : Fin.tail (Fin.tail u) = 0) :
       refine Fin.cases ?_ (fun i => ?_) i
       · exact congrFun h 0
       · exact congrFun ht i
-    rw [s₁h_succ m u h1, s₁h_tail0 m _ ht, s₁h_one _ h1', map_mul]
-    erw [padh_ιh m 1]
+    rw [s₁h_succ m u h1, s₁h_tail0 m _ ht, s₁h_one _ h1', map_mul, padh_ιh_one m]
     rfl
 
 theorem padh_ιh_two (m : ℕ) (x : Gh p g 2) : padh m 3 (ιh 2 x) = ιh (m + 2) (padh m 2 x) :=
