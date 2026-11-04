@@ -253,16 +253,117 @@ structure TStep (m : ℕ) where
   dir : Bool
   pos : ℕ
 
+/-! The words of a derivation are rewritten by the kernel thousands of times
+(`decide +kernel`), which pays for every unfolding: `List.take`, `List.drop`,
+`List.length`, `++` and the derived equality of `Gen` go through `brecOn` and
+`Decidable` instances.  So the rewriting below uses the same operations by
+primitive recursion (`takeR`, `dropR`, `lenR`, `appR`) and compares words by
+one Boolean on the values of the indices (`eqW`); this made the checks of
+`Rel323` three times faster. -/
+
+section Prim
+
+variable {α : Type*}
+
+/-- `List.drop` by primitive recursion. -/
+def dropR (k : ℕ) (l : List α) : List α :=
+  Nat.rec (motive := fun _ => List α → List α) (fun l => l)
+    (fun _ ih l => List.rec (motive := fun _ => List α) [] (fun _ t _ => ih t) l) k l
+
+/-- `List.take` by primitive recursion. -/
+def takeR (k : ℕ) (l : List α) : List α :=
+  Nat.rec (motive := fun _ => List α → List α) (fun _ => [])
+    (fun _ ih l => List.rec (motive := fun _ => List α) [] (fun a t _ => a :: ih t) l) k l
+
+/-- `List.length` by primitive recursion. -/
+def lenR (l : List α) : ℕ := List.rec (motive := fun _ => ℕ) 0 (fun _ _ ih => ih + 1) l
+
+/-- `l ++ r` by primitive recursion. -/
+def appR (l r : List α) : List α := List.rec (motive := fun _ => List α) r (fun a _ ih => a :: ih) l
+
+theorem dropR_eq (k : ℕ) (l : List α) : dropR k l = l.drop k := by
+  induction k generalizing l with
+  | zero => rfl
+  | succ k ih => cases l with
+    | nil => rfl
+    | cons a t => exact ih t
+
+theorem takeR_eq (k : ℕ) (l : List α) : takeR k l = l.take k := by
+  induction k generalizing l with
+  | zero => rfl
+  | succ k ih => cases l with
+    | nil => rfl
+    | cons a t => exact congrArg (a :: ·) (ih t)
+
+theorem lenR_eq (l : List α) : lenR l = l.length := by
+  induction l with
+  | nil => rfl
+  | cons a t ih => exact congrArg (· + 1) ih
+
+theorem appR_eq (l r : List α) : appR l r = l ++ r := by
+  induction l with
+  | nil => rfl
+  | cons a t ih => exact congrArg (a :: ·) ih
+
+end Prim
+
+/-- Equality of generators, by the values of their indices. -/
+def Gen.beqG : Gen m → Gen m → Bool
+  | .neg a, .neg a' => Nat.beq a.val a'.val
+  | .x a b _, .x a' b' _ => Nat.beq a.val a'.val && Nat.beq b.val b'.val
+  | .k a b c d _ _ _, .k a' b' c' d' _ _ _ =>
+    Nat.beq a.val a'.val && Nat.beq b.val b'.val && Nat.beq c.val c'.val && Nat.beq d.val d'.val
+  | _, _ => false
+
+theorem Gen.beqG_eq {g g' : Gen m} (h : g.beqG g' = true) : g = g' := by
+  cases g <;> cases g' <;> simp only [Gen.beqG, Bool.and_eq_true, Nat.beq_eq, reduceCtorEq] at h
+  · exact congrArg Gen.neg (Fin.ext h)
+  · obtain ⟨h1, h2⟩ := h
+    cases Fin.ext h1; cases Fin.ext h2; rfl
+  · obtain ⟨⟨⟨h1, h2⟩, h3⟩, h4⟩ := h
+    cases Fin.ext h1; cases Fin.ext h2; cases Fin.ext h3; cases Fin.ext h4; rfl
+
+theorem Gen.beqG_refl (g : Gen m) : g.beqG g = true := by
+  cases g <;> simp [Gen.beqG]
+
+/-- Equality of words, by `Gen.beqG`. -/
+def eqW (u v : List (Gen m)) : Bool :=
+  List.rec (motive := fun _ => List (Gen m) → Bool)
+    (fun v => List.rec (motive := fun _ => Bool) true (fun _ _ _ => false) v)
+    (fun a _ ih v => List.rec (motive := fun _ => Bool) false (fun b t _ => a.beqG b && ih t) v) u v
+
+theorem eqW_iff {u v : List (Gen m)} : eqW u v = true ↔ u = v := by
+  induction u generalizing v with
+  | nil => cases v <;> simp [eqW]
+  | cons a u ih =>
+    cases v with
+    | nil => simp [eqW]
+    | cons b v =>
+      show (a.beqG b && eqW u v) = true ↔ _
+      rw [Bool.and_eq_true, ih, List.cons.injEq]
+      exact ⟨fun h => ⟨Gen.beqG_eq h.1, h.2⟩, fun h => ⟨h.1 ▸ Gen.beqG_refl a, h.2⟩⟩
+
 /-- Replace `l` at position `pos` of `w` by `r`. -/
 def rewriteAt (w : List (Gen m)) (pos : ℕ) (l r : List (Gen m)) : Option (List (Gen m)) :=
-  if (w.drop pos).take l.length = l then
-    some (w.take pos ++ r ++ w.drop (pos + l.length)) else none
+  bif eqW (takeR (lenR l) (dropR pos w)) l then
+    some (appR (takeR pos w) (appR r (dropR (pos + lenR l) w))) else none
+
+theorem rewriteAt_eq (w : List (Gen m)) (pos : ℕ) (l r : List (Gen m)) :
+    rewriteAt w pos l r = if (w.drop pos).take l.length = l then
+      some (w.take pos ++ r ++ w.drop (pos + l.length)) else none := by
+  simp only [rewriteAt, takeR_eq, dropR_eq, lenR_eq, appR_eq, List.append_assoc]
+  by_cases hc : (w.drop pos).take l.length = l
+  · rw [if_pos hc, (eqW_iff.2 hc)]; rfl
+  · rw [if_neg hc]
+    cases h : eqW ((w.drop pos).take l.length) l
+    · rfl
+    · exact absurd (eqW_iff.1 h) hc
 
 theorem rewriteAt_sound {w w' l r : List (Gen m)} {pos : ℕ}
     (hlr : Derivable (Table1 m) (FreeMonoid.ofList l) (FreeMonoid.ofList r))
     (h : rewriteAt w pos l r = some w') :
     Derivable (Table1 m) (FreeMonoid.ofList w) (FreeMonoid.ofList w') := by
-  unfold rewriteAt at h
+  rw [rewriteAt_eq] at h
   split_ifs at h with hc
   obtain rfl := Option.some.inj h
   have hw : w = w.take pos ++ l ++ w.drop (pos + l.length) := by

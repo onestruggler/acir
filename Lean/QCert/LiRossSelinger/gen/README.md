@@ -19,10 +19,14 @@ committed modules byte for byte.
 
 | script | reads | writes |
 |---|---|---|
-| `mkderive.py` | `boot.json` | `../Derive.lean` from the marker `Derived relations (generated)` on (the macros are flattened to Table 1 steps) |
+| `mkderive.py` | `boot.json` | `../Derive.lean` from the marker `Derived relations (generated)` on (the macros are flattened to Table 1 steps; also the decoder `stepsOf` of step codes) |
 | `mk1223.py` | `d1223.json` | `../Rel1223.lean` |
 | `mk325.py` | `d325.json` | `../Rel325.lean` |
 | `mk323.py` | `d323.json` | `../Rel323.lean` |
+
+The chains of `mk1223.py`, `mk325.py` and `mk323.py` are written one number
+per step (`leanfmt.steps_code`, decoded by `Derive.stepsOf`): as structure
+literals with `Fin` numerals they took the elaborator seconds.
 | `mkmeet.py` | `meet_head.lean`, `meet_tail.lean` | `../CaseKMeet.lean` (the `par_ij` and `two_ij` cases between head and tail) |
 | `mkx8.py` | — | `../CaseX8.lean`, the region `eight_lev_e`, `eight_lev_h` only |
 
@@ -48,7 +52,8 @@ python3 mkmeet.py && python3 mkx8.py
   `K` one at a time (relations (4a), (4c), (8a)–(8d), (9a)–(9f), (2c),
   (2e) and the renamings (3d)–(3g)), found by a BFS in the group.
 * `flatten.py`: expands macro steps into Table 1 steps; `leanfmt.py`: Lean
-  syntax for words and steps; `alg.py`: an exact model of Algorithm 1.
+  syntax for words and steps (and steps as numbers, `steps_code`); `alg.py`:
+  an exact model of Algorithm 1.
 
 ## Numerical checks (not needed to regenerate)
 

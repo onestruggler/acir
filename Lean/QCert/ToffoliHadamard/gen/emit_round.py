@@ -221,10 +221,10 @@ for x in order:
 L.append(",\n".join(ents) + "]")
 L.append("""
 set_option maxRecDepth 100000 in
-theorem rt_check : checkTable (E0 ++ instE) rtTable = true := by decide +kernel
+theorem rt_check : checkTable' κM (E0 ++ instE) rtTable = true := by decide +kernel
 
 theorem rt_valid : Valid MRel (E0 ++ instE ++ eqns rtTable) :=
-  checkTable_valid (E0_valid.append instE_valid) involutionM rt_check
+  checkTable'_valid κM_inj (E0_valid.append instE_valid) involutionM rt_check
 """)
 L.append("/-- Where the round-trip equation of a letter is. -/")
 L.append("def rtIdx : Sym1 → ℕ")

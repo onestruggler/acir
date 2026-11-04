@@ -85,21 +85,106 @@ def AdjCert.entry (c : AdjCert) : Entry ML :=
   ⟨.T c.j :: c.g.enc ++ [.T c.j], (c.g.act c.j).enc, false, c.n, c.code⟩
 
 theorem AdjCert.derivable {E : List (Eqn ML)} (hE : Valid MRel E) {cs : List AdjCert}
-    (h : checkFlat E (cs.map AdjCert.entry) = true) {c : AdjCert} (hc : c ∈ cs) :
+    (h : checkFlat' κM E (cs.map AdjCert.entry) = true) {c : AdjCert} (hc : c ∈ cs) :
     Derivable MRel (FreeMonoid.ofList c.entry.lhs) (FreeMonoid.ofList c.entry.rhs) :=
-  checkFlat_valid hE h (c.entry.lhs, c.entry.rhs) (by
+  checkFlat'_valid κM_inj hE h (c.entry.lhs, c.entry.rhs) (by
     simp only [Engine.eqns, List.map_map]
     exact List.mem_map_of_mem (f := (fun t : Entry ML => (t.lhs, t.rhs)) ∘ AdjCert.entry) hc)
 
-/-- `p a` for every `a < n`. -/
-def allBelow (n : ℕ) (p : ℕ → Bool) : Bool := (List.range n).all p
+/-- `p a` for every `a < n`, by primitive recursion: the families' checks
+evaluate it tens of thousands of times, where `(List.range n).all p` cost
+the kernel a third more. -/
+def allBelow (n : ℕ) (p : ℕ → Bool) : Bool :=
+  Nat.rec (motive := fun _ => Bool) true (fun k acc => p k && acc) n
 
 theorem allBelow_spec {n : ℕ} {p : ℕ → Bool} (h : allBelow n p = true) {a : ℕ} (ha : a < n) :
-    p a = true :=
-  List.all_eq_true.1 h a (List.mem_range.2 ha)
+    p a = true := by
+  induction n with
+  | zero => omega
+  | succ k ih =>
+    have h' : (p k && allBelow k p) = true := h
+    rw [Bool.and_eq_true] at h'
+    rcases Nat.lt_succ_iff_lt_or_eq.1 ha with ha | rfl
+    · exact ih h'.2 ha
+    · exact h'.1
 
 theorem imp_spec {p : Prop} [Decidable p] {b : Bool} (h : (!decide p || b) = true) (hp : p) :
     b = true := by
   simpa [hp] using h
+
+
+/-! ## Membership by code
+
+`allAG.contains g`, and the search of the certificate of a pair `(g, j)` in
+`adjCerts`, scan lists of 106 and 630 elements with the derived equality of
+`AG`; decided 2 123 and 742 times, that was most of the kernel time of
+`Families` and `MacroTable`.  Instead a generator is coded by a number
+(`agKey`, injective on generators with indices below 8), a list of
+generators by the set of their codes as the bits of one number (`bitsOf`),
+and membership is one `Nat.testBit`. -/
+
+/-- The code of a generator: injective on generators with indices below `8`. -/
+def agKey : AG → ℕ
+  | .n a => a
+  | .x a b => 8 + 8 * a + b
+  | .k a b c d => 72 + 512 * a + 64 * b + 8 * c + d
+
+/-- The indices are below `8`. -/
+def boundedAG : AG → Bool
+  | .n a => Nat.blt a 8
+  | .x a b => Nat.blt a 8 && Nat.blt b 8
+  | .k a b c d => Nat.blt a 8 && Nat.blt b 8 && Nat.blt c 8 && Nat.blt d 8
+
+theorem agKey_inj {g g' : AG} (hg : boundedAG g = true) (hg' : boundedAG g' = true)
+    (h : agKey g = agKey g') : g = g' := by
+  cases g <;> cases g' <;>
+    simp only [boundedAG, Bool.and_eq_true, Nat.blt_eq, agKey] at hg hg' h <;>
+    first | rfl | (exfalso; omega) | (congr 1 <;> omega)
+
+/-- The codes of a list, as the bits of a number. -/
+def bitsOf {α : Type} (f : α → ℕ) : List α → ℕ
+  | [] => 0
+  | a :: l => bitsOf f l ||| 2 ^ f a
+
+theorem bitsOf_spec {α : Type} {f : α → ℕ} {l : List α} {k : ℕ}
+    (h : (bitsOf f l).testBit k = true) : ∃ a ∈ l, f a = k := by
+  induction l with
+  | nil => simp [bitsOf] at h
+  | cons a l ih =>
+    rw [bitsOf, Nat.testBit_or, Bool.or_eq_true, Nat.testBit_two_pow, decide_eq_true_eq] at h
+    rcases h with h | h
+    · obtain ⟨b, hb, rfl⟩ := ih h
+      exact ⟨b, List.mem_cons_of_mem a hb, rfl⟩
+    · exact ⟨a, List.mem_cons_self .., h⟩
+
+theorem allAG_bounded : allAG.all boundedAG = true := by decide
+
+/-- The codes of `allAG`. -/
+def allAGBits : ℕ := bitsOf agKey allAG
+
+/-- `g ∈ allAG`, by one bit test. -/
+def memAG (g : AG) : Bool := boundedAG g && allAGBits.testBit (agKey g)
+
+theorem memAG_spec {g : AG} (h : memAG g = true) : g ∈ allAG := by
+  simp only [memAG, Bool.and_eq_true] at h
+  obtain ⟨g', hg', hk⟩ := bitsOf_spec h.2
+  rw [← agKey_inj (List.all_eq_true.1 allAG_bounded g' hg') h.1 hk]
+  exact hg'
+
+/-- The code of a certificate's pair `(g, j)`. -/
+def AdjCert.key (c : AdjCert) : ℕ := 8 * agKey c.g + c.j
+
+/-- The certificate of `(g, j)` is in `cs`, given that `cs` has bounded
+generators and transpositions, and `g`, `j` are bounded. -/
+theorem AdjCert.of_bit {cs : List AdjCert} (hb : (cs.all fun c => boundedAG c.g && Nat.blt c.j 8) = true)
+    {g : AG} (hg : boundedAG g = true) {j : ℕ} (hj : j < 8)
+    (h : (bitsOf AdjCert.key cs).testBit (8 * agKey g + j) = true) :
+    ∃ c ∈ cs, c.j = j ∧ c.g = g := by
+  obtain ⟨c, hc, hk⟩ := bitsOf_spec h
+  have hcb := List.all_eq_true.1 hb c hc
+  simp only [Bool.and_eq_true, Nat.blt_eq] at hcb
+  simp only [AdjCert.key] at hk
+  have h1 : c.j = j ∧ agKey c.g = agKey g := by omega
+  exact ⟨c, hc, h1.1, agKey_inj hcb.1 hg h1.2⟩
 
 end QCert.ToffoliHadamard.Macro

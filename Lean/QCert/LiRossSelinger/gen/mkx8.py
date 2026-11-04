@@ -6,7 +6,7 @@ import re
 IDX = list('abcdefgh')
 def ne(x, y):
     """proof of x ≠ y for indices x, y in a..h"""
-    return f"(ne' (by omega))" if IDX.index(x) < IDX.index(y) else f"(ne (by omega))"
+    return f"(ne' (by vlt))" if IDX.index(x) < IDX.index(y) else f"(ne (by vlt))"
 
 def gen(tag, Z, haz, par, sumv):
     others = [x for x in 'efgh' if x != Z]
@@ -76,8 +76,8 @@ theorem eight_lev_{tag} {{σ : O_ZHalf n}} (hσ : σ ≠ 1) (hk : 0 < lde σ) {{
   obtain ⟨u3, c3, x3a, x3z, o3⟩ := step_x c2 {haz}
   obtain ⟨u4, c4, x4z, o4⟩ := step_neg c3 {Z}
   obtain ⟨u5, c5, x5a, o5⟩ := step_neg c4 a
-  have w5a : u5 a = -u2 {Z} := by rw [x5a, o4 a (ne' (by omega)), x3a]
-  have w5z : u5 {Z} = -u2 a := by rw [o5 {Z} (ne (by omega)), x4z, x3z]
+  have w5a : u5 a = -u2 {Z} := by rw [x5a, o4 a (ne' (by vlt)), x3a]
+  have w5z : u5 {Z} = -u2 a := by rw [o5 {Z} (ne (by vlt)), x4z, x3z]
   have w5 : ∀ r, r ≠ a → r ≠ {Z} → u5 r = u2 r := fun r ra rz => by
     rw [o5 r ra, o4 r rz, o3 r ra rz]
   have hstate : ∀ l : List (Gen n), FreeMonoid.lift (sem n) (FreeMonoid.ofList
@@ -97,20 +97,20 @@ theorem eight_lev_{tag} {{σ : O_ZHalf n}} (hσ : σ ≠ 1) (hk : 0 < lde σ) {{
       · exact hJ
       · exact signs_extent (fun r hr => by
           simp only [List.mem_cons, List.not_mem_nil, or_false] at hr
-          rcases hr with rfl | rfl | rfl | rfl <;> omega) x hx
+          rcases hr with rfl | rfl | rfl | rfl <;> vlt hJ) x hx
     · rw [hs1] at hx
       rcases List.mem_cons.1 hx with rfl | hx
-      · show d.val < pivotJ σ; omega
+      · show d.val < pivotJ σ; vlt hJ
       · exact signs_extent (fun r hr => by
           simp only [List.mem_cons, List.not_mem_nil, or_false] at hr
-          rcases hr with rfl | rfl | rfl | rfl <;> omega) x hx
+          rcases hr with rfl | rfl | rfl | rfl <;> vlt hJ) x hx
   have hoa : Odd (wint σ a) := (mem_oddS_iff a).1 ha
   obtain ⟨u6, c6, y6a, y6b, y6c, y6d, o6⟩ := step_k c5 h1 h2 h3 (by
     rw [{abcd_rw}]; exact k1)
   have w6 : ∀ r, r = e ∨ r = f ∨ r = g ∨ r = h → u6 r = u5 r := fun r hr => by
-    apply o6 <;> rcases hr with rfl | rfl | rfl | rfl <;> exact ne (by omega)
+    apply o6 <;> rcases hr with rfl | rfl | rfl | rfl <;> exact ne (by vlt)
   intro j hj
-  rcases (show j = 0 ∨ j = 1 ∨ 2 ≤ j by omega) with rfl | rfl | hj2
+  rcases (show j = 0 ∨ j = 1 ∨ 2 ≤ j by vlt) with rfl | rfl | hj2
   · obtain ⟨u7, c7, y7e, y7f, y7g, y7h, o7⟩ := step_k c6 h5 h6 h7 (by
       rw [{efgh_rw}]
       exact k2)
@@ -118,7 +118,7 @@ theorem eight_lev_{tag} {{σ : O_ZHalf n}} (hσ : σ ≠ 1) (hk : 0 < lde σ) {{
       Gen.x a {Z} {haz}] (by
         intro x hx
         simp only [List.mem_cons, List.not_mem_nil, or_false] at hx
-        rcases hx with rfl | rfl | rfl | rfl | rfl <;> simp [extent] <;> omega)
+        rcases hx with rfl | rfl | rfl | rfl | rfl <;> simp [extent] <;> vlt)
     have := level_lt_of_col hσ hk _ hl (u' := u7)
       (by rw [wact_append]; exact c7) (fun r hr => by
         have ho := Int.odd_iff.1 hr
@@ -129,7 +129,7 @@ theorem eight_lev_{tag} {{σ : O_ZHalf n}} (hσ : σ ≠ 1) (hk : 0 < lde σ) {{
   · have hl := hbelow [Gen.k a b c d h1 h2 h3, Gen.neg a, Gen.neg {Z}, Gen.x a {Z} {haz}] (by
         intro x hx
         simp only [List.mem_cons, List.not_mem_nil, or_false] at hx
-        rcases hx with rfl | rfl | rfl | rfl <;> simp [extent] <;> omega)
+        rcases hx with rfl | rfl | rfl | rfl <;> simp [extent] <;> vlt)
     have := level_lt_of_col hσ hk _ hl (u' := u6)
       (by rw [wact_append]; exact c6) (fun r hr => by
         have ho := Int.odd_iff.1 hr
@@ -137,14 +137,14 @@ theorem eight_lev_{tag} {{σ : O_ZHalf n}} (hσ : σ ≠ 1) (hk : 0 < lde σ) {{
           have ho := Int.odd_iff.1 hr
           rw [y6a, {abcd_rw}] at ho; omega)
     rwa [hstate] at this
-  · obtain ⟨i, rfl⟩ : ∃ i, j = i + 2 := ⟨j - 2, by omega⟩
+  · obtain ⟨i, rfl⟩ : ∃ i, j = i + 2 := ⟨j - 2, by vlt hj2⟩
     have e2 : ([Gen.k e f g h h5 h6 h7, Gen.k a b c d h1 h2 h3, Gen.neg a, Gen.neg {Z},
         Gen.x a {Z} {haz}].drop (i + 2)) = [Gen.neg a, Gen.neg {Z}, Gen.x a {Z} {haz}].drop i := rfl
     rw [e2]
     refine (level_sp_word hσ hk _ (fun x hx => ?_) hνF hνL).2
     have hx' := List.mem_of_mem_drop hx
     simp only [List.mem_cons, List.not_mem_nil, or_false] at hx'
-    rcases hx' with rfl | rfl | rfl <;> exact ⟨by simp [Gen.tag], by simp [extent]; omega⟩
+    rcases hx' with rfl | rfl | rfl <;> exact ⟨by simp [Gen.tag], by simp [extent]; vlt hJ⟩
 '''
     return t
 out = gen('e', 'e', '(h1.trans (h2.trans (h3.trans h4)))', 'par8_e', '4')

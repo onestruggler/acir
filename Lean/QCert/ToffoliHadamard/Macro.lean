@@ -30,6 +30,27 @@ inductive ML : Type
   | K
   deriving DecidableEq
 
+/-- The code of a macro letter, for the replay of the tables on codes
+(`Engine.lean`): `T i ↦ i + 1` for `i < 29` (the tables use `i ≤ 6`), `N ↦ 30`,
+`K ↦ 31`. -/
+def κM : ML → ℕ
+  | .T i => if i < 29 then i + 1 else 0
+  | .N => 30
+  | .K => 31
+
+/-- `κM` is injective on the letters with a code in `1 … 31`. -/
+theorem κM_inj : ∀ a b : ML, Engine.Good κM a → κM a = κM b → a = b
+  | .T i, .T j, ha, h => by
+    simp only [κM, Engine.Good] at ha h; congr 1; split_ifs at h ha <;> omega
+  | .T i, .N, ha, h => by simp only [κM, Engine.Good] at ha h; split_ifs at h ha; omega
+  | .T i, .K, ha, h => by simp only [κM, Engine.Good] at ha h; split_ifs at h ha; omega
+  | .N, .T j, _, h => by simp only [κM] at h; split_ifs at h; omega
+  | .N, .N, _, _ => rfl
+  | .N, .K, _, h => by simp [κM] at h
+  | .K, .T j, _, h => by simp only [κM] at h; split_ifs at h; omega
+  | .K, .N, _, h => by simp [κM] at h
+  | .K, .K, _, _ => rfl
+
 /-- A macro letter as a word over `Σ₁`. -/
 def phiL : ML → List Sym1
   | .T i => xAdj i
@@ -50,20 +71,20 @@ theorem phi_ofList (l : List ML) : phi (FreeMonoid.ofList l) = FreeMonoid.ofList
 
 /-- `X_[a,a+g+1]` over `ML`. -/
 def xGapM : ℕ → ℕ → List ML
-  | 0, a => [.T a]
-  | g + 1, a => [.T a] ++ xGapM g (a + 1) ++ [.T a]
+  | 0, a => [ML.T a]
+  | g + 1, a => [ML.T a] ++ xGapM g (a + 1) ++ [ML.T a]
 
 /-- `X_[a,b]` over `ML`. -/
 def xabM (a b : ℕ) : List ML := xGapM (b - a - 1) a
 
 /-- `(−1)_[c]` over `ML`. -/
-def negM (c : ℕ) : List ML := if c = 0 then [.N] else xabM 0 c ++ [.N] ++ xabM 0 c
+def negM (c : ℕ) : List ML := if c = 0 then [ML.N] else xabM 0 c ++ [ML.N] ++ xabM 0 c
 
 /-- Conjugation by `X_[i,j]` over `ML`. -/
 def conjXM (i j : ℕ) (u : List ML) : List ML := if i = j then u else xabM i j ++ u ++ xabM i j
 
 /-- `K_[a,b,c,d]` over `ML`. -/
-def kwM (a b c d : ℕ) : List ML := conjXM 0 a (conjXM 1 b (conjXM 2 c (conjXM 3 d [.K])))
+def kwM (a b c d : ℕ) : List ML := conjXM 0 a (conjXM 1 b (conjXM 2 c (conjXM 3 d [ML.K])))
 
 theorem flat_xGapM (g a : ℕ) : (xGapM g a).flatMap phiL = xGap g a := by
   induction g generalizing a with
@@ -108,37 +129,37 @@ theorem phi_encMW (u : Word (LiRossSelinger.Gen 8)) : phi (encMW u) = encW u := 
 /-! ## The macro relations -/
 
 /-- `ρ` of Figure 6 over `ML`. -/
-def rhoM : List ML := kwM 4 5 6 7 ++ [.K] ++ xabM 3 4 ++ [.K] ++ kwM 4 5 6 7
+def rhoM : List ML := kwM 4 5 6 7 ++ [ML.K] ++ xabM 3 4 ++ [ML.K] ++ kwM 4 5 6 7
 
 /-- Figure 7 over `ML` ((83)–(101), (97) and (100) corrected). -/
 def fig7M : List (Eqn ML) :=
-  [(negM 0 ++ negM 0, []), ([.K, .K], []),
+  [(negM 0 ++ negM 0, []), ([ML.K, ML.K], []),
    (xabM 1 2 ++ negM 0, negM 0 ++ xabM 1 2), (xabM 2 3 ++ negM 0, negM 0 ++ xabM 2 3),
    (xabM 3 4 ++ negM 0, negM 0 ++ xabM 3 4), (xabM 4 5 ++ negM 0, negM 0 ++ xabM 4 5),
    (xabM 5 6 ++ negM 0, negM 0 ++ xabM 5 6), (xabM 6 7 ++ negM 0, negM 0 ++ xabM 6 7),
-   (xabM 4 5 ++ [.K], [.K] ++ xabM 4 5), (xabM 5 6 ++ [.K], [.K] ++ xabM 5 6),
-   (xabM 6 7 ++ [.K], [.K] ++ xabM 6 7), (negM 4 ++ [.K], [.K] ++ negM 4),
-   (negM 0 ++ negM 4, negM 4 ++ negM 0), ([.K] ++ kwM 4 5 6 7, kwM 4 5 6 7 ++ [.K]),
-   (xabM 0 1 ++ [.K], [.K] ++ xabM 1 3 ++ negM 1 ++ negM 3),
-   (xabM 1 2 ++ [.K], negM 0 ++ [.K] ++ negM 0 ++ [.K] ++ negM 0),
-   (xabM 2 3 ++ [.K], [.K] ++ xabM 1 3),
-   ([.K] ++ kwM 1 3 4 5, kwM 2 3 4 5 ++ kwM 0 1 2 4),
+   (xabM 4 5 ++ [ML.K], [ML.K] ++ xabM 4 5), (xabM 5 6 ++ [ML.K], [ML.K] ++ xabM 5 6),
+   (xabM 6 7 ++ [ML.K], [ML.K] ++ xabM 6 7), (negM 4 ++ [ML.K], [ML.K] ++ negM 4),
+   (negM 0 ++ negM 4, negM 4 ++ negM 0), ([ML.K] ++ kwM 4 5 6 7, kwM 4 5 6 7 ++ [ML.K]),
+   (xabM 0 1 ++ [ML.K], [ML.K] ++ xabM 1 3 ++ negM 1 ++ negM 3),
+   (xabM 1 2 ++ [ML.K], negM 0 ++ [ML.K] ++ negM 0 ++ [ML.K] ++ negM 0),
+   (xabM 2 3 ++ [ML.K], [ML.K] ++ xabM 1 3),
+   ([ML.K] ++ kwM 1 3 4 5, kwM 2 3 4 5 ++ kwM 0 1 2 4),
    (negM 0 ++ negM 4 ++ xabM 0 4 ++ rhoM, rhoM ++ xabM 0 4 ++ negM 4 ++ negM 0)]
 
 /-- The Coxeter relations of `S₈` on the `T i`, in the order of the tables:
 `T i T i = ε`, then `T i T j = T j T i` (`i + 2 ≤ j`), then the braids. -/
 def coxM : List (Eqn ML) :=
-  ((List.range 7).map fun i => ([.T i, .T i], [])) ++
+  ((List.range 7).map fun i => ([ML.T i, ML.T i], [])) ++
   ((List.range 7).flatMap fun i =>
-    ((List.range 7).filter fun j => i + 2 ≤ j).map fun j => ([.T i, .T j], [.T j, .T i])) ++
-  ((List.range 6).map fun i => ([.T i, .T (i + 1), .T i], [.T (i + 1), .T i, .T (i + 1)]))
+    ((List.range 7).filter fun j => i + 2 ≤ j).map fun j => ([ML.T i, ML.T j], [ML.T j, ML.T i])) ++
+  ((List.range 6).map fun i => ([ML.T i, ML.T (i + 1), ML.T i], [ML.T (i + 1), ML.T i, ML.T (i + 1)]))
 
 /-- The relations over `ML`: Coxeter and Figure 7, and `T i T i = ε` for
 every `i` (for `i ≥ 7`, `T i` is read as `X_[6,7]`, so every letter is an
 involution). -/
 inductive MRel : WRel ML
   | ax {e : Eqn ML} (h : e ∈ coxM ++ fig7M) : MRel (FreeMonoid.ofList e.1) (FreeMonoid.ofList e.2)
-  | sqAll (i : ℕ) : MRel (FreeMonoid.ofList [.T i, .T i]) 1
+  | sqAll (i : ℕ) : MRel (FreeMonoid.ofList [ML.T i, ML.T i]) 1
 
 /-- The base of the macro tables. -/
 def baseM : List (Eqn ML) := coxM ++ fig7M
@@ -155,9 +176,9 @@ theorem fig7M_phi : fig7M.map phiE = (Micro.base.drop 46).take 19 := by decide +
 
 set_option maxRecDepth 10000 in
 theorem coxM_cases : ∀ e ∈ coxM,
-    (∃ i, i < 7 ∧ e = ([.T i, .T i], [])) ∨
-    (∃ i j, j < 7 ∧ i + 2 ≤ j ∧ e = ([.T i, .T j], [.T j, .T i])) ∨
-    (∃ i, i < 6 ∧ e = ([.T i, .T (i + 1), .T i], [.T (i + 1), .T i, .T (i + 1)])) := by
+    (∃ i, i < 7 ∧ e = ([ML.T i, ML.T i], [])) ∨
+    (∃ i j, j < 7 ∧ i + 2 ≤ j ∧ e = ([ML.T i, ML.T j], [ML.T j, ML.T i])) ∨
+    (∃ i, i < 6 ∧ e = ([ML.T i, ML.T (i + 1), ML.T i], [ML.T (i + 1), ML.T i, ML.T (i + 1)])) := by
   intro e he
   simp only [coxM, List.mem_append, List.mem_map, List.mem_range, List.mem_flatMap,
     List.mem_filter, decide_eq_true_eq] at he
@@ -196,8 +217,8 @@ theorem mrel_sound : ∀ u v, MRel u v → Derivable R1 (phi u) (phi v) := by
 /-- Every macro letter is an involution. -/
 theorem involutionM : ∀ x : ML, Derivable MRel (FreeMonoid.ofList [x, x]) 1
   | .T i => Derivable.of (MRel.sqAll i)
-  | .N => Derivable.of (MRel.ax (e := ([.N, .N], [])) (by decide))
-  | .K => Derivable.of (MRel.ax (e := ([.K, .K], [])) (by decide))
+  | .N => Derivable.of (MRel.ax (e := ([ML.N, ML.N], [])) (by decide))
+  | .K => Derivable.of (MRel.ax (e := ([ML.K, ML.K], [])) (by decide))
 
 /-- A derivation over `ML` gives one in `R₁`. -/
 theorem toR1 {u v : Word ML} (h : Derivable MRel u v) : Derivable R1 (phi u) (phi v) :=

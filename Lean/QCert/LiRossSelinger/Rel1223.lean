@@ -28,9 +28,8 @@ theorem rel1223_e {a b c d e f g h : Fin n} (h1 : a < b) (h2 : b < c) (h3 : c < 
   have hh := derivable_rename (emb8 h1 h2 h3 h4 h5 h6 h7) (checkD_sound
     (w := ([Gen.x 0 4 (by decide), Gen.neg 4, Gen.neg 0, Gen.k 0 1 2 3 (by decide) (by decide) (by decide), Gen.k 4 5 6 7 (by decide) (by decide) (by decide), Gen.x 3 4 (by decide), Gen.k 4 5 6 7 (by decide) (by decide) (by decide), Gen.k 0 1 2 3 (by decide) (by decide) (by decide), Gen.neg 0, Gen.neg 4, Gen.x 0 4 (by decide)] : List (Gen 8)))
     (w' := [Gen.k 4 5 6 7 (by decide) (by decide) (by decide), Gen.k 0 1 2 3 (by decide) (by decide) (by decide), Gen.x 3 4 (by decide), Gen.k 0 1 2 3 (by decide) (by decide) (by decide), Gen.k 4 5 6 7 (by decide) (by decide) (by decide)])
-    (sts := [⟨(.inl .r2f, false), [0, 1, 2, 3, 4, 5, 6, 7], true, 3⟩, ⟨(.inl .r2f, false), [4, 5, 6, 7, 0, 1, 2, 3], true, 6⟩, ⟨(.inl .r2d, false), [0, 4], false, 1⟩, ⟨(.inl .r3c, true), [0, 4], false, 0⟩,
-      ⟨(.inl .r3c, false), [0, 4], true, 1⟩, ⟨(.inl .r2d, false), [0, 4], false, 0⟩, ⟨(.inl .r2d, false), [0, 4], true, 8⟩, ⟨(.inl .r3c, false), [0, 4], false, 9⟩,
-      ⟨(.inl .r3c, true), [0, 4], true, 8⟩, ⟨(.inl .r6a, false), [0, 1, 2, 3, 4, 5, 6, 7], true, 0⟩])
+    (sts := stepsOf 8 [148868987683720, 73811284526728, 5308678, 5308491, 5308811, 5308422, 5310598, 5310731,
+      5310667, 148868987682964])
     (by decide +kernel))
   simpa only [renW_ofList, List.map_cons, List.map_nil, Gen.rename, emb8_0, emb8_1, emb8_2,
     emb8_3, emb8_4, emb8_5, emb8_6, emb8_7] using hh
@@ -43,23 +42,15 @@ theorem rel1223_h {a b c d e f g h : Fin n} (h1 : a < b) (h2 : b < c) (h3 : c < 
   have hh := derivable_rename (emb8 h1 h2 h3 h4 h5 h6 h7) (checkD_sound
     (w := ([Gen.x 0 7 (by decide), Gen.neg 7, Gen.neg 0, Gen.k 0 1 2 3 (by decide) (by decide) (by decide), Gen.k 4 5 6 7 (by decide) (by decide) (by decide), Gen.x 3 4 (by decide), Gen.k 4 5 6 7 (by decide) (by decide) (by decide), Gen.k 0 1 2 3 (by decide) (by decide) (by decide), Gen.neg 0, Gen.neg 7, Gen.x 0 7 (by decide)] : List (Gen 8)))
     (w' := [Gen.k 4 5 6 7 (by decide) (by decide) (by decide), Gen.k 0 1 2 3 (by decide) (by decide) (by decide), Gen.x 3 4 (by decide), Gen.k 0 1 2 3 (by decide) (by decide) (by decide), Gen.k 4 5 6 7 (by decide) (by decide) (by decide)])
-    (sts := [⟨(.inl .r2f, false), [0, 1, 2, 3, 4, 5, 6, 7], true, 3⟩, ⟨(.inl .r2f, false), [4, 5, 6, 7, 0, 1, 2, 3], true, 6⟩, ⟨(.inl .r2d, false), [0, 7], false, 1⟩, ⟨(.inl .r1a, false), [4, 7], false, 3⟩,
-      ⟨(.inl .r3c, true), [4, 7], true, 2⟩, ⟨(.inl .r2b, false), [4, 7, 0], false, 1⟩, ⟨(.inl .r2d, false), [0, 4], true, 2⟩, ⟨(.inl .r3b, false), [0, 4, 7], false, 0⟩,
-      ⟨(.inl .r2d, false), [0, 7], true, 10⟩, ⟨(.inl .r3c, false), [0, 7], false, 11⟩, ⟨(.inl .r3c, true), [0, 7], true, 10⟩, ⟨(.inl .r1a, false), [4, 7], false, 13⟩,
-      ⟨(.inl .r3c, true), [4, 7], true, 12⟩, ⟨(.inl .r2b, false), [4, 7, 0], false, 11⟩, ⟨(.inl .r3b, false), [0, 4, 7], false, 10⟩, ⟨(.inl .r3c, true), [0, 4], false, 11⟩,
-      ⟨(.inl .r3c, false), [0, 4], true, 12⟩, ⟨(.inl .r2d, false), [0, 4], false, 11⟩, ⟨(.inr .ksym5, false), [4, 5, 6, 7], true, 4⟩, ⟨(.inl .r3b, false), [5, 6, 7], false, 5⟩,
-      ⟨(.inl .r3a, false), [5, 6, 7], false, 5⟩, ⟨(.inl .r1a, false), [5, 7], true, 6⟩, ⟨(.inl .r2e, false), [6, 0, 1, 2, 3], true, 7⟩, ⟨(.inl .r2e, false), [5, 0, 1, 2, 3], true, 6⟩,
-      ⟨(.inl .r2c, false), [5, 6, 0, 1, 2, 3], true, 5⟩, ⟨(.inl .r2b, false), [3, 4, 6], false, 8⟩, ⟨(.inl .r2b, false), [3, 4, 5], false, 7⟩, ⟨(.inl .r2a, false), [5, 6, 3, 4], true, 6⟩,
-      ⟨(.inl .r2e, false), [6, 0, 1, 2, 3], true, 9⟩, ⟨(.inl .r2e, false), [5, 0, 1, 2, 3], true, 8⟩, ⟨(.inl .r2c, false), [5, 6, 0, 1, 2, 3], true, 7⟩, ⟨(.inl .r3c, true), [5, 6], false, 8⟩,
-      ⟨(.inl .r3c, false), [5, 6], true, 9⟩, ⟨(.inl .r2d, false), [5, 6], false, 8⟩, ⟨(.inr .ksym2, false), [4, 5, 6, 7], true, 10⟩, ⟨(.inr .k31, false), [4, 5, 6, 7], true, 8⟩,
-      ⟨(.inl .r1a, false), [5, 6], true, 10⟩, ⟨(.inl .r1a, false), [4, 7], true, 9⟩, ⟨(.inl .r2d, false), [0, 4], false, 2⟩, ⟨(.inl .r3c, true), [0, 4], false, 1⟩,
-      ⟨(.inl .r3c, false), [0, 4], true, 2⟩, ⟨(.inl .r2d, false), [0, 4], false, 1⟩, ⟨(.inl .r2d, false), [0, 4], true, 9⟩, ⟨(.inl .r3c, false), [0, 4], false, 10⟩,
-      ⟨(.inl .r3c, true), [0, 4], true, 9⟩, ⟨(.inl .r6a, false), [0, 1, 2, 3, 4, 5, 6, 7], true, 1⟩, ⟨(.inr .ksym5, false), [4, 5, 6, 7], true, 0⟩, ⟨(.inl .r3b, false), [5, 6, 7], false, 1⟩,
-      ⟨(.inl .r3a, false), [5, 6, 7], false, 1⟩, ⟨(.inl .r1a, false), [5, 7], true, 2⟩, ⟨(.inl .r2e, false), [6, 0, 1, 2, 3], true, 3⟩, ⟨(.inl .r2e, false), [5, 0, 1, 2, 3], true, 2⟩,
-      ⟨(.inl .r2c, false), [5, 6, 0, 1, 2, 3], true, 1⟩, ⟨(.inl .r2b, false), [3, 4, 6], false, 4⟩, ⟨(.inl .r2b, false), [3, 4, 5], false, 3⟩, ⟨(.inl .r2a, false), [5, 6, 3, 4], true, 2⟩,
-      ⟨(.inl .r2e, false), [6, 0, 1, 2, 3], true, 5⟩, ⟨(.inl .r2e, false), [5, 0, 1, 2, 3], true, 4⟩, ⟨(.inl .r2c, false), [5, 6, 0, 1, 2, 3], true, 3⟩, ⟨(.inl .r3c, true), [5, 6], false, 4⟩,
-      ⟨(.inl .r3c, false), [5, 6], true, 5⟩, ⟨(.inl .r2d, false), [5, 6], false, 4⟩, ⟨(.inr .ksym2, false), [4, 5, 6, 7], true, 6⟩, ⟨(.inr .k31, false), [4, 5, 6, 7], true, 4⟩,
-      ⟨(.inl .r1a, false), [5, 6], true, 6⟩, ⟨(.inl .r1a, false), [4, 7], true, 5⟩])
+    (sts := stepsOf 8 [148868987683720, 73811284526728, 8454406, 8717056, 8717003, 25493764, 5309062, 139526154,
+      8456838, 8456971, 8456907, 8719616, 8719563, 25496324, 139528714, 5311307,
+      5311627, 5311238, 2271544472, 141952266, 141952265, 8783488, 18020239239, 18020173447,
+      288324191621, 122947588, 106170116, 1417021059, 18020239751, 18020173959, 288324192133, 7735371,
+      7735691, 7735302, 2271546005, 2271545499, 7735936, 8718720, 5308934, 5308747,
+      5309067, 5308678, 5310854, 5310987, 5310923, 148868987683220, 2271543448, 141951242,
+      141951241, 8782464, 18020238215, 18020172423, 288324190597, 122946564, 106169092, 1417020035,
+      18020238727, 18020172935, 288324191109, 7734347, 7734667, 7734278, 2271544981, 2271544475,
+      7734912, 8717696])
     (by decide +kernel))
   simpa only [renW_ofList, List.map_cons, List.map_nil, Gen.rename, emb8_0, emb8_1, emb8_2,
     emb8_3, emb8_4, emb8_5, emb8_6, emb8_7] using hh

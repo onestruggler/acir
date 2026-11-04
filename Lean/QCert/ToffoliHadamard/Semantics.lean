@@ -43,9 +43,8 @@ theorem gateMatQ_transpose (g : Sym1) :
 
 theorem gateMatQ_sq (g : Sym1) :
     gateMat QSqrt2.invSqrt2 g * gateMat QSqrt2.invSqrt2 g = 1 := by
-  have h : evalW [g, g] = evalW [] := by cases g <;> decide +kernel
-  have := congrArg (ListMat.toMat 8) h
-  simpa [toMat_evalW] using this
+  have h : eqS 2 (evalZ [g, g]) (evalZ []) = true := by cases g <;> decide +kernel
+  simpa using prod_gateMatQ_eq h
 
 theorem gateMatQ_entries (g : Sym1) (i j : Fin 8) :
     (gateMat QSqrt2.invSqrt2 g i j).a1 = 0 ∧ ((gateMat QSqrt2.invSqrt2 g i j).a0 * 2).den = 1 := by
@@ -81,9 +80,10 @@ theorem matH2Q_eq : matH2 QSqrt2.invSqrt2 = QSqrt2.invSqrt2 • intH2.map (Int.c
 theorem semH2_mem : semH2 ∈ unitaryGroup (Fin 8) ℝ := by
   have hT : (matH2 QSqrt2.invSqrt2)ᵀ = matH2 QSqrt2.invSqrt2 := by decide +kernel
   have hsq : matH2 QSqrt2.invSqrt2 * matH2 QSqrt2.invSqrt2 = 1 := by
-    have h : actH2.apply 8 (actH2.apply 8 (one 8)) = one 8 := by decide +kernel
-    have := congrArg (ListMat.toMat 8) h
-    rwa [Act.toMat_apply, Act.toMat_apply, toMat_one, Matrix.mul_one, actH2_toMat] at this
+    have h : eqS 2 (evalS (fun _ : Unit => 1) (fun _ => actH2Z) [(), ()])
+        (evalS (fun _ : Unit => 1) (fun _ => actH2Z) []) = true := by decide +kernel
+    simpa using prodQ_eq_of_eqS (fun _ : Unit => 1) (fun _ => actH2Z)
+      (fun _ => matH2 QSqrt2.invSqrt2) (fun _ => actH2Z_wf) (fun _ => matH2_eq_actH2Z) h
   rw [mem_unitaryGroup_iff, star_eq_conjTranspose, conjTranspose_eq_transpose_of_trivial,
     semH2_eq, ← Matrix.transpose_map, hT, ← Matrix.map_mul, hsq,
     Matrix.map_one _ (map_zero _) (map_one _)]

@@ -36,9 +36,11 @@ groups), `Theorem.lean`.
   `2 − j`.
 * Matrices are defined over any commutative ring with an element `s` for
   `1/√2` (`Matrices.lean`) and taken over `ℝ` with `s = 1/√2`; identities
-  are decided over `ℚ(√2)` (`Eval.lean`: each gate as a row permutation,
-  row signs or a dense matrix, so that words of hundreds of letters are
-  evaluated quickly by `decide +kernel`).
+  are decided on scaled integer matrices (`Eval.lean`: each gate is
+  `(1/√2)^k` times an integer row permutation, row signs or dense matrix,
+  checked against `gateMat` over `ℚ(√2)`; a word is `(1/√2)^e · M` with `M`
+  integral, so that words of hundreds of letters are evaluated quickly by
+  `decide +kernel`, see "Typechecking cost").
 
 ## Errors in the paper (each checked on matrices)
 
@@ -150,10 +152,9 @@ groups), `Theorem.lean`.
   over `ML` by `table1_macro`).
 * `RoundTrip.lean`: induction along the order of the routes.
 
-Build times (each module on its own, given its imports): `Engine` 7 s,
-`Micro` 40–60 s, `Macro` 30 s, `Gens` 8 s, `MacroTable` 2.5 min (up to
-8 min on a loaded machine; 630 transport certificates, 30 000 steps),
-`Transport` 6 s, `Families` 28 s, `RoundTable` 13 s, `RoundTrip` 6 s.
+The tables are replayed on words coded as numbers (`Engine`, section
+"Replay on codes"; the letters' codes are `κ1` in `Codes.lean` and `κM` in
+`Macro.lean`); build times are under "Typechecking cost".
 The generated modules (`Micro`, `MacroTable`, `Families`, `RoundTable`) are
 written by the scripts in `gen/` (see `gen/README.md`): `gen/run_all.sh emit`
 regenerates them from the recorded search results in `gen/data/`, and

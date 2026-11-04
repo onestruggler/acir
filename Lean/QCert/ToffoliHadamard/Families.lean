@@ -57,13 +57,13 @@ theorem nodup_val {l : List (Fin 8)} (h : l.Nodup) : (l.map Fin.val).Nodup :=
 
 /-- The palindromic path of `(a b)` is valid for `g` and renames it `g'`. -/
 def okPal (a b : ℕ) (g g' : AG) : Bool :=
-  allAG.contains g && g.validPath (palPath a b) && g.actPath (palPath a b) == g'
+  memAG g && g.validPath (palPath a b) && g.actPath (palPath a b) == g'
 
 theorem of_okPal {a b : ℕ} (hab : a < b) (hb : b < 8) {g g' : AG} (h : okPal a b g g' = true) :
     Derivable MRel (FreeMonoid.ofList (xabM a b ++ g.enc)) (FreeMonoid.ofList (g'.enc ++ xabM a b)) := by
-  simp only [okPal, Bool.and_eq_true, beq_iff_eq, List.contains_iff_mem] at h
+  simp only [okPal, Bool.and_eq_true, beq_iff_eq] at h
   obtain ⟨⟨hg, hv⟩, rfl⟩ := h
-  exact pal hab hb hg hv
+  exact pal hab hb (memAG_spec hg) hv
 
 theorem fam1a {a b : ℕ} (hab : a < b) (hb : b < 8) :
     Derivable MRel (FreeMonoid.ofList (xabM a b ++ xabM a b)) 1 := by

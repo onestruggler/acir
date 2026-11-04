@@ -53,7 +53,7 @@ groups `O_ZHalf n` and `L n`, `matIH` = `I ⊗ H`), `Theorem.lean`.
 * Soundness of Table 1 at every `n` and every choice of indices
   (`Soundness.sound`, Theorem 4.3): moved to its own at most eight indices
   by a level-matrix embedding (`Local.lean`), each relation is an identity
-  of rational matrices decided by the kernel (`ListMat.lean`: list
+  of scaled integer matrices decided by the kernel (`ListMat.lean`: list
   matrices, products evaluated by `decide +kernel`).  The cases are
   generated (`gen/mk_sound.py`, scratch).
 * Soundness of Table 2 at every `m` (`SoundnessL.soundL`, Theorem 5.4):

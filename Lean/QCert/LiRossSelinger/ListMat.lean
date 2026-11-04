@@ -218,4 +218,307 @@ theorem toMat_apply (n : ℕ) (a : Act R) (M : LMat R) :
 
 end Act
 
+
+/-! ## Fast evaluation on integer matrices
+
+`decide +kernel` pays for every unfolding and almost nothing for arithmetic
+on literals, so a product of gate matrices over `ℚ(√2)` costs seconds
+(`Rat` normalisation at every entry) where the same product over `ℤ`
+costs milliseconds.  A word of gates is therefore evaluated as a *scaled
+integer matrix* `SMat`: a power `e` of a scalar `c` (`1/√2` or `1/2`,
+fixed by the client) and an integer list matrix, read as `c ^ e • M`
+(`SMat.toMatS`).  Every gate is an integer row operation `Act ℤ` with a
+scale (`SMat.step`); the row operations are applied by primitive recursion
+(`Act.applyF`: no `GetElem?`, no `brecOn`, no `Decidable` tests), and two
+results are compared by one Boolean (`eqS`), which rescales the one with
+the smaller exponent; `eqS_sound` is its soundness, given `2 * c ^ p = 1`
+for the period `p` of the scale (`p = 2` for `c = 1/√2`, `p = 1` for
+`c = 1/2`). -/
+
+section Fast
+
+variable {α β : Type*}
+
+/-- `l.getD i d` by primitive recursion. -/
+def nthD (d : α) (l : List α) : ℕ → α :=
+  List.rec (motive := fun _ => ℕ → α) (fun _ => d)
+    (fun a _ ih i => Nat.rec (motive := fun _ => α) a (fun i' _ => ih i') i) l
+
+theorem nthD_eq (d : α) (l : List α) (i : ℕ) : nthD d l i = l.getD i d := by
+  induction l generalizing i with
+  | nil => cases i <;> rfl
+  | cons a l ih =>
+    cases i with
+    | zero => rfl
+    | succ i => rw [List.getD_cons_succ, ← ih i]; rfl
+
+/-- `List.map` by primitive recursion. -/
+def mapR (f : α → β) : List α → List β :=
+  List.rec (motive := fun _ => List β) [] (fun a _ ih => f a :: ih)
+
+theorem mapR_eq (f : α → β) (l : List α) : mapR f l = l.map f := by
+  induction l with
+  | nil => rfl
+  | cons a l ih => show f a :: mapR f l = _; rw [ih]; rfl
+
+/-- The rows `π` of `M`: the product with the permutation matrix of `π`. -/
+def permF (π : List ℕ) (M : LMat ℤ) : LMat ℤ := mapR (fun i => nthD [] M i) π
+
+/-- The rows of `M` negated where `σ` is set. -/
+def signF (σ : List Bool) (M : LMat ℤ) : LMat ℤ :=
+  List.rec (motive := fun _ => LMat ℤ → LMat ℤ) (fun _ => [])
+    (fun b _ ih M => List.rec (motive := fun _ => LMat ℤ) []
+      (fun r M' _ => (bif b then mapR Neg.neg r else r) :: ih M') M) σ M
+
+/-- The sum of two rows (the longer one's tail kept). -/
+def addRow : List ℤ → List ℤ → List ℤ :=
+  List.rec (motive := fun _ => List ℤ → List ℤ) (fun v => v)
+    (fun x _ ih v => List.rec (motive := fun _ => List ℤ) (x :: ih [])
+      (fun y ys _ => (x + y) :: ih ys) v)
+
+/-- A row times a scalar. -/
+def scaleRow (c : ℤ) (r : List ℤ) : List ℤ := r.map (c * ·)
+
+/-- `∑ k, cs[k] • M[k]`: a row of a product, as a combination of the rows of
+`M`; zero coefficients are skipped. -/
+def combRow : List ℤ → LMat ℤ → List ℤ :=
+  List.rec (motive := fun _ => LMat ℤ → List ℤ) (fun _ => [])
+    (fun c _ ih M => List.rec (motive := fun _ => List ℤ) []
+      (fun r M' _ => bif c == 0 then ih M' else addRow (scaleRow c r) (ih M')) M)
+
+/-- The product `L * M`, row by row. -/
+def mulF (L M : LMat ℤ) : LMat ℤ := mapR (fun cs => combRow cs M) L
+
+theorem signF_getD (σ : List Bool) (M : LMat ℤ) (i : ℕ) (hi : i < σ.length) :
+    (signF σ M).getD i [] =
+      if σ.getD i false then (M.getD i []).map Neg.neg else M.getD i [] := by
+  induction σ generalizing M i with
+  | nil => simp at hi
+  | cons b σ ih =>
+    cases M with
+    | nil => cases i <;> simp [signF]
+    | cons r M =>
+      cases i with
+      | zero =>
+        show (bif b then mapR Neg.neg r else r) = if b then r.map Neg.neg else r
+        cases b <;> simp [mapR_eq]
+      | succ i =>
+        show (signF σ M).getD i [] = _
+        rw [List.getD_cons_succ, List.getD_cons_succ, ih M i (by simpa using hi)]
+
+theorem addRow_getD (u v : List ℤ) (j : ℕ) :
+    (addRow u v).getD j 0 = u.getD j 0 + v.getD j 0 := by
+  induction u generalizing v j with
+  | nil => simp [addRow]
+  | cons x u ih =>
+    cases v with
+    | nil =>
+      cases j with
+      | zero => show x = x + 0; rw [add_zero]
+      | succ j => show (addRow u []).getD j 0 = _; rw [ih]; simp
+    | cons y v =>
+      cases j with
+      | zero => rfl
+      | succ j => show (addRow u v).getD j 0 = _; rw [ih]; rfl
+
+theorem scaleRow_getD (c : ℤ) (r : List ℤ) (j : ℕ) :
+    (scaleRow c r).getD j 0 = c * r.getD j 0 := by
+  simp only [scaleRow, List.getD_eq_getElem?_getD, List.getElem?_map]
+  cases r[j]? <;> simp
+
+theorem combRow_getD (cs : List ℤ) (M : LMat ℤ) (j : ℕ) :
+    (combRow cs M).getD j 0 =
+      ∑ k ∈ Finset.range cs.length, cs.getD k 0 * (M.getD k []).getD j 0 := by
+  induction cs generalizing M with
+  | nil => simp [combRow]
+  | cons c cs ih =>
+    cases M with
+    | nil =>
+      show ([] : List ℤ).getD j 0 = _
+      simp
+    | cons r M =>
+      show (bif c == 0 then combRow cs M else addRow (scaleRow c r) (combRow cs M)).getD j 0 = _
+      rw [List.length_cons, Finset.sum_range_succ']
+      simp only [List.getD_cons_succ, List.getD_cons_zero]
+      cases hc : c == 0
+      · simp only [cond_false, addRow_getD, scaleRow_getD, ih]; ring
+      · simp only [beq_iff_eq] at hc
+        simp only [cond_true, ih, hc, zero_mul, add_zero]
+
+theorem toMat_mulF (n : ℕ) (L M : LMat ℤ) (hL : ∀ r ∈ L, r.length ≤ n) :
+    toMat n (mulF L M) = toMat n L * toMat n M := by
+  ext i j
+  simp only [toMat, mulF, mapR_eq, Matrix.mul_apply]
+  by_cases hi : (i : ℕ) < L.length
+  · rw [getD_map_of_lt _ _ hi _ [], combRow_getD]
+    have hmem : L.getD i [] ∈ L := by
+      rw [List.getD_eq_getElem?_getD, List.getElem?_eq_getElem hi]; exact List.getElem_mem hi
+    have hlen := hL _ hmem
+    rw [Fin.sum_univ_eq_sum_range (fun k => (L.getD i []).getD k 0 * (M.getD k []).getD j 0) n]
+    apply Finset.sum_subset (Finset.range_mono hlen)
+    intro k _ hk
+    rw [Finset.mem_range, not_lt] at hk
+    rw [List.getD_eq_getElem?_getD, List.getElem?_eq_none hk]; simp
+  · rw [getD_map_of_ge _ _ (by omega)]
+    have h0 : L.getD i [] = [] := by
+      rw [List.getD_eq_getElem?_getD, List.getElem?_eq_none (by omega)]; rfl
+    simp only [h0, List.getD_nil, zero_mul, Finset.sum_const_zero]
+
+namespace Act
+
+/-- The fast application of a gate (`apply`, by primitive recursion). -/
+def applyF : Act ℤ → LMat ℤ → LMat ℤ
+  | perm π, M => permF π M
+  | signs σ, M => signF σ M
+  | dense L, M => mulF L M
+
+/-- A gate fits `n` rows: a permutation's indices are below `n`, a sign gate
+has `n` signs, a dense gate's rows have at most `n` entries. -/
+def WF (n : ℕ) : Act ℤ → Prop
+  | perm π => ∀ i ∈ π, i < n
+  | signs σ => σ.length = n
+  | dense L => ∀ r ∈ L, r.length ≤ n
+
+instance decWF (n : ℕ) : ∀ a : Act ℤ, Decidable (a.WF n)
+  | perm π => inferInstanceAs (Decidable (∀ i ∈ π, i < n))
+  | signs σ => inferInstanceAs (Decidable (σ.length = n))
+  | dense L => inferInstanceAs (Decidable (∀ r ∈ L, r.length ≤ n))
+
+theorem toMat_applyF (n : ℕ) {a : Act ℤ} (hwf : a.WF n) (M : LMat ℤ) :
+    ListMat.toMat n (a.applyF M) = a.toMat n * ListMat.toMat n M := by
+  rw [← toMat_apply]
+  cases a with
+  | perm π =>
+    show ListMat.toMat n (permF π M) =
+      ListMat.toMat n (π.map fun i => if i < n then M.getD i [] else [])
+    congr 1
+    rw [permF, mapR_eq]
+    apply List.map_congr_left
+    intro i hi
+    rw [nthD_eq, if_pos (hwf i hi)]
+  | signs σ =>
+    ext i j
+    simp only [ListMat.toMat, apply, applyF]
+    rw [signF_getD σ M i (by rw [hwf]; exact i.2), getD_range_map _ _ _ i.2]
+  | dense L =>
+    show ListMat.toMat n (mulF L M) = ListMat.toMat n (mul n L M)
+    rw [toMat_mulF n L M hwf, toMat_mul]
+
+end Act
+
+/-- A matrix `c ^ e • M` with `M` an integer list matrix. -/
+structure SMat where
+  /-- The power of the scalar. -/
+  e : ℕ
+  /-- The integer matrix. -/
+  m : LMat ℤ
+
+variable {R : Type*} [CommRing R]
+
+/-- The matrix `c ^ e • M`. -/
+def SMat.toMatS (n : ℕ) (c : R) (A : SMat) : Matrix (Fin n) (Fin n) R :=
+  c ^ A.e • (toMat n A.m).map (Int.castRingHom R)
+
+/-- The identity. -/
+def SMat.one (n : ℕ) : SMat := ⟨0, ListMat.one n⟩
+
+/-- A gate with scale `c ^ k` applied on the left. -/
+def SMat.step (k : ℕ) (a : Act ℤ) (A : SMat) : SMat := ⟨k + A.e, a.applyF A.m⟩
+
+theorem SMat.toMatS_one (n : ℕ) (c : R) : (SMat.one n).toMatS n c = 1 := by
+  simp [SMat.toMatS, SMat.one, toMat_one, Matrix.map_one]
+
+theorem SMat.toMatS_step (n k : ℕ) (c : R) {a : Act ℤ} (hwf : a.WF n) (A : SMat) :
+    (SMat.step k a A).toMatS n c =
+      (c ^ k • (a.toMat n).map (Int.castRingHom R)) * A.toMatS n c := by
+  simp only [SMat.toMatS, SMat.step, Act.toMat_applyF n hwf, Matrix.map_mul, Matrix.smul_mul,
+    Matrix.mul_smul, smul_smul, pow_add]
+  rw [mul_comm]
+
+/-- The entries of an integer list matrix, cast and times `c`. -/
+def scaleC (c : R) (M : LMat ℤ) : LMat R := M.map (List.map fun z : ℤ => c * Int.castRingHom R z)
+
+theorem toMat_scaleC (n : ℕ) (c : R) (M : LMat ℤ) :
+    toMat n (scaleC c M) = c • (toMat n M).map (Int.castRingHom R) := by
+  ext i j
+  simp only [toMat, scaleC, Matrix.smul_apply, Matrix.map_apply, List.getD_eq_getElem?_getD,
+    List.getElem?_map, smul_eq_mul]
+  cases hM : M[(i : ℕ)]? with
+  | none => simp
+  | some r => cases hr : r[(j : ℕ)]? <;> simp [hr]
+
+/-- The entries of a list matrix times `k`. -/
+def scaleM (k : ℤ) (M : LMat ℤ) : LMat ℤ := M.map (List.map (k * ·))
+
+theorem toMat_scaleM_map (n : ℕ) (k : ℤ) (M : LMat ℤ) :
+    (toMat n (scaleM k M)).map (Int.castRingHom R) =
+      (k : R) • (toMat n M).map (Int.castRingHom R) := by
+  ext i j
+  simp only [toMat, scaleM, Matrix.smul_apply, Matrix.map_apply, List.getD_eq_getElem?_getD,
+    List.getElem?_map, smul_eq_mul]
+  cases hM : M[(i : ℕ)]? with
+  | none => simp
+  | some r => cases hr : r[(j : ℕ)]? <;> simp [hr]
+
+/-- Two scaled matrices are equal: the one with the smaller exponent is
+scaled by `2 ^ (difference / p)` and the integer matrices compared, the
+difference being a multiple of the period `p`. -/
+def eqS (p : ℕ) (A B : SMat) : Bool :=
+  bif Nat.ble A.e B.e then
+    Nat.beq ((B.e - A.e) % p) 0 && (scaleM ((2 ^ ((B.e - A.e) / p) : ℕ) : ℤ) A.m == B.m)
+  else
+    Nat.beq ((A.e - B.e) % p) 0 && (scaleM ((2 ^ ((A.e - B.e) / p) : ℕ) : ℤ) B.m == A.m)
+
+theorem toMatS_of_scale (n : ℕ) {c : R} {p : ℕ} (hc : (2 : R) * c ^ p = 1) (A B : SMat)
+    (hle : A.e ≤ B.e) (hmod : (B.e - A.e) % p = 0)
+    (hm : scaleM ((2 ^ ((B.e - A.e) / p) : ℕ) : ℤ) A.m = B.m) :
+    A.toMatS n c = B.toMatS n c := by
+  set q := (B.e - A.e) / p with hqdef
+  have hdiv : p * q = B.e - A.e := Nat.mul_div_cancel' (Nat.dvd_of_mod_eq_zero hmod)
+  have hq : B.e = A.e + p * q := by omega
+  unfold SMat.toMatS
+  rw [← hm, toMat_scaleM_map, hq, pow_add, pow_mul, smul_smul]
+  congr 1
+  rw [Int.cast_natCast, Nat.cast_pow, Nat.cast_ofNat, mul_assoc, ← mul_pow, mul_comm (c ^ p) 2,
+    hc, one_pow, mul_one]
+
+theorem eqS_sound (n : ℕ) {c : R} {p : ℕ} (hc : (2 : R) * c ^ p = 1) {A B : SMat}
+    (h : eqS p A B = true) : A.toMatS n c = B.toMatS n c := by
+  unfold eqS at h
+  cases hle : Nat.ble A.e B.e <;> rw [hle] at h <;>
+    simp only [cond_true, cond_false, Bool.and_eq_true, Nat.beq_eq, beq_iff_eq] at h
+  · have hle' : B.e ≤ A.e := by
+      have : ¬ A.e ≤ B.e := fun h' => by rw [Nat.ble_eq_true_of_le h'] at hle; cases hle
+      omega
+    exact (toMatS_of_scale n hc B A hle' h.1 h.2).symm
+  · exact toMatS_of_scale n hc A B (Nat.le_of_ble_eq_true hle) h.1 h.2
+
+
+/-! ### Words of gates -/
+
+section Words
+
+variable {X : Type*}
+
+/-- The scaled integer matrix of a word, each letter given by its row
+operation and scale. -/
+def evalSM (n : ℕ) (sc : X → ℕ) (act : X → Act ℤ) (l : List X) : SMat :=
+  l.foldr (fun g A => SMat.step (sc g) (act g) A) (SMat.one n)
+
+theorem toMatS_evalSM (n : ℕ) (c : R) (sc : X → ℕ) (act : X → Act ℤ)
+    (F : X → Matrix (Fin n) (Fin n) R) (l : List X) (hwf : ∀ g ∈ l, (act g).WF n)
+    (hF : ∀ g ∈ l, F g = c ^ sc g • ((act g).toMat n).map (Int.castRingHom R)) :
+    (l.map F).prod = (evalSM n sc act l).toMatS n c := by
+  induction l with
+  | nil => simp [evalSM, SMat.toMatS_one]
+  | cons g l ih =>
+    rw [List.map_cons, List.prod_cons,
+      ih (fun g hg => hwf g (List.mem_cons_of_mem _ hg)) (fun g hg => hF g (List.mem_cons_of_mem _ hg)),
+      show evalSM n sc act (g :: l) = SMat.step (sc g) (act g) (evalSM n sc act l) from rfl,
+      SMat.toMatS_step n _ _ (hwf g (List.mem_cons_self ..)), hF g (List.mem_cons_self ..)]
+
+end Words
+
+end Fast
+
 end QCert.ListMat
