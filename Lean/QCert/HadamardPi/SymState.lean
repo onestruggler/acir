@@ -84,26 +84,6 @@ theorem state_after {s : O n} (hs : s ≠ 1) (hk : lde (col s (pj s (piv_pos hs)
 
 /-! ### On a window -/
 
-/-- The window after a word, at the old exponent. -/
-def divAll {w : ℕ} (P : List ZL) (K : List (Gen w)) : List ZL :=
-  (List.range w).map fun j => (divAt P K j).getD dZ
-
-/-- Every entry of the window after the word is integral. -/
-def allSome {w : ℕ} (P : List ZL) (K : List (Gen w)) : Bool :=
-  (List.range w).all fun j => (divAt P K j).isSome
-
-theorem divAll_getD {w : ℕ} (P : List ZL) (K : List (Gen w)) (j : Fin w) :
-    (divAll P K).getD j dZ = (divAt P K j).getD dZ := by
-  simp [divAll, List.getD_eq_getElem?_getD, List.getElem?_map, List.getElem?_range j.2]
-
-theorem divAll_sound {w : ℕ} {P : List ZL} {K : List (Gen w)} (hc : allSome P K = true)
-    (t : ℕ → ℤ) (j : Fin w) :
-    rt2 ^ hcntw K * zev ((divAll P K).getD j dZ) t = scw K (pv P t) j := by
-  have : (divAt P K j).isSome = true := by
-    simp only [allSome, List.all_eq_true, List.mem_range] at hc; exact hc j j.2
-  obtain ⟨y, hy⟩ := Option.isSome_iff_exists.1 this
-  rw [divAll_getD, hy, Option.getD_some, zdivp_sound _ hy t, scwL_sound]
-
 theorem scw_window {w : ℕ} (f : Fin w → Fin n) (hf : StrictMono f) (K : List (Gen w))
     (V : Fin n → ℤ√2) (j : Fin w) :
     scw (K.map (Gen.map f hf)) V (f j) = scw K (V ∘ f) j := scw_map f hf K V j
@@ -175,19 +155,6 @@ theorem lev_eq_of_num {s s' : O n} (hs : s ≠ 1) (hs' : s' ≠ 1) (hpiv : piv s
     ext i; rw [mem_oddSet, mem_oddSet]; exact ho i
   rw [lev, lev, hpiv, pcol_eq (piv_pos hs'), pcol_eq (piv_pos hs), kl_eq_of hl hoS]
 
-/-- The window has the same odd entries before and after. -/
-def sameOdd {w : ℕ} (P P' : List ZL) : Bool :=
-  (List.range w).all fun j =>
-    (oddSure (P.getD j dZ) && oddSure (P'.getD j dZ)) ||
-      (allEven (P.getD j dZ).1 && allEven (P'.getD j dZ).1)
-
-theorem sameOdd_iff {w : ℕ} {P P' : List ZL} (h : sameOdd (w := w) P P' = true) (t : ℕ → ℤ)
-    (j : Fin w) : Odd (zev (P'.getD j dZ) t).re ↔ Odd (zev (P.getD j dZ) t).re := by
-  simp only [sameOdd, List.all_eq_true, List.mem_range, Bool.or_eq_true, Bool.and_eq_true] at h
-  rcases h j j.2 with ⟨h1, h2⟩ | ⟨h1, h2⟩
-  · exact iff_of_true (odd_of_oddSure h2 t) (odd_of_oddSure h1 t)
-  · exact iff_of_false (not_odd_of_allEven h2 t) (not_odd_of_allEven h1 t)
-
 /-- A word on a window with a pattern that keeps the odd entries keeps the
 level. -/
 theorem lev_after_eq {w : ℕ} (f : Fin w → Fin n) (hf : StrictMono f) {s : O n} (hs : s ≠ 1)
@@ -205,26 +172,6 @@ theorem lev_after_eq {w : ℕ} (f : Fin w → Fin n) (hf : StrictMono f) {s : O 
   · rw [htail i fun j hj => h ⟨j, hj⟩]
 
 /-! ### Entries outside a window -/
-
-/-- The entry `j` of the window after `K`, `δ` below the old exponent. -/
-def divAtD {w : ℕ} (P : List ZL) (K : List (Gen w)) (δ j : ℕ) : Option ZL :=
-  zdivp (hcntw K + δ) ((scwL K P).getD j dZ)
-
-def divAllD {w : ℕ} (P : List ZL) (K : List (Gen w)) (δ : ℕ) : List ZL :=
-  (List.range w).map fun j => (divAtD P K δ j).getD dZ
-
-def allSomeD {w : ℕ} (P : List ZL) (K : List (Gen w)) (δ : ℕ) : Bool :=
-  (List.range w).all fun j => (divAtD P K δ j).isSome
-
-theorem divAllD_sound {w : ℕ} {P : List ZL} {K : List (Gen w)} {δ : ℕ}
-    (hc : allSomeD P K δ = true) (t : ℕ → ℤ) (j : Fin w) :
-    rt2 ^ (hcntw K + δ) * zev ((divAllD P K δ).getD j dZ) t = scw K (pv P t) j := by
-  have : (divAtD P K δ j).isSome = true := by
-    simp only [allSomeD, List.all_eq_true, List.mem_range] at hc; exact hc j j.2
-  obtain ⟨y, hy⟩ := Option.isSome_iff_exists.1 this
-  have e : (divAllD P K δ).getD j dZ = (divAtD P K δ j).getD dZ := by
-    simp [divAllD, List.getD_eq_getElem?_getD, List.getElem?_map]
-  rw [e, hy, Option.getD_some, zdivp_sound _ hy t, scwL_sound]
 
 /-- The numerators of the state `D s` at `δ` below the exponent of `s`, when
 the entries outside the window are divisible by `√2 ^ δ`. -/
@@ -273,76 +220,6 @@ theorem tail_numerators {w : ℕ} (f : Fin w → Fin n) (hf : StrictMono f) {s :
   have hk' : k = (k - δ) + δ := by omega
   rw [hk', show k - δ + δ + hcntw D = (k - δ) + (hcntw D + δ) by omega] at e
   exact cancel_sqrt2_pow e
-
-/-- Odd with a constant: the constant odd and the other coefficients even. -/
-def oddSureL : List ℤ → Bool
-  | [] => false
-  | c :: cs => c % 2 == 1 && allEven cs
-
-theorem odd_of_oddSureL {l : List ℤ} (h : oddSureL l = true) (t : ℕ → ℤ) : Odd (evv l (c1 t)) := by
-  cases l with
-  | nil => simp [oddSureL] at h
-  | cons c cs =>
-    simp only [oddSureL, Bool.and_eq_true, beq_iff_eq] at h
-    rw [evv_c1]
-    obtain ⟨m, hm⟩ := even_evv cs t h.2
-    exact ⟨c / 2 + m, by rw [hm]; omega⟩
-
-/-- Surely odd of the class `γ` (the parity of the `√2` part). -/
-def isCls (γ : Bool) (x : ZL) : Bool := oddSure x && (if γ then oddSureL x.2 else allEven x.2)
-
-/-- Surely not odd of the class `γ`. -/
-def notCls (γ : Bool) (x : ZL) : Bool :=
-  allEven x.1 || (oddSure x && (if γ then allEven x.2 else oddSureL x.2))
-
-theorem isCls_iff {γ : Bool} {x : ZL} (h : (isCls γ x || notCls γ x) = true) (t : ℕ → ℤ) :
-    (Odd (zev x t).re ∧ (Odd (zev x t).im ↔ γ = true)) ↔ isCls γ x = true := by
-  have hre := fun h => odd_of_oddSure (x := x) h t
-  have hev := fun h => not_odd_of_allEven (x := x) h t
-  have him1 : oddSureL x.2 = true → Odd (zev x t).im := fun h => odd_of_oddSureL h t
-  have him0 : allEven x.2 = true → ¬Odd (zev x t).im := fun h => by
-    rw [Int.not_odd_iff_even]; exact even_evv _ _ h
-  by_cases hi : isCls γ x = true
-  · rw [iff_true_right hi]
-    simp only [isCls, Bool.and_eq_true] at hi
-    refine ⟨hre hi.1, ?_⟩
-    cases γ <;> simp only [Bool.false_eq_true, if_false, if_true] at hi
-    · simp [him0 hi.2]
-    · simp [him1 hi.2]
-  · rw [iff_false_right hi]
-    simp only [hi, Bool.false_or, notCls, Bool.or_eq_true, Bool.and_eq_true] at h
-    rintro ⟨a, b⟩
-    rcases h with h | ⟨-, h2⟩
-    · exact hev h a
-    · cases γ
-      · simp only [Bool.false_eq_true, if_false, iff_false] at h2 b
-        exact b (him1 h2)
-      · simp only [if_true, iff_true] at h2 b
-        exact him0 h2 b
-
-/-- Every entry has a sure status, and the class `γ` has a count of parity
-`par`. -/
-def clsCount {w : ℕ} (V : List ZL) (γ : Bool) (par : ℕ) : Bool :=
-  (List.range w).all (fun j => isCls γ (V.getD j dZ) || notCls γ (V.getD j dZ)) &&
-    (List.range w).countP (fun j => isCls γ (V.getD j dZ)) % 2 == par
-
-theorem card_cls {w : ℕ} (f : Fin w → Fin n) (hf : StrictMono f) {U : Fin n → ℤ√2}
-    {V : List ZL} {t : ℕ → ℤ} (hU : ∀ j, U (f j) = zev (V.getD j dZ) t) {γ : Bool} {par : ℕ}
-    (hc : clsCount (w := w) V γ par = true) :
-    ((univ.map ⟨f, hf.injective⟩).filter fun i => Odd (U i).re ∧ (Odd (U i).im ↔ γ = true)).card
-      % 2 = par := by
-  classical
-  simp only [clsCount, Bool.and_eq_true, List.all_eq_true, List.mem_range, beq_iff_eq] at hc
-  obtain ⟨hall, hcnt⟩ := hc
-  rw [Finset.filter_map, Finset.card_map]
-  have : (univ.filter ((fun i => Odd (U i).re ∧ (Odd (U i).im ↔ γ = true)) ∘
-      (⟨f, hf.injective⟩ : Fin w ↪ Fin n))) =
-      univ.filter fun j : Fin w => isCls γ (V.getD j dZ) = true := by
-    ext j
-    simp only [mem_filter, mem_univ, true_and, Function.comp, Function.Embedding.coeFn_mk, hU]
-    exact isCls_iff (hall j j.2) t
-  rw [this, card_filter_univ_fin (fun j => isCls γ (V.getD j dZ))]
-  exact hcnt
 
 /-- An entry outside the window forced by an odd class count. -/
 theorem tail_entry {w : ℕ} (f : Fin w → Fin n) (hf : StrictMono f) {s : O n} (hs : s ≠ 1)

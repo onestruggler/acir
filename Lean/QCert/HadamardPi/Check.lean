@@ -192,6 +192,140 @@ theorem derive_of (sts : List (Step m)) {L R : List (Gen m)} (h : runSteps sts L
     Derivable Fig6 (ofList L) (ofList R) :=
   runSteps_sound sts h
 
+/-! ### Running the steps in one traversal
+
+`rewriteAt` compares the segment with `take`/`drop` and the `DecidableEq` instance, and rebuilds
+the word with `take`/`++`/`drop`; `rewriteAt'` walks to the position once, compares the letters
+by their indices (`genBeq`, `Nat.beq` on the values, which the kernel evaluates natively) and
+rebuilds the word on the way back.  `runCheck` runs a derivation with it and compares the result
+letter by letter (`runCheck_sound`); on the tables of `QCert.Clement2019.Tables` this halves the
+kernel's work. -/
+
+/-- Letters compared by their indices. -/
+def genBeq : Gen m → Gen m → Bool
+  | .Z a, .Z a' => Nat.beq a.val a'.val
+  | .X a b _, .X a' b' _ => Nat.beq a.val a'.val && Nat.beq b.val b'.val
+  | .H a b _, .H a' b' _ => Nat.beq a.val a'.val && Nat.beq b.val b'.val
+  | _, _ => false
+
+theorem eq_of_genBeq : ∀ {g g' : Gen m}, genBeq g g' = true → g = g'
+  | .Z a, .Z a', h => by
+    have e : a = a' := Fin.ext (Nat.eq_of_beq_eq_true h)
+    subst e; rfl
+  | .X a b _, .X a' b' _, h => by
+    simp only [genBeq, Bool.and_eq_true] at h
+    have e1 : a = a' := Fin.ext (Nat.eq_of_beq_eq_true h.1)
+    have e2 : b = b' := Fin.ext (Nat.eq_of_beq_eq_true h.2)
+    subst e1 e2; rfl
+  | .H a b _, .H a' b' _, h => by
+    simp only [genBeq, Bool.and_eq_true] at h
+    have e1 : a = a' := Fin.ext (Nat.eq_of_beq_eq_true h.1)
+    have e2 : b = b' := Fin.ext (Nat.eq_of_beq_eq_true h.2)
+    subst e1 e2; rfl
+  | .Z _, .X _ _ _, h | .Z _, .H _ _ _, h | .X _ _ _, .Z _, h | .X _ _ _, .H _ _ _, h
+  | .H _ _ _, .Z _, h | .H _ _ _, .X _ _ _, h => by simp [genBeq] at h
+
+/-- Words compared letter by letter. -/
+def wordBeq : List (Gen m) → List (Gen m) → Bool
+  | [], [] => true
+  | g :: w, g' :: w' => genBeq g g' && wordBeq w w'
+  | _, _ => false
+
+theorem eq_of_wordBeq : ∀ {w w' : List (Gen m)}, wordBeq w w' = true → w = w'
+  | [], [], _ => rfl
+  | g :: w, g' :: w', h => by
+    simp only [wordBeq, Bool.and_eq_true] at h
+    rw [eq_of_genBeq h.1, eq_of_wordBeq h.2]
+  | [], _ :: _, h | _ :: _, [], h => by simp [wordBeq] at h
+
+/-- `w` with the prefix `P` removed. -/
+def stripPrefix : List (Gen m) → List (Gen m) → Option (List (Gen m))
+  | [], w => some w
+  | _ :: _, [] => none
+  | p :: P, g :: w => bif genBeq p g then stripPrefix P w else none
+
+theorem stripPrefix_eq : ∀ {P w r : List (Gen m)}, stripPrefix P w = some r → w = P ++ r
+  | [], w, r, h => by simp only [stripPrefix, Option.some.injEq] at h; subst h; rfl
+  | _ :: _, [], r, h => by simp [stripPrefix] at h
+  | p :: P, g :: w, r, h => by
+    simp only [stripPrefix] at h
+    cases hb : genBeq p g with
+    | false => rw [hb] at h; simp at h
+    | true =>
+      rw [hb, cond_true] at h
+      rw [eq_of_genBeq hb, stripPrefix_eq h]
+      rfl
+
+/-- Rewrite the segment `P` at position `pos` of `w` into `Q`, in one traversal
+(`rewriteAt` when it succeeds, `rewriteAt'_eq`). -/
+def rewriteAt' (P Q : List (Gen m)) : ℕ → List (Gen m) → Option (List (Gen m))
+  | 0, w => (stripPrefix P w).map (Q ++ ·)
+  | _ + 1, [] => none
+  | n + 1, g :: w => (rewriteAt' P Q n w).map (g :: ·)
+
+theorem rewriteAt'_eq (P Q : List (Gen m)) : ∀ (pos : ℕ) (w w' : List (Gen m)),
+    rewriteAt' P Q pos w = some w' → rewriteAt P Q pos w = some w'
+  | 0, w, w', h => by
+    simp only [rewriteAt', Option.map_eq_some_iff] at h
+    obtain ⟨r, hr, rfl⟩ := h
+    rw [stripPrefix_eq hr]
+    simp [rewriteAt]
+  | _ + 1, [], w', h => by simp [rewriteAt'] at h
+  | n + 1, g :: w, w', h => by
+    simp only [rewriteAt', Option.map_eq_some_iff] at h
+    obtain ⟨r, hr, rfl⟩ := h
+    have ih := rewriteAt'_eq P Q n w r hr
+    unfold rewriteAt at ih ⊢
+    split_ifs at ih with h1
+    simp only [Option.some.injEq] at ih
+    rw [if_pos (by simpa using h1), ← ih]
+    simp [Nat.succ_add]
+
+/-- Run a list of steps from a word, in one traversal per step. -/
+def runSteps' : List (Step m) → List (Gen m) → Option (List (Gen m))
+  | [], w => some w
+  | st :: sts, w =>
+    match st.pair with
+    | some (P, Q) =>
+      match rewriteAt' P Q st.pos w with
+      | some w' => runSteps' sts w'
+      | none => none
+    | none => none
+
+theorem runSteps'_eq : ∀ (sts : List (Step m)) {w w' : List (Gen m)},
+    runSteps' sts w = some w' → runSteps sts w = some w'
+  | [], w, w', h => h
+  | st :: sts, w, w', h => by
+    simp only [runSteps'] at h
+    simp only [runSteps]
+    split at h
+    · rename_i P Q hp
+      split at h
+      · rename_i w1 hw1
+        simp only [hp, rewriteAt'_eq P Q _ _ _ hw1]
+        exact runSteps'_eq sts h
+      · cases h
+    · cases h
+
+/-- The steps lead from `L` to `R`. -/
+def runCheck (sts : List (Step m)) (L R : List (Gen m)) : Bool :=
+  match runSteps' sts L with
+  | some w => wordBeq w R
+  | none => false
+
+theorem runCheck_sound {sts : List (Step m)} {L R : List (Gen m)} (h : runCheck sts L R = true) :
+    runSteps sts L = some R := by
+  unfold runCheck at h
+  split at h
+  · rename_i w hw
+    rw [runSteps'_eq sts hw, eq_of_wordBeq h]
+  · cases h
+
+/-- A derivation checked by `runCheck`. -/
+theorem derive_of' (sts : List (Step m)) {L R : List (Gen m)} (h : runCheck sts L R = true) :
+    Derivable Fig6 (ofList L) (ofList R) :=
+  runSteps_sound sts (runCheck_sound h)
+
 /-- A derivation moved along a strictly increasing map of indices. -/
 theorem der_map {n : ℕ} (f : Fin m → Fin n) (hf : StrictMono f) {L R : List (Gen m)}
     (h : Derivable Fig6 (ofList L) (ofList R)) :

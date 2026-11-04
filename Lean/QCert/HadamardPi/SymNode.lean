@@ -26,6 +26,8 @@ namespace QCert.HadamardPi
 
 open Matrix Finset FreeMonoid
 
+noncomputable section
+
 variable {n : ℕ}
 
 /-! ### The embedding of the window -/
@@ -328,7 +330,7 @@ theorem extend_entry {w : ℕ} {s : O n} (hs : s ≠ 1) (hk : lde (col s (pj s (
     have hsw : ∀ i', scw K (num v) i' = num v (Equiv.swap pw i i') := by
       intro i'
       simp only [K, scw, scg, Equiv.swap_apply_def]
-      split_ifs <;> simp_all
+      split_ifs <;> rfl
     -- an odd entry of the window stays
     have hodd0 : Odd (num v (Equiv.swap pw i (Fin.castLE (hw.trans (piv_le_n s)) j0))).re := by
       have hne1 : Fin.castLE (hw.trans (piv_le_n s)) j0 ≠ pw := by
@@ -474,5 +476,7 @@ theorem tail_class_even {w : ℕ} (f : Fin w → Fin n) (hf : StrictMono f) {s :
   rw [hsplit] at hev
   rw [Nat.even_add] at hev
   exact hev.1 (Nat.even_iff.2 hwin)
+
+end
 
 end QCert.HadamardPi

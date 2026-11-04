@@ -21,13 +21,13 @@ open FreeMonoid QCert.HadamardPi
 /-- `X_[0,1] H_[0,1] X_[0,1] ≈ (-1)_[0] H_[0,1] (-1)_[1]`. -/
 theorem cf_xhx : Derivable Fig6 (ofList ([xL 0 1, hL 0 1, xL 0 1] : List (Gen 2)))
     (ofList [zL 0, hL 0 1, zL 1]) :=
-  derive_of [.rel .d2 [0, 1] 1 false, .rel .c1 [0, 1] 0 false, .rel .a3 [0, 1] 1 false,
+  derive_of' [.rel .d2 [0, 1] 1 false, .rel .c1 [0, 1] 0 false, .rel .a3 [0, 1] 1 false,
     .rel .d2 [0, 1] 2 false, .rel .a3 [0, 1] 3 true] (by decide +kernel)
 
 /-- (f1) as a commutation: `H_[0,1] H_[2,3]` commutes with `H_[0,2] H_[1,3]`. -/
 theorem cf_f1 : Derivable Fig6 (ofList ([hL 0 1, hL 2 3, hL 0 2, hL 1 3] : List (Gen 4)))
     (ofList [hL 0 2, hL 1 3, hL 0 1, hL 2 3]) :=
-  derive_of [.lem _ _ f1₁ 4 false, .rel .b6 [0, 2, 1, 3] 4 true, .rel .a3 [1, 3] 3 true,
+  derive_of' [.lem _ _ f1₁ 4 false, .rel .b6 [0, 2, 1, 3] 4 true, .rel .a3 [1, 3] 3 true,
     .rel .a3 [0, 2] 2 true, .rel .b6 [0, 1, 2, 3] 2 true, .rel .a3 [2, 3] 1 true,
     .rel .a3 [0, 1] 0 true] (by decide +kernel)
 

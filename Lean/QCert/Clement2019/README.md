@@ -45,12 +45,11 @@ theorem conGen_rel : conGen (Rel (n := n)) = (conGen (Fig6 (n := n))).comap tr (
 | Equivalence with Figure 6 | proved syntactically, no `sorry` (`Equivalence.lean`) |
 | Completeness (Theorem 4.1) | from Hadamard-Π's `theorem_4_14` through the equivalence; no `sorry` of its own |
 
-`#print axioms theorem_4_1` shows `[propext, sorryAx, Classical.choice,
-Quot.sound]`: the `sorryAx` is the one of `QCert/HadamardPi/Case9.lean`
-(`case9_four`), reached through `theorem_4_14` only.  The equivalence
-theorems (`fig6_iff_clement`, `clement_iff_fig6`, `clement_tr`,
-`conGen_fig6`, `conGen_rel`) depend on `[propext, Classical.choice,
-Quot.sound]` only.  Clément's own proof of Theorem 4.1 (his Main Lemma 4.4,
+`#print axioms theorem_4_1` shows `[propext, Classical.choice, Quot.sound]`
+(Hadamard-Π's `theorem_4_14`, through which it goes, has no `sorry` since
+`case9_four` was proved), and so do the equivalence theorems
+(`fig6_iff_clement`, `clement_iff_fig6`, `clement_tr`, `conGen_fig6`,
+`conGen_rel`).  Clément's own proof of Theorem 4.1 (his Main Lemma 4.4,
 Section 5) is not formalized here.
 
 ## The equivalence
@@ -64,7 +63,7 @@ Section 5) is not formalized here.
 | `DerivedC.lean` | (generated) Figure 6's (d3) from (20) and (19) on four indices, (d4) from (21) on six (`kd3`, `kd4`) |
 | `FromFig6.lean` | every relation of Figure 6 in Clément's theory (`fig6_rel`): (a1)–(d2) are among (1)–(18); (d3), (d4) are `kd3`, `kd4` moved |
 | `Translate.lean` | `ι`, `tr`, both preserve the matrices; `tr ∘ ι = id` |
-| `Patterns.lean` | a relation of Clément's as a scheme on `a` indices; any injective instance is an increasing one after a permutation of its indices (`exists_sort`), so a scheme holds in Figure 6 once it holds at the `a!` arrangements of `0, …, a-1` |
+| `Patterns.lean` | a relation of Clément's as a scheme on `a` indices; any injective instance is an increasing one after a permutation of its indices (`exists_sort`), so a scheme holds in Figure 6 once it holds at the `a!` arrangements of `0, …, a-1` (`checkTbl`, the derivations run by Hadamard-Π's `runCheck`) |
 | `Tables.lean` | (generated) the Figure 6 derivations of (1)–(19) and (22) at every arrangement of their indices; for (19), (f1) conjugated by `X`'s of adjacent transpositions |
 | `ToFig6.lean` | every relation of Clément's, written over `𝒢ₙ`, in Figure 6 (`rel_fig6`): (1)–(19), (22) by the tables, (20), (21) by Hadamard-Π's `c20`, `c21` |
 | `Equivalence.lean` | Lemma 1.7 in `Rel` (from Lemma 3.5 when `n ≥ 3`, from (22) when `n = 2`), `clement_tr`, the equivalence theorems |
@@ -78,6 +77,36 @@ Hadamard-Π's (f1) (`Q B ≈ B A Q A`), both `Q B Q B A` and `B Q B Q B` are
 The derivation of (d4) from (21) reverses the derivation of (21) from (d4)
 of `HadamardPi/Derived.lean`: (21) is `T' T T' ≈ M' T M'` for
 `T = Q A Q`, `T' = R A R`, `R = H[0,4] H[1,5]`, `M' = R (-1)[0] (-1)[1] R`.
+
+## Typechecking cost
+
+Lone runs (`lean --profile`, one module at a time, HEAD of 3 November and
+this tree interleaved; the machine was shared, load about 4), wall time in
+seconds, about 4–5 s of it importing:
+
+| Module | before | after |
+|---|---|---|
+| `Soundness.lean` | 15.9 | 6.2 |
+| `ToFig6.lean` | 16.9 | 9.1 |
+
+Every other module of the folder checks in 5–10 s (`Tables.lean`, the
+largest file, spends 2.5 s elaborating its steps; writing the constructors
+qualified, `Step.rel Tag.a3 …`, was tried and is slower here, 6.1–6.6 s of
+CPU against 5.3–5.7 s, the lists being short).
+
+* The words of (20) and (21) are products of eight and twelve letters;
+  `rfl` on their lists of letters (`w.toList.map …`) unfolded the products
+  in the elaborator, about 5 s for (21) in each of `Soundness.lean` and
+  `ToFig6.lean`.  `simp only [FreeMonoid.toList_mul, …]` reads the lists off
+  first, then `rfl` compares them (`check_relC'`, and the cases `r20`, `r21`
+  of `rel_fig6`).
+* The relations are checked on the basis vectors (`HadamardPi.vcheck`)
+  instead of by multiplying the scaled matrices.
+* The tables are run by `HadamardPi.runCheck` (`Patterns.checkTbl`), one
+  traversal of the word per step with the letters compared by `Nat.beq` on
+  their indices, where `runSteps` compared segments with `take`/`drop` and
+  the `DecidableEq` instance: the kernel's check of the table of (19) went
+  from 5.7 to 2.8 s.
 
 ## Notes on the transcription
 

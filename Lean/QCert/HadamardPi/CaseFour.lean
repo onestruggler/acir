@@ -150,7 +150,8 @@ theorem move_opt {s : O n} (hs : s ≠ 1) (hk : lde (col s (pj s (piv_pos hs))) 
     have hsw : ∀ i, scw K (num v) i = num v (Equiv.swap p c i) := by
       intro i
       simp only [K, scw, scg, Equiv.swap_apply_def]
-      split_ifs <;> simp_all
+      -- `simp_all` here simplified every hypothesis of the context (about 9 s)
+      split_ifs <;> rfl
     have hodd' : Odd (num v (Equiv.swap p c i0)).re := by
       rw [Equiv.swap_apply_of_ne_of_ne hi0.1 hi0.2]; exact hodd
     obtain ⟨hs', hpiv, hl, hnum⟩ := state_after hs hk hKi

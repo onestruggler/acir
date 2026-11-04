@@ -1,5 +1,5 @@
 # Generate QCert/HadamardPi/Switch.lean: switch words on a window of four odd entries of one
-# class, their derivations (checked by `derive_of`) and the goodness of every state.
+# class, their derivations (checked by `derive_of'`) and the goodness of every state.
 import sys
 from deriv import *
 from good4 import good
@@ -35,14 +35,12 @@ others conjugate a base word by `X_[2,3]` (relabelling the window) or by a
 sign `(-1)_[j]` off `A` and `[0,1]` (which changes the parity of the
 pattern).
 -/
-import QCert.HadamardPi.Good
+import QCert.HadamardPi.GoodCheck
 
 namespace QCert.HadamardPi
 
 open FreeMonoid
 
--- the generated proofs share one `simp` call, whose lemmas are not all needed everywhere
-set_option linter.unusedSimpArgs false
 
 /-! ### (f1) on four indices -/
 """)
@@ -53,7 +51,7 @@ for name, ix in [("f1₀", (0, 1, 2, 3)), ("f1₁", (0, 2, 1, 3))]:
     check_steps(st, ch[0], ch[-1], eng0)
     w(f"""/-- (f1) `(H_[a,b] H_[c,d] H_[a,c] H_[b,d])² ≈ ε` at `{ix}`, by the paper's proof. -/
 theorem {name} : Derivable Fig6 (ofList {lean_word(ch[0])}) (ofList ([] : List (Gen 4))) :=
-  derive_of {lean_steps(st)} (by decide +kernel)
+  derive_of' {lean_steps(st)} (by decide +kernel)
 """)
 
 lemmas = [("f1₀", F1A, ()), ("f1₁", F1B, ())]
@@ -77,7 +75,7 @@ for (A, par) in order:
     check_steps(st, src, tgt, eng)
     name = f"der{pname(A)}_{par}"
     w(f"""theorem {name} : Derivable Fig6 (ofList {lean_word(src)}) (ofList [hL (m := 4) 0 1]) :=
-  derive_of {lean_steps(st)} (by decide +kernel)
+  derive_of' {lean_steps(st)} (by decide +kernel)
 """)
     lemmas.append((name, src, tgt))
 

@@ -17,7 +17,14 @@ open Matrix QCert.HadamardPi
 
 /-- Discharge a relation by an exact check in dimension `m`. -/
 macro "check_relC " f:term:max L:term:max R:term:max : tactic =>
-  `(tactic| exact wordMat_eq_of_check $f (by vec_inj) $L $R (by decide +kernel) rfl rfl)
+  `(tactic| exact wordMat_eq_of_vcheck $f (by vec_inj) $L $R (by decide +kernel) rfl rfl)
+
+/-- The same for the long words of (20), (21): their lists of letters are read off by `simp`
+before `rfl` compares them (`rfl` alone took about 5 s for (21)). -/
+macro "check_relC' " f:term:max L:term:max R:term:max : tactic =>
+  `(tactic| (refine wordMat_eq_of_vcheck $f (by vec_inj) $L $R (by decide +kernel) ?_ ?_ <;>
+    simp only [FreeMonoid.toList_mul, FreeMonoid.toList_of, List.map_append, List.map_cons,
+      List.map_nil, List.cons_append, List.nil_append] <;> rfl))
 
 /-- Every relation (1)–(22) holds for the matrices. -/
 theorem rel_wordMat {n : ℕ} {w w' : Word (Gen n)} (h : Rel w w') :
@@ -49,11 +56,11 @@ theorem rel_wordMat {n : ℕ} {w w' : Word (Gen n)} (h : Rel w w') :
     · subst hkl; rfl
     · check_relC ![j, k, l, t] [.H 0 1, .H 2 3, .H 0 2, .H 1 3] [.H 0 2, .H 1 3, .H 0 1, .H 2 3]
   | r20 hn =>
-    check_relC ![idx 0, idx 1, idx 2, idx 3]
+    check_relC' ![idx 0, idx 1, idx 2, idx 3]
       [.H 0 1, .H 0 2, .H 1 3, .H 0 1, .Z 0, .Z 1, .H 0 2, .H 1 3]
       [.H 0 2, .H 1 3, .H 0 1, .Z 0, .Z 1, .H 0 2, .H 1 3, .H 0 1]
   | r21 hn =>
-    check_relC ![idx 0, idx 1, idx 2, idx 3, idx 4, idx 5]
+    check_relC' ![idx 0, idx 1, idx 2, idx 3, idx 4, idx 5]
       [.H 0 1, .H 0 2, .H 1 3, .H 0 4, .H 1 5, .H 0 1, .Z 0, .Z 1, .H 0 4, .H 1 5, .H 0 2, .H 1 3]
       [.H 0 2, .H 1 3, .H 0 4, .H 1 5, .H 0 1, .Z 0, .Z 1, .H 0 4, .H 1 5, .H 0 2, .H 1 3, .H 0 1]
   | @r22 hn j k hjk => check_relC ![j, k] [.X 0 1, .H 0 1] [.H 1 0, .X 0 1]

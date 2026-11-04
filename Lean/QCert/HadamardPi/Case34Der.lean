@@ -28,32 +28,32 @@ open FreeMonoid
 /-- `H13 H02 Z1 ≈ Z1 Z3 X13 H13 H02`. -/
 theorem c34_tr57_A : Derivable Fig6 (ofList ([hL 1 3, hL 0 2, zL 1] : List (Gen 4)))
     (ofList [zL 1, zL 3, xL 1 3, hL 1 3, hL 0 2]) :=
-  derive_of [.rel .b4 [1, 0, 2] 1 false, .rel .a3 [1, 3] 2 false, .rel .a2 [1, 3] 3 false,
+  derive_of' [.rel .b4 [1, 0, 2] 1 false, .rel .a3 [1, 3] 2 false, .rel .a2 [1, 3] 3 false,
     .rel .d2 [1, 3] 2 false, .rel .d1 [1, 3] 1 true, .rel .a3 [1, 3] 0 true] (by decide +kernel)
 
 /-- `H13 H02 H01 Z1 ≈ X01 H12 H03 H01`. -/
 theorem c34_tr57_B : Derivable Fig6 (ofList ([hL 1 3, hL 0 2, hL 0 1, zL 1] : List (Gen 4)))
     (ofList [xL 0 1, hL 1 2, hL 0 3, hL 0 1]) :=
-  derive_of [.rel .b6 [0, 2, 1, 3] 0 false, .rel .a2 [0, 1] 0 false, .rel .c4 [0, 1, 2] 1 false,
+  derive_of' [.rel .b6 [0, 2, 1, 3] 0 false, .rel .a2 [0, 1] 0 false, .rel .c4 [0, 1, 2] 1 false,
     .rel .a3 [0, 1] 6 false, .rel .d2 [0, 1] 5 true, .rel .a3 [0, 1] 4 true,
     .rel .c4 [0, 1, 3] 3 true, .rel .a2 [0, 1] 2 true] (by decide +kernel)
 
 /-- `H13 H02 X01 X23 ≈ X01 X23 H02 H13`. -/
 theorem c34_conjXX : Derivable Fig6 (ofList ([hL 1 3, hL 0 2, xL 0 1, xL 2 3] : List (Gen 4)))
     (ofList [xL 0 1, xL 2 3, hL 0 2, hL 1 3]) :=
-  derive_of [.rel .a2 [0, 1] 1 false, .rel .c4 [0, 1, 2] 2 false, .rel .a2 [0, 1] 3 true,
+  derive_of' [.rel .a2 [0, 1] 1 false, .rel .c4 [0, 1, 2] 2 false, .rel .a2 [0, 1] 3 true,
     .rel .a2 [2, 3] 2 false, .rel .c5 [1, 2, 3] 3 false, .rel .a2 [2, 3] 4 true,
     .rel .c4 [0, 1, 3] 0 true, .rel .c5 [0, 2, 3] 1 true] (by decide +kernel)
 
 /-- `H13 H02 Z1 X01 X23 ≈ Z1 Z3 X13 X01 X23 H13 H02`. -/
 theorem c34_tr59_A : Derivable Fig6 (ofList ([hL 1 3, hL 0 2, zL 1, xL 0 1, xL 2 3] : List (Gen 4)))
     (ofList [zL 1, zL 3, xL 1 3, xL 0 1, xL 2 3, hL 1 3, hL 0 2]) :=
-  derive_of [.lem _ _ c34_tr57_A 0 true, .lem _ _ c34_conjXX 3 true, .rel .b6 [0, 2, 1, 3] 5 true] (by decide +kernel)
+  derive_of' [.lem _ _ c34_tr57_A 0 true, .lem _ _ c34_conjXX 3 true, .rel .b6 [0, 2, 1, 3] 5 true] (by decide +kernel)
 
 /-- `H01 Z0 ≈ Z0 Z1 X01 H01`. -/
 theorem c34_hz0 : Derivable Fig6 (ofList ([hL 0 1, zL 0] : List (Gen 2)))
     (ofList [zL 0, zL 1, xL 0 1, hL 0 1]) :=
-  derive_of [.rel .a1 [1] 2 false, .rel .d1 [0, 1] 0 false, .rel .a3 [0, 1] 4 false,
+  derive_of' [.rel .a1 [1] 2 false, .rel .d1 [0, 1] 0 false, .rel .a3 [0, 1] 4 false,
     .rel .d2 [0, 1] 3 true, .rel .a3 [0, 1] 2 true] (by decide +kernel)
 
 theorem c34_hz0_at0_2_4 : Derivable Fig6 (ofList ([hL 0 2, zL 0] : List (Gen 4)))
@@ -63,7 +63,7 @@ theorem c34_hz0_at0_2_4 : Derivable Fig6 (ofList ([hL 0 2, zL 0] : List (Gen 4))
 /-- `H13 H02 H01 Z1 X01 X23 ≈ Z0 Z2 X01 X12 X23 H13 H02 H01`. -/
 theorem c34_tr59_B : Derivable Fig6 (ofList ([hL 1 3, hL 0 2, hL 0 1, zL 1, xL 0 1, xL 2 3] : List (Gen 4)))
     (ofList [zL 0, zL 2, xL 0 1, xL 1 2, xL 2 3, hL 1 3, hL 0 2, hL 0 1]) :=
-  derive_of [.rel .a3 [0, 1] 4 false, .rel .d2 [0, 1] 3 true, .rel .a3 [0, 1] 2 true,
+  derive_of' [.rel .a3 [0, 1] 4 false, .rel .d2 [0, 1] 3 true, .rel .a3 [0, 1] 2 true,
     .rel .d2 [0, 1] 3 false, .rel .b5 [2, 3, 0, 1] 4 false, .rel .c1 [0, 1] 2 false,
     .lem _ _ c34_hz0_at0_2_4 1 true, .rel .b4 [0, 1, 3] 0 false, .rel .b4 [2, 1, 3] 1 false,
     .rel .b5 [0, 2, 1, 3] 2 false, .lem _ _ c34_conjXX 3 true, .rel .b6 [0, 2, 1, 3] 5 true,
@@ -72,29 +72,29 @@ theorem c34_tr59_B : Derivable Fig6 (ofList ([hL 1 3, hL 0 2, hL 0 1, zL 1, xL 0
 /-- `H13 H02 Z2 ≈ X02 H13 H02`. -/
 theorem c34_trZ2_A : Derivable Fig6 (ofList ([hL 1 3, hL 0 2, zL 2] : List (Gen 4)))
     (ofList [xL 0 2, hL 1 3, hL 0 2]) :=
-  derive_of [.rel .a3 [0, 2] 3 false, .rel .d2 [0, 2] 2 true, .rel .a3 [0, 2] 1 true,
+  derive_of' [.rel .a3 [0, 2] 3 false, .rel .d2 [0, 2] 2 true, .rel .a3 [0, 2] 1 true,
     .rel .b5 [0, 2, 1, 3] 0 false] (by decide +kernel)
 
 /-- `H13 H02 H01 Z2 ≈ X02 H13 H02 H01`. -/
 theorem c34_trZ2_B : Derivable Fig6 (ofList ([hL 1 3, hL 0 2, hL 0 1, zL 2] : List (Gen 4)))
     (ofList [xL 0 2, hL 1 3, hL 0 2, hL 0 1]) :=
-  derive_of [.rel .b4 [2, 0, 1] 2 false, .lem _ _ c34_trZ2_A 0 true] (by decide +kernel)
+  derive_of' [.rel .b4 [2, 0, 1] 2 false, .lem _ _ c34_trZ2_A 0 true] (by decide +kernel)
 
 /-- `H13 H02 Z3 ≈ X13 H13 H02`. -/
 theorem c34_trZ3_A : Derivable Fig6 (ofList ([hL 1 3, hL 0 2, zL 3] : List (Gen 4)))
     (ofList [xL 1 3, hL 1 3, hL 0 2]) :=
-  derive_of [.rel .b4 [3, 0, 2] 1 false, .rel .a3 [1, 3] 2 false, .rel .d2 [1, 3] 1 true,
+  derive_of' [.rel .b4 [3, 0, 2] 1 false, .rel .a3 [1, 3] 2 false, .rel .d2 [1, 3] 1 true,
     .rel .a3 [1, 3] 0 true] (by decide +kernel)
 
 /-- `H13 H02 H01 Z3 ≈ X13 H13 H02 H01`. -/
 theorem c34_trZ3_B : Derivable Fig6 (ofList ([hL 1 3, hL 0 2, hL 0 1, zL 3] : List (Gen 4)))
     (ofList [xL 1 3, hL 1 3, hL 0 2, hL 0 1]) :=
-  derive_of [.rel .b4 [3, 0, 1] 2 false, .lem _ _ c34_trZ3_A 0 true] (by decide +kernel)
+  derive_of' [.rel .b4 [3, 0, 1] 2 false, .lem _ _ c34_trZ3_A 0 true] (by decide +kernel)
 
 /-- The join `l341`: `D A ≈ B` for `D = H01 Z1 Z0 H13 H02 H01 H02 H13 Z1 Z0 H01`. -/
 theorem c34_l341 : Derivable Fig6 (ofList ([hL 0 1, zL 1, zL 0, hL 1 3, hL 0 2, hL 0 1, hL 0 2, hL 1 3, zL 1, zL 0, hL 0 1, hL 1 3, hL 0 2] : List (Gen 4)))
     (ofList [hL 1 3, hL 0 2, hL 0 1]) :=
-  derive_of [.rel .b1 [0, 1] 8 false, .rel .d1 [0, 1] 8 true, .rel .b6 [0, 2, 1, 3] 11 false,
+  derive_of' [.rel .b1 [0, 1] 8 false, .rel .d1 [0, 1] 8 true, .rel .b6 [0, 2, 1, 3] 11 false,
     .lem _ _ c20 5 true, .rel .a3 [0, 2] 4 true, .rel .a3 [1, 3] 3 true,
     .rel .d1 [0, 1] 3 false, .rel .a1 [0] 2 true, .rel .a1 [1] 1 true,
     .rel .a3 [0, 1] 0 true, .rel .b6 [0, 2, 1, 3] 0 true] (by decide +kernel)
@@ -102,7 +102,7 @@ theorem c34_l341 : Derivable Fig6 (ofList ([hL 0 1, zL 1, zL 0, hL 1 3, hL 0 2, 
 /-- The join `l21a`: `D A ≈ B` for `D = H04 H15 H01 Z1 Z0 H15 H04 H13 H02 H01 H02 H13 H04 H15 Z1 Z0 H01 H15 H04`. -/
 theorem c34_l21a : Derivable Fig6 (ofList ([hL 0 4, hL 1 5, hL 0 1, zL 1, zL 0, hL 1 5, hL 0 4, hL 1 3, hL 0 2, hL 0 1, hL 0 2, hL 1 3, hL 0 4, hL 1 5, zL 1, zL 0, hL 0 1, hL 1 5, hL 0 4, hL 1 3, hL 0 2] : List (Gen 6)))
     (ofList [hL 1 3, hL 0 2, hL 0 1]) :=
-  derive_of [.rel .b6 [0, 4, 1, 5] 17 false, .rel .b6 [0, 2, 1, 3] 19 false, .rel .b1 [0, 1] 14 false,
+  derive_of' [.rel .b6 [0, 4, 1, 5] 17 false, .rel .b6 [0, 2, 1, 3] 19 false, .rel .b1 [0, 1] 14 false,
     .rel .d1 [0, 1] 14 true, .lem _ _ c21 9 true, .rel .a3 [0, 2] 8 true,
     .rel .a3 [1, 3] 7 true, .rel .a3 [0, 4] 6 true, .rel .a3 [1, 5] 5 true,
     .rel .d1 [0, 1] 5 false, .rel .a1 [0] 4 true, .rel .a1 [1] 3 true,
@@ -112,27 +112,27 @@ theorem c34_l21a : Derivable Fig6 (ofList ([hL 0 4, hL 1 5, hL 0 1, zL 1, zL 0, 
 /-- The join `l21b`: `D A ≈ B` for `D = H24 H35 H45 H35 H24 H13 H02 H01 H02 H13 H04 H15 H01 H15 H04`. -/
 theorem c34_l21b : Derivable Fig6 (ofList ([hL 2 4, hL 3 5, hL 4 5, hL 3 5, hL 2 4, hL 1 3, hL 0 2, hL 0 1, hL 0 2, hL 1 3, hL 0 4, hL 1 5, hL 0 1, hL 1 5, hL 0 4, hL 1 3, hL 0 2] : List (Gen 6)))
     (ofList [hL 1 3, hL 0 2, hL 0 1]) :=
-  derive_of [.rel .b6 [2, 4, 3, 5] 3 false, .lem _ _ d4f 0 false, .rel .b6 [0, 2, 1, 3] 15 false,
+  derive_of' [.rel .b6 [2, 4, 3, 5] 3 false, .lem _ _ d4f 0 false, .rel .b6 [0, 2, 1, 3] 15 false,
     .lem _ _ tt 10 true, .rel .b6 [0, 4, 1, 5] 13 false, .lem _ _ ttp 5 true,
     .rel .a3 [1, 3] 4 true, .rel .a3 [0, 2] 3 true, .rel .b6 [0, 2, 1, 3] 0 true] (by decide +kernel)
 
 /-- `Z2 H12 H01 Z0 Z1 H12 Z2 ≈ H12 H02 Z0 Z2 H12`. -/
 theorem c34_core3 : Derivable Fig6 (ofList ([zL 2, hL 1 2, hL 0 1, zL 0, zL 1, hL 1 2, zL 2] : List (Gen 3)))
     (ofList [hL 1 2, hL 0 2, zL 0, zL 2, hL 1 2]) :=
-  derive_of [.rel .a3 [1, 2] 7 false, .rel .d2 [1, 2] 6 true, .rel .a3 [1, 2] 5 true,
+  derive_of' [.rel .a3 [1, 2] 7 false, .rel .d2 [1, 2] 6 true, .rel .a3 [1, 2] 5 true,
     .rel .d2 [1, 2] 0 true, .rel .c5 [0, 1, 2] 1 false, .rel .b2 [0, 1, 2] 2 false,
     .rel .c1 [1, 2] 4 true, .rel .a2 [1, 2] 3 true] (by decide +kernel)
 
 /-- `Z2 H12 H01 H12 Z2 ≈ H12 H02 H12`. -/
 theorem c34_core3b : Derivable Fig6 (ofList ([zL 2, hL 1 2, hL 0 1, hL 1 2, zL 2] : List (Gen 3)))
     (ofList [hL 1 2, hL 0 2, hL 1 2]) :=
-  derive_of [.rel .a3 [1, 2] 5 false, .rel .d2 [1, 2] 4 true, .rel .a3 [1, 2] 3 true,
+  derive_of' [.rel .a3 [1, 2] 5 false, .rel .d2 [1, 2] 4 true, .rel .a3 [1, 2] 3 true,
     .rel .d2 [1, 2] 0 true, .rel .c5 [0, 1, 2] 1 false, .rel .a2 [1, 2] 2 true] (by decide +kernel)
 
 /-- `X23 H02 H13 X23 ≈ H03 H12`. -/
 theorem c34_conjH : Derivable Fig6 (ofList ([xL 2 3, hL 0 2, hL 1 3, xL 2 3] : List (Gen 4)))
     (ofList [hL 0 3, hL 1 2]) :=
-  derive_of [.rel .c5 [1, 2, 3] 2 true, .rel .c5 [0, 2, 3] 0 false, .rel .a2 [2, 3] 1 true] (by decide +kernel)
+  derive_of' [.rel .c5 [1, 2, 3] 2 true, .rel .c5 [0, 2, 3] 0 false, .rel .a2 [2, 3] 1 true] (by decide +kernel)
 
 theorem c34_core3_at0_1_2_4 : Derivable Fig6 (ofList ([zL 2, hL 1 2, hL 0 1, zL 0, zL 1, hL 1 2, zL 2] : List (Gen 4)))
     (ofList ([hL 1 2, hL 0 2, zL 0, zL 2, hL 1 2] : List (Gen 4))) :=
@@ -141,7 +141,7 @@ theorem c34_core3_at0_1_2_4 : Derivable Fig6 (ofList ([zL 2, hL 1 2, hL 0 1, zL 
 /-- `H03 H12 H02 Z0 Z2 H03 H12 ≈ π H02 H13 H01 Z0 Z1 H02 H13 π` with `π = Z2 X23`. -/
 theorem c34_rot31 : Derivable Fig6 (ofList ([hL 0 3, hL 1 2, hL 0 2, zL 0, zL 2, hL 0 3, hL 1 2] : List (Gen 4)))
     (ofList [zL 2, xL 2 3, hL 0 2, hL 1 3, hL 0 1, zL 0, zL 1, hL 0 2, hL 1 3, xL 2 3, zL 2]) :=
-  derive_of [.rel .b6 [0, 3, 1, 2] 5 true, .lem _ _ c34_core3_at0_1_2_4 1 false, .rel .b4 [2, 0, 3] 0 false,
+  derive_of' [.rel .b6 [0, 3, 1, 2] 5 true, .lem _ _ c34_core3_at0_1_2_4 1 false, .rel .b4 [2, 0, 3] 0 false,
     .rel .b4 [2, 0, 3] 7 true, .rel .b6 [0, 3, 1, 2] 6 false, .lem _ _ c34_conjH 6 false,
     .lem _ _ c34_conjH 1 false, .rel .b5 [2, 3, 0, 1] 4 true, .rel .b2 [0, 2, 3] 5 false,
     .rel .b2 [1, 2, 3] 7 true, .rel .a2 [2, 3] 6 true] (by decide +kernel)
@@ -153,14 +153,14 @@ theorem c34_core3b_at0_1_2_4 : Derivable Fig6 (ofList ([zL 2, hL 1 2, hL 0 1, hL
 /-- `H03 H12 H02 H03 H12 ≈ π H02 H13 H01 H02 H13 π` with `π = Z2 X23`. -/
 theorem c34_rot32 : Derivable Fig6 (ofList ([hL 0 3, hL 1 2, hL 0 2, hL 0 3, hL 1 2] : List (Gen 4)))
     (ofList [zL 2, xL 2 3, hL 0 2, hL 1 3, hL 0 1, hL 0 2, hL 1 3, xL 2 3, zL 2]) :=
-  derive_of [.rel .b6 [0, 3, 1, 2] 3 true, .lem _ _ c34_core3b_at0_1_2_4 1 false, .rel .b4 [2, 0, 3] 0 false,
+  derive_of' [.rel .b6 [0, 3, 1, 2] 3 true, .lem _ _ c34_core3b_at0_1_2_4 1 false, .rel .b4 [2, 0, 3] 0 false,
     .rel .b4 [2, 0, 3] 5 true, .rel .b6 [0, 3, 1, 2] 4 false, .lem _ _ c34_conjH 4 false,
     .lem _ _ c34_conjH 1 false, .rel .b5 [2, 3, 0, 1] 5 false, .rel .a2 [2, 3] 4 true] (by decide +kernel)
 
 /-- `Z1 H01 X12 H12 X12 H01 Z1 ≈ H01 Z0 X02 H02 H01`. -/
 theorem c34_vcv3 : Derivable Fig6 (ofList ([zL 1, hL 0 1, xL 1 2, hL 1 2, xL 1 2, hL 0 1, zL 1] : List (Gen 3)))
     (ofList [hL 0 1, zL 0, xL 0 2, hL 0 2, hL 0 1]) :=
-  derive_of [.rel .a3 [0, 1] 7 false, .rel .d2 [0, 1] 6 true, .rel .a3 [0, 1] 5 true,
+  derive_of' [.rel .a3 [0, 1] 7 false, .rel .d2 [0, 1] 6 true, .rel .a3 [0, 1] 5 true,
     .rel .c2 [0, 1, 2] 4 true, .rel .c4 [0, 1, 2] 3 true, .rel .c2 [0, 1, 2] 2 true,
     .rel .d2 [0, 1] 1 false, .rel .a1 [1] 0 true, .rel .d2 [0, 2] 2 false,
     .rel .c1 [0, 2] 1 false] (by decide +kernel)
@@ -176,7 +176,7 @@ theorem c34_conjH_at2_3_4_5_6 : Derivable Fig6 (ofList ([xL 4 5, hL 2 4, hL 3 5,
 /-- `H25 H34 Z3 X35 H35 H34 H25 ≈ π H24 H35 H45 H35 H24 π` with `π = Z4 X45`. -/
 theorem c34_vcv : Derivable Fig6 (ofList ([hL 2 5, hL 3 4, zL 3, xL 3 5, hL 3 5, hL 3 4, hL 2 5] : List (Gen 6)))
     (ofList [zL 4, xL 4 5, hL 2 4, hL 3 5, hL 4 5, hL 3 5, hL 2 4, xL 4 5, zL 4]) :=
-  derive_of [.lem _ _ c34_vcv3_at3_4_5_6 1 false, .rel .b4 [4, 2, 5] 0 false, .lem _ _ c34_conjH_at2_3_4_5_6 1 false,
+  derive_of' [.lem _ _ c34_vcv3_at3_4_5_6 1 false, .rel .b4 [4, 2, 5] 0 false, .lem _ _ c34_conjH_at2_3_4_5_6 1 false,
     .rel .a2 [4, 5] 4 true, .rel .c5 [3, 4, 5] 5 false, .rel .b4 [4, 2, 5] 7 true,
     .rel .a2 [4, 5] 8 false, .rel .c5 [2, 4, 5] 7 true, .rel .a2 [4, 5] 6 true] (by decide +kernel)
 
@@ -187,7 +187,7 @@ theorem c34_rot31_at0_1_4_5_6 : Derivable Fig6 (ofList ([hL 0 5, hL 1 4, hL 0 4,
 /-- The join `l22a`: `D A ≈ B` for `D = H05 H14 H04 Z4 Z0 H14 H05 H13 H02 H01 H02 H13 H05 H14 Z4 Z0 H04 H14 H05`. -/
 theorem c34_l22a : Derivable Fig6 (ofList ([hL 0 5, hL 1 4, hL 0 4, zL 4, zL 0, hL 1 4, hL 0 5, hL 1 3, hL 0 2, hL 0 1, hL 0 2, hL 1 3, hL 0 5, hL 1 4, zL 4, zL 0, hL 0 4, hL 1 4, hL 0 5, hL 1 3, hL 0 2] : List (Gen 6)))
     (ofList [hL 1 3, hL 0 2, hL 0 1]) :=
-  derive_of [.rel .b1 [0, 4] 3 false, .rel .b6 [0, 5, 1, 4] 5 false, .rel .b1 [0, 4] 14 false,
+  derive_of' [.rel .b1 [0, 4] 3 false, .rel .b6 [0, 5, 1, 4] 5 false, .rel .b1 [0, 4] 14 false,
     .rel .b6 [0, 5, 1, 4] 17 false, .rel .d1 [0, 4] 14 true, .lem _ _ c34_rot31_at0_1_4_5_6 12 true,
     .lem _ _ c34_rot31_at0_1_4_5_6 0 true, .rel .b4 [4, 1, 3] 10 true, .rel .b5 [4, 5, 1, 3] 9 true,
     .rel .b4 [4, 0, 2] 11 true, .rel .b5 [4, 5, 0, 2] 10 true, .rel .b4 [4, 0, 1] 12 true,
@@ -208,7 +208,7 @@ theorem c34_rot32_at0_1_4_5_6 : Derivable Fig6 (ofList ([hL 0 5, hL 1 4, hL 0 4,
 /-- The join `l22b`: `D A ≈ B` for `D = H25 H34 Z3 X35 H35 H34 H25 H13 H02 H01 H02 H13 H05 H14 H04 H14 H05`. -/
 theorem c34_l22b : Derivable Fig6 (ofList ([hL 2 5, hL 3 4, zL 3, xL 3 5, hL 3 5, hL 3 4, hL 2 5, hL 1 3, hL 0 2, hL 0 1, hL 0 2, hL 1 3, hL 0 5, hL 1 4, hL 0 4, hL 1 4, hL 0 5, hL 1 3, hL 0 2] : List (Gen 6)))
     (ofList [hL 1 3, hL 0 2, hL 0 1]) :=
-  derive_of [.rel .b6 [0, 5, 1, 4] 15 false, .lem _ _ c34_vcv 0 true, .lem _ _ c34_rot32_at0_1_4_5_6 14 true,
+  derive_of' [.rel .b6 [0, 5, 1, 4] 15 false, .lem _ _ c34_vcv 0 true, .lem _ _ c34_rot32_at0_1_4_5_6 14 true,
     .rel .b4 [4, 1, 3] 8 true, .rel .b5 [4, 5, 1, 3] 7 true, .rel .b4 [4, 0, 2] 9 true,
     .rel .b5 [4, 5, 0, 2] 8 true, .rel .b4 [4, 0, 1] 10 true, .rel .b5 [4, 5, 0, 1] 9 true,
     .rel .b4 [4, 0, 2] 11 true, .rel .b5 [4, 5, 0, 2] 10 true, .rel .b4 [4, 1, 3] 12 true,

@@ -221,6 +221,231 @@ theorem lprod_eq_of_check {m : ℕ} (L R : List (LGen m))
 
 end Check
 
+/-! ### The check on basis vectors
+
+The scaled matrices act on vectors entry by entry (`LGen.act`): `(-1)` negates one entry,
+`X` exchanges two, `H` takes their sum and difference, and every other entry is multiplied by
+`√2`.  Two scaled products are equal when they agree on every basis vector, which `vcheck`
+decides on pairs of integers (`a + b √2` as `(a, b)`, `√2` doubling and exchanging the two):
+the kernel then evaluates about `m · |w|` entries instead of the matrix products, where
+`decide` on the matrices took seconds for a word of twenty letters. -/
+
+section Act
+
+variable {R : Type*} [CommRing R] {k m : ℕ}
+
+/-- The indices of a local generator are distinct. -/
+def LGen.ok : LGen m → Bool
+  | .Z _ => true
+  | .X i j => decide (i ≠ j)
+  | .H i j => decide (i ≠ j)
+
+/-- The scaled matrix of a local generator acting on a vector, entry by entry
+(`smat t g *ᵥ v` for distinct indices, `smat_mulVec`). -/
+def LGen.act (t : R) : LGen m → (Fin m → R) → (Fin m → R)
+  | .Z i, v => fun k => if k = i then -(t * v i) else t * v k
+  | .X i j, v => fun k => if k = i then t * v j else if k = j then t * v i else t * v k
+  | .H i j, v => fun k => if k = i then v i + v j else if k = j then v i - v j else t * v k
+
+theorem embedMatT_mulVecL (f : Fin k → Fin m) (v : Fin m → R) :
+    (embedMat f)ᵀ *ᵥ v = fun i => v (f i) := by
+  funext i
+  simp only [mulVec, dotProduct, transpose_apply, embedMat, ite_mul, one_mul, zero_mul]
+  rw [Finset.sum_ite_eq]
+  simp
+
+theorem embedMat_mulVec₂ (p q : Fin m) (u : Fin 2 → R) :
+    embedMat ![p, q] *ᵥ u = fun k => (if k = p then u 0 else 0) + (if k = q then u 1 else 0) := by
+  funext k
+  simp only [mulVec, dotProduct, embedMat, Fin.sum_univ_two, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_fin_one, ite_mul, one_mul, zero_mul,
+    @eq_comm _ p k, @eq_comm _ q k]
+
+theorem embedMat_mulVec₁ (p : Fin m) (u : Fin 1 → R) :
+    embedMat ![p] *ᵥ u = fun k => if k = p then u 0 else 0 := by
+  funext k
+  simp only [mulVec, dotProduct, embedMat, Fin.sum_univ_one, Matrix.cons_val_fin_one, ite_mul,
+    one_mul, zero_mul, @eq_comm _ p k]
+
+theorem Zmat_sub (t : R) : (!![-t] - t • (1 : Matrix (Fin 1) (Fin 1) R)) = !![-t - t] := by
+  ext i j; fin_cases i; fin_cases j; simp
+
+theorem Xmat_sub (t : R) :
+    (!![0, t; t, 0] - t • (1 : Matrix (Fin 2) (Fin 2) R)) = !![-t, t; t, -t] := by
+  ext i j; fin_cases i <;> fin_cases j <;> simp
+
+theorem Hmat_sub (t : R) :
+    (!![1, 1; 1, -1] - t • (1 : Matrix (Fin 2) (Fin 2) R)) = !![1 - t, 1; 1, -1 - t] := by
+  ext i j; fin_cases i <;> fin_cases j <;> simp [sub_eq_add_neg]
+
+theorem slevel_mulVec (f : Fin k → Fin m) (t : R) (A : Matrix (Fin k) (Fin k) R) (v : Fin m → R) :
+    slevel f t A *ᵥ v = t • v + embedMat f *ᵥ ((A - t • 1) *ᵥ fun i => v (f i)) := by
+  rw [slevel, add_mulVec, smul_mulVec, one_mulVec, ← mulVec_mulVec, ← mulVec_mulVec,
+    embedMatT_mulVecL]
+
+theorem mulVec_fin_one (A : Matrix (Fin 1) (Fin 1) R) (w : Fin 1 → R) :
+    A *ᵥ w = ![A 0 0 * w 0] := by
+  funext i; fin_cases i; simp [mulVec, dotProduct]
+
+theorem mulVec_fin_two (A : Matrix (Fin 2) (Fin 2) R) (w : Fin 2 → R) :
+    A *ᵥ w = ![A 0 0 * w 0 + A 0 1 * w 1, A 1 0 * w 0 + A 1 1 * w 1] := by
+  funext i; fin_cases i <;> simp [mulVec, dotProduct, Fin.sum_univ_two]
+
+theorem smat_mulVec (t : R) (g : LGen m) (hg : g.ok = true) (v : Fin m → R) :
+    LGen.smat t g *ᵥ v = g.act t v := by
+  cases g with
+  | Z i =>
+    funext k
+    simp only [LGen.smat, LGen.act, slevel_mulVec, Zmat_sub, embedMat_mulVec₁, mulVec_fin_one,
+      Matrix.of_apply, Matrix.cons_val_fin_one, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+    split_ifs with h
+    · subst h; ring
+    · ring
+  | X i j =>
+    funext k
+    simp only [LGen.smat, LGen.act, slevel_mulVec, Xmat_sub, embedMat_mulVec₂, mulVec_fin_two,
+      Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.cons_val_fin_one, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+    split_ifs <;> (try subst_vars) <;> ring1
+  | H i j =>
+    have hij : i ≠ j := by simpa [LGen.ok] using hg
+    funext k
+    simp only [LGen.smat, LGen.act, slevel_mulVec, Hmat_sub, embedMat_mulVec₂, mulVec_fin_two,
+      Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.cons_val_fin_one, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+    split_ifs <;> (try subst_vars) <;> first | ring1 | exact absurd rfl hij
+
+/-- A local word acting on a vector, letter by letter. -/
+def actLW (t : R) : List (LGen m) → (Fin m → R) → (Fin m → R)
+  | [], v => v
+  | g :: w, v => g.act t (actLW t w v)
+
+theorem sprod_mulVec (t : R) : ∀ (w : List (LGen m)), w.all LGen.ok = true → ∀ v : Fin m → R,
+    sprod t w *ᵥ v = actLW t w v
+  | [], _, v => by simp [sprod, actLW]
+  | g :: w, h, v => by
+    simp only [List.all_cons, Bool.and_eq_true] at h
+    simp only [sprod, List.map_cons, List.prod_cons, actLW]
+    rw [← mulVec_mulVec, ← sprod, sprod_mulVec t w h.2, smat_mulVec t g h.1]
+
+/-- The basis vector `e j`. -/
+def basisV (j : Fin m) : Fin m → R := fun k => if k = j then 1 else 0
+
+theorem basisV_eq_single (j : Fin m) : (basisV j : Fin m → R) = Pi.single j 1 := by
+  funext k; simp [basisV, Pi.single_apply]
+
+/-- Two scaled products agree when they agree on every basis vector. -/
+theorem sprod_eq_of_act (t : R) (L Rw : List (LGen m)) (hL : L.all LGen.ok = true)
+    (hR : Rw.all LGen.ok = true)
+    (h : ∀ j : Fin m, t ^ Rw.length • actLW t L (basisV j) = t ^ L.length • actLW t Rw (basisV j)) :
+    t ^ Rw.length • sprod t L = t ^ L.length • sprod t Rw := by
+  ext i j
+  have := congrFun (h j) i
+  rw [← sprod_mulVec t L hL, ← sprod_mulVec t Rw hR, basisV_eq_single, mulVec_single_one,
+    mulVec_single_one] at this
+  simpa using this
+
+end Act
+
+/-! ### Over `ℤ√2`, on pairs of integers -/
+
+theorem rt2_sq : rt2 * rt2 = ⟨2, 0⟩ := by ext <;> simp [rt2]
+
+theorem rt2_pow_even (m : ℕ) : rt2 ^ (2 * m) = ⟨2 ^ m, 0⟩ := by
+  induction m with
+  | zero => ext <;> simp
+  | succ m ih => rw [Nat.mul_succ, pow_add, ih, pow_two, rt2_sq]; ext <;> simp [pow_succ]
+
+/-- `a + b √2` as a pair of integers, for the computation. -/
+abbrev ZPair := ℤ × ℤ
+
+namespace ZPair
+
+def toZ (x : ZPair) : ℤ√2 := ⟨x.1, x.2⟩
+/-- `√2 · x`. -/
+def sq2 (x : ZPair) : ZPair := (2 * x.2, x.1)
+def add (x y : ZPair) : ZPair := (x.1 + y.1, x.2 + y.2)
+def sub (x y : ZPair) : ZPair := (x.1 - y.1, x.2 - y.2)
+def neg (x : ZPair) : ZPair := (-x.1, -x.2)
+/-- `√2 ^ n · x`. -/
+def pow2 (n : ℕ) (x : ZPair) : ZPair :=
+  if n % 2 = 0 then (2 ^ (n / 2) * x.1, 2 ^ (n / 2) * x.2)
+  else (2 ^ (n / 2 + 1) * x.2, 2 ^ (n / 2) * x.1)
+
+theorem toZ_sq2 (x : ZPair) : (sq2 x).toZ = rt2 * x.toZ := by ext <;> simp [toZ, sq2, rt2]
+theorem toZ_add (x y : ZPair) : (add x y).toZ = x.toZ + y.toZ := by ext <;> simp [toZ, add]
+theorem toZ_sub (x y : ZPair) : (sub x y).toZ = x.toZ - y.toZ := by ext <;> simp [toZ, sub]
+theorem toZ_neg (x : ZPair) : (neg x).toZ = -x.toZ := by ext <;> simp [toZ, neg]
+
+theorem toZ_pow2 (n : ℕ) (x : ZPair) : (pow2 n x).toZ = rt2 ^ n * x.toZ := by
+  unfold pow2
+  set m := n / 2 with hm
+  split_ifs with h
+  · rw [show n = 2 * m by omega, rt2_pow_even]
+    ext <;> simp [toZ]
+  · rw [show n = 2 * m + 1 by omega, pow_succ rt2 (2 * m), mul_assoc (rt2 ^ (2 * m)) rt2,
+      rt2_pow_even]
+    ext
+    · simp [toZ, rt2, pow_succ]; ring
+    · simp [toZ, rt2]
+
+end ZPair
+
+/-- The scaled action on pairs: `√2` doubles the `√2` part and exchanges the two. -/
+def LGen.act2 {m : ℕ} : LGen m → (Fin m → ZPair) → (Fin m → ZPair)
+  | .Z i, v => fun k => if k = i then (v i).sq2.neg else (v k).sq2
+  | .X i j, v => fun k => if k = i then (v j).sq2 else if k = j then (v i).sq2 else (v k).sq2
+  | .H i j, v => fun k => if k = i then (v i).add (v j) else if k = j then (v i).sub (v j)
+      else (v k).sq2
+
+theorem toZ_act2 {m : ℕ} (g : LGen m) (v : Fin m → ZPair) :
+    (fun k => (g.act2 v k).toZ) = g.act rt2 fun k => (v k).toZ := by
+  funext k
+  cases g <;> simp only [LGen.act2, LGen.act] <;> split_ifs <;>
+    simp [ZPair.toZ_sq2, ZPair.toZ_add, ZPair.toZ_sub, ZPair.toZ_neg]
+
+def actLP {m : ℕ} : List (LGen m) → (Fin m → ZPair) → (Fin m → ZPair)
+  | [], v => v
+  | g :: w, v => g.act2 (actLP w v)
+
+theorem toZ_actLP {m : ℕ} : ∀ (w : List (LGen m)) (v : Fin m → ZPair),
+    (fun k => (actLP w v k).toZ) = actLW rt2 w fun k => (v k).toZ
+  | [], v => rfl
+  | g :: w, v => by
+    simp only [actLP, actLW]
+    rw [← toZ_actLP w v, toZ_act2]
+
+/-- The basis vector `e j` as pairs. -/
+def basisP {m : ℕ} (j : Fin m) : Fin m → ZPair := fun k => if k = j then (1, 0) else (0, 0)
+
+theorem toZ_basisP {m : ℕ} (j : Fin m) : (fun k => (basisP j k).toZ) = (basisV j : Fin m → ℤ√2) := by
+  funext k; simp only [basisP, basisV]; split_ifs <;> ext <;> simp [ZPair.toZ]
+
+/-- The check of an identity of local words on the basis vectors, as one Boolean: every entry
+of `√2 ^ |R| · L e_j` and `√2 ^ |L| · R e_j` agree. -/
+def vcheck {m : ℕ} (L R : List (LGen m)) : Bool :=
+  L.all LGen.ok && R.all LGen.ok &&
+    (List.finRange m).all fun j =>
+      let a := actLP L (basisP j)
+      let b := actLP R (basisP j)
+      (List.finRange m).all fun k => ZPair.pow2 R.length (a k) == ZPair.pow2 L.length (b k)
+
+theorem sprod_eq_of_vcheck {m : ℕ} (L R : List (LGen m)) (h : vcheck L R = true) :
+    rt2 ^ R.length • sprod rt2 L = rt2 ^ L.length • sprod rt2 R := by
+  simp only [vcheck, Bool.and_eq_true] at h
+  obtain ⟨⟨hL, hR⟩, hv⟩ := h
+  simp only [List.all_eq_true, List.mem_finRange, true_implies, beq_iff_eq] at hv
+  refine sprod_eq_of_act rt2 L R hL hR fun j => ?_
+  funext k
+  have e := congrArg ZPair.toZ (hv j k)
+  rw [ZPair.toZ_pow2, ZPair.toZ_pow2] at e
+  have hL := congrFun (toZ_actLP L (basisP j)) k
+  have hR := congrFun (toZ_actLP R (basisP j)) k
+  rw [toZ_basisP] at hL hR
+  simp only [Pi.smul_apply, smul_eq_mul]
+  rw [← hL, ← hR]
+  exact e
+
 section Gen
 
 variable {R : Type*} [CommRing R] {n : ℕ}
@@ -252,6 +477,14 @@ theorem wordMat_eq_of_check {m : ℕ} (f : Fin m → Fin n) (hf : Function.Injec
     wordMat invSqrt2 w = wordMat invSqrt2 w' := by
   rw [wordMat_eq, wordMat_eq, hw, hw', lprod_push _ hf, lprod_push _ hf,
     lprod_eq_of_check L R h]
+
+/-- The same, the identity of local words decided on the basis vectors (`vcheck`). -/
+theorem wordMat_eq_of_vcheck {m : ℕ} (f : Fin m → Fin n) (hf : Function.Injective f)
+    (L R : List (LGen m)) (h : vcheck L R = true)
+    {w w' : Word (Gen n)} (hw : w.toList.map Gen.toL = L.map (LGen.push f))
+    (hw' : w'.toList.map Gen.toL = R.map (LGen.push f)) :
+    wordMat invSqrt2 w = wordMat invSqrt2 w' :=
+  wordMat_eq_of_check f hf L R (sprod_eq_of_vcheck L R h) hw hw'
 
 end Gen
 

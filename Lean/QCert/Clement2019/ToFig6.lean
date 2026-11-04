@@ -134,8 +134,16 @@ theorem rel_fig6 {w v : Word (Gen n)} (h : Rel w v) : Derivable Fig6 (tr w) (tr 
     by_cases hkl : k = l
     · subst hkl; exact Derivable.refl _
     · exact good19.tr ![j, k, l, t] (by vec_inj) rfl rfl
-  | r20 hn => exact goodId_tr tr_sch20 (Fin.castLE hn) (Fin.strictMono_castLE hn) rfl rfl
-  | r21 hn => exact goodId_tr tr_sch21 (Fin.castLE hn) (Fin.strictMono_castLE hn) rfl rfl
+  -- the words of (20), (21) are long products: `rfl` alone unfolds them in the elaborator
+  -- slowly (about 5 s for (21)), the lists of letters read off by `simp` first are compared fast
+  | r20 hn =>
+    refine goodId_tr tr_sch20 (Fin.castLE hn) (Fin.strictMono_castLE hn) ?_ ?_ <;>
+      simp only [FreeMonoid.toList_mul, FreeMonoid.toList_of, List.map_append, List.map_cons,
+        List.map_nil, List.cons_append, List.nil_append] <;> rfl
+  | r21 hn =>
+    refine goodId_tr tr_sch21 (Fin.castLE hn) (Fin.strictMono_castLE hn) ?_ ?_ <;>
+      simp only [FreeMonoid.toList_mul, FreeMonoid.toList_of, List.map_append, List.map_cons,
+        List.map_nil, List.cons_append, List.nil_append] <;> rfl
   | @r22 hn j k h => exact good22.tr ![j, k] (by vec_inj) rfl rfl
 
 end QCert.Clement2019

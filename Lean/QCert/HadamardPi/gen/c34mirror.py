@@ -1,5 +1,5 @@
-# An exact mirror of the list computations of Sym.lean, SymState.lean, SymSplit.lean,
-# SymNode.lean, SymClean.lean and Case34Base.lean, so that every `decide` emitted by
+# An exact mirror of the list computations of SymForms.lean, SymSplit.lean,
+# SymNode.lean, SymClean.lean, Case34Base.lean and Case34Steps.lean, so that every check emitted by
 # gen_case34.py is known to succeed.  Letters: ('Z', p), ('X', p, q), ('H', p, q) with p < q.
 # Words are in written order (the rightmost letter acts first).  Forms are lists of ints,
 # the constant first; an entry is a pair (rational part, sqrt2 part).
@@ -158,3 +158,14 @@ def ev(l, t):
     return (l[0] if l else 0) + sum(c * t[i] for i, c in enumerate(l[1:]))
 
 def zevals(P, t): return [(ev(x[0], t), ev(x[1], t)) for x in P]
+
+# ---- Case34Steps.lean: the one-parameter substitution of a split ----
+def substAt(f, p, L):
+    if not f: return []
+    c, cs = f[0], list(f[1:])
+    a = lget(cs, p)
+    if a == 0: return list(f)
+    return ladd([c + a * (L[0] if L else 0)] + lset(cs, p, 0), [0] + lsmul(a, L[1:]))
+def Psplit(P, p, L): return [(substAt(x[0], p, L), substAt(x[1], p, L)) for x in P]
+# (The Lean `zdivp` divides by `2 ^ (h / 2)` in one pass and `sumL` skips zero coefficients; the
+# values agree with the step-by-step computations above, up to trailing zeros that `Pnorm` strips.)
