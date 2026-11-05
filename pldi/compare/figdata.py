@@ -43,8 +43,11 @@ print(f"Lean run {run['date']} at {run['revision']}, {run['modules']} modules, {
       f"{run['logical_cpus']} CPUs, {run['mem_gib']} GiB")
 print('shared units', shared)
 print(f"timed total {sum(v['seconds'] for v in ltime['units'].values()):.2f} s; failed",
-      {u: v['failed'] for u, v in ltime['units'].items() if v['failed'] or v['rc']},
-      '; foreign Lean seen in', [u for u, v in ltime['units'].items() if v['foreign']])
+      {u: v['failed'] for u, v in ltime['units'].items() if v['failed'] or v['rc']})
+print('other projects\' Lean during a unit (CPU s):',
+      {u: v['foreign_cpu_s'] for u, v in ltime['units'].items() if v.get('foreign_cpu_s')},
+      '; units of the first run never re-timed:',
+      [u for u, v in ltime['units'].items() if 'foreign_procs' in v])
 
 lines = []
 tot = dict(ac=0, lc=0, af=0, lf=0)
