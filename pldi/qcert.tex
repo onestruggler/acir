@@ -209,20 +209,29 @@ Related human-supervised, AI-assisted workflows have been used to formalize quan
 This is based on our formalization of the qudit Clifford completeness result of~\cite{bian2026qupit} (\Cref{sec:qudit}), where the framework~\cite{bian2027popl} was built and the main verification steps were carried out by hand.
 Since all sixteen completeness results use the same framework of quantum circuits, gates, and matrices over a finitely generated ring, this makes it possible to efficiently check the alignment of the formalized results with the natural-language statements from the original papers. Of these sixteen results, we fully verify fourteen directly, and find fixes to verify the remaining two. For one result, we find a gap in its proof, which we fix, so the original completeness claim still holds. For another result, we find that the theorem is missing one relation, and we show that this relation is independent of the others, so completeness fails without it.
 
+\Cref{fig:qcert-pipeline} highlights QCert's main benefit: humans check only that the main theorem and its definitions match the paper's result; Lean or Agda checks the proof. Its extension branch shows that proposed completeness results undergo the same human review and machine checking.
+
+% Draft assumption: this paragraph describes the intended completed state.
+% New-result development is ongoing; formal verification remains pending;
+% confirm the claims below once both are complete.
+QCert also provides a foundation for LLM-assisted exploration of new completeness results. Its shared definitions and verified libraries allow coding agents to build on existing mathematics and automate derivations that would otherwise require substantial manual effort. As a case study, we use this workflow to extend Toffoli--Hadamard completeness from three to any number of qubits (\Cref{sec:toffoli-hadamard}). Alongside the proofs checked in QCert, we are developing a clear mathematical exposition of the underlying arguments. This case study demonstrates QCert's potential as a research tool: it makes automated proof development practical while grounding confidence in machine checking and human review of the definitions and theorem statements.
+
+\begin{figure}[t]
+\centering
+\input{figures/qcert-pipeline.tikz}
+\caption{Using QCert's shared, verified libraries, humans need only check that its main theorem faithfully expresses the paper's result, including the relations, target group, gate matrices, and interpretation. LLM coding agents formalize the source papers' arguments and supply missing proofs or details where needed. Lean or Agda checks the generated proof, so the proof itself needs no human review. Each implementation undergoes checks by both Agda and Lean. The dashed branch shows how humans and LLMs can join forces to explore new completeness results, building on QCert's verified libraries. Each newly obtained result undergoes the same human review and machine checking.}
+\label{fig:qcert-pipeline}
+\Description{A large mint-green panel highlights the per-paper human check: compare the paper's result with the QCert main theorem and the definitions it refers to. A green double-headed arrow asks whether they express the same mathematical statement. The pipeline continues with an LLM formalizing the paper's arguments and supplying missing proofs or details where needed. Lean or Agda checks the formal proof, yielding a faithful formalization. A lower branch reuses the verified libraries for human-guided, LLM-assisted extensions. Proposed results undergo the same human review of definitions and theorem statements and machine checking of formal proofs.}
+\end{figure}
+
+
+\begin{samepage}
 \paragraph{Orientation} In \Cref{sec:background}, we review the two main strategies for proving completeness of a rule set and how minimality is shown. In \Cref{sec:form}, we describe the QCert framework, which adds matrix semantics to
 % our earlier library of circuits and presentations~\cite{bian2027popl},
 the library of circuits and presentations of~\citet{bian2027popl},
 together with our formalization workflow, how QCert keeps completeness from being lost in translation, and a comparison of the Agda and Lean formalizations. In \Cref{sec:qudit}, we present the formalization of qudit Clifford completeness that QCert grew out of, and the mathematical choices it fixed. In \Cref{sec:corpus}, we use QCert to machine-check the completeness and minimality results of sixteen papers. In \Cref{sec:findings}, we describe the issues these formalizations found in the source papers. In \Cref{sec:conclusion}, we discuss the current limitations of QCert and our plans to extend it.
 
-\paragraph{Extensions of the earlier framework} QCert extends the Agda framework of~\citet{bian2027popl} in six ways.
-\begin{itemize}
-\item \emph{Three-wire gates.} The earlier framework allows gates on one and two wires. QCert also allows gates on three wires, such as the Toffoli gate, together with the structural rule they need.
-\item \emph{Scalars.} QCert also allows scalars, which act on no wire, such as the global phase $\omega$ of Clifford circuits, with a structural rule that places a scalar on any wire. A rule set can then relate circuits exactly rather than up to a global phase.
-\item \emph{Matrix semantics.} The earlier framework interprets circuits in groups such as permutation groups and Pauli groups modulo phases. QCert interprets each gate as a matrix over a finitely generated ring, and extends this to circuits, with the soundness of the structural rules, once for all gate sets (\Cref{sec:form}).
-\item \emph{PROPs.} In the earlier framework, a swap is an ordinary gate whose laws must be listed among the rules. QCert can also treat circuits as a PROP. One two-wire gate is designated as the swap, and the framework supplies its laws, that it is an involution and that every gate can be moved across it, once for all gate sets. A paper's rule set then lists only its own rules, each on the wires it is drawn on, while the swap and its laws stay hidden. We use this for the circuits of~\cite{amy2018cnotdihedral,blake2026phaseaffine,blake2026simpler}.
-\item \emph{Minimality.} QCert can state that a rule is independent of the others, and prove it by an interpretation that every other rule preserves but that rule does not (\Cref{sec:background}). We use this for the minimality theorem of~\cite{blake2026simpler}, and to show that the relation $r_{\mathrm K}$ of \Cref{sec:findings} is needed.
-\item \emph{Research-level examples.} The examples of~\citet{bian2027popl} are groups such as symmetric, cyclic and Pauli groups, wreath products, and single-qubit Clifford+T. QCert formalizes sixteen published completeness and minimality results (\Cref{tab:corpus}).
-\end{itemize}
+\end{samepage}
 
 %In \Cref{sec:toffoli-hadamard}, we use QCert to prove a new result, the completeness of Toffoli--Hadamard circuits on any number of qubits. 
 \section{Background}\label{sec:background}
@@ -313,6 +322,16 @@ presentation : {n : ℕ} → (_===_ {n}) IsPresentationOf (O n)@\agdatag{agda:hp
 \end{agdacode}
 
 Agda checks every proof, so a reader only needs to check that each theorem statement matches its paper's result. Since every theorem is one of these two records, it suffices for a reader to check only four components: the relations transcribed from the paper, the target group, the matrix of each gate, and the line assigning $\llbracket - \rrbracket$ to the record. Each Agda development exports its main presentation theorem; the corresponding Lean statements are collected in \texttt{QCert/Table1.lean}.
+
+\paragraph{Extensions of the earlier framework} To support these formalizations, QCert extends the Agda framework of~\citet{bian2027popl} in six ways.
+\begin{itemize}
+\item \emph{Three-wire gates.} The earlier framework allows gates on one and two wires. QCert also allows gates on three wires, such as the Toffoli gate, together with the structural rule they need.
+\item \emph{Scalars.} QCert also allows scalars, which act on no wire, such as the global phase $\omega$ of Clifford circuits, with a structural rule that places a scalar on any wire. A rule set can then relate circuits exactly rather than up to a global phase.
+\item \emph{Matrix semantics.} The earlier framework interprets circuits in groups such as permutation groups and Pauli groups modulo phases. QCert interprets each gate as a matrix over a finitely generated ring, and extends this to circuits, with the soundness of the structural rules, once for all gate sets.
+\item \emph{PROPs.} In the earlier framework, a swap is an ordinary gate whose laws must be listed among the rules. QCert can also treat circuits as a PROP. One two-wire gate is designated as the swap, and the framework supplies its laws, that it is an involution and that every gate can be moved across it, once for all gate sets. A paper's rule set then lists only its own rules, each on the wires it is drawn on, while the swap and its laws stay hidden. We use this for the circuits of~\cite{amy2018cnotdihedral,blake2026phaseaffine,blake2026simpler}.
+\item \emph{Minimality.} QCert can state that a rule is independent of the others, and prove it by an interpretation that every other rule preserves but that rule does not (\Cref{sec:background}). We use this for the minimality theorem of~\cite{blake2026simpler}, and to show that the relation $r_{\mathrm K}$ of \Cref{sec:findings} is needed.
+\item \emph{Research-level examples.} The examples of~\citet{bian2027popl} are groups such as symmetric, cyclic and Pauli groups, wreath products, and single-qubit Clifford+T. QCert formalizes sixteen published completeness and minimality results (\Cref{tab:corpus}).
+\end{itemize}
 
 \subsection{Formalization Workflow}\label{sec:method}
 
