@@ -19,7 +19,8 @@ for each unit the CPU seconds that Lean processes of other projects (those
 not running in this Lean directory) used while it built (`foreign_cpu_s`),
 so that a time taken while something else was building can be told apart
 and re-timed. With LEANTIME_IDLE=<seconds> it first waits, at most that
-long, until other projects' Lean has been idle for 30 seconds. Results are
+long, until other projects' Lean has used at most LEANTIME_IDLE_CPU
+(default 3) CPU-seconds in 30 seconds; 30 allows one busy core. Results are
 written to the JSON file after each unit; a re-timing keeps the record of
 the first run (`run`) and adds its own (`retimes`).
 """
@@ -107,14 +108,14 @@ class Foreign:
         return self.used / TICK
 
 
-def wait_idle(limit):
-    """Wait (at most `limit` seconds) until other projects' Lean used under
-    3 CPU-seconds in 30 seconds; return the seconds waited."""
+def wait_idle(limit, cpu):
+    """Wait (at most `limit` seconds) until other projects' Lean used at
+    most `cpu` CPU-seconds in 30 seconds; return the seconds waited."""
     t0 = time.monotonic()
     while time.monotonic() - t0 < limit:
         f = Foreign()
         time.sleep(30)
-        if f.poll() < 3:
+        if f.poll() <= cpu:
             break
     return round(time.monotonic() - t0)
 
@@ -163,8 +164,9 @@ def main():
     else:
         rec.setdefault('retimes', []).append(dict(info, units=todo))
     idle = int(os.environ.get('LEANTIME_IDLE', '0'))  # wait for an idle machine, at most this
+    idle_cpu = float(os.environ.get('LEANTIME_IDLE_CPU', '3'))  # CPU-s per 30 s that count as idle
     for u in todo:
-        waited = wait_idle(idle) if idle else 0
+        waited = wait_idle(idle, idle_cpu) if idle else 0
         if ONLY is not None:
             remove_artifacts(units[u])
         foreign = Foreign()
