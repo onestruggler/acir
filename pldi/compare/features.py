@@ -5,7 +5,10 @@ Agda: options (--safe, --without-K, --cubical-compatible), postulates,
 `with` abstractions, `rewrite`, absurd patterns, reflection macros.
 Lean: noncomputable definitions, `by` blocks, automation tactics, case
 splits, `decide +kernel`.  Also the library modules imported (stdlib /
-Mathlib), over all files.
+Mathlib), over all files.  Declarations marked noncomputable are counted
+both over the written files (`noncomputable_decl`) and over all files
+(`noncomputable_decl_all`, which includes the data of generated
+certificates and kernel-only checkers).
 """
 import json, os, re, sys, collections
 
@@ -80,11 +83,12 @@ for lang, table, ext in (('agda', AGDA, '.agda'), ('lean', LEAN, '.lean')):
                 libs['mathlib'].update(MATHLIB.findall(text))
                 c['noncomputable_decl_all'] += len(NC_DECL.findall(text))
             c['files'] += 1
-            kind = count(f, lang)['gen']
-            if kind:
+            if kind(f):
                 continue
             body = strip_comments(text, lang)
             c['written_files'] += 1
+            if lang == 'lean':
+                c['noncomputable_decl'] += len(NC_DECL.findall(text))
             for k, r in (AG_BODY if lang == 'agda' else LE_BODY).items():
                 c[k] += len(r.findall(body))
             # postulates count in every file, written or not

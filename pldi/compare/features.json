@@ -19,20 +19,20 @@
    "files": 23,
    "written_files": 23,
    "noncomputable": 17,
-   "by": 1092,
-   "automation": 831,
-   "case_split": 327,
-   "decide_kernel": 37,
-   "theorem": 468
+   "by": 1096,
+   "automation": 791,
+   "case_split": 331,
+   "decide_kernel": 17,
+   "theorem": 473
   }
  },
  "BianSelingerUn": {
   "agda": {
-   "safe": 38,
-   "without_K": 38,
+   "safe": 37,
+   "without_K": 37,
    "cubical_compatible": 0,
-   "files": 38,
-   "written_files": 38,
+   "files": 37,
+   "written_files": 37,
    "postulate": 0,
    "with": 87,
    "rewrite": 12,
@@ -42,15 +42,15 @@
    "postulate_any": 0
   },
   "lean": {
-   "noncomputable_decl_all": 2,
-   "files": 25,
-   "written_files": 25,
-   "noncomputable": 17,
-   "by": 829,
-   "automation": 613,
-   "case_split": 319,
-   "decide_kernel": 20,
-   "theorem": 368
+   "noncomputable_decl_all": 3,
+   "files": 26,
+   "written_files": 26,
+   "noncomputable": 18,
+   "by": 868,
+   "automation": 645,
+   "case_split": 339,
+   "decide_kernel": 2,
+   "theorem": 401
   }
  },
  "LiRossSelinger": {
@@ -73,11 +73,11 @@
    "files": 36,
    "written_files": 29,
    "noncomputable": 10,
-   "by": 1942,
-   "automation": 1772,
-   "case_split": 683,
+   "by": 1982,
+   "automation": 1458,
+   "case_split": 763,
    "decide_kernel": 4,
-   "theorem": 383
+   "theorem": 410
   }
  },
  "HadamardPi": {
@@ -96,15 +96,15 @@
    "postulate_any": 0
   },
   "lean": {
-   "noncomputable_decl_all": 23,
-   "files": 36,
-   "written_files": 31,
-   "noncomputable": 23,
-   "by": 1450,
-   "automation": 1229,
-   "case_split": 578,
+   "noncomputable_decl_all": 284,
+   "files": 46,
+   "written_files": 34,
+   "noncomputable": 37,
+   "by": 1544,
+   "automation": 1343,
+   "case_split": 616,
    "decide_kernel": 5,
-   "theorem": 457
+   "theorem": 513
   }
  },
  "Clement2019": {
@@ -127,11 +127,11 @@
    "files": 15,
    "written_files": 12,
    "noncomputable": 1,
-   "by": 197,
-   "automation": 114,
+   "by": 199,
+   "automation": 118,
    "case_split": 105,
-   "decide_kernel": 23,
-   "theorem": 94
+   "decide_kernel": 24,
+   "theorem": 95
   }
  },
  "SelingerClifford": {
@@ -154,11 +154,11 @@
    "files": 24,
    "written_files": 21,
    "noncomputable": 5,
-   "by": 865,
-   "automation": 901,
-   "case_split": 390,
-   "decide_kernel": 112,
-   "theorem": 434
+   "by": 874,
+   "automation": 908,
+   "case_split": 393,
+   "decide_kernel": 113,
+   "theorem": 442
   }
  },
  "QuditClifford": {
@@ -177,15 +177,15 @@
    "postulate_any": 0
   },
   "lean": {
-   "noncomputable_decl_all": 42,
+   "noncomputable_decl_all": 54,
    "files": 37,
    "written_files": 33,
-   "noncomputable": 37,
+   "noncomputable": 49,
    "by": 1499,
    "automation": 617,
    "case_split": 313,
    "decide_kernel": 0,
-   "theorem": 742
+   "theorem": 744
   }
  },
  "RealStabilizer": {
@@ -262,11 +262,11 @@
    "files": 32,
    "written_files": 30,
    "noncomputable": 21,
-   "by": 1304,
-   "automation": 766,
+   "by": 1312,
+   "automation": 768,
    "case_split": 370,
    "decide_kernel": 0,
-   "theorem": 612
+   "theorem": 613
   }
  },
  "CliffordT2": {
@@ -343,11 +343,11 @@
    "files": 274,
    "written_files": 229,
    "noncomputable": 3,
-   "by": 13696,
-   "automation": 12617,
+   "by": 13697,
+   "automation": 12615,
    "case_split": 2910,
    "decide_kernel": 867,
-   "theorem": 3809
+   "theorem": 3811
   }
  },
  "ToffoliHadamard": {
@@ -367,14 +367,14 @@
   },
   "lean": {
    "noncomputable_decl_all": 12,
-   "files": 19,
-   "written_files": 12,
+   "files": 20,
+   "written_files": 14,
    "noncomputable": 2,
-   "by": 219,
-   "automation": 192,
-   "case_split": 72,
-   "decide_kernel": 36,
-   "theorem": 111
+   "by": 265,
+   "automation": 252,
+   "case_split": 100,
+   "decide_kernel": 30,
+   "theorem": 160
   }
  },
  "QutritClifford": {
@@ -393,15 +393,15 @@
    "postulate_any": 0
   },
   "lean": {
-   "noncomputable_decl_all": 1,
-   "files": 73,
-   "written_files": 22,
-   "noncomputable": 7,
-   "by": 1196,
-   "automation": 950,
-   "case_split": 505,
-   "decide_kernel": 80,
-   "theorem": 605
+   "noncomputable_decl_all": 27,
+   "files": 40,
+   "written_files": 21,
+   "noncomputable": 10,
+   "by": 1221,
+   "automation": 980,
+   "case_split": 501,
+   "decide_kernel": 89,
+   "theorem": 618
   }
  },
  "Minimality": {

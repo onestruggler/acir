@@ -9,26 +9,26 @@
   },
   "lean": {
    "files": 23,
-   "lines": 5964,
-   "blank": 676,
-   "comment": 857,
-   "code": 4431
+   "lines": 6038,
+   "blank": 686,
+   "comment": 884,
+   "code": 4468
   }
  },
  "BianSelingerUn": {
   "agda": {
-   "files": 38,
-   "lines": 10469,
+   "files": 37,
+   "lines": 10442,
    "blank": 1436,
-   "comment": 1320,
-   "code": 7713
+   "comment": 1319,
+   "code": 7687
   },
   "lean": {
-   "files": 25,
-   "lines": 5126,
-   "blank": 575,
-   "comment": 630,
-   "code": 3921
+   "files": 26,
+   "lines": 5605,
+   "blank": 663,
+   "comment": 701,
+   "code": 4241
   }
  },
  "LiRossSelinger": {
@@ -41,10 +41,10 @@
   },
   "lean": {
    "files": 36,
-   "lines": 11707,
-   "blank": 836,
-   "comment": 1026,
-   "code": 9845
+   "lines": 11574,
+   "blank": 935,
+   "comment": 1132,
+   "code": 9507
   }
  },
  "HadamardPi": {
@@ -56,11 +56,11 @@
    "code": 9728
   },
   "lean": {
-   "files": 36,
-   "lines": 16792,
-   "blank": 1509,
-   "comment": 1770,
-   "code": 13513
+   "files": 46,
+   "lines": 15921,
+   "blank": 1669,
+   "comment": 1978,
+   "code": 12274
   }
  },
  "Clement2019": {
@@ -73,10 +73,10 @@
   },
   "lean": {
    "files": 15,
-   "lines": 3134,
-   "blank": 268,
-   "comment": 440,
-   "code": 2426
+   "lines": 3159,
+   "blank": 270,
+   "comment": 447,
+   "code": 2442
   }
  },
  "SelingerClifford": {
@@ -89,10 +89,10 @@
   },
   "lean": {
    "files": 24,
-   "lines": 7028,
-   "blank": 763,
-   "comment": 834,
-   "code": 5431
+   "lines": 7184,
+   "blank": 784,
+   "comment": 859,
+   "code": 5541
   }
  },
  "QuditClifford": {
@@ -105,10 +105,10 @@
   },
   "lean": {
    "files": 37,
-   "lines": 8688,
-   "blank": 1211,
-   "comment": 1106,
-   "code": 6371
+   "lines": 8732,
+   "blank": 1216,
+   "comment": 1120,
+   "code": 6396
   }
  },
  "RealStabilizer": {
@@ -153,10 +153,10 @@
   },
   "lean": {
    "files": 32,
-   "lines": 9373,
-   "blank": 1159,
-   "comment": 1197,
-   "code": 7017
+   "lines": 9445,
+   "blank": 1161,
+   "comment": 1210,
+   "code": 7074
   }
  },
  "CliffordT2": {
@@ -201,10 +201,10 @@
   },
   "lean": {
    "files": 274,
-   "lines": 130395,
-   "blank": 16780,
+   "lines": 130403,
+   "blank": 16783,
    "comment": 7728,
-   "code": 105887
+   "code": 105892
   }
  },
  "ToffoliHadamard": {
@@ -216,11 +216,11 @@
    "code": 28568
   },
   "lean": {
-   "files": 19,
-   "lines": 4800,
-   "blank": 447,
-   "comment": 612,
-   "code": 3741
+   "files": 20,
+   "lines": 5751,
+   "blank": 592,
+   "comment": 758,
+   "code": 4401
   }
  },
  "QutritClifford": {
@@ -232,11 +232,11 @@
    "code": 53849
   },
   "lean": {
-   "files": 73,
-   "lines": 14888,
-   "blank": 1840,
-   "comment": 2841,
-   "code": 10207
+   "files": 40,
+   "lines": 14128,
+   "blank": 1788,
+   "comment": 2514,
+   "code": 9826
   }
  },
  "Minimality": {

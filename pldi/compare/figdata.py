@@ -2,16 +2,20 @@
 into figdata.json (read by mkfig.py), and print the totals quoted in the
 text of Section 3.3 and in tab:compare.
 
-Inputs: loc.json, features.json (this directory).  The check times are
-those of Table 1 (pldi/qcert.tex, tab:corpus).
+Inputs: loc.json, features.json, leantime.json (this directory).  The
+Agda check times are those of Table 1 (pldi/qcert.tex, tab:corpus); the
+Lean times are read from leantime.json (leantime.py) and printed in the
+form Table 1 quotes them.
 """
 import json, os, sys
 
 here = os.path.dirname(os.path.abspath(__file__))
 loc = json.load(open(os.path.join(here, 'loc.json')))
 feat = json.load(open(os.path.join(here, 'features.json')))
+ltime = json.load(open(os.path.join(here, 'leantime.json')))
 
-# Table 1 order, label, Agda time (s), Lean time (s).
+# Table 1 order, label, Agda time (s), Lean time (s, of 1 November; replaced
+# below by leantime.json).
 ROWS = [
     ('Greylyn', r'$U_n(\Z[1/\sqrt2,i])$', 42, 115.62),
     ('BianSelingerUn', r'$U_n(\Z[1/2,i])$', 62, 140.99),
@@ -31,6 +35,17 @@ ROWS = [
     ('Minimality', 'minimality, six fragments', 183, 300.20),
 ]
 
+ROWS = [(k, label, at, ltime['units'][k]['seconds']) for k, label, at, _ in ROWS]
+run = ltime['run']
+shared = {u: v['seconds'] for u, v in ltime['units'].items()
+          if u not in {r[0] for r in ROWS}}
+print(f"Lean run {run['date']} at {run['revision']}, {run['modules']} modules, {run['cpu']}, "
+      f"{run['logical_cpus']} CPUs, {run['mem_gib']} GiB")
+print('shared units', shared)
+print(f"timed total {sum(v['seconds'] for v in ltime['units'].values()):.2f} s; failed",
+      {u: v['failed'] for u, v in ltime['units'].items() if v['failed'] or v['rc']},
+      '; foreign Lean seen in', [u for u, v in ltime['units'].items() if v['foreign']])
+
 lines = []
 tot = dict(ac=0, lc=0, af=0, lf=0)
 for i, (key, label, at, lt) in enumerate(ROWS + [('(shared)', 'shared library', None, None)]):
@@ -47,10 +62,15 @@ print('totals (16 rows)', tot)
 print('Lean shorter in', sum(1 for r in lines[:-1] if r[4] < r[3]), 'of 16 rows; longer in',
       [r[1] for r in lines[:-1] if r[4] > r[3]])
 print('Lean faster in', [r[1] for r in lines[:-1] if r[6] < r[5]])
+big = max(lines[:-1], key=lambda r: r[6])
+print(f"check times: Agda {sum(r[5] for r in lines[:-1])} s, Lean {sum(r[6] for r in lines[:-1]):.2f} s; "
+      f"without {big[1]}: Agda {sum(r[5] for r in lines[:-1] if r is not big)} s, "
+      f"Lean {sum(r[6] for r in lines[:-1] if r is not big):.2f} s")
 
 sumf = lambda lang, k: sum(feat[r[0]][lang].get(k, 0) for r in ROWS)
 print('lean by', sumf('lean', 'by'), 'automation', sumf('lean', 'automation'),
-      'noncomputable declarations (all files)', sumf('lean', 'noncomputable_decl_all'),
+      'noncomputable declarations: written files', sumf('lean', 'noncomputable_decl'),
+      'all files', sumf('lean', 'noncomputable_decl_all'),
       'theorems', sumf('lean', 'theorem'), 'decide+kernel', sumf('lean', 'decide_kernel'))
 print('agda with', sumf('agda', 'with'), 'solver', sumf('agda', 'solver'),
       'safe files', sumf('agda', 'safe'), 'of', sumf('agda', 'files'),

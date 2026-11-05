@@ -7,7 +7,8 @@ printed by `figdata.py`. Python 3, no dependencies. Run from this folder:
 ```sh
 python loc.py ../.. loc.json            # code lines per row
 python features.py ../.. features.json  # options, postulates, tactics, noncomputable, imports
-python figdata.py                       # combine with Table 1's check times; print totals
+python3 leantime.py ../../Lean leantime.json   # in WSL: clean timed Lean build, about 1-3 h
+python figdata.py                       # combine with the check times; print totals
 python mkfig.py ../figures/compare.tex  # the pgfplots figure
 ```
 
@@ -18,11 +19,23 @@ python mkfig.py ../figures/compare.tex  # the pgfplots figure
   `Normalization`, `Examples/Construct` and the small groups in Agda, and
   `Presentation`, `Circuit`, `Exact`, `Matrix`, `NumberTheory`, `Synthesis` in Lean.
 * **Code lines** exclude blank lines and comments (`--`, nested `{- -}` / `/- -/`).
-  They count every file, generated ones (certificates, derivations) and, in
-  Agda, those ported from the authors' Clifford+T and Clifford+CS proofs
-  included; Lean's generator templates under `gen/` are not modules and are
-  left out.
-* **Check times** are those of Table 1, copied into `figdata.py`.
+  They count every file under version control, generated ones (certificates,
+  derivations) and, in Agda, those ported from the authors' Clifford+T and
+  Clifford+CS proofs included; untracked work in progress is not counted, and
+  Lean's generator templates under `gen/` are not modules and are left out.
+* **Proof features** (`features.py`) are counted over the written files, those
+  whose header does not say they are generated or ported (`loc.kind`);
+  `noncomputable` declarations are counted both there and over all files.
+* **Check times.** The Agda times are those of Table 1, copied into
+  `figdata.py`. The Lean times are measured by `leantime.py`: it removes QCert's
+  build artifacts (keeping Mathlib), then builds each folder of `Lean/QCert`
+  and each root module in dependency order of their imports with
+  `LEAN_NUM_THREADS=2 lake build <its modules>`, timing each, so that every
+  module is counted in its own folder. It holds `check.sh`'s lock and records,
+  per folder, the load and whether another project's Lean was running
+  (`foreign`); such a folder can be re-timed alone (`leantime.py ../../Lean
+  leantime.json Folder,...`). `leantime.json` records the run (date, revision,
+  CPU, memory). Logs go to `~/leantime-logs/`.
 
 ## Execution benchmark (panel (c))
 
@@ -47,5 +60,8 @@ cd ../pldi/compare && python3 runbench.py exec.json && python3 mkfig.py ../figur
 `exec.json` records each configuration's three trials and their median, and
 the date and CPU.
 
-The JSON files are the measurements of 3 November 2026 (revision `ac567f88`
-plus the working tree) on an Intel Core i5-14400 under WSL.
+`exec.json` is the measurement of 3 November 2026 (revision `ac567f88` plus
+the working tree) on an Intel Core i5-14400 under WSL. `loc.json`,
+`features.json` and `leantime.json` were remeasured on 5 November 2026, after
+the Lean typechecking speed-up (merge `e19af70c`); `leantime.json` says on
+which machine.
