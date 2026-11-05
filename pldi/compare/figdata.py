@@ -14,8 +14,8 @@ loc = json.load(open(os.path.join(here, 'loc.json')))
 feat = json.load(open(os.path.join(here, 'features.json')))
 ltime = json.load(open(os.path.join(here, 'leantime.json')))
 
-# Table 1 order, label, Agda time (s), Lean time (s, of 1 November; replaced
-# below by leantime.json).
+# Table 1 order, label, Agda time (s), Lean time (s, of the 1 November run;
+# replaced below by leantime.json).
 ROWS = [
     ('Greylyn', r'$U_n(\Z[1/\sqrt2,i])$', 42, 115.62),
     ('BianSelingerUn', r'$U_n(\Z[1/2,i])$', 62, 140.99),

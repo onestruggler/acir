@@ -372,12 +372,12 @@ The semantic targets also differ. Most Agda developments work directly with exac
 Both implementations reuse normal-form, exact-synthesis, and translation arguments, and both check generated derivations by a proved replay procedure. The proof assistant checks the computation and the theorem connecting replay success to derivability, so the scripts that search for derivations need not be trusted. For Clifford+CS, Lean supplies independently constructed coset certificates. The trust checks reflect the assistants' different foundations. The Agda corpus uses safe modules without postulates, so it is constructive. The Lean corpus uses neither \texttt{native\_decide} nor unfinished proofs in its main theorem chain: an audit of 105 declarations reports only \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}, with no \texttt{sorryAx} dependency.
 
 \paragraph{Typechecking cost}
-\Cref{tab:corpus} places the recorded Agda timings alongside a clean Lean build measured on 1~November~2026 at revision \texttt{62d6e3b3}. The Lean run used Lean~4.30.0, the pinned Mathlib revision, and WSL on the same Intel Core i5-14400 model, with eight logical CPUs, approximately 12\,GiB of RAM, and 24\,GiB of swap. We removed QCert's build artifacts while retaining the Mathlib and other dependency caches, then built folders sequentially in dependency order with \texttt{LEAN\_NUM\_THREADS=2}. Each folder's elapsed wall time includes Lake startup and Lean artifact generation; shared dependencies are counted only in the folder that defines them. These are build times rather than isolated kernel CPU times.
+\Cref{tab:corpus} places the recorded Agda timings alongside a clean Lean build of revision \texttt{e19af70c}, measured on 5--6~November~2026. The Lean run used Lean~4.30.0, the pinned Mathlib revision, and WSL on an Intel Core i5-13400TEF, with sixteen logical CPUs, approximately 26\,GiB of RAM, and 64\,GiB of swap. We removed QCert's build artifacts while retaining the Mathlib and other dependency caches, then built folders sequentially in dependency order with \texttt{LEAN\_NUM\_THREADS=2}. Each folder's elapsed wall time includes Lake startup and Lean artifact generation; shared dependencies are counted only in the folder that defines them. These are build times rather than isolated kernel CPU times.
 
-The run covered all 831 tracked library modules, excluding three generator templates, and took \textbf{12{,}573.26 seconds (3\,h 29\,min 33\,s)} in timed build commands. Of these modules, 829 passed. Two unused legacy helpers in real Clifford+CH, \texttt{ItemBFun} and \texttt{ItemASteps}, failed respectively at \texttt{omega} proofs and the heartbeat limit; neither is imported by the main theorem chain or the audit, both of which passed. The real Clifford+CH entry in the table includes the full attempted folder build. Beyond the sixteen development folders, the shared \texttt{Circuit}, \texttt{Exact}, \texttt{Matrix}, and \texttt{NumberTheory} folders took 14.16, 13.90, 5.05, and 14.57 seconds, respectively; the five root modules, including the audit, added 54.83 seconds.
+The run covered all 810 tracked library modules, excluding three generator templates, and took \textbf{9{,}415.37 seconds (2\,h 36\,min 55\,s)} in timed build commands. Of these modules, 808 passed. Two unused legacy helpers in real Clifford+CH, \texttt{ItemBFun} and \texttt{ItemASteps}, failed respectively at \texttt{omega} proofs and the heartbeat limit; neither is imported by the main theorem chain or the audit, both of which passed. The real Clifford+CH entry in the table includes the full attempted folder build. Beyond the sixteen development folders, the shared \texttt{Circuit}, \texttt{Exact}, \texttt{Matrix}, and \texttt{NumberTheory} folders took 17.91, 15.51, 6.88, and 15.29 seconds, respectively; the five root modules, including the audit, added 54.95 seconds. Lean builds of another project ran on the same machine during part of the run, so we re-timed the twenty folders and root modules they overlapped and report the second timing, during which the other project used on average about a quarter of one CPU. The two runs total 9{,}604 and 9{,}415 seconds, and the two timings of each development folder agree within 15\%, except Toffoli--Hadamard (178 and 135 seconds).
 
-The Agda column retains the development-local measurements already reported in \Cref{tab:corpus}; it is not a new matched run. Differences in proof constructions, module boundaries, parallelism, and artifact generation prevent attributing the timings solely to the proof assistant. Memory pressure was especially significant in Lean's real Clifford+CH build, which incurred substantial swapping. Its five-wire certificate modules \texttt{Family267} and \texttt{Family268} alone took about 5{,}217 and 1{,}551 seconds. These measurements identify costs of the present implementations under the stated build conditions.
-% Measurement record: lean-typechecking-2026-11-01.json.
+The Agda column retains the development-local measurements already reported in \Cref{tab:corpus}; it is not a new matched run, and it was taken on a different machine. Differences in proof constructions, module boundaries, parallelism, and artifact generation prevent attributing the timings solely to the proof assistant. Lean's real Clifford+CH build takes more than half of the total. Its five-wire certificate modules \texttt{Family267} and \texttt{Family268} alone took about 1{,}741 and 1{,}369 seconds. These measurements identify costs of the present implementations under the stated build conditions.
+% Measurement record: pldi/compare/leantime.json (written by pldi/compare/leantime.py).
 
 Since we have formalized the same results in both Agda and Lean, we can compare the two formalizations in three respects (\Cref{fig:compare} and \Cref{tab:compare}). These observations concern our current formalizations, not differences between Agda and Lean in general, and the two formalizations of a result often take different routes to it.
 
@@ -390,7 +390,7 @@ Since we have formalized the same results in both Agda and Lean, we can compare 
 
 \paragraph{Proof development} We compare the code of the two formalizations (\Cref{fig:compare}(a), \Cref{tab:compare}). Excluding blank lines and comments, the Agda formalization has about 376{,}000 lines and the Lean formalization about 339{,}000. Lean's is shorter in thirteen of the sixteen rows, by a factor of five or more for qudit Clifford, Toffoli--Hadamard and qutrit Clifford, and longer for Hadamard-$\Pi$, three-qubit Clifford+CS and real Clifford+CH. Both counts include the derivations and certificates that scripts generate. The Agda proofs are explicit terms, built by pattern matching and equational reasoning, with reflection-based solvers for associativity and ring identities, and its library develops the group theory the proofs need (about 13{,}100 lines, against 1{,}200 in Lean). The Lean proofs rely on tactics, with about 23{,}000 calls to automation such as \texttt{simp}, \texttt{omega}, \texttt{decide} and \texttt{ring}, and on the algebra of Mathlib.
 
-\paragraph{Verification time} \Cref{fig:compare}(b) plots the check times of \Cref{tab:corpus}. In total Agda took 2{,}332 seconds and Lean 12{,}471, or 1{,}927 and 3{,}602 without real Clifford+CH, whose Lean build swapped heavily. Lean was faster for three rows, Cl\'ement's presentation, qudit Clifford and qutrit Clifford, whose Lean proofs take different routes (see \emph{Definitions and semantics} above). Both assistants decide equalities of matrices and certificates by evaluation in the checker: Agda reduces a Boolean to \texttt{true}, and Lean uses \texttt{decide +kernel}. The two columns were measured under different conditions, and we have yet to separate the time Lean spends running proof automation from the time it spends checking the resulting proofs.
+\paragraph{Verification time} \Cref{fig:compare}(b) plots the check times of \Cref{tab:corpus}. In total Agda took 2{,}332 seconds and Lean 9{,}305, or 1{,}927 and 3{,}826 without real Clifford+CH, whose Lean build alone took 5{,}479. Lean was faster for three rows, Cl\'ement's presentation, qudit Clifford and qutrit Clifford, whose Lean proofs take different routes (see \emph{Definitions and semantics} above). Both assistants decide equalities of matrices and certificates by evaluation in the checker: Agda reduces a Boolean to \texttt{true}, and Lean uses \texttt{decide +kernel}. The two columns were measured under different conditions, and we have yet to separate the time Lean spends running proof automation from the time it spends checking the resulting proofs.
 
 \paragraph{Execution time} The Agda normal forms are executable functions. The Lean formalizations obtain normal forms either as existence theorems, as for the Clifford and real stabilizer circuits of~\cite{selinger2015clifford,makary2021real}, whose Lean proofs show that every circuit equals a normal form without defining a function that computes it, or as \texttt{noncomputable} definitions, as for the exact synthesis of the two-level groups; 140 definitions in the hand-written files of the sixteen Lean developments are declared \texttt{noncomputable}. There is therefore no Lean normalizer to time. What both formalizations can execute is the procedure that decides whether two circuits have the same matrix, which their soundness proofs run. We compiled this procedure for the Clifford circuits of~\cite{selinger2015clifford} to native code, through Agda's GHC backend and Lean's C backend, and timed both on the same random circuits of 100 gates over $H$, $S$ and $CZ$, deciding that each circuit $w$ has the matrix of $w\,S^4$ (\Cref{fig:compare}(c)). On two qubits Agda is slightly faster, 5.0 against 5.8 milliseconds per decision. From three qubits on Lean is faster, by a factor of 2.1 on three qubits and 40 on six, where Agda takes 24 seconds and Lean 0.61. The gap comes mostly from the procedures rather than the compilers: Agda computes each circuit's matrix as a product of stored $2^n\times 2^n$ matrices, so its work grows eightfold with each qubit, whereas Lean simulates the circuit on each basis vector, so its work grows fourfold.
 
@@ -412,7 +412,7 @@ Code lines & 375{,}647 & 338{,}866 \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Verification time}}\\
 Decided equalities & a Boolean reduced to \texttt{true} & \texttt{decide +kernel} \\
-Check time, sixteen rows & 2{,}332\,s & 12{,}471\,s \\
+Check time, sixteen rows & 2{,}332\,s & 9{,}305\,s \\
 Faster for & thirteen rows & three rows \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Execution time}}\\
@@ -770,28 +770,28 @@ The sixteen formalizations in \Cref{tab:corpus} contain about 420{,}000 lines of
 Source & Object & Result & \shortstack{Agda\\Mod} & \shortstack{Agda\\time (s)} & \shortstack{Lean\\time (s)} \\
 \midrule
 \multicolumn{6}{@{}l}{\emph{Groups of $m$-level matrices}}\\
-\tabcite{greylyn2014} & $U_n(\Z[1/\sqrt2,i])$ & presentation, $n\le4$ & 31 & 42 & 115.62 \\
-\tabcite{bian2021un} & $U_n(\Z[1/2,i])$ & presentation & 37 & 62 & 140.99 \\
-\tabcite{li2021on} & $O_n(\Z[1/2])$, $L_n$ & presentations & 68 & 79 & 157.76 \\
-\tabcite{fang2026hadamard} & $O_n(\Z[1/\sqrt2])$ & presentation & 44 & 44 & 315.70 \\
-\tabcite{clement2019thesis} & $O_n(\Z[1/\sqrt2])$ & presentation & 40 & 64 & 52.94 \\
+\tabcite{greylyn2014} & $U_n(\Z[1/\sqrt2,i])$ & presentation, $n\le4$ & 31 & 42 & 145.34 \\
+\tabcite{bian2021un} & $U_n(\Z[1/2,i])$ & presentation & 37 & 62 & 126.99 \\
+\tabcite{li2021on} & $O_n(\Z[1/2])$, $L_n$ & presentations & 68 & 79 & 185.32 \\
+\tabcite{fang2026hadamard} & $O_n(\Z[1/\sqrt2])$ & presentation & 44 & 44 & 231.57 \\
+\tabcite{clement2019thesis} & $O_n(\Z[1/\sqrt2])$ & presentation & 40 & 64 & 51.99 \\
 \midrule
 \multicolumn{6}{@{}l}{\emph{Circuits}}\\
-\tabcite{selinger2015clifford} & Clifford & sub-presentation & 31 & 34 & 103.61 \\
-\citetalias{bian2026qupit}~[\citeyear{bian2026qupit}] & Clifford, odd prime~$p$ & presentation of a~model & 215 & 546 & 166.92 \\
-\tabcite{makary2021real} & real stabilizer & sub-presentation & 30 & 35 & 62.87 \\
-\tabcite{amy2018cnotdihedral} & CNOT-dihedral & sub-presentation & 30 & 24 & 77.29 \\
-\tabcite{blake2026phaseaffine} & phase-affine, prime~$d$ & sub-presentations & 56 & 61 & 176.59 \\
-\tabcite{bian2023cliffordt2} & two-qubit Clifford+T & sub-presentation in~$U_4$ & 62 & 118 & 275.40 \\
-\tabcite{bian2023cliffordcs3} & three-qubit Clifford+CS & sub-presentation in~$U_8$ & 123 & 250 & 1162.66 \\
-\tabcite{clement2026realcliffordch} & real Clifford+CH & sub-presentation & 346 & 405 & 8868.59\textsuperscript{*} \\
-\tabcite{amy2024toffoli} & three-qubit Toffoli--Hadamard & presentation of $L_8$ & 201 & 102 & 328.84 \\
-\tabcite{li2025qutrit} & qutrit Clifford & presentation & 89 & 282 & 164.76 \\
+\tabcite{selinger2015clifford} & Clifford & sub-presentation & 31 & 34 & 88.24 \\
+\citetalias{bian2026qupit}~[\citeyear{bian2026qupit}] & Clifford, odd prime~$p$ & presentation of a~model & 215 & 546 & 197.32 \\
+\tabcite{makary2021real} & real stabilizer & sub-presentation & 30 & 35 & 79.75 \\
+\tabcite{amy2018cnotdihedral} & CNOT-dihedral & sub-presentation & 30 & 24 & 101.22 \\
+\tabcite{blake2026phaseaffine} & phase-affine, prime~$d$ & sub-presentations & 56 & 61 & 257.24 \\
+\tabcite{bian2023cliffordt2} & two-qubit Clifford+T & sub-presentation in~$U_4$ & 62 & 118 & 356.79 \\
+\tabcite{bian2023cliffordcs3} & three-qubit Clifford+CS & sub-presentation in~$U_8$ & 123 & 250 & 1330.89 \\
+\tabcite{clement2026realcliffordch} & real Clifford+CH & sub-presentation & 346 & 405 & 5478.79\textsuperscript{*} \\
+\tabcite{amy2024toffoli} & three-qubit Toffoli--Hadamard & presentation of $L_8$ & 201 & 102 & 134.91 \\
+\tabcite{li2025qutrit} & qutrit Clifford & presentation & 89 & 282 & 179.60 \\
 \midrule
 \multicolumn{6}{@{}l}{\emph{Minimality}}\\
-\tabcite{blake2026simpler} & six fragments & minimal, complete & 73 & 183 & 300.20 \\
+\tabcite{blake2026simpler} & six fragments & minimal, complete & 73 & 183 & 358.87 \\
 \midrule
-Total & & & 1{,}476 & 2{,}332 & 12{,}470.74 \\
+Total & & & 1{,}476 & 2{,}332 & 9{,}304.83 \\
 \bottomrule
 \end{tabularx}
 \captionsetup{position=bottom}

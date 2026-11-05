@@ -64,4 +64,7 @@ the date and CPU.
 the working tree) on an Intel Core i5-14400 under WSL. `loc.json`,
 `features.json` and `leantime.json` were remeasured on 5 November 2026, after
 the Lean typechecking speed-up (merge `e19af70c`); `leantime.json` says on
-which machine.
+which machine. Its clean run (5 November, kept as `leantime-run1.json`)
+overlapped another project's Lean builds, so the twenty units they overlapped
+were re-timed on 6 November (`retimes`); `leantime.json` holds each unit's
+last timing.
