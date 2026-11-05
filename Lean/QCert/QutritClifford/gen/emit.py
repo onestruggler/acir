@@ -1,4 +1,8 @@
-"""Lean source for stored libraries and certificates (words as base-9 numbers)."""
+"""Lean source for stored libraries and certificates.
+
+Certificates store words as base-9 numbers (`enc`, read by `decW`);
+libraries as base-16 numbers with their lengths (`enc16`, read by `dec16`),
+so that the kernel can split and join words by arithmetic."""
 
 DIG = {('H', 0): 1, ('S', 0): 2, ('H', 1): 3, ('S', 1): 4, ('H', 2): 5, ('S', 2): 6,
        ('CZ', 0): 7, ('CZ', 1): 8}
@@ -12,29 +16,66 @@ def enc(w):
     return n
 
 
-def enc_pos(ps):
+def enc16(w):
     n = 0
-    for p in reversed(ps):
-        assert p < 255
-        n = 256 * n + p + 1
+    for l in reversed(w):
+        n = 16 * n + DIG[l]
     return n
 
 
-def enc_step(st):
-    if st[0] == 'swaps':
-        return '(2, %d, 0, 0, 0)' % enc_pos(st[1])
-    if st[0] == 'rule':
-        _, i, d, u, v = st
-        return '(0, %d, %d, %d, %d)' % (i, 1 if d else 0, enc(u), enc(v))
-    _, w, u, s, t, v = st
-    return '(1, %d, %d, %d, %d)' % (enc(u), enc(s), enc(t), enc(v))
+def hints(cur, tgt):
+    """`(p, w)`: the words agree on their first `p` letters and on all but
+    the next `w`, the window `sameTr` compares; `(0, 0)` when they are equal."""
+    if cur == tgt:
+        return 0, 0
+    assert len(cur) == len(tgt)
+    p = 0
+    while cur[p] == tgt[p]:
+        p += 1
+    q = 0
+    while q < len(cur) - p and cur[-1 - q] == tgt[-1 - q]:
+        q += 1
+    return p, len(cur) - p - q
 
 
-def lib_lines(lemmas):
+def lib_lines(E):
+    """The stored lemmas of the engine `E`, each `(l, |l|, r, |r|, p, w,
+    steps)` with the words `l = r` and the hints for the comparison at the
+    end.  A rule step is `(0, i, rev, u, |u|, v, p, w, 0, 0)`, a free step
+    `(1, u, |u|, s, |s|, t, |t|, v, p, w)`, with the hints for the
+    comparison of the word before the step with `u ++ lhs ++ v`.  The swaps
+    of adjacent commuting letters that the engine puts before a step are
+    left out: the Lean checker compares up to commuting letters on the
+    window the hints give (`sameH` in `Run.lean`).  The numbers are raw
+    literals (`nat_lit`): elaborating a numeral `n : ℕ` goes through an
+    instance `OfNat ℕ n`, a new one for every literal, which took most of
+    the time of the data modules."""
+    def tup(xs):
+        return '(' + ', '.join('nat_lit %d' % x for x in xs) + ')'
     out = []
-    for (name, l, r, steps) in lemmas:
-        sts = ',\n    '.join(enc_step(st) for st in steps)
-        out.append('  -- %s\n  (%d, %d, [\n    %s])' % (name, enc(l), enc(r), sts))
+    for (name, l, r, steps) in E.lemmas:
+        cur = list(l)
+        sts = []
+        for st in steps:
+            if st[0] == 'swaps':
+                continue
+            if st[0] == 'rule':
+                _, i, d, u, v = st
+                L, R = E.table[i]
+                if d:
+                    L, R = R, L
+                p, w = hints(cur, u + L + v)
+                sts.append(tup([0, i, 1 if d else 0, enc16(u), len(u), enc16(v), p, w, 0, 0]))
+                cur = u + R + v
+            else:
+                _, _, u, s, t, v = st
+                p, w = hints(cur, u + s + v)
+                sts.append(tup([1, enc16(u), len(u), enc16(s), len(s), enc16(t), len(t), enc16(v),
+                                p, w]))
+                cur = u + t + v
+        p, w = hints(cur, list(r))
+        out.append('  -- %s\n  %s, [\n    %s])' % (
+            name, tup([enc16(l), len(l), enc16(r), len(r), p, w])[:-1], ',\n    '.join(sts)))
     return ',\n'.join(out)
 
 

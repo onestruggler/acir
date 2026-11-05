@@ -17,32 +17,38 @@ namespace QCert.HadamardPi
 
 open Matrix Finset FreeMonoid
 
+noncomputable section
+
 variable {n : ℕ}
 
 /-! ### Normal forms of patterns -/
 
-/-- Drop the trailing zero coefficients. -/
-def lnorm : List ℤ → List ℤ
-  | [] => []
-  | a :: as =>
-    match lnorm as with
-    | [] => if a = 0 then [] else [a]
-    | l => a :: l
+/-- Drop the trailing zero coefficients (by `List.rec`, as the list functions of
+`SymForms.lean`). -/
+noncomputable def lnorm : List ℤ → List ℤ :=
+  List.rec (motive := fun _ => List ℤ) [] fun a _ ih =>
+    List.casesOn (motive := fun _ => List ℤ) ih (if a = 0 then [] else [a]) fun b bs => a :: b :: bs
+
+theorem lnorm_cons (a : ℤ) (as : List ℤ) :
+    lnorm (a :: as) = List.casesOn (motive := fun _ => List ℤ) (lnorm as)
+      (if a = 0 then [] else [a]) (fun b bs => a :: b :: bs) := rfl
 
 theorem evv_lnorm : ∀ (l : List ℤ) (t : ℕ → ℤ), evv (lnorm l) t = evv l t
   | [], t => rfl
   | a :: as, t => by
     have ih := evv_lnorm as (fun i => t (i + 1))
-    simp only [lnorm]
+    rw [lnorm_cons]
     cases h : lnorm as with
     | nil =>
       rw [h] at ih
       simp only [evv_nil] at ih
+      show evv (if a = 0 then [] else [a]) t = _
       split_ifs with ha
       · subst ha; simp [evv_cons, ← ih]
       · simp [evv_cons, ← ih]
     | cons b bs =>
       rw [h] at ih
+      show evv (a :: b :: bs) t = _
       simp only [evv_cons] at ih ⊢
       rw [ih]
 
@@ -132,7 +138,7 @@ theorem lget_lmod2 : ∀ (l : List ℤ) (p : ℕ), lget (lmod2 l) p = lget l p %
   | a :: as, p + 1 => lget_lmod2 as p
 
 theorem lget_lsmul : ∀ (c : ℤ) (l : List ℤ) (p : ℕ), lget (lsmul c l) p = c * lget l p
-  | _, [], _ => by simp [lget, lsmul]
+  | _, [], _ => by simp [lget, lsmul_nil]
   | _, a :: as, 0 => rfl
   | c, a :: as, p + 1 => lget_lsmul c as p
 
@@ -147,7 +153,7 @@ theorem length_lmod2 : ∀ l : List ℤ, (lmod2 l).length = l.length
 
 theorem length_lsmul (c : ℤ) : ∀ l : List ℤ, (lsmul c l).length = l.length
   | [] => rfl
-  | a :: as => by simp [lsmul, length_lsmul c as]
+  | a :: as => by simp [lsmul_cons, length_lsmul c as]
 
 theorem length_lset : ∀ (l : List ℤ) (p : ℕ) (b : ℤ), (lset l p b).length = l.length
   | [], _, _ => rfl
@@ -216,5 +222,7 @@ theorem pat_case {w : ℕ} {v : Fin n → ℝ} {f : Fin w → Fin n} {P : List Z
       zev ((Psubst P (splitφ nv p (splitL lf p b))).getD j dZ)
         (Function.update t p (splitX lf p b t)) :=
   pat_split hw p _ _ (split_eq hodd hp h) hP
+
+end
 
 end QCert.HadamardPi

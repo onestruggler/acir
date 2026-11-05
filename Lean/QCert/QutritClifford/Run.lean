@@ -7,13 +7,15 @@ Toward Theorem 4.4.  The computational part of the engine
 (`Engine.lean`, `Local.lean`), with no Mathlib import, so that the modules
 deciding stored libraries (`Lib2Chk*`, ...) load nothing else:
 
-* letters (`Lt`), their wires, canonical forms for commuting letters
-  (`canon`), and runs of steps over a table of equations (`runStep`,
-  `lemOk`, `libLemOk`);
-* words and steps stored as numbers (`decW`, `decStep`, `decLib`);
+* letters (`Lt`), their wires, and equality up to commuting letters
+  (`sameTr`);
+* words stored as numbers: in base 9 for the certificates (`decW`), in
+  base 16 for the libraries (`dec16`);
 * Pauli tableaux on one and two wires (`run1`, `run2`) and the free steps
   on two and three wires (`fo2`, `fo3`);
-* the base tables (`base2`, `base3`) and inverse words (`invW`).
+* the base tables (`base2`, `base3`) and inverse words (`invW`);
+* the check of a stored library, lemma by lemma, on codes (`stepX`,
+  `runX`, `libLemOk`).
 
 Their meaning is in `Engine.lean` and `Local.lean`.
 -/
@@ -52,119 +54,36 @@ def down : Lt → Lt
 /-- Letters on disjoint wires. -/
 def disj (x y : Lt) : Bool := x.hi < y.lo || y.hi < x.lo
 
-/-- The order of letters in canonical forms. -/
-def rank : Lt → ℕ
-  | H j => 3 * j
-  | S j => 3 * j + 1
-  | C j => 3 * j + 2
-
 end Lt
 
-/-- Wires `0`, `1`, `2` blocked by the letters passed so far. -/
-structure Bl where
-  b0 : Bool
-  b1 : Bool
-  b2 : Bool
+/-- Boolean equality of letters, by `Nat.beq` on the wires. -/
+def Lt.beq : Lt → Lt → Bool
+  | .H i, .H j => i.beq j
+  | .S i, .S j => i.beq j
+  | .C i, .C j => i.beq j
+  | _, _ => false
 
-namespace Bl
+/-- `w` with the letter `t` taken out of the first place it occurs,
+provided every letter before it is on wires disjoint from it. -/
+def extract (t : Lt) : List Lt → Option (List Lt)
+  | [] => none
+  | y :: w => bif Lt.beq t y then some w
+    else bif Lt.disj y t then (extract t w).map (y :: ·) else none
 
-def get (bl : Bl) : ℕ → Bool
-  | 0 => bl.b0
-  | 1 => bl.b1
-  | 2 => bl.b2
-  | _ => true
-
-/-- A letter is on wire `w`. -/
-def onw (x : Lt) (w : ℕ) : Bool := x.lo ≤ w && w ≤ x.hi
-
-def add (bl : Bl) (x : Lt) : Bl := ⟨bl.b0 || onw x 0, bl.b1 || onw x 1, bl.b2 || onw x 2⟩
-
-/-- The letter may be moved in front of the letters passed. -/
-def free (bl : Bl) (x : Lt) : Bool := !bl.get x.lo && !bl.get x.hi
-
-end Bl
-
-/-- Scan for the least-ranked letter that commutes with every letter before
-it: `i` the position, `best` the best so far (position and letter). -/
-def pickI : Bl → ℕ → Option (ℕ × Lt) → List Lt → Option (ℕ × Lt)
-  | _, _, best, [] => best
-  | bl, i, best, x :: rest =>
-    let better : Bool := match best with
-      | none => true
-      | some (_, y) => decide (x.rank < y.rank)
-    let best' := if (bl.free x && better) = true then some (i, x) else best
-    pickI (bl.add x) (i + 1) best' rest
-
-def pick (w : List Lt) : Option (List Lt × Lt × List Lt) :=
-  match pickI ⟨false, false, false⟩ 0 none w with
-  | none => none
-  | some (i, x) => some (w.take i, x, w.drop (i + 1))
-
-def canonF : ℕ → List Lt → List Lt
-  | 0, w => w
-  | n + 1, w => match pick w with
-    | none => w
-    | some (p, x, s) => x :: canonF n (p ++ s)
-
-/-- The canonical form of a word for commuting letters on disjoint wires. -/
-def canon (w : List Lt) : List Lt := canonF w.length w
-
-/-- A step: an equation of the table at a place (`u`, `v`), reversed when
-`rev`; or a free replacement of `s` by `t`. -/
-inductive Step
-  | rule (i : ℕ) (rev : Bool) (u v : List Lt)
-  | free (u s t v : List Lt)
-  | swaps (ps : List ℕ)
-
-/-- Exchange the letters at positions `i`, `i + 1` when they are on disjoint wires. -/
-def swapAt : ℕ → List Lt → Option (List Lt)
-  | 0, x :: y :: r => if Lt.disj x y = true then some (y :: x :: r) else none
-  | i + 1, x :: r => (swapAt i r).map (x :: ·)
-  | _, _ => none
-
-def swapsAt : List ℕ → List Lt → Option (List Lt)
-  | [], w => some w
-  | i :: ps, w => (swapAt i w).bind (swapsAt ps)
+/-- `w` and `v` are the same word up to commuting adjacent letters on
+disjoint wires: the letters of `v` are taken out of `w` in order, each from
+the first place it occurs (`extract`).  This is one pass over the words,
+with a few comparisons per letter; it replaced a comparison of canonical
+forms, and with it the explicit swaps of adjacent letters the derivations
+used to carry before each step (see the README, "Typechecking cost"). -/
+def sameTr : List Lt → List Lt → Bool
+  | [], [] => true
+  | _ :: _, [] => false
+  | w, t :: ts => match extract t w with
+    | some w' => sameTr w' ts
+    | none => false
 
 abbrev Tbl := List (List Lt × List Lt)
-
-section Run
-
-variable (fo : List Lt → List Lt → Bool)
-
-def runStep (T : Tbl) (cur : List Lt) : Step → Option (List Lt)
-  | .rule i rev u v => match T[i]? with
-    | none => none
-    | some e =>
-      if (cur == u ++ (if rev then e.2 else e.1) ++ v ||
-          canon cur == canon (u ++ (if rev then e.2 else e.1) ++ v)) = true
-      then some (u ++ (if rev then e.1 else e.2) ++ v) else none
-  | .free u s t v =>
-    if ((cur == u ++ s ++ v || canon cur == canon (u ++ s ++ v)) && fo s t) = true
-    then some (u ++ t ++ v) else none
-  | .swaps ps => swapsAt ps cur
-
-def runSteps (T : Tbl) : List Lt → List Step → Option (List Lt)
-  | cur, [] => some cur
-  | cur, st :: sts => match runStep fo T cur st with
-    | none => none
-    | some nxt => runSteps T nxt sts
-
-def lemOk (T : Tbl) (l r : List Lt) (sts : List Step) : Bool :=
-  match runSteps fo T l sts with
-  | none => false
-  | some c => c == r || canon c == canon r
-
-/-- Check a library of lemmas, each over the table so far. -/
-def libOk : Tbl → List (List Lt × List Lt × List Step) → Bool
-  | _, [] => true
-  | T, (l, r, sts) :: rest => lemOk fo T l r sts && libOk (T ++ [(l, r)]) rest
-
-/-- The table after a library. -/
-def libTbl (T : Tbl) (L : List (List Lt × List Lt × List Step)) : Tbl :=
-  T ++ L.map fun e => (e.1, e.2.1)
-
-end Run
 
 /-! ### Words as numbers -/
 
@@ -290,32 +209,131 @@ def invW : List Lt → List Lt
   | [] => []
   | x :: l => invW l ++ invL x
 
-def decPF : ℕ → ℕ → List ℕ
-  | 0, _ => []
-  | f + 1, n => if n = 0 then [] else (n % 256 - 1) :: decPF f (n / 256)
+/-! ### The stored libraries: words as base-16 codes
 
-/-- A list of positions stored as a number (base 256, digits shifted by one). -/
-def decP (n : ℕ) : List ℕ := decPF 1000 n
+A library lemma is checked on codes: a word is a number in base `16`, its
+first letter the least significant digit (`dec16`; digits other than
+`1`-`8` stand for no letter), so that a rewrite is arithmetic, which the
+kernel does with GMP (`cat3`), where decoding the words into lists and
+comparing them cost it a few hundred reductions per letter.  The words of
+a step are stored with their lengths; the comparison of the word before a
+step with the side of the equation (`sameH`) is equality of the codes, or,
+when the two differ by commuting letters, equality below digit `p` and
+from digit `p + w` on and `sameTr` on the window of `w` digits between,
+`p` and `w` being stored with the step. -/
 
-/-- A stored step: `(0, i, rev, u, v)` a rule, `(1, u, s, t, v)` a free step,
-`(2, ps, _, _, _)` swaps of adjacent commuting letters. -/
-def decStep : ℕ × ℕ × ℕ × ℕ × ℕ → Step
-  | (0, i, r, u, v) => .rule i (r == 1) (decW u) (decW v)
-  | (1, u, s, t, v) => .free (decW u) (decW s) (decW t) (decW v)
-  | (_, ps, _, _, _) => .swaps (decP ps)
+/-- The letter of a base-16 digit: `1`-`8` are `H₀ S₀ H₁ S₁ H₂ S₂ C₀ C₁`,
+the other digits stand for no letter. -/
+def dig16 (d : ℕ) : List Lt :=
+  bif d.beq 1 then [.H 0] else bif d.beq 2 then [.S 0] else bif d.beq 3 then [.H 1] else
+  bif d.beq 4 then [.S 1] else bif d.beq 5 then [.H 2] else bif d.beq 6 then [.S 2] else
+  bif d.beq 7 then [.C 0] else bif d.beq 8 then [.C 1] else []
 
-/-- A stored library. -/
-def decLib (L : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))) :
-    List (List Lt × List Lt × List Step) :=
-  L.map fun e => (decW e.1, decW e.2.1, e.2.2.map decStep)
+/-- Decoding with fuel, by primitive recursion (for the kernel). -/
+noncomputable def dec16F (f : ℕ) : ℕ → List Lt :=
+  Nat.rec (motive := fun _ => ℕ → List Lt) (fun _ => [])
+    (fun _ ih n => bif n.beq 0 then [] else dig16 (n % 16) ++ ih (n / 16)) f
+
+/-- The word of a base-16 code. -/
+noncomputable def dec16 (n : ℕ) : List Lt := dec16F n n
+
+/-- The digit of a letter (`0` for a letter on wires above `2`). -/
+def code16 : Lt → ℕ
+  | .H 0 => 1
+  | .S 0 => 2
+  | .H 1 => 3
+  | .S 1 => 4
+  | .H 2 => 5
+  | .S 2 => 6
+  | .C 0 => 7
+  | .C 1 => 8
+  | _ => 0
+
+/-- The base-16 code of a word. -/
+def enc16 : List Lt → ℕ
+  | [] => 0
+  | x :: w => code16 x + 16 * enc16 w
+
+/-- `u ++ a ++ v` on codes, `u` of `lu` digits and `a` of `la`. -/
+def cat3 (u lu a la v : ℕ) : ℕ := u + 16 ^ lu * (a + 16 ^ la * v)
+
+/-- The words of two codes are equal up to commuting letters: the codes
+are equal, or agree below digit `p` and from digit `p + w` on, with windows
+of `w` digits that `sameTr` identifies. -/
+noncomputable def sameH (c d p w : ℕ) : Bool :=
+  c.beq d ||
+    ((c % 16 ^ p).beq (d % 16 ^ p) && (c / 16 ^ (p + w)).beq (d / 16 ^ (p + w)) &&
+      sameTr (dec16 (c / 16 ^ p % 16 ^ w)) (dec16 (d / 16 ^ p % 16 ^ w)))
+
+/-- Entry `i` of a list, by primitive recursion (for the kernel). -/
+noncomputable def nthX {α : Type} (l : List α) : ℕ → Option α :=
+  List.rec (motive := fun _ => ℕ → Option α) (fun _ => none)
+    (fun a _ ih i => Nat.rec (motive := fun _ => Option α) (some a) (fun i' _ => ih i') i) l
+
+/-- A stored step: `(0, i, rev, u, |u|, v, p, w, 0, 0)` rewrites with
+entry `i` of the table (right to left when `rev = 1`) at `u`, `v`;
+`(1, u, |u|, s, |s|, t, |t|, v, p, w)` replaces `s` by `t` at `u`, `v`, a
+free step; `p`, `w` are the hints of `sameH`. -/
+abbrev SX := ℕ × ℕ × ℕ × ℕ × ℕ × ℕ × ℕ × ℕ × ℕ × ℕ
+
+/-- A stored lemma `(l, |l|, r, |r|, p, w, steps)`: `l = r`, by the steps,
+with the hints of the comparison at the end. -/
+abbrev LX := ℕ × ℕ × ℕ × ℕ × ℕ × ℕ × List SX
+
+/-- Entry `j < n` of the table `B` followed by the lemmas of `D`, as codes
+with their lengths. -/
+noncomputable def tbX (B : Tbl) (D : List LX) (n j : ℕ) : Option (ℕ × ℕ × ℕ × ℕ) :=
+  bif Nat.blt j n then
+    bif Nat.blt j B.length then (nthX B j).map fun e => (enc16 e.1, e.1.length, enc16 e.2, e.2.length)
+    else (nthX D (j - B.length)).map fun e => (e.1, e.2.1, e.2.2.1, e.2.2.2.1)
+  else none
+
+/-- Replace `x` (of `lx` digits) by `y` (of `ly`) between `u` (of `lu`) and
+`v`, the word before being `cur` (with the hints `p`, `w`). -/
+def ruleX (sm : ℕ → ℕ → ℕ → ℕ → Bool) (cur u lu v p w x lx y ly : ℕ) : Option ℕ :=
+  bif Nat.blt u (16 ^ lu) && Nat.blt x (16 ^ lx) && Nat.blt y (16 ^ ly) &&
+      sm cur (cat3 u lu x lx v) p w then
+    some (cat3 u lu y ly v)
+  else none
+
+section RunX
+
+variable (fo : List Lt → List Lt → Bool) (T : ℕ → Option (ℕ × ℕ × ℕ × ℕ))
+
+/-- One stored step. -/
+noncomputable def stepX (cur : ℕ) : SX → Option ℕ
+  | (k, a1, a2, a3, a4, a5, a6, a7, a8, a9) =>
+    bif k.beq 0 then
+      match T a1 with
+      | none => none
+      | some (l, ll, r, lr) =>
+        bif a2.beq 1 then ruleX sameH cur a3 a4 a5 a6 a7 r lr l ll
+        else ruleX sameH cur a3 a4 a5 a6 a7 l ll r lr
+    else bif k.beq 1 then
+      bif fo (dec16 a3) (dec16 a5) then ruleX sameH cur a1 a2 a7 a8 a9 a3 a4 a5 a6 else none
+    else none
+
+/-- A run of stored steps. -/
+noncomputable def runX : List SX → ℕ → Option ℕ
+  | [], c => some c
+  | st :: sts, c => match stepX fo T c st with
+    | some c' => runX sts c'
+    | none => none
+
+end RunX
 
 /-- Lemma `i` of a stored library checks over the table before it. -/
-def libLemOk (fo : List Lt → List Lt → Bool) (B : Tbl)
-    (D : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))) (i : ℕ) : Bool :=
-  match D[i]? with
+noncomputable def libLemOk (fo : List Lt → List Lt → Bool) (B : Tbl) (D : List LX) (i : ℕ) : Bool :=
+  match nthX D i with
   | none => false
-  | some e => lemOk fo ((libTbl B (decLib D)).take (B.length + i)) (decW e.1) (decW e.2.1)
-      (e.2.2.map decStep)
+  | some (l, _, r, _, p, w, sts) =>
+    match runX fo (tbX B D (B.length + i)) sts l with
+    | none => false
+    | some c => sameH c r p w
+
+/-- The table of a library: `B`, then the lemmas of `D`. -/
+noncomputable def libTbl (B : Tbl) (D : List LX) : Tbl :=
+  B ++ D.map fun e => (dec16 e.1, dec16 e.2.2.1)
 
 /-- Every index below `j + 1` passes, from every index below `j` and `j`. -/
 theorem upto_succ {P : Nat → Bool} {j : Nat} (h : ∀ i < j, P i = true) (hj : P j = true) :

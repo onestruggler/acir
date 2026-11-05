@@ -42,7 +42,7 @@ theorem rel1223_{tag} {{a b c d e f g h : Fin n}} (h1 : a < b) (h2 : b < c) (h3 
   have hh := derivable_rename (emb8 h1 h2 h3 h4 h5 h6 h7) (checkD_sound
     (w := ({word_lit(l)} : List (Gen 8)))
     (w' := {word_lit(C)})
-    (sts := {steps_lit(st, step_d)})
+    (sts := {steps_code(st, 8)})
     (by decide +kernel))
   simpa only [renW_ofList, List.map_cons, List.map_nil, Gen.rename, emb8_0, emb8_1, emb8_2,
     emb8_3, emb8_4, emb8_5, emb8_6, emb8_7] using hh

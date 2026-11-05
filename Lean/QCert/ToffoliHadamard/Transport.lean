@@ -33,10 +33,12 @@ theorem adj {g : AG} {j : ℕ} (hg : g ∈ allAG) (hj : j < 7) (hv : g.valid j =
       (FreeMonoid.ofList (g.act j).enc) := by
   have h1 := List.all_eq_true.1 adj_keys g hg
   have h2 := allBelow_spec h1 hj
-  simp only [hv, Bool.not_true, Bool.false_or, Bool.and_eq_true, List.contains_iff_mem,
-    List.any_eq_true, beq_iff_eq] at h2
-  obtain ⟨hmem, c, hc, rfl, rfl⟩ := h2
-  exact ⟨hmem, by simpa [AdjCert.entry] using adj_valid c hc⟩
+  simp only [hv, Bool.not_true, Bool.false_or, Bool.and_eq_true] at h2
+  obtain ⟨c, hc, hcj, hcg⟩ := AdjCert.of_bit adj_bounded (List.all_eq_true.1 allAG_bounded g hg)
+    (by omega) h2.2
+  refine ⟨memAG_spec h2.1, ?_⟩
+  rw [← hcj, ← hcg]
+  simpa [AdjCert.entry] using adj_valid c hc
 
 /-! ## Paths -/
 
@@ -143,16 +145,15 @@ theorem transport_rel (P : List ℕ) (hP : ∀ j ∈ P, j < 7) (l r : List AG)
 
 /-- `P` carries the relation `L = R` to `Lt = Rt`. -/
 def ok (P : List ℕ) (L R Lt Rt : List AG) : Bool :=
-  P.all (· < 7) && (L ++ R).all (fun g => allAG.contains g && g.validPath P) &&
+  P.all (· < 7) && (L ++ R).all (fun g => memAG g && g.validPath P) &&
     L.map (AG.actPath P) == Lt && R.map (AG.actPath P) == Rt
 
 theorem of_ok {P : List ℕ} {L R Lt Rt : List AG} (hok : ok P L R Lt Rt = true)
     (h : Derivable MRel (FreeMonoid.ofList (encL L)) (FreeMonoid.ofList (encL R))) :
     Derivable MRel (FreeMonoid.ofList (encL Lt)) (FreeMonoid.ofList (encL Rt)) := by
-  simp only [ok, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq, beq_iff_eq,
-    List.contains_iff_mem] at hok
+  simp only [ok, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq, beq_iff_eq] at hok
   obtain ⟨⟨⟨hP, hv⟩, rfl⟩, rfl⟩ := hok
-  exact transport_rel P hP L R (fun g hg => hv g hg) h
+  exact transport_rel P hP L R (fun g hg => ⟨memAG_spec (hv g hg).1, (hv g hg).2⟩) h
 
 /-! ## Paths by bubble sort -/
 

@@ -249,7 +249,34 @@ def czZ : Matrix (Fin (2 ^ 2)) (Fin (2 ^ 2)) GaussianInt :=
 
 theorem hZ_conj : ∀ P : PD 1, hZ * pauliZ P = pauliZ (actH P) * hZ := by decide +kernel
 theorem sZ_conj : ∀ P : PD 1, sZ * pauliZ P = pauliZ (actS P) * sZ := by decide +kernel
-theorem czZ_conj : ∀ P : PD 2, czZ * pauliZ P = pauliZ (actCZ P) * czZ := by decide +kernel
+
+/-- The diagonal of `Z_c`. -/
+def czd : Fin (2 ^ 2) → GaussianInt := ![1, 1, 1, -1]
+
+theorem czZ_eq : czZ = diagonal czd := by decide +kernel
+
+/-- Pauli data on two wires from its five components. -/
+def pd2 (c : Fin 4) (a0 a1 b0 b1 : Fin 2) : PD 2 := ⟨c, ![a0, a1], ![b0, b1]⟩
+
+theorem pd2_eta (P : PD 2) : P = pd2 P.c (P.a 0) (P.a 1) (P.b 0) (P.b 1) := by
+  ext j
+  · rfl
+  · fin_cases j <;> rfl
+  · fin_cases j <;> rfl
+
+/-- `Z_c` is diagonal, so both sides are entrywise products with its
+diagonal; decided over the five components of the Pauli data and the
+entries (deciding `∀ P : PD 2` on the `Matrix` products took the kernel
+about 7 s). -/
+theorem czZ_conj : ∀ P : PD 2, czZ * pauliZ P = pauliZ (actCZ P) * czZ := by
+  have h : ∀ c : Fin 4, ∀ a0 a1 b0 b1 : Fin 2, ∀ i j : Fin (2 ^ 2),
+      czd i * pauliZ (pd2 c a0 a1 b0 b1) i j = pauliZ (actCZ (pd2 c a0 a1 b0 b1)) i j * czd j := by
+    decide +kernel
+  intro P
+  rw [pd2_eta P, czZ_eq]
+  refine Matrix.ext fun i j => ?_
+  rw [diagonal_mul, mul_diagonal]
+  exact h _ _ _ _ _ i j
 
 theorem toComplex_gi : GaussianInt.toComplex gi = Complex.I := by
   simp [gi, GaussianInt.toComplex_def']

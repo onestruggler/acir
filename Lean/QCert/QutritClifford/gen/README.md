@@ -14,11 +14,11 @@ order) is the reverse of a letter list.
 | `gadgets.py` | breadth-first search for the section gadgets (`α`, `P`, `Q`, `Γ₀₁`, `Γ₀₀`) |
 | `sections.py` | the sections `sigma`, `tau` of the two Schreier stages (checked on 1–3 wires) and K-words by breadth-first search in the stabilisers |
 | `engine.py` | the derivation engine of `Engine.lean` in Python (rule steps, free steps, swaps; `chain` finds the steps between consecutive words) |
-| `emit.py`, `mk_lib.py` | Lean source for stored libraries (words as base-9 numbers): `<Name>Data.lean`, `<Name>Chk<j>.lean` (lemmas checked by `decide +kernel`, a chunk per module), `<Name>.lean` |
+| `emit.py`, `mk_lib.py` | Lean source for stored libraries (words as base-16 numbers with their lengths, raw literals; the swaps the engine puts before a step left out, the comparison hints of `sameH` computed by replaying the steps): `<Name>Data.lean`, `<Name>Chk<j>.lean` (lemmas checked by `decide +kernel`, a chunk per module), `<Name>.lean`; certificates store words as base-9 numbers |
 | `cosets.py`, `cert.py` | coset tables with a deduction order for widths 1 and 2 (`Coset.lean`) |
-| `lib2.py`, `facts2.py`, `mk_lib2.py` | the two-wire library (free one-wire segments): the swap lemmas, `X` and the generators of `P` passing `CZ`, and the stabiliser facts of the width-2 certificate; writes `Lib2Data.lean`, `Lib2Chk*.lean`, `Lib2.lean` |
+| `lib2.py`, `facts2.py`, `mk_lib2.py` | the two-wire library (free one-wire segments): the swap lemmas, `X` and the generators of `P` passing `CZ`, and the stabiliser facts of the width-2 certificate; writes `Lib2Data.lean`, `Lib2Chk0.lean` (all 105 lemmas), `Lib2.lean` |
 | `mk_cert.py` | writes `Cert1Data.lean`, `Cert2Data.lean` (about 2 minutes) |
-| `lib3.py`, `facts3.py`, `mk_lib3.py` | the three-wire lemmas and the 311 local facts of the generic step (free two-wire segments; `python3 facts3.py` checks them in about 30 s); `mk_lib3.py [chunk]` writes `Lib3Data.lean`, `Lib3Chk*.lean` (chunks of 12 lemmas by default), `Lib3.lean` and `Facts3Data.lean` |
+| `lib3.py`, `facts3.py`, `mk_lib3.py` | the three-wire lemmas and the 311 local facts of the generic step (free two-wire segments; `python3 facts3.py` checks them in about 30 s); `mk_lib3.py [chunk]` writes `Lib3Data.lean`, `Lib3Chk*.lean` (chunks of 128 lemmas by default, three modules), `Lib3.lean` and `Facts3Data.lean` |
 | `mk_s12.py` | writes `S12Data.lean`, the K-words of the stage-1 condition on two wires |
 
 Found gadgets (time order):

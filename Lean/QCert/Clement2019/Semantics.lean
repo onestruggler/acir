@@ -82,4 +82,13 @@ theorem wordMat_eq_of_check {m : ℕ} (f : Fin m → Fin n) (hf : Function.Injec
   rw [wordMat_eq, wordMat_eq, hw, hw', lprod_push _ hf, lprod_push _ hf,
     lprod_eq_of_check L R h]
 
+/-- The same, the identity of local words decided on the basis vectors
+(`HadamardPi.vcheck`). -/
+theorem wordMat_eq_of_vcheck {m : ℕ} (f : Fin m → Fin n) (hf : Function.Injective f)
+    (L R : List (LGen m)) (h : vcheck L R = true)
+    {w w' : Word (Gen n)} (hw : w.toList.map Gen.toL = L.map (LGen.push f))
+    (hw' : w'.toList.map Gen.toL = R.map (LGen.push f)) :
+    wordMat invSqrt2 w = wordMat invSqrt2 w' :=
+  wordMat_eq_of_check f hf L R (sprod_eq_of_vcheck L R h) hw hw'
+
 end QCert.Clement2019

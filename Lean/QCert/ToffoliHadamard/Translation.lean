@@ -6,7 +6,8 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 The completeness half of Theorem 5.2 is a translation argument (the paper
 reaches its presentation by Tietze transformations from Li–Ross–Selinger's
 presentation of `O₈(ℤ[1/2])`).  Each letter of `Σ₁` decodes to a word of
-level matrices with the same matrix (`dec`, checked by the kernel), and
+level matrices with the same matrix (`dec`, decided on scaled integer
+matrices by the kernel), and
 each generator of `𝒢₈` encodes to a circuit (`enc`, `Encode.lean`).  Then
 completeness of `R₁` follows from Li–Ross–Selinger's Theorem 4.10 at
 `n = 8` together with two families of derivations in `R₁`
@@ -65,25 +66,14 @@ def dec : Sym1 → List (LiRossSelinger.Gen 8)
   | .Kc => [K' 0 1 2 3]
   | .CCZ => [N' 7]
 
-set_option maxHeartbeats 0 in
-theorem dec_eval : ∀ x : Sym1,
-    ListMat.prod 8 ((dec x).map (fun g => ListMat.map ratToQ2 (locL g))) = evalW [x] := by
+theorem dec_eval : ∀ x : Sym1, eqS 2 (evalZ [x]) (evalG (dec x)) = true := by
+  intro x; cases x <;> decide +kernel
+
+theorem dec_bridge : ∀ x : Sym1, (dec x).all bridgeK = true := by
   intro x; cases x <;> decide +kernel
 
 theorem dec_mat (x : Sym1) : ((dec x).map LiRossSelinger.genMat).prod = semMat x := by
-  have e1 : ((dec x).map LiRossSelinger.genMat).prod =
-      (ListMat.toMat 8 (ListMat.prod 8 ((dec x).map (fun g => ListMat.map ratToQ2 (locL g))))).map
-        QSqrt2.toR := by
-    rw [toMat_prod, List.map_map]
-    induction dec x with
-    | nil => exact (Matrix.map_one _ (map_zero _) (map_one _)).symm
-    | cons g l ih =>
-      rw [List.map_cons, List.prod_cons, ih, List.map_cons, List.prod_cons, Matrix.map_mul,
-        Function.comp_apply, toMat_map, Matrix.map_map, genMat_eq_locL]
-      congr 2
-      exact (congrArg DFunLike.coe toR_comp_ratToQ2).symm
-  rw [e1, dec_eval, toMat_evalW, semMat_eq]
-  simp
+  simpa using (semW_genW (dec_bridge x) (dec_eval x)).symm
 
 /-- Words over `Σ₁` as words over `𝒢₈`. -/
 def decW : Word Sym1 →* Word (LiRossSelinger.Gen 8) := FreeMonoid.lift fun x => FreeMonoid.ofList (dec x)

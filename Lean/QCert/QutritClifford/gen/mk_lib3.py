@@ -5,7 +5,7 @@ import sys
 import facts3
 import mk_lib
 
-CHUNK = int(sys.argv[1]) if len(sys.argv) > 1 else 12
+CHUNK = int(sys.argv[1]) if len(sys.argv) > 1 else 128
 
 TOK = {'S0': '.S0', 'X0': '.X0', 'Z0': '.Z0', 'C0': '.C0',
        'H1': '.top (.H 1)', 'S1': '.top (.S 1)', 'H2': '.top (.H 2)', 'S2': '.top (.S 2)',

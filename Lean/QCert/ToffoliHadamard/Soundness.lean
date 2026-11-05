@@ -4,7 +4,8 @@ Copyright (c) 2026 QCert contributors. All rights reserved.
 # Amy, Ross, Wesley (2024): soundness, and inverses of the generators
 
 Every relation of `R₁` and `R₂` holds for the matrices: each side is
-evaluated over `ℚ(√2)` by the kernel (`evalW`), which decides the identity.
+evaluated as a scaled integer matrix by the kernel (`evalZ`), which decides
+the identity.
 Every generator is a unit modulo `R₁` (a product of involutions, by the
 order relations (21)–(25), (84) and the definitions (1)–(20); `CCZ` by
 (83)), so `R₁` and `R₂` are grouplike.
@@ -28,7 +29,7 @@ theorem sem1_word (l : List Sym1) :
       Subgroup.coe_mul, Submonoid.coe_mul, ih, FreeMonoid.lift_eval_of]
     rfl
 
-theorem sem1_eq_of_evalW {l l' : List Sym1} (h : evalW l = evalW l') :
+theorem sem1_eq_of_evalZ {l l' : List Sym1} (h : eqS 2 (evalZ l) (evalZ l') = true) :
     FreeMonoid.lift sem1 (w l) = FreeMonoid.lift sem1 (w l') := by
   apply Subtype.ext; apply Subtype.ext
   rw [sem1_word, sem1_word]
@@ -39,43 +40,59 @@ set_option maxHeartbeats 0 in
 theorem sound1 : ∀ ⦃u v : Word Sym1⦄, R1 u v → FreeMonoid.lift sem1 u = FreeMonoid.lift sem1 v := by
   intro u v h
   rcases h with h | h | _
-  · cases h <;> (apply sem1_eq_of_evalW; decide +kernel)
-  · cases h <;> (apply sem1_eq_of_evalW; decide +kernel)
-  · apply sem1_eq_of_evalW; decide +kernel
+  · cases h <;> (apply sem1_eq_of_evalZ; decide +kernel)
+  · cases h <;> (apply sem1_eq_of_evalZ; decide +kernel)
+  · apply sem1_eq_of_evalZ; decide +kernel
 
 /-! ## `Σ₂` -/
 
-/-- The row operation of a letter of `Σ₂`. -/
-def actOf2 : Sym2 → Act QSqrt2
-  | .g x => actOf x
-  | .H2 => actH2
+/-- The integer row operation of a letter of `Σ₂`. -/
+def actZ2 : Sym2 → Act ℤ
+  | .g x => actZ x
+  | .H2 => actH2Z
+
+/-- The power of `1/√2` a letter of `Σ₂` carries. -/
+def scZ2 : Sym2 → ℕ
+  | .g x => scZ x
+  | .H2 => 1
+
+/-- The matrix of a letter of `Σ₂` over `ℚ(√2)`. -/
+def gateQ2 : Sym2 → Matrix (Fin 8) (Fin 8) QSqrt2
+  | .g x => gateMat QSqrt2.invSqrt2 x
+  | .H2 => matH2 QSqrt2.invSqrt2
 
 /-- The real matrix of a letter of `Σ₂`. -/
 noncomputable def semMat2 : Sym2 → Matrix (Fin 8) (Fin 8) ℝ
   | .g x => semMat x
   | .H2 => semH2
 
-/-- The matrix of a word over `Σ₂`, over `ℚ(√2)`. -/
-def evalW2 (l : List Sym2) : LMat QSqrt2 := l.foldr (fun g M => (actOf2 g).apply 8 M) (one 8)
-
-theorem semMat2_eq (g : Sym2) : semMat2 g = ((actOf2 g).toMat 8).map QSqrt2.toR := by
+theorem actZ2_wf (g : Sym2) : (actZ2 g).WF 8 := by
   cases g with
-  | g x => rw [semMat2, semMat_eq, actOf2, actOf_toMat]
-  | H2 => rw [semMat2, semH2_eq, actOf2, actH2_toMat]
+  | g x => exact actZ_wf x
+  | H2 => exact actH2Z_wf
 
-theorem prod_semMat2_eq {l l' : List Sym2} (h : evalW2 l = evalW2 l') :
+theorem gateQ2_eq (g : Sym2) : gateQ2 g = gateQ (scZ2 g) (actZ2 g) := by
+  cases g with
+  | g x => exact gateMat_eq_actZ x
+  | H2 => exact matH2_eq_actH2Z
+
+theorem semMat2_eq (g : Sym2) : semMat2 g = (gateQ2 g).map QSqrt2.toR := by
+  cases g with
+  | g x => rw [semMat2, semMat_eq, gateQ2]
+  | H2 => rw [semMat2, semH2_eq, gateQ2]
+
+/-- The matrix of a word over `Σ₂` as a scaled integer matrix. -/
+def evalZ2 : List Sym2 → SMat := evalS scZ2 actZ2
+
+theorem prod_semMat2_eq {l l' : List Sym2} (h : eqS 2 (evalZ2 l) (evalZ2 l') = true) :
     (l.map semMat2).prod = (l'.map semMat2).prod := by
-  have e : ∀ l : List Sym2, (l.map semMat2).prod = (ListMat.toMat 8 (evalW2 l)).map QSqrt2.toR := by
+  have e : ∀ l : List Sym2, (l.map semMat2).prod = ((l.map gateQ2).prod).map QSqrt2.toR := by
     intro l
     induction l with
-    | nil =>
-      rw [List.map_nil, List.prod_nil, show evalW2 [] = one 8 from rfl, toMat_one]
-      exact (Matrix.map_one _ (map_zero QSqrt2.toR) (map_one QSqrt2.toR)).symm
-    | cons g l ih =>
-      rw [List.map_cons, List.prod_cons, ih,
-        show evalW2 (g :: l) = (actOf2 g).apply 8 (evalW2 l) from rfl, Act.toMat_apply,
+    | nil => exact (Matrix.map_one _ (map_zero QSqrt2.toR) (map_one QSqrt2.toR)).symm
+    | cons g l ih => rw [List.map_cons, List.prod_cons, ih, List.map_cons, List.prod_cons,
         Matrix.map_mul, semMat2_eq]
-  rw [e, e, h]
+  rw [e, e, prodQ_eq_of_eqS scZ2 actZ2 gateQ2 actZ2_wf gateQ2_eq h]
 
 theorem sem2_word (l : List Sym2) :
     (((FreeMonoid.lift sem2 (w2 l) : TofH3) : unitaryGroup (Fin 8) ℝ) : Matrix (Fin 8) (Fin 8) ℝ) =

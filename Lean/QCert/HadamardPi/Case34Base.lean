@@ -17,6 +17,8 @@ namespace QCert.HadamardPi
 
 open Matrix Finset FreeMonoid
 
+noncomputable section
+
 variable {n : ℕ}
 
 /-- The window of `s` has the pattern `P` at the parameters `t`. -/
@@ -132,5 +134,7 @@ theorem shrink_window {w w' δ : ℕ} (hww : w ≤ w') {s : O n} {hs : s ≠ 1} 
   · obtain ⟨y, hy⟩ := htail i (by omega)
     obtain ⟨d, rfl⟩ : ∃ d, δ = d + 1 := ⟨δ - 1, by omega⟩
     exact ⟨rt2 ^ d * y, by rw [← hy]; ring⟩
+
+end
 
 end QCert.HadamardPi

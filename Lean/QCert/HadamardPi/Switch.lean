@@ -17,26 +17,24 @@ others conjugate a base word by `X_[2,3]` (relabelling the window) or by a
 sign `(-1)_[j]` off `A` and `[0,1]` (which changes the parity of the
 pattern).
 -/
-import QCert.HadamardPi.Good
+import QCert.HadamardPi.GoodCheck
 
 namespace QCert.HadamardPi
 
 open FreeMonoid
 
--- the generated proofs share one `simp` call, whose lemmas are not all needed everywhere
-set_option linter.unusedSimpArgs false
 
 /-! ### (f1) on four indices -/
 /-- (f1) `(H_[a,b] H_[c,d] H_[a,c] H_[b,d])² ≈ ε` at `(0, 1, 2, 3)`, by the paper's proof. -/
 theorem f1₀ : Derivable Fig6 (ofList [hL 0 1, hL 2 3, hL 0 2, hL 1 3, hL 0 1, hL 2 3, hL 0 2, hL 1 3]) (ofList ([] : List (Gen 4))) :=
-  derive_of [.rel .d3 [0, 1, 2, 3] 0 false, .rel .b6 [0, 2, 1, 3] 12 true, .rel .a3 [1, 3] 11 true,
+  derive_of' [.rel .d3 [0, 1, 2, 3] 0 false, .rel .b6 [0, 2, 1, 3] 12 true, .rel .a3 [1, 3] 11 true,
     .rel .a3 [0, 2] 10 true, .rel .a3 [1, 3] 0 false, .rel .a3 [0, 2] 1 false,
     .rel .a3 [2, 3] 2 false, .rel .d3 [0, 1, 2, 3] 3 true, .rel .a3 [2, 3] 4 true,
     .rel .a3 [0, 1] 3 true, .rel .a3 [2, 3] 2 true, .rel .a3 [0, 2] 1 true,
     .rel .a3 [1, 3] 0 true] (by decide +kernel)
 /-- (f1) `(H_[a,b] H_[c,d] H_[a,c] H_[b,d])² ≈ ε` at `(0, 2, 1, 3)`, by the paper's proof. -/
 theorem f1₁ : Derivable Fig6 (ofList [hL 0 2, hL 1 3, hL 0 1, hL 2 3, hL 0 2, hL 1 3, hL 0 1, hL 2 3]) (ofList ([] : List (Gen 4))) :=
-  derive_of [.rel .d3 [0, 2, 1, 3] 0 false, .rel .b6 [0, 1, 2, 3] 12 true, .rel .a3 [2, 3] 11 true,
+  derive_of' [.rel .d3 [0, 2, 1, 3] 0 false, .rel .b6 [0, 1, 2, 3] 12 true, .rel .a3 [2, 3] 11 true,
     .rel .a3 [0, 1] 10 true, .rel .a3 [2, 3] 0 false, .rel .a3 [0, 1] 1 false,
     .rel .a3 [1, 3] 2 false, .rel .d3 [0, 2, 1, 3] 3 true, .rel .a3 [1, 3] 4 true,
     .rel .a3 [0, 2] 3 true, .rel .a3 [1, 3] 2 true, .rel .a3 [0, 1] 1 true,
@@ -44,520 +42,120 @@ theorem f1₁ : Derivable Fig6 (ofList [hL 0 2, hL 1 3, hL 0 1, hL 2 3, hL 0 2, 
 
 /-! ### The derivations -/
 theorem der01_0 : Derivable Fig6 (ofList [hL 0 1]) (ofList [hL (m := 4) 0 1]) :=
-  derive_of [] (by decide +kernel)
+  derive_of' [] (by decide +kernel)
 theorem der01_1 : Derivable Fig6 (ofList [hL 0 1]) (ofList [hL (m := 4) 0 1]) :=
-  derive_of [] (by decide +kernel)
+  derive_of' [] (by decide +kernel)
 theorem der23_0 : Derivable Fig6 (ofList [hL 2 3, hL 0 1, hL 2 3]) (ofList [hL (m := 4) 0 1]) :=
-  derive_of [.rel .b6 [0, 1, 2, 3] 1 true, .rel .a3 [2, 3] 0 true] (by decide +kernel)
+  derive_of' [.rel .b6 [0, 1, 2, 3] 1 true, .rel .a3 [2, 3] 0 true] (by decide +kernel)
 theorem der23_1 : Derivable Fig6 (ofList [hL 2 3, hL 0 1, hL 2 3]) (ofList [hL (m := 4) 0 1]) :=
-  derive_of [.lem _ _ der23_0 0 true] (by decide +kernel)
+  derive_of' [.lem _ _ der23_0 0 true] (by decide +kernel)
 theorem der02_0 : Derivable Fig6 (ofList [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, hL 0 2]) (ofList [hL (m := 4) 0 1]) :=
-  derive_of [.rel .b6 [0, 2, 1, 3] 1 false, .rel .b6 [0, 1, 2, 3] 3 false, .rel .b6 [0, 2, 1, 3] 5 false,
+  derive_of' [.rel .b6 [0, 2, 1, 3] 1 false, .rel .b6 [0, 1, 2, 3] 3 false, .rel .b6 [0, 2, 1, 3] 5 false,
     .rel .a3 [0, 1] 0 false, .lem _ _ der23_0 0 false, .lem _ _ f1₀ 3 true,
     .lem _ _ der23_0 0 true] (by decide +kernel)
 theorem der13_0 : Derivable Fig6 (ofList [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, hL 1 3]) (ofList [hL (m := 4) 0 1]) :=
-  derive_of [.rel .b6 [0, 1, 2, 3] 3 false, .rel .b6 [0, 2, 1, 3] 1 false, .rel .a3 [0, 1] 0 false,
+  derive_of' [.rel .b6 [0, 2, 1, 3] 1 false, .rel .b6 [0, 1, 2, 3] 3 false, .rel .a3 [0, 1] 0 false,
     .lem _ _ der23_0 0 false, .lem _ _ f1₀ 3 true, .lem _ _ der23_0 0 true] (by decide +kernel)
 theorem der03_0 : Derivable Fig6 (ofList [xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, hL 0 3]) (ofList [hL (m := 4) 0 1]) :=
-  derive_of [.rel .a3 [0, 2] 7 false, .lem _ _ der02_0 1 true, .rel .b5 [2, 3, 0, 1] 0 true,
+  derive_of' [.rel .a3 [0, 2] 7 false, .lem _ _ der02_0 1 true, .rel .b5 [2, 3, 0, 1] 0 true,
     .rel .c5 [0, 2, 3] 1 false, .rel .a2 [2, 3] 2 true, .rel .a3 [0, 3] 1 true] (by decide +kernel)
 theorem der12_0 : Derivable Fig6 (ofList [xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, hL 1 2]) (ofList [hL (m := 4) 0 1]) :=
-  derive_of [.rel .c5 [1, 2, 3] 7 false, .lem _ _ der13_0 1 true, .rel .b5 [2, 3, 0, 1] 1 false,
+  derive_of' [.rel .c5 [1, 2, 3] 7 false, .lem _ _ der13_0 1 true, .rel .b5 [2, 3, 0, 1] 1 false,
     .rel .a2 [2, 3] 0 true] (by decide +kernel)
 theorem der02_1 : Derivable Fig6 (ofList [zL 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, zL 3, hL 0 2]) (ofList [hL (m := 4) 0 1]) :=
-  derive_of [.rel .b4 [3, 0, 2] 7 true, .lem _ _ der02_0 1 true, .rel .b4 [3, 0, 1] 1 false,
+  derive_of' [.rel .b4 [3, 0, 2] 7 true, .lem _ _ der02_0 1 true, .rel .b4 [3, 0, 1] 1 false,
     .rel .a1 [3] 0 true] (by decide +kernel)
 theorem der13_1 : Derivable Fig6 (ofList [zL 2, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, zL 2, hL 1 3]) (ofList [hL (m := 4) 0 1]) :=
-  derive_of [.rel .b4 [2, 1, 3] 7 true, .lem _ _ der13_0 1 true, .rel .b4 [2, 0, 1] 1 false,
+  derive_of' [.rel .b4 [2, 1, 3] 7 true, .lem _ _ der13_0 1 true, .rel .b4 [2, 0, 1] 1 false,
     .rel .a1 [2] 0 true] (by decide +kernel)
 theorem der03_1 : Derivable Fig6 (ofList [zL 2, xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3]) (ofList [hL (m := 4) 0 1]) :=
-  derive_of [.rel .b4 [2, 0, 3] 9 true, .lem _ _ der03_0 1 true, .rel .b4 [2, 0, 1] 1 false,
+  derive_of' [.rel .b4 [2, 0, 3] 9 true, .lem _ _ der03_0 1 true, .rel .b4 [2, 0, 1] 1 false,
     .rel .a1 [2] 0 true] (by decide +kernel)
 theorem der12_1 : Derivable Fig6 (ofList [zL 3, xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2]) (ofList [hL (m := 4) 0 1]) :=
-  derive_of [.rel .b4 [3, 1, 2] 9 true, .lem _ _ der12_0 1 true, .rel .b4 [3, 0, 1] 1 false,
+  derive_of' [.rel .b4 [3, 1, 2] 9 true, .lem _ _ der12_0 1 true, .rel .b4 [3, 0, 1] 1 false,
     .rel .a1 [3] 0 true] (by decide +kernel)
 
 /-! ### Every state is good -/
-theorem good01_0_0 : Good4 0 [hL 0 1] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 1, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good01_1_0 : Good4 1 [hL 0 1] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 3, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good23_0_0 : Good4 0 [hL 2 3, hL 0 1, hL 2 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 1, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good23_0_1 : Good4 0 [hL 0 1, hL 2 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 1⟩, ⟨2 * b 2 - 2 * b 3, a 0 + a 1 + 2 * a 2 - 2 * mm⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good23_0_2 : Good4 0 [hL 2 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 1, 2 * b 0 + c⟩, ⟨2 * a 1 + 1, 2 * b 1 + c⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 1⟩, ⟨2 * b 2 - 2 * b 3, a 0 + a 1 + 2 * a 2 - 2 * mm⟩], fun j => ?_, 2, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good23_1_0 : Good4 1 [hL 2 3, hL 0 1, hL 2 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 3, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good23_1_1 : Good4 1 [hL 0 1, hL 2 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 2⟩, ⟨2 * b 2 - 2 * b 3, a 0 + a 1 + 2 * a 2 - 2 * mm - 1⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good23_1_2 : Good4 1 [hL 2 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 1, 2 * b 0 + c⟩, ⟨2 * a 1 + 1, 2 * b 1 + c⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 2⟩, ⟨2 * b 2 - 2 * b 3, a 0 + a 1 + 2 * a 2 - 2 * mm - 1⟩], fun j => ?_, 2, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_0_0 : Good4 0 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 1, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_0_1 : Good4 0 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 1⟩, ⟨2 * b 2 - 2 * b 3, a 0 + a 1 + 2 * a 2 - 2 * mm⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_0_2 : Good4 0 [hL 0 2, hL 2 3, hL 0 1, hL 1 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * a 0 + 2 * a 2 - 2 * mm, b 0 - b 1 + b 2 - b 3⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 1⟩, ⟨-2 * a 1 - 2 * a 2 + 2 * mm, b 0 - b 1 - b 2 + b 3⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_0_3 : Good4 0 [hL 2 3, hL 0 1, hL 1 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * mm + 2, b 0 + b 1 + b 2 + b 3 + 2 * c⟩, ⟨2 * a 0 + 2 * a 2 - 2 * mm, b 0 - b 1 + b 2 - b 3⟩, ⟨2 * a 0 + 2 * a 1 - 2 * mm, b 0 + b 1 - b 2 - b 3⟩, ⟨-2 * a 1 - 2 * a 2 + 2 * mm, b 0 - b 1 - b 2 + b 3⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_0_4 : Good4 0 [hL 0 1, hL 1 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * mm + 2, b 0 + b 1 + b 2 + b 3 + 2 * c⟩, ⟨2 * a 0 + 2 * a 2 - 2 * mm, b 0 - b 1 + b 2 - b 3⟩, ⟨2 * b 0 - 2 * b 2, a 0 - a 2⟩, ⟨2 * b 1 - 2 * b 3, a 0 + 2 * a 1 + a 2 - 2 * mm⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_0_5 : Good4 0 [hL 1 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 2 + 2 * c, a 0 + a 2 + 1⟩, ⟨2 * b 1 + 2 * b 3 + 2 * c, -a 0 - a 2 + 2 * mm + 1⟩, ⟨2 * b 0 - 2 * b 2, a 0 - a 2⟩, ⟨2 * b 1 - 2 * b 3, a 0 + 2 * a 1 + a 2 - 2 * mm⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_0_6 : Good4 0 [hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 2 + 2 * c, a 0 + a 2 + 1⟩, ⟨2 * a 1 + 1, 2 * b 1 + c⟩, ⟨2 * b 0 - 2 * b 2, a 0 - a 2⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 1, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_0_0 : Good4 0 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 1, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_0_1 : Good4 0 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 1⟩, ⟨2 * b 2 - 2 * b 3, a 0 + a 1 + 2 * a 2 - 2 * mm⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_0_2 : Good4 0 [hL 0 2, hL 2 3, hL 0 1, hL 0 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * a 0 + 2 * a 2 - 2 * mm, b 0 - b 1 + b 2 - b 3⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 1⟩, ⟨-2 * a 1 - 2 * a 2 + 2 * mm, b 0 - b 1 - b 2 + b 3⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_0_3 : Good4 0 [hL 2 3, hL 0 1, hL 0 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * mm + 2, b 0 + b 1 + b 2 + b 3 + 2 * c⟩, ⟨2 * a 0 + 2 * a 2 - 2 * mm, b 0 - b 1 + b 2 - b 3⟩, ⟨2 * a 0 + 2 * a 1 - 2 * mm, b 0 + b 1 - b 2 - b 3⟩, ⟨-2 * a 1 - 2 * a 2 + 2 * mm, b 0 - b 1 - b 2 + b 3⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_0_4 : Good4 0 [hL 0 1, hL 0 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * mm + 2, b 0 + b 1 + b 2 + b 3 + 2 * c⟩, ⟨2 * a 0 + 2 * a 2 - 2 * mm, b 0 - b 1 + b 2 - b 3⟩, ⟨2 * b 0 - 2 * b 2, a 0 - a 2⟩, ⟨2 * b 1 - 2 * b 3, a 0 + 2 * a 1 + a 2 - 2 * mm⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_0_5 : Good4 0 [hL 0 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 2 + 2 * c, a 0 + a 2 + 1⟩, ⟨2 * b 1 + 2 * b 3 + 2 * c, -a 0 - a 2 + 2 * mm + 1⟩, ⟨2 * b 0 - 2 * b 2, a 0 - a 2⟩, ⟨2 * b 1 - 2 * b 3, a 0 + 2 * a 1 + a 2 - 2 * mm⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_0_6 : Good4 0 [hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 1, 2 * b 0 + c⟩, ⟨2 * b 1 + 2 * b 3 + 2 * c, -a 0 - a 2 + 2 * mm + 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨2 * b 1 - 2 * b 3, a 0 + 2 * a 1 + a 2 - 2 * mm⟩], fun j => ?_, 1, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_0_0 : Good4 0 [xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 1, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_0_1 : Good4 0 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 1, 2 * b 3 + c⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_0_2 : Good4 0 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 1⟩, ⟨-2 * b 2 + 2 * b 3, -a 0 - a 1 - 2 * a 2 + 2 * mm⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_0_3 : Good4 0 [hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨-2 * a 1 - 2 * a 2 + 2 * mm, b 0 - b 1 - b 2 + b 3⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 1⟩, ⟨2 * a 0 + 2 * a 2 - 2 * mm, b 0 - b 1 + b 2 - b 3⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_0_4 : Good4 0 [hL 2 3, hL 0 1, hL 1 3, xL 2 3, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * mm + 2, b 0 + b 1 + b 2 + b 3 + 2 * c⟩, ⟨-2 * a 1 - 2 * a 2 + 2 * mm, b 0 - b 1 - b 2 + b 3⟩, ⟨2 * a 0 + 2 * a 1 - 2 * mm, b 0 + b 1 - b 2 - b 3⟩, ⟨2 * a 0 + 2 * a 2 - 2 * mm, b 0 - b 1 + b 2 - b 3⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_0_5 : Good4 0 [hL 0 1, hL 1 3, xL 2 3, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * mm + 2, b 0 + b 1 + b 2 + b 3 + 2 * c⟩, ⟨-2 * a 1 - 2 * a 2 + 2 * mm, b 0 - b 1 - b 2 + b 3⟩, ⟨2 * b 0 - 2 * b 3, 2 * a 0 + a 1 + a 2 - 2 * mm⟩, ⟨2 * b 1 - 2 * b 2, a 1 - a 2⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_0_6 : Good4 0 [hL 1 3, xL 2 3, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 3 + 2 * c, -a 1 - a 2 + 2 * mm + 1⟩, ⟨2 * b 1 + 2 * b 2 + 2 * c, a 1 + a 2 + 1⟩, ⟨2 * b 0 - 2 * b 3, 2 * a 0 + a 1 + a 2 - 2 * mm⟩, ⟨2 * b 1 - 2 * b 2, a 1 - a 2⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_0_7 : Good4 0 [xL 2 3, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 3 + 2 * c, -a 1 - a 2 + 2 * mm + 1⟩, ⟨2 * a 1 + 1, 2 * b 1 + c⟩, ⟨2 * b 0 - 2 * b 3, 2 * a 0 + a 1 + a 2 - 2 * mm⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_0_8 : Good4 0 [hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 3 + 2 * c, -a 1 - a 2 + 2 * mm + 1⟩, ⟨2 * a 1 + 1, 2 * b 1 + c⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨2 * b 0 - 2 * b 3, 2 * a 0 + a 1 + a 2 - 2 * mm⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_0_0 : Good4 0 [xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 1, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_0_1 : Good4 0 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 1, 2 * b 3 + c⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_0_2 : Good4 0 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 1⟩, ⟨-2 * b 2 + 2 * b 3, -a 0 - a 1 - 2 * a 2 + 2 * mm⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_0_3 : Good4 0 [hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨-2 * a 1 - 2 * a 2 + 2 * mm, b 0 - b 1 - b 2 + b 3⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 1⟩, ⟨2 * a 0 + 2 * a 2 - 2 * mm, b 0 - b 1 + b 2 - b 3⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_0_4 : Good4 0 [hL 2 3, hL 0 1, hL 0 2, xL 2 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * mm + 2, b 0 + b 1 + b 2 + b 3 + 2 * c⟩, ⟨-2 * a 1 - 2 * a 2 + 2 * mm, b 0 - b 1 - b 2 + b 3⟩, ⟨2 * a 0 + 2 * a 1 - 2 * mm, b 0 + b 1 - b 2 - b 3⟩, ⟨2 * a 0 + 2 * a 2 - 2 * mm, b 0 - b 1 + b 2 - b 3⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_0_5 : Good4 0 [hL 0 1, hL 0 2, xL 2 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * mm + 2, b 0 + b 1 + b 2 + b 3 + 2 * c⟩, ⟨-2 * a 1 - 2 * a 2 + 2 * mm, b 0 - b 1 - b 2 + b 3⟩, ⟨2 * b 0 - 2 * b 3, 2 * a 0 + a 1 + a 2 - 2 * mm⟩, ⟨2 * b 1 - 2 * b 2, a 1 - a 2⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_0_6 : Good4 0 [hL 0 2, xL 2 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 3 + 2 * c, -a 1 - a 2 + 2 * mm + 1⟩, ⟨2 * b 1 + 2 * b 2 + 2 * c, a 1 + a 2 + 1⟩, ⟨2 * b 0 - 2 * b 3, 2 * a 0 + a 1 + a 2 - 2 * mm⟩, ⟨2 * b 1 - 2 * b 2, a 1 - a 2⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_0_7 : Good4 0 [xL 2 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 1, 2 * b 0 + c⟩, ⟨2 * b 1 + 2 * b 2 + 2 * c, a 1 + a 2 + 1⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 1, 2 * b 3 + c⟩, ⟨2 * b 1 - 2 * b 2, a 1 - a 2⟩], fun j => ?_, 1, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_0_8 : Good4 0 [hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 1, 2 * b 0 + c⟩, ⟨2 * b 1 + 2 * b 2 + 2 * c, a 1 + a 2 + 1⟩, ⟨2 * b 1 - 2 * b 2, a 1 - a 2⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 1, 2 * b 3 + c⟩], fun j => ?_, 1, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_1_0 : Good4 1 [zL 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, zL 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 3, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_1_1 : Good4 1 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, zL 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨2 * a 0 + 2 * a 1 + 2 * a 2 - 4 * mm - 3, -2 * b 3 - c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_1_2 : Good4 1 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, zL 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * b 2 - 2 * b 3, a 0 + a 1 + 2 * a 2 - 2 * mm - 1⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 2⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_1_3 : Good4 1 [hL 0 2, hL 2 3, hL 0 1, hL 1 3, zL 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨-2 * a 1 + 2 * mm + 2, b 0 - b 1 + b 2 + b 3 + c⟩, ⟨2 * b 2 - 2 * b 3, a 0 + a 1 + 2 * a 2 - 2 * mm - 1⟩, ⟨2 * a 0 - 2 * mm - 2, b 0 - b 1 - b 2 - b 3 - c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_1_4 : Good4 1 [hL 2 3, hL 0 1, hL 1 3, zL 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 2 * a 1 + 2 * a 2 - 2 * mm, b 0 + b 1 + b 2 - b 3 + c⟩, ⟨-2 * a 1 + 2 * mm + 2, b 0 - b 1 + b 2 + b 3 + c⟩, ⟨-2 * a 2 + 2 * mm + 2, b 0 + b 1 - b 2 + b 3 + c⟩, ⟨2 * a 0 - 2 * mm - 2, b 0 - b 1 - b 2 - b 3 - c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_1_5 : Good4 1 [hL 0 1, hL 1 3, zL 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 2 * a 1 + 2 * a 2 - 2 * mm, b 0 + b 1 + b 2 - b 3 + c⟩, ⟨-2 * a 1 + 2 * mm + 2, b 0 - b 1 + b 2 + b 3 + c⟩, ⟨2 * b 0 - 2 * b 2, a 0 - a 2⟩, ⟨2 * b 1 + 2 * b 3 + 2 * c, -a 0 - a 2 + 2 * mm + 2⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_1_6 : Good4 1 [hL 1 3, zL 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 2 + 2 * c, a 0 + a 2 + 1⟩, ⟨2 * b 1 - 2 * b 3, a 0 + 2 * a 1 + a 2 - 2 * mm - 1⟩, ⟨2 * b 0 - 2 * b 2, a 0 - a 2⟩, ⟨2 * b 1 + 2 * b 3 + 2 * c, -a 0 - a 2 + 2 * mm + 2⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_1_7 : Good4 1 [zL 3, hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 2 + 2 * c, a 0 + a 2 + 1⟩, ⟨2 * a 1 + 1, 2 * b 1 + c⟩, ⟨2 * b 0 - 2 * b 2, a 0 - a 2⟩, ⟨2 * a 0 + 2 * a 1 + 2 * a 2 - 4 * mm - 3, -2 * b 3 - c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good02_1_8 : Good4 1 [hL 0 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 2 + 2 * c, a 0 + a 2 + 1⟩, ⟨2 * a 1 + 1, 2 * b 1 + c⟩, ⟨2 * b 0 - 2 * b 2, a 0 - a 2⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 3, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_1_0 : Good4 1 [zL 2, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, zL 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 3, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_1_1 : Good4 1 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, zL 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨-2 * a 2 - 1, -2 * b 2 - c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 3, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_1_2 : Good4 1 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, zL 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨-2 * b 2 + 2 * b 3, -a 0 - a 1 - 2 * a 2 + 2 * mm + 1⟩, ⟨-2 * b 2 - 2 * b 3 - 2 * c, a 0 + a 1 - 2 * mm - 2⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_1_3 : Good4 1 [hL 0 2, hL 2 3, hL 0 1, hL 0 2, zL 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * a 0 - 2 * mm - 2, b 0 - b 1 - b 2 - b 3 - c⟩, ⟨-2 * b 2 + 2 * b 3, -a 0 - a 1 - 2 * a 2 + 2 * mm + 1⟩, ⟨-2 * a 1 + 2 * mm + 2, b 0 - b 1 + b 2 + b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_1_4 : Good4 1 [hL 2 3, hL 0 1, hL 0 2, zL 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨-2 * a 2 + 2 * mm + 2, b 0 + b 1 - b 2 + b 3 + c⟩, ⟨2 * a 0 - 2 * mm - 2, b 0 - b 1 - b 2 - b 3 - c⟩, ⟨2 * a 0 + 2 * a 1 + 2 * a 2 - 2 * mm, b 0 + b 1 + b 2 - b 3 + c⟩, ⟨-2 * a 1 + 2 * mm + 2, b 0 - b 1 + b 2 + b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_1_5 : Good4 1 [hL 0 1, hL 0 2, zL 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨-2 * a 2 + 2 * mm + 2, b 0 + b 1 - b 2 + b 3 + c⟩, ⟨2 * a 0 - 2 * mm - 2, b 0 - b 1 - b 2 - b 3 - c⟩, ⟨2 * b 0 + 2 * b 2 + 2 * c, a 0 + a 2 + 1⟩, ⟨2 * b 1 - 2 * b 3, a 0 + 2 * a 1 + a 2 - 2 * mm - 1⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_1_6 : Good4 1 [hL 0 2, zL 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 - 2 * b 2, a 0 - a 2⟩, ⟨2 * b 1 + 2 * b 3 + 2 * c, -a 0 - a 2 + 2 * mm + 2⟩, ⟨2 * b 0 + 2 * b 2 + 2 * c, a 0 + a 2 + 1⟩, ⟨2 * b 1 - 2 * b 3, a 0 + 2 * a 1 + a 2 - 2 * mm - 1⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_1_7 : Good4 1 [zL 2, hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 1, 2 * b 0 + c⟩, ⟨2 * b 1 + 2 * b 3 + 2 * c, -a 0 - a 2 + 2 * mm + 2⟩, ⟨-2 * a 2 - 1, -2 * b 2 - c⟩, ⟨2 * b 1 - 2 * b 3, a 0 + 2 * a 1 + a 2 - 2 * mm - 1⟩], fun j => ?_, 1, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good13_1_8 : Good4 1 [hL 1 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 1, 2 * b 0 + c⟩, ⟨2 * b 1 + 2 * b 3 + 2 * c, -a 0 - a 2 + 2 * mm + 2⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨2 * b 1 - 2 * b 3, a 0 + 2 * a 1 + a 2 - 2 * mm - 1⟩], fun j => ?_, 1, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_1_0 : Good4 1 [zL 2, xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 3, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_1_1 : Good4 1 [xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨-2 * a 2 - 1, -2 * b 2 - c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 3, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_1_2 : Good4 1 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 3, 2 * b 3 + c⟩, ⟨-2 * a 2 - 1, -2 * b 2 - c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_1_3 : Good4 1 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨-2 * b 2 + 2 * b 3, -a 0 - a 1 - 2 * a 2 + 2 * mm + 1⟩, ⟨2 * b 2 + 2 * b 3 + 2 * c, -a 0 - a 1 + 2 * mm + 2⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_1_4 : Good4 1 [hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨-2 * a 1 + 2 * mm + 2, b 0 - b 1 + b 2 + b 3 + c⟩, ⟨-2 * b 2 + 2 * b 3, -a 0 - a 1 - 2 * a 2 + 2 * mm + 1⟩, ⟨2 * a 0 - 2 * mm - 2, b 0 - b 1 - b 2 - b 3 - c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_1_5 : Good4 1 [hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨-2 * a 2 + 2 * mm + 2, b 0 + b 1 - b 2 + b 3 + c⟩, ⟨-2 * a 1 + 2 * mm + 2, b 0 - b 1 + b 2 + b 3 + c⟩, ⟨2 * a 0 + 2 * a 1 + 2 * a 2 - 2 * mm, b 0 + b 1 + b 2 - b 3 + c⟩, ⟨2 * a 0 - 2 * mm - 2, b 0 - b 1 - b 2 - b 3 - c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_1_6 : Good4 1 [hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨-2 * a 2 + 2 * mm + 2, b 0 + b 1 - b 2 + b 3 + c⟩, ⟨-2 * a 1 + 2 * mm + 2, b 0 - b 1 + b 2 + b 3 + c⟩, ⟨2 * b 0 - 2 * b 3, 2 * a 0 + a 1 + a 2 - 2 * mm - 1⟩, ⟨2 * b 1 + 2 * b 2 + 2 * c, a 1 + a 2 + 1⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_1_7 : Good4 1 [hL 1 3, xL 2 3, zL 2, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 3 + 2 * c, -a 1 - a 2 + 2 * mm + 2⟩, ⟨2 * b 1 - 2 * b 2, a 1 - a 2⟩, ⟨2 * b 0 - 2 * b 3, 2 * a 0 + a 1 + a 2 - 2 * mm - 1⟩, ⟨2 * b 1 + 2 * b 2 + 2 * c, a 1 + a 2 + 1⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_1_8 : Good4 1 [xL 2 3, zL 2, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 3 + 2 * c, -a 1 - a 2 + 2 * mm + 2⟩, ⟨2 * a 1 + 1, 2 * b 1 + c⟩, ⟨2 * b 0 - 2 * b 3, 2 * a 0 + a 1 + a 2 - 2 * mm - 1⟩, ⟨-2 * a 2 - 1, -2 * b 2 - c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_1_9 : Good4 1 [zL 2, hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 3 + 2 * c, -a 1 - a 2 + 2 * mm + 2⟩, ⟨2 * a 1 + 1, 2 * b 1 + c⟩, ⟨-2 * a 2 - 1, -2 * b 2 - c⟩, ⟨2 * b 0 - 2 * b 3, 2 * a 0 + a 1 + a 2 - 2 * mm - 1⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good03_1_10 : Good4 1 [hL 0 3] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 3 + 2 * c, -a 1 - a 2 + 2 * mm + 2⟩, ⟨2 * a 1 + 1, 2 * b 1 + c⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨2 * b 0 - 2 * b 3, 2 * a 0 + a 1 + a 2 - 2 * mm - 1⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_1_0 : Good4 1 [zL 3, xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 3, 2 * b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_1_1 : Good4 1 [xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩, ⟨2 * a 0 + 2 * a 1 + 2 * a 2 - 4 * mm - 3, -2 * b 3 - c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_1_2 : Good4 1 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * a 0 + 2 * a 1 + 2 * a 2 - 4 * mm - 3, -2 * b 3 - c⟩, ⟨2 * a 2 + 1, 2 * b 2 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_1_3 : Good4 1 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * b 0 - 2 * b 1, a 0 - a 1⟩, ⟨2 * b 2 - 2 * b 3, a 0 + a 1 + 2 * a 2 - 2 * mm - 1⟩, ⟨-2 * b 2 - 2 * b 3 - 2 * c, a 0 + a 1 - 2 * mm - 2⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_1_4 : Good4 1 [hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 + 2 * b 1 + 2 * c, a 0 + a 1 + 1⟩, ⟨2 * a 0 - 2 * mm - 2, b 0 - b 1 - b 2 - b 3 - c⟩, ⟨2 * b 2 - 2 * b 3, a 0 + a 1 + 2 * a 2 - 2 * mm - 1⟩, ⟨-2 * a 1 + 2 * mm + 2, b 0 - b 1 + b 2 + b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_1_5 : Good4 1 [hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 2 * a 1 + 2 * a 2 - 2 * mm, b 0 + b 1 + b 2 - b 3 + c⟩, ⟨2 * a 0 - 2 * mm - 2, b 0 - b 1 - b 2 - b 3 - c⟩, ⟨-2 * a 2 + 2 * mm + 2, b 0 + b 1 - b 2 + b 3 + c⟩, ⟨-2 * a 1 + 2 * mm + 2, b 0 - b 1 + b 2 + b 3 + c⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_1_6 : Good4 1 [hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 2 * a 1 + 2 * a 2 - 2 * mm, b 0 + b 1 + b 2 - b 3 + c⟩, ⟨2 * a 0 - 2 * mm - 2, b 0 - b 1 - b 2 - b 3 - c⟩, ⟨2 * b 0 + 2 * b 3 + 2 * c, -a 1 - a 2 + 2 * mm + 2⟩, ⟨2 * b 1 - 2 * b 2, a 1 - a 2⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_1_7 : Good4 1 [hL 0 2, xL 2 3, zL 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * b 0 - 2 * b 3, 2 * a 0 + a 1 + a 2 - 2 * mm - 1⟩, ⟨2 * b 1 + 2 * b 2 + 2 * c, a 1 + a 2 + 1⟩, ⟨2 * b 0 + 2 * b 3 + 2 * c, -a 1 - a 2 + 2 * mm + 2⟩, ⟨2 * b 1 - 2 * b 2, a 1 - a 2⟩], fun j => ?_, 0, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_1_8 : Good4 1 [xL 2 3, zL 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 1, 2 * b 0 + c⟩, ⟨2 * b 1 + 2 * b 2 + 2 * c, a 1 + a 2 + 1⟩, ⟨2 * a 0 + 2 * a 1 + 2 * a 2 - 4 * mm - 3, -2 * b 3 - c⟩, ⟨2 * b 1 - 2 * b 2, a 1 - a 2⟩], fun j => ?_, 1, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_1_9 : Good4 1 [zL 3, hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 1, 2 * b 0 + c⟩, ⟨2 * b 1 + 2 * b 2 + 2 * c, a 1 + a 2 + 1⟩, ⟨2 * b 1 - 2 * b 2, a 1 - a 2⟩, ⟨2 * a 0 + 2 * a 1 + 2 * a 2 - 4 * mm - 3, -2 * b 3 - c⟩], fun j => ?_, 1, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
-theorem good12_1_10 : Good4 1 [hL 1 2] := by
-  intro a b c mm hs
-  refine ⟨![⟨2 * a 0 + 1, 2 * b 0 + c⟩, ⟨2 * b 1 + 2 * b 2 + 2 * c, a 1 + a 2 + 1⟩, ⟨2 * b 1 - 2 * b 2, a 1 - a 2⟩, ⟨-2 * a 0 - 2 * a 1 - 2 * a 2 + 4 * mm + 3, 2 * b 3 + c⟩], fun j => ?_, 1, ?_⟩
-  · fin_cases j <;> apply Zsqrtd.ext <;>
-      simp [scw, scg, hcntw, hcnt, pow_succ, mul_assoc] <;> omega
-  · simp only [Matrix.cons_val, Int.not_odd_iff_even, Int.even_iff]; omega
+theorem good01_0_0 : Good4 0 [hL 0 1] := good4_of_chk (by decide +kernel)
+theorem good01_1_0 : Good4 1 [hL 0 1] := good4_of_chk (by decide +kernel)
+theorem good23_0_0 : Good4 0 [hL 2 3, hL 0 1, hL 2 3] := good4_of_chk (by decide +kernel)
+theorem good23_0_1 : Good4 0 [hL 0 1, hL 2 3] := good4_of_chk (by decide +kernel)
+theorem good23_0_2 : Good4 0 [hL 2 3] := good4_of_chk (by decide +kernel)
+theorem good23_1_0 : Good4 1 [hL 2 3, hL 0 1, hL 2 3] := good4_of_chk (by decide +kernel)
+theorem good23_1_1 : Good4 1 [hL 0 1, hL 2 3] := good4_of_chk (by decide +kernel)
+theorem good23_1_2 : Good4 1 [hL 2 3] := good4_of_chk (by decide +kernel)
+theorem good02_0_0 : Good4 0 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_0_1 : Good4 0 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_0_2 : Good4 0 [hL 0 2, hL 2 3, hL 0 1, hL 1 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_0_3 : Good4 0 [hL 2 3, hL 0 1, hL 1 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_0_4 : Good4 0 [hL 0 1, hL 1 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_0_5 : Good4 0 [hL 1 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_0_6 : Good4 0 [hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good13_0_0 : Good4 0 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_0_1 : Good4 0 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_0_2 : Good4 0 [hL 0 2, hL 2 3, hL 0 1, hL 0 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_0_3 : Good4 0 [hL 2 3, hL 0 1, hL 0 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_0_4 : Good4 0 [hL 0 1, hL 0 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_0_5 : Good4 0 [hL 0 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_0_6 : Good4 0 [hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good03_0_0 : Good4 0 [xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_0_1 : Good4 0 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_0_2 : Good4 0 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_0_3 : Good4 0 [hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_0_4 : Good4 0 [hL 2 3, hL 0 1, hL 1 3, xL 2 3, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_0_5 : Good4 0 [hL 0 1, hL 1 3, xL 2 3, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_0_6 : Good4 0 [hL 1 3, xL 2 3, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_0_7 : Good4 0 [xL 2 3, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_0_8 : Good4 0 [hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good12_0_0 : Good4 0 [xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_0_1 : Good4 0 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_0_2 : Good4 0 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_0_3 : Good4 0 [hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_0_4 : Good4 0 [hL 2 3, hL 0 1, hL 0 2, xL 2 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_0_5 : Good4 0 [hL 0 1, hL 0 2, xL 2 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_0_6 : Good4 0 [hL 0 2, xL 2 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_0_7 : Good4 0 [xL 2 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_0_8 : Good4 0 [hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good02_1_0 : Good4 1 [zL 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, zL 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_1_1 : Good4 1 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, zL 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_1_2 : Good4 1 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, zL 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_1_3 : Good4 1 [hL 0 2, hL 2 3, hL 0 1, hL 1 3, zL 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_1_4 : Good4 1 [hL 2 3, hL 0 1, hL 1 3, zL 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_1_5 : Good4 1 [hL 0 1, hL 1 3, zL 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_1_6 : Good4 1 [hL 1 3, zL 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_1_7 : Good4 1 [zL 3, hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good02_1_8 : Good4 1 [hL 0 2] := good4_of_chk (by decide +kernel)
+theorem good13_1_0 : Good4 1 [zL 2, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, zL 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_1_1 : Good4 1 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, zL 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_1_2 : Good4 1 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, zL 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_1_3 : Good4 1 [hL 0 2, hL 2 3, hL 0 1, hL 0 2, zL 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_1_4 : Good4 1 [hL 2 3, hL 0 1, hL 0 2, zL 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_1_5 : Good4 1 [hL 0 1, hL 0 2, zL 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_1_6 : Good4 1 [hL 0 2, zL 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_1_7 : Good4 1 [zL 2, hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good13_1_8 : Good4 1 [hL 1 3] := good4_of_chk (by decide +kernel)
+theorem good03_1_0 : Good4 1 [zL 2, xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_1_1 : Good4 1 [xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_1_2 : Good4 1 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_1_3 : Good4 1 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_1_4 : Good4 1 [hL 0 2, hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_1_5 : Good4 1 [hL 2 3, hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_1_6 : Good4 1 [hL 0 1, hL 1 3, xL 2 3, zL 2, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_1_7 : Good4 1 [hL 1 3, xL 2 3, zL 2, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_1_8 : Good4 1 [xL 2 3, zL 2, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_1_9 : Good4 1 [zL 2, hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good03_1_10 : Good4 1 [hL 0 3] := good4_of_chk (by decide +kernel)
+theorem good12_1_0 : Good4 1 [zL 3, xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_1_1 : Good4 1 [xL 2 3, hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_1_2 : Good4 1 [hL 2 3, hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_1_3 : Good4 1 [hL 1 3, hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_1_4 : Good4 1 [hL 0 2, hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_1_5 : Good4 1 [hL 2 3, hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_1_6 : Good4 1 [hL 0 1, hL 0 2, xL 2 3, zL 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_1_7 : Good4 1 [hL 0 2, xL 2 3, zL 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_1_8 : Good4 1 [xL 2 3, zL 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_1_9 : Good4 1 [zL 3, hL 1 2] := good4_of_chk (by decide +kernel)
+theorem good12_1_10 : Good4 1 [hL 1 2] := good4_of_chk (by decide +kernel)
 
 /-! ### The switch -/
 

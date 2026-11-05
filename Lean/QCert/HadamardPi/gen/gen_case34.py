@@ -137,25 +137,37 @@ def solve_phi_q(Psrc, nvs, Pdst, nvd):
 # ---------------------------------------------------------------- Lean output
 def lint(c): return f"({c})" if c < 0 else str(c)
 def llist(l): return "[" + ", ".join(lint(c) for c in l) + "]"
-def lpat(P): return "[" + ",\n    ".join(f"({llist(a)}, {llist(b)})" for a, b in P) + "]"
-def lphi(phi): return "[" + ", ".join(llist(f) for f in phi) + "]"
+# integer lists elaborated by `zl[…]` (`Case34Steps.elabZl`): constructors on raw literals, with no
+# instance problem per coefficient; the entry patterns, which `CaseFour.lean` unfolds by `simp`,
+# stay ordinary list literals
+def zlist(l): return "zl[" + ", ".join(str(c) for c in l) + "]"
+def lpat(P, lit=False):
+    f = llist if lit else zlist
+    return "[" + ",\n    ".join(f"({f(a)}, {f(b)})" for a, b in P) + "]"
+def lphi(phi): return "[" + ", ".join(zlist(f) for f in phi) + "]"
 def lword(ws):
     out = []
     for g in ws:
         out.append(f"zL {g[1]}" if g[0] == 'Z' else f"{g[0].lower()}L {g[1]} {g[2]}")
     return "[" + ", ".join(out) + "]"
+def lwordw(ws, w): return f"({lword(ws)} : List (Gen {w}))"
 
 OUT = []          # Lean declarations in order
 PATS = {}         # Pnorm pattern (as repr) -> name
 NODES = {}        # key -> node name
 COUNT = [0]
+LIT = set()       # the patterns written as ordinary literals (the entries', set in `entries`)
 
 def patname(P):
     key = repr(Pnorm(P))
     if key not in PATS:
         name = f"c34_p{len(PATS)}"
         PATS[key] = name
-        OUT.append(f"/-- A window pattern. -/\ndef {name} : List ZL :=\n  {lpat(Pnorm(P))}\n")
+        if key in LIT:
+            OUT.append(f"/-- A window pattern. -/\ndef {name} : List ZL :=\n  {lpat(Pnorm(P), True)}\n")
+        else:
+            OUT.append(f"/-- A window pattern. -/\nnoncomputable def {name} : List ZL :=\n"
+                       f"  {lpat(Pnorm(P))}\n")
     return PATS[key]
 
 def wordsAB(w, B=B4):
@@ -182,14 +194,15 @@ def fresh(prefix):
     return f"c34_{prefix}{COUNT[0]}"
 
 def split_body(P, nv, lf, n0, n1, conv0=None, conv1=None):
-    """split on lf; branch b goes to node n_b (whose pattern is the child pattern)"""
+    """split on lf (`dichStep`); branch b goes to node n_b (whose pattern is the child pattern)"""
     p = splitvar(lf)
-    pat = patname(P)
-    lines = [f"  rcases pat_dich (P := {pat}) (nv := {nv}) (by decide +kernel) {llist(lf)} {p}",
-             f"      (by decide +kernel) (by decide +kernel) hP with ⟨-, h0⟩ | ⟨-, h1⟩"]
-    for b, nb in ((0, n0), (1, n1)):
-        lines.append(f"  · exact {call(nb, hP=f'pat_eqv (by decide +kernel) h{b}')}")
-    return "\n".join(lines)
+    q = []
+    for b in (0, 1):
+        c = child(P, nv, lf, b)
+        assert Pnorm(Psplit(P, p, splitL(lf, p, b))) == c, "Psplit"
+        q.append(patname(c))
+    return (f"  exact dichStep hs hk hw hK hP htail {zlist(lf)} {p} {q[0]} {q[1]} (by decide +kernel)\n"
+            f"    {n0} {n1}")
 
 def split_node(P, nv, w, d, kb, lf, f, doc):
     """a node splitting on lf, its children built by f(child pattern)"""
@@ -229,13 +242,9 @@ def mono_transfer(P, nv, w, d, kb, m, mu, nu, derA, derB, target, Ptarget, nvt, 
     assert pathOK(P, [], A4, w)
     phi = solve_phi(V, nv, Ptarget, nvt)
     assert phi is not None, doc
-    body = (f"  exact transfer_mono hs hk hw hP (T := fun u => ∃ y, rt2 ^ {d} * y = u) htail\n"
-            f"    (m := {lword(m)}) (μ := {lword(mu)})\n"
-            f"    (ν := {lword(nu)}) (A' := {lword(A4)}) (B' := {lword(Bdst)}) (by decide) (by decide)\n"
-            f"    (by decide) {derA} {derB} (by decide +kernel) ⟨0, by decide⟩ (by decide +kernel)\n"
-            f"    (by decide +kernel) fun s' hs' hk' hw' hP' ht' =>\n"
-            f"      {target} s' hs' hk' hw' (Nat.one_le_iff_ne_zero.2 hk') _\n"
-            f"        (pat_conv' (φ := {lphi(phi)}) (by decide +kernel) hP') ht'")
+    body = (f"  exact monoStep (Nat.zero_lt_succ _) hs hk hw hP htail {lword(m)} {lword(mu)}\n"
+            f"    {lword(nu)} {lword(A4)} {lword(Bdst)} {derA} {derB} {patname(Ptarget)}\n"
+            f"    {lphi(phi)} (by decide +kernel) {target}")
     return node(fresh("tr"), P, nv, w, d, kb, body, doc, B=Bsrc)
 
 
@@ -266,27 +275,12 @@ def ext_body(P, nv, w, d, D, delta, gamma, nxt, kb_next):
     assert allSomeD(P, D, delta, w) and clsCount(V, gamma, 1, w), (w, delta, gamma)
     assert countOddSure(V, w) >= 2 and Pwidth(P, nv) and len(P) == w and oddSure(getD(P, 0))
     assert pathOK(P, [], A4, w) and pathOK(P, [], B4, w)
+    assert delta == d
     g = "true" if gamma else "false"
-    return (f"  have hKd : {delta + 1} ≤ lde (col s (pj s (piv_pos hs))) := by\n"
-            f"    have h := pow_ge_of_odd (Fin.castLE (hw.trans (piv_le_n s))) (Fin.strictMono_castLE _)\n"
-            f"      hs hP (D := {lword(D)}) {delta} (by omega) (by decide +kernel) (htail.castLE _)\n"
-            f"    have := one_le_of_pow h (by decide +kernel)\n"
-            f"    omega\n"
-            f"  obtain ⟨i, hi, y, hyo, hyc, hy⟩ := tail_entry (Fin.castLE (hw.trans (piv_le_n s)))\n"
-            f"    (Fin.strictMono_castLE _) hs hP (D := {lword(D)}) {delta} hKd (by decide +kernel)\n"
-            f"    (htail.castLE _) {g} (by decide +kernel)\n"
-            + ext_tail(P, nv, w, d, delta, g, nxt))
-
-def ext_tail(P, nv, w, d, delta, g, nxt):
-    return (f"  exact extend_entry hs hk hw (nv := {nv}) (by decide +kernel) (by decide +kernel) hP\n"
-            f"    ⟨0, by decide⟩ (by decide +kernel) (T := fun u => ∃ y, rt2 ^ {d} * y = u)\n"
-            f"    (fun u hu => not_odd_of_rt2 (by omega) hu) htail (idx_castLE_lt _ _) (idx_castLE_lt _ _)\n"
-            f"    (lev_lt_of_check hs hk hw hP (A := {lword(A4)}) (by decide +kernel))\n"
-            f"    (lev_lt_of_check hs hk hw hP (A := {lword(B4)}) (by decide +kernel))\n"
-            f"    ((castLE_ne_iff _ i).1 hi) (δ := {delta}) (γ := {g}) hy hyo hyc\n"
-            f"    fun s' hs' hk' hw' hP' ht' hlev =>\n"
-            f"      {nxt} s' hs' hk' hw' (by rw [lde_eq_of_lev hs hs' hlev]; exact hK) _\n"
-            f"        (pat_eqv (by decide +kernel) hP') ht'")
+    q = patname(P + [dent(delta, gamma, nv)])
+    return (f"  exact extStep (Nat.zero_lt_succ _) hs hk hw hK hP (by decide) (by omega) htail {nv}\n"
+            f"    {lword(D)} {g} {q} (by decide +kernel) (A' := {lwordw(A4, w + 1)})\n"
+            f"    (B' := {lwordw(B4, w + 1)}) rfl rfl {nxt}")
 
 # ---------------- stage 1: Lemmas 5.7, 5.9, Assumption 3, Subcases 3.4.1 / 3.4.2
 def P0(eps):
@@ -363,21 +357,12 @@ def build_not21(P):
 
 
 # ---------------- stage 3: Subcase 3.4.2.3 (Lemma 5.13), by tail cleaning and K
-def bound(D, delta, lemma, cnt, tail="htail.castLE _"):
-    return (f"    have h := pow_ge_of_odd (Fin.castLE (hw.trans (piv_le_n s))) (Fin.strictMono_castLE _)\n"
-            f"      hs hP (D := {lword(D)}) {delta} (by omega) (by decide +kernel) ({tail})\n"
-            f"    have := {lemma} h (by decide +kernel)\n"
-            f"    omega\n")
-
 def build_N3423(P):
     name = fresh("c")
     assert cleanOK(P, 12, 1, A4, A4, B4, 6)
     assert countOddSure(divAllD(P, A4, 1, 6), 6) >= 2
     nxt = build_N3423b(P)
-    body = (f"  have hK2 : 2 ≤ lde (col s (pj s (piv_pos hs))) := by\n" + bound(A4, 1, "one_le_of_pow", 2) +
-            f"  exact clean_ind (P := {patname(P)}) (nv := 12) (δ := 1) (D := {lword(A4)})\n"
-            f"    (A0 := {lword(A4)}) (B0 := {lword(B4)}) (by decide +kernel)\n"
-            f"    (fun s hs hk hw hδ t hP htail => {nxt} s hs hk hw hδ t hP htail) s hs hk hw hK2 t hP htail")
+    body = (f"  exact cleanStep hs hk hw hP (by omega) htail 12 {lword(A4)} (by decide +kernel) {nxt}")
     return node(name, P, 12, 6, 1, 1, body, "Subcase 3.4.2.3: no two entries of depth 1 outside.")
 
 def build_N3423b(P):
@@ -409,10 +394,7 @@ def build_N8(P):
     assert cleanOK(P, 16, 2, S2, A4, B4, 8)
     assert countOddSure(divAllD(P, S2, 2, 8), 8) >= 2
     nxt = build_N8b(P)
-    body = (f"  have hK3 : 3 ≤ lde (col s (pj s (piv_pos hs))) := by\n" + bound(S2, 2, "one_le_of_pow", 2) +
-            f"  exact clean_ind (P := {patname(P)}) (nv := 16) (δ := 2) (D := {lword(S2)})\n"
-            f"    (A0 := {lword(A4)}) (B0 := {lword(B4)}) (by decide +kernel)\n"
-            f"    (fun s hs hk hw hδ t hP htail => {nxt} s hs hk hw hδ t hP htail) s hs hk hw hK3 t hP htail")
+    body = (f"  exact cleanStep hs hk hw hP (by omega) htail 16 {lword(S2)} (by decide +kernel) {nxt}")
     return node(name, P, 16, 8, 2, 2, body, "Lemma 5.13: no two entries of depth 2 outside.")
 
 def build_N8b(P):
@@ -426,16 +408,12 @@ def build_N8b(P):
         name = fresh("e")
         n_t = build_N9(Pnorm(Q + [dent(3, True, 16)]))
         n_f = build_N9(Pnorm(Q + [dent(3, False, 16)]))
-        def tl(g, nxt):
-            return "\n".join("  " + x for x in ext_tail(Q, 16, 8, 3, 3, g, nxt).split("\n"))
-        body = ("  have hK4 : 4 ≤ lde (col s (pj s (piv_pos hs))) := by\n" +
-                bound(S2, 2, "two_le_of_pow", 3, "htail.mono.castLE _") +
-                "  obtain ⟨i, hi, y, hyo, hy⟩ := tail_odd_entry (Fin.castLE (hw.trans (piv_le_n s)))\n"
-                f"    (Fin.strictMono_castLE _) hs hP (D := {lword(DM)}) 3 hK4 (by decide +kernel)\n"
-                "    (htail.castLE _) (by decide +kernel)\n"
-                "  by_cases hc : Odd y.im\n"
-                "  · have hyc : Odd y.im ↔ true = true := iff_of_true hc rfl\n" + tl("true", n_t) + "\n"
-                "  · have hyc : Odd y.im ↔ false = true := iff_of_false hc (by simp)\n" + tl("false", n_f))
+        assert Pwidth(Q, 16) and len(Q) == 8 and oddSure(getD(Q, 0))
+        assert pathOK(Q, [], A4, 8) and pathOK(Q, [], B4, 8)
+        qt = patname(Q + [dent(3, True, 16)]); qf = patname(Q + [dent(3, False, 16)])
+        body = (f"  exact oddStep (Nat.zero_lt_succ _) hs hk hw hK hP (by omega) htail 16 {lword(S2)}\n"
+                f"    {lword(DM)} {qt} {qf} (by decide +kernel) (A' := {lwordw(A4, 9)})\n"
+                f"    (B' := {lwordw(B4, 9)}) rfl rfl {n_t} {n_f}")
         return node(name, Q, 16, 8, 3, 3, body, "Lemma 5.13: the entry `m`.")
     return explore(P, 16, 8, 3, 3, dec, "Lemma 5.13: the entry `m`.")
 
@@ -468,14 +446,9 @@ def build_N9(P):
             phi = solve_phi(Pnorm(V[:6]), 20, p21, 12)
             if phi is None:
                 continue
-            body = ("  exact transfer_win hs hk hw hP (T := fun u => ∃ y, rt2 ^ 3 * y = u) htail\n"
-                    f"    (K := {lword(K)}) (comm_word_win (by decide)) (comm_word_win (by decide))\n"
-                    "    (by decide +kernel) ⟨0, by decide⟩ (by decide +kernel) (by decide +kernel)\n"
-                    "    (by decide +kernel) (by decide +kernel) fun s' hs' hk' hw' hP' ht' => by\n"
-                    "      obtain ⟨hP6, ht6⟩ := shrink_window (w := 6) (by omega) hw' hP' ht' (by omega)\n"
-                    "        (by decide +kernel)\n"
-                    f"      exact {n21} s' hs' hk' (le_trans (by omega) hw') (Nat.one_le_iff_ne_zero.2 hk') _\n"
-                    f"        (pat_conv' (φ := {lphi(phi)}) (by decide +kernel) hP6.take) ht6")
+            body = (f"  exact twStep (by decide) (Nat.zero_lt_succ _) hs hk hw hP (by decide) htail {lword(K)}\n"
+                    f"    {patname(p21)} {lphi(phi)} (by decide +kernel) (A' := {lwordw(A4, 6)})\n"
+                    f"    (B' := {lwordw(B4, 6)}) rfl rfl {n21}")
             return node(fresh("k"), Q, 20, 9, 3, 3, body,
                         "Lemma 5.13: the transfer along `(-1)[α] X[α,β] H[j,m]` to Subcase 3.4.2.1.")
         if unk is not None:
@@ -485,6 +458,7 @@ def build_N9(P):
 
 # ---------------- the entries
 def entries():
+    LIT.update(repr(Pnorm(P0(e))) for e in (0, 1))
     P1 = {e: child(P0(e), 8, LF_ETA, e) for e in (0, 1)}
     n1 = {}
     n1[1] = build_N2(P1[1])
@@ -517,11 +491,89 @@ def entries():
 
 HEADER = open(__file__.replace("gen_case34.py", "case34_header.txt"), encoding="utf-8").read()
 
+# ---------------------------------------------------------------- modules
+# The tree is written to several modules, which Lake checks in parallel (within one module Lean
+# overlaps the checks of the nodes only a little): `Case34Data` has the patterns and the nodes that
+# several parts share, `Case34Part1`, ..., `Case34Part{PARTS}` the largest disjoint subtrees,
+# balanced, and `Case34` the nodes above them and the entries.
+PARTS = 6
+import re, os
+
+def split_modules(out):
+    decls = []
+    for d in out:
+        name = re.search(r"^(?:noncomputable )?(?:theorem|def|abbrev) (\S+)", d, re.M).group(1)
+        kind = ("pat" if re.match(r"c34_p\d+$", name) else
+                "top" if name.startswith("c34_entry") or name.startswith("c34_P0_") else "node")
+        decls.append((name, kind, d))
+    names = {n for n, _, _ in decls}
+    nodes = [n for n, k, _ in decls if k == "node"]
+    refs = {n: set(re.findall(r"\b(c34_\w+)", d)) & set(nodes) - {n} for n, _, d in decls}
+    memo = {}
+    def reach(n):
+        if n not in memo:
+            s = {n}
+            for c in refs[n]: s |= reach(c)
+            memo[n] = s
+        return memo[n]
+    thr = -(-len(nodes) // PARTS)
+    cand = [n for n in nodes if len(reach(n)) <= thr]
+    inside = set()
+    for c in cand: inside |= reach(c) - {c}
+    cuts = sorted((c for c in cand if c not in inside), key=lambda c: (-len(reach(c)), nodes.index(c)))
+    bins = [[] for _ in range(PARTS)]; load = [0] * PARTS
+    for c in cuts:
+        b = min(range(PARTS), key=lambda i: (load[i], i))
+        bins[b].append(c); load[b] += len(reach(c))
+    where = {}
+    for n in nodes:
+        owners = {b for b in range(PARTS) for c in bins[b] if n in reach(c)}
+        where[n] = ("data" if len(owners) > 1 else f"part{owners.pop() + 1}" if owners else "top")
+    for n, k, _ in decls:
+        if k == "pat": where[n] = "data"
+        if k == "top": where[n] = "top"
+    for n in nodes:   # a module uses only its own nodes and those of the modules it imports
+        for c in refs[n]:
+            assert where[c] in ("data", where[n]) or where[n] == "top", (n, c)
+    mods = {m: [d for n, _, d in decls if where[n] == m]
+            for m in ["data"] + [f"part{i + 1}" for i in range(PARTS)] + ["top"]}
+    return mods
+
+PART_HEADER = """/-
+Copyright (c) 2026 QCert contributors. All rights reserved.
+
+# The case analysis of Clément's Case 3.4: {what}
+
+Generated by `gen/gen_case34.py` with `Case34.lean` (run `python gen_case34.py ../Case34.lean` in
+`gen/`); do not edit by hand.  See `Case34.lean`.
+-/
+import QCert.HadamardPi.{imp}
+
+namespace QCert.HadamardPi
+
+open FreeMonoid
+
+set_option maxRecDepth 100000
+
+"""
+
 if __name__ == "__main__":
     sys.setrecursionlimit(100000)
     E = entries()
     print("nodes", len(OUT), "patterns", len(PATS))
     if len(sys.argv) > 1:
-        open(sys.argv[1], "w", encoding="utf-8", newline="\n").write(
-            HEADER + "\n".join(OUT) + "\nend QCert.HadamardPi\n")
-        print("written", sys.argv[1])
+        mods = split_modules(OUT)
+        d = os.path.dirname(sys.argv[1])
+        files = {"data": ("Case34Data", PART_HEADER.format(
+            what="the window patterns, and the nodes shared by its parts", imp="Case34Steps"))}
+        for i in range(PARTS):
+            files[f"part{i + 1}"] = (f"Case34Part{i + 1}", PART_HEADER.format(
+                what=f"part {i + 1} of the subtrees", imp="Case34Data"))
+        imports = "\n".join(f"import QCert.HadamardPi.Case34Part{i + 1}" for i in range(PARTS))
+        files["top"] = ("Case34", HEADER.replace("import QCert.HadamardPi.Case34Steps\n",
+                                                 imports + "\n"))
+        for m, (fname, head) in files.items():
+            path = sys.argv[1] if m == "top" else os.path.join(d, fname + ".lean")
+            open(path, "w", encoding="utf-8", newline="\n").write(
+                head + "\n".join(mods[m]) + "\nend QCert.HadamardPi\n")
+            print("written", path, len(mods[m]), "declarations")

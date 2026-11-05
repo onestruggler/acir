@@ -23,10 +23,15 @@ odd entries at `0, 1, 2, 3` with the classes `ε`, `1 - ε`, `ε`, `1 - ε` and 
   depth 2 and `m` of depth 3 of Lemma 5.13, and the transfer along
   `(-1)_[α] X_[α,β] H_[j,m]` (`transfer_win`) to a state of Subcase 3.4.2.1.
 
-Every node splits on the parity of a form in the parameters (`pat_dich`) until its step is
-decided by evaluation.
+Every node splits on the parity of a form in the parameters (`dichStep`) until its step is
+decided by evaluation: each node is one step of `Case34Steps.lean` with one check, decided by
+`decide +kernel` on the pattern.
+
+The tree is written to several modules, which are checked in parallel: `Case34Data.lean` has the
+patterns and the few nodes that several parts share, `Case34Part1.lean`, …, `Case34Part6.lean`
+the largest disjoint subtrees, and this module the nodes above them and the entries.
 -/
-import QCert.HadamardPi.Case34Base
+import QCert.HadamardPi.Case34Steps
 
 namespace QCert.HadamardPi
 

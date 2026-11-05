@@ -25,42 +25,42 @@ LEAN = os.path.dirname(HERE)
 # the output ones.
 TABLES = [
     ('tAH', 3, 5, 'H at the wire of `A_i`', 'i', 'Fin 3',
-     '[.H 0] ++ bA ({i}.val + 1) 0', [('bA ({o}.val + 1) 0', 'Fin 3')], 'okB 0', 1),
+     '[Lt.H 0] ++ bA ({i}.val + 1) 0', [('bA ({o}.val + 1) 0', 'Fin 3')], 'okB 0', 1),
     ('tAS', 6, 8, 'S at the wire of `A_i`', 'i', 'Fin 3',
-     '[.S 0] ++ bA ({i}.val + 1) 0', [('bA ({o}.val + 1) 0', 'Fin 3')], 'okB 0', 1),
+     '[Lt.S 0] ++ bA ({i}.val + 1) 0', [('bA ({o}.val + 1) 0', 'Fin 3')], 'okB 0', 1),
     ('tBH', 24, 27, 'H on the upper wire of `B_j`', 'j', 'Fin 4',
-     '[.H 1] ++ bB ({i}.val + 1) 0', [('bB ({o}.val + 1) 0', 'Fin 4')], 'okB 1', 2),
+     '[Lt.H 1] ++ bB ({i}.val + 1) 0', [('bB ({o}.val + 1) 0', 'Fin 4')], 'okB 1', 2),
     ('tBS1', 28, 31, 'S on the upper wire of `B_j`', 'j', 'Fin 4',
-     '[.S 1] ++ bB ({i}.val + 1) 0', [('bB ({o}.val + 1) 0', 'Fin 4')], 'okB 1', 2),
+     '[Lt.S 1] ++ bB ({i}.val + 1) 0', [('bB ({o}.val + 1) 0', 'Fin 4')], 'okB 1', 2),
     ('tBS0', 32, 35, 'S on the lower wire of `B_j`', 'j', 'Fin 4',
-     '[.S 0] ++ bB ({i}.val + 1) 0', [('bB ({o}.val + 1) 0', 'Fin 4')], 'okB 1', 2),
+     '[Lt.S 0] ++ bB ({i}.val + 1) 0', [('bB ({o}.val + 1) 0', 'Fin 4')], 'okB 1', 2),
     ('tBX', 36, 39, 'X on the lower wire of `B_j`', 'j', 'Fin 4',
      'bX 0 ++ bB ({i}.val + 1) 0', [('bB ({o}.val + 1) 0', 'Fin 4')], 'okB 1', 2),
     ('tBZ', 40, 43, 'CZ below `B_j`, on its lower wire', 'j', 'Fin 4',
-     '[.CZ 0] ++ bB ({i}.val + 1) 1', [('bB ({o}.val + 1) 1', 'Fin 4')], 'okB 2', 3),
+     '[Lt.CZ 0] ++ bB ({i}.val + 1) 1', [('bB ({o}.val + 1) 1', 'Fin 4')], 'okB 2', 3),
     ('tCX', 44, 45, 'X at the wire of `C_k`', 'k', 'Fin 2',
      'bX 0 ++ bC ({i}.val + 1) 0', [('bC ({o}.val + 1) 0', 'Fin 2')], 'okD true 0', 1),
     ('tCS', 46, 47, 'S at the wire of `C_k`', 'k', 'Fin 2',
-     '[.S 0] ++ bC ({i}.val + 1) 0', [('bC ({o}.val + 1) 0', 'Fin 2')], 'okD true 0', 1),
+     '[Lt.S 0] ++ bC ({i}.val + 1) 0', [('bC ({o}.val + 1) 0', 'Fin 2')], 'okD true 0', 1),
     ('tCZ', 48, 49, 'CZ below `C_k`, on its wire', 'k', 'Fin 2',
-     '[.CZ 0] ++ bC ({i}.val + 1) 1', [('bC ({o}.val + 1) 1', 'Fin 2')], 'okD true 1', 2),
+     '[Lt.CZ 0] ++ bC ({i}.val + 1) 1', [('bC ({o}.val + 1) 1', 'Fin 2')], 'okD true 1', 2),
     ('tDH', 66, 69, 'H on the lower wire of `D_l`', 'l', 'Fin 4',
-     '[.H 0] ++ bD ({i}.val + 1) 0', [('bD ({o}.val + 1) 0', 'Fin 4')], 'okD false 0', 2),
+     '[Lt.H 0] ++ bD ({i}.val + 1) 0', [('bD ({o}.val + 1) 0', 'Fin 4')], 'okD false 0', 2),
     ('tDS0', 70, 73, 'S on the lower wire of `D_l`', 'l', 'Fin 4',
-     '[.S 0] ++ bD ({i}.val + 1) 0', [('bD ({o}.val + 1) 0', 'Fin 4')], 'okD false 0', 2),
+     '[Lt.S 0] ++ bD ({i}.val + 1) 0', [('bD ({o}.val + 1) 0', 'Fin 4')], 'okD false 0', 2),
     ('tDS1', 74, 77, 'S on the upper wire of `D_l`', 'l', 'Fin 4',
-     '[.S 1] ++ bD ({i}.val + 1) 0', [('bD ({o}.val + 1) 0', 'Fin 4')], 'okD false 0', 2),
+     '[Lt.S 1] ++ bD ({i}.val + 1) 0', [('bD ({o}.val + 1) 0', 'Fin 4')], 'okD false 0', 2),
     ('tDZ', 78, 81, 'CZ on the wires of `D_l`', 'l', 'Fin 4',
-     '[.CZ 0] ++ bD ({i}.val + 1) 0', [('bD ({o}.val + 1) 0', 'Fin 4')], 'okD false 0', 2),
+     '[Lt.CZ 0] ++ bD ({i}.val + 1) 0', [('bD ({o}.val + 1) 0', 'Fin 4')], 'okD false 0', 2),
 ]
 
 # two-box tables: CZ before two boxes
 TABLES2 = [
     ('tBB', 50, 65, 'CZ on the wires of the second of `B_j B_j\'`, before the first', 'B',
-     '[.CZ 1] ++ bB ({i}.val + 1) 0 ++ bB ({i2}.val + 1) 1',
+     '[Lt.CZ 1] ++ bB ({i}.val + 1) 0 ++ bB ({i2}.val + 1) 1',
      'bB ({o}.val + 1) 0 ++ bB ({o2}.val + 1) 1', 'okB 2', 3),
     ('tDD', 86, 101, 'CZ on the wires of the second of `D_l D_l\'`, before the first', 'D',
-     '[.CZ 0] ++ bD ({i}.val + 1) 1 ++ bD ({i2}.val + 1) 0',
+     '[Lt.CZ 0] ++ bD ({i}.val + 1) 1 ++ bD ({i2}.val + 1) 0',
      'bD ({o}.val + 1) 1 ++ bD ({o2}.val + 1) 0', 'okD false 0', 3),
 ]
 
@@ -91,9 +91,9 @@ namespace QCert.SelingerClifford
 def dg(tok, k):
     name, args = tok
     if name in ('H', 'S', 'X'):
-        return f'.{name} {k - 1 - args[0]}'
+        return f'Dg.{name} {k - 1 - args[0]}'
     if name == 'ZZ':
-        return f'.CZ {k - 2 - min(args)}'
+        return f'Dg.CZ {k - 2 - min(args)}'
     raise ValueError(tok)
 
 
@@ -112,7 +112,7 @@ def split(eq):
 
 
 def out_list(rdirty, ph, k):
-    return '[' + ', '.join([dg(t, k) for t in rdirty] + ['.om'] * (ph % 8)) + ']'
+    return '[' + ', '.join([dg(t, k) for t in rdirty] + ['Dg.om'] * (ph % 8)) + ']'
 
 
 def gen():
@@ -167,7 +167,7 @@ def gen():
     rows.sort()
     s += '/-- S at the wire of `E_h`: equations 3.82–3.85. -/\n'
     s += 'theorem tES : ∀ h : Fin 4, ∃ h\' : Fin 4,\n'
-    s += '    Holds 1 ([.S 0] ++ bE (h.val + 1) 0) (bE (h\'.val + 1) 0)\n'
+    s += '    Holds 1 ([Lt.S 0] ++ bE (h.val + 1) 0) (bE (h\'.val + 1) 0)\n'
     for i, o, x in rows:
         s += f'  | {i} => ⟨{o}, rule_3_{x}⟩\n'
     s += '\nend QCert.SelingerClifford\n'
@@ -196,10 +196,10 @@ def A_TABLES(eqs):
 stays, or the ladder grows down by one wire (`A_{i'}` below `B_j`). -/
 theorem tAZ : ∀ i : Fin 3,
     (∃ (i' : Fin 3) (out : List Dg),
-      Holds 2 ([.CZ 0] ++ bA (i.val + 1) 1) (bA (i'.val + 1) 1 ++ dw out) ∧
+      Holds 2 ([Lt.CZ 0] ++ bA (i.val + 1) 1) (bA (i'.val + 1) 1 ++ dw out) ∧
         OkL (okB 1) 2 out) ∨
     (∃ (i' : Fin 3) (j : Fin 4) (out : List Dg),
-      Holds 2 ([.CZ 0] ++ bA (i.val + 1) 1) (bA (i'.val + 1) 0 ++ bB (j.val + 1) 0 ++ dw out) ∧
+      Holds 2 ([Lt.CZ 0] ++ bA (i.val + 1) 1) (bA (i'.val + 1) 0 ++ bB (j.val + 1) 0 ++ dw out) ∧
         OkL (okB 1) 2 out)
 '''
     for i, t in rows:
@@ -227,10 +227,10 @@ the two boxes stay, or the ladder shrinks by one wire (`A_{i'}` on the upper
 wire). -/
 theorem tAB : ∀ (i : Fin 3) (j : Fin 4),
     (∃ (i' : Fin 3) (j' : Fin 4) (out : List Dg),
-      Holds 2 ([.CZ 0] ++ bA (i.val + 1) 0 ++ bB (j.val + 1) 0)
+      Holds 2 ([Lt.CZ 0] ++ bA (i.val + 1) 0 ++ bB (j.val + 1) 0)
         (bA (i'.val + 1) 0 ++ bB (j'.val + 1) 0 ++ dw out) ∧ OkL (okB 1) 2 out) ∨
     (∃ (i' : Fin 3) (out : List Dg),
-      Holds 2 ([.CZ 0] ++ bA (i.val + 1) 0 ++ bB (j.val + 1) 0)
+      Holds 2 ([Lt.CZ 0] ++ bA (i.val + 1) 0 ++ bB (j.val + 1) 0)
         (bA (i'.val + 1) 1 ++ dw out) ∧ OkL (okB 1) 2 out)
 '''
     for (i, j), t in rows:

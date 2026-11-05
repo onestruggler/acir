@@ -211,23 +211,104 @@ def ct3 (A : Matrix (Fin 3) (Fin 3) Q) : Matrix (Fin 3) (Fin 3) Q := fun i j => 
 
 theorem ct3_eq (A : Matrix (Fin 3) (Fin 3) Q) : ct3 A = conjT A := rfl
 
+/-! #### The checks over `ℤ[ω]`
+
+The matrix identities below are decided over `ℤ[ω]` (`Eisenstein.lean`),
+where a product of two entries is four integer products; over `ℚ(ζ)`, with
+rational coefficients, each check cost the kernel about a second.  `3 H`
+has entries in `ℤ[ω]` (`HZ3 = -c [ω^{jk}]`, `c = ω² - ω`), so `H X H† = Z`
+is read there as `HZ3 X HZ3† = 9 Z`; the nine entries of each matrix over
+`ℚ(ζ)` are then identified with the image of the integer one once
+(`XQ_eq`, `HQ_eq`, …). -/
+
+/-- `X` over `ℤ[ω]`. -/
+def XZ : Matrix (Fin 3) (Fin 3) Zω := !![0, 0, 1; 1, 0, 0; 0, 1, 0]
+
+/-- `Z` over `ℤ[ω]`. -/
+def ZZ : Matrix (Fin 3) (Fin 3) Zω := !![1, 0, 0; 0, Zω.om, 0; 0, 0, Zω.om2]
+
+/-- `S` over `ℤ[ω]`. -/
+def SZ3 : Matrix (Fin 3) (Fin 3) Zω := !![Zω.om, 0, 0; 0, Zω.om, 0; 0, 0, 1]
+
+/-- `3 H = -c [ω^{jk}]` over `ℤ[ω]`. -/
+def HZ3 : Matrix (Fin 3) (Fin 3) Zω :=
+  !![-Zω.c, -Zω.c, -Zω.c; -Zω.c, -Zω.c * Zω.om, -Zω.c * Zω.om2; -Zω.c, -Zω.c * Zω.om2, -Zω.c * Zω.om]
+
+/-- `1/3` in `ℚ(ζ)`. -/
+def third : Q := ⟨1 / 3, 0, 0, 0⟩
+
+/-- Complex conjugation on `ℤ[ω]`: `ω̄ = ω² = -1 - ω`. -/
+def conjZ (x : Zω) : Zω := ⟨x.a - x.b, -x.b⟩
+
+theorem toQ_conjZ (x : Zω) : Zω.toQ (conjZ x) = conjQ (Zω.toQ x) := by
+  ext <;> simp [Zω.toQ_apply, conjZ, conjQ]
+
+/-- The product of `3 × 3` matrices over `ℤ[ω]`, written out. -/
+def m3Z (A B : Matrix (Fin 3) (Fin 3) Zω) : Matrix (Fin 3) (Fin 3) Zω :=
+  fun i j => A i 0 * B 0 j + A i 1 * B 1 j + A i 2 * B 2 j
+
+theorem m3Z_eq (A B : Matrix (Fin 3) (Fin 3) Zω) : m3Z A B = A * B := by
+  refine Matrix.ext fun i j => ?_; simp [m3Z, Matrix.mul_apply, Fin.sum_univ_three]
+
+/-- The conjugate transpose over `ℤ[ω]`, written out. -/
+def ct3Z (A : Matrix (Fin 3) (Fin 3) Zω) : Matrix (Fin 3) (Fin 3) Zω := fun i j => conjZ (A j i)
+
+/-- Entrywise comparison over `ℤ[ω]`. -/
+def eq3Z (A B : Matrix (Fin 3) (Fin 3) Zω) : Bool :=
+  decide (A 0 0 = B 0 0) && decide (A 0 1 = B 0 1) && decide (A 0 2 = B 0 2) &&
+  decide (A 1 0 = B 1 0) && decide (A 1 1 = B 1 1) && decide (A 1 2 = B 1 2) &&
+  decide (A 2 0 = B 2 0) && decide (A 2 1 = B 2 1) && decide (A 2 2 = B 2 2)
+
+theorem eq_of_eq3Z {A B : Matrix (Fin 3) (Fin 3) Zω} (h : eq3Z A B = true) : A = B := by
+  simp only [eq3Z, Bool.and_eq_true, decide_eq_true_eq] at h
+  refine Matrix.ext fun i j => ?_; fin_cases i <;> fin_cases j <;> simp_all
+
+theorem XQ_eq : XQ = XZ.map Zω.toQ := eq_of_eq3 (by decide +kernel)
+theorem ZQ_eq : ZQ = ZZ.map Zω.toQ := eq_of_eq3 (by decide +kernel)
+theorem SQ_eq : SQ = SZ3.map Zω.toQ := eq_of_eq3 (by decide +kernel)
+theorem HQ_eq : HQ = third • HZ3.map Zω.toQ := eq_of_eq3 (by decide +kernel)
+theorem conjT_HQ : conjT HQ = third • (ct3Z HZ3).map Zω.toQ := eq_of_eq3 (by decide +kernel)
+theorem conjT_SQ : conjT SQ = (ct3Z SZ3).map Zω.toQ := eq_of_eq3 (by decide +kernel)
+
+theorem map_one_toQ : (1 : Matrix (Fin 3) (Fin 3) Zω).map Zω.toQ = 1 :=
+  Matrix.map_one _ (map_zero _) (map_one _)
+
+/-- A conjugation by `3 H`, decided over `ℤ[ω]`, read in `ℚ(ζ)`. -/
+theorem conj_of_Z {A B P : Matrix (Fin 3) (Fin 3) Zω}
+    (h : m3Z (m3Z A B) (ct3Z A) = (9 : Zω) • P) :
+    third • A.map Zω.toQ * B.map Zω.toQ * (third • (ct3Z A).map Zω.toQ) = P.map Zω.toQ := by
+  rw [smul_mul_assoc, smul_mul_assoc, mul_smul_comm, smul_smul, ← Matrix.map_mul,
+    ← Matrix.map_mul, ← m3Z_eq, ← m3Z_eq, h, map_smul_hom, map_ofNat, smul_smul,
+    show third * third * (9 : Q) = 1 by decide +kernel, one_smul]
+
+/-- A conjugation by an integer matrix, decided over `ℤ[ω]`, read in `ℚ(ζ)`. -/
+theorem conj_of_Z' {A B P : Matrix (Fin 3) (Fin 3) Zω} (h : m3Z (m3Z A B) (ct3Z A) = P) :
+    A.map Zω.toQ * B.map Zω.toQ * (ct3Z A).map Zω.toQ = P.map Zω.toQ := by
+  rw [← Matrix.map_mul, ← Matrix.map_mul, ← m3Z_eq, ← m3Z_eq, h]
+
 /-! #### The one-qutrit Pauli calculus over `ℚ(ζ)`
 
 Products of `ω^c X^a Z^b` follow from `X³ = Z³ = ω³ = 1` and `Z X = ω X Z`
 (`pauliQ1_mul`); conjugation by a unitary is multiplicative, so a gate
 normalises the Paulis as soon as it sends `X` and `Z` to Paulis. -/
 
-theorem ωQ_pow_three : ωQ ^ 3 = 1 := by decide +kernel
+theorem ωQ_pow_three : ωQ ^ 3 = 1 := by
+  rw [← Zω.toQ_om, ← map_pow, show Zω.om ^ 3 = 1 by decide, map_one]
 
 theorem XQ_pow_three : XQ ^ 3 = 1 := by
-  rw [← p3_eq]; exact eq_of_eq3 (by decide +kernel)
+  have h : XZ ^ 3 = 1 := by
+    rw [pow_succ, pow_succ, pow_one, ← m3Z_eq, ← m3Z_eq]; exact eq_of_eq3Z (by decide +kernel)
+  rw [XQ_eq, ← Matrix.map_pow, h, map_one_toQ]
 
 theorem ZQ_pow_three : ZQ ^ 3 = 1 := by
-  rw [← p3_eq]; exact eq_of_eq3 (by decide +kernel)
+  have h : ZZ ^ 3 = 1 := by
+    rw [pow_succ, pow_succ, pow_one, ← m3Z_eq, ← m3Z_eq]; exact eq_of_eq3Z (by decide +kernel)
+  rw [ZQ_eq, ← Matrix.map_pow, h, map_one_toQ]
 
 theorem ZQ_mul_XQ : ZQ * XQ = ωQ • (XQ * ZQ) := by
-  have h : m3 ZQ XQ = fun i j => ωQ * m3 XQ ZQ i j := eq_of_eq3 (by decide +kernel)
-  rw [← m3_eq, ← m3_eq, h]; rfl
+  have h : m3Z ZZ XZ = Zω.om • m3Z XZ ZZ := eq_of_eq3Z (by decide +kernel)
+  rw [ZQ_eq, XQ_eq, ← Matrix.map_mul, ← Matrix.map_mul, ← m3Z_eq, ← m3Z_eq, h, map_smul_hom,
+    Zω.toQ_om]
 
 theorem pow_mod_three {M : Type*} [Monoid M] {x : M} (h : x ^ 3 = 1) (n : ℕ) :
     x ^ n = x ^ (n % 3) := by
@@ -340,29 +421,39 @@ theorem normalises_one (G : Matrix (Fin 3) (Fin 3) Q) (h₁ : conjT G * G = 1)
   rw [pauli_one, pauli_one, star_ofMat1, ← ofMat_mul1, ← ofMat_mul1, star_map, ← Matrix.map_mul,
     ← Matrix.map_mul, h]
 
-/-- `H† H = 1`. -/
+/-- `H† H = 1`: `HZ3† HZ3 = 9` over `ℤ[ω]`. -/
 theorem HQ_unitary₁ : conjT HQ * HQ = 1 := by
-  rw [← ct3_eq, ← m3_eq]; exact eq_of_eq3 (by decide +kernel)
+  have h : m3Z (ct3Z HZ3) HZ3 = (9 : Zω) • 1 := eq_of_eq3Z (by decide +kernel)
+  rw [conjT_HQ, HQ_eq, smul_mul_assoc, mul_smul_comm, smul_smul, ← Matrix.map_mul, ← m3Z_eq, h,
+    map_smul_hom, map_ofNat, map_one_toQ, smul_smul, show third * third * (9 : Q) = 1 by decide +kernel,
+    one_smul]
 
 /-- `H X H† = Z`. -/
 theorem HQ_X : HQ * XQ * conjT HQ = pauliQ1 0 0 1 := by
-  rw [← pQ_eq, ← ct3_eq, ← m3_eq, ← m3_eq]; exact eq_of_eq3 (by decide +kernel)
+  rw [conjT_HQ, HQ_eq, XQ_eq, conj_of_Z (P := ZZ) (eq_of_eq3Z (by decide +kernel)), ← ZQ_eq]
+  simp [pauliQ1, -Quartic.one_def]
 
 /-- `H Z H† = X²`. -/
 theorem HQ_Z : HQ * ZQ * conjT HQ = pauliQ1 0 2 0 := by
-  rw [← pQ_eq, ← ct3_eq, ← m3_eq, ← m3_eq]; exact eq_of_eq3 (by decide +kernel)
+  rw [conjT_HQ, HQ_eq, ZQ_eq, conj_of_Z (P := m3Z XZ XZ) (eq_of_eq3Z (by decide +kernel)),
+    m3Z_eq, Matrix.map_mul, ← XQ_eq]
+  simp [pauliQ1, pow_two, -Quartic.one_def]
 
 /-- `S† S = 1`. -/
 theorem SQ_unitary₁ : conjT SQ * SQ = 1 := by
-  rw [← ct3_eq, ← m3_eq]; exact eq_of_eq3 (by decide +kernel)
+  have h : m3Z (ct3Z SZ3) SZ3 = 1 := eq_of_eq3Z (by decide +kernel)
+  rw [conjT_SQ, SQ_eq, ← Matrix.map_mul, ← m3Z_eq, h, map_one_toQ]
 
 /-- `S X S† = X Z²`. -/
 theorem SQ_X : SQ * XQ * conjT SQ = pauliQ1 0 1 2 := by
-  rw [← pQ_eq, ← ct3_eq, ← m3_eq, ← m3_eq]; exact eq_of_eq3 (by decide +kernel)
+  rw [conjT_SQ, SQ_eq, XQ_eq, conj_of_Z' (P := m3Z XZ (m3Z ZZ ZZ)) (eq_of_eq3Z (by decide +kernel)),
+    m3Z_eq, m3Z_eq, Matrix.map_mul, Matrix.map_mul, ← XQ_eq, ← ZQ_eq]
+  simp [pauliQ1, pow_two, -Quartic.one_def]
 
 /-- `S Z S† = Z`. -/
 theorem SQ_Z : SQ * ZQ * conjT SQ = pauliQ1 0 0 1 := by
-  rw [← pQ_eq, ← ct3_eq, ← m3_eq, ← m3_eq]; exact eq_of_eq3 (by decide +kernel)
+  rw [conjT_SQ, SQ_eq, ZQ_eq, conj_of_Z' (P := ZZ) (eq_of_eq3Z (by decide +kernel)), ← ZQ_eq]
+  simp [pauliQ1, -Quartic.one_def]
 
 theorem normalises_H : Normalises (gateSem.gate1 Gate.H : Op ℂ 3 1) := by
   show Normalises (ofMat (d := 3) (k := 1) Hmat)

@@ -22,7 +22,7 @@ import QCert.HadamardPi.Check
 namespace QCert.Clement2019
 
 open FreeMonoid
-open HadamardPi (Fig6 der_map runSteps derive_of)
+open HadamardPi (Fig6 der_map runCheck derive_of')
 
 variable {m n a : ℕ}
 
@@ -168,11 +168,12 @@ def look (tbl : List (List (Fin a) × List (HadamardPi.Step a))) (t : List (Fin 
   | some e => e.2
   | none => []
 
-/-- Every arrangement of `0, …, a-1` is derived by the table. -/
+/-- Every arrangement of `0, …, a-1` is derived by the table (the run checked by
+`HadamardPi.runCheck`, which compares letters by their indices). -/
 def checkTbl (L R : List (RL a)) (tbl : List (List (Fin a) × List (HadamardPi.Step a))) :
     Bool :=
   (tuples a a).all fun t => !decide t.Nodup ||
-    runSteps (look tbl t) (trL (L.map (RL.map (vecOf t)))) == some (trL (R.map (RL.map (vecOf t))))
+    runCheck (look tbl t) (trL (L.map (RL.map (vecOf t)))) (trL (R.map (RL.map (vecOf t))))
 
 theorem good_of_check (L R : List (RL a)) (tbl : List (List (Fin a) × List (HadamardPi.Step a)))
     (h : checkTbl L R tbl = true) : Good L R := by
@@ -181,7 +182,7 @@ theorem good_of_check (L R : List (RL a)) (tbl : List (List (Fin a) × List (Had
     have := mem_tuples (List.ofFn p); rwa [List.length_ofFn] at this
   have := List.all_eq_true.mp h _ ht
   have hn : (List.ofFn p).Nodup := List.nodup_ofFn.mpr hp
-  simp only [hn, decide_true, Bool.not_true, Bool.false_or, beq_iff_eq, vecOf_ofFn] at this
-  exact derive_of _ this
+  simp only [hn, decide_true, Bool.not_true, Bool.false_or, vecOf_ofFn] at this
+  exact derive_of' _ this
 
 end QCert.Clement2019

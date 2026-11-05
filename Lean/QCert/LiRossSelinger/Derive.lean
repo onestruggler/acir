@@ -50,8 +50,11 @@ def gRun (w : List (Gen m)) : List (GStep F m) → Option (List (Gen m))
     | none => none
     | some w' => gRun w' sts
 
-/-- A derivation, checked by evaluation. -/
-def gCheck (w w' : List (Gen m)) (sts : List (GStep F m)) : Bool := gRun sd w sts == some w'
+/-- A derivation, checked by evaluation (the end compared by `eqW`). -/
+def gCheck (w w' : List (Gen m)) (sts : List (GStep F m)) : Bool :=
+  match gRun sd w sts with
+  | some u => eqW u w'
+  | none => false
 
 variable {sd}
 
@@ -87,8 +90,14 @@ theorem gCheck_sound
     (hsd : ∀ f ps u v, sd f ps = some (u, v) →
       Derivable (Table1 m) (FreeMonoid.ofList u) (FreeMonoid.ofList v))
     {w w' : List (Gen m)} {sts : List (GStep F m)} (h : gCheck sd w w' sts = true) :
-    Derivable (Table1 m) (FreeMonoid.ofList w) (FreeMonoid.ofList w') :=
-  gRun_sound hsd (by simpa [gCheck] using h)
+    Derivable (Table1 m) (FreeMonoid.ofList w) (FreeMonoid.ofList w') := by
+  unfold gCheck at h
+  split at h
+  · rename_i u hu
+    rw [eqW_iff] at h
+    subst h
+    exact gRun_sound hsd hu
+  · cases h
 
 end Generic
 
@@ -560,5 +569,40 @@ theorem checkD_sound {w w' : List (Gen m)} {sts : List (GStep ((Fam ⊕ MFam) ×
     (h : checkD w w' sts = true) :
     Derivable (Table1 m) (FreeMonoid.ofList w) (FreeMonoid.ofList w') :=
   gCheck_sound dsides_sound h
+
+/-! ## Steps as numbers
+
+The long tables of steps (`Rel323`, `Rel325`, `Rel1223`) are written one
+number per step and decoded by `stepsOf`: elaborated as structure literals
+with `Fin` numerals they took seconds.  A step `c` has the family
+`famOf (c % 64)` (Table 1 in order, then the derived relations), read
+backwards when bit 6 is set, the direction of bit 7, the position
+`c / 256 % 256`, and as indices the base-16 digits of `c / 65536`, each
+shifted by one (a digit `0` ends them). -/
+
+/-- The family of a code (`r1a` past the end). -/
+def famOf (i : ℕ) : Fam ⊕ MFam :=
+  List.rec (motive := fun _ => ℕ → Fam ⊕ MFam) (fun _ => .inl .r1a)
+    (fun a _ ih i => Nat.rec (motive := fun _ => Fam ⊕ MFam) a (fun j _ => ih j) i)
+    [.inl .r1a, .inl .r1b, .inl .r1c, .inl .r2a, .inl .r2b, .inl .r2c, .inl .r2d, .inl .r2e,
+      .inl .r2f, .inl .r3a, .inl .r3b, .inl .r3c, .inl .r3d, .inl .r3e, .inl .r3f, .inl .r3g,
+      .inl .r4a, .inl .r4b, .inl .r4c, .inl .r5a, .inl .r6a, .inr .ksym2, .inr .ksym6,
+      .inr .ksym4, .inr .ksym5, .inr .k21, .inr .k11, .inr .k31, .inr .relk4, .inr .k12,
+      .inr .k22, .inr .k32, .inr .knk0] i
+
+/-- At most `k` indices: the base-16 digits of `c`, shifted by one, up to a `0`. -/
+def psOf (m : ℕ) [NeZero m] (k c : ℕ) : List (Fin m) :=
+  Nat.rec (motive := fun _ => ℕ → List (Fin m)) (fun _ => [])
+    (fun _ ih c => bif Nat.beq (c % 16) 0 then [] else Fin.ofNat m (c % 16 - 1) :: ih (c / 16)) k c
+
+/-- The step of a code. -/
+def stepOf (m : ℕ) [NeZero m] (c : ℕ) : GStep ((Fam ⊕ MFam) × Bool) m :=
+  ⟨(famOf (c % 64), Nat.beq (c / 64 % 2) 1), psOf m 8 (c / 65536), Nat.beq (c / 128 % 2) 1,
+    c / 256 % 256⟩
+
+/-- The steps of a list of codes. -/
+def stepsOf (m : ℕ) [NeZero m] (l : List ℕ) : List (GStep ((Fam ⊕ MFam) × Bool) m) :=
+  List.rec (motive := fun _ => List (GStep ((Fam ⊕ MFam) × Bool) m)) []
+    (fun c _ ih => stepOf m c :: ih) l
 
 end QCert.LiRossSelinger

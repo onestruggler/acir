@@ -105,4 +105,94 @@ theorem prod_eq_of_loc (f : Fin m → Fin n) (hf : Function.Injective f) {u v : 
         toMat_mul, Matrix.map_mul, Loc.glob, levelMat_mul hf]
   rw [hu, hv, e, e, h]
 
+
+/-! ## Local generators as integer row operations
+
+The products above, over `ℚ`, cost the kernel seconds per relation (`Rat`
+normalisation at every entry); each local generator is instead `(1/2) ^ k`
+times an integer row operation (`Loc.act`, `Loc.sc`), checked against
+`Loc.mat` by `decide` for the generators of each relation (`Loc.bridge`),
+and the two sides are compared as scaled integer matrices (`checkLoc`,
+`ListMat.eqS`). -/
+
+/-- `2 K` as integers. -/
+def lK2 : LMat ℤ := [[1, 1, 1, 1], [1, -1, 1, -1], [1, 1, -1, -1], [1, -1, -1, 1]]
+
+/-- The list form of `2 K_[idx]`: `2 K` on the indices, `2` on the rest of
+the diagonal. -/
+def level2 (m : ℕ) (idx : List ℕ) (M : LMat ℤ) : LMat ℤ :=
+  (List.range m).map fun i => (List.range m).map fun j =>
+    match pos idx i, pos idx j with
+    | some p, some q => (M.getD p []).getD q 0
+    | _, _ => if i = j then 2 else 0
+
+/-- A local generator as an integer row operation. -/
+def Loc.act (m : ℕ) : Loc → Act ℤ
+  | .neg p => .signs ((List.range m).map fun i => i == p)
+  | .x p q => .perm ((List.range m).map fun i => if i = p then q else if i = q then p else i)
+  | .k p q r s => .dense (level2 m [p, q, r, s] lK2)
+
+/-- The power of `1/2` a local generator carries. -/
+def Loc.sc : Loc → ℕ
+  | .k _ _ _ _ => 1
+  | _ => 0
+
+/-- An integer list matrix over `ℚ`, divided by `2 ^ k`. -/
+def halfQ (k : ℕ) (M : LMat ℤ) : LMat ℚ := M.map (List.map fun z : ℤ => (z : ℚ) / 2 ^ k)
+
+/-- The local matrix of a generator is its row operation, divided by `2` for
+`K`, and the row operation fits `m` rows: decided per generator. -/
+def Loc.bridge (m : ℕ) (l : Loc) : Bool :=
+  decide ((Loc.act m l).WF m) && (Loc.mat m l == halfQ l.sc ((Loc.act m l).applyF (one m)))
+
+/-- The scaled integer matrix of a local word. -/
+def evalLoc (m : ℕ) (l : List Loc) : SMat := evalSM m Loc.sc (Loc.act m) l
+
+/-- A relation checked on scaled integer matrices: the bridges of its
+generators, and the equality of its sides. -/
+def checkLoc (m : ℕ) (lu lv : List Loc) : Bool :=
+  (lu ++ lv).all (Loc.bridge m) && eqS 1 (evalLoc m lu) (evalLoc m lv)
+
+theorem toMat_halfQ (m k : ℕ) (M : LMat ℤ) :
+    (ListMat.toMat m (halfQ k M)).map (Rat.castHom ℝ) =
+      (1 / 2 : ℝ) ^ k • (ListMat.toMat m M).map (Int.castRingHom ℝ) := by
+  ext i j
+  simp only [ListMat.toMat, halfQ, Matrix.smul_apply, Matrix.map_apply, List.getD_eq_getElem?_getD,
+    List.getElem?_map, smul_eq_mul]
+  cases hM : M[(i : ℕ)]? with
+  | none => simp
+  | some r =>
+    cases hr : r[(j : ℕ)]? with
+    | none => simp [hr]
+    | some z => simp [hr, div_eq_mul_inv, mul_comm]
+
+theorem Loc.bridge_spec {m : ℕ} {l : Loc} (h : Loc.bridge m l = true) :
+    (Loc.act m l).WF m ∧ (ListMat.toMat m (Loc.mat m l)).map (Rat.castHom ℝ) =
+      (1 / 2 : ℝ) ^ l.sc • ((Loc.act m l).toMat m).map (Int.castRingHom ℝ) := by
+  simp only [Loc.bridge, Bool.and_eq_true, decide_eq_true_eq, beq_iff_eq] at h
+  refine ⟨h.1, ?_⟩
+  rw [h.2, toMat_halfQ, Act.toMat_applyF m h.1, toMat_one, Matrix.mul_one]
+
+/-- The product of the matrices of a list of generators that are local
+generators moved along `f`, decided on scaled integer matrices. -/
+theorem prod_eq_of_check (f : Fin m → Fin n) (hf : Function.Injective f) {u v : List (Gen n)}
+    (lu lv : List Loc) (hu : u.map genMat = lu.map (Loc.glob f))
+    (hv : v.map genMat = lv.map (Loc.glob f)) (h : checkLoc m lu lv = true) :
+    (u.map genMat).prod = (v.map genMat).prod := by
+  simp only [checkLoc, Bool.and_eq_true, List.all_eq_true, List.mem_append] at h
+  obtain ⟨hb, he⟩ := h
+  have e : ∀ l : List Loc, (∀ g ∈ l, Loc.bridge m g = true) →
+      (l.map (Loc.glob f)).prod = levelMat f ((evalLoc m l).toMatS m (1 / 2 : ℝ)) := by
+    intro l hl
+    rw [evalLoc, ← toMatS_evalSM m (1 / 2 : ℝ) Loc.sc (Loc.act m)
+      (fun g => (ListMat.toMat m (Loc.mat m g)).map (Rat.castHom ℝ)) l
+      (fun g hg => (Loc.bridge_spec (hl g hg)).1) (fun g hg => (Loc.bridge_spec (hl g hg)).2)]
+    clear hl
+    induction l with
+    | nil => rw [List.map_nil, List.prod_nil, List.map_nil, List.prod_nil, levelMat_one]
+    | cons a l ih => rw [List.map_cons, List.prod_cons, ih, List.map_cons, List.prod_cons,
+        Loc.glob, ← levelMat_mul hf]
+  rw [hu, hv, e lu (fun g hg => hb g (Or.inl hg)), e lv (fun g hg => hb g (Or.inr hg)),
+    eqS_sound m (by norm_num) he]
+
 end QCert.LiRossSelinger

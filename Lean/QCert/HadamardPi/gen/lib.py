@@ -1,6 +1,6 @@
 # A library of derived relations of Figure 6 on concrete indices, each found by the search of
 # deriv.py (from a chain of intermediate words, or directly) and emitted as a Lean theorem checked
-# by `derive_of`.  A lemma on m indices is available as a rewriting rule at every strictly
+# by `derive_of'`.  A lemma on m indices is available as a rewriting rule at every strictly
 # increasing placement into the indices of a later lemma (`der_map`).
 import itertools
 from deriv import Engine, check_steps, lean_word, lean_steps, same_matrix, fmt, parse
@@ -64,7 +64,7 @@ class Lib:
         rhs = lean_word(R) if R else f"([] : List (Gen {m}))"
         lhs = lean_word(L) if L else f"([] : List (Gen {m}))"
         self.out.append(f"theorem {name} : Derivable Fig6 (ofList ({lhs} : List (Gen {m})))\n"
-                        f"    (ofList {rhs}) :=\n  derive_of {lean_steps(st)} (by decide +kernel)\n")
+                        f"    (ofList {rhs}) :=\n  derive_of' {lean_steps(st)} (by decide +kernel)\n")
         return st
 
     def text(self):

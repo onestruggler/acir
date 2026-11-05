@@ -51,7 +51,7 @@ for b, V, st in ev:
 out.append("  | _, _, _, _ => []\n")
 out.append("/-- The chains of `K ≈ V K S`. -/\ndef S325e : Bool → Bool → Bool → Bool → List (GStep ((Fam ⊕ MFam) × Bool) 4)")
 for b, V, st in ev:
-    out.append(f"  | {', '.join(B(c) for c in b)} =>\n    {steps_lit(st, step_d)}")
+    out.append(f"  | {', '.join(B(c) for c in b)} =>\n    {steps_code(st, 4)}")
 out.append("  | _, _, _, _ => []\n")
 out.append("/-- The word `V` of `K S' K ≈ V K S` (oddly many signs at both). -/\ndef V325o : Bool → Bool → Bool → Bool → Bool → Bool → Bool → Bool → List (Gen 4)")
 for b, b2, V, st in od:
@@ -59,7 +59,7 @@ for b, b2, V, st in od:
 out.append("  | _, _, _, _, _, _, _, _ => []\n")
 out.append("/-- The chains of `K S' K ≈ V K S`. -/\ndef S325o : Bool → Bool → Bool → Bool → Bool → Bool → Bool → Bool →\n    List (GStep ((Fam ⊕ MFam) × Bool) 4)")
 for b, b2, V, st in od:
-    out.append(f"  | {', '.join(B(c) for c in b + b2)} =>\n    {steps_lit(st, step_d)}")
+    out.append(f"  | {', '.join(B(c) for c in b + b2)} =>\n    {steps_code(st, 4)}")
 out.append("  | _, _, _, _, _, _, _, _ => []\n")
 out.append("""theorem chk325e : ∀ t0 t1 t2 t3 : Bool, (t0 ^^ t1 ^^ t2 ^^ t3) = false →
     checkD [K4] (V325e t0 t1 t2 t3 ++ K4 :: sgn4 t0 t1 t2 t3) (S325e t0 t1 t2 t3) = true := by

@@ -20,6 +20,23 @@ open QCert
 
 variable {n : ℕ}
 
+/-! With the four odd entries written `2 u + 1`, the halvings in `k4_par` are
+exact and `τ` is the parity of `u`; `omega` then proves each conjunct for
+each parity of the sum (sixteen cases on the residues mod `4`, an `omega`
+each, took seconds). -/
+
+private theorem odd_two_mul_add_one {w : ℤ} (h : w % 2 = 1) : ∃ u, w = 2 * u + 1 :=
+  ⟨w / 2, by omega⟩
+
+private theorem tau_two_mul_add_one (u : ℤ) : tau (2 * u + 1) = decide (u % 2 = 1) := by
+  unfold tau
+  rcases Int.emod_two_eq_zero_or_one u with h | h <;> simp [h] <;> omega
+
+private theorem xor_decide_odd (a b : ℤ) :
+    xor (decide (a % 2 = 1)) (decide (b % 2 = 1)) = decide ((a + b) % 2 = 1) := by
+  rcases Int.emod_two_eq_zero_or_one a with ha | ha <;>
+    rcases Int.emod_two_eq_zero_or_one b with hb | hb <;> simp [ha, hb] <;> omega
+
 /-- `K` on four odd integers: the four new entries all have the parity of the
 number of entries `≡ 3 (mod 4)` (Lemma A.2). -/
 theorem k4_par (w0 w1 w2 w3 : ℤ) (o0 : w0 % 2 = 1) (o1 : w1 % 2 = 1) (o2 : w2 % 2 = 1)
@@ -28,9 +45,18 @@ theorem k4_par (w0 w1 w2 w3 : ℤ) (o0 : w0 % 2 = 1) (o1 : w1 % 2 = 1) (o2 : w2 
     (w0 - w1 + w2 - w3) / 2 % 2 = (if xor (xor (xor (tau w0) (tau w1)) (tau w2)) (tau w3) then 1 else 0) ∧
     (w0 + w1 - w2 - w3) / 2 % 2 = (if xor (xor (xor (tau w0) (tau w1)) (tau w2)) (tau w3) then 1 else 0) ∧
     (w0 - w1 - w2 + w3) / 2 % 2 = (if xor (xor (xor (tau w0) (tau w1)) (tau w2)) (tau w3) then 1 else 0) := by
-  unfold tau
-  by_cases h0 : w0 % 4 = 3 <;> by_cases h1 : w1 % 4 = 3 <;> by_cases h2 : w2 % 4 = 3 <;>
-    by_cases h3 : w3 % 4 = 3 <;> simp [h0, h1, h2, h3] <;> omega
+  obtain ⟨u0, rfl⟩ := odd_two_mul_add_one o0
+  obtain ⟨u1, rfl⟩ := odd_two_mul_add_one o1
+  obtain ⟨u2, rfl⟩ := odd_two_mul_add_one o2
+  obtain ⟨u3, rfl⟩ := odd_two_mul_add_one o3
+  clear o0 o1 o2 o3
+  rw [tau_two_mul_add_one, tau_two_mul_add_one, tau_two_mul_add_one, tau_two_mul_add_one,
+    xor_decide_odd, xor_decide_odd, xor_decide_odd]
+  by_cases hS : (u0 + u1 + u2 + u3) % 2 = 1
+  · rw [if_pos (decide_eq_true hS)]
+    refine ⟨?_, ?_, ?_, ?_⟩ <;> omega
+  · rw [if_neg (by simpa using hS)]
+    refine ⟨?_, ?_, ?_, ?_⟩ <;> omega
 
 theorem k4_back (w0 w1 w2 w3 : ℤ) (o0 : w0 % 2 = 1) (o1 : w1 % 2 = 1) (o2 : w2 % 2 = 1)
     (o3 : w3 % 2 = 1) :

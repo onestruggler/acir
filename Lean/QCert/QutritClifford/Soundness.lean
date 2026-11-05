@@ -210,34 +210,26 @@ theorem xcZ_map : xcZ.map toQ = xcX := op_ext_of_all (by decide +kernel)
 to its number of Hadamards. -/
 theorem opsZ_gen {n : ℕ} (g : Gen XGate n) :
     (opsZ.map toQ).gen g = toQ c ^ wtX g • opsX.gen g := by
+  -- each case is unfolded by `simp only`: a `show` of the unfolded goal made
+  -- the elaborator compare the two `onBottom`s for seconds (7 s for `CZ`)
   induction g with
   | gate0 g =>
     cases g
-    show toQ Zω.negω • (1 : Op Q 3 _) = toQ c ^ 0 • (negωQ • 1)
-    rw [pow_zero, one_smul, toQ_negω]
+    simp only [GateOps.gen, GateOps.map, opsZ, opsX, wtX, pow_zero, one_smul, toQ_negω]
   | gate1 g =>
     cases g
-    · show onBottom (HZ.map toQ) = toQ c ^ 1 • onBottom (ofMat HQ)
-      rw [pow_one, ← onBottom_smul, HZ_map]
-    · show onBottom (SZ.map toQ) = toQ c ^ 0 • onBottom (ofMat SQ)
-      rw [pow_zero, one_smul, SZ_map]
-    · show onBottom (SpZ.map toQ) = toQ c ^ 0 • onBottom SpX
-      rw [pow_zero, one_smul, SpZ_map]
+    · simp only [GateOps.gen, GateOps.map, opsZ, opsX, wtX, pow_one, HZ_map, onBottom_smul]
+    · simp only [GateOps.gen, GateOps.map, opsZ, opsX, wtX, pow_zero, one_smul, SZ_map]
+    · simp only [GateOps.gen, GateOps.map, opsZ, opsX, wtX, pow_zero, one_smul, SpZ_map]
   | gate2 g =>
     cases g
-    · show onBottom (CZZ.map toQ) = toQ c ^ 0 • onBottom (ofMat CZQ)
-      rw [pow_zero, one_smul, CZZ_map]
-    · show onBottom (swapZ.map toQ) = toQ c ^ 0 • onBottom swapX
-      rw [pow_zero, one_smul, swapZ_map]
-    · show onBottom (cxZ.map toQ) = toQ c ^ 0 • onBottom cxX
-      rw [pow_zero, one_smul, cxZ_map]
-    · show onBottom (xcZ.map toQ) = toQ c ^ 0 • onBottom xcX
-      rw [pow_zero, one_smul, xcZ_map]
+    · simp only [GateOps.gen, GateOps.map, opsZ, opsX, wtX, pow_zero, one_smul, CZZ_map]
+    · simp only [GateOps.gen, GateOps.map, opsZ, opsX, wtX, pow_zero, one_smul, swapZ_map]
+    · simp only [GateOps.gen, GateOps.map, opsZ, opsX, wtX, pow_zero, one_smul, cxZ_map]
+    · simp only [GateOps.gen, GateOps.map, opsZ, opsX, wtX, pow_zero, one_smul, xcZ_map]
   | gate3 g => exact nomatch g
   | up g ih =>
-    show onTop 1 ((opsZ.map toQ).gen g) = _ • onTop 1 (opsX.gen g)
-    rw [ih, onTop_smul]
-    rfl
+    simp only [GateOps.gen, wtX, ih, onTop_smul]
 
 theorem evalZ_weight {n : ℕ} (w : Circuit XGate n) :
     (opsZ.map toQ).eval n w = toQ c ^ hcount w • opsX.eval n w :=

@@ -20,7 +20,7 @@ set_option maxRecDepth 8000
 /-- Equation 3.41 (supplement: `[ZZ 1 2 B 2 0 1]·ω^0 = [B 2 0 1 ZZ 0 1 H 1 ZZ 1 2 H 1 ZZ 0 1]·ω^0`). -/
 theorem rule_3_41 :
     Holds 3 ([Lt.CZ 0] ++ bB 2 1)
-      (bB 2 1 ++ [.CZ 1, .H 1, .CZ 0, .H 1, .CZ 1]) :=
+      (bB 2 1 ++ [Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1]) :=
   Holds.of_derives (db_ok_cons hC2 (db_ok_cons hC5 (db_ok_cons hC12 db_ok_nil)))
     (steps := [Step.mv 3 2, Step.rw 1 0 1 true, Step.rw 2 2 0 false, Step.rw 1 0 1 false, Step.rw 0 1 1 true, Step.mv 5 2,
      Step.rw 1 3 1 true, Step.mv 2 1])
@@ -29,7 +29,7 @@ theorem rule_3_41 :
 /-- Equation 3.42 (supplement: `[ZZ 1 2 B 3 0 1]·ω^0 = [B 3 0 1 ZZ 0 1 H 1 ZZ 1 2 H 1 ZZ 0 1]·ω^0`). -/
 theorem rule_3_42 :
     Holds 3 ([Lt.CZ 0] ++ bB 3 1)
-      (bB 3 1 ++ [.CZ 1, .H 1, .CZ 0, .H 1, .CZ 1]) :=
+      (bB 3 1 ++ [Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC7 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hC12 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hL7 (db_ok_cons hL8 (db_ok_cons hL9 (db_ok_cons hL10 (db_ok_cons hL14 (db_ok_cons hL17 (db_ok_cons hM14 db_ok_nil))))))))))))))))))
     (steps := [Step.mv 5 4, Step.rw 4 2 1 false, Step.mv 4 3, Step.rw 16 1 1 false, Step.rw 0 15 0 true, Step.mv 22 15, Step.mv 22 16,
      Step.rw 11 11 2 true, Step.mv 22 16, Step.mv 22 17, Step.mv 22 18, Step.mv 22 19, Step.mv 22 20, Step.mv 22 21,
@@ -66,7 +66,7 @@ theorem rule_3_42 :
 /-- Equation 3.43 (supplement: `[ZZ 1 2 B 4 0 1]·ω^0 = [B 4 0 1 ZZ 0 1 H 1 ZZ 1 2 H 1 ZZ 0 1]·ω^0`). -/
 theorem rule_3_43 :
     Holds 3 ([Lt.CZ 0] ++ bB 4 1)
-      (bB 4 1 ++ [.CZ 1, .H 1, .CZ 0, .H 1, .CZ 1]) :=
+      (bB 4 1 ++ [Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.CZ 1]) :=
   Holds.of_derives (db_ok_cons hC2 (db_ok_cons hC5 (db_ok_cons hC12 db_ok_nil)))
     (steps := [Step.mv 4 3, Step.rw 1 0 0 true, Step.mv 3 2, Step.rw 2 3 0 false, Step.rw 1 0 0 false, Step.rw 0 2 1 true, Step.mv 6 3,
      Step.rw 1 4 1 true, Step.mv 3 2])
@@ -91,7 +91,7 @@ theorem rule_3_45 :
 /-- Equation 3.46 (supplement: `[S 0 C 1 0]·ω^0 = [C 1 0 S 0]·ω^0`). -/
 theorem rule_3_46 :
     Holds 1 ([Lt.S 0] ++ bC 1 0)
-      (bC 1 0 ++ [.S 0]) :=
+      (bC 1 0 ++ [Lt.S 0]) :=
   Holds.of_derives (db_ok_nil)
     (steps := [])
     (by decide +kernel)
@@ -99,7 +99,7 @@ theorem rule_3_46 :
 /-- Equation 3.47 (supplement: `[S 0 C 2 0]·ω^0 = [C 2 0 S 0 S 0 S 0]·ω^2`). -/
 theorem rule_3_47 :
     Holds 1 ([Lt.S 0] ++ bC 2 0)
-      (bC 2 0 ++ [.S 0, .S 0, .S 0, .om, .om]) :=
+      (bC 2 0 ++ [Lt.S 0, Lt.S 0, Lt.S 0, Lt.om, Lt.om]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hL9 db_ok_nil))
     (steps := [Step.rw 0 5 0 true, Step.mv 12 5, Step.mv 12 6, Step.mv 12 7, Step.mv 12 8, Step.mv 12 9, Step.mv 12 10, Step.rw 1 0 0 true])
     (by decide +kernel)
@@ -107,7 +107,7 @@ theorem rule_3_47 :
 /-- Equation 3.48 (supplement: `[ZZ 0 1 C 1 0]·ω^0 = [C 1 0 ZZ 0 1]·ω^0`). -/
 theorem rule_3_48 :
     Holds 2 ([Lt.CZ 0] ++ bC 1 1)
-      (bC 1 1 ++ [.CZ 0]) :=
+      (bC 1 1 ++ [Lt.CZ 0]) :=
   Holds.of_derives (db_ok_nil)
     (steps := [])
     (by decide +kernel)
@@ -115,7 +115,7 @@ theorem rule_3_48 :
 /-- Equation 3.49 (supplement: `[ZZ 0 1 C 2 0]·ω^0 = [C 2 0 ZZ 0 1 S 1 S 1]·ω^0`). -/
 theorem rule_3_49 :
     Holds 2 ([Lt.CZ 0] ++ bC 2 1)
-      (bC 2 1 ++ [.CZ 0, .S 0, .S 0]) :=
+      (bC 2 1 ++ [Lt.CZ 0, Lt.S 0, Lt.S 0]) :=
   Holds.of_derives (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hL14 db_ok_nil)))
     (steps := [Step.rw 1 1 0 true, Step.rw 0 0 1 true, Step.mv 7 3, Step.mv 8 5, Step.mv 9 7, Step.mv 10 8, Step.rw 2 1 0 true])
     (by decide +kernel)
@@ -123,7 +123,7 @@ theorem rule_3_49 :
 /-- Equation 3.50 (supplement: `[ZZ 0 1 B 1 1 2 B 1 0 1]·ω^0 = [B 1 1 2 B 1 0 1 H 1 H 2 ZZ 1 2 H 1 H 2]·ω^0`). -/
 theorem rule_3_50 :
     Holds 3 ([Lt.CZ 1] ++ bB 1 0 ++ bB 1 1)
-      (bB 1 0 ++ bB 1 1 ++ [.H 1, .H 0, .CZ 0, .H 1, .H 0]) :=
+      (bB 1 0 ++ bB 1 1 ++ [Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hC12 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hL7 (db_ok_cons hL10 (db_ok_cons hL16 (db_ok_cons hM14 (db_ok_cons hM15 (db_ok_cons hM17 (db_ok_cons hM18 (db_ok_cons hM20 db_ok_nil))))))))))))))))))
     (steps := [Step.mv 1 0, Step.mv 7 6, Step.mv 15 14, Step.mv 1 0, Step.mv 4 3, Step.mv 7 6, Step.rw 16 1 0 false, Step.mv 3 2, Step.mv 6 5,
      Step.rw 1 8 1 false, Step.rw 1 8 2 true, Step.rw 3 9 1 true, Step.rw 1 10 2 true, Step.rw 1 10 1 true,
@@ -155,7 +155,7 @@ theorem rule_3_50 :
 /-- Equation 3.51 (supplement: `[ZZ 0 1 B 1 1 2 B 2 0 1]·ω^0 = [B 4 1 2 B 2 0 1 H 2 ZZ 1 2 H 2]·ω^0`). -/
 theorem rule_3_51 :
     Holds 3 ([Lt.CZ 1] ++ bB 1 0 ++ bB 2 1)
-      (bB 4 0 ++ bB 2 1 ++ [.H 0, .CZ 0, .H 0]) :=
+      (bB 4 0 ++ bB 2 1 ++ [Lt.H 0, Lt.CZ 0, Lt.H 0]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC7 (db_ok_cons hC10 (db_ok_cons hC12 (db_ok_cons hL5 (db_ok_cons hL7 (db_ok_cons hL10 (db_ok_cons hL14 (db_ok_cons hL15 (db_ok_cons hL16 (db_ok_cons hL21 (db_ok_cons hM14 (db_ok_cons hM16 (db_ok_cons hM18 db_ok_nil))))))))))))))))))
     (steps := [Step.mv 1 0, Step.mv 7 6, Step.mv 11 10, Step.mv 1 0, Step.mv 4 3, Step.mv 7 6, Step.rw 17 1 0 false, Step.mv 3 2, Step.mv 6 5,
      Step.rw 1 8 0 true, Step.mv 9 14, Step.rw 3 14 0 true, Step.rw 3 15 1 true, Step.rw 1 15 0 true,
@@ -186,7 +186,7 @@ theorem rule_3_51 :
 /-- Equation 3.52 (supplement: `[ZZ 0 1 B 1 1 2 B 3 0 1]·ω^0 = [B 4 1 2 B 3 0 1 H 2 H 1 S 1 H 1 ZZ 2 1 S 1 H 1 S 1 H 2]·ω^7`). -/
 theorem rule_3_52 :
     Holds 3 ([Lt.CZ 1] ++ bB 1 0 ++ bB 3 1)
-      (bB 4 0 ++ bB 3 1 ++ [.H 0, .H 1, .S 1, .H 1, .CZ 0, .S 1, .H 1, .S 1, .H 0, .om, .om, .om, .om, .om, .om, .om]) :=
+      (bB 4 0 ++ bB 3 1 ++ [Lt.H 0, Lt.H 1, Lt.S 1, Lt.H 1, Lt.CZ 0, Lt.S 1, Lt.H 1, Lt.S 1, Lt.H 0, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC7 (db_ok_cons hC10 (db_ok_cons hC12 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hL7 (db_ok_cons hL10 (db_ok_cons hL14 (db_ok_cons hL15 (db_ok_cons hL16 (db_ok_cons hL17 (db_ok_cons hL21 (db_ok_cons hM14 (db_ok_cons hM16 (db_ok_cons hM18 db_ok_nil))))))))))))))))))))
     (steps := [Step.mv 1 0, Step.mv 7 6, Step.mv 13 12, Step.rw 4 10 1 false, Step.mv 12 11, Step.rw 15 9 1 false, Step.mv 1 0, Step.mv 4 3,
      Step.mv 7 6, Step.rw 19 1 0 false, Step.mv 3 2, Step.mv 6 5, Step.rw 1 8 0 true, Step.mv 9 15, Step.rw 3 15 0 true,
@@ -226,7 +226,7 @@ theorem rule_3_52 :
 /-- Equation 3.53 (supplement: `[ZZ 0 1 B 1 1 2 B 4 0 1]·ω^0 = [B 1 1 2 B 4 0 1 H 1 H 2 ZZ 1 2 H 1 H 2]·ω^0`). -/
 theorem rule_3_53 :
     Holds 3 ([Lt.CZ 1] ++ bB 1 0 ++ bB 4 1)
-      (bB 1 0 ++ bB 4 1 ++ [.H 1, .H 0, .CZ 0, .H 1, .H 0]) :=
+      (bB 1 0 ++ bB 4 1 ++ [Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC7 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hC12 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hL7 (db_ok_cons hL10 (db_ok_cons hL14 (db_ok_cons hL15 (db_ok_cons hL17 (db_ok_cons hL18 (db_ok_cons hL20 (db_ok_cons hM16 (db_ok_cons hM18 db_ok_nil)))))))))))))))))))
     (steps := [Step.mv 1 0, Step.mv 7 6, Step.mv 12 11, Step.mv 1 0, Step.mv 4 3, Step.mv 7 6, Step.rw 18 1 0 false, Step.mv 3 2, Step.mv 6 5,
      Step.rw 1 0 2 true, Step.rw 3 0 0 true, Step.mv 1 2, Step.rw 1 1 1 true, Step.mv 2 3, Step.rw 1 1 0 true,
@@ -264,7 +264,7 @@ theorem rule_3_53 :
 /-- Equation 3.54 (supplement: `[ZZ 0 1 B 2 1 2 B 1 0 1]·ω^0 = [B 2 1 2 B 4 0 1 H 1 ZZ 1 2 H 1]·ω^0`). -/
 theorem rule_3_54 :
     Holds 3 ([Lt.CZ 1] ++ bB 2 0 ++ bB 1 1)
-      (bB 2 0 ++ bB 4 1 ++ [.H 1, .CZ 0, .H 1]) :=
+      (bB 2 0 ++ bB 4 1 ++ [Lt.H 1, Lt.CZ 0, Lt.H 1]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC7 (db_ok_cons hC11 (db_ok_cons hC12 (db_ok_cons hL7 (db_ok_cons hL8 (db_ok_cons hL14 (db_ok_cons hL16 (db_ok_cons hM14 (db_ok_cons hM15 (db_ok_cons hM16 (db_ok_cons hM18 (db_ok_cons hM21 db_ok_nil)))))))))))))))))
     (steps := [Step.mv 3 2, Step.mv 11 10, Step.mv 8 7, Step.mv 11 10, Step.rw 15 5 1 false, Step.mv 7 6, Step.mv 10 9, Step.rw 1 12 1 true,
      Step.mv 13 14, Step.rw 3 13 0 true, Step.mv 14 15, Step.rw 1 14 1 true, Step.mv 15 16, Step.rw 3 16 1 true,
@@ -306,7 +306,7 @@ theorem rule_3_54 :
 /-- Equation 3.55 (supplement: `[ZZ 0 1 B 2 1 2 B 2 0 1]·ω^0 = [B 3 1 2 B 3 0 1 H 1 S 1 H 1 H 2 S 2 H 2 ZZ 1 2 S 1 S 2]·ω^6`). -/
 theorem rule_3_55 :
     Holds 3 ([Lt.CZ 1] ++ bB 2 0 ++ bB 2 1)
-      (bB 3 0 ++ bB 3 1 ++ [.H 1, .S 1, .H 1, .H 0, .S 0, .H 0, .CZ 0, .S 1, .S 0, .om, .om, .om, .om, .om, .om]) :=
+      (bB 3 0 ++ bB 3 1 ++ [Lt.H 1, Lt.S 1, Lt.H 1, Lt.H 0, Lt.S 0, Lt.H 0, Lt.CZ 0, Lt.S 1, Lt.S 0, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC7 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hC12 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hL7 (db_ok_cons hL10 (db_ok_cons hL14 (db_ok_cons hL15 (db_ok_cons hL17 (db_ok_cons hM14 db_ok_nil)))))))))))))))))
     (steps := [Step.mv 3 2, Step.mv 7 6, Step.rw 3 7 0 true, Step.mv 9 8, Step.rw 8 9 0 false, Step.rw 2 11 1 true, Step.rw 4 10 0 true,
      Step.rw 2 12 0 true, Step.rw 5 11 0 true, Step.mv 11 8, Step.rw 5 10 1 true, Step.mv 10 9, Step.rw 1 9 1 true,
@@ -340,7 +340,7 @@ theorem rule_3_55 :
 /-- Equation 3.56 (supplement: `[ZZ 0 1 B 2 1 2 B 3 0 1]·ω^0 = [B 3 1 2 B 2 0 1 H 2 S 2 H 2 ZZ 1 2 X 0 H 1 S 1 S 2]·ω^7`). -/
 theorem rule_3_56 :
     Holds 3 ([Lt.CZ 1] ++ bB 2 0 ++ bB 3 1)
-      (bB 3 0 ++ bB 2 1 ++ [.H 0, .S 0, .H 0, .CZ 0] ++ bX 2 ++ [.H 1, .S 1, .S 0, .om, .om, .om, .om, .om, .om, .om]) :=
+      (bB 3 0 ++ bB 2 1 ++ [Lt.H 0, Lt.S 0, Lt.H 0, Lt.CZ 0] ++ bX 2 ++ [Lt.H 1, Lt.S 1, Lt.S 0, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC7 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hC12 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hL7 (db_ok_cons hL10 (db_ok_cons hL14 (db_ok_cons hL15 (db_ok_cons hL17 (db_ok_cons hM14 db_ok_nil)))))))))))))))))
     (steps := [Step.mv 3 2, Step.mv 9 8, Step.rw 4 6 1 false, Step.mv 8 7, Step.rw 15 5 1 false, Step.rw 3 7 0 true, Step.mv 9 8,
      Step.mv 10 9, Step.rw 8 10 0 false, Step.rw 4 11 0 true, Step.rw 4 12 0 true, Step.rw 4 13 0 true,
@@ -372,7 +372,7 @@ theorem rule_3_56 :
 /-- Equation 3.57 (supplement: `[ZZ 0 1 B 2 1 2 B 4 0 1]·ω^0 = [B 2 1 2 B 1 0 1 H 1 ZZ 1 2 H 1]·ω^0`). -/
 theorem rule_3_57 :
     Holds 3 ([Lt.CZ 1] ++ bB 2 0 ++ bB 4 1)
-      (bB 2 0 ++ bB 1 1 ++ [.H 1, .CZ 0, .H 1]) :=
+      (bB 2 0 ++ bB 1 1 ++ [Lt.H 1, Lt.CZ 0, Lt.H 1]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC7 (db_ok_cons hC11 (db_ok_cons hC12 (db_ok_cons hL7 (db_ok_cons hL8 (db_ok_cons hL14 (db_ok_cons hL16 (db_ok_cons hM14 (db_ok_cons hM15 (db_ok_cons hM16 (db_ok_cons hM18 (db_ok_cons hM21 db_ok_nil)))))))))))))))))
     (steps := [Step.mv 3 2, Step.mv 8 7, Step.rw 3 4 0 true, Step.mv 7 6, Step.rw 7 7 0 false, Step.rw 2 9 1 true, Step.rw 4 8 0 true,
      Step.rw 5 7 1 true, Step.mv 7 6, Step.rw 2 15 2 true, Step.rw 1 11 1 true, Step.rw 1 7 1 true, Step.mv 18 12,
@@ -405,7 +405,7 @@ theorem rule_3_57 :
 /-- Equation 3.58 (supplement: `[ZZ 0 1 B 3 1 2 B 1 0 1]·ω^0 = [B 3 1 2 B 4 0 1 H 1 H 2 S 2 H 2 ZZ 1 2 H 1 S 2 H 2 S 2]·ω^7`). -/
 theorem rule_3_58 :
     Holds 3 ([Lt.CZ 1] ++ bB 3 0 ++ bB 1 1)
-      (bB 3 0 ++ bB 4 1 ++ [.H 1, .H 0, .S 0, .H 0, .CZ 0, .H 1, .S 0, .H 0, .S 0, .om, .om, .om, .om, .om, .om, .om]) :=
+      (bB 3 0 ++ bB 4 1 ++ [Lt.H 1, Lt.H 0, Lt.S 0, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.S 0, Lt.H 0, Lt.S 0, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC7 (db_ok_cons hC11 (db_ok_cons hC12 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hL7 (db_ok_cons hL8 (db_ok_cons hL10 (db_ok_cons hL14 (db_ok_cons hL16 (db_ok_cons hL17 (db_ok_cons hM14 (db_ok_cons hM15 (db_ok_cons hM16 (db_ok_cons hM18 (db_ok_cons hM21 db_ok_nil)))))))))))))))))))))
     (steps := [Step.mv 5 4, Step.mv 13 12, Step.rw 4 2 0 false, Step.mv 4 3, Step.rw 15 1 0 false, Step.rw 1 14 1 false,
      Step.rw 5 13 1 false, Step.rw 5 12 1 false, Step.mv 16 13, Step.rw 16 14 1 false, Step.mv 14 13, Step.mv 18 17,
@@ -465,7 +465,7 @@ theorem rule_3_58 :
 /-- Equation 3.59 (supplement: `[ZZ 0 1 B 3 1 2 B 2 0 1]·ω^0 = [B 2 1 2 B 3 0 1 H 1 S 1 H 1 ZZ 1 2 X 0 S 1 H 2 S 2]·ω^7`). -/
 theorem rule_3_59 :
     Holds 3 ([Lt.CZ 1] ++ bB 3 0 ++ bB 2 1)
-      (bB 2 0 ++ bB 3 1 ++ [.H 1, .S 1, .H 1, .CZ 0] ++ bX 2 ++ [.S 1, .H 0, .S 0, .om, .om, .om, .om, .om, .om, .om]) :=
+      (bB 2 0 ++ bB 3 1 ++ [Lt.H 1, Lt.S 1, Lt.H 1, Lt.CZ 0] ++ bX 2 ++ [Lt.S 1, Lt.H 0, Lt.S 0, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC7 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hC12 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hL7 (db_ok_cons hL10 (db_ok_cons hL14 (db_ok_cons hL15 (db_ok_cons hL17 (db_ok_cons hM14 db_ok_nil)))))))))))))))))
     (steps := [Step.mv 5 4, Step.mv 9 8, Step.rw 4 2 0 false, Step.mv 4 3, Step.rw 15 1 0 false, Step.rw 16 12 1 false, Step.mv 16 15,
      Step.mv 18 16, Step.mv 19 17, Step.mv 20 18, Step.mv 11 6, Step.mv 12 7, Step.rw 1 6 1 false, Step.rw 1 15 1 false,
@@ -513,7 +513,7 @@ theorem rule_3_59 :
 /-- Equation 3.60 (supplement: `[ZZ 0 1 B 3 1 2 B 3 0 1]·ω^0 = [B 2 1 2 B 2 0 1 ZZ 1 2 H 1 S 1 H 2 S 2]·ω^0`). -/
 theorem rule_3_60 :
     Holds 3 ([Lt.CZ 1] ++ bB 3 0 ++ bB 3 1)
-      (bB 2 0 ++ bB 2 1 ++ [.CZ 0, .H 1, .S 1, .H 0, .S 0]) :=
+      (bB 2 0 ++ bB 2 1 ++ [Lt.CZ 0, Lt.H 1, Lt.S 1, Lt.H 0, Lt.S 0]) :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC7 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hC12 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hL7 (db_ok_cons hL10 (db_ok_cons hL14 (db_ok_cons hL15 (db_ok_cons hL17 (db_ok_cons hM14 db_ok_nil)))))))))))))))))
     (steps := [Step.mv 5 4, Step.mv 11 10, Step.rw 4 2 0 false, Step.mv 4 3, Step.rw 15 1 0 false, Step.mv 15 12, Step.mv 16 13,
      Step.rw 16 14 1 false, Step.mv 14 12, Step.mv 18 17, Step.mv 20 18, Step.mv 21 19, Step.mv 22 20, Step.mv 11 6,

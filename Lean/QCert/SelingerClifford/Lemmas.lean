@@ -18,8 +18,8 @@ set_option maxRecDepth 8000
 
 /-- (4) of Lemma 1.1: `SHSH = HSSS·ω`. -/
 def eL4 : Eqn :=
-  ⟨1, [.H 0, .S 0, .H 0, .S 0],
-    [.S 0, .S 0, .S 0, .H 0, .om]⟩
+  ⟨1, [Lt.H 0, Lt.S 0, Lt.H 0, Lt.S 0],
+    [Lt.S 0, Lt.S 0, Lt.S 0, Lt.H 0, Lt.om]⟩
 
 theorem hL4 : Holds eL4.k eL4.l eL4.r :=
   Holds.of_derives (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC4 db_ok_nil)))
@@ -28,8 +28,8 @@ theorem hL4 : Holds eL4.k eL4.l eL4.r :=
 
 /-- (5) of Lemma 1.1: `HSHS = SSSH·ω`. -/
 def eL5 : Eqn :=
-  ⟨1, [.S 0, .H 0, .S 0, .H 0],
-    [.H 0, .S 0, .S 0, .S 0, .om]⟩
+  ⟨1, [Lt.S 0, Lt.H 0, Lt.S 0, Lt.H 0],
+    [Lt.H 0, Lt.S 0, Lt.S 0, Lt.S 0, Lt.om]⟩
 
 theorem hL5 : Holds eL5.k eL5.l eL5.r :=
   Holds.of_derives (db_ok_cons hC2 (db_ok_cons hL4 db_ok_nil))
@@ -39,8 +39,8 @@ theorem hL5 : Holds eL5.k eL5.l eL5.r :=
 
 /-- (6) of Lemma 1.1: `HSSSH = SHS·ω⁻¹`. -/
 def eL6 : Eqn :=
-  ⟨1, [.H 0, .S 0, .S 0, .S 0, .H 0],
-    [.S 0, .H 0, .S 0, .om, .om, .om, .om, .om, .om, .om]⟩
+  ⟨1, [Lt.H 0, Lt.S 0, Lt.S 0, Lt.S 0, Lt.H 0],
+    [Lt.S 0, Lt.H 0, Lt.S 0, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om]⟩
 
 theorem hL6 : Holds eL6.k eL6.l eL6.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hL4 db_ok_nil)))
@@ -49,8 +49,8 @@ theorem hL6 : Holds eL6.k eL6.l eL6.r :=
 
 /-- (7) of Lemma 1.1: `SHSSHS = HSSH·ω²`. -/
 def eL7 : Eqn :=
-  ⟨1, [.S 0, .H 0, .S 0, .S 0, .H 0, .S 0],
-    [.H 0, .S 0, .S 0, .H 0, .om, .om]⟩
+  ⟨1, [Lt.S 0, Lt.H 0, Lt.S 0, Lt.S 0, Lt.H 0, Lt.S 0],
+    [Lt.H 0, Lt.S 0, Lt.S 0, Lt.H 0, Lt.om, Lt.om]⟩
 
 theorem hL7 : Holds eL7.k eL7.l eL7.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hL6 db_ok_nil))))
@@ -61,8 +61,8 @@ theorem hL7 : Holds eL7.k eL7.l eL7.r :=
 
 /-- (8) of Lemma 1.1: `HSSHSS = SSHSSH·ω⁴`. -/
 def eL8 : Eqn :=
-  ⟨1, [.S 0, .S 0, .H 0, .S 0, .S 0, .H 0],
-    [.H 0, .S 0, .S 0, .H 0, .S 0, .S 0, .om, .om, .om, .om]⟩
+  ⟨1, [Lt.S 0, Lt.S 0, Lt.H 0, Lt.S 0, Lt.S 0, Lt.H 0],
+    [Lt.H 0, Lt.S 0, Lt.S 0, Lt.H 0, Lt.S 0, Lt.S 0, Lt.om, Lt.om, Lt.om, Lt.om]⟩
 
 theorem hL8 : Holds eL8.k eL8.l eL8.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hL5 (db_ok_cons hL6 (db_ok_cons hL7 db_ok_nil))))
@@ -72,8 +72,8 @@ theorem hL8 : Holds eL8.k eL8.l eL8.r :=
 
 /-- (9) of Lemma 1.1: `SSSHSSH = HSSHS·ω⁻²`. -/
 def eL9 : Eqn :=
-  ⟨1, [.H 0, .S 0, .S 0, .H 0, .S 0, .S 0, .S 0],
-    [.S 0, .H 0, .S 0, .S 0, .H 0, .om, .om, .om, .om, .om, .om]⟩
+  ⟨1, [Lt.H 0, Lt.S 0, Lt.S 0, Lt.H 0, Lt.S 0, Lt.S 0, Lt.S 0],
+    [Lt.S 0, Lt.H 0, Lt.S 0, Lt.S 0, Lt.H 0, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om]⟩
 
 theorem hL9 : Holds eL9.k eL9.l eL9.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hL5 db_ok_nil)))
@@ -83,8 +83,8 @@ theorem hL9 : Holds eL9.k eL9.l eL9.r :=
 
 /-- (10) of Lemma 1.1: `SSSHSSS = HSH·ω⁻¹`. -/
 def eL10 : Eqn :=
-  ⟨1, [.S 0, .S 0, .S 0, .H 0, .S 0, .S 0, .S 0],
-    [.H 0, .S 0, .H 0, .om, .om, .om, .om, .om, .om, .om]⟩
+  ⟨1, [Lt.S 0, Lt.S 0, Lt.S 0, Lt.H 0, Lt.S 0, Lt.S 0, Lt.S 0],
+    [Lt.H 0, Lt.S 0, Lt.H 0, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om]⟩
 
 theorem hL10 : Holds eL10.k eL10.l eL10.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC3 (db_ok_cons hL4 db_ok_nil)))
@@ -93,8 +93,8 @@ theorem hL10 : Holds eL10.k eL10.l eL10.r :=
 
 /-- (14) of Lemma 1.2. -/
 def eL14 : Eqn :=
-  ⟨2, [.S 1, .S 1, .H 1, .CZ 0],
-    [.H 1, .CZ 0, .H 1, .S 0, .S 1, .S 0, .S 1, .H 1]⟩
+  ⟨2, [Lt.S 1, Lt.S 1, Lt.H 1, Lt.CZ 0],
+    [Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.S 0, Lt.S 1, Lt.S 0, Lt.S 1, Lt.H 1]⟩
 
 theorem hL14 : Holds eL14.k eL14.l eL14.r :=
   Holds.of_derives (db_ok_cons hC2 (db_ok_cons hC8 db_ok_nil))
@@ -103,8 +103,8 @@ theorem hL14 : Holds eL14.k eL14.l eL14.r :=
 
 /-- The upside-down version of (14) of Lemma 1.2. -/
 def eM14 : Eqn :=
-  ⟨2, [.S 0, .S 0, .H 0, .CZ 0],
-    [.H 0, .CZ 0, .H 0, .S 1, .S 0, .S 1, .S 0, .H 0]⟩
+  ⟨2, [Lt.S 0, Lt.S 0, Lt.H 0, Lt.CZ 0],
+    [Lt.H 0, Lt.CZ 0, Lt.H 0, Lt.S 1, Lt.S 0, Lt.S 1, Lt.S 0, Lt.H 0]⟩
 
 theorem hM14 : Holds eM14.k eM14.l eM14.r :=
   Holds.of_derives (db_ok_cons hC2 (db_ok_cons hC9 db_ok_nil))
@@ -113,8 +113,8 @@ theorem hM14 : Holds eM14.k eM14.l eM14.r :=
 
 /-- (15) of Lemma 1.2. -/
 def eL15 : Eqn :=
-  ⟨2, [.H 1, .S 1, .H 1, .CZ 0],
-    [.S 1, .H 1, .CZ 0, .S 1, .S 0, .H 1, .S 0, .S 1, .S 1, .H 1, .om, .om, .om, .om, .om, .om,
+  ⟨2, [Lt.H 1, Lt.S 1, Lt.H 1, Lt.CZ 0],
+    [Lt.S 1, Lt.H 1, Lt.CZ 0, Lt.S 1, Lt.S 0, Lt.H 1, Lt.S 0, Lt.S 1, Lt.S 1, Lt.H 1, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om,
      .om]⟩
 
 theorem hL15 : Holds eL15.k eL15.l eL15.r :=
@@ -128,8 +128,8 @@ theorem hL15 : Holds eL15.k eL15.l eL15.r :=
 
 /-- The upside-down version of (15) of Lemma 1.2. -/
 def eM15 : Eqn :=
-  ⟨2, [.H 0, .S 0, .H 0, .CZ 0],
-    [.S 0, .H 0, .CZ 0, .S 0, .S 1, .H 0, .S 1, .S 0, .S 0, .H 0, .om, .om, .om, .om, .om, .om,
+  ⟨2, [Lt.H 0, Lt.S 0, Lt.H 0, Lt.CZ 0],
+    [Lt.S 0, Lt.H 0, Lt.CZ 0, Lt.S 0, Lt.S 1, Lt.H 0, Lt.S 1, Lt.S 0, Lt.S 0, Lt.H 0, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om, Lt.om,
      .om]⟩
 
 theorem hM15 : Holds eM15.k eM15.l eM15.r :=
@@ -143,8 +143,8 @@ theorem hM15 : Holds eM15.k eM15.l eM15.r :=
 
 /-- (16) of Lemma 1.2. -/
 def eL16 : Eqn :=
-  ⟨2, [.S 1, .H 1, .CZ 0, .H 0, .H 1, .CZ 0],
-    [.H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0, .S 0, .H 0]⟩
+  ⟨2, [Lt.S 1, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0],
+    [Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.S 0, Lt.H 0]⟩
 
 theorem hL16 : Holds eL16.k eL16.l eL16.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hM14 db_ok_nil)))))))))
@@ -159,8 +159,8 @@ theorem hL16 : Holds eL16.k eL16.l eL16.r :=
 
 /-- The upside-down version of (16) of Lemma 1.2. -/
 def eM16 : Eqn :=
-  ⟨2, [.S 0, .H 0, .CZ 0, .H 1, .H 0, .CZ 0],
-    [.H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .S 1, .H 1]⟩
+  ⟨2, [Lt.S 0, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0],
+    [Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.S 1, Lt.H 1]⟩
 
 theorem hM16 : Holds eM16.k eM16.l eM16.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC7 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hL4 (db_ok_cons hL5 (db_ok_cons hL14 db_ok_nil)))))))))
@@ -175,8 +175,8 @@ theorem hM16 : Holds eM16.k eM16.l eM16.r :=
 
 /-- (17) of Lemma 1.2. -/
 def eL17 : Eqn :=
-  ⟨2, [.H 1, .CZ 0, .H 0, .S 1, .H 1, .CZ 0],
-    [.CZ 0, .H 0, .S 1, .H 1, .CZ 0, .S 0, .S 0, .S 0, .H 0, .S 0, .H 1, .S 1, .S 1, .H 1]⟩
+  ⟨2, [Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.S 1, Lt.H 1, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 0, Lt.S 1, Lt.H 1, Lt.CZ 0, Lt.S 0, Lt.S 0, Lt.S 0, Lt.H 0, Lt.S 0, Lt.H 1, Lt.S 1, Lt.S 1, Lt.H 1]⟩
 
 theorem hL17 : Holds eL17.k eL17.l eL17.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC8 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hL4 (db_ok_cons hL7 (db_ok_cons hL15 db_ok_nil))))))))))
@@ -192,8 +192,8 @@ theorem hL17 : Holds eL17.k eL17.l eL17.r :=
 
 /-- The upside-down version of (17) of Lemma 1.2. -/
 def eM17 : Eqn :=
-  ⟨2, [.H 0, .CZ 0, .H 1, .S 0, .H 0, .CZ 0],
-    [.CZ 0, .H 1, .S 0, .H 0, .CZ 0, .S 1, .S 1, .S 1, .H 1, .S 1, .H 0, .S 0, .S 0, .H 0]⟩
+  ⟨2, [Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.S 0, Lt.H 0, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 1, Lt.S 0, Lt.H 0, Lt.CZ 0, Lt.S 1, Lt.S 1, Lt.S 1, Lt.H 1, Lt.S 1, Lt.H 0, Lt.S 0, Lt.S 0, Lt.H 0]⟩
 
 theorem hM17 : Holds eM17.k eM17.l eM17.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC7 (db_ok_cons hC9 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hL4 (db_ok_cons hL7 (db_ok_cons hM15 db_ok_nil))))))))))
@@ -209,8 +209,8 @@ theorem hM17 : Holds eM17.k eM17.l eM17.r :=
 
 /-- (18) of Lemma 1.2. -/
 def eL18 : Eqn :=
-  ⟨2, [.H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0, .H 1, .CZ 0],
-    [.CZ 0, .H 0, .H 1, .CZ 0, .H 0, .H 1, .CZ 0, .H 0]⟩
+  ⟨2, [Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0]⟩
 
 theorem hL18 : Holds eL18.k eL18.l eL18.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC7 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hL5 (db_ok_cons hL7 (db_ok_cons hL15 (db_ok_cons hL16 (db_ok_cons hL17 (db_ok_cons hM14 db_ok_nil))))))))))))))
@@ -234,8 +234,8 @@ theorem hL18 : Holds eL18.k eL18.l eL18.r :=
 
 /-- The upside-down version of (18) of Lemma 1.2. -/
 def eM18 : Eqn :=
-  ⟨2, [.H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0],
-    [.CZ 0, .H 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 0, .H 1]⟩
+  ⟨2, [Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0],
+    [Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1]⟩
 
 theorem hM18 : Holds eM18.k eM18.l eM18.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC6 (db_ok_cons hC7 (db_ok_cons hC10 (db_ok_cons hC11 (db_ok_cons hL5 (db_ok_cons hL7 (db_ok_cons hL14 (db_ok_cons hM15 (db_ok_cons hM16 (db_ok_cons hM17 db_ok_nil))))))))))))))
@@ -259,8 +259,8 @@ theorem hM18 : Holds eM18.k eM18.l eM18.r :=
 
 /-- (20) of Lemma 1.3. -/
 def eL20 : Eqn :=
-  ⟨3, [.CZ 0, .H 1, .H 0, .CZ 1, .H 2, .H 1, .CZ 1, .H 2, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .CZ 1],
-    [.H 1, .H 0, .CZ 1, .H 2, .H 1, .CZ 1, .H 2, .CZ 0, .H 1, .H 0, .CZ 0, .H 1]⟩
+  ⟨3, [Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 2, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.CZ 1],
+    [Lt.H 1, Lt.H 0, Lt.CZ 1, Lt.H 2, Lt.H 1, Lt.CZ 1, Lt.H 2, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1]⟩
 
 theorem hL20 : Holds eL20.k eL20.l eL20.r :=
   Holds.of_derives (db_ok_cons hC2 (db_ok_cons hC5 (db_ok_cons hC13 db_ok_nil)))
@@ -273,8 +273,8 @@ theorem hL20 : Holds eL20.k eL20.l eL20.r :=
 
 /-- The upside-down version of (20) of Lemma 1.3. -/
 def eM20 : Eqn :=
-  ⟨3, [.CZ 1, .H 1, .H 2, .CZ 0, .H 0, .H 1, .CZ 0, .H 0, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .CZ 0],
-    [.H 1, .H 2, .CZ 0, .H 0, .H 1, .CZ 0, .H 0, .CZ 1, .H 1, .H 2, .CZ 1, .H 1]⟩
+  ⟨3, [Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.CZ 0],
+    [Lt.H 1, Lt.H 2, Lt.CZ 0, Lt.H 0, Lt.H 1, Lt.CZ 0, Lt.H 0, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1]⟩
 
 theorem hM20 : Holds eM20.k eM20.l eM20.r :=
   Holds.of_derives (db_ok_cons hC2 (db_ok_cons hC5 (db_ok_cons hC13 db_ok_nil)))
@@ -287,9 +287,9 @@ theorem hM20 : Holds eM20.k eM20.l eM20.r :=
 
 /-- (21) of Lemma 1.3. -/
 def eL21 : Eqn :=
-  ⟨3, [.CZ 0, .H 1, .H 0, .CZ 1, .H 1, .CZ 0, .H 1, .H 0, .CZ 0, .H 1, .H 0, .CZ 1, .S 1, .H 1,
+  ⟨3, [Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 1, Lt.H 1, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.H 1, Lt.H 0, Lt.CZ 1, Lt.S 1, Lt.H 1,
        .CZ 0],
-    [.H 1, .H 0, .CZ 0, .CZ 1, .H 0, .S 1, .S 0, .H 1, .S 0, .S 0]⟩
+    [Lt.H 1, Lt.H 0, Lt.CZ 0, Lt.CZ 1, Lt.H 0, Lt.S 1, Lt.S 0, Lt.H 1, Lt.S 0, Lt.S 0]⟩
 
 theorem hL21 : Holds eL21.k eL21.l eL21.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC10 (db_ok_cons hC12 (db_ok_cons hC15 (db_ok_cons hL5 (db_ok_cons hL18 db_ok_nil)))))))))
@@ -305,9 +305,9 @@ theorem hL21 : Holds eL21.k eL21.l eL21.r :=
 
 /-- The upside-down version of (21) of Lemma 1.3. -/
 def eM21 : Eqn :=
-  ⟨3, [.CZ 1, .H 1, .H 2, .CZ 0, .H 1, .CZ 1, .H 1, .H 2, .CZ 1, .H 1, .H 2, .CZ 0, .S 1, .H 1,
+  ⟨3, [Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 0, Lt.H 1, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.H 1, Lt.H 2, Lt.CZ 0, Lt.S 1, Lt.H 1,
        .CZ 1],
-    [.H 1, .H 2, .CZ 1, .CZ 0, .H 2, .S 1, .S 2, .H 1, .S 2, .S 2]⟩
+    [Lt.H 1, Lt.H 2, Lt.CZ 1, Lt.CZ 0, Lt.H 2, Lt.S 1, Lt.S 2, Lt.H 1, Lt.S 2, Lt.S 2]⟩
 
 theorem hM21 : Holds eM21.k eM21.l eM21.r :=
   Holds.of_derives (db_ok_cons hC1 (db_ok_cons hC2 (db_ok_cons hC3 (db_ok_cons hC5 (db_ok_cons hC11 (db_ok_cons hC12 (db_ok_cons hC14 (db_ok_cons hL5 (db_ok_cons hM18 db_ok_nil)))))))))

@@ -370,8 +370,13 @@ holds the whole library. -/
 /-- The first `n` entries of the table hold. -/
 def ValidUpTo (k : ℕ) (T : Tbl) (n : ℕ) : Prop := ∀ i < n, ∀ e, T[i]? = some e → E k e.1 e.2
 
-theorem validUpTo_base {k : ℕ} {B : Tbl} (hB : Valid k B) (D : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))) :
-    ValidUpTo k (libTbl B (decLib D)) B.length := by
+theorem nthX_eq {α : Type} : ∀ (l : List α) (i : ℕ), nthX l i = l[i]?
+  | [], _ => rfl
+  | _ :: _, 0 => rfl
+  | _ :: l, i + 1 => nthX_eq l i
+
+theorem validUpTo_base {k : ℕ} {B : Tbl} (hB : Valid k B) (D : List LX) :
+    ValidUpTo k (libTbl B D) B.length := by
   intro i hi e he
   apply hB e
   rw [libTbl, List.getElem?_append_left hi] at he
@@ -384,34 +389,71 @@ theorem valid_take {k : ℕ} {T : Tbl} {n : ℕ} (h : ValidUpTo k T n) : Valid k
   have hin : i < n := by simp [List.length_take] at hi; omega
   exact h i hin e (by rw [← hie]; exact List.getElem?_eq_getElem _)
 
+/-- The entries the check of a lemma looks up hold, given the table so far. -/
+theorem tbX_valid {k : ℕ} {B : Tbl} {D : List LX} {n : ℕ}
+    (hBc : ∀ e ∈ B, dec16 (enc16 e.1) = e.1 ∧ dec16 (enc16 e.2) = e.2)
+    (h : ValidUpTo k (libTbl B D) n) :
+    ∀ j e, tbX B D n j = some e → E k (dec16 e.1) (dec16 e.2.2.1) := by
+  intro j e he
+  unfold tbX at he
+  cases hj : Nat.blt j n
+  · rw [hj, cond_false] at he; exact nomatch he
+  · rw [hj, cond_true] at he
+    have hjn : j < n := by simpa using hj
+    cases hb : Nat.blt j B.length
+    · rw [hb, cond_false, nthX_eq, Option.map_eq_some_iff] at he
+      obtain ⟨e0, he0, rfl⟩ := he
+      have hjb : B.length ≤ j := Nat.not_lt.1 fun h' => by
+        rw [show Nat.blt j B.length = true by simpa using h'] at hb; exact nomatch hb
+      exact h j hjn _ (by
+        rw [libTbl, List.getElem?_append_right hjb, List.getElem?_map, he0]; rfl)
+    · rw [hb, cond_true, nthX_eq, Option.map_eq_some_iff] at he
+      obtain ⟨e0, he0, rfl⟩ := he
+      have hjb : j < B.length := by simpa using hb
+      have hm := hBc e0 (List.mem_of_getElem? he0)
+      rw [hm.1, hm.2]
+      exact h j hjn e0 (by rw [libTbl, List.getElem?_append_left hjb, he0])
+
 theorem validUpTo_step {k : ℕ} (fo : List Lt → List Lt → Bool)
     (hfo : ∀ s t, fo s t = true → E k s t) {B : Tbl}
-    {D : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))} {i : ℕ}
-    (h : ValidUpTo k (libTbl B (decLib D)) (B.length + i)) (hi : libLemOk fo B D i = true) :
-    ValidUpTo k (libTbl B (decLib D)) (B.length + i + 1) := by
+    (hBc : ∀ e ∈ B, dec16 (enc16 e.1) = e.1 ∧ dec16 (enc16 e.2) = e.2)
+    {D : List LX} {i : ℕ}
+    (h : ValidUpTo k (libTbl B D) (B.length + i)) (hi : libLemOk fo B D i = true) :
+    ValidUpTo k (libTbl B D) (B.length + i + 1) := by
   unfold libLemOk at hi
   split at hi
   · exact nomatch hi
-  · rename_i e he
-    have hE := lemOk_E fo hfo (valid_take h) hi
-    intro j hj e' he'
-    rcases Nat.lt_succ_iff_lt_or_eq.1 hj with hj | rfl
-    · exact h j hj e' he'
-    · have hD : i < D.length := (List.getElem?_eq_some_iff.1 he).1
-      rw [libTbl, List.getElem?_append_right (by omega), Nat.add_sub_cancel_left,
-        List.getElem?_map, decLib, List.getElem?_map, he] at he'
-      simp only [Option.map_some, Option.some.injEq] at he'
-      subst he'
-      exact hE
+  · rename_i l ll r lr p w sts he
+    split at hi
+    · exact nomatch hi
+    · rename_i c hc
+      have hE : E k (dec16 l) (dec16 r) :=
+        (runX_E fo hfo (tbX_valid hBc h) hc).trans (sameH_E hi)
+      intro j hj e' he'
+      rcases Nat.lt_succ_iff_lt_or_eq.1 hj with hj | rfl
+      · exact h j hj e' he'
+      · rw [nthX_eq] at he
+        rw [libTbl, List.getElem?_append_right (by omega), Nat.add_sub_cancel_left,
+          List.getElem?_map, he] at he'
+        simp only [Option.map_some, Option.some.injEq] at he'
+        subst he'
+        exact hE
 
 /-- A stored library all of whose lemmas below `n` check. -/
 theorem validUpTo_all {k : ℕ} (fo : List Lt → List Lt → Bool)
     (hfo : ∀ s t, fo s t = true → E k s t) {B : Tbl} (hB : Valid k B)
-    (D : List (ℕ × ℕ × List (ℕ × ℕ × ℕ × ℕ × ℕ))) :
-    ∀ n, (∀ i < n, libLemOk fo B D i = true) → ValidUpTo k (libTbl B (decLib D)) (B.length + n)
+    (hBc : ∀ e ∈ B, dec16 (enc16 e.1) = e.1 ∧ dec16 (enc16 e.2) = e.2) (D : List LX) :
+    ∀ n, (∀ i < n, libLemOk fo B D i = true) → ValidUpTo k (libTbl B D) (B.length + n)
   | 0, _ => validUpTo_base hB D
-  | n + 1, h => validUpTo_step fo hfo (validUpTo_all fo hfo hB D n (fun i hi => h i (by omega)))
-      (h n (by omega))
+  | n + 1, h => validUpTo_step fo hfo hBc
+      (validUpTo_all fo hfo hB hBc D n (fun i hi => h i (by omega))) (h n (by omega))
+
+/-- The base tables in codes. -/
+theorem base2_codes : ∀ e ∈ base2, dec16 (enc16 e.1) = e.1 ∧ dec16 (enc16 e.2) = e.2 := by
+  decide +kernel
+
+theorem base3_codes : ∀ e ∈ base3, dec16 (enc16 e.1) = e.1 ∧ dec16 (enc16 e.2) = e.2 := by
+  decide +kernel
 
 /-- An entry of a table of which the first `n` entries hold. -/
 theorem ValidUpTo.get {k : ℕ} {T : Tbl} {n : ℕ} (h : ValidUpTo k T n) (i : ℕ) (hi : i < n)

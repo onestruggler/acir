@@ -146,14 +146,44 @@ theorem finish323 {s : O_ZHalf n} (hs : s ≠ 1) (hk : 0 < lde s) {a₀ a₁ a�
     · exact h₄.trans h₅
   exact Derivable.of (Table1.r2e z a₀ a₁ a₂ a₃ h₁ h₂ h₃ (nd5 h₁ h₂ h₃ hz'))
 
+/-! In `xor4_tau` and `par_ij` the four entries are written `2 u + 1` or
+`2 u`, so that every halving is exact and `τ` is the parity of `u`; `omega` then
+proves each conjunct (sixteen cases on the residues mod `4`, or one `omega`
+on a whole statement with its divisions, took seconds). -/
+
+private theorem par_odd {w : ℤ} (h : w % 2 = 1) : ∃ u, w = 2 * u + 1 := ⟨w / 2, by omega⟩
+
+private theorem par_even {w : ℤ} (h : w % 2 = 0) : ∃ u, w = 2 * u := ⟨w / 2, by omega⟩
+
+private theorem tau_two_mul_add_one (u : ℤ) : tau (2 * u + 1) = decide (u % 2 = 1) := by
+  unfold tau
+  rcases Int.emod_two_eq_zero_or_one u with h | h <;> simp [h] <;> omega
+
+private theorem xor_decide_odd (a b : ℤ) :
+    xor (decide (a % 2 = 1)) (decide (b % 2 = 1)) = decide ((a + b) % 2 = 1) := by
+  rcases Int.emod_two_eq_zero_or_one a with ha | ha <;>
+    rcases Int.emod_two_eq_zero_or_one b with hb | hb <;> simp [ha, hb] <;> omega
+
 theorem xor4_tau (z1 z2 z3 z4 : ℤ) (o1 : z1 % 2 = 1) (o2 : z2 % 2 = 1) (o3 : z3 % 2 = 1)
     (o4 : z4 % 2 = 1) :
     xor (xor (xor (tau z1) (tau z2)) (tau z3)) (tau z4) = decide ((z1 + z2 + z3 + z4) % 4 = 2) := by
-  unfold tau
-  by_cases h1 : z1 % 4 = 3 <;> by_cases h2 : z2 % 4 = 3 <;> by_cases h3 : z3 % 4 = 3 <;>
-    by_cases h4 : z4 % 4 = 3 <;> simp [h1, h2, h3, h4] <;> omega
+  obtain ⟨u1, rfl⟩ := par_odd o1
+  obtain ⟨u2, rfl⟩ := par_odd o2
+  obtain ⟨u3, rfl⟩ := par_odd o3
+  obtain ⟨u4, rfl⟩ := par_odd o4
+  clear o1 o2 o3 o4
+  rw [tau_two_mul_add_one, tau_two_mul_add_one, tau_two_mul_add_one, tau_two_mul_add_one,
+    xor_decide_odd, xor_decide_odd, xor_decide_odd]
+  exact decide_eq_decide.2 ⟨fun h => by omega, fun h => by omega⟩
 
 theorem ne_of_val {a b : Fin n} (h : a.val ≠ b.val) : a ≠ b := fun e => h (congrArg Fin.val e)
+
+set_option hygiene false in
+/-- An order fact about `a₀, …, a₃, c, d` in `two_ij`: `omega` on their values
+`e0 … e3`, `vc`, `vd` and the hypotheses named, alone (on the whole context
+each call took a tenth of a second). -/
+local macro "vlt" hs:(ppSpace colGt ident)* : tactic =>
+  `(tactic| (clear * - e0 e1 e2 e3 vc vd $hs*; omega))
 
 /-- Lemma A.3 with `a, b = 0, 1`: the odd entries of `K s` and the parity of the signs. -/
 theorem par_01 (w0 w1 w2 w3 : ℤ) (oi : w0 % 2 = 1) (oj : w1 % 2 = 1) (ek : w2 % 2 = 0)
@@ -162,7 +192,11 @@ theorem par_01 (w0 w1 w2 w3 : ℤ) (oi : w0 % 2 = 1) (oj : w1 % 2 = 1) (ek : w2 
       ((w0 + w1 + w2 + w3) / 2 + (w0 + w1 - w2 - w3) / 2 + w0 + w1) % 4 = 0) ∨
     ((w0 - w1 + w2 - w3) / 2 % 2 = 1 ∧ (w0 - w1 - w2 + w3) / 2 % 2 = 1 ∧ (w0 + w1 + w2 + w3) / 2 % 2 = 0 ∧ (w0 + w1 - w2 - w3) / 2 % 2 = 0 ∧
       ((w0 - w1 + w2 - w3) / 2 + (w0 - w1 - w2 + w3) / 2 + w0 + w1) % 4 = 2) := by
-  omega
+  rcases Int.emod_two_eq_zero_or_one ((w0 + w1 + w2 + w3) / 2) with h | h <;>
+    obtain ⟨u0, rfl⟩ := par_odd oi <;> obtain ⟨u1, rfl⟩ := par_odd oj <;>
+    obtain ⟨u2, rfl⟩ := par_even ek <;> obtain ⟨u3, rfl⟩ := par_even el <;> clear oi oj ek el
+  · right; refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> omega
+  · left; refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> omega
 
 /-- Subcase 3.2.3 with `a, b = 0, 1` (from `0`). -/
 theorem two_01 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} (h₁ : a₀ < a₁)
@@ -180,22 +214,22 @@ theorem two_01 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} 
   have vc := Fin.lt_def.1 h₄; have vd := Fin.lt_def.1 h₅
   have oi := Int.odd_iff.1 ((mem_oddS_iff _).1 ha)
   have oj := Int.odd_iff.1 ((mem_oddS_iff _).1 hb)
-  have ek : wint s a₂ % 2 = 0 := even_low hrest (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega))
-    (Fin.le_def.2 (by omega))
-  have el : wint s a₃ % 2 = 0 := even_low hrest (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega))
-    (Fin.le_def.2 (by omega))
+  have ek : wint s a₂ % 2 = 0 := even_low hrest (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt))
+    (Fin.le_def.2 (by vlt))
+  have el : wint s a₃ % 2 = 0 := even_low hrest (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt))
+    (Fin.le_def.2 (by vlt))
   have hsylls := syll_eq_pos s hU hk h₁ ((h₂.trans h₃).trans h₄) h₅ ha hb hc hd hrest
   have hsum : 2 ∣ wint s a₀ + wint s a₁ + wint s a₂ + wint s a₃ := by omega
   obtain ⟨u', hcV, hv0, hv1, hv2, hv3, hout⟩ := kcol h₁ h₂ h₃ hsum
   have low4 : ∀ {r : Fin n}, r ≤ a₃ → r = a₀ ∨ r = a₁ ∨ r = a₂ ∨ r = a₃ := fun {r} hr => by
-    have := Fin.le_def.1 hr
-    simp only [Fin.ext_iff]; omega
+    have hr' := Fin.le_def.1 hr
+    simp only [Fin.ext_iff]; vlt hr'
   rcases par_01 _ _ _ _ oi oj ek el with hp | hp
   · rw [← hv0, ← hv2, ← hv1, ← hv3] at hp
     obtain ⟨pα, pβ, pk, pl, h4⟩ := hp
     have hpar := (xor4_tau _ _ _ _ pα pβ oi oj).trans (by rw [h4])
     exact finish323 hs hk h₁ h₂ h₃ h₄ h₅ hle (a := a₀) (b := a₁) (α := a₀)
-      (β := a₂) h₁ ((h₂.trans h₃).trans h₄) (h₁.trans h₂) (h₃.trans h₄) (Fin.le_def.2 (by omega))
+      (β := a₂) h₁ ((h₂.trans h₃).trans h₄) (h₁.trans h₂) (h₃.trans h₄) (Fin.le_def.2 (by vlt))
       hc hd hsylls hcV (Int.odd_iff.2 pα) (Int.odd_iff.2 pβ) hout (fun r hr ho => by
         have ho' := Int.odd_iff.1 ho
         rcases low4 hr with rfl | rfl | rfl | rfl <;> first
@@ -207,7 +241,7 @@ theorem two_01 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} 
     obtain ⟨pα, pβ, pk, pl, h4⟩ := hp
     have hpar := (xor4_tau _ _ _ _ pα pβ oi oj).trans (by rw [h4])
     exact finish323 hs hk h₁ h₂ h₃ h₄ h₅ hle (a := a₀) (b := a₁) (α := a₁)
-      (β := a₃) h₁ ((h₂.trans h₃).trans h₄) (h₂.trans h₃) h₄ (Fin.le_def.2 (by omega))
+      (β := a₃) h₁ ((h₂.trans h₃).trans h₄) (h₂.trans h₃) h₄ (Fin.le_def.2 (by vlt))
       hc hd hsylls hcV (Int.odd_iff.2 pα) (Int.odd_iff.2 pβ) hout (fun r hr ho => by
         have ho' := Int.odd_iff.1 ho
         rcases low4 hr with rfl | rfl | rfl | rfl <;> first
@@ -223,7 +257,11 @@ theorem par_02 (w0 w1 w2 w3 : ℤ) (oi : w0 % 2 = 1) (oj : w2 % 2 = 1) (ek : w1 
       ((w0 + w1 + w2 + w3) / 2 + (w0 - w1 + w2 - w3) / 2 + w0 + w2) % 4 = 0) ∨
     ((w0 + w1 - w2 - w3) / 2 % 2 = 1 ∧ (w0 - w1 - w2 + w3) / 2 % 2 = 1 ∧ (w0 + w1 + w2 + w3) / 2 % 2 = 0 ∧ (w0 - w1 + w2 - w3) / 2 % 2 = 0 ∧
       ((w0 + w1 - w2 - w3) / 2 + (w0 - w1 - w2 + w3) / 2 + w0 + w2) % 4 = 2) := by
-  omega
+  rcases Int.emod_two_eq_zero_or_one ((w0 + w1 + w2 + w3) / 2) with h | h <;>
+    obtain ⟨u0, rfl⟩ := par_odd oi <;> obtain ⟨u2, rfl⟩ := par_odd oj <;>
+    obtain ⟨u1, rfl⟩ := par_even ek <;> obtain ⟨u3, rfl⟩ := par_even el <;> clear oi oj ek el
+  · right; refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> omega
+  · left; refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> omega
 
 /-- Subcase 3.2.3 with `a, b = 0, 2` (from `0`). -/
 theorem two_02 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} (h₁ : a₀ < a₁)
@@ -241,22 +279,22 @@ theorem two_02 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} 
   have vc := Fin.lt_def.1 h₄; have vd := Fin.lt_def.1 h₅
   have oi := Int.odd_iff.1 ((mem_oddS_iff _).1 ha)
   have oj := Int.odd_iff.1 ((mem_oddS_iff _).1 hb)
-  have ek : wint s a₁ % 2 = 0 := even_low hrest (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega))
-    (Fin.le_def.2 (by omega))
-  have el : wint s a₃ % 2 = 0 := even_low hrest (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega))
-    (Fin.le_def.2 (by omega))
+  have ek : wint s a₁ % 2 = 0 := even_low hrest (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt))
+    (Fin.le_def.2 (by vlt))
+  have el : wint s a₃ % 2 = 0 := even_low hrest (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt))
+    (Fin.le_def.2 (by vlt))
   have hsylls := syll_eq_pos s hU hk (h₁.trans h₂) (h₃.trans h₄) h₅ ha hb hc hd hrest
   have hsum : 2 ∣ wint s a₀ + wint s a₁ + wint s a₂ + wint s a₃ := by omega
   obtain ⟨u', hcV, hv0, hv1, hv2, hv3, hout⟩ := kcol h₁ h₂ h₃ hsum
   have low4 : ∀ {r : Fin n}, r ≤ a₃ → r = a₀ ∨ r = a₁ ∨ r = a₂ ∨ r = a₃ := fun {r} hr => by
-    have := Fin.le_def.1 hr
-    simp only [Fin.ext_iff]; omega
+    have hr' := Fin.le_def.1 hr
+    simp only [Fin.ext_iff]; vlt hr'
   rcases par_02 _ _ _ _ oi oj ek el with hp | hp
   · rw [← hv0, ← hv1, ← hv2, ← hv3] at hp
     obtain ⟨pα, pβ, pk, pl, h4⟩ := hp
     have hpar := (xor4_tau _ _ _ _ pα pβ oi oj).trans (by rw [h4])
     exact finish323 hs hk h₁ h₂ h₃ h₄ h₅ hle (a := a₀) (b := a₂) (α := a₀)
-      (β := a₁) (h₁.trans h₂) (h₃.trans h₄) h₁ ((h₂.trans h₃).trans h₄) (Fin.le_def.2 (by omega))
+      (β := a₁) (h₁.trans h₂) (h₃.trans h₄) h₁ ((h₂.trans h₃).trans h₄) (Fin.le_def.2 (by vlt))
       hc hd hsylls hcV (Int.odd_iff.2 pα) (Int.odd_iff.2 pβ) hout (fun r hr ho => by
         have ho' := Int.odd_iff.1 ho
         rcases low4 hr with rfl | rfl | rfl | rfl <;> first
@@ -268,7 +306,7 @@ theorem two_02 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} 
     obtain ⟨pα, pβ, pk, pl, h4⟩ := hp
     have hpar := (xor4_tau _ _ _ _ pα pβ oi oj).trans (by rw [h4])
     exact finish323 hs hk h₁ h₂ h₃ h₄ h₅ hle (a := a₀) (b := a₂) (α := a₂)
-      (β := a₃) (h₁.trans h₂) (h₃.trans h₄) h₃ h₄ (Fin.le_def.2 (by omega))
+      (β := a₃) (h₁.trans h₂) (h₃.trans h₄) h₃ h₄ (Fin.le_def.2 (by vlt))
       hc hd hsylls hcV (Int.odd_iff.2 pα) (Int.odd_iff.2 pβ) hout (fun r hr ho => by
         have ho' := Int.odd_iff.1 ho
         rcases low4 hr with rfl | rfl | rfl | rfl <;> first
@@ -284,7 +322,11 @@ theorem par_03 (w0 w1 w2 w3 : ℤ) (oi : w0 % 2 = 1) (oj : w3 % 2 = 1) (ek : w1 
       ((w0 + w1 + w2 + w3) / 2 + (w0 - w1 - w2 + w3) / 2 + w0 + w3) % 4 = 0) ∨
     ((w0 - w1 + w2 - w3) / 2 % 2 = 1 ∧ (w0 + w1 - w2 - w3) / 2 % 2 = 1 ∧ (w0 + w1 + w2 + w3) / 2 % 2 = 0 ∧ (w0 - w1 - w2 + w3) / 2 % 2 = 0 ∧
       ((w0 - w1 + w2 - w3) / 2 + (w0 + w1 - w2 - w3) / 2 + w0 + w3) % 4 = 2) := by
-  omega
+  rcases Int.emod_two_eq_zero_or_one ((w0 + w1 + w2 + w3) / 2) with h | h <;>
+    obtain ⟨u0, rfl⟩ := par_odd oi <;> obtain ⟨u3, rfl⟩ := par_odd oj <;>
+    obtain ⟨u1, rfl⟩ := par_even ek <;> obtain ⟨u2, rfl⟩ := par_even el <;> clear oi oj ek el
+  · right; refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> omega
+  · left; refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> omega
 
 /-- Subcase 3.2.3 with `a, b = 0, 3` (from `0`). -/
 theorem two_03 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} (h₁ : a₀ < a₁)
@@ -302,22 +344,22 @@ theorem two_03 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} 
   have vc := Fin.lt_def.1 h₄; have vd := Fin.lt_def.1 h₅
   have oi := Int.odd_iff.1 ((mem_oddS_iff _).1 ha)
   have oj := Int.odd_iff.1 ((mem_oddS_iff _).1 hb)
-  have ek : wint s a₁ % 2 = 0 := even_low hrest (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega))
-    (Fin.le_def.2 (by omega))
-  have el : wint s a₂ % 2 = 0 := even_low hrest (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega))
-    (Fin.le_def.2 (by omega))
+  have ek : wint s a₁ % 2 = 0 := even_low hrest (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt))
+    (Fin.le_def.2 (by vlt))
+  have el : wint s a₂ % 2 = 0 := even_low hrest (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt))
+    (Fin.le_def.2 (by vlt))
   have hsylls := syll_eq_pos s hU hk (h₁.trans (h₂.trans h₃)) h₄ h₅ ha hb hc hd hrest
   have hsum : 2 ∣ wint s a₀ + wint s a₁ + wint s a₂ + wint s a₃ := by omega
   obtain ⟨u', hcV, hv0, hv1, hv2, hv3, hout⟩ := kcol h₁ h₂ h₃ hsum
   have low4 : ∀ {r : Fin n}, r ≤ a₃ → r = a₀ ∨ r = a₁ ∨ r = a₂ ∨ r = a₃ := fun {r} hr => by
-    have := Fin.le_def.1 hr
-    simp only [Fin.ext_iff]; omega
+    have hr' := Fin.le_def.1 hr
+    simp only [Fin.ext_iff]; vlt hr'
   rcases par_03 _ _ _ _ oi oj ek el with hp | hp
   · rw [← hv0, ← hv3, ← hv1, ← hv2] at hp
     obtain ⟨pα, pβ, pk, pl, h4⟩ := hp
     have hpar := (xor4_tau _ _ _ _ pα pβ oi oj).trans (by rw [h4])
     exact finish323 hs hk h₁ h₂ h₃ h₄ h₅ hle (a := a₀) (b := a₃) (α := a₀)
-      (β := a₃) (h₁.trans (h₂.trans h₃)) h₄ (h₁.trans (h₂.trans h₃)) h₄ (Fin.le_def.2 (by omega))
+      (β := a₃) (h₁.trans (h₂.trans h₃)) h₄ (h₁.trans (h₂.trans h₃)) h₄ (Fin.le_def.2 (by vlt))
       hc hd hsylls hcV (Int.odd_iff.2 pα) (Int.odd_iff.2 pβ) hout (fun r hr ho => by
         have ho' := Int.odd_iff.1 ho
         rcases low4 hr with rfl | rfl | rfl | rfl <;> first
@@ -329,7 +371,7 @@ theorem two_03 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} 
     obtain ⟨pα, pβ, pk, pl, h4⟩ := hp
     have hpar := (xor4_tau _ _ _ _ pα pβ oi oj).trans (by rw [h4])
     exact finish323 hs hk h₁ h₂ h₃ h₄ h₅ hle (a := a₀) (b := a₃) (α := a₁)
-      (β := a₂) (h₁.trans (h₂.trans h₃)) h₄ h₂ (h₃.trans h₄) (Fin.le_def.2 (by omega))
+      (β := a₂) (h₁.trans (h₂.trans h₃)) h₄ h₂ (h₃.trans h₄) (Fin.le_def.2 (by vlt))
       hc hd hsylls hcV (Int.odd_iff.2 pα) (Int.odd_iff.2 pβ) hout (fun r hr ho => by
         have ho' := Int.odd_iff.1 ho
         rcases low4 hr with rfl | rfl | rfl | rfl <;> first
@@ -345,7 +387,11 @@ theorem par_12 (w0 w1 w2 w3 : ℤ) (oi : w1 % 2 = 1) (oj : w2 % 2 = 1) (ek : w0 
       ((w0 + w1 + w2 + w3) / 2 + (w0 - w1 - w2 + w3) / 2 + w1 + w2) % 4 = 2) ∨
     ((w0 - w1 + w2 - w3) / 2 % 2 = 1 ∧ (w0 + w1 - w2 - w3) / 2 % 2 = 1 ∧ (w0 + w1 + w2 + w3) / 2 % 2 = 0 ∧ (w0 - w1 - w2 + w3) / 2 % 2 = 0 ∧
       ((w0 - w1 + w2 - w3) / 2 + (w0 + w1 - w2 - w3) / 2 + w1 + w2) % 4 = 0) := by
-  omega
+  rcases Int.emod_two_eq_zero_or_one ((w0 + w1 + w2 + w3) / 2) with h | h <;>
+    obtain ⟨u1, rfl⟩ := par_odd oi <;> obtain ⟨u2, rfl⟩ := par_odd oj <;>
+    obtain ⟨u0, rfl⟩ := par_even ek <;> obtain ⟨u3, rfl⟩ := par_even el <;> clear oi oj ek el
+  · right; refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> omega
+  · left; refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> omega
 
 /-- Subcase 3.2.3 with `a, b = 1, 2` (from `0`). -/
 theorem two_12 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} (h₁ : a₀ < a₁)
@@ -363,22 +409,22 @@ theorem two_12 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} 
   have vc := Fin.lt_def.1 h₄; have vd := Fin.lt_def.1 h₅
   have oi := Int.odd_iff.1 ((mem_oddS_iff _).1 ha)
   have oj := Int.odd_iff.1 ((mem_oddS_iff _).1 hb)
-  have ek : wint s a₀ % 2 = 0 := even_low hrest (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega))
-    (Fin.le_def.2 (by omega))
-  have el : wint s a₃ % 2 = 0 := even_low hrest (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega))
-    (Fin.le_def.2 (by omega))
+  have ek : wint s a₀ % 2 = 0 := even_low hrest (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt))
+    (Fin.le_def.2 (by vlt))
+  have el : wint s a₃ % 2 = 0 := even_low hrest (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt))
+    (Fin.le_def.2 (by vlt))
   have hsylls := syll_eq_pos s hU hk h₂ (h₃.trans h₄) h₅ ha hb hc hd hrest
   have hsum : 2 ∣ wint s a₀ + wint s a₁ + wint s a₂ + wint s a₃ := by omega
   obtain ⟨u', hcV, hv0, hv1, hv2, hv3, hout⟩ := kcol h₁ h₂ h₃ hsum
   have low4 : ∀ {r : Fin n}, r ≤ a₃ → r = a₀ ∨ r = a₁ ∨ r = a₂ ∨ r = a₃ := fun {r} hr => by
-    have := Fin.le_def.1 hr
-    simp only [Fin.ext_iff]; omega
+    have hr' := Fin.le_def.1 hr
+    simp only [Fin.ext_iff]; vlt hr'
   rcases par_12 _ _ _ _ oi oj ek el with hp | hp
   · rw [← hv0, ← hv3, ← hv1, ← hv2] at hp
     obtain ⟨pα, pβ, pk, pl, h4⟩ := hp
     have hpar := (xor4_tau _ _ _ _ pα pβ oi oj).trans (by rw [h4])
     exact finish323 hs hk h₁ h₂ h₃ h₄ h₅ hle (a := a₁) (b := a₂) (α := a₀)
-      (β := a₃) h₂ (h₃.trans h₄) (h₁.trans (h₂.trans h₃)) h₄ (Fin.le_def.2 (by omega))
+      (β := a₃) h₂ (h₃.trans h₄) (h₁.trans (h₂.trans h₃)) h₄ (Fin.le_def.2 (by vlt))
       hc hd hsylls hcV (Int.odd_iff.2 pα) (Int.odd_iff.2 pβ) hout (fun r hr ho => by
         have ho' := Int.odd_iff.1 ho
         rcases low4 hr with rfl | rfl | rfl | rfl <;> first
@@ -390,7 +436,7 @@ theorem two_12 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} 
     obtain ⟨pα, pβ, pk, pl, h4⟩ := hp
     have hpar := (xor4_tau _ _ _ _ pα pβ oi oj).trans (by rw [h4])
     exact finish323 hs hk h₁ h₂ h₃ h₄ h₅ hle (a := a₁) (b := a₂) (α := a₁)
-      (β := a₂) h₂ (h₃.trans h₄) h₂ (h₃.trans h₄) (Fin.le_def.2 (by omega))
+      (β := a₂) h₂ (h₃.trans h₄) h₂ (h₃.trans h₄) (Fin.le_def.2 (by vlt))
       hc hd hsylls hcV (Int.odd_iff.2 pα) (Int.odd_iff.2 pβ) hout (fun r hr ho => by
         have ho' := Int.odd_iff.1 ho
         rcases low4 hr with rfl | rfl | rfl | rfl <;> first
@@ -406,7 +452,11 @@ theorem par_13 (w0 w1 w2 w3 : ℤ) (oi : w1 % 2 = 1) (oj : w3 % 2 = 1) (ek : w0 
       ((w0 + w1 + w2 + w3) / 2 + (w0 - w1 + w2 - w3) / 2 + w1 + w3) % 4 = 2) ∨
     ((w0 + w1 - w2 - w3) / 2 % 2 = 1 ∧ (w0 - w1 - w2 + w3) / 2 % 2 = 1 ∧ (w0 + w1 + w2 + w3) / 2 % 2 = 0 ∧ (w0 - w1 + w2 - w3) / 2 % 2 = 0 ∧
       ((w0 + w1 - w2 - w3) / 2 + (w0 - w1 - w2 + w3) / 2 + w1 + w3) % 4 = 0) := by
-  omega
+  rcases Int.emod_two_eq_zero_or_one ((w0 + w1 + w2 + w3) / 2) with h | h <;>
+    obtain ⟨u1, rfl⟩ := par_odd oi <;> obtain ⟨u3, rfl⟩ := par_odd oj <;>
+    obtain ⟨u0, rfl⟩ := par_even ek <;> obtain ⟨u2, rfl⟩ := par_even el <;> clear oi oj ek el
+  · right; refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> omega
+  · left; refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> omega
 
 /-- Subcase 3.2.3 with `a, b = 1, 3` (from `0`). -/
 theorem two_13 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} (h₁ : a₀ < a₁)
@@ -424,22 +474,22 @@ theorem two_13 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} 
   have vc := Fin.lt_def.1 h₄; have vd := Fin.lt_def.1 h₅
   have oi := Int.odd_iff.1 ((mem_oddS_iff _).1 ha)
   have oj := Int.odd_iff.1 ((mem_oddS_iff _).1 hb)
-  have ek : wint s a₀ % 2 = 0 := even_low hrest (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega))
-    (Fin.le_def.2 (by omega))
-  have el : wint s a₂ % 2 = 0 := even_low hrest (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega))
-    (Fin.le_def.2 (by omega))
+  have ek : wint s a₀ % 2 = 0 := even_low hrest (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt))
+    (Fin.le_def.2 (by vlt))
+  have el : wint s a₂ % 2 = 0 := even_low hrest (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt))
+    (Fin.le_def.2 (by vlt))
   have hsylls := syll_eq_pos s hU hk (h₂.trans h₃) h₄ h₅ ha hb hc hd hrest
   have hsum : 2 ∣ wint s a₀ + wint s a₁ + wint s a₂ + wint s a₃ := by omega
   obtain ⟨u', hcV, hv0, hv1, hv2, hv3, hout⟩ := kcol h₁ h₂ h₃ hsum
   have low4 : ∀ {r : Fin n}, r ≤ a₃ → r = a₀ ∨ r = a₁ ∨ r = a₂ ∨ r = a₃ := fun {r} hr => by
-    have := Fin.le_def.1 hr
-    simp only [Fin.ext_iff]; omega
+    have hr' := Fin.le_def.1 hr
+    simp only [Fin.ext_iff]; vlt hr'
   rcases par_13 _ _ _ _ oi oj ek el with hp | hp
   · rw [← hv0, ← hv1, ← hv2, ← hv3] at hp
     obtain ⟨pα, pβ, pk, pl, h4⟩ := hp
     have hpar := (xor4_tau _ _ _ _ pα pβ oi oj).trans (by rw [h4])
     exact finish323 hs hk h₁ h₂ h₃ h₄ h₅ hle (a := a₁) (b := a₃) (α := a₀)
-      (β := a₁) (h₂.trans h₃) h₄ h₁ ((h₂.trans h₃).trans h₄) (Fin.le_def.2 (by omega))
+      (β := a₁) (h₂.trans h₃) h₄ h₁ ((h₂.trans h₃).trans h₄) (Fin.le_def.2 (by vlt))
       hc hd hsylls hcV (Int.odd_iff.2 pα) (Int.odd_iff.2 pβ) hout (fun r hr ho => by
         have ho' := Int.odd_iff.1 ho
         rcases low4 hr with rfl | rfl | rfl | rfl <;> first
@@ -451,7 +501,7 @@ theorem two_13 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} 
     obtain ⟨pα, pβ, pk, pl, h4⟩ := hp
     have hpar := (xor4_tau _ _ _ _ pα pβ oi oj).trans (by rw [h4])
     exact finish323 hs hk h₁ h₂ h₃ h₄ h₅ hle (a := a₁) (b := a₃) (α := a₂)
-      (β := a₃) (h₂.trans h₃) h₄ h₃ h₄ (Fin.le_def.2 (by omega))
+      (β := a₃) (h₂.trans h₃) h₄ h₃ h₄ (Fin.le_def.2 (by vlt))
       hc hd hsylls hcV (Int.odd_iff.2 pα) (Int.odd_iff.2 pβ) hout (fun r hr ho => by
         have ho' := Int.odd_iff.1 ho
         rcases low4 hr with rfl | rfl | rfl | rfl <;> first
@@ -467,7 +517,11 @@ theorem par_23 (w0 w1 w2 w3 : ℤ) (oi : w2 % 2 = 1) (oj : w3 % 2 = 1) (ek : w0 
       ((w0 + w1 + w2 + w3) / 2 + (w0 + w1 - w2 - w3) / 2 + w2 + w3) % 4 = 2) ∨
     ((w0 - w1 + w2 - w3) / 2 % 2 = 1 ∧ (w0 - w1 - w2 + w3) / 2 % 2 = 1 ∧ (w0 + w1 + w2 + w3) / 2 % 2 = 0 ∧ (w0 + w1 - w2 - w3) / 2 % 2 = 0 ∧
       ((w0 - w1 + w2 - w3) / 2 + (w0 - w1 - w2 + w3) / 2 + w2 + w3) % 4 = 0) := by
-  omega
+  rcases Int.emod_two_eq_zero_or_one ((w0 + w1 + w2 + w3) / 2) with h | h <;>
+    obtain ⟨u2, rfl⟩ := par_odd oi <;> obtain ⟨u3, rfl⟩ := par_odd oj <;>
+    obtain ⟨u0, rfl⟩ := par_even ek <;> obtain ⟨u1, rfl⟩ := par_even el <;> clear oi oj ek el
+  · right; refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> omega
+  · left; refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> omega
 
 /-- Subcase 3.2.3 with `a, b = 2, 3` (from `0`). -/
 theorem two_23 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} (h₁ : a₀ < a₁)
@@ -485,22 +539,22 @@ theorem two_23 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} 
   have vc := Fin.lt_def.1 h₄; have vd := Fin.lt_def.1 h₅
   have oi := Int.odd_iff.1 ((mem_oddS_iff _).1 ha)
   have oj := Int.odd_iff.1 ((mem_oddS_iff _).1 hb)
-  have ek : wint s a₀ % 2 = 0 := even_low hrest (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega))
-    (Fin.le_def.2 (by omega))
-  have el : wint s a₁ % 2 = 0 := even_low hrest (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega)) (ne_of_val (by omega))
-    (Fin.le_def.2 (by omega))
+  have ek : wint s a₀ % 2 = 0 := even_low hrest (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt))
+    (Fin.le_def.2 (by vlt))
+  have el : wint s a₁ % 2 = 0 := even_low hrest (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt)) (ne_of_val (by vlt))
+    (Fin.le_def.2 (by vlt))
   have hsylls := syll_eq_pos s hU hk h₃ h₄ h₅ ha hb hc hd hrest
   have hsum : 2 ∣ wint s a₀ + wint s a₁ + wint s a₂ + wint s a₃ := by omega
   obtain ⟨u', hcV, hv0, hv1, hv2, hv3, hout⟩ := kcol h₁ h₂ h₃ hsum
   have low4 : ∀ {r : Fin n}, r ≤ a₃ → r = a₀ ∨ r = a₁ ∨ r = a₂ ∨ r = a₃ := fun {r} hr => by
-    have := Fin.le_def.1 hr
-    simp only [Fin.ext_iff]; omega
+    have hr' := Fin.le_def.1 hr
+    simp only [Fin.ext_iff]; vlt hr'
   rcases par_23 _ _ _ _ oi oj ek el with hp | hp
   · rw [← hv0, ← hv2, ← hv1, ← hv3] at hp
     obtain ⟨pα, pβ, pk, pl, h4⟩ := hp
     have hpar := (xor4_tau _ _ _ _ pα pβ oi oj).trans (by rw [h4])
     exact finish323 hs hk h₁ h₂ h₃ h₄ h₅ hle (a := a₂) (b := a₃) (α := a₀)
-      (β := a₂) h₃ h₄ (h₁.trans h₂) (h₃.trans h₄) (Fin.le_def.2 (by omega))
+      (β := a₂) h₃ h₄ (h₁.trans h₂) (h₃.trans h₄) (Fin.le_def.2 (by vlt))
       hc hd hsylls hcV (Int.odd_iff.2 pα) (Int.odd_iff.2 pβ) hout (fun r hr ho => by
         have ho' := Int.odd_iff.1 ho
         rcases low4 hr with rfl | rfl | rfl | rfl <;> first
@@ -512,7 +566,7 @@ theorem two_23 {s : O_ZHalf n} (hs : s ≠ 1) {a₀ a₁ a₂ a₃ c d : Fin n} 
     obtain ⟨pα, pβ, pk, pl, h4⟩ := hp
     have hpar := (xor4_tau _ _ _ _ pα pβ oi oj).trans (by rw [h4])
     exact finish323 hs hk h₁ h₂ h₃ h₄ h₅ hle (a := a₂) (b := a₃) (α := a₁)
-      (β := a₃) h₃ h₄ (h₂.trans h₃) h₄ (Fin.le_def.2 (by omega))
+      (β := a₃) h₃ h₄ (h₂.trans h₃) h₄ (Fin.le_def.2 (by vlt))
       hc hd hsylls hcV (Int.odd_iff.2 pα) (Int.odd_iff.2 pβ) hout (fun r hr ho => by
         have ho' := Int.odd_iff.1 ho
         rcases low4 hr with rfl | rfl | rfl | rfl <;> first

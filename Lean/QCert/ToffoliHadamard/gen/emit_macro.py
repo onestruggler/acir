@@ -110,9 +110,9 @@ noncomputable def kbTable : List (Entry ML) := [""")
 L.append(",\n".join(entry(*e) for e in kb_entries) + "]")
 L.append("""
 set_option maxRecDepth 100000 in
-theorem kb_check : checkPlain baseM kbTable = true := by decide +kernel
+theorem kb_check : checkPlain' κM baseM kbTable = true := by decide +kernel
 
-theorem kb_valid : Valid MRel (baseM ++ eqns kbTable) := checkPlain_valid baseM_valid kb_check
+theorem kb_valid : Valid MRel (baseM ++ eqns kbTable) := checkPlain'_valid κM_inj baseM_valid kb_check
 
 /-- `baseM ++ eqns kbTable`, written out. -/
 noncomputable def E0 : List (Eqn ML) := [""")
@@ -126,15 +126,25 @@ theorem E0_valid : Valid MRel E0 := E0_eq ▸ kb_valid
 CH = int(sys.argv[2]) if len(sys.argv) > 2 else 6
 def lag(g):
     return "." + g[0] + " " + " ".join(map(str, g[1:]))
-chunk = (len(adj) + CH - 1) // CH
+# Contiguous parts with about the same number of steps each (the kernel's
+# time is the steps'; equal numbers of certificates made the last parts, with
+# the long certificates of the `K` generators, take five times the first).
+tot = sum(len(a[3]) for a in adj)
+cuts = [0]
+acc = 0
+for i, a in enumerate(adj):
+    acc += len(a[3])
+    if len(cuts) < CH and acc * CH >= tot * len(cuts):
+        cuts.append(i + 1)
+cuts += [len(adj)] * (CH + 1 - len(cuts))
 for c in range(CH):
-    part = adj[c * chunk:(c + 1) * chunk]
+    part = adj[cuts[c]:cuts[c + 1]]
     L.append(f"/-- Adjacent transport certificates, part {c + 1}. -/")
     L.append(f"noncomputable def adjCerts{c + 1} : List AdjCert := [")
     L.append(("," + chr(10)).join(f"  ⟨{j}, {lag(g)}, {len(st)}, {pack_plain(st)}⟩" for ((j, g), l, r, st) in part) + "]")
     L.append(f"""
 set_option maxRecDepth 100000 in
-theorem adj_check{c + 1} : checkFlat E0 (adjCerts{c + 1}.map AdjCert.entry) = true := by
+theorem adj_check{c + 1} : checkFlat' κM E0 (adjCerts{c + 1}.map AdjCert.entry) = true := by
   decide +kernel
 """)
 L.append("/-- All adjacent transport certificates. -/")
@@ -152,7 +162,11 @@ L.append("""
 set_option maxRecDepth 100000 in
 /-- Every valid adjacent transposition of every generator has a certificate. -/
 theorem adj_keys : (allAG.all fun g => allBelow 7 fun j =>
-    !g.valid j || (allAG.contains (g.act j) && adjCerts.any fun c => c.j == j && c.g == g)) = true := by
+    !g.valid j || (memAG (g.act j) && (bitsOf AdjCert.key adjCerts).testBit (8 * agKey g + j))) = true := by
+  decide +kernel
+
+/-- Every certificate has bounded indices. -/
+theorem adj_bounded : (adjCerts.all fun c => boundedAG c.g && Nat.blt c.j 8) = true := by
   decide +kernel
 """)
 L.append("/-- The instance `0, …, 7` of (6a). -/")
@@ -160,9 +174,9 @@ L.append("noncomputable def std6aTable : List (Entry ML) := [")
 L.append(entry(*std6a) + "]")
 L.append("""
 set_option maxRecDepth 100000 in
-theorem std6a_check : checkFlat E0 std6aTable = true := by decide +kernel
+theorem std6a_check : checkFlat' κM E0 std6aTable = true := by decide +kernel
 
-theorem std6a_valid : Valid MRel (eqns std6aTable) := checkFlat_valid E0_valid std6a_check
+theorem std6a_valid : Valid MRel (eqns std6aTable) := checkFlat'_valid κM_inj E0_valid std6a_check
 
 end QCert.ToffoliHadamard.Macro
 """)

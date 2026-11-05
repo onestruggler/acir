@@ -67,7 +67,7 @@ for (a, b, al, be), cases in sorted(cfgs.items()):
     out.append("  | _, _, _, _ => []\n")
     out.append(f"/-- The chains for `{{a,b}} = {{{a},{b}}}`, `{{α,β}} = {{{al},{be}}}`. -/\ndef S323_{tag} : Bool → Bool → Bool → Bool → List (GStep ((Fam ⊕ MFam) × Bool) 6)")
     for bits, (Xl, Yl, st) in sorted(cases.items()):
-        out.append(f"  | {', '.join(B(v) for v in bits)} =>\n    {steps_lit(st, step_d)}")
+        out.append(f"  | {', '.join(B(v) for v in bits)} =>\n    {steps_code(st, 6)}")
     out.append("  | _, _, _, _ => []\n")
     kl = lit([K(al, be, 4, 5)])[1:-1]
     kr = lit([K(a, b, 4, 5)])[1:-1]

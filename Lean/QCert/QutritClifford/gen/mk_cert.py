@@ -26,6 +26,12 @@ def lst(xs):
     return '[' + ', '.join(xs) + ']'
 
 
+def lit(n):
+    """A raw literal: a numeral `n : ℕ` would be elaborated through an
+    instance `OfNat ℕ n`, a new one for every number."""
+    return 'nat_lit %d' % n
+
+
 def rows(rs, f, per=12):
     out = []
     for r in rs:
@@ -45,31 +51,32 @@ def flat(xs, per=8):
 
 def ded_code(how):
     if how[0] == 'tree':
-        return '(0, 0, 0, 0, 0)'
+        return '(nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)'
     if how[0] == 'sub':
-        return '(1, 0, 0, 0, 0)'
+        return '(nat_lit 1, nat_lit 0, nat_lit 0, nat_lit 0, nat_lit 0)'
     _, e, d, side, j = how
-    return '(2, %d, %d, %d, %d)' % (e, d, side, j)
+    return '(nat_lit 2, nat_lit %d, nat_lit %d, nat_lit %d, nat_lit %d)' % (e, d, side, j)
 
 
 def write(C, name, doc, k):
     nl = len(C.letters)
     size = C.T.size
-    rep = [str(emit.enc(C.rep[c])) for c in range(size)]
+    rep = [lit(emit.enc(C.rep[c])) for c in range(size)]
     dl = [C.dl[c] for c in range(size)]
     ordr = [[C.order[(c, i)] for i in range(nl)] for c in range(size)]
     ded = [[C.ded[(c, i)] for i in range(nl)] for c in range(size)]
     eqs = []
     for (l, r, at) in C.eqs:
-        eqs.append('(%d, %d, %d)' % (emit.enc(l), emit.enc(r), 0 if at is None else at + 1))
+        eqs.append('(nat_lit %d, nat_lit %d, nat_lit %d)' % (
+            emit.enc(l), emit.enc(r), 0 if at is None else at + 1))
     src = HDR % doc
-    src += 'def %s : Cert where\n' % name
+    src += 'noncomputable def %s : Cert where\n' % name
     src += '  k := %d\n' % k
     src += '  letters := %s\n' % lst([LT[x] for x in C.letters])
     src += '  loc := %s\n' % lst([LT[x] for x in C.T.N[0:0]] + [LT[x] for x in loc_of(C)])
     src += '  rep := %s\n' % flat(rep)
-    src += '  dl := %s\n' % rows(dl, str, per=16)
-    src += '  ord := %s\n' % rows(ordr, str, per=16)
+    src += '  dl := %s\n' % rows(dl, lit, per=16)
+    src += '  ord := %s\n' % rows(ordr, lit, per=16)
     src += '  ded := %s\n' % rows(ded, ded_code, per=4)
     src += '  eqs := %s\n\n' % flat(eqs, per=4)
     src += 'end QCert.QutritClifford\n'

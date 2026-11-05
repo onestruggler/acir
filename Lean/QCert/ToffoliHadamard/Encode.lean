@@ -59,11 +59,139 @@ theorem genMat_eq_locL (g : LiRossSelinger.Gen 8) :
         simp [List.nodup_cons]; omega) a b c d h₁ h₂ h₃ rfl rfl rfl rfl,
       LiRossSelinger.Loc.glob, levelMat_id]; rfl
 
-theorem evalW_negw : ∀ a : Fin 8, evalW (negw a) = ListMat.map ratToQ2 (level 8 [a] LiRossSelinger.lNeg) := by
+/-! ## The generators of `𝒢₈` as integer row operations -/
+
+/-- `2 K` as an integer `4 × 4` matrix. -/
+def lK2 : LMat ℤ := [[1, 1, 1, 1], [1, -1, 1, -1], [1, 1, -1, -1], [1, -1, -1, 1]]
+
+/-- The sign at `a`. -/
+def signAt (a : ℕ) : List Bool := (List.range 8).map fun i => i == a
+
+/-- The transposition `(a b)`. -/
+def swapAt (a b : ℕ) : List ℕ := (List.range 8).map fun i => if i = a then b else if i = b then a else i
+
+/-- `2 K_[a,b,c,d]` on `8` indices: `2 K` on `a, b, c, d`, `2` on the rest of
+the diagonal. -/
+def kAt (a b c d : ℕ) : LMat ℤ :=
+  (List.range 8).map fun i => (List.range 8).map fun j =>
+    match pos [a, b, c, d] i, pos [a, b, c, d] j with
+    | some p, some q => (lK2.getD p []).getD q 0
+    | _, _ => if i = j then 2 else 0
+
+/-- The integer row operation of a generator of `𝒢₈`. -/
+def genZ : LiRossSelinger.Gen 8 → Act ℤ
+  | .neg a => .signs (signAt a)
+  | .x a b _ => .perm (swapAt a b)
+  | .k a b c d _ _ _ => .dense (kAt a b c d)
+
+/-- The power of `1/√2` a generator carries: `2` for `K`. -/
+def genSc : LiRossSelinger.Gen 8 → ℕ
+  | .k _ _ _ _ _ _ _ => 2
+  | _ => 0
+
+theorem genZ_wf (g : LiRossSelinger.Gen 8) : (genZ g).WF 8 := by
+  cases g with
+  | neg a => simp [genZ, Act.WF, signAt]
+  | x a b _ =>
+    simp only [genZ, Act.WF, swapAt, List.mem_map, List.mem_range, forall_exists_index, and_imp]
+    rintro i j hj rfl
+    split_ifs <;> omega
+  | k a b c d _ _ _ =>
+    simp only [genZ, Act.WF, kAt, List.mem_map, List.mem_range, forall_exists_index, and_imp]
+    rintro r i _ rfl
+    simp
+
+/-- The matrix of a generator over `ℚ(√2)`. -/
+def genQ (g : LiRossSelinger.Gen 8) : Matrix (Fin 8) (Fin 8) QSqrt2 := gateQ (genSc g) (genZ g)
+
+/-- An integer list matrix over `ℚ`, divided by `2 ^ k`. -/
+def halfC (k : ℕ) (M : LMat ℤ) : LMat ℚ := M.map (List.map fun z : ℤ => (z : ℚ) / 2 ^ k)
+
+theorem map_halfC (k : ℕ) (M : LMat ℤ) :
+    ListMat.map ratToQ2 (halfC k M) = scaleC (QSqrt2.invSqrt2 ^ (2 * k)) M := by
+  have h2 : QSqrt2.invSqrt2 ^ 2 = ratToQ2 (1 / 2) := by decide +kernel
+  have hk : QSqrt2.invSqrt2 ^ (2 * k) = ratToQ2 ((2 ^ k)⁻¹) := by
+    rw [pow_mul, h2, ← map_pow, one_div, inv_pow]
+  simp only [ListMat.map, halfC, scaleC, List.map_map]
+  apply List.map_congr_left
+  intro r _
+  simp only [Function.comp, List.map_map]
+  apply List.map_congr_left
+  intro z _
+  simp only [Function.comp, hk, div_eq_mul_inv, map_mul, map_intCast, eq_intCast]
+  ring
+
+/-- The local list matrix of a generator is its row operation, divided by
+`2` for `K` (`genSc g / 2` halvings): checked generator by generator. -/
+def bridgeG (g : LiRossSelinger.Gen 8) : Bool :=
+  decide (locL g = halfC (genSc g / 2) ((genZ g).applyF (one 8)))
+
+/-- The bridge for every `(−1)_[a]` and `X_[a,b]`, decided for every choice of
+the indices.  `K_[a,b,c,d]` is checked only where it is used (`bridgeK` in
+`prod_genMat`): for all `70` choices its rational matrices cost seconds. -/
+theorem bridgeG_neg : ∀ a : Fin 8, bridgeG (.neg a) = true := by
   decide +kernel
 
-theorem evalW_xab : ∀ a b : Fin 8, a < b →
-    evalW (xab a b) = ListMat.map ratToQ2 (level 8 [a, b] LiRossSelinger.lX) := by
+theorem bridgeG_x : ∀ (a b : Fin 8) (h : a < b), bridgeG (.x a b h) = true := by
+  decide +kernel
+
+/-- The bridges still to check: those of the `K` generators. -/
+def bridgeK : LiRossSelinger.Gen 8 → Bool
+  | .k a b c d h₁ h₂ h₃ => bridgeG (.k a b c d h₁ h₂ h₃)
+  | _ => true
+
+theorem bridgeG_of_K {g : LiRossSelinger.Gen 8} (h : bridgeK g = true) : bridgeG g = true := by
+  cases g with
+  | neg a => exact bridgeG_neg a
+  | x a b hab => exact bridgeG_x a b hab
+  | k => exact h
+
+theorem locL_eq {g : LiRossSelinger.Gen 8} (hg : bridgeG g = true) :
+    ListMat.map ratToQ2 (locL g) = scaleC (QSqrt2.invSqrt2 ^ genSc g) ((genZ g).applyF (one 8)) := by
+  rw [of_decide_eq_true hg, map_halfC]
+  cases g <;> simp only [genSc]
+
+/-- The real matrix of a generator is the image of its row operation, scaled. -/
+theorem genMat_eq_genQ {g : LiRossSelinger.Gen 8} (hg : bridgeG g = true) :
+    LiRossSelinger.genMat g = (genQ g).map QSqrt2.toR := by
+  rw [genMat_eq_locL, ← congrArg DFunLike.coe toR_comp_ratToQ2, RingHom.coe_comp,
+    ← Matrix.map_map, ← toMat_map, locL_eq hg, toMat_scaleC, genQ, gateQ,
+    Act.toMat_applyF 8 (genZ_wf g), toMat_one, Matrix.mul_one]
+
+/-- The matrix of a word over `𝒢₈` as a scaled integer matrix. -/
+def evalG : List (LiRossSelinger.Gen 8) → SMat := evalS genSc genZ
+
+theorem prod_genQ {l : List (LiRossSelinger.Gen 8)} (hl : l.all bridgeK = true) :
+    (l.map LiRossSelinger.genMat).prod = ((l.map genQ).prod).map QSqrt2.toR := by
+  induction l with
+  | nil => exact (Matrix.map_one _ (map_zero _) (map_one _)).symm
+  | cons g l ih =>
+    rw [List.all_cons, Bool.and_eq_true] at hl
+    rw [List.map_cons, List.prod_cons, ih hl.2, List.map_cons, List.prod_cons,
+      Matrix.map_mul, genMat_eq_genQ (bridgeG_of_K hl.1)]
+
+theorem prod_genMat {l : List (LiRossSelinger.Gen 8)} (hl : l.all bridgeK = true) :
+    (l.map LiRossSelinger.genMat).prod = ((evalG l).toMatS 8 QSqrt2.invSqrt2).map QSqrt2.toR := by
+  rw [prod_genQ hl]
+  exact congrArg (fun M => Matrix.map M QSqrt2.toR)
+    (toMatS_evalS genSc genZ genQ genZ_wf (fun _ => rfl) l)
+
+theorem prod_semMat (l : List Sym1) :
+    (l.map semMat).prod = ((evalZ l).toMatS 8 QSqrt2.invSqrt2).map QSqrt2.toR := by
+  rw [← toMatS_evalZ]
+  exact prod_gateMatR l
+
+/-- A circuit and a word over `𝒢₈` with the same scaled integer matrix have
+the same real matrix. -/
+theorem semW_genW {l : List Sym1} {l' : List (LiRossSelinger.Gen 8)}
+    (hb : l'.all bridgeK = true) (h : eqS 2 (evalZ l) (evalG l') = true) :
+    (l.map semMat).prod = (l'.map LiRossSelinger.genMat).prod := by
+  rw [prod_semMat, prod_genMat hb, eqS_sound 8 invSqrt2_sq h]
+
+theorem negw_eval : ∀ a : Fin 8, eqS 2 (evalZ (negw a)) (evalG [.neg a]) = true := by
+  decide +kernel
+
+theorem xab_eval : ∀ (a b : Fin 8) (h : a < b), eqS 2 (evalZ (xab a b)) (evalG [.x a b h]) = true := by
   decide +kernel
 
 /-! ## `K_[a,b,c,d]` as conjugated `K_[0,1,2,3]` -/
@@ -72,22 +200,9 @@ theorem semW_append (l l' : List Sym1) :
     ((l ++ l').map semMat).prod = (l.map semMat).prod * (l'.map semMat).prod := by
   rw [List.map_append, List.prod_append]
 
-theorem semW_eq (l : List Sym1) : (l.map semMat).prod = (ListMat.toMat 8 (evalW l)).map QSqrt2.toR := by
-  rw [toMat_evalW]
-  induction l with
-  | nil => exact (Matrix.map_one _ (map_zero _) (map_one _)).symm
-  | cons g l ih => rw [List.map_cons, List.prod_cons, ih, semMat_eq, List.map_cons,
-      List.prod_cons, Matrix.map_mul]
-
-theorem semW_locL {l : List Sym1} {g : LiRossSelinger.Gen 8}
-    (h : evalW l = ListMat.map ratToQ2 (locL g)) : (l.map semMat).prod = LiRossSelinger.genMat g := by
-  rw [semW_eq, h, toMat_map, Matrix.map_map, genMat_eq_locL]
-  congr 1
-  exact congrArg DFunLike.coe toR_comp_ratToQ2
-
 theorem xab_mat (a b : Fin 8) (h : a < b) :
-    ((xab a b).map semMat).prod = LiRossSelinger.genMat (.x a b h) :=
-  semW_locL (g := .x a b h) (evalW_xab a b h)
+    ((xab a b).map semMat).prod = LiRossSelinger.genMat (.x a b h) := by
+  simpa using semW_genW rfl (xab_eval a b h)
 
 theorem genX_mul (a b : Fin 8) (h : a < b) (A : Matrix (Fin 8) (Fin 8) ℝ) (r c : Fin 8) :
     (LiRossSelinger.genMat (.x a b h) * A) r c = A (Equiv.swap a b r) c := by
@@ -195,7 +310,7 @@ theorem kw_mat (a b c d : Fin 8) (h₁ : a < b) (h₂ : b < c) (h₃ : c < d) :
 theorem enc_mat (g : LiRossSelinger.Gen 8) :
     ((enc g).map semMat).prod = LiRossSelinger.genMat g := by
   cases g with
-  | neg a => exact semW_locL (g := .neg a) (evalW_negw a)
+  | neg a => simpa using semW_genW rfl (negw_eval a)
   | x a b h => exact xab_mat a b h
   | k a b c d h₁ h₂ h₃ => exact kw_mat a b c d h₁ h₂ h₃
 

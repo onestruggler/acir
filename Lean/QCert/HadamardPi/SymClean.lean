@@ -19,6 +19,8 @@ namespace QCert.HadamardPi
 
 open Matrix Finset FreeMonoid
 
+noncomputable section
+
 variable {n : ℕ}
 
 /-! ### Exponents -/
@@ -498,5 +500,7 @@ theorem clean_ind {w : ℕ} {P : List ZL} {nv δ : ℕ} {D A0 B0 : List (Gen w)}
     rw [pow_succ, mul_assoc, rt2_mul, ← hy]
     congr 1
     apply Zsqrtd.ext <;> simp <;> omega
+
+end
 
 end QCert.HadamardPi

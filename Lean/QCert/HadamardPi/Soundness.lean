@@ -15,15 +15,50 @@ namespace QCert.HadamardPi
 
 open Matrix
 
+/-! A vector of distinct indices is injective: one lemma per length, so that `vec_inj` is
+one application and a few `omega` calls instead of a `fin_cases` enumeration of every pair
+(which cost about 0.4 s per relation). -/
+
+theorem vecInj1 {n : ℕ} (a : Fin n) : Function.Injective ![a] := fun i j _ =>
+  Subsingleton.elim i j
+
+theorem vecInj2 {n : ℕ} {a b : Fin n} (hab : a ≠ b) : Function.Injective ![a, b] := by
+  intro i j hij
+  fin_cases i <;> fin_cases j <;> first | rfl | exact absurd hij hab | exact absurd hij.symm hab
+
+theorem vecInj3 {n : ℕ} {a b c : Fin n} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    Function.Injective ![a, b, c] := by
+  intro i j hij
+  fin_cases i <;> fin_cases j <;> first | rfl | exact absurd hij ‹_› | exact absurd hij.symm ‹_›
+
+theorem vecInj4 {n : ℕ} {a b c d : Fin n} (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hbc : b ≠ c)
+    (hbd : b ≠ d) (hcd : c ≠ d) : Function.Injective ![a, b, c, d] := by
+  intro i j hij
+  fin_cases i <;> fin_cases j <;> first | rfl | exact absurd hij ‹_› | exact absurd hij.symm ‹_›
+
+theorem vecInj6 {n : ℕ} {a b c d e f : Fin n} (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d)
+    (hae : a ≠ e) (haf : a ≠ f) (hbc : b ≠ c) (hbd : b ≠ d) (hbe : b ≠ e) (hbf : b ≠ f)
+    (hcd : c ≠ d) (hce : c ≠ e) (hcf : c ≠ f) (hde : d ≠ e) (hdf : d ≠ f) (hef : e ≠ f) :
+    Function.Injective ![a, b, c, d, e, f] := by
+  intro i j hij
+  fin_cases i <;> fin_cases j <;> first | rfl | exact absurd hij ‹_› | exact absurd hij.symm ‹_›
+
 /-- `f : Fin m → Fin n` given as a vector of indices is injective when its
 entries are distinct (from the hypotheses in context). -/
 macro "vec_inj" : tactic =>
-  `(tactic| (intro i j hij; fin_cases i <;> fin_cases j <;>
-    first | rfl | (simp at hij; done) | (simp at hij; exfalso; omega)))
+  `(tactic| first
+    | exact vecInj1 _
+    | exact vecInj2 (by omega)
+    | exact vecInj3 (by omega) (by omega) (by omega)
+    | exact vecInj4 (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    | exact vecInj6 (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+        (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    | (intro i j hij; fin_cases i <;> fin_cases j <;>
+        first | rfl | (simp at hij; done) | (simp at hij; exfalso; omega)))
 
 /-- Discharge a relation by an exact check in dimension `m`. -/
 macro "check_rel " f:term:max L:term:max R:term:max : tactic =>
-  `(tactic| exact wordMat_eq_of_check $f (by vec_inj) $L $R (by decide +kernel) rfl rfl)
+  `(tactic| exact wordMat_eq_of_vcheck $f (by vec_inj) $L $R (by decide +kernel) rfl rfl)
 
 /-- Every relation of Figure 6 holds for the matrices. -/
 theorem fig6_wordMat {n : ℕ} {w w' : Word (Gen n)} (h : Fig6 w w') :
