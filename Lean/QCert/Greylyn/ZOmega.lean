@@ -89,21 +89,28 @@ variable (x y : ZOmega)
 
 end Coordinates
 
+/-- A ring law, coordinate by coordinate (`simp only` on the coordinate
+lemmas: the default simp set cost 3 s over the fourteen laws). -/
+local macro "coord_ring" : tactic =>
+  `(tactic| (ext <;> simp only [a_zero, b_zero, c_zero, d_zero, a_one, b_one, c_one, d_one,
+    a_add, b_add, c_add, d_add, a_neg, b_neg, c_neg, d_neg, a_sub, b_sub, c_sub, d_sub, a_mul,
+    b_mul, c_mul, d_mul] <;> ring))
+
 instance : CommRing ZOmega where
-  add_assoc x y z := by ext <;> simp <;> ring
-  zero_add x := by ext <;> simp
-  add_zero x := by ext <;> simp
-  add_comm x y := by ext <;> simp <;> ring
-  neg_add_cancel x := by ext <;> simp
-  sub_eq_add_neg x y := by ext <;> simp <;> ring
-  mul_assoc x y z := by ext <;> simp <;> ring
-  one_mul x := by ext <;> simp
-  mul_one x := by ext <;> simp
-  zero_mul x := by ext <;> simp
-  mul_zero x := by ext <;> simp
-  left_distrib x y z := by ext <;> simp <;> ring
-  right_distrib x y z := by ext <;> simp <;> ring
-  mul_comm x y := by ext <;> simp <;> ring
+  add_assoc x y z := by coord_ring
+  zero_add x := by coord_ring
+  add_zero x := by coord_ring
+  add_comm x y := by coord_ring
+  neg_add_cancel x := by coord_ring
+  sub_eq_add_neg x y := by coord_ring
+  mul_assoc x y z := by coord_ring
+  one_mul x := by coord_ring
+  mul_one x := by coord_ring
+  zero_mul x := by coord_ring
+  mul_zero x := by coord_ring
+  left_distrib x y z := by coord_ring
+  right_distrib x y z := by coord_ring
+  mul_comm x y := by coord_ring
   nsmul := nsmulRec
   zsmul := zsmulRec
 
@@ -347,25 +354,39 @@ def res (x : ZOmega) : ℕ :=
 
 theorem res_lt (x : ZOmega) : res x < 4 := by unfold res; split_ifs <;> omega
 
+/-- The residues of `x / δ` for even `x`: its parity is that of `b + d`, and
+its `b + d` that of `c + d`. -/
+theorem divδ_bits {x : ZOmega} (h : (x.a + x.b + x.c + x.d) % 2 = 0) :
+    ((divδ x).a + (divδ x).b + (divδ x).c + (divδ x).d) % 2 = (x.b + x.d) % 2 ∧
+      ((divδ x).b + (divδ x).d) % 2 = (x.c + x.d) % 2 := by
+  simp only [divδ]
+  omega
+
 /-- `δ³` divides an element whose three residues `a + b + c + d`, `b + d`,
-`c + d` are even. -/
+`c + d` are even.  (The residues of `x / δ` and `x / δ²` come from
+`divδ_bits`: `omega` on `divδ (divδ x)` unfolded, sixteen nested halvings,
+took 3 s.) -/
 theorem δz_pow_three_dvd {x : ZOmega} (h0 : (x.a + x.b + x.c + x.d) % 2 = 0)
     (h1 : (x.b + x.d) % 2 = 0) (h2 : (x.c + x.d) % 2 = 0) : δz ^ 3 ∣ x := by
   refine ⟨divδ (divδ (divδ x)), ?_⟩
-  have e1 : ¬ IsOdd x := by simp only [IsOdd]; omega
-  have e2 : ¬ IsOdd (divδ x) := by simp only [IsOdd, divδ]; omega
-  have e3 : ¬ IsOdd (divδ (divδ x)) := by simp only [IsOdd, divδ]; omega
+  have b1 := divδ_bits h0
+  have b2 := divδ_bits (b1.1.trans h1)
+  have e1 : ¬ IsOdd x := by unfold IsOdd; omega
+  have e2 : ¬ IsOdd (divδ x) := by unfold IsOdd; omega
+  have e3 : ¬ IsOdd (divδ (divδ x)) := by unfold IsOdd; omega
   rw [pow_three, mul_assoc, mul_assoc, δz_mul_divδ e3, δz_mul_divδ e2, δz_mul_divδ e1]
 
 /-- Two odd elements with the same residue modulo `δ³` are congruent
 modulo `δ³`, and so is one to minus the other (`2 ≡ 0`). -/
 theorem δz_pow_three_dvd_add_sub {x y : ZOmega} (hx : IsOdd x) (hy : IsOdd y)
     (h : res x = res y) : δz ^ 3 ∣ x + y ∧ δz ^ 3 ∣ x - y := by
-  unfold IsOdd at hx hy
-  unfold res at h
-  constructor <;> apply δz_pow_three_dvd <;>
-    simp only [a_add, b_add, c_add, d_add, a_sub, b_sub, c_sub, d_sub] <;>
+  -- the two residue bits first, so that each of the six goals is one `omega`
+  have ⟨h1, h2⟩ : (x.b + x.d) % 2 = (y.b + y.d) % 2 ∧ (x.c + x.d) % 2 = (y.c + y.d) % 2 := by
+    unfold res at h
     split_ifs at h <;> omega
+  unfold IsOdd at hx hy
+  constructor <;> apply δz_pow_three_dvd <;>
+    simp only [a_add, b_add, c_add, d_add, a_sub, b_sub, c_sub, d_sub] <;> omega
 
 theorem ωz_mul (x : ZOmega) : ωz * x = ⟨-x.d, x.a, x.b, x.c⟩ := by
   ext <;> simp [ωz]
@@ -414,9 +435,15 @@ def uexp (x : ZOmega) : ℕ :=
   else if x = ⟨-1, 0, 0, 0⟩ then 4 else if x = ⟨0, -1, 0, 0⟩ then 5
   else if x = ⟨0, 0, -1, 0⟩ then 6 else if x = ⟨0, 0, 0, -1⟩ then 7 else 8
 
-theorem uexp_le (x : ZOmega) : uexp x ≤ 8 := by unfold uexp; split_ifs <;> omega
+/-- Each branch of the `if` chain is one of `1, …, 8`. -/
+theorem uexp_mem (x : ZOmega) : 1 ≤ uexp x ∧ uexp x ≤ 8 := by
+  unfold uexp
+  repeat' split
+  all_goals decide
 
-theorem one_le_uexp (x : ZOmega) : 1 ≤ uexp x := by unfold uexp; split_ifs <;> omega
+theorem uexp_le (x : ZOmega) : uexp x ≤ 8 := (uexp_mem x).2
+
+theorem one_le_uexp (x : ZOmega) : 1 ≤ uexp x := (uexp_mem x).1
 
 /-- Proof of Lemma 14: an element with `a² + b² + c² + d² = 1` is `ωᵐ`,
 `m = uexp x ∈ {1, …, 8}`. -/
@@ -424,20 +451,14 @@ theorem ωz_pow_uexp {x : ZOmega} (h : nrm0 x = 1) : ωz ^ uexp x = x := by
   obtain ⟨a, b, c, d⟩ := x
   simp only [nrm0] at h
   have := sq_nonneg a; have := sq_nonneg b; have := sq_nonneg c; have := sq_nonneg d
-  have ha : a ^ 2 ≤ 1 := by linarith
-  have hb : b ^ 2 ≤ 1 := by linarith
-  have hc : c ^ 2 ≤ 1 := by linarith
-  have hd : d ^ 2 ≤ 1 := by linarith
-  have ha1 : -1 ≤ a := by nlinarith
-  have ha2 : a ≤ 1 := by nlinarith
-  have hb1 : -1 ≤ b := by nlinarith
-  have hb2 : b ≤ 1 := by nlinarith
-  have hc1 : -1 ≤ c := by nlinarith
-  have hc2 : c ≤ 1 := by nlinarith
-  have hd1 : -1 ≤ d := by nlinarith
-  have hd2 : d ≤ 1 := by nlinarith
+  obtain ⟨ha1, ha2⟩ := abs_le.1 ((sq_le_one_iff_abs_le_one a).1 (by linarith))
+  obtain ⟨hb1, hb2⟩ := abs_le.1 ((sq_le_one_iff_abs_le_one b).1 (by linarith))
+  obtain ⟨hc1, hc2⟩ := abs_le.1 ((sq_le_one_iff_abs_le_one c).1 (by linarith))
+  obtain ⟨hd1, hd2⟩ := abs_le.1 ((sq_le_one_iff_abs_le_one d).1 (by linarith))
+  -- the 73 cases with `a² + b² + c² + d² ≠ 1` are refuted first, by `decide`
+  -- on `h` (`decide +kernel` failing on them, then `norm_num`, took 3 s)
   interval_cases a <;> interval_cases b <;> interval_cases c <;> interval_cases d <;>
-    first | decide +kernel | (norm_num at h)
+    first | exact absurd h (by decide) | decide +kernel
 
 /-- `ω^{8-m} ωᵐ = 1`. -/
 theorem ωz_pow_sub_uexp_mul {x : ZOmega} (h : nrm0 x = 1) : ωz ^ (8 - uexp x) * x = 1 := by

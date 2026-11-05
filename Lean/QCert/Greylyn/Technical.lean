@@ -155,8 +155,40 @@ theorem bits (x : ZOmega) :
   have := nrm1_bits x
   omega
 
+/-- `1` on the class `1` of `Fin 4`, `0` on the others. -/
+private def isOne (c : Fin 4) : ℕ := if c = 1 then 1 else 0
+
+/-- Four distinct classes: exactly one of them is `1` (decided over `Fin 4`). -/
+private theorem count_one : ∀ c0 c1 c2 c3 : Fin 4,
+    (c0 ≠ c1 ∧ c0 ≠ c2 ∧ c0 ≠ c3 ∧ c1 ≠ c2 ∧ c1 ≠ c3 ∧ c2 ≠ c3) →
+      isOne c0 + isOne c1 + isOne c2 + isOne c3 = 1 := by
+  decide
+
+/-- The class `2 a + b` of the bits `a`, `b`, and the bit `r`, which is `1` in the
+class `1` alone. -/
+private theorem bits_class {a b r : ℤ}
+    (h : 0 ≤ a ∧ a ≤ 1 ∧ 0 ≤ b ∧ b ≤ 1 ∧ 0 ≤ r ∧ r ≤ b ∧ r + a ≤ 1 ∧ b ≤ r + a) :
+    ∃ c : Fin 4, ((c : ℕ) : ℤ) = 2 * a + b ∧ r = isOne c := by
+  obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8⟩ := h
+  rcases (show a = 0 ∨ a = 1 by omega) with rfl | rfl <;>
+    rcases (show b = 0 ∨ b = 1 by omega) with rfl | rfl
+  · exact ⟨0, rfl, show r = 0 by omega⟩
+  · exact ⟨1, rfl, show r = 1 by omega⟩
+  · exact ⟨2, rfl, show r = 0 by omega⟩
+  · exact ⟨3, rfl, show r = 0 by omega⟩
+
+private theorem class_ne {c c' : Fin 4} {a b r a' b' r' : ℤ} (e : ((c : ℕ) : ℤ) = 2 * a + b)
+    (e' : ((c' : ℕ) : ℤ) = 2 * a' + b')
+    (h : 0 ≤ a ∧ a ≤ 1 ∧ 0 ≤ b ∧ b ≤ 1 ∧ 0 ≤ r ∧ r ≤ b ∧ r + a ≤ 1 ∧ b ≤ r + a)
+    (h' : 0 ≤ a' ∧ a' ≤ 1 ∧ 0 ≤ b' ∧ b' ≤ 1 ∧ 0 ≤ r' ∧ r' ≤ b' ∧ r' + a' ≤ 1 ∧ b' ≤ r' + a')
+    (d : ¬ (a = a' ∧ b = b')) : c ≠ c' := by
+  rintro rfl
+  exact d (by omega)
+
 /-- Lemma 37, the counting: four distinct classes modulo `δ²` contain
-exactly one of class `δ`. -/
+exactly one of class `δ`.  The classes are `2 a + b ∈ Fin 4` (`bits_class`)
+and the count is decided there (`count_one`): the case split on the eight
+bits, 256 `omega` proofs, cost 10 s of kernel time. -/
 theorem four_bits {a0 a1 a2 a3 b0 b1 b2 b3 r0 r1 r2 r3 : ℤ}
     (h0 : 0 ≤ a0 ∧ a0 ≤ 1 ∧ 0 ≤ b0 ∧ b0 ≤ 1 ∧ 0 ≤ r0 ∧ r0 ≤ b0 ∧ r0 + a0 ≤ 1 ∧ b0 ≤ r0 + a0)
     (h1 : 0 ≤ a1 ∧ a1 ≤ 1 ∧ 0 ≤ b1 ∧ b1 ≤ 1 ∧ 0 ≤ r1 ∧ r1 ≤ b1 ∧ r1 + a1 ≤ 1 ∧ b1 ≤ r1 + a1)
@@ -165,13 +197,17 @@ theorem four_bits {a0 a1 a2 a3 b0 b1 b2 b3 r0 r1 r2 r3 : ℤ}
     (d01 : ¬ (a0 = a1 ∧ b0 = b1)) (d02 : ¬ (a0 = a2 ∧ b0 = b2)) (d03 : ¬ (a0 = a3 ∧ b0 = b3))
     (d12 : ¬ (a1 = a2 ∧ b1 = b2)) (d13 : ¬ (a1 = a3 ∧ b1 = b3)) (d23 : ¬ (a2 = a3 ∧ b2 = b3)) :
     (r0 + r1 + r2 + r3) % 2 = 1 := by
-  have ⟨x0, y0, z0, w0, _⟩ := h0
-  have ⟨x1, y1, z1, w1, _⟩ := h1
-  have ⟨x2, y2, z2, w2, _⟩ := h2
-  have ⟨x3, y3, z3, w3, _⟩ := h3
-  interval_cases a0 <;> interval_cases b0 <;> interval_cases a1 <;> interval_cases b1 <;>
-    interval_cases a2 <;> interval_cases b2 <;> interval_cases a3 <;> interval_cases b3 <;>
-    omega
+  obtain ⟨c0, e0, f0⟩ := bits_class h0
+  obtain ⟨c1, e1, f1⟩ := bits_class h1
+  obtain ⟨c2, e2, f2⟩ := bits_class h2
+  obtain ⟨c3, e3, f3⟩ := bits_class h3
+  have := count_one c0 c1 c2 c3 ⟨class_ne e0 e1 h0 h1 d01, class_ne e0 e2 h0 h2 d02,
+    class_ne e0 e3 h0 h3 d03, class_ne e1 e2 h1 h2 d12, class_ne e1 e3 h1 h3 d13,
+    class_ne e2 e3 h2 h3 d23⟩
+  rw [f0, f1, f2, f3]
+  -- `omega` with the disequalities still in context splits on all of them
+  clear d01 d02 d03 d12 d13 d23 h0 h1 h2 h3 e0 e1 e2 e3 f0 f1 f2 f3
+  omega
 
 /-- Lemma 39 (with Lemma 37): in dimension `4`, no unit vector has a
 numerator whose entries lie in the four classes modulo `δ²` (whatever the

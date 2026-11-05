@@ -126,31 +126,59 @@ end Powers
 
 /-! ### Evaluating both sides -/
 
-/-- Evaluate the pairs of both sides of a rule. -/
-macro "pa_simp" : tactic => `(tactic| simp [gen_g0, gen_g1_zero, gen_g2_zero, gen_up, sem_pad_1_1,
-  sem_pad_1_2, sem_pad_2_1, sem_pad_1_3, GateData.sem_shift, gD_X, gD_M, gD_Z, gD_S, gD_T, gD_CX,
-  gD_SW, gD_om, sem_Xf, sem_CXf, sem_Zf, sem_Sf, sem_Tf, PA.diag_pow, PA.scalar, ZMod.natCast_self])
-
-/-- The same, with the given extra lemmas. -/
+/-- Evaluate the pairs of both sides of a rule, with the given extra lemmas.
+The lemmas listed here and in `pa_entry` are those `simp?` reports over
+every rule: `simp only` on them costs a third of `simp` with the default
+set, and the instance searches it ran under it are gone with it.  The
+semantics is a `MonoidHom`, so `MonoidHom.map_mul` rather than `map_mul`,
+which looks for a `MulHomClass` instance at every use (2 s over the
+module). -/
 macro "pa_simp" "[" ls:Lean.Parser.Tactic.simpLemma,* "]" : tactic =>
-  `(tactic| simp [gen_g0, gen_g1_zero, gen_g2_zero, gen_up, sem_pad_1_1,
-  sem_pad_1_2, sem_pad_2_1, sem_pad_1_3, GateData.sem_shift, gD_X, gD_M, gD_Z, gD_S, gD_T, gD_CX,
-  gD_SW, gD_om, sem_Xf, sem_CXf, sem_Zf, sem_Sf, sem_Tf, PA.diag_pow, PA.scalar, ZMod.natCast_self,
-  $ls,*])
+  `(tactic| simp only [gen_g0, gen_g1_zero, gen_g2_zero, gen_up, sem_pad_1_1, sem_pad_1_2,
+    sem_pad_2_1, sem_pad_1_3, GateData.sem_shift, GateData.sem_of, Circuit.shift_of, gD_X, gD_M,
+    gD_Z, gD_S, gD_T, gD_CX, gD_SW, gD_om, sem_Xf, sem_CXf, sem_Zf, sem_Sf, sem_Tf, PA.diag_pow,
+    PA.scalar, ZMod.natCast_self, seq_cons, seq_nil, MonoidHom.map_mul, MonoidHom.map_one,
+    MonoidHom.map_pow, one_mul, one_smul, neg_mul, neg_smul, nsmul_eq_mul, Units.val_mul,
+    Units.val_neg, Units.val_one, Fin.isValue, Nat.reduceAdd, Nat.succ_eq_add_one, $ls,*])
+
+/-- Evaluate the pairs of both sides of a rule. -/
+macro "pa_simp" : tactic => `(tactic| pa_simp [])
+
+/-- Evaluate a component of a pair at a vector: the relabelling at a wire, or
+the phase. -/
+macro "pa_entry" : tactic =>
+  `(tactic| simp only [PA.perm, PA.diag, PA.mul_f, PA.mul_q, PA.one_f, PA.one_q, PA.onTop,
+    PA.onBottom, PA.high, PA.low, Function.comp_apply, id_eq, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_fin_one, Pi.add_apply, Pi.mul_apply, Pi.neg_apply,
+    Pi.one_apply, Pi.smul_apply, Pi.natCast_apply, smul_eq_mul, Fin.isValue, Fin.eta,
+    Fin.zero_eta, Fin.mk_one, Fin.mk_eq_zero, Fin.val_eq_zero, Fin.val_eq_zero_iff,
+    Fin.coe_ofNat_eq_mod, Fin.reduceFinMk, Fin.reduceEq, Nat.reduceAdd, Nat.reduceMod,
+    Nat.succ_eq_add_one, Nat.mod_succ, Nat.zero_mod, Nat.one_mod, Nat.add_eq_zero_iff,
+    Nat.add_one_sub_one, Nat.not_ofNat_le_one, Order.lt_one_iff, Order.lt_two_iff, Std.le_refl,
+    zero_le, tsub_self, add_tsub_cancel_left, dite_eq_ite, ite_self, ↓reduceDIte, ↓reduceIte,
+    CompTriple.comp_eq, CharP.cast_eq_zero, OfNat.ofNat_ne_zero, one_ne_zero, false_and,
+    add_zero, zero_add, mul_one, zero_mul, mul_neg, neg_neg, add_neg_cancel_right,
+    add_neg_cancel_comm, add_neg_cancel_comm_assoc])
 
 /-- Compare two pairs: every wire of the relabelling, and the phase. -/
 macro "pa_eval" : tactic => `(tactic| (
   refine PA.ext (funext fun v => funext fun i => ?_) (funext fun v => ?_)
-  · fin_cases i <;>
-      simp [PA.perm, PA.diag, PA.scalar, PA.onTop, PA.onBottom, PA.high, PA.low] <;> ring
-  · simp [PA.perm, PA.diag, PA.scalar, PA.onTop, PA.onBottom, PA.high, PA.low] <;> ring))
+  · fin_cases i <;> pa_entry <;> ring
+  · pa_entry <;> ring))
 
 /-- The same, with the binomial coordinates expanded. -/
 macro "pa_eval_binom" : tactic => `(tactic| (
   refine PA.ext (funext fun v => funext fun i => ?_) (funext fun v => ?_)
-  · fin_cases i <;>
-      simp [PA.perm, PA.diag, PA.scalar, PA.onTop, PA.onBottom, PA.high, PA.low] <;> ring
-  · simp [PA.perm, PA.diag, PA.scalar, PA.onTop, PA.onBottom, PA.high, PA.low, binom2, binom3]
+  · fin_cases i <;> pa_entry <;> ring
+  · simp only [PA.perm, PA.diag, PA.mul_q, PA.onTop, PA.onBottom, PA.high, PA.low, id_eq,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, Pi.add_apply,
+      Pi.one_apply, Pi.smul_apply, smul_eq_mul, Fin.isValue, Fin.eta, Fin.zero_eta, Fin.mk_one,
+      Fin.mk_eq_zero, Fin.val_eq_zero, Fin.val_eq_zero_iff, Fin.coe_ofNat_eq_mod,
+      Fin.reduceFinMk, Fin.reduceEq, Nat.reduceAdd, Nat.mod_succ, Nat.zero_mod, Nat.one_mod,
+      Nat.add_eq_zero_iff, Nat.add_one_sub_one, Nat.not_ofNat_le_one, Order.lt_one_iff,
+      Order.lt_two_iff, Std.le_refl, zero_le, tsub_self, add_tsub_cancel_left, dite_eq_ite,
+      ite_self, ↓reduceDIte, ↓reduceIte, one_ne_zero, false_and, add_zero, zero_add,
+      add_neg_cancel_right, add_sub_cancel_right, binom2, binom3]
     field_simp
     ring))
 
@@ -172,13 +200,57 @@ theorem sem_CS (h : 3 ≤ lv) (h2 : (2 : ZMod d) ≠ 0) (h3 : (3 : ZMod d) ≠ 0
   pa_simp [CS, sem_diag_fpow _ _ (sem_CZ (lv := lv) (by omega) h2)]
   pa_eval_binom
 
-/-- `CCZ` has exponent `x y z`. -/
+omit [Fact d.Prime] in
+private theorem seq_append {n : ℕ} (l₁ l₂ : List (C d lv n)) :
+    seq (l₁ ++ l₂) = seq l₂ * seq l₁ := by
+  simp [seq, List.reverse_append, List.prod_append]
+
+/-- `CCZ` has exponent `x y z`: it is the third difference of `T`, the sum of
+`T` on `x₀ + x₁ + x₂`, of `T⁻¹` on `x₁ + x₂`, `x₀ + x₁` and `x₀ + x₂`, and
+of `T` on `x₂`, `x₁`, `x₀`.  Each of the seven conjugates is evaluated on
+its own short word (`e1` … `e7`) and the phases are added: evaluating the
+word of Definition 18 at once, twenty-two factors, cost 8 s of kernel time
+and 6 s of `simp`. -/
 theorem sem_CCZ (h : 3 ≤ lv) (h2 : (2 : ZMod d) ≠ 0) (h3 : (3 : ZMod d) ≠ 0) :
     (𝒢).sem 3 (CCZ h) = PA.diag fun v => v 0 * v 1 * v 2 := by
   have h6 : (6 : ZMod d) ≠ 0 := by
     rw [show (6 : ZMod d) = 2 * 3 by norm_num]; exact mul_ne_zero h2 h3
-  pa_simp [CCZ, long]
-  pa_eval_binom
+  have e1 : (𝒢).sem 3 (seq [Circuit.shift CX, Circuit.pad 1 CX, Circuit.pad 2 (T h),
+      Circuit.pad 1 (CX ^ᶠ (-1)), Circuit.shift (CX ^ᶠ (-1))]) =
+      PA.diag fun v => binom3 (v 0 + (v 1 + v 2)) := by
+    pa_simp; pa_eval
+  have e2 : (𝒢).sem 3 (seq [Circuit.shift CX, Circuit.pad 1 (Circuit.shift (T h ^ᶠ (-1))),
+      Circuit.shift (CX ^ᶠ (-1))]) = PA.diag fun v => -binom3 (v 1 + v 2) := by
+    pa_simp; pa_eval
+  have e3 : (𝒢).sem 3 (seq [Circuit.pad 1 CX, Circuit.pad 2 (T h ^ᶠ (-1)),
+      Circuit.pad 1 (CX ^ᶠ (-1))]) = PA.diag fun v => -binom3 (v 0 + v 1) := by
+    pa_simp; pa_eval
+  have e4 : (𝒢).sem 3 (seq [long CX, Circuit.pad 2 (T h ^ᶠ (-1)), long (CX ^ᶠ (-1))]) =
+      PA.diag fun v => -binom3 (v 0 + v 2) := by
+    pa_simp [long]; pa_eval
+  have e5 : (𝒢).sem 3 (seq [Circuit.shift (Circuit.shift (T h))]) =
+      PA.diag fun v => binom3 (v 2) := by
+    pa_simp; pa_eval
+  have e6 : (𝒢).sem 3 (seq [Circuit.pad 1 (Circuit.shift (T h))]) =
+      PA.diag fun v => binom3 (v 1) := by
+    pa_simp; pa_eval
+  have e7 : (𝒢).sem 3 (seq [Circuit.pad 2 (T h)]) = PA.diag fun v => binom3 (v 0) := by
+    pa_simp; pa_eval
+  rw [show CCZ h = seq ([Circuit.shift CX, Circuit.pad 1 CX, Circuit.pad 2 (T h),
+      Circuit.pad 1 (CX ^ᶠ (-1)), Circuit.shift (CX ^ᶠ (-1))] ++
+      [Circuit.shift CX, Circuit.pad 1 (Circuit.shift (T h ^ᶠ (-1))),
+        Circuit.shift (CX ^ᶠ (-1))] ++
+      [Circuit.pad 1 CX, Circuit.pad 2 (T h ^ᶠ (-1)), Circuit.pad 1 (CX ^ᶠ (-1))] ++
+      [long CX, Circuit.pad 2 (T h ^ᶠ (-1)), long (CX ^ᶠ (-1))] ++
+      [Circuit.shift (Circuit.shift (T h))] ++ [Circuit.pad 1 (Circuit.shift (T h))] ++
+      [Circuit.pad 2 (T h)]) from rfl,
+    seq_append, seq_append, seq_append, seq_append, seq_append, seq_append,
+    map_mul, map_mul, map_mul, map_mul, map_mul, map_mul, e1, e2, e3, e4, e5, e6, e7]
+  simp only [PA.diag_mul]
+  refine congrArg PA.diag (funext fun v => ?_)
+  simp only [Pi.add_apply, binom3]
+  field_simp
+  ring
 
 /-! ### Every rule is sound (Lemmas 1 and 9) -/
 

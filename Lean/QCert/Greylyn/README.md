@@ -165,3 +165,32 @@ truth of Theorem 22; each was worked around as described.
 ```
 wsl --exec bash -lc 'cd /mnt/d/work2/acir/Lean && ./check.sh QCert/Greylyn/Theorem.lean'
 ```
+
+## Typechecking cost
+
+Single `lake env lean` runs (November 2026, other builds running on the
+machine), before → after the changes below; about 4–6 s of each is the
+import.
+
+* `Soundness` (33.4 → 10.0 s): the twenty relations were checked by
+  `decide +kernel` on products of level matrices over `ℚ(ω)`, which the
+  kernel evaluated entry by entry through `Finset.sum` and rational
+  arithmetic, every sub-product again for every entry (26 s of kernel
+  time).  They are decided by `level_check`
+  (`QCert/BianSelingerUn/LevelCheck.lean`): each side evaluated once on
+  tables over `ℤ[ω]`, every letter scaled by `2`, and compared by one
+  Boolean whose soundness is proved once (1.7 s of kernel time in all).
+* `Technical` (15.4 → 6.1 s): `four_bits` split on its eight bits with
+  `interval_cases`, 256 `omega` proofs, about 8 s of kernel time.  The four
+  classes are now elements `2 a + b` of `Fin 4`, and the count is decided
+  there.
+* `ZOmega` (14.3 → 9.6 s): `omega` on `divδ (divδ x)` unfolded (sixteen
+  nested halvings) took 3 s, and `divδ_bits` gives the residues one halving
+  at a time; in Lemma 14, eight `nlinarith` calls and 73 cases refuted by a
+  failing `decide +kernel` and then `norm_num` took 3 s, and the bounds now
+  come from `sq_le_one_iff_abs_le_one` and those cases are refuted first,
+  by `decide` on the hypothesis; the ring laws use `simp only` on the
+  coordinate lemmas, and `δz_pow_three_dvd_add_sub` reads the residue bits
+  off `res` once instead of in each of its six goals.
+* `Algorithm`: shortcut instances `Monoid`, `Group` and `Semigroup` for the
+  states `St n`, as in `BianSelingerUn` (whose README says why).

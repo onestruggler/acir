@@ -77,7 +77,8 @@ theorem level_syl_lt {s : St n} (hs : s ≠ 1) :
         intro a
         rw [iz_pow_expo_mul hc1]
         simp only [Function.update_apply]
-        split_ifs <;> simp_all
+        split_ifs <;> simp_all only [ne_eq, Int.reduceNeg, Std.le_refl, map_mul, map_pow,
+          FreeMonoid.lift_eval_of, matOf_of, not_true_eq_false, not_false_eq_true]
     · rw [sylCol_unit_eq hw hcne hc0] at hcol ⊢
       apply level_lt_of_cols hp
       · intro q hq
@@ -88,7 +89,8 @@ theorem level_syl_lt {s : St n} (hs : s ≠ 1) :
         intro a
         rw [iz_pow_expo_mul hc1]
         simp only [Function.update_apply]
-        split_ifs <;> simp_all
+        split_ifs <;> simp_all only [ne_eq, Int.reduceNeg, Std.le_refl, map_mul, map_pow,
+          FreeMonoid.lift_eval_of, matOf_of, not_true_eq_false, not_false_eq_true]
   · -- `k > 0`: the row operation on the first two odd entries (Lemma 2.10)
     have hev := even_card_odd (col_unit s p) hw hk
     obtain ⟨j0, hj0⟩ := exists_odd hw hk
