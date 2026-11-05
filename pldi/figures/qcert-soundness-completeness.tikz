@@ -1,0 +1,101 @@
+% Shared semantics and completeness by rule derivation. Native, editable TikZ.
+\begingroup
+\definecolor{scBlue}{HTML}{205886}
+\definecolor{scGreen}{HTML}{32866B}
+\definecolor{scGreenText}{HTML}{23674F}
+\definecolor{scMint}{HTML}{EFF9F3}
+\definecolor{scMintAccent}{HTML}{D1ECDE}
+\definecolor{scInk}{HTML}{233447}
+\begin{tikzpicture}[
+  x=1cm,y=1cm,line cap=round,line join=round,
+  sc arrow/.style={-{Stealth[length=1.6mm,width=1.4mm]},
+    draw=scBlue,line width=.85pt},
+  sc sound/.style={-{Stealth[length=1.7mm,width=1.5mm]},
+    draw=scGreen,line width=1.1pt},
+  sc card/.style={draw=scBlue!30,fill=white,rounded corners=1.5mm,
+    line width=.6pt},
+  sc title/.style={font=\sffamily\bfseries\fontsize{9}{10.5}\selectfont,
+    text=scInk,align=center,inner sep=0pt,text width=5.7cm},
+  sc text/.style={font=\sffamily\fontsize{7.7}{9.1}\selectfont,
+    text=scInk,align=center,inner sep=0pt,text width=5.65cm},
+  sc math/.style={font=\fontsize{10}{11.5}\selectfont,
+    text=scInk,inner sep=0pt}
+]
+% The two proof obligations share a single matrix interpretation.
+\fill[scMint,rounded corners=2.5mm] (0,.75) rectangle (6.22,7.85);
+\fill[scBlue!4,rounded corners=2.5mm] (7.52,.75) rectangle (13.74,7.85);
+\node[sc title,text=scGreenText] at (3.11,7.52)
+  {(a) Soundness of $\mathcal R$};
+\node[sc title,text=scBlue] at (10.63,7.52)
+  {(b) Completeness of $\mathcal R$};
+
+% The generator-level definition is the most prominent card.
+\path[draw=scGreen,fill=scMintAccent,rounded corners=1.8mm,line width=1.1pt]
+  (.20,5.25) rectangle (6.02,7.10);
+\node[sc title,text=scGreenText] at (3.11,6.81)
+  {1. Interpret generators};
+\node[sc text] at (3.11,6.43) {Gates or two-level operators};
+\node[sc math,font=\fontsize{12}{13}\selectfont] at (3.11,6.00)
+  {$g\longmapsto M_g\in U_n(\D[\omega])$};
+\node[sc text,font=\sffamily\bfseries\fontsize{7.7}{9.1}\selectfont,
+  text=scGreenText] at (3.11,5.55)
+  {Uniform matrix semantics};
+\draw[sc arrow] (3.11,5.25) -- (3.11,4.95);
+
+\path[sc card] (.20,3.25) rectangle (6.02,4.95);
+\node[sc title] at (3.11,4.62) {2. Lift to circuits / words};
+\node[sc math] at (3.11,4.18)
+  {$g_1\cdots g_k\quad\longmapsto\quad M_{g_1}\cdots M_{g_k}$};
+\node[sc text] at (3.11,3.65)
+  {Generic lifting handles\\composition and wire placement.};
+\draw[sc arrow] (3.11,3.25) -- (3.11,2.95);
+
+\path[sc card] (.20,1.00) rectangle (6.02,2.95);
+\node[sc title] at (3.11,2.62) {3. Compare both sides of every rule};
+\node[sc text] at (3.11,2.25) {For each $(u=v)\in\mathcal R$, check};
+\node[sc math,font=\fontsize{12}{13}\selectfont] at (3.11,1.80)
+  {$\llbracket u\rrbracket=\llbracket v\rrbracket$};
+\node[sc text,text=scGreenText,
+  font=\sffamily\bfseries\fontsize{7.7}{9.1}\selectfont] at (3.11,1.28)
+  {Every $\mathcal R$-rewrite preserves its matrix.};
+
+% A complete reference set may be redundant, but is in the same syntax.
+\path[sc card] (7.72,5.25) rectangle (13.54,7.10);
+\node[sc title] at (10.63,6.81) {1. Fix a complete reference set};
+\node[sc math,font=\fontsize{12}{13}\selectfont] at (10.63,6.28)
+  {$\mathcal T=\{A=B,\ldots\}$};
+\node[sc text] at (10.63,5.72)
+  {Known complete, possibly redundant;\\same language and matrix semantics as $\mathcal R$.};
+\draw[sc arrow] (10.63,5.25) -- (10.63,4.95);
+
+\path[sc card] (7.72,2.60) rectangle (13.54,4.95);
+\node[sc title] at (10.63,4.62) {2. Derive every reference equation};
+\node[sc text] at (10.63,4.20)
+  {For every $(A=B)\in\mathcal T$, construct};
+\node[sc math] at (8.40,3.62) {$A=C_0$};
+\node[sc math] at (9.89,3.62) {$C_1$};
+\node[sc math] at (10.97,3.62) {$\cdots$};
+\node[sc math] at (12.53,3.62) {$C_k=B$};
+\foreach \a/\b in {9.00/9.48,10.19/10.59,11.34/11.91} {
+  \draw[{Stealth[length=1.1mm]}-{Stealth[length=1.1mm]},
+    draw=scGreen,line width=.8pt] (\a,3.62) -- (\b,3.62);
+  \node[font=\fontsize{7.5}{8.5}\selectfont,text=scGreenText,inner sep=0pt]
+    at ({(\a+\b)/2},3.89) {$\mathcal R$};
+}
+% Soundness of R has already been established by the left column.
+\node[sc text,text=scGreenText,fill=scMint,rounded corners=1mm,
+  inner sep=3pt,text width=5.10cm,
+  font=\sffamily\bfseries\fontsize{7.7}{9.1}\selectfont]
+  (sound-steps) at (10.63,3.08)
+  {Each step uses a sound rule from $\mathcal R$.};
+\draw[sc arrow] (10.63,2.60) -- (10.63,2.30);
+
+\path[sc card] (7.72,1.00) rectangle (13.54,2.30);
+\node[sc title] at (10.63,1.99) {3. Conclude $\mathcal R$ is complete};
+\node[sc text] at (10.63,1.43)
+  {\mbox{Every valid equation is derivable from $\mathcal R$.}};
+
+% Soundness certifies the chain; it does not construct or find it.
+\draw[sc sound] (6.02,1.80) -- (6.87,1.80) -- (6.87,3.08) -- (sound-steps.west);
+\end{tikzpicture}
+\endgroup
