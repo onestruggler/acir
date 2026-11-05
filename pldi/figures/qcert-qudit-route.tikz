@@ -1,0 +1,66 @@
+% Qudit presentation route. Folded into two columns to keep labels readable.
+\begingroup
+\definecolor{routeBlue}{HTML}{205886}
+\definecolor{routeInk}{HTML}{233447}
+\begin{tikzpicture}[
+  x=1cm,y=1cm,line cap=round,line join=round,
+  route box/.style={draw=routeBlue!60,fill=white,rounded corners=1.5mm,
+    line width=.65pt,text=routeInk,align=center,
+    font=\sffamily\fontsize{8}{9.5}\selectfont,
+    text width=4.10cm,minimum height=1.03cm,inner sep=4pt},
+  route label/.style={font=\sffamily\fontsize{7.4}{8.7}\selectfont,
+    text=routeInk,align=center,fill=white,inner sep=1.5pt},
+  route arrow/.style={-{Stealth[length=1.6mm,width=1.4mm]},
+    draw=routeBlue,line width=.85pt}
+]
+% Symplectic presentations, followed by the Pauli extension.
+\node[route box] (sp) at (2.25,0)
+  {$\Sp$: full rules (17)\\coset tower, unique NF};
+\node[route box] (sim) at (11.25,0)
+  {$\Sp$: simplified\\rules (15)};
+\node[route box] (pauli) at (2.25,-2)
+  {$\PPauli$\\$X^p,\ Z^p,\ XZ=ZX$};
+\node[route box] (sd) at (11.25,-2)
+  {$\PPauli\rtimes\Sp$\\semidirect presentation\\on $X,Z,H,S,CZ$};
+
+% Generator reduction and the two equivalent projective rule sets.
+\node[route box] (v0) at (2.25,-4)
+  {Paper-V0 (16 rules)\\multiplier over $R$};
+\node[route box] (v1) at (11.25,-4)
+  {Simplified-V1\\19 rules over $H,S,CZ$};
+\node[route box] (pv1) at (2.25,-6)
+  {Paper-V1 (15 rules)\\Theorem~\ref{thm:q-main}\\the paper's Figure~1 mod scalars};
+\node[route box] (ex) at (11.25,-6)
+  {Exact: Paper-V0 $+\,\omega$\\one correction};
+
+% The scalar extension is a separate branch from Paper-V0.
+\node[route box] (fig1) at (2.25,-8)
+  {the paper's Figure~1\\16 rules over $-\omega$};
+\node[route box] (exm) at (11.25,-8)
+  {Exact $+\,{-1}$};
+
+\draw[route arrow] (sp.east) --
+  node[route label,above=3pt] {identity isomorphism} (sim.west);
+\draw[route arrow] (sim.south) -- (sd.north);
+\node[route label,anchor=east,text width=2.7cm] at (11.00,-.96)
+  {semidirect\\theorem};
+\draw[route arrow] (pauli.east) --
+  node[route label,above=3pt] {semidirect theorem} (sd.west);
+\draw[route arrow] (sd.south) -- (v1.north);
+\node[route label,anchor=east,text width=2.7cm] at (11.00,-3.04)
+  {generator reduction:\\$X,Z\mapsto$ words};
+\draw[route arrow] (v1.west) --
+  node[route label,above=3pt] {identity isomorphism} (v0.east);
+\draw[route arrow] (v0.south) -- (pv1.north);
+\node[route label,anchor=east,text width=2.05cm] at (2.00,-4.96)
+  {identity\\isomorphism};
+\draw[route arrow] (v0.south east) -- (ex.north west);
+\node[route label,text width=3.1cm] at (6.75,-4.40)
+  {central extension theorem};
+\draw[route arrow] (ex.south) -- (exm.north);
+\node[route label,anchor=east,text width=2.7cm] at (11.00,-7)
+  {direct product\\theorem};
+\draw[route arrow] (exm.west) --
+  node[route label,above=3pt] {isomorphism:\\$-\omega\mapsto-1\cdot\omega$} (fig1.east);
+\end{tikzpicture}
+\endgroup
