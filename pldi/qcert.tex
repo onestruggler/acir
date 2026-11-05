@@ -845,7 +845,20 @@ Their main result is however still correct: Cl\'ement's unpublished notes~\cite{
 
 The relation is missing from Theorem~5.2 of~\cite{amy2024toffoli}. It states that the relations in its Figures~4 and~7, over the Toffoli and $\mathrm{K} = \mathrm{H}\otimes\mathrm{H}$ gates, present the group $O_8\left(\Z\left[1/2\right]\right)$. This is the first of two steps towards presenting the scaled dyadic orthogonal group $L_8$ by three-qubit Toffoli--Hadamard circuits. The relation $r_{\mathrm{K}}$ in its Section~5.5, which splits $\mathrm{K}$ on two qubits into two copies controlled by the third qubit (\Cref{sec:previous-completeness}), is in neither figure. Nor can it be derived from them. Hence, Theorem~5.2 fails as stated, and we have informed the authors. Our formalization~\cite{qcert2026toffoli} shows that $r_{\mathrm{K}}$ is independent by giving an interpretation of circuits that every other relation preserves but $r_{\mathrm{K}}$ does not, and proves the presentations of $O_8\left(\Z\left[1/2\right]\right)$ and $L_8$ with $r_{\mathrm{K}}$ restored.
 
-\iffalse
+
+\section{Discussion and Future Work}\label{sec:conclusion}
+
+We formalize the results of sixteen papers in QCert, using consistent circuit syntax, a unified definition of group presentations, and shared libraries for rings and their matrix groups. Since all formalizations use these definitions, presentations of the same group from different papers can be compared and proved equivalent. The same libraries, together with the induction that turns an exact synthesis algorithm into a completeness proof, can be reused for new algorithms. Only the case analysis over matrices and generators is specific to each algorithm. As the most error-prone part of the proof, it is where machine checking in QCert matters most.
+
+At the moment, not every completeness result fits into QCert, as its scope is limited in two ways. First, it supports only discrete gate sets, so it does not cover completeness results for circuits with continuous parameters, such as rotations by arbitrary angles~\cite{clement2023complete,clement2024extensions,clement2024minimal}. Second, control is not a circuit constructor in QCert, so it does not cover results that treat control as a primitive operation on circuits~\cite{delorme2026control,schober2026control,blake2026qudit}.
+
+We plan to extend the infrastructure of QCert to more families of quantum circuits, including the two above. Completeness is still open for many discrete gate sets in higher-dimensional quantum systems, and their case analyses are often too large to check by hand. In particular, we plan to study the completeness of Clifford circuits in all dimensions with the help of QCert. Beyond completeness, the exact synthesis libraries can be reused for T-count optimization of multi-qubit Clifford+T circuits. 
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{refs}
+
+\appendix
+
 \section{A New Result: Toffoli–Hadamard Completeness for Any Number of Qubits}
 \label{sec:toffoli-hadamard}
 
@@ -870,7 +883,7 @@ The interpretations of these circuits are orthogonal matrices. We write $O_n\lef
 (-1)_{[a]}, \qquad \mathrm{X}_{[a,b]}, \qquad \mathrm{K}_{[a,b,c,d]}, \qquad 0\le a<b<c<d<n,
 \]
 and a finite list of relation schemas, stated independently of~$n$, presents this group~\cite[Theorem~4.10]{li2021on}. For even~$n$, adding the generator $\mathrm{I}\otimes\mathrm{H} = \mathrm{diag}(\mathrm{H},\dots,\mathrm{H})$ and four relations gives a presentation of $L_n$~\cite[Theorem~5.7]{li2021on}. A few generators are gates. On three qubits, for example, the Toffoli gate controlled by qubits~$0$ and~$1$ is $\mathrm{X}_{[6,7]}$, and $\mathrm{I}\otimes\mathrm{H}$ is $\mathrm{H}_2$. Most generators, however, are not gates of either gate set. For instance, $\mathrm{K}_{[4,5,6,7]}$ applies $\mathrm{K}_{1,2}$ only when qubit~$0$ is in the state $\lvert 1\rangle$. So these presentations are not yet equational theories for circuits.
-
+\iffalse
 \subsection{Previous Completeness Proofs}
 \label{sec:previous-completeness}
 
@@ -910,19 +923,9 @@ Here $\mathrm{K}_{[4,5,6,7]}$ applies $\mathrm{K}_{1,2}$ when qubit~$0$ is $\lve
 \end{figure}
 
 Recently, \citet{clement2026realcliffordch} found a complete set of rewrite rules on any number of qubits for a closely related family, the real Clifford+CH circuits over the gates $\mathrm{H}$, $\mathrm{Z}$, $\mathrm{CZ}$, and the controlled Hadamard gate $\mathrm{CH}$. His rules consist of eighteen equations on at most three qubits and one equation schema, which gives an equation on $n$ qubits for each $n\ge5$. The rules we find for Toffoli--Hadamard circuits in \Cref{sec:arbitrary-qubit-completeness} have the same shape, a few equations on a small number of qubits together with one schema over the number of qubits. Our proof also follows his. He translates circuits back and forth to a presentation by one- and two-level matrices, as in \Cref{fig:translation}, and we do the same with the presentations of~\citet{li2021on}.
-
+\fi
 \subsection{Completeness for Any Number of Qubits}
 \label{sec:arbitrary-qubit-completeness}
-\fi
-\section{Discussion and Future Work}\label{sec:conclusion}
 
-We formalize the results of sixteen papers in QCert, using consistent circuit syntax, a unified definition of group presentations, and shared libraries for rings and their matrix groups. Since all formalizations use these definitions, presentations of the same group from different papers can be compared and proved equivalent. The same libraries, together with the induction that turns an exact synthesis algorithm into a completeness proof, can be reused for new algorithms. Only the case analysis over matrices and generators is specific to each algorithm. As the most error-prone part of the proof, it is where machine checking in QCert matters most.
-
-At the moment, not every completeness result fits into QCert, as its scope is limited in two ways. First, it supports only discrete gate sets, so it does not cover completeness results for circuits with continuous parameters, such as rotations by arbitrary angles~\cite{clement2023complete,clement2024extensions,clement2024minimal}. Second, control is not a circuit constructor in QCert, so it does not cover results that treat control as a primitive operation on circuits~\cite{delorme2026control,schober2026control,blake2026qudit}.
-
-We plan to extend the infrastructure of QCert to more families of quantum circuits, including the two above. Completeness is still open for many discrete gate sets in higher-dimensional quantum systems, and their case analyses are often too large to check by hand. In particular, we plan to study the completeness of Clifford circuits in all dimensions with the help of QCert. Beyond completeness, the exact synthesis libraries can be reused for T-count optimization of multi-qubit Clifford+T circuits. 
-
-\bibliographystyle{ACM-Reference-Format}
-\bibliography{refs}
 
 \end{document}
