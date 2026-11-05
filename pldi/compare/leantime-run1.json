@@ -1,0 +1,247 @@
+{
+ "units": {
+  "Exact": {
+   "seconds": 15.22,
+   "rc": 0,
+   "modules": 3,
+   "failed": [],
+   "load_start": 2.9,
+   "foreign": 5
+  },
+  "Matrix": {
+   "seconds": 6.03,
+   "rc": 0,
+   "modules": 2,
+   "failed": [],
+   "load_start": 3.42,
+   "foreign": 4
+  },
+  "NumberTheory": {
+   "seconds": 16.78,
+   "rc": 0,
+   "modules": 2,
+   "failed": [],
+   "load_start": 3.47,
+   "foreign": 4
+  },
+  "QCert.Presentation": {
+   "seconds": 7.83,
+   "rc": 0,
+   "modules": 1,
+   "failed": [],
+   "load_start": 3.54,
+   "foreign": 4
+  },
+  "Circuit": {
+   "seconds": 22.15,
+   "rc": 0,
+   "modules": 3,
+   "failed": [],
+   "load_start": 3.58,
+   "foreign": 4
+  },
+  "CNOTDihedral": {
+   "seconds": 115.41,
+   "rc": 0,
+   "modules": 15,
+   "failed": [],
+   "load_start": 3.57,
+   "foreign": 5
+  },
+  "PhaseAffine": {
+   "seconds": 256.76,
+   "rc": 0,
+   "modules": 32,
+   "failed": [],
+   "load_start": 4.03,
+   "foreign": 7
+  },
+  "QCert.Synthesis": {
+   "seconds": 8.03,
+   "rc": 0,
+   "modules": 1,
+   "failed": [],
+   "load_start": 4.21,
+   "foreign": 4
+  },
+  "BianSelingerUn": {
+   "seconds": 144.94,
+   "rc": 0,
+   "modules": 26,
+   "failed": [],
+   "load_start": 4.32,
+   "foreign": 4
+  },
+  "Greylyn": {
+   "seconds": 126.94,
+   "rc": 0,
+   "modules": 23,
+   "failed": [],
+   "load_start": 3.72,
+   "foreign": 5
+  },
+  "CliffordT2": {
+   "seconds": 351.51,
+   "rc": 0,
+   "modules": 34,
+   "failed": [],
+   "load_start": 3.46,
+   "foreign": 4
+  },
+  "CliffordCS3": {
+   "seconds": 1330.89,
+   "rc": 0,
+   "modules": 86,
+   "failed": [],
+   "load_start": 2.74,
+   "foreign": 1
+  },
+  "HadamardPi": {
+   "seconds": 231.57,
+   "rc": 0,
+   "modules": 46,
+   "failed": [],
+   "load_start": 1.11,
+   "foreign": 1
+  },
+  "Clement2019": {
+   "seconds": 51.99,
+   "rc": 0,
+   "modules": 15,
+   "failed": [],
+   "load_start": 1.61,
+   "foreign": 1
+  },
+  "LiRossSelinger": {
+   "seconds": 173.28,
+   "rc": 0,
+   "modules": 36,
+   "failed": [],
+   "load_start": 1.71,
+   "foreign": 2
+  },
+  "QuditClifford": {
+   "seconds": 197.32,
+   "rc": 0,
+   "modules": 37,
+   "failed": [],
+   "load_start": 2.57,
+   "foreign": 1
+  },
+  "QutritClifford": {
+   "seconds": 179.6,
+   "rc": 0,
+   "modules": 40,
+   "failed": [],
+   "load_start": 1.3,
+   "foreign": 1
+  },
+  "SelingerClifford": {
+   "seconds": 87.7,
+   "rc": 0,
+   "modules": 24,
+   "failed": [],
+   "load_start": 1.62,
+   "foreign": 2
+  },
+  "RealStabilizer": {
+   "seconds": 80.86,
+   "rc": 0,
+   "modules": 19,
+   "failed": [],
+   "load_start": 2.59,
+   "foreign": 3
+  },
+  "Minimality": {
+   "seconds": 400.97,
+   "rc": 0,
+   "modules": 68,
+   "failed": [],
+   "load_start": 2.46,
+   "foreign": 3
+  },
+  "RealCliffordCH": {
+   "seconds": 5568.85,
+   "rc": 1,
+   "modules": 274,
+   "failed": [
+    "QCert.RealCliffordCH.Sec8.A.ItemBFun",
+    "QCert.RealCliffordCH.Sec8.A.ItemASteps"
+   ],
+   "load_start": 2.54,
+   "foreign": 8
+  },
+  "ToffoliHadamard": {
+   "seconds": 178.27,
+   "rc": 0,
+   "modules": 20,
+   "failed": [],
+   "load_start": 3.5,
+   "foreign": 4
+  },
+  "QCert.Table1": {
+   "seconds": 21.6,
+   "rc": 0,
+   "modules": 1,
+   "failed": [],
+   "load_start": 2.81,
+   "foreign": 3
+  },
+  "QCert": {
+   "seconds": 14.87,
+   "rc": 0,
+   "modules": 1,
+   "failed": [],
+   "load_start": 2.71,
+   "foreign": 3
+  },
+  "QCert.Audit": {
+   "seconds": 14.6,
+   "rc": 0,
+   "modules": 1,
+   "failed": [],
+   "load_start": 2.63,
+   "foreign": 3
+  }
+ },
+ "order": [
+  "Exact",
+  "Matrix",
+  "NumberTheory",
+  "QCert.Presentation",
+  "Circuit",
+  "CNOTDihedral",
+  "PhaseAffine",
+  "QCert.Synthesis",
+  "BianSelingerUn",
+  "Greylyn",
+  "CliffordT2",
+  "CliffordCS3",
+  "HadamardPi",
+  "Clement2019",
+  "LiRossSelinger",
+  "QuditClifford",
+  "QutritClifford",
+  "SelingerClifford",
+  "RealStabilizer",
+  "Minimality",
+  "RealCliffordCH",
+  "ToffoliHadamard",
+  "QCert.Table1",
+  "QCert",
+  "QCert.Audit"
+ ],
+ "run": {
+  "date": "2026-11-05 21:12 +0800",
+  "revision": "e19af70c",
+  "modified": [
+   "M QCert/RealCliffordCH/Sec8/A/ItemATest.lean"
+  ],
+  "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF",
+  "logical_cpus": 16,
+  "mem_gib": 26.4,
+  "lean": "",
+  "modules": 810,
+  "mode": "clean"
+ }
+}

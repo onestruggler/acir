@@ -14,10 +14,14 @@ monotonic clock, Lake startup and artifact generation included. Before the
 first unit QCert's build artifacts are removed (Mathlib and the other
 packages are kept); re-timing a unit removes only its own artifacts.
 
-The script holds the lock of Lean/check.sh for the whole run, and samples
-the Lean processes of other projects every five seconds, so that a time
-taken while something else was building can be told apart (`foreign`).
-Results are written to the JSON file after each unit.
+The script holds the lock of Lean/check.sh for the whole run, and records
+for each unit the CPU seconds that Lean processes of other projects (those
+not running in this Lean directory) used while it built (`foreign_cpu_s`),
+so that a time taken while something else was building can be told apart
+and re-timed. With LEANTIME_IDLE=<seconds> it first waits, at most that
+long, until other projects' Lean has been idle for 30 seconds. Results are
+written to the JSON file after each unit; a re-timing keeps the record of
+the first run (`run`) and adds its own (`retimes`).
 """
 import fcntl, glob, json, os, platform, re, subprocess, sys, threading, time
 
@@ -67,18 +71,52 @@ def remove_artifacts(mods):
                 os.remove(f)
 
 
-def foreign_lean():
-    n = 0
+REAL = os.path.realpath(LEAN)
+TICK = os.sysconf('SC_CLK_TCK')
+
+
+def foreign_ticks():
+    """CPU ticks used so far by each Lean or Lake process of another project
+    (one not running in this Lean directory)."""
+    out = {}
     for pid in os.listdir('/proc'):
         if not pid.isdigit():
             continue
         try:
             cmd = open(f'/proc/{pid}/cmdline', 'rb').read().replace(b'\0', b' ').decode()
+            if not re.search(r'/bin/(lean|lake) ', cmd):
+                continue
+            if os.path.realpath(os.readlink(f'/proc/{pid}/cwd')).startswith(REAL) or LEAN in cmd:
+                continue
+            f = open(f'/proc/{pid}/stat').read().rsplit(')', 1)[1].split()
+            out[pid] = int(f[11]) + int(f[12])  # utime + stime
         except OSError:
             continue
-        if re.search(r'/bin/(lean|lake) ', cmd) and LEAN not in cmd and 'qcert-lake' not in cmd:
-            n += 1
-    return n
+    return out
+
+
+class Foreign:
+    """CPU seconds used by other projects' Lean since the last reset."""
+    def __init__(self):
+        self.last = foreign_ticks(); self.used = 0
+
+    def poll(self):
+        now = foreign_ticks()
+        self.used += sum(t - self.last.get(p, 0) for p, t in now.items())
+        self.last = now
+        return self.used / TICK
+
+
+def wait_idle(limit):
+    """Wait (at most `limit` seconds) until other projects' Lean used under
+    3 CPU-seconds in 30 seconds; return the seconds waited."""
+    t0 = time.monotonic()
+    while time.monotonic() - t0 < limit:
+        f = Foreign()
+        time.sleep(30)
+        if f.poll() < 3:
+            break
+    return round(time.monotonic() - t0)
 
 
 def main():
@@ -113,23 +151,29 @@ def main():
                 if ln.startswith('model name')), platform.processor())
     mem = int(next(ln.split()[1] for ln in open('/proc/meminfo') if ln.startswith('MemTotal')))
     lean = subprocess.run(['lean', '--version'], capture_output=True, text=True, env=ENV).stdout.strip()
-    rec['run'] = dict(date=time.strftime('%Y-%m-%d %H:%M %z'), revision=rev,
-                      modified=[d.strip() for d in dirty if d.strip()], cpu=cpu,
-                      logical_cpus=os.cpu_count(), mem_gib=round(mem / 2**20, 1), lean=lean,
-                      modules=len(paths), mode='partial' if ONLY else 'clean')
+    info = dict(date=time.strftime('%Y-%m-%d %H:%M %z'), revision=rev,
+                modified=[d.strip() for d in dirty if d.strip()], cpu=cpu,
+                logical_cpus=os.cpu_count(), mem_gib=round(mem / 2**20, 1), lean=lean,
+                modules=len(paths))
     if ONLY is None:
+        rec['run'] = info
         for d in ('lib/lean', 'ir'):
             for f in glob.glob(os.path.join(BUILD, d, 'QCert*')):
                 subprocess.run(['rm', '-rf', f], check=True)
+    else:
+        rec.setdefault('retimes', []).append(dict(info, units=todo))
+    idle = int(os.environ.get('LEANTIME_IDLE', '0'))  # wait for an idle machine, at most this
     for u in todo:
+        waited = wait_idle(idle) if idle else 0
         if ONLY is not None:
             remove_artifacts(units[u])
-        seen = [0]
+        foreign = Foreign()
+        used = [0.0]
         stop = threading.Event()
 
         def sample():
-            while not stop.wait(5):
-                seen[0] = max(seen[0], foreign_lean())
+            while not stop.wait(2):
+                used[0] = foreign.poll()
         th = threading.Thread(target=sample, daemon=True); th.start()
         load0 = os.getloadavg()[0]
         t0 = time.monotonic()
@@ -140,14 +184,16 @@ def main():
                                 stdout=fh, stderr=subprocess.STDOUT).returncode
         secs = time.monotonic() - t0
         stop.set(); th.join()
+        fcpu = foreign.poll()
         failed = [m.group(0) for ln in open(log, encoding='utf-8', errors='replace')
                   if ln.startswith('✖') for m in [re.search(r'QCert[\w.]*', ln)] if m]
         rec['units'][u] = dict(seconds=round(secs, 2), rc=rc, modules=len(units[u]),
                                failed=failed, load_start=round(load0, 2),
-                               foreign=seen[0])
+                               foreign_cpu_s=round(fcpu, 1), waited_s=waited,
+                               date=time.strftime('%Y-%m-%d %H:%M'))
         json.dump(rec, open(OUT, 'w'), indent=1)
         print(f'{u:28} {secs:9.2f} s  rc={rc}  modules={len(units[u])}  '
-              f'foreign={seen[0]}  failed={failed}', flush=True)
+              f'foreign_cpu={fcpu:.1f} s  waited={waited} s  failed={failed}', flush=True)
     tot = sum(v['seconds'] for v in rec['units'].values())
     print(f'total {tot:.2f} s over {len(rec["units"])} units', flush=True)
 
