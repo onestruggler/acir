@@ -16,6 +16,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 3,
+   "by_all": 1096,
+   "automation_all": 791,
    "files": 23,
    "written_files": 23,
    "noncomputable_decl": 3,
@@ -44,6 +46,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 3,
+   "by_all": 868,
+   "automation_all": 645,
    "files": 26,
    "written_files": 26,
    "noncomputable_decl": 3,
@@ -72,6 +76,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 5,
+   "by_all": 3410,
+   "automation_all": 2861,
    "files": 36,
    "written_files": 29,
    "noncomputable_decl": 5,
@@ -100,6 +106,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 284,
+   "by_all": 2627,
+   "automation_all": 2161,
    "files": 46,
    "written_files": 34,
    "noncomputable_decl": 30,
@@ -128,6 +136,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 1,
+   "by_all": 272,
+   "automation_all": 191,
    "files": 15,
    "written_files": 12,
    "noncomputable_decl": 1,
@@ -156,6 +166,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 4,
+   "by_all": 993,
+   "automation_all": 1025,
    "files": 24,
    "written_files": 21,
    "noncomputable_decl": 4,
@@ -184,6 +196,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 54,
+   "by_all": 1589,
+   "automation_all": 657,
    "files": 37,
    "written_files": 33,
    "noncomputable_decl": 41,
@@ -212,6 +226,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 1,
+   "by_all": 1107,
+   "automation_all": 1093,
    "files": 19,
    "written_files": 13,
    "noncomputable_decl": 1,
@@ -240,6 +256,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 17,
+   "by_all": 1272,
+   "automation_all": 1049,
    "files": 15,
    "written_files": 12,
    "noncomputable_decl": 6,
@@ -268,6 +286,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 28,
+   "by_all": 1445,
+   "automation_all": 840,
    "files": 32,
    "written_files": 30,
    "noncomputable_decl": 21,
@@ -296,6 +316,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 4,
+   "by_all": 2131,
+   "automation_all": 2175,
    "files": 34,
    "written_files": 13,
    "noncomputable_decl": 4,
@@ -324,6 +346,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 3,
+   "by_all": 28684,
+   "automation_all": 28712,
    "files": 86,
    "written_files": 12,
    "noncomputable_decl": 3,
@@ -352,15 +376,17 @@
   },
   "lean": {
    "noncomputable_decl_all": 2,
+   "by_all": 24034,
+   "automation_all": 21878,
    "files": 274,
    "written_files": 229,
    "noncomputable_decl": 2,
    "noncomputable": 3,
-   "by": 13697,
-   "automation": 12615,
+   "by": 13696,
+   "automation": 12617,
    "case_split": 2910,
    "decide_kernel": 867,
-   "theorem": 3811
+   "theorem": 3809
   }
  },
  "ToffoliHadamard": {
@@ -380,6 +406,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 12,
+   "by_all": 1103,
+   "automation_all": 1062,
    "files": 20,
    "written_files": 14,
    "noncomputable_decl": 1,
@@ -408,6 +436,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 27,
+   "by_all": 1856,
+   "automation_all": 1584,
    "files": 40,
    "written_files": 21,
    "noncomputable_decl": 3,
@@ -436,6 +466,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 12,
+   "by_all": 2030,
+   "automation_all": 2010,
    "files": 68,
    "written_files": 56,
    "noncomputable_decl": 12,
@@ -464,6 +496,8 @@
   },
   "lean": {
    "noncomputable_decl_all": 3,
+   "by_all": 259,
+   "automation_all": 289,
    "files": 12,
    "written_files": 11,
    "noncomputable_decl": 1,

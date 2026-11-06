@@ -8,7 +8,8 @@ splits, `decide +kernel`.  Also the library modules imported (stdlib /
 Mathlib), over all files.  Declarations marked noncomputable are counted
 both over the written files (`noncomputable_decl`) and over all files
 (`noncomputable_decl_all`, which includes the data of generated
-certificates and kernel-only checkers).
+certificates and kernel-only checkers), and so are Lean's `by` blocks and
+automation calls (`by_all`, `automation_all`), the counts Section 3.3 quotes.
 """
 import json, os, re, sys, collections
 
@@ -82,6 +83,9 @@ for lang, table, ext in (('agda', AGDA, '.agda'), ('lean', LEAN, '.lean')):
             else:
                 libs['mathlib'].update(MATHLIB.findall(text))
                 c['noncomputable_decl_all'] += len(NC_DECL.findall(text))
+                body_all = strip_comments(text, lang)
+                c['by_all'] += len(LE_BODY['by'].findall(body_all))
+                c['automation_all'] += len(LE_BODY['automation'].findall(body_all))
             c['files'] += 1
             if kind(f):
                 continue

@@ -71,6 +71,7 @@ print(f"check times: Agda {sum(r[5] for r in lines[:-1])} s, Lean {sum(r[6] for 
       f"Lean {sum(r[6] for r in lines[:-1] if r is not big):.2f} s")
 
 sumf = lambda lang, k: sum(feat[r[0]][lang].get(k, 0) for r in ROWS)
+print('lean, all files: by', sumf('lean', 'by_all'), 'automation', sumf('lean', 'automation_all'))
 print('lean by', sumf('lean', 'by'), 'automation', sumf('lean', 'automation'),
       'noncomputable declarations: written files', sumf('lean', 'noncomputable_decl'),
       'all files', sumf('lean', 'noncomputable_decl_all'),
