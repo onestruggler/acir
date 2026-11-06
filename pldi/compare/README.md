@@ -25,7 +25,9 @@ python mkfig.py ../figures/compare.tex  # the pgfplots figure
   Lean's generator templates under `gen/` are not modules and are left out.
 * **Proof features** (`features.py`) are counted over the written files, those
   whose header does not say they are generated or ported (`loc.kind`);
-  `noncomputable` declarations are counted both there and over all files.
+  `noncomputable` declarations and Lean's `by` blocks and automation calls are
+  counted both there and over all files, and Section 3.3 quotes the counts over
+  all files.
 * **Check times.** The Agda times are those of Table 1, copied into
   `figdata.py`. The Lean times are measured by `leantime.py`: it removes QCert's
   build artifacts (keeping Mathlib), then builds each folder of `Lean/QCert`
