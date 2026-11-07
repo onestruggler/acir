@@ -17,6 +17,21 @@
 -- auxiliary equations, the layers of the qudit Clifford chain — are in
 -- its own folder and its README; nothing here rests on a postulate.
 --
+-- Each of the fifteen sources before the minimality section also gets
+-- its completeness and soundness theorems, for the semantics ⟦_⟧ its
+-- presentation interprets the words in: complete says that two words
+-- with the same value are equal by the relations, sound the converse
+-- (Presentation.Embedding reads them off a presentation).  The groups
+-- of the Clifford+T family — over ℤ[½], ℤ[½, i], ℤ[1/√2] and
+-- ℤ[1/√2, i] — are all read in one semantics, Uₙ(𝔻[ω]), the unitary
+-- n × n matrices over 𝔻[ω] = ℤ[1/√2, i] compared by their entries
+-- (_≈ᵁ_ below): a group over a subring is carried there by the
+-- inclusion of the entries (EucDomain's Quantum.Synthesis.Ring.
+-- Properties.Embedding and Quantum.Synthesis.Matrix.Map, assembled in
+-- Clifford+T-2qubit-TwoLevel.Subring), in a DOmega module of its
+-- development.  The qudit, phase-affine and qutrit sources keep their
+-- own semantics.
+--
 -- The root reaches every paper formalization, about 1,600 modules, so
 -- from scratch it is checked module by module (CLAUDE.md).  The
 -- library's other contents — the symmetric, trivial and cyclic groups,
@@ -45,8 +60,22 @@ open import ForStdlib.Data.Fin.Mod using (ℤ ; ℤ* ; _^′_)
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat using (module PrimeModulus')
 open import Quantum.Synthesis.Ring.Properties.Hom using (IsInvolutiveRingEndo)
 import Examples.Groups.Qupit-Phase-Affine.Field as Field
+open import Word.Base using (Word)
+import Presentation.Base as PB
 open import Presentation.Definitions
   using (_IsPresentationOf_ ; _IsSubPresentationOf_)
+import Presentation.Embedding as PE
+import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics as Uₙ
+
+------------------------------------------------------------------------
+-- The uniform semantics of the Clifford+T family: Uₙ(𝔻[ω]), whose
+-- elements are unitary matrices over 𝔻[ω] = ℤ[1/√2, i], equal when
+-- their entries are.
+
+infix 4 _≈ᵁ_
+
+_≈ᵁ_ : ∀ {N} → Uₙ.UMat N → Uₙ.UMat N → Set
+_≈ᵁ_ {N} = Group._≈_ (Uₙ.U N)
 
 ------------------------------------------------------------------------
 -- Groups of two-level matrices
@@ -62,28 +91,53 @@ open import Presentation.Definitions
 
 module Greylyn where
 
-  open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Syntactics using (_===_)
-  open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics using (U)
+  open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Syntactics using (Gen ; _===_)
+  open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics using (U ; 𝕀)
   import Examples.Groups.Clifford+T-2qubit-TwoLevel.Presentation as P
+  import Examples.Groups.Clifford+T-2qubit-TwoLevel.Reduction as R
+  import Examples.Groups.Clifford+T-2qubit-TwoLevel.MainLemma as ML
 
   presentation : ∀ {n} → n ≤ 4 → (_===_ {n}) IsPresentationOf (U n)
   presentation n≤4 = P.presentation n≤4
+
+  -- A word's matrix.
+  ⟦_⟧ : ∀ {n} → Word (Gen n) → Uₙ.UMat n
+  ⟦_⟧ = P.⟦_⟧ᵘ
+
+  complete : ∀ {n} → n ≤ 4 → {w v : Word (Gen n)} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → PB._≈_ (_===_ {n}) w v
+  complete n≤4 = ML.relations-complete n≤4
+
+  sound : ∀ {n} {w v : Word (Gen n)} → PB._≈_ (_===_ {n}) w v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound e = R.sound-act e 𝕀
 
 ------------------------------------------------------------------------
 -- Bian and Selinger (2021): Uₙ(ℤ[½, i])
 --
 -- Home: Examples.Groups.Clifford+CS-TwoLevel.Presentation.  The
 -- two-level generators and the relations of their Figure 1 present
--- Uₙ(ℤ[½, i]) in every dimension.
+-- Uₙ(ℤ[½, i]) in every dimension.  Uₙ(ℤ[½, i]) is a subgroup of
+-- Uₙ(𝔻[ω]) (Examples.Groups.Clifford+CS-TwoLevel.DOmega), where the
+-- matrices are compared.
 
 module Bian-Selinger-Un where
 
-  open import Examples.Groups.Clifford+CS-TwoLevel.Syntactics using (_===_)
+  open import Examples.Groups.Clifford+CS-TwoLevel.Syntactics using (Gen ; _===_)
   open import Examples.Groups.Clifford+CS-TwoLevel.Semantics using (U)
   import Examples.Groups.Clifford+CS-TwoLevel.Presentation as P
+  import Examples.Groups.Clifford+CS-TwoLevel.DOmega as Ω
 
   presentation : ∀ {n} → (_===_ {n}) IsPresentationOf (U n)
   presentation = P.presentation
+
+  -- A word's matrix, over 𝔻[ω].
+  ⟦_⟧ : ∀ {n} → Word (Gen n) → Uₙ.UMat n
+  ⟦_⟧ = Ω.⟦_⟧
+
+  complete : ∀ {n} {w v : Word (Gen n)} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → PB._≈_ (_===_ {n}) w v
+  complete = Ω.complete
+
+  sound : ∀ {n} {w v : Word (Gen n)} → PB._≈_ (_===_ {n}) w v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound = Ω.sound
 
 ------------------------------------------------------------------------
 -- Li, Ross and Selinger (2021): Oₙ(ℤ[½]) and Lₙ
@@ -92,21 +146,46 @@ module Bian-Selinger-Un where
 -- Presentation.  (−1)_[a], X_[a,b], K_[a,b,c,d] and Table 1 present
 -- Oₙ(ℤ[½]) in every dimension (Theorem 4.10), and with I ⊗ H and Table
 -- 2 the scaled dyadic orthogonal matrices Lₙ, for n = 2(k + 1)
--- (Theorem 5.7).
+-- (Theorem 5.7).  Both are subgroups of Uₙ(𝔻[ω])
+-- (Examples.Groups.CCX+HH-TwoLevel.DOmega and .Scaled.DOmega).
 
 module Li-Ross-Selinger where
 
-  open import Examples.Groups.CCX+HH-TwoLevel.Syntactics using (_===_)
+  open import Examples.Groups.CCX+HH-TwoLevel.Syntactics using (Gen ; _===_)
   open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (O)
-  open import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics using (_===ᴸ_)
+  open import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics using (Genᴸ ; _===ᴸ_)
   import Examples.Groups.CCX+HH-TwoLevel.Presentation as P
   import Examples.Groups.CCX+HH-TwoLevel.Scaled.Presentation as PL
+  import Examples.Groups.CCX+HH-TwoLevel.DOmega as Ω
+  import Examples.Groups.CCX+HH-TwoLevel.Scaled.DOmega as ΩL
 
   presentation : ∀ {n} → (_===_ {n}) IsPresentationOf (O n)
   presentation = P.presentation
 
   presentationᴸ : ∀ k → (_===ᴸ_ {suc k ℕ.* 2}) IsPresentationOf (PL.L k)
   presentationᴸ k = PL.presentation k
+
+  -- A word's matrix, over 𝔻[ω].
+  ⟦_⟧ : ∀ {n} → Word (Gen n) → Uₙ.UMat n
+  ⟦_⟧ = Ω.⟦_⟧
+
+  complete : ∀ {n} {w v : Word (Gen n)} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → PB._≈_ (_===_ {n}) w v
+  complete = Ω.complete
+
+  sound : ∀ {n} {w v : Word (Gen n)} → PB._≈_ (_===_ {n}) w v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound = Ω.sound
+
+  -- The same for Lₙ, n = 2(k + 1).
+  ⟦_⟧ᴸ_ : ∀ k → Word (Genᴸ (suc k ℕ.* 2)) → Uₙ.UMat (suc k ℕ.* 2)
+  ⟦ k ⟧ᴸ w = ΩL.⟦_⟧ k w
+
+  completeᴸ : ∀ k {w v : Word (Genᴸ (suc k ℕ.* 2))} →
+              ⟦ k ⟧ᴸ w ≈ᵁ ⟦ k ⟧ᴸ v → PB._≈_ (_===ᴸ_ {suc k ℕ.* 2}) w v
+  completeᴸ k = ΩL.complete k
+
+  soundᴸ : ∀ k {w v : Word (Genᴸ (suc k ℕ.* 2))} →
+           PB._≈_ (_===ᴸ_ {suc k ℕ.* 2}) w v → ⟦ k ⟧ᴸ w ≈ᵁ ⟦ k ⟧ᴸ v
+  soundᴸ k = ΩL.sound k
 
 ------------------------------------------------------------------------
 -- Fang, Heunen and Kaarsgaard (2026), Hadamard-Π: Oₙ(ℤ[1/√2])
@@ -121,11 +200,13 @@ module Li-Ross-Selinger where
 
 module Hadamard-Pi where
 
-  open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (_===_)
+  open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (Gen ; _===_)
   open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics using (O)
   import Examples.Groups.Real-Clifford+CH-TwoLevel.MainLemma as ML
   import Examples.Groups.Real-Clifford+CH-TwoLevel.Presentation as P
   import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Presentation as C
+  import Examples.Groups.Real-Clifford+CH-TwoLevel.DOmega as RΩ
+  import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.DOmega as Ω
 
   -- The paper's proof, given the case it misses ...
   presentation-given : ∀ {n} → ML.Hard {n} → (_===_ {n}) IsPresentationOf (O n)
@@ -134,6 +215,23 @@ module Hadamard-Pi where
   -- ... and the theorem.
   presentation : ∀ {n} → (_===_ {n}) IsPresentationOf (O n)
   presentation = C.presentation
+
+  -- Oₙ(ℤ[1/√2]) is a subgroup of Uₙ(𝔻[ω]): a word's matrix, over 𝔻[ω]
+  -- (Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.DOmega).
+  ⟦_⟧ : ∀ {n} → Word (Gen n) → Uₙ.UMat n
+  ⟦_⟧ = Ω.⟦_⟧
+
+  -- Completeness by the paper's proof, given the case it misses ...
+  complete-given : ∀ {n} → ML.Hard {n} → {w v : Word (Gen n)} →
+                   ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → PB._≈_ (_===_ {n}) w v
+  complete-given hard = PE.Sub.complete (RΩ.presentation-given hard)
+
+  -- ... and the theorem.
+  complete : ∀ {n} {w v : Word (Gen n)} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → PB._≈_ (_===_ {n}) w v
+  complete = Ω.complete
+
+  sound : ∀ {n} {w v : Word (Gen n)} → PB._≈_ (_===_ {n}) w v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound = Ω.sound
 
 ------------------------------------------------------------------------
 -- Clément (2019, thesis): Oₙ(ℤ[1/√2]) by relations (1)–(21)
@@ -145,16 +243,34 @@ module Hadamard-Pi where
 
 module Clement-Thesis where
 
-  open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (_===_)
+  open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (Gen ; _===_)
   open import Examples.Groups.Real-Clifford+CH-TwoLevel.Clement using (_===ᶜ_)
   open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics using (O)
   import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Presentation as T
+  import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.DOmega as Ω
 
   presentationᶜ : ∀ {n} → (_===ᶜ_ {n}) IsPresentationOf (O n)
   presentationᶜ = T.presentationᶜ
 
   presentation : ∀ {n} → (_===_ {n}) IsPresentationOf (O n)
   presentation = T.presentation
+
+  -- A word's matrix, over 𝔻[ω]
+  -- (Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.DOmega).
+  ⟦_⟧ : ∀ {n} → Word (Gen n) → Uₙ.UMat n
+  ⟦_⟧ = Ω.⟦_⟧
+
+  completeᶜ : ∀ {n} {w v : Word (Gen n)} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → PB._≈_ (_===ᶜ_ {n}) w v
+  completeᶜ = Ω.completeᶜ
+
+  soundᶜ : ∀ {n} {w v : Word (Gen n)} → PB._≈_ (_===ᶜ_ {n}) w v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  soundᶜ = Ω.soundᶜ
+
+  complete : ∀ {n} {w v : Word (Gen n)} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → PB._≈_ (_===_ {n}) w v
+  complete = Ω.complete
+
+  sound : ∀ {n} {w v : Word (Gen n)} → PB._≈_ (_===_ {n}) w v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound = Ω.sound
 
 ------------------------------------------------------------------------
 -- Circuits
@@ -169,12 +285,22 @@ module Clement-Thesis where
 
 module Selinger-Clifford where
 
-  open import Examples.Groups.Qubit-Clifford.Syntactics using (_VRel,_===_)
+  open import Examples.Groups.Qubit-Clifford.Syntactics using (Circuit ; _VRel,_===_ ; _⊢_≈_)
   open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics using (U)
   import Examples.Groups.Qubit-Clifford.Presentation.DOmega as P
 
   presentation : ∀ {n} → (n VRel,_===_) IsSubPresentationOf U (2 ^ n)
   presentation = P.presentation
+
+  -- A circuit's matrix.
+  ⟦_⟧ : ∀ {n} → Circuit n → Uₙ.UMat (2 ^ n)
+  ⟦_⟧ {n} = PE.Sub.⟦_⟧ (P.presentation {n})
+
+  complete : ∀ {n} {w v : Circuit n} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → n ⊢ w ≈ v
+  complete {n} = PE.Sub.complete (P.presentation {n})
+
+  sound : ∀ {n} {w v : Circuit n} → n ⊢ w ≈ v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound {n} = PE.Sub.sound (P.presentation {n})
 
 ------------------------------------------------------------------------
 -- Bian et al. (2026): qudit Clifford circuits, odd prime p
@@ -197,13 +323,25 @@ module Qudit-Clifford
   where
 
   open import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Syntactics p-3 p-prime g* g-gen
-    using (_F,_===_)
+    using (Circuit ; _F,_===_)
   open import Examples.Groups.Clifford+MinusOne.Qupit.Semantics p-3 p-prime g* g-gen
     using (Clifford±)
   import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Presentation p-3 p-prime g* g-gen as P
 
   figure1-presentation : ∀ n → (n F,_===_) IsPresentationOf (Clifford± n)
   figure1-presentation = P.presentation-Figure1
+
+  -- A circuit's value in the model.
+  ⟦_⟧ : ∀ {n} → Circuit n → Group.Carrier (Clifford± n)
+  ⟦_⟧ {n} = PE.Pres.⟦_⟧ (P.presentation-Figure1 n)
+
+  complete : ∀ {n} {w v : Circuit n} →
+             Group._≈_ (Clifford± n) ⟦ w ⟧ ⟦ v ⟧ → PB._≈_ (n F,_===_) w v
+  complete {n} = PE.Pres.complete (P.presentation-Figure1 n)
+
+  sound : ∀ {n} {w v : Circuit n} →
+          PB._≈_ (n F,_===_) w v → Group._≈_ (Clifford± n) ⟦ w ⟧ ⟦ v ⟧
+  sound {n} = PE.Pres.sound (P.presentation-Figure1 n)
 
 ------------------------------------------------------------------------
 -- Makary, Ross and Selinger (2021): real stabilizer circuits
@@ -215,7 +353,7 @@ module Qudit-Clifford
 
 module Makary-Ross-Selinger where
 
-  open import Examples.Groups.Real-Clifford.Syntactics using (_VRel,_===_)
+  open import Examples.Groups.Real-Clifford.Syntactics using (Circuit ; _VRel,_===_ ; _⊢_≈_)
   open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics using (U)
   open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics using (O)
   import Examples.Groups.Real-Clifford.Presentation.DOmega as PU
@@ -227,6 +365,16 @@ module Makary-Ross-Selinger where
   presentationᴼ : ∀ {n} → (n VRel,_===_) IsSubPresentationOf O (2 ^ n)
   presentationᴼ = PO.presentation
 
+  -- A circuit's matrix, over 𝔻[ω].
+  ⟦_⟧ : ∀ {n} → Circuit n → Uₙ.UMat (2 ^ n)
+  ⟦_⟧ {n} = PE.Sub.⟦_⟧ (PU.presentation {n})
+
+  complete : ∀ {n} {w v : Circuit n} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → n ⊢ w ≈ v
+  complete {n} = PE.Sub.complete (PU.presentation {n})
+
+  sound : ∀ {n} {w v : Circuit n} → n ⊢ w ≈ v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound {n} = PE.Sub.sound (PU.presentation {n})
+
 ------------------------------------------------------------------------
 -- Amy, Chen and Ross (2018): CNOT-dihedral circuits
 --
@@ -237,12 +385,22 @@ module Makary-Ross-Selinger where
 
 module Amy-Chen-Ross where
 
-  open import Examples.Groups.CNOT+Dihedral.Syntactics using (_VRel,_===_)
+  open import Examples.Groups.CNOT+Dihedral.Syntactics using (Circuit ; _VRel,_===_ ; _⊢_≈_)
   open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics using (U)
   import Examples.Groups.CNOT+Dihedral.Presentation as P
 
   presentation : ∀ {n} → (n VRel,_===_) IsSubPresentationOf U (2 ^ n)
   presentation = P.presentation
+
+  -- A circuit's matrix.
+  ⟦_⟧ : ∀ {n} → Circuit n → Uₙ.UMat (2 ^ n)
+  ⟦_⟧ {n} = PE.Sub.⟦_⟧ (P.presentation {n})
+
+  complete : ∀ {n} {w v : Circuit n} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → n ⊢ w ≈ v
+  complete {n} = PE.Sub.complete (P.presentation {n})
+
+  sound : ∀ {n} {w v : Circuit n} → n ⊢ w ≈ v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound {n} = PE.Sub.sound (P.presentation {n})
 
 ------------------------------------------------------------------------
 -- Blake (2026): phase-affine circuits in prime dimension p
@@ -281,6 +439,30 @@ module Blake-Phase-Affine
   linear-phase-presentation : ∀ {n} → S₁._VRel,_===_ n IsSubPresentationOf U (p ^ n)
   linear-phase-presentation = Lin.presentation
 
+  -- Matrices in U_{pⁿ} over A, equal when their entries are.
+  infix 4 _≈ᴬ_
+  _≈ᴬ_ : ∀ {N} → Group.Carrier (U N) → Group.Carrier (U N) → Set
+  _≈ᴬ_ {N} = Group._≈_ (U N)
+
+  -- A circuit's matrix, at each level.
+  ⟦_⟧₀ : ∀ {n} → S₀.Circuit n → Group.Carrier (U (p ^ n))
+  ⟦_⟧₀ {n} = PE.Sub.⟦_⟧ (Aff.presentation {n})
+
+  ⟦_⟧₁ : ∀ {n} → S₁.Circuit n → Group.Carrier (U (p ^ n))
+  ⟦_⟧₁ {n} = PE.Sub.⟦_⟧ (Lin.presentation {n})
+
+  affine-complete : ∀ {n} {w v : S₀.Circuit n} → ⟦ w ⟧₀ ≈ᴬ ⟦ v ⟧₀ → n S₀.⊢ w ≈ v
+  affine-complete {n} = PE.Sub.complete (Aff.presentation {n})
+
+  affine-sound : ∀ {n} {w v : S₀.Circuit n} → n S₀.⊢ w ≈ v → ⟦ w ⟧₀ ≈ᴬ ⟦ v ⟧₀
+  affine-sound {n} = PE.Sub.sound (Aff.presentation {n})
+
+  linear-phase-complete : ∀ {n} {w v : S₁.Circuit n} → ⟦ w ⟧₁ ≈ᴬ ⟦ v ⟧₁ → n S₁.⊢ w ≈ v
+  linear-phase-complete {n} = PE.Sub.complete (Lin.presentation {n})
+
+  linear-phase-sound : ∀ {n} {w v : S₁.Circuit n} → n S₁.⊢ w ≈ v → ⟦ w ⟧₁ ≈ᴬ ⟦ v ⟧₁
+  linear-phase-sound {n} = PE.Sub.sound (Lin.presentation {n})
+
   module Quadratic (odd : 1 ≤ p-2) where
 
     import Examples.Groups.Qupit-Phase-Affine.Presentation.Quad p-2 p-prime odd isCR adjI phase phase-+ phase-unit phase-injective as Quad
@@ -288,12 +470,30 @@ module Blake-Phase-Affine
     quadratic-phase-presentation : ∀ {n} → S₂._VRel,_===_ n IsSubPresentationOf U (p ^ n)
     quadratic-phase-presentation = Quad.presentation
 
+    ⟦_⟧₂ : ∀ {n} → S₂.Circuit n → Group.Carrier (U (p ^ n))
+    ⟦_⟧₂ {n} = PE.Sub.⟦_⟧ (Quad.presentation {n})
+
+    quadratic-phase-complete : ∀ {n} {w v : S₂.Circuit n} → ⟦ w ⟧₂ ≈ᴬ ⟦ v ⟧₂ → n S₂.⊢ w ≈ v
+    quadratic-phase-complete {n} = PE.Sub.complete (Quad.presentation {n})
+
+    quadratic-phase-sound : ∀ {n} {w v : S₂.Circuit n} → n S₂.⊢ w ≈ v → ⟦ w ⟧₂ ≈ᴬ ⟦ v ⟧₂
+    quadratic-phase-sound {n} = PE.Sub.sound (Quad.presentation {n})
+
   module Cubic (gt3 : 2 ≤ p-2) where
 
     import Examples.Groups.Qupit-Phase-Affine.Presentation.Cube p-2 p-prime gt3 isCR adjI phase phase-+ phase-unit phase-injective as Cube
 
     cubic-phase-presentation : ∀ {n} → S₃._VRel,_===_ n IsSubPresentationOf U (p ^ n)
     cubic-phase-presentation = Cube.presentation
+
+    ⟦_⟧₃ : ∀ {n} → S₃.Circuit n → Group.Carrier (U (p ^ n))
+    ⟦_⟧₃ {n} = PE.Sub.⟦_⟧ (Cube.presentation {n})
+
+    cubic-phase-complete : ∀ {n} {w v : S₃.Circuit n} → ⟦ w ⟧₃ ≈ᴬ ⟦ v ⟧₃ → n S₃.⊢ w ≈ v
+    cubic-phase-complete {n} = PE.Sub.complete (Cube.presentation {n})
+
+    cubic-phase-sound : ∀ {n} {w v : S₃.Circuit n} → n S₃.⊢ w ≈ v → ⟦ w ⟧₃ ≈ᴬ ⟦ v ⟧₃
+    cubic-phase-sound {n} = PE.Sub.sound (Cube.presentation {n})
 
 ------------------------------------------------------------------------
 -- Bian and Selinger (2023): two-qubit Clifford+T circuits
@@ -306,7 +506,7 @@ module Blake-Phase-Affine
 module Bian-Selinger-Clifford+T where
 
   open import Examples.Groups.Clifford+T-2qubit.Generator using (module Clifford+T)
-  open Clifford+T using (Rel)
+  open Clifford+T using (Generator ; Rel)
   import Examples.Groups.Clifford+T-2qubit.Circuits.Syntactics as C
   open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics using (U)
   import Examples.Groups.Clifford+T-2qubit.Presentation as P
@@ -318,6 +518,26 @@ module Bian-Selinger-Clifford+T where
   circuit-presentation : C._VRel,_===_ 2 IsSubPresentationOf U 4
   circuit-presentation = PC.presentation
 
+  -- A word's matrix ...
+  ⟦_⟧ : Word Generator → Uₙ.UMat 4
+  ⟦_⟧ = P.⟦_⟧
+
+  complete : ∀ {w v} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → PB._≈_ Rel w v
+  complete = P.complete
+
+  sound : ∀ {w v} → PB._≈_ Rel w v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound = P.sound
+
+  -- ... and a circuit's.
+  circuit⟦_⟧ : C.Circuit 2 → Uₙ.UMat 4
+  circuit⟦_⟧ = PC.⟦_⟧
+
+  circuit-complete : ∀ {w v : C.Circuit 2} → circuit⟦ w ⟧ ≈ᵁ circuit⟦ v ⟧ → 2 C.⊢ w ≈ v
+  circuit-complete = PE.Sub.complete PC.presentation
+
+  circuit-sound : ∀ {w v : C.Circuit 2} → 2 C.⊢ w ≈ v → circuit⟦ w ⟧ ≈ᵁ circuit⟦ v ⟧
+  circuit-sound = PE.Sub.sound PC.presentation
+
 ------------------------------------------------------------------------
 -- Bian and Selinger (2023): three-qubit Clifford+CS circuits
 --
@@ -325,21 +545,44 @@ module Bian-Selinger-Clifford+T where
 -- .Circuits.Presentation.  The relations of Figure 2 present the
 -- three-qubit Clifford+CS group in U₈(ℤ[½, i]), over the paper's
 -- alphabet and as circuits over Circuit.Base on three wires.
+-- U₈(ℤ[½, i]) is a subgroup of U₈(𝔻[ω])
+-- (Examples.Groups.Clifford+CS-3qubit.DOmega).
 
 module Bian-Selinger-Clifford+CS where
 
   open import Examples.Groups.Clifford+CS-3qubit.Theorem using (module CliffordCS)
-  open CliffordCS using (Rel)
+  open CliffordCS using (Gen ; Rel)
   import Examples.Groups.Clifford+CS-3qubit.Circuits.Syntactics as C
   open import Examples.Groups.Clifford+CS-TwoLevel.Semantics using (U)
   import Examples.Groups.Clifford+CS-3qubit.Presentation as P
   import Examples.Groups.Clifford+CS-3qubit.Circuits.Presentation as PC
+  import Examples.Groups.Clifford+CS-3qubit.DOmega as Ω
 
   presentation : Rel IsSubPresentationOf U 8
   presentation = P.presentation
 
   circuit-presentation : C._VRel,_===_ 3 IsSubPresentationOf U 8
   circuit-presentation = PC.presentation
+
+  -- A word's matrix, over 𝔻[ω] ...
+  ⟦_⟧ : Word Gen → Uₙ.UMat 8
+  ⟦_⟧ = Ω.⟦_⟧
+
+  complete : ∀ {w v} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → PB._≈_ Rel w v
+  complete = Ω.complete
+
+  sound : ∀ {w v} → PB._≈_ Rel w v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound = Ω.sound
+
+  -- ... and a circuit's.
+  circuit⟦_⟧ : C.Circuit 3 → Uₙ.UMat 8
+  circuit⟦_⟧ = Ω.circuit⟦_⟧
+
+  circuit-complete : ∀ {w v : C.Circuit 3} → circuit⟦ w ⟧ ≈ᵁ circuit⟦ v ⟧ → 3 C.⊢ w ≈ v
+  circuit-complete = Ω.circuit-complete
+
+  circuit-sound : ∀ {w v : C.Circuit 3} → 3 C.⊢ w ≈ v → circuit⟦ w ⟧ ≈ᵁ circuit⟦ v ⟧
+  circuit-sound = Ω.circuit-sound
 
 ------------------------------------------------------------------------
 -- Clément (2026): real Clifford+CH circuits
@@ -348,16 +591,28 @@ module Bian-Selinger-Clifford+CS where
 -- CZ, CH and the relations of Figure 4 present the group the circuits
 -- on n wires generate in O_{2ⁿ}(ℤ[1/√2]), at every width: Theorem 8.9,
 -- with Theorem 4.4, which the paper imports from Hadamard-Π, proved
--- from Clément's thesis.
+-- from Clément's thesis.  O_{2ⁿ}(ℤ[1/√2]) is a subgroup of
+-- U_{2ⁿ}(𝔻[ω]) (Examples.Groups.Real-Clifford+CH.DOmega).
 
 module Clement-Real-Clifford+CH where
 
-  open import Examples.Groups.Real-Clifford+CH.Syntactics using (_VRel,_===_)
+  open import Examples.Groups.Real-Clifford+CH.Syntactics using (Circuit ; _VRel,_===_ ; _⊢_≈_)
   open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics using (O)
   import Examples.Groups.Real-Clifford+CH.Presentation as P
+  import Examples.Groups.Real-Clifford+CH.DOmega as Ω
 
   presentation : ∀ n → (n VRel,_===_) IsSubPresentationOf O (2 ^ n)
   presentation = P.subpresentationᴼ
+
+  -- A circuit's matrix, over 𝔻[ω].
+  ⟦_⟧ : ∀ {n} → Circuit n → Uₙ.UMat (2 ^ n)
+  ⟦_⟧ = Ω.⟦_⟧
+
+  complete : ∀ {n} {w v : Circuit n} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → n ⊢ w ≈ v
+  complete = Ω.complete
+
+  sound : ∀ {n} {w v : Circuit n} → n ⊢ w ≈ v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound = Ω.sound
 
 ------------------------------------------------------------------------
 -- Amy, Ross and Wesley (2024): three-qubit Toffoli-Hadamard circuits
@@ -367,21 +622,43 @@ module Clement-Real-Clifford+CH where
 -- corrected and with the definition of K that Section 5.5 uses but the
 -- figures omit, present L₈, the group of 3-qubit Toffoli-Hadamard
 -- operators (scaled dyadic orthogonal 8 × 8 matrices), over the paper's
--- alphabet and as circuits over Circuit.Base on three wires.
+-- alphabet and as circuits over Circuit.Base on three wires.  L₈ is a
+-- subgroup of U₈(𝔻[ω]) (Examples.Groups.CCX+HH-3qubit.DOmega).
 
 module Amy-Ross-Wesley where
 
-  open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics using (_===_)
+  open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics using (Gen ; _===_)
   import Examples.Groups.CCX+HH-3qubit.Circuits.Syntactics as C
   open import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation using (ToffoliHadamard)
   import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation as P
   import Examples.Groups.CCX+HH-3qubit.Circuits.Presentation as PC
+  import Examples.Groups.CCX+HH-3qubit.DOmega as Ω
 
   presentation : _===_ IsPresentationOf ToffoliHadamard
   presentation = P.presentation
 
   circuit-presentation : C._VRel,_===_ 3 IsPresentationOf ToffoliHadamard
   circuit-presentation = PC.presentation
+
+  -- A word's matrix, over 𝔻[ω] ...
+  ⟦_⟧ : Word Gen → Uₙ.UMat 8
+  ⟦_⟧ = Ω.⟦_⟧
+
+  complete : ∀ {w v} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → PB._≈_ _===_ w v
+  complete = Ω.complete
+
+  sound : ∀ {w v} → PB._≈_ _===_ w v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound = Ω.sound
+
+  -- ... and a circuit's.
+  circuit⟦_⟧ : C.Circuit 3 → Uₙ.UMat 8
+  circuit⟦_⟧ = Ω.circuit⟦_⟧
+
+  circuit-complete : ∀ {w v : C.Circuit 3} → circuit⟦ w ⟧ ≈ᵁ circuit⟦ v ⟧ → 3 C.⊢ w ≈ v
+  circuit-complete = Ω.circuit-complete
+
+  circuit-sound : ∀ {w v : C.Circuit 3} → 3 C.⊢ w ≈ v → circuit⟦ w ⟧ ≈ᵁ circuit⟦ v ⟧
+  circuit-sound = Ω.circuit-sound
 
 ------------------------------------------------------------------------
 -- Li, Mosca, Ross, van de Wetering and Zhao (2025): qutrit Clifford
@@ -395,16 +672,30 @@ module Amy-Ross-Wesley where
 
 module Li-Mosca-Ross-vandeWetering-Zhao where
 
-  open import Examples.Groups.Qutrit-Clifford.Syntactics using (_VRel,_===_)
+  open import Examples.Groups.Qutrit-Clifford.Syntactics using (Circuit ; _VRel,_===_ ; _⊢_≈_)
   open import Examples.Groups.Qutrit-Clifford.Presentation using (Clifford)
   open import Examples.Groups.Qutrit-Clifford.Count using (order)
   import Examples.Groups.Qutrit-Clifford.Presentation as P
+  import Examples.Groups.Qutrit-Clifford.Semantics as Sem
+  import Examples.Groups.Qutrit-Clifford.CompletenessN as CN
+  import Examples.Groups.Qutrit-Clifford.Soundness as S
 
   presentation : ∀ n → (n VRel,_===_) IsPresentationOf Clifford n
   presentation = P.presentationᴳ
 
   clifford-order : ∀ n → Inverse (Group.setoid (Clifford n)) (Eq.setoid (Fin (order n)))
   clifford-order = P.clifford-group-order
+
+  -- A circuit's value: an exact scaled matrix over ℤ[ζ₁₂], compared
+  -- exactly.
+  ⟦_⟧ : ∀ {n} → Circuit n → Sem.Sc n
+  ⟦_⟧ = Sem.⟦_⟧
+
+  complete : ∀ {n} {w v : Circuit n} → ⟦ w ⟧ Sem.≈ ⟦ v ⟧ → n ⊢ w ≈ v
+  complete {n} = CN.complete n
+
+  sound : ∀ {n} {w v : Circuit n} → n ⊢ w ≈ v → ⟦ w ⟧ Sem.≈ ⟦ v ⟧
+  sound = S.sound
 
 ------------------------------------------------------------------------
 -- Minimality
