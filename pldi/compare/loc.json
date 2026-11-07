@@ -1,11 +1,11 @@
 {
  "Greylyn": {
   "agda": {
-   "files": 31,
-   "lines": 9879,
-   "blank": 1389,
-   "comment": 1276,
-   "code": 7214
+   "files": 34,
+   "lines": 10122,
+   "blank": 1435,
+   "comment": 1339,
+   "code": 7348
   },
   "lean": {
    "files": 23,
@@ -17,11 +17,11 @@
  },
  "BianSelingerUn": {
   "agda": {
-   "files": 37,
-   "lines": 10442,
-   "blank": 1436,
-   "comment": 1319,
-   "code": 7687
+   "files": 39,
+   "lines": 10589,
+   "blank": 1470,
+   "comment": 1365,
+   "code": 7754
   },
   "lean": {
    "files": 26,
@@ -33,11 +33,11 @@
  },
  "LiRossSelinger": {
   "agda": {
-   "files": 68,
-   "lines": 17707,
-   "blank": 2179,
-   "comment": 1945,
-   "code": 13583
+   "files": 71,
+   "lines": 17932,
+   "blank": 2231,
+   "comment": 2017,
+   "code": 13684
   },
   "lean": {
    "files": 36,
@@ -49,11 +49,11 @@
  },
  "HadamardPi": {
   "agda": {
-   "files": 44,
-   "lines": 12951,
-   "blank": 1746,
-   "comment": 1477,
-   "code": 9728
+   "files": 46,
+   "lines": 13114,
+   "blank": 1781,
+   "comment": 1535,
+   "code": 9798
   },
   "lean": {
    "files": 46,
@@ -65,11 +65,11 @@
  },
  "Clement2019": {
   "agda": {
-   "files": 40,
-   "lines": 11835,
-   "blank": 1408,
-   "comment": 1340,
-   "code": 9087
+   "files": 43,
+   "lines": 12012,
+   "blank": 1448,
+   "comment": 1397,
+   "code": 9167
   },
   "lean": {
    "files": 15,
@@ -81,11 +81,11 @@
  },
  "SelingerClifford": {
   "agda": {
-   "files": 31,
-   "lines": 12550,
-   "blank": 995,
-   "comment": 808,
-   "code": 10747
+   "files": 32,
+   "lines": 12600,
+   "blank": 1006,
+   "comment": 826,
+   "code": 10768
   },
   "lean": {
    "files": 24,
@@ -97,11 +97,11 @@
  },
  "QuditClifford": {
   "agda": {
-   "files": 215,
-   "lines": 81764,
-   "blank": 11612,
-   "comment": 12324,
-   "code": 57828
+   "files": 216,
+   "lines": 81838,
+   "blank": 11626,
+   "comment": 12345,
+   "code": 57867
   },
   "lean": {
    "files": 37,
@@ -113,11 +113,11 @@
  },
  "RealStabilizer": {
   "agda": {
-   "files": 30,
-   "lines": 13459,
-   "blank": 1449,
-   "comment": 954,
-   "code": 11056
+   "files": 31,
+   "lines": 13515,
+   "blank": 1461,
+   "comment": 973,
+   "code": 11081
   },
   "lean": {
    "files": 19,
@@ -129,11 +129,11 @@
  },
  "CNOTDihedral": {
   "agda": {
-   "files": 30,
-   "lines": 6978,
-   "blank": 994,
-   "comment": 941,
-   "code": 5043
+   "files": 31,
+   "lines": 7027,
+   "blank": 1005,
+   "comment": 958,
+   "code": 5064
   },
   "lean": {
    "files": 15,
@@ -145,11 +145,11 @@
  },
  "PhaseAffine": {
   "agda": {
-   "files": 56,
-   "lines": 15218,
-   "blank": 2470,
-   "comment": 2015,
-   "code": 10733
+   "files": 57,
+   "lines": 15372,
+   "blank": 2510,
+   "comment": 2041,
+   "code": 10821
   },
   "lean": {
    "files": 32,
@@ -161,11 +161,11 @@
  },
  "CliffordT2": {
   "agda": {
-   "files": 62,
-   "lines": 13394,
-   "blank": 1023,
-   "comment": 1342,
-   "code": 11029
+   "files": 63,
+   "lines": 13476,
+   "blank": 1041,
+   "comment": 1366,
+   "code": 11069
   },
   "lean": {
    "files": 34,
@@ -177,11 +177,11 @@
  },
  "CliffordCS3": {
   "agda": {
-   "files": 123,
-   "lines": 65184,
-   "blank": 7440,
-   "comment": 1506,
-   "code": 56238
+   "files": 125,
+   "lines": 65309,
+   "blank": 7466,
+   "comment": 1548,
+   "code": 56295
   },
   "lean": {
    "files": 86,
@@ -193,11 +193,11 @@
  },
  "RealCliffordCH": {
   "agda": {
-   "files": 346,
-   "lines": 88181,
-   "blank": 13759,
-   "comment": 14250,
-   "code": 60172
+   "files": 348,
+   "lines": 88267,
+   "blank": 13778,
+   "comment": 14284,
+   "code": 60205
   },
   "lean": {
    "files": 274,
@@ -209,11 +209,11 @@
  },
  "ToffoliHadamard": {
   "agda": {
-   "files": 201,
-   "lines": 40603,
-   "blank": 11354,
-   "comment": 681,
-   "code": 28568
+   "files": 203,
+   "lines": 40744,
+   "blank": 11382,
+   "comment": 733,
+   "code": 28629
   },
   "lean": {
    "files": 20,
@@ -225,11 +225,11 @@
  },
  "QutritClifford": {
   "agda": {
-   "files": 89,
-   "lines": 69083,
-   "blank": 13566,
-   "comment": 1668,
-   "code": 53849
+   "files": 90,
+   "lines": 69150,
+   "blank": 13579,
+   "comment": 1689,
+   "code": 53882
   },
   "lean": {
    "files": 40,
@@ -241,11 +241,11 @@
  },
  "Minimality": {
   "agda": {
-   "files": 73,
-   "lines": 28478,
-   "blank": 3172,
-   "comment": 2221,
-   "code": 23085
+   "files": 80,
+   "lines": 28793,
+   "blank": 3230,
+   "comment": 2368,
+   "code": 23195
   },
   "lean": {
    "files": 68,
@@ -257,11 +257,11 @@
  },
  "(shared)": {
   "agda": {
-   "files": 91,
-   "lines": 20969,
-   "blank": 3252,
-   "comment": 4594,
-   "code": 13123
+   "files": 92,
+   "lines": 21058,
+   "blank": 3269,
+   "comment": 4617,
+   "code": 13172
   },
   "lean": {
    "files": 12,

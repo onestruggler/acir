@@ -8,6 +8,7 @@ printed by `figdata.py`. Python 3, no dependencies. Run from this folder:
 python loc.py ../.. loc.json            # code lines per row
 python features.py ../.. features.json  # options, postulates, tactics, noncomputable, imports
 python3 leantime.py ../../Lean leantime.json   # in WSL: clean timed Lean build, about 1-3 h
+python3 agdatime.py ../.. agdatime.json        # in WSL: from-scratch Agda check, per module, about 1 h
 python figdata.py                       # combine with the check times; print totals
 python mkfig.py ../figures/compare.tex  # the pgfplots figure
 ```
@@ -28,8 +29,17 @@ python mkfig.py ../figures/compare.tex  # the pgfplots figure
   `noncomputable` declarations and Lean's `by` blocks and automation calls are
   counted both there and over all files, and Section 3.3 quotes the counts over
   all files.
-* **Check times.** The Agda times are those of Table 1, copied into
-  `figdata.py`. The Lean times are measured by `leantime.py`: it removes QCert's
+* **Check times.** The Agda times are measured by `agdatime.py`: it removes
+  the repository's Agda interfaces (keeping the standard library's and
+  EucDomain's), then checks the shared library and each row in one Agda
+  process each, through a root importing every tracked module of the unit,
+  with `--profile=modules`; a row's time is the sum of the times Agda reports
+  for its own modules, each without its imports, wherever it was checked.
+  A module that does not typecheck (a stale one that nothing imports) is left
+  out, with what imports it, and recorded (`excluded`). `agdatime.json` keeps
+  every module's time, and per unit the wall time, the peak resident size and
+  the CPU that other projects' Lean or Agda used meanwhile; logs go to
+  `~/agdatime-logs/`. The Lean times are measured by `leantime.py`: it removes QCert's
   build artifacts (keeping Mathlib), then builds each folder of `Lean/QCert`
   and each root module in dependency order of their imports with
   `LEAN_NUM_THREADS=2 lake build <its modules>`, timing each, so that every
@@ -69,4 +79,6 @@ the Lean typechecking speed-up (merge `e19af70c`); `leantime.json` says on
 which machine. Its clean run (5 November, kept as `leantime-run1.json`)
 overlapped another project's Lean builds, so the twenty units they overlapped
 were re-timed on 6 November (`retimes`); `leantime.json` holds each unit's
-last timing.
+last timing. `agdatime.json`, `loc.json` and `features.json` were measured on
+8 November 2026, on the same machine as `leantime.json`, after the
+`MainTheorem` modules were added (revision `88440624`).

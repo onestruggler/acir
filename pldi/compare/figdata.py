@@ -2,10 +2,10 @@
 into figdata.json (read by mkfig.py), and print the totals quoted in the
 text of Section 3.3 and in tab:compare.
 
-Inputs: loc.json, features.json, leantime.json (this directory).  The
-Agda check times are those of Table 1 (pldi/qcert.tex, tab:corpus); the
-Lean times are read from leantime.json (leantime.py) and printed in the
-form Table 1 quotes them.
+Inputs: loc.json, features.json, agdatime.json, leantime.json (this
+directory).  The Agda check times are read from agdatime.json
+(agdatime.py), the Lean times from leantime.json (leantime.py), and both
+are printed in the form Table 1 quotes them.
 """
 import json, os, sys
 
@@ -13,9 +13,11 @@ here = os.path.dirname(os.path.abspath(__file__))
 loc = json.load(open(os.path.join(here, 'loc.json')))
 feat = json.load(open(os.path.join(here, 'features.json')))
 ltime = json.load(open(os.path.join(here, 'leantime.json')))
+atime = json.load(open(os.path.join(here, 'agdatime.json')))
 
-# Table 1 order, label, Agda time (s), Lean time (s, of the 1 November run;
-# replaced below by leantime.json).
+# Table 1 order, label, Agda time (s, as recorded on 22 October), Lean time
+# (s, of the 1 November run); both replaced below, from agdatime.json and
+# leantime.json.
 ROWS = [
     ('Greylyn', r'$U_n(\Z[1/\sqrt2,i])$', 42, 115.62),
     ('BianSelingerUn', r'$U_n(\Z[1/2,i])$', 62, 140.99),
@@ -35,7 +37,21 @@ ROWS = [
     ('Minimality', 'minimality, six fragments', 183, 300.20),
 ]
 
-ROWS = [(k, label, at, ltime['units'][k]['seconds']) for k, label, at, _ in ROWS]
+ROWS = [(k, label, atime['rows'][k]['seconds'], ltime['units'][k]['seconds'])
+        for k, label, _, _ in ROWS]
+arun = atime['run']
+print(f"Agda run {arun['date']} at {arun['revision']}, {arun['modules']} modules, {arun['cpu']}, "
+      f"{arun['logical_cpus']} CPUs, {arun['mem_gib']} GiB, {arun['agda']}, {arun['rts']}")
+print('Agda shared library', atime['rows']['(shared)'],
+      '; wall per unit', {u: v['seconds'] for u, v in atime['units'].items()},
+      '; peak RSS (GB)', {u: round((v['max_rss_kb'] or 0) / 2**20, 1) for u, v in atime['units'].items()},
+      '; left out', {u: v.get('excluded') for u, v in atime['units'].items() if v.get('excluded')},
+      '; other projects (CPU s)', {u: v['foreign_cpu_s'] for u, v in atime['units'].items()
+                                    if v['foreign_cpu_s']},
+      '; modules profiled', {k: (v['profiled'], v['modules']) for k, v in atime['rows'].items()
+                             if v['profiled'] != v['modules']})
+slow = sorted(((v['ms'], m, v['unit']) for m, v in atime['modules'].items()), reverse=True)[:8]
+print('slowest Agda modules', [(m, round(ms / 1000, 1), u) for ms, m, u in slow])
 run = ltime['run']
 shared = {u: v['seconds'] for u, v in ltime['units'].items()
           if u not in {r[0] for r in ROWS}}
@@ -66,9 +82,10 @@ print('Lean shorter in', sum(1 for r in lines[:-1] if r[4] < r[3]), 'of 16 rows;
       [r[1] for r in lines[:-1] if r[4] > r[3]])
 print('Lean faster in', [r[1] for r in lines[:-1] if r[6] < r[5]])
 big = max(lines[:-1], key=lambda r: r[6])
-print(f"check times: Agda {sum(r[5] for r in lines[:-1])} s, Lean {sum(r[6] for r in lines[:-1]):.2f} s; "
-      f"without {big[1]}: Agda {sum(r[5] for r in lines[:-1] if r is not big)} s, "
+print(f"check times: Agda {sum(r[5] for r in lines[:-1]):.2f} s, Lean {sum(r[6] for r in lines[:-1]):.2f} s; "
+      f"without {big[1]}: Agda {sum(r[5] for r in lines[:-1] if r is not big):.2f} s, "
       f"Lean {sum(r[6] for r in lines[:-1] if r is not big):.2f} s")
+print('Lean/Agda ratio per row', {r[1]: round(r[6] / r[5], 1) for r in lines[:-1]})
 
 sumf = lambda lang, k: sum(feat[r[0]][lang].get(k, 0) for r in ROWS)
 print('lean, all files: by', sumf('lean', 'by_all'), 'automation', sumf('lean', 'automation_all'))
