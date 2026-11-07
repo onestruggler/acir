@@ -325,13 +325,19 @@ The record $\mathcal{R}$~\aid{IsSubPresentationOf}~$G$ contains the semantics $\
 \Description{Two columns show soundness and completeness. On the left, the highlighted uniform matrix semantics assigns a matrix to each gate or two-level operator. QCert lifts this assignment to circuits and words, then checks equality of the matrices on both sides of each rule. On the right, every equation in a known complete reference rule set is derived by rewrites from the proposed rule set. The rewrite arrows are green. An arrow from the completed soundness checks points to the statement that each step uses a sound rule from the proposed rule set. Deriving every reference rule establishes completeness.}
 \end{figure}
 
-Each formalization ends with its main theorem stated as an \aid{IsSubPresentationOf} or \aid{IsPresentationOf} record. For example, \Cref{agda:stab} is the theorem for the real stabilizer circuits of~\cite{makary2021real}, with the relations R1--R16 of its Figure~1 lifted to $n$ wires. \Cref{agda:hpi} is the theorem for the two-level matrices of Hadamard-$\Pi$~\cite{fang2026hadamard}, with the relations of its Figure~6.
+Each formalization ends with its main theorem stated as an \aid{IsSubPresentationOf} or \aid{IsPresentationOf} record, in one format for all of them. The relations are written \aid{n CRel,{\_}==={\_}} for circuits on $n$ wires and \aid{n MRel,{\_}==={\_}} for words over multi-level matrices of dimension $n$. For example, \Cref{agda:stab} is the theorem for the real stabilizer circuits of~\cite{makary2021real}, with the relations R1--R16 of its Figure~1 lifted to $n$ wires. \Cref{agda:hpi} is the theorem for the two-level matrices of Hadamard-$\Pi$~\cite{fang2026hadamard}, with the relations of its Figure~6. Completeness and soundness are read off the record in one form too, \Cref{agda:complete,agda:sound}, where \aid{⊢ w ≈ v} says that $w$ and $v$ are equal by the relations. The qubit developments compare matrices over $\D[\omega]$ (\aid{{\_}≈ᵁ{\_}}), in which each reads its group; the qudit ones compare in their own groups.
 \begin{agdacode}[escapechar=@]
-presentation : {n : ℕ} → (n VRel,_===_) IsSubPresentationOf U (2 ^ n)@\agdatag{agda:stab}@
-presentation : {n : ℕ} → (_===_ {n}) IsPresentationOf (O n)@\agdatag{agda:hpi}@
+presentation : ∀ n → (n CRel,_===_) IsSubPresentationOf U (2 ^ n)@\agdatag{agda:stab}@
+presentation : ∀ n → (n MRel,_===_) IsPresentationOf (O n)@\agdatag{agda:hpi}@
+complete : ∀ {n} {w v : Circuit n} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → ⊢ w ≈ v@\agdatag{agda:complete}@
+sound : ∀ {n} {w v : Circuit n} → ⊢ w ≈ v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧@\agdatag{agda:sound}@
+\end{agdacode}
+The minimality results of~\cite{blake2026simpler} take the same form, \Cref{agda:minimal}, for the rule set of a fragment on $n$ wires, \aid{n ⊢{\_}==={\_}}. It is complete if it derives every equation that the matrices validate, and minimal if, without any one of its rules on $n$ wires, it is no longer complete there. Minimality only makes sense for a rule set, which says what dropping a rule is, so Agda accepts \aid{IsMinimal} only for \aid{n ⊢{\_}==={\_}}.
+\begin{agdacode}[escapechar=@]
+minimal-complete : ∀ {n} → (n ⊢_===_) IsMinimal × (n ⊢_===_) IsComplete@\agdatag{agda:minimal}@
 \end{agdacode}
 
-Agda checks every proof, so a reader only needs to check that each theorem statement matches its paper's result. Since every theorem is one of these two records, it suffices for a reader to check only four components: the relations transcribed from the paper, the target group, the matrix of each gate, and the line assigning $\llbracket - \rrbracket$ to the record. Each Agda development exports its main presentation theorem; the corresponding Lean statements are collected in \texttt{QCert/Table1.lean}.
+Agda checks every proof, so a reader only needs to check that each theorem statement matches its paper's result. Since every theorem is one of these two records, it suffices for a reader to check only four components: the relations transcribed from the paper, the target group, the matrix of each gate, and the line assigning $\llbracket - \rrbracket$ to the record. Each Agda development collects these components and its main theorem in one module, \aid{MainTheorem}, and the file \texttt{MainTheorems.agda} imports one such module per source and restates each theorem; the corresponding Lean statements are collected in \texttt{QCert/Table1.lean}.
 
 \paragraph{Extensions of the earlier framework} To support these formalizations, QCert extends the Agda framework of~\citet{bian2027popl}. Besides the matrix semantics above and the statement of minimality (\Cref{sec:background}), it adds three features.
 \begin{itemize}
