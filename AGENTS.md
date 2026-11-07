@@ -258,7 +258,7 @@ There is no longer a `Presentation/Groups/`: it held a second Sₙ and a hand-ro
 - `nfp` (`NormalFormInjective`) and `nfp'` (`NormalForm`) are the standard names for normal-form witnesses.
 - `by-equal-nf` proves `w ≈ v` from `nf w ≡ nf v`; `by-assoc` proves `w ≈ v` from `to-list w ≡ to-list v`; `by-passoc` re-brackets guided by pattern words built from `□`.
 - Files follow the agda-stdlib style guide (see `style-guide.md`): 72-char banner headers with library line `-- Presentations of groups`, `{-# OPTIONS --safe #-}`, imports sorted with `using` lists, `private variable` blocks, sentence-case section separators.
-- `MainTheorems.agda` is the style exemplar: it re-states the main theorems with definitions imported openly and proofs imported qualified, each section's banner naming the module the proof lives in. It is also the only façade — the per-development `Theorems.agda` layer was removed for the symmetric group, whose results MainTheorems now takes straight from `Presentation`, `UniqueNormalForm` and `SubPresentation/*`.
+- `MainTheorems.agda` is the style exemplar: it re-states the main theorems with their full types, each section importing one module, the `MainTheorem.agda` of the development, which defines everything the statement mentions (words, `n MRel,_===_` / `n CRel,_===_`, the group, `⟦_⟧`, `⊢ w ≈ v`) and states `presentation : ∀ n → …`, `complete` and `sound` in one format (see CLAUDE.md). It is also the only façade — the per-development `Theorems.agda` layer was removed for the symmetric group, whose results MainTheorems now takes straight from `Presentation`, `UniqueNormalForm` and `SubPresentation/*`.
 
 ## Stdlib compatibility notes
 
