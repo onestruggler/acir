@@ -1,0 +1,150 @@
+% Literature audit (generation is distinct from completeness of relations).
+% AGR20, arXiv:1908.06076: the six restricted matrix families are Eqs.
+% (2), (5), (7), (9), (10), (13), with generation Theorems 5.5, 5.10,
+% 5.15, 5.20, 5.26, 5.30 and one-clean-ancilla circuit Corollaries
+% 5.6, 5.11, 5.16, 5.21, 5.27, 5.31, respectively.
+% GS13, arXiv:1212.0506: Lemma 6 and Theorem 1 give the full ring case.
+% LRS21: Definitions 5.1--5.2 and Theorem 5.7 give the scaled real group.
+% BS21: Figure 1, relation (15), gives the Gaussian X redundancy below.
+% FHK26: Definition 4.5 and Theorem 4.8 give the real matrix generators.
+%
+% The displayed families are reductions of the published lists:
+% real: X_[a,b] = H_[a,b] (-1)_[b] H_[a,b];
+% imaginary: X_[a,b] = F_[a,b]^2 (-1)_[b] F_[a,b]^6;
+% Gaussian and super-Gaussian:
+% X_[a,b] = (omega H)_[a,b] i_[b]^2 (omega H)_[a,b]^dagger;
+% full ring: X_[a,b] = H_[a,b] omega_[b]^4 H_[a,b], T_[a,b]=omega_[b].
+% These are exact embedded-block equalities, with identity outside the block.
+% The two BS21 Hadamard phase conventions are inverses of one another.
+%
+% For the scaled real group, put J=I_(N/2) tensor H. Then
+% J (-1)_[2j+1] J = X_[2j,2j+1]. On a consecutive quartet (a,b,c,d),
+% R=(H tensor H)_[a,b,c,d] satisfies R X_[c,d] R = X_[b,d], and
+% X_[c,d] X_[b,d] X_[c,d] = X_[b,c]. Hence all adjacent transpositions
+% are generated, and X can be omitted. For N=2 the first identity suffices.
+%
+% The super-Gaussian group equals G union omega*G, G=U_N(D[i]):
+% even q gives G; for odd q, omega^-1 2^(-q/2)M=(1-i)M/2^((q+1)/2).
+% Thus the former product notation was not a direct-product assertion.
+% Greylyn14 (N=4), BS22 (2 qubits), BS23 (3 qubits), and ARW24
+% (3 qubits) do not supply unrestricted-width completeness results here.
+% Amy et al. 2023, arXiv:2305.11305, improves synthesis in the same
+% integral/scaled-real groups. Mukhopadhyay 2024,
+% doi:10.1038/s41598-024-64558-8, gives CS synthesis and generators modulo
+% Clifford, not another multi-level matrix family for this figure.
+%
+% Each main node pairs circuit gates with its exact-synthesis matrix group
+% (at most one clean ancilla) and reduced multi-level generators.
+% N = 2^n is the matrix dimension; n >= 1 is the number of qubits.
+\usetikzlibrary{shapes.multipart}
+\definecolor{fragmentMint}{HTML}{DFF1E8}
+\definecolor{fragmentBlue}{HTML}{E3EEF7}
+\definecolor{fragmentLavender}{HTML}{EEE7F5}
+\definecolor{fragmentIvory}{HTML}{F6EEDB}
+\begin{tikzpicture}[
+  font=\small,
+  fragment/.style={rectangle split,rectangle split parts=3,
+    rectangle split part fill={fragmentMint,fragmentBlue,fragmentLavender},
+    draw=black!60,line width=.6pt,align=center,
+    inner xsep=7pt,inner ysep=6pt,minimum width=40mm},
+  finite/.style={draw=black!60,line width=.6pt,rounded corners=3pt,
+    fill=fragmentIvory,align=center,inner xsep=7pt,inner ysep=6pt,
+    minimum width=27mm,minimum height=13mm},
+  circuit/.style={draw=black!60,line width=.6pt,rounded corners=3pt,
+    fill=fragmentMint,align=center,inner xsep=7pt,inner ysep=6pt,
+    minimum width=34mm},
+  inclusion/.style={-{Stealth[length=2mm,width=1.4mm]},
+    draw=black!65,line width=.7pt,shorten >=2pt,shorten <=2pt},
+  every node/.style={outer sep=0pt}
+]
+\node[fragment] (integral) at (0,0)
+  {Integral~\cite{amy2020numbertheoretic}\\$\{X,CX,CCX,H\otimes H\}$
+   \nodepart{two}$O_N(\D)$~\cite{li2021on}
+   \nodepart{three}$\{(-1)_{[a]},X_{[a,b]},$\\
+     $\phantom{\{}(H\otimes H)_{[a,b,c,d]}\}$};
+\node[fragment] (th) at (4.6,3.3)
+  {Toffoli--Hadamard~\cite{amy2020numbertheoretic}\\$\{H,Z,CZ,CCZ\}$
+   \nodepart{two}$\left\{\begin{array}{@{}l@{}}
+     2^{-q/2}M\in O_N(\mathbb R):\\[-1pt]
+     M\in\Z^{N\times N},\ q\in\mathbb N
+     \end{array}\right\}$\\[-1pt]
+     \cite{li2021on}
+   \nodepart{three}$\{(-1)_{[a]},(H\otimes H)_{[a,b,c,d]},$\\
+     $\phantom{\{}I_{N/2}\otimes H\}$};
+\node[fragment] (gaussian) at (9.2,0)
+  {Gaussian~\cite{amy2020numbertheoretic}\\$\{\omega H,S,CZ,CCZ\}$
+   \nodepart{two}$U_N(\D[i])$~\cite{bian2021un}
+   \nodepart{three}$\{i_{[a]},(\omega H)_{[a,b]}\}$};
+\node[fragment] (imaginary) at (0,7.8)
+  {Imaginary~\cite{amy2020numbertheoretic}\\$\{F,Z,CZ,CCZ\}$
+   \nodepart{two}$U_N(\D[i\sqrt2])$
+   \nodepart{three}$\{(-1)_{[a]},F_{[a,b]}\}$};
+\node[fragment] (real) at (4.6,7.8)
+  {Real~\cite{amy2020numbertheoretic}\\$\{H,Z,CZ,CCZ,CH\}$
+   \nodepart{two}$O_N(\D[\sqrt2])$~\cite{fang2026hadamard}
+   \nodepart{three}$\{(-1)_{[a]},H_{[a,b]}\}$};
+\node[fragment] (supergaussian) at (9.2,7.8)
+  {Super-Gaussian~\cite{amy2020numbertheoretic}\\$\{H,S,CZ,CCZ\}$
+   \nodepart{two}$\left\{\begin{array}{@{}l@{}}
+     2^{-q/2}M\in U_N(\mathbb C):\\[-1pt]
+     M\in\Z[i]^{N\times N},\ q\in\mathbb N
+     \end{array}\right\}$
+   \nodepart{three}$\{i_{[a]},(\omega H)_{[a,b]},\omega I_N\}$};
+\node[fragment] (ct) at (4.6,11.9)
+  {Clifford+$T$~\cite{giles2013exact}\\$\{H,T,CZ\}$
+   \nodepart{two}$U_N(\D[\omega])$
+   \nodepart{three}$\{\omega_{[a]},H_{[a,b]}\}$};
+\node[finite] (rcliff) at (13.9,0)
+  {Real Clifford~\cite{makary2021real}\\$\{H,Z,CZ\}$};
+\node[finite] (cliff) at (13.9,3.3)
+  {Clifford~\cite{selinger2015clifford}\\$\{H,S,CZ\}$};
+\node[finite] (dihedral) at (13.9,11.9)
+  {CNOT-dihedral~\cite{amy2018cnotdihedral}\\$\{X,T,CX\}$};
+\node[circuit] (rch) at (0,3.3)
+  {Real Clifford+$CH$~\cite{clement2026realcliffordch}\\
+   $\{H,Z,CZ,CH\}$\\
+   $=$ Real for $n\ne3$};
+\node[circuit] (cs) at (13.9,6)
+  {Clifford+$CS$~\cite{bian2023cliffordcs3}\\
+   $\{\omega H,S,CS\}$\\
+   $=$ Gaussian for $n\ne2$};
+\node[circuit] (csomega) at (13.9,9.2)
+  {Clifford+$CS$+$\omega$~\cite{glaudell2021optimal}\\
+   $\{H,S,CS\}$\\
+   $=$ Super-Gaussian for $n\ne2$};
+% Colour key in the unused upper-left corner.
+\node[draw=black!25,rounded corners=3pt,fill=white,
+  inner sep=7pt,align=left] at (0,11.9) {\begin{tabular}{@{}ll@{}}
+  \colorbox{fragmentMint}{\rule{0pt}{1ex}\hspace{1.5ex}} & Circuit gate sets\\
+  \colorbox{fragmentBlue}{\rule{0pt}{1ex}\hspace{1.5ex}} & Matrix groups\\
+  \colorbox{fragmentLavender}{\rule{0pt}{1ex}\hspace{1.5ex}} & Multi-level generators\\
+  \colorbox{fragmentIvory}{\rule{0pt}{1ex}\hspace{1.5ex}} & Finite circuit groups
+\end{tabular}};
+\begin{pgfonlayer}{edgelayer}
+  \draw[inclusion] (integral) -- (th);
+  \draw[inclusion,rounded corners=5pt]
+    (integral.west) -- (-2.5,0) -- (-2.5,7.8) -- (imaginary.west);
+  \draw[inclusion] (integral) -- (gaussian);
+  \draw[inclusion] (rcliff) -- (cliff);
+  \draw[inclusion] (th) -- (real);
+  \draw[inclusion] (th) -- (supergaussian);
+  \draw[inclusion] (gaussian) -- (supergaussian);
+  % Keep this circuit inclusion clear of the Gaussian node; the white
+  % underlay marks its crossing with the Gaussian inclusion.
+  \draw[inclusion,rounded corners=5pt,
+    preaction={draw=white,line width=3.5pt,-}]
+    (rcliff.north west) -- (11.6,1.9) -- (7.4,1.9) -- (th.south east);
+  \draw[inclusion] (rch) -- (real);
+  \draw[inclusion,rounded corners=5pt,
+    preaction={draw=white,line width=3.5pt,-}]
+    (gaussian.north east) -- (11.8,1.7) -- (11.8,4.6) -- (cs.south west);
+  \draw[inclusion] (supergaussian) -- (csomega);
+  \draw[inclusion] (cs) -- (csomega);
+  \draw[inclusion] (csomega) -- (ct);
+  \draw[inclusion] (cliff) -- (supergaussian);
+  \draw[inclusion] (imaginary) -- (ct);
+  \draw[inclusion] (real) -- (ct);
+  \draw[inclusion] (supergaussian) -- (ct);
+  \draw[inclusion] (dihedral) -- (ct);
+\end{pgfonlayer}
+\end{tikzpicture}
