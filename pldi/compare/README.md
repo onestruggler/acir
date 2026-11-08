@@ -74,6 +74,11 @@ the Intel Core i5-14400, with no other proof assistant running; Table 1's
 times are from the i5-13400TEF, so its Toffoli–Hadamard row differs (111 and
 135 s there, 103 and 125 s here). Logs go to `~/th4-logs/`.
 
+Panel (a) of `fig:compare` takes its Toffoli–Hadamard row from `th4.json`, the
+second pair (one proof in both assistants), where Table 1's two proofs take
+different routes; panel (b) and the totals of `tab:compare` keep Table 1's
+folders. `figdata.py` reads it, so rerun `figdata.py` and `mkfig.py` after `th4.py`.
+
 ## Execution benchmark (panel (c))
 
 Both programs decide, for random circuits `w` of 100 gates over H, S and CZ

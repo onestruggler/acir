@@ -2,8 +2,8 @@
 into figdata.json (read by mkfig.py), and print the totals quoted in the
 text of Section 3.3 and in tab:compare.
 
-Inputs: loc.json, features.json, agdatime.json, leantime.json (this
-directory).  The Agda check times are read from agdatime.json
+Inputs: loc.json, features.json, agdatime.json, leantime.json and, for
+the Toffoli--Hadamard row of panel (a), th4.json (this directory).  The Agda check times are read from agdatime.json
 (agdatime.py), the Lean times from leantime.json (leantime.py), and both
 are printed in the form Table 1 quotes them.
 """
@@ -32,7 +32,7 @@ ROWS = [
     ('CliffordT2', 'two-qubit Clifford+T', 118, 275.40),
     ('CliffordCS3', 'three-qubit Clifford+CS', 250, 1162.66),
     ('RealCliffordCH', 'real Clifford+CH', 405, 8868.59),
-    ('ToffoliHadamard', r'Toffoli--Hadamard', 102, 328.84),
+    ('ToffoliHadamard', r'Toffoli--Hadamard$^{\ast}$', 102, 328.84),
     ('QutritClifford', 'qutrit Clifford', 282, 164.76),
     ('Minimality', 'minimality, six fragments', 183, 300.20),
 ]
@@ -65,11 +65,19 @@ print('other projects\' Lean during a unit (CPU s):',
       '; units of the first run never re-timed:',
       [u for u, v in ltime['units'].items() if 'foreign_procs' in v])
 
+# Panel (a) of the figure counts, for Toffoli--Hadamard, the one proof in
+# both assistants (tab:th4's second pair, measured by th4.py) rather than the
+# two proofs of Table 1's row, which take different routes; panel (b) and
+# the totals of tab:compare stay those of Table 1's folders.
+th4 = json.load(open(os.path.join(here, 'th4.json')))['forms']
+FIG_LOC = {'ToffoliHadamard': (th4['Agda RS'], th4['Lean RS'])}
+
 lines = []
 tot = dict(ac=0, lc=0, af=0, lf=0)
 for i, (key, label, at, lt) in enumerate(ROWS + [('(shared)', 'shared library', None, None)]):
     a, l = loc[key]['agda'], loc[key]['lean']
-    lines.append((i, key, label, a['code'], l['code'], at, lt, a['files'], l['files']))
+    fa, fl = FIG_LOC.get(key, (a, l))
+    lines.append((i, key, label, fa['code'], fl['code'], at, lt, fa['files'], fl['files']))
     if key != '(shared)':
         tot['ac'] += a['code']; tot['lc'] += l['code']
         tot['af'] += a['files']; tot['lf'] += l['files']
@@ -77,7 +85,10 @@ for i, (key, label, at, lt) in enumerate(ROWS + [('(shared)', 'shared library', 
 print(f"{'row':18} {'Agda':>7} {'Lean':>7}  {'Agda s':>6} {'Lean s':>8}")
 for i, key, label, ac, lc, at, lt, af, lf in lines:
     print(f"{key:18} {ac:7} {lc:7}  {at or '':>6} {lt or '':>8}")
-print('totals (16 rows)', tot)
+print('totals (16 rows, Table 1 folders)', tot)
+for key, (fa, fl) in FIG_LOC.items():
+    print(f"panel (a) {key}: {fa['folder']} {fa['code']} and {fl['folder']} {fl['code']} "
+          f"in place of {loc[key]['agda']['code']} and {loc[key]['lean']['code']}")
 print('Lean shorter in', sum(1 for r in lines[:-1] if r[4] < r[3]), 'of 16 rows; longer in',
       [r[1] for r in lines[:-1] if r[4] > r[3]])
 print('Lean faster in', [r[1] for r in lines[:-1] if r[6] < r[5]])
