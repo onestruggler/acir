@@ -4,11 +4,11 @@
 % \tikzstyle{NAME}=[PROPERTY LIST]
 
 % Node styles
-\tikzstyle{gate}=[shape=rectangle, text height=1.5ex, text depth=0.25ex, yshift=0.5mm, fill=white, draw=black, minimum height=7mm, yshift=-0.5mm, minimum width=7mm, font={\small}, tikzit category=circuit]
+\tikzstyle{gate}=[shape=rectangle, text height=1.5ex, text depth=0.25ex, yshift=0.5mm, fill=white, draw=black, minimum height=4.5mm, yshift=-0.5mm, minimum width=4.5mm, inner sep=1.5pt, font={\small}, tikzit category=circuit]
 \tikzstyle{small gate}=[shape=rectangle, text height=1.5ex, text depth=0.25ex, yshift=0.5mm, fill=white, draw=black, minimum height=5mm, yshift=-0.5mm, minimum width=7mm, font={\small}, tikzit category=circuit]
 \tikzstyle{big gate}=[shape=rectangle, text height=1.5ex, text depth=0.25ex, yshift=0.5mm, fill=white, draw=black, minimum height=13mm, yshift=-0.5mm, minimum width=5mm, font={\small}, tikzit category=circuit]
 \tikzstyle{box}=[shape=rectangle, text height=1.5ex, text depth=0.25ex, yshift=0.5mm, fill=white, draw=black, minimum height=6mm, yshift=-1mm, minimum width=5mm, font={\footnotesize}]
-\tikzstyle{medium box}=[shape=rectangle, text height=1.5ex, text depth=0.25ex, yshift=0.5mm, fill=white, draw=black, minimum height=13mm, yshift=-0.5mm, minimum width=5mm, font={\footnotesize}]
+\tikzstyle{medium box}=[shape=rectangle, text height=1.5ex, text depth=0.25ex, yshift=0.5mm, fill=white, draw=black, minimum height=11.1mm, yshift=-0.5mm, minimum width=5mm, font={\footnotesize}]
 \tikzstyle{large box}=[shape=rectangle, text height=1.5ex, text depth=0.25ex, yshift=0.5mm, fill=white, draw=black, minimum height=14mm, yshift=-0.5mm, minimum width=5mm, font={\footnotesize}]
 \tikzstyle{giant box}=[shape=rectangle, text height=1.5ex, text depth=0.25ex, yshift=0.5mm, fill=white, draw=black, minimum height=23mm, yshift=-0.5mm, minimum width=5mm, font={\footnotesize}]
 \tikzstyle{Z dot}=[inner sep=0.1mm, font={\tiny\boldmath}, minimum size=2mm, shape=circle, draw=black, fill=zxgreen, tikzit fill={rgb,255: red,216; green,248; blue,216}]

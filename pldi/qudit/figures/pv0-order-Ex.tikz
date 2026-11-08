@@ -1,42 +1,67 @@
 \begin{tikzpicture}
-\path [use as bounding box] (-0.3, -1.0) rectangle (11.55, 3.7);
-\begin{pgfonlayer}{nodelayer}
-\node [style=none] (n0y00tl) at (1.0, 2.0) {$$};
-\node [style=none] (n0y00bl) at (1.0, 0.0) {$$};
-\node [style=none] (n0y00br) at (2.5, 0.0) {$$};
-\node [style=none] (n0y00tr) at (2.5, 2.0) {$$};
-\node [style=none] (n0y00ftl) at (1.0, 2.15) {};
-\node [style=none] (n0y00fbr) at (2.5, -0.15) {};
-\node [style=none] (n0y01tl) at (3.5, 2.0) {$$};
-\node [style=none] (n0y01bl) at (3.5, 0.0) {$$};
-\node [style=none] (n0y01br) at (5.0, 0.0) {$$};
-\node [style=none] (n0y01tr) at (5.0, 2.0) {$$};
-\node [style=none] (n0y01ftl) at (3.5, 2.15) {};
-\node [style=none] (n0y01fbr) at (5.0, -0.15) {};
-\node [style=none] (lm0el00) at (0.0, 0.0){};
-\node [style=none] (lm0el10) at (0.0, 2.0){};
-\node [style=none] (lm0er00) at (6.0, 0.0){};
-\node [style=none] (lm0er10) at (6.0, 2.0){};
-\end{pgfonlayer}
-\begin{pgfonlayer}{edgelayer}
-\draw (lm0el00.center) to (lm0er00.center);
-\draw (lm0el10.center) to (lm0er10.center);
-\fill [white] (n0y00ftl.center) rectangle (n0y00fbr.center);
-\draw (n0y00bl.center) to (n0y00tr.center);
-\draw (n0y00tl.center) to (n0y00br.center);
-\fill [white] (n0y01ftl.center) rectangle (n0y01fbr.center);
-\draw (n0y01bl.center) to (n0y01tr.center);
-\draw (n0y01tl.center) to (n0y01br.center);
-\end{pgfonlayer}
-\node [style=none] (equiv) at (7.0, 1.0) {$\equiv$};
-\begin{pgfonlayer}{nodelayer}
-\node [style=none] (lm8el00) at (8.0, 0.0){};
-\node [style=none] (lm8el10) at (8.0, 2.0){};
-\node [style=none] (lm8er00) at (10.75, 0.0){};
-\node [style=none] (lm8er10) at (10.75, 2.0){};
-\end{pgfonlayer}
-\begin{pgfonlayer}{edgelayer}
-\draw (lm8el00.center) to (lm8er00.center);
-\draw (lm8el10.center) to (lm8er10.center);
-\end{pgfonlayer}
+	\path [use as bounding box] (-9.55,-2) rectangle (13.35,2.7);
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (n0y00tl) at (-8.5, 1) {$$};
+		\node [style=none] (n0y00bl) at (-8.5, -1) {$$};
+		\node [style=none] (n0y00br) at (-7.25, -1) {$$};
+		\node [style=none] (n0y00tr) at (-7.25, 1) {$$};
+		\node [style=none] (n0y01tl) at (-6.5, 1) {$$};
+		\node [style=none] (n0y01bl) at (-6.5, -1) {$$};
+		\node [style=none] (n0y01br) at (-5.25, -1) {$$};
+		\node [style=none] (n0y01tr) at (-5.25, 1) {$$};
+		\node [style=none] (lm0el00) at (-9.25, -1) {};
+		\node [style=none] (lm0el10) at (-9.25, 1) {};
+		\node [style=none] (lm0er00) at (-4.5, -1) {};
+		\node [style=none] (lm0er10) at (-4.5, 1) {};
+		\node [style=none] (equiv) at (-3.5, 0) {$\equiv$};
+		\node [style=none] (lm8el00) at (-2.5, -1) {};
+		\node [style=none] (lm8el10) at (-2.5, 1) {};
+		\node [style=none] (lm8er00) at (-1, -1) {};
+		\node [style=none] (lm8er10) at (-1, 1) {};
+		\node [style=none] (0) at (2.05, 1) {$$};
+		\node [style=none] (1) at (2.05, -1) {$$};
+		\node [style=none] (2) at (3.3, -1) {$$};
+		\node [style=none] (3) at (3.3, 1) {$$};
+		\node [style=gate] (4) at (4.55, 1) {$H$};
+		\node [style=none] (5) at (1.3, -1) {};
+		\node [style=none] (6) at (1.3, 1) {};
+		\node [style=none] (7) at (5.8, -1) {};
+		\node [style=none] (8) at (5.8, 1) {};
+		\node [style=none] (9) at (6.8, 0) {\Large$\equiv$};
+		\node [style=gate] (10) at (9.05, -1) {$H$};
+		\node [style=none] (11) at (10.3, 1) {$$};
+		\node [style=none] (12) at (10.3, -1) {$$};
+		\node [style=none] (13) at (11.55, -1) {$$};
+		\node [style=none] (14) at (11.55, 1) {$$};
+		\node [style=none] (15) at (7.8, -1) {};
+		\node [style=none] (16) at (7.8, 1) {};
+		\node [style=none] (17) at (12.55, -1) {};
+		\node [style=none] (18) at (12.55, 1) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw (lm0el00.center) to (n0y00bl.center);
+		\draw (n0y00br.center) to (n0y01bl.center);
+		\draw (n0y01br.center) to (lm0er00.center);
+		\draw (lm0el10.center) to (n0y00tl.center);
+		\draw (n0y00tr.center) to (n0y01tl.center);
+		\draw (n0y01tr.center) to (lm0er10.center);
+		\draw (n0y00bl.center) to (n0y00tr.center);
+		\draw (n0y00tl.center) to (n0y00br.center);
+		\draw (n0y01bl.center) to (n0y01tr.center);
+		\draw (n0y01tl.center) to (n0y01br.center);
+		\draw (lm8el00.center) to (lm8er00.center);
+		\draw (lm8el10.center) to (lm8er10.center);
+		\draw (5.center) to (1.center);
+		\draw (2.center) to (7.center);
+		\draw (6.center) to (0.center);
+		\draw (3.center) to (8.center);
+		\draw (1.center) to (3.center);
+		\draw (0.center) to (2.center);
+		\draw (15.center) to (12.center);
+		\draw (13.center) to (17.center);
+		\draw (16.center) to (11.center);
+		\draw (14.center) to (18.center);
+		\draw (12.center) to (14.center);
+		\draw (11.center) to (13.center);
+	\end{pgfonlayer}
 \end{tikzpicture}

@@ -160,13 +160,7 @@ minimal-complete : ∀ {n} → (n ⊢_===_) IsMinimal × (n ⊢_===_) IsComplete
 
 For each presentation, a reader checks four components against the source paper: the transcribed relations, the target group, the matrix of each gate, and the assignment of $\llbracket - \rrbracket$ to the record. Each Agda development collects these components and its main theorem in a \aid{MainTheorem} module. The file \texttt{MainTheorems.agda} restates the results; the corresponding Lean statements are in \texttt{QCert/Table1.lean}.
 
-\paragraph{Extensions of the earlier framework} Besides matrix semantics and minimality, QCert adds three features to the Agda framework of~\citet{bian2027popl}.
-\begin{itemize}
-\item \emph{Three-wire gates.} QCert supports gates such as Toffoli, extending the earlier one- and two-wire syntax.
-\item \emph{Scalars.} Explicit scalar generators allow rule sets to express exact equality, including global phase.
-\item \emph{Shared swap laws.} QCert supports PROPs~\cite{MacLane1965categorical}, supplying the structural swap laws once so that each paper need state only its own relations.
-\end{itemize}
-Appendix~\ref{app:qcert-implementation} gives the encoding conventions, theorem notation, and implementation details.
+\paragraph{Extensions of the earlier framework} Besides matrix semantics and minimality, QCert extends the one- and two-wire syntax of~\citet{bian2027popl} with three-wire gates such as Toffoli and explicit scalar generators for expressing exact equality, including global phase. It also supplies the structural swap laws of PROPs~\cite{MacLane1965categorical}, so each paper need only state its own relations. Appendix~\ref{app:qcert-implementation} gives the encoding conventions, theorem notation, and implementation details.
 
 \subsection{Formalization Workflow}\label{sec:method}
 
@@ -216,18 +210,18 @@ The circuits use the Fourier gate $H$, the phase gate $S$, and the controlled-ph
 
 \begin{figure}[!htbp]
 \centering
-\begin{minipage}[t]{0.49\linewidth}\centering\vspace{0pt}
+\begin{minipage}[t]{0.39\linewidth}\centering\vspace{0pt}
 \textbf{(a) A circuit word}\par\smallskip
-\ufig[0.75]{def-Ex-eq}
+\ufig[.9]{def-Ex-eq}
 \end{minipage}\hfill
-\begin{minipage}[t]{0.49\linewidth}\centering\vspace{0pt}
+\begin{minipage}[t]{0.57\linewidth}\centering\vspace{0pt}
 \textbf{(b) Generating equations}\par\smallskip
-\ufig[0.75]{pv0-order-Ex}\\[3pt]
-\ufig[0.75]{pv0-semi-Ex-Hup}
+\ufig[.9]{pv0-order-Ex}
+% \ufig[0.75]{pv0-semi-Ex-Hup}
 \end{minipage}
 \par\medskip
 \textbf{(c) A derived equality}\par\smallskip
-\ufig[0.85]{pv0-conj-Ex-Hup-steps}
+\ufig[0.9]{pv0-conj-Ex-Hup-steps}
 \caption{Circuit syntax, rules, and reasoning in the projective Clifford formalization. Crossed wires denote swap, and connected dots denote $CZ$. Diagrams are read from right to left. In (c), moving $H$ across one swap and cancelling the two swaps moves $H$ to the other wire. The generating equations ($\equiv$) justify the derived equivalence ($\approx$).}
 \Description{A swap is expanded into Fourier and controlled-phase gates. Two equations state that swap is an involution and moves a Fourier gate between wires. A two-step derivation uses these equations to simplify a swap-Fourier-swap circuit.}
 \label{fig:q-rewriting}
@@ -275,7 +269,7 @@ This replaces the most difficult part of following the source proof directly. It
 \label{fig:q-route}
 \end{figure}
 
-\FloatBarrier
+
 \subsection{What the Formalization Establishes}\label{sec:q-discussion}
 
 Agda checks the presentations of the symplectic, projective, and scalar-extension models for every odd prime $p$ and every width $n$, with no postulates or unfinished proofs. In particular, it checks both normalization and the translations back to the source rule sets. This demonstrates how QCert can support a proof that needs substantial mathematical restructuring while keeping each obligation explicit.
@@ -339,12 +333,12 @@ Total & & & 1{,}509 & 2{,}399.36 & 9{,}304.83 \\
 
 The green checks in \Cref{fig:qubit-progress} correspond to the qubit part of \Cref{tab:corpus}; the qudit results and minimality proofs are also listed in the table. The asterisks connect this coverage to the source corrections in \Cref{sec:findings}.
 
-\FloatBarrier
+% \FloatBarrier
 Two qualifications apply to the Agda results in \Cref{tab:corpus}. The two-qubit Clifford+$T$ and three-qubit Clifford+$CS$ developments~\cite{bian2023cliffordt2,bian2023cliffordcs3} reuse the authors' Agda proofs and connect them to QCert's shared matrix presentations (\Cref{sec:form}). The qudit Clifford theorem of~\quditcite{} presents an independently constructed algebraic model; \Cref{sec:qudit} explains its connection to the intended unitary semantics.
 
 % Long computational derivations, such as those in Selinger's 105-page supplement and the qutrit box relations, come from scripts that follow the paper, as in \Cref{sec:method}, or search for the steps. In the real stabilizer formalization, half the lines are generated in this way, and a fifth formalize the paper's mathematics.
 
-\FloatBarrier
+% \FloatBarrier
 \section{Corrections to the Source Papers}\label{sec:findings}
 
 The formalizations in \Cref{tab:corpus} identify two kinds of issues in the source papers. Most are typos, and some of them appear in statements that the proofs rely on. These are easy to fix. Two others are harder to repair. One is a gap in a proof, and the other is a relation missing from a theorem. We describe both below.

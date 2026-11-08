@@ -1,21 +1,40 @@
 \begin{tikzpicture}
-\path [use as bounding box] (-1.5, -1.0) rectangle (3.5, 7.7);
+\path [use as bounding box] (-1.5, -1) rectangle (3.5, 6.2);
 \begin{pgfonlayer}{nodelayer}
-\node [style=none] (w0l) at (-1.2, 0.0){};
-\node [style=none] (w0r) at (3.2, 0.0){};
-\node [style=none] (w1l) at (-1.2, 2.0){};
-\node [style=none] (w1r) at (3.2, 2.0){};
-\node [style=none] (w2l) at (-1.2, 4.0){};
-\node [style=none] (w2r) at (3.2, 4.0){};
-\node [style=none] (w3l) at (-1.2, 6.0){};
-\node [style=none] (w3r) at (3.2, 6.0){};
-\draw [fill=white] (0.0, -0.75) rectangle (2.0, 6.75);
-\node [style=none] (b) at (1.0, 3.0) {\scriptsize $L_4$};
+\node [style=none] (w0l) at (-1.2, 0){};
+\node [style=none] (w0r) at (3.2, 0){};
+\node [style=none] (w1l) at (-1.2, 1.5){};
+\node [style=none] (w1r) at (3.2, 1.5){};
+\node [style=none] (w2l) at (-1.2, 3){};
+\node [style=none] (w2r) at (3.2, 3){};
+\node [style=none] (w3l) at (-1.2, 4.5){};
+\node [style=none] (w3r) at (3.2, 4.5){};
+\node [style=none] (bx0bl) at (0.0, -0.75) {};
+\node [style=none] (bx0br) at (2.0, -0.75) {};
+\node [style=none] (bx0tr) at (2.0, 5.25) {};
+\node [style=none] (bx0tl) at (0.0, 5.25) {};
+\node [style=none] (bx0l0) at (0.0, 0) {};
+\node [style=none] (bx0r1) at (2.0, 0) {};
+\node [style=none] (bx0l2) at (0.0, 1.5) {};
+\node [style=none] (bx0r3) at (2.0, 1.5) {};
+\node [style=none] (bx0l4) at (0.0, 3) {};
+\node [style=none] (bx0r5) at (2.0, 3) {};
+\node [style=none] (bx0l6) at (0.0, 4.5) {};
+\node [style=none] (bx0r7) at (2.0, 4.5) {};
+\node [style=none] (b) at (1.0, 2.25) {\scriptsize $L_4$};
 \end{pgfonlayer}
 \begin{pgfonlayer}{edgelayer}
-\draw (w0l.center) to (w0r.center);
-\draw (w1l.center) to (w1r.center);
-\draw (w2l.center) to (w2r.center);
-\draw (w3l.center) to (w3r.center);
+\draw (w0l.center) to (bx0l0.center);
+\draw (bx0r1.center) to (w0r.center);
+\draw (w1l.center) to (bx0l2.center);
+\draw (bx0r3.center) to (w1r.center);
+\draw (w2l.center) to (bx0l4.center);
+\draw (bx0r5.center) to (w2r.center);
+\draw (w3l.center) to (bx0l6.center);
+\draw (bx0r7.center) to (w3r.center);
+\draw [line cap=rect] (bx0bl.center) to (bx0br.center);
+\draw [line cap=rect] (bx0br.center) to (bx0tr.center);
+\draw [line cap=rect] (bx0tr.center) to (bx0tl.center);
+\draw [line cap=rect] (bx0tl.center) to (bx0bl.center);
 \end{pgfonlayer}
 \end{tikzpicture}
