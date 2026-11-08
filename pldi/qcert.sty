@@ -162,18 +162,8 @@
 %% ---------------------------------------------------------------------
 %% Page layout
 
-%% Use acmsmall's standard text area from page 2 onward, without
-%% line-height rounding. Preserve the current first-page margins so
-%% that Figure 1 fits below its introduction.
+%% Use acmsmall's standard text area on every page, without
+%% line-height rounding.
 \geometry{heightrounded=false}
-\newlength{\qcert@normaltextheight}
-\newlength{\qcert@normaltopmargin}
-\setlength{\qcert@normaltextheight}{\textheight}
-\setlength{\qcert@normaltopmargin}{\topmargin}
-\geometry{heightrounded=false,top=30pt,bottom=16pt}
-\AddToHookNext{shipout/after}{%
-  \global\textheight=\qcert@normaltextheight
-  \global\topmargin=\qcert@normaltopmargin
-}
 
 \endinput

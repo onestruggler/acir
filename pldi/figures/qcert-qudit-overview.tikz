@@ -1,0 +1,48 @@
+% Conceptual overview; the detailed presentation chain is in Appendix B.
+\begingroup
+\definecolor{qupitOverviewBlue}{HTML}{205886}
+\definecolor{qupitOverviewInk}{HTML}{233447}
+\begin{tikzpicture}[
+  x=1cm,y=1cm,line cap=round,line join=round,
+  overview box/.style={draw=qupitOverviewBlue!60,fill=white,
+    rounded corners=1.5mm,line width=.65pt,text=qupitOverviewInk,
+    align=center,font=\sffamily\fontsize{8.5}{10}\selectfont,
+    text width=4.35cm,minimum height=1.08cm,inner sep=4pt},
+  overview label/.style={font=\sffamily\fontsize{7.3}{8.6}\selectfont,
+    text=qupitOverviewInk,align=center,fill=white,inner sep=1.5pt},
+  overview arrow/.style={-{Stealth[length=1.6mm,width=1.4mm]},
+    draw=qupitOverviewBlue,line width=.85pt}
+]
+\node[overview box] (symplectic) at (0,0)
+  {Symplectic group $\Sp$\\unique normal forms};
+\node[overview box] (pauli) at (7.15,0)
+  {Pauli phase space $V$\\presentation over $X,Z$};
+
+\node[overview box] (projective) at (0,-2.25)
+  {Projective model\\$V\rtimes\Sp$};
+\node[overview box] (projective-rules) at (7.15,-2.25)
+  {Source rules\\modulo scalar phases};
+
+\node[overview box] (exact) at (0,-4.50)
+  {Exact model\\including scalar phases};
+\node[overview box] (exact-rules) at (7.15,-4.50)
+  {Source rules\\with scalar phases};
+
+\draw[overview arrow] (symplectic.south) -- (projective.north);
+\draw[overview arrow] (pauli.south west) -- (projective.north east);
+\node[overview label,text width=3.7cm] at (3.58,-1.10)
+  {verified semidirect-product\\theorem};
+
+\draw[overview arrow] (projective.east) --
+  node[overview label,above=2pt,text width=1.95cm]
+    {verified\\translations} (projective-rules.west);
+
+\draw[overview arrow] (projective.south) -- (exact.north);
+\node[overview label,anchor=west,text width=3.1cm] at (.18,-3.375)
+  {scalar extension\\and direct product};
+
+\draw[overview arrow] (exact.east) --
+  node[overview label,above=2pt,text width=1.95cm]
+    {verified\\translations} (exact-rules.west);
+\end{tikzpicture}
+\endgroup

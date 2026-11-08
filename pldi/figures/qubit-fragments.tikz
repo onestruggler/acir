@@ -65,7 +65,7 @@
 \node[fragment] (th) at (4.6,3.3)
   {Toffoli--Hadamard~\cite{amy2020numbertheoretic}\\$\{H,Z,CZ,CCZ\}$
    \nodepart{two}$\left\{\begin{array}{@{}l@{}}
-     2^{-q/2}M\in O_N(\mathbb R):\\[-1pt]
+     \frac{1}{\sqrt{2}^{q}}M\in O_N(\mathbb R):\\[-1pt]
      M\in\Z^{N\times N},\ q\in\mathbb N
      \end{array}\right\}$\\[-1pt]
      \cite{li2021on}
@@ -86,7 +86,7 @@
 \node[fragment] (supergaussian) at (9.2,7.8)
   {Super-Gaussian~\cite{amy2020numbertheoretic}\\$\{H,S,CZ,CCZ\}$
    \nodepart{two}$\left\{\begin{array}{@{}l@{}}
-     2^{-q/2}M\in U_N(\mathbb C):\\[-1pt]
+     \frac{1}{\sqrt{2}^{q}}M\in U_N(\mathbb C):\\[-1pt]
      M\in\Z[i]^{N\times N},\ q\in\mathbb N
      \end{array}\right\}$
    \nodepart{three}$\{i_{[a]},(\omega H)_{[a,b]},\omega I_N\}$};
