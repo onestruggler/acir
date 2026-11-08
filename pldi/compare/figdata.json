@@ -156,6 +156,17 @@
   ],
   [
    14,
+   "ToffoliHadamardTietzePart",
+   "Toffoli--Hadamard$^{\\dagger}$",
+   17862,
+   18946,
+   null,
+   null,
+   46,
+   46
+  ],
+  [
+   15,
    "QutritClifford",
    "qutrit Clifford",
    53882,
@@ -166,7 +177,7 @@
    40
   ],
   [
-   15,
+   16,
    "Minimality",
    "minimality, six fragments",
    23195,
@@ -177,7 +188,7 @@
    68
   ],
   [
-   16,
+   17,
    "(shared)",
    "shared library",
    13172,

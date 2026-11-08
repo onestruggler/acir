@@ -1,0 +1,856 @@
+{
+ "run": {
+  "date": "2026-11-08 12:10 +0100",
+  "revision": "1d8511eb"
+ },
+ "totals": {
+  "agda": {
+   "files": 46,
+   "code": 17862,
+   "generated_code": 16987,
+   "chars": 1056950,
+   "generated_chars": 1009714
+  },
+  "lean": {
+   "files": 46,
+   "code": 18946,
+   "generated_code": 18753,
+   "chars": 1030864,
+   "generated_chars": 1024338
+  }
+ },
+ "agda_folder": {
+  "files": 203,
+  "code": 28629
+ },
+ "modules": {
+  "CircuitLemmas": {
+   "agda": {
+    "lines": 13,
+    "blank": 2,
+    "comment": 1,
+    "code": 10,
+    "chars": 537,
+    "generated": false
+   },
+   "lean": {
+    "lines": 22,
+    "blank": 2,
+    "comment": 9,
+    "code": 11,
+    "chars": 471,
+    "generated": true
+   }
+  },
+  "Engine": {
+   "agda": {
+    "lines": 18,
+    "blank": 4,
+    "comment": 6,
+    "code": 8,
+    "chars": 407,
+    "generated": true
+   },
+   "lean": {
+    "lines": 37,
+    "blank": 8,
+    "comment": 18,
+    "code": 11,
+    "chars": 493,
+    "generated": true
+   }
+  },
+  "FrameWords": {
+   "agda": {
+    "lines": 530,
+    "blank": 117,
+    "comment": 3,
+    "code": 410,
+    "chars": 30261,
+    "generated": false
+   },
+   "lean": {
+    "lines": 330,
+    "blank": 12,
+    "comment": 17,
+    "code": 301,
+    "chars": 12773,
+    "generated": true
+   }
+  },
+  "Frames": {
+   "agda": {
+    "lines": 55,
+    "blank": 11,
+    "comment": 4,
+    "code": 40,
+    "chars": 1525,
+    "generated": false
+   },
+   "lean": {
+    "lines": 77,
+    "blank": 16,
+    "comment": 17,
+    "code": 44,
+    "chars": 1451,
+    "generated": false
+   }
+  },
+  "GatePermutations": {
+   "agda": {
+    "lines": 88,
+    "blank": 26,
+    "comment": 1,
+    "code": 61,
+    "chars": 2906,
+    "generated": false
+   },
+   "lean": {
+    "lines": 87,
+    "blank": 25,
+    "comment": 10,
+    "code": 52,
+    "chars": 2261,
+    "generated": true
+   }
+  },
+  "Kit": {
+   "agda": {
+    "lines": 40,
+    "blank": 4,
+    "comment": 15,
+    "code": 21,
+    "chars": 906,
+    "generated": true
+   },
+   "lean": {
+    "lines": 11,
+    "blank": 0,
+    "comment": 10,
+    "code": 1,
+    "chars": 40,
+    "generated": true
+   }
+  },
+  "PermProofs/B000": {
+   "agda": {
+    "lines": 1325,
+    "blank": 459,
+    "comment": 1,
+    "code": 865,
+    "chars": 22704,
+    "generated": true
+   },
+   "lean": {
+    "lines": 1466,
+    "blank": 523,
+    "comment": 13,
+    "code": 930,
+    "chars": 24230,
+    "generated": true
+   }
+  },
+  "PermProofs/B001": {
+   "agda": {
+    "lines": 1187,
+    "blank": 410,
+    "comment": 1,
+    "code": 776,
+    "chars": 23686,
+    "generated": true
+   },
+   "lean": {
+    "lines": 1309,
+    "blank": 463,
+    "comment": 13,
+    "code": 833,
+    "chars": 24745,
+    "generated": true
+   }
+  },
+  "PermProofs/B002": {
+   "agda": {
+    "lines": 989,
+    "blank": 340,
+    "comment": 1,
+    "code": 648,
+    "chars": 26176,
+    "generated": true
+   },
+   "lean": {
+    "lines": 1089,
+    "blank": 382,
+    "comment": 13,
+    "code": 694,
+    "chars": 26661,
+    "generated": true
+   }
+  },
+  "PermProofs/B003": {
+   "agda": {
+    "lines": 1165,
+    "blank": 401,
+    "comment": 1,
+    "code": 763,
+    "chars": 23809,
+    "generated": true
+   },
+   "lean": {
+    "lines": 1280,
+    "blank": 450,
+    "comment": 13,
+    "code": 817,
+    "chars": 24631,
+    "generated": true
+   }
+  },
+  "PermProofs/B004": {
+   "agda": {
+    "lines": 550,
+    "blank": 189,
+    "comment": 1,
+    "code": 360,
+    "chars": 13433,
+    "generated": true
+   },
+   "lean": {
+    "lines": 620,
+    "blank": 213,
+    "comment": 13,
+    "code": 394,
+    "chars": 14047,
+    "generated": true
+   }
+  },
+  "PermProofs/B005": {
+   "agda": {
+    "lines": 250,
+    "blank": 82,
+    "comment": 1,
+    "code": 167,
+    "chars": 34324,
+    "generated": true
+   },
+   "lean": {
+    "lines": 280,
+    "blank": 86,
+    "comment": 13,
+    "code": 181,
+    "chars": 33682,
+    "generated": true
+   }
+  },
+  "PermProofs/B006": {
+   "agda": {
+    "lines": 1234,
+    "blank": 425,
+    "comment": 1,
+    "code": 808,
+    "chars": 23728,
+    "generated": true
+   },
+   "lean": {
+    "lines": 1359,
+    "blank": 478,
+    "comment": 13,
+    "code": 868,
+    "chars": 24695,
+    "generated": true
+   }
+  },
+  "PermProofs/B007": {
+   "agda": {
+    "lines": 1146,
+    "blank": 394,
+    "comment": 1,
+    "code": 751,
+    "chars": 24788,
+    "generated": true
+   },
+   "lean": {
+    "lines": 1260,
+    "blank": 440,
+    "comment": 13,
+    "code": 807,
+    "chars": 25527,
+    "generated": true
+   }
+  },
+  "PermProofs/B008": {
+   "agda": {
+    "lines": 1069,
+    "blank": 367,
+    "comment": 1,
+    "code": 701,
+    "chars": 25101,
+    "generated": true
+   },
+   "lean": {
+    "lines": 1177,
+    "blank": 410,
+    "comment": 13,
+    "code": 754,
+    "chars": 25800,
+    "generated": true
+   }
+  },
+  "PermProofs/B009": {
+   "agda": {
+    "lines": 225,
+    "blank": 76,
+    "comment": 1,
+    "code": 148,
+    "chars": 6194,
+    "generated": true
+   },
+   "lean": {
+    "lines": 273,
+    "blank": 87,
+    "comment": 13,
+    "code": 173,
+    "chars": 6743,
+    "generated": true
+   }
+  },
+  "PermProofs/B010": {
+   "agda": {
+    "lines": 346,
+    "blank": 113,
+    "comment": 1,
+    "code": 232,
+    "chars": 46721,
+    "generated": true
+   },
+   "lean": {
+    "lines": 378,
+    "blank": 117,
+    "comment": 13,
+    "code": 248,
+    "chars": 45666,
+    "generated": true
+   }
+  },
+  "PermProofs/B011": {
+   "agda": {
+    "lines": 545,
+    "blank": 186,
+    "comment": 1,
+    "code": 358,
+    "chars": 14539,
+    "generated": true
+   },
+   "lean": {
+    "lines": 616,
+    "blank": 208,
+    "comment": 13,
+    "code": 395,
+    "chars": 15108,
+    "generated": true
+   }
+  },
+  "PermProofs/B012": {
+   "agda": {
+    "lines": 775,
+    "blank": 263,
+    "comment": 1,
+    "code": 511,
+    "chars": 28566,
+    "generated": true
+   },
+   "lean": {
+    "lines": 853,
+    "blank": 290,
+    "comment": 13,
+    "code": 550,
+    "chars": 28469,
+    "generated": true
+   }
+  },
+  "PermProofs/B013": {
+   "agda": {
+    "lines": 947,
+    "blank": 324,
+    "comment": 1,
+    "code": 622,
+    "chars": 22441,
+    "generated": true
+   },
+   "lean": {
+    "lines": 1048,
+    "blank": 362,
+    "comment": 13,
+    "code": 673,
+    "chars": 23157,
+    "generated": true
+   }
+  },
+  "PermProofs/B014": {
+   "agda": {
+    "lines": 302,
+    "blank": 97,
+    "comment": 1,
+    "code": 204,
+    "chars": 37990,
+    "generated": true
+   },
+   "lean": {
+    "lines": 334,
+    "blank": 101,
+    "comment": 13,
+    "code": 220,
+    "chars": 37006,
+    "generated": true
+   }
+  },
+  "PermProofs/B015": {
+   "agda": {
+    "lines": 1066,
+    "blank": 365,
+    "comment": 1,
+    "code": 700,
+    "chars": 25514,
+    "generated": true
+   },
+   "lean": {
+    "lines": 1177,
+    "blank": 407,
+    "comment": 13,
+    "code": 757,
+    "chars": 26185,
+    "generated": true
+   }
+  },
+  "PermProofs/B016": {
+   "agda": {
+    "lines": 1026,
+    "blank": 350,
+    "comment": 1,
+    "code": 675,
+    "chars": 25759,
+    "generated": true
+   },
+   "lean": {
+    "lines": 1131,
+    "blank": 390,
+    "comment": 13,
+    "code": 728,
+    "chars": 26331,
+    "generated": true
+   }
+  },
+  "PermProofs/B017": {
+   "agda": {
+    "lines": 567,
+    "blank": 192,
+    "comment": 1,
+    "code": 374,
+    "chars": 15216,
+    "generated": true
+   },
+   "lean": {
+    "lines": 642,
+    "blank": 216,
+    "comment": 13,
+    "code": 413,
+    "chars": 15769,
+    "generated": true
+   }
+  },
+  "PermProofs/B018": {
+   "agda": {
+    "lines": 579,
+    "blank": 189,
+    "comment": 1,
+    "code": 389,
+    "chars": 139876,
+    "generated": true
+   },
+   "lean": {
+    "lines": 614,
+    "blank": 193,
+    "comment": 13,
+    "code": 408,
+    "chars": 138058,
+    "generated": true
+   }
+  },
+  "PermProofs/B019": {
+   "agda": {
+    "lines": 880,
+    "blank": 298,
+    "comment": 1,
+    "code": 581,
+    "chars": 28434,
+    "generated": true
+   },
+   "lean": {
+    "lines": 969,
+    "blank": 329,
+    "comment": 13,
+    "code": 627,
+    "chars": 28673,
+    "generated": true
+   }
+  },
+  "PermProofs/B020": {
+   "agda": {
+    "lines": 1046,
+    "blank": 357,
+    "comment": 1,
+    "code": 688,
+    "chars": 25897,
+    "generated": true
+   },
+   "lean": {
+    "lines": 1157,
+    "blank": 398,
+    "comment": 13,
+    "code": 746,
+    "chars": 26585,
+    "generated": true
+   }
+  },
+  "PermProofs/B021": {
+   "agda": {
+    "lines": 464,
+    "blank": 156,
+    "comment": 1,
+    "code": 307,
+    "chars": 17789,
+    "generated": true
+   },
+   "lean": {
+    "lines": 530,
+    "blank": 172,
+    "comment": 13,
+    "code": 345,
+    "chars": 18277,
+    "generated": true
+   }
+  },
+  "PermProofs/B022": {
+   "agda": {
+    "lines": 183,
+    "blank": 59,
+    "comment": 1,
+    "code": 123,
+    "chars": 15003,
+    "generated": true
+   },
+   "lean": {
+    "lines": 228,
+    "blank": 63,
+    "comment": 13,
+    "code": 152,
+    "chars": 15478,
+    "generated": true
+   }
+  },
+  "PermProofs/B023": {
+   "agda": {
+    "lines": 384,
+    "blank": 125,
+    "comment": 1,
+    "code": 258,
+    "chars": 24975,
+    "generated": true
+   },
+   "lean": {
+    "lines": 430,
+    "blank": 132,
+    "comment": 13,
+    "code": 285,
+    "chars": 24629,
+    "generated": true
+   }
+  },
+  "PermProofs/B024": {
+   "agda": {
+    "lines": 519,
+    "blank": 170,
+    "comment": 1,
+    "code": 348,
+    "chars": 29929,
+    "generated": true
+   },
+   "lean": {
+    "lines": 568,
+    "blank": 179,
+    "comment": 13,
+    "code": 376,
+    "chars": 29241,
+    "generated": true
+   }
+  },
+  "PermProofs/B025": {
+   "agda": {
+    "lines": 585,
+    "blank": 194,
+    "comment": 1,
+    "code": 390,
+    "chars": 28116,
+    "generated": true
+   },
+   "lean": {
+    "lines": 646,
+    "blank": 208,
+    "comment": 13,
+    "code": 425,
+    "chars": 27759,
+    "generated": true
+   }
+  },
+  "PermProofs/B026": {
+   "agda": {
+    "lines": 174,
+    "blank": 57,
+    "comment": 1,
+    "code": 116,
+    "chars": 10215,
+    "generated": true
+   },
+   "lean": {
+    "lines": 229,
+    "blank": 64,
+    "comment": 13,
+    "code": 152,
+    "chars": 11049,
+    "generated": true
+   }
+  },
+  "Permutation": {
+   "agda": {
+    "lines": 139,
+    "blank": 15,
+    "comment": 4,
+    "code": 120,
+    "chars": 5569,
+    "generated": false
+   },
+   "lean": {
+    "lines": 94,
+    "blank": 8,
+    "comment": 22,
+    "code": 64,
+    "chars": 2430,
+    "generated": true
+   }
+  },
+  "Proofs/B000": {
+   "agda": {
+    "lines": 518,
+    "blank": 180,
+    "comment": 1,
+    "code": 337,
+    "chars": 7902,
+    "generated": true
+   },
+   "lean": {
+    "lines": 578,
+    "blank": 205,
+    "comment": 11,
+    "code": 362,
+    "chars": 8488,
+    "generated": true
+   }
+  },
+  "States": {
+   "agda": {
+    "lines": 125,
+    "blank": 28,
+    "comment": 15,
+    "code": 82,
+    "chars": 3032,
+    "generated": false
+   },
+   "lean": {
+    "lines": 49,
+    "blank": 11,
+    "comment": 18,
+    "code": 20,
+    "chars": 807,
+    "generated": false
+   }
+  },
+  "Syntactics": {
+   "agda": {
+    "lines": 184,
+    "blank": 29,
+    "comment": 3,
+    "code": 152,
+    "chars": 3406,
+    "generated": false
+   },
+   "lean": {
+    "lines": 226,
+    "blank": 54,
+    "comment": 43,
+    "code": 129,
+    "chars": 4268,
+    "generated": false
+   }
+  },
+  "Tietze/B000": {
+   "agda": {
+    "lines": 738,
+    "blank": 256,
+    "comment": 1,
+    "code": 481,
+    "chars": 28546,
+    "generated": true
+   },
+   "lean": {
+    "lines": 814,
+    "blank": 289,
+    "comment": 11,
+    "code": 514,
+    "chars": 27949,
+    "generated": true
+   }
+  },
+  "Tietze/B001": {
+   "agda": {
+    "lines": 680,
+    "blank": 235,
+    "comment": 1,
+    "code": 444,
+    "chars": 29892,
+    "generated": true
+   },
+   "lean": {
+    "lines": 747,
+    "blank": 263,
+    "comment": 11,
+    "code": 473,
+    "chars": 28964,
+    "generated": true
+   }
+  },
+  "Tietze/B002": {
+   "agda": {
+    "lines": 762,
+    "blank": 263,
+    "comment": 1,
+    "code": 498,
+    "chars": 28550,
+    "generated": true
+   },
+   "lean": {
+    "lines": 836,
+    "blank": 295,
+    "comment": 11,
+    "code": 530,
+    "chars": 27436,
+    "generated": true
+   }
+  },
+  "Tietze/B003": {
+   "agda": {
+    "lines": 698,
+    "blank": 240,
+    "comment": 1,
+    "code": 457,
+    "chars": 30021,
+    "generated": true
+   },
+   "lean": {
+    "lines": 764,
+    "blank": 268,
+    "comment": 11,
+    "code": 485,
+    "chars": 28576,
+    "generated": true
+   }
+  },
+  "Tietze/B004": {
+   "agda": {
+    "lines": 649,
+    "blank": 223,
+    "comment": 1,
+    "code": 425,
+    "chars": 28970,
+    "generated": true
+   },
+   "lean": {
+    "lines": 713,
+    "blank": 250,
+    "comment": 11,
+    "code": 452,
+    "chars": 27632,
+    "generated": true
+   }
+  },
+  "Tietze/B005": {
+   "agda": {
+    "lines": 683,
+    "blank": 234,
+    "comment": 1,
+    "code": 448,
+    "chars": 28702,
+    "generated": true
+   },
+   "lean": {
+    "lines": 747,
+    "blank": 261,
+    "comment": 11,
+    "code": 475,
+    "chars": 27280,
+    "generated": true
+   }
+  },
+  "Tietze/B006": {
+   "agda": {
+    "lines": 665,
+    "blank": 227,
+    "comment": 1,
+    "code": 437,
+    "chars": 29796,
+    "generated": true
+   },
+   "lean": {
+    "lines": 724,
+    "blank": 251,
+    "comment": 11,
+    "code": 462,
+    "chars": 28256,
+    "generated": true
+   }
+  },
+  "Tietze/B007": {
+   "agda": {
+    "lines": 726,
+    "blank": 249,
+    "comment": 1,
+    "code": 476,
+    "chars": 29213,
+    "generated": true
+   },
+   "lean": {
+    "lines": 797,
+    "blank": 279,
+    "comment": 11,
+    "code": 507,
+    "chars": 27650,
+    "generated": true
+   }
+  },
+  "Tietze/B008": {
+   "agda": {
+    "lines": 139,
+    "blank": 46,
+    "comment": 1,
+    "code": 92,
+    "chars": 5886,
+    "generated": true
+   },
+   "lean": {
+    "lines": 166,
+    "blank": 53,
+    "comment": 11,
+    "code": 102,
+    "chars": 5438,
+    "generated": true
+   }
+  }
+ }
+}
