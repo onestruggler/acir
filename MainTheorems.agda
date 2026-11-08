@@ -512,8 +512,8 @@ module Clement-Real-Clifford+CH where
 -- matrices), as circuits over Circuit.Base on three wires and over the
 -- paper's alphabet (ᴾ).  L₈ is a subgroup of U₈(𝔻[ω]).
 --
--- The theorem has several formalizations, two in Agda, restated below
--- in one format, and in Lean.  Each decodes Li-Ross-Selinger's
+-- The theorem has four formalizations, two in Agda, restated below in
+-- one format, and two in Lean.  Each decodes Li-Ross-Selinger's
 -- generators into circuits and concludes from their presentations of
 -- O₈(𝔻) and L₈; they differ in where the circuit identities come from.
 --
@@ -525,6 +525,11 @@ module Clement-Real-Clifford+CH where
 -- * Lean/QCert/ToffoliHadamard (theorem_5_2 and theorem_6_3 in
 --   Theorem.lean) was written from the paper, over a macro alphabet,
 --   with a kernel-checked Knuth-Bendix system for S₈.
+-- * Lean/QCert/ToffoliHadamardRS (theorem_5_2, theorem_6_3,
+--   circuits_5_2, circuits_6_3 and r_K_independent in Theorem.lean) is
+--   a translation of CCX+H-3qubit-RS, module for module, with the same
+--   derivations; its S₈ facts are proved by a normal form of its own
+--   (CoxeterFrames).
 
 module Amy-Ross-Wesley where
 
