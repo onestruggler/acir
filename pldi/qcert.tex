@@ -70,7 +70,7 @@ Using the dashed branch of \Cref{fig:qcert-pipeline}, we have obtained complete 
 
 Mechanized quantum compilers and program logics establish program correctness or the soundness of circuit transformations~\cite{paykin2017qwire,hietala2021voqc,chareton2021qbricks,zhou2023coqq}. The mechanized completeness results for $\Pi$ and its square-root extension are coherence arguments~\cite{choudhury2022symmetries,carette2024squareroots}. Human-supervised, AI-assisted workflows have also formalized quantum program logics, algorithms, and components of interactive proofs~\cite{ren2026qedia,zhang2026leanquantumalg,lu2026formalflow}. QCert focuses on completeness and minimality of circuit equational theories.
 
-\paragraph{Orientation} \Cref{sec:background,sec:form} introduce the proof strategies and QCert framework, and \Cref{sec:qudit} illustrates them through multi-qupit Clifford completeness. \Cref{sec:corpus,sec:findings} describe the formalized results and source corrections, followed by limitations and future work in \Cref{sec:conclusion}.
+\paragraph{Orientation} \Cref{sec:background,sec:form} introduce the proof strategies and QCert framework, and \Cref{sec:qudit} illustrates them through multi-qudit Clifford completeness. \Cref{sec:corpus,sec:findings} describe the formalized results and source corrections, followed by limitations and future work in \Cref{sec:conclusion}.
 
 % \FloatBarrier
 
@@ -199,10 +199,10 @@ The Lean~\cite{moura2021lean4} version formalizes the same sixteen results using
 \end{figure}
 \FloatBarrier
 
-\section{Case Study: Multi-Qupit Clifford Completeness}
+\section{Case Study: Multi-Qudit Clifford Completeness}
 \label{sec:qudit}
 
-The multi-qupit Clifford result of~\quditcite{} shows how QCert turns a circuit completeness proof into reusable, checked components. Here each qupit has odd prime dimension~$p$; the result covers every number $n$ of qupits and every such~$p$. Its sixteen rules must derive every valid equation between Clifford circuits. Two choices matter for the rest of the paper: defining the semantic group independently of the circuit syntax, and assembling completeness proofs using general theorems about groups. We explain these choices here; Appendix~\ref{app:qupit-details} gives the definitions, formal statements, and derivations.
+The multi-qudit Clifford result of~\quditcite{} shows how QCert turns a circuit completeness proof into reusable, checked components. Here each qudit has odd prime dimension~$p$; the result covers every number $n$ of qudits and every such~$p$. Its sixteen rules must derive every valid equation between Clifford circuits. Two choices matter for the rest of the paper: defining the semantic group independently of the circuit syntax, and assembling completeness proofs using general theorems about groups. We explain these choices here; Appendix~\ref{app:qupit-details} gives the definitions, formal statements, and derivations.
 
 \subsection{From Circuit Equations to Checked Derivations}\label{sec:q-circuits}
 
@@ -365,6 +365,65 @@ We plan to extend the infrastructure of QCert to more families of quantum circui
 \clearpage
 \appendix
 
+\section{Completeness from Exact Synthesis}\label{app:main-lemma}
+
+For the matrix groups discussed in \Cref{sec:background}, normal forms come from exact synthesis, and the proof that every circuit can be transformed into its normal form has the same structure for each algorithm. Each matrix, or \emph{state}, has a \emph{level}, built from quantities such as the least denominator exponent of a column, and the algorithm reduces each state $M$ to the identity in steps that lower the level. These steps form the normal word $N_M$.
+
+The \emph{Main Lemma} says that for every state $M$ and generator $g$, a diagram of relations closes the square formed by $g$ and the algorithm's next steps from $M$ and $gM$, passing only through states of lower level (\Cref{fig:mainlemma}).
+
+By well-founded induction on the level, the relations then rewrite $N_{gM}\,g$ into $N_M$ (\Cref{fig:level}), and by induction on length, every word that reduces $M$ to the identity rewrites into $N_M$ (\Cref{fig:length}). Two words with the same matrix therefore rewrite into each other. These inductions have the same form for every presentation, so the main work in each formalization is its Main Lemma.
+
+\begin{figure}[!htb]
+\centering
+\begin{subfigure}[b]{0.26\linewidth}
+  \centering
+  \tikzfig{../planqc/figures/mainlemma}
+  \caption{The Main Lemma.}
+  \label{fig:mainlemma}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.38\linewidth}
+  \centering
+  \tikzfig{../planqc/figures/levelinduction}
+  \caption{Induction on the level.}
+  \label{fig:level}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.32\linewidth}
+  \centering
+  \tikzfig{../planqc/figures/lengthinduction}
+  \caption{Induction on length.}
+  \label{fig:length}
+\end{subfigure}
+\vspace{-.2 cm}
+\caption{Completeness from the Main Lemma. Plain arrows are words, double arrows are steps or runs of the algorithm, and dashed arrows are words through states of lower level.}
+\label{fig:proof}
+\end{figure}
+
+\FloatBarrier
+\section{QCert Implementation Details}\label{app:qcert-implementation}
+
+This appendix gives the circuit encoding, theorem notation, and matrix equality procedure used by the framework in \Cref{sec:form}.
+
+\subsection{Wire Placement and Structural Rules}\label{app:wire-placement}
+
+Wires are numbered from $0$ at the bottom, and a gate acts on the bottom wires of a circuit. A shift places a circuit on $n$ wires onto wires $1,\dots,n$ of a circuit with $n+1$ wires. In the matrix semantics, both placing a gate in a larger circuit and shifting a circuit are Kronecker products with an identity. This defines wire placement once for all gate sets.
+
+Each source relation is stated on as many wires as the paper draws it on. Structural rules allow an equation to be shifted by one wire, gates on disjoint wires to commute, and a scalar to be placed on any wire. QCert extends the earlier framework's one- and two-wire syntax with three-wire gates and their structural rule. Scalars are zero-wire generators; their placement rule allows exact equations to account for global phase.
+
+In the earlier framework, swap is an ordinary gate whose laws must be included in each rule set. QCert also supports a PROP presentation, in which a designated two-wire gate is the swap and the framework supplies its involution law and the laws for moving gates across it. The source rule set then contains only its own relations, each on its original wires; swap and its laws are supplied by the framework. We use this representation for the circuits of~\cite{amy2018cnotdihedral,blake2026phaseaffine,blake2026simpler}.
+
+\subsection{Theorem Notation}\label{app:theorem-notation}
+
+The signatures in \Cref{sec:form} use \aid{n CRel,{\_}==={\_}} for relations on circuits with $n$ wires and \aid{n MRel,{\_}==={\_}} for relations on words over multi-level matrices of dimension $n$. In \Cref{agda:stab}, the former contains R1--R16 of Figure~1 of~\cite{makary2021real}, lifted to $n$ wires. In \Cref{agda:hpi}, the latter contains the relations of Figure~6 of Hadamard-$\Pi$~\cite{fang2026hadamard}.
+
+The judgement \aid{⊢ w ≈ v} states that $w$ and $v$ are equal by the relations. The qubit developments interpret matrices in $\D[\omega]$ and use \aid{{\_}≈ᵁ{\_}} for their equality; the qudit developments compare interpretations in their own groups. The \aid{IsSubPresentationOf} record contains the semantics and its soundness and completeness proofs, and \aid{IsPresentationOf} adds surjectivity.
+
+Minimality is stated for the rule set \aid{n ⊢{\_}==={\_}} in \Cref{agda:minimal}. Unlike the generated equivalence relation, this retains the individual rules, so removing one is defined. The predicate \aid{IsMinimal} therefore takes this rule set rather than its generated equivalence relation.
+
+\subsection{Matrix Equality Checking}\label{app:matrix-equality}
+
+The main computational cost came from Agda's conversion checker. It accepts syntactically identical terms immediately; otherwise, it evaluates them to compare their results. For long matrix products, this evaluation can take exponential time. We keep circuit interpretations abstract and decide matrix equality by computing a single Boolean using row operations. For these products, this is orders of magnitude faster than comparing matrices entry by entry. These techniques are included in the agents' instructions so that later formalizations avoid the same slowdowns.
+
+% \clearpage
 \section{Agda and Lean Comparison}\label{app:agda-lean-comparison}
 
 The Lean~\cite{moura2021lean4} version of QCert formalizes the same sixteen results on top of Mathlib~\cite{mathlib2020}. Once the Agda formalization exists, translating it to Lean is comparatively easy, so the Lean version is not a second achievement of the same kind. Its point is its theorem statements. They rest on Mathlib's standard definitions, with matrix groups over Mathlib's real or complex numbers in place of our exact rings, so a reader can check them against the source papers using definitions that are already widely used and reviewed. For qudit Clifford, the Lean statement also removes an argument that the Agda statement leaves to external mathematics (\Cref{sec:q-discussion}).
@@ -424,8 +483,8 @@ The build covered all 810 tracked library modules, excluding three generator tem
 \paragraph{Execution time} The Agda normal forms are executable functions. The Lean developments obtain normal forms either as existence theorems or as \texttt{noncomputable} definitions. For example, the Lean proofs for the Clifford and real stabilizer circuits of~\cite{selinger2015clifford,makary2021real} show that every circuit equals a normal form without defining a function that computes it, and the exact synthesis of the two-level groups is noncomputable. In all, 460 definitions in the sixteen Lean developments are declared \texttt{noncomputable}, so there is no Lean normalizer to time. Both formalizations can, however, execute the procedure that decides whether two circuits have the same matrix, which their soundness proofs run. We compiled this procedure for the Clifford circuits of~\cite{selinger2015clifford} to native code, through Agda's GHC backend and Lean's C backend. We then timed both on an Intel Core i5-14400, on the same random circuits of 100 gates over $H$, $S$, and $CZ$, deciding that each circuit $w$ has the matrix of $w\,S^4$ (\Cref{fig:compare}(c)). On two qubits Agda is slightly faster, at 5.0 against 5.8 milliseconds per decision. From three qubits on Lean is faster, by a factor of 2.1 on three qubits and 40 on six, where Agda takes 24 seconds and Lean 0.61. The gap comes mostly from the procedures rather than the compilers. Agda computes each circuit's matrix as a product of stored $2^n\times 2^n$ matrices, so its work grows about eightfold with each qubit. Lean simulates the circuit on each basis vector, so its work grows about fourfold.
 
 
-\clearpage
-\section{Multi-Qupit Clifford Completeness: Formalization Details}\label{app:qupit-details}
+% \clearpage
+\section{Multi-Qudit Clifford Completeness: Formalization Details}\label{app:qupit-details}
 
 This appendix gives the details of the case study in \Cref{sec:qudit}. We first fix the gate conventions and state the formal theorems (Appendix~\ref{app:q-circuits}). We then prove symplectic completeness by normalization (Appendix~\ref{app:q-symplectic}), restore Paulis and recover the source rule sets (Appendix~\ref{app:q-composing}), and restore scalar phases (Appendix~\ref{app:q-scalars}). Appendix~\ref{app:q-discussion} records the implementation and the boundary between the Agda proof and the external identification with unitary groups.
 
@@ -474,7 +533,7 @@ Normal forms with equal symplectic denotations are equal:
 \Description{A two-column flow connects the full and simplified symplectic presentations, then combines the latter with a Pauli presentation by a semidirect-product theorem. Generator reduction yields Simplified-V1, followed by Paper-V0. One branch reaches Paper-V1 modulo scalars. The other adds scalar phases by a central extension, then adjoins minus one by a direct product and reaches the paper's Figure 1 by an isomorphism.}
 \label{fig:q-route-details}
 \end{figure}
-\FloatBarrier
+% \FloatBarrier
 
 \subsection{Normal Forms for the Symplectic Factor}\label{app:q-symplectic}
 
@@ -549,65 +608,6 @@ We used versions of Claude for parts of this formalization: composing box relati
 % rules of~\cite{li2025qutrit}, which the odd-prime development does not
 % cover, are now among the formalizations of \Cref{sec:corpus}.
 
-
-\clearpage
-\section{Completeness from Exact Synthesis}\label{app:main-lemma}
-
-For the matrix groups discussed in \Cref{sec:background}, normal forms come from exact synthesis, and the proof that every circuit can be transformed into its normal form has the same structure for each algorithm. Each matrix, or \emph{state}, has a \emph{level}, built from quantities such as the least denominator exponent of a column, and the algorithm reduces each state $M$ to the identity in steps that lower the level. These steps form the normal word $N_M$.
-
-The \emph{Main Lemma} says that for every state $M$ and generator $g$, a diagram of relations closes the square formed by $g$ and the algorithm's next steps from $M$ and $gM$, passing only through states of lower level (\Cref{fig:mainlemma}).
-
-By well-founded induction on the level, the relations then rewrite $N_{gM}\,g$ into $N_M$ (\Cref{fig:level}), and by induction on length, every word that reduces $M$ to the identity rewrites into $N_M$ (\Cref{fig:length}). Two words with the same matrix therefore rewrite into each other. These inductions have the same form for every presentation, so the main work in each formalization is its Main Lemma.
-
-\begin{figure}[!htb]
-\centering
-\begin{subfigure}[b]{0.26\linewidth}
-  \centering
-  \tikzfig{../planqc/figures/mainlemma}
-  \caption{The Main Lemma.}
-  \label{fig:mainlemma}
-\end{subfigure}\hfill
-\begin{subfigure}[b]{0.38\linewidth}
-  \centering
-  \tikzfig{../planqc/figures/levelinduction}
-  \caption{Induction on the level.}
-  \label{fig:level}
-\end{subfigure}\hfill
-\begin{subfigure}[b]{0.32\linewidth}
-  \centering
-  \tikzfig{../planqc/figures/lengthinduction}
-  \caption{Induction on length.}
-  \label{fig:length}
-\end{subfigure}
-\vspace{-.2 cm}
-\caption{Completeness from the Main Lemma. Plain arrows are words, double arrows are steps or runs of the algorithm, and dashed arrows are words through states of lower level.}
-\label{fig:proof}
-\end{figure}
-
-\FloatBarrier
-\section{QCert Implementation Details}\label{app:qcert-implementation}
-
-This appendix gives the circuit encoding, theorem notation, and matrix equality procedure used by the framework in \Cref{sec:form}.
-
-\subsection{Wire Placement and Structural Rules}\label{app:wire-placement}
-
-Wires are numbered from $0$ at the bottom, and a gate acts on the bottom wires of a circuit. A shift places a circuit on $n$ wires onto wires $1,\dots,n$ of a circuit with $n+1$ wires. In the matrix semantics, both placing a gate in a larger circuit and shifting a circuit are Kronecker products with an identity. This defines wire placement once for all gate sets.
-
-Each source relation is stated on as many wires as the paper draws it on. Structural rules allow an equation to be shifted by one wire, gates on disjoint wires to commute, and a scalar to be placed on any wire. QCert extends the earlier framework's one- and two-wire syntax with three-wire gates and their structural rule. Scalars are zero-wire generators; their placement rule allows exact equations to account for global phase.
-
-In the earlier framework, swap is an ordinary gate whose laws must be included in each rule set. QCert also supports a PROP presentation, in which a designated two-wire gate is the swap and the framework supplies its involution law and the laws for moving gates across it. The source rule set then contains only its own relations, each on its original wires; swap and its laws are supplied by the framework. We use this representation for the circuits of~\cite{amy2018cnotdihedral,blake2026phaseaffine,blake2026simpler}.
-
-\subsection{Theorem Notation}\label{app:theorem-notation}
-
-The signatures in \Cref{sec:form} use \aid{n CRel,{\_}==={\_}} for relations on circuits with $n$ wires and \aid{n MRel,{\_}==={\_}} for relations on words over multi-level matrices of dimension $n$. In \Cref{agda:stab}, the former contains R1--R16 of Figure~1 of~\cite{makary2021real}, lifted to $n$ wires. In \Cref{agda:hpi}, the latter contains the relations of Figure~6 of Hadamard-$\Pi$~\cite{fang2026hadamard}.
-
-The judgement \aid{⊢ w ≈ v} states that $w$ and $v$ are equal by the relations. The qubit developments interpret matrices in $\D[\omega]$ and use \aid{{\_}≈ᵁ{\_}} for their equality; the qudit developments compare interpretations in their own groups. The \aid{IsSubPresentationOf} record contains the semantics and its soundness and completeness proofs, and \aid{IsPresentationOf} adds surjectivity.
-
-Minimality is stated for the rule set \aid{n ⊢{\_}==={\_}} in \Cref{agda:minimal}. Unlike the generated equivalence relation, this retains the individual rules, so removing one is defined. The predicate \aid{IsMinimal} therefore takes this rule set rather than its generated equivalence relation.
-
-\subsection{Matrix Equality Checking}\label{app:matrix-equality}
-
-The main computational cost came from Agda's conversion checker. It accepts syntactically identical terms immediately; otherwise, it evaluates them to compare their results. For long matrix products, this evaluation can take exponential time. We keep circuit interpretations abstract and decide matrix equality by computing a single Boolean using row operations. For these products, this is orders of magnitude faster than comparing matrices entry by entry. These techniques are included in the agents' instructions so that later formalizations avoid the same slowdowns.
 
 \iffalse
 \section{A New Result: Toffoli–Hadamard Completeness for Any Number of Qubits}
