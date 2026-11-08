@@ -49,6 +49,31 @@ python mkfig.py ../figures/compare.tex  # the pgfplots figure
   leantime.json Folder,...`). `leantime.json` records the run (date, revision,
   CPU, memory). Logs go to `~/leantime-logs/`.
 
+## Four formalizations of Toffoli–Hadamard (`tab:th4`)
+
+`th4.py` compares the four formalizations of Amy, Ross and Wesley [2024] as
+two Agda–Lean pairs: `CCX+H-3qubit-Tietze` (Table 1's row) against
+`QCert/ToffoliHadamard` (written from the paper), and `CCX+H-3qubit-RS`
+against `QCert/ToffoliHadamardRS`, its translation to Lean (one proof in
+both assistants). It counts code lines as `loc.py` does, and code
+characters (non-blank characters outside comments), which do not depend on
+how a generator lays out its output. It times each folder as `agdatime.py`
+and `leantime.py` time a row: an untimed check first, so that everything the
+folder imports is built, then the folder's own interfaces or build artifacts
+removed and the folder checked again, Agda's time the sum of its per-module
+profile and Lean's the wall time of `LEAN_NUM_THREADS=2 lake build`. In WSL,
+under the Agda lock (it takes `check.sh`'s Lean lock itself):
+
+```sh
+python3 th4.py ../.. th4.json                 # about 15 minutes
+TH4_LINES=1 python3 th4.py ../.. th4.json     # recount, keep the times
+```
+
+`th4.json` is the measurement of 8 November 2026 (revision `ede28959`) on
+the Intel Core i5-14400, with no other proof assistant running; Table 1's
+times are from the i5-13400TEF, so its Toffoli–Hadamard row differs (111 and
+135 s there, 103 and 125 s here). Logs go to `~/th4-logs/`.
+
 ## Execution benchmark (panel (c))
 
 Both programs decide, for random circuits `w` of 100 gates over H, S and CZ
