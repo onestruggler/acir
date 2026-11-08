@@ -69,7 +69,7 @@ pm = ['''-----------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.PushMatrices where
+module Examples.Groups.CCX+H-3qubit-RS.PushMatrices where
 
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
 open import Quantum.Synthesis.Matrix using (Matrix)
@@ -78,9 +78,9 @@ open import Word.Base using (Word ; ε ; _•_)
 open import Examples.Groups.CCX+HH-TwoLevel.Ring using (D ; _+ᴰ_ ; _*ᴰ_ ; -ᴰ_ ; _≟ᴰ_)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
-open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics
+open import Examples.Groups.CCX+H-3qubit-RS.Decide using (module Over)
 
 open Over _≟ᴰ_ using (eqM-sound)
 
@@ -111,7 +111,7 @@ pu = ['''-----------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Push where
+module Examples.Groups.CCX+H-3qubit-RS.Push where
 
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -119,11 +119,11 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Lift using (lift₁₂)
-open import Examples.Groups.CCX+HH-3qubit-opus.PresentationO8 using (complete₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.PushMatrices
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Lift using (lift₁₂)
+open import Examples.Groups.CCX+H-3qubit-RS.PresentationO8 using (complete₁)
+open import Examples.Groups.CCX+H-3qubit-RS.PushMatrices
 
 open PB _===₂⁺_ using (_≈_ ; refl ; sym ; trans ; cong ; assoc ; left-unit ; right-unit ; axiom)
 open PP _===₂⁺_ using (by-assoc)

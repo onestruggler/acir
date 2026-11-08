@@ -9,7 +9,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.TableMatrices where
+module Examples.Groups.CCX+H-3qubit-RS.TableMatrices where
 
 open import Data.Fin using (#_)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
@@ -19,14 +19,14 @@ open import Examples.Groups.CCX+HH-TwoLevel.Syntactics using (Gen ; M-gen ; X-ge
 open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_ ; _≟ᴰ_)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Encoding using (lt)
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
-open import Examples.Groups.CCX+HH-3qubit-opus.Toffoli.Coxeter using (coxeter₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.Decode coxeter₁ using (dec)
-open import Examples.Groups.CCX+HH-3qubit-opus.Push using (conj)
-open import Examples.Groups.CCX+HH-3qubit-opus.PushMatrices using (⟦_⟧₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Encoding using (lt)
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics
+open import Examples.Groups.CCX+H-3qubit-RS.Toffoli.Coxeter using (coxeter₁)
+open import Examples.Groups.CCX+H-3qubit-RS.Decode coxeter₁ using (dec)
+open import Examples.Groups.CCX+H-3qubit-RS.Push using (conj)
+open import Examples.Groups.CCX+H-3qubit-RS.PushMatrices using (⟦_⟧₁)
+open import Examples.Groups.CCX+H-3qubit-RS.Decide using (module Over)
 
 open Over _≟ᴰ_ using (eqM-sound)
 

@@ -1,13 +1,13 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Repaired.KMatrix where
+module Examples.Groups.CCX+H-3qubit-Tietze.Repaired.KMatrix where
 
 open import Data.Integer.Base using (+_ ; -[1+_])
 open import Data.Product.Base using (_,_ )
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.GateMatrices
-open import Examples.Groups.CCX+HH-3qubit.Interpretation
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.GateMatrices
+open import Examples.Groups.CCX+H-3qubit-Tietze.Interpretation
 
 w0 : Word Gen
 w0 = K12

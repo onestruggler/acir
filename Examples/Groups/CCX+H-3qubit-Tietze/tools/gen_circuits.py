@@ -1,11 +1,11 @@
 """Generate Circuits/Syntactics.agda and Circuits/Iso.agda from the
-paper's Syntactics.agda: python3 Examples/Groups/CCX+HH-3qubit/tools/
+paper's Syntactics.agda: python3 Examples/Groups/CCX+H-3qubit-Tietze/tools/
 gen_circuits.py, from the repository root."""
 import re, sys
 
 ROOT = sys.argv[1] if len(sys.argv) > 1 else '.'
-SRC = ROOT + '/Examples/Groups/CCX+HH-3qubit/Syntactics.agda'
-OUT = ROOT + '/Examples/Groups/CCX+HH-3qubit/Circuits/'
+SRC = ROOT + '/Examples/Groups/CCX+H-3qubit-Tietze/Syntactics.agda'
+OUT = ROOT + '/Examples/Groups/CCX+H-3qubit-Tietze/Circuits/'
 src = open(SRC, encoding='utf-8').read().replace('\r\n', '\n')
 lines = src.split('\n')
 
@@ -82,7 +82,7 @@ syn = HEAD + '''-- Amy, Ross and Wesley's 3-qubit Toffoli-Hadamard presentation 
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Circuits.Syntactics where
+module Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Syntactics where
 
 open import Data.Nat using (ℕ)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_)
@@ -222,7 +222,7 @@ iso = HEAD + '''-- On three wires, the circuit presentation (Circuits.Syntactics
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Circuits.Iso where
+module Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Iso where
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Morphism.Structures using (module GroupMorphisms)
@@ -234,13 +234,13 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 import Presentation.Base as PB
 open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
 
-open import Examples.Groups.CCX+HH-3qubit.Circuits.Syntactics
-import Examples.Groups.CCX+HH-3qubit.Syntactics as P
-import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics as R
-open import Examples.Groups.CCX+HH-3qubit.Repaired.GroupLike using () renaming (grouplike to grouplikeᴾ)
-import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation as RP
-import Examples.Groups.CCX+HH-3qubit.Interpretation as I
-open import Examples.Groups.CCX+HH-3qubit.GateMatrices using (Mat ; gateM ; mulM ; idM ; √2^_)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Syntactics
+import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics as P
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics as R
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.GroupLike using () renaming (grouplike to grouplikeᴾ)
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Presentation as RP
+import Examples.Groups.CCX+H-3qubit-Tietze.Interpretation as I
+open import Examples.Groups.CCX+H-3qubit-Tietze.GateMatrices using (Mat ; gateM ; mulM ; idM ; √2^_)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Scaled using (scaleM)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Decide using (eqM ; eqM-sound)
 

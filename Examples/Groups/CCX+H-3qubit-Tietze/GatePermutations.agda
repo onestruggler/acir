@@ -1,24 +1,24 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.GatePermutations where
+module Examples.Groups.CCX+H-3qubit-Tietze.GatePermutations where
 
 import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Frames
-open import Examples.Groups.CCX+HH-3qubit.FrameWords
-open import Examples.Groups.CCX+HH-3qubit.Engine
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Frames
+open import Examples.Groups.CCX+H-3qubit-Tietze.FrameWords
+open import Examples.Groups.CCX+H-3qubit-Tietze.Engine
 
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B000 using (module decodeCCX01 ; module decodeCCX02)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B002 using (module decodeCCX12 ; module decodeCX01 ; module decodeCX02)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B005 using (module decodeCX10)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B006 using (module decodeCX12)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B010 using (module decodeCX20)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B011 using (module decodeCX21)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B012 using (module decodeSWAP01)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B014 using (module decodeSWAP02)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B015 using (module decodeSWAP12)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B018 using (module decodeX0)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B019 using (module decodeX1 ; module decodeX2)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B000 using (module decodeCCX01 ; module decodeCCX02)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B002 using (module decodeCCX12 ; module decodeCX01 ; module decodeCX02)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B005 using (module decodeCX10)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B006 using (module decodeCX12)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B010 using (module decodeCX20)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B011 using (module decodeCX21)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B012 using (module decodeSWAP01)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B014 using (module decodeSWAP02)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B015 using (module decodeSWAP12)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B018 using (module decodeX0)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B019 using (module decodeX1 ; module decodeX2)
 
 gateCCX01 : CCX01 ≈ p (s6)
 gateCCX01 = by-assoc-and decodeCCX01.proved Eq.refl Eq.refl

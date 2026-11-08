@@ -21,7 +21,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Circuits.Iso2 where
+module Examples.Groups.CCX+H-3qubit-RS.Circuits.Iso2 where
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Morphism.Structures using (module GroupMorphisms)
@@ -32,15 +32,15 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 import Presentation.Base as PB
 open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Circuits.Syntactics using (module Σ₂ ; X-gate ; CX-gate ; K-gate ; CCX-gate ; NK-gate ; CCZ-gate ; H-gate)
+open import Examples.Groups.CCX+H-3qubit-RS.Circuits.Syntactics using (module Σ₂ ; X-gate ; CX-gate ; K-gate ; CCX-gate ; NK-gate ; CCZ-gate ; H-gate)
 open Σ₂
-import Examples.Groups.CCX+HH-3qubit-opus.Syntactics as P
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates using (G₂)
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics using (⟦_⟧ᴴ)
-open import Examples.Groups.CCX+HH-3qubit-opus.PresentationH using (complete₂ ; grouplike₂)
+import Examples.Groups.CCX+H-3qubit-RS.Syntactics as P
+open import Examples.Groups.CCX+H-3qubit-RS.Gates using (G₂)
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics using (⟦_⟧ᴴ)
+open import Examples.Groups.CCX+H-3qubit-RS.PresentationH using (complete₂ ; grouplike₂)
 open import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics using (actV ; set₁ ; set₂)
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring as R2
-open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
+open import Examples.Groups.CCX+H-3qubit-RS.Decide using (module Over)
 
 open Over R2._≟ᴰ_ using (eqM-sound)
 

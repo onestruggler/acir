@@ -8,22 +8,22 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Theorems where
+module Examples.Groups.CCX+H-3qubit-Tietze.Theorems where
 
-open import Examples.Groups.CCX+HH-3qubit.Syntactics public
-open import Examples.Groups.CCX+HH-3qubit.Interpretation public
-open import Examples.Groups.CCX+HH-3qubit.Soundness public
-open import Examples.Groups.CCX+HH-3qubit.GroupLike public using (grouplike)
-open import Examples.Groups.CCX+HH-3qubit.Normalization public
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics public
+open import Examples.Groups.CCX+H-3qubit-Tietze.Interpretation public
+open import Examples.Groups.CCX+H-3qubit-Tietze.Soundness public
+open import Examples.Groups.CCX+H-3qubit-Tietze.GroupLike public using (grouplike)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Normalization public
   using (Normal ; normalize ; past-gen ; past-word)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation public
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Presentation public
   using (ToffoliHadamard)
 open import Presentation.Definitions using (_IsPresentationOf_)
-import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation as P
-import Examples.Groups.CCX+HH-3qubit.Repaired.Soundness as RS
-import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics as Repaired
-import Examples.Groups.CCX+HH-3qubit.Errata as Errata
-import Examples.Groups.CCX+HH-3qubit.Semantics as Semantics
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Presentation as P
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Soundness as RS
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics as Repaired
+import Examples.Groups.CCX+H-3qubit-Tietze.Errata as Errata
+import Examples.Groups.CCX+H-3qubit-Tietze.Semantics as Semantics
 
 -- The relation in these results includes K-definition. The
 -- soundness and normalization results above use the paper rules alone.

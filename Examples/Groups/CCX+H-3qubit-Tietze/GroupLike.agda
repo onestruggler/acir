@@ -1,12 +1,12 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.GroupLike where
+module Examples.Groups.CCX+H-3qubit-Tietze.GroupLike where
 
 open import Data.Product.Base using (_,_ )
 open import Relation.Binary.PropositionalEquality as Eq
 open import Presentation.GroupLike using (Grouplike)
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Invertible
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Invertible
 open import Presentation.Base _===_ hiding (_===_ ; _≈_)
 open import Presentation.Properties _===_ using (by-assoc)
 

@@ -17,7 +17,7 @@
 -- sends the states below j (frame≈).  frame ts sends the states
 -- 0, 1, … to the distinct states ts.
 --
--- The development of CCX+HH-3qubit-opus (its Perm and Frame) made
+-- The development of CCX+H-3qubit-RS (its Perm and Frame) made
 -- generic in the circuits T d.
 ------------------------------------------------------------------------
 

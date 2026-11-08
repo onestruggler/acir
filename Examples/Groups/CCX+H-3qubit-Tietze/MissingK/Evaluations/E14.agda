@@ -1,16 +1,16 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E14 where
+module Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E14 where
 
 open import Data.Product.Base using (_,_ )
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.MissingK.Model
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Model
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E08 using (e130 ; e132 ; e137 ; e140 ; matrix130 ; matrix132 ; matrix137 ; matrix140 ; w130 ; w132 ; w137 ; w140)
-open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E09 using (e152 ; matrix152 ; w152)
-open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E10 using (e170 ; matrix170 ; w170)
-open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E11 using (e176 ; e177 ; e181 ; e184 ; matrix176 ; matrix177 ; matrix181 ; matrix184 ; w176 ; w177 ; w181 ; w184)
-open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E13 using (e216 ; e217 ; e223 ; matrix216 ; matrix217 ; matrix223 ; w216 ; w217 ; w223)
+open import Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E08 using (e130 ; e132 ; e137 ; e140 ; matrix130 ; matrix132 ; matrix137 ; matrix140 ; w130 ; w132 ; w137 ; w140)
+open import Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E09 using (e152 ; matrix152 ; w152)
+open import Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E10 using (e170 ; matrix170 ; w170)
+open import Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E11 using (e176 ; e177 ; e181 ; e184 ; matrix176 ; matrix177 ; matrix181 ; matrix184 ; w176 ; w177 ; w181 ; w184)
+open import Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E13 using (e216 ; e217 ; e223 ; matrix216 ; matrix217 ; matrix223 ; w216 ; w217 ; w223)
 
 w224 : Word Gen
 w224 = w184 • w223

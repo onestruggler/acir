@@ -24,7 +24,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.GateMatrices where
+module Examples.Groups.CCX+H-3qubit-RS.GateMatrices where
 
 open import Data.Bool.Base using (Bool ; true ; false ; if_then_else_ ; _∧_ ; _xor_ ; not)
 open import Data.Fin.Base using (Fin ; zero ; suc)
@@ -43,8 +43,8 @@ import Examples.Groups.CCX+HH-TwoLevel.Semantics as S1
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂ ; mk)
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SL
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics
 
 private
   variable

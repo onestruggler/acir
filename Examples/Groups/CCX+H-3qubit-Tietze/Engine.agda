@@ -6,9 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Engine where
+module Examples.Groups.CCX+H-3qubit-Tietze.Engine where
 
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
 open import Presentation.Base _===_ public hiding (_===_ ; _≈_)
 open import Presentation.Properties _===_ public using (by-assoc ; by-assoc-and)
 open import Relation.Binary.PropositionalEquality as Eq public using ()

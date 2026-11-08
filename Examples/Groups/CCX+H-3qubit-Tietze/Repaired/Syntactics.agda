@@ -7,11 +7,11 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics where
+module Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics where
 
-open import Examples.Groups.CCX+HH-3qubit.Syntactics public
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics public
   hiding (_===_ ; _≈_)
-import Examples.Groups.CCX+HH-3qubit.Syntactics as Paper
+import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics as Paper
 import Presentation.Base as PB
 
 infix 4 _===_

@@ -1,8 +1,8 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Proofs.B000 where
+module Examples.Groups.CCX+H-3qubit-Tietze.Proofs.B000 where
 
-import Examples.Groups.CCX+HH-3qubit.Kit as K using (CX01 ; CX10 ; K01 ; SWAP01 ; X0 ; X1 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; module Eq ; r002 ; r012 ; r013 ; r021 ; r022 ; r025 ; r028 ; refl ; sym ; trans ; under ; ε)
+import Examples.Groups.CCX+H-3qubit-Tietze.Kit as K using (CX01 ; CX10 ; K01 ; SWAP01 ; X0 ; X1 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; module Eq ; r002 ; r012 ; r013 ; r021 ; r022 ; r025 ; r028 ; refl ; sym ; trans ; under ; ε)
 open K
 
 module KB0001 where

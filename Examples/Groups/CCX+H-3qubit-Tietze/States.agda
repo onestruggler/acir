@@ -5,12 +5,12 @@
 -- evaluation: two functions agree on the states below j (agree) or
 -- everywhere (everywhere), a property holds of every state (all8), and
 -- a concrete list of states is duplicate-free (distinct).  As in
--- CCX+HH-3qubit-opus's Check.
+-- CCX+H-3qubit-RS's Check.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.States where
+module Examples.Groups.CCX+H-3qubit-Tietze.States where
 
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; if_then_else_ ; T ; not)
 open import Data.Empty.Irrelevant using (⊥-elim)

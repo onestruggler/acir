@@ -22,7 +22,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Gates where
+module Examples.Groups.CCX+H-3qubit-RS.Gates where
 
 open import Data.Nat.Base using (ℕ ; zero ; suc ; _∸_)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl ; sym ; trans ; cong)

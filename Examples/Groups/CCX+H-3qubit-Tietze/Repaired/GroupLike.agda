@@ -6,12 +6,12 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Repaired.GroupLike where
+module Examples.Groups.CCX+H-3qubit-Tietze.Repaired.GroupLike where
 
 open import Data.Product.Base using (_,_)
 open import Presentation.GroupLike using (Grouplike)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
-import Examples.Groups.CCX+HH-3qubit.GroupLike as Original
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics
+import Examples.Groups.CCX+H-3qubit-Tietze.GroupLike as Original
 
 grouplike : Grouplike _===_
 grouplike g = inverse , lift proof

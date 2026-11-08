@@ -1,4 +1,4 @@
-# Generators for CCX+HH-3qubit-opus
+# Generators for CCX+H-3qubit-RS
 
 Python 3 (no dependencies) and a C++17 compiler. Run from this directory.
 

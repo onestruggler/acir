@@ -1,13 +1,13 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.GateMatrices where
+module Examples.Groups.CCX+H-3qubit-Tietze.GateMatrices where
 
 open import Data.Bool.Base using (true ; false)
 open import Data.Integer.Base as ℤ using (+_ ; -[1+_])
 open import Data.Nat.Base using (ℕ)
 open import Data.Vec.Base using ([] ; _∷_)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Algebra public
-open import Examples.Groups.CCX+HH-3qubit.Syntactics using (Gen ; X0-gen ; X1-gen ; X2-gen ; Z0-gen ; Z1-gen ; Z2-gen ; CX01-gen ; CX02-gen ; CX10-gen ; CX12-gen ; CX20-gen ; CX21-gen ; CZ01-gen ; CZ02-gen ; CZ12-gen ; CCX01-gen ; CCX02-gen ; CCX12-gen ; K01-gen ; K12-gen ; SWAP01-gen ; SWAP02-gen ; SWAP12-gen ; CCZ-gen ; NK-gen ; H2-gen)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics using (Gen ; X0-gen ; X1-gen ; X2-gen ; Z0-gen ; Z1-gen ; Z2-gen ; CX01-gen ; CX02-gen ; CX10-gen ; CX12-gen ; CX20-gen ; CX21-gen ; CZ01-gen ; CZ02-gen ; CZ12-gen ; CCX01-gen ; CCX02-gen ; CCX12-gen ; K01-gen ; K12-gen ; SWAP01-gen ; SWAP02-gen ; SWAP12-gen ; CCZ-gen ; NK-gen ; H2-gen)
 
 degree : Gen → ℕ
 degree X0-gen = 0

@@ -1,21 +1,21 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Evaluation.E10 where
+module Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E10 where
 
 open import Data.Integer.Base using (+_ ; -[1+_])
 open import Data.Product.Base using (_,_ )
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import Examples.Groups.CCX+HH-3qubit.Syntactics using (Word ; Gen ; _•_ ; ε ; H2 ; H2-gen)
-open import Examples.Groups.CCX+HH-3qubit.GateMatrices using (Mat ; mat ; mulM ; _+√2_)
-open import Examples.Groups.CCX+HH-3qubit.Interpretation using (readM ; readM-gen ; readM-ε ; readM-•)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics using (Word ; Gen ; _•_ ; ε ; H2 ; H2-gen)
+open import Examples.Groups.CCX+H-3qubit-Tietze.GateMatrices using (Mat ; mat ; mulM ; _+√2_)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Interpretation using (readM ; readM-gen ; readM-ε ; readM-•)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Decide using (eqM-sound)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Sparse using (mulS ; mulS-ok)
-open import Examples.Groups.CCX+HH-3qubit.Evaluation.E00 using (e1 ; e2 ; e5 ; e6 ; e18 ; matrix1 ; matrix2 ; matrix5 ; matrix6 ; matrix18 ; w1 ; w2 ; w5 ; w6 ; w18)
-open import Examples.Groups.CCX+HH-3qubit.Evaluation.E01 using (e29 ; e35 ; e38 ; e47 ; matrix29 ; matrix35 ; matrix38 ; matrix47 ; w29 ; w35 ; w38 ; w47)
-open import Examples.Groups.CCX+HH-3qubit.Evaluation.E02 using (e56 ; matrix56 ; w56)
-open import Examples.Groups.CCX+HH-3qubit.Evaluation.E05 using (e124 ; e125 ; e132 ; matrix124 ; matrix125 ; matrix132 ; w124 ; w125 ; w132)
-open import Examples.Groups.CCX+HH-3qubit.Evaluation.E07 using (e174 ; matrix174 ; w174)
-open import Examples.Groups.CCX+HH-3qubit.Evaluation.E09 using (e233 ; e236 ; matrix233 ; matrix236 ; w233 ; w236)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E00 using (e1 ; e2 ; e5 ; e6 ; e18 ; matrix1 ; matrix2 ; matrix5 ; matrix6 ; matrix18 ; w1 ; w2 ; w5 ; w6 ; w18)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E01 using (e29 ; e35 ; e38 ; e47 ; matrix29 ; matrix35 ; matrix38 ; matrix47 ; w29 ; w35 ; w38 ; w47)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E02 using (e56 ; matrix56 ; w56)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E05 using (e124 ; e125 ; e132 ; matrix124 ; matrix125 ; matrix132 ; w124 ; w125 ; w132)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E07 using (e174 ; matrix174 ; w174)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E09 using (e233 ; e236 ; matrix233 ; matrix236 ; w233 ; w236)
 
 w240 : Word Gen
 w240 = w233 • w174

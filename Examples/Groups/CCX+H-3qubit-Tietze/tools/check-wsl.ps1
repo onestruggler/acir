@@ -3,7 +3,7 @@ param([string[]]$Targets, [string]$Heap = '8G')
 $ErrorActionPreference = 'Stop'
 $taskRepo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../../..'))
 Set-Location -LiteralPath $taskRepo
-$development = 'Examples/Groups/CCX+HH-3qubit'
+$development = 'Examples/Groups/CCX+H-3qubit-Tietze'
 $libraryList = "$development/tools/libraries-wsl"
 $checkLogs = Join-Path $taskRepo 'local/ccxhh-3qubit-checks'
 New-Item -ItemType Directory -Path $checkLogs -Force | Out-Null

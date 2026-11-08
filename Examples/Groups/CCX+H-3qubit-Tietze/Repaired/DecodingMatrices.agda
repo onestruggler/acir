@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Repaired.DecodingMatrices where
+module Examples.Groups.CCX+H-3qubit-Tietze.Repaired.DecodingMatrices where
 
 open import Data.Nat.Base as ℕ using (ℕ ; suc ; s≤s)
 import Data.Nat.Properties as ℕP
@@ -10,12 +10,12 @@ open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
 open import Quantum.Synthesis.Matrix using (_·*·_)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Matrix using (⟦_⟧ᴹ ; matrix-• ; matrix-ε ; matrix-sound)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Encoding using (decode)
-import Examples.Groups.CCX+HH-3qubit.Repaired.EncodingMatrices as EM
-import Examples.Groups.CCX+HH-3qubit.FrameWords as F
-import Examples.Groups.CCX+HH-3qubit.TwoLevel as TwoLevel
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Matrix using (⟦_⟧ᴹ ; matrix-• ; matrix-ε ; matrix-sound)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Encoding using (decode)
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.EncodingMatrices as EM
+import Examples.Groups.CCX+H-3qubit-Tietze.FrameWords as F
+import Examples.Groups.CCX+H-3qubit-Tietze.TwoLevel as TwoLevel
 import Presentation.Base as PB
 import Examples.Groups.CCX+HH-TwoLevel.Syntactics as T
 import Examples.Groups.CCX+HH-TwoLevel.Semantics as S1
@@ -26,15 +26,15 @@ import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring as R
 module Dim = SS.Dim 4
-import Examples.Groups.CCX+HH-3qubit.DecodeMatrices.M0 as CM0
-import Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X01 as CX01
-import Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X12 as CX12
-import Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X23 as CX23
-import Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X34 as CX34
-import Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X45 as CX45
-import Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X56 as CX56
-import Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X67 as CX67
-import Examples.Groups.CCX+HH-3qubit.DecodeMatrices.K0123 as CK0123
+import Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.M0 as CM0
+import Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X01 as CX01
+import Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X12 as CX12
+import Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X23 as CX23
+import Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X34 as CX34
+import Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X45 as CX45
+import Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X56 as CX56
+import Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X67 as CX67
+import Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.K0123 as CK0123
 
 -- The basic letters, from their matrix certificates.
 basic : ∀ g → Conj.Basic g → Dim.⟦ [ L.⌊ g ⌋ ]ʷ ⟧ᴸ ≡ ⟦ F.decode g ⟧ᴹ

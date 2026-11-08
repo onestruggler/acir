@@ -12,7 +12,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Push where
+module Examples.Groups.CCX+H-3qubit-RS.Push where
 
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -20,11 +20,11 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Lift using (lift₁₂)
-open import Examples.Groups.CCX+HH-3qubit-opus.PresentationO8 using (complete₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.PushMatrices
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Lift using (lift₁₂)
+open import Examples.Groups.CCX+H-3qubit-RS.PresentationO8 using (complete₁)
+open import Examples.Groups.CCX+H-3qubit-RS.PushMatrices
 
 open PB _===₂⁺_ using (_≈_ ; refl ; sym ; trans ; cong ; assoc ; left-unit ; right-unit ; axiom)
 open PP _===₂⁺_ using (by-assoc)

@@ -13,7 +13,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Circuits.Presentation where
+module Examples.Groups.CCX+H-3qubit-RS.Circuits.Presentation where
 
 import Algebra.Morphism.Construct.Composition as Compose
 open import Algebra.Bundles using (Group)
@@ -22,12 +22,12 @@ open import Word.Base using (_ʷ)
 
 open import Presentation.Definitions using (_IsPresentationOf_)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Circuits.Syntactics using (module Σ₁ ; module Σ₂)
-import Examples.Groups.CCX+HH-3qubit-opus.Circuits.Iso1 as I₁
-import Examples.Groups.CCX+HH-3qubit-opus.Circuits.Iso2 as I₂
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics using (O8 ; TofH3)
-import Examples.Groups.CCX+HH-3qubit-opus.PresentationO8 as O
-import Examples.Groups.CCX+HH-3qubit-opus.PresentationH as H
+open import Examples.Groups.CCX+H-3qubit-RS.Circuits.Syntactics using (module Σ₁ ; module Σ₂)
+import Examples.Groups.CCX+H-3qubit-RS.Circuits.Iso1 as I₁
+import Examples.Groups.CCX+H-3qubit-RS.Circuits.Iso2 as I₂
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics using (O8 ; TofH3)
+import Examples.Groups.CCX+H-3qubit-RS.PresentationO8 as O
+import Examples.Groups.CCX+H-3qubit-RS.PresentationH as H
 
 private
   module PO = _IsPresentationOf_ O.presentation

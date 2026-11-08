@@ -4,7 +4,7 @@ set -eu
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 task_repo=$(cd -- "$script_dir/../../../.." && pwd)
 cd -- "$task_repo"
-development=Examples/Groups/CCX+HH-3qubit
+development=Examples/Groups/CCX+H-3qubit-Tietze
 check_logs=local/ccxhh-3qubit-checks
 mkdir -p -- "$check_logs"
 agda_program=${AGDA:-agda}

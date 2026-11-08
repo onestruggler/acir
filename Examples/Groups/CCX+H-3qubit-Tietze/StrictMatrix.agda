@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.StrictMatrix where
+module Examples.Groups.CCX+H-3qubit-Tietze.StrictMatrix where
 
 open import Data.Integer.Base using (ℤ ; +_ ; -[1+_])
 open import Data.Nat.Base using (ℕ ; zero ; suc)

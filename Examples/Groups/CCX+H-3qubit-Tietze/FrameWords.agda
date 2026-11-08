@@ -1,10 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.FrameWords where
+module Examples.Groups.CCX+H-3qubit-Tietze.FrameWords where
 
 open import Data.Fin.Base using (Fin ; zero ; suc)
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Frames
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Frames
 import Examples.Groups.CCX+HH-TwoLevel.Syntactics as TL
 
 M0 : Word Gen

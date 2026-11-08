@@ -7,7 +7,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Semantics where
+module Examples.Groups.CCX+H-3qubit-Tietze.Semantics where
 
 open import Algebra.Bundles using (Monoid)
 open import Level using (0ℓ)

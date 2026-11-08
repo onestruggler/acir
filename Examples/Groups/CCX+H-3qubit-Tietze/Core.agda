@@ -1,9 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Core where
+module Examples.Groups.CCX+H-3qubit-Tietze.Core where
 
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
 open import Presentation.Base _===_ hiding (_===_ ; _≈_)
 
 data CGen : Set where

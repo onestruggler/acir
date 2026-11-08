@@ -1,18 +1,18 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Evaluation.E08 where
+module Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E08 where
 
 open import Data.Integer.Base using (+_ ; -[1+_])
 open import Data.Product.Base using (_,_ )
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import Examples.Groups.CCX+HH-3qubit.Syntactics using (Word ; Gen ; _•_ ; ε)
-open import Examples.Groups.CCX+HH-3qubit.GateMatrices using (Mat ; mat ; mulM ; _+√2_)
-open import Examples.Groups.CCX+HH-3qubit.Interpretation using (readM ; readM-gen ; readM-ε ; readM-•)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics using (Word ; Gen ; _•_ ; ε)
+open import Examples.Groups.CCX+H-3qubit-Tietze.GateMatrices using (Mat ; mat ; mulM ; _+√2_)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Interpretation using (readM ; readM-gen ; readM-ε ; readM-•)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Decide using (eqM-sound)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Sparse using (mulS ; mulS-ok)
-open import Examples.Groups.CCX+HH-3qubit.Evaluation.E05 using (e130 ; e132 ; e137 ; e140 ; matrix130 ; matrix132 ; matrix137 ; matrix140 ; w130 ; w132 ; w137 ; w140)
-open import Examples.Groups.CCX+HH-3qubit.Evaluation.E06 using (e152 ; e156 ; matrix152 ; matrix156 ; w152 ; w156)
-open import Examples.Groups.CCX+HH-3qubit.Evaluation.E07 using (e181 ; e184 ; e186 ; e191 ; matrix181 ; matrix184 ; matrix186 ; matrix191 ; w181 ; w184 ; w186 ; w191)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E05 using (e130 ; e132 ; e137 ; e140 ; matrix130 ; matrix132 ; matrix137 ; matrix140 ; w130 ; w132 ; w137 ; w140)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E06 using (e152 ; e156 ; matrix152 ; matrix156 ; w152 ; w156)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E07 using (e181 ; e184 ; e186 ; e191 ; matrix181 ; matrix184 ; matrix186 ; matrix191 ; w181 ; w184 ; w186 ; w191)
 
 w192 : Word Gen
 w192 = w140 • w191

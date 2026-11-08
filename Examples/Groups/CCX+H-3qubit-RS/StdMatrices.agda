@@ -7,7 +7,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.StdMatrices where
+module Examples.Groups.CCX+H-3qubit-RS.StdMatrices where
 
 open import Data.Fin using (#_)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
@@ -16,9 +16,9 @@ open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 import Examples.Groups.CCX+HH-TwoLevel.Semantics as S1
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Encoding
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Encoding
 
 opaque
   unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_

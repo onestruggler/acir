@@ -15,7 +15,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.PresentationH where
+module Examples.Groups.CCX+H-3qubit-RS.PresentationH where
 
 open import Algebra.Bundles using (Group ; Monoid)
 open import Data.Bool.Base using (true)
@@ -41,18 +41,18 @@ import Examples.Groups.CCX+HH-TwoLevel.Scaled.Completeness 3 as LC
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Presentation 3 as LP
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (RingD)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Encoding
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
-open import Examples.Groups.CCX+HH-3qubit-opus.SoundnessH using (sound₂⁺* ; noH ; ⟦⟧ᴴ-noH)
-open import Examples.Groups.CCX+HH-3qubit-opus.Lift using (lift₁₂)
-open import Examples.Groups.CCX+HH-3qubit-opus.Completeness using (module Complete)
-open import Examples.Groups.CCX+HH-3qubit-opus.Derived using (derived ; invol₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.Toffoli.Coxeter using (coxeter₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.Decode coxeter₁ using (dec ; decʷ)
-open import Examples.Groups.CCX+HH-3qubit-opus.PresentationO8 using (dec-sem)
-open import Examples.Groups.CCX+HH-3qubit-opus.DecodeH
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Encoding
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics
+open import Examples.Groups.CCX+H-3qubit-RS.SoundnessH using (sound₂⁺* ; noH ; ⟦⟧ᴴ-noH)
+open import Examples.Groups.CCX+H-3qubit-RS.Lift using (lift₁₂)
+open import Examples.Groups.CCX+H-3qubit-RS.Completeness using (module Complete)
+open import Examples.Groups.CCX+H-3qubit-RS.Derived using (derived ; invol₁)
+open import Examples.Groups.CCX+H-3qubit-RS.Toffoli.Coxeter using (coxeter₁)
+open import Examples.Groups.CCX+H-3qubit-RS.Decode coxeter₁ using (dec ; decʷ)
+open import Examples.Groups.CCX+H-3qubit-RS.PresentationO8 using (dec-sem)
+open import Examples.Groups.CCX+H-3qubit-RS.DecodeH
 
 open PB _===₂⁺_ using (_≈_ ; refl ; sym ; trans ; cong ; axiom)
 open SL.Dim 4 using (⟦_⟧ᴸ ; ⟦•⟧ᴸ)

@@ -7,16 +7,16 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Matrix where
+module Examples.Groups.CCX+H-3qubit-Tietze.Matrix where
 
 open import Data.Product.Base using (_,_)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
 open import Quantum.Synthesis.Matrix using (Matrix ; _·*·_)
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.GateMatrices
-open import Examples.Groups.CCX+HH-3qubit.Interpretation
-import Examples.Groups.CCX+HH-3qubit.Soundness as Sound
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.GateMatrices
+open import Examples.Groups.CCX+H-3qubit-Tietze.Interpretation
+import Examples.Groups.CCX+H-3qubit-Tietze.Soundness as Sound
 import Examples.Groups.Real-Clifford+CH.Semantics.Scaled as S
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring as R
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics as RMat

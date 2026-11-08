@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.MissingK.Model where
+module Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Model where
 
 open import Algebra.Bundles using (Monoid)
 open import Data.Bool.Base using (true ; false)
@@ -11,8 +11,8 @@ open import Data.Vec.Base using ([] ; _∷_)
 open import Level using (0ℓ)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
-open import Examples.Groups.CCX+HH-3qubit.MissingK.Algebra public
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Algebra public
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
 import Presentation.Base as PB
 open import Presentation.Independence using (Select ; _∣_)
 import Normalization.StarInterp as SI

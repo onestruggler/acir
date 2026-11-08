@@ -15,7 +15,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Errata where
+module Examples.Groups.CCX+H-3qubit-RS.Errata where
 
 open import Data.Fin using (Fin ; #_)
 open import Data.Vec.Base using (lookup)
@@ -29,10 +29,10 @@ open import Examples.Groups.CCX+HH-TwoLevel.Ring using (D ; _+ᴰ_ ; _*ᴰ_ ; -�
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 import Examples.Groups.CCX+HH-TwoLevel.Semantics as S1
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Encoding
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics using (⟦_⟧)
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Encoding
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics using (⟦_⟧)
 
 ------------------------------------------------------------------------
 -- Readings at a fixed level, and the entry in row r and column c

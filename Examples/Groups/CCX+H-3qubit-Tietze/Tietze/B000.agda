@@ -1,10 +1,10 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Tietze.B000 where
+module Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B000 where
 
-import Examples.Groups.CCX+HH-3qubit.Kit as K using (CCX01 ; CCX02 ; CCX12 ; CX01 ; CX02 ; CX10 ; CX12 ; CX20 ; CX21 ; K01 ; K12 ; SWAP01 ; SWAP02 ; SWAP12 ; X0 ; X1 ; X2 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; module Eq ; r002 ; r005 ; r007 ; r008 ; r009 ; r010 ; r011 ; r012 ; r013 ; r014 ; r015 ; r017 ; r021 ; r022 ; r023 ; r024 ; r025 ; r026 ; r027 ; r028 ; r029 ; r030 ; r031 ; r035 ; r042 ; refl ; sym ; trans ; under ; ε)
+import Examples.Groups.CCX+H-3qubit-Tietze.Kit as K using (CCX01 ; CCX02 ; CCX12 ; CX01 ; CX02 ; CX10 ; CX12 ; CX20 ; CX21 ; K01 ; K12 ; SWAP01 ; SWAP02 ; SWAP12 ; X0 ; X1 ; X2 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; module Eq ; r002 ; r005 ; r007 ; r008 ; r009 ; r010 ; r011 ; r012 ; r013 ; r014 ; r015 ; r017 ; r021 ; r022 ; r023 ; r024 ; r025 ; r026 ; r027 ; r028 ; r029 ; r030 ; r031 ; r035 ; r042 ; refl ; sym ; trans ; under ; ε)
 open K
-open import Examples.Groups.CCX+HH-3qubit.Proofs.B000 using (module X0X1)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Proofs.B000 using (module X0X1)
 
 module drel46 where
 

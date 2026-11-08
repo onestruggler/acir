@@ -10,7 +10,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.DecodeH where
+module Examples.Groups.CCX+H-3qubit-RS.DecodeH where
 
 open import Data.Empty using (⊥-elim)
 open import Data.Fin using (#_)
@@ -29,15 +29,15 @@ open import Examples.Groups.CCX+HH-TwoLevel.Syntactics as L using (Gen)
 open import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as LS
   using (Genᴸ ; ⌊_⌋ ; IH ; ⌊_⌋ʷ ; _===ᴸ_ ; table1 ; r7a ; r7b ; r7c ; r7d₀ ; r7d₁)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
-open import Examples.Groups.CCX+HH-3qubit-opus.Lift using (lift₁₂)
-open import Examples.Groups.CCX+HH-3qubit-opus.Toffoli.Coxeter using (coxeter₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.Decode coxeter₁ using (dec ; decʷ ; dec-cong)
-open import Examples.Groups.CCX+HH-3qubit-opus.PresentationO8 using (complete₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.Push using (conj ; pushʷ)
-open import Examples.Groups.CCX+HH-3qubit-opus.TableMatrices
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics
+open import Examples.Groups.CCX+H-3qubit-RS.Lift using (lift₁₂)
+open import Examples.Groups.CCX+H-3qubit-RS.Toffoli.Coxeter using (coxeter₁)
+open import Examples.Groups.CCX+H-3qubit-RS.Decode coxeter₁ using (dec ; decʷ ; dec-cong)
+open import Examples.Groups.CCX+H-3qubit-RS.PresentationO8 using (complete₁)
+open import Examples.Groups.CCX+H-3qubit-RS.Push using (conj ; pushʷ)
+open import Examples.Groups.CCX+H-3qubit-RS.TableMatrices
 
 open PB _===₂⁺_ using (_≈_ ; refl ; sym ; trans ; cong ; assoc ; left-unit ; right-unit ; axiom)
 open SR (PP.word-setoid _===₂⁺_)

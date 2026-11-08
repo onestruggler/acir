@@ -162,6 +162,6 @@ cd gen && python3 errata.py
 ```
 
 An independent formalisation of the same paper in
-[`../CCX+HH-3qubit/`](../CCX+HH-3qubit/ERRATA.md) records the same
+[`../CCX+H-3qubit-Tietze/`](../CCX+H-3qubit-Tietze/ERRATA.md) records the same
 corrections for Sections 1–3, except r_CX and the CCZ decomposition. Those
 two, and Sections 4 and 5, are new here.

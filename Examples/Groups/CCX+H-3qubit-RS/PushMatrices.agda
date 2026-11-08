@@ -10,7 +10,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.PushMatrices where
+module Examples.Groups.CCX+H-3qubit-RS.PushMatrices where
 
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
 open import Quantum.Synthesis.Matrix using (Matrix)
@@ -19,9 +19,9 @@ open import Word.Base using (Word ; ε ; _•_)
 open import Examples.Groups.CCX+HH-TwoLevel.Ring using (D ; _+ᴰ_ ; _*ᴰ_ ; -ᴰ_ ; _≟ᴰ_)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
-open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics
+open import Examples.Groups.CCX+H-3qubit-RS.Decide using (module Over)
 
 open Over _≟ᴰ_ using (eqM-sound)
 

@@ -7,12 +7,12 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Normalization where
+module Examples.Groups.CCX+H-3qubit-Tietze.Normalization where
 
 open import Data.Bool.Base using (Bool ; true ; false)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Core
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Core
 open import Presentation.Base _===_ hiding (_===_ ; _≈_)
 open import Presentation.Properties _===_ using (by-assoc)
 

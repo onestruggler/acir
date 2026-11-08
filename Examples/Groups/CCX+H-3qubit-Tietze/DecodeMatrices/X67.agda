@@ -1,18 +1,18 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X67 where
+module Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X67 where
 
 open import Data.Fin.Base using (zero ; suc)
 open import Data.Nat.Base using (s≤s ; z≤n)
 open import Data.Product.Base using (_,_ )
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.GateMatrices
-open import Examples.Groups.CCX+HH-3qubit.Interpretation
-import Examples.Groups.CCX+HH-3qubit.FrameWords as F
-open import Examples.Groups.CCX+HH-3qubit.Matrix using (module BM ; ⟦_⟧ᴹ)
-open import Examples.Groups.CCX+HH-3qubit.FrameEvaluation using (matrix13 ; e13)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.GateMatrices
+open import Examples.Groups.CCX+H-3qubit-Tietze.Interpretation
+import Examples.Groups.CCX+H-3qubit-Tietze.FrameWords as F
+open import Examples.Groups.CCX+H-3qubit-Tietze.Matrix using (module BM ; ⟦_⟧ᴹ)
+open import Examples.Groups.CCX+H-3qubit-Tietze.FrameEvaluation using (matrix13 ; e13)
 import Examples.Groups.CCX+HH-TwoLevel.Syntactics as T
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS

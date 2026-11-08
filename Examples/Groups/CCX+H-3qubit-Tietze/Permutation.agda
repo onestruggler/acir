@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Permutation where
+module Examples.Groups.CCX+H-3qubit-Tietze.Permutation where
 
 open import Data.Nat.Base using (ℕ ; zero ; suc ; _≤_ ; s≤s)
 open import Data.Empty using (⊥ ; ⊥-elim)
@@ -14,13 +14,13 @@ import Presentation.Properties as PP
 import Examples.Groups.Symmetric.Syntactics as S
 import Examples.Groups.Symmetric.SubPresentation.Semantics as SS
 import Examples.Groups.Symmetric.SubPresentation.SubPres as SP
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B021 using (module braid0 ; module braid1)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B022 using (module braid2)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B023 using (module braid3 ; module braid4 ; module braid5 ; module comm02)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B024 using (module comm03 ; module comm04 ; module comm05 ; module comm06 ; module comm13 ; module comm14)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B025 using (module comm15 ; module comm16 ; module comm24 ; module comm25 ; module comm26 ; module comm35 ; module comm36 ; module comm46 ; module invol0 ; module invol1 ; module invol2)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B026 using (module invol3 ; module invol4 ; module invol5 ; module invol6)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B021 using (module braid0 ; module braid1)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B022 using (module braid2)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B023 using (module braid3 ; module braid4 ; module braid5 ; module comm02)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B024 using (module comm03 ; module comm04 ; module comm05 ; module comm06 ; module comm13 ; module comm14)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B025 using (module comm15 ; module comm16 ; module comm24 ; module comm25 ; module comm26 ; module comm35 ; module comm36 ; module comm46 ; module invol0 ; module invol1 ; module invol2)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B026 using (module invol3 ; module invol4 ; module invol5 ; module invol6)
 
 adjacent : ℕ → Word Gen
 adjacent 0 = t01

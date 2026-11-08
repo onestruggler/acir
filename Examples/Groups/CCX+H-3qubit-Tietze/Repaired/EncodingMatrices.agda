@@ -1,16 +1,16 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Repaired.EncodingMatrices where
+module Examples.Groups.CCX+H-3qubit-Tietze.Repaired.EncodingMatrices where
 
 open import Data.Fin.Base using (zero ; suc)
 open import Data.Product.Base using (_,_ )
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Quantum.Synthesis.Matrix using (_·*·_)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.GateMatrices
-open import Examples.Groups.CCX+HH-3qubit.Core
-open import Examples.Groups.CCX+HH-3qubit.Matrix using (module BM ; ⟦_⟧ᴹ ; matrix-gen ; matrix-ε ; matrix-• ; matrix-sound)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Encoding using (encode ; e)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.GateMatrices
+open import Examples.Groups.CCX+H-3qubit-Tietze.Core
+open import Examples.Groups.CCX+H-3qubit-Tietze.Matrix using (module BM ; ⟦_⟧ᴹ ; matrix-gen ; matrix-ε ; matrix-• ; matrix-sound)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Encoding using (encode ; e)
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring as R
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
 

@@ -19,14 +19,14 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Perm where
+module Examples.Groups.CCX+H-3qubit-RS.Perm where
 
 open import Data.Nat.Base using (ℕ)
 
 open import Examples.Groups.Symmetric.CoxeterFrames public hiding (module Circuits)
 import Examples.Groups.Symmetric.CoxeterFrames as CF
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics using (T)
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics using (T)
 
 module _ {k : ℕ} where
 

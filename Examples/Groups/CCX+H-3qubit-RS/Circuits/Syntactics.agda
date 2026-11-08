@@ -31,7 +31,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Circuits.Syntactics where
+module Examples.Groups.CCX+H-3qubit-RS.Circuits.Syntactics where
 
 open import Data.Nat.Base using (ℕ ; zero ; suc ; _∸_)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_)

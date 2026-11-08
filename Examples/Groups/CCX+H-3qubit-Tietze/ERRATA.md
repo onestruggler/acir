@@ -196,7 +196,7 @@ definition in the intended semantics.
 The full repaired presentation is
 [Repaired/Presentation.agda](Repaired/Presentation.agda), with public
 exports in [Theorems.agda](Theorems.agda). The separate development
-[CCX+HH-3qubit-opus/Theorems.agda](../CCX+HH-3qubit-opus/Theorems.agda)
+[CCX+H-3qubit-RS/Theorems.agda](../CCX+H-3qubit-RS/Theorems.agda)
 also states both repaired group presentations and dyadic independence.
 The formal certificates were checked with Agda 2.8.0 and
 standard-library 2.4, using `--safe` and `--without-K`.

@@ -9,7 +9,7 @@ from fractions import Fraction
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-PREFIX = "Examples.Groups.CCX+HH-3qubit"
+PREFIX = "Examples.Groups.CCX+H-3qubit-Tietze"
 GATES = "X0 X1 X2 Z0 Z1 Z2 CX01 CX02 CX10 CX12 CX20 CX21 CZ01 CZ02 CZ12 CCX01 CCX02 CCX12 K01 K12 SWAP01 SWAP02 SWAP12 CCZ NK H2".split()
 # Words are in matrix-product order: the rightmost gate acts first.
 DEFS = {

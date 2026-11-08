@@ -4,15 +4,15 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Frames where
+module Examples.Groups.CCX+H-3qubit-Tietze.Frames where
 
 open import Data.Fin.Base using (Fin ; zero ; suc)
 import Relation.Binary.PropositionalEquality as Eq
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 import Examples.Groups.Symmetric.Syntactics as S
 import Examples.Groups.Symmetric.SubPresentation.Semantics as SS
-open import Examples.Groups.CCX+HH-3qubit.Syntactics hiding (Gen)
-open import Examples.Groups.CCX+HH-3qubit.Permutation using (decode ; permutation-complete)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics hiding (Gen)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Permutation using (decode ; permutation-complete)
 open import Presentation.Base _===_ hiding (_===_ ; _≈_)
 
 PWord : Set
@@ -27,7 +27,7 @@ s4 = [ ((((S.gate₂ S.σ-gate) S.↥) S.↥) S.↥) S.↥ ]ʷ
 s5 = [ (((((S.gate₂ S.σ-gate) S.↥) S.↥) S.↥) S.↥) S.↥ ]ʷ
 s6 = [ ((((((S.gate₂ S.σ-gate) S.↥) S.↥) S.↥) S.↥) S.↥) S.↥ ]ʷ
 
-p : PWord → Word Examples.Groups.CCX+HH-3qubit.Syntactics.Gen
+p : PWord → Word Examples.Groups.CCX+H-3qubit-Tietze.Syntactics.Gen
 p = (decode 0) ʷ
 
 checked : (u v : PWord) → (∀ i → SS.⟦ u ⟧ i Eq.≡ SS.⟦ v ⟧ i) → p u ≈ p v

@@ -13,7 +13,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Decide where
+module Examples.Groups.CCX+H-3qubit-RS.Decide where
 
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_)
 open import Data.Nat.Base using (ℕ)

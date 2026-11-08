@@ -23,14 +23,14 @@
 -- they send the states, and the frame lemma turns each decoded
 -- generator into its frame (bridge).
 --
--- The argument is CCX+HH-3qubit-opus's Decode, on this development's
+-- The argument is CCX+H-3qubit-RS's Decode, on this development's
 -- rules: its Figure 7 states (101) as m0 m4 t04 ρ = ρ t04 m4 m0, so the
 -- standard instance of (6a) also uses (3c), (1a), (1b) and (2d).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.TwoLevel where
+module Examples.Groups.CCX+H-3qubit-Tietze.TwoLevel where
 
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; if_then_else_)
 import Data.Bool.Base as B
@@ -59,14 +59,14 @@ import Examples.Groups.Symmetric.Syntactics as Sym
 open Sym using (gate₀ ; gate₁ ; gate₂ ; σ-gate ; _↥)
 open import Examples.Groups.Symmetric.CoxeterFrames
 
-open import Examples.Groups.CCX+HH-3qubit.Syntactics hiding (_≈_)
-import Examples.Groups.CCX+HH-3qubit.Permutation as Perm
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics hiding (_≈_)
+import Examples.Groups.CCX+H-3qubit-Tietze.Permutation as Perm
 open Perm using (adjacent)
-import Examples.Groups.CCX+HH-3qubit.Frames as Fm
-open import Examples.Groups.CCX+HH-3qubit.FrameWords
+import Examples.Groups.CCX+H-3qubit-Tietze.Frames as Fm
+open import Examples.Groups.CCX+H-3qubit-Tietze.FrameWords
   using (decode ; dM ; dX ; dK ; fM ; fX ; fK ; fK′)
-import Examples.Groups.CCX+HH-3qubit.GatePermutations as GP
-open import Examples.Groups.CCX+HH-3qubit.States
+import Examples.Groups.CCX+H-3qubit-Tietze.GatePermutations as GP
+open import Examples.Groups.CCX+H-3qubit-Tietze.States
 
 open PB _===_ hiding (_===_)
 open PP _===_ using (by-assoc)

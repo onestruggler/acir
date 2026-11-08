@@ -13,7 +13,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Semantics where
+module Examples.Groups.CCX+H-3qubit-RS.Semantics where
 
 open import Algebra.Bundles using (Group)
 open import Data.Nat.Base using (ℕ)
@@ -31,8 +31,8 @@ import Examples.Groups.CCX+HH-TwoLevel.Scaled.Ring as RL
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Presentation as LP
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (RingD)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Encoding
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Encoding
 
 private
   variable

@@ -19,20 +19,20 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.MainTheorem where
+module Examples.Groups.CCX+H-3qubit-Tietze.MainTheorem where
 
 open import Word.Base using (Word ; WRel)
 import Presentation.Base as PB
 open import Presentation.Definitions using (_IsPresentationOf_)
 
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics using (Gen ; _===_)
-open import Examples.Groups.CCX+HH-3qubit.Circuits.Syntactics public
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics using (Gen ; _===_)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Syntactics public
   using (Circuit) renaming (_VRel,_===_ to _CRel,_===_)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation public using (ToffoliHadamard)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Presentation public using (ToffoliHadamard)
 open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Unitary public using (UMat ; _≈ᵁ_)
-import Examples.Groups.CCX+HH-3qubit.Circuits.Presentation as PC
-import Examples.Groups.CCX+HH-3qubit.DOmega as Ω
-import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation as P
+import Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Presentation as PC
+import Examples.Groups.CCX+H-3qubit-Tietze.DOmega as Ω
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Presentation as P
 
 ------------------------------------------------------------------------
 -- Circuits on three wires

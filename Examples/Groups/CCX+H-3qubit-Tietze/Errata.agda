@@ -1,16 +1,16 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Errata where
+module Examples.Groups.CCX+H-3qubit-Tietze.Errata where
 
 open import Data.Empty using (⊥)
 open import Data.Integer.Base using (+_ ; -[1+_])
 open import Data.Bool.Base using (true ; false)
 open import Data.Vec.Base using ([] ; _∷_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≢_)
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.GateMatrices
-open import Examples.Groups.CCX+HH-3qubit.Interpretation
-open import Examples.Groups.CCX+HH-3qubit.Evaluation
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.GateMatrices
+open import Examples.Groups.CCX+H-3qubit-Tietze.Interpretation
+open import Examples.Groups.CCX+H-3qubit-Tietze.Evaluation
 
 -- Witness: matrix entry (1, 1).
 r033-false : ⟦ CCX01 ⟧ ~ ⟦ SWAP12 • CCX02 • SWAP02 ⟧ → ⊥

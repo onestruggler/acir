@@ -7,7 +7,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Repaired.Presentation where
+module Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Presentation where
 
 open import Algebra.Bundles using (Group ; Monoid)
 open import Algebra.Morphism.Structures using (module MonoidMorphisms)
@@ -18,15 +18,15 @@ open import Presentation.Definitions
   using (_IsMonoidPresentationOf_ ; _IsPresentationOf_ ; monoidPresentation⇒presentation)
 import Presentation.Properties as PP
 import Presentation.Base as PB
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Repaired.GroupLike using (grouplike)
-open import Examples.Groups.CCX+HH-3qubit.Matrix using (⟦_⟧ᴹ ; module BM)
-import Examples.Groups.CCX+HH-3qubit.Interpretation as I
-import Examples.Groups.CCX+HH-3qubit.Repaired.Encoding as E
-import Examples.Groups.CCX+HH-3qubit.Repaired.EncodingMatrices as EM
-import Examples.Groups.CCX+HH-3qubit.Repaired.DecodingMatrices as DM
-import Examples.Groups.CCX+HH-3qubit.Repaired.DyadicCompleteness as DC
-import Examples.Groups.CCX+HH-3qubit.Repaired.TwoLevelScaled as T
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.GroupLike using (grouplike)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Matrix using (⟦_⟧ᴹ ; module BM)
+import Examples.Groups.CCX+H-3qubit-Tietze.Interpretation as I
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Encoding as E
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.EncodingMatrices as EM
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.DecodingMatrices as DM
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.DyadicCompleteness as DC
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.TwoLevelScaled as T
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Presentation as P₀

@@ -21,11 +21,11 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates using (G₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics using (_===₁⁺_)
-open import Examples.Groups.CCX+HH-3qubit-opus.Perm using (Coxeter)
+open import Examples.Groups.CCX+H-3qubit-RS.Gates using (G₁)
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics using (_===₁⁺_)
+open import Examples.Groups.CCX+H-3qubit-RS.Perm using (Coxeter)
 
-module Examples.Groups.CCX+HH-3qubit-opus.Decode (cox : Coxeter _===₁⁺_) where
+module Examples.Groups.CCX+H-3qubit-RS.Decode (cox : Coxeter _===₁⁺_) where
 
 open import Data.Empty.Irrelevant using (⊥-elim)
 open import Data.Fin.Base using (Fin ; zero ; suc ; toℕ ; _<_)
@@ -46,11 +46,11 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 open import Examples.Groups.CCX+HH-TwoLevel.Syntactics as L using (Gen ; M-gen ; X-gen ; K-gen)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Encoding using (lt)
-open import Examples.Groups.CCX+HH-3qubit-opus.Perm hiding (Coxeter)
-open import Examples.Groups.CCX+HH-3qubit-opus.Check using (all8 ; below ; eqᵇ ; agree ; everywhere ; distinct)
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Encoding using (lt)
+open import Examples.Groups.CCX+H-3qubit-RS.Perm hiding (Coxeter)
+open import Examples.Groups.CCX+H-3qubit-RS.Check using (all8 ; below ; eqᵇ ; agree ; everywhere ; distinct)
 import Examples.Groups.Symmetric.Syntactics as Sym
 open Sym using (gate₂ ; σ-gate ; _↥)
 

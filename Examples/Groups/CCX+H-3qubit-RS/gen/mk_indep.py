@@ -25,7 +25,7 @@ L.append('''--------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Independence where
+module Examples.Groups.CCX+H-3qubit-RS.Independence where
 
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_)
 open import Data.Nat.Base using (ℕ)
@@ -42,13 +42,13 @@ open import Examples.Groups.CCX+HH-TwoLevel.Ring using (D ; RingD ; _+ᴰ_ ; _*�
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 import Examples.Groups.CCX+HH-TwoLevel.Semantics as S1
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
-open import Examples.Groups.CCX+HH-3qubit-opus.Soundness using (sound₀ ; sound₇ ; soundᴷ)
-import Examples.Groups.CCX+HH-3qubit-opus.Congruence as C
-open import Examples.Groups.CCX+HH-3qubit-opus.Entry00 using (exp00)
-open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics
+open import Examples.Groups.CCX+H-3qubit-RS.Soundness using (sound₀ ; sound₇ ; soundᴷ)
+import Examples.Groups.CCX+H-3qubit-RS.Congruence as C
+open import Examples.Groups.CCX+H-3qubit-RS.Entry00 using (exp00)
+open import Examples.Groups.CCX+H-3qubit-RS.Decide using (module Over)
 
 open Over _≟ᴰ_ using (eqM-sound)
 

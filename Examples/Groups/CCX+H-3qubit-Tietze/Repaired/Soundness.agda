@@ -6,14 +6,14 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Repaired.Soundness where
+module Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Soundness where
 
 open import Data.Product.Base using (_,_)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.GateMatrices
-open import Examples.Groups.CCX+HH-3qubit.Interpretation
-import Examples.Groups.CCX+HH-3qubit.Soundness as Original
-import Examples.Groups.CCX+HH-3qubit.Repaired.KMatrix as K
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.GateMatrices
+open import Examples.Groups.CCX+H-3qubit-Tietze.Interpretation
+import Examples.Groups.CCX+H-3qubit-Tietze.Soundness as Original
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.KMatrix as K
 import Examples.Groups.Real-Clifford+CH.Semantics.Scaled as S
 import Normalization.StarInterp as SI
 

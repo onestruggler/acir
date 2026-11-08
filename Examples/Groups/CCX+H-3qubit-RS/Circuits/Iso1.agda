@@ -21,7 +21,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Circuits.Iso1 where
+module Examples.Groups.CCX+H-3qubit-RS.Circuits.Iso1 where
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Morphism.Structures using (module GroupMorphisms)
@@ -32,15 +32,15 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 import Presentation.Base as PB
 open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Circuits.Syntactics using (module Σ₁ ; X-gate ; CX-gate ; K-gate ; CCX-gate ; NK-gate ; CCZ-gate)
+open import Examples.Groups.CCX+H-3qubit-RS.Circuits.Syntactics using (module Σ₁ ; X-gate ; CX-gate ; K-gate ; CCX-gate ; NK-gate ; CCZ-gate)
 open Σ₁
-import Examples.Groups.CCX+HH-3qubit-opus.Syntactics as P
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates using (G₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics using (⟦_⟧)
-open import Examples.Groups.CCX+HH-3qubit-opus.PresentationO8 using (complete₁ ; grouplike₁)
+import Examples.Groups.CCX+H-3qubit-RS.Syntactics as P
+open import Examples.Groups.CCX+H-3qubit-RS.Gates using (G₁)
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics using (⟦_⟧)
+open import Examples.Groups.CCX+H-3qubit-RS.PresentationO8 using (complete₁ ; grouplike₁)
 open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_ ; _≟ᴰ_)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
-open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
+open import Examples.Groups.CCX+H-3qubit-RS.Decide using (module Over)
 
 open Over _≟ᴰ_ using (eqM-sound)
 

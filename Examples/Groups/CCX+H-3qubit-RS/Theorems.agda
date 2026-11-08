@@ -12,7 +12,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Theorems where
+module Examples.Groups.CCX+H-3qubit-RS.Theorems where
 
 open import Data.Product.Base using (_×_)
 open import Relation.Binary.PropositionalEquality using (_≡_)
@@ -22,14 +22,14 @@ open import Word.Base using (Word ; _•_)
 import Presentation.Base as PB
 open import Presentation.Definitions using (_IsPresentationOf_)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics
 
-import Examples.Groups.CCX+HH-3qubit-opus.SoundnessH as Sound
-import Examples.Groups.CCX+HH-3qubit-opus.PresentationO8 as O8
-import Examples.Groups.CCX+HH-3qubit-opus.PresentationH as H
-import Examples.Groups.CCX+HH-3qubit-opus.Independence as I
+import Examples.Groups.CCX+H-3qubit-RS.SoundnessH as Sound
+import Examples.Groups.CCX+H-3qubit-RS.PresentationO8 as O8
+import Examples.Groups.CCX+H-3qubit-RS.PresentationH as H
+import Examples.Groups.CCX+H-3qubit-RS.Independence as I
 
 ------------------------------------------------------------------------
 -- O(8, 𝔻): circuits over Σ₁ = 𝒟 ∪ {K_[0,1,2,3], CCZ}

@@ -336,8 +336,8 @@ uses no three-wire rule, the paper's Remark~14, which is proved as
 References are to arXiv:2407.11152v3. Qubit~0 is the most significant
 bit, products are matrix products, and $N = K_{[0,1,2,3]}$, the gate
 $H\otimes H$ on qubits~1 and~2 when qubit~0 is~0. Every correction is
-checked on the matrices in \path{CCX+HH-3qubit/Errata}, and
-\path{CCX+HH-3qubit/ERRATA.md} gives each with its matrix witness.
+checked on the matrices in \path{CCX+H-3qubit-Tietze/Errata}, and
+\path{CCX+H-3qubit-Tietze/ERRATA.md} gives each with its matrix witness.
 
 \paragraph{The omitted relation $r_K$.} Section~5.5 introduces the
 circuit generators with $K_{1,2} = K_{[4,5,6,7]}\,X_0\,K_{[4,5,6,7]}\,X_0$,
@@ -349,9 +349,9 @@ permutation matrix. Reading each Toffoli-K generator $g$ as $RgR$, and
 $N$ and $CCZ$ as themselves, satisfies the corrected Figures~4 and~7,
 but the two sides of $r_K$ differ at entry $(0,0)$: $-\frac14$ against
 $\frac12$. So $R_1$ is not complete for $O_8(\Z[\frac12])$; the
-development keeps $r_K$ (\path{CCX+HH-3qubit/Repaired/Syntactics}) and
+development keeps $r_K$ (\path{CCX+H-3qubit-Tietze/Repaired/Syntactics}) and
 checks the countermodel over $\Z/17\Z$
-(\path{CCX+HH-3qubit/MissingK}). Whether $r_K$ follows once Figure~8 is
+(\path{CCX+H-3qubit-Tietze/MissingK}). Whether $r_K$ follows once Figure~8 is
 added is open.
 
 \paragraph{Five false formulas.} (33) ends with $\sigma_{1,2}$, not

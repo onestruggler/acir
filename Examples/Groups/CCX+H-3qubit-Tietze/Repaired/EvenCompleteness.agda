@@ -8,17 +8,17 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Repaired.EvenCompleteness where
+module Examples.Groups.CCX+H-3qubit-Tietze.Repaired.EvenCompleteness where
 
 open import Data.Bool.Base using (false ; true)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Matrix using (⟦_⟧ᴹ)
-import Examples.Groups.CCX+HH-3qubit.Normalization as N
-open import Examples.Groups.CCX+HH-3qubit.Repaired.DyadicCompleteness
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Matrix using (⟦_⟧ᴹ)
+import Examples.Groups.CCX+H-3qubit-Tietze.Normalization as N
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.DyadicCompleteness
   using (matrix-sound ; completeness)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Even public
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Even public
   using (even ; FromEven)
 open import Presentation.Base _===_ hiding (_===_ ; _≈_)
 

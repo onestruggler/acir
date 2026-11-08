@@ -87,7 +87,7 @@ syn = HEAD + '''-- Amy, Ross and Wesley's presentations R₁⁺ and R₂⁺ as c
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Circuits.Syntactics where
+module Examples.Groups.CCX+H-3qubit-RS.Circuits.Syntactics where
 
 open import Data.Nat.Base using (ℕ ; zero ; suc ; _∸_)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_)
@@ -308,7 +308,7 @@ def iso(lvl):
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Circuits.Iso%d where
+module Examples.Groups.CCX+H-3qubit-RS.Circuits.Iso%d where
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Morphism.Structures using (module GroupMorphisms)
@@ -319,25 +319,25 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 import Presentation.Base as PB
 open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Circuits.Syntactics using (module %s ; X-gate ; CX-gate ; K-gate ; CCX-gate ; NK-gate ; CCZ-gate%s)
+open import Examples.Groups.CCX+H-3qubit-RS.Circuits.Syntactics using (module %s ; X-gate ; CX-gate ; K-gate ; CCX-gate ; NK-gate ; CCZ-gate%s)
 open %s
-import Examples.Groups.CCX+HH-3qubit-opus.Syntactics as P
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates using (%s)
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics using (%s)
+import Examples.Groups.CCX+H-3qubit-RS.Syntactics as P
+open import Examples.Groups.CCX+H-3qubit-RS.Gates using (%s)
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics using (%s)
 ''' % (lvl, S, ' ; H-gate' if two else '', S, G, '⟦_⟧ᴴ' if two else '⟦_⟧')
     if two:
-        out += '''open import Examples.Groups.CCX+HH-3qubit-opus.PresentationH using (complete₂ ; grouplike₂)
+        out += '''open import Examples.Groups.CCX+H-3qubit-RS.PresentationH using (complete₂ ; grouplike₂)
 open import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics using (actV ; set₁ ; set₂)
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring as R2
-open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
+open import Examples.Groups.CCX+H-3qubit-RS.Decide using (module Over)
 
 open Over R2._≟ᴰ_ using (eqM-sound)
 '''
     else:
-        out += '''open import Examples.Groups.CCX+HH-3qubit-opus.PresentationO8 using (complete₁ ; grouplike₁)
+        out += '''open import Examples.Groups.CCX+H-3qubit-RS.PresentationO8 using (complete₁ ; grouplike₁)
 open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_ ; _≟ᴰ_)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
-open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
+open import Examples.Groups.CCX+H-3qubit-RS.Decide using (module Over)
 
 open Over _≟ᴰ_ using (eqM-sound)
 '''

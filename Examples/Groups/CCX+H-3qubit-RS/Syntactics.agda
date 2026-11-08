@@ -44,13 +44,13 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Syntactics where
+module Examples.Groups.CCX+H-3qubit-RS.Syntactics where
 
 open import Data.Nat.Base using (ℕ ; zero ; suc ; _∸_)
 
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates public
+open import Examples.Groups.CCX+H-3qubit-RS.Gates public
 
 private
   variable

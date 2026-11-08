@@ -1,17 +1,17 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.PermProofs.B008 where
+module Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B008 where
 
-import Examples.Groups.CCX+HH-3qubit.Kit as K using (CCX01 ; CCX02 ; CCX12 ; CX01 ; CX02 ; CX10 ; CX12 ; CX20 ; CX21 ; SWAP02 ; X0 ; X1 ; X2 ; _•_ ; _≈_ ; by-assoc-and ; module Eq ; refl ; sym ; trans ; under ; ε)
+import Examples.Groups.CCX+H-3qubit-Tietze.Kit as K using (CCX01 ; CCX02 ; CCX12 ; CX01 ; CX02 ; CX10 ; CX12 ; CX20 ; CX21 ; SWAP02 ; X0 ; X1 ; X2 ; _•_ ; _≈_ ; by-assoc-and ; module Eq ; refl ; sym ; trans ; under ; ε)
 open K
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B000 using (module KB0006 ; module KB0009 ; module KB0010 ; module KB0026 ; module KB0028 ; module KB0029 ; module KB0035 ; module KB0040 ; module KB0046 ; module KB0118 ; module KB0121 ; module KB0129 ; module KB0139 ; module KB0153 ; module KB0164 ; module KB0307)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B001 using (module KB0022 ; module KB0038 ; module KB0119 ; module KB0124 ; module KB0126 ; module KB0157 ; module KB0159 ; module KB0165 ; module KB0176 ; module KB0282 ; module KB0328)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B002 using (module KB0005 ; module KB0018 ; module KB0019 ; module KB0045 ; module KB0141 ; module KB0155 ; module KB0156 ; module KB0189)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B003 using (module KB0044 ; module KB0117 ; module KB0131 ; module KB0135 ; module KB0180 ; module KB0190 ; module KB0342)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B004 using (module KB0333 ; module KB0335 ; module KB0623)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B006 using (module KB0076 ; module KB0085 ; module KB0093 ; module KB0104 ; module KB0223 ; module KB0309 ; module KB0316 ; module KB0814)
-open import Examples.Groups.CCX+HH-3qubit.PermProofs.B007 using (module KB0198 ; module KB0318 ; module KB0323 ; module KB0324)
-open import Examples.Groups.CCX+HH-3qubit.Tietze.B004 using (module drel129)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B000 using (module KB0006 ; module KB0009 ; module KB0010 ; module KB0026 ; module KB0028 ; module KB0029 ; module KB0035 ; module KB0040 ; module KB0046 ; module KB0118 ; module KB0121 ; module KB0129 ; module KB0139 ; module KB0153 ; module KB0164 ; module KB0307)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B001 using (module KB0022 ; module KB0038 ; module KB0119 ; module KB0124 ; module KB0126 ; module KB0157 ; module KB0159 ; module KB0165 ; module KB0176 ; module KB0282 ; module KB0328)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B002 using (module KB0005 ; module KB0018 ; module KB0019 ; module KB0045 ; module KB0141 ; module KB0155 ; module KB0156 ; module KB0189)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B003 using (module KB0044 ; module KB0117 ; module KB0131 ; module KB0135 ; module KB0180 ; module KB0190 ; module KB0342)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B004 using (module KB0333 ; module KB0335 ; module KB0623)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B006 using (module KB0076 ; module KB0085 ; module KB0093 ; module KB0104 ; module KB0223 ; module KB0309 ; module KB0316 ; module KB0814)
+open import Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B007 using (module KB0198 ; module KB0318 ; module KB0323 ; module KB0324)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B004 using (module drel129)
 
 module KB0383 where
 

@@ -4,9 +4,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Invertible where
+module Examples.Groups.CCX+H-3qubit-Tietze.Invertible where
 
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
 open import Presentation.Base _===_ hiding (_===_ ; _≈_)
 open import Presentation.Properties _===_ using (word-setoid ; by-assoc)
 import Presentation.Properties as PP

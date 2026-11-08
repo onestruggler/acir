@@ -29,7 +29,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Circuits.Syntactics where
+module Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Syntactics where
 
 open import Data.Nat using (ℕ)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_)

@@ -8,7 +8,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.DecMatrices where
+module Examples.Groups.CCX+H-3qubit-RS.DecMatrices where
 
 open import Data.Fin using (#_)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
@@ -19,10 +19,10 @@ open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 import Examples.Groups.CCX+HH-TwoLevel.Semantics as S1
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Encoding
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
-open import Examples.Groups.CCX+HH-3qubit-opus.Toffoli.Coxeter using (coxeter₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.Decode coxeter₁ using (dec)
+open import Examples.Groups.CCX+H-3qubit-RS.Encoding
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics
+open import Examples.Groups.CCX+H-3qubit-RS.Toffoli.Coxeter using (coxeter₁)
+open import Examples.Groups.CCX+H-3qubit-RS.Decode coxeter₁ using (dec)
 
 opaque
   unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_

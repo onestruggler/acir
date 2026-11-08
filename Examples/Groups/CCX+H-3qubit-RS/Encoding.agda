@@ -18,7 +18,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Encoding where
+module Examples.Groups.CCX+H-3qubit-RS.Encoding where
 
 open import Data.Bool.Base using (T)
 open import Data.Fin using (#_)
@@ -32,7 +32,7 @@ open import Examples.Groups.CCX+HH-TwoLevel.Syntactics as L
 open import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics
   using (Genᴸ ; ⌊_⌋ʷ ; IH)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
 
 private
   variable

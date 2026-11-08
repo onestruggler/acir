@@ -21,13 +21,13 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Perm using (Coxeter)
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Perm using (Coxeter)
 import Presentation.Base as PB
 open import Word.Base using ([_]ʷ ; ε ; _•_)
 
-module Examples.Groups.CCX+HH-3qubit-opus.Completeness where
+module Examples.Groups.CCX+H-3qubit-RS.Completeness where
 
 open import Algebra.Bundles using (Group)
 open import Data.Fin.Base using (Fin ; zero ; suc ; toℕ)
@@ -54,10 +54,10 @@ open import Examples.Groups.CCX+HH-TwoLevel.Reduction {8} using () renaming (sou
 import Examples.Groups.CCX+HH-TwoLevel.Presentation {8} as LP
 import Examples.Groups.CCX+HH-TwoLevel.Conjugation {8} as Conj
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Encoding
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
-open import Examples.Groups.CCX+HH-3qubit-opus.SoundnessH using (sound₁⁺*)
-open import Examples.Groups.CCX+HH-3qubit-opus.StdMatrices
+open import Examples.Groups.CCX+H-3qubit-RS.Encoding
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics
+open import Examples.Groups.CCX+H-3qubit-RS.SoundnessH using (sound₁⁺*)
+open import Examples.Groups.CCX+H-3qubit-RS.StdMatrices
 
 open PB _===₁⁺_ using (_≈_ ; refl ; sym ; trans ; cong ; assoc ; left-unit ; right-unit ; axiom)
 
@@ -83,7 +83,7 @@ record Derived : Set where
 module Complete (D : Derived) where
 
   open Derived D
-  open import Examples.Groups.CCX+HH-3qubit-opus.Decode coxeter
+  open import Examples.Groups.CCX+H-3qubit-RS.Decode coxeter
 
   ----------------------------------------------------------------------
   -- Decoding an encoded circuit

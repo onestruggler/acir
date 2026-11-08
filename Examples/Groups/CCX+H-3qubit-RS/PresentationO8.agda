@@ -14,7 +14,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.PresentationO8 where
+module Examples.Groups.CCX+H-3qubit-RS.PresentationO8 where
 
 open import Algebra.Bundles using (Group)
 open import Data.Empty using (⊥-elim)
@@ -42,15 +42,15 @@ open import Examples.Groups.CCX+HH-TwoLevel.Reduction {8} using () renaming (sou
 import Examples.Groups.CCX+HH-TwoLevel.Presentation {8} as LP
 import Examples.Groups.CCX+HH-TwoLevel.Conjugation {8} as Conj
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
-open import Examples.Groups.CCX+HH-3qubit-opus.SoundnessH using (sound₁⁺*)
-open import Examples.Groups.CCX+HH-3qubit-opus.Completeness using (module Complete)
-open import Examples.Groups.CCX+HH-3qubit-opus.Derived using (derived ; invol₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.Toffoli.Coxeter using (coxeter₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.Decode coxeter₁ using (dec ; decʷ ; dec-cong)
-open import Examples.Groups.CCX+HH-3qubit-opus.DecMatrices
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics
+open import Examples.Groups.CCX+H-3qubit-RS.SoundnessH using (sound₁⁺*)
+open import Examples.Groups.CCX+H-3qubit-RS.Completeness using (module Complete)
+open import Examples.Groups.CCX+H-3qubit-RS.Derived using (derived ; invol₁)
+open import Examples.Groups.CCX+H-3qubit-RS.Toffoli.Coxeter using (coxeter₁)
+open import Examples.Groups.CCX+H-3qubit-RS.Decode coxeter₁ using (dec ; decʷ ; dec-cong)
+open import Examples.Groups.CCX+H-3qubit-RS.DecMatrices
 
 open PB _===₁⁺_ using (_≈_)
 

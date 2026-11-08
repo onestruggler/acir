@@ -15,10 +15,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Kit where
+module Examples.Groups.CCX+H-3qubit-Tietze.Kit where
 
 open import Data.Fin.Base public using (zero ; suc)
-open import Examples.Groups.CCX+HH-3qubit.Syntactics public
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics public
   using (_≈_ ; _•_ ; ε
         ; CCX01 ; CCX02 ; CCX12 ; CCZ ; CX01 ; CX02 ; CX10 ; CX12 ; CX20 ; CX21
         ; CZ01 ; CZ02 ; CZ12 ; K01 ; K12 ; NK ; SWAP01 ; SWAP02 ; SWAP12
@@ -32,7 +32,7 @@ open import Examples.Groups.CCX+HH-3qubit.Syntactics public
         ; r041 ; r042 ; r043 ; r044 ; r045 ; r046 ; r083 ; r084 ; r085 ; r086
         ; r087 ; r088 ; r089 ; r090 ; r091 ; r092 ; r093 ; r094 ; r095 ; r096
         ; r097 ; r098 ; r099 ; r100 ; r101)
-open import Examples.Groups.CCX+HH-3qubit.Engine public
+open import Examples.Groups.CCX+H-3qubit-Tietze.Engine public
   using (refl ; sym ; trans ; cong ; axiom ; left-unit ; right-unit
         ; by-assoc ; by-assoc-and ; under)
 

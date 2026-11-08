@@ -8,7 +8,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Lift where
+module Examples.Groups.CCX+H-3qubit-RS.Lift where
 
 open import Data.Nat.Base using (ℕ ; suc)
 
@@ -16,8 +16,8 @@ open import Word.Base using (Word)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
 
 private
   variable

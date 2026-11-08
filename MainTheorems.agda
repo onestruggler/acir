@@ -504,8 +504,8 @@ module Clement-Real-Clifford+CH where
 ------------------------------------------------------------------------
 -- Amy, Ross and Wesley (2024): three-qubit Toffoli-Hadamard circuits
 --
--- Home: Examples.Groups.CCX+HH-3qubit.MainTheorem.  The relations of
--- Figures 4, 7 and 8, corrected and with the definition of K that
+-- Home: Examples.Groups.CCX+H-3qubit-Tietze.MainTheorem.  The relations
+-- of Figures 4, 7 and 8, corrected and with the definition of K that
 -- Section 5.5 uses but the figures omit, present L₈, the group of
 -- 3-qubit Toffoli-Hadamard operators (scaled dyadic orthogonal 8 × 8
 -- matrices), as circuits over Circuit.Base on three wires and over the
@@ -513,7 +513,7 @@ module Clement-Real-Clifford+CH where
 
 module Amy-Ross-Wesley where
 
-  open import Examples.Groups.CCX+HH-3qubit.MainTheorem as M
+  open import Examples.Groups.CCX+H-3qubit-Tietze.MainTheorem as M
     using ( Circuit ; _CRel,_===_ ; ToffoliHadamard ; ⟦_⟧ ; _≈ᵁ_ ; ⊢_≈_
           ; Wordᴾ ; _===ᴾ_ ; ⟦_⟧ᴾ ; ⊢ᴾ_≈_ )
 

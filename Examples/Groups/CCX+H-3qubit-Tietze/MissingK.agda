@@ -1,15 +1,15 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.MissingK where
+module Examples.Groups.CCX+H-3qubit-Tietze.MissingK where
 
 open import Data.Bool.Base using (true ; false)
 open import Data.Empty using (⊥)
 open import Data.Product.Base using (_,_)
 open import Data.Vec.Base using ([] ; _∷_)
 import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.MissingK.Model
-open import Examples.Groups.CCX+HH-3qubit.MissingK.Evaluation
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Model
+open import Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluation
 import Presentation.Base as PB
 
 axiom-sound : ∀ {w v} → w ===ᴰ v → Ext.⟦ w ⟧ ≐ Ext.⟦ v ⟧

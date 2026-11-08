@@ -1,7 +1,7 @@
 -- Figures 4, 7 and 8 of arXiv:2407.11152v3. See README.md for corrections.
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Syntactics where
+module Examples.Groups.CCX+H-3qubit-Tietze.Syntactics where
 
 open import Word.Base public
 import Presentation.Base as PB

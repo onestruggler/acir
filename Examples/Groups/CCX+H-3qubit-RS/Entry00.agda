@@ -9,7 +9,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Entry00 where
+module Examples.Groups.CCX+H-3qubit-RS.Entry00 where
 
 open import Data.Nat.Base using (ℕ)
 open import Data.Vec.Base using (head)

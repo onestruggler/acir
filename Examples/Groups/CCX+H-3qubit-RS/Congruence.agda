@@ -8,7 +8,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Congruence where
+module Examples.Groups.CCX+H-3qubit-RS.Congruence where
 
 open import Relation.Binary.PropositionalEquality
 

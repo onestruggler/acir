@@ -21,7 +21,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.DOmega where
+module Examples.Groups.CCX+H-3qubit-Tietze.DOmega where
 
 open import Data.Product.Base using (proj₁ ; proj₂)
 open import Relation.Binary.PropositionalEquality using (refl)
@@ -29,11 +29,11 @@ open import Relation.Binary.PropositionalEquality using (refl)
 open import Presentation.Definitions using (_IsSubPresentationOf_)
 import Presentation.Embedding as PE
 
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics using (_===_)
-import Examples.Groups.CCX+HH-3qubit.Circuits.Syntactics as C
-import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation as P
-import Examples.Groups.CCX+HH-3qubit.Circuits.Presentation as PC
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation using (ToffoliHadamard)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics using (_===_)
+import Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Syntactics as C
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Presentation as P
+import Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Presentation as PC
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Presentation using (ToffoliHadamard)
 import Examples.Groups.Real-Clifford+CH-TwoLevel.DOmega as RΩ
 open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics using (U)
 

@@ -59,7 +59,7 @@ out = ['''----------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Derived where
+module Examples.Groups.CCX+H-3qubit-RS.Derived where
 
 open import Data.List.Base using (List ; [] ; _∷_)
 import Relation.Binary.PropositionalEquality as Eq
@@ -67,19 +67,19 @@ import Relation.Binary.PropositionalEquality as Eq
 open import Word.Base using ([_]ʷ ; ε ; _•_)
 import Presentation.Base as PB
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Gates
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Lift using (lift₀₁)
-open import Examples.Groups.CCX+HH-3qubit-opus.Completeness using (Derived)
-import Examples.Groups.CCX+HH-3qubit-opus.Toffoli.Base as B0
-import Examples.Groups.CCX+HH-3qubit-opus.Toffoli.Lemmas as L0
-open import Examples.Groups.CCX+HH-3qubit-opus.Toffoli.Coxeter using (coxeter₁)
-import Examples.Groups.CCX+HH-3qubit-opus.Engine
+open import Examples.Groups.CCX+H-3qubit-RS.Gates
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Lift using (lift₀₁)
+open import Examples.Groups.CCX+H-3qubit-RS.Completeness using (Derived)
+import Examples.Groups.CCX+H-3qubit-RS.Toffoli.Base as B0
+import Examples.Groups.CCX+H-3qubit-RS.Toffoli.Lemmas as L0
+open import Examples.Groups.CCX+H-3qubit-RS.Toffoli.Coxeter using (coxeter₁)
+import Examples.Groups.CCX+H-3qubit-RS.Engine
 
 open PB _===₁⁺_ using (_≈_ ; sym ; axiom)
 
 private
-  module E1 = Examples.Groups.CCX+HH-3qubit-opus.Engine _===₁⁺_ code code-inj
+  module E1 = Examples.Groups.CCX+H-3qubit-RS.Engine _===₁⁺_ code code-inj
   open E1 using (Eqn ; derive ; rw ; to≈ ; of⁼ ; ax⁼ ; sym⁼)
 
   sq0 sq1 sq2 e83 : Eqn

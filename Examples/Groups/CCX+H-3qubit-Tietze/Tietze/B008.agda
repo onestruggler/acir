@@ -1,15 +1,15 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Tietze.B008 where
+module Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B008 where
 
-import Examples.Groups.CCX+HH-3qubit.Kit as K using (CCX01 ; CCX02 ; CCX12 ; CX01 ; CX02 ; CX10 ; CX12 ; CX20 ; CX21 ; K12 ; SWAP01 ; SWAP02 ; SWAP12 ; X0 ; X1 ; Z0 ; Z1 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; module Eq ; r009 ; r014 ; r021 ; r023 ; r029 ; r030 ; r032 ; r042 ; r044 ; refl ; sym ; trans ; under ; ε)
+import Examples.Groups.CCX+H-3qubit-Tietze.Kit as K using (CCX01 ; CCX02 ; CCX12 ; CX01 ; CX02 ; CX10 ; CX12 ; CX20 ; CX21 ; K12 ; SWAP01 ; SWAP02 ; SWAP12 ; X0 ; X1 ; Z0 ; Z1 ; _•_ ; _≈_ ; axiom ; by-assoc-and ; module Eq ; r009 ; r014 ; r021 ; r023 ; r029 ; r030 ; r032 ; r042 ; r044 ; refl ; sym ; trans ; under ; ε)
 open K
-open import Examples.Groups.CCX+HH-3qubit.Tietze.B000 using (module drel46 ; module elim_CX12 ; module elim_SWAP01 ; module elim_SWAP02 ; module symmetry_CX_e)
-open import Examples.Groups.CCX+HH-3qubit.Tietze.B002 using (module drel137 ; module drel65)
-open import Examples.Groups.CCX+HH-3qubit.Tietze.B003 using (module bifunct_Z_SWAP_a ; module drel30)
-open import Examples.Groups.CCX+HH-3qubit.Tietze.B004 using (module elim_CCX2)
-open import Examples.Groups.CCX+HH-3qubit.Tietze.B006 using (module drel78)
-open import Examples.Groups.CCX+HH-3qubit.Tietze.B007 using (module drel79 ; module drel94)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B000 using (module drel46 ; module elim_CX12 ; module elim_SWAP01 ; module elim_SWAP02 ; module symmetry_CX_e)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B002 using (module drel137 ; module drel65)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B003 using (module bifunct_Z_SWAP_a ; module drel30)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B004 using (module elim_CCX2)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B006 using (module drel78)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B007 using (module drel79 ; module drel94)
 
 module drel80 where
 

@@ -13,7 +13,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Circuits.Presentation where
+module Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Presentation where
 
 import Algebra.Morphism.Construct.Composition as Compose
 open import Algebra.Bundles using (Group)
@@ -22,9 +22,9 @@ open import Word.Base using (_ʷ)
 
 open import Presentation.Definitions using (_IsPresentationOf_)
 
-open import Examples.Groups.CCX+HH-3qubit.Circuits.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Circuits.Iso using (ι ; grouplike ; circuits≅paper)
-import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation as P
+open import Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Iso using (ι ; grouplike ; circuits≅paper)
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Presentation as P
 open P using (ToffoliHadamard)
 
 private

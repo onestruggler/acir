@@ -14,14 +14,14 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Repaired.Even where
+module Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Even where
 
 open import Data.Bool.Base using (false ; true)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Matrix using (⟦_⟧ᴹ)
-import Examples.Groups.CCX+HH-3qubit.Normalization as N
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Matrix using (⟦_⟧ᴹ)
+import Examples.Groups.CCX+H-3qubit-Tietze.Normalization as N
 open import Presentation.Base _===_ hiding (_===_ ; _≈_)
 
 even : ∀ {w} (nf : N.Normal w) → N.Normal.odd nf ≡ false →

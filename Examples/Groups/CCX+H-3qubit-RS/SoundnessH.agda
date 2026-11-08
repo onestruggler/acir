@@ -10,7 +10,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.SoundnessH where
+module Examples.Groups.CCX+H-3qubit-RS.SoundnessH where
 
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_)
 open import Data.Nat.Base using (ℕ ; suc)
@@ -28,12 +28,12 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (RingD)
 open import Examples.Groups.CCX+HH-TwoLevel.Ring using () renaming (RingD to RingD₁)
 open import Quantum.Synthesis.Matrix using (_·*·_)
 
-open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
-open import Examples.Groups.CCX+HH-3qubit-opus.Encoding
-open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
-open import Examples.Groups.CCX+HH-3qubit-opus.Soundness
-import Examples.Groups.CCX+HH-3qubit-opus.Congruence as C
-open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
+open import Examples.Groups.CCX+H-3qubit-RS.Syntactics
+open import Examples.Groups.CCX+H-3qubit-RS.Encoding
+open import Examples.Groups.CCX+H-3qubit-RS.Semantics
+open import Examples.Groups.CCX+H-3qubit-RS.Soundness
+import Examples.Groups.CCX+H-3qubit-RS.Congruence as C
+open import Examples.Groups.CCX+H-3qubit-RS.Decide using (module Over)
 
 open SL.Dim 4 using (⟦_⟧ᴸ)
 open Over R2._≟ᴰ_ using () renaming (eqM-sound to eqMᴴ-sound)

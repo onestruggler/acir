@@ -3,15 +3,15 @@
 open import Data.Fin.Base using (zero ; suc)
 open import Data.Nat.Base using (s≤s ; z≤n)
 import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Encoding using (decode)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Even using (even ; FromEven)
-import Examples.Groups.CCX+HH-3qubit.Normalization as N
-import Examples.Groups.CCX+HH-3qubit.Repaired.DecodingMatrices as DM
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Encoding using (decode)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Even using (even ; FromEven)
+import Examples.Groups.CCX+H-3qubit-Tietze.Normalization as N
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.DecodingMatrices as DM
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
 
-module Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i2345 (from-even : FromEven) where
+module Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₁_i2345 (from-even : FromEven) where
 
 left right : Word (L.Genᴸ 8)
 left = (L.H) • (L.Xᴸ (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (s≤s (s≤s (s≤s (s≤s z≤n))))) • (L.H)

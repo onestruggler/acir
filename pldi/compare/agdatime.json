@@ -6455,522 +6455,522 @@
    "unit": "RealCliffordCH",
    "checked_in": "RealCliffordCH"
   },
-  "Examples.Groups.CCX+HH-3qubit.TwoLevel": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.TwoLevel": {
    "ms": 3061,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Repaired.EncodingMatrices": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.EncodingMatrices": {
    "ms": 2962,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B018": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B018": {
    "ms": 2913,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Soundness": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Soundness": {
    "ms": 2887,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Repaired.DecodingMatrices": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.DecodingMatrices": {
    "ms": 2829,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Model": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Model": {
    "ms": 2769,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Circuits.Iso": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Iso": {
    "ms": 2550,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d\u2081_i4567": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d\u2081_i4567": {
    "ms": 2070,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E14": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E14": {
    "ms": 1910,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E08": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E08": {
    "ms": 1905,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E04": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E04": {
    "ms": 1873,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E06": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E06": {
    "ms": 1860,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E07": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E07": {
    "ms": 1858,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d\u2080_i67": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d\u2080_i67": {
    "ms": 1857,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E09": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E09": {
    "ms": 1856,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E11": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E11": {
    "ms": 1820,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E13": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E13": {
    "ms": 1799,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E12": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E12": {
    "ms": 1799,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E03": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E03": {
    "ms": 1793,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E10": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E10": {
    "ms": 1785,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Repaired.TwoLevelScaled": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.TwoLevelScaled": {
    "ms": 1742,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E05": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E05": {
    "ms": 1721,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E01": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E01": {
    "ms": 1608,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E00": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E00": {
    "ms": 1587,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E02": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E02": {
    "ms": 1577,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d\u2080_i45": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d\u2080_i45": {
    "ms": 1532,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.FrameWords": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.FrameWords": {
    "ms": 1282,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d\u2081_i2345": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d\u2081_i2345": {
    "ms": 1260,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R100": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R100": {
    "ms": 1255,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B010": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B010": {
    "ms": 865,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation.E05": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E05": {
    "ms": 800,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation.E01": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E01": {
    "ms": 785,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation.E09": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E09": {
    "ms": 780,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation.E10": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E10": {
    "ms": 765,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R101": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R101": {
    "ms": 764,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation.E04": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E04": {
    "ms": 734,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation.E08": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E08": {
    "ms": 733,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation.E02": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E02": {
    "ms": 725,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation.E03": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E03": {
    "ms": 721,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.FrameEvaluation.E00": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.FrameEvaluation.E00": {
    "ms": 720,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation.E06": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E06": {
    "ms": 711,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B019": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B019": {
    "ms": 711,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d\u2080_i23": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d\u2080_i23": {
    "ms": 704,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation.E07": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E07": {
    "ms": 701,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B014": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B014": {
    "ms": 701,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B024": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B024": {
    "ms": 693,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B020": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B020": {
    "ms": 689,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation.E00": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E00": {
    "ms": 673,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B025": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B025": {
    "ms": 626,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B016": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B016": {
    "ms": 623,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B012": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B012": {
    "ms": 617,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B002": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B002": {
    "ms": 616,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B008": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B008": {
    "ms": 613,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B001": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B001": {
    "ms": 612,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B015": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B015": {
    "ms": 612,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B007": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B007": {
    "ms": 604,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Tietze.B002": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B002": {
    "ms": 601,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B005": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B005": {
    "ms": 599,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B000": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B000": {
    "ms": 599,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Tietze.B007": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B007": {
    "ms": 588,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Tietze.B003": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B003": {
    "ms": 575,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Tietze.B001": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B001": {
    "ms": 574,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Tietze.B006": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B006": {
    "ms": 558,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B006": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B006": {
    "ms": 557,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B023": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B023": {
    "ms": 556,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Tietze.B005": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B005": {
    "ms": 554,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Tietze.B000": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B000": {
    "ms": 547,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B013": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B013": {
    "ms": 547,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Tietze.B004": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B004": {
    "ms": 532,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B003": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B003": {
    "ms": 521,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.FrameEvaluation.E01": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.FrameEvaluation.E01": {
    "ms": 511,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.DecodeMatrices.K0123": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.K0123": {
    "ms": 501,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Algebra": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Algebra": {
    "ms": 482,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Repaired.KMatrix": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.KMatrix": {
    "ms": 481,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R097": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R097": {
    "ms": 460,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Circuits.Syntactics": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Syntactics": {
    "ms": 429,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X34": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X34": {
    "ms": 424,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK": {
    "ms": 423,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X23": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X23": {
    "ms": 418,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B021": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B021": {
    "ms": 410,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.DecodeMatrices.M0": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.M0": {
    "ms": 401,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X67": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X67": {
    "ms": 396,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X56": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X56": {
    "ms": 395,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X12": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X12": {
    "ms": 393,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X45": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X45": {
    "ms": 392,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.DecodeMatrices.X01": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.DecodeMatrices.X01": {
    "ms": 389,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PrimitiveFrames": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PrimitiveFrames": {
    "ms": 383,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d\u2081_i0123": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d\u2081_i0123": {
    "ms": 369,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B017": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B017": {
    "ms": 343,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.GateMatrices": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.GateMatrices": {
    "ms": 337,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B022": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B022": {
    "ms": 335,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B011": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B011": {
    "ms": 325,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R098": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R098": {
    "ms": 310,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Matrix": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Matrix": {
    "ms": 295,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B004": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B004": {
    "ms": 292,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Permutation": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Permutation": {
    "ms": 288,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Normalization": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Normalization": {
    "ms": 284,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R087": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R087": {
    "ms": 282,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R095": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R095": {
    "ms": 274,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R094": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R094": {
    "ms": 257,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluations.E15": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluations.E15": {
    "ms": 250,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R099": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R099": {
    "ms": 238,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B026": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B026": {
    "ms": 237,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R085": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R085": {
    "ms": 237,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
@@ -6980,492 +6980,492 @@
    "unit": "(other)",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Repaired.Presentation": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Presentation": {
    "ms": 229,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R096": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R096": {
    "ms": 227,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R089": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R089": {
    "ms": 226,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R088": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R088": {
    "ms": 225,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R086": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R086": {
    "ms": 224,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R104": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R104": {
    "ms": 224,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R020": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R020": {
    "ms": 219,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R002": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R002": {
    "ms": 218,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R090": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R090": {
    "ms": 207,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R092": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R092": {
    "ms": 200,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R083": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R083": {
    "ms": 200,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R091": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R091": {
    "ms": 199,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Errata": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Errata": {
    "ms": 198,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R039": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R039": {
    "ms": 197,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R017": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R017": {
    "ms": 197,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R012": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R012": {
    "ms": 195,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R106": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R106": {
    "ms": 194,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R018": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R018": {
    "ms": 193,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R107": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R107": {
    "ms": 191,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R093": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R093": {
    "ms": 188,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R033": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R033": {
    "ms": 187,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R041": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R041": {
    "ms": 186,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R036": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R036": {
    "ms": 186,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R035": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R035": {
    "ms": 186,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R007": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R007": {
    "ms": 186,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R011": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R011": {
    "ms": 186,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R001": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R001": {
    "ms": 185,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R027": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R027": {
    "ms": 185,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R004": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R004": {
    "ms": 183,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R105": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R105": {
    "ms": 182,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R045": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R045": {
    "ms": 181,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R103": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R103": {
    "ms": 180,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R019": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R019": {
    "ms": 180,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Proofs.B000": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Proofs.B000": {
    "ms": 179,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R025": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R025": {
    "ms": 179,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R031": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R031": {
    "ms": 179,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d\u2080_i01": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d\u2080_i01": {
    "ms": 179,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R102": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R102": {
    "ms": 179,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R003": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R003": {
    "ms": 178,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R046": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R046": {
    "ms": 175,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R023": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R023": {
    "ms": 175,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R084": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R084": {
    "ms": 173,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R032": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R032": {
    "ms": 173,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R006": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R006": {
    "ms": 172,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R044": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R044": {
    "ms": 172,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R108": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R108": {
    "ms": 170,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R043": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R043": {
    "ms": 170,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R009": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R009": {
    "ms": 170,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R021": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R021": {
    "ms": 169,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R005": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R005": {
    "ms": 169,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R042": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R042": {
    "ms": 168,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R038": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R038": {
    "ms": 167,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R040": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R040": {
    "ms": 167,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R010": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R010": {
    "ms": 167,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R028": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R028": {
    "ms": 167,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R034": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R034": {
    "ms": 166,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R013": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R013": {
    "ms": 166,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R014": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R014": {
    "ms": 165,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R015": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R015": {
    "ms": 165,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R029": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R029": {
    "ms": 165,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R037": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R037": {
    "ms": 165,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R008": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R008": {
    "ms": 164,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R030": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R030": {
    "ms": 164,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R026": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R026": {
    "ms": 164,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R016": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R016": {
    "ms": 164,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R024": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R024": {
    "ms": 160,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Checks.R022": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Checks.R022": {
    "ms": 157,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.States": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.States": {
    "ms": 143,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.PermProofs.B009": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.PermProofs.B009": {
    "ms": 141,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation.E11": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E11": {
    "ms": 133,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Tietze.B008": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Tietze.B008": {
    "ms": 118,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7c_i01": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7c_i01": {
    "ms": 118,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.GatePermutations": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.GatePermutations": {
    "ms": 106,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Core": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Core": {
    "ms": 104,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Repaired.Encoding": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Encoding": {
    "ms": 102,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Repaired.DyadicCompleteness": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.DyadicCompleteness": {
    "ms": 101,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Circuits.Presentation": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Circuits.Presentation": {
    "ms": 92,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Invertible": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Invertible": {
    "ms": 82,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Repaired.Soundness": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Soundness": {
    "ms": 82,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Interpretation": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Interpretation": {
    "ms": 79,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.StrictMatrix": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.StrictMatrix": {
    "ms": 77,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Syntactics": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Syntactics": {
    "ms": 71,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.DOmega": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.DOmega": {
    "ms": 65,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Frames": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Frames": {
    "ms": 63,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.GroupLike": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.GroupLike": {
    "ms": 59,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7b_i0123": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7b_i0123": {
    "ms": 55,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Semantics": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Semantics": {
    "ms": 40,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MainTheorem": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MainTheorem": {
    "ms": 32,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Repaired.EvenCompleteness": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.EvenCompleteness": {
    "ms": 32,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.CircuitLemmas": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.CircuitLemmas": {
    "ms": 30,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Repaired.Even": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Even": {
    "ms": 28,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.MissingK.Evaluation": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Evaluation": {
    "ms": 27,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics": {
    "ms": 27,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Evaluation": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Evaluation": {
    "ms": 26,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Theorems": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Theorems": {
    "ms": 22,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Engine": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Engine": {
    "ms": 16,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Repaired.GroupLike": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.GroupLike": {
    "ms": 15,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"
   },
-  "Examples.Groups.CCX+HH-3qubit.Kit": {
+  "Examples.Groups.CCX+H-3qubit-Tietze.Kit": {
    "ms": 13,
    "unit": "ToffoliHadamard",
    "checked_in": "ToffoliHadamard"

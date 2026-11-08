@@ -1,16 +1,16 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Repaired.Encoding where
+module Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Encoding where
 
 open import Data.Fin.Base using (zero ; suc)
 open import Data.Nat.Base using (s≤s ; z≤n)
 import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Core using (CGen ; cX0 ; cCX01 ; cCCX12 ; cK12 ; cCCZ ; cNK ; cH2 ; embed ; core ; gen-expand)
-import Examples.Groups.CCX+HH-3qubit.Core as Core
-import Examples.Groups.CCX+HH-3qubit.PrimitiveFrames as PF
-import Examples.Groups.CCX+HH-3qubit.FrameWords as F
-import Examples.Groups.CCX+HH-3qubit.Normalization as N
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Core using (CGen ; cX0 ; cCX01 ; cCCX12 ; cK12 ; cCCZ ; cNK ; cH2 ; embed ; core ; gen-expand)
+import Examples.Groups.CCX+H-3qubit-Tietze.Core as Core
+import Examples.Groups.CCX+H-3qubit-Tietze.PrimitiveFrames as PF
+import Examples.Groups.CCX+H-3qubit-Tietze.FrameWords as F
+import Examples.Groups.CCX+H-3qubit-Tietze.Normalization as N
 import Examples.Groups.CCX+HH-TwoLevel.Syntactics as T
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 open import Presentation.Base _===_ hiding (_===_ ; _≈_)

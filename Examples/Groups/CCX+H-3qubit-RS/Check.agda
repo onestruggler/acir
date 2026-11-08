@@ -8,7 +8,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit-opus.Check where
+module Examples.Groups.CCX+H-3qubit-RS.Check where
 
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; if_then_else_ ; T ; not)
 open import Data.Fin.Base using (Fin ; zero ; suc ; toℕ)

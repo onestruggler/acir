@@ -22,7 +22,7 @@ open import Data.Nat.Base using (ℕ)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Word.Base using (WRel)
 
-module Examples.Groups.CCX+HH-3qubit-opus.Engine
+module Examples.Groups.CCX+H-3qubit-RS.Engine
   {A : Set} (Γ : WRel A) (code : A → ℕ) (code-inj : ∀ {x y} → code x ≡ code y → x ≡ y) where
 
 open import Data.Bool.Base using (Bool ; true ; false ; if_then_else_ ; _∧_ ; T)

@@ -1,16 +1,16 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Evaluation.E01 where
+module Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E01 where
 
 open import Data.Integer.Base using (+_ ; -[1+_])
 open import Data.Product.Base using (_,_ )
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import Examples.Groups.CCX+HH-3qubit.Syntactics using (Word ; Gen ; _•_ ; ε ; CX02 ; CX10 ; CX12 ; CCX02 ; K01 ; SWAP01 ; SWAP02 ; SWAP12 ; CX02-gen ; CX10-gen ; CX12-gen ; CCX02-gen ; K01-gen ; SWAP01-gen ; SWAP02-gen ; SWAP12-gen)
-open import Examples.Groups.CCX+HH-3qubit.GateMatrices using (Mat ; mat ; mulM ; _+√2_)
-open import Examples.Groups.CCX+HH-3qubit.Interpretation using (readM ; readM-gen ; readM-ε ; readM-•)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics using (Word ; Gen ; _•_ ; ε ; CX02 ; CX10 ; CX12 ; CCX02 ; K01 ; SWAP01 ; SWAP02 ; SWAP12 ; CX02-gen ; CX10-gen ; CX12-gen ; CCX02-gen ; K01-gen ; SWAP01-gen ; SWAP02-gen ; SWAP12-gen)
+open import Examples.Groups.CCX+H-3qubit-Tietze.GateMatrices using (Mat ; mat ; mulM ; _+√2_)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Interpretation using (readM ; readM-gen ; readM-ε ; readM-•)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Decide using (eqM-sound)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Sparse using (mulS ; mulS-ok)
-open import Examples.Groups.CCX+HH-3qubit.Evaluation.E00 using (e1 ; e2 ; e17 ; e22 ; e23 ; matrix1 ; matrix2 ; matrix17 ; matrix22 ; matrix23 ; w1 ; w2 ; w17 ; w22 ; w23)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Evaluation.E00 using (e1 ; e2 ; e17 ; e22 ; e23 ; matrix1 ; matrix2 ; matrix17 ; matrix22 ; matrix23 ; w1 ; w2 ; w17 ; w22 ; w23)
 
 w24 : Word Gen
 w24 = w2 • w23

@@ -10,8 +10,8 @@
 -- (Presentation), are a sub-presentation of Uₙ(𝔻[ω]): two words are
 -- equal by the tables exactly when their matrices over 𝔻[ω] are equal
 -- (sound, complete).  The dimension is spelled suc k * 2 throughout;
--- CCX+HH-3qubit.DOmega embeds L₈ at the dimension 8 itself, since U 8
--- and U (suc 3 * 2) are compared by unfolding both groups.
+-- CCX+H-3qubit-Tietze.DOmega embeds L₈ at the dimension 8 itself,
+-- since U 8 and U (suc 3 * 2) are compared by unfolding both groups.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

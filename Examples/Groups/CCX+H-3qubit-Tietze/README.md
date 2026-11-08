@@ -33,7 +33,7 @@ symbolic indices: every generator is a centre (`m0`, `t01` or `NK`)
 conjugated by a Coxeter word, and by the frame lemma of
 `Examples/Groups/Symmetric/CoxeterFrames` that conjugate depends only
 on where the word sends the centre's states, so a relation follows
-from its standard instance (the argument of `CCX+HH-3qubit-opus`'s
+from its standard instance (the argument of `CCX+H-3qubit-RS`'s
 `Decode`). The tables of Coxeter words in `FrameWords` (`fM`, `fX`,
 `fK`, `fK′`) are related to those frames by one evaluated check per
 table (`okM`, `okX`, `okK`). This replaces the 2,123 finite instances,
@@ -46,7 +46,7 @@ letters (-1)_[0], X_[x,x+1] and K_[0,1,2,3] have matrix certificates
 by adjacent X's (`CCX+HH-TwoLevel`'s `Conjugation.decompose`), which
 both readings respect — the two-level one by the soundness of Table 1,
 the circuit one by `TwoLevel.decode-cong` — as in
-`CCX+HH-3qubit-opus`'s `dec-sem`. It replaces 97 certificates and 722
+`CCX+H-3qubit-RS`'s `dec-sem`. It replaces 97 certificates and 722
 of their 763 matrix evaluations.
 
 `Repaired/Presentation.agda` proves completeness for exact matrix
@@ -153,15 +153,15 @@ dependency. Check separate entry points sequentially; do not run
 Agda processes against the same interfaces concurrently.
 
 ```sh
-agda Examples/Groups/CCX+HH-3qubit/Theorems.agda
-agda Examples/Groups/CCX+HH-3qubit/CircuitLemmas.agda
-agda Examples/Groups/CCX+HH-3qubit/MissingK.agda
-agda Examples/Groups/CCX+HH-3qubit/Repaired/Encoding.agda
-agda Examples/Groups/CCX+HH-3qubit/Repaired/Soundness.agda
-agda Examples/Groups/CCX+HH-3qubit/Repaired/Presentation.agda
+agda Examples/Groups/CCX+H-3qubit-Tietze/Theorems.agda
+agda Examples/Groups/CCX+H-3qubit-Tietze/CircuitLemmas.agda
+agda Examples/Groups/CCX+H-3qubit-Tietze/MissingK.agda
+agda Examples/Groups/CCX+H-3qubit-Tietze/Repaired/Encoding.agda
+agda Examples/Groups/CCX+H-3qubit-Tietze/Repaired/Soundness.agda
+agda Examples/Groups/CCX+H-3qubit-Tietze/Repaired/Presentation.agda
 ```
 
-`bash Examples/Groups/CCX+HH-3qubit/tools/check.sh` checks the four
+`bash Examples/Groups/CCX+H-3qubit-Tietze/tools/check.sh` checks the four
 roots that reach every module of the directory but `Circuits/` —
 `CircuitLemmas`, `MissingK`, `Theorems` and `StrictMatrix` — and
 `Circuits/Presentation`, which reaches those, sequentially with a

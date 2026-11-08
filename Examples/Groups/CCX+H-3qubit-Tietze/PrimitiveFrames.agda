@@ -1,15 +1,15 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.PrimitiveFrames where
+module Examples.Groups.CCX+H-3qubit-Tietze.PrimitiveFrames where
 
 import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Frames
-open import Examples.Groups.CCX+HH-3qubit.FrameWords
-open import Examples.Groups.CCX+HH-3qubit.Engine
+open import Examples.Groups.CCX+H-3qubit-Tietze.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Frames
+open import Examples.Groups.CCX+H-3qubit-Tietze.FrameWords
+open import Examples.Groups.CCX+H-3qubit-Tietze.Engine
 
-import Examples.Groups.CCX+HH-3qubit.GatePermutations as GP
-open import Examples.Groups.CCX+HH-3qubit.TwoLevel using (k4567≈K4567)
+import Examples.Groups.CCX+H-3qubit-Tietze.GatePermutations as GP
+open import Examples.Groups.CCX+H-3qubit-Tietze.TwoLevel using (k4567≈K4567)
 
 open import Data.Fin.Base using (zero ; suc)
 

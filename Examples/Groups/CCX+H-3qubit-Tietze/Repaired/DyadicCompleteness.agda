@@ -7,19 +7,19 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Repaired.DyadicCompleteness where
+module Examples.Groups.CCX+H-3qubit-Tietze.Repaired.DyadicCompleteness where
 
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Normalization using (DGen ; dyadic)
-open import Examples.Groups.CCX+HH-3qubit.Matrix using (⟦_⟧ᴹ ; module BM)
-import Examples.Groups.CCX+HH-3qubit.Interpretation as I
-import Examples.Groups.CCX+HH-3qubit.FrameWords as F
-import Examples.Groups.CCX+HH-3qubit.TwoLevel as T
-import Examples.Groups.CCX+HH-3qubit.Repaired.Encoding as E
-import Examples.Groups.CCX+HH-3qubit.Repaired.EncodingMatrices as EM
-import Examples.Groups.CCX+HH-3qubit.Repaired.Soundness as Sound
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Normalization using (DGen ; dyadic)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Matrix using (⟦_⟧ᴹ ; module BM)
+import Examples.Groups.CCX+H-3qubit-Tietze.Interpretation as I
+import Examples.Groups.CCX+H-3qubit-Tietze.FrameWords as F
+import Examples.Groups.CCX+H-3qubit-Tietze.TwoLevel as T
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Encoding as E
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.EncodingMatrices as EM
+import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Soundness as Sound
 import Examples.Groups.CCX+HH-TwoLevel.Semantics as S
 import Examples.Groups.CCX+HH-TwoLevel.MainLemma as C
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L

@@ -1,40 +1,40 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.CCX+HH-3qubit.Repaired.TwoLevelScaled where
+module Examples.Groups.CCX+H-3qubit-Tietze.Repaired.TwoLevelScaled where
 
 open import Data.Empty.Irrelevant using (⊥-elim)
 open import Data.Fin.Base using (zero ; suc)
 open import Data.Nat.Base using (s≤s ; z≤n)
 import Data.Nat.Properties as NP
 import Relation.Binary.PropositionalEquality as Eq
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
-open import Examples.Groups.CCX+HH-3qubit.Repaired.Encoding using (decode ; dyadic-decoding)
-open import Examples.Groups.CCX+HH-3qubit.Repaired.EvenCompleteness using (from-even)
-import Examples.Groups.CCX+HH-3qubit.TwoLevel as T
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Syntactics
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.Encoding using (decode ; dyadic-decoding)
+open import Examples.Groups.CCX+H-3qubit-Tietze.Repaired.EvenCompleteness using (from-even)
+import Examples.Groups.CCX+H-3qubit-Tietze.TwoLevel as T
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open PB _===_ hiding (_===_ ; _≈_)
 
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7b_i0123
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7c_i01
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i01
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i23
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i45
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i67
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i0123
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i2345
-import Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i4567
+import Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7b_i0123
+import Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7c_i01
+import Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₀_i01
+import Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₀_i23
+import Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₀_i45
+import Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₀_i67
+import Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₁_i0123
+import Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₁_i2345
+import Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₁_i4567
 
-module C0 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7b_i0123 from-even using (proved)
-module C1 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7c_i01 from-even using (proved)
-module C2 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i01 from-even using (proved)
-module C3 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i23 from-even using (proved)
-module C4 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i45 from-even using (proved)
-module C5 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₀_i67 from-even using (proved)
-module C6 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i0123 from-even using (proved)
-module C7 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i2345 from-even using (proved)
-module C8 = Examples.Groups.CCX+HH-3qubit.HadamardRelations.r7d₁_i4567 from-even using (proved)
+module C0 = Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7b_i0123 from-even using (proved)
+module C1 = Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7c_i01 from-even using (proved)
+module C2 = Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₀_i01 from-even using (proved)
+module C3 = Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₀_i23 from-even using (proved)
+module C4 = Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₀_i45 from-even using (proved)
+module C5 = Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₀_i67 from-even using (proved)
+module C6 = Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₁_i0123 from-even using (proved)
+module C7 = Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₁_i2345 from-even using (proved)
+module C8 = Examples.Groups.CCX+H-3qubit-Tietze.HadamardRelations.r7d₁_i4567 from-even using (proved)
 
 axiom-decode : ∀ {w v} → L._===ᴸ_ {8} w v → (decode ʷ) w ≈ (decode ʷ) v
 axiom-decode (L.table1 {w} {v} proof) = trans
