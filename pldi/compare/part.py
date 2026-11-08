@@ -9,8 +9,8 @@ from the authors' TIETZE2 files, the permutation certificates, the frame
 words); each Lean module is compared with the Agda module of the same name.
 Counted as th4.py counts: code lines as loc.py (blank lines and comments
 excluded, `generated` by loc.kind), and code characters, the non-blank
-characters outside comments.  figdata.py reads part.json for the second
-Toffoli-Hadamard row of fig:compare(a).
+characters outside comments.  Section 3.3 quotes the totals (the
+paragraph on one proof in both assistants).
 """
 import datetime, json, os, subprocess, sys
 

@@ -49,16 +49,14 @@ python mkfig.py ../figures/compare.tex  # the pgfplots figure
   leantime.json Folder,...`). `leantime.json` records the run (date, revision,
   CPU, memory). Logs go to `~/leantime-logs/`.
 
-## One proof in both assistants (the Toffoli–Hadamard rows of `fig:compare`(a))
+## One proof in both assistants (the Toffoli–Hadamard row of `fig:compare`(a), and the text)
 
 Table 1's two Toffoli–Hadamard proofs take different routes, so panel (a)
-shows, in their place, two pairs of one proof each:
-
-* `*`: `CCX+H-3qubit-RS`, a second Agda proof, against
-  `QCert/ToffoliHadamardRS`, its translation to Lean;
-* `†`: the 46 modules of `CCX+H-3qubit-Tietze` (Table 1's Agda proof) that
-  `QCert/ToffoliHadamardTietze` translates, against the same Agda modules
-  (the translation stops before `TwoLevel`; its README says what it covers).
+shows, in their place (`*`), `CCX+H-3qubit-RS`, a second Agda proof,
+against `QCert/ToffoliHadamardRS`, its translation to Lean.  The text also
+compares the 46 modules of `CCX+H-3qubit-Tietze` (Table 1's Agda proof) that
+`QCert/ToffoliHadamardTietze` translates with the same Agda modules (the
+translation stops before `TwoLevel`; its README says what it covers).
 
 `th4.py` measures the first pair and Table 1's (code lines as `loc.py`
 counts them, code characters, the non-blank characters outside comments,
@@ -67,9 +65,9 @@ times as `agdatime.py` and `leantime.py` time a row: an untimed check
 first, so that everything the folder imports is built, then the folder's
 own interfaces or build artifacts removed and the folder checked again,
 Agda's time the sum of its per-module profile and Lean's the wall time of
-`LEAN_NUM_THREADS=2 lake build`); `part.py` counts the second pair, module
-by module, the same way.  `figdata.py` reads both.  In WSL, under the Agda
-lock (`th4.py` takes `check.sh`'s Lean lock itself):
+`LEAN_NUM_THREADS=2 lake build`); `figdata.py` reads it.  `part.py` counts
+the translated modules, module by module, the same way, for the text.  In
+WSL, under the Agda lock (`th4.py` takes `check.sh`'s Lean lock itself):
 
 ```sh
 python3 th4.py ../.. th4.json                 # about 15 minutes
@@ -83,7 +81,7 @@ times are from the i5-13400TEF, so its Toffoli–Hadamard row differs (111 and
 135 s there, 103 and 125 s here). Logs go to `~/th4-logs/`.  `part.json` is
 the count of 8 November 2026 at revision `1d8511eb`.  Panel (b) and the
 totals of `tab:compare` keep Table 1's folders; rerun `figdata.py` and
-`mkfig.py` after `th4.py` or `part.py`.
+`mkfig.py` after `th4.py`.
 
 ## Execution benchmark (panel (c))
 

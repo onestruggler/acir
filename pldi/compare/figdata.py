@@ -3,8 +3,7 @@ into figdata.json (read by mkfig.py), and print the totals quoted in the
 text of Section 3.3 and in tab:compare.
 
 Inputs: loc.json, features.json, agdatime.json, leantime.json and, for
-the two Toffoli--Hadamard rows of panel (a), th4.json and part.json (this
-directory).  The Agda check times are read from agdatime.json
+the Toffoli--Hadamard row of panel (a), th4.json (this directory).  The Agda check times are read from agdatime.json
 (agdatime.py), the Lean times from leantime.json (leantime.py), and both
 are printed in the form Table 1 quotes them.
 """
@@ -110,13 +109,4 @@ print('agda with', sumf('agda', 'with'), 'solver', sumf('agda', 'solver'),
       'postulates', sumf('agda', 'postulate_any'))
 print('libs', {k: len(v) for k, v in feat['_libs'].items()})
 
-# A second Toffoli--Hadamard row, panel (a) only: the Lean translation of
-# CCX+H-3qubit-Tietze as far as it went, against the same Agda modules
-# (part.json, written by part.py); it has no check times.
-part = json.load(open(os.path.join(here, 'part.json')))['totals']
-k = next(i for i, r in enumerate(lines) if r[1] == 'ToffoliHadamard') + 1
-extra = (k, 'ToffoliHadamardTietzePart', r'Toffoli--Hadamard$^{\dagger}$', part['agda']['code'],
-         part['lean']['code'], None, None, part['agda']['files'], part['lean']['files'])
-rows = lines[:k] + [extra] + [(r[0] + 1,) + tuple(r[1:]) for r in lines[k:]]
-print('panel (a) row', extra[2], extra[3:5], 'modules', extra[7:])
-json.dump(dict(rows=rows, totals=tot), open(os.path.join(here, 'figdata.json'), 'w'), indent=1)
+json.dump(dict(rows=lines, totals=tot), open(os.path.join(here, 'figdata.json'), 'w'), indent=1)
