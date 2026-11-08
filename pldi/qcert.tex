@@ -261,7 +261,7 @@ The semantic targets also differ. Most Agda developments work directly with exac
 \label{fig:compare}
 \end{figure}
 
-\paragraph{Proof development} Excluding blank lines and comments, the Agda formalization has about 377{,}000 lines and the Lean formalization about 339{,}000 (\Cref{fig:compare}(a)). Lean's is shorter in thirteen of the sixteen rows, by a factor of five or more for qudit Clifford, Toffoli--Hadamard, and qutrit Clifford. It is longer for Hadamard-$\Pi$, three-qubit Clifford+CS, and real Clifford+CH. Both counts include the derivations and certificates that scripts generate. The Agda proofs are explicit terms, built by pattern matching and equational reasoning, with reflection-based solvers for associativity and ring identities. Its library develops the group theory the proofs need, in about 13{,}200 lines against 1{,}200 in Lean. The Lean proofs rely on Mathlib's algebra and on tactics, with about 69{,}000 calls to automation such as \texttt{simp}, \texttt{omega}, \texttt{decide}, and \texttt{ring}.
+\paragraph{Proof development} Excluding blank lines and comments, the Agda formalization has about 355{,}000 lines and the Lean formalization about 339{,}000 (\Cref{fig:compare}(a)). Lean's is shorter in thirteen of the sixteen rows, by a factor of five or more for qudit Clifford and qutrit Clifford. It is longer for Hadamard-$\Pi$, three-qubit Clifford+CS, and real Clifford+CH. For Toffoli--Hadamard we count the Agda formalization that, like the Lean one, reaches the result through the two-level presentation of~\cite{li2021on}. The repository has a second one, which replays the authors' own derivation traces in about 28{,}600 lines, four fifths of them generated certificates. Both counts include the derivations and certificates that scripts generate. The Agda proofs are explicit terms, built by pattern matching and equational reasoning, with reflection-based solvers for associativity and ring identities. Its library develops the group theory the proofs need, in about 13{,}200 lines against 1{,}200 in Lean. The Lean proofs rely on Mathlib's algebra and on tactics, with about 69{,}000 calls to automation such as \texttt{simp}, \texttt{omega}, \texttt{decide}, and \texttt{ring}.
 
 Both implementations reuse normal-form, exact-synthesis, and translation arguments. Both also check generated derivations with a replay procedure that is proved correct. The proof assistant checks the computation and the theorem that a successful replay gives a derivation, so the scripts that search for derivations need not be trusted. For Clifford+CS, Lean constructs its own coset certificates. The trust checks reflect the different foundations. Every Agda module is \texttt{-{}-safe} and uses no postulates, so the Agda corpus is constructive. The Lean corpus uses no \texttt{native\_decide}, and its main theorems depend on no unfinished proof. An audit of 105 declarations reports only the axioms \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
 
@@ -431,7 +431,7 @@ We used versions of Claude for parts of this formalization: composing box relati
 
 \section{Formalized Completeness and Minimality Proofs}\label{sec:corpus}
 
-The sixteen formalizations in \Cref{tab:corpus} contain about 377{,}000 lines of Agda code and use no postulates, and each theorem is as general as the result in its source paper. Moreover, all matrices are computed exactly. Their entries lie in algebraic number rings, whose elements are given by finitely many integers, so Agda checks automatically whether two matrices are equal. Over the real or complex numbers, no such automatic check exists, which limits the equality checking of QCert to discrete gate sets, as we discuss in \Cref{sec:conclusion}.
+The sixteen formalizations in \Cref{tab:corpus} contain about 355{,}000 lines of Agda code and use no postulates, and each theorem is as general as the result in its source paper. Moreover, all matrices are computed exactly. Their entries lie in algebraic number rings, whose elements are given by finitely many integers, so Agda checks automatically whether two matrices are equal. Over the real or complex numbers, no such automatic check exists, which limits the equality checking of QCert to discrete gate sets, as we discuss in \Cref{sec:conclusion}.
 
 
 
@@ -459,13 +459,15 @@ Source & Object & Result & \shortstack{Agda\\Mod} & \shortstack{Agda\\time (s)} 
 \tabcite{bian2023cliffordt2} & two-qubit Clifford+T & sub-presentation in~$U_4$ & 63 & 135.79 & 356.79 \\
 \tabcite{bian2023cliffordcs3} & three-qubit Clifford+CS & sub-presentation in~$U_8$ & 125 & 298.29 & 1330.89 \\
 \tabcite{clement2026realcliffordch} & real Clifford+CH & sub-presentation & 348 & 419.99 & 5478.79\textsuperscript{*} \\
-\tabcite{amy2024toffoli} & three-qubit Toffoli--Hadamard & presentation of $L_8$ & 203 & 111.17 & 134.91 \\
+%% Agda time still that of CCX+HH-3qubit; re-time CCX+HH-3qubit-opus on the Lean machine:
+%% python3 agdatime.py ../.. agdatime.json ToffoliHadamard (in pldi/compare), then figdata.py.
+\tabcite{amy2024toffoli} & three-qubit Toffoli--Hadamard & presentation of $L_8$ & 37 & 111.17 & 134.91 \\
 \tabcite{li2025qutrit} & qutrit Clifford & presentation & 90 & 285.58 & 179.60 \\
 \midrule
 \multicolumn{6}{@{}l}{\emph{Minimality}}\\
 \tabcite{blake2026simpler} & six fragments & minimal, complete & 80 & 180.10 & 358.87 \\
 \midrule
-Total & & & 1{,}509 & 2{,}399.36 & 9{,}304.83 \\
+Total & & & 1{,}343 & 2{,}399.36 & 9{,}304.83 \\
 \bottomrule
 \end{tabularx}
 \captionsetup{position=bottom}
@@ -513,11 +515,11 @@ We plan to extend the infrastructure of QCert to more families of quantum circui
 \midrule
 \multicolumn{3}{@{}l}{\emph{Proof development}}\\
 Logic & constructive: every module \texttt{-{}-safe}, no postulates & classical: every main theorem uses \texttt{Classical.choice} \\
-Library & standard library (104 modules imported), EucDomain & Mathlib (56 modules imported directly) \\
+Library & standard library (105 modules imported), EucDomain & Mathlib (56 modules imported directly) \\
 Proofs & terms, by pattern matching and equational reasoning; reflection-based solvers & tactics: about 75{,}000 tactic blocks, 69{,}000 automation calls \\
 Reused from the sources & the authors' Agda proofs for Clifford+T and Clifford+CS & no proofs; the authors' coset-action data for Clifford+T \\
-Modules & 1{,}509 & 795 \\
-Code lines & 376{,}627 & 338{,}866 \\
+Modules & 1{,}343 & 795 \\
+Code lines & 355{,}086 & 338{,}866 \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Verification time}}\\
 Decided equalities & a Boolean reduced to \texttt{true} & \texttt{decide +kernel} \\

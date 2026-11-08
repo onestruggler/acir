@@ -209,11 +209,11 @@
  },
  "ToffoliHadamard": {
   "agda": {
-   "files": 203,
-   "lines": 40744,
-   "blank": 11382,
-   "comment": 733,
-   "code": 28629
+   "files": 37,
+   "lines": 9156,
+   "blank": 1220,
+   "comment": 848,
+   "code": 7088
   },
   "lean": {
    "files": 20,
