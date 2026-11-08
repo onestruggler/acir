@@ -209,4 +209,103 @@ theorem semO_eq_sem8_of_check {k : ℕ} {w : Word (Gate k)} {u : Word (Gen 8)}
   apply sem8_eq_of_check
   rw [encW_toList]; exact h
 
+/-! ## Entries -/
+
+/-- The matrix of a word over `𝒢₈`: its scaled integer matrix. -/
+theorem coe_sem8 (u : Word (Gen 8)) :
+    (((FreeMonoid.lift (sem 8) u : O_ZHalf 8) : Matrix.unitaryGroup (Fin 8) ℝ) :
+      Matrix (Fin 8) (Fin 8) ℝ) = (evalG u.toList).toMatS 8 (Real.sqrt 2)⁻¹ := by
+  rw [coe_lift]
+  exact toMatS_evalSM 8 _ gSc gAct genMat _ (fun x _ => gAct_wf x) (fun x _ => genMat_act x)
+
+/-- The matrix of a word over `𝓕₈`. -/
+theorem coe_semL (u : Word (GenL 4)) :
+    (((FreeMonoid.lift (semL 4) u : L (4 * 2)) : Matrix.unitaryGroup (Fin (4 * 2)) ℝ) :
+      Matrix (Fin 8) (Fin 8) ℝ) = (evalL u.toList).toMatS 8 (Real.sqrt 2)⁻¹ := by
+  rw [coe_lift]
+  exact toMatS_evalSM 8 _ lSc lAct lMat _ (fun x _ => lAct_wf x) (fun x _ => lMat_act x)
+
+/-- The entry `(i, j)` of a scaled integer matrix. -/
+def sentry (A : SMat) (i j : ℕ) : ℤ := (A.m.getD i []).getD j 0
+
+theorem toMatS_apply (A : SMat) (i j : Fin 8) :
+    A.toMatS 8 (Real.sqrt 2)⁻¹ i j = (Real.sqrt 2)⁻¹ ^ A.e * (sentry A i j : ℝ) := by
+  simp [SMat.toMatS, sentry, ListMat.toMat]
+
+/-- Two scaled integer matrices of even exponents differ at `(i, j)`,
+decided. -/
+def entryNe (A B : SMat) (i j : ℕ) : Bool :=
+  Nat.beq (A.e % 2) 0 && Nat.beq (B.e % 2) 0 &&
+    bif Nat.ble A.e B.e then !(sentry A i j * 2 ^ ((B.e - A.e) / 2) == sentry B i j)
+    else !(sentry B i j * 2 ^ ((A.e - B.e) / 2) == sentry A i j)
+
+theorem isqrt2_pow_even (t : ℕ) : (Real.sqrt 2)⁻¹ ^ (2 * t) = (1 / 2 : ℝ) ^ t := by
+  rw [pow_mul, inv_pow, Real.sq_sqrt (by norm_num), one_div]
+
+theorem entry_ne_of_entryNe {A B : SMat} {i j : Fin 8} (h : entryNe A B i j = true) :
+    A.toMatS 8 (Real.sqrt 2)⁻¹ i j ≠ B.toMatS 8 (Real.sqrt 2)⁻¹ i j := by
+  rw [toMatS_apply, toMatS_apply]
+  simp only [entryNe, Bool.and_eq_true, Nat.beq_eq] at h
+  obtain ⟨⟨hA, hB⟩, h⟩ := h
+  obtain ⟨a, ha⟩ : ∃ a, A.e = 2 * a := ⟨A.e / 2, by omega⟩
+  obtain ⟨b, hb⟩ : ∃ b, B.e = 2 * b := ⟨B.e / 2, by omega⟩
+  rw [ha, hb, isqrt2_pow_even, isqrt2_pow_even]
+  rw [ha, hb] at h
+  intro e
+  cases hle : Nat.ble (2 * a) (2 * b) <;> rw [hle] at h <;>
+    simp only [cond_true, cond_false, Bool.not_eq_true', beq_eq_false_iff_ne, ne_eq] at h
+  · have hab : b ≤ a := by
+      have : ¬ (2 * a ≤ 2 * b) := fun h' => by rw [Nat.ble_eq_true_of_le h'] at hle; cases hle
+      omega
+    apply h
+    have e2 : (2 * a - 2 * b) / 2 = a - b := by omega
+    rw [e2]
+    have : (sentry B i j : ℝ) = (sentry A i j : ℝ) * (1 / 2) ^ (a - b) := by
+      have hp : (1 / 2 : ℝ) ^ a = (1 / 2) ^ b * (1 / 2) ^ (a - b) := by
+        rw [← pow_add, Nat.add_sub_cancel' hab]
+      rw [hp] at e
+      have h0 : (1 / 2 : ℝ) ^ b ≠ 0 := by positivity
+      field_simp at e ⊢; linarith
+    have : ((sentry B i j * 2 ^ (a - b) : ℤ) : ℝ) = (sentry A i j : ℝ) := by
+      push_cast; rw [this, mul_assoc, ← mul_pow]; norm_num
+    exact_mod_cast this
+  · have hab : a ≤ b := by have := Nat.le_of_ble_eq_true hle; omega
+    apply h
+    have e2 : (2 * b - 2 * a) / 2 = b - a := by omega
+    rw [e2]
+    have : (sentry A i j : ℝ) = (sentry B i j : ℝ) * (1 / 2) ^ (b - a) := by
+      have hp : (1 / 2 : ℝ) ^ b = (1 / 2) ^ a * (1 / 2) ^ (b - a) := by
+        rw [← pow_add, Nat.add_sub_cancel' hab]
+      rw [hp] at e
+      have h0 : (1 / 2 : ℝ) ^ a ≠ 0 := by positivity
+      field_simp at e ⊢; linarith
+    have : ((sentry A i j * 2 ^ (b - a) : ℤ) : ℝ) = (sentry B i j : ℝ) := by
+      push_cast; rw [this, mul_assoc, ← mul_pow]; norm_num
+    exact_mod_cast this
+
+/-- Two words over `𝒢₈` with different values, decided at one entry. -/
+theorem sem8_ne_of_entry {u v : Word (Gen 8)} (i j : Fin 8)
+    (h : entryNe (evalG u.toList) (evalG v.toList) i j = true) :
+    FreeMonoid.lift (sem 8) u ≠ FreeMonoid.lift (sem 8) v := by
+  intro e
+  have := congrArg (fun A : O_ZHalf 8 =>
+    ((A : Matrix.unitaryGroup (Fin 8) ℝ) : Matrix (Fin 8) (Fin 8) ℝ) i j) e
+  simp only [coe_sem8] at this
+  exact entry_ne_of_entryNe h this
+
+/-- Two circuits with different values, decided at one entry. -/
+theorem semO_ne_of_entry {k : ℕ} {w v : Word (Gate k)} (i j : Fin 8)
+    (h : entryNe (evalG (encList w.toList)) (evalG (encList v.toList)) i j = true) :
+    semO w ≠ semO v := by
+  show FreeMonoid.lift (sem 8) (encW w) ≠ FreeMonoid.lift (sem 8) (encW v)
+  apply sem8_ne_of_entry i j
+  rw [encW_toList, encW_toList]; exact h
+
+theorem semO_ne_sem8_of_entry {k : ℕ} {w : Word (Gate k)} {u : Word (Gen 8)} (i j : Fin 8)
+    (h : entryNe (evalG (encList w.toList)) (evalG u.toList) i j = true) :
+    semO w ≠ FreeMonoid.lift (sem 8) u := by
+  show FreeMonoid.lift (sem 8) (encW w) ≠ _
+  apply sem8_ne_of_entry i j
+  rw [encW_toList]; exact h
+
 end QCert.ToffoliHadamardRS
