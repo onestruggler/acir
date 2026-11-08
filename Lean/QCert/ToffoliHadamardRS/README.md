@@ -150,8 +150,8 @@ for byte.
 ```
 
 `Theorem.lean` reaches all 38 modules.  From a clean folder (the
-dependencies built), 2 min 21 s wall time under Lake's parallel jobs,
-299 s of module time in all; the slowest modules are `Decode` (38 s),
-`Soundness/Figure7b` (16 s), `TableMatrices` (15 s), `Circuits/Iso2`
-(14 s), `Decide`, `Circuits/Iso1` (12 s each) and `Soundness` (11 s), the
-rest under 10 s.
+dependencies built), 2 min 30 s wall time under Lake's parallel jobs,
+311 s of module time in all; the slowest modules are `Decode` (38 s),
+`Circuits/Iso2` (16 s), `Soundness/Figure7b` (15 s), `TableMatrices`,
+`Decide` (13 s each), `Circuits/Iso1` (12 s), `Soundness` and
+`CoxeterFrames` (10 s each), the rest under 10 s.
