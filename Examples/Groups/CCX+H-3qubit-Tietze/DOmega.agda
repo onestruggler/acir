@@ -4,12 +4,12 @@
 -- Amy, Ross and Wesley's 3-qubit Toffoli-Hadamard circuits, read in
 -- U₈(𝔻[ω])
 --
--- The repaired relations present L₈, the orthogonal scaled dyadic 8 × 8
--- matrices (Repaired.Presentation, over the paper's alphabet;
+-- The repaired relations present L₈, the orthogonal scaled dyadic
+-- 8 × 8 matrices (Repaired.Presentation, over the paper's alphabet;
 -- Circuits.Presentation, as circuits on three wires), and L₈ is a
--- subgroup of U₈(𝔻[ω]) (Embed, as CCX+HH-TwoLevel.Scaled.DOmega's EmbedL),
--- so both are sub-presentations of U₈(𝔻[ω]): two words, or two
--- circuits, are equal by the relations exactly when their matrices
+-- subgroup of U₈(𝔻[ω]) (Embed, as CCX+HH-TwoLevel.Scaled.DOmega's
+-- EmbedL), so both are sub-presentations of U₈(𝔻[ω]): two words, or
+-- two circuits, are equal by the relations exactly when their matrices
 -- over 𝔻[ω] are equal (sound, complete; circuit-sound,
 -- circuit-complete).
 --

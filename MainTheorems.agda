@@ -504,16 +504,58 @@ module Clement-Real-Clifford+CH where
 ------------------------------------------------------------------------
 -- Amy, Ross and Wesley (2024): three-qubit Toffoli-Hadamard circuits
 --
--- Home: Examples.Groups.CCX+H-3qubit-Tietze.MainTheorem.  The relations
--- of Figures 4, 7 and 8, corrected and with the definition of K that
+-- Homes: Examples.Groups.CCX+H-3qubit-Tietze.MainTheorem and
+-- Examples.Groups.CCX+H-3qubit-RS.MainTheorem.  The relations of
+-- Figures 4, 7 and 8, corrected and with the definition of K that
 -- Section 5.5 uses but the figures omit, present L₈, the group of
 -- 3-qubit Toffoli-Hadamard operators (scaled dyadic orthogonal 8 × 8
 -- matrices), as circuits over Circuit.Base on three wires and over the
 -- paper's alphabet (ᴾ).  L₈ is a subgroup of U₈(𝔻[ω]).
+--
+-- The theorem has several formalizations, two in Agda, restated below
+-- in one format, and in Lean.  Each decodes Li-Ross-Selinger's
+-- generators into circuits and concludes from their presentations of
+-- O₈(𝔻) and L₈; they differ in where the circuit identities come from.
+--
+-- * CCX+H-3qubit-Tietze (module Amy-Ross-Wesley) replays the authors'
+--   own derivations, from their TIETZE2 files (CircuitLemmas).
+-- * CCX+H-3qubit-RS (module Amy-Ross-Wesley-RS) derives them by a
+--   breadth-first search over Figure 4 (gen/); its decoding is Figure
+--   7's letters conjugated by Coxeter words (Decode).
+-- * Lean/QCert/ToffoliHadamard (theorem_5_2 and theorem_6_3 in
+--   Theorem.lean) was written from the paper, over a macro alphabet,
+--   with a kernel-checked Knuth-Bendix system for S₈.
 
 module Amy-Ross-Wesley where
 
   open import Examples.Groups.CCX+H-3qubit-Tietze.MainTheorem as M
+    using ( Circuit ; _CRel,_===_ ; ToffoliHadamard ; ⟦_⟧ ; _≈ᵁ_ ; ⊢_≈_
+          ; Wordᴾ ; _===ᴾ_ ; ⟦_⟧ᴾ ; ⊢ᴾ_≈_ )
+
+  presentation : (3 CRel,_===_) IsPresentationOf ToffoliHadamard
+  presentation = M.presentation
+
+  complete : ∀ {w v : Circuit 3} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → ⊢ w ≈ v
+  complete = M.complete
+
+  sound : ∀ {w v : Circuit 3} → ⊢ w ≈ v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+  sound = M.sound
+
+  -- The paper's alphabet.
+  presentationᴾ : _===ᴾ_ IsPresentationOf ToffoliHadamard
+  presentationᴾ = M.presentationᴾ
+
+  completeᴾ : ∀ {w v : Wordᴾ} → ⟦ w ⟧ᴾ ≈ᵁ ⟦ v ⟧ᴾ → ⊢ᴾ w ≈ v
+  completeᴾ = M.completeᴾ
+
+  soundᴾ : ∀ {w v : Wordᴾ} → ⊢ᴾ w ≈ v → ⟦ w ⟧ᴾ ≈ᵁ ⟦ v ⟧ᴾ
+  soundᴾ = M.soundᴾ
+
+-- The same theorem, by CCX+H-3qubit-RS.
+
+module Amy-Ross-Wesley-RS where
+
+  open import Examples.Groups.CCX+H-3qubit-RS.MainTheorem as M
     using ( Circuit ; _CRel,_===_ ; ToffoliHadamard ; ⟦_⟧ ; _≈ᵁ_ ; ⊢_≈_
           ; Wordᴾ ; _===ᴾ_ ; ⟦_⟧ᴾ ; ⊢ᴾ_≈_ )
 
