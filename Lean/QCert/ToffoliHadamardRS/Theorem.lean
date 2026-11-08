@@ -20,9 +20,11 @@ Li, Ross and Selinger's presentations of `O(8, 𝔻)` and `L₈`
   `R₁ = Figure 4 ∪ Figure 7`, so the paper's `R₁` is not complete;
 * `circuits_5_2`, `circuits_6_3`: the same presentations for the circuits of
   `Circuits.Syntactics` on three wires;
+* `unitary₁`, `unitary₂`, `circuits_unitary₁`, `circuits_unitary₂`: all four
+  are sub-presentations of the unitary group `U(8)`, where both groups lie;
 * the printed equations that are false, each refuted by one matrix entry.
 -/
-import QCert.ToffoliHadamardRS.Circuits.Presentation
+import QCert.ToffoliHadamardRS.Unitary
 import QCert.ToffoliHadamardRS.Independence
 import QCert.ToffoliHadamardRS.Errata
 import QCert.ToffoliHadamardRS.GateMatrices
@@ -65,6 +67,20 @@ theorem circuits_5_2 : IsPresentationOf (QCert.Lift Circuits.SRel1 3) Circuits.s
 
 theorem circuits_6_3 : IsPresentationOf (QCert.Lift Circuits.SRel2 3) Circuits.sem2 :=
   Circuits.theorem_6_3
+
+/-! ## All four in `U(8)` -/
+
+theorem unitary₁ : IsSubPresentationOf R1plus (fun g => (sem1 g : U8)) := presentation₁
+
+theorem unitary₂ : IsSubPresentationOf R2plus (fun g => (sem2 g : U8)) := presentation₂
+
+theorem circuits_unitary₁ :
+    IsSubPresentationOf (QCert.Lift Circuits.SRel1 3) (fun x => (Circuits.sem1 x : U8)) :=
+  circuit_presentation₁
+
+theorem circuits_unitary₂ :
+    IsSubPresentationOf (QCert.Lift Circuits.SRel2 3) (fun x => (Circuits.sem2 x : U8)) :=
+  circuit_presentation₂
 
 /-! ## The errata: the printed equations that are false -/
 
