@@ -162,11 +162,18 @@
 %% ---------------------------------------------------------------------
 %% Page layout
 
-%% Disable line-height rounding, which otherwise enlarges the text area
-%% at 10pt. The top and bottom margins are smaller than acmsmall's
-%% (58pt and 44pt), so that Figure 1 fits on the first page after the
-%% paragraph that introduces it. The text area is about 5.478in by
-%% 8.658in, where acmsmall's is 5.478in by 7.884in.
+%% Use acmsmall's standard text area from page 2 onward, without
+%% line-height rounding. Preserve the current first-page margins so
+%% that Figure 1 fits below its introduction.
+\geometry{heightrounded=false}
+\newlength{\qcert@normaltextheight}
+\newlength{\qcert@normaltopmargin}
+\setlength{\qcert@normaltextheight}{\textheight}
+\setlength{\qcert@normaltopmargin}{\topmargin}
 \geometry{heightrounded=false,top=30pt,bottom=16pt}
+\AddToHookNext{shipout/after}{%
+  \global\textheight=\qcert@normaltextheight
+  \global\topmargin=\qcert@normaltopmargin
+}
 
 \endinput
