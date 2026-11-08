@@ -16,11 +16,7 @@ python mkfig.py ../figures/compare.tex  # the pgfplots figure
 * **Rows.** `loc.py` maps each row of Table 1 to its Agda folders (the qudit
   Clifford row is `Symplectic`, `ProjectiveClifford/Qupit`, `Clifford+MinusOne`,
   `ProjectivePauli` and `Qupit-Clifford`, Table 1's 215 modules) and to
-  `Lean/QCert/<Row>`. The Toffoli–Hadamard row is `CCX+HH-3qubit-opus`, which
-  reaches the result through Li–Ross–Selinger's two-level presentation as the
-  Lean one does; `CCX+HH-3qubit`, which replays the authors' TIETZE2 traces
-  (28,629 code lines, 79% generated certificates), was counted until 8
-  November. The shared library is `Word`, `Presentation`, `Circuit`,
+  `Lean/QCert/<Row>`. The shared library is `Word`, `Presentation`, `Circuit`,
   `Normalization`, `Examples/Construct` and the small groups in Agda, and
   `Presentation`, `Circuit`, `Exact`, `Matrix`, `NumberTheory`, `Synthesis` in Lean.
 * **Code lines** exclude blank lines and comments (`--`, nested `{- -}` / `/- -/`).
@@ -85,10 +81,4 @@ overlapped another project's Lean builds, so the twenty units they overlapped
 were re-timed on 6 November (`retimes`); `leantime.json` holds each unit's
 last timing. `agdatime.json`, `loc.json` and `features.json` were measured on
 8 November 2026, on the same machine as `leantime.json`, after the
-`MainTheorem` modules were added (revision `88440624`). The same day the
-Toffoli–Hadamard row was moved to `CCX+HH-3qubit-opus`, and its entries of
-`loc.json` and `features.json` recounted (the other rows kept as measured);
-its time in `agdatime.json` is still that of `CCX+HH-3qubit` until it is
-re-timed on the same machine: `python3 agdatime.py ../.. agdatime.json
-ToffoliHadamard`, then `figdata.py` and `mkfig.py`, and the time figures of
-Section 3.3 and Table 1.
+`MainTheorem` modules were added (revision `88440624`).

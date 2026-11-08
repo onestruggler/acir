@@ -28,7 +28,7 @@ AGDA = {
     'CliffordT2': ['Examples/Groups/Clifford+T-2qubit'],
     'CliffordCS3': ['Examples/Groups/Clifford+CS-3qubit'],
     'RealCliffordCH': ['Examples/Groups/Real-Clifford+CH'],
-    'ToffoliHadamard': ['Examples/Groups/CCX+HH-3qubit-opus'],
+    'ToffoliHadamard': ['Examples/Groups/CCX+HH-3qubit'],
     'QutritClifford': ['Examples/Groups/Qutrit-Clifford'],
     'Minimality': ['Examples/Independence'],
     '(shared)': ['Word', 'Presentation', 'Circuit', 'Normalization', 'Examples/Construct',
