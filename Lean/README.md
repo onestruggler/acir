@@ -63,6 +63,7 @@ main result) and a `README.md` listing what is proved and every remaining
 | Bian, Selinger [2023] | three-qubit Clifford+CS | `QCert/CliffordCS3` | **proved** (Theorem 3.1, with independently constructed and checked two-coset data; no `sorry`) |
 | Clément [2026] | real Clifford+CH | `QCert/RealCliffordCH` | **proved** (Theorem 8.9 at every width, with Theorem 4.10, Lemmas 8.7, 8.8 and Appendix D; no `sorry`) |
 | Amy, Ross, Wesley [2024] | three-qubit Toffoli–Hadamard | `QCert/ToffoliHadamard` | **proved** (Theorem 5.2 with (r_K) restored, Theorem 6.3; no `sorry`); (r_K) proved independent |
+| Amy, Ross, Wesley [2024], via Li, Ross, Selinger | three-qubit Toffoli–Hadamard | `QCert/ToffoliHadamardRS` | **proved** (Theorems 5.2 and 6.3 with (r_K), over the paper's alphabet and as circuits; (r_K) proved independent; a translation of the Agda `CCX+H-3qubit-RS`; no `sorry`) |
 | Li et al. [2025] | qutrit Clifford | `QCert/QutritClifford` | **proved** (Theorem 4.4 at every width, by a stabiliser chain; Proposition 3.9, Corollary 3.10; no `sorry`) |
 | Blake [2026] | six fragments, minimality | `QCert/Minimality` | Theorem 37 proved; Theorem 22 transferred for all six fragments in the stated ranges. All six fragments have complete source proofs, including Clifford+CS on two and three wires; no `sorry`. |
 

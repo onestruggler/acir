@@ -13,3 +13,4 @@ import QCert.Exact.Quadratic
 import QCert.Exact.Roots
 import QCert.Synthesis
 import QCert.Table1
+import QCert.ToffoliHadamardRS.Theorem
