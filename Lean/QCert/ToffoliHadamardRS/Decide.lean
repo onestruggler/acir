@@ -201,4 +201,12 @@ theorem semH_eq_of_check {k : ℕ} {w v : Word (Gate k)} (h : checkH w.toList v.
   apply semL_eq_of_check
   rw [encLW_toList, encLW_toList]; exact h
 
+/-- A circuit has the value of a word over `𝒢₈`, decided. -/
+theorem semO_eq_sem8_of_check {k : ℕ} {w : Word (Gate k)} {u : Word (Gen 8)}
+    (h : eqS 2 (evalG (encList w.toList)) (evalG u.toList) = true) :
+    semO w = FreeMonoid.lift (sem 8) u := by
+  show FreeMonoid.lift (sem 8) (encW w) = FreeMonoid.lift (sem 8) u
+  apply sem8_eq_of_check
+  rw [encW_toList]; exact h
+
 end QCert.ToffoliHadamardRS

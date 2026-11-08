@@ -89,6 +89,8 @@ theorem sw_lt {i x n : ℕ} (hi : i + 1 < n) (hx : x < n) : sw i x < n := by
 /-- The letters of a word lie below `N`: a word of `S_{N+1}`. -/
 def Valid (N : ℕ) (w : CW) : Prop := ∀ i ∈ w, i < N
 
+instance (N : ℕ) (w : CW) : Decidable (Valid N w) := inferInstanceAs (Decidable (∀ i ∈ w, i < N))
+
 theorem act_lt {N : ℕ} {w : CW} (hw : Valid N w) {x : ℕ} (hx : x < N + 1) : act w x < N + 1 := by
   induction w with
   | nil => exact hx
