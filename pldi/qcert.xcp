@@ -1,0 +1,1543 @@
+%!
+TeXDict begin
+/XC@red{1 0 0}XCrgb
+/XC@green{0 1 0}XCrgb
+/XC@blue{0 0 1}XCrgb
+/XC@brown{0.75 0.5 0.25}XCrgb
+/XC@lime{0.75 1 0}XCrgb
+/XC@orange{1 0.5 0}XCrgb
+/XC@pink{1 0.75 0.75}XCrgb
+/XC@purple{0.75 0 0.25}XCrgb
+/XC@teal{0 0.5 0.5}XCrgb
+/XC@violet{0.5 0 0.5}XCrgb
+/XC@cyan{1 0 0 0}XCcmyk
+/XC@magenta{0 1 0 0}XCcmyk
+/XC@yellow{0 0 1 0}XCcmyk
+/XC@olive{0 0 1 0.5}XCcmyk
+/XC@black{0}XCgray
+/XC@darkgray{0.25}XCgray
+/XC@gray{0.5}XCgray
+/XC@lightgray{0.75}XCgray
+/XC@white{1}XCgray
+/XC@ACMBlue{1 0.1 0 0.1}XCcmyk
+/XC@ACMYellow{0 0.16 1 0}XCcmyk
+/XC@ACMOrange{0 0.42 1 0.01}XCcmyk
+/XC@ACMRed{0 0.9 0.86 0}XCcmyk
+/XC@ACMLightBlue{0.49 0.01 0 0}XCcmyk
+/XC@ACMGreen{0.2 0 1 0.19}XCcmyk
+/XC@ACMPurple{0.55 1 0 0.15}XCcmyk
+/XC@ACMDarkBlue{1 0.58 0 0.21}XCcmyk
+/XC@AgdaKeyword{0.80392 0.4 0}XCrgb
+/XC@AgdaComment{0.69804 0.13333 0.13333}XCrgb
+/XC@AgdaDatatype{0 0 0.80392}XCrgb
+/XC@AgdaComment{0.69804 0.13333 0.13333}XCrgb
+/XC@AgdaPragma{0 0 0}XCrgb
+/XC@AgdaKeyword{0.80392 0.4 0}XCrgb
+/XC@AgdaString{0.69804 0.13333 0.13333}XCrgb
+/XC@AgdaNumber{0.62746 0.12549 0.9412}XCrgb
+/XC@AgdaSymbol{0.25098 0.25098 0.25098}XCrgb
+/XC@AgdaPrimitiveType{0 0 0.80392}XCrgb
+/XC@AgdaBound{0 0 0}XCrgb
+/XC@AgdaGeneralizable{0 0 0}XCrgb
+/XC@AgdaInductiveConstructor{0 0.5451 0}XCrgb
+/XC@AgdaCoinductiveConstructor{0.5451 0.45882 0}XCrgb
+/XC@AgdaDatatype{0 0 0.80392}XCrgb
+/XC@AgdaField{0.93333 0.0706 0.53725}XCrgb
+/XC@AgdaFunction{0 0 0.80392}XCrgb
+/XC@AgdaMacro{0.2706 0.5451 0.4549}XCrgb
+/XC@AgdaModule{0.62746 0.12549 0.9412}XCrgb
+/XC@AgdaPostulate{0 0 0.80392}XCrgb
+/XC@AgdaPrimitive{0 0 0.80392}XCrgb
+/XC@AgdaRecord{0 0 0.80392}XCrgb
+/XC@AgdaArgument{0.25098 0.25098 0.25098}XCrgb
+/XC@AgdaDottedPattern{0 0 0}XCrgb
+/XC@AgdaUnsolvedMeta{1 1 0}XCrgb
+/XC@AgdaUnsolvedConstraint{1 1 0}XCrgb
+/XC@AgdaTerminationProblem{1 0.62746 0.47842}XCrgb
+/XC@AgdaIncompletePattern{0.96078 0.87059 0.70197}XCrgb
+/XC@AgdaErrorWarning{1 0.62746 0.47842}XCrgb
+/XC@AgdaError{1 0 0}XCrgb
+/XC@AgdaHole{0.61569 1 0.61569}XCrgb
+/XC@pgftransparent{0}XCgray
+/XC@transparent{0}XCgray
+/XC@tikz@axis@top{0.5}XCgray
+/XC@tikz@axis@middle{0.75}XCgray
+/XC@tikz@axis@bottom{1}XCgray
+/XC@tikz@ball{0 0 1}XCrgb
+/XC@tikz@radial@inner{0.5}XCgray
+/XC@tikz@radial@outer{1}XCgray
+/XC@normGreen{0.83922 0.95294 0.86667}XCrgb
+/XC@normRed{0.97647 0.76863 0.76863}XCrgb
+/XC@normYellow{0.99217 0.96472 0.81569}XCrgb
+/XC@zxgreen{0.84706 0.97255 0.84706}XCrgb
+/XC@zxred{0.86667 0.64706 0.64706}XCrgb
+/XC@zxhad{1 1 0}XCrgb
+/XC@zxpaulibox{0.54118 0.62354 0.77647}XCrgb
+/XC@mapped color{0 0 0}XCrgb
+/XC@pgf@tempcol{0 0 1}XCrgb
+/XC@pgf@tempcol{0 0 1 0}XCcmyk
+/XC@pgf@tempcol{1 0.5 0}XCrgb
+/XC@pgf@tempcol{1 0 0}XCrgb
+/XC@pgf@tempcol{0}XCgray
+/XC@pgf@tempcol{0}XCgray
+/XC@pgffillcolor{0.8}XCgray
+/XC@pgffillcolor{0.9}XCgray
+/XC@pgffillcolor{0.85}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.65}XCgray
+/XC@pgffillcolor{0.1}XCgray
+/XC@pgffillcolor{0.15}XCgray
+/XC@pgffillcolor{0.9 0.9 1}XCrgb
+/XC@pgffillcolor{0.85 0.85 1}XCrgb
+/XC@pgffillcolor{0.1 0.1 1}XCrgb
+/XC@pgffillcolor{0.15 0.15 1}XCrgb
+/XC@pgffillcolor{0.8}XCgray
+/XC@pgffillcolor{0.9}XCgray
+/XC@pgffillcolor{0.3}XCgray
+/XC@pgf@lightsteelblue{0.6875 0.76562 0.86718}XCrgb
+/XC@pgf@darklightsteelblue{0.34375 0.38281 0.4336}XCrgb
+/XC@pgffillcolor{0.6875 0.76562 0.86718}XCrgb
+/XC@pgffillcolor{0.93437 0.93828 0.94336}XCrgb
+/XC@pgffillcolor{0.54062 0.56796 0.60352}XCrgb
+/XC@cmpAgda{0.16472 0.4706 0.83922}XCrgb
+/XC@cmpLean{0.92157 0.40784 0.20392}XCrgb
+/XC@cmpAxis{0.45}XCgray
+/XC@cmpGrid{0.88}XCgray
+/XC@pipelineBlue{0.12549 0.34511 0.5255}XCrgb
+/XC@pipelineGreen{0.19609 0.5255 0.41962}XCrgb
+/XC@pipelineGreenText{0.13725 0.40392 0.3098}XCrgb
+/XC@pipelineMint{0.93726 0.97647 0.95294}XCrgb
+/XC@pipelineMintAccent{0.73724 0.89804 0.80785}XCrgb
+/XC@pipelineLemon{1 0.97255 0.81961}XCrgb
+/XC@pipelineYellow{0.83922 0.72942 0.16864}XCrgb
+/XC@pipelineYellowAccent{0.95294 0.82745 0.2902}XCrgb
+/XC@pipelineInk{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.96501 0.9738 0.98102}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.93726 0.97647 0.95294}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.73724 0.89804 0.80785}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.73724 0.89804 0.80785}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.83922 0.72942 0.16864}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.83922 0.72942 0.16864}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.95294 0.82745 0.2902}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.19609 0.5255 0.41962}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.83922 0.72942 0.16864}XCrgb
+/XC@pgffillcolor{1 0.97255 0.81961}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.83922 0.72942 0.16864}XCrgb
+/XC@pgffillcolor{1 0.97255 0.81961}XCrgb
+/XC@pgfstrokecolor{0.83922 0.72942 0.16864}XCrgb
+/XC@pgffillcolor{0.83922 0.72942 0.16864}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.83922 0.72942 0.16864}XCrgb
+/XC@pgffillcolor{0.83922 0.72942 0.16864}XCrgb
+/XC@fragmentMint{0.87451 0.9451 0.9098}XCrgb
+/XC@fragmentBlue{0.8902 0.93333 0.96863}XCrgb
+/XC@fragmentLavender{0.93333 0.90588 0.96078}XCrgb
+/XC@fragmentIvory{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgffillcolor{0.93333 0.90588 0.96078}XCrgb
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgffillcolor{0.93333 0.90588 0.96078}XCrgb
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgffillcolor{0.93333 0.90588 0.96078}XCrgb
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgffillcolor{0.93333 0.90588 0.96078}XCrgb
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgffillcolor{0.93333 0.90588 0.96078}XCrgb
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgffillcolor{0.93333 0.90588 0.96078}XCrgb
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgffillcolor{0.93333 0.90588 0.96078}XCrgb
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgffillcolor{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgffillcolor{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgffillcolor{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgffillcolor{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgffillcolor{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgffillcolor{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.4}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgfstrokecolor{0.75}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.75}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{1}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{1}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0.35}XCgray
+/XC@pgffillcolor{0.35}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@scBlue{0.12549 0.34511 0.5255}XCrgb
+/XC@scGreen{0.19609 0.5255 0.41962}XCrgb
+/XC@scGreenText{0.13725 0.40392 0.3098}XCrgb
+/XC@scMint{0.93726 0.97647 0.95294}XCrgb
+/XC@scMintAccent{0.81961 0.92549 0.87059}XCrgb
+/XC@scInk{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.93726 0.97647 0.95294}XCrgb
+/XC@pgffillcolor{0.96501 0.9738 0.98102}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.81961 0.92549 0.87059}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.73764 0.80353 0.85765}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.73764 0.80353 0.85765}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.73764 0.80353 0.85765}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.73764 0.80353 0.85765}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.19609 0.5255 0.41962}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.19609 0.5255 0.41962}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.19609 0.5255 0.41962}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.13725 0.40392 0.3098}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@pgffillcolor{0.93726 0.97647 0.95294}XCrgb
+/XC@.{0.13725 0.40392 0.3098}XCrgb
+/XC@pgfstrokecolor{0.13725 0.40392 0.3098}XCrgb
+/XC@pgffillcolor{0.93726 0.97647 0.95294}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.73764 0.80353 0.85765}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgffillcolor{0.19609 0.5255 0.41962}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.75}XCgray
+/XC@pgffillcolor{0.88}XCgray
+/XC@pgffillcolor{0.5}XCgray
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgffillcolor{0.5}XCgray
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.16472 0.4706 0.83922}XCrgb
+/XC@pgfstrokecolor{0.16472 0.4706 0.83922}XCrgb
+/XC@pgffillcolor{0.92157 0.40784 0.20392}XCrgb
+/XC@pgfstrokecolor{0.92157 0.40784 0.20392}XCrgb
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.75}XCgray
+/XC@pgffillcolor{0.88}XCgray
+/XC@pgffillcolor{0.5}XCgray
+/XC@pgffillcolor{0.5}XCgray
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgffillcolor{0.5}XCgray
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@pgffillcolor{0.7}XCgray
+/XC@.{0.25}XCgray
+/XC@.{0.25}XCgray
+/XC@pgfstrokecolor{0.25}XCgray
+/XC@.{0.25}XCgray
+/XC@.{0.25}XCgray
+/XC@pgfstrokecolor{0.25}XCgray
+/XC@tikz@color{0.16472 0.4706 0.83922}XCrgb
+/XC@.{0.16472 0.4706 0.83922}XCrgb
+/XC@pgfstrokecolor{0.16472 0.4706 0.83922}XCrgb
+/XC@tikz@color{0.16472 0.4706 0.83922}XCrgb
+/XC@.{0.16472 0.4706 0.83922}XCrgb
+/XC@pgfstrokecolor{0.16472 0.4706 0.83922}XCrgb
+/XC@tikz@color{0.92157 0.40784 0.20392}XCrgb
+/XC@.{0.92157 0.40784 0.20392}XCrgb
+/XC@pgfstrokecolor{0.92157 0.40784 0.20392}XCrgb
+/XC@tikz@color{0.92157 0.40784 0.20392}XCrgb
+/XC@.{0.92157 0.40784 0.20392}XCrgb
+/XC@pgfstrokecolor{0.92157 0.40784 0.20392}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgffillcolor{0.16472 0.4706 0.83922}XCrgb
+/XC@pgfstrokecolor{0.16472 0.4706 0.83922}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgffillcolor{0.92157 0.40784 0.20392}XCrgb
+/XC@pgfstrokecolor{0.92157 0.40784 0.20392}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.75}XCgray
+/XC@pgffillcolor{0.88}XCgray
+/XC@pgffillcolor{0.5}XCgray
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgffillcolor{0.5}XCgray
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgffillcolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@tikz@color{0.16472 0.4706 0.83922}XCrgb
+/XC@.{0.16472 0.4706 0.83922}XCrgb
+/XC@pgfstrokecolor{0.16472 0.4706 0.83922}XCrgb
+/XC@tikz@color{0.92157 0.40784 0.20392}XCrgb
+/XC@.{0.92157 0.40784 0.20392}XCrgb
+/XC@pgfstrokecolor{0.92157 0.40784 0.20392}XCrgb
+/XC@.{0.25}XCgray
+/XC@.{0.25}XCgray
+/XC@pgfstrokecolor{0.25}XCgray
+/XC@.{0.25}XCgray
+/XC@.{0.25}XCgray
+/XC@pgfstrokecolor{0.25}XCgray
+/XC@tikz@color{0.16472 0.4706 0.83922}XCrgb
+/XC@.{0.16472 0.4706 0.83922}XCrgb
+/XC@pgfstrokecolor{0.16472 0.4706 0.83922}XCrgb
+/XC@tikz@color{0.16472 0.4706 0.83922}XCrgb
+/XC@.{0.16472 0.4706 0.83922}XCrgb
+/XC@pgfstrokecolor{0.16472 0.4706 0.83922}XCrgb
+/XC@tikz@color{0.92157 0.40784 0.20392}XCrgb
+/XC@.{0.92157 0.40784 0.20392}XCrgb
+/XC@pgfstrokecolor{0.92157 0.40784 0.20392}XCrgb
+/XC@tikz@color{0.92157 0.40784 0.20392}XCrgb
+/XC@.{0.92157 0.40784 0.20392}XCrgb
+/XC@pgfstrokecolor{0.92157 0.40784 0.20392}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.83922 0.95294 0.86667}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.83922 0.95294 0.86667}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.83922 0.95294 0.86667}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.83922 0.95294 0.86667}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.83922 0.95294 0.86667}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.83922 0.95294 0.86667}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.83922 0.95294 0.86667}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.83922 0.95294 0.86667}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.97647 0.76863 0.76863}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.97647 0.76863 0.76863}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.97647 0.76863 0.76863}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.97647 0.76863 0.76863}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.97647 0.76863 0.76863}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.97647 0.76863 0.76863}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.97647 0.76863 0.76863}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.97647 0.76863 0.76863}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.83922 0.95294 0.86667}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.83922 0.95294 0.86667}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@qupitOverviewBlue{0.12549 0.34511 0.5255}XCrgb
+/XC@qupitOverviewInk{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@fragmentMint{0.87451 0.9451 0.9098}XCrgb
+/XC@fragmentBlue{0.8902 0.93333 0.96863}XCrgb
+/XC@fragmentIvory{0.96472 0.93333 0.85883}XCrgb
+/XC@progressDone{0.4706 0.23529 0.51373}XCrgb
+/XC@progressChecked{0.08627 0.43922 0.2902}XCrgb
+/XC@progressPartial{0.57256 0.4157 0.0706}XCrgb
+/XC@progressOpen{0.63922 0.24315 0.24315}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgffillcolor{0.8902 0.93333 0.96863}XCrgb
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgffillcolor{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgffillcolor{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgffillcolor{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgffillcolor{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgffillcolor{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgffillcolor{0.96472 0.93333 0.85883}XCrgb
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.45}XCgray
+/XC@pgffillcolor{0.87451 0.9451 0.9098}XCrgb
+/XC@pgfstrokecolor{0.75}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.75}XCgray
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{1}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{1}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0.55}XCgray
+/XC@pgffillcolor{0.55}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{1}XCgray
+/XC@pgffillcolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{1}XCgray
+/XC@pgffillcolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{0.16864 0.29805 0.49413}XCrgb
+/XC@pgffillcolor{0.16864 0.29805 0.49413}XCrgb
+/XC@pgfstrokecolor{0.38431 0.50195 0.67451}XCrgb
+/XC@pgffillcolor{0.38431 0.50195 0.67451}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{1}XCgray
+/XC@pgffillcolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{1}XCgray
+/XC@pgffillcolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{0.16864 0.29805 0.49413}XCrgb
+/XC@pgffillcolor{0.16864 0.29805 0.49413}XCrgb
+/XC@pgfstrokecolor{0.38431 0.50195 0.67451}XCrgb
+/XC@pgffillcolor{0.38431 0.50195 0.67451}XCrgb
+/XC@pgfstrokecolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{1}XCgray
+/XC@pgffillcolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{1}XCgray
+/XC@pgffillcolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0}XCgray
+/XC@pgfstrokecolor{0.16864 0.29805 0.49413}XCrgb
+/XC@pgffillcolor{0.16864 0.29805 0.49413}XCrgb
+/XC@pgfstrokecolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{1}XCgray
+/XC@pgffillcolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{1}XCgray
+/XC@pgffillcolor{0.54903 0.1098 0.13333}XCrgb
+/XC@pgfstrokecolor{0.16864 0.29805 0.49413}XCrgb
+/XC@pgffillcolor{0.16864 0.29805 0.49413}XCrgb
+/XC@routeBlue{0.12549 0.34511 0.5255}XCrgb
+/XC@routeInk{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.4753 0.60707 0.7153}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@.{0.13725 0.20392 0.27843}XCrgb
+/XC@pgfstrokecolor{0.13725 0.20392 0.27843}XCrgb
+/XC@pgffillcolor{1}XCgray
+/XC@pgfstrokecolor{0.12549 0.34511 0.5255}XCrgb
+/XC@pgffillcolor{0.12549 0.34511 0.5255}XCrgb
+end
