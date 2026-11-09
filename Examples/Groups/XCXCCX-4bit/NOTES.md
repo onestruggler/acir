@@ -31,6 +31,19 @@ circuits over X, CX, CCX, and G₄ ≅ Alt(16).
 * Width2.agda: `complete₂ : ⟦ u ⟧ ≐ ⟦ v ⟧ → 2 ⊢ u ≈ v` (Prop. B.2).
 * Narrow2.agda: `by2 l r refl : Eqn (₂₊ n)` for two-wire letter lists with
   the same function (a two-wire step inside any derivation).
+* Width1/Width3.agda: `complete₁`, `complete₃` (Props. B.1, B.3).
+* EvenRS.agda (N): A_N by Reidemeister–Schreier from S_N (`Sch`, `f`,
+  `_RS,_===_` with constructors order/braid₀/braid/far₀/far, `rs-complete`,
+  `rs`, `rs-sem`).
+* Placed.agda: placed letters `Xᵖ t`, `CXᵖ c t`, `CCXᵖ a b t` (a < b; wires
+  `₀ ₁ ₂ ₃`), `ι`/`ι*` (placement by swap networks), `relabel-ι`,
+  `disj-comm`, `rule7`, `Narrow` (parameterised by complete₃).
+  Narrow3.agda: `by3` (three-wire steps, Kit level) and the placed `narrow`
+  on any triple from `Width3.complete₃`.  PlacedEngine.agda: `Eqnᵖ`,
+  `derive` with steps `perm` / `rw` / `narrow i k ys`, `r7at a b c d`,
+  `relabel⁼`.  PlacedEngine and Kit share names (`perm`, `rw`, `derive`,
+  `sym⁼`, `Step`, `run`): open only one of them in a module; don't open
+  Narrow3 unqualified beside PlacedEngine (`narrow` clashes).
 * Coxeter.agda (N): Symmetric.CoxeterFrames for N states: `Circuits T`,
   `Coxeter` record, `Complete` with `perm-complete′`, `Fr`, `Fr-conj`,
   `Comm≥`, `stab`, `frame≈`.
