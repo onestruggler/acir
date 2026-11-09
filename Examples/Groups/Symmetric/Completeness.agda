@@ -4,10 +4,12 @@
 -- Completeness of the permutation semantics of Sₙ: words with equal
 -- denotations are congruent, by normalization.
 --
--- Nothing imports this.  It is the permutation counterpart of
--- SubPresentation.SubPres's completeness, and it holds -- it
--- typechecks -- but Theorems re-exports completeness only for the
--- endofunction semantics, so this statement is currently unreached.
+-- The permutation counterpart of SubPresentation.SubPres's
+-- completeness.  Symmetric-Prop's Presentation transports it, and
+-- Examples.Groups.Alternating.Parity uses it: it makes the parity of a
+-- circuit of transpositions an invariant of the permutation the
+-- circuit denotes, which is how the sign of a permutation is defined
+-- there.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
