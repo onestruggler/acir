@@ -43,6 +43,7 @@ open import Examples.Groups.XCXCCX-4bit.PFrames
 open import Examples.Groups.XCXCCX-4bit.CBase
 import Examples.Groups.XCXCCX-4bit.Coxeter as Cox
 open Cox 8 using (act-inv)
+import Examples.Groups.Symmetric.CoxeterFrames as CF
 
 open PB (4 VRel,_===_) using (_≈_)
 
@@ -322,6 +323,141 @@ flips-act true true true true ₄ = Eq.refl
 flips-act true true true true ₅ = Eq.refl
 flips-act true true true true ₆ = Eq.refl
 flips-act true true true true ₇ = Eq.refl
+
+-- The transposition of the positions d and d + 1.
+swp : ℕ → Fin 8 → Fin 8
+swp 0 ₀ = ₁
+swp 0 ₁ = ₀
+swp 0 ₂ = ₂
+swp 0 ₃ = ₃
+swp 0 ₄ = ₄
+swp 0 ₅ = ₅
+swp 0 ₆ = ₆
+swp 0 ₇ = ₇
+swp 1 ₀ = ₀
+swp 1 ₁ = ₂
+swp 1 ₂ = ₁
+swp 1 ₃ = ₃
+swp 1 ₄ = ₄
+swp 1 ₅ = ₅
+swp 1 ₆ = ₆
+swp 1 ₇ = ₇
+swp 2 ₀ = ₀
+swp 2 ₁ = ₁
+swp 2 ₂ = ₃
+swp 2 ₃ = ₂
+swp 2 ₄ = ₄
+swp 2 ₅ = ₅
+swp 2 ₆ = ₆
+swp 2 ₇ = ₇
+swp 3 ₀ = ₀
+swp 3 ₁ = ₁
+swp 3 ₂ = ₂
+swp 3 ₃ = ₄
+swp 3 ₄ = ₃
+swp 3 ₅ = ₅
+swp 3 ₆ = ₆
+swp 3 ₇ = ₇
+swp 4 ₀ = ₀
+swp 4 ₁ = ₁
+swp 4 ₂ = ₂
+swp 4 ₃ = ₃
+swp 4 ₄ = ₅
+swp 4 ₅ = ₄
+swp 4 ₆ = ₆
+swp 4 ₇ = ₇
+swp 5 ₀ = ₀
+swp 5 ₁ = ₁
+swp 5 ₂ = ₂
+swp 5 ₃ = ₃
+swp 5 ₄ = ₄
+swp 5 ₅ = ₆
+swp 5 ₆ = ₅
+swp 5 ₇ = ₇
+swp 6 ₀ = ₀
+swp 6 ₁ = ₁
+swp 6 ₂ = ₂
+swp 6 ₃ = ₃
+swp 6 ₄ = ₄
+swp 6 ₅ = ₅
+swp 6 ₆ = ₇
+swp 6 ₇ = ₆
+swp _ x = x
+
+act-letter : (g : SG 8) (x : Fin 8) → act [ g ]ʷ x ≡ swp (CF.tr 0 g) x
+act-letter (Sym.gate₂ Sym.σ-gate) ₀ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate) ₁ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate) ₂ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate) ₃ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate) ₄ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate) ₅ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate) ₆ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate) ₇ = Eq.refl
+act-letter (Sym.gate₀ ()) x
+act-letter (Sym.gate₁ ()) x
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥) ₀ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥) ₁ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥) ₂ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥) ₃ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥) ₄ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥) ₅ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥) ₆ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥) ₇ = Eq.refl
+act-letter (Sym.gate₀ () Sym.↥) x
+act-letter (Sym.gate₁ () Sym.↥) x
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥) ₀ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥) ₁ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥) ₂ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥) ₃ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥) ₄ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥) ₅ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥) ₆ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥) ₇ = Eq.refl
+act-letter (Sym.gate₀ () Sym.↥ Sym.↥) x
+act-letter (Sym.gate₁ () Sym.↥ Sym.↥) x
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥) ₀ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥) ₁ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥) ₂ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥) ₃ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥) ₄ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥) ₅ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥) ₆ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥) ₇ = Eq.refl
+act-letter (Sym.gate₀ () Sym.↥ Sym.↥ Sym.↥) x
+act-letter (Sym.gate₁ () Sym.↥ Sym.↥ Sym.↥) x
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₀ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₁ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₂ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₃ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₄ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₅ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₆ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₇ = Eq.refl
+act-letter (Sym.gate₀ () Sym.↥ Sym.↥ Sym.↥ Sym.↥) x
+act-letter (Sym.gate₁ () Sym.↥ Sym.↥ Sym.↥ Sym.↥) x
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₀ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₁ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₂ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₃ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₄ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₅ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₆ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₇ = Eq.refl
+act-letter (Sym.gate₀ () Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) x
+act-letter (Sym.gate₁ () Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) x
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₀ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₁ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₂ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₃ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₄ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₅ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₆ = Eq.refl
+act-letter (Sym.gate₂ Sym.σ-gate Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) ₇ = Eq.refl
+act-letter (Sym.gate₀ () Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) x
+act-letter (Sym.gate₁ () Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) x
+act-letter (Sym.gate₀ () Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) x
+act-letter (Sym.gate₁ () Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) x
+act-letter (Sym.gate₀ () Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥ Sym.↥) x
 
 pairW : Fin 4 → Fin 4 → Fin 4 → Fin 4 → CW
 pairW ₀ ₁ ₂ ₃ = ε
@@ -900,6 +1036,23 @@ module _ (r : CW) (h : InC r) where
 match : CW → Fin 8 → Fin 8
 match p x = act p (μ₀ (act (inv p) x))
 
+-- The action computed letter by letter (fast, and the same).
+actF : CW → Fin 8 → Fin 8
+actF [ g ]ʷ   x = swp (CF.tr 0 g) x
+actF ε       x = x
+actF (u • v) x = actF u (actF v x)
+
+actF-ok : (w : CW) (x : Fin 8) → actF w x ≡ act w x
+actF-ok [ g ]ʷ   x = Eq.sym (act-letter g x)
+actF-ok ε       x = Eq.refl
+actF-ok (u • v) x = Eq.trans (Eq.cong (actF u) (actF-ok v x)) (actF-ok u (act v x))
+
+matchF : CW → Fin 8 → Fin 8
+matchF p x = actF p (μ₀ (actF (inv p) x))
+
+matchF-ok : (p : CW) (x : Fin 8) → matchF p x ≡ match p x
+matchF-ok p x = Eq.trans (Eq.cong (λ z → actF p (μ₀ z)) (actF-ok (inv p) x)) (actF-ok p _)
+
 _==₈_ : Fin 8 → Fin 8 → Bool
 x ==₈ y = (half x ==₄ half y) ∧ not (low x xor low y)
 
@@ -931,10 +1084,12 @@ all8-sound f h ₇ = ∧ʳ {f ₆} (∧ʳ {f ₅} (∧ʳ {f ₄} (∧ʳ {f ₃} 
 
 -- The two matchings agree on the eight positions.
 eqMatch : CW → CW → Bool
-eqMatch p q = all8 (λ x → match p x ==₈ match q x)
+eqMatch p q = all8 (λ x → matchF p x ==₈ matchF q x)
 
 eqMatch-sound : (p q : CW) → eqMatch p q ≡ true → ∀ x → match p x ≡ match q x
-eqMatch-sound p q h x = ==₈-sound _ _ (all8-sound (λ y → match p y ==₈ match q y) h x)
+eqMatch-sound p q h x =
+  Eq.trans (Eq.sym (matchF-ok p x))
+    (Eq.trans (==₈-sound _ _ (all8-sound (λ y → matchF p y ==₈ matchF q y) h x)) (matchF-ok q x))
 
 match-InC : (p q : CW) → (∀ x → match p x ≡ match q x) → InC (inv q • p)
 match-InC p q e x =

@@ -114,6 +114,17 @@ def main():
         o.append('  %s %s' % ('  ' if i == 0 else '∷', fin_vec(m)))
     o.append('  ∷ []')
     o.append('')
+    o.append('-- A Coxeter word placing μ₀ on each matching (its frame).')
+    o.append('frmT : Vec CW 105')
+    o.append('frmT =')
+    for i, m in enumerate(PMS):
+        pl = plist(m)
+        perm = tuple(pl)                      # act w (k) = pl[k]
+        w = word_of(perm)
+        assert match_of(w) == m
+        o.append('  %s %s' % ('  ' if i == 0 else '∷', '(' + cw(w) + ')'))
+    o.append('  ∷ []')
+    o.append('')
     o.append('-- The base matchings: one per union type with μ₀.')
     o.append('baseT : Vec (Fin 105) 5')
     o.append('baseT = ' + ' ∷ '.join('# %d' % i for i in BASE_IDX) + ' ∷ []')

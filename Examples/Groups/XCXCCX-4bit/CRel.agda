@@ -111,7 +111,7 @@ L : Set
 L = Fin 105
 
 frm : L → CW
-frm i = frameD (lookup pairsT i)
+frm i = lookup frmT i
 
 -- The controlled matching of a label.
 Xm : L → Circuit 4
@@ -224,13 +224,80 @@ comm-Pc-X₃ : (r : CW) → Comm (Pc 0 r) (ι (Xᵖ ₃))
 comm-Pc-X₃ r = Eq.subst (λ z → Comm z (ι (Xᵖ ₃))) (Eq.sym (Pc-↓ 0 r)) (comm-X₃ _)
 
 inC? : CW → Bool
-inC? r = all8 (λ x → act r (μ₀ x) ==₈ μ₀ (act r x))
+inC? r = all8 (λ x → actF r (μ₀ x) ==₈ μ₀ (actF r x))
 
 inC-sound : (r : CW) → inC? r ≡ true → InC r
-inC-sound r h x = ==₈-sound _ _ (all8-sound (λ y → act r (μ₀ y) ==₈ μ₀ (act r y)) h x)
+inC-sound r h x =
+  Eq.trans (Eq.sym (actF-ok r (μ₀ x)))
+    (Eq.trans (==₈-sound _ _ (all8-sound (λ y → actF r (μ₀ y) ==₈ μ₀ (actF r y)) h x))
+              (Eq.cong μ₀ (actF-ok r x)))
 
 comm-Pc-Ḡ : (r : CW) → inC? r ≡ true → Comm (Pc 0 r) Ḡ
 comm-Pc-Ḡ r h = commḠ (W-core r (inC-sound r h)) (comm-Pc-X₃ r)
+
+------------------------------------------------------------------------
+-- The side conditions, decided on the labels
+
+private
+  bc-ok : CW → Maybe L → Bool
+  bc-ok F (just m) = eqMatch F (lookup orbCT m • baseW (lookup orbKT m))
+                     ∧ (inC? (lookup orbCT m) ∧ inC? (inv (lookup orbCT m)))
+  bc-ok F nothing  = false
+
+-- Ḡ against a frame of G, through the orbit table.
+BC₀-ok : CW → Bool
+BC₀-ok F = bc-ok F (find (matchF F))
+
+-- Q̄ x against Xm y.
+BC-ok : L → L → Bool
+BC-ok x y = eqMatch (frm x • (inv (frm x) • frm y)) (frm y) ∧ BC₀-ok (inv (frm x) • frm y)
+
+-- The word of the lower part of Xm x, the matching x on both halves.
+cP : CW → CW
+cP F = F • (w₀ • inv F)
+
+-- The side condition of conjugation.
+conj-ok : L → L → Bool
+conj-ok x y = eqMatch (cP (frm x) • frm y) (frm (c3 x y)) ∧ BC-ok x y
+
+-- The positions of the Klein four-group of x and y: the orbit of 0
+-- and of the first position outside it.
+kleinList : L → L → List (Fin 8)
+kleinList x y = a ∷ tx a ∷ ty a ∷ tx (ty a) ∷ b ∷ tx b ∷ ty b ∷ tx (ty b) ∷ []
+  where
+  tx = tbl x
+  ty = tbl y
+  a : Fin 8
+  a = zero
+  out : Fin 8 → Bool
+  out p = not (p ==₈ a) ∧ (not (p ==₈ tx a) ∧ (not (p ==₈ ty a) ∧ not (p ==₈ tx (ty a))))
+  first : List (Fin 8) → Fin 8
+  first []       = a
+  first (p ∷ ps) = if out p then p else first ps
+  b = first (₁ ∷ ₂ ∷ ₃ ∷ ₄ ∷ ₅ ∷ ₆ ∷ ₇ ∷ [])
+
+-- The flip of wire 1, placed by the swap of wires 0, 1.
+κw : CW
+κw = [ s₁ ]ʷ • [ s₂ ]ʷ • [ s₁ ]ʷ • [ s₄ ]ʷ • [ s₅ ]ʷ • [ s₄ ]ʷ
+
+private
+  ko : (x y : L) → Maybe (CF.Distinct (kleinList x y)) → Bool
+  ko x y (just d) = eqMatch (frm x) (CF.frame (kleinList x y) d • ε)
+                    ∧ (eqMatch (frm y) (CF.frame (kleinList x y) d • baseW ₁)
+                    ∧ eqMatch (frm (mul x y)) (CF.frame (kleinList x y) d • κw))
+  ko x y nothing  = false
+
+-- The side condition of klein.
+klein-ok : L → L → Bool
+klein-ok x y = ko x y (distinct? (kleinList x y))
+
+-- Q̄ x and P x: the matching x controlled by wire 3 = 0, and on both
+-- halves.
+Q̄ : CW → Circuit 4
+Q̄ F = Fr Ḡ F
+
+P : CW → Circuit 4
+P F = Fr (ι (Xᵖ ₀)) F
 
 ------------------------------------------------------------------------
 -- The calculus, given the five base commutations
@@ -247,11 +314,6 @@ module Calculus (base : (k : Fin 5) → Comm Ḡ (Fr G (baseW k))) where
   -- Block commutation
 
   private
-    bc-ok : CW → Maybe L → Bool
-    bc-ok F (just m) = eqMatch F (lookup orbCT m • baseW (lookup orbKT m))
-                       ∧ (inC? (lookup orbCT m) ∧ inC? (inv (lookup orbCT m)))
-    bc-ok F nothing  = false
-
     bc : (F : CW) (mm : Maybe L) → bc-ok F mm ≡ true → Comm Ḡ (Fr G F)
     bc F (just m) h =
       comm-≈ʳ (trans (W′ F (c • baseW k) (∧ˡ h)) (sym (Fr-conj G c (baseW k))))
@@ -262,19 +324,8 @@ module Calculus (base : (k : Fin 5) → Comm Ḡ (Fr G (baseW k))) where
       h′ = ∧ʳ {eqMatch F (c • baseW k)} h
     bc F nothing ()
 
-  -- Ḡ against a frame of G, decided through the orbit table.
-  BC₀-ok : CW → Bool
-  BC₀-ok F = bc-ok F (find (match F))
-
   BC₀ : (F : CW) → BC₀-ok F ≡ true → Comm Ḡ (Fr G F)
-  BC₀ F h = bc F (find (match F)) h
-
-  -- Q̄ x: the matching x controlled by wire 3 = 0.
-  Q̄ : CW → Circuit 4
-  Q̄ F = Fr Ḡ F
-
-  BC-ok : L → L → Bool
-  BC-ok x y = eqMatch (frm x • (inv (frm x) • frm y)) (frm y) ∧ BC₀-ok (inv (frm x) • frm y)
+  BC₀ F h = bc F (find (matchF F)) h
 
   BC : (x y : L) → BC-ok x y ≡ true → Comm (Q̄ (frm x)) (Xm y)
   BC x y h =
@@ -285,13 +336,6 @@ module Calculus (base : (k : Fin 5) → Comm Ḡ (Fr G (baseW k))) where
 
   ----------------------------------------------------------------------
   -- Conjugation
-
-  -- The lower part of Xm x: the matching x on both halves.
-  P : CW → Circuit 4
-  P F = Fr (ι (Xᵖ ₀)) F
-
-  cP : CW → CW
-  cP F = F • (w₀ • inv F)
 
   private
     X-PQ : (F : CW) → 4 ⊢ Fr G F ≈ P F • Q̄ F
@@ -322,12 +366,9 @@ module Calculus (base : (k : Fin 5) → Comm Ḡ (Fr G (baseW k))) where
       where
       c = cP F
 
-  conj-ok : L → L → Bool
-  conj-ok x y = eqMatch (cP (frm x) • frm y) (frm (c3 x y)) ∧ BC-ok x y
-
   X-conj : (x y : L) → conj-ok x y ≡ true → 4 ⊢ Xm x • Xm y • Xm x ≈ Xm (c3 x y)
   X-conj x y h = begin
-    Xm x • (Xm y • Xm x)                                   ≈⟨ cong (X-PQ fx) (cong refl (X-QP fx)) ⟩
+    Xm x • (Xm y • Xm x)                                ≈⟨ cong (X-PQ fx) (cong refl (X-QP fx)) ⟩
     (A • B) • (Y • (B • A))                             ≈⟨ assoc ⟩
     A • (B • (Y • (B • A)))                             ≈⟨ cong refl (sym assoc) ⟩
     A • ((B • Y) • (B • A))                             ≈⟨ cong refl (cong (BC x y (∧ʳ {eqMatch (cP fx • frm y) (frm (c3 x y))} h)) refl) ⟩
@@ -338,7 +379,7 @@ module Calculus (base : (k : Fin 5) → Comm Ḡ (Fr G (baseW k))) where
     A • (Y • A)                                         ≈⟨ cong (P-Pc fx) (cong refl (P-Pc⁻ fx)) ⟩
     Pc 0 (cP fx) • (Y • Pc 0 (inv (cP fx)))             ≈⟨ Fr-conj G (cP fx) (frm y) ⟩
     Fr G (cP fx • frm y)                                ≈⟨ W′ (cP fx • frm y) (frm (c3 x y)) (∧ˡ h) ⟩
-    Xm (c3 x y)                                          ∎
+    Xm (c3 x y)                                         ∎
     where
     fx = frm x
     A = P fx
@@ -347,26 +388,6 @@ module Calculus (base : (k : Fin 5) → Comm Ḡ (Fr G (baseW k))) where
 
   ----------------------------------------------------------------------
   -- Klein pairs
-
-  -- The positions of the Klein four-group of x and y: the orbit of 0
-  -- and of the first position outside it.
-  kleinList : L → L → List (Fin 8)
-  kleinList x y = a ∷ tx a ∷ ty a ∷ tx (ty a) ∷ b ∷ tx b ∷ ty b ∷ tx (ty b) ∷ []
-    where
-    tx = tbl x
-    ty = tbl y
-    a : Fin 8
-    a = zero
-    out : Fin 8 → Bool
-    out p = not (p ==₈ a) ∧ (not (p ==₈ tx a) ∧ (not (p ==₈ ty a) ∧ not (p ==₈ tx (ty a))))
-    first : List (Fin 8) → Fin 8
-    first []       = a
-    first (p ∷ ps) = if out p then p else first ps
-    b = first (₁ ∷ ₂ ∷ ₃ ∷ ₄ ∷ ₅ ∷ ₆ ∷ ₇ ∷ [])
-
-  -- The flip of wire 1, placed by the swap of wires 0, 1.
-  κw : CW
-  κw = [ s₁ ]ʷ • [ s₂ ]ʷ • [ s₁ ]ʷ • [ s₄ ]ʷ • [ s₅ ]ʷ • [ s₄ ]ʷ
 
   private
     -- The standard Klein pair: μ₀, μ₀ under CX₀₁ and their product, the
@@ -396,17 +417,11 @@ module Calculus (base : (k : Fin 5) → Comm Ḡ (Fr G (baseW k))) where
       Pc 0 κw • G • Pc 0 (inv κw)
           ∎
 
-    ko : (x y : L) → Maybe (CF.Distinct (kleinList x y)) → Bool
-    ko x y (just d) = eqMatch (frm x) (CF.frame (kleinList x y) d • ε)
-                      ∧ (eqMatch (frm y) (CF.frame (kleinList x y) d • baseW ₁)
-                      ∧ eqMatch (frm (mul x y)) (CF.frame (kleinList x y) d • κw))
-    ko x y nothing  = false
-
     kl : (x y : L) (md : Maybe (CF.Distinct (kleinList x y))) → ko x y md ≡ true →
          4 ⊢ Xm x • Xm y ≈ Xm (mul x y)
     kl x y (just d) h = begin
       Fr G (frm x) • Fr G (frm y)                                    ≈⟨ cong (W′ (frm x) (kc • ε) (∧ˡ h)) (W′ (frm y) (kc • baseW ₁) (∧ˡ h′)) ⟩
-      Fr G (kc • ε) • Fr G (kc • baseW ₁)                                  ≈⟨ cong (sym (Fr-conj G kc ε)) (sym (Fr-conj G kc (baseW ₁))) ⟩
+      Fr G (kc • ε) • Fr G (kc • baseW ₁)                            ≈⟨ cong (sym (Fr-conj G kc ε)) (sym (Fr-conj G kc (baseW ₁))) ⟩
       Fr (Fr G ε) kc • Fr (Fr G (baseW ₁)) kc                        ≈⟨ Fr-• (Fr G ε) (Fr G (baseW ₁)) kc ⟩
       Fr (Fr G ε • Fr G (baseW ₁)) kc                                ≈⟨ Fr-cong kc (cong (trans left-unit right-unit) refl) ⟩
       Fr (G • Fr G (baseW ₁)) kc                                     ≈⟨ Fr-cong kc klein-base ⟩
@@ -417,10 +432,6 @@ module Calculus (base : (k : Fin 5) → Comm Ḡ (Fr G (baseW k))) where
       kc = CF.frame (kleinList x y) d
       h′ = ∧ʳ {eqMatch (frm x) (kc • ε)} h
     kl x y nothing ()
-
-  -- The side condition of klein.
-  klein-ok : L → L → Bool
-  klein-ok x y = ko x y (distinct? (kleinList x y))
 
   X-klein : (x y : L) → klein-ok x y ≡ true → 4 ⊢ Xm x • Xm y ≈ Xm (mul x y)
   X-klein x y h = kl x y (distinct? (kleinList x y)) h

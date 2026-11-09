@@ -127,6 +127,23 @@ module _ (r : CW) (h : InC r) where
 match : CW → Fin 8 → Fin 8
 match p x = act p (μ₀ (act (inv p) x))
 
+-- The action computed letter by letter (fast, and the same).
+actF : CW → Fin 8 → Fin 8
+actF [ g ]ʷ   x = swp (CF.tr 0 g) x
+actF ε       x = x
+actF (u • v) x = actF u (actF v x)
+
+actF-ok : (w : CW) (x : Fin 8) → actF w x ≡ act w x
+actF-ok [ g ]ʷ   x = Eq.sym (act-letter g x)
+actF-ok ε       x = Eq.refl
+actF-ok (u • v) x = Eq.trans (Eq.cong (actF u) (actF-ok v x)) (actF-ok u (act v x))
+
+matchF : CW → Fin 8 → Fin 8
+matchF p x = actF p (μ₀ (actF (inv p) x))
+
+matchF-ok : (p : CW) (x : Fin 8) → matchF p x ≡ match p x
+matchF-ok p x = Eq.trans (Eq.cong (λ z → actF p (μ₀ z)) (actF-ok (inv p) x)) (actF-ok p _)
+
 _==₈_ : Fin 8 → Fin 8 → Bool
 x ==₈ y = (half x ==₄ half y) ∧ not (low x xor low y)
 
@@ -158,10 +175,12 @@ all8-sound f h ₇ = ∧ʳ {f ₆} (∧ʳ {f ₅} (∧ʳ {f ₄} (∧ʳ {f ₃} 
 
 -- The two matchings agree on the eight positions.
 eqMatch : CW → CW → Bool
-eqMatch p q = all8 (λ x → match p x ==₈ match q x)
+eqMatch p q = all8 (λ x → matchF p x ==₈ matchF q x)
 
 eqMatch-sound : (p q : CW) → eqMatch p q ≡ true → ∀ x → match p x ≡ match q x
-eqMatch-sound p q h x = ==₈-sound _ _ (all8-sound (λ y → match p y ==₈ match q y) h x)
+eqMatch-sound p q h x =
+  Eq.trans (Eq.sym (matchF-ok p x))
+    (Eq.trans (==₈-sound _ _ (all8-sound (λ y → matchF p y ==₈ matchF q y) h x)) (matchF-ok q x))
 
 match-InC : (p q : CW) → (∀ x → match p x ≡ match q x) → InC (inv q • p)
 match-InC p q e x =

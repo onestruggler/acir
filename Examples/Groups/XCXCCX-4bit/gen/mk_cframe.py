@@ -81,6 +81,25 @@ def main():
         for x in range(8):
             o.append('flips-act %s %s = Eq.refl' % (' '.join('true' if b else 'false' for b in bs), F8[x]))
     o.append('')
+    # the fast action: transpositions, and act on a letter
+    o.append('-- The transposition of the positions d and d + 1.')
+    o.append('swp : ℕ → Fin 8 → Fin 8')
+    for d in range(7):
+        for x in range(8):
+            y = d + 1 if x == d else (d if x == d + 1 else x)
+            o.append('swp %d %s = %s' % (d, F8[x], F8[y]))
+    o.append('swp _ x = x')
+    o.append('')
+    o.append('act-letter : (g : SG 8) (x : Fin 8) → act [ g ]ʷ x ≡ swp (CF.tr 0 g) x')
+    for k in range(9):
+        sh = ' Sym.↥' * k
+        if k <= 6:
+            for x in range(8):
+                o.append('act-letter (Sym.gate₂ Sym.σ-gate%s) %s = Eq.refl' % (sh, F8[x]))
+        o.append('act-letter (Sym.gate₀ ()%s) x' % sh)
+        if k <= 7:
+            o.append('act-letter (Sym.gate₁ ()%s) x' % sh)
+    o.append('')
     # pair words
     o.append('pairW : Fin 4 → Fin 4 → Fin 4 → Fin 4 → CW')
     for s, w in sorted(PW.items()):
@@ -169,6 +188,7 @@ open import Examples.Groups.XCXCCX-4bit.PFrames
 open import Examples.Groups.XCXCCX-4bit.CBase
 import Examples.Groups.XCXCCX-4bit.Coxeter as Cox
 open Cox 8 using (act-inv)
+import Examples.Groups.Symmetric.CoxeterFrames as CF
 
 open PB (4 VRel,_===_) using (_≈_)
 
