@@ -6,10 +6,10 @@
 -- Labels stand for involutions of a group (here perfect matchings of
 -- eight states), interpreted as words X x of some theory.  Given that
 -- each X x is an involution (inv), that X x conjugates X y to the
--- label of x y x (conj), and that two labels whose product is a label
--- (side condition kok, decided) multiply to it (klein), a word of
--- labels can be rewritten by moves whose side conditions are decided
--- on the labels alone:
+-- label of x y x (conj, under a decided side condition cok), and that
+-- two labels whose product is a label (side condition kok, decided)
+-- multiply to it (klein), a word of labels can be rewritten by moves
+-- whose side conditions are decided on the labels alone:
 --
 --   H i     x y   ↦  (x y x) x          Hi i    x y   ↦  y (y x y)
 --   C i     x x   ↦  ε                  I i z   ε     ↦  z z
@@ -30,10 +30,10 @@ import Presentation.Base as PB
 module Examples.Groups.XCXCCX-4bit.LabelEngine
   {L : Set}
   (_≟ᴸ_ : L → L → Bool) (≟ᴸ-sound : ∀ x y → (x ≟ᴸ y) ≡ true → x ≡ y)
-  (c3 : L → L → L) (mul : L → L → L) (kok : L → L → Bool)
+  (c3 : L → L → L) (cok : L → L → Bool) (mul : L → L → L) (kok : L → L → Bool)
   {A : Set} (Γ : WRel A) (X : L → Word A)
   (inv   : ∀ x → PB._≈_ Γ (X x • X x) ε)
-  (conj  : ∀ x y → PB._≈_ Γ (X x • X y • X x) (X (c3 x y)))
+  (conj  : ∀ x y → cok x y ≡ true → PB._≈_ Γ (X x • X y • X x) (X (c3 x y)))
   (klein : ∀ x y → kok x y ≡ true → PB._≈_ Γ (X x • X y) (X (mul x y)))
   where
 
@@ -66,18 +66,18 @@ Xs-++ (x ∷ xs) ys = trans (cong refl (Xs-++ xs ys)) (sym assoc)
 -- The local moves
 
 -- X x X y = X (x y x) X x.
-h-move : ∀ x y → X x • X y ≈ X (c3 x y) • X x
-h-move x y =
+h-move : ∀ x y → cok x y ≡ true → X x • X y ≈ X (c3 x y) • X x
+h-move x y c =
   trans (sym right-unit)
   (trans (cong refl (sym (inv x)))
-  (trans (sym assoc) (cong (trans assoc (conj x y)) refl)))
+  (trans (sym assoc) (cong (trans assoc (conj x y c)) refl)))
 
 -- X x X y = X y X (y x y).
-hi-move : ∀ x y → X x • X y ≈ X y • X (c3 y x)
-hi-move x y =
+hi-move : ∀ x y → cok y x ≡ true → X x • X y ≈ X y • X (c3 y x)
+hi-move x y c =
   trans (sym left-unit)
   (trans (cong (sym (inv y)) refl)
-  (trans assoc (cong refl (conj y x))))
+  (trans assoc (cong refl (conj y x c))))
 
 ------------------------------------------------------------------------
 -- Moves and their runs
@@ -93,8 +93,8 @@ data Move : Set where
 -- A move applied at the head of a word (after the first i letters are
 -- skipped by step).
 local : Move → List L → Maybe (List L)
-local (H _)  (x ∷ y ∷ r) = just (c3 x y ∷ x ∷ r)
-local (Hi _) (x ∷ y ∷ r) = just (y ∷ c3 y x ∷ r)
+local (H _)  (x ∷ y ∷ r) = if cok x y then just (c3 x y ∷ x ∷ r) else nothing
+local (Hi _) (x ∷ y ∷ r) = if cok y x then just (y ∷ c3 y x ∷ r) else nothing
 local (C _)  (x ∷ y ∷ r) = if x ≟ᴸ y then just r else nothing
 local (I _ z) r          = just (z ∷ z ∷ r)
 local (K _)  (x ∷ y ∷ r) = if kok x y then just (mul x y ∷ r) else nothing
@@ -156,8 +156,10 @@ private
   if-just false ()
 
 local-sound : (m : Move) (xs ys : List L) → local m xs ≡ just ys → Xs xs ≈ Xs ys
-local-sound (H _)  (x ∷ y ∷ r) _ Eq.refl = trans (sym assoc) (trans (cong (h-move x y) refl) assoc)
-local-sound (Hi _) (x ∷ y ∷ r) _ Eq.refl = trans (sym assoc) (trans (cong (hi-move x y) refl) assoc)
+local-sound (H _)  (x ∷ y ∷ r) ys e with if-just (cok x y) e
+... | b , Eq.refl = trans (sym assoc) (trans (cong (h-move x y b) refl) assoc)
+local-sound (Hi _) (x ∷ y ∷ r) ys e with if-just (cok y x) e
+... | b , Eq.refl = trans (sym assoc) (trans (cong (hi-move x y b) refl) assoc)
 local-sound (C _)  (x ∷ y ∷ r) ys e with if-just (x ≟ᴸ y) e
 ... | b , Eq.refl with ≟ᴸ-sound x y b
 ... | Eq.refl = trans (sym assoc) (trans (cong (inv x) refl) left-unit)
