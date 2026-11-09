@@ -26,7 +26,9 @@
 -- the same permutation are related (rs-complete).  Conversely rs turns
 -- a Coxeter word that ends in coset false, an even one, into symbols
 -- whose Coxeter word is the same up to S_N's relations (rs-≈), so
--- with the same permutation (rs-sem).
+-- with the same permutation (rs-sem).  And the relations are sound:
+-- the two sides of each have equal Coxeter words (rs-sound), so the
+-- same permutation (rs-sound-sem).
 --
 -- Symbol indices are natural numbers: γ c d p q, with d : ℕ and the
 -- bounds p : 1 ≤ d and q : 2 + d ≤ N irrelevant, so that two symbols
@@ -394,3 +396,103 @@ rs-≈ w e =
 rs-sem : (w : Word G) → proj₂ (rs false w) ≡ false →
          ∀ i → SymI.⟦ (f ʷ) (proj₁ (rs false w)) ⟧ ⟨$⟩ʳ i ≡ SymI.⟦ w ⟧ ⟨$⟩ʳ i
 rs-sem w e = SymSound.sound (rs-≈ w e)
+
+------------------------------------------------------------------------
+-- The relations are sound
+
+private
+  -- The Coxeter relations for the letters, at any width.
+  ord′ : (d n : ℕ) .(q : 2 + d ≤ n) → PB._≈_ (n VRel,_===_) ([ letter′ d n q ]ʷ • [ letter′ d n q ]ʷ) ε
+  ord′ zero    zero          ()
+  ord′ zero    (suc zero)    q = ⊥-elim (ℕP.1+n≰n (ℕP.≤-pred q))
+  ord′ zero    (suc (suc n)) q = PB.axiom (srel Sym.order)
+  ord′ (suc d) zero          ()
+  ord′ (suc d) (suc n)       q = Sym.lemma-cong↑ _ _ (ord′ d n (ℕP.≤-pred q))
+
+  braid′ : (d n : ℕ) .(q : 3 + d ≤ n) →
+           PB._≈_ (n VRel,_===_)
+             ([ letter′ d n (ℕP.<⇒≤ q) ]ʷ • [ letter′ (suc d) n q ]ʷ • [ letter′ d n (ℕP.<⇒≤ q) ]ʷ)
+             ([ letter′ (suc d) n q ]ʷ • [ letter′ d n (ℕP.<⇒≤ q) ]ʷ • [ letter′ (suc d) n q ]ʷ)
+  braid′ zero    zero                ()
+  braid′ zero    (suc zero)          q = ⊥-elim (ℕP.1+n≰n (ℕP.≤-pred (ℕP.≤-trans (s≤s (s≤s z≤n)) q)))
+  braid′ zero    (suc (suc zero))    q = ⊥-elim (ℕP.1+n≰n (ℕP.≤-pred (ℕP.≤-pred q)))
+  braid′ zero    (suc (suc (suc n))) q = PB.axiom (srel Sym.yang-baxter)
+  braid′ (suc d) zero                ()
+  braid′ (suc d) (suc n)             q = Sym.lemma-cong↑ _ _ (braid′ d n (ℕP.≤-pred q))
+
+  far′ : (d e n : ℕ) .(lo : 2 + d ≤ e) .(q : 2 + e ≤ n) →
+         PB._≈_ (n VRel,_===_)
+           ([ letter′ d n (ℕP.≤-trans (ℕP.+-monoʳ-≤ 2 (ℕP.≤-trans (ℕP.m≤n+m d 2) lo)) q) ]ʷ • [ letter′ e n q ]ʷ)
+           ([ letter′ e n q ]ʷ • [ letter′ d n (ℕP.≤-trans (ℕP.+-monoʳ-≤ 2 (ℕP.≤-trans (ℕP.m≤n+m d 2) lo)) q) ]ʷ)
+  far′ zero    zero          n             ()
+  far′ zero    (suc zero)    n             lo q = ⊥-elim (ℕP.1+n≰n (ℕP.≤-pred lo))
+  far′ zero    (suc (suc e)) zero          lo ()
+  far′ zero    (suc (suc e)) (suc zero)    lo q = ⊥-elim (ℕP.1+n≰n (ℕP.≤-trans (s≤s (s≤s z≤n)) q))
+  far′ zero    (suc (suc e)) (suc (suc n)) lo q =
+    PB.sym (PB.axiom (comm₂ σ-gate (letter′ e n (ℕP.≤-pred (ℕP.≤-pred q)))))
+  far′ (suc d) zero          n             ()
+  far′ (suc d) (suc e)       zero          lo ()
+  far′ (suc d) (suc e)       (suc n)       lo q = Sym.lemma-cong↑ _ _ (far′ d e n (ℕP.≤-pred lo) (ℕP.≤-pred q))
+
+  s-ord : (d : ℕ) .(q : 2 + d ≤ N) → s d q • s d q S.≈ ε
+  s-ord d q = ord′ d N q
+
+  s-braid : (d : ℕ) .(q : 3 + d ≤ N) →
+            s d (ℕP.<⇒≤ q) • s (suc d) q • s d (ℕP.<⇒≤ q) S.≈ s (suc d) q • s d (ℕP.<⇒≤ q) • s (suc d) q
+  s-braid d q = braid′ d N q
+
+  s-far : (d e : ℕ) .(lo : 2 + d ≤ e) .(q : 2 + e ≤ N) → s d (far-lo lo q) • s e q S.≈ s e q • s d (far-lo lo q)
+  s-far d e lo q = far′ d e N lo q
+
+  -- Word algebra.
+  mid : (x y z : Word G) → y • y S.≈ ε → (x • y) • (y • z) S.≈ x • z
+  mid x y z e =
+    S.trans S.assoc (S.trans (S.cong S.refl (S.sym S.assoc))
+      (S.trans (S.cong S.refl (S.cong e S.refl)) (S.cong S.refl S.left-unit)))
+
+  br : (a b z : Word G) → z • z S.≈ ε → (a • z) • ((z • b) • (a • z)) S.≈ (a • b • a) • z
+  br a b z e =
+    S.trans (S.sym S.assoc) (S.trans (S.cong (mid a z b e) S.refl)
+      (S.trans (S.sym S.assoc) (S.cong S.assoc S.refl)))
+
+  br′ : (a b z : Word G) → z • z S.≈ ε → (z • a) • ((b • z) • (z • a)) S.≈ z • (a • b • a)
+  br′ a b z e = S.trans (S.cong S.refl (mid b z a e)) S.assoc
+
+  sw4 : (z a b : Word G) → a • b S.≈ b • a → (z • a) • (b • z) S.≈ (z • b) • (a • z)
+  sw4 z a b e =
+    S.trans S.assoc (S.trans (S.cong S.refl (S.sym S.assoc))
+      (S.trans (S.cong S.refl (S.cong e S.refl))
+        (S.trans (S.cong S.refl S.assoc) (S.sym S.assoc))))
+
+  b₀ : ∀ {d} → 2 + d ≤ N → 2 ≤ N
+  b₀ = ℕP.m+n≤o⇒m≤o 2
+
+-- Each relation's two sides have equal Coxeter words.
+rs-sound : {u v : Word Sch} → _RS,_===_ u v → (f ʷ) u S.≈ (f ʷ) v
+rs-sound (order false d p q) = S.trans (mid (s d q) (s 0 (b₀ q)) (s d q) (s-ord 0 (b₀ q))) (s-ord d q)
+rs-sound (order true  d p q) = S.trans (mid (s 0 (b₀ q)) (s d q) (s 0 (b₀ q)) (s-ord d q)) (s-ord 0 (b₀ q))
+rs-sound (braid₀ false q) = S.sym
+  (S.trans S.assoc (S.trans (S.cong S.refl (s-braid 0 q))
+    (S.trans (S.sym S.assoc) (S.trans (S.cong (s-ord 1 q) S.refl) S.left-unit))))
+rs-sound (braid₀ true q) = S.sym
+  (S.trans S.assoc (S.trans (S.cong S.refl (S.sym (s-braid 0 q)))
+    (S.trans (S.sym S.assoc) (S.trans (S.cong (s-ord 0 (ℕP.<⇒≤ q)) S.refl) S.left-unit))))
+rs-sound (braid false d p q) =
+  S.trans (br (s d (ℕP.<⇒≤ q)) (s (suc d) q) (s 0 (b₀ q)) (s-ord 0 (b₀ q)))
+    (S.trans (S.cong (s-braid d q) S.refl)
+      (S.sym (br (s (suc d) q) (s d (ℕP.<⇒≤ q)) (s 0 (b₀ q)) (s-ord 0 (b₀ q)))))
+rs-sound (braid true d p q) =
+  S.trans (br′ (s d (ℕP.<⇒≤ q)) (s (suc d) q) (s 0 (b₀ q)) (s-ord 0 (b₀ q)))
+    (S.trans (S.cong S.refl (s-braid d q))
+      (S.sym (br′ (s (suc d) q) (s d (ℕP.<⇒≤ q)) (s 0 (b₀ q)) (s-ord 0 (b₀ q)))))
+rs-sound (far₀ false e p q) = S.sym (s-far 0 e p q)
+rs-sound (far₀ true  e p q) = s-far 0 e p q
+rs-sound (far false d e p q r) =
+  S.trans (mid (s d (far-lo q r)) (s 0 (b₀ r)) (s e r) (s-ord 0 (b₀ r)))
+    (S.trans (s-far d e q r) (S.sym (mid (s e r) (s 0 (b₀ r)) (s d (far-lo q r)) (s-ord 0 (b₀ r)))))
+rs-sound (far true d e p q r) = sw4 (s 0 (b₀ r)) (s d (far-lo q r)) (s e r) (s-far d e q r)
+
+-- So their two sides have the same permutation.
+rs-sound-sem : {u v : Word Sch} → _RS,_===_ u v →
+               ∀ i → SymI.⟦ (f ʷ) u ⟧ ⟨$⟩ʳ i ≡ SymI.⟦ (f ʷ) v ⟧ ⟨$⟩ʳ i
+rs-sound-sem r = SymSound.sound (rs-sound r)
