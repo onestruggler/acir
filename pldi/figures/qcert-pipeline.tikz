@@ -136,7 +136,7 @@
   minimum width=4.65cm,minimum height=.72cm,inner sep=3pt,
   font=\sffamily\fontsize{7.5}{9}\selectfont,
   align=center,text=pipelineInk] (extensions) at (8.50,-2.48)
-  {\textbf{Explore completeness extensions}\\
+  {\textbf{New completeness results}\\
    Humans + LLMs: new rule sets or circuit families};
 \draw[extension arrow] (12.45,-1.83) -- (12.45,-2.48) -- (extensions.east);
 \node[font=\sffamily\fontsize{7}{8}\selectfont,
