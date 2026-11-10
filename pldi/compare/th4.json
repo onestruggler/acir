@@ -7,7 +7,21 @@
   "mem_gib": 26.4,
   "agda": "Agda version 2.8.0",
   "rts": "-M6G",
-  "lean": "Lean (version 4.30.0, x86_64-unknown-linux-gnu, commit d024af099ca4bf2c86f649261ebf59565dc8c622, Release)"
+  "lean": "Lean (version 4.30.0, x86_64-unknown-linux-gnu, commit d024af099ca4bf2c86f649261ebf59565dc8c622, Release)",
+  "retimed 2026-11-10 17:34 +0100": {
+   "date": "2026-11-10 17:34 +0100",
+   "revision": "f505371e",
+   "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF",
+   "logical_cpus": 16,
+   "mem_gib": 26.4,
+   "agda": "Agda version 2.8.0",
+   "rts": "-M6G",
+   "lean": "Lean (version 4.30.0, x86_64-unknown-linux-gnu, commit d024af099ca4bf2c86f649261ebf59565dc8c622, Release)",
+   "forms": [
+    "Agda A16",
+    "Lean A16"
+   ]
+  }
  },
  "forms": {
   "Agda Tietze": {
@@ -211,6 +225,76 @@
     "load_start": 1.1,
     "foreign_cpu_s": 0.0,
     "date": "2026-11-10 14:47",
+    "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF"
+   }
+  },
+  "Agda A16": {
+   "folder": "Examples/Groups/Alt16-RevCir",
+   "lang": "agda",
+   "files": 38,
+   "code": 24062,
+   "comment": 2108,
+   "generated_files": 17,
+   "generated_code": 21448,
+   "written_code": 2614,
+   "chars": 462926,
+   "generated_chars": 388415,
+   "check": {
+    "seconds": 28.11,
+    "wall_s": 42.73,
+    "rc": 0,
+    "modules": 38,
+    "profiled": 37,
+    "max_rss_kb": 1034892,
+    "load_start": 0.71,
+    "foreign_cpu_s": 0.0,
+    "slowest": [
+     [
+      "Examples.Groups.Alt16-RevCir.Four.Relations",
+      1961
+     ],
+     [
+      "Examples.Groups.Alt16-RevCir.Width3.Derivations",
+      1547
+     ],
+     [
+      "Examples.Groups.Alt16-RevCir.Semantics",
+      1389
+     ],
+     [
+      "Examples.Groups.Alt16-RevCir.Four.Part9",
+      1332
+     ],
+     [
+      "Examples.Groups.Alt16-RevCir.Four.Part6",
+      1311
+     ]
+    ],
+    "date": "2026-11-10 17:36",
+    "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF"
+   }
+  },
+  "Lean A16": {
+   "folder": "Lean/QCert/Alt16RevCir",
+   "lang": "lean",
+   "files": 54,
+   "code": 23083,
+   "comment": 3108,
+   "generated_files": 17,
+   "generated_code": 19296,
+   "written_code": 3787,
+   "chars": 536855,
+   "generated_chars": 406103,
+   "lib_files": 16,
+   "lib_code": 1450,
+   "lib_chars": 52437,
+   "check": {
+    "seconds": 287.56,
+    "rc": 0,
+    "modules": 54,
+    "load_start": 0.95,
+    "foreign_cpu_s": 0.0,
+    "date": "2026-11-10 17:40",
     "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF"
    }
   }

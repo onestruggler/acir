@@ -51,7 +51,7 @@ python mkfig.py ../figures/compare.tex  # the pgfplots figure
 
 ## One proof in both assistants (the Toffoli–Hadamard row of `fig:compare`(a), and the text)
 
-Three Agda–Lean pairs, all in `th4.json`.
+Four Agda–Lean pairs, all in `th4.json`; the text reports three of them.
 
 Table 1's two Toffoli–Hadamard proofs take different routes, so panel (a)
 shows, in their place (`*`), `CCX+H-3qubit-RS`, a second Agda proof,
@@ -59,10 +59,22 @@ against `QCert/ToffoliHadamardRS`, its translation to Lean.  The text also
 compares the 46 modules of `CCX+H-3qubit-Tietze` (Table 1's Agda proof) that
 `QCert/ToffoliHadamardTietze` translates with the same Agda modules (the
 translation stops before `TwoLevel`; its README says what it covers).  And
-it compares `XCXCCX-4bit`, the four-bit theorem of Section 6, with
-`QCert/XCXCCX4bit`, its translation to Lean, whose `Lib/` translates what the
-Agda imports from the shared library (Symmetric, Alternating, the PROP layer,
-the engine); `th4.py` counts `Lib/` separately (`lib_code`, `lib_chars`).
+it compares `Alt16-RevCir`, the proof of the four-bit theorem that Section 6
+and Appendix E follow, with `QCert/Alt16RevCir`, its translation to Lean,
+whose `Lib/` translates what the Agda imports from the shared library
+(Lafont's presentation of the alternating groups, Symmetric, the PROP layer,
+the morphisms of presentations); `th4.py` counts `Lib/` separately
+(`lib_code`, `lib_chars`).  The fourth pair, no longer in the text, is
+`XCXCCX-4bit`, an earlier proof of the same theorem, with `QCert/XCXCCX4bit`
+(forms `Agda XC4`, `Lean XC4`).
+
+For the `Alt16` pair the text also splits Lean's time.  The per-module times
+that Lake prints in `~/th4-logs/LeanA16.log` sum to 354 s (the build runs
+some modules at the same time; its wall time is the 287.56 s of `th4.json`),
+and a module with the folder's imports and no content takes 4.0 to 4.5 s
+(`LEAN_NUM_THREADS=2 lean` on a file holding only
+`import QCert.Alt16RevCir.Letters`, or only `import QCert.Alt16RevCir.Syntactics`):
+loading Mathlib, about 220 s for the 54 modules.
 
 `th4.py` measures these pairs and Table 1's (code lines as `loc.py`
 counts them, code characters, the non-blank characters outside comments,
@@ -78,14 +90,17 @@ WSL, under the Agda lock (`th4.py` takes `check.sh`'s Lean lock itself):
 ```sh
 python3 th4.py ../.. th4.json                 # about 25 minutes
 TH4_LINES=1 python3 th4.py ../.. th4.json     # recount, keep the times
-TH4_FORMS='Agda XC4,Lean XC4' python3 th4.py ../.. th4.json   # retime some forms
+TH4_FORMS='Agda A16,Lean A16' python3 th4.py ../.. th4.json   # retime some forms
 python3 part.py ../.. part.json               # seconds
 ```
 
 Agda is run with `--library-file=~/acir-agdatime.libraries`, as
 `agdatime.py` runs it (`TH4_LIBS`).  `th4.json` is the measurement of
 10 November 2026 (revision `4d91b890`) on the Intel Core i5-13400TEF, the
-machine of Table 1's times, with no other proof assistant running.  There
+machine of Table 1's times, with no other proof assistant running; the
+`Alt16` pair was added to it later that day (revision `f505371e`, recorded
+under `retimed` in its `run`), on the same machine, while an idle interactive
+Agda session was open and used no CPU.  There
 Table 1's Toffoli–Hadamard row took 111.17 and 134.91 s (Agda, Lean, timed
 within the whole build) and 110.95 and 118.48 s timed folder by folder here.
 `th4-run1.json` keeps the first measurement of the two Toffoli–Hadamard pairs,
@@ -93,7 +108,9 @@ on 8 November 2026 (revision `ede28959`) on an Intel Core i5-14400 (103 and
 125 s, 44 and 161 s).  Logs go to `~/th4-logs/`.  `part.json` is the count
 of 8 November 2026 at revision `1d8511eb`.  Panel (b) and the totals of
 `tab:compare` keep Table 1's folders; rerun `figdata.py` and `mkfig.py` after
-`th4.py` (`figdata.py` prints the three pairs).
+`th4.py` (`figdata.py` prints the four pairs).  `loc.py`'s `WRITTEN_PATHS`
+names two written modules of the `Alt16` pair whose headers its `generated`
+heuristic would misread.
 
 ## Execution benchmark (panel (c))
 

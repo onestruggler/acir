@@ -8,7 +8,8 @@ assistants.  Code lines and check times.
     TH4_FORMS='Agda XC4,Lean XC4' python3 th4.py ../.. th4.json
                                        # time these forms only, keep the rest
 
-There are three Agda-Lean pairs:
+There are four Agda-Lean pairs (the last is the one Section 3.3 reports
+for the four-bit theorem):
 
   * Agda Examples/Groups/CCX+H-3qubit-Tietze, the row of Table 1, against
     Lean QCert/ToffoliHadamard, written from the paper (Figure 6's row);
@@ -20,7 +21,13 @@ There are three Agda-Lean pairs:
     against Lean QCert/XCXCCX4bit, its translation to Lean (whose Lib/
     holds what the Agda imports from shared libraries: the symmetric and
     alternating groups, the PROP layer, the engine; counted separately as
-    lib_*).
+    lib_*);
+  * Agda Examples/Groups/Alt16-RevCir, the proof of that theorem that
+    Section 6 and Appendix E follow (from Lafont's presentation of
+    Alt(16)), against Lean QCert/Alt16RevCir, its translation to Lean
+    (whose Lib/ has Lafont's presentation of the alternating groups, the
+    Coxeter presentation of the symmetric groups, the PROP layer and the
+    morphisms of presentations).
 
 Agda is run with the library file TH4_LIBS (default
 ~/acir-agdatime.libraries, agdatime.py's: the standard library and this
@@ -67,6 +74,8 @@ FORMS = [
     ('Lean RS', 'lean', 'Lean/QCert/ToffoliHadamardRS'),
     ('Agda XC4', 'agda', 'Examples/Groups/XCXCCX-4bit'),
     ('Lean XC4', 'lean', 'Lean/QCert/XCXCCX4bit'),
+    ('Agda A16', 'agda', 'Examples/Groups/Alt16-RevCir'),
+    ('Lean A16', 'lean', 'Lean/QCert/Alt16RevCir'),
 ]
 
 

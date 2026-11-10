@@ -90,7 +90,8 @@ for key, (fa, fl) in FIG_LOC.items():
     print(f"panel (a) {key}: {fa['folder']} {fa['code']} and {fl['folder']} {fl['code']} "
           f"in place of {loc[key]['agda']['code']} and {loc[key]['lean']['code']}")
 print('Agda-Lean pairs (th4.json, one machine; Lean/Agda check-time ratio):')
-for a, l in (('Agda Tietze', 'Lean paper'), ('Agda RS', 'Lean RS'), ('Agda XC4', 'Lean XC4')):
+for a, l in (('Agda Tietze', 'Lean paper'), ('Agda RS', 'Lean RS'), ('Agda XC4', 'Lean XC4'),
+             ('Agda A16', 'Lean A16')):
     fa, fl = th4[a], th4[l]
     ta, tl = fa['check']['seconds'], fl['check']['seconds']
     nolib = (f"; Lean without Lib/: {fl['code'] - fl['lib_code']} code, "
