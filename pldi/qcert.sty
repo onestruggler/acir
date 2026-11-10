@@ -128,6 +128,13 @@
 %% A remark, in the style of acmart's definitions (defined after acmart's
 %% own theorem environments, so that it can share their counter).
 \AtEndPreamble{\theoremstyle{acmdefinition}\newtheorem{remark}[theorem]{Remark}}
+%% acmart's proposition, lemma and corollary share the counter of its
+%% theorem, as the remark above does, so cleveref would name a reference
+%% to any of them ``Theorem''. Each environment says what it is.
+\AtBeginEnvironment{proposition}{\crefalias{theorem}{proposition}}
+\AtBeginEnvironment{lemma}{\crefalias{theorem}{lemma}}
+\AtBeginEnvironment{corollary}{\crefalias{theorem}{corollary}}
+\AtBeginEnvironment{remark}{\crefalias{theorem}{remark}}
 %% Named ``Bian, Li et al.'' (authors in alphabetical order), as a link.
 \defcitealias{bian2026qupit}{Bian, Li et al.}
 \newcommand{\quditcite}{\citetalias{bian2026qupit}~\cite{bian2026qupit}}
