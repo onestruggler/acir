@@ -149,6 +149,21 @@ module ByPerm
       hw = proj₂ (SSurj.go N π)
       r = realise w (Eq.trans (Eq.sym (sign-of {N} w π hw)) s)
 
+    -- Every element of Alt N, through its evenness proof here, at a
+    -- variable N.
+    ontoᴬ : (a : Alt N) → Σ (Circuit k) (λ u → ∀ i → perm u ⟨$⟩ʳ i ≡ Alt.perm a ⟨$⟩ʳ i)
+    ontoᴬ a = onto (Alt.perm a) (Alt.even a)
+
+    -- A circuit carrying out an element of Alt N, opaque: unfolded at a
+    -- numeral N it is evaluated through Symmetric's word whenever two
+    -- spellings of its function meet.
+    opaque
+      circᴬ : Alt N → Circuit k
+      circᴬ a = proj₁ (ontoᴬ a)
+
+      circᴬ-sem : (a : Alt N) → ∀ i → ⟦ circᴬ a ⟧ (enc i) ≡ enc (Alt.perm a ⟨$⟩ʳ i)
+      circᴬ-sem a i = Eq.trans (at (proj₁ (ontoᴬ a)) i) (Eq.cong enc (proj₂ (ontoᴬ a) i))
+
     monoid-presentation : (k VRel,_===_) IsMonoidPresentationOf (Group.monoid (Alt-group N))
     monoid-presentation = record
       { ⟦_⟧ = permᴬ

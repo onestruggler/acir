@@ -209,8 +209,8 @@ presentation₃ = Three.presentation
 ------------------------------------------------------------------------
 -- Four wires: Alt(16)
 
-private
-  module Fourw where
+-- The four-wire instance, public for the normal form (NormalForm).
+module Fourw where
     module F = Four faithful₃
     open F using (enc ; dec ; dec-enc ; enc-dec)
     open F.RL using (R* ; R*-act)
