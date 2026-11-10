@@ -71,14 +71,21 @@ All sixteen rows have complete proofs without `sorryAx`. The final
 Clifford+CS gap is closed by the checked two-coset construction in
 `QCert/CliffordCS3/Cosets.lean`.
 
-Beyond Table 1, `QCert/XCXCCX4bit` proves the new result of Section 6 of
+Beyond Table 1, `QCert/Alt16RevCir` proves the new result of Section 6 of
 `qcert.pdf`, for reversible circuits over X, CX and CCX: the seven rules of
-that section are complete on at most four wires, the circuits present Sym(2),
-Sym(4), Sym(8) and Alt(16), and every four-wire circuit equals a unique
-block normal form, with gate absorption (`QCert/XCXCCX4bit/MainTheorem.lean`;
+that section present Alt(16) on four wires and Sym(2), Sym(4), Sym(8) on
+one, two and three, they are sound and complete for the functions on
+states, and every four-wire circuit equals a unique canonical circuit, the
+translation of Lafont's canonical form (`QCert/Alt16RevCir/MainTheorem.lean`;
 no `sorry`).  It is a module-for-module translation of the Agda
-`Examples/Groups/XCXCCX-4bit`, and its `Lib/` translates what that imports
-from the Agda's shared library (its README lists the deviations).
+`Examples/Groups/Alt16-RevCir`, and its `Lib/` translates what that imports
+from the Agda's shared library, Lafont's presentation of the alternating
+groups among it (its README lists the deviations).
+
+`QCert/XCXCCX4bit` is the translation of the earlier Agda proof of the same
+completeness theorem, `Examples/Groups/XCXCCX-4bit`, which reaches it
+through a block normal form and not through Lafont's presentation
+(`QCert/XCXCCX4bit/MainTheorem.lean`; no `sorry`).
 
 ## Typechecking cost
 

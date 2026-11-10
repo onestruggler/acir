@@ -15,3 +15,4 @@ import QCert.Synthesis
 import QCert.Table1
 import QCert.ToffoliHadamardRS.Theorem
 import QCert.XCXCCX4bit.MainTheorem
+import QCert.Alt16RevCir.MainTheorem
