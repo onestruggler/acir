@@ -19,18 +19,21 @@ everywhere (they do not see wire 3), and are equal by completeness on three
 wires; cancelling them, the two words of labels have the same function and
 are equal by `CFaithful`.  That is `Faithful 3`, the hypothesis of `Four`.
 
-Names.  The Agda's `rev-cancel`, `low-ok`, `low-check`, `push*`, `nf-ok`,
-`nf-low`, `expand-ok`, `expand*`, `expand*-ok`, `expand*-basic`,
-`flip-comm`, `mF*-low`, `Xs-low`, `faithful₃` are `rev_cancel`, `low_ok`,
-`low_check`, `push_s`, `nf_ok`, `nf_low`, `expand_ok`, `expands`,
-`expands_ok`, `expands_basic`, `flip_comm`, `mFs_low`, `Xs_low`,
-`faithful₃`.
+Names.  The Agda's `rev-cancel`, `low-ok`, `push*`, `nf-ok`, `nf-low`,
+`expand-ok`, `expand*`, `expand*-ok`, `expand*-basic`, `flip-comm`,
+`mF*-low`, `Xs-low`, `faithful₃` are `rev_cancel`, `low_ok`, `push_s`,
+`nf_ok`, `nf_low`, `expand_ok`, `expands`, `expands_ok`, `expands_basic`,
+`flip_comm`, `mFs_low`, `Xs_low`, `faithful₃`; the Agda's `by` is `by_`.
 
 **Deviations from the Agda.**  Words are multiplied left-associatively and
 the Agda's associativity steps are reasoning in the quotient monoid
-(`CircuitProp.cl`).  `expand_ok` proves the eight expanded letters by their
-derivations and the others, whose expansion is the letter itself, through
-one decided Boolean (`expand_self`) rather than by one clause per letter.
+(`CircuitProp.cl`).  The Agda's `low-check` (one decision over all
+letters) is decided letter by letter for the twelve letters of the lower
+wires (`low_X₀`, …, `low_CCX₁₂₀`), with `low_mem` saying that they are the
+letters that avoid wire 3: with one check over all letters the module
+peaked at 6.7 GB of memory, 4.1 GB in this form.  `faithful₃` goes
+through a lemma `core` that takes the two normal forms as variables (the
+Agda's `where` block).
 -/
 import QCert.XCXCCX4bit.CFaithful
 import QCert.XCXCCX4bit.KData
@@ -78,13 +81,38 @@ def low_ok (g : PG) : Bool :=
         eqF 4 (semPs (pg (Pc 0 (inv (rg g))))) (semPs [g])) &&
       allFin 105 (fun ν => eqMatch (rg g * frm ν) (frm (ρ g ν))))
 
-private theorem low_check : forallPG (fun g => !avoids 3 g || low_ok g) = true := by
+/-- The twelve letters of the lower wires. -/
+private def lowL : List PG :=
+  [PG.Xₚ 0, PG.Xₚ 1, PG.Xₚ 2, PG.CXₚ 0 1, PG.CXₚ 0 2, PG.CXₚ 1 0, PG.CXₚ 1 2, PG.CXₚ 2 0,
+   PG.CXₚ 2 1, PG.CCXₚ 0 1 2, PG.CCXₚ 0 2 1, PG.CCXₚ 1 2 0]
+
+private theorem low_mem : forallPG (fun g => !avoids 3 g || lowL.any (eqPG g)) = true := by
   decide +kernel
 
+private theorem low_X₀ : low_ok (PG.Xₚ 0) = true := by decide +kernel
+private theorem low_X₁ : low_ok (PG.Xₚ 1) = true := by decide +kernel
+private theorem low_X₂ : low_ok (PG.Xₚ 2) = true := by decide +kernel
+private theorem low_CX₀₁ : low_ok (PG.CXₚ 0 1) = true := by decide +kernel
+private theorem low_CX₀₂ : low_ok (PG.CXₚ 0 2) = true := by decide +kernel
+private theorem low_CX₁₀ : low_ok (PG.CXₚ 1 0) = true := by decide +kernel
+private theorem low_CX₁₂ : low_ok (PG.CXₚ 1 2) = true := by decide +kernel
+private theorem low_CX₂₀ : low_ok (PG.CXₚ 2 0) = true := by decide +kernel
+private theorem low_CX₂₁ : low_ok (PG.CXₚ 2 1) = true := by decide +kernel
+private theorem low_CCX₀₁₂ : low_ok (PG.CCXₚ 0 1 2) = true := by decide +kernel
+private theorem low_CCX₀₂₁ : low_ok (PG.CCXₚ 0 2 1) = true := by decide +kernel
+private theorem low_CCX₁₂₀ : low_ok (PG.CCXₚ 1 2 0) = true := by decide +kernel
+
+/-- The Agda's `low-check`, letter by letter. -/
 private theorem low_sound (g : PG) (a : avoids 3 g = true) : low_ok g = true := by
-  have h := forallPG_sound _ low_check g
+  have h := forallPG_sound _ low_mem g
   rw [a] at h
-  exact h
+  simp only [Bool.not_true, Bool.false_or, List.any_eq_true] at h
+  obtain ⟨g', hg', e⟩ := h
+  rw [eqPG_sound g g' e]
+  simp only [lowL, List.mem_cons, List.not_mem_nil, or_false] at hg'
+  rcases hg' with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  exacts [low_X₀, low_X₁, low_X₂, low_CX₀₁, low_CX₀₂, low_CX₁₀, low_CX₁₂, low_CX₂₀, low_CX₂₁,
+    low_CCX₀₁₂, low_CCX₀₂₁, low_CCX₁₂₀]
 
 private theorem one (g : PG) (a : avoids 3 g = true) : every (avoids 3) [g] = true := by
   simp only [every, a, Bool.and_true]

@@ -9,11 +9,11 @@ checked-in modules byte for byte.
 
 | Lean module | Agda | state | own build time |
 |---|---|---|---|
-| `BaseComm.lean` | `BaseComm.agda`, **generated** by `gen/mk_basecomm.py` | built | 28 s |
+| `BaseComm.lean` | `BaseComm.agda`, **generated** by `gen/mk_basecomm.py` | built | ~30 s (30 segments of at most 40 steps, ~0.6 s of kernel each) |
 | `CBC.lean` | `CBC.agda` | built | ~6 s |
-| `CCerts.lean` | `CCerts.agda`, **generated** by `gen/mk_ccerts.py` | built | **68 s** (kernel: 54 relation certificates, 12 rev certificates, the closure over 105 labels; each `conj_ok` costs about 0.1 s) |
+| `CCerts.lean` | `CCerts.agda`, **generated** by `gen/mk_ccerts.py` | built | **47 s** (kernel: 54 relation certificates, 12 rev certificates, the closure in 7 ranges; peak ~5.3 GB resident with the imports) |
 | `CFaithful.lean` | `CFaithful.agda` | built | ~5 s |
-| `KFaithful.lean` | `KFaithful.agda` | built | **41 s** (mostly `low_check`: 12 lower letters × 105 labels, a `find` and an `eqMatch` each) |
+| `KFaithful.lean` | `KFaithful.agda` | built | **35 s** (mostly `low_X₀` … `low_CCX₁₂₀`: 12 lower letters × 105 labels, a `find` and an `eqMatch` each; peak ~4.1 GB resident) |
 | `Completeness.lean` | `Completeness.agda` | built | ~6 s |
 
 Axioms of `Completeness.complete₄`, `KFaithful.faithful₃`, `CFaithful.cfaith`,
@@ -48,7 +48,8 @@ Namespaces `QCert.XCXCCX4bit.BaseComm`, `.CBC`, `.CCerts`, `.CFaithful`,
   `inv_sym`, `rev_ok`, `μ₀ : L` (the label 0; `CFrame.μ₀` is a function on
   `Fin 8` — do not open both), `base_word`, `base_ok`, `parT`, `symT`,
   `depT` (lists), `par`, `sym_of`, `dep` (`List.getD`), `star`, `conjs_ok`,
-  `cstep`, `closure_ok`, `closure_all : allFin 105 closure_ok = true`.
+  `cstep`, `closure_ok`, `closure_all : allFin 105 closure_ok = true` (and
+  `closure_at μ : closure_ok μ = true`, `lab`, `allRange`).
   Moves are `LabelEngine.Move`'s constructors (`Move.H 3`, `open
   LabelEngine (Move)`).
 * `CBC.base k : Comm Gbar (Fr G (baseW k))`, and CRel's calculus at it:
@@ -73,14 +74,24 @@ Namespaces `QCert.XCXCCX4bit.BaseComm`, `.CBC`, `.CCerts`, `.CFaithful`,
 * **CCerts.**  Each certificate is a private lemma of its own (`R_order_f1`,
   …, `R_far_t4_6`, `rev_f1`, …, `rev_t6`) that `R_rel` and `rev_ok`
   dispatch to: as clauses of one definition the checks exhausted its
-  heartbeats (200000) after about thirty certificates.  `Φ_act_ok` is
+  heartbeats (200000) after about thirty certificates.  The closure is
+  checked in seven ranges of fifteen labels (`allRange`, `allRange_sound`,
+  `closure₀` … `closure₆`, `closure_at : ∀ μ, closure_ok μ = true`), and
+  `closure_all` (the Agda's statement) follows: with one check of all 105
+  labels (13.7 s) the module peaked near 7 GB resident, 5.3 GB after the
+  split.  `Φ_act_ok` is
   decided per symbol over the eight positions at once.  Tables are lists.
 * **CBC.**  The Agda's `open CRel.Calculus base public` is restated:
   `X_inv`, `BC₀`, `BC`, `X_conj`, `X_klein` in `CBC`.
 * **CFaithful.**  The Agda's `cl` is `cl_tree`; `Φs_cong` by
   `Con.conGen_le`; associativity in the quotient monoid (`CircuitProp.cl`).
-* **KFaithful.**  `expand_ok` by the Agda's 31 clauses (the letters whose
-  expansion is themselves by `rfl`); the Agda's `by g d e` is `by_ g e`;
+* **KFaithful.**  The Agda's `low-check` is decided letter by letter for
+  the twelve lower letters (`low_X₀` …, `low_CCX₁₂₀`), with `low_mem`
+  (`forallPG`: a letter that avoids wire 3 is one of them): with one check
+  over all letters (24 s) the module peaked at 6.7 GB resident, 4.1 GB after
+  the split.  `expand_ok` by the
+  Agda's 31 clauses (the letters whose expansion is themselves by `rfl`);
+  the Agda's `by g d e` is `by_ g e`;
   `faithful₃` through a lemma `core` taking the two normal forms as
   variables (the Agda's `where` block).
 
