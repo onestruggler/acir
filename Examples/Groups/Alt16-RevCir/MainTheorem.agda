@@ -106,11 +106,11 @@ infix 4 _RRel,_===_ ⊢ᴿ_≈_
 _RRel,_===_ : (n : ℕ) → Circuit n → Circuit n → Set
 _RRel,_===_ = Th.T._VRel,_===_
 
-⊢ᴿ_≈_ : Circuit 4 → Circuit 4 → Set
-⊢ᴿ_≈_ = PB._≈_ (4 RRel,_===_)
+⊢ᴿ_≈_ : ∀ {n} → Circuit n → Circuit n → Set
+⊢ᴿ_≈_ {n} = PB._≈_ (n RRel,_===_)
 
--- A circuit's function on the states of the four wires,
-⟦_⟧ : Circuit 4 → Bits 4 → Bits 4
+-- A circuit's function on the states of its wires,
+⟦_⟧ : ∀ {n} → Circuit n → Bits n → Bits n
 ⟦_⟧ = Sem.⟦_⟧
 
 -- and its even permutation of the sixteen positions: that of its word
@@ -191,10 +191,10 @@ rules≅cycles = E.Theoremᵀ.Theorem-Rules-iso-Cycles
 presentationᴿ : (4 RRel,_===_) IsPresentationOf Alt-group 16
 presentationᴿ = E.presentationᵀ
 
--- Two circuits are equal by the rules exactly when they are the same
--- function on states,
-soundᴿ : ∀ {w v : Circuit 4} → ⊢ᴿ w ≈ v → ⟦ w ⟧ ≐ ⟦ v ⟧
-soundᴿ = E.soundᵀ
+-- Circuits equal by the rules are the same function on states, on any
+-- number of wires, and on four wires the converse holds,
+soundᴿ : ∀ {n} {w v : Circuit n} → ⊢ᴿ w ≈ v → ⟦ w ⟧ ≐ ⟦ v ⟧
+soundᴿ = Th.T-sound
 
 completeᴿ : ∀ {w v : Circuit 4} → ⟦ w ⟧ ≐ ⟦ v ⟧ → ⊢ᴿ w ≈ v
 completeᴿ = E.completeᵀ
