@@ -65,10 +65,9 @@ first argument.
   disappear.
 * `Coxeter.frame` is total, so the distinctness of a letter's wires
   (`dX`, `dCX`, `dCCX`) is used only where `frame_act` is.
-* The Agda's `w ↓ᵏ 1 : Circuit (n + 1)` is `Circuit.pad 1 w : Circ (1 + n)`,
-  so a widened state appends its new bit with `snoc : Bits n → Bool →
-  Bits (1 + n)` (the Agda's `x V.++ (b V.∷ V.[])`).  The Agda's `V.lookup`
-  and `_[_]%=_` on states are `bget` and `bmod`, by the wire's number.
+* The Agda's `V.lookup`, `_[_]%=_` and `_++_` on states are `Semantics`'
+  `Bits.get`, `Bits.update` and `Bits.append` (`x ++ (b ∷ .nil) : Bits (1 + n)`,
+  the state of `Circuit.pad 1 w : Circ (1 + n)`).
 * `lowW` and `cutW` read a circuit through its list of letters
   (`List.all`, `FreeMonoid.map`).
 -/
@@ -315,23 +314,11 @@ theorem ιw_ofList (u : List PG) : ιw (FreeMonoid.ofList u) = ιs u := by
 
 /-! ## The function of a letter -/
 
-/-- The bit on a wire of a state (the Agda's `V.lookup`). -/
-def bget : {n : ℕ} → Bits n → ℕ → Bool
-  | _, .nil, _ => false
-  | _, a ∷ _, 0 => a
-  | _, _ ∷ x, i + 1 => bget x i
-
-/-- A state with the bit on a wire changed by `f` (the Agda's `_[_]%=_`). -/
-def bmod : {n : ℕ} → Bits n → ℕ → (Bool → Bool) → Bits n
-  | _, .nil, _, _ => .nil
-  | _, a ∷ x, 0, f => f a ∷ x
-  | _, a ∷ x, i + 1, f => a ∷ bmod x i f
-
 /-- The function of a letter (the Agda's `⟦_⟧ᵖ`). -/
 def semP : PG → Fun 4
-  | .Xₚ t, x => bmod x t.1 (!·)
-  | .CXₚ c t _, x => bmod x t.1 (· ^^ bget x c.1)
-  | .CCXₚ a b t _, x => bmod x t.1 (· ^^ (bget x a.1 && bget x b.1))
+  | .Xₚ t, x => x.update t (!·)
+  | .CXₚ c t _, x => x.update t (· ^^ x.get c)
+  | .CCXₚ a b t _, x => x.update t (· ^^ (x.get a && x.get b))
 
 /-- The function of a list of letters, in diagram order (the Agda's
 `⟦_⟧ᵖ*`). -/
@@ -882,19 +869,9 @@ theorem low_ιs : ∀ u : List PG, every (avoids 3) u = true → lowW (ιs u) = 
 
 /-! ### A widened circuit computes on the bottom wires -/
 
-/-- A state with a bit on a new top wire (the Agda's `x V.++ (b V.∷ V.[])`). -/
-def snoc : {n : ℕ} → Bits n → Bool → Bits (1 + n)
-  | _, .nil, b => b ∷ .nil
-  | _, a ∷ x, b => a ∷ snoc x b
-
-theorem snoc_inj : ∀ {n : ℕ} (x y : Bits n) (b c : Bool), snoc x b = snoc y c → x = y
-  | _, .nil, .nil, _, _, _ => rfl
-  | _, a ∷ x, a' ∷ y, b, c, h => by
-    simp only [snoc, Bits.cons.injEq] at h
-    rw [h.1, snoc_inj x y b c h.2]
-
+/-- The Agda's `gen↓`: a generator widened by an idle top wire. -/
 theorem gen_down : ∀ {n : ℕ} (g : Gn n) (x : Bits n) (b : Bool),
-    semG (Gen.pad 1 g) (snoc x b) = snoc (semG g x) b
+    semG (Gen.pad 1 g) (x ++ (b ∷ .nil)) = semG g x ++ (b ∷ .nil)
   | _, .gate0 (.gate g), _, _ => nomatch g
   | _, .gate1 (.gate .X_gate), _ ∷ _, _ => rfl
   | _, .gate2 (.gate .CX_gate), _ ∷ _ ∷ _, _ => rfl
@@ -902,16 +879,17 @@ theorem gen_down : ∀ {n : ℕ} (g : Gn n) (x : Bits n) (b : Bool),
   | _, .gate3 (.gate .CCX_gate), _ ∷ _ ∷ _ ∷ _, _ => rfl
   | _, .up g, a ∷ x, b => congrArg (a ∷ ·) (gen_down g x b)
 
+/-- The Agda's `word↓`. -/
 theorem word_down {n : ℕ} (w : Circ n) (x : Bits n) (b : Bool) :
-    sem (Circuit.pad 1 w) (snoc x b) = snoc (sem w x) b := by
-  show semL (FreeMonoid.toList (FreeMonoid.map (Gen.pad 1) w)) (snoc x b) = _
+    sem (Circuit.pad 1 w) (x ++ (b ∷ .nil)) = sem w x ++ (b ∷ .nil) := by
+  show semL (FreeMonoid.toList (FreeMonoid.map (Gen.pad 1) w)) (x ++ (b ∷ .nil)) = _
   rw [FreeMonoid.toList_map]
-  show _ = snoc (semL (FreeMonoid.toList w) x) b
+  show _ = semL (FreeMonoid.toList w) x ++ (b ∷ .nil)
   generalize FreeMonoid.toList w = l
   induction l generalizing x with
   | nil => rfl
   | cons g l ih =>
-    show semL (l.map (Gen.pad 1)) (semG (Gen.pad 1 g) (snoc x b)) = _
+    show semL (l.map (Gen.pad 1)) (semG (Gen.pad 1 g) (x ++ (b ∷ .nil))) = _
     rw [gen_down, ih]
     rfl
 
@@ -927,7 +905,7 @@ theorem narrow_low (u v : List PG) (hu : every (avoids 3) u = true)
   have eu := lowW_ok (ιs u) (low_ιs u hu)
   have ev := lowW_ok (ιs v) (low_ιs v hv)
   have sem₃ : sem (cutW (ιs u)) ≐ sem (cutW (ιs v)) := fun x => by
-    apply snoc_inj _ _ false false
+    apply Bits.append_inj_left _ _ (false ∷ .nil) (false ∷ .nil)
     rw [← word_down, ← word_down, ← eu, ← ev]
     exact e _
   have d : 4 ⊢ Circuit.pad 1 (cutW (ιs u)) ≈ Circuit.pad 1 (cutW (ιs v)) :=

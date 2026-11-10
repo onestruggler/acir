@@ -36,7 +36,7 @@
   `ToPlaced.ιs_append'` is the Agda's `ι*-++` as a derivation.
 * `semP : PG → Fun 4`, `semPs : List PG → Fun 4` (the Agda's `⟦_⟧ᵖ`,
   `⟦_⟧ᵖ*`; `semPs (g :: u) x = semPs u (semP g x)` by `rfl`,
-  `semPs_append`), with `bget`/`bmod` on `Bits` by the wire's number.
+  `semPs_append`), with `Semantics`' `Bits.get`/`Bits.update`.
   `sem_ok g : sem (ι g) ≐ semP g`, `ιs_sem u : sem (ιs u) ≐ semPs u`.
 * `every p l` (the Agda's `every`, recursion, `every_iff`), `avoids m g`,
   `apart`, `disjoint g h`, `forallPG p` with `forallPG_sound` (decide `p`
@@ -69,8 +69,8 @@
 * `disj_comm g h (e : disjoint g h = true)`, `comm_via`, `distinct_append`.
 * `lhs₇`, `rhs₇`, `rule7₀`, `rule7 R`.
 * `Complete₃ : Prop` (a `def`), `low₂ … low₄`, `cut₂ … cut₄`, `lowW`,
-  `cutW` (on the list of letters), `lowW_ok`, `low_ι`, `low_ιs`, `snoc :
-  Bits n → Bool → Bits (1 + n)` (the Agda's `x ++ [b]`), `snoc_inj`,
+  `cutW` (on the list of letters), `lowW_ok`, `low_ι`, `low_ιs`,
+  `x ++ (b ∷ .nil)` for the Agda's `x V.++ (b V.∷ V.[])`,
   `gen_down`, `word_down`, and the section `Narrow`: `narrow_low complete₃
   u v hu hv e`, `narrow complete₃ m u v hu hv e`, `narrowP complete₃ m u v
   hu hv e` (the Agda's `narrowᵖ`; `e : semPs u ≐ semPs v`).
