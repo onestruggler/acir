@@ -69,7 +69,7 @@ Peer review cannot check proofs of this volume in detail, so it is desirable to 
 
 In quantum computing, proof assistants and, more recently, LLM agents have mostly been applied to programs rather than to circuit equational theories. Mechanized quantum compilers and program logics establish program correctness or the soundness of circuit transformations~\cite{paykin2017qwire,hietala2021voqc,chareton2021qbricks,zhou2023coqq}. The mechanized completeness results for $\Pi$ and its square-root extension are coherence arguments~\cite{choudhury2022symmetries,carette2024squareroots}. Human-supervised, AI-assisted workflows have also formalized quantum program logics, algorithms, and components of interactive proofs~\cite{ren2026qedia,zhang2026leanquantumalg,lu2026formalflow}. In concurrent work, \citet{shirobokov2026discovering} build a quantum program library in Lean, where researchers write frozen specifications of correctness and cost and teams of LLM agents synthesize and verify new programs against them.
 
-\paragraph{Orientation} \Cref{sec:background,sec:form} introduce the proof strategies and the QCert framework. \Cref{sec:corpus} presents the formalized results and compares the Agda and Lean formalizations, and \Cref{sec:findings} describes the corrections to the source papers. \Cref{sec:conclusion} discusses limitations and future work. Appendix~\ref{app:qupit-details} works through the multi-qudit Clifford formalization as a case study.
+\paragraph{Orientation} \Cref{sec:background,sec:form} introduce the proof strategies and the QCert framework. \Cref{sec:corpus} presents the formalized results and compares the Agda and Lean formalizations, and \Cref{sec:findings} describes the corrections to the source papers. \Cref{sec:xcxccx} presents a new completeness theorem for four-bit reversible circuits and its formalization. \Cref{sec:conclusion} discusses limitations and future work. Appendix~\ref{app:qupit-details} works through the multi-qudit Clifford formalization as a case study, and Appendix~\ref{app:xcxccx} proves the theorems of \Cref{sec:xcxccx}.
 
 % \FloatBarrier
 
@@ -280,6 +280,64 @@ Their main result is however still correct: Cl\'ement's unpublished notes~\cite{
 
 The relation is missing from Theorem~5.2 of~\cite{amy2024toffoli}. It states that the relations in its Figures~4 and~7, over the Toffoli and $\mathrm{K} = \mathrm{H}\otimes\mathrm{H}$ gates, present the group $O_8\left(\Z\left[1/2\right]\right)$. This is the first of two steps towards presenting the scaled dyadic orthogonal group $L_8$ by three-qubit Toffoli--Hadamard circuits. The relation $r_{\mathrm{K}}$ in its Section~5.5, which splits $\mathrm{K}$ on two qubits into two copies controlled by the third qubit, is in neither figure. Nor can it be derived from them. Hence, Theorem~5.2 fails as stated. Our formalization~\cite{qcert2026toffoli} shows that $r_{\mathrm{K}}$ is independent by giving an interpretation of circuits that every other relation preserves but $r_{\mathrm{K}}$ does not, and proves the presentations of $O_8\left(\Z\left[1/2\right]\right)$ and $L_8$ with $r_{\mathrm{K}}$ restored.
 
+
+\section{A New Result: Complete Equations for Four-Bit Reversible Circuits}\label{sec:xcxccx}
+
+Beyond the published results, we use QCert to prove and check a new completeness theorem for classical reversible circuits. The gates $\mathrm{X}$ (NOT), $\mathrm{CX}$ (CNOT), and $\mathrm{CCX}$ (Toffoli) generate the reversible circuits on bits. Without ancillas, circuits on $k\le3$ wires realize every permutation of the $2^k$ bit strings, while on $k\ge4$ wires every gate is an even permutation and the circuits realize exactly the even ones~\cite{shende2003synthesis}. Complete equational theories are known for linear reversible circuits~\cite{lafont2003boolean,sakashita2013cnot} and for circuits over multiple-control Toffoli gates~\cite{feng2026complete,feng2026ancillas}. We take the gate set $\{\mathrm{X},\mathrm{CX},\mathrm{CCX}\}$ on at most four wires, and the theory $\mathcal{T}$ of the seven equations in \Cref{fig:xcxccx-rules}. Equations \xrule{1}--\xrule{6} act on at most three wires and \xrule{7} on four.
+
+\begin{figure}[!htbp]
+\centering
+\small
+\begin{tabular}{@{}c@{\hspace{.5cm}}c@{\hspace{.5cm}}c@{}}
+\xrule{1}\enspace\input{figures/xcxccx/rule-1-l}\,$=$\,\input{figures/xcxccx/rule-1-r} &
+\xrule{2}\enspace\input{figures/xcxccx/rule-2-l}\,$=$\,\input{figures/xcxccx/rule-2-r} &
+\xrule{3}\enspace\input{figures/xcxccx/rule-3-l}\,$=$\,\input{figures/xcxccx/rule-3-r}\\
+\end{tabular}
+\par\vspace{1em}
+\begin{tabular}{@{}c@{\hspace{.5cm}}c@{\hspace{.5cm}}c@{}}
+\xrule{4}\enspace\input{figures/xcxccx/rule-4-l}\,$=$\,\input{figures/xcxccx/rule-4-r} &
+\xrule{5}\enspace\input{figures/xcxccx/rule-5-l}\,$=$\,\input{figures/xcxccx/rule-5-r} &
+\xrule{6}\enspace\input{figures/xcxccx/rule-6-l}\,$=$\,\input{figures/xcxccx/rule-6-r}\\
+\end{tabular}
+\par\vspace{1em}
+\xrule{7}\enspace\input{figures/xcxccx/rule-7-l}\,$=$\,\input{figures/xcxccx/rule-7-r}
+\caption{The theory $\mathcal{T}$ for circuits over $\{\mathrm{X},\mathrm{CX},\mathrm{CCX}\}$. Time runs left to right and wire~1 is on top. A filled control tests~1, an open control tests~0 (it is the filled one conjugated by $\mathrm{X}$ on its wire), $\oplus$ is a NOT target, and crossed wires are the structural swap. With the structural laws of \Cref{sec:form}, the equations may be placed on any wires and used in either direction.}
+\label{fig:xcxccx-rules}
+\Description{Seven circuit equations: X is an involution; a CNOT followed by the CNOT with the opposite control polarity is X on the target; three alternating CNOTs are a swap; a Toffoli followed by the Toffoli with one control negated is a CNOT; the two controls of a Toffoli are interchangeable; a CNOT conjugates a Toffoli onto its control into three Toffolis; and on four wires a Toffoli conjugates a CNOT from its target into a Toffoli onto the CNOT's target followed by that CNOT.}
+\end{figure}
+
+Write $G_k$ for the circuits on $k$ wires modulo $\mathcal{T}$. Each gate is an involution modulo $\mathcal{T}$, so $G_k$ is a group, and the semantics $\llbracket - \rrbracket$, which maps a circuit to its permutation of the bit strings, is a group homomorphism from $G_k$.
+
+\begin{theorem}[completeness]\label{thm:xcxccx-complete}
+For $k\le4$, two circuits on $k$ wires over $\{\mathrm{X},\mathrm{CX},\mathrm{CCX}\}$ are equal modulo $\mathcal{T}$ if and only if they denote the same permutation. Hence $G_k\cong\mathrm{Sym}(2^k)$ for $k\le3$ and $G_4\cong\mathrm{Alt}(16)$.
+\end{theorem}
+
+The theorem also has a constructive form. For an eight-element set $S$ of the sixteen states, write $r_S$ for a fixed circuit that maps $S$ onto the states whose first bit is~$0$. For $B\in\mathrm{Sym}(8)$, write $\mathrm{D}(B)$ for a fixed circuit that applies $B$ to wires~2--4, and for $E\in\mathrm{Alt}(8)$, write $\mathrm{C}(E)$ for one that applies $E$ to wires~2--4 when wire~1 is~$1$ and never targets wire~1. The \emph{block normal form} $\mathrm{NF}(E,B,S)$ first applies $r_S$, then $\mathrm{D}(B)$, and then $\mathrm{C}(E)$.
+
+\begin{theorem}[block normal form]\label{thm:xcxccx-nf}
+Every four-wire circuit is equal modulo $\mathcal{T}$ to exactly one block normal form, and $(E,B,S)\mapsto\llbracket\mathrm{NF}(E,B,S)\rrbracket$ is a bijection from $\mathrm{Alt}(8)\times\mathrm{Sym}(8)\times\binom{\mathbb{F}_2^4}{8}$ onto $\mathrm{Alt}(16)$. For every circuit $w$, the circuit that applies $w$ and then $\mathrm{NF}(E,B,S)$ is equal modulo $\mathcal{T}$ to $\mathrm{NF}(E',B',w^{-1}S)$, where $E'$ and $B'$ are given by an explicit update formula (Appendix~\ref{app:xcxccx-nf}).
+\end{theorem}
+
+Both theorems are proved in Agda~\cite{qcert2026xcxccx}; \Cref{agda:x-complete,agda:x-alt,agda:x-nf,agda:x-absorb} are the four-wire statements of its \aid{MainTheorem} module, which also states completeness and the presentations of $\mathrm{Sym}(2^k)$ on fewer wires. Here $\llbracket w\rrbracket$ is the function of $w$ on bit vectors, $\doteq$ is pointwise equality, and $u \bullet w$ applies $u$ and then $w$.
+
+\begin{agdacode}[escapechar=@]
+complete : {w v : Circuit 4} → ⟦ w ⟧ ≐ ⟦ v ⟧ → ⊢ w ≈ v@\agdatag{agda:x-complete}@
+presentation₄ : (4 CRel,_===_) IsPresentationOf Alt-group 16@\agdatag{agda:x-alt}@
+normal-form : (u : Circuit 4) → ⊢ u ≈ NF (coords u)@\agdatag{agda:x-nf}@
+absorption : (c : Coords) (w : Circuit 4) → ⊢ w • NF c ≈ NF (absorb c w)@\agdatag{agda:x-absorb}@
+\end{agdacode}
+
+\paragraph{Proof idea}
+A direct proof follows the first strategy of \Cref{fig:strategies}, showing that appending a gate to a normal form gives a circuit that rewrites to a normal form. The exposition we are preparing proves the theorems this way, with finite certificates for the $360{,}360$ transitions of the $12{,}870$ sets $S$ under the $28$ placed gates and for the subgroup equalities they rely on, about $380{,}000$ deductions in all. The formalization instead combines the second strategy with Reidemeister--Schreier presentations of permutation groups (\Cref{sec:lost}), so that only small facts are decided by evaluation. It has four steps.
+
+\begin{enumerate}
+\item \emph{At most three wires.} Ordered along the Gray code $000,001,011,010,110,111,101,100$, consecutive states differ in one bit, so they are exchanged by a Toffoli gate with suitable control polarities. Equations \xrule{1}--\xrule{6} derive the Coxeter relations of $\mathrm{Sym}(8)$ for these gates. Translating the Coxeter presentation~\cite{coxeter1980generators} back into circuits gives completeness on three wires, and likewise on fewer.
+\item \emph{Reduction to circuits that keep a wire.} The Reidemeister--Schreier method presents $\mathrm{Alt}(16)$ by $28$ generators, each a product of two adjacent transpositions, and $238$ relations derived from the Coxeter relations of $\mathrm{Sym}(16)$. Along the four-bit Gray code, each generator is realized by a circuit of at most eight gates that targets only two wires, so every relation is an equation between circuits that never target some wire. Completeness therefore follows once circuits that never target a given wire, which form a subgroup $K$, are \emph{faithful}, that is, determined by their permutations.
+\item \emph{The subgroup $K$.} A circuit that never targets wire~1 preserves its value, so its permutation is block diagonal. Semantically, $K$ is the semidirect product of the circuits on wires~2--4, which are faithful by the first step, and the controlled even permutations $C\cong\mathrm{Alt}(8)$. The group $C$ is generated by the $105$ \emph{controlled perfect matchings}, the conjugates of $\mathrm{CX}_{1\to4}$ by circuits on wires~2--4. We show that each depends only on its matching, and that they satisfy three relation schemas: each is an involution, each conjugates another to the controlled conjugate matching, and two commuting ones multiply to their product when it is a matching. The side conditions of the schemas are decided on the matchings. With the schemas, each of the $54$ Reidemeister--Schreier relations of $\mathrm{Alt}(8)$ is checked by a certificate of rewriting moves on words of matchings, $412$ moves in all.
+\item \emph{The block normal form.} Given completeness, a circuit is equal to the normal form of the coordinates read off its permutation. The update formula follows because the permutation that applies $r_{S'}^{-1}$, then $w$, and then $r_S$ preserves the halves, where $S'=w^{-1}(S)$.
+\end{enumerate}
+
+The only genuinely four-wire equations, which apply \xrule{7}, are found by a search that also uses three-wire steps justified by the first step. They include the equation by which a CNOT onto a control of a Toffoli conjugates it into the product of two Toffolis, and three of the five base cases of the conjugation schema, one for each way two matchings can intersect; the longest takes $496$ steps. The formalization has $40$ modules and about $13{,}000$ lines, and Agda checks it in $93$~seconds from scratch, given the shared library. Appendix~\ref{app:xcxccx} gives the details.
 
 \section{Discussion and Future Work}\label{sec:conclusion}
 
@@ -606,6 +664,145 @@ We used versions of Claude for parts of this formalization: composing box relati
 % rules of~\cite{li2025qutrit}, which the odd-prime development does not
 % cover, are now among the formalizations of \Cref{sec:corpus}.
 
+
+\section{Proofs for Four-Bit Reversible Circuits}\label{app:xcxccx}
+
+This appendix proves the theorems of \Cref{sec:xcxccx}, following the Agda development~\cite{qcert2026xcxccx}. We number the wires from the top, as in \Cref{fig:xcxccx-rules}, while the development numbers them from the bottom. A circuit acts on the bit strings $x_1x_2x_3x_4$, where $x_i$ is the bit of wire~$i$. We compose in execution order, for circuits and permutations alike: $uw$ applies $u$ and then $w$. The halves $H_0$ and $H_1$ are the sets of states with $x_1=0$ and with $x_1=1$. By \xrule{3}, a structural swap is three CNOTs, so we write circuits as words of gates placed on arbitrary wires. The results are labeled with their Agda identifiers.
+
+\subsection{One to Three Wires}
+
+\begin{proposition}[\aid{complete₁}--\aid{complete₃}, \aid{presentation₁}--\aid{presentation₃}]\label{prop:x-small}
+For $k\le3$, the theory $\mathcal{T}$ is complete for circuits on $k$ wires, and $G_k\cong\mathrm{Sym}(2^k)$.
+\end{proposition}
+
+\begin{proof}
+On three wires, order the states along the Gray code, so that $q_0,\dots,q_7$ are 000, 001, 011, 010, 110, 111, 101, and 100. Consecutive states differ in one bit, so their transposition $s_i=(q_i\ q_{i+1})$ is an \emph{edge Toffoli}, a Toffoli gate onto that bit whose controls are filled or open according to the values of the other two bits. Using \xrule{1}--\xrule{6}, every gate is an involution, and conjugating an edge Toffoli by $\mathrm{X}$ on a wire or by a swap of two wires gives another edge Toffoli. These symmetries of the cube carry each Coxeter relation of the $s_i$ to one of three base cases. First, the four edge Toffolis onto one wire commute, because $\mathrm{X}$ on that wire is their product in two different orders, by \xrule{2}, \xrule{4}, and \xrule{5}. Second, two edge Toffolis onto different wires on disjoint edges commute, by \xrule{6}. Third, two on edges with a common state satisfy the braid relation, by \xrule{6} and \xrule{3}. Moreover, every gate is a product of edge Toffolis. For example, $\mathrm{X}$ on wire~3 is $s_4s_2s_6s_0$, and the CNOT from wire~2 onto wire~3 is $s_2s_4$. Hence every circuit is equal to the product of edge Toffolis along a Coxeter word with the same permutation. If two circuits have the same permutation, then their Coxeter words are equal by the Coxeter presentation of $\mathrm{Sym}(8)$~\cite{coxeter1980generators}, and translating that derivation gives a derivation between the circuits. The cases of one and two wires are the same, with $\mathrm{Sym}(2)$ and $\mathrm{Sym}(4)$. Since every permutation is that of a Coxeter word, the semantics is onto, which gives the isomorphisms.
+\end{proof}
+
+On four wires, an equation whose two sides lie on the same three wires holds modulo $\mathcal{T}$ whenever it holds semantically, by \Cref{prop:x-small}. We call such an equation a \emph{three-wire step}. The development decides each one by evaluating both sides.
+
+\subsection{Reduction to Circuits That Keep a Wire}
+
+Let $N\ge3$ and $s_d=(d\ \ d{+}1)$ for $0\le d\le N-2$. The alternating group $\mathrm{Alt}(N)$ has index two in $\mathrm{Sym}(N)$, with coset representatives $1$ and $s_0$. The Reidemeister--Schreier method~\cite{magnus2004combinatorial} rewrites the Coxeter presentation of $\mathrm{Sym}(N)$ into a presentation of $\mathrm{Alt}(N)$. Its generators are $\gamma(0,d)=s_ds_0$ and $\gamma(1,d)=s_0s_d$ for $1\le d\le N-2$. Writing $\bar c$ for the coset other than $c$, its relations are
+\begin{align*}
+&\gamma(c,d)\,\gamma(\bar c,d)=1, &&\gamma(\bar c,1)=\gamma(c,1)^2,\\
+&\gamma(c,d)\,\gamma(\bar c,d{+}1)\,\gamma(c,d)=\gamma(c,d{+}1)\,\gamma(\bar c,d)\,\gamma(c,d{+}1), &&\gamma(c,e)=\gamma(\bar c,e)\quad(e\ge2),\\
+&\gamma(c,d)\,\gamma(\bar c,e)=\gamma(c,e)\,\gamma(\bar c,d)\quad(e\ge d+2),
+\end{align*}
+for $c\in\{0,1\}$ and indices between $1$ and $N-2$. They are the Coxeter relations rewritten from either coset. For $N=16$ there are $28$ generators and $238$ relations, and for $N=8$ there are $12$ and $54$.
+
+\begin{proposition}[\aid{rs-complete}]\label{prop:x-rs}
+Two words in the generators $\gamma(c,d)$ whose products are the same permutation are equal modulo these relations.
+\end{proposition}
+
+\begin{proof}
+The framework's Reidemeister--Schreier theorem reduces this to two obligations. Rewriting a Coxeter relation from either coset must give words that are equal modulo the relations, and rewriting the Coxeter word of a generator from the coset of~$1$ must give that generator back. Both are proved for every~$N$. Completeness then transfers from the Coxeter presentation of $\mathrm{Sym}(N)$.
+\end{proof}
+
+Number the sixteen states along the four-bit reflected Gray code $0000,0001,0011,0010,\dots,1000$. The states numbered $0$--$7$ then form $H_0$, and each $s_d$ flips a single wire~$t(d)$, with $t(d)=4$ for even~$d$. A breadth-first search finds, for each generator $\gamma(c,d)$ of $\mathrm{Alt}(16)$, a circuit of at most eight gates that realizes it and targets only wires~4 and~$t(d)$. Each relation involves generators with at most two values of~$d$. So its circuits target at most three wires, and they all keep one of the wires 1--3. Let $K$ be the set of circuits none of whose gates targets wire~1, and $K_m$ the same for wire~$m$. We call $K$ \emph{faithful} if any two circuits in $K$ with the same permutation are equal modulo $\mathcal{T}$.
+
+\begin{proposition}[\aid{Four.complete₄}]\label{prop:x-reduction}
+If $K$ is faithful, then $\mathcal{T}$ is complete for four-wire circuits.
+\end{proposition}
+
+\begin{proof}
+Relabeling the wires carries faithfulness from $K$ to every $K_m$. The relations therefore hold for the circuits of the generators, because the two sides of each have the same permutation and lie in some $K_m$. Each gate is also equal to the circuit of a word in the generators. For most gates, a Coxeter word for the gate uses only transpositions $s_d$ that do not flip some wire $m\in\{1,2,3\}$ that the gate keeps. The gate and the circuit of the word's generators then both lie in $K_m$, and they have the same permutation. The four remaining gates are $\mathrm{X}$ on wire~1, the CNOTs from wires~3 and~4 onto wire~1, and the Toffoli from wires~3 and~4 onto wire~1. Each is equal, by a three-wire step, to a circuit of gates translated before. Hence every circuit is equal to the circuit of a word in the generators with the same permutation. Two circuits with the same permutation thus give words with the same permutation, which are equal modulo the relations by \Cref{prop:x-rs}, so the circuits are equal.
+\end{proof}
+
+\subsection{Controlled Perfect Matchings}
+
+We identify each half with the eight states of wires~2--4. Let $\mu_0$ be the perfect matching of these states that flips wire~4, and $G=\mathrm{CX}_{1\to4}$, which acts as the identity on $H_0$ and as $\mu_0$ on $H_1$. For a circuit $Q$ on wires~2--4, the conjugate $Q^{-1}GQ$ acts as the identity on $H_0$ and as the perfect matching $\mu=Q^{-1}\mu_0Q$ on $H_1$. For each of the $105$ perfect matchings $\mu$, we fix such a circuit $Q_\mu$ and call $X_\mu=Q_\mu^{-1}GQ_\mu$ a \emph{controlled matching}.
+
+\begin{lemma}[\aid{CFrame.W′}]\label{lem:x-frame}
+If two circuits on wires~2--4 conjugate $\mu_0$ to the same matching, then they conjugate $G$ to equal circuits.
+\end{lemma}
+
+\begin{proof}
+It suffices to show that a circuit $R$ on wires~2--4 whose permutation commutes with $\mu_0$ commutes with $G$. Such a permutation sends the pair of states with value $v$ on wires~2 and~3 to the pair with some value $\sigma(v)$, flipping wire~4 or not according to~$v$. So $R$ has the permutation of a product of edge Toffolis onto wire~4 and a circuit on wires~2 and~3, and it equals that product by \Cref{prop:x-small}. Each edge Toffoli onto wire~4 commutes with $G$ by a four-wire equation, and the circuit on wires~2 and~3 is disjoint from $G$. The development computes the decomposition from the permutation and checks it by evaluation.
+\end{proof}
+
+Let $\bar G=\mathrm{X}_1G\,\mathrm{X}_1$, which acts as $\mu_0$ on $H_0$ and as the identity on $H_1$. Then $G=\mathrm{X}_4\bar G=\bar G\,\mathrm{X}_4$, so $X_\mu=P_\mu\bar X_\mu=\bar X_\mu P_\mu$, where $P_\mu=Q_\mu^{-1}\mathrm{X}_4Q_\mu$ applies $\mu$ on both halves and $\bar X_\mu=Q_\mu^{-1}\bar GQ_\mu$ applies it on $H_0$ only.
+
+\begin{lemma}[\aid{CRel.Calculus}]\label{lem:x-relations}
+For perfect matchings $\mu$ and $\nu$:
+\begin{enumerate}
+\item $X_\mu X_\mu=1$;
+\item $X_\mu X_\nu X_\mu = X_{\mu\nu\mu}$;
+\item $X_\mu X_\nu = X_{\mu\nu}$ if $\mu\ne\nu$ commute and $\mu\nu$ is a perfect matching.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Item~1 holds because $G$ is an involution. For item~2, suppose first that $\bar X_\mu$ and $X_\nu$ commute, as they do semantically, acting on different halves. Then $X_\mu X_\nu X_\mu=P_\mu\bar X_\mu X_\nu\bar X_\mu P_\mu=P_\mu X_\nu P_\mu$. This is the conjugate of $G$ by $Q_\nu P_\mu$, which conjugates $\mu_0$ to $\mu\nu\mu$, so it is $X_{\mu\nu\mu}$ by \Cref{lem:x-frame}.
+
+It remains to derive the commutation. The circuit $Q_\mu\bar X_\mu Q_\mu^{-1}$ is $\bar G$, and $Q_\mu X_\nu Q_\mu^{-1}$ is $X_{\nu'}$ for $\nu'=Q_\mu\nu Q_\mu^{-1}$, by \Cref{lem:x-frame}. A circuit on wires~2--4 whose permutation commutes with $\mu_0$ commutes with $G$, by the proof of \Cref{lem:x-frame}, and hence with $\bar G$. Such circuits carry $\nu'$ to one of five base matchings, according to the cycles of the union of $\nu'$ and $\mu_0$, which pass through $1{+}1{+}1{+}1$, $2{+}2$, $2{+}1{+}1$, $3{+}1$, or $4$ pairs of~$\mu_0$. For the first two base matchings, the commutation is a three-wire step. For the other three, it is a four-wire derivation of $171$, $496$, and $187$ steps, found by a search that uses \xrule{7}, three-wire steps, and earlier four-wire equations.
+
+For item~3, a circuit on wires~2--4 carries $\mu$ and $\nu$ to a standard pair: $\mu_0$, and the matching that flips wires~3 and~4 together. The relation for the standard pair is a three-wire step on wires~1, 3, and~4.
+\end{proof}
+
+The side conditions of items~2 and~3, and the matching $\mu\nu\mu$, are computed on the matchings. The development therefore states the lemma with hypotheses that it decides by evaluation.
+
+\subsection{The Controlled Alternating Group and the Faithfulness of \texorpdfstring{$K$}{K}}
+
+\begin{proposition}[\aid{CFaithful.cfaith}]\label{prop:x-cfaith}
+Two words of controlled matchings with the same permutation are equal modulo $\mathcal{T}$.
+\end{proposition}
+
+\begin{proof}
+The controlled matchings act on $H_1$ as even permutations of the eight states, and $\mathrm{Alt}(8)$ is presented by the generators $\gamma(c,d)$ with $N=8$, the states numbered along the Gray code. For $d\ge2$, $\gamma(c,d)$ is a double transposition $(a\ b)(e\ f)$, the product $\big((a\ e)(b\ f)\rho\big)\big((a\ f)(b\ e)\rho\big)$ of two commuting perfect matchings, where $\rho$ is a fixed matching of the other four states. For $d=1$, it is a three-cycle, the product of two double transpositions that share the pair $(6\ 7)$. Each generator $\gamma$ is thus a word $\Phi(\gamma)$ of two or four matchings, whose controlled matchings act on $H_1$ as $\gamma$.
+
+A \emph{certificate} is a sequence of moves on words of matchings. A conjugation move rewrites $\mu\nu$ to $(\mu\nu\mu)\mu$ or to $\nu(\nu\mu\nu)$. A cancellation or insertion move deletes or inserts $\mu\mu$. A Klein move merges $\mu\nu$ into the matching $\mu\nu$, or splits it, for commuting $\mu\ne\nu$ whose product is a matching. By \Cref{lem:x-relations}, each move is a derivation once its side condition evaluates to true. For each of the $54$ relations of $\mathrm{Alt}(8)$, a search over double transpositions finds a certificate between the images under $\Phi$ of its two sides, with $412$ moves in all, and Agda checks each certificate by evaluation.
+
+Finally, every controlled matching is equal to the image under $\Phi$ of a word in the generators. For $X_{\mu_0}$, the word is $\gamma(0,2)\gamma(0,4)\gamma(0,6)$, by an eight-move certificate. Each other matching is reached along a breadth-first tree of depth~$9$, by conjugating its parent with a word $\Phi(\gamma)$. Translating each controlled matching in this way, two words with the same permutation become words in the generators with the same permutation. These are equal modulo the relations by \Cref{prop:x-rs}, and the certificates carry the equality back to the controlled matchings.
+\end{proof}
+
+\begin{proposition}[\aid{KFaithful.faithful₃}]\label{prop:x-kfaith}
+The set $K$ is faithful.
+\end{proposition}
+
+\begin{proof}
+Every gate in $K$ is equal to a word of gates on wires~2--4 and $G$. The CNOTs from wire~1 onto wires~2 and~3 are conjugates of $G$ by swaps. Let $a$ and $t$ be two of the wires 2--4, and $b$ the third. The Toffoli with controls on wires~1 and~$a$ and target~$t$ is $\mathrm{CX}_{1\to b}\,\mathrm{CCX}_{b,a\to t}\,\mathrm{CX}_{1\to b}\,\mathrm{CCX}_{b,a\to t}$, by a relabeling of the four-wire equation by which a CNOT onto a control of a Toffoli conjugates it into the product of two Toffolis, and a commutation. A gate $g$ on wires~2--4 carries each controlled matching to another, $gX_\mu=X_{g\mu g^{-1}}g$, by \Cref{lem:x-frame}. The development decides these $12\times105$ equations by evaluation. Since $G=X_{\mu_0}$, every circuit in $K$ is equal to $X_{\mu_1}\cdots X_{\mu_r}P$ for some matchings $\mu_i$ and a circuit $P$ on wires~2--4.
+
+Suppose that two such circuits have the same permutation. The controlled matchings fix $H_0$, so the two circuits $P$ agree on $H_0$. They do not involve wire~1, so they agree everywhere and are equal by \Cref{prop:x-small}. Cancelling them, the two words of controlled matchings have the same permutation, so they are equal by \Cref{prop:x-cfaith}.
+\end{proof}
+
+\Cref{prop:x-reduction,prop:x-kfaith} prove \Cref{thm:xcxccx-complete} on four wires. Every four-wire circuit is equal to the circuit of a word in the generators of $\mathrm{Alt}(16)$, so its permutation is even. Conversely, every even permutation is the product of a word in the generators, which the circuits of the generators realize. This gives $G_4\cong\mathrm{Alt}(16)$ (\aid{presentation₄}).
+
+\subsection{The Block Normal Form}\label{app:xcxccx-nf}
+
+The development fixes the circuits of the normal form as follows. $\mathrm{D}(B)$ is the product of edge Toffolis on wires~2--4 along a fixed Coxeter word for $B$, so it applies $B$ on both halves. $\mathrm{C}(E)$ is the word of controlled matchings $\Phi(w)$ for a fixed word $w$ in the generators of $\mathrm{Alt}(8)$ with permutation~$E$. The circuit $r_S$ consists of the circuits of generators of $\mathrm{Alt}(16)$ for the following permutation. It sends the states of $S$, in increasing order, to the states numbered $0$--$7$, which form $H_0$, and the remaining states, in increasing order, to those numbered $8$--$15$. If that permutation is odd, it is followed by the transposition of the states numbered $14$ and~$15$. These choices differ from those of the exposition we are preparing, but the theorems hold for any fixed choice.
+
+\begin{proposition}[\aid{unique}, \aid{onto}]\label{prop:x-bijection}
+The map $(E,B,S)\mapsto\llbracket\mathrm{NF}(E,B,S)\rrbracket$ is a bijection from $\mathrm{Alt}(8)\times\mathrm{Sym}(8)\times\binom{\mathbb{F}_2^4}{8}$ onto $\mathrm{Alt}(16)$.
+\end{proposition}
+
+\begin{proof}
+Let $p=\llbracket\mathrm{NF}(E,B,S)\rrbracket$. The circuits $\mathrm{D}(B)$ and $\mathrm{C}(E)$ preserve the halves, so $S=p^{-1}(H_0)$, which determines $S$ and hence $r_S$. The permutation $r_S^{-1}p$ acts as $B$ on $H_0$ and as $BE$ on $H_1$, which determine $B$ and $E$.
+
+Conversely, let $p\in\mathrm{Alt}(16)$ and $S=p^{-1}(H_0)$, a set of eight states. The permutation $r_S^{-1}p$ preserves the halves; let it act as $B_0$ on $H_0$ and as $B_1$ on $H_1$. Let $E=B_0^{-1}B_1$. The permutation $\llbracket\mathrm{D}(B_0)\rrbracket^{-1}r_S^{-1}p$ is even, since $p$ is and circuits are, and it acts as the identity on $H_0$ and as $E$ on $H_1$, so $E$ is even. Then $p=\llbracket\mathrm{NF}(E,B_0,S)\rrbracket$.
+\end{proof}
+
+By \Cref{thm:xcxccx-complete}, every four-wire circuit $u$ is therefore equal to the normal form of the coordinates of $\llbracket u\rrbracket$ (\aid{normal-form}), and to no other normal form (\aid{unique}).
+
+\begin{proposition}[\aid{absorption}, \aid{NormalForm.Absorb}]\label{prop:x-absorb}
+Let $w$ be a circuit and $\mathrm{NF}(E,B,S)$ a normal form. Let $S'=w^{-1}(S)$, and let $\mathrm{diag}(A_0,A_1)$ be the permutation $r_{S'}^{-1}\,w\,r_S$, which acts as $A_0$ on $H_0$ and as $A_1$ on $H_1$. Then the circuit that applies $w$ and then $\mathrm{NF}(E,B,S)$ is equal modulo $\mathcal{T}$ to $\mathrm{NF}(E',B',S')$, where
+\[
+B'=A_0B\qquad\text{and}\qquad E'=B^{-1}A_0^{-1}A_1BE.
+\]
+In composition order, as in the exposition we are preparing, these read $B'=BA_0$ and $E'=EBA_1A_0^{-1}B^{-1}$.
+\end{proposition}
+
+\begin{proof}
+The permutation $r_{S'}^{-1}\,w\,r_S$ preserves the halves, because $r_{S'}$ sends $S'=w^{-1}(S)$ onto $H_0$, $w$ sends $S'$ onto $S$, and $r_S$ sends $S$ onto $H_0$. So the composite has the permutation
+\[
+\llbracket w\,\mathrm{NF}(E,B,S)\rrbracket=r_{S'}\,\mathrm{diag}(A_0,A_1)\,\llbracket\mathrm{D}(B)\,\mathrm{C}(E)\rrbracket.
+\]
+Its coordinates are therefore $S'$, the block $A_0B$ on $H_0$, and the block $A_1BE$ on $H_1$, which give $B'$ and $E'$. The derivation then comes from \Cref{thm:xcxccx-complete}. The development states the formulas pointwise, as $B'(x)=B(A_0(x))$ and $E'(B'(x))=E(B(A_1(x)))$ for the states $x$ of wires~2--4, in function notation.
+\end{proof}
+
+\subsection{Implementation}
+
+The development consists of $40$ modules in \texttt{Examples/Groups/XCXCCX-4bit}, all reached from \aid{MainTheorem}. Agda checks them in $93$~seconds from scratch, with a peak residency of $0.9$~GB, given the interfaces of the shared library. Scripts in the development generate the long derivations, namely the four-wire equations and the three base commutations of \Cref{lem:x-relations}, together with the tables of matchings and the $412$ moves of the certificates. Agda checks each derivation step and each move by evaluation. Two traps took most of the debugging time, and both made Agda evaluate the symbolic word that the library's symmetric group development builds for an arbitrary permutation. The first is comparing two spellings of the sign of a permutation at a numeric width, such as $16$ against $8+8$. The second is meeting a goal about a circuit with a lemma about its unfolding. The development therefore reasons about signs at variable widths and keeps the normal form's building blocks opaque, with their definitions given as equations.
 
 \iffalse
 \section{A New Result: Toffoli–Hadamard Completeness for Any Number of Qubits}
