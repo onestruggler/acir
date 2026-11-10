@@ -71,6 +71,15 @@ All sixteen rows have complete proofs without `sorryAx`. The final
 Clifford+CS gap is closed by the checked two-coset construction in
 `QCert/CliffordCS3/Cosets.lean`.
 
+Beyond Table 1, `QCert/XCXCCX4bit` proves the new result of Section 6 of
+`qcert.pdf`, for reversible circuits over X, CX and CCX: the seven rules of
+that section are complete on at most four wires, the circuits present Sym(2),
+Sym(4), Sym(8) and Alt(16), and every four-wire circuit equals a unique
+block normal form, with gate absorption (`QCert/XCXCCX4bit/MainTheorem.lean`;
+no `sorry`).  It is a module-for-module translation of the Agda
+`Examples/Groups/XCXCCX-4bit`, and its `Lib/` translates what that imports
+from the Agda's shared library (its README lists the deviations).
+
 ## Typechecking cost
 
 Nearly every slow module here is a computation checked by `decide +kernel`

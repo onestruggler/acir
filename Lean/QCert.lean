@@ -14,3 +14,4 @@ import QCert.Exact.Roots
 import QCert.Synthesis
 import QCert.Table1
 import QCert.ToffoliHadamardRS.Theorem
+import QCert.XCXCCX4bit.MainTheorem

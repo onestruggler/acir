@@ -173,7 +173,7 @@ searches).
 
 ## Deviations from the Agda
 
-Collected from the module headers and the notes of the parts.
+Collected from the module headers, which state each one where it occurs.
 
 * **Words.**  The framework's words are `FreeMonoid` (lists), multiplied
   left-associatively; the Agda's associativity steps are reasoning in the
