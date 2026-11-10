@@ -1,11 +1,9 @@
 """The pair lemmas of macro.py up to the symmetries of the 4-cube (wire
-permutations and X on wires, which act on coloured gates), and for each
-orbit a black representative in pg_search letters where one exists.
+permutations and X on wires, which act on coloured gates).
 
-python pairs.py            -> pairs.json, prints the orbits
+python pairs.py            prints the orbits
 """
 import itertools
-import json
 
 import macro as M
 
@@ -53,12 +51,7 @@ for (g, h) in M.PAIR:
     ORBITS.setdefault(orbit_key(g, h), []).append((g, h))
 
 if __name__ == '__main__':
-    out = []
     for key in sorted(ORBITS):
         g, h = key
-        k = M.PAIR[key]
         print('%-10s %-10s  %s  (x%d)' % (M.gname(g), M.gname(h), describe(g, h), len(ORBITS[key])))
-        out.append({'g': M.gname(g), 'h': M.gname(h), 'k': None if k == -1 else M.gname(k),
-                    'description': describe(g, h), 'instances': len(ORBITS[key])})
     print(len(ORBITS), 'orbits of pair lemmas')
-    json.dump(out, open('pairs.json', 'w'), indent=1)

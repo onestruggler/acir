@@ -1,2 +1,0 @@
-  expanded 2000, heap 904788, len 23 depth 15, 34s
-{'name': 'far1_3_2', 'relator_text': '0~2>1 1~3>0 0~2>1 1~3>0 ~01>2 2~3>0 ~01>2 2~3>0 0~2>1 1~3>0 0~2>1 1~3>0 ~0~3>2 1~2>0 ~0~3>2 1~2>0 1~3>0 0~2>1 1~3>0 0~2>1 2~3>0 ~01>2 2~3>0 ~01>2', 'found': True, 'expanded': 3616, 'time': 54.4, 'checked': True, 'narrow_steps': 63, 'pair_steps': 27, 'expand_steps': 20}

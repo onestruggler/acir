@@ -1,7 +1,0 @@
-  expanded 2000, heap 355638, len 10 depth 21, 11s
-  expanded 4000, heap 736595, len 11 depth 5, 30s
-  expanded 6000, heap 1118119, len 10 depth 9, 40s
-  expanded 8000, heap 1489848, len 10 depth 16, 50s
-  expanded 10000, heap 1853077, len 11 depth 7, 61s
-  expanded 12000, heap 2235882, len 11 depth 8, 85s
-{'name': 'Cprime', 'relator_text': '0~2>1 13>0 02>1 13>0 0~2>1 13>0 02>1 13>0', 'found': True, 'expanded': 12861, 'time': 199.3, 'checked': True, 'narrow_steps': 20, 'pair_steps': 9, 'expand_steps': 6}

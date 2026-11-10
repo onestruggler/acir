@@ -9,37 +9,20 @@ the caps by design.  A found derivation reduces the relator lhs rhs^-1 to
 the empty word; it is checked by macro.check before it is written.
 """
 import json
+import os
 import sys
 
-import kdefs                # puts gen/ and XCXCCX-4bit/gen on the path
-import common
-import macro as M
+sys.dont_write_bytecode = True
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.join(HERE, '..'))
 
-bit = common.bit
+import macro as M          # noqa: E402
+import inst                # noqa: E402
 
-
-def forms(i):
-    """The forms of Omega_i as four coloured Toffolis: with a, b the wires
-    flipped from state i to i+1 and from i+1 to i+2, and c, d the other
-    two, T flips b where a is as in state i+1 and one of c, d as in state
-    i, and C flips a where b is as in state i+1 and the other one is as in
-    state i; Omega_i is (T C)^2 or (C T)^2.  Two forms, one for each
-    assignment of c, d: form 0 gives the smaller of the two wires to C."""
-    s0, s1, s2 = (common.ENC[i + k] for k in range(3))
-    a = (s0 ^ s1).bit_length() - 1
-    b = (s1 ^ s2).bit_length() - 1
-    c, d = [w for w in range(4) if w not in (a, b)]
-    out = []
-    for (c1, d1) in ((c, d), (d, c)):
-        Tg = M.gate(b, (a, bit(s1, a)), (d1, bit(s0, d1)))
-        Cg = M.gate(a, (b, bit(s1, b)), (c1, bit(s0, c1)))
-        ws = [w for w in ((Tg, Cg) * 2, (Cg, Tg) * 2) if M.func(w) == kdefs.func(kdefs.OM[i])]
-        assert len(ws) == 1
-        out.append(ws[0])
-    return out
-
-
-FORMS = [forms(i) for i in range(14)]
+# The two forms of each cycle as four coloured Toffoli gates (inst.py);
+# the searches use form 0 unless a target says otherwise.
+FORMS = [[tuple(w) for w in fs] for fs in inst.FORMS]
 OM = [f[0] for f in FORMS]
 
 
@@ -49,12 +32,9 @@ def targets():
     Tg, Cg = OM[9][0], OM[9][1]
     assert (M.gname(Tg), M.gname(Cg)) == ('02>1', '13>0')
     t = M.gate(1, (0, 1))
-    Tw = M.gate(1, (0, 1), (2, 0))            # T with a white control on wire 2
     z = (Cg, t, Cg, t, Cg)
-    T['Cprime'] = ((Tw, Cg, Tg, Cg), (Cg, Tg, Cg, Tw))
     T['L1'] = ((Tg, Cg, Tg, Cg, Tg), (t, Cg, Tg, Cg, t))
     T['Tz'] = ((Tg,) + z, z + (Tg,))
-    T['braid'] = ((Tg, Cg) * 3, (Cg, Tg) * 3)
     # F: the two forms of K (K is invariant under the exchange of wires 2, 3)
     T['F'] = (FORMS[9][0], FORMS[9][1])
     for i in range(13):

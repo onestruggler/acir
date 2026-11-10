@@ -29,823 +29,47 @@ open import Examples.Groups.Alt16-RevCir.Letters
   using (bo ; to ; hs ; fr ; rwˢ ; deriveℓ)
 open import Examples.Groups.Alt16-RevCir.Four.Part3 public
 
--- relator apart0_6
-Z224 : Eqn 4
-Z224 = deriveℓ "bfuTufbautsuTustuabfuTufbautsuTustuabdTdbfsuTusfbdTdbfsuTusfautsuTustuabfuTufbautsuTustuabfuTufbfsuTusfbdTdbfsuTusfbdTdb" ""
-  ( rwˢ 25 I132
-  ∷ rwˢ 30 I209
-  ∷ rw 41 P210
-  ∷ rwˢ 30 I98
-  ∷ rwˢ 37 I209
-  ∷ rw 48 P211
-  ∷ rwˢ 37 I132
-  ∷ rwˢ 42 I209
-  ∷ rw 53 P210
-  ∷ rwˢ 42 I98
-  ∷ rwˢ 49 I209
-  ∷ rw 60 P211
-  ∷ fr 49 "autsu" "tu" "T" "atsTsta"
-  ∷ fr 60 "autsu" "tu" "T" "atsTsta"
-  ∷ hs 58 "uttu" ""
-  ∷ bo 51 "atsTstaatsTsta" ""
-  ∷ hs 49 "tuut" ""
-  ∷ rwˢ 18 I132
-  ∷ rwˢ 23 I118
-  ∷ rw 30 P180
-  ∷ rwˢ 37 P181
-  ∷ fr 23 "bfu" "u" "T" "bdTdb"
-  ∷ fr 30 "fsu" "u" "T" "dsTsd"
-  ∷ fr 37 "bu" "u" "T" "bTb"
-  ∷ hs 29 "uu" ""
-  ∷ hs 34 "uu" ""
-  ∷ bo 24 "bdTdbdsTsdbTb" "bcbdsTsd"
-  ∷ hs 27 "" "uu"
-  ∷ fr 23 "u" "bu" "bcb" "c"
-  ∷ rwˢ 25 comm-ex2-cx0
-  ∷ to 24 "tt" ""
-  ∷ fr 26 "u" "fsu" "dsTsd" "T"
-  ∷ bo 18 "bdTdbbcb" "bTb"
-  ∷ rwˢ 46 I90
-  ∷ rwˢ 59 I17
-  ∷ rw 28 P182
-  ∷ fr 38 "dutsut" "tu" "c" "btstctstb"
-  ∷ fr 51 "dutsut" "tu" "c" "btstctstb"
-  ∷ hs 49 "uttu" ""
-  ∷ bo 40 "btstctstbbtstctstb" ""
-  ∷ hs 38 "tuut" ""
-  ∷ fr 33 "bu" "u" "T" "bTb"
-  ∷ fr 38 "fsu" "u" "T" "dsTsd"
-  ∷ fr 45 "bfu" "u" "T" "bdTdb"
-  ∷ hs 37 "uu" ""
-  ∷ hs 42 "uu" ""
-  ∷ bo 34 "bTbdsTsdbdTdb" "dsTsdbcb"
-  ∷ hs 39 "" "uu"
-  ∷ fr 33 "u" "fsu" "dsTsd" "T"
-  ∷ fr 40 "u" "bu" "bcb" "c"
-  ∷ rwˢ 42 comm-ex2-cx0
-  ∷ to 41 "tt" ""
-  ∷ rwˢ 54 I44
-  ∷ rwˢ 57 I209
-  ∷ rw 40 P212
-  ∷ to 65 "" "tt"
-  ∷ rw 66 comm-ex2-cx0
-  ∷ fr 64 "bu" "u" "c" "bcb"
-  ∷ fr 69 "bfu" "u" "T" "bdTdb"
-  ∷ fr 76 "fsu" "u" "T" "dsTsd"
-  ∷ hs 68 "uu" ""
-  ∷ hs 73 "uu" ""
-  ∷ bo 65 "bcbbdTdbdsTsd" "bTbdsTsd"
-  ∷ hs 68 "" "uu"
-  ∷ fr 64 "u" "bu" "bTb" "T"
-  ∷ fr 69 "u" "fsu" "dsTsd" "T"
-  ∷ rwˢ 40 I209
-  ∷ rwˢ 51 I213
-  ∷ rw 64 P214
-  ∷ rwˢ 33 I209
-  ∷ rwˢ 44 I98
-  ∷ rw 51 P215
-  ∷ rwˢ 28 I209
-  ∷ rwˢ 39 I132
-  ∷ rw 44 P216
-  ∷ rwˢ 21 I209
-  ∷ rwˢ 32 I98
-  ∷ rw 39 P215
-  ∷ rwˢ 18 I209
-  ∷ rwˢ 29 I192
-  ∷ rw 32 P217
-  ∷ fr 7 "autsu" "tu" "T" "atsTsta"
-  ∷ fr 18 "autsu" "tu" "T" "atsTsta"
-  ∷ hs 16 "uttu" ""
-  ∷ bo 9 "atsTstaatsTsta" ""
-  ∷ hs 7 "tuut" ""
-  ∷ rwˢ 7 P218
-  ∷ fr 0 "bfu" "u" "T" "bdTdb"
-  ∷ fr 7 "bfu" "u" "T" "bdTdb"
-  ∷ hs 6 "uu" ""
-  ∷ bo 1 "bdTdbbdTdb" ""
-  ∷ hs 0 "uu" ""
-  ∷ fr 20 "butstu" "stu" "T" "atsTsta"
-  ∷ fr 33 "butstu" "stu" "T" "atsTsta"
-  ∷ hs 30 "utsstu" ""
-  ∷ bo 23 "atsTstaatsTsta" ""
-  ∷ hs 20 "stuuts" ""
-  ∷ rwˢ 64 P185
-  ∷ fr 52 "bu" "u" "T" "bTb"
-  ∷ fr 57 "fsu" "u" "T" "dsTsd"
-  ∷ fr 64 "bfu" "u" "T" "bdTdb"
-  ∷ hs 56 "uu" ""
-  ∷ hs 61 "uu" ""
-  ∷ bo 53 "bTbdsTsdbdTdb" "dsTsdbcb"
-  ∷ hs 58 "" "uu"
-  ∷ fr 52 "u" "fsu" "dsTsd" "T"
-  ∷ fr 59 "u" "bu" "bcb" "c"
-  ∷ rwˢ 61 comm-ex2-cx0
-  ∷ to 60 "tt" ""
-  ∷ rw 59 C219
-  ∷ rwˢ 72 I98
-  ∷ rwˢ 79 I90
-  ∷ rw 52 P94
-  ∷ fr 70 "fsu" "u" "T" "dsTsd"
-  ∷ to 78 "" "tt"
-  ∷ rw 79 comm-ex2-cx0
-  ∷ fr 77 "bu" "u" "c" "bcb"
-  ∷ fr 82 "bfu" "u" "T" "bdTdb"
-  ∷ hs 76 "uu" ""
-  ∷ hs 79 "uu" ""
-  ∷ bo 71 "dsTsdbcbbdTdb" "bTbdsTsd"
-  ∷ hs 74 "" "uu"
-  ∷ fr 70 "u" "bu" "bTb" "T"
-  ∷ fr 75 "u" "fsu" "dsTsd" "T"
-  ∷ rwˢ 82 I98
-  ∷ rwˢ 89 I90
-  ∷ rw 102 P99
-  ∷ fr 70 "bu" "u" "T" "bTb"
-  ∷ fr 75 "fsu" "u" "T" "dsTsd"
-  ∷ fr 82 "fsu" "u" "T" "dsTsd"
-  ∷ hs 74 "uu" ""
-  ∷ hs 79 "uu" ""
-  ∷ bo 71 "bTbdsTsddsTsd" "bTb"
-  ∷ fr 70 "u" "bu" "bTb" "T"
-  ∷ rwˢ 75 I90
-  ∷ rwˢ 88 I17
-  ∷ rw 57 P182
-  ∷ fr 67 "dutsut" "tu" "c" "btstctstb"
-  ∷ fr 80 "dutsut" "tu" "c" "btstctstb"
-  ∷ hs 78 "uttu" ""
-  ∷ bo 69 "btstctstbbtstctstb" ""
-  ∷ hs 67 "tuut" ""
-  ∷ rwˢ 39 I125
-  ∷ rwˢ 44 I213
-  ∷ rw 57 P220
-  ∷ rwˢ 44 I132
-  ∷ rwˢ 49 I213
-  ∷ rw 62 P221
-  ∷ rwˢ 44 P222
-  ∷ fr 73 "bdutstu" "stu" "T" "abtsTstba"
-  ∷ fr 88 "butstu" "stu" "T" "atsTsta"
-  ∷ hs 85 "utsstu" ""
-  ∷ bo 76 "abtsTstbaatsTsta" "atscsta"
-  ∷ fr 73 "stu" "butstu" "atscsta" "c"
-  ∷ rwˢ 79 comm-ex2-cx0
-  ∷ to 78 "tt" ""
-  ∷ fr 66 "bfu" "u" "T" "bdTdb"
-  ∷ fr 73 "butst" "u" "c" "btstctstb"
-  ∷ fr 84 "bu" "u" "T" "bTb"
-  ∷ hs 72 "uu" ""
-  ∷ hs 81 "uu" ""
-  ∷ bo 67 "bdTdbbtstctstbbTb" "btstctstb"
-  ∷ fr 66 "u" "butst" "btstctstb" "c"
-  ∷ fr 51 "bdutstu" "stu" "T" "abtsTstba"
-  ∷ to 71 "" "tt"
-  ∷ rw 72 comm-ex2-cx0
-  ∷ fr 66 "butstu" "stu" "c" "atscsta"
-  ∷ hs 63 "utsstu" ""
-  ∷ bo 54 "abtsTstbaatscsta" "atsTsta"
-  ∷ fr 51 "stu" "butstu" "atsTsta" "T"
-  ∷ rwˢ 39 P94
-  ∷ fr 32 "fsu" "u" "T" "dsTsd"
-  ∷ fr 39 "fsu" "u" "T" "dsTsd"
-  ∷ hs 38 "uu" ""
-  ∷ bo 33 "dsTsddsTsd" ""
-  ∷ hs 32 "uu" ""
-  ∷ rwˢ 27 P181
-  ∷ fr 13 "bfu" "u" "T" "bdTdb"
-  ∷ fr 20 "fsu" "u" "T" "dsTsd"
-  ∷ fr 27 "bu" "u" "T" "bTb"
-  ∷ hs 19 "uu" ""
-  ∷ hs 24 "uu" ""
-  ∷ bo 14 "bdTdbdsTsdbTb" "bcbdsTsd"
-  ∷ hs 17 "" "uu"
-  ∷ fr 13 "u" "bu" "bcb" "c"
-  ∷ rwˢ 15 comm-ex2-cx0
-  ∷ to 14 "tt" ""
-  ∷ fr 16 "u" "fsu" "dsTsd" "T"
-  ∷ fr 41 "dutsut" "tu" "c" "btstctstb"
-  ∷ fr 54 "dutsut" "tu" "c" "btstctstb"
-  ∷ hs 52 "uttu" ""
-  ∷ bo 43 "btstctstbbtstctstb" ""
-  ∷ hs 41 "tuut" ""
-  ∷ rwˢ 36 I98
-  ∷ rwˢ 43 I90
-  ∷ rw 16 P94
-  ∷ fr 34 "fsu" "u" "T" "dsTsd"
-  ∷ fr 41 "bu" "u" "T" "bTb"
-  ∷ fr 46 "fsu" "u" "T" "dsTsd"
-  ∷ hs 40 "uu" ""
-  ∷ hs 43 "uu" ""
-  ∷ bo 35 "dsTsdbTbdsTsd" "bTb"
-  ∷ fr 34 "u" "bu" "bTb" "T"
-  ∷ rwˢ 39 I90
-  ∷ rwˢ 52 I17
-  ∷ rw 21 P182
-  ∷ fr 31 "dutsut" "tu" "c" "btstctstb"
-  ∷ fr 44 "dutsut" "tu" "c" "btstctstb"
-  ∷ hs 42 "uttu" ""
-  ∷ bo 33 "btstctstbbtstctstb" ""
-  ∷ hs 31 "tuut" ""
-  ∷ fr 26 "bu" "u" "T" "bTb"
-  ∷ fr 31 "bfu" "u" "T" "bdTdb"
-  ∷ hs 30 "uu" ""
-  ∷ bo 27 "bTbbdTdb" "bcb"
-  ∷ fr 26 "u" "bu" "bcb" "c"
-  ∷ rwˢ 28 comm-ex2-cx0
-  ∷ to 27 "tt" ""
-  ∷ bo 13 "bcbdsTsdbdTdbbcb" "bdTdbdsTsd"
-  ∷ rwˢ 18 I213
-  ∷ rwˢ 31 I125
-  ∷ rw 36 P223
-  ∷ bo 31 "dsTsddsTsdbdTdb" "bdTdb"
-  ∷ rwˢ 0 I132
-  ∷ rwˢ 5 I213
-  ∷ rw 18 P221
-  ∷ fr 5 "butstu" "stu" "T" "atsTsta"
-  ∷ fr 18 "butstu" "stu" "T" "atsTsta"
-  ∷ hs 15 "utsstu" ""
-  ∷ bo 8 "atsTstaatsTsta" ""
-  ∷ hs 5 "stuuts" ""
-  ∷ bo 0 "bdTdbbdTdb" ""
-  ∷ [])
-  refl
-
--- pair 23>0 , ~1~2>0
-P225 : Eqn 4
-P225 = deriveℓ "tuTutbdTdbtuTutbdTdb" ""
-  ( fr 0 "tu" "btu" "T" "T"
-  ∷ fr 7 "bd" "btubu" "T" "T"
-  ∷ fr 18 "tu" "btu" "T" "T"
-  ∷ fr 25 "bd" "btubu" "T" "T"
-  ∷ hs 4 "utbbtu" ""
-  ∷ hs 9 "utbbtu" ""
-  ∷ hs 10 "utbbtu" ""
-  ∷ rw 3 Q41
-  ∷ hs 0 "btuutb" ""
-  ∷ [])
-  refl
-
--- pair 0~3>1 , 23>0
-P226 : Eqn 4
-P226 = deriveℓ "fsuTusftuTutfsuTusftuTut" ""
-  ( fr 7 "tu" "fsudstu" "T" "T"
-  ∷ fr 29 "tu" "fsudstu" "T" "T"
-  ∷ hs 4 "usffsu" ""
-  ∷ hs 13 "usffsu" ""
-  ∷ hs 14 "usffsu" ""
-  ∷ rw 3 Q62
-  ∷ hs 0 "fsuusf" ""
-  ∷ [])
-  refl
-
--- pair ~1~2>0 , 23>0
-P227 : Eqn 4
-P227 = deriveℓ "bdTdbtuTutbdTdbtuTut" ""
-  ( fr 0 "bd" "bdt" "T" "T"
-  ∷ fr 7 "tu" "bdtbu" "T" "T"
-  ∷ fr 18 "bd" "bdt" "T" "T"
-  ∷ fr 25 "tu" "bdtbu" "T" "T"
-  ∷ hs 4 "tdbbdt" ""
-  ∷ hs 9 "tdbbdt" ""
-  ∷ hs 10 "tdbbdt" ""
-  ∷ rw 3 Q41
-  ∷ hs 0 "bdttdb" ""
-  ∷ [])
-  refl
-
--- pair 23>0 , 0~3>1
-P228 : Eqn 4
-P228 = deriveℓ "tuTutfsuTusftuTutfsuTusf" ""
-  ( fr 0 "tu" "fsudstu" "T" "T"
-  ∷ fr 22 "tu" "fsudstu" "T" "T"
-  ∷ hs 12 "usffsu" ""
-  ∷ hs 13 "usffsu" ""
-  ∷ hs 22 "usffsu" ""
-  ∷ rw 3 P63
-  ∷ hs 0 "fsuusf" ""
-  ∷ [])
-  refl
-
--- inverse ~0~1>3
-I229 : Eqn 4
-I229 = deriveℓ "abutsTstubaabutsTstuba" ""
-  ( hs 6 "stubaabuts" ""
-  ∷ bo 5 "TT" ""
-  ∷ hs 0 "abutsstuba" ""
-  ∷ [])
-  refl
-
--- pair ~0~1>3 , ~1~2>0
-P230 : Eqn 4
-P230 = deriveℓ "abutsTstubabdTdbabutsTstubabdTdb" "bdutstuTutstudb"
-  ( fr 0 "abuts" "abduts" "T" "T"
-  ∷ fr 13 "bd" "abdutsstu" "T" "T"
-  ∷ fr 32 "abuts" "abduts" "T" "T"
-  ∷ fr 45 "bd" "abdutsstu" "T" "T"
-  ∷ hs 7 "studbaabduts" ""
-  ∷ hs 14 "studbaabduts" ""
-  ∷ hs 15 "studbaabduts" ""
-  ∷ rw 6 P52
-  ∷ fr 0 "abdutstu" "bdutstu" "T" "T"
-  ∷ [])
-  refl
-
--- pair ~0>3 , ~1~2>0
-P231 : Eqn 4
-P231 = deriveℓ "autscstuabdTdbautscstuabdTdb" "bdutstuTutstudb"
-  ( fr 0 "auts" "abduts" "c" "c"
-  ∷ fr 13 "bd" "abdutsstu" "T" "T"
-  ∷ fr 32 "auts" "abduts" "c" "c"
-  ∷ fr 45 "bd" "abdutsstu" "T" "T"
-  ∷ hs 7 "studbaabduts" ""
-  ∷ hs 14 "studbaabduts" ""
-  ∷ hs 15 "studbaabduts" ""
-  ∷ rw 6 P5
-  ∷ fr 0 "abdutstu" "bdutstu" "T" "T"
-  ∷ [])
-  refl
-
--- inverse ~0>3
-I232 : Eqn 4
-I232 = deriveℓ "autscstuaautscstua" ""
-  ( hs 5 "stuaauts" ""
-  ∷ bo 4 "cc" ""
-  ∷ hs 0 "autsstua" ""
-  ∷ [])
-  refl
-
--- pair ~1~2>3 , 3>0
-P233 : Eqn 4
-P233 = deriveℓ "bdutstuTutstudbutctubdutstuTutstudbutctu" "bdTdb"
-  ( fr 15 "ut" "bdut" "c" "c"
-  ∷ fr 39 "ut" "bdut" "c" "c"
-  ∷ hs 11 "tudbbdut" ""
-  ∷ hs 12 "tudbbdut" ""
-  ∷ hs 19 "tudbbdut" ""
-  ∷ rw 4 R2
-  ∷ fr 0 "bduttu" "bd" "T" "T"
-  ∷ [])
-  refl
-
--- pair ~23>0 , ~1~2>3
-P234 : Eqn 4
-P234 = deriveℓ "dtuTutdbdutstuTutstudbdtuTutdbdutstuTutstudb" "bdTdb"
-  ( fr 0 "dtu" "bdtut" "T" "T"
-  ∷ fr 11 "bdutstu" "bdtutstu" "T" "T"
-  ∷ fr 28 "dtu" "bdtut" "T" "T"
-  ∷ fr 39 "bdutstu" "bdtutstu" "T" "T"
-  ∷ hs 6 "tutdbbdtut" ""
-  ∷ hs 13 "tutdbbdtut" ""
-  ∷ hs 14 "tutdbbdtut" ""
-  ∷ rw 5 P52
-  ∷ fr 0 "bdtuttu" "bd" "T" "T"
-  ∷ [])
-  refl
-
--- pair ~1~2>0 , ~0~1>3
-P235 : Eqn 4
-P235 = deriveℓ "bdTdbabutsTstubabdTdbabutsTstuba" "bdutstuTutstudb"
-  ( fr 0 "bd" "abdutsstu" "T" "T"
-  ∷ fr 19 "abuts" "abduts" "T" "T"
-  ∷ fr 32 "bd" "abdutsstu" "T" "T"
-  ∷ fr 51 "abuts" "abduts" "T" "T"
-  ∷ hs 13 "studbaabduts" ""
-  ∷ hs 14 "studbaabduts" ""
-  ∷ hs 21 "studbaabduts" ""
-  ∷ rw 6 P53
-  ∷ fr 0 "abdutstu" "bdutstu" "T" "T"
-  ∷ [])
-  refl
-
--- relator apart0_7
-Z236 : Eqn 4
-Z236 = deriveℓ "abutsTstubatuTutabutsTstubatuTutbdTdbfsuTusfbdTdbfsuTusftuTutabutsTstubatuTutabutsTstubafsuTusfbdTdbfsuTusfbdTdb" ""
-  ( rwˢ 27 I132
-  ∷ rwˢ 32 I3
-  ∷ rw 37 P225
-  ∷ rwˢ 49 I3
-  ∷ rwˢ 54 I98
-  ∷ rw 61 P226
-  ∷ rwˢ 44 I3
-  ∷ rwˢ 49 I132
-  ∷ rw 54 P227
-  ∷ rwˢ 32 I98
-  ∷ rwˢ 39 I3
-  ∷ rw 44 P228
-  ∷ hs 42 "uttu" ""
-  ∷ bo 41 "TT" ""
-  ∷ hs 39 "tuut" ""
-  ∷ rwˢ 32 I229
-  ∷ rwˢ 43 I132
-  ∷ rw 16 P230
-  ∷ rwˢ 16 P231
-  ∷ bo 39 "bdTdbbdTdb" ""
-  ∷ fr 30 "auts" "u" "c" "atscsta"
-  ∷ fr 39 "abuts" "u" "T" "abtsTstba"
-  ∷ fr 50 "fsu" "u" "T" "dsTsd"
-  ∷ hs 38 "uu" ""
-  ∷ hs 47 "uu" ""
-  ∷ bo 31 "atscstaabtsTstbadsTsd" "dsTsdatsTsta"
-  ∷ hs 36 "" "uu"
-  ∷ fr 30 "u" "fsu" "dsTsd" "T"
-  ∷ fr 37 "u" "auts" "atsTsta" "T"
-  ∷ rwˢ 30 I232
-  ∷ rwˢ 39 I132
-  ∷ rw 16 P231
-  ∷ fr 36 "auts" "u" "c" "atscsta"
-  ∷ fr 45 "fsu" "u" "T" "dsTsd"
-  ∷ fr 52 "auts" "u" "T" "atsTsta"
-  ∷ hs 44 "uu" ""
-  ∷ hs 49 "uu" ""
-  ∷ bo 37 "atscstadsTsdatsTsta" "dsTsdabtsTstba"
-  ∷ hs 42 "" "uu"
-  ∷ fr 36 "u" "fsu" "dsTsd" "T"
-  ∷ fr 43 "u" "abuts" "abtsTstba" "T"
-  ∷ rwˢ 59 I229
-  ∷ rwˢ 70 I132
-  ∷ rw 43 P230
-  ∷ fr 63 "abuts" "u" "T" "abtsTstba"
-  ∷ fr 74 "fsu" "u" "T" "dsTsd"
-  ∷ fr 81 "abuts" "u" "T" "abtsTstba"
-  ∷ hs 73 "uu" ""
-  ∷ hs 78 "uu" ""
-  ∷ bo 64 "abtsTstbadsTsdabtsTstba" "dsTsd"
-  ∷ fr 63 "u" "fsu" "dsTsd" "T"
-  ∷ rwˢ 63 I3
-  ∷ rwˢ 68 I98
-  ∷ rw 75 P226
-  ∷ fr 68 "fsu" "u" "T" "dsTsd"
-  ∷ fr 75 "abuts" "u" "T" "abtsTstba"
-  ∷ fr 86 "fsu" "u" "T" "dsTsd"
-  ∷ hs 74 "uu" ""
-  ∷ hs 83 "uu" ""
-  ∷ bo 69 "dsTsdabtsTstbadsTsd" "abtsTstba"
-  ∷ fr 68 "u" "abuts" "abtsTstba" "T"
-  ∷ rwˢ 58 P233
-  ∷ to 95 "" "tt"
-  ∷ rw 96 comm-ex2-cx0
-  ∷ fr 93 "utu" "tu" "c" "tct"
-  ∷ hs 98 "uttu" ""
-  ∷ bo 95 "tctT" "bTb"
-  ∷ fr 93 "tu" "dtu" "bTb" "T"
-  ∷ fr 43 "bdutstu" "stu" "T" "abtsTstba"
-  ∷ fr 58 "bdutstu" "stu" "T" "abtsTstba"
-  ∷ hs 55 "utsstu" ""
-  ∷ bo 46 "abtsTstbaabtsTstba" ""
-  ∷ hs 43 "stuuts" ""
-  ∷ rwˢ 31 P233
-  ∷ fr 71 "fsu" "u" "T" "dsTsd"
-  ∷ hs 70 "uu" ""
-  ∷ hs 75 "uu" ""
-  ∷ bo 67 "tctdsTsdtct" "dsTsd"
-  ∷ fr 66 "u" "fsu" "dsTsd" "T"
-  ∷ fr 16 "bdutstu" "stu" "T" "abtsTstba"
-  ∷ fr 31 "bdutstu" "stu" "T" "abtsTstba"
-  ∷ hs 28 "utsstu" ""
-  ∷ bo 19 "abtsTstbaabtsTstba" ""
-  ∷ hs 16 "stuuts" ""
-  ∷ to 18 "" "tt"
-  ∷ rw 19 comm-ex2-cx0
-  ∷ fr 16 "utu" "tu" "c" "tct"
-  ∷ hs 14 "uttu" ""
-  ∷ bo 13 "Ttct" "bTb"
-  ∷ fr 11 "tu" "dtu" "bTb" "T"
-  ∷ rwˢ 33 I56
-  ∷ rwˢ 40 I76
-  ∷ rw 11 P234
-  ∷ rwˢ 0 I132
-  ∷ rwˢ 5 I229
-  ∷ rw 16 P230
-  ∷ fr 16 "bdutstu" "stu" "T" "abtsTstba"
-  ∷ fr 31 "bdutstu" "stu" "T" "abtsTstba"
-  ∷ hs 28 "utsstu" ""
-  ∷ bo 19 "abtsTstbaabtsTstba" ""
-  ∷ hs 16 "stuuts" ""
-  ∷ rwˢ 16 I98
-  ∷ rwˢ 23 I56
-  ∷ rw 30 P136
-  ∷ rwˢ 45 I56
-  ∷ rwˢ 52 I76
-  ∷ rw 23 P234
-  ∷ fr 43 "dtu" "tu" "T" "bTb"
-  ∷ fr 50 "dtu" "tu" "T" "bTb"
-  ∷ hs 48 "uttu" ""
-  ∷ bo 45 "bTbbTb" ""
-  ∷ hs 43 "tuut" ""
-  ∷ rwˢ 28 P235
-  ∷ bo 23 "bdTdbbdTdb" ""
-  ∷ fr 5 "abuts" "u" "T" "abtsTstba"
-  ∷ fr 16 "fsu" "u" "T" "dsTsd"
-  ∷ fr 23 "abuts" "u" "T" "abtsTstba"
-  ∷ hs 15 "uu" ""
-  ∷ hs 20 "uu" ""
-  ∷ bo 6 "abtsTstbadsTsdabtsTstba" "dsTsd"
-  ∷ fr 5 "u" "fsu" "dsTsd" "T"
-  ∷ fr 17 "abuts" "u" "T" "abtsTstba"
-  ∷ fr 28 "abuts" "u" "T" "abtsTstba"
-  ∷ hs 27 "uu" ""
-  ∷ bo 18 "abtsTstbaabtsTstba" ""
-  ∷ hs 17 "uu" ""
-  ∷ bo 12 "bdTdbbdTdb" ""
-  ∷ fr 5 "fsu" "u" "T" "dsTsd"
-  ∷ fr 12 "fsu" "u" "T" "dsTsd"
-  ∷ hs 11 "uu" ""
-  ∷ bo 6 "dsTsddsTsd" ""
-  ∷ hs 5 "uu" ""
-  ∷ bo 0 "bdTdbbdTdb" ""
-  ∷ [])
-  refl
-
--- commute ~3>2 , ~1>0
-C237 : Eqn 4
-C237 = deriveℓ "ftsutctustfbcb" "bcbftsutctustf"
-  ( fr 0 "ftsut" "fbtsut" "c" "c"
-  ∷ fr 13 "b" "fbtsuttsut" "c" "c"
-  ∷ hs 7 "tustbffbtsut" ""
-  ∷ rw 7 C95
-  ∷ rwˢ 6 comm-cx2-cx0
-  ∷ rwˢ 6 C95
-  ∷ hs 15 "" "tustbffbtsut"
-  ∷ fr 0 "fbtsuttsut" "b" "c" "c"
-  ∷ fr 3 "fbtsut" "ftsut" "c" "c"
-  ∷ [])
-  refl
-
--- commute ~3>2 , 0>1
-C238 : Eqn 4
-C238 = deriveℓ "ftsutctustfscs" "scsftsutctustf"
-  ( to 5 "" "tt"
-  ∷ rw 6 comm-ex2-cx0
-  ∷ fr 13 "s" "ftsututsut" "c" "c"
-  ∷ hs 7 "utustfftsutu" ""
-  ∷ rw 7 C95
-  ∷ rwˢ 6 comm-cx2-cx0
-  ∷ rwˢ 6 C95
-  ∷ hs 15 "" "utustfftsutu"
-  ∷ fr 0 "ftsututsut" "s" "c" "c"
-  ∷ rwˢ 9 comm-ex2-cx0
-  ∷ to 8 "tt" ""
-  ∷ [])
-  refl
-
--- pair 3>2 , 0~2>1
-P239 : Eqn 4
-P239 = deriveℓ "tsutctustdsTsdtsutctustdsTsd" "suTus"
-  ( to 4 "" "tt"
-  ∷ rw 5 comm-ex2-cx0
-  ∷ fr 0 "tsutu" "dstsut" "c" "c"
-  ∷ fr 13 "ds" "dstsuttsu" "T" "T"
-  ∷ to 36 "" "tt"
-  ∷ rw 37 comm-ex2-cx0
-  ∷ fr 32 "tsutu" "dstsut" "c" "c"
-  ∷ fr 45 "ds" "dstsuttsu" "T" "T"
-  ∷ hs 7 "tustsddstsut" ""
-  ∷ hs 14 "tustsddstsut" ""
-  ∷ hs 15 "tustsddstsut" ""
-  ∷ rw 6 P82
-  ∷ fr 0 "dstsuttstu" "su" "T" "T"
-  ∷ [])
-  refl
-
--- pair 3>2 , ~12>0
-P240 : Eqn 4
-P240 = deriveℓ "tsutctustbTbtsutctustbTb" "buTub"
-  ( fr 0 "tsut" "btsut" "c" "c"
-  ∷ fr 11 "b" "btsuttsu" "T" "T"
-  ∷ fr 28 "tsut" "btsut" "c" "c"
-  ∷ fr 39 "b" "btsuttsu" "T" "T"
-  ∷ hs 6 "tustbbtsut" ""
-  ∷ hs 13 "tustbbtsut" ""
-  ∷ hs 14 "tustbbtsut" ""
-  ∷ rw 5 P82
-  ∷ fr 0 "btsuttstu" "bu" "T" "T"
-  ∷ [])
-  refl
-
--- commute 3>2 , 0>1
-C241 : Eqn 4
-C241 = deriveℓ "tsutctustscs" "scstsutctust"
-  ( to 4 "" "tt"
-  ∷ rw 5 comm-ex2-cx0
-  ∷ fr 11 "s" "tsututsut" "c" "c"
-  ∷ hs 6 "utusttsutu" ""
-  ∷ rw 6 C95
-  ∷ rwˢ 5 comm-cx2-cx0
-  ∷ rwˢ 5 C95
-  ∷ hs 14 "" "utusttsutu"
-  ∷ fr 0 "tsututsut" "s" "c" "c"
-  ∷ rwˢ 8 comm-ex2-cx0
-  ∷ to 7 "tt" ""
-  ∷ [])
-  refl
-
--- relator apart0_8
-Z242 : Eqn 4
-Z242 = deriveℓ "bTbsuTusbTbsuTusbdTdbfsuTusfbdTdbfsuTusfsuTusbTbsuTusbTbfsuTusfbdTdbfsuTusfbdTdb" ""
-  ( fr 33 "fsu" "u" "T" "dsTsd"
-  ∷ fr 40 "su" "u" "T" "sTs"
-  ∷ hs 39 "uu" ""
-  ∷ bo 34 "dsTsdsTs" "scs"
-  ∷ fr 33 "u" "su" "scs" "c"
-  ∷ rwˢ 35 comm-ex2-cx0
-  ∷ to 34 "tt" ""
-  ∷ rwˢ 21 P173
-  ∷ bo 46 "sTsbdTdbscsbTb" "bcbdsTsd"
-  ∷ rw 35 C237
-  ∷ rwˢ 38 I125
-  ∷ rwˢ 43 I172
-  ∷ rw 54 P188
-  ∷ fr 54 "fsu" "u" "T" "dsTsd"
-  ∷ fr 61 "su" "u" "T" "sTs"
-  ∷ hs 60 "uu" ""
-  ∷ bo 55 "dsTsdsTs" "scs"
-  ∷ fr 54 "u" "su" "scs" "c"
-  ∷ rwˢ 56 comm-ex2-cx0
-  ∷ to 55 "tt" ""
-  ∷ rw 43 C238
-  ∷ bo 32 "sTsbcbdsTsdscs" "bcbsTsbTb"
-  ∷ rw 21 C237
-  ∷ bo 16 "bdTdbbcb" "bTb"
-  ∷ rwˢ 36 I192
-  ∷ rwˢ 39 I172
-  ∷ rw 50 P191
-  ∷ bo 30 "sTsbTbbTb" "sTs"
-  ∷ rwˢ 30 I172
-  ∷ rwˢ 41 I91
-  ∷ rw 44 P171
-  ∷ fr 19 "ftsut" "tu" "c" "dstctsd"
-  ∷ fr 30 "ftsut" "tu" "c" "dstctsd"
-  ∷ hs 28 "uttu" ""
-  ∷ bo 21 "dstctsddstctsd" ""
-  ∷ hs 19 "tuut" ""
-  ∷ rwˢ 11 P239
-  ∷ bo 34 "dsTsdbTbsTs" "bTbscs"
-  ∷ to 38 "" "tt"
-  ∷ rw 39 comm-ex2-cx0
-  ∷ fr 37 "su" "u" "c" "scs"
-  ∷ fr 42 "fsu" "u" "T" "dsTsd"
-  ∷ fr 49 "bfu" "u" "T" "bdTdb"
-  ∷ fr 56 "fsu" "u" "T" "dsTsd"
-  ∷ hs 41 "uu" ""
-  ∷ hs 46 "uu" ""
-  ∷ hs 51 "uu" ""
-  ∷ bo 38 "scsdsTsdbdTdbdsTsd" "bdTdbscs"
-  ∷ hs 43 "" "uu"
-  ∷ fr 37 "u" "bfu" "bdTdb" "T"
-  ∷ fr 44 "u" "su" "scs" "c"
-  ∷ rwˢ 46 comm-ex2-cx0
-  ∷ to 45 "tt" ""
-  ∷ rwˢ 25 I192
-  ∷ rwˢ 28 I85
-  ∷ rw 37 P240
-  ∷ fr 37 "bu" "u" "T" "bTb"
-  ∷ fr 42 "bfu" "u" "T" "bdTdb"
-  ∷ to 50 "" "tt"
-  ∷ rw 51 comm-ex2-cx0
-  ∷ fr 49 "su" "u" "c" "scs"
-  ∷ hs 41 "uu" ""
-  ∷ hs 46 "uu" ""
-  ∷ bo 38 "bTbbdTdbscs" "bcbscs"
-  ∷ hs 41 "" "uu"
-  ∷ fr 37 "u" "bu" "bcb" "c"
-  ∷ rwˢ 39 comm-ex2-cx0
-  ∷ to 38 "tt" ""
-  ∷ fr 40 "u" "su" "scs" "c"
-  ∷ rwˢ 42 comm-ex2-cx0
-  ∷ to 41 "tt" ""
-  ∷ rw 28 C201
-  ∷ rw 31 C241
-  ∷ bo 20 "dsTsdbTbbcbscs" "bdTdbscsbdTdb"
-  ∷ rwˢ 20 I192
-  ∷ rwˢ 23 I85
-  ∷ rw 8 P205
-  ∷ bo 22 "bTbbdTdbscsbdTdb" "bcbscsbdTdb"
-  ∷ rw 13 C201
-  ∷ rw 16 C241
-  ∷ fr 3 "su" "u" "T" "sTs"
-  ∷ fr 8 "bu" "u" "T" "bTb"
-  ∷ to 14 "" "tt"
-  ∷ rw 15 comm-ex2-cx0
-  ∷ fr 13 "bu" "u" "c" "bcb"
-  ∷ to 19 "" "tt"
-  ∷ rw 20 comm-ex2-cx0
-  ∷ fr 18 "su" "u" "c" "scs"
-  ∷ hs 7 "uu" ""
-  ∷ hs 10 "uu" ""
-  ∷ hs 13 "uu" ""
-  ∷ bo 4 "sTsbTbbcbscs" "bdTdbdsTsd"
-  ∷ hs 9 "" "uu"
-  ∷ fr 3 "u" "bfu" "bdTdb" "T"
-  ∷ fr 10 "u" "fsu" "dsTsd" "T"
-  ∷ rwˢ 31 I85
-  ∷ rwˢ 40 I132
-  ∷ rw 17 P206
-  ∷ fr 3 "bfu" "u" "T" "bdTdb"
-  ∷ fr 10 "fsu" "u" "T" "dsTsd"
-  ∷ fr 17 "bu" "u" "T" "bTb"
-  ∷ hs 9 "uu" ""
-  ∷ hs 14 "uu" ""
-  ∷ bo 4 "bdTdbdsTsdbTb" "bcbdsTsd"
-  ∷ hs 7 "" "uu"
-  ∷ fr 3 "u" "bu" "bcb" "c"
-  ∷ rwˢ 5 comm-ex2-cx0
-  ∷ to 4 "tt" ""
-  ∷ fr 6 "u" "fsu" "dsTsd" "T"
-  ∷ bo 0 "bTbbcb" "bdTdb"
-  ∷ fr 17 "tsut" "tu" "c" "stcts"
-  ∷ fr 26 "tsut" "tu" "c" "stcts"
-  ∷ hs 24 "uttu" ""
-  ∷ bo 19 "stctsstcts" ""
-  ∷ hs 17 "tuut" ""
-  ∷ bo 12 "bdTdbbdTdb" ""
-  ∷ fr 5 "fsu" "u" "T" "dsTsd"
-  ∷ fr 12 "fsu" "u" "T" "dsTsd"
-  ∷ hs 11 "uu" ""
-  ∷ bo 6 "dsTsddsTsd" ""
-  ∷ hs 5 "uu" ""
-  ∷ bo 0 "bdTdbbdTdb" ""
-  ∷ [])
-  refl
-
--- pair 13>0 , ~1~2>0
-P243 : Eqn 4
-P243 = deriveℓ "uTubdTdbuTubdTdb" ""
-  ( fr 0 "u" "du" "T" "T"
-  ∷ fr 5 "bd" "dubu" "T" "T"
-  ∷ fr 14 "u" "du" "T" "T"
-  ∷ fr 19 "bd" "dubu" "T" "T"
-  ∷ hs 3 "uddu" ""
-  ∷ hs 8 "uddu" ""
-  ∷ hs 9 "uddu" ""
-  ∷ rw 2 Q41
-  ∷ hs 0 "duud" ""
-  ∷ [])
-  refl
-
--- pair ~1~2>0 , 13>0
-P244 : Eqn 4
-P244 = deriveℓ "bdTdbuTubdTdbuTu" ""
-  ( fr 5 "u" "bdbu" "T" "T"
-  ∷ fr 19 "u" "bdbu" "T" "T"
-  ∷ hs 3 "dbbd" ""
-  ∷ hs 8 "dbbd" ""
-  ∷ hs 9 "dbbd" ""
-  ∷ rw 2 Q41
-  ∷ hs 0 "bddb" ""
-  ∷ [])
-  refl
-
--- pair 0~3>1 , 02>1
-P245 : Eqn 4
-P245 = deriveℓ "fsuTusfsTsfsuTusfsTs" ""
-  ( fr 7 "s" "fsuu" "T" "T"
-  ∷ fr 23 "s" "fsuu" "T" "T"
-  ∷ hs 4 "usffsu" ""
-  ∷ hs 7 "usffsu" ""
-  ∷ hs 8 "usffsu" ""
-  ∷ rw 3 Q38
-  ∷ hs 0 "fsuusf" ""
-  ∷ [])
-  refl
-
 -- relator apart0_9
-Z246 : Eqn 4
-Z246 = deriveℓ "sTsuTusTsuTubdTdbfsuTusfbdTdbfsuTusfuTusTsuTusTsfsuTusfbdTdbfsuTusfbdTdb" ""
-  ( rwˢ 39 P197
+Z233 : Eqn 4
+Z233 = deriveℓ "sTsuTusTsuTubdTdbfsuTusfbdTdbfsuTusfuTusTsuTusTsfsuTusfbdTdbfsuTusfbdTdb" ""
+  ( rwˢ 39 P182
   ∷ fr 29 "fsu" "u" "T" "dsTsd"
   ∷ fr 39 "fsu" "u" "T" "dsTsd"
   ∷ hs 35 "uu" ""
   ∷ hs 36 "uu" ""
   ∷ bo 30 "dsTsdTdsTsd" "T"
-  ∷ rwˢ 50 I112
-  ∷ rwˢ 61 I98
-  ∷ rw 32 P111
+  ∷ rwˢ 50 I90
+  ∷ rwˢ 61 I93
+  ∷ rw 32 P89
   ∷ fr 42 "utsut" "tu" "c" "tstctst"
   ∷ fr 53 "utsut" "tu" "c" "tstctst"
   ∷ hs 51 "uttu" ""
   ∷ bo 44 "tstctsttstctst" ""
   ∷ hs 42 "tuut" ""
-  ∷ rwˢ 45 I98
-  ∷ rwˢ 52 I91
-  ∷ rw 55 P101
+  ∷ rwˢ 45 I93
+  ∷ rwˢ 52 I96
+  ∷ rw 55 P229
   ∷ fr 35 "fsu" "u" "T" "dsTsd"
   ∷ fr 45 "fsu" "u" "T" "dsTsd"
   ∷ hs 41 "uu" ""
   ∷ hs 42 "uu" ""
   ∷ bo 36 "dsTsdTdsTsd" "T"
-  ∷ rwˢ 9 I132
+  ∷ rwˢ 9 I113
   ∷ rwˢ 14 I39
-  ∷ rw 17 P243
+  ∷ rw 17 P230
   ∷ rwˢ 24 I39
-  ∷ rwˢ 27 I132
-  ∷ rw 32 P244
+  ∷ rwˢ 27 I113
+  ∷ rw 32 P231
   ∷ fr 17 "fsu" "u" "T" "dsTsd"
   ∷ hs 16 "uu" ""
   ∷ hs 21 "uu" ""
   ∷ bo 15 "TdsTsdT" "dsTsd"
   ∷ fr 14 "u" "fsu" "dsTsd" "T"
-  ∷ rwˢ 14 P171
+  ∷ rwˢ 14 P153
   ∷ bo 6 "sTsbdTdbsTs" "bdTdb"
-  ∷ rwˢ 25 I172
-  ∷ rwˢ 36 I91
-  ∷ rw 11 P173
+  ∷ rwˢ 25 I154
+  ∷ rwˢ 36 I96
+  ∷ rw 11 P155
   ∷ fr 21 "ftsut" "tu" "c" "dstctsd"
   ∷ fr 32 "ftsut" "tu" "c" "dstctsd"
   ∷ hs 30 "uttu" ""
@@ -853,20 +77,20 @@ Z246 = deriveℓ "sTsuTusTsuTubdTdbfsuTusfbdTdbfsuTusfuTusTsuTusTsfsuTusfbdTdbfs
   ∷ hs 21 "tuut" ""
   ∷ bo 18 "sTsbdTdbsTs" "bdTdb"
   ∷ rwˢ 18 I39
-  ∷ rwˢ 21 I132
-  ∷ rw 26 P244
+  ∷ rwˢ 21 I113
+  ∷ rw 26 P231
   ∷ bo 21 "bdTdbsTsbdTdb" "sTs"
-  ∷ rwˢ 3 I132
+  ∷ rwˢ 3 I113
   ∷ rwˢ 8 I39
-  ∷ rw 11 P243
+  ∷ rw 11 P230
   ∷ fr 11 "fsu" "u" "T" "dsTsd"
   ∷ hs 10 "uu" ""
   ∷ hs 15 "uu" ""
   ∷ bo 9 "TdsTsdT" "dsTsd"
   ∷ fr 8 "u" "fsu" "dsTsd" "T"
-  ∷ rwˢ 8 I91
-  ∷ rwˢ 11 I98
-  ∷ rw 18 P245
+  ∷ rwˢ 8 I96
+  ∷ rwˢ 11 I93
+  ∷ rw 18 P232
   ∷ bo 0 "sTsbdTdbsTs" "bdTdb"
   ∷ fr 5 "fsu" "u" "T" "dsTsd"
   ∷ fr 12 "fsu" "u" "T" "dsTsd"
@@ -878,8 +102,8 @@ Z246 = deriveℓ "sTsuTusTsuTubdTdbfsuTusfbdTdbfsuTusfuTusTsuTusTsfsuTusfbdTdbfs
   refl
 
 -- inverse ~03>2
-I247 : Eqn 4
-I247 = deriveℓ "atsuTustaatsuTusta" ""
+I234 : Eqn 4
+I234 = deriveℓ "atsuTustaatsuTusta" ""
   ( hs 5 "ustaatsu" ""
   ∷ bo 4 "TT" ""
   ∷ hs 0 "atsuusta" ""
@@ -887,8 +111,8 @@ I247 = deriveℓ "atsuTustaatsuTusta" ""
   refl
 
 -- pair ~03>2 , 0~2>1
-P248 : Eqn 4
-P248 = deriveℓ "atsuTustadsTsdatsuTustadsTsd" ""
+P235 : Eqn 4
+P235 = deriveℓ "atsuTustadsTsdatsuTustadsTsd" ""
   ( fr 0 "atsu" "dstdstu" "T" "T"
   ∷ fr 15 "ds" "dst" "T" "T"
   ∷ fr 22 "atsu" "dstdstu" "T" "T"
@@ -902,8 +126,8 @@ P248 = deriveℓ "atsuTustadsTsdatsuTustadsTsd" ""
   refl
 
 -- pair ~03>2 , 1~3>0
-P249 : Eqn 4
-P249 = deriveℓ "atsuTustafuTufatsuTustafuTuf" ""
+P236 : Eqn 4
+P236 = deriveℓ "atsuTustafuTufatsuTustafuTuf" ""
   ( fr 9 "fu" "atsudstu" "T" "T"
   ∷ fr 35 "fu" "atsudstu" "T" "T"
   ∷ hs 5 "ustaatsu" ""
@@ -915,8 +139,8 @@ P249 = deriveℓ "atsuTustafuTufatsuTustafuTuf" ""
   refl
 
 -- pair 1~3>0 , 12>0
-P250 : Eqn 4
-P250 = deriveℓ "fuTufTfuTufT" ""
+P237 : Eqn 4
+P237 = deriveℓ "fuTufTfuTufT" ""
   ( fr 5 "" "fuu" "T" "T"
   ∷ fr 17 "" "fuu" "T" "T"
   ∷ hs 3 "uffu" ""
@@ -928,8 +152,8 @@ P250 = deriveℓ "fuTufTfuTufT" ""
   refl
 
 -- pair 12>0 , 1~3>0
-P251 : Eqn 4
-P251 = deriveℓ "TfuTufTfuTuf" ""
+P238 : Eqn 4
+P238 = deriveℓ "TfuTufTfuTuf" ""
   ( fr 0 "" "f" "T" "T"
   ∷ fr 8 "" "f" "T" "T"
   ∷ hs 2 "ff" ""
@@ -941,8 +165,8 @@ P251 = deriveℓ "TfuTufTfuTuf" ""
   refl
 
 -- pair 1~3>0 , ~03>2
-P252 : Eqn 4
-P252 = deriveℓ "fuTufatsuTustafuTufatsuTusta" ""
+P239 : Eqn 4
+P239 = deriveℓ "fuTufatsuTustafuTufatsuTusta" ""
   ( fr 0 "fu" "atsudstu" "T" "T"
   ∷ fr 26 "fu" "atsudstu" "T" "T"
   ∷ hs 13 "ustaatsu" ""
@@ -954,8 +178,8 @@ P252 = deriveℓ "fuTufatsuTustafuTufatsuTusta" ""
   refl
 
 -- pair 12>0 , ~3>2
-P253 : Eqn 4
-P253 = deriveℓ "TftsutctustfTftsutctustf" "fuTuf"
+P240 : Eqn 4
+P240 = deriveℓ "TftsutctustfTftsutctustf" "fuTuf"
   ( fr 0 "" "ftsuttsu" "T" "T"
   ∷ fr 28 "" "ftsuttsu" "T" "T"
   ∷ hs 12 "tustfftsut" ""
@@ -967,8 +191,8 @@ P253 = deriveℓ "TftsutctustfTftsutctustf" "fuTuf"
   refl
 
 -- pair ~3>2 , 12>0
-P254 : Eqn 4
-P254 = deriveℓ "ftsutctustfTftsutctustfT" "fuTuf"
+P241 : Eqn 4
+P241 = deriveℓ "ftsutctustfTftsutctustfT" "fuTuf"
   ( fr 11 "" "ftsuttsu" "T" "T"
   ∷ fr 39 "" "ftsuttsu" "T" "T"
   ∷ hs 6 "tustfftsut" ""
@@ -980,20 +204,20 @@ P254 = deriveℓ "ftsutctustfTftsutctustfT" "fuTuf"
   refl
 
 -- relator apart1_10
-Z255 : Eqn 4
-Z255 = deriveℓ "TatsuTustaTatsuTustadsTsdfuTufdsTsdfuTufatsuTustaTatsuTustaTfuTufdsTsdfuTufdsTsd" ""
-  ( rwˢ 11 I125
-  ∷ rwˢ 16 I247
-  ∷ rw 25 P248
+Z242 : Eqn 4
+Z242 = deriveℓ "TatsuTustaTatsuTustadsTsdfuTufdsTsdfuTufatsuTustaTatsuTustaTfuTufdsTsdfuTufdsTsd" ""
+  ( rwˢ 11 I106
+  ∷ rwˢ 16 I234
+  ∷ rw 25 P235
   ∷ rwˢ 16 I9
-  ∷ rwˢ 21 I247
-  ∷ rw 30 P249
-  ∷ rwˢ 21 I125
-  ∷ rwˢ 26 I247
-  ∷ rw 35 P248
+  ∷ rwˢ 21 I234
+  ∷ rw 30 P236
+  ∷ rwˢ 21 I106
+  ∷ rwˢ 26 I234
+  ∷ rw 35 P235
   ∷ rwˢ 26 I9
-  ∷ rwˢ 31 I247
-  ∷ rw 40 P249
+  ∷ rwˢ 31 I234
+  ∷ rw 40 P236
   ∷ fr 31 "atsu" "tu" "T" "asTsa"
   ∷ fr 40 "atsu" "tu" "T" "asTsa"
   ∷ hs 38 "uttu" ""
@@ -1001,47 +225,47 @@ Z255 = deriveℓ "TatsuTustaTatsuTustadsTsdfuTufdsTsdfuTufatsuTustaTatsuTustaTfu
   ∷ hs 31 "tuut" ""
   ∷ bo 26 "" "TT"
   ∷ rwˢ 27 I9
-  ∷ rw 32 P250
+  ∷ rw 32 P237
   ∷ rwˢ 41 I9
   ∷ bo 46 "" "TT"
-  ∷ rw 47 P251
-  ∷ rwˢ 27 I247
+  ∷ rw 47 P238
+  ∷ rwˢ 27 I234
   ∷ rwˢ 36 I9
-  ∷ rw 41 P252
+  ∷ rw 41 P239
   ∷ fr 36 "fu" "u" "T" "dTd"
   ∷ fr 41 "fu" "u" "T" "dTd"
   ∷ hs 40 "uu" ""
   ∷ bo 37 "dTddTd" ""
   ∷ hs 36 "uu" ""
-  ∷ rwˢ 42 P253
+  ∷ rwˢ 42 P240
   ∷ bo 36 "TdsTsdT" "dsTsd"
-  ∷ rwˢ 27 I125
-  ∷ rwˢ 32 I247
-  ∷ rw 41 P248
+  ∷ rwˢ 27 I106
+  ∷ rwˢ 32 I234
+  ∷ rw 41 P235
   ∷ bo 21 "dsTsdTdsTsd" "T"
   ∷ bo 16 "" "TT"
   ∷ rwˢ 17 I9
-  ∷ rw 22 P250
+  ∷ rw 22 P237
   ∷ bo 10 "TdsTsdT" "dsTsd"
-  ∷ rwˢ 41 I172
+  ∷ rwˢ 41 I154
   ∷ bo 52 "" "TT"
-  ∷ rw 29 P254
+  ∷ rw 29 P241
   ∷ fr 35 "ftsut" "tu" "c" "dstctsd"
   ∷ fr 46 "ftsut" "tu" "c" "dstctsd"
   ∷ hs 44 "uttu" ""
   ∷ bo 37 "dstctsddstctsd" ""
   ∷ hs 35 "tuut" ""
-  ∷ rwˢ 15 I247
+  ∷ rwˢ 15 I234
   ∷ rwˢ 24 I9
-  ∷ rw 29 P252
+  ∷ rw 29 P239
   ∷ fr 24 "fu" "u" "T" "dTd"
   ∷ fr 29 "fu" "u" "T" "dTd"
   ∷ hs 28 "uu" ""
   ∷ bo 25 "dTddTd" ""
   ∷ hs 24 "uu" ""
-  ∷ rwˢ 1 I125
-  ∷ rwˢ 6 I247
-  ∷ rw 15 P248
+  ∷ rwˢ 1 I106
+  ∷ rwˢ 6 I234
+  ∷ rw 15 P235
   ∷ fr 6 "atsu" "tu" "T" "asTsa"
   ∷ fr 15 "atsu" "tu" "T" "asTsa"
   ∷ hs 13 "uttu" ""
@@ -1052,8 +276,8 @@ Z255 = deriveℓ "TatsuTustaTatsuTustadsTsdfuTufdsTsdfuTufatsuTustaTatsuTustaTfu
   refl
 
 -- pair ~01>2 , 1~3>0
-P256 : Eqn 4
-P256 = deriveℓ "atsTstafuTufatsTstafuTuf" "ftstuTutstf"
+P243 : Eqn 4
+P243 = deriveℓ "atsTstafuTufatsTstafuTuf" "ftstuTutstf"
   ( fr 0 "ats" "afts" "T" "T"
   ∷ fr 9 "fu" "aftsstu" "T" "T"
   ∷ fr 24 "ats" "afts" "T" "T"
@@ -1067,8 +291,8 @@ P256 = deriveℓ "atsTstafuTufatsTstafuTuf" "ftstuTutstf"
   refl
 
 -- pair 1~3>2 , ~2~3>0
-P257 : Eqn 4
-P257 = deriveℓ "ftstuTutstfdftuTutfdftstuTutstfdftuTutfd" "fuTuf"
+P244 : Eqn 4
+P244 = deriveℓ "ftstuTutstfdftuTutfdftstuTutstfdftuTutfd" "fuTuf"
   ( fr 0 "ftstu" "dftustu" "T" "T"
   ∷ fr 24 "ftstu" "dftustu" "T" "T"
   ∷ hs 11 "utfddftu" ""
@@ -1080,8 +304,8 @@ P257 = deriveℓ "ftstuTutstfdftuTutfdftstuTutstfdftuTutfd" "fuTuf"
   refl
 
 -- inverse 1~3>2
-I258 : Eqn 4
-I258 = deriveℓ "ftstuTutstfftstuTutstf" ""
+I245 : Eqn 4
+I245 = deriveℓ "ftstuTutstfftstuTutstf" ""
   ( hs 6 "utstfftstu" ""
   ∷ bo 5 "TT" ""
   ∷ hs 0 "ftstuutstf" ""
@@ -1089,8 +313,8 @@ I258 = deriveℓ "ftstuTutstfftstuTutstf" ""
   refl
 
 -- pair ~2>0 , 1~3>2
-P259 : Eqn 4
-P259 = deriveℓ "dtctdftstuTutstfdtctdftstuTutstf" "fuTuf"
+P246 : Eqn 4
+P246 = deriveℓ "dtctdftstuTutstfdtctdftstuTutstf" "fuTuf"
   ( fr 0 "dt" "dft" "c" "c"
   ∷ fr 7 "ftstu" "dftstu" "T" "T"
   ∷ fr 20 "dt" "dft" "c" "c"
@@ -1104,8 +328,8 @@ P259 = deriveℓ "dtctdftstuTutstfdtctdftstuTutstf" "fuTuf"
   refl
 
 -- pair 1~3>0 , ~23>0
-P260 : Eqn 4
-P260 = deriveℓ "fuTufdtuTutdfuTufdtuTutd" ""
+P247 : Eqn 4
+P247 = deriveℓ "fuTufdtuTutdfuTufdtuTutd" ""
   ( fr 0 "fu" "dfut" "T" "T"
   ∷ fr 9 "dtu" "dfutbu" "T" "T"
   ∷ fr 22 "fu" "dfut" "T" "T"
@@ -1119,8 +343,8 @@ P260 = deriveℓ "fuTufdtuTutdfuTufdtuTutd" ""
   refl
 
 -- pair 0~2>1 , ~23>0
-P261 : Eqn 4
-P261 = deriveℓ "dsTsddtuTutddsTsddtuTutd" "dstuTutsd"
+P248 : Eqn 4
+P248 = deriveℓ "dsTsddtuTutddsTsddtuTutd" "dstuTutsd"
   ( fr 5 "dtu" "dsstu" "T" "T"
   ∷ fr 21 "dtu" "dsstu" "T" "T"
   ∷ hs 3 "sdds" ""
@@ -1131,8 +355,8 @@ P261 = deriveℓ "dsTsddtuTutddsTsddtuTutd" "dstuTutsd"
   refl
 
 -- pair ~23>1 , 1~3>0
-P262 : Eqn 4
-P262 = deriveℓ "dstuTutsdfuTufdstuTutsdfuTuf" ""
+P249 : Eqn 4
+P249 = deriveℓ "dstuTutsdfuTufdstuTutsdfuTuf" ""
   ( fr 0 "dstu" "dfudstu" "T" "T"
   ∷ fr 15 "fu" "dfu" "T" "T"
   ∷ fr 22 "dstu" "dfudstu" "T" "T"
@@ -1146,8 +370,8 @@ P262 = deriveℓ "dstuTutsdfuTufdstuTutsdfuTuf" ""
   refl
 
 -- pair ~23>1 , 0~2>1
-P263 : Eqn 4
-P263 = deriveℓ "dstuTutsddsTsddstuTutsddsTsd" ""
+P250 : Eqn 4
+P250 = deriveℓ "dstuTutsddsTsddstuTutsddsTsd" ""
   ( fr 9 "ds" "dstuu" "T" "T"
   ∷ fr 29 "ds" "dstuu" "T" "T"
   ∷ hs 5 "utsddstu" ""
@@ -1159,8 +383,8 @@ P263 = deriveℓ "dstuTutsddsTsddstuTutsddsTsd" ""
   refl
 
 -- pair 13>0 , ~2>1
-P264 : Eqn 4
-P264 = deriveℓ "uTudstctsduTudstctsd" "dtuTutd"
+P251 : Eqn 4
+P251 = deriveℓ "uTudstctsduTudstctsd" "dtuTutd"
   ( fr 0 "u" "dsttsu" "T" "T"
   ∷ fr 20 "u" "dsttsu" "T" "T"
   ∷ hs 10 "tsddst" ""
@@ -1172,8 +396,8 @@ P264 = deriveℓ "uTudstctsduTudstctsd" "dtuTutd"
   refl
 
 -- inverse ~2>1
-I265 : Eqn 4
-I265 = deriveℓ "dstctsddstctsd" ""
+I252 : Eqn 4
+I252 = deriveℓ "dstctsddstctsd" ""
   ( hs 4 "tsddst" ""
   ∷ bo 3 "cc" ""
   ∷ hs 0 "dsttsd" ""
@@ -1181,8 +405,8 @@ I265 = deriveℓ "dstctsddstctsd" ""
   refl
 
 -- pair 1~3>0 , ~23>1
-P266 : Eqn 4
-P266 = deriveℓ "fuTufdstuTutsdfuTufdstuTutsd" ""
+P253 : Eqn 4
+P253 = deriveℓ "fuTufdstuTutsdfuTufdstuTutsd" ""
   ( fr 0 "fu" "dfu" "T" "T"
   ∷ fr 7 "dstu" "dfudstu" "T" "T"
   ∷ fr 22 "fu" "dfu" "T" "T"
@@ -1196,8 +420,8 @@ P266 = deriveℓ "fuTufdstuTutsdfuTufdstuTutsd" ""
   refl
 
 -- pair ~23>0 , 0~2>1
-P267 : Eqn 4
-P267 = deriveℓ "dtuTutddsTsddtuTutddsTsd" "dstuTutsd"
+P254 : Eqn 4
+P254 = deriveℓ "dtuTutddsTsddtuTutddsTsd" "dstuTutsd"
   ( fr 0 "dtu" "dsstu" "T" "T"
   ∷ fr 16 "dtu" "dsstu" "T" "T"
   ∷ hs 9 "sdds" ""
@@ -1208,8 +432,8 @@ P267 = deriveℓ "dtuTutddsTsddtuTutddsTsd" "dstuTutsd"
   refl
 
 -- pair 1~3>2 , ~2>0
-P268 : Eqn 4
-P268 = deriveℓ "ftstuTutstfdtctdftstuTutstfdtctd" "fuTuf"
+P255 : Eqn 4
+P255 = deriveℓ "ftstuTutstfdtctdftstuTutstfdtctd" "fuTuf"
   ( fr 0 "ftstu" "dftstu" "T" "T"
   ∷ fr 13 "dt" "dft" "c" "c"
   ∷ fr 20 "ftstu" "dftstu" "T" "T"
@@ -1223,12 +447,12 @@ P268 = deriveℓ "ftstuTutstfdtctdftstuTutstfdtctd" "fuTuf"
   refl
 
 -- relator apart1_11
-Z269 : Eqn 4
-Z269 = deriveℓ "atsTstadtuTutdatsTstadtuTutddsTsdfuTufdsTsdfuTufdtuTutdatsTstadtuTutdatsTstafuTufdsTsdfuTufdsTsd" ""
-  ( rwˢ 81 I119
+Z256 : Eqn 4
+Z256 = deriveℓ "atsTstadtuTutdatsTstadtuTutddsTsdfuTufdsTsdfuTufdtuTutdatsTstadtuTutdatsTstafuTufdsTsdfuTufdsTsd" ""
+  ( rwˢ 81 I100
   ∷ rwˢ 88 I9
-  ∷ rw 69 P256
-  ∷ rwˢ 80 P257
+  ∷ rw 69 P243
+  ∷ rwˢ 80 P244
   ∷ fr 69 "ftstu" "stu" "T" "dsTsd"
   ∷ fr 80 "ftstu" "stu" "T" "dsTsd"
   ∷ hs 77 "utsstu" ""
@@ -1241,9 +465,9 @@ Z269 = deriveℓ "atsTstadtuTutdatsTstadtuTutddsTsdfuTufdsTsdfuTufdtuTutdatsTsta
   ∷ fr 62 "tu" "dtu" "bcb" "c"
   ∷ rwˢ 65 comm-ex2-cx0
   ∷ to 64 "tt" ""
-  ∷ rwˢ 78 I157
-  ∷ rwˢ 83 I258
-  ∷ rw 62 P259
+  ∷ rwˢ 78 I139
+  ∷ rwˢ 83 I245
+  ∷ rw 62 P246
   ∷ to 80 "" "tt"
   ∷ rw 81 comm-ex2-cx0
   ∷ fr 78 "dtu" "tu" "c" "bcb"
@@ -1252,8 +476,8 @@ Z269 = deriveℓ "atsTstadtuTutdatsTstadtuTutddsTsdfuTufdsTsdfuTufdtuTutdatsTsta
   ∷ bo 80 "bcbbdTdb" "bTb"
   ∷ fr 78 "tu" "dtu" "bTb" "T"
   ∷ rwˢ 55 I9
-  ∷ rwˢ 60 I119
-  ∷ rw 67 P256
+  ∷ rwˢ 60 I100
+  ∷ rw 67 P243
   ∷ fr 67 "ftstu" "stu" "T" "dsTsd"
   ∷ fr 78 "ftstu" "stu" "T" "dsTsd"
   ∷ hs 75 "utsstu" ""
@@ -1261,21 +485,21 @@ Z269 = deriveℓ "atsTstadtuTutdatsTstadtuTutddsTsdfuTufdsTsdfuTufdtuTutdatsTsta
   ∷ hs 67 "stuuts" ""
   ∷ rwˢ 43 I56
   ∷ rwˢ 50 I9
-  ∷ rw 55 P260
+  ∷ rw 55 P247
   ∷ fr 50 "fu" "u" "T" "dTd"
   ∷ fr 55 "fu" "u" "T" "dTd"
   ∷ hs 54 "uu" ""
   ∷ bo 51 "dTddTd" ""
   ∷ hs 50 "uu" ""
   ∷ rwˢ 38 I56
-  ∷ rwˢ 45 I125
-  ∷ rw 50 P261
+  ∷ rwˢ 45 I106
+  ∷ rw 50 P248
   ∷ rwˢ 33 I56
   ∷ rwˢ 40 I9
-  ∷ rw 45 P260
+  ∷ rw 45 P247
   ∷ rwˢ 28 I56
-  ∷ rwˢ 35 I125
-  ∷ rw 40 P261
+  ∷ rwˢ 35 I106
+  ∷ rw 40 P248
   ∷ fr 21 "dtu" "tu" "T" "bTb"
   ∷ fr 28 "dtu" "tu" "T" "bTb"
   ∷ hs 26 "uttu" ""
@@ -1283,38 +507,38 @@ Z269 = deriveℓ "atsTstadtuTutdatsTstadtuTutddsTsdfuTufdsTsdfuTufdtuTutdatsTsta
   ∷ hs 21 "tuut" ""
   ∷ rwˢ 26 I9
   ∷ rwˢ 31 I60
-  ∷ rw 40 P262
-  ∷ rwˢ 31 I125
+  ∷ rw 40 P249
+  ∷ rwˢ 31 I106
   ∷ rwˢ 36 I60
-  ∷ rw 45 P263
+  ∷ rw 45 P250
   ∷ fr 36 "dstu" "stu" "T" "bTb"
   ∷ fr 45 "dstu" "stu" "T" "bTb"
   ∷ hs 42 "utsstu" ""
   ∷ bo 39 "bTbbTb" ""
   ∷ hs 36 "stuuts" ""
-  ∷ rwˢ 7 P264
+  ∷ rwˢ 7 P251
   ∷ bo 20 "dstctsdatsTstadsTsd" "adsTsdaatsTsta"
   ∷ rwˢ 17 I39
-  ∷ rwˢ 20 I265
-  ∷ rw 7 P264
+  ∷ rwˢ 20 I252
+  ∷ rw 7 P251
   ∷ hs 23 "uu" ""
   ∷ bo 22 "TT" ""
   ∷ hs 21 "uu" ""
   ∷ bo 14 "dstctsdadsTsdaatsTsta" "dsTsdatsTsta"
-  ∷ rwˢ 31 I119
+  ∷ rwˢ 31 I100
   ∷ rwˢ 38 I9
-  ∷ rw 19 P256
+  ∷ rw 19 P243
   ∷ bo 35 "atsTstadsTsdatsTsta" "dsTsd"
-  ∷ rwˢ 47 I125
+  ∷ rwˢ 47 I106
   ∷ rwˢ 52 I56
-  ∷ rw 35 P261
+  ∷ rw 35 P248
   ∷ bo 51 "dsTsdatsTstadsTsd" "atsTsta"
   ∷ rwˢ 30 I60
   ∷ rwˢ 39 I9
-  ∷ rw 44 P266
-  ∷ rwˢ 7 I125
+  ∷ rw 44 P253
+  ∷ rwˢ 7 I106
   ∷ rwˢ 12 I56
-  ∷ rw 19 P267
+  ∷ rw 19 P254
   ∷ fr 19 "dstu" "stu" "T" "bTb"
   ∷ fr 28 "ftstu" "stu" "T" "dsTsd"
   ∷ fr 39 "dstu" "stu" "T" "bTb"
@@ -1322,7 +546,7 @@ Z269 = deriveℓ "atsTstadtuTutdatsTstadtuTutddsTsdfuTufdsTsdfuTufdtuTutdatsTsta
   ∷ hs 30 "utsstu" ""
   ∷ bo 22 "bTbdsTsdbTb" "dsTsd"
   ∷ fr 19 "stu" "ftstu" "dsTsd" "T"
-  ∷ rwˢ 30 P257
+  ∷ rwˢ 30 P244
   ∷ fr 61 "dftu" "tu" "T" "bdTdb"
   ∷ fr 70 "dtu" "tu" "T" "bTb"
   ∷ hs 68 "uttu" ""
@@ -1342,11 +566,11 @@ Z269 = deriveℓ "atsTstadtuTutdatsTstadtuTutddsTsdfuTufdsTsdfuTufdtuTutdatsTsta
   ∷ fr 12 "tu" "dtu" "bcb" "c"
   ∷ rwˢ 15 comm-ex2-cx0
   ∷ to 14 "tt" ""
-  ∷ rwˢ 17 I157
-  ∷ rwˢ 22 I258
-  ∷ rw 33 P268
+  ∷ rwˢ 17 I139
+  ∷ rwˢ 22 I245
+  ∷ rw 33 P255
   ∷ bo 0 "atsTstadsTsddtctddtctd" "dsTsdatsTsta"
-  ∷ rwˢ 12 P256
+  ∷ rwˢ 12 P243
   ∷ bo 0 "dsTsdatsTstaatsTsta" "dsTsd"
   ∷ fr 17 "fu" "u" "T" "dTd"
   ∷ fr 22 "fu" "u" "T" "dTd"
@@ -1364,8 +588,8 @@ Z269 = deriveℓ "atsTstadtuTutdatsTstadtuTutddsTsdfuTufdsTsdfuTufdtuTutdatsTsta
   refl
 
 -- inverse ~3>0
-I270 : Eqn 4
-I270 = deriveℓ "futctuffutctuf" ""
+I257 : Eqn 4
+I257 = deriveℓ "futctuffutctuf" ""
   ( hs 4 "tuffut" ""
   ∷ bo 3 "cc" ""
   ∷ hs 0 "futtuf" ""
@@ -1373,8 +597,8 @@ I270 = deriveℓ "futctuffutctuf" ""
   refl
 
 -- pair ~3>0 , 02>1
-P271 : Eqn 4
-P271 = deriveℓ "futctufsTsfutctufsTs" "fstuTutsf"
+P258 : Eqn 4
+P258 = deriveℓ "futctufsTsfutctufsTs" "fstuTutsf"
   ( fr 7 "s" "futtsu" "T" "T"
   ∷ fr 27 "s" "futtsu" "T" "T"
   ∷ hs 4 "tuffut" ""
@@ -1386,8 +610,8 @@ P271 = deriveℓ "futctufsTsfutctufsTs" "fstuTutsf"
   refl
 
 -- pair 2~3>1 , ~1~3>0
-P272 : Eqn 4
-P272 = deriveℓ "fstuTutsfbfuTufbfstuTutsfbfuTufb" "ftuTutf"
+P259 : Eqn 4
+P259 = deriveℓ "fstuTutsfbfuTufbfstuTutsfbfuTufb" "ftuTutf"
   ( fr 0 "fstu" "bfustu" "T" "T"
   ∷ fr 20 "fstu" "bfustu" "T" "T"
   ∷ hs 10 "ufbbfu" ""
@@ -1399,8 +623,8 @@ P272 = deriveℓ "fstuTutsfbfuTufbfstuTutsfbfuTufb" "ftuTutf"
   refl
 
 -- pair 1~3>0 , 2~3>0
-P273 : Eqn 4
-P273 = deriveℓ "fuTufftuTutffuTufftuTutf" ""
+P260 : Eqn 4
+P260 = deriveℓ "fuTufftuTutffuTufftuTutf" ""
   ( fr 0 "fu" "fut" "T" "T"
   ∷ fr 7 "ftu" "futu" "T" "T"
   ∷ fr 16 "fu" "fut" "T" "T"
@@ -1414,8 +638,8 @@ P273 = deriveℓ "fuTufftuTutffuTufftuTutf" ""
   refl
 
 -- pair 02>1 , 2~3>0
-P274 : Eqn 4
-P274 = deriveℓ "sTsftuTutfsTsftuTutf" "fstuTutsf"
+P261 : Eqn 4
+P261 = deriveℓ "sTsftuTutfsTsftuTutf" "fstuTutsf"
   ( fr 0 "s" "fs" "T" "T"
   ∷ fr 5 "ftu" "fsstu" "T" "T"
   ∷ fr 16 "s" "fs" "T" "T"
@@ -1428,8 +652,8 @@ P274 = deriveℓ "sTsftuTutfsTsftuTutf" "fstuTutsf"
   refl
 
 -- pair ~1~3>0 , 2~3>1
-P275 : Eqn 4
-P275 = deriveℓ "bfuTufbfstuTutsfbfuTufbfstuTutsf" "ftuTutf"
+P262 : Eqn 4
+P262 = deriveℓ "bfuTufbfstuTutsfbfuTufbfstuTutsf" "ftuTutf"
   ( fr 7 "fstu" "bfustu" "T" "T"
   ∷ fr 27 "fstu" "bfustu" "T" "T"
   ∷ hs 4 "ufbbfu" ""
@@ -1441,8 +665,8 @@ P275 = deriveℓ "bfuTufbfstuTutsfbfuTufbfstuTutsf" "ftuTutf"
   refl
 
 -- pair 02>1 , ~3>0
-P276 : Eqn 4
-P276 = deriveℓ "sTsfutctufsTsfutctuf" "fstuTutsf"
+P263 : Eqn 4
+P263 = deriveℓ "sTsfutctufsTsfutctuf" "fstuTutsf"
   ( fr 0 "s" "futtsu" "T" "T"
   ∷ fr 20 "s" "futtsu" "T" "T"
   ∷ hs 10 "tuffut" ""
@@ -1454,8 +678,8 @@ P276 = deriveℓ "sTsfutctufsTsfutctuf" "fstuTutsf"
   refl
 
 -- pair 2>3 , 1~3>0
-P277 : Eqn 4
-P277 = deriveℓ "utsutctustufuTufutsutctustufuTuf" "T"
+P264 : Eqn 4
+P264 = deriveℓ "utsutctustufuTufutsutctustufuTuf" "T"
   ( fr 0 "utsut" "ftsuts" "c" "c"
   ∷ fr 13 "fu" "ftsutstsu" "T" "T"
   ∷ fr 32 "utsut" "ftsuts" "c" "c"
@@ -1465,5 +689,760 @@ P277 = deriveℓ "utsutctustufuTufutsutctustufuTuf" "T"
   ∷ hs 15 "stustfftsuts" ""
   ∷ rw 6 P82
   ∷ fr 0 "ftsutststu" "" "T" "T"
+  ∷ [])
+  refl
+
+-- relator apart1_5
+Z265 : Eqn 4
+Z265 = deriveℓ "sTsbfuTufbsTsbfuTufbdsTsdfuTufdsTsdfuTufbfuTufbsTsbfuTufbsTsfuTufdsTsdfuTufdsTsd" ""
+  ( fr 35 "fu" "u" "T" "dTd"
+  ∷ fr 40 "bfu" "u" "T" "bdTdb"
+  ∷ hs 39 "uu" ""
+  ∷ bo 36 "dTdbdTdb" "dtctd"
+  ∷ fr 35 "u" "fut" "dtctd" "c"
+  ∷ rwˢ 35 I96
+  ∷ rwˢ 38 I257
+  ∷ rw 45 P258
+  ∷ bo 30 "dsTsdsTs" "scs"
+  ∷ rwˢ 40 I99
+  ∷ rwˢ 47 I129
+  ∷ rw 56 P259
+  ∷ fr 25 "fu" "u" "T" "dTd"
+  ∷ to 31 "" "tt"
+  ∷ rw 32 comm-ex2-cx0
+  ∷ fr 30 "su" "u" "c" "scs"
+  ∷ fr 35 "fut" "u" "c" "dtctd"
+  ∷ fr 42 "bfu" "u" "T" "bdTdb"
+  ∷ hs 29 "uu" ""
+  ∷ hs 32 "uu" ""
+  ∷ hs 37 "uu" ""
+  ∷ bo 26 "dTdscsdtctdbdTdb" "dTdscsdTd"
+  ∷ hs 29 "" "uu"
+  ∷ hs 34 "" "uu"
+  ∷ fr 25 "u" "fu" "dTd" "T"
+  ∷ fr 30 "u" "su" "scs" "c"
+  ∷ rwˢ 32 comm-ex2-cx0
+  ∷ to 31 "tt" ""
+  ∷ fr 33 "u" "fu" "dTd" "T"
+  ∷ rwˢ 38 P127
+  ∷ fr 25 "fu" "u" "T" "dTd"
+  ∷ to 31 "" "tt"
+  ∷ rw 32 comm-ex2-cx0
+  ∷ fr 30 "su" "u" "c" "scs"
+  ∷ fr 35 "fu" "u" "T" "dTd"
+  ∷ fr 40 "fsu" "u" "T" "dsTsd"
+  ∷ hs 29 "uu" ""
+  ∷ hs 32 "uu" ""
+  ∷ hs 35 "uu" ""
+  ∷ bo 26 "dTdscsdTddsTsd" "scsdTd"
+  ∷ hs 29 "" "uu"
+  ∷ fr 25 "u" "su" "scs" "c"
+  ∷ rwˢ 27 comm-ex2-cx0
+  ∷ to 26 "tt" ""
+  ∷ fr 28 "u" "fu" "dTd" "T"
+  ∷ bo 20 "dsTsdscs" "sTs"
+  ∷ fr 42 "ftu" "tu" "T" "dTd"
+  ∷ fr 49 "ftu" "tu" "T" "dTd"
+  ∷ hs 47 "uttu" ""
+  ∷ bo 44 "dTddTd" ""
+  ∷ hs 42 "tuut" ""
+  ∷ rwˢ 23 I103
+  ∷ rwˢ 30 I9
+  ∷ rw 35 P260
+  ∷ rwˢ 30 I96
+  ∷ rwˢ 33 I103
+  ∷ rw 20 P261
+  ∷ rwˢ 13 I129
+  ∷ rwˢ 22 I99
+  ∷ rw 29 P262
+  ∷ fr 29 "ftu" "tu" "T" "dTd"
+  ∷ fr 36 "ftu" "tu" "T" "dTd"
+  ∷ hs 34 "uttu" ""
+  ∷ bo 31 "dTddTd" ""
+  ∷ hs 29 "tuut" ""
+  ∷ rwˢ 13 P263
+  ∷ bo 10 "sTssTs" ""
+  ∷ fr 3 "bfu" "u" "T" "bdTdb"
+  ∷ fr 10 "fut" "u" "c" "dtctd"
+  ∷ hs 9 "uu" ""
+  ∷ bo 4 "bdTdbdtctd" "dTd"
+  ∷ fr 3 "u" "fu" "dTd" "T"
+  ∷ fr 11 "fut" "u" "c" "dtctd"
+  ∷ fr 18 "bfu" "u" "T" "bdTdb"
+  ∷ hs 17 "uu" ""
+  ∷ bo 12 "dtctdbdTdb" "dTd"
+  ∷ fr 11 "u" "fu" "dTd" "T"
+  ∷ rwˢ 16 P85
+  ∷ fr 43 "su" "u" "T" "sTs"
+  ∷ fr 48 "fu" "u" "T" "dTd"
+  ∷ fr 53 "fsu" "u" "T" "dsTsd"
+  ∷ hs 47 "uu" ""
+  ∷ hs 50 "uu" ""
+  ∷ bo 44 "sTsdTddsTsd" "dTdscs"
+  ∷ hs 47 "" "uu"
+  ∷ fr 43 "u" "fu" "dTd" "T"
+  ∷ fr 48 "u" "su" "scs" "c"
+  ∷ rwˢ 50 comm-ex2-cx0
+  ∷ to 49 "tt" ""
+  ∷ bo 48 "scssTs" "dsTsd"
+  ∷ rwˢ 27 I9
+  ∷ rwˢ 32 I90
+  ∷ rw 11 P84
+  ∷ rwˢ 33 I9
+  ∷ rwˢ 38 I90
+  ∷ rw 49 P264
+  ∷ fr 23 "fu" "u" "T" "dTd"
+  ∷ fr 28 "su" "u" "T" "sTs"
+  ∷ fr 33 "fu" "u" "T" "dTd"
+  ∷ hs 27 "uu" ""
+  ∷ hs 30 "uu" ""
+  ∷ bo 24 "dTdsTsdTd" "sTs"
+  ∷ fr 23 "u" "su" "sTs" "T"
+  ∷ rwˢ 23 I90
+  ∷ rwˢ 34 I95
+  ∷ rw 39 P87
+  ∷ bo 39 "sTsTdsTsd" "scsT"
+  ∷ fr 34 "su" "u" "T" "sTs"
+  ∷ to 40 "" "tt"
+  ∷ rw 41 comm-ex2-cx0
+  ∷ fr 39 "su" "u" "c" "scs"
+  ∷ hs 38 "uu" ""
+  ∷ bo 35 "sTsscs" "dsTsd"
+  ∷ fr 34 "u" "fsu" "dsTsd" "T"
+  ∷ fr 12 "utsut" "tu" "c" "tstctst"
+  ∷ fr 23 "utsut" "tu" "c" "tstctst"
+  ∷ hs 21 "uttu" ""
+  ∷ bo 14 "tstctsttstctst" ""
+  ∷ hs 12 "tuut" ""
+  ∷ rwˢ 20 P240
+  ∷ bo 19 "TT" ""
+  ∷ rwˢ 12 P171
+  ∷ bo 8 "sTsTdsTsd" "scsT"
+  ∷ fr 28 "ftsut" "tu" "c" "dstctsd"
+  ∷ fr 39 "ftsut" "tu" "c" "dstctsd"
+  ∷ hs 37 "uttu" ""
+  ∷ bo 30 "dstctsddstctsd" ""
+  ∷ hs 28 "tuut" ""
+  ∷ rwˢ 29 I106
+  ∷ rwˢ 34 I154
+  ∷ rw 45 P172
+  ∷ bo 23 "dsTsdTdsTsd" "T"
+  ∷ bo 23 "" "TT"
+  ∷ rwˢ 24 I154
+  ∷ rw 11 P240
+  ∷ bo 27 "TT" ""
+  ∷ fr 16 "ftsut" "tu" "c" "dstctsd"
+  ∷ fr 27 "ftsut" "tu" "c" "dstctsd"
+  ∷ hs 25 "uttu" ""
+  ∷ bo 18 "dstctsddstctsd" ""
+  ∷ hs 16 "tuut" ""
+  ∷ fr 3 "fu" "u" "T" "dTd"
+  ∷ to 9 "" "tt"
+  ∷ rw 10 comm-ex2-cx0
+  ∷ fr 8 "su" "u" "c" "scs"
+  ∷ fr 13 "fu" "u" "T" "dTd"
+  ∷ fr 18 "fsu" "u" "T" "dsTsd"
+  ∷ fr 25 "fu" "u" "T" "dTd"
+  ∷ hs 7 "uu" ""
+  ∷ hs 10 "uu" ""
+  ∷ hs 13 "uu" ""
+  ∷ hs 18 "uu" ""
+  ∷ bo 4 "dTdscsdTddsTsddTd" "scs"
+  ∷ fr 3 "u" "su" "scs" "c"
+  ∷ rwˢ 5 comm-ex2-cx0
+  ∷ to 4 "tt" ""
+  ∷ bo 0 "sTsscsdsTsd" ""
+  ∷ [])
+  refl
+
+-- pair ~3>0 , 0~2>1
+P266 : Eqn 4
+P266 = deriveℓ "futctufdsTsdfutctufdsTsd" "dfstuTutsfd"
+  ( fr 0 "fut" "dfut" "c" "c"
+  ∷ fr 9 "ds" "dfuttsu" "T" "T"
+  ∷ fr 24 "fut" "dfut" "c" "c"
+  ∷ fr 33 "ds" "dfuttsu" "T" "T"
+  ∷ hs 5 "tufddfut" ""
+  ∷ hs 12 "tufddfut" ""
+  ∷ hs 13 "tufddfut" ""
+  ∷ rw 4 P82
+  ∷ fr 0 "dfuttstu" "dfstu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair ~2~3>0 , 0~2>1
+P267 : Eqn 4
+P267 = deriveℓ "dftuTutfddsTsddftuTutfddsTsd" "dfstuTutsfd"
+  ( fr 0 "dftu" "dfsstu" "T" "T"
+  ∷ fr 13 "ds" "dfs" "T" "T"
+  ∷ fr 20 "dftu" "dfsstu" "T" "T"
+  ∷ fr 33 "ds" "dfs" "T" "T"
+  ∷ hs 10 "sfddfs" ""
+  ∷ hs 11 "sfddfs" ""
+  ∷ hs 18 "sfddfs" ""
+  ∷ rw 3 P53
+  ∷ [])
+  refl
+
+-- pair ~2>1 , 1~3>0
+P268 : Eqn 4
+P268 = deriveℓ "dstctsdfuTufdstctsdfuTuf" "dftuTutfd"
+  ( fr 0 "dst" "dfst" "c" "c"
+  ∷ fr 9 "fu" "dfsttsu" "T" "T"
+  ∷ fr 24 "dst" "dfst" "c" "c"
+  ∷ fr 33 "fu" "dfsttsu" "T" "T"
+  ∷ hs 5 "tsfddfst" ""
+  ∷ hs 12 "tsfddfst" ""
+  ∷ hs 13 "tsfddfst" ""
+  ∷ rw 4 P82
+  ∷ fr 0 "dfsttstu" "dftu" "T" "T"
+  ∷ [])
+  refl
+
+-- commute ~2>1 , ~3>0
+C269 : Eqn 4
+C269 = deriveℓ "dstctsdfutctuf" "futctufdstctsd"
+  ( fr 0 "dst" "dfst" "c" "c"
+  ∷ fr 9 "fut" "dfsttsut" "c" "c"
+  ∷ hs 5 "tsfddfst" ""
+  ∷ rw 5 C121
+  ∷ rwˢ 4 comm-cx2-cx0
+  ∷ rwˢ 4 C121
+  ∷ hs 13 "" "tsfddfst"
+  ∷ fr 0 "dfsttsut" "fut" "c" "c"
+  ∷ fr 7 "dfst" "dst" "c" "c"
+  ∷ [])
+  refl
+
+-- commute ~1>2 , ~3>0
+C270 : Eqn 4
+C270 = deriveℓ "btstctstbfutctuf" "futctufbtstctstb"
+  ( fr 0 "btst" "bftst" "c" "c"
+  ∷ to 14 "" "tt"
+  ∷ rw 15 comm-ex2-cx0
+  ∷ fr 11 "futu" "bftsttsut" "c" "c"
+  ∷ hs 6 "tstfbbftst" ""
+  ∷ rw 6 C121
+  ∷ rwˢ 5 comm-cx2-cx0
+  ∷ rwˢ 5 C121
+  ∷ hs 14 "" "tstfbbftst"
+  ∷ fr 0 "bftsttsut" "futu" "c" "c"
+  ∷ rwˢ 4 comm-ex2-cx0
+  ∷ to 3 "tt" ""
+  ∷ fr 7 "bftst" "btst" "c" "c"
+  ∷ [])
+  refl
+
+-- inverse ~2~3>0
+I271 : Eqn 4
+I271 = deriveℓ "dftuTutfddftuTutfd" ""
+  ( hs 5 "utfddftu" ""
+  ∷ bo 4 "TT" ""
+  ∷ hs 0 "dftuutfd" ""
+  ∷ [])
+  refl
+
+-- pair ~2~3>0 , ~1>2
+P272 : Eqn 4
+P272 = deriveℓ "dftuTutfdbtstctstbdftuTutfdbtstctstb" "bfuTufb"
+  ( fr 0 "dftu" "bdfststsu" "T" "T"
+  ∷ fr 19 "btst" "bdfsts" "c" "c"
+  ∷ fr 32 "dftu" "bdfststsu" "T" "T"
+  ∷ fr 51 "btst" "bdfsts" "c" "c"
+  ∷ hs 13 "stsfdbbdfsts" ""
+  ∷ hs 14 "stsfdbbdfsts" ""
+  ∷ hs 21 "stsfdbbdfsts" ""
+  ∷ rw 6 P83
+  ∷ fr 0 "bdfstststu" "bfu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair 1>2 , 2~3>0
+P273 : Eqn 4
+P273 = deriveℓ "tstctstftuTutftstctstftuTutf" "fuTuf"
+  ( fr 0 "tst" "fsts" "c" "c"
+  ∷ fr 9 "ftu" "fststsu" "T" "T"
+  ∷ fr 24 "tst" "fsts" "c" "c"
+  ∷ fr 33 "ftu" "fststsu" "T" "T"
+  ∷ hs 5 "stsffsts" ""
+  ∷ hs 12 "stsffsts" ""
+  ∷ hs 13 "stsffsts" ""
+  ∷ rw 4 P82
+  ∷ fr 0 "fstststu" "fu" "T" "T"
+  ∷ [])
+  refl
+
+-- commute 1>2 , ~3>0
+C274 : Eqn 4
+C274 = deriveℓ "tstctstfutctuf" "futctuftstctst"
+  ( fr 0 "tst" "ftst" "c" "c"
+  ∷ to 12 "" "tt"
+  ∷ rw 13 comm-ex2-cx0
+  ∷ fr 9 "futu" "ftsttsut" "c" "c"
+  ∷ hs 5 "tstfftst" ""
+  ∷ rw 5 C121
+  ∷ rwˢ 4 comm-cx2-cx0
+  ∷ rwˢ 4 C121
+  ∷ hs 13 "" "tstfftst"
+  ∷ fr 0 "ftsttsut" "futu" "c" "c"
+  ∷ rwˢ 4 comm-ex2-cx0
+  ∷ to 3 "tt" ""
+  ∷ fr 7 "ftst" "tst" "c" "c"
+  ∷ [])
+  refl
+
+-- inverse 1>2
+I275 : Eqn 4
+I275 = deriveℓ "tstctsttstctst" ""
+  ( hs 4 "tsttst" ""
+  ∷ bo 3 "cc" ""
+  ∷ hs 0 "tsttst" ""
+  ∷ [])
+  refl
+
+-- pair 1>2 , ~2~3>0
+P276 : Eqn 4
+P276 = deriveℓ "tstctstdftuTutfdtstctstdftuTutfd" "fuTuf"
+  ( fr 0 "tst" "dfsts" "c" "c"
+  ∷ fr 11 "dftu" "dfststsu" "T" "T"
+  ∷ fr 28 "tst" "dfsts" "c" "c"
+  ∷ fr 39 "dftu" "dfststsu" "T" "T"
+  ∷ hs 6 "stsfddfsts" ""
+  ∷ hs 13 "stsfddfsts" ""
+  ∷ hs 14 "stsfddfsts" ""
+  ∷ rw 5 P82
+  ∷ fr 0 "dfstststu" "fu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair 1~3>0 , ~2>1
+P277 : Eqn 4
+P277 = deriveℓ "fuTufdstctsdfuTufdstctsd" "dftuTutfd"
+  ( fr 0 "fu" "dfsttsu" "T" "T"
+  ∷ fr 15 "dst" "dfst" "c" "c"
+  ∷ fr 24 "fu" "dfsttsu" "T" "T"
+  ∷ fr 39 "dst" "dfst" "c" "c"
+  ∷ hs 11 "tsfddfst" ""
+  ∷ hs 12 "tsfddfst" ""
+  ∷ hs 19 "tsfddfst" ""
+  ∷ rw 4 P83
+  ∷ fr 0 "dfsttstu" "dftu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair ~2>1 , ~02>3
+P278 : Eqn 4
+P278 = deriveℓ "dstctsdautsuTustuadstctsdautsuTustua" ""
+  ( to 3 "" "tt"
+  ∷ rw 4 comm-ex2-cx0
+  ∷ fr 0 "dstu" "adstu" "c" "c"
+  ∷ fr 11 "autsu" "adstubtstu" "T" "T"
+  ∷ to 35 "" "tt"
+  ∷ rw 36 comm-ex2-cx0
+  ∷ fr 32 "dstu" "adstu" "c" "c"
+  ∷ fr 43 "autsu" "adstubtstu" "T" "T"
+  ∷ hs 6 "utsdaadstu" ""
+  ∷ hs 17 "utsdaadstu" ""
+  ∷ hs 18 "utsdaadstu" ""
+  ∷ rw 5 Q20
+  ∷ hs 0 "adstuutsda" ""
+  ∷ [])
+  refl
+
+-- pair ~2>1 , ~1~3>0
+P279 : Eqn 4
+P279 = deriveℓ "dstctsdbfuTufbdstctsdbfuTufb" "dftuTutfd"
+  ( fr 0 "dst" "bdfst" "c" "c"
+  ∷ fr 11 "bfu" "bdfsttsu" "T" "T"
+  ∷ fr 28 "dst" "bdfst" "c" "c"
+  ∷ fr 39 "bfu" "bdfsttsu" "T" "T"
+  ∷ hs 6 "tsfdbbdfst" ""
+  ∷ hs 13 "tsfdbbdfst" ""
+  ∷ hs 14 "tsfdbbdfst" ""
+  ∷ rw 5 P82
+  ∷ fr 0 "bdfsttstu" "dftu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair ~01>3 , 2>1
+P280 : Eqn 4
+P280 = deriveℓ "autsTstuastctsautsTstuastcts" "autsuTustua"
+  ( fr 0 "auts" "astutsu" "T" "T"
+  ∷ to 17 "" "tt"
+  ∷ rw 18 comm-ex2-cx0
+  ∷ fr 15 "stu" "astu" "c" "c"
+  ∷ fr 24 "auts" "astutsu" "T" "T"
+  ∷ to 41 "" "tt"
+  ∷ rw 42 comm-ex2-cx0
+  ∷ fr 39 "stu" "astu" "c" "c"
+  ∷ hs 11 "utsaastu" ""
+  ∷ hs 12 "utsaastu" ""
+  ∷ hs 19 "utsaastu" ""
+  ∷ rw 4 P83
+  ∷ fr 0 "astutstu" "autsu" "T" "T"
+  ∷ [])
+  refl
+
+-- commute 2>1 , ~3>0
+C281 : Eqn 4
+C281 = deriveℓ "stctsfutctuf" "futctufstcts"
+  ( fr 0 "st" "fst" "c" "c"
+  ∷ fr 7 "fut" "fsttsut" "c" "c"
+  ∷ hs 4 "tsffst" ""
+  ∷ rw 4 C121
+  ∷ rwˢ 3 comm-cx2-cx0
+  ∷ rwˢ 3 C121
+  ∷ hs 12 "" "tsffst"
+  ∷ fr 0 "fsttsut" "fut" "c" "c"
+  ∷ fr 7 "fst" "st" "c" "c"
+  ∷ [])
+  refl
+
+-- inverse ~0~2>1
+I282 : Eqn 4
+I282 = deriveℓ "adsTsdaadsTsda" ""
+  ( hs 4 "sdaads" ""
+  ∷ bo 3 "TT" ""
+  ∷ hs 0 "adssda" ""
+  ∷ [])
+  refl
+
+-- pair ~02>3 , ~0~2>1
+P283 : Eqn 4
+P283 = deriveℓ "autsuTustuaadsTsdaautsuTustuaadsTsda" ""
+  ( fr 0 "autsu" "atuts" "T" "T"
+  ∷ fr 11 "ads" "atutsdutstu" "T" "T"
+  ∷ fr 34 "autsu" "atuts" "T" "T"
+  ∷ fr 45 "ads" "atutsdutstu" "T" "T"
+  ∷ hs 6 "stutaatuts" ""
+  ∷ hs 19 "stutaatuts" ""
+  ∷ hs 20 "stutaatuts" ""
+  ∷ rw 5 Q69
+  ∷ hs 0 "atutsstuta" ""
+  ∷ [])
+  refl
+
+-- pair ~02>1 , ~0~1>3
+P284 : Eqn 4
+P284 = deriveℓ "asTsaabutsTstubaasTsaabutsTstuba" "autsuTustua"
+  ( fr 0 "as" "absutsstu" "T" "T"
+  ∷ fr 19 "abuts" "absuts" "T" "T"
+  ∷ fr 32 "as" "absutsstu" "T" "T"
+  ∷ fr 51 "abuts" "absuts" "T" "T"
+  ∷ hs 13 "stusbaabsuts" ""
+  ∷ hs 14 "stusbaabsuts" ""
+  ∷ hs 21 "stusbaabsuts" ""
+  ∷ rw 6 P53
+  ∷ fr 0 "absutstu" "autsu" "T" "T"
+  ∷ [])
+  refl
+
+-- commute ~2>1 , ~0>3
+C285 : Eqn 4
+C285 = deriveℓ "dstctsdautscstua" "autscstuadstctsd"
+  ( to 3 "" "tt"
+  ∷ rw 4 comm-ex2-cx0
+  ∷ fr 0 "dstu" "dastu" "c" "c"
+  ∷ fr 11 "auts" "dastutsut" "c" "c"
+  ∷ hs 6 "utsaddastu" ""
+  ∷ rw 6 C121
+  ∷ rwˢ 5 comm-cx2-cx0
+  ∷ rwˢ 5 C121
+  ∷ hs 14 "" "utsaddastu"
+  ∷ fr 0 "dastutsut" "auts" "c" "c"
+  ∷ fr 9 "dastu" "dstu" "c" "c"
+  ∷ rwˢ 13 comm-ex2-cx0
+  ∷ to 12 "tt" ""
+  ∷ [])
+  refl
+
+-- pair ~2~3>0 , ~1~3>0
+P286 : Eqn 4
+P286 = deriveℓ "dftuTutfdbfuTufbdftuTutfdbfuTufb" ""
+  ( fr 0 "dftu" "bdftut" "T" "T"
+  ∷ fr 13 "bfu" "bdftutu" "T" "T"
+  ∷ fr 28 "dftu" "bdftut" "T" "T"
+  ∷ fr 41 "bfu" "bdftutu" "T" "T"
+  ∷ hs 7 "tutfdbbdftut" ""
+  ∷ hs 10 "tutfdbbdftut" ""
+  ∷ hs 11 "tutfdbbdftut" ""
+  ∷ rw 6 Q38
+  ∷ hs 0 "bdftuttutfdb" ""
+  ∷ [])
+  refl
+
+-- pair 2~3>0 , 0~2>1
+P287 : Eqn 4
+P287 = deriveℓ "ftuTutfdsTsdftuTutfdsTsd" ""
+  ( fr 0 "ftu" "dfsdstu" "T" "T"
+  ∷ fr 15 "ds" "dfs" "T" "T"
+  ∷ fr 22 "ftu" "dfsdstu" "T" "T"
+  ∷ fr 37 "ds" "dfs" "T" "T"
+  ∷ hs 12 "sfddfs" ""
+  ∷ hs 13 "sfddfs" ""
+  ∷ hs 22 "sfddfs" ""
+  ∷ rw 3 P63
+  ∷ hs 0 "dfssfd" ""
+  ∷ [])
+  refl
+
+-- pair ~0~1>3 , 0~2>1
+P288 : Eqn 4
+P288 = deriveℓ "abutsTstubadsTsdabutsTstubadsTsd" ""
+  ( fr 0 "abuts" "abdsuts" "T" "T"
+  ∷ fr 15 "ds" "abdsutsdstu" "T" "T"
+  ∷ fr 38 "abuts" "abdsuts" "T" "T"
+  ∷ fr 53 "ds" "abdsutsdstu" "T" "T"
+  ∷ hs 8 "stusdbaabdsuts" ""
+  ∷ hs 17 "stusdbaabdsuts" ""
+  ∷ hs 18 "stusdbaabdsuts" ""
+  ∷ rw 7 Q62
+  ∷ hs 0 "abdsutsstusdba" ""
+  ∷ [])
+  refl
+
+-- pair 1~3>0 , ~2~3>0
+P289 : Eqn 4
+P289 = deriveℓ "fuTufdftuTutfdfuTufdftuTutfd" ""
+  ( fr 0 "fu" "dfut" "T" "T"
+  ∷ fr 9 "dftu" "dfutu" "T" "T"
+  ∷ fr 20 "fu" "dfut" "T" "T"
+  ∷ fr 29 "dftu" "dfutu" "T" "T"
+  ∷ hs 5 "tufddfut" ""
+  ∷ hs 8 "tufddfut" ""
+  ∷ hs 9 "tufddfut" ""
+  ∷ rw 4 Q38
+  ∷ hs 0 "dfuttufd" ""
+  ∷ [])
+  refl
+
+-- pair ~0~2>1 , ~2~3>0
+P290 : Eqn 4
+P290 = deriveℓ "adsTsdadftuTutfdadsTsdadftuTutfd" "dfstuTutsfd"
+  ( fr 0 "ads" "adfs" "T" "T"
+  ∷ fr 9 "dftu" "adfsstu" "T" "T"
+  ∷ fr 24 "ads" "adfs" "T" "T"
+  ∷ fr 33 "dftu" "adfsstu" "T" "T"
+  ∷ hs 5 "sfdaadfs" ""
+  ∷ hs 12 "sfdaadfs" ""
+  ∷ hs 13 "sfdaadfs" ""
+  ∷ rw 4 P52
+  ∷ fr 0 "adfstu" "dfstu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair ~0>3 , ~23>1
+P291 : Eqn 4
+P291 = deriveℓ "autscstuadstuTutsdautscstuadstuTutsd" "adsTsda"
+  ( fr 0 "auts" "aduts" "c" "c"
+  ∷ fr 11 "dstu" "adutstsu" "T" "T"
+  ∷ fr 28 "auts" "aduts" "c" "c"
+  ∷ fr 39 "dstu" "adutstsu" "T" "T"
+  ∷ hs 6 "studaaduts" ""
+  ∷ hs 13 "studaaduts" ""
+  ∷ hs 14 "studaaduts" ""
+  ∷ rw 5 P82
+  ∷ fr 0 "adutststu" "ads" "T" "T"
+  ∷ [])
+  refl
+
+-- commute ~0>3 , ~2>1
+C292 : Eqn 4
+C292 = deriveℓ "autscstuadstctsd" "dstctsdautscstua"
+  ( fr 0 "auts" "aduts" "c" "c"
+  ∷ to 14 "" "tt"
+  ∷ rw 15 comm-ex2-cx0
+  ∷ fr 11 "dstu" "adutstsut" "c" "c"
+  ∷ hs 6 "studaaduts" ""
+  ∷ rw 6 C121
+  ∷ rwˢ 5 comm-cx2-cx0
+  ∷ rwˢ 5 C121
+  ∷ hs 14 "" "studaaduts"
+  ∷ fr 0 "adutstsut" "dstu" "c" "c"
+  ∷ rwˢ 4 comm-ex2-cx0
+  ∷ to 3 "tt" ""
+  ∷ fr 7 "aduts" "auts" "c" "c"
+  ∷ [])
+  refl
+
+-- inverse ~0~2>3
+I293 : Eqn 4
+I293 = deriveℓ "adutsuTustudaadutsuTustuda" ""
+  ( hs 7 "ustudaadutsu" ""
+  ∷ bo 6 "TT" ""
+  ∷ hs 0 "adutsuustuda" ""
+  ∷ [])
+  refl
+
+-- pair ~0~2>3 , ~2~3>1
+P294 : Eqn 4
+P294 = deriveℓ "adutsuTustudadfstuTutsfdadutsuTustudadfstuTutsfd" "adsTsda"
+  ( fr 0 "adutsu" "adfstutstu" "T" "T"
+  ∷ fr 21 "dfstu" "adfstut" "T" "T"
+  ∷ fr 36 "adutsu" "adfstutstu" "T" "T"
+  ∷ fr 57 "dfstu" "adfstut" "T" "T"
+  ∷ hs 14 "tutsfdaadfstut" ""
+  ∷ hs 15 "tutsfdaadfstut" ""
+  ∷ hs 22 "tutsfdaadfstut" ""
+  ∷ rw 7 P53
+  ∷ fr 0 "adfstuttu" "ads" "T" "T"
+  ∷ [])
+  refl
+
+-- pair ~01>3 , ~0~2>1
+P295 : Eqn 4
+P295 = deriveℓ "autsTstuaadsTsdaautsTstuaadsTsda" "adutsuTustuda"
+  ( fr 0 "auts" "adsuts" "T" "T"
+  ∷ fr 13 "ads" "adsutsstu" "T" "T"
+  ∷ fr 32 "auts" "adsuts" "T" "T"
+  ∷ fr 45 "ads" "adsutsstu" "T" "T"
+  ∷ hs 7 "stusdaadsuts" ""
+  ∷ hs 14 "stusdaadsuts" ""
+  ∷ hs 15 "stusdaadsuts" ""
+  ∷ rw 6 P52
+  ∷ fr 0 "adsutstu" "adutsu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair ~1~3>0 , ~2~3>1
+P296 : Eqn 4
+P296 = deriveℓ "bfuTufbdfstuTutsfdbfuTufbdfstuTutsfd" "dftuTutfd"
+  ( fr 0 "bfu" "bdfu" "T" "T"
+  ∷ fr 9 "dfstu" "bdfustu" "T" "T"
+  ∷ fr 24 "bfu" "bdfu" "T" "T"
+  ∷ fr 33 "dfstu" "bdfustu" "T" "T"
+  ∷ hs 5 "ufdbbdfu" ""
+  ∷ hs 12 "ufdbbdfu" ""
+  ∷ hs 13 "ufdbbdfu" ""
+  ∷ rw 4 P52
+  ∷ fr 0 "bdfutu" "dftu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair ~0~2>1 , 2~3>0
+P297 : Eqn 4
+P297 = deriveℓ "adsTsdaftuTutfadsTsdaftuTutf" ""
+  ( fr 0 "ads" "adfs" "T" "T"
+  ∷ fr 9 "ftu" "adfsdstu" "T" "T"
+  ∷ fr 26 "ads" "adfs" "T" "T"
+  ∷ fr 35 "ftu" "adfsdstu" "T" "T"
+  ∷ hs 5 "sfdaadfs" ""
+  ∷ hs 14 "sfdaadfs" ""
+  ∷ hs 15 "sfdaadfs" ""
+  ∷ rw 4 Q62
+  ∷ hs 0 "adfssfda" ""
+  ∷ [])
+  refl
+
+-- pair ~3>0 , ~0~2>1
+P298 : Eqn 4
+P298 = deriveℓ "futctufadsTsdafutctufadsTsda" "dfstuTutsfd"
+  ( fr 0 "fut" "adfut" "c" "c"
+  ∷ fr 11 "ads" "adfuttsu" "T" "T"
+  ∷ fr 28 "fut" "adfut" "c" "c"
+  ∷ fr 39 "ads" "adfuttsu" "T" "T"
+  ∷ hs 6 "tufdaadfut" ""
+  ∷ hs 13 "tufdaadfut" ""
+  ∷ hs 14 "tufdaadfut" ""
+  ∷ rw 5 P82
+  ∷ fr 0 "adfuttstu" "dfstu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair ~0~1>3 , ~0~2>1
+P299 : Eqn 4
+P299 = deriveℓ "abutsTstubaadsTsdaabutsTstubaadsTsda" "adutsuTustuda"
+  ( fr 0 "abuts" "abdsuts" "T" "T"
+  ∷ fr 15 "ads" "abdsutsstu" "T" "T"
+  ∷ fr 36 "abuts" "abdsuts" "T" "T"
+  ∷ fr 51 "ads" "abdsutsstu" "T" "T"
+  ∷ hs 8 "stusdbaabdsuts" ""
+  ∷ hs 15 "stusdbaabdsuts" ""
+  ∷ hs 16 "stusdbaabdsuts" ""
+  ∷ rw 7 P52
+  ∷ fr 0 "abdsutstu" "adutsu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair ~01>3 , ~2>1
+P300 : Eqn 4
+P300 = deriveℓ "autsTstuadstctsdautsTstuadstctsd" "adutsuTustuda"
+  ( fr 0 "auts" "adstutsu" "T" "T"
+  ∷ to 20 "" "tt"
+  ∷ rw 21 comm-ex2-cx0
+  ∷ fr 17 "dstu" "adstu" "c" "c"
+  ∷ fr 28 "auts" "adstutsu" "T" "T"
+  ∷ to 48 "" "tt"
+  ∷ rw 49 comm-ex2-cx0
+  ∷ fr 45 "dstu" "adstu" "c" "c"
+  ∷ hs 12 "utsdaadstu" ""
+  ∷ hs 13 "utsdaadstu" ""
+  ∷ hs 20 "utsdaadstu" ""
+  ∷ rw 5 P83
+  ∷ fr 0 "adstutstu" "adutsu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair ~1~3>0 , 2>1
+P301 : Eqn 4
+P301 = deriveℓ "bfuTufbstctsbfuTufbstcts" "ftuTutf"
+  ( fr 0 "bfu" "bfsttsu" "T" "T"
+  ∷ fr 15 "st" "bfst" "c" "c"
+  ∷ fr 24 "bfu" "bfsttsu" "T" "T"
+  ∷ fr 39 "st" "bfst" "c" "c"
+  ∷ hs 11 "tsfbbfst" ""
+  ∷ hs 12 "tsfbbfst" ""
+  ∷ hs 19 "tsfbbfst" ""
+  ∷ rw 4 P83
+  ∷ fr 0 "bfsttstu" "ftu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair ~2>1 , ~0~1>3
+P302 : Eqn 4
+P302 = deriveℓ "dstctsdabutsTstubadstctsdabutsTstuba" "adutsuTustuda"
+  ( to 3 "" "tt"
+  ∷ rw 4 comm-ex2-cx0
+  ∷ fr 0 "dstu" "abdstu" "c" "c"
+  ∷ fr 13 "abuts" "abdstutsu" "T" "T"
+  ∷ to 35 "" "tt"
+  ∷ rw 36 comm-ex2-cx0
+  ∷ fr 32 "dstu" "abdstu" "c" "c"
+  ∷ fr 45 "abuts" "abdstutsu" "T" "T"
+  ∷ hs 7 "utsdbaabdstu" ""
+  ∷ hs 14 "utsdbaabdstu" ""
+  ∷ hs 15 "utsdbaabdstu" ""
+  ∷ rw 6 P82
+  ∷ fr 0 "abdstutstu" "adutsu" "T" "T"
+  ∷ [])
+  refl
+
+-- pair ~02>3 , ~23>1
+P303 : Eqn 4
+P303 = deriveℓ "autsuTustuadstuTutsdautsuTustuadstuTutsd" ""
+  ( fr 0 "autsu" "adstutdstu" "T" "T"
+  ∷ fr 21 "dstu" "adstut" "T" "T"
+  ∷ fr 34 "autsu" "adstutdstu" "T" "T"
+  ∷ fr 55 "dstu" "adstut" "T" "T"
+  ∷ hs 15 "tutsdaadstut" ""
+  ∷ hs 16 "tutsdaadstut" ""
+  ∷ hs 25 "tutsdaadstut" ""
+  ∷ rw 6 P63
+  ∷ hs 0 "adstuttutsda" ""
+  ∷ [])
+  refl
+
+-- pair ~1~3>0 , ~23>1
+P304 : Eqn 4
+P304 = deriveℓ "bfuTufbdstuTutsdbfuTufbdstuTutsd" ""
+  ( fr 0 "bfu" "bdfu" "T" "T"
+  ∷ fr 9 "dstu" "bdfudstu" "T" "T"
+  ∷ fr 26 "bfu" "bdfu" "T" "T"
+  ∷ fr 35 "dstu" "bdfudstu" "T" "T"
+  ∷ hs 5 "ufdbbdfu" ""
+  ∷ hs 14 "ufdbbdfu" ""
+  ∷ hs 15 "ufdbbdfu" ""
+  ∷ rw 4 Q62
+  ∷ hs 0 "bdfuufdb" ""
   ∷ [])
   refl

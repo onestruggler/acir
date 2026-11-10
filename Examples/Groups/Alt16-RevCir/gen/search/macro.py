@@ -7,8 +7,9 @@ at most two of them: x_t += prod (x_c == colour).  Moves on words:
   pair      adjacent g h spanning four wires with (g h)^2 = k, k the identity
             or a single gate: g h -> h g k  /  g h -> k h g   [pair lemma]
   expand    a gate k -> g h g h for a pair with (g h)^2 = k    [pair lemma]
-The pair lemmas are 4-wire equations between <= 5 gates (rule 7 and the
-equations E1..E8 of XCXCCX-4bit in other colours/placements).
+The pair lemmas are 4-wire equations between <= 5 gates: rule (7) in every
+placement and colouring, and eleven more orbits under the symmetries of the
+cube, each derived from rule (7) by boot.py.
 """
 import heapq
 import itertools

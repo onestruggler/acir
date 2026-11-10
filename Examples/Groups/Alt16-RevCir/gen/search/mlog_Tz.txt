@@ -1,1 +1,0 @@
-{'name': 'Tz', 'relator_text': '02>1 13>0 0>1 13>0 0>1 13>0 02>1 13>0 0>1 13>0 0>1 13>0', 'found': True, 'expanded': 1, 'time': 0.0, 'checked': True, 'narrow_steps': 4, 'pair_steps': 1, 'expand_steps': 0}

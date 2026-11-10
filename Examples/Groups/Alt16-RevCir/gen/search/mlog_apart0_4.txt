@@ -1,4 +1,0 @@
-  expanded 2000, heap 497467, len 13 depth 22, 11s
-  expanded 4000, heap 1006489, len 14 depth 18, 22s
-  expanded 6000, heap 1516494, len 14 depth 19, 34s
-{'name': 'apart0_4', 'relator_text': '12>0 0~3>1 12>0 0~3>1 ~1~2>0 0~3>1 ~1~2>0 0~3>1 0~3>1 12>0 0~3>1 12>0 0~3>1 ~1~2>0 0~3>1 ~1~2>0', 'found': True, 'expanded': 6823, 'time': 38.5, 'checked': True, 'narrow_steps': 42, 'pair_steps': 19, 'expand_steps': 12}

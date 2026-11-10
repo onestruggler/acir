@@ -18,8 +18,9 @@
 --   touches wire 3 and no wire of the first (comm-…): the instances of
 --   the rules that involve all four wires.
 --
--- These are equations of the engine (Engine), to be used by rw in the
--- derivations of the relations of Syntactics from the rules.
+-- These are equations of the engine (Engine), used by rw in the
+-- derivations of the relations of Syntactics from the rules (Frames,
+-- Four.Part*, Four.Relations, Equivalence).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -137,7 +138,8 @@ comm-x3-ccx0 = eqnʷ (x3 ∷ ccx0 ∷ []) (ccx0 ∷ x3 ∷ [])
 -- With T the Toffoli gate one wire up, c the bottom CX and Q the
 -- Toffoli gate with controls 2 3 and target 0, rule (7) says
 -- T c T = Q c, so Q = T c T c; Q is an involution (a fact about three
--- wires), hence (T c)⁴ = ε, which is what c Q = Q c comes to.
+-- wires), hence (T c)⁴ = ε, which is what c Q = Q c comes to.  The
+-- generated derivations (Four.Part*) are lists of steps like this one.
 
 private
   cx ex ccx : Gen 3

@@ -14,7 +14,9 @@
 --   his commutation of the cycle with a generator three or more points
 --   further up is the rule apart.  An instance one point up is the
 --   same instance read one point further up (gᵈ-↑), so the statement
---   is about gᵈ d for every d, by recursion on the instance.
+--   is about gᵈ d for every d, by recursion on the instance.  It is
+--   proved in any congruence in which those four families hold
+--   (FromCycles), which Equivalence uses for the rules (1)–(7).
 --
 -- * lemma-g-f: every gate is the circuit of its word in the cycles.
 --   For the six gates on their own wires that is one of the rules

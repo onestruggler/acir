@@ -17,11 +17,10 @@
 -- Syntactics' relation (Lafont's relations read on the cycles Ω i, and
 -- the six gate rules) and this one, over the same gates, the
 -- translations being the identity.  This module has the half that
--- needs no derivation by hand: every rule here holds for functions on
--- states (T-sound), so on four wires it follows from Syntactics'
--- relation, which is complete (t⇒s).  The other half — each of the
--- rules order, near, far, apart and gate-… derived from r1, …, r7 — is
--- not here yet.
+-- needs no derivation: every rule here holds for functions on states
+-- (T-sound), so on four wires it follows from Syntactics' relation,
+-- which is complete (t⇒s).  The other half — each of the rules order,
+-- near, far, apart and gate-… derived from r1, …, r7 — is Equivalence.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

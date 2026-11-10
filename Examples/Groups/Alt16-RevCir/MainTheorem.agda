@@ -5,20 +5,35 @@
 -- X, CX, CCX and Ex: the main theorem
 --
 -- The circuits on four wires over NOT, CNOT, Toffoli and the swap,
--- modulo the rules of Syntactics, are a presentation of the even
--- permutations of the sixteen states.  It is obtained from Lafont's
--- presentation of 𝔄₁₆ by the cycles ω₀, …, ω₁₃
--- (Examples.Groups.Alternating) by a Reidemeister–Schreier step: the
--- generators are translated in both directions (f reads a gate as a
--- word in the cycles, g a cycle as a circuit), each translation
--- carries the relations of its source to consequences of those of its
--- target, and the two are inverse on generators, so the two word
--- groups are isomorphic.  The rules are sound and complete for the
--- functions on states, and every circuit is equal to a unique
--- canonical circuit, the translation of Lafont's canonical form.
+-- modulo the seven rules of Theory (r1, …, r7, the rules of
+-- XCXCCX-4bit's Figure 1 restated over Circuit.Prop), are a
+-- presentation of the even permutations of the sixteen states.  It is
+-- obtained from Lafont's presentation of 𝔄₁₆ by the cycles ω₀, …, ω₁₃
+-- (Examples.Groups.Alternating) in two Reidemeister–Schreier steps,
+-- each a pair of translations that carry the relations of their source
+-- to consequences of those of their target and are inverse on
+-- generators.
+--
+-- * From Lafont's words to circuits: f reads a gate as a word in the
+--   cycles, g a cycle as a circuit, and the circuits' relation is the
+--   translated one (_CRel,_===_, Syntactics): Lafont's relations read
+--   on the cycles' circuits, and one rule per gate naming its word.
+--
+-- * From the translated relation to the rules (_RRel,_===_): the same
+--   gates and the identity translations, so the step is that each
+--   relation set's rules follow from the other's.  The translated
+--   relations are derived from r1, …, r7 without another development's
+--   theorems: the rules are complete on one, two and three wires by a
+--   step of the same kind from Symmetric's presentation
+--   (presentation₁, …, complete₃), and the four-wire derivations rest
+--   on those and on rule (7).
+--
+-- Both relation sets are sound and complete for the functions on
+-- states, and every circuit is equal to a unique canonical circuit,
+-- the translation of Lafont's canonical form.
 --
 -- This module collects the statements behind one import: the circuits
--- and their rules (_CRel,_===_), derivability ⊢_≈_, a circuit's
+-- and their relations, derivability ⊢_≈_ and ⊢ᴿ_≈_, a circuit's
 -- function ⟦_⟧ with pointwise equality _≐_ and its even permutation
 -- ⟦_⟧ᴬ, the numbering enc, dec of the states, and the theorems.
 ------------------------------------------------------------------------
@@ -31,7 +46,9 @@ open import Algebra.Bundles using (Group)
 open import Algebra.Morphism.Structures using (module GroupMorphisms)
 open import Data.Fin using (Fin)
 open import Data.Fin.Permutation using (_⟨$⟩ʳ_)
+open import Data.Nat.Base using (ℕ)
 open import Data.Product using (Σ)
+open import Function.Base using (id)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
 import Presentation.Base as PB
@@ -56,10 +73,17 @@ open import Examples.Groups.Alt16-RevCir.Numbering public
   using (enc ; dec)
 open import Examples.Groups.Alt16-RevCir.NormalForm public
   using (NF ; canon ; nf)
+open import Examples.Groups.Alt16-RevCir.Theory public
+  using (_TRel,_===_ ; r1 ; r2 ; r3 ; r4 ; r5 ; r6 ; r7)
+open import Examples.Groups.Alt16-RevCir.ThreeWire public
+  using ( presentation₁ ; presentation₂ ; presentation₃
+        ; complete₁ ; complete₂ ; complete₃ )
+import Examples.Groups.Alt16-RevCir.Equivalence as E
 import Examples.Groups.Alt16-RevCir.Iso as I
 import Examples.Groups.Alt16-RevCir.NormalForm as N
 import Examples.Groups.Alt16-RevCir.Presentation as P
 import Examples.Groups.Alt16-RevCir.Semantics as Sem
+import Examples.Groups.Alt16-RevCir.Theory as Th
 
 open GroupMorphisms using (IsGroupIsomorphism)
 
@@ -76,6 +100,15 @@ infix 4 ⊢_≈_ ⊢ᴸ_≈_
 ⊢ᴸ_≈_ : L.Circuit 16 → L.Circuit 16 → Set
 ⊢ᴸ_≈_ = PB._≈_ _LRel_
 
+-- The rules r1, …, r7, with the laws of the swap and the structural
+-- rules, and equality by them.
+infix 4 _RRel,_===_ ⊢ᴿ_≈_
+_RRel,_===_ : (n : ℕ) → Circuit n → Circuit n → Set
+_RRel,_===_ = Th.T._VRel,_===_
+
+⊢ᴿ_≈_ : Circuit 4 → Circuit 4 → Set
+⊢ᴿ_≈_ = PB._≈_ (4 RRel,_===_)
+
 -- A circuit's function on the states of the four wires,
 ⟦_⟧ : Circuit 4 → Bits 4 → Bits 4
 ⟦_⟧ = Sem.⟦_⟧
@@ -86,7 +119,7 @@ infix 4 ⊢_≈_ ⊢ᴸ_≈_
 ⟦_⟧ᴬ = P.⟦_⟧ᴬ
 
 ------------------------------------------------------------------------
--- The Reidemeister–Schreier step
+-- The first step: Lafont's words and the circuits
 
 -- Each translation carries the relations of its source to consequences
 -- of the relations of its target,
@@ -118,11 +151,64 @@ circuits≅cycles :
     (f ʷ)
 circuits≅cycles = I.Theorem.Theorem-Circuits-iso-Cycles
 
-------------------------------------------------------------------------
--- The presentation of 𝔄₁₆
-
+-- With Lafont's theorem, the circuits modulo the translated relation
+-- present 𝔄₁₆.
 presentation : (4 CRel,_===_) IsPresentationOf Alt-group 16
 presentation = P.presentation
+
+------------------------------------------------------------------------
+-- The second step: the translated relation and the rules
+
+-- Each relation set's rules are consequences of the other's,
+relations⇒rules : ∀ {w v} → 4 CRel, w === v → ⊢ᴿ w ≈ v
+relations⇒rules = E.s⇒t-ax
+
+rules⇒relations : ∀ {w v} → 4 RRel, w === v → ⊢ w ≈ v
+rules⇒relations = E.t⇒s-ax
+
+-- so the identity is an isomorphism of the two word groups,
+grouplikeᴿ : Grouplike (4 RRel,_===_)
+grouplikeᴿ = E.grouplikeᵀ
+
+rules≅relations :
+  IsGroupIsomorphism
+    (Group.rawGroup (Group-Lemmas.•-ε-group (4 RRel,_===_) grouplikeᴿ))
+    (Group.rawGroup (Group-Lemmas.•-ε-group (4 CRel,_===_) grouplike))
+    id
+rules≅relations = E.rules≅relations
+
+-- and the first step holds for the rules, with the same translations.
+rules≅cycles :
+  IsGroupIsomorphism
+    (Group.rawGroup (Group-Lemmas.•-ε-group (4 RRel,_===_) grouplikeᴿ))
+    (Group.rawGroup (Group-Lemmas.•-ε-group _LRel_ grouplikeᴸ))
+    (f ʷ)
+rules≅cycles = E.Theoremᵀ.Theorem-Rules-iso-Cycles
+
+------------------------------------------------------------------------
+-- The presentation of 𝔄₁₆ by the rules
+
+presentationᴿ : (4 RRel,_===_) IsPresentationOf Alt-group 16
+presentationᴿ = E.presentationᵀ
+
+-- Two circuits are equal by the rules exactly when they are the same
+-- function on states,
+soundᴿ : ∀ {w v : Circuit 4} → ⊢ᴿ w ≈ v → ⟦ w ⟧ ≐ ⟦ v ⟧
+soundᴿ = E.soundᵀ
+
+completeᴿ : ∀ {w v : Circuit 4} → ⟦ w ⟧ ≐ ⟦ v ⟧ → ⊢ᴿ w ≈ v
+completeᴿ = E.completeᵀ
+
+-- every circuit is equal by the rules to its canonical circuit, and
+-- circuits equal by the rules have the same normal form.
+normal-formᴿ : (w : Circuit 4) → ⊢ᴿ canon (nf w) ≈ w
+normal-formᴿ = E.normal-formᵀ
+
+nf-congᴿ : ∀ {w v : Circuit 4} → ⊢ᴿ w ≈ v → nf w ≡ nf v
+nf-congᴿ = E.nf-congᵀ
+
+------------------------------------------------------------------------
+-- The translated relation and the functions on states
 
 -- A circuit's permutation carries the position of a state to the
 -- position of the state the circuit sends it to.
