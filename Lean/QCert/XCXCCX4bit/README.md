@@ -246,7 +246,12 @@ Collected from the module headers, which state each one where it occurs.
 ./check.sh QCert/XCXCCX4bit/MainTheorem.lean
 ```
 
-`MainTheorem.lean` reaches all 47 modules of the folder.  Each module checks
+`MainTheorem.lean` reaches all 47 modules of the folder.  With its imports
+outside the folder built and its own build artifacts removed, the folder
+builds in 277 s (`LEAN_NUM_THREADS=2 lake build` of the 47 modules, wall
+time, 10 November 2026 on an Intel Core i5-13400TEF under WSL; Agda checks the
+40 modules of `XCXCCX-4bit` in 85 s there, the sum of its per-module times;
+`pldi/compare/th4.json`).  Each module checks
 in under a minute on its own given its imports (Lean 4.30, Mathlib cached);
 the slowest are the certificates, `CCerts` and `KFaithful`, then `BaseComm`
 (its 30 segments), `CSem`, `Lib/Symmetric`, `NFLib`, `NormalForm` and
