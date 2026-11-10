@@ -91,3 +91,12 @@ in the README.
 * The README is `QCert/XCXCCX4bit/README.md`.
 * The nine generators other than the certificates part's were rerun and
   regenerate their modules byte for byte (`git status` clean afterwards).
+* **The whole-folder build time was not measured**: thirty minutes after
+  this part was finished, `NOTES-certificates.md` did not yet say done (its
+  last commit was a31d9168, with nothing uncommitted in the folder).  To
+  measure it once nothing else builds: under the build lock remove
+  `~/qcert-lake/build/lib/lean/QCert/XCXCCX4bit` and
+  `~/qcert-lake/build/ir/QCert/XCXCCX4bit` (`Lean/.lake` points to
+  `~/qcert-lake` in WSL), release the lock, and time
+  `./check.sh QCert/XCXCCX4bit/MainTheorem.lean`; then add the time to the
+  README's "Typechecking".
