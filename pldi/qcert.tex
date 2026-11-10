@@ -283,27 +283,34 @@ The relation is missing from Theorem~5.2 of~\cite{amy2024toffoli}. It states tha
 
 \section{A New Result: Complete Equations for Four-Bit Reversible Circuits}\label{sec:xcxccx}
 
-Beyond the published results, we use QCert to prove and check a new completeness theorem for classical reversible circuits. The gates $\mathrm{X}$ (NOT), $\mathrm{CX}$ (CNOT), and $\mathrm{CCX}$ (Toffoli) generate the reversible circuits on bits. Without ancillas, circuits on $k\le3$ wires realize every permutation of the $2^k$ bit strings, while on $k\ge4$ wires every gate is an even permutation and the circuits realize exactly the even ones~\cite{shende2003synthesis}. Complete equational theories are known for linear reversible circuits~\cite{lafont2003boolean,sakashita2013cnot} and for circuits over multiple-control Toffoli gates~\cite{feng2026complete,feng2026ancillas}. We take the gate set $\{\mathrm{X},\mathrm{CX},\mathrm{CCX}\}$ on at most four wires, and the theory $\mathcal{T}$ of the seven equations in \Cref{fig:xcxccx-rules}. Equations \xrule{1}--\xrule{6} act on at most three wires and \xrule{7} on four.
+Beyond the published results, we use QCert to prove and check a new completeness theorem for classical reversible circuits. The gates $\mathrm{X}$ (NOT), $\mathrm{CX}$ (CNOT), and $\mathrm{CCX}$ (Toffoli) generate the reversible circuits on bits. Without ancillas, circuits on $k\le3$ wires realize every permutation of the $2^k$ bit strings, while on $k\ge4$ wires every gate is an even permutation and the circuits realize exactly the even ones~\cite{shende2003synthesis}. Complete equational theories are known for linear reversible circuits~\cite{lafont2003boolean,sakashita2013cnot} and for circuits over multiple-control Toffoli gates~\cite{feng2026complete,feng2026ancillas}. We take the gate set $\{\mathrm{X},\mathrm{CX},\mathrm{CCX}\}$ on at most four wires, and the theory $\mathcal{T}$ of the seven equations in \Cref{fig:xcxccx-rules}. Equations \xrule{1}--\xrule{6} act on at most three wires and \xrule{7} on four. Two circuits are \emph{equal modulo~$\mathcal{T}$} when one can be rewritten into the other by these equations and the structural rules of \Cref{fig:xcxccx-structural}, every equation used in either direction.
 
 \begin{figure}[!htbp]
 \centering
 \small
 \begin{tabular}{@{}c@{\hspace{.5cm}}c@{\hspace{.5cm}}c@{}}
-\xrule{1}\enspace\input{figures/xcxccx/rule-1-l}\,$=$\,\input{figures/xcxccx/rule-1-r} &
-\xrule{2}\enspace\input{figures/xcxccx/rule-2-l}\,$=$\,\input{figures/xcxccx/rule-2-r} &
-\xrule{3}\enspace\input{figures/xcxccx/rule-3-l}\,$=$\,\input{figures/xcxccx/rule-3-r}\\
+\xrule{1}\enspace\input{figures/xcxccx/rule-1-l}\xeq\input{figures/xcxccx/rule-1-r} &
+\xrule{2}\enspace\input{figures/xcxccx/rule-2-l}\xeq\input{figures/xcxccx/rule-2-r} &
+\xrule{3}\enspace\input{figures/xcxccx/rule-3-l}\xeq\input{figures/xcxccx/rule-3-r}\\
 \end{tabular}
 \par\vspace{1em}
 \begin{tabular}{@{}c@{\hspace{.5cm}}c@{\hspace{.5cm}}c@{}}
-\xrule{4}\enspace\input{figures/xcxccx/rule-4-l}\,$=$\,\input{figures/xcxccx/rule-4-r} &
-\xrule{5}\enspace\input{figures/xcxccx/rule-5-l}\,$=$\,\input{figures/xcxccx/rule-5-r} &
-\xrule{6}\enspace\input{figures/xcxccx/rule-6-l}\,$=$\,\input{figures/xcxccx/rule-6-r}\\
+\xrule{4}\enspace\input{figures/xcxccx/rule-4-l}\xeq\input{figures/xcxccx/rule-4-r} &
+\xrule{5}\enspace\input{figures/xcxccx/rule-5-l}\xeq\input{figures/xcxccx/rule-5-r} &
+\xrule{6}\enspace\input{figures/xcxccx/rule-6-l}\xeq\input{figures/xcxccx/rule-6-r}\\
 \end{tabular}
 \par\vspace{1em}
-\xrule{7}\enspace\input{figures/xcxccx/rule-7-l}\,$=$\,\input{figures/xcxccx/rule-7-r}
-\caption{The theory $\mathcal{T}$ for circuits over $\{\mathrm{X},\mathrm{CX},\mathrm{CCX}\}$. Time runs left to right and wire~1 is on top. A filled control tests~1, an open control tests~0 (it is the filled one conjugated by $\mathrm{X}$ on its wire), $\oplus$ is a NOT target, and crossed wires are the structural swap. With the structural laws of \Cref{sec:form}, the equations may be placed on any wires and used in either direction.}
+\xrule{7}\enspace\input{figures/xcxccx/rule-7-l}\xeq\input{figures/xcxccx/rule-7-r}\unskip
+\caption{The theory $\mathcal{T}$ for circuits over $\{\mathrm{X},\mathrm{CX},\mathrm{CCX}\}$. Time runs left to right and wire~1 is on top. A filled control tests~1, an open control tests~0 (it is the filled one conjugated by $\mathrm{X}$ on its wire), $\oplus$ is a NOT target, and crossed wires are the structural swap. A CNOT or Toffoli drawn in another position, as in \xrule{3}, \xrule{6}, and \xrule{7}, is the gate on adjacent wires with its target below its controls, conjugated by swaps. Each equation can be used in either direction and, by the structural rules of \Cref{fig:xcxccx-structural}, on any wires of a circuit, adjacent or not and in any order.}
 \label{fig:xcxccx-rules}
 \Description{Seven circuit equations: X is an involution; a CNOT followed by the CNOT with the opposite control polarity is X on the target; three alternating CNOTs are a swap; a Toffoli followed by the Toffoli with one control negated is a CNOT; the two controls of a Toffoli are interchangeable; a CNOT conjugates a Toffoli onto its control into three Toffolis; and on four wires a Toffoli conjugates a CNOT from its target into a Toffoli onto the CNOT's target followed by that CNOT.}
+
+\par\vspace{2em}
+\nextfloat
+\input{figures/xcxccx/structural}
+\caption{The structural rules for circuits over $\{\mathrm{X},\mathrm{CX},\mathrm{CCX}\}$, which QCert supplies for every gate set with a structural swap (Appendix~\ref{app:wire-placement}). Here $u$ and $v$ are circuits, $g$ and $h$ are $\mathrm{X}$, $\mathrm{CX}$, $\mathrm{CCX}$, or the swap, and a slashed wire carries the wires of the box on it or, if it has none, any number of idle wires. An equation also holds with an idle wire below it, a gate commutes with any gate above it, the swap is an involution, and a gate slides past a wire that crosses all of its wires; for $g$ the swap, \textup{(naturality)} is the braid relation. \textup{(shift)} adds wires only below, while the other rules hold under any idle wires.}
+\label{fig:xcxccx-structural}
+\Description{Four structural rules drawn with boxes on slashed bundles of wires. Shift: if u equals v, then u above an idle wire equals v above an idle wire. Commutation: below a bundle of idle wires, a gate g and a gate h further down, with idle wires between them, may be applied in either order. Involution: below a bundle of idle wires, two consecutive swaps are two straight wires. Naturality: below a bundle of idle wires, a gate g on a bundle of wires followed by a wire crossing from just above the bundle to below it equals the crossing followed by g on the bundle in its new place.}
 \end{figure}
 
 Write $G_k$ for the circuits on $k$ wires modulo $\mathcal{T}$. Each gate is an involution modulo $\mathcal{T}$, so $G_k$ is a group, and the semantics $\llbracket - \rrbracket$, which maps a circuit to its permutation of the bit strings, is a group homomorphism from $G_k$.
@@ -320,12 +327,14 @@ Every four-wire circuit is equal modulo $\mathcal{T}$ to exactly one block norma
 
 Both theorems are proved in Agda~\cite{qcert2026xcxccx}; \Cref{agda:x-complete,agda:x-alt,agda:x-nf,agda:x-absorb} are the four-wire statements of its \aid{MainTheorem} module, which also states completeness and the presentations of $\mathrm{Sym}(2^k)$ on fewer wires. Here $\llbracket w\rrbracket$ is the function of $w$ on bit vectors, $\doteq$ is pointwise equality, and $u \bullet w$ applies $u$ and then $w$.
 
+\par\vskip\medskipamount\noindent\begin{minipage}{\linewidth}
 \begin{agdacode}[escapechar=@]
 complete : {w v : Circuit 4} → ⟦ w ⟧ ≐ ⟦ v ⟧ → ⊢ w ≈ v@\agdatag{agda:x-complete}@
 presentation₄ : (4 CRel,_===_) IsPresentationOf Alt-group 16@\agdatag{agda:x-alt}@
 normal-form : (u : Circuit 4) → ⊢ u ≈ NF (coords u)@\agdatag{agda:x-nf}@
 absorption : (c : Coords) (w : Circuit 4) → ⊢ w • NF c ≈ NF (absorb c w)@\agdatag{agda:x-absorb}@
 \end{agdacode}
+\end{minipage}\par\vskip\medskipamount
 
 \paragraph{Proof idea}
 A direct proof follows the first strategy of \Cref{fig:strategies}, showing that appending a gate to a normal form gives a circuit that rewrites to a normal form. The exposition we are preparing proves the theorems this way, with finite certificates for the $360{,}360$ transitions of the $12{,}870$ sets $S$ under the $28$ placed gates and for the subgroup equalities they rely on, about $380{,}000$ deductions in all. The formalization instead combines the second strategy with Reidemeister--Schreier presentations of permutation groups (\Cref{sec:lost}), so that only small facts are decided by evaluation. It has four steps.
@@ -399,7 +408,7 @@ Wires are numbered from $0$ at the bottom, and a gate acts on the bottom wires o
 
 Each source relation is stated on as many wires as the paper draws it on. Structural rules allow an equation to be shifted by one wire, gates on disjoint wires to commute, and a scalar to be placed on any wire. QCert extends the earlier framework's one- and two-wire syntax with three-wire gates and their structural rule. Scalars are zero-wire generators; their placement rule allows exact equations to account for global phase.
 
-In the earlier framework, swap is an ordinary gate whose laws must be included in each rule set. QCert also supports a PROP presentation, in which a designated two-wire gate is the swap and the framework supplies its involution law and the laws for moving gates across it. The source rule set then contains only its own relations, each on its original wires; swap and its laws are supplied by the framework. We use this representation for the circuits of~\cite{amy2018cnotdihedral,blake2026phaseaffine,blake2026simpler}.
+In the earlier framework, swap is an ordinary gate whose laws must be included in each rule set. QCert also supports a PROP presentation, in which a designated two-wire gate is the swap and the framework supplies its involution law and the laws for moving gates across it. The source rule set then contains only its own relations, each on its original wires; swap and its laws are supplied by the framework. We use this representation for the circuits of~\cite{amy2018cnotdihedral,blake2026phaseaffine,blake2026simpler}, and for the reversible circuits of \Cref{sec:xcxccx}, whose structural rules are drawn in \Cref{fig:xcxccx-structural}. That section numbers wires from~1 at the top, as its figures do, so on $n$ wires its wire~$w$ is wire~$n-w$ here.
 
 \subsection{Theorem Notation}\label{app:theorem-notation}
 
