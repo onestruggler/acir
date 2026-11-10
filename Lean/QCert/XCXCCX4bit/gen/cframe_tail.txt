@@ -1,0 +1,160 @@
+/-- The 24 pair permutations pass `CBase.wcheck`. -/
+private theorem pair_wcheck : ∀ a b c d : Fin 4, valid4 a b c d = true →
+    wcheck (pairW a b c d) = true := by
+  decide +kernel
+
+theorem pair_act : ∀ a b c d : Fin 4, valid4 a b c d = true → ∀ x : Fin 8,
+    act (pairW a b c d) x = mk (sel4 a b c d (half x)) (low x) := by
+  decide +kernel
+
+theorem pair_comm (a b c d : Fin 4) (h : valid4 a b c d = true) : Comm (Pc 0 (pairW a b c d)) G :=
+  wcore _ (pair_wcheck a b c d h)
+
+/-! ## The frame lemma -/
+
+/-- Two positions in the same pair are equal or partners. -/
+theorem same_half : ∀ y y' : Fin 8, half y = half y' → y = y' ∨ y = μ₀ y' := by decide
+
+theorem act_inj (r : CW 8) {x x' : Fin 8} (e : act r x = act r x') : x = x' := by
+  rw [← act_inv r x, e, act_inv]
+
+private theorem neq4 {a b : Fin 4} (h : a ≠ b) : (!eq4 a b) = true := by
+  cases e : eq4 a b
+  · rfl
+  · exact absurd (eq4_sound a b e) h
+
+private theorem valid4_of {a b c d : Fin 4} (h₁ : a ≠ b) (h₂ : a ≠ c) (h₃ : b ≠ c) (h₄ : a ≠ d)
+    (h₅ : b ≠ d) (h₆ : c ≠ d) : valid4 a b c d = true := by
+  simp only [valid4, neq4 h₁, neq4 h₂, neq4 h₃, neq4 h₄, neq4 h₅, neq4 h₆, Bool.and_self]
+
+theorem sel4_self (f : Fin 4 → Fin 4) : ∀ v, sel4 (f 0) (f 1) (f 2) (f 3) v = f v
+  | ⟨0, _⟩ => rfl
+  | ⟨1, _⟩ => rfl
+  | ⟨2, _⟩ => rfl
+  | ⟨3, _⟩ => rfl
+  | ⟨k + 4, h⟩ => absurd h (by omega)
+
+theorem sel4b_self (f : Fin 4 → Bool) : ∀ v, sel4b (f 0) (f 1) (f 2) (f 3) v = f v
+  | ⟨0, _⟩ => rfl
+  | ⟨1, _⟩ => rfl
+  | ⟨2, _⟩ => rfl
+  | ⟨3, _⟩ => rfl
+  | ⟨k + 4, h⟩ => absurd h (by omega)
+
+section Core
+
+variable (r : CW 8)
+
+/-- The pair a Coxeter word sends the pair `v` to … -/
+def σᵣ (v : Fin 4) : Fin 4 := half (act r (mk v false))
+
+/-- … and whether it exchanges the two sides. -/
+def βᵣ (v : Fin 4) : Bool := low (act r (mk v false))
+
+/-- The canonical word with the same permutation. -/
+def pairᵣ : CW 8 := pairW (σᵣ r 0) (σᵣ r 1) (σᵣ r 2) (σᵣ r 3)
+
+def flipsᵣ : CW 8 := flips4 (βᵣ r 0) (βᵣ r 1) (βᵣ r 2) (βᵣ r 3)
+
+def canonW : CW 8 := pairᵣ r * flipsᵣ r
+
+theorem σᵣ_inj (h : InC r) (v v' : Fin 4) (e : σᵣ r v = σᵣ r v') : v = v' := by
+  rcases same_half _ _ e with p | p
+  · have := congrArg half (act_inj r p)
+    rwa [half_mk, half_mk] at this
+  · rw [← h, μ₀_mk] at p
+    have := congrArg low (act_inj r p)
+    rw [low_mk, low_mk] at this
+    exact absurd this (by decide)
+
+theorem σᵣ_valid (h : InC r) : valid4 (σᵣ r 0) (σᵣ r 1) (σᵣ r 2) (σᵣ r 3) = true := by
+  have ne : ∀ v v' : Fin 4, v ≠ v' → σᵣ r v ≠ σᵣ r v' := fun v v' d e => d (σᵣ_inj r h v v' e)
+  exact valid4_of (ne 0 1 (by decide)) (ne 0 2 (by decide)) (ne 1 2 (by decide))
+    (ne 0 3 (by decide)) (ne 1 3 (by decide)) (ne 2 3 (by decide))
+
+/-- The permutation at `2 v + e`. -/
+private theorem pos_at (h : InC r) (v : Fin 4) (e : Bool) :
+    act r (mk v e) = mk (σᵣ r v) (e ^^ βᵣ r v) := by
+  cases e
+  · rw [Bool.false_xor]
+    exact (mk_hl _).symm
+  · rw [← μ₀_mk, h]
+    simp only [μ₀, σᵣ, βᵣ, Bool.true_xor]
+
+private theorem fl_at (x : Fin 8) : act (flipsᵣ r) x = mk (half x) (low x ^^ βᵣ r (half x)) := by
+  rw [flipsᵣ, flips_act, sel4b_self (βᵣ r)]
+
+private theorem pa_at (h : InC r) (v : Fin 4) (e : Bool) :
+    act (pairᵣ r) (mk v e) = mk (σᵣ r v) e := by
+  rw [pairᵣ, pair_act _ _ _ _ (σᵣ_valid r h), half_mk, low_mk, sel4_self (σᵣ r)]
+
+theorem canonW_act (h : InC r) (x : Fin 8) : act r x = act (canonW r) x := by
+  have e := pos_at r h (half x) (low x)
+  rw [mk_hl] at e
+  rw [e, canonW, act_mul, fl_at, pa_at r h]
+
+/-- So the circuit of `r` commutes with `G`. -/
+theorem W_core (h : InC r) : Comm (Pc 0 r) G := by
+  refine comm_eqv (perm_complete r (canonW r) (canonW_act r h)) ?_
+  rw [canonW, map_mul]
+  exact comm_mul (pair_comm _ _ _ _ (σᵣ_valid r h)) (flips_comm _ _ _ _)
+
+end Core
+
+/-! ## Frames of G with the same matching -/
+
+/-- The matching of `G` placed by `p` (the Agda's `match`, a keyword of
+Lean). -/
+def matchW (p : CW 8) (x : Fin 8) : Fin 8 := act p (μ₀ (act (inv p) x))
+
+/-- The action computed letter by letter (the Agda's `actF`; `act` is that
+already). -/
+def actF (w : CW 8) (x : Fin 8) : Fin 8 := act w x
+
+theorem actF_ok (w : CW 8) (x : Fin 8) : actF w x = act w x := rfl
+
+def matchF (p : CW 8) (x : Fin 8) : Fin 8 := actF p (μ₀ (actF (inv p) x))
+
+theorem matchF_ok (p : CW 8) (x : Fin 8) : matchF p x = matchW p x := rfl
+
+/-- Equality of positions, decided (the Agda's `_==₈_`). -/
+def eq8 (x y : Fin 8) : Bool := Nat.beq x.1 y.1
+
+theorem eq8_sound (x y : Fin 8) (h : eq8 x y = true) : x = y :=
+  Fin.ext (Nat.eq_of_beq_eq_true h)
+
+def all8 (f : Fin 8 → Bool) : Bool := f 0 && (f 1 && (f 2 && (f 3 && (f 4 && (f 5 && (f 6 && f 7))))))
+
+theorem all8_sound (f : Fin 8 → Bool) (h : all8 f = true) : ∀ x, f x = true := by
+  simp only [all8, Bool.and_eq_true] at h
+  intro x
+  match x with
+  | ⟨0, _⟩ => exact h.1
+  | ⟨1, _⟩ => exact h.2.1
+  | ⟨2, _⟩ => exact h.2.2.1
+  | ⟨3, _⟩ => exact h.2.2.2.1
+  | ⟨4, _⟩ => exact h.2.2.2.2.1
+  | ⟨5, _⟩ => exact h.2.2.2.2.2.1
+  | ⟨6, _⟩ => exact h.2.2.2.2.2.2.1
+  | ⟨7, _⟩ => exact h.2.2.2.2.2.2.2
+  | ⟨k + 8, h⟩ => exact absurd h (by omega)
+
+/-- The two matchings agree on the eight positions. -/
+def eqMatch (p q : CW 8) : Bool := all8 fun x => eq8 (matchF p x) (matchF q x)
+
+theorem eqMatch_sound (p q : CW 8) (h : eqMatch p q = true) (x : Fin 8) :
+    matchW p x = matchW q x :=
+  eq8_sound _ _ (all8_sound (fun y => eq8 (matchF p y) (matchF q y)) h x)
+
+theorem match_InC (p q : CW 8) (e : ∀ x, matchW p x = matchW q x) : InC (inv q * p) := by
+  intro x
+  have step : act p (μ₀ x) = act q (μ₀ (act (inv q) (act p x))) := by
+    have := e (act p x)
+    rwa [matchW, matchW, act_inv] at this
+  rw [act_mul, act_mul, step, act_inv]
+
+/-- Two frames of `G` with the same matching are equal (the Agda's `W′`). -/
+theorem W' (p q : CW 8) (e : eqMatch p q = true) : 4 ⊢ Fr G p ≈ Fr G q :=
+  Wc p q (W_core (inv q * p) (match_InC p q (eqMatch_sound p q e)))
+
+end QCert.XCXCCX4bit.CFrame
