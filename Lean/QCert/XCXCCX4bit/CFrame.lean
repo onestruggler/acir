@@ -28,8 +28,10 @@ definitions take `r` and theorems `r` and `h`, explicitly.
 **Deviation from the Agda.**  `mk`, `half`, `low` compute (`2 v + e`, `x / 2`,
 `x % 2`) where the Agda's are tables, and each of the Agda's tables of `refl`
 proofs (`flips-act`, `pair-act`, and the 24 checks of `pair-comm`) is one
-`decide`.  The Agda's fast letter action (`swp`, `act-letter`) is not
-needed: `Coxeter.act` acts letter by letter, so `actF` is `act`.  `eq8`
+`decide`.  The fast action `actF` acts on the values of the positions,
+letter by letter with `Nat.beq` tests (`swN`, `actL`), where the Agda's
+acts on `Fin 8` through a table of the transpositions (`swp`, with
+`act-letter`); `swN_eq` and `actL_val` make it `act` (`actF_ok`).  `eq8`
 compares the values of the positions.
 -/
 import QCert.XCXCCX4bit.CBase
@@ -259,15 +261,43 @@ end Core
 Lean). -/
 def matchW (p : CW 8) (x : Fin 8) : Fin 8 := act p (μ₀ (act (inv p) x))
 
-/-- The action computed letter by letter (the Agda's `actF`; `act` is that
-already). -/
-def actF (w : CW 8) (x : Fin 8) : Fin 8 := act w x
+/-- The transposition of the positions `d` and `d + 1`, on their values,
+tested by `Nat.beq` (for the kernel). -/
+def swN (d x : ℕ) : ℕ := bif Nat.beq x d then d + 1 else bif Nat.beq x (d + 1) then d else x
 
-theorem actF_ok (w : CW 8) (x : Fin 8) : actF w x = act w x := rfl
+theorem swN_eq (d x : ℕ) : swN d x = QCert.ToffoliHadamardRS.CoxeterFrames.sw d x := by
+  unfold swN QCert.ToffoliHadamardRS.CoxeterFrames.sw
+  cases h₁ : Nat.beq x d
+  · cases h₂ : Nat.beq x (d + 1)
+    · simp [Nat.ne_of_beq_eq_false h₁, Nat.ne_of_beq_eq_false h₂]
+    · simp [Nat.eq_of_beq_eq_true h₂]
+  · simp [Nat.eq_of_beq_eq_true h₁]
+
+/-- The action of a list of letters on the values of the positions. -/
+def actL : List (SG 8) → ℕ → ℕ
+  | [], x => x
+  | g :: w, x => swN g.1 (actL w x)
+
+theorem actL_val (w : CW 8) (x : Fin 8) : actL (FreeMonoid.toList w) x.1 = (act w x).1 := by
+  rw [Symmetric.act_val]
+  show actL (FreeMonoid.toList w) x.1
+    = ((FreeMonoid.toList w).map Subtype.val).foldr QCert.ToffoliHadamardRS.CoxeterFrames.sw x.1
+  generalize FreeMonoid.toList w = l
+  induction l with
+  | nil => rfl
+  | cons g l ih => rw [actL, ih, swN_eq]; rfl
+
+/-- The action computed letter by letter on the values of the positions (the
+Agda's `actF`, fast, and the same: `actF_ok`). -/
+def actF (w : CW 8) (x : Fin 8) : Fin 8 :=
+  ⟨actL (FreeMonoid.toList w) x.1, by rw [actL_val]; exact (act w x).2⟩
+
+theorem actF_ok (w : CW 8) (x : Fin 8) : actF w x = act w x := Fin.ext (actL_val w x)
 
 def matchF (p : CW 8) (x : Fin 8) : Fin 8 := actF p (μ₀ (actF (inv p) x))
 
-theorem matchF_ok (p : CW 8) (x : Fin 8) : matchF p x = matchW p x := rfl
+theorem matchF_ok (p : CW 8) (x : Fin 8) : matchF p x = matchW p x := by
+  rw [matchF, matchW, actF_ok, actF_ok]
 
 /-- Equality of positions, decided (the Agda's `_==₈_`). -/
 def eq8 (x y : Fin 8) : Bool := Nat.beq x.1 y.1
@@ -295,8 +325,9 @@ theorem all8_sound (f : Fin 8 → Bool) (h : all8 f = true) : ∀ x, f x = true 
 def eqMatch (p q : CW 8) : Bool := all8 fun x => eq8 (matchF p x) (matchF q x)
 
 theorem eqMatch_sound (p q : CW 8) (h : eqMatch p q = true) (x : Fin 8) :
-    matchW p x = matchW q x :=
-  eq8_sound _ _ (all8_sound (fun y => eq8 (matchF p y) (matchF q y)) h x)
+    matchW p x = matchW q x := by
+  rw [← matchF_ok, ← matchF_ok]
+  exact eq8_sound _ _ (all8_sound (fun y => eq8 (matchF p y) (matchF q y)) h x)
 
 theorem match_InC (p q : CW 8) (e : ∀ x, matchW p x = matchW q x) : InC (inv q * p) := by
   intro x

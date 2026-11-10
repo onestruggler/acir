@@ -12,10 +12,10 @@ tail in cframe_tail.txt (this folder's, the Lean counterpart of the Agda's).
 
 Where the Agda generator writes tables of `refl` proofs (the flips' and the
 pair words' actions on the eight positions, the action of a letter), the
-Lean module states each table as one `decide +kernel`; the Agda's fast
-letter action (`swp`, `act-letter`) is not needed, `Coxeter.act` acting
-letter by letter already.  Like the Agda's, this script is untrusted: Lean
-checks what it writes.
+Lean module states each table as one `decide +kernel`; the Agda's table of
+the fast letter action (`swp`, `act-letter`) is the lemma `swN_eq` of the
+tail.  Like the Agda's, this script is untrusted: Lean checks what it
+writes.
 
 Run with WSL's python3 from this folder: `python3 mk_cframe.py`.
 """
@@ -88,8 +88,10 @@ definitions take `r` and theorems `r` and `h`, explicitly.
 **Deviation from the Agda.**  `mk`, `half`, `low` compute (`2 v + e`, `x / 2`,
 `x % 2`) where the Agda's are tables, and each of the Agda's tables of `refl`
 proofs (`flips-act`, `pair-act`, and the 24 checks of `pair-comm`) is one
-`decide`.  The Agda's fast letter action (`swp`, `act-letter`) is not
-needed: `Coxeter.act` acts letter by letter, so `actF` is `act`.  `eq8`
+`decide`.  The fast action `actF` acts on the values of the positions,
+letter by letter with `Nat.beq` tests (`swN`, `actL`), where the Agda's
+acts on `Fin 8` through a table of the transpositions (`swp`, with
+`act-letter`); `swN_eq` and `actL_val` make it `act` (`actF_ok`).  `eq8`
 compares the values of the positions.
 -/
 import QCert.XCXCCX4bit.CBase

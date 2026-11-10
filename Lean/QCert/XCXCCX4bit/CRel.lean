@@ -211,8 +211,9 @@ theorem comm_Pc_X₃ (r : CW 8) : Comm (Pc 0 r) (ι (.Xₚ 3)) := by
 /-- Commuting with `μ₀`, decided. -/
 def inC? (r : CW 8) : Bool := all8 fun x => eq8 (actF r (μ₀ x)) (μ₀ (actF r x))
 
-theorem inC_sound (r : CW 8) (h : inC? r = true) : InC r := fun x =>
-  eq8_sound _ _ (all8_sound (fun y => eq8 (actF r (μ₀ y)) (μ₀ (actF r y))) h x)
+theorem inC_sound (r : CW 8) (h : inC? r = true) : InC r := fun x => by
+  have := eq8_sound _ _ (all8_sound (fun y => eq8 (actF r (μ₀ y)) (μ₀ (actF r y))) h x)
+  rwa [actF_ok, actF_ok] at this
 
 /-- … and if its permutation commutes with `μ₀` it commutes with `Gbar`. -/
 theorem comm_Pc_Gbar (r : CW 8) (h : inC? r = true) : Comm (Pc 0 r) Gbar :=
