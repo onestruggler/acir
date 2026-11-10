@@ -1,0 +1,2 @@
+  expanded 2000, heap 369637, len 11 depth 19, 13s
+{'name': 'L1', 'relator_text': '02>1 13>0 02>1 13>0 02>1 0>1 13>0 02>1 13>0 0>1', 'found': True, 'expanded': 3388, 'time': 29.1, 'checked': True, 'narrow_steps': 18, 'pair_steps': 4, 'expand_steps': 5}

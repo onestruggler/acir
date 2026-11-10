@@ -1,0 +1,5 @@
+  depth 1+0: frontier 1078/1, meetings 0, 0.8s
+  depth 1+1: frontier 1078/1080, meetings 0, 1.6s
+  stopped at depth 1+1
+  stopped: 69 expanded, 56699 seen, 301s
+{'name': 'order', 'found': False, 'length': None, 'rule7_steps': None, 'narrow_steps': None, 'time': 804.3, 'engine': None, 'macro_moves': None, 'lemmas_used': None, 'checked': None, 'tried': [{'engine': 'macro-bidir', 'depth_reached': 2, 'found': False, 'time': 503.1}, {'engine': 'macro-reduce', 'found': False, 'time': 300.8}]}

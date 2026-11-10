@@ -1,0 +1,6 @@
+  expanded 2000, heap 491582, len 12 depth 42, 23s
+  expanded 4000, heap 939299, len 12 depth 46, 38s
+  expanded 6000, heap 1387542, len 12 depth 45, 49s
+  expanded 8000, heap 1817522, len 12 depth 48, 64s
+  expanded 10000, heap 2250552, len 12 depth 49, 196s
+{'name': 'apart2_6', 'relator_text': '~1~3>0 ~02>3 ~1~3>0 ~02>3 1~2>0 ~0~3>2 1~2>0 ~0~3>2 ~02>3 ~1~3>0 ~02>3 ~1~3>0 ~0~3>2 1~2>0 ~0~3>2 1~2>0', 'found': True, 'expanded': 11152, 'time': 218.0, 'checked': True, 'narrow_steps': 42, 'pair_steps': 31, 'expand_steps': 10}

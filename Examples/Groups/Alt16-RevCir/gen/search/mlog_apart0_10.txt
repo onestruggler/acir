@@ -1,0 +1,7 @@
+  expanded 2000, heap 685123, len 18 depth 19, 34s
+  expanded 4000, heap 1371610, len 17 depth 14, 55s
+  expanded 6000, heap 2056323, len 17 depth 20, 97s
+  expanded 8000, heap 2735869, len 18 depth 18, 151s
+  expanded 10000, heap 3398297, len 19 depth 1, 219s
+  expanded 12000, heap 4071719, len 19 depth 2, 287s
+  expanded 14000, heap 4723978, len 18 depth 22, 325s

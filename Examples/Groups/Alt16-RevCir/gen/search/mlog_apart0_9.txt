@@ -1,0 +1,1 @@
+{'name': 'apart0_9', 'relator_text': '02>1 13>0 02>1 13>0 ~1~2>0 0~3>1 ~1~2>0 0~3>1 13>0 02>1 13>0 02>1 0~3>1 ~1~2>0 0~3>1 ~1~2>0', 'found': True, 'expanded': 13, 'time': 0.1, 'checked': True, 'narrow_steps': 12, 'pair_steps': 8, 'expand_steps': 2}
