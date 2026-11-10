@@ -105,6 +105,10 @@ write PlacedEngine derivations and can be reused for `BaseComm`
 * `ToPlaced`: `pgl : Gn 4 → List PG`, `pgl_ok`, `pgL` (list version),
   `pg u = pgL (toList u)` (computable by the kernel on a concrete circuit),
   `pgL_append`, `pg_mul`, `pg_of`, `pg_ok u : 4 ⊢ u ≈ ιs (pg u)`.
+  Checked: `eqL (pg (PFrames.T₄ 4)) [PG.CCXₚ 1 2 0] = true`,
+  `narrowCheck (pg (PFrames.Pc 0 (FreeMonoid.of ⟨4, _⟩))) [PG.CCXₚ 1 2 0] = true`
+  and `forallPG (fun g => narrowCheck [g, g] []) = true` (the Agda
+  `KFaithful`'s `inv-check`) all close by `decide +kernel` in milliseconds.
 * `Faithful`: `target`, `keeps`, `every_append` (the Agda's `every-++`),
   `targets`, `keep_by`, `keeps_from`, `imp`, `imp_sound`, `keeps_τ_check`,
   `keeps_τ`, `every_keeps_τ`, `Faithful m : Prop` (a `def`, so
