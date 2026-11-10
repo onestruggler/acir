@@ -271,11 +271,12 @@ class Library:
         self.lemmas = []          # (name, lhs, rhs, steps, comment)
         self.count = 0
 
-    def add(self, prefix, proof, rhs, comment=''):
+    def add(self, prefix, proof, rhs, comment='', name=None):
         assert proof.cur == rhs, (prefix, proof.cur, rhs)
         assert proof.steps, prefix
         self.count += 1
-        name = '%s%d' % (prefix, self.count)
+        if name is None:
+            name = '%s%d' % (prefix, self.count)
         self.lemmas.append((name, proof.start, rhs, proof.steps, comment))
         return Named(name, proof.start, rhs)
 
@@ -359,8 +360,10 @@ def to_frame(g, p, b):
     if wire_perm(rev(h) + p)[3] == 3:
         return [(0, FR(h, p, B, b))]
     assert B == 'c'
-    return [(len(h), Top('', 'tt')), (len(h) + 1, AX['comm-ex2-cx0']),
-            (0, FR(h + 'u', p, B, b))]
+    steps = [(len(h), Top('', 'tt')), (len(h) + 1, AX['comm-ex2-cx0'])]
+    if (h + 'u', B) != (p, b):
+        steps.append((0, FR(h + 'u', p, B, b)))
+    return steps
 
 
 # ----------------------------------------------------------------------
@@ -426,49 +429,62 @@ def inv(g):
     return eq
 
 
+def _target(W, g0):
+    t, cs = GATES[g0]
+    if not cs:
+        return W, XL[t]
+    h, B = frame_of(g0)
+    return W + h, B
+
+
+def frame_all(pr, off, W, gates0):
+    """The word at off is sp(W gates0 W^-1), gate by gate; turn it into
+    W sp(gates0) W^-1."""
+    if not W or not gates0:
+        return
+    Wr = rev(W)
+    x = off
+    for g0 in gates0:
+        pr.run(to_frame(act(W, g0), *_target(W, g0)), x)
+        x += len(W) + len(sp(g0)) + len(W)
+    x = off + len(W)
+    for k, g0 in enumerate(gates0):
+        x += len(sp(g0))
+        if k + 1 < len(gates0):
+            pr.rw(x, HS(Wr + W, ''))
+
+
+def unframe_all(pr, off, W, gates0):
+    """The word at off is W sp(gates0) W^-1; turn it into
+    sp(W gates0 W^-1), gate by gate."""
+    if not W:
+        return
+    Wr = rev(W)
+    if not gates0:
+        pr.rw(off, HS(W + Wr, ''))
+        return
+    x = off + len(W)
+    for k, g0 in enumerate(gates0):
+        x += len(sp(g0))
+        if k + 1 < len(gates0):
+            pr.rw(x, HS('', Wr + W))
+            x += 2 * len(W)
+    x = off
+    for g0 in gates0:
+        g = act(W, g0)
+        pr.run(backwards(to_frame(g, *_target(W, g0))), x)
+        x += len(sp(g))
+
+
 def transport(base, lg0, rg0, W):
-    """base: sp(lg0) -> sp(rg0).  Steps turning sp(W lg0 W^-1) into
+    """base: sp(lg0) -> sp(rg0).  The proof of sp(W lg0 W^-1) ->
     sp(W rg0 W^-1), each gate conjugated by W."""
     lg = [act(W, g) for g in lg0]
     rg = [act(W, g) for g in rg0]
     pr = Proof(spw(lg))
-    if not W:
-        pr.rw(0, base)
-        return lg, rg, pr
-    Wr = rev(W)
-
-    def target(g0):
-        t, cs = GATES[g0]
-        if not cs:
-            return W, XL[t]
-        h, B = frame_of(g0)
-        return W + h, B
-
-    # every gate into the frame W
-    off = 0
-    for g, g0 in zip(lg, lg0):
-        pr.run(to_frame(g, *target(g0)), off)
-        off += len(W) + len(sp(g0)) + len(W)
-    # cancel W^-1 W between them
-    off = len(W)
-    for k, g0 in enumerate(lg0):
-        off += len(sp(g0))
-        if k + 1 < len(lg0):
-            pr.rw(off, HS(Wr + W, ''))
+    frame_all(pr, 0, W, lg0)
     pr.rw(len(W), base)
-    if not rg0:
-        pr.rw(0, HS(W + Wr, ''))
-        return lg, rg, pr
-    off = len(W)
-    for k, g0 in enumerate(rg0):
-        off += len(sp(g0))
-        if k + 1 < len(rg0):
-            pr.rw(off, HS('', Wr + W))
-            off += 2 * len(W)
-    off = 0
-    for g, g0 in zip(rg, rg0):
-        pr.run(backwards(to_frame(g, *target(g0))), off)
-        off += len(sp(g))
+    unframe_all(pr, 0, W, rg0)
     assert pr.cur == spw(rg)
     return lg, rg, pr
 

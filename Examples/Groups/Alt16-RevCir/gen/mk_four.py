@@ -66,6 +66,8 @@ def pair_orbits():
 
 
 RELATORS = {}
+INST = {}
+GATE = {}
 
 
 def relators():
@@ -162,8 +164,19 @@ def main():
     pair_orbits()
     relators()
     print('lemmas: %d, steps: %d' % (len(LIB.lemmas), LIB.steps()))
+    import inst
+    INST.update(inst.all_instances(RELATORS))
+    print('with the %d instances: lemmas: %d, steps: %d' % (
+        len(INST), len(LIB.lemmas), LIB.steps()))
+    import gatesc
+    GATE.update(gatesc.gate_lemmas())
+    for nm, (lem, word) in GATE.items():
+        print('gate %-5s %3d cycles' % (nm, len(word)))
+    print('with the gates: lemmas: %d, steps: %d' % (len(LIB.lemmas), LIB.steps()))
     if 'check' not in sys.argv[1:]:
-        write()
+        last = write()
+        import mk_rel
+        mk_rel.write(INST, GATE, last)
 
 
 if __name__ == '__main__':

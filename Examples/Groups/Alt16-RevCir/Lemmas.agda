@@ -79,45 +79,67 @@ private
   top : ∀ d {m} → d + ₃₊ m ≡ 16 → d ≤ 13
   top d eq = +-cancelˡ-≤ 3 _ _ (m+n≤o⇒m≤o _ (≤-reflexive (up₃ d eq)))
 
-  -- The circuits Ω j with c ≤ j.
-  Above : ℕ → Circuit 4 → Set
-  Above c w = ∃ λ j → w ≡ Ω j × c ≤ j × j ≤ 13
-
-  -- A generator read c points up is one of them.
-  gᵈ-above : ∀ {k} (c : ℕ) (y : L.Gen k) → c + k ≡ 16 →
-             Above c (gᵈ c y)
-  gᵈ-above c L.ω-gen eq = c , Eq.refl , ≤-refl , top c eq
-  gᵈ-above c (y L.↥) eq =
-    let (j , e , c<j , j≤13) = gᵈ-above (suc c) y (up c eq)
-    in j , e , ≤-trans (n≤1+n c) c<j , j≤13
-    -- c<j : suc c ≤ j
-
-  -- Ω d commutes with the cycles three or more points further up.
-  lemma-apart : ∀ d {w} → Above (₃₊ d) w → 4 ⊢ w • Ω d ≈ Ω d • w
-  lemma-apart d (j , Eq.refl , d+3≤j , j≤13) =
-    axiom (srel (srel (apart d j d+3≤j j≤13)))
-
 ------------------------------------------------------------------------
 -- Lafont's relations, read through g
+--
+-- In any congruence on the circuits in which the relations between the
+-- cycles hold: that of Syntactics, where they are rules, and that of
+-- the rules (1)–(7) (Theory), where they are theorems (Equivalence).
+
+module FromCycles
+  (Γ : CRel 4)
+  (order′ : ∀ i → i ≤ 13 → PB._≈_ Γ (Ω i • Ω i • Ω i) ε)
+  (near′  : ∀ i → i ≤ 12 →
+            PB._≈_ Γ (Ω i • Ω (1 + i) • Ω i) (Ω (1 + i) • Ω (1 + i)))
+  (far′   : ∀ i → i ≤ 11 →
+            PB._≈_ Γ (Ω i • Ω (2 + i) • Ω i) (Ω (2 + i) • Ω i • Ω (1 + i)))
+  (apart′ : ∀ i j → 3 + i ≤ j → j ≤ 13 → PB._≈_ Γ (Ω j • Ω i) (Ω i • Ω j))
+  where
+
+  private
+    -- The circuits Ω j with c ≤ j.
+    Above : ℕ → Circuit 4 → Set
+    Above c w = ∃ λ j → w ≡ Ω j × c ≤ j × j ≤ 13
+
+    -- A generator read c points up is one of them.
+    gᵈ-above : ∀ {k} (c : ℕ) (y : L.Gen k) → c + k ≡ 16 →
+               Above c (gᵈ c y)
+    gᵈ-above c L.ω-gen eq = c , Eq.refl , ≤-refl , top c eq
+    gᵈ-above c (y L.↥) eq =
+      let (j , e , c<j , j≤13) = gᵈ-above (suc c) y (up c eq)
+      in j , e , ≤-trans (n≤1+n c) c<j , j≤13
+      -- c<j : suc c ≤ j
+
+    -- Ω d commutes with the cycles three or more points further up.
+    lemma-apart : ∀ d {w} → Above (₃₊ d) w → PB._≈_ Γ (w • Ω d) (Ω d • w)
+    lemma-apart d (j , Eq.refl , d+3≤j , j≤13) = apart′ d j d+3≤j j≤13
+
+  -- Every instance of Lafont's relation, read through g at any shift.
+  lemma-g-rel : ∀ {n} (d : ℕ) → d + n ≡ 16 → {u t : L.Circuit n} →
+                L._VRel,_===_ n u t →
+                PB._≈_ Γ ((gᵈ d ʷ) u) ((gᵈ d ʷ) t)
+  lemma-g-rel d eq (L.srel L.order) = order′ d (top d eq)
+  lemma-g-rel d eq (L.srel L.near) =
+    near′ d (s≤s⁻¹ (top (suc d) (up d eq)))
+  lemma-g-rel d eq (L.srel L.far) =
+    far′ d (s≤s⁻¹ (s≤s⁻¹ (top (₂₊ d) eq₂)))
+    where eq₂ = up (suc d) (up d eq)
+  lemma-g-rel d eq (L.cong↑ {w = w} {v = v} p) =
+    trans (refl' (gᵈ-↑ d w))
+    (trans (lemma-g-rel (suc d) (up d eq) p)
+           (refl' (Eq.sym (gᵈ-↑ d v))))
+    where open PB Γ using (refl')
+  lemma-g-rel d eq (L.comm₃ L.ω-gate y) =
+    lemma-apart d (gᵈ-above (₃₊ d) y (up₃ d eq))
 
 -- Every instance of Lafont's relation, read through g at any shift, is
 -- a rule of Syntactics.
-lemma-g-rel : ∀ {n} (d : ℕ) → d + n ≡ 16 → {u t : L.Circuit n} →
-              L._VRel,_===_ n u t → 4 ⊢ (gᵈ d ʷ) u ≈ (gᵈ d ʷ) t
-lemma-g-rel d eq (L.srel L.order) =
-  axiom (srel (srel (order d (top d eq))))
-lemma-g-rel d eq (L.srel L.near) =
-  axiom (srel (srel (near d (s≤s⁻¹ (top (suc d) (up d eq))))))
-lemma-g-rel d eq (L.srel L.far) =
-  axiom (srel (srel (far d (s≤s⁻¹ (s≤s⁻¹ (top (₂₊ d) eq₂))))))
-  where eq₂ = up (suc d) (up d eq)
-lemma-g-rel d eq (L.cong↑ {w = w} {v = v} p) =
-  trans (refl' (gᵈ-↑ d w))
-  (trans (lemma-g-rel (suc d) (up d eq) p)
-         (refl' (Eq.sym (gᵈ-↑ d v))))
-  where open PB (4 VRel,_===_) using (refl')
-lemma-g-rel d eq (L.comm₃ L.ω-gate y) =
-  lemma-apart d (gᵈ-above (₃₊ d) y (up₃ d eq))
+open FromCycles (4 VRel,_===_)
+  (λ i p → axiom (srel (srel (order i p))))
+  (λ i p → axiom (srel (srel (near i p))))
+  (λ i p → axiom (srel (srel (far i p))))
+  (λ i j p q → axiom (srel (srel (apart i j p q))))
+  public using (lemma-g-rel)
 
 ------------------------------------------------------------------------
 -- A gate one wire up, between swaps
