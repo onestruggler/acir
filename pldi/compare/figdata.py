@@ -89,6 +89,14 @@ print('totals (16 rows, Table 1 folders)', tot)
 for key, (fa, fl) in FIG_LOC.items():
     print(f"panel (a) {key}: {fa['folder']} {fa['code']} and {fl['folder']} {fl['code']} "
           f"in place of {loc[key]['agda']['code']} and {loc[key]['lean']['code']}")
+print('Agda-Lean pairs (th4.json, one machine; Lean/Agda check-time ratio):')
+for a, l in (('Agda Tietze', 'Lean paper'), ('Agda RS', 'Lean RS'), ('Agda XC4', 'Lean XC4')):
+    fa, fl = th4[a], th4[l]
+    ta, tl = fa['check']['seconds'], fl['check']['seconds']
+    nolib = (f"; Lean without Lib/: {fl['code'] - fl['lib_code']} code, "
+             f"{fl['chars'] - fl['lib_chars']} chars" if 'lib_code' in fl else '')
+    print(f"  {a} / {l}: {fa['files']} / {fl['files']} modules, code {fa['code']} / {fl['code']}, "
+          f"chars {fa['chars']} / {fl['chars']}, check {ta} / {tl} s, ratio {tl / ta:.2f}{nolib}")
 print('Lean shorter in', sum(1 for r in lines[:-1] if r[4] < r[3]), 'of 16 rows; longer in',
       [r[1] for r in lines[:-1] if r[4] > r[3]])
 print('Lean faster in', [r[1] for r in lines[:-1] if r[6] < r[5]])

@@ -51,14 +51,20 @@ python mkfig.py ../figures/compare.tex  # the pgfplots figure
 
 ## One proof in both assistants (the Toffoli–Hadamard row of `fig:compare`(a), and the text)
 
+Three Agda–Lean pairs, all in `th4.json`.
+
 Table 1's two Toffoli–Hadamard proofs take different routes, so panel (a)
 shows, in their place (`*`), `CCX+H-3qubit-RS`, a second Agda proof,
 against `QCert/ToffoliHadamardRS`, its translation to Lean.  The text also
 compares the 46 modules of `CCX+H-3qubit-Tietze` (Table 1's Agda proof) that
 `QCert/ToffoliHadamardTietze` translates with the same Agda modules (the
-translation stops before `TwoLevel`; its README says what it covers).
+translation stops before `TwoLevel`; its README says what it covers).  And
+it compares `XCXCCX-4bit`, the four-bit theorem of Section 6, with
+`QCert/XCXCCX4bit`, its translation to Lean, whose `Lib/` translates what the
+Agda imports from the shared library (Symmetric, Alternating, the PROP layer,
+the engine); `th4.py` counts `Lib/` separately (`lib_code`, `lib_chars`).
 
-`th4.py` measures the first pair and Table 1's (code lines as `loc.py`
+`th4.py` measures these pairs and Table 1's (code lines as `loc.py`
 counts them, code characters, the non-blank characters outside comments,
 which do not depend on how a generator lays out its output, and check
 times as `agdatime.py` and `leantime.py` time a row: an untimed check
@@ -70,18 +76,24 @@ the translated modules, module by module, the same way, for the text.  In
 WSL, under the Agda lock (`th4.py` takes `check.sh`'s Lean lock itself):
 
 ```sh
-python3 th4.py ../.. th4.json                 # about 15 minutes
+python3 th4.py ../.. th4.json                 # about 25 minutes
 TH4_LINES=1 python3 th4.py ../.. th4.json     # recount, keep the times
+TH4_FORMS='Agda XC4,Lean XC4' python3 th4.py ../.. th4.json   # retime some forms
 python3 part.py ../.. part.json               # seconds
 ```
 
-`th4.json` is the measurement of 8 November 2026 (revision `ede28959`) on
-the Intel Core i5-14400, with no other proof assistant running; Table 1's
-times are from the i5-13400TEF, so its Toffoli–Hadamard row differs (111 and
-135 s there, 103 and 125 s here). Logs go to `~/th4-logs/`.  `part.json` is
-the count of 8 November 2026 at revision `1d8511eb`.  Panel (b) and the
-totals of `tab:compare` keep Table 1's folders; rerun `figdata.py` and
-`mkfig.py` after `th4.py`.
+Agda is run with `--library-file=~/acir-agdatime.libraries`, as
+`agdatime.py` runs it (`TH4_LIBS`).  `th4.json` is the measurement of
+10 November 2026 (revision `4d91b890`) on the Intel Core i5-13400TEF, the
+machine of Table 1's times, with no other proof assistant running.  There
+Table 1's Toffoli–Hadamard row took 111.17 and 134.91 s (Agda, Lean, timed
+within the whole build) and 110.95 and 118.48 s timed folder by folder here.
+`th4-run1.json` keeps the first measurement of the two Toffoli–Hadamard pairs,
+on 8 November 2026 (revision `ede28959`) on an Intel Core i5-14400 (103 and
+125 s, 44 and 161 s).  Logs go to `~/th4-logs/`.  `part.json` is the count
+of 8 November 2026 at revision `1d8511eb`.  Panel (b) and the totals of
+`tab:compare` keep Table 1's folders; rerun `figdata.py` and `mkfig.py` after
+`th4.py` (`figdata.py` prints the three pairs).
 
 ## Execution benchmark (panel (c))
 

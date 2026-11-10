@@ -1,18 +1,30 @@
-"""The four formalizations of Amy, Ross and Wesley [2024]: code lines and
-check times, all measured on one machine.
+"""Agda-Lean pairs measured on one machine: the four formalizations of Amy,
+Ross and Wesley [2024], and the four-bit reversible circuits in both
+assistants.  Code lines and check times.
 
     python3 th4.py ../.. th4.json      # in WSL, under the Agda lock
     TH4_DRY=1 python3 th4.py ../.. x   # print the code counts only
     TH4_LINES=1 python3 th4.py ../.. th4.json   # recount, keep the times
+    TH4_FORMS='Agda XC4,Lean XC4' python3 th4.py ../.. th4.json
+                                       # time these forms only, keep the rest
 
-The four are two Agda-Lean pairs:
+There are three Agda-Lean pairs:
 
   * Agda Examples/Groups/CCX+H-3qubit-Tietze, the row of Table 1, against
     Lean QCert/ToffoliHadamard, written from the paper (Figure 6's row);
   * Agda Examples/Groups/CCX+H-3qubit-RS, a second Agda proof (by
     translation into Li-Ross-Selinger's presentations), against Lean
     QCert/ToffoliHadamardRS, its translation to Lean: one proof in two
-    assistants.
+    assistants;
+  * Agda Examples/Groups/XCXCCX-4bit, the four-bit theorem of Section 6,
+    against Lean QCert/XCXCCX4bit, its translation to Lean (whose Lib/
+    holds what the Agda imports from shared libraries: the symmetric and
+    alternating groups, the PROP layer, the engine; counted separately as
+    lib_*).
+
+Agda is run with the library file TH4_LIBS (default
+~/acir-agdatime.libraries, agdatime.py's: the standard library and this
+checkout's EucDomain).
 
 Code lines are counted as loc.py counts them (tracked files, blank lines
 and comments excluded; `generated` by loc.kind), and so are code
@@ -37,6 +49,7 @@ import collections, fcntl, glob, json, os, platform, re, subprocess, sys, thread
 ROOT = os.path.abspath(sys.argv[1])
 OUT = sys.argv[2]
 HEAP = os.environ.get('TH4_HEAP', '6G')
+LIBS = os.path.expanduser(os.environ.get('TH4_LIBS', '~/acir-agdatime.libraries'))
 LENV = dict(os.environ, LEAN_NUM_THREADS='2',
             PATH=os.path.expanduser('~/.elan/bin') + ':' + os.environ['PATH'])
 
@@ -52,6 +65,8 @@ FORMS = [
     ('Lean paper', 'lean', 'Lean/QCert/ToffoliHadamard'),
     ('Agda RS', 'agda', 'Examples/Groups/CCX+H-3qubit-RS'),
     ('Lean RS', 'lean', 'Lean/QCert/ToffoliHadamardRS'),
+    ('Agda XC4', 'agda', 'Examples/Groups/XCXCCX-4bit'),
+    ('Lean XC4', 'lean', 'Lean/QCert/XCXCCX4bit'),
 ]
 
 
@@ -88,17 +103,22 @@ def chars(path, lang):
 
 
 def lines(lang, folder):
-    tot, gen, ng = collections.Counter(), collections.Counter(), 0
+    tot, gen, lib, ng, nl = collections.Counter(), collections.Counter(), collections.Counter(), 0, 0
     fs = sources(lang, folder)
     for f in fs:
         c = dict(count(f, lang), chars=chars(f, lang))
         tot.update(c)
         if kind(f) == 'generated':
             gen.update(c); ng += 1
-    return dict(files=len(fs), code=tot['code'], comment=tot['comment'],
-                generated_files=ng, generated_code=gen['code'],
-                written_code=tot['code'] - gen['code'],
-                chars=tot['chars'], generated_chars=gen['chars'])
+        if '/Lib/' in f.replace(os.sep, '/'):
+            lib.update(c); nl += 1
+    rec = dict(files=len(fs), code=tot['code'], comment=tot['comment'],
+               generated_files=ng, generated_code=gen['code'],
+               written_code=tot['code'] - gen['code'],
+               chars=tot['chars'], generated_chars=gen['chars'])
+    if nl:   # translations of shared libraries kept inside the folder
+        rec.update(lib_files=nl, lib_code=lib['code'], lib_chars=lib['chars'])
+    return rec
 
 
 REAL = os.path.realpath(ROOT)
@@ -157,8 +177,8 @@ def agda_check(tag, mods, log):
         fh.write(f'module {root} where\n' + ''.join(f'import {m}\n' for m in mods))
     t0 = time.monotonic()
     with open(log, 'w') as fh:
-        rc = subprocess.run(['/usr/bin/time', '-f', 'maxrss %M KB', 'agda', '--profile=modules',
-                             root + '.agda', '+RTS', f'-M{HEAP}', '-RTS'],
+        rc = subprocess.run(['/usr/bin/time', '-f', 'maxrss %M KB', 'agda', f'--library-file={LIBS}',
+                             '--profile=modules', root + '.agda', '+RTS', f'-M{HEAP}', '-RTS'],
                             cwd=ROOT, stdout=fh, stderr=subprocess.STDOUT).returncode
     secs = time.monotonic() - t0
     os.remove(path)
@@ -239,14 +259,25 @@ def main():
     if os.environ.get('TH4_LINES'):         # recount, keep the run and the times
         old = json.load(open(OUT, encoding='utf-8'))
         for name, f in rec['forms'].items():
-            f['check'] = old['forms'][name]['check']
+            if 'check' in old['forms'].get(name, {}):
+                f['check'] = old['forms'][name]['check']
         old['forms'] = rec['forms']
         json.dump(old, open(OUT, 'w', encoding='utf-8'), indent=1, ensure_ascii=False)
         return
+    only = [s.strip() for s in os.environ.get('TH4_FORMS', '').split(',') if s.strip()]
+    if only:                                # time these forms, keep the others' times
+        old = json.load(open(OUT, encoding='utf-8'))
+        for name, f in rec['forms'].items():
+            if name not in only and 'check' in old['forms'].get(name, {}):
+                f['check'] = old['forms'][name]['check']
+        rec['run'] = dict(old['run'], **{'retimed ' + rec['run']['date']: dict(rec['run'], forms=only)})
     lock =open(os.path.expanduser('~/.qcert-build-1.lock'), 'w')
     fcntl.flock(lock, fcntl.LOCK_EX)
     for name, lang, folder in FORMS:
+        if only and name not in only:
+            continue
         t = time_agda(name, folder) if lang == 'agda' else time_lean(name, folder)
+        t['cpu'] = cpu
         rec['forms'][name]['check'] = t
         json.dump(rec, open(OUT, 'w', encoding='utf-8'), indent=1, ensure_ascii=False)
         f = rec['forms'][name]

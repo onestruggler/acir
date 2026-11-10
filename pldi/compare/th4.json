@@ -1,10 +1,10 @@
 {
  "run": {
-  "date": "2026-11-08 07:59 +0100",
-  "revision": "ede28959",
-  "cpu": "Intel(R) Core(TM) i5-14400",
-  "logical_cpus": 8,
-  "mem_gib": 11.9,
+  "date": "2026-11-10 14:27 +0800",
+  "revision": "4d91b890",
+  "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF",
+  "logical_cpus": 16,
+  "mem_gib": 26.4,
   "agda": "Agda version 2.8.0",
   "rts": "-M6G",
   "lean": "Lean (version 4.30.0, x86_64-unknown-linux-gnu, commit d024af099ca4bf2c86f649261ebf59565dc8c622, Release)"
@@ -22,37 +22,38 @@
    "chars": 1911789,
    "generated_chars": 1614159,
    "check": {
-    "seconds": 103.35,
-    "wall_s": 185.97,
+    "seconds": 110.95,
+    "wall_s": 168.55,
     "rc": 0,
     "modules": 203,
     "profiled": 202,
-    "max_rss_kb": 2839952,
-    "load_start": 1.09,
+    "max_rss_kb": 3017956,
+    "load_start": 1.0,
     "foreign_cpu_s": 0.0,
     "slowest": [
      [
       "Examples.Groups.CCX+H-3qubit-Tietze.TwoLevel",
-      3131
+      3372
      ],
      [
       "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.EncodingMatrices",
-      2734
+      2969
      ],
      [
       "Examples.Groups.CCX+H-3qubit-Tietze.Soundness",
-      2703
+      2921
      ],
      [
       "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.DecodingMatrices",
-      2665
+      2878
      ],
      [
       "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Model",
-      2651
+      2740
      ]
     ],
-    "date": "2026-11-08 08:03"
+    "date": "2026-11-10 14:33",
+    "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF"
    }
   },
   "Lean paper": {
@@ -67,12 +68,13 @@
    "chars": 426532,
    "generated_chars": 369504,
    "check": {
-    "seconds": 124.62,
+    "seconds": 118.48,
     "rc": 0,
     "modules": 20,
-    "load_start": 1.34,
+    "load_start": 1.07,
     "foreign_cpu_s": 0.0,
-    "date": "2026-11-08 08:05"
+    "date": "2026-11-10 14:35",
+    "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF"
    }
   },
   "Agda RS": {
@@ -87,37 +89,38 @@
    "chars": 182301,
    "generated_chars": 90457,
    "check": {
-    "seconds": 44.19,
-    "wall_s": 83.42,
+    "seconds": 48.32,
+    "wall_s": 80.4,
     "rc": 0,
     "modules": 39,
     "profiled": 39,
-    "max_rss_kb": 2118032,
-    "load_start": 1.19,
+    "max_rss_kb": 2041128,
+    "load_start": 1.32,
     "foreign_cpu_s": 0.0,
     "slowest": [
      [
       "Examples.Groups.CCX+H-3qubit-RS.Soundness.Figure7b",
-      8016
+      8343
      ],
      [
       "Examples.Groups.CCX+H-3qubit-RS.TableMatrices",
-      5579
+      6086
      ],
      [
       "Examples.Groups.CCX+H-3qubit-RS.PresentationO8",
-      4901
+      5472
      ],
      [
       "Examples.Groups.CCX+H-3qubit-RS.Circuits.Iso2",
-      3238
+      3453
      ],
      [
       "Examples.Groups.CCX+H-3qubit-RS.PresentationH",
-      2822
+      3058
      ]
     ],
-    "date": "2026-11-08 08:07"
+    "date": "2026-11-10 14:37",
+    "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF"
    }
   },
   "Lean RS": {
@@ -132,12 +135,83 @@
    "chars": 191589,
    "generated_chars": 82744,
    "check": {
-    "seconds": 161.28,
+    "seconds": 164.29,
     "rc": 0,
     "modules": 38,
-    "load_start": 1.12,
+    "load_start": 1.08,
     "foreign_cpu_s": 0.0,
-    "date": "2026-11-08 08:10"
+    "date": "2026-11-10 14:40",
+    "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF"
+   }
+  },
+  "Agda XC4": {
+   "folder": "Examples/Groups/XCXCCX-4bit",
+   "lang": "agda",
+   "files": 40,
+   "code": 13135,
+   "comment": 1631,
+   "generated_files": 12,
+   "generated_code": 5623,
+   "written_code": 7512,
+   "chars": 421726,
+   "generated_chars": 165328,
+   "check": {
+    "seconds": 84.91,
+    "wall_s": 98.24,
+    "rc": 0,
+    "modules": 40,
+    "profiled": 40,
+    "max_rss_kb": 1934664,
+    "load_start": 1.49,
+    "foreign_cpu_s": 0.0,
+    "slowest": [
+     [
+      "Examples.Groups.XCXCCX-4bit.CCerts",
+      32813
+     ],
+     [
+      "Examples.Groups.XCXCCX-4bit.KFaithful",
+      14950
+     ],
+     [
+      "Examples.Groups.XCXCCX-4bit.BaseComm",
+      9150
+     ],
+     [
+      "Examples.Groups.XCXCCX-4bit.Four",
+      4890
+     ],
+     [
+      "Examples.Groups.XCXCCX-4bit.Width3",
+      3736
+     ]
+    ],
+    "date": "2026-11-10 14:42",
+    "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF"
+   }
+  },
+  "Lean XC4": {
+   "folder": "Lean/QCert/XCXCCX4bit",
+   "lang": "lean",
+   "files": 47,
+   "code": 12177,
+   "comment": 2538,
+   "generated_files": 15,
+   "generated_code": 7946,
+   "written_code": 4231,
+   "chars": 467667,
+   "generated_chars": 314418,
+   "lib_files": 7,
+   "lib_code": 972,
+   "lib_chars": 36625,
+   "check": {
+    "seconds": 276.84,
+    "rc": 0,
+    "modules": 47,
+    "load_start": 1.1,
+    "foreign_cpu_s": 0.0,
+    "date": "2026-11-10 14:47",
+    "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF"
    }
   }
  }

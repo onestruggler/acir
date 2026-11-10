@@ -1,0 +1,144 @@
+{
+ "run": {
+  "date": "2026-11-08 07:59 +0100",
+  "revision": "ede28959",
+  "cpu": "Intel(R) Core(TM) i5-14400",
+  "logical_cpus": 8,
+  "mem_gib": 11.9,
+  "agda": "Agda version 2.8.0",
+  "rts": "-M6G",
+  "lean": "Lean (version 4.30.0, x86_64-unknown-linux-gnu, commit d024af099ca4bf2c86f649261ebf59565dc8c622, Release)"
+ },
+ "forms": {
+  "Agda Tietze": {
+   "folder": "Examples/Groups/CCX+H-3qubit-Tietze",
+   "lang": "agda",
+   "files": 203,
+   "code": 28629,
+   "comment": 733,
+   "generated_files": 76,
+   "generated_code": 22572,
+   "written_code": 6057,
+   "chars": 1911789,
+   "generated_chars": 1614159,
+   "check": {
+    "seconds": 103.35,
+    "wall_s": 185.97,
+    "rc": 0,
+    "modules": 203,
+    "profiled": 202,
+    "max_rss_kb": 2839952,
+    "load_start": 1.09,
+    "foreign_cpu_s": 0.0,
+    "slowest": [
+     [
+      "Examples.Groups.CCX+H-3qubit-Tietze.TwoLevel",
+      3131
+     ],
+     [
+      "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.EncodingMatrices",
+      2734
+     ],
+     [
+      "Examples.Groups.CCX+H-3qubit-Tietze.Soundness",
+      2703
+     ],
+     [
+      "Examples.Groups.CCX+H-3qubit-Tietze.Repaired.DecodingMatrices",
+      2665
+     ],
+     [
+      "Examples.Groups.CCX+H-3qubit-Tietze.MissingK.Model",
+      2651
+     ]
+    ],
+    "date": "2026-11-08 08:03"
+   }
+  },
+  "Lean paper": {
+   "folder": "Lean/QCert/ToffoliHadamard",
+   "lang": "lean",
+   "files": 20,
+   "code": 4401,
+   "comment": 758,
+   "generated_files": 6,
+   "generated_code": 2888,
+   "written_code": 1513,
+   "chars": 426532,
+   "generated_chars": 369504,
+   "check": {
+    "seconds": 124.62,
+    "rc": 0,
+    "modules": 20,
+    "load_start": 1.34,
+    "foreign_cpu_s": 0.0,
+    "date": "2026-11-08 08:05"
+   }
+  },
+  "Agda RS": {
+   "folder": "Examples/Groups/CCX+H-3qubit-RS",
+   "lang": "agda",
+   "files": 39,
+   "code": 7161,
+   "comment": 900,
+   "generated_files": 9,
+   "generated_code": 4332,
+   "written_code": 2829,
+   "chars": 182301,
+   "generated_chars": 90457,
+   "check": {
+    "seconds": 44.19,
+    "wall_s": 83.42,
+    "rc": 0,
+    "modules": 39,
+    "profiled": 39,
+    "max_rss_kb": 2118032,
+    "load_start": 1.19,
+    "foreign_cpu_s": 0.0,
+    "slowest": [
+     [
+      "Examples.Groups.CCX+H-3qubit-RS.Soundness.Figure7b",
+      8016
+     ],
+     [
+      "Examples.Groups.CCX+H-3qubit-RS.TableMatrices",
+      5579
+     ],
+     [
+      "Examples.Groups.CCX+H-3qubit-RS.PresentationO8",
+      4901
+     ],
+     [
+      "Examples.Groups.CCX+H-3qubit-RS.Circuits.Iso2",
+      3238
+     ],
+     [
+      "Examples.Groups.CCX+H-3qubit-RS.PresentationH",
+      2822
+     ]
+    ],
+    "date": "2026-11-08 08:07"
+   }
+  },
+  "Lean RS": {
+   "folder": "Lean/QCert/ToffoliHadamardRS",
+   "lang": "lean",
+   "files": 38,
+   "code": 5672,
+   "comment": 1064,
+   "generated_files": 8,
+   "generated_code": 2785,
+   "written_code": 2887,
+   "chars": 191589,
+   "generated_chars": 82744,
+   "check": {
+    "seconds": 161.28,
+    "rc": 0,
+    "modules": 38,
+    "load_start": 1.12,
+    "foreign_cpu_s": 0.0,
+    "date": "2026-11-08 08:10"
+   }
+  }
+ }
+}
