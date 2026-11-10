@@ -6,6 +6,11 @@
 |---|---|---|
 | `Lib/Symmetric.lean` | what is used of `Examples/Groups/Symmetric` (Syntactics, Semantics, Interpretation, Soundness, Presentation, Surjectivity) | built |
 | `Coxeter.lean` | `Coxeter.agda` (with the generic part of `Symmetric/CoxeterFrames`) | built |
+| `Lib/Alternating.lean` | what is used of `Examples/Groups/Alternating` (Parity, Semantics) | built |
+| `EvenRS.lean` | `EvenRS.agda` | built |
+| `NFLib.lean` | `NFLib.agda` | built |
+| `EvenWord.lean` | `EvenWord.agda` | built |
+| `LabelEngine.lean` | `LabelEngine.agda` | built |
 
 ## Representation (read this before using `Coxeter`)
 
@@ -68,6 +73,88 @@
 * Not reproduced (only the Agda's own proof of `stab` used them): `stripN`,
   `strip-ok`, `liftW`, `⟦liftW⟧`, `cyc`, `outs`, `act-↑-0`, `act-↑-suc`.
 
+
+## Signs and even permutations (`Lib/Alternating`)
+
+* `parity (w : Word A) : Bool := decide (FreeMonoid.length w % 2 = 1)`
+  (`parity_one`, `parity_of`, `parity_mul : parity (w * v) = (parity w ^^ parity v)`,
+  `parity_map`).
+* `sign (π : Equiv.Perm (Fin n)) : Bool := decide (Equiv.Perm.sign π = -1)`,
+  i.e. **Mathlib's sign** (not the Agda's parity of Symmetric's word):
+  `sign_eq_false_iff`, `sign_eq_true_iff`, `sign_of w π h : sign π = parity w`
+  (from `∀ k, perm w k = π k`), `sign_perm`, `sign_letter`, `sign_cong`,
+  `sign_comp : sign (π.trans ρ) = (sign π ^^ sign ρ)` (the Agda's `sign-∘`),
+  `sign_id`, `sign_one`, `sign_flip`.  Never evaluate `sign` on a numeral
+  permutation; use `sign_of`.
+* `Alt n := ↥(alternatingGroup (Fin n))`; `Alt.perm a`, `Alt.even a :
+  sign (Alt.perm a) = false`, `Alt.mk π h`, `Alt.ext`.  **Order**: Mathlib's
+  group on `alternatingGroup` is in operator order, so the Agda's
+  `a ∙ᴬ b` (diagram order, `∘ₚ`) is `b * a` (`Alt.perm_mul`); likewise the
+  Agda's `Permutation′-group` is `Equiv.Perm (Fin N)` with `π ∘ₚ ρ = ρ * π`.
+  The MainTheorem agent decides how to state presentations (the circuits'
+  diagram-order words against operator-order groups: `MulOpposite`, or
+  `perm` vs `(perm w).symm`; `Symmetric.presentation` uses
+  `FreeMonoid.lift sem w = (perm w).symm`).
+
+## EvenRS
+
+* `EvenRS.G N = SG N`; `letter n d q = ⟨d, q⟩`; `s d q` is `Symmetric.s d q`.
+* `structure Sch (N)` with constructor **`Sch.γ c d p q`** (fields `c d p q`,
+  `p : 1 ≤ d`, `q : 2 + d ≤ N`, proofs); `DecidableEq`.  Match on
+  `⟨false, 3, _, _⟩` etc.  `y N c d p q := FreeMonoid.of (Sch.γ c d p q)`.
+* `f N : Sch N → Word (G N)` (`f ⟨false,d,_,q⟩ = s d q * s 0 _`,
+  `f ⟨true,d,_,q⟩ = s 0 _ * s d q`); the Agda's `(f ʷ)` is
+  `FreeMonoid.lift (f N)`.
+* `γw N c d q` (the Agda's `γʷ`), `RSRel N` with constructors `order c d p q`,
+  `braid₀ c q`, `braid c d p q` (`q : 3 + d ≤ N`), `far₀ c e p q`,
+  `far c d e p q r`, with `far_lo N q r`, `far_pos p q` (left-associated
+  products: `y … * y … * y …`).
+* `h N c g = (γw N c g.1 g.2, !c)`, `rs N c w = hstar (h N) c w` (with
+  `rs_one`, `rs_of`, `rs_mul`), `Sim N` (the Agda's `_~_`), `h_wd`,
+  `h_f_gen`, `rs_complete N u v e`, `s0w`, `rep`, `step`, `rs_rep`,
+  `rs_approx` (the Agda's `rs-≈`), `rs_sem`, `rs_sound`, `rs_sound_sem`.
+  In `rs_rep … rs_sound_sem` the `N` is implicit.
+
+## NFLib
+
+* `step`, `part`, `ts`, `weight`, `part_cong`, `ts_cong`, `part_length`,
+  `ts_length`, `nth_in₁`/`nth_in₂` (`‼-in₁/₂`), `nth_append` (`‼-++`),
+  `nth_total` (returns `{x // xs[k]? = some x}`), `nth_ts : (ts S)[k]? = some x
+  → S x = decide (k < weight S)`, `ts_distinct : (ts S).Nodup`, `frameL`,
+  `frameL_act`, `weight_sum`, `weight_perm π S : weight (fun i => S (π i)) =
+  weight S`, `sign_liftN`, `sign_by_liftN`, `sign_sandwich ρ π : sign
+  (ρ.trans (π.trans ρ)) = sign π`.  Also `mem_part₁`/`mem_part₂`,
+  `part_nodup₁/₂`.  `avoid?`/`distinct?` are `decide`.
+
+## EvenWord
+
+* `EvenWord.Coset`: `Sch`, `f`, `rs` re-exported (`Coset.Sch 8` works),
+  `rs_parity N c w : (rs N c w).2 = (c ^^ parity w)`, `coset_even`,
+  `go_sem N π`, `coset_sign`, `coset_alt`, `syms N a` (`irreducible_def`,
+  with `syms_def`), `sym_sem N a : ∀ i, perm (FreeMonoid.lift (f N) (syms N a)) i
+  = Alt.perm a i`.
+* `EvenWord.Lift.lift_sign j m w pw r ρ e` (the Agda's `r ∘ₚ (ρ ∘ₚ r)` is
+  `r.trans (ρ.trans r)`).
+
+## LabelEngine
+
+* Parameters explicit, in the Agda's order: `eqLab c3 cok mul kok` (the
+  Agda's `_≟ᴸ_ c3 cok mul kok`).  `Move L` with constructors
+  `Move.H i`, `Hi i`, `C i`, `I i z`, `K i`, `Ki i x y` (qualify them in long
+  lists: `LabelEngine.Move.H 3`).  `localStep` (Agda `local`), `index`,
+  `atPos` (Agda `at`), `step`, `eqL`, `run`, `check eqLab c3 cok mul kok ms l r : Bool`.
+* Soundness: `Xs X : List L → Word A` (`Xs X (x :: xs) = X x * Xs X xs`),
+  `Xs_append` (an equation), `Xs_append'` (as a derivation),
+  `check_sound eq_sound inv conj klein ms l r h : Derivable Γ (Xs X l) (Xs X r)`
+  with `inv : ∀ x, Derivable Γ (X x * X x) 1`,
+  `conj : ∀ x y, cok x y = true → Derivable Γ (X x * X y * X x) (X (c3 x y))`
+  (left-associated), `klein : ∀ x y, kok x y = true → Derivable Γ (X x * X y) (X (mul x y))`,
+  `eq_sound : ∀ x y, eqLab x y = true → x = y`.  A check closes by
+  `decide` (tested on a toy alphabet).
+
 ## Build times
 
-`Lib/Symmetric` about 16 s, `Coxeter` about 5 s (given Mathlib).
+Every module of this part checks in under 20 s (given Mathlib):
+`Lib/Symmetric` ~16 s, `Coxeter` ~5 s, `Lib/Alternating` ~10 s, `EvenRS`
+~10 s, `NFLib` ~15 s, `EvenWord` ~5 s, `LabelEngine` ~10 s.  Axioms: only
+`propext`, `Classical.choice`, `Quot.sound`.
