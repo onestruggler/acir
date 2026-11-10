@@ -33,7 +33,7 @@ open import Examples.Groups.Alt16-RevCir.Translation
         ; ω₁₂ ; ω₁₃ )
 open import Examples.Groups.Alt16-RevCir.Theory using (module T)
 open import Examples.Groups.Alt16-RevCir.FourWire using (eqn→)
-open import Examples.Groups.Alt16-RevCir.Four.Part15
+open import Examples.Groups.Alt16-RevCir.Four.Part14
 
 ------------------------------------------------------------------------
 -- The cycles have order three

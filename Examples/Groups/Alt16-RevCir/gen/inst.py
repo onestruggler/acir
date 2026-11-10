@@ -151,8 +151,10 @@ def shape_reps(relators):
         if nm == 'order':
             kind, idx, fm = 'order', (9,), {9: 0}
         elif nm.startswith('near'):
-            i, j = map(int, nm[4:].split('_'))
-            kind, idx, fm = 'near', (i, j), {i: 0, j: 0}
+            parts = nm[4:].split('_')
+            i, j = int(parts[0]), int(parts[1])
+            fi, fj = (int(parts[2][1]), int(parts[2][2])) if len(parts) > 2 else (0, 0)
+            kind, idx, fm = 'near', (i, j), {i: fi, j: fj}
         elif nm.startswith('far'):
             i, k, j = map(int, nm[3:].split('_'))
             kind, idx, fm = 'far', (i, j, k), {i: 0, j: 0, k: 0}

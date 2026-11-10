@@ -39,6 +39,11 @@ def targets():
     T['F'] = (FORMS[9][0], FORMS[9][1])
     for i in range(13):
         T['near%d_%d' % (i, i + 1)] = (OM[i] + OM[i + 1] + OM[i], OM[i + 1] * 2)
+        for fi in range(2):
+            for fj in range(2):
+                if (fi, fj) != (0, 0):
+                    A, B = FORMS[i][fi], FORMS[i + 1][fj]
+                    T['near%d_%d_f%d%d' % (i, i + 1, fi, fj)] = (A + B + A, B * 2)
     for i in range(12):
         T['far%d_%d_%d' % (i, i + 2, i + 1)] = (OM[i] + OM[i + 2] + OM[i], OM[i + 2] + OM[i] + OM[i + 1])
     for i in range(14):

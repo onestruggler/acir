@@ -242,16 +242,18 @@ def check(lhs, rhs, steps):
 def search(start, goal=(), max_states=600000, time_limit=300, wdepth=0.05,
            maxlen=None, expand=True, log=None):
     """Best-first reduction of `start` to `goal` (both normalised), bounded:
-    at most `max_states` words are ever stored (a word stores its parent
-    and the index of the move that made it, nothing else; the heap holds
-    each stored word once), and the search stops after `time_limit`
-    seconds.  Returns (steps or None, expansions, seconds, why)."""
+    at most `max_states` words are ever stored (a word, as bytes, stores its
+    parent and the index of the move that made it, nothing else; the heap
+    holds each stored word once: about 320 bytes a word), and the search
+    stops after `time_limit` seconds.  Returns (steps or None, expansions,
+    seconds, why)."""
     s0, st0 = normalise(start)
     g0, _ = normalise(goal)
     if maxlen is None:
         maxlen = len(s0) + 8
-    parent = {s0: None}
-    heap = [(len(s0), 0, s0)]
+    b0, gb = bytes(s0), bytes(g0)
+    parent = {b0: None}
+    heap = [(len(s0), 0, b0)]
     t0 = time.time()
     n = 0
     full = False
@@ -260,36 +262,38 @@ def search(start, goal=(), max_states=600000, time_limit=300, wdepth=0.05,
         if time.time() - t0 > time_limit:
             why = 'time limit'
             break
-        pr, d, w = heapq.heappop(heap)
-        if w == g0:
+        pr, d, wb = heapq.heappop(heap)
+        if wb == gb:
             path = []
-            while parent[w] is not None:
-                pw, k = parent[w]
-                w2, rec = moves(pw, expand)[k]
+            while parent[wb] is not None:
+                pb, k = parent[wb]
+                w2, rec = moves(tuple(pb), expand)[k]
                 path.append((rec, normalise(w2)[1]))
-                w = pw
+                wb = pb
             steps = list(st0)
             for rec, nst in reversed(path):
                 steps.append(rec)
                 steps.extend(nst)
             return steps, n, time.time() - t0, 'found'
+        w = tuple(wb)
         n += 1
         if log and n % 2000 == 0:
             log('  expanded %d, stored %d%s, len %d depth %d, %.0fs'
                 % (n, len(parent), ' (full)' if full else '', len(w), d, time.time() - t0))
         if full:
-            continue          # only words stored before the cap are expanded... no new ones
+            continue          # only the words stored before the cap are looked at
         for k, (w2, rec) in enumerate(moves(w, expand)):
             w3 = normalise(w2)[0]
-            if len(w3) > maxlen or w3 in parent:
+            b3 = bytes(w3)
+            if len(w3) > maxlen or b3 in parent:
                 continue
-            parent[w3] = (w, k)
-            heapq.heappush(heap, (len(w3) + wdepth * (d + 1), d + 1, w3))
+            parent[b3] = (wb, k)
+            heapq.heappush(heap, (len(w3) + wdepth * (d + 1), d + 1, b3))
             if len(parent) >= max_states:
                 full = True
                 why = 'state cap'
                 break
-        if full and g0 in parent:
+        if full and gb in parent:
             continue
         if full:
             break
