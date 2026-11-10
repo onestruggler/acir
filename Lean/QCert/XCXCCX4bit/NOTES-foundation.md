@@ -76,6 +76,13 @@ Use `open QCert QCert.Circuit CircuitProp IndepProp Engine` (and the
   `same n w v = true` / `eqF … = true` by `decide +kernel`.  Agda name map:
   `≐-refl/sym/trans` → `feq_refl/feq_sym/feq_trans`, `⨾-cong` → `seq_cong`,
   `up-cong` → `up_cong`.  `sound : n ⊢ w ≈ v → sem w ≐ sem v`.
+  `Data.Vec`'s operations used downstream on states are in `Semantics`:
+  `Bits.head`, `Bits.tail`, `Bits.get` (`lookup`), `Bits.update`
+  (`x [ t ]%= f`), `Bits.append` with `x ++ y : Bits (k + m)` for
+  `x : Bits m`, `y : Bits k` (so `x ++ (b ∷ .nil) : Bits (1 + n)`, the width
+  of `Circuit.pad 1 w`), `Bits.cons_append`, `Bits.append_inj_left`
+  (`++-injectiveˡ`).  Checked: `semG (g.pad 1) (x ++ (b ∷ .nil)) =
+  semG g x ++ (b ∷ .nil)` holds by `rfl` for each gate after splitting `x`.
 * **Engine / Kit.**  `Eqn n := Engine.Eqn SRel n` (structure, constructor
   `Engine.Eqn.eqn`, fields `lhs`, `rhs`, `prf`), `symE`, `liftE`, `eqnW`
   (`eqnʷ`; both side conditions `rfl`), `Eqn.pad m e : Eqn (m + k)` (for
@@ -87,6 +94,16 @@ Use `open QCert QCert.Circuit CircuitProp IndepProp Engine` (and the
   Rules `r1E … r7E`, swap rules `σσE σXE σCXE σCCXE σσσE`.  The Agda's names
   `x⁼`, `CX²⁼`, `em=me⁼`, `cjX0-01⁼` are `xE`, `CXsqE`, `em_eq_meE`,
   `cjX0_01E`.
+* **Name clash `perm`.**  Kit's step `perm` (in `QCert.XCXCCX4bit`) and
+  the groups part's permutation `Coxeter.perm` clash: do not `open Coxeter`
+  wholesale in a module that writes derivations; `open Coxeter (SG tr)`,
+  `open Coxeter.Circuits (Pc)` and write `Coxeter.perm` (as `Width2`,
+  `Width3` do).
+* **Widths in statements.**  `4 ⊢ Circuit.pad 1 (shift σ * CCX * shift σ) ≈ …`
+  does not elaborate (`1 + (?m + 3) =?= 4` is not solved): write the width
+  as `(1 + 3) ⊢ …` or annotate the padded word (`(CCX : Circ 3)`).
+  `ax_at SRel.r5 1`, `pad₃ (Width3.complete₃ e) 1`, `nat₃ w`, `σInvσ 3`,
+  `lift σ_invol` all check against goals written that way.
 * **Commutation in `perm`.**  `Engine.comm` is `QCert.Minimality.Gen.apart`
   (disjoint wires) with soundness `QCert.Minimality.comm_apart`; the same
   as the Agda's `comm?` for gate sets without scalars (ours has none).
@@ -102,9 +119,30 @@ Use `open QCert QCert.Circuit CircuitProp IndepProp Engine` (and the
   `eqL`); `derive` takes `check … = true`.
 * `perm`'s commutation test is `Minimality.Gen.apart` (see above).
 
+## Width 2 and 3 (public API, used by Groups, NormalForm, CBase, …)
+
+`Width2.T`, `Width2.cox : Coxeter.Circuits.Coxeter 4 T (VRel SRel 2)`,
+`Width2.enc : Fin 4 → Bits 2`, `dec`, `dec_enc`, `T_act`, `tw`, `tw_ok`,
+`translate`, `translate_ok`, `complete₂`, `via`; the same names in `Width3`
+(at `8`, `Bits 3`), with `tw_X0 … tw_X2`, `ok_X0 … ok_X2`, and `complete₃`.
+`ByCoxeter.Via.Pc_sem k N T enc T_act p i`, `Via.translate tw`,
+`Via.translate_ok T tw tw_ok u`, `Via.complete k N T enc cox dec dec_enc
+T_act tw tw_ok e`.  `by2 l r (by decide +kernel) : Eqn (n + 2)` and
+`ofList_map` (`⟪map⟫`) in `Narrow2` (flat namespace).
+
 ## Build times
 
-(see the end of this file; filled in as modules are built)
+Every module of this part checks in under 15 s of its own (given Mathlib and
+the imports): `Lib/CircuitProp` ~10 s, `Lib/Engine` ~5 s, `Semantics` ~5 s,
+`Kit` ~5 s, `Involutions` 1.6 s (kernel 0.6 s), `Width2` ~3 s, `Width3`
+~8 s (elaboration 2.9 s, kernel 2.8 s).  Axioms of `Width3.complete₃`:
+`propext`, `Classical.choice`, `Quot.sound`.
 
-* `Lib/CircuitProp` ~10 s, `Lib/Engine` ~5 s, `Semantics` ~5 s, `Kit` ~5 s,
-  `Involutions` 1.6 s (type checking 0.6 s).
+## Generators
+
+`gen/common.py` parses the Agda's derivation text (`derive (lhs) (rhs)
+(steps) refl`) and writes the Lean step for step.  `mk_involutions.py` and
+`mk_width2.py` import and run the Agda's searches (`appA.py`, `width2.py`;
+about 15 s each) and assert that they find the derivations of the checked-in
+`Involutions.agda`, `Width2.agda`; `mk_width3.py` reads the Agda's saved
+`width3_lemmas.json`.  All three regenerate the Lean modules byte for byte.

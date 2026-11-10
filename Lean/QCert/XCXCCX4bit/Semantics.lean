@@ -42,6 +42,55 @@ inductive Bits : ℕ → Type
 
 @[inherit_doc] scoped infixr:67 " ∷ " => Bits.cons
 
+/-! ### Vector operations on states
+
+`Data.Vec`'s operations that the development applies to states, for `Bits`:
+`head`, `tail`, `lookup` (`Bits.get`), `x [ t ]%= f` (`Bits.update`) and
+`_++_` (`Bits.append`, written `x ++ y`; `x ++ (b ∷ .nil)` puts `b` on a new
+top wire, the state of `Circuit.pad 1 w`, and has width `1 + n`, as `pad`'s
+circuits). -/
+
+namespace Bits
+
+def head {n : ℕ} : Bits (n + 1) → Bool
+  | a ∷ _ => a
+
+def tail {n : ℕ} : Bits (n + 1) → Bits n
+  | _ ∷ x => x
+
+/-- The bit on wire `i` (`Data.Vec`'s `lookup`). -/
+def get : {n : ℕ} → Bits n → Fin n → Bool
+  | _, a ∷ _, ⟨0, _⟩ => a
+  | _, _ ∷ x, ⟨i + 1, h⟩ => get x ⟨i, Nat.lt_of_succ_lt_succ h⟩
+
+/-- The bit on wire `i` changed by `f` (`Data.Vec`'s `x [ i ]%= f`). -/
+def update : {n : ℕ} → Bits n → Fin n → (Bool → Bool) → Bits n
+  | _, a ∷ x, ⟨0, _⟩, f => f a ∷ x
+  | _, a ∷ x, ⟨i + 1, h⟩, f => a ∷ update x ⟨i, Nat.lt_of_succ_lt_succ h⟩ f
+
+/-- `x` below `y`: the wires of `y` on top of those of `x`. -/
+def append : {m k : ℕ} → Bits m → Bits k → Bits (k + m)
+  | _, _, .nil, y => y
+  | _, _, a ∷ x, y => a ∷ append x y
+
+instance {m k : ℕ} : HAppend (Bits m) (Bits k) (Bits (k + m)) := ⟨append⟩
+
+theorem cons_append {m k : ℕ} (a : Bool) (x : Bits m) (y : Bits k) :
+    (a ∷ x) ++ y = a ∷ (x ++ y) := rfl
+
+theorem nil_append {k : ℕ} (y : Bits k) : (Bits.nil ++ y : Bits (k + 0)) = y := rfl
+
+/-- `++-injectiveˡ`. -/
+theorem append_inj_left : ∀ {m k : ℕ} (x x' : Bits m) (y y' : Bits k),
+    x ++ y = x' ++ y' → x = x'
+  | _, _, .nil, .nil, _, _, _ => rfl
+  | _, _, a ∷ x, a' ∷ x', y, y', h => by
+    rw [cons_append, cons_append] at h
+    injection h with _ h₁ h₂
+    rw [h₁, append_inj_left x x' y y' h₂]
+
+end Bits
+
 /-- Functions on bit vectors. -/
 abbrev Fun (n : ℕ) : Type := Bits n → Bits n
 
