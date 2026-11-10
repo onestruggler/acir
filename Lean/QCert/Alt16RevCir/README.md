@@ -212,9 +212,18 @@ Collected from the module headers, which state each one where it occurs.
 ./check.sh QCert/Alt16RevCir/MainTheorem.lean
 ```
 
-`MainTheorem.lean` reaches all 54 modules of the folder.  Each module checks
-in about ten seconds or less on its own given its imports (Lean 4.30,
-Mathlib cached), about half of that the time of loading Mathlib; the
-fourteen generated parts form a chain of imports, as in the Agda, and so
-are checked one after the other.  The folder's build time against the
-Agda's is in `pldi/compare/th4.json` (the forms `Agda A16`, `Lean A16`).
+`MainTheorem.lean` reaches all 54 modules of the folder.  With its imports
+outside the folder built and its own build artifacts removed, the folder
+builds in 288 s (`LEAN_NUM_THREADS=2 lake build` of the 54 modules, wall
+time, 10 November 2026 on an Intel Core i5-13400TEF under WSL; Agda checks
+the 38 modules of `Alt16-RevCir` in 28 s there, the sum of its per-module
+times; `pldi/compare/th4.json`, the forms `Agda A16`, `Lean A16`).
+
+Most of that is not checking.  A module with the folder's imports and no
+content takes 4.0 to 4.5 s (Lean 4.30, Mathlib cached): the time of loading
+Mathlib, which every module pays, and the fourteen generated parts form a
+chain of imports, as in the Agda, so they are built one after the other.
+The per-module times of that build sum to 354 s, about 220 s of it loading.
+The slowest modules are `Lib/Symmetric` (13 s), the generated parts and
+`Four/Relations` (9 to 12 s each), `Semantics` (10 s), `Width3/Derivations`
+(9 s), `Bridge` (8 s) and `Lemmas` (7 s), the loading included.
