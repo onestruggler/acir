@@ -4,14 +4,14 @@
 -- The rules (1)–(7) are complete on one, two and three wires
 --
 -- Two circuits over this folder's gates on at most three wires that
--- are the same function on states are equal by the rules of Theory:
--- Propositions B.1–B.3 of "Block Normal Forms and Certified Equations
--- for Four-Bit Reversible Circuits", which
--- Examples.Groups.XCXCCX-4bit proves (Width1, Width2, Width3: the edge
--- Toffolis along the Gray code satisfy the Coxeter relations of S₈),
--- carried to this folder's gates by Relabel.  On three wires only the
--- rules (1)–(6) and the laws of the swap take part: rule (7) lives on
--- four.
+-- are the same function on states are equal by the rules of Theory,
+-- and the circuits on one, two and three wires present S₂, S₄ and S₈.
+-- Each width is a Reidemeister–Schreier step from Symmetric's
+-- presentation of the permutations of the states (BySymmetric), with
+-- the Coxeter relations between the edge Toffolis and the gates' words
+-- derived from the rules (Width1, Width2, Width3).  On three wires
+-- only the rules (1)–(6) and the laws of the swap take part: rule (7)
+-- lives on four.
 --
 -- This is what a step on three wires of a four-wire derivation rests
 -- on.  on₀₁₂, …, on₀₂₃ place a three-wire circuit on three of the four
@@ -20,7 +20,7 @@
 -- circuits so placed.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Alt16-RevCir.ThreeWire where
 
@@ -28,11 +28,6 @@ open import Word.Base using (_•_)
 
 import Presentation.Base as PB
 
-import Examples.Groups.XCXCCX-4bit.Width1 as W1
-import Examples.Groups.XCXCCX-4bit.Width2 as W2
-import Examples.Groups.XCXCCX-4bit.Width3 as W3
-
-open import Examples.Groups.Alt16-RevCir.Relabel using (module Transfer)
 open import Examples.Groups.Alt16-RevCir.Semantics using (⟦_⟧ ; _≐_)
 open import Examples.Groups.Alt16-RevCir.Syntactics
   using (Circuit ; _↑ ; _↓ᵏ_ ; Ex₀ ; Ex₂)
@@ -41,14 +36,12 @@ open import Examples.Groups.Alt16-RevCir.Theory using (module T)
 ------------------------------------------------------------------------
 -- Completeness on one, two and three wires
 
-complete₁ : {w v : Circuit 1} → ⟦ w ⟧ ≐ ⟦ v ⟧ → 1 T.⊢ w ≈ v
-complete₁ = Transfer.complete (λ {u} {v} → W1.complete₁ {u} {v})
-
-complete₂ : {w v : Circuit 2} → ⟦ w ⟧ ≐ ⟦ v ⟧ → 2 T.⊢ w ≈ v
-complete₂ = Transfer.complete (λ {u} {v} → W2.complete₂ {u} {v})
-
-complete₃ : {w v : Circuit 3} → ⟦ w ⟧ ≐ ⟦ v ⟧ → 3 T.⊢ w ≈ v
-complete₃ = Transfer.complete (λ {u} {v} → W3.complete₃ {u} {v})
+open import Examples.Groups.Alt16-RevCir.Width1 public
+  using (complete₁ ; presentation₁)
+open import Examples.Groups.Alt16-RevCir.Width2 public
+  using (complete₂ ; presentation₂)
+open import Examples.Groups.Alt16-RevCir.Width3 public
+  using (complete₃ ; presentation₃)
 
 ------------------------------------------------------------------------
 -- A three-wire circuit on three of the four wires

@@ -78,6 +78,31 @@ data _TRel,_===_ : (n : ℕ) → CRel n where
 module T = Lift-To-Prop _TRel,_===_
 
 ------------------------------------------------------------------------
+-- A gate one wire up, between swaps
+--
+-- By the naturality of the swap, as Lemmas has it for Syntactics'
+-- relation.
+
+private
+  -- If a followed by s is s followed by b, and s⁻ undoes s, then b is
+  -- a between s⁻ and s.
+  conjugate : ∀ {a b s s⁻ : Circuit n} → n T.⊢ s⁻ • s ≈ ε →
+              n T.⊢ a • s ≈ s • b → n T.⊢ b ≈ s⁻ • a • s
+  conjugate inv nat =
+    PB.trans (PB.sym PB.left-unit)
+    (PB.trans (PB.cong (PB.sym inv) PB.refl)
+    (PB.trans PB.assoc (PB.cong PB.refl (PB.sym nat))))
+
+X↑≈ : (₂₊ n) T.⊢ X ↑ ≈ Ex • X • Ex
+X↑≈ = conjugate T.σ-invol (T.sym-rule (σ-nat₁ X-gate))
+
+CX↑≈ : (₃₊ n) T.⊢ CX ↑ ≈ σ⁻[ 2 ] • CX • σ[ 2 ]
+CX↑≈ = conjugate (T.σ⁻σ 2) (T.sym-rule (σ-nat₂ CX-gate))
+
+CCX↑≈ : (₄₊ n) T.⊢ CCX ↑ ≈ σ⁻[ 3 ] • CCX • σ[ 3 ]
+CCX↑≈ = conjugate (T.σ⁻σ 3) (T.sym-rule (σ-nat₃ CCX-gate))
+
+------------------------------------------------------------------------
 -- Soundness for functions on states
 
 private
