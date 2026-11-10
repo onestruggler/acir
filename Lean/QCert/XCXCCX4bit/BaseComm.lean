@@ -529,7 +529,9 @@ theorem BC211E_d6 : 4 ⊢ ιs BC211E_w5 ≈ ιs BC211E_w6 := check_sound (ss :=
   (by decide +kernel)
 
 /-- Ḡ against G placed by CCX_{2,0→1} (union type 2 + 1 + 1). -/
-def BC211E : Eqnp := ⟨BC211E_w0, BC211E_w6, (((((BC211E_d1).trans BC211E_d2).trans BC211E_d3).trans BC211E_d4).trans BC211E_d5).trans BC211E_d6⟩
+def BC211E : Eqnp := ⟨BC211E_w0, BC211E_w6,
+  BC211E_d1.trans <| BC211E_d2.trans <| BC211E_d3.trans <| BC211E_d4.trans <| BC211E_d5.trans <|
+  BC211E_d6⟩
 
 /-- The left side. -/
 def BC31E_w0 : List PG :=
@@ -2398,7 +2400,11 @@ theorem BC31E_d17 : 4 ⊢ ιs BC31E_w16 ≈ ιs BC31E_w17 := check_sound (ss :=
   (by decide +kernel)
 
 /-- Ḡ against G placed by CCX_{2,0→1} CCX_{1,0→2} (union type 3 + 1). -/
-def BC31E : Eqnp := ⟨BC31E_w0, BC31E_w17, ((((((((((((((((BC31E_d1).trans BC31E_d2).trans BC31E_d3).trans BC31E_d4).trans BC31E_d5).trans BC31E_d6).trans BC31E_d7).trans BC31E_d8).trans BC31E_d9).trans BC31E_d10).trans BC31E_d11).trans BC31E_d12).trans BC31E_d13).trans BC31E_d14).trans BC31E_d15).trans BC31E_d16).trans BC31E_d17⟩
+def BC31E : Eqnp := ⟨BC31E_w0, BC31E_w17,
+  BC31E_d1.trans <| BC31E_d2.trans <| BC31E_d3.trans <| BC31E_d4.trans <| BC31E_d5.trans <|
+  BC31E_d6.trans <| BC31E_d7.trans <| BC31E_d8.trans <| BC31E_d9.trans <| BC31E_d10.trans <|
+  BC31E_d11.trans <| BC31E_d12.trans <| BC31E_d13.trans <| BC31E_d14.trans <| BC31E_d15.trans <|
+  BC31E_d16.trans <| BC31E_d17⟩
 
 /-- The left side. -/
 def BC4E_w0 : List PG :=
@@ -3127,6 +3133,8 @@ theorem BC4E_d7 : 4 ⊢ ιs BC4E_w6 ≈ ιs BC4E_w7 := check_sound (ss :=
   (by decide +kernel)
 
 /-- Ḡ against G placed by CX_{0→1} CCX_{1,0→2} (union type 4). -/
-def BC4E : Eqnp := ⟨BC4E_w0, BC4E_w7, ((((((BC4E_d1).trans BC4E_d2).trans BC4E_d3).trans BC4E_d4).trans BC4E_d5).trans BC4E_d6).trans BC4E_d7⟩
+def BC4E : Eqnp := ⟨BC4E_w0, BC4E_w7,
+  BC4E_d1.trans <| BC4E_d2.trans <| BC4E_d3.trans <| BC4E_d4.trans <| BC4E_d5.trans <|
+  BC4E_d6.trans <| BC4E_d7⟩
 
 end QCert.XCXCCX4bit.BaseComm

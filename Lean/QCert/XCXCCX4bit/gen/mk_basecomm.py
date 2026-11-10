@@ -95,10 +95,15 @@ def emit(name, comment, t):
         out.append('  (by decide +kernel)')
         out.append('')
     out.append('/-- ' + '\n'.join(comment) + ' -/')
-    chain = '%s_d1' % name
-    for k in range(2, nseg + 1):
-        chain = '(%s).trans %s_d%d' % (chain, name, k)
-    out.append('def %s : Eqnp := ⟨%s, %s, %s⟩' % (name, ws[0], ws[nseg], chain))
+    out.append('def %s : Eqnp := ⟨%s, %s,' % (name, ws[0], ws[nseg]))
+    pieces = ['%s_d%d.trans <|' % (name, k) for k in range(1, nseg)] + ['%s_d%d⟩' % (name, nseg)]
+    line = ' '
+    for p in pieces:
+        if len(line) + 1 + len(p) > 100:
+            out.append(line)
+            line = ' '
+        line += ' ' + p
+    out.append(line)
     return '\n'.join(out)
 
 
