@@ -135,6 +135,10 @@
 \AtBeginEnvironment{lemma}{\crefalias{theorem}{lemma}}
 \AtBeginEnvironment{corollary}{\crefalias{theorem}{corollary}}
 \AtBeginEnvironment{remark}{\crefalias{theorem}{remark}}
+%% Keep a theorem that holds a list on one page: no page break between
+%% its lines, before the list or between the items. Say \keeptogether at
+%% the start of the theorem.
+\newcommand{\keeptogether}{\interlinepenalty\@M\@beginparpenalty\@M\@itempenalty\@M}
 %% Named ``Bian, Li et al.'' (authors in alphabetical order), as a link.
 \defcitealias{bian2026qupit}{Bian, Li et al.}
 \newcommand{\quditcite}{\citetalias{bian2026qupit}~\cite{bian2026qupit}}
