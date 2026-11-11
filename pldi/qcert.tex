@@ -44,9 +44,9 @@ Only a few completeness results have been formalized, each in isolation, mostly 
 
 This isolation is problematic, because completeness results can build on one another. Bian and Selinger's formalizations assume the underlying matrix-group presentations~\cite{greylyn2014,bian2021un}. Cl\'ement's result for real Clifford+\CH{} circuits~\cite{clement2026realcliffordch} relies on Hadamard-$\Pi$'s presentation of $O_n(\Z[1/\sqrt2])$~\cite{fang2026hadamard}, whose proof misses a case (\Cref{sec:findings}). The completeness of $\sqrt{\Pi}$, a quantum extension of~$\Pi$~\cite{carette2024squareroots}, rests on the presentations~\cite{selinger2015clifford,bian2021un,bian2023cliffordt2}, whose relations it derives. A single framework makes such dependencies checkable, lets reviewers audit shared definitions once, and lets formalizations reuse earlier ones.
 
-EquaCert\footnote{EquaCert combines ``equational'' and
-``certification,'' reflecting our use of proof assistants to verify
-completeness of equational theories of quantum circuits.} is such a
+EquaCert\footnote{The name EquaCert combines ``equational'' and
+``certification'': we use a proof assistant to certify that
+equational theories of quantum circuits are complete.} is such a
 framework, written in Agda~\cite{norell2007thesis,bove2009agda}. This
 paper makes four contributions.
 \begin{itemize}
