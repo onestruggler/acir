@@ -168,6 +168,14 @@ For each presentation, a reader checks four components against the source paper:
 
 \subsection{Formalization Workflow}\label{sec:method}
 
+\begin{figure}[!t]
+\centering
+\input{figures/equacert-qudit-overview.tikz}
+\caption{The formalization of the multi-qudit Clifford result of~\quditcite{}, assembled from verified components. The symplectic normal-form proof and the Pauli presentation combine into a projective model; restoring phases gives an exact model. Arrows denote checked constructions and translations of presentations. Appendix~\ref{app:qupit-details} gives the full case study, including the intermediate rule sets (Appendix~\ref{app:q-composing}) and the scalar corrections (Appendix~\ref{app:q-scalars}).}
+\Description{The symplectic presentation and the Pauli presentation feed into a semidirect-product construction. This yields a projective model, which is extended by scalar phases. Verified translations connect the constructed presentations to the source paper's rules.}
+\label{fig:q-route}
+\end{figure}
+
 Our workflow has three parts. First, before formalizing a paper, we check its rewrite rules, its intermediate results, and each line of its derivations with exact matrices in short scripts. This caught most typos before any Agda code was written. Second, we state each main theorem in EquaCert before a coding agent starts, so the agent only supplies the proof. Finally, for long derivations, the agent writes a script that turns each line of the paper into one step of the Agda proof, so a failing step points to a specific line of the paper. 
 %With this workflow, coding agents wrote the fifteen formalizations other than qudit Clifford within four weeks, most in less than a day.
 
@@ -184,14 +192,6 @@ Second, when a source rule set must be changed, the formal theorem names the rev
 Finally, we verify general completeness arguments and group constructions once, including Reidemeister--Schreier coset enumeration~\cite{magnus2004combinatorial} and presentations of semidirect products. Each formalization that uses them only needs to prove their hypotheses and check the connection to its own circuit semantics.
 
 For example, \Cref{fig:q-route} shows how we formalize the multi-qudit Clifford result of~\quditcite{} using the first and third choices. Its semantic model is the semidirect product of the Pauli phase space by the symplectic group, which we define independently of the circuits. To prove completeness, we combine a normal-form proof for the symplectic group with the framework's semidirect-product and scalar-extension theorems. We give the full case study in \Cref{app:qupit-details}.
-
-\begin{figure}[!htbp]
-\centering
-\input{figures/equacert-qudit-overview.tikz}
-\caption{The formalization of the multi-qudit Clifford result of~\quditcite{}, assembled from verified components. The symplectic normal-form proof and the Pauli presentation combine into a projective model; restoring phases gives an exact model. Arrows denote checked constructions and translations of presentations. Appendix~\ref{app:qupit-details} gives the full case study, including the intermediate rule sets (Appendix~\ref{app:q-composing}) and the scalar corrections (Appendix~\ref{app:q-scalars}).}
-\Description{The symplectic presentation and the Pauli presentation feed into a semidirect-product construction. This yields a projective model, which is extended by scalar phases. Verified translations connect the constructed presentations to the source paper's rules.}
-\label{fig:q-route}
-\end{figure}
 
 \FloatBarrier
 
