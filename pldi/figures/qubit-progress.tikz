@@ -1,136 +1,56 @@
-% Companion to qubit-fragments.tikz: preserve its nodes and inclusion edges.
-% Status audit: relations_status.pdf (7 Nov 2026), pp. 1--3, Notes 13--15,
-% and imaginary section, item 10; EquaCert MainTheorems.agda / Table 1.
-% Q marks an explicit corpus presentation, not an unformalized gate-set transfer.
-% The dagger records the new Toffoli-Hadamard theory announced in this paper;
-% its mathematical exposition is in preparation.
-% Integral k=3 is W(E8), not the extended alphabet presenting O_8(D).
-% Below three wires the displayed Toffoli-Hadamard alphabet is literally real Clifford.
-% Pure CS at small widths differs from the CS+omega theory in Minimality.
-% Imaginary U_2/U_3 Lean proofs are outside this corpus and use native_decide.
-\begingroup
-\usetikzlibrary{shapes.multipart}
-\definecolor{fragmentMint}{HTML}{DFF1E8}
-\definecolor{fragmentBlue}{HTML}{E3EEF7}
-\definecolor{fragmentIvory}{HTML}{F6EEDB}
-\definecolor{fragmentRose}{HTML}{F5E1E6}
-\definecolor{progressDone}{HTML}{783C83}
-\definecolor{progressChecked}{HTML}{16704A}
-\definecolor{progressPartial}{HTML}{926A12}
-\definecolor{progressOpen}{HTML}{A33E3E}
-\newcommand{\pdone}{\mathord{\textcolor{progressDone}{\checkmark}}}
-\newcommand{\pchecked}{\mathord{\textcolor{progressChecked}{\checkmark_{\mathsf E}}}}
-\newcommand{\ppartial}{\mathord{\textcolor{progressPartial}{\sim}}}
-\newcommand{\popen}{\mathord{\textcolor{progressOpen}{\times}}}
-\begin{tikzpicture}[
-  font=\small,
-  fragment/.style={rectangle split,rectangle split parts=2,
-    rectangle split part fill={fragmentMint,fragmentBlue},
-    draw=black!55,line width=.6pt,align=center,
-    inner xsep=6pt,inner ysep=6pt,minimum width=35mm},
-  finite/.style={draw=black!55,line width=.6pt,rounded corners=3pt,
-    fill=fragmentIvory,align=center,inner xsep=6pt,inner ysep=6pt,
-    minimum width=32mm},
-  circuit/.style={draw=black!55,line width=.6pt,rounded corners=3pt,
-    fill=fragmentRose,align=center,inner xsep=6pt,inner ysep=6pt,
-    minimum width=35mm},
-  inclusion/.style={-{Stealth[length=1.8mm,width=1.3mm]},
-    draw=black!45,line width=.6pt,shorten >=2pt,shorten <=2pt},
-  every node/.style={outer sep=0pt}
-]
-\node[fragment] (integral) at (0,0)
-  {Integral~\cite{amy2024toffoli}\\
-   $k\le2:\ {-}\quad k=3:\ \pdone$\\
-   $k\ge4:\ \popen$
-   \nodepart{two}$O_n(\D)\quad\pchecked$~\cite{li2021on}};
-\node[fragment] (th) at (4.05,2.9)
-  {Toffoli--Hadamard~\cite{amy2024toffoli}\\
-   $k\le2:\ \pchecked\quad k=3:\ \pchecked^{\ast}$\\
-   $k\ge4:\ \pdone^{\dagger}$
-   \nodepart{two}$L_n\quad\pchecked$~\cite{li2021on}\\
-   $n\ \text{even}$};
-\node[fragment] (gaussian) at (8.1,0)
-  {Gaussian\\
-   $k=1,3:\ \ppartial\quad k=2:\ {-}$\\
-   $k\ge4:\ \popen$
-   \nodepart{two}$U_n(\D[i])\quad\pchecked$~\cite{bian2021un}};
-\node[fragment] (imaginary) at (0,6.8)
-  {Imaginary~\cite{relationsstatus2026}\\
-   $\pdone$
-   \nodepart{two}$U_n(\D[i\sqrt2])\quad\pdone$\\
-   {\footnotesize Lean: $n=2,3$}};
-\node[fragment] (real) at (4.05,6.8)
-  {Real\\
-   $k\le2:\ \pchecked\quad k=3:\ \popen$\\
-   $k\ge4:\ \ppartial$
-   \nodepart{two}$O_n(\D[\sqrt2])\quad\pchecked^{\ast}$\\
-   \cite{fang2026hadamard,clement2019thesis}};
-\node[fragment] (supergaussian) at (8.1,6.8)
-  {Super-Gaussian\\
-   $k\le2:\ \pchecked\quad k=3:\ \ppartial$\\
-   $k\ge4:\ \popen$
-   \nodepart{two}$\langle\omega I_n\rangle\,U_n(\D[i])\quad\ppartial$};
-\node[fragment] (ct) at (4.05,10.5)
-  {Clifford+\T~\cite{bian2023cliffordt2,blake2026simpler}\\
-   $k\le2:\ \pchecked\quad k\ge3:\ \popen$
-   \nodepart{two}$U_n(\D[\omega])$~\cite{greylyn2014}\\
-   $n\le4:\ \pchecked\quad n\ge5:\ \ppartial$};
-\node[finite] (rcliff) at (12.2,0)
-  {Real Clifford~\cite{makary2021real}\\$\pchecked$};
-\node[finite] (cliff) at (12.2,2.9)
-  {Clifford~\cite{selinger2015clifford}\\$\pchecked$};
-\node[finite] (dihedral) at (12.2,10.5)
-  {CNOT-dihedral~\cite{amy2018cnotdihedral}\\$\pchecked$};
-\node[circuit] (rch) at (0,2.9)
-  {Real Clifford+\CH~\cite{clement2026realcliffordch}\\$\pchecked$\\
-   {\footnotesize $=$ Real for $k\ne3$}};
-\node[circuit] (cs) at (12.2,5.2)
-  {Clifford+\CS~\cite{bian2023cliffordcs3,glaudell2021optimal}\\
-   $k\le2:\ \pdone\quad k=3:\ \pchecked$\\
-   $k\ge4:\ \popen$\\
-   {\footnotesize $=$ Gaussian for $k\ne2$}};
-\node[circuit] (csomega) at (12.2,8.1)
-  {Clifford+\CS+$\omega$~\cite{blake2026simpler}\\
-   $k\le3:\ \pchecked\quad k\ge4:\ \popen$\\
-   {\footnotesize $=$ Super-Gaussian for $k\ne2$}};
-\node[draw=black!25,rounded corners=3pt,fill=white,
-  inner sep=6pt,align=left,font=\footnotesize] at (0,10.7)
-  {\begin{tabular}{@{}cl@{}}
-   $\pdone$ & Complete relations\\
-   $\pchecked$ & Checked in EquaCert\\
-   $\ppartial$ & Partial / consequence\\
-   $\popen$ & Open\\
-   $-$ & Not treated\\
-   $\dagger$ & New result (\S\ref{sec:conclusion})\\
-   $\ast$ & Source repaired (\S\ref{sec:findings})
-   \end{tabular}\\[3pt]
-   Unqualified: all widths.\\
-   \colorbox{fragmentMint}{\rule{0pt}{1ex}\hspace{1ex}} Circuits ($k$ qubits)\\
-   \colorbox{fragmentRose}{\rule{0pt}{1ex}\hspace{1ex}} Circuits sharing a group\\
-   \colorbox{fragmentBlue}{\rule{0pt}{1ex}\hspace{1ex}} Matrices (dimension $n$)\\
-   \colorbox{fragmentIvory}{\rule{0pt}{1ex}\hspace{1ex}} Finite circuit groups};
-\begin{pgfonlayer}{edgelayer}
-  \draw[inclusion] (integral) -- (th);
-  \draw[inclusion,rounded corners=5pt]
-    (integral.west) -- (-2.15,0) -- (-2.15,6.8) -- (imaginary.west);
-  \draw[inclusion] (integral) -- (gaussian);
-  \draw[inclusion] (rcliff) -- (cliff);
-  \draw[inclusion] (th) -- (real);
-  \draw[inclusion] (th) -- (supergaussian);
-  \draw[inclusion] (gaussian) -- (supergaussian);
-  \draw[inclusion,rounded corners=5pt,preaction={draw=white,line width=3pt,-}]
-    (rcliff.north west) -- (10.2,1.65) -- (6.5,1.65) -- (th.south east);
-  \draw[inclusion] (rch) -- (real);
-  \draw[inclusion,rounded corners=5pt,preaction={draw=white,line width=3pt,-}]
-    (gaussian.north east) -- (10.25,1.4) -- (10.25,4.0) -- (cs.south west);
-  \draw[inclusion] (supergaussian) -- (csomega);
-  \draw[inclusion] (cs) -- (csomega);
-  \draw[inclusion] (csomega) -- (ct);
-  \draw[inclusion] (cliff) -- (supergaussian);
-  \draw[inclusion] (imaginary) -- (ct);
-  \draw[inclusion] (real) -- (ct);
-  \draw[inclusion] (supergaussian) -- (ct);
-  \draw[inclusion] (dihedral) -- (ct);
-\end{pgfonlayer}
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=status family] (integral) at (0, 0) {Integral~\cite{amy2024toffoli}\\ $k\le2:\ {-}\quad k=3:\ \pdone$\\ $k\ge4:\ \popen$ \nodepart{two}$O_n(\D)\quad\pchecked$~\cite{li2021on}};
+		\node [style=status family] (th) at (4.05, 2.9) {Toffoli--Hadamard~\cite{amy2024toffoli}\\ $k\le2:\ \pchecked\quad k=3:\ \pchecked^{\ast}$\\ $k\ge4:\ \pdone^{\dagger}$ \nodepart{two}$L_n\quad\pchecked$~\cite{li2021on}\\ $n\ \text{even}$};
+		\node [style=status family] (gaussian) at (8.1, 0) {Gaussian\\ $k=1,3:\ \ppartial\quad k=2:\ {-}$\\ $k\ge4:\ \popen$ \nodepart{two}$U_n(\D[i])\quad\pchecked$~\cite{bian2021un}};
+		\node [style=status family] (imaginary) at (0, 6.8) {Imaginary~\cite{relationsstatus2026}\\ $\pdone$ \nodepart{two}$U_n(\D[i\sqrt2])\quad\pdone$\\ {\footnotesize Lean: $n=2,3$}};
+		\node [style=status family] (real) at (4.05, 6.8) {Real\\ $k\le2:\ \pchecked\quad k=3:\ \popen$\\ $k\ge4:\ \ppartial$ \nodepart{two}$O_n(\D[\sqrt2])\quad\pchecked^{\ast}$\\ \cite{fang2026hadamard,clement2019thesis}};
+		\node [style=status family] (supergaussian) at (8.1, 6.8) {Super-Gaussian\\ $k\le2:\ \pchecked\quad k=3:\ \ppartial$\\ $k\ge4:\ \popen$ \nodepart{two}$\langle\omega I_n\rangle\,U_n(\D[i])\quad\ppartial$};
+		\node [style=status family] (ct) at (4.05, 10.5) {Clifford+\T~\cite{bian2023cliffordt2,blake2026simpler}\\ $k\le2:\ \pchecked\quad k\ge3:\ \popen$ \nodepart{two}$U_n(\D[\omega])$~\cite{greylyn2014}\\ $n\le4:\ \pchecked\quad n\ge5:\ \ppartial$};
+		\node [style=status finite] (rcliff) at (12.2, 0) {Real Clifford~\cite{makary2021real}\\$\pchecked$};
+		\node [style=status finite] (cliff) at (12.2, 2.9) {Clifford~\cite{selinger2015clifford}\\$\pchecked$};
+		\node [style=status finite] (dihedral) at (12.2, 10.5) {CNOT-dihedral~\cite{amy2018cnotdihedral}\\$\pchecked$};
+		\node [style=status shared] (rch) at (0, 2.9) {Real Clifford+\CH~\cite{clement2026realcliffordch}\\$\pchecked$\\ {\footnotesize $=$ Real for $k\ne3$}};
+		\node [style=status shared] (cs) at (12.2, 5.6) {Clifford+\CS~\cite{bian2023cliffordcs3,glaudell2021optimal}\\ $k\le2:\ \pdone\quad k=3:\ \pchecked$\\ $k\ge4:\ \popen$\\ {\footnotesize $=$ Gaussian for $k\ne2$}};
+		\node [style=status shared] (csomega) at (12.2, 8.1) {Clifford+\CS+$\omega$~\cite{blake2026simpler}\\ $k\le3:\ \pchecked\quad k\ge4:\ \popen$\\ {\footnotesize $=$ Super-Gaussian for $k\ne2$}};
+		\node [style=status legend] (legend) at (0, 10.7) {\begin{tabular}{@{}cl@{}} $\pdone$ & Complete relations\\ $\pchecked$ & Checked in EquaCert\\ $\ppartial$ & Partial / consequence\\ $\popen$ & Open\\ $-$ & Not treated\\ $\dagger$ & New result (\S\ref{sec:conclusion})\\ $\ast$ & Source repaired (\S\ref{sec:findings}) \end{tabular}\\[3pt] Unqualified: all widths.\\ \colorbox{fragmentMint}{\rule{0pt}{1ex}\hspace{1ex}} Circuits ($k$ qubits)\\ \colorbox{fragmentRose}{\rule{0pt}{1ex}\hspace{1ex}} Circuits sharing a group\\ \colorbox{fragmentBlue}{\rule{0pt}{1ex}\hspace{1ex}} Matrices (dimension $n$)\\ \colorbox{fragmentIvory}{\rule{0pt}{1ex}\hspace{1ex}} Finite circuit groups};
+		\node [style=none] (w1) at (-2.15, 0) {};
+		\node [style=none] (w2) at (-2.15, 6.8) {};
+		\node [style=none] (w3) at (11.0, 1.65) {};
+		\node [style=none] (w4) at (6.5, 1.65) {};
+		\node [style=none] (w5) at (10.15, 0) {};
+		\node [style=none] (w6) at (10.15, 5.6) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=status arrow] (integral) to (th);
+		\draw [style=status path start] (integral) to (w1.center);
+		\draw [style=status path] (w1.center) to (w2.center);
+		\draw [style=status path end] (w2.center) to (imaginary);
+		\draw [style=status arrow] (integral) to (gaussian);
+		\draw [style=status arrow] (rcliff) to (cliff);
+		\draw [style=status arrow] (th) to (real);
+		\draw [style=status arrow] (th) to (supergaussian);
+		\draw [style=status arrow] (gaussian) to (supergaussian);
+		\draw [style=status arrow] (cliff) to (supergaussian);
+		\draw [style=status underlay start] (rcliff) to (w3.center);
+		\draw [style=status underlay] (w3.center) to (w4.center);
+		\draw [style=status underlay end] (w4.center) to (th);
+		\draw [style=status path start] (rcliff) to (w3.center);
+		\draw [style=status path] (w3.center) to (w4.center);
+		\draw [style=status path end] (w4.center) to (th);
+		\draw [style=status arrow] (rch) to (real);
+		\draw [style=status underlay start] (gaussian) to (w5.center);
+		\draw [style=status underlay] (w5.center) to (w6.center);
+		\draw [style=status underlay end] (w6.center) to (cs);
+		\draw [style=status path start] (gaussian) to (w5.center);
+		\draw [style=status path] (w5.center) to (w6.center);
+		\draw [style=status path end] (w6.center) to (cs);
+		\draw [style=status arrow] (supergaussian) to (csomega);
+		\draw [style=status arrow] (cs) to (csomega);
+		\draw [style=status arrow] (csomega) to (ct);
+		\draw [style=status arrow] (imaginary) to (ct);
+		\draw [style=status arrow] (real) to (ct);
+		\draw [style=status arrow] (supergaussian) to (ct);
+		\draw [style=status arrow] (dihedral) to (ct);
+	\end{pgfonlayer}
 \end{tikzpicture}
-\endgroup

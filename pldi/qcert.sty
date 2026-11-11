@@ -108,6 +108,27 @@
 %% The TikZiT figures of Section 6 (figures/xcxccx/*.tikz), drawn with
 %% \tikzfig to match the generated circuits beside them.
 \input{figures/xcxccx/xcxccx.tikzstyles}
+%% The TikZiT figures of figures/ (Figures 2, 5 and 6 and the qudit route):
+%% their colours, the status marks of Figure 6, and their styles. TikZiT
+%% reads only nodes and edges, so these live here and not in the figures.
+\definecolor{fragmentMint}{HTML}{DFF1E8}
+\definecolor{fragmentBlue}{HTML}{E3EEF7}
+\definecolor{fragmentLavender}{HTML}{EEE7F5}
+\definecolor{fragmentIvory}{HTML}{F6EEDB}
+\definecolor{fragmentRose}{HTML}{F5E1E6}
+\definecolor{progressDone}{HTML}{783C83}
+\definecolor{progressChecked}{HTML}{16704A}
+\definecolor{progressPartial}{HTML}{926A12}
+\definecolor{progressOpen}{HTML}{A33E3E}
+\definecolor{qupitOverviewBlue}{HTML}{205886}
+\definecolor{qupitOverviewInk}{HTML}{233447}
+\definecolor{routeBlue}{HTML}{205886}
+\definecolor{routeInk}{HTML}{233447}
+\newcommand{\pdone}{\mathord{\textcolor{progressDone}{\checkmark}}}
+\newcommand{\pchecked}{\mathord{\textcolor{progressChecked}{\checkmark_{\mathsf E}}}}
+\newcommand{\ppartial}{\mathord{\textcolor{progressPartial}{\sim}}}
+\newcommand{\popen}{\mathord{\textcolor{progressOpen}{\times}}}
+\input{figures/figures.tikzstyles}
 \tikzstyle{qtikzfig}=[baseline=-0.25em,scale=0.38]
 \newcommand{\ufig}[2][1]{$\vcenter{\hbox{\scalebox{#1}{{\tikzstyle{every picture}=[qtikzfig]\input{qudit/figures/#2.tikz}}}}}$}
 %% The comparison of the Agda and Lean formalizations (figures/compare.tex,
