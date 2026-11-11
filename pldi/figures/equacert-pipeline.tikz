@@ -1,12 +1,11 @@
 % Section 1 overview. All artwork is native TikZ and remains editable.
 \begingroup
 \definecolor{pipelineBlue}{HTML}{205886}
-% Cool emerald and mint for human validation; light lemon for exploration.
+% Cool emerald and mint for human validation.
 \definecolor{pipelineGreen}{HTML}{32866B}
 \definecolor{pipelineGreenText}{HTML}{23674F}
 \definecolor{pipelineMint}{HTML}{EFF9F3}
 \definecolor{pipelineMintAccent}{HTML}{BCE5CE}
-\definecolor{pipelineLemon}{HTML}{FFF8D1}
 \definecolor{pipelineYellow}{HTML}{D6BA2B}
 \definecolor{pipelineYellowAccent}{HTML}{F3D34A}
 \definecolor{pipelineInk}{HTML}{233447}
@@ -15,8 +14,6 @@
   line cap=round,line join=round,
   pipe arrow/.style={-{Stealth[length=1.6mm,width=1.5mm]},
     draw=pipelineInk,line width=.85pt},
-  extension arrow/.style={-{Stealth[length=1.5mm,width=1.4mm]},
-    draw=pipelineYellow,line width=.8pt,densely dashed},
   alignment arrow/.style={{Stealth[length=1.9mm,width=1.7mm]}-{Stealth[length=1.9mm,width=1.7mm]},
     draw=pipelineGreen,line width=1.3pt},
   pipe title/.style={font=\sffamily\bfseries\fontsize{8}{9.4}\selectfont,
@@ -129,19 +126,5 @@
   text=pipelineBlue,align=center,inner sep=0pt] at (10.20,-1.43)
   {Generated proofs need no manual audit};
 
-% A small research branch reuses the checked library and returns every
-% proposed extension to the human theorem-alignment check.
-\node[draw=pipelineYellow,fill=pipelineLemon,
-  rounded corners=1.5mm,line width=.7pt,
-  minimum width=4.65cm,minimum height=.72cm,inner sep=3pt,
-  font=\sffamily\fontsize{7.5}{9}\selectfont,
-  align=center,text=pipelineInk] (extensions) at (8.50,-2.48)
-  {\textbf{New completeness results}\\
-   Humans + LLMs: new rule sets or circuit families};
-\draw[extension arrow] (12.45,-1.83) -- (12.45,-2.48) -- (extensions.east);
-\node[font=\sffamily\fontsize{7}{8}\selectfont,
-  text=pipelineInk,fill=white,inner sep=1pt]
-  at (11.90,-2.28) {reuse};
-\draw[extension arrow] (extensions.west) -- (5.55,-2.48) -- (5.55,-1.83);
 \end{tikzpicture}
 \endgroup
