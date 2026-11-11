@@ -16,7 +16,7 @@
 \node[overview box] (symplectic) at (0,0)
   {Symplectic group $\Sp$\\unique normal forms};
 \node[overview box] (pauli) at (7.15,0)
-  {Pauli phase space $V$\\presentation over $X,Z$};
+  {Pauli phase space $V$\\presentation over $\X,\Zg$};
 
 \node[overview box] (projective) at (0,-2.25)
   {Projective model\\$V\rtimes\Sp$};

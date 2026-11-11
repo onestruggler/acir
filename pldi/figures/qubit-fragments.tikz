@@ -58,59 +58,59 @@
   every node/.style={outer sep=0pt}
 ]
 \node[fragment] (integral) at (0,0)
-  {Integral~\cite{amy2020numbertheoretic}\\$\{X,CX,CCX,H\otimes H\}$
+  {Integral~\cite{amy2020numbertheoretic}\\$\{\X,\CX,\CCX,\Hg\otimes \Hg\}$
    \nodepart{two}$O_N(\D)$~\cite{li2021on}
-   \nodepart{three}$\{(-1)_{[a]},X_{[a,b]},$\\
-     $\phantom{\{}(H\otimes H)_{[a,b,c,d]}\}$};
+   \nodepart{three}$\{(-1)_{[a]},\X_{[a,b]},$\\
+     $\phantom{\{}(\Hg\otimes \Hg)_{[a,b,c,d]}\}$};
 \node[fragment] (th) at (4.6,3.3)
-  {Toffoli--Hadamard~\cite{amy2020numbertheoretic}\\$\{H,Z,CZ,CCZ\}$
+  {Toffoli--Hadamard~\cite{amy2020numbertheoretic}\\$\{\Hg,\Zg,\CZ,\CCZ\}$
    \nodepart{two}$\left\{\begin{array}{@{}l@{}}
      \left(1/\sqrt{2}^{q}\right)\,M\in O_N(\mathbb R):\\[-1pt]
      M\in\Z^{N\times N},\ q\in\mathbb N
      \end{array}\right\}$\\[-1pt]
      \cite{li2021on}
-   \nodepart{three}$\{(-1)_{[a]},(H\otimes H)_{[a,b,c,d]},$\\
-     $\phantom{\{}I_{N/2}\otimes H\}$};
+   \nodepart{three}$\{(-1)_{[a]},(\Hg\otimes \Hg)_{[a,b,c,d]},$\\
+     $\phantom{\{}I_{N/2}\otimes \Hg\}$};
 \node[fragment] (gaussian) at (9.2,0)
-  {Gaussian~\cite{amy2020numbertheoretic}\\$\{\omega H,S,CZ,CCZ\}$
+  {Gaussian~\cite{amy2020numbertheoretic}\\$\{\omega \Hg,\Sg,\CZ,\CCZ\}$
    \nodepart{two}$U_N(\D[i])$~\cite{bian2021un}
-   \nodepart{three}$\{i_{[a]},(\omega H)_{[a,b]}\}$};
+   \nodepart{three}$\{i_{[a]},(\omega \Hg)_{[a,b]}\}$};
 \node[fragment] (imaginary) at (0,7.8)
-  {Imaginary~\cite{amy2020numbertheoretic}\\$\{F,Z,CZ,CCZ\}$
+  {Imaginary~\cite{amy2020numbertheoretic}\\$\{\F,\Zg,\CZ,\CCZ\}$
    \nodepart{two}$U_N(\D[i\sqrt2])$
-   \nodepart{three}$\{(-1)_{[a]},F_{[a,b]}\}$};
+   \nodepart{three}$\{(-1)_{[a]},\F_{[a,b]}\}$};
 \node[fragment] (real) at (4.6,7.8)
-  {Real~\cite{amy2020numbertheoretic}\\$\{H,Z,CZ,CCZ,CH\}$
+  {Real~\cite{amy2020numbertheoretic}\\$\{\Hg,\Zg,\CZ,\CCZ,\CH\}$
    \nodepart{two}$O_N(\D[\sqrt2])$~\cite{fang2026hadamard}
-   \nodepart{three}$\{(-1)_{[a]},H_{[a,b]}\}$};
+   \nodepart{three}$\{(-1)_{[a]},\Hg_{[a,b]}\}$};
 \node[fragment] (supergaussian) at (9.2,7.8)
-  {Super-Gaussian~\cite{amy2020numbertheoretic}\\$\{H,S,CZ,CCZ\}$
+  {Super-Gaussian~\cite{amy2020numbertheoretic}\\$\{\Hg,\Sg,\CZ,\CCZ\}$
    \nodepart{two}$\left\{\begin{array}{@{}l@{}}
      \left(1/\sqrt{2}^{q}\right)\,M\in U_N(\mathbb C):\\[-1pt]
      M\in\Z[i]^{N\times N},\ q\in\mathbb N
      \end{array}\right\}$
-   \nodepart{three}$\{i_{[a]},(\omega H)_{[a,b]},\omega I_N\}$};
+   \nodepart{three}$\{i_{[a]},(\omega \Hg)_{[a,b]},\omega I_N\}$};
 \node[fragment] (ct) at (4.6,11.9)
-  {Clifford+$T$~\cite{giles2013exact}\\$\{H,T,CZ\}$
+  {Clifford+\T~\cite{giles2013exact}\\$\{\Hg,\T,\CZ\}$
    \nodepart{two}$U_N(\D[\omega])$
-   \nodepart{three}$\{\omega_{[a]},H_{[a,b]}\}$};
+   \nodepart{three}$\{\omega_{[a]},\Hg_{[a,b]}\}$};
 \node[finite] (rcliff) at (13.9,0)
-  {Real Clifford~\cite{makary2021real}\\$\{H,Z,CZ\}$};
+  {Real Clifford~\cite{makary2021real}\\$\{\Hg,\Zg,\CZ\}$};
 \node[finite] (cliff) at (13.9,3.3)
-  {Clifford~\cite{selinger2015clifford}\\$\{H,S,CZ\}$};
+  {Clifford~\cite{selinger2015clifford}\\$\{\Hg,\Sg,\CZ\}$};
 \node[finite] (dihedral) at (13.9,11.9)
-  {CNOT-dihedral~\cite{amy2018cnotdihedral}\\$\{X,T,CX\}$};
+  {CNOT-dihedral~\cite{amy2018cnotdihedral}\\$\{\X,\T,\CX\}$};
 \node[circuit] (rch) at (0,3.3)
-  {Real Clifford+$CH$~\cite{clement2026realcliffordch}\\
-   $\{H,Z,CZ,CH\}$\\
+  {Real Clifford+\CH~\cite{clement2026realcliffordch}\\
+   $\{\Hg,\Zg,\CZ,\CH\}$\\
    $=$ Real for $n\ne3$};
 \node[circuit] (cs) at (13.9,6)
-  {Clifford+$CS$~\cite{bian2023cliffordcs3}\\
-   $\{\omega H,S,CS\}$\\
+  {Clifford+\CS~\cite{bian2023cliffordcs3}\\
+   $\{\omega \Hg,\Sg,\CS\}$\\
    $=$ Gaussian for $n\ne2$};
 \node[circuit] (csomega) at (13.9,9.2)
-  {Clifford+$CS$+$\omega$~\cite{glaudell2021optimal}\\
-   $\{H,S,CS\}$\\
+  {Clifford+\CS+$\omega$~\cite{glaudell2021optimal}\\
+   $\{\Hg,\Sg,\CS\}$\\
    $=$ Super-Gaussian for $n\ne2$};
 % Colour key in the unused upper-left corner.
 \node[draw=black!25,rounded corners=3pt,fill=white,

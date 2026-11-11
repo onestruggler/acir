@@ -70,7 +70,7 @@
    $n\ge4:\ \popen$
    \nodepart{two}$\langle\omega I_N\rangle\,U_N(\D[i])\quad\ppartial$};
 \node[fragment] (ct) at (4.05,10.5)
-  {Clifford+$T$~\cite{bian2023cliffordt2,blake2026simpler}\\
+  {Clifford+\T~\cite{bian2023cliffordt2,blake2026simpler}\\
    $n\le2:\ \pchecked\quad n\ge3:\ \popen$
    \nodepart{two}$U_N(\D[\omega])$~\cite{greylyn2014}\\
    $N\le4:\ \pchecked\quad N\ge5:\ \ppartial$};
@@ -81,15 +81,15 @@
 \node[finite] (dihedral) at (12.2,10.5)
   {CNOT-dihedral~\cite{amy2018cnotdihedral}\\$\pchecked$};
 \node[circuit] (rch) at (0,2.9)
-  {Real Clifford+$CH$~\cite{clement2026realcliffordch}\\$\pchecked$\\
+  {Real Clifford+\CH~\cite{clement2026realcliffordch}\\$\pchecked$\\
    {\footnotesize $=$ Real for $n\ne3$}};
 \node[circuit] (cs) at (12.2,5.2)
-  {Clifford+$CS$~\cite{bian2023cliffordcs3,glaudell2021optimal}\\
+  {Clifford+\CS~\cite{bian2023cliffordcs3,glaudell2021optimal}\\
    $n\le2:\ \pdone\quad n=3:\ \pchecked$\\
    $n\ge4:\ \popen$\\
    {\footnotesize $=$ Gaussian for $n\ne2$}};
 \node[circuit] (csomega) at (12.2,8.1)
-  {Clifford+$CS$+$\omega$~\cite{blake2026simpler}\\
+  {Clifford+\CS+$\omega$~\cite{blake2026simpler}\\
    $n\le3:\ \pchecked\quad n\ge4:\ \popen$\\
    {\footnotesize $=$ Super-Gaussian for $n\ne2$}};
 \node[draw=black!25,rounded corners=3pt,fill=white,

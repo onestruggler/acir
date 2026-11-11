@@ -19,15 +19,15 @@
 \node[route box] (sim) at (11.25,0)
   {$\Sp$: simplified\\rules (15)};
 \node[route box] (pauli) at (2.25,-2)
-  {$\PPauli$\\$X^p,\ Z^p,\ XZ=ZX$};
+  {$\PPauli$\\$\X^p,\ \Zg^p,\ \X\Zg=\Zg\X$};
 \node[route box] (sd) at (11.25,-2)
-  {$\PPauli\rtimes\Sp$\\semidirect presentation\\on $X,Z,H,S,CZ$};
+  {$\PPauli\rtimes\Sp$\\semidirect presentation\\on $\X,\Zg,\Hg,\Sg,\CZ$};
 
 % Generator reduction and the two equivalent projective rule sets.
 \node[route box] (v0) at (2.25,-4)
   {Paper-V0 (16 rules)\\multiplier over $R$};
 \node[route box] (v1) at (11.25,-4)
-  {Simplified-V1\\19 rules over $H,S,CZ$};
+  {Simplified-V1\\19 rules over $\Hg,\Sg,\CZ$};
 \node[route box] (pv1) at (2.25,-6)
   {Paper-V1 (15 rules)\\Theorem~\ref{thm:q-main}\\the paper's Figure~1 mod scalars};
 \node[route box] (ex) at (11.25,-6)
@@ -48,7 +48,7 @@
   node[route label,above=3pt] {semidirect theorem} (sd.west);
 \draw[route arrow] (sd.south) -- (v1.north);
 \node[route label,anchor=east,text width=2.7cm] at (11.00,-3.04)
-  {generator reduction:\\$X,Z\mapsto$ words};
+  {generator reduction:\\$\X,\Zg\mapsto$ words};
 \draw[route arrow] (v1.west) --
   node[route label,above=3pt] {identity isomorphism} (v0.east);
 \draw[route arrow] (v0.south) -- (pv1.north);

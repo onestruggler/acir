@@ -2,8 +2,8 @@
 	\begin{pgfonlayer}{nodelayer}
 		\node [style=none] (1) at (-2.95, 1.65) {$C_1$};
 		\node [style=none] (2) at (-2.95, -1.65) {$C_2$};
-		\node [style=none] (3) at (3.2, 1.65) {$B_1H_2^{\epsilon}$};
-		\node [style=none] (4) at (3.2, -1.65) {$B_2H_2^{\epsilon}$};
+		\node [style=none] (3) at (3.2, 1.65) {$B_1\Hg_2^{\epsilon}$};
+		\node [style=none] (4) at (3.2, -1.65) {$B_2\Hg_2^{\epsilon}$};
 		\node [style=rule label] (5) at (0, 2.12) {$\mathcal R_2^{*}$};
 		\node [style=rule label] (6) at (0, -1.17) {$\mathcal R_2^{*}$};
 		\node [style=rule label] (7) at (-1.9, 0) {$\mathcal R_2^{*}$};
