@@ -41,6 +41,7 @@
 \definecolor{fragmentBlue}{HTML}{E3EEF7}
 \definecolor{fragmentLavender}{HTML}{EEE7F5}
 \definecolor{fragmentIvory}{HTML}{F6EEDB}
+\definecolor{fragmentRose}{HTML}{F5E1E6}
 \begin{tikzpicture}[
   font=\small,
   fragment/.style={rectangle split,rectangle split parts=3,
@@ -51,7 +52,7 @@
     fill=fragmentIvory,align=center,inner xsep=7pt,inner ysep=6pt,
     minimum width=27mm,minimum height=13mm},
   circuit/.style={draw=black!60,line width=.6pt,rounded corners=3pt,
-    fill=fragmentMint,align=center,inner xsep=7pt,inner ysep=6pt,
+    fill=fragmentRose,align=center,inner xsep=7pt,inner ysep=6pt,
     minimum width=34mm},
   inclusion/.style={-{Stealth[length=2mm,width=1.4mm]},
     draw=black!65,line width=.7pt,shorten >=2pt,shorten <=2pt},
@@ -116,6 +117,7 @@
 \node[draw=black!25,rounded corners=3pt,fill=white,
   inner sep=7pt,align=left] at (0,11.9) {\begin{tabular}{@{}ll@{}}
   \colorbox{fragmentMint}{\rule{0pt}{1ex}\hspace{1.5ex}} & Circuit gate sets\\
+  \colorbox{fragmentRose}{\rule{0pt}{1ex}\hspace{1.5ex}} & Gate sets sharing a group\\
   \colorbox{fragmentBlue}{\rule{0pt}{1ex}\hspace{1.5ex}} & Matrix groups\\
   \colorbox{fragmentLavender}{\rule{0pt}{1ex}\hspace{1.5ex}} & Multi-level generators\\
   \colorbox{fragmentIvory}{\rule{0pt}{1ex}\hspace{1.5ex}} & Finite circuit groups
