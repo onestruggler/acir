@@ -41,7 +41,7 @@
 
 \node[pipe title] at (.95,1.01) {Paper's\\result};
 \node[pipe title,font=\sffamily\bfseries\fontsize{8.8}{10}\selectfont]
-  at (5.55,1.01) {QCert\\main theorem};
+  at (5.55,1.01) {EquaCert\\main theorem};
 \node[pipe title] at (7.85,1.01) {2. Formalize\\the proof};
 \node[pipe title] at (10.15,1.01) {3. Proof\\checking};
 \node[pipe title] at (12.45,1.01) {Faithful\\formalization};

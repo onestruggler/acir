@@ -1,6 +1,6 @@
 % Companion to qubit-fragments.tikz: preserve its nodes and inclusion edges.
 % Status audit: relations_status.pdf (7 Nov 2026), pp. 1--3, Notes 13--15,
-% and imaginary section, item 10; QCert MainTheorems.agda / Table 1.
+% and imaginary section, item 10; EquaCert MainTheorems.agda / Table 1.
 % Q marks an explicit corpus presentation, not an unformalized gate-set transfer.
 % The dagger records the new Toffoli-Hadamard theory announced in this paper;
 % its mathematical exposition is in preparation.
@@ -18,7 +18,7 @@
 \definecolor{progressPartial}{HTML}{926A12}
 \definecolor{progressOpen}{HTML}{A33E3E}
 \newcommand{\pdone}{\mathord{\textcolor{progressDone}{\checkmark}}}
-\newcommand{\pchecked}{\mathord{\textcolor{progressChecked}{\checkmark_{\mathsf Q}}}}
+\newcommand{\pchecked}{\mathord{\textcolor{progressChecked}{\checkmark_{\mathsf E}}}}
 \newcommand{\ppartial}{\mathord{\textcolor{progressPartial}{\sim}}}
 \newcommand{\popen}{\mathord{\textcolor{progressOpen}{\times}}}
 \begin{tikzpicture}[
@@ -96,7 +96,7 @@
   inner sep=6pt,align=left,font=\footnotesize] at (0,10.5)
   {\begin{tabular}{@{}cl@{}}
    $\pdone$ & Complete relations\\
-   $\pchecked$ & Checked in QCert\\
+   $\pchecked$ & Checked in EquaCert\\
    $\ppartial$ & Partial / consequence\\
    $\popen$ & Open\\
    $-$ & Not treated\\
