@@ -49,7 +49,7 @@ This isolation is problematic, because completeness results build on one another
 \begin{figure}[H]
 \centering
 \resizebox{\linewidth}{!}{\input{figures/equacert-pipeline.tikz}}
-\caption{EquaCert's workflow. The main path checks published results; the dashed branch reuses the verified libraries for human-guided, LLM-assisted work on new completeness results. Proposed results undergo the same human review of definitions and theorem statements, and the same machine checking of formal proofs.}
+\caption{EquaCert's workflow. Humans check only that the formal theorem and its definitions state the paper's result (step~1); LLM agents formalize the paper's proof and the proof assistant checks it (steps~2 and~3). The dashed branch reuses the verified libraries for new completeness results, which follow the same steps.}
 \label{fig:equacert-pipeline}
 \end{figure}
 
