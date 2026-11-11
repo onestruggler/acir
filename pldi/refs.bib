@@ -9,23 +9,28 @@
 %% line this library mechanizes)
 %% ===================================================================
 
+%% The journal name is double-braced: the ACM style would otherwise
+%% abbreviate it, as it does no other cited journal.
 @article{MacLane1965categorical,
   author    = {Mac Lane, Saunders},
   title     = {Categorical algebra},
-  journal   = {Bulletin of the American Mathematical Society},
+  journal   = {{Bulletin of the American Mathematical Society}},
   volume    = {71},
   number    = {1},
   pages     = {40--106},
   year      = {1965},
-  doi       = {10.1090/S0002-9904-1965-11234-4},
-  url       = {https://pubs.ams.org/BULL/1965-71-01/S0002-9904-1965-11234-4}
+  doi       = {10.1090/S0002-9904-1965-11234-4}
 }
 
-@article{bastounis2026navier,
-  title={Navier-Stokes lost in translation: Why Lean verification of AI autoformalisation does not guarantee correct natural language proofs},
-  author={Bastounis, Alexander and Circelli, Fabian and Hansen, Anders C.},
-  journal={arXiv preprint arXiv:2610.08144},
-  year={2026}
+@misc{bastounis2026navier,
+  author        = {Bastounis, Alexander and Circelli, Fabian and Hansen,
+                  Anders C.},
+  title         = {{Navier}--{Stokes} lost in translation: Why {Lean}
+                  verification of {AI} autoformalisation does not guarantee
+                  correct natural language proofs},
+  year          = {2026},
+  eprint        = {2610.08144},
+  archivePrefix = {arXiv}
 }
 
 @article{selinger2015clifford,
@@ -34,7 +39,8 @@
                   operators},
   journal       = {Logical Methods in Computer Science},
   volume        = {11},
-  number        = {2:10},
+  number        = {2},
+  articleno     = {10},
   year          = {2015},
   doi           = {10.2168/LMCS-11(2:10)2015},
   eprint        = {1310.6813},
@@ -95,7 +101,7 @@
 @inproceedings{amy2024toffoli,
   author        = {Amy, Matthew and Ross, Neil J. and Wesley, Scott},
   title         = {A sound and complete equational theory for 3-qubit
-                  {Toffoli}-{Hadamard} circuits},
+                  {Toffoli}--{Hadamard} circuits},
   booktitle     = {Proceedings of the 21st International Conference on Quantum
                   Physics and Logic (QPL 2024)},
   series        = {Electronic Proceedings in Theoretical Computer Science},
@@ -156,7 +162,8 @@
   journal = {Quantum},
   volume  = {4},
   pages   = {252},
-  year    = {2020}
+  year    = {2020},
+  doi     = {10.22331/q-2020-04-06-252}
 }
 
 @misc{matsumoto2008representation,
@@ -233,7 +240,8 @@
   title         = {Minimal equational theories for quantum circuits},
   booktitle     = {Proceedings of the 39th Annual ACM/IEEE Symposium on Logic
                   in Computer Science (LICS 2024)},
-  pages         = {27:1--27:14},
+  articleno     = {27},
+  numpages      = {14},
   year          = {2024},
   doi           = {10.1145/3661814.3662088},
   eprint        = {2311.07476},
@@ -322,7 +330,8 @@
   number    = {POPL},
   articleno = {6},
   numpages  = {32},
-  year      = {2022}
+  year      = {2022},
+  doi       = {10.1145/3498667}
 }
 
 @article{carette2024squareroots,
@@ -333,7 +342,9 @@
   journal       = {Proceedings of the ACM on Programming Languages},
   volume        = {8},
   number        = {POPL},
+  numpages      = {29},
   year          = {2024},
+  doi           = {10.1145/3632861},
   eprint        = {2310.14056},
   archivePrefix = {arXiv}
 }
@@ -437,7 +448,7 @@
 
 @book{coxeter1980generators,
   author    = {Coxeter, H. S. M. and Moser, W. O. J.},
-  title     = {Generators and Relations for Discrete Groups},
+  title     = {Generators and relations for discrete groups},
   edition   = {4th},
   series    = {Ergebnisse der Mathematik und ihrer Grenzgebiete},
   volume    = {14},
@@ -466,6 +477,7 @@
               generators and relations},
   edition   = {2nd revised},
   publisher = {Dover Publications},
+  address   = {Mineola, NY},
   year      = {2004}
 }
 
@@ -507,10 +519,7 @@
                   quantum algorithms that humans can trust},
   year          = {2026},
   eprint        = {2610.30216},
-  archivePrefix = {arXiv},
-  primaryClass  = {quant-ph},
-  doi           = {10.48550/arXiv.2610.30216},
-  url           = {https://arxiv.org/abs/2610.30216}
+  archivePrefix = {arXiv}
 }
 
 @misc{lu2026formalflow,
@@ -520,10 +529,7 @@
                   underlying {$\mathrm{MIP}^{*}=\mathrm{RE}$}},
   year          = {2026},
   eprint        = {2609.19814},
-  archivePrefix = {arXiv},
-  primaryClass  = {quant-ph},
-  doi           = {10.48550/arXiv.2609.19814},
-  url           = {https://arxiv.org/abs/2609.19814}
+  archivePrefix = {arXiv}
 }
 
 @misc{ren2026qedia,
@@ -532,10 +538,7 @@
   title         = {{QEDIA}: Quantum program verification in {Lean}},
   year          = {2026},
   eprint        = {2610.17708},
-  archivePrefix = {arXiv},
-  primaryClass  = {quant-ph},
-  doi           = {10.48550/arXiv.2610.17708},
-  url           = {https://arxiv.org/abs/2610.17708}
+  archivePrefix = {arXiv}
 }
 
 @misc{shirobokov2026discovering,
@@ -551,10 +554,7 @@
   title         = {Discovering formally verified quantum programs with {AI}},
   year          = {2026},
   eprint        = {2611.09822},
-  archivePrefix = {arXiv},
-  primaryClass  = {quant-ph},
-  doi           = {10.48550/arXiv.2611.09822},
-  url           = {https://arxiv.org/abs/2611.09822}
+  archivePrefix = {arXiv}
 }
 
 @misc{benshahar2026cryptography,
@@ -563,10 +563,7 @@
   title         = {Quantum cryptography and autoformalization in {Lean}},
   year          = {2026},
   eprint        = {2610.17286},
-  archivePrefix = {arXiv},
-  primaryClass  = {quant-ph},
-  doi           = {10.48550/arXiv.2610.17286},
-  url           = {https://arxiv.org/abs/2610.17286}
+  archivePrefix = {arXiv}
 }
 
 @misc{kasaura2026leanquantum,
@@ -577,10 +574,7 @@
                   quantum information},
   year          = {2026},
   eprint        = {2607.05492},
-  archivePrefix = {arXiv},
-  primaryClass  = {quant-ph},
-  doi           = {10.48550/arXiv.2607.05492},
-  url           = {https://arxiv.org/abs/2607.05492}
+  archivePrefix = {arXiv}
 }
 
 @misc{zhu2026leanqit,
@@ -591,10 +585,7 @@
                   information theory},
   year          = {2026},
   eprint        = {2607.09632},
-  archivePrefix = {arXiv},
-  primaryClass  = {quant-ph},
-  doi           = {10.48550/arXiv.2607.09632},
-  url           = {https://arxiv.org/abs/2607.09632}
+  archivePrefix = {arXiv}
 }
 
 @inproceedings{paykin2017qwire,
@@ -603,7 +594,8 @@
   booktitle = {Proceedings of the 44th ACM SIGPLAN Symposium on Principles of
               Programming Languages (POPL 2017)},
   pages     = {846--858},
-  year      = {2017}
+  year      = {2017},
+  doi       = {10.1145/3009837.3009894}
 }
 
 @inproceedings{rand2018qwirepractice,
@@ -667,8 +659,6 @@
   booktitle = {Proceedings of the 43rd ACM SIGPLAN International Conference on
               Programming Language Design and Implementation (PLDI 2022)},
   pages     = {625--640},
-  publisher = {Association for Computing Machinery},
-  address   = {New York, NY, USA},
   year      = {2022},
   doi       = {10.1145/3519939.3523433}
 }
@@ -729,7 +719,8 @@
   number    = {POPL},
   articleno = {29},
   numpages  = {33},
-  year      = {2023}
+  year      = {2023},
+  doi       = {10.1145/3571222}
 }
 
 @inproceedings{chareton2021qbricks,
@@ -737,14 +728,15 @@
               Fran{\c{c}}ois and Perrelle, Valentin and Valiron, Beno{\^i}t},
   title     = {An automated deductive verification framework for
               circuit-building quantum programs},
-  booktitle = {Programming Languages and Systems: 30th European Symposium on
-              Programming (ESOP 2021)},
+  booktitle = {Proceedings of the 30th European Symposium on Programming
+              (ESOP 2021)},
   series    = {Lecture Notes in Computer Science},
   volume    = {12648},
   pages     = {148--177},
-  year      = {2021}
+  year      = {2021},
+  doi       = {10.1007/978-3-030-72019-3_6}
 }
-%% VERIFY-DETAIL: LNCS volume/pages
+%% Pages and DOI checked against Crossref on 2026-11-11.
 
 @inproceedings{liu2019quantum,
   author    = {Liu, Junyi and Zhan, Bohua and Wang, Shuling and Ying,
@@ -868,13 +860,13 @@
   author    = {Bove, Ana and Dybjer, Peter and Norell, Ulf},
   title     = {A brief overview of {Agda} -- a functional language with
               dependent types},
-  booktitle = {Theorem Proving in Higher Order Logics (TPHOLs 2009)},
+  booktitle = {Proceedings of the 22nd International Conference on Theorem
+              Proving in Higher Order Logics (TPHOLs 2009)},
   series    = {Lecture Notes in Computer Science},
   volume    = {5674},
   pages     = {73--78},
-  publisher = {Springer},
-  address   = {Berlin, Heidelberg},
-  year      = {2009}
+  year      = {2009},
+  doi       = {10.1007/978-3-642-03359-9_6}
 }
 
 @article{vezzosi2019cubical,
@@ -986,15 +978,17 @@
 }
 
 @inproceedings{amy2018cnotdihedral,
-  author    = {Amy, Matthew and Chen, Jianxin and Ross, Neil J.},
-  title     = {A finite presentation of {CNOT}-dihedral operators},
-  booktitle = {Proceedings of the 14th International Conference on Quantum
-              Physics and Logic (QPL 2017)},
-  series    = {Electronic Proceedings in Theoretical Computer Science},
-  volume    = {266},
-  pages     = {84--97},
-  year      = {2018},
-  doi       = {10.4204/EPTCS.266.5}
+  author        = {Amy, Matthew and Chen, Jianxin and Ross, Neil J.},
+  title         = {A finite presentation of {CNOT}-dihedral operators},
+  booktitle     = {Proceedings of the 14th International Conference on Quantum
+                  Physics and Logic (QPL 2017)},
+  series        = {Electronic Proceedings in Theoretical Computer Science},
+  volume        = {266},
+  pages         = {84--97},
+  year          = {2018},
+  doi           = {10.4204/EPTCS.266.5},
+  eprint        = {1701.00140},
+  archivePrefix = {arXiv}
 }
 
 @misc{blake2026phaseaffine,
@@ -1037,8 +1031,10 @@
   title         = {Exact synthesis of multiqubit {Clifford+T} circuits},
   journal       = {Physical Review A},
   volume        = {87},
+  number        = {3},
   pages         = {032332},
   year          = {2013},
+  doi           = {10.1103/PhysRevA.87.032332},
   eprint        = {1212.0506},
   archivePrefix = {arXiv}
 }
@@ -1047,6 +1043,7 @@
   author  = {Bian, Xiaoning and Feng, Yuan},
   title   = {Normal forms and complete relations for circuits in {Agda}},
   journal = {Proceedings of the ACM on Programming Languages},
+  volume  = {11},
   number  = {POPL},
   year    = {2027},
   note    = {To appear}
@@ -1144,23 +1141,21 @@
 }
 
 @misc{bian2026qupitagda,
-  author = {Bian, Xiaoning and Li, Sarah Meng and Ross, Neil J. and van de
-           Wetering, John and Zhao, Yuming},
-  title  = {A complete and natural rule set for multi-qudit {Clifford}
-           circuits in all odd prime dimensions},
-  year   = {2026},
-  url    = {https://github.com/onestruggler/acir/releases/tag/qip-submission}
+  author       = {Bian, Xiaoning and Li, Sarah Meng and Ross, Neil J. and van
+                 de Wetering, John and Zhao, Yuming},
+  title        = {A complete and natural rule set for multi-qudit {Clifford}
+                 circuits in all odd prime dimensions},
+  year         = {2026},
+  howpublished = {Agda formalization},
+  url          = {https://github.com/onestruggler/acir/releases/tag/qip-submission}
 }
 
 @misc{anthropic2026flt,
   author       = {{Anthropic}},
   title        = {Formalizing {Fermat's Last Theorem}},
   year         = {2026},
-  month        = sep,
-  day          = {4},
-  url          = {https://www.anthropic.com/research/formalizing-fermats-last-theorem},
-  howpublished = {Research post},
-  note         = {4 September 2026}
+  howpublished = {Research post, 4 September 2026},
+  url          = {https://www.anthropic.com/research/formalizing-fermats-last-theorem}
 }
 
 @misc{openai2026math,
@@ -1168,10 +1163,8 @@
   title        = {Mathematical manuscripts and {Lean} formalizations from an
                  internal {OpenAI} model},
   year         = {2026},
-  month        = oct,
-  url          = {https://github.com/openai/math},
-  howpublished = {GitHub repository},
-  note         = {Released 6 October 2026}
+  howpublished = {GitHub repository, released 6 October 2026},
+  url          = {https://github.com/openai/math}
 }
 
 @misc{hales2026reliability,
@@ -1179,21 +1172,19 @@
   title        = {What mathematicians should know about the {Lean} theorem
                  prover: Questions of reliability and {AI}},
   year         = {2026},
-  month        = oct,
-  day          = {9},
-  url          = {https://terrytao.wordpress.com/2026/10/09/what-mathematicians-should-know-about-the-lean-theorem-proverquestions-of-reliability-and-ai/},
-  howpublished = {Guest post on Terence Tao's blog \emph{What's new}},
-  note         = {9 October 2026}
+  howpublished = {Guest post on Terence Tao's blog \emph{What's new},
+                 9 October 2026},
+  url          = {https://terrytao.wordpress.com/2026/10/09/what-mathematicians-should-know-about-the-lean-theorem-proverquestions-of-reliability-and-ai/}
 }
 
 @inproceedings{moura2021lean4,
   author    = {de Moura, Leonardo and Ullrich, Sebastian},
   title     = {The {Lean} 4 theorem prover and programming language},
-  booktitle = {Automated Deduction -- CADE 28},
+  booktitle = {Proceedings of the 28th International Conference on Automated
+              Deduction (CADE 2021)},
   series    = {Lecture Notes in Computer Science},
   volume    = {12699},
   pages     = {625--635},
-  publisher = {Springer},
   year      = {2021},
   doi       = {10.1007/978-3-030-79876-5_37}
 }
@@ -1207,8 +1198,6 @@
                   simplifications},
   booktitle     = {Proceedings of the 32nd EACSL Annual Conference on
                   Computer Science Logic (CSL 2024)},
-  publisher     = {Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik},
-  address       = {Dagstuhl, Germany},
   series        = {Leibniz International Proceedings in Informatics},
   volume        = {288},
   pages         = {20:1--20:23},
@@ -1222,10 +1211,9 @@
   author        = {Delorme, No{\'e} and Perdrix, Simon},
   title         = {Diagrammatic reasoning with control as a constructor,
                   applications to quantum circuits},
-  booktitle     = {Foundations of Software Science and Computation
-                  Structures (FoSSaCS 2026)},
-  publisher     = {Springer Nature Switzerland},
-  address       = {Cham, Switzerland},
+  booktitle     = {Proceedings of the 29th International Conference on
+                  Foundations of Software Science and Computation Structures
+                  (FoSSaCS 2026)},
   series        = {Lecture Notes in Computer Science},
   volume        = {16503},
   pages         = {240--261},
@@ -1241,8 +1229,6 @@
                   via polycontrolled {PROPs}},
   booktitle     = {Proceedings of the 51st International Symposium on
                   Mathematical Foundations of Computer Science (MFCS 2026)},
-  publisher     = {Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik},
-  address       = {Dagstuhl, Germany},
   series        = {Leibniz International Proceedings in Informatics},
   volume        = {386},
   pages         = {6:1--6:18},
@@ -1253,14 +1239,13 @@
 }
 
 @misc{schober2026control,
-  author        = {Schober, William and Wesley, Scott},
-  title         = {A complete equational theory for quantum circuits with
-                  generalized control},
-  year          = {2026},
-  note          = {Accepted to the proceedings track of the 23rd
-                  International Conference on Quantum Physics and Logic
-                  (QPL 2026)},
-  url           = {https://cqi.inf.usi.ch/publications/Hierarchical_QPL2026.pdf}
+  author       = {Schober, William and Wesley, Scott},
+  title        = {A complete equational theory for quantum circuits with
+                 generalized control},
+  year         = {2026},
+  howpublished = {Accepted to the proceedings track of the 23rd International
+                 Conference on Quantum Physics and Logic (QPL 2026)},
+  url          = {https://cqi.inf.usi.ch/publications/Hierarchical_QPL2026.pdf}
 }
 
 @article{feng2026complete,
@@ -1303,7 +1288,7 @@
 
 %% Anonymous references to supplementary material for review.
 @misc{qcert2026clement,
-  author    = {Anonymous},
+  author = {Anonymous},
   title  = {{QCert}: The presentations of $O_n(\mathbb{Z}[1/\sqrt{2}])$
             by {Hadamard-$\Pi$} and by {Cl\'ement}, formalized in {Agda}},
   year   = {2026},
@@ -1315,7 +1300,7 @@
 }
 
 @misc{qcert2026alt16,
-  author    = {Anonymous},
+  author = {Anonymous},
   title  = {{QCert}: Complete equations for four-bit reversible circuits
             from {Lafont}'s presentation of the alternating group,
             formalized in {Agda} and {Lean}},
@@ -1329,7 +1314,7 @@
 }
 
 @misc{qcert2026toffoli,
-  author    = {Anonymous},
+  author = {Anonymous},
   title  = {{QCert}: Three-qubit {Toffoli}--{Hadamard} circuits with the
             relation $r_{\mathrm{K}}$, formalized in {Agda}},
   year   = {2026},
@@ -1426,38 +1411,40 @@
   archivePrefix = {arXiv}
 }
 
+%% The journal name is double-braced, as for Mac Lane's above.
 @article{gross2006hudson,
-  author  = {Gross, David},
-  title   = {Hudson's theorem for finite-dimensional quantum systems},
-  journal = {Journal of Mathematical Physics},
-  volume  = {47},
-  number  = {12},
-  pages   = {122107},
-  year    = {2006},
-  doi     = {10.1063/1.2393152},
-  url     = {https://arxiv.org/abs/quant-ph/0602001}
+  author        = {Gross, David},
+  title         = {{Hudson}'s theorem for finite-dimensional quantum systems},
+  journal       = {{Journal of Mathematical Physics}},
+  volume        = {47},
+  number        = {12},
+  pages         = {122107},
+  year          = {2006},
+  doi           = {10.1063/1.2393152},
+  eprint        = {quant-ph/0602001},
+  archivePrefix = {arXiv}
 }
 
 @article{gurevich2007geometric,
-  author  = {Gurevich, Shamgar and Hadani, Ronny},
-  title   = {The geometric {Weil} representation},
-  journal = {Selecta Mathematica},
-  volume  = {13},
-  pages   = {465--481},
-  year    = {2007},
-  doi     = {10.1007/s00029-007-0047-3},
-  url     = {https://arxiv.org/abs/math/0610818}
+  author        = {Gurevich, Shamgar and Hadani, Ronny},
+  title         = {The geometric {Weil} representation},
+  journal       = {Selecta Mathematica},
+  volume        = {13},
+  number        = {3},
+  pages         = {465--481},
+  year          = {2007},
+  doi           = {10.1007/s00029-007-0047-3},
+  eprint        = {math/0610818},
+  archivePrefix = {arXiv}
 }
 
 @misc{gurevich2010bounds,
-  author       = {Gurevich, Shamgar and Hadani, Ronny},
-  title        = {Bounds on certain higher-dimensional exponential sums
+  author        = {Gurevich, Shamgar and Hadani, Ronny},
+  title         = {Bounds on certain higher-dimensional exponential sums
                   via the self-reducibility of the {Weil} representation},
-  year         = {2010},
-  eprint       = {math/0612765},
-  archivePrefix = {arXiv},
-  primaryClass = {math.RT},
-  url          = {https://arxiv.org/abs/math/0612765}
+  year          = {2010},
+  eprint        = {math/0612765},
+  archivePrefix = {arXiv}
 }
 
 @article{li2022vqo,
@@ -1474,15 +1461,14 @@
 
 @article{neuhauser2002metaplectic,
   author  = {Neuhauser, Markus},
-  title   = {An Explicit Construction of the Metaplectic Representation
-             over a Finite Field},
+  title   = {An explicit construction of the metaplectic representation
+             over a finite field},
   journal = {Journal of Lie Theory},
   volume  = {12},
   number  = {1},
   pages   = {15--30},
   year    = {2002},
-  doi     = {10.5802/jolt.250},
-  url     = {https://jolt.centre-mersenne.org/articles/10.5802/jolt.250/}
+  doi     = {10.5802/jolt.250}
 }
 
 @article{peduri2025qbc,
@@ -1510,10 +1496,9 @@
 }
 
 @misc{relationsstatus2026,
-  key = {RelationsStatus},
-  title = {Complete relations for restricted {Clifford+T} operators: status by exact synthesis algorithm},
-  year = {2026},
-  month = nov,
-  howpublished = {Unpublished working notes},
-  note = {Version of 7 November 2026}
+  author       = {Anonymous},
+  title        = {Complete relations for restricted {Clifford+T} operators:
+                 Status by exact synthesis algorithm},
+  year         = {2026},
+  howpublished = {Unpublished working notes, version of 7 November 2026}
 }

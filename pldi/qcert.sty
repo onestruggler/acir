@@ -105,6 +105,9 @@
 \definecolor{zxhad}{RGB}{255,255,0}
 \definecolor{zxpaulibox}{RGB}{138,159,198}
 \input{qudit/circuits.tikzstyles}
+%% The TikZiT figures of Section 6 (figures/xcxccx/*.tikz), drawn with
+%% \tikzfig to match the generated circuits beside them.
+\input{figures/xcxccx/xcxccx.tikzstyles}
 \tikzstyle{qtikzfig}=[baseline=-0.25em,scale=0.38]
 \newcommand{\ufig}[2][1]{$\vcenter{\hbox{\scalebox{#1}{{\tikzstyle{every picture}=[qtikzfig]\input{qudit/figures/#2.tikz}}}}}$}
 %% The comparison of the Agda and Lean formalizations (figures/compare.tex,
