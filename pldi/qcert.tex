@@ -42,24 +42,49 @@ In quantum computing, however, proof assistants and LLM agents have mostly been 
 
 Only a few completeness results have been formalized, each in isolation, mostly by its authors. \citet{choudhury2022symmetries} formalize in Agda that the equations of the reversible programming language~$\Pi$ are complete for permutations of finite sets. Also in Agda, Bian and Selinger formalize their completeness proofs for two-qubit Clifford+\T{} and three-qubit Clifford+\CS{} circuits~\cite{bian2023cliffordt2,bian2023cliffordcs3}.
 
-This isolation is problematic, because completeness results build on one another. Bian and Selinger's formalizations assume the underlying matrix-group presentations~\cite{greylyn2014,bian2021un}. Cl\'ement's result for real Clifford+\CH{} circuits~\cite{clement2026realcliffordch} relies on Hadamard-$\Pi$'s presentation of $O_n(\Z[1/\sqrt2])$~\cite{fang2026hadamard}, whose proof misses a case (\Cref{sec:findings}). The completeness of $\sqrt{\Pi}$, a quantum extension of~$\Pi$~\cite{carette2024squareroots}, rests on the presentations~\cite{selinger2015clifford,bian2021un,bian2023cliffordt2}, whose relations it derives. A single framework makes such dependencies checkable, lets reviewers audit shared definitions once, and lets formalizations reuse earlier ones.
+This isolation is problematic, because completeness results can build on one another. Bian and Selinger's formalizations assume the underlying matrix-group presentations~\cite{greylyn2014,bian2021un}. Cl\'ement's result for real Clifford+\CH{} circuits~\cite{clement2026realcliffordch} relies on Hadamard-$\Pi$'s presentation of $O_n(\Z[1/\sqrt2])$~\cite{fang2026hadamard}, whose proof misses a case (\Cref{sec:findings}). The completeness of $\sqrt{\Pi}$, a quantum extension of~$\Pi$~\cite{carette2024squareroots}, rests on the presentations~\cite{selinger2015clifford,bian2021un,bian2023cliffordt2}, whose relations it derives. A single framework makes such dependencies checkable, lets reviewers audit shared definitions once, and lets formalizations reuse earlier ones.
 
-EquaCert\footnote{EquaCert combines ``equational'' and ``certification,'' reflecting our use of proof assistants to verify equational theories of quantum circuits.} is such a framework, written in Agda~\cite{norell2007thesis,bove2009agda}. This paper makes four contributions.
+EquaCert\footnote{EquaCert combines ``equational'' and
+``certification,'' reflecting our use of proof assistants to verify
+completeness of equational theories of quantum circuits.} is such a
+framework, written in Agda~\cite{norell2007thesis,bove2009agda}. This
+paper makes four contributions.
 \begin{itemize}
-\item \textbf{Framework.} EquaCert states every result over one circuit syntax, one matrix semantics, and one notion of group presentation, with each paper's main theorem in a module of its own (\Cref{sec:form}). Humans check these statements against the paper, LLM coding agents formalize the paper's proof, and Agda checks it (\Cref{fig:equacert-pipeline}).
-\item \textbf{Corpus.} We formalize the main results of sixteen papers, fifteen on completeness and one on minimality, in about 377{,}000 lines of Agda without postulates (\Cref{sec:corpus}). They cover Clifford, Clifford+\T, Toffoli--Hadamard, and related gate sets, on qubits and on qudits of every odd prime dimension.
-\item \textbf{Corrections.} We verify fourteen of the sixteen results and repair the other two: a proof that misses a case and a theorem that omits a relation (\Cref{sec:findings}).
-\item \textbf{New result.} We prove that seven equations are complete for four-bit reversible circuits over $\{\X,\CX,\CCX\}$; EquaCert checks the proof, which reuses its proof of Lafont's presentation of the alternating group~\cite{lafont2003boolean} (\Cref{sec:xcxccx}).
+\item \textbf{Framework.} EquaCert extends the library
+  of~\citet{bian2027popl} with matrix semantics, three-wire gates,
+  zero-wire gates (scalars, global phases), PROPs, and independence of
+  relations. It states every result over one circuit syntax, one
+  matrix semantics, and one definition of completeness.
+\item \textbf{Corpus.} We formalize the main results of sixteen
+  papers, fifteen on completeness and one on minimality. They cover
+  Clifford, Clifford+\T, Toffoli--Hadamard, and related gate sets, on
+  qubits or higher-dimensional qudits.
+\item \textbf{Corrections.} We find two gaps in published papers: a
+  proof that misses a case and a theorem that omits a relation
+  (\Cref{sec:findings}).
+\item \textbf{New result.} We prove that seven equations are complete
+  for four-bit reversible circuits over $\{\X,\CX,\CCX\}$.
 \end{itemize}
 
 \begin{figure}[H]
 \centering
 \resizebox{\linewidth}{!}{\input{figures/equacert-pipeline.tikz}}
-\caption{EquaCert's workflow. Humans check only that the formal theorem and its definitions state the paper's result (step~1); LLM agents formalize the paper's proof and the proof assistant checks it (steps~2 and~3).}
+\caption{EquaCert's workflow. Humans check only that the formal
+  theorem and its definitions state the paper's result (step~1); LLM
+  agents formalize the paper's proof and the proof assistant checks it
+  (steps~2 and~3).}
 \label{fig:equacert-pipeline}
 \end{figure}
 
-EquaCert is a tool for checking completeness proofs, not for finding them; what it changes is how much a reader must trust. A proof assistant checks a proof only against the theorem as stated, which may not match the intended result~\cite{hales2026reliability}: \citet{bastounis2026navier} find that a claimed Navier--Stokes formalization verified a weaker statement than intended, because of mistranslations. Since each main theorem is stated in a module of its own, a reader need only compare that statement, and the definitions it uses, with the source paper, and Agda checks the rest. Because all results share one framework, the dependencies between them are checked as well, and definitions and arguments are reused: most of the circuit families are restricted Clifford+\T{} circuits, whose matrices have entries in $\Z[1/\sqrt2,i]$ (\Cref{fig:qubit-fragments}). EquaCert builds on two earlier Agda developments, the formalization~\cite{bian2026qupitagda} of the multi-qudit Clifford completeness result of~\quditcite{} and the library for normal forms and complete relations of~\citet{bian2027popl}, which it extends with matrix semantics, three-wire gates, scalar generators, PROPs, and independence of relations. We also provide a Lean~\cite{moura2021lean4} translation of the Agda development, for a broader audience.
+A proof assistant checks a proof only against the theorem as stated,
+which may not match the intended result~\cite{hales2026reliability}:
+\citet{bastounis2026navier} find that a claimed Navier--Stokes
+formalization verified a weaker statement than intended, because of
+mistranslations. So aligning the theorem statement in the code with
+the source paper remains a human task (step~1 of \Cref{fig:equacert-pipeline}). Because all results share
+one framework, the dependencies between them are checked as well. We
+also provide a Lean~\cite{moura2021lean4} translation of the Agda
+development, for a broader audience.
 
 \paragraph{Concurrent Work} Several concurrent projects use a similar idea, where humans check the statements and LLM agents write the proofs. MerLean formalizes three quantum computing papers~\cite{ren2026merlean}, and EconCSLib formalizes twenty papers in economics and computation~\cite{garg2026econcslib}. An LLM agent has also proved part of a verified compiler correct~\cite{paraskevopoulou2026compiler}. QECert collects results of many papers on quantum error correction in one Lean library~\cite{he2026qecert}. The closest to EquaCert is \citet{shirobokov2026discovering}, who apply this idea to quantum programs, with LLM agents writing both the programs and their proofs.
 
