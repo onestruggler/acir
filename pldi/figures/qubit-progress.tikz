@@ -4,7 +4,7 @@
 % Q marks an explicit corpus presentation, not an unformalized gate-set transfer.
 % The dagger records the new Toffoli-Hadamard theory announced in this paper;
 % its mathematical exposition is in preparation.
-% Integral n=3 is W(E8), not the extended alphabet presenting O_8(D).
+% Integral k=3 is W(E8), not the extended alphabet presenting O_8(D).
 % Below three wires the displayed Toffoli-Hadamard alphabet is literally real Clifford.
 % Pure CS at small widths differs from the CS+omega theory in Minimality.
 % Imaginary U_2/U_3 Lean proofs are outside this corpus and use native_decide.
@@ -39,41 +39,41 @@
 ]
 \node[fragment] (integral) at (0,0)
   {Integral~\cite{amy2024toffoli}\\
-   $n\le2:\ {-}\quad n=3:\ \pdone$\\
-   $n\ge4:\ \popen$
-   \nodepart{two}$O_N(\D)\quad\pchecked$~\cite{li2021on}};
+   $k\le2:\ {-}\quad k=3:\ \pdone$\\
+   $k\ge4:\ \popen$
+   \nodepart{two}$O_n(\D)\quad\pchecked$~\cite{li2021on}};
 \node[fragment] (th) at (4.05,2.9)
   {Toffoli--Hadamard~\cite{amy2024toffoli}\\
-   $n\le2:\ \pchecked\quad n=3:\ \pchecked^{\ast}$\\
-   $n\ge4:\ \pdone^{\dagger}$
-   \nodepart{two}$L_N\quad\pchecked$~\cite{li2021on}\\
-   $N\ \text{even}$};
+   $k\le2:\ \pchecked\quad k=3:\ \pchecked^{\ast}$\\
+   $k\ge4:\ \pdone^{\dagger}$
+   \nodepart{two}$L_n\quad\pchecked$~\cite{li2021on}\\
+   $n\ \text{even}$};
 \node[fragment] (gaussian) at (8.1,0)
   {Gaussian\\
-   $n=1,3:\ \ppartial\quad n=2:\ {-}$\\
-   $n\ge4:\ \popen$
-   \nodepart{two}$U_N(\D[i])\quad\pchecked$~\cite{bian2021un}};
+   $k=1,3:\ \ppartial\quad k=2:\ {-}$\\
+   $k\ge4:\ \popen$
+   \nodepart{two}$U_n(\D[i])\quad\pchecked$~\cite{bian2021un}};
 \node[fragment] (imaginary) at (0,6.8)
   {Imaginary~\cite{relationsstatus2026}\\
    $\pdone$
-   \nodepart{two}$U_N(\D[i\sqrt2])\quad\pdone$\\
-   {\footnotesize Lean: $N=2,3$}};
+   \nodepart{two}$U_n(\D[i\sqrt2])\quad\pdone$\\
+   {\footnotesize Lean: $n=2,3$}};
 \node[fragment] (real) at (4.05,6.8)
   {Real\\
-   $n\le2:\ \pchecked\quad n=3:\ \popen$\\
-   $n\ge4:\ \ppartial$
-   \nodepart{two}$O_N(\D[\sqrt2])\quad\pchecked^{\ast}$\\
+   $k\le2:\ \pchecked\quad k=3:\ \popen$\\
+   $k\ge4:\ \ppartial$
+   \nodepart{two}$O_n(\D[\sqrt2])\quad\pchecked^{\ast}$\\
    \cite{fang2026hadamard,clement2019thesis}};
 \node[fragment] (supergaussian) at (8.1,6.8)
   {Super-Gaussian\\
-   $n\le2:\ \pchecked\quad n=3:\ \ppartial$\\
-   $n\ge4:\ \popen$
-   \nodepart{two}$\langle\omega I_N\rangle\,U_N(\D[i])\quad\ppartial$};
+   $k\le2:\ \pchecked\quad k=3:\ \ppartial$\\
+   $k\ge4:\ \popen$
+   \nodepart{two}$\langle\omega I_n\rangle\,U_n(\D[i])\quad\ppartial$};
 \node[fragment] (ct) at (4.05,10.5)
   {Clifford+\T~\cite{bian2023cliffordt2,blake2026simpler}\\
-   $n\le2:\ \pchecked\quad n\ge3:\ \popen$
-   \nodepart{two}$U_N(\D[\omega])$~\cite{greylyn2014}\\
-   $N\le4:\ \pchecked\quad N\ge5:\ \ppartial$};
+   $k\le2:\ \pchecked\quad k\ge3:\ \popen$
+   \nodepart{two}$U_n(\D[\omega])$~\cite{greylyn2014}\\
+   $n\le4:\ \pchecked\quad n\ge5:\ \ppartial$};
 \node[finite] (rcliff) at (12.2,0)
   {Real Clifford~\cite{makary2021real}\\$\pchecked$};
 \node[finite] (cliff) at (12.2,2.9)
@@ -82,16 +82,16 @@
   {CNOT-dihedral~\cite{amy2018cnotdihedral}\\$\pchecked$};
 \node[circuit] (rch) at (0,2.9)
   {Real Clifford+\CH~\cite{clement2026realcliffordch}\\$\pchecked$\\
-   {\footnotesize $=$ Real for $n\ne3$}};
+   {\footnotesize $=$ Real for $k\ne3$}};
 \node[circuit] (cs) at (12.2,5.2)
   {Clifford+\CS~\cite{bian2023cliffordcs3,glaudell2021optimal}\\
-   $n\le2:\ \pdone\quad n=3:\ \pchecked$\\
-   $n\ge4:\ \popen$\\
-   {\footnotesize $=$ Gaussian for $n\ne2$}};
+   $k\le2:\ \pdone\quad k=3:\ \pchecked$\\
+   $k\ge4:\ \popen$\\
+   {\footnotesize $=$ Gaussian for $k\ne2$}};
 \node[circuit] (csomega) at (12.2,8.1)
   {Clifford+\CS+$\omega$~\cite{blake2026simpler}\\
-   $n\le3:\ \pchecked\quad n\ge4:\ \popen$\\
-   {\footnotesize $=$ Super-Gaussian for $n\ne2$}};
+   $k\le3:\ \pchecked\quad k\ge4:\ \popen$\\
+   {\footnotesize $=$ Super-Gaussian for $k\ne2$}};
 \node[draw=black!25,rounded corners=3pt,fill=white,
   inner sep=6pt,align=left,font=\footnotesize] at (0,10.5)
   {\begin{tabular}{@{}cl@{}}
@@ -104,8 +104,8 @@
    $\ast$ & Source repaired (\S\ref{sec:findings})
    \end{tabular}\\[3pt]
    Unqualified: all widths.\\
-   \colorbox{fragmentMint}{\rule{0pt}{1ex}\hspace{1ex}} Circuits ($n$ qubits)\\
-   \colorbox{fragmentBlue}{\rule{0pt}{1ex}\hspace{1ex}} Matrices (dimension $N$)\\
+   \colorbox{fragmentMint}{\rule{0pt}{1ex}\hspace{1ex}} Circuits ($k$ qubits)\\
+   \colorbox{fragmentBlue}{\rule{0pt}{1ex}\hspace{1ex}} Matrices (dimension $n$)\\
    \colorbox{fragmentIvory}{\rule{0pt}{1ex}\hspace{1ex}} Finite circuit groups};
 \begin{pgfonlayer}{edgelayer}
   \draw[inclusion] (integral) -- (th);
