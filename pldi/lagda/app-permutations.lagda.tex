@@ -35,13 +35,10 @@ appendix introduces it on its smallest complete case study: circuits
 built from a single two-wire gate, the swap $\sigma$, which present the
 symmetric groups.  The walkthrough exhibits the pipeline --- gates,
 relations, cosets, tower, semantics, uniqueness, completeness,
-presentation --- that the case study of \Cref{sec:qudit-case-study}
-instantiates again for the symplectic factor
-(Appendix~\ref{app:q-symplectic}), concretely enough that the latter can
-be read as the same pipeline with richer gates and a richer action.  The
-appendix closes with the product constructions
-(Appendix~\ref{app:constructions}) by which \Cref{sec:q-composing} glues
-such presentations together.
+presentation --- that the formalizations by normalization instantiate
+with richer gates and richer actions.  The appendix closes with the
+product constructions (Appendix~\ref{app:constructions}) by which such
+presentations are combined.
 
 \subsection{Gates, Generators, and Circuits}\label{app:sn-gates}
 
@@ -369,8 +366,4 @@ symmetric-presentation n = SymPres.presentation {n}
 
 \noindent read: the monoid of swap circuits modulo \{\aid{order},
 \aid{yang-baxter}\} and the structural rules \emph{is} the group of
-permutations of $\mathsf{Fin}\;n$.  The symplectic
-factor of the case study (\Cref{sec:q-symplectic},
-Appendix~\ref{app:q-symplectic}) is this pipeline again, with richer
-gates and a richer action, and \Cref{sec:q-composing} composes such
-presentations.
+permutations of $\mathsf{Fin}\;n$.

@@ -102,7 +102,7 @@ That these results are formalized independently, instead of in a common framewor
 Recent AI-assisted work has also formalized quantum program logics, algorithms, and complexity results~\cite{ren2026qedia,zhang2026leanquantumalg,lu2026formalflow}.
 Several concurrent projects divide the work as we do: humans check the statements and LLM agents write the proofs. MerLean formalizes three quantum computing papers~\cite{ren2026merlean}, EconCSLib formalizes twenty papers in economics and computation~\cite{garg2026econcslib}, and an LLM agent has proved part of a verified compiler correct~\cite{paraskevopoulou2026compiler}. QECert, a Lean library for quantum error correction, likewise gathers many results in one place~\cite{he2026qecert}. The closest to EquaCert is the work of \citet{shirobokov2026discovering} on quantum programs, in which LLM agents write both the programs and their proofs.
 
-\paragraph{Structure of the paper} \Cref{sec:background} reviews equational theories and the main techniques for proving their completeness and minimality. \Cref{sec:form} introduces EquaCert, and \Cref{sec:qudit-case-study} illustrates it through the multi-qudit Clifford case study. \Cref{sec:corpus,sec:findings} present the formalized results and the corrections to the source papers. \Cref{sec:xcxccx} gives the new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$, and explains how its proof is constructed and checked; Appendix~\ref{app:xcxccx} gives the full proof. \Cref{sec:conclusion} discusses limitations and future work. The remaining appendices give background, an introduction to the framework on permutation circuits, implementation details, the comparison with Lean, the detailed qudit Clifford proofs, and the details of the corrections.
+\paragraph{Structure of the paper} \Cref{sec:background} reviews equational theories and the main techniques for proving their completeness and minimality. \Cref{sec:form} introduces EquaCert. \Cref{sec:corpus,sec:findings} present the formalized results and the corrections to the source papers. \Cref{sec:xcxccx} gives the new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$, and explains how its proof is constructed and checked; Appendix~\ref{app:xcxccx} gives the full proof. \Cref{sec:conclusion} discusses limitations and future work. The remaining appendices give background, an introduction to the framework on permutation circuits, implementation details, the comparison with Lean, and the details of the corrections.
 
 % \FloatBarrier
 
@@ -268,7 +268,7 @@ The work also cost more than its final size shows. Three formalizations first to
 
 \paragraph{AI Use}\label{sec:ai-use}
 %% Required by the call for papers; it counts toward the page limit.
-The library of~\cite{bian2027popl} is the starting point of the framework, and the proofs of~\cite{bian2023cliffordt2,bian2023cliffordcs3} are ported from their authors' Agda code; agents revised both. The rest was written by LLM coding agents: the extensions of the framework, the Agda proofs, and the scripts that search for and generate derivations, in the workflow above, and the Lean version, from the source papers. The exception is the qudit Clifford formalization, which predates this workflow; agents wrote parts of it (Appendix~\ref{app:q-discussion}). Most of the agents' work was done by Claude Code, with several versions of Anthropic's Claude models. A second coding agent, Astra, worked on the Toffoli--Hadamard formalization of \Cref{tab:corpus} and on parts of the Lean version. Claude Code also helped to draft and revise the text of this paper, which we checked.
+The library of~\cite{bian2027popl} is the starting point of the framework, and the proofs of~\cite{bian2023cliffordt2,bian2023cliffordcs3} are ported from their authors' Agda code; agents revised both. The rest was written by LLM coding agents: the extensions of the framework, the Agda proofs, and the scripts that search for and generate derivations, in the workflow above, and the Lean version, from the source papers. The exception is the qudit Clifford formalization, which predates this workflow; agents wrote parts of it. Most of the agents' work was done by Claude Code, with several versions of Anthropic's Claude models. A second coding agent, Astra, worked on the Toffoli--Hadamard formalization of \Cref{tab:corpus} and on parts of the Lean version. Claude Code also helped to draft and revise the text of this paper, which we checked.
 
 \subsection{Avoiding Completeness Lost in Translation}
 \label{sec:lost}
@@ -280,86 +280,6 @@ First, we define the target group independently of the circuit syntax, using mat
 Second, when a source rule set must be changed, the formal theorem names the revised set. This lets a reader tell a repair to the proof apart from a correction to the theorem itself (\Cref{sec:findings}).
 
 Finally, general completeness arguments and group constructions are verified once, among them the Reidemeister--Schreier method~\cite{magnus2004combinatorial} and presentations of semidirect products, both inherited from~\cite{bian2027popl}. Each formalization that uses them only needs to prove their hypotheses and check the connection to its own circuit semantics.
-
-The case study in \Cref{sec:qudit-case-study} shows how these design choices work together in a multi-qudit Clifford proof.
-
-\section{Case Study: Multi-Qudit Clifford Completeness}\label{sec:qudit-case-study}
-
-The multi-qudit Clifford result of~\quditcite{} shows how EquaCert turns a circuit completeness proof into reusable, checked components. Here each qudit has odd prime dimension~$p$; the result covers every number $n$ of qudits and every such~$p$. Its sixteen rules must derive every valid equation between Clifford circuits. It illustrates two design choices of \Cref{sec:lost}, defining the semantic group independently of the circuit syntax and assembling completeness proofs from general theorems about groups, as \Cref{fig:q-route} summarizes.
-
-\begin{figure}[!htbp]
-\centering
-\input{figures/equacert-qudit-overview.tikz}\unskip
-\caption{The formalization of the multi-qudit Clifford result of~\quditcite{}, assembled from verified components. The symplectic normal-form proof and the Pauli presentation combine into a projective model; restoring phases gives an exact model. Arrows denote checked constructions and translations of presentations. Appendix~\ref{app:qupit-details} gives the detailed proofs, including the intermediate rule sets (Appendix~\ref{app:q-composing}) and the scalar corrections (Appendix~\ref{app:q-scalars}).}
-\Description{The symplectic presentation and the Pauli presentation feed into a semidirect-product construction. This yields a projective model, which is extended by scalar phases. Verified translations connect the constructed presentations to the source paper's rules.}
-\label{fig:q-route}
-\end{figure}
-
-\subsection{From Circuit Equations to Checked Derivations}\label{sec:q-circuits}
-
-The circuits use the Fourier gate $\Hg$, the phase gate $\Sg$, and the controlled-phase gate $\CZ$. We first work projectively, identifying operators that differ only by a global phase. \Cref{fig:q-rewriting} gives a small example of the translation into EquaCert: a swap is a word in the generators, its laws are circuit equations, and a derived equality records the rule used at each step. The framework supplies the structural rules that let the same derivation apply inside a larger circuit. The corresponding Agda definitions and proof terms are in Appendix~\ref{app:q-circuits}.
-
-\begin{figure}[!htbp]
-\centering
-\begin{minipage}[t]{0.39\linewidth}\centering\vspace{0pt}
-\textbf{(a) A circuit word}\par\smallskip
-\ufig[.9]{def-Ex-eq}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.57\linewidth}\centering\vspace{0pt}
-\textbf{(b) Generating equations}\par\smallskip
-\ufig[.9]{pv0-order-Ex}
-% \ufig[0.75]{pv0-semi-Ex-Hup}
-\end{minipage}
-\par\medskip
-\textbf{(c) A derived equality}\par\smallskip
-\ufig[0.9]{pv0-conj-Ex-Hup-steps}
-\caption{Circuit syntax, rules, and reasoning in the projective Clifford formalization. Crossed wires denote swap, and connected dots denote $\CZ$. Diagrams are read from right to left. In (c), moving $\Hg$ across one swap and cancelling the two swaps moves $\Hg$ to the other wire. The generating equations ($\equiv$) justify the derived equivalence ($\approx$).}
-\Description{A swap is expanded into Fourier and controlled-phase gates. Two equations state that swap is an involution and moves a Fourier gate between wires. A two-step derivation uses these equations to simplify a swap-Fourier-swap circuit.}
-\label{fig:q-rewriting}
-\end{figure}
-
-To prove completeness, we must also specify what a circuit means. We first consider its action on Pauli operators, ignoring phase factors. Each wire contributes a pair $(a,b)$ modulo $p$, describing $\X^a\Zg^b$ for the generalized Pauli shift and phase gates $\X$ and $\Zg$. The induced transformations form the symplectic group $\Sp$, which preserves Pauli commutation. This first stage identifies Clifford operators that differ by a Pauli; the next stage restores that information. This group is defined using linear algebra, independently of circuits and their rewrite rules. Completeness at this stage therefore requires a proof that equal transformations give derivable equations in the symplectic theory.
-
-%% No \FloatBarrier here: with one, most of a page stays blank.
-\subsection{Normalize the Factors, Then Compose}\label{sec:q-symplectic}\label{sec:q-composing}
-
-The first step is a normal-form proof for this symplectic group. \Cref{fig:q-normalforms} shows the recursive shape: a canonical block accounts for one wire, and normalization continues on the remaining wires. The formalization proves that every circuit rewrites to this shape, that each rewrite preserves its meaning, and that the normal form is uniquely determined by that meaning. Consequently, circuits denoting the same transformation rewrite to the same normal form and are equivalent. This is the normalization strategy of \Cref{sec:background}, instantiated with the source paper's circuit blocks; the datatypes and normalization table are in Appendix~\ref{app:q-symplectic}.
-
-\begin{figure}[!htbp]
-\centering
-\begin{minipage}[c]{0.49\linewidth}\centering
-\textbf{(a) Canonical layers}\par\smallskip
-\begin{tabular}{@{}rcl@{}}
-\ufig[0.85]{m4-box} & $=$ & \ufig[0.85]{m4-atoms}\\[3pt]
-\ufig[0.85]{l4-box} & $=$ & \ufig[0.85]{l4-atoms}
-\end{tabular}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.49\linewidth}\centering
-\textbf{(b) Recursive blocks}\par\smallskip
-\begin{tabular}{@{}rcl@{}}
-\ufig[0.85]{ml4-box} & $=$ & \ufig[0.85]{ml-tower-a-r}\\[3pt]
-\ufig[0.85]{ml4-box} & $=$ & \ufig[0.85]{ml-tower-b-r}
-\end{tabular}
-\end{minipage}
-\par\medskip
-\textbf{(c) The normal-form staircase}\par\smallskip
-\ufig[0.95]{nf4}
-\caption{The symplectic normal form, illustrated on four wires. (a) The $M$ and $L$ layers use the source paper's parameterized circuit blocks $A$, $B$, $D$, and $E$. (b) An $\ML$ block combines the two layers or extends a smaller $\ML$ block by a $D$ block. (c) One block per width gives the staircase. Its uniqueness is the key completeness obligation; Paulis and scalar phases are restored separately.}
-\Description{Two rows expand the M and L layers into smaller circuit blocks. Two alternatives define an ML block recursively. A staircase contains ML blocks on one, two, three, and four wires.}
-\label{fig:q-normalforms}
-\end{figure}
-
-Symplectic transformations retain only the Clifford action modulo Paulis. To restore the Paulis, we present their phase space $V=\Zp^{2n}$ separately and combine the two presentations into the independently defined model $V\rtimes\Sp$. The semidirect product records how a symplectic transformation acts on Pauli exponents. EquaCert's general composition theorem asks us to prove that this action respects the relations of both factors. Once these obligations are checked, completeness of the combined presentation follows from completeness of the factors.
-
-This replaces the most difficult part of following the source proof directly. Its passage from symplectic to projective completeness tracks a Pauli correction through each rewrite. We instead discharge the compatibility obligations once and use the framework's semidirect-product theorem. Verified translations then recover the paper's generators and relations. Finally, the scalar-extension theorem restores global phases, with the necessary phase corrections checked explicitly (\Cref{fig:q-route}). The construction-specific calculations remain in the case study; the composition theorems can be reused by other formalizations.
-
-
-
-\subsection{What the Formalization Establishes}\label{sec:q-discussion}
-
-Agda checks the presentations of the symplectic, projective, and scalar-extension models for every odd prime $p$ and every width $n$, with no postulates or unfinished proofs. In particular, it checks both normalization and the translations back to the source rule sets. This demonstrates how EquaCert can support a proof that needs substantial mathematical restructuring while keeping each obligation explicit.
-
-The semantic boundary is also explicit. The Agda formalization presents independently constructed algebraic models; identifying them with the unitary Clifford groups and matching the paper's gate phases uses external mathematics. The Lean formalization proves soundness and completeness directly against complex matrices (Appendix~\ref{app:agda-lean-comparison}). Appendix~\ref{app:qupit-details} gives the gate conventions, formal statements, and detailed proofs. Thus the case study shows both how the proof is assembled and exactly which connection each proof assistant checks.
 
 \FloatBarrier
 
@@ -421,14 +341,14 @@ Total & & & & 1{,}509 & 2{,}399.36 & 9{,}304.83 \\
 The green checks in \Cref{fig:qubit-progress} correspond to the qubit part of \Cref{tab:corpus}; the qudit results and minimality proofs are also listed in the table. The asterisks connect this coverage to the source corrections in \Cref{sec:findings}.
 
 % \FloatBarrier
-Four qualifications apply to the Agda results in \Cref{tab:corpus}. The two-qubit Clifford+\T{} and three-qubit Clifford+\CS{} formalizations~\cite{bian2023cliffordt2,bian2023cliffordcs3} reuse the authors' Agda proofs and connect them to EquaCert's shared matrix presentations (\Cref{sec:form}). The qudit Clifford theorem of~\quditcite{} presents an independently constructed algebraic model; \Cref{sec:q-discussion} explains its connection to the intended unitary semantics. The Toffoli--Hadamard row measures a formalization that replays, as generated certificates, the derivations in the files that accompany the source. A second formalization, whose derivations are found by search, proves the same presentation, that of $O_8(\Z[1/2])$ on which it rests, and the independence of the relation restored in \Cref{sec:findings}~\cite{equacert2026toffoli}. In the minimality row, three of the six fragments are minimal and complete on every number of wires. The other three carry bounds: qutrit Clifford is complete on every number of wires, with every rule on at most two wires shown necessary; Clifford+\T{} is complete on at most two wires, with every rule on at most one shown necessary; and Clifford+\CS{} is complete on at most three, with every rule on at most two shown necessary.
+Four qualifications apply to the Agda results in \Cref{tab:corpus}. The two-qubit Clifford+\T{} and three-qubit Clifford+\CS{} formalizations~\cite{bian2023cliffordt2,bian2023cliffordcs3} reuse the authors' Agda proofs and connect them to EquaCert's shared matrix presentations (\Cref{sec:form}). The qudit Clifford theorem of~\quditcite{} presents an independently constructed algebraic model, not a group of matrices; that this model is the group of unitary Clifford operators is classical mathematics~\cite{gross2006hudson,gurevich2007geometric} that the Agda formalization does not check. The Toffoli--Hadamard row measures a formalization that replays, as generated certificates, the derivations in the files that accompany the source. A second formalization, whose derivations are found by search, proves the same presentation, that of $O_8(\Z[1/2])$ on which it rests, and the independence of the relation restored in \Cref{sec:findings}~\cite{equacert2026toffoli}. In the minimality row, three of the six fragments are minimal and complete on every number of wires. The other three carry bounds: qutrit Clifford is complete on every number of wires, with every rule on at most two wires shown necessary; Clifford+\T{} is complete on at most two wires, with every rule on at most one shown necessary; and Clifford+\CS{} is complete on at most three, with every rule on at most two shown necessary.
 
 % Long computational derivations, such as those in Selinger's 105-page supplement and the qutrit box relations, come from scripts that follow the paper, as in \Cref{sec:method}, or search for the steps. In the real stabilizer formalization, half the lines are generated in this way, and a fifth formalize the paper's mathematics.
 
 \subsection{Comparison of the Agda and Lean Formalizations}
 \label{sec:compare}
 
-The Lean~\cite{moura2021lean4} version of EquaCert formalizes the same sixteen results on top of Mathlib~\cite{mathlib2020}. Its framework is a translation of the Agda framework, and, judging by its commits, coding agents then wrote its sixteen formalizations from the source papers within a week. It came second, and we present it as a second version of the same results and not as a second contribution of the same kind. Its point is its theorem statements. They rest on Mathlib's standard definitions, with matrix groups over Mathlib's real or complex numbers in place of our exact rings, so a reader can check them against the source papers using definitions that are already widely used and reviewed. For qudit Clifford, the Lean statement also removes an argument that the Agda statement leaves to external mathematics (\Cref{sec:q-discussion}). The Lean proofs use no \texttt{sorry} and no \texttt{native\_decide}, and the main theorems depend only on Lean's three standard axioms (Appendix~\ref{app:agda-lean-comparison}).
+The Lean~\cite{moura2021lean4} version of EquaCert formalizes the same sixteen results on top of Mathlib~\cite{mathlib2020}. Its framework is a translation of the Agda framework, and, judging by its commits, coding agents then wrote its sixteen formalizations from the source papers within a week. It came second, and we present it as a second version of the same results and not as a second contribution of the same kind. Its point is its theorem statements. They rest on Mathlib's standard definitions, with matrix groups over Mathlib's real or complex numbers in place of our exact rings, so a reader can check them against the source papers using definitions that are already widely used and reviewed. For qudit Clifford, the Lean statement also removes an argument that the Agda statement leaves to external mathematics (\Cref{sec:corpus}). The Lean proofs use no \texttt{sorry} and no \texttt{native\_decide}, and the main theorems depend only on Lean's three standard axioms (Appendix~\ref{app:agda-lean-comparison}).
 
 \begin{figure}[!htbp]
 \centering
@@ -748,7 +668,7 @@ Minimality is stated for the rule set \aid{n ⊢{\_}==={\_}} in \Cref{agda:minim
 \label{tab:provenance}
 \end{table}
 
-\paragraph{What a Reader Must Read} For each row we followed the names in the statement of its main theorem to their definitions: the relations, the gates or generators, the target group, and the semantics down to the matrix of each generator. By our count these statements and definitions take $8{,}207$ of the $376{,}627$ code lines, or $2.2\%$. Of these, $7{,}087$ lines are in the rows' own modules (the Statement column), and $1{,}120$ are shared by several rows: $200$ lines of the framework's definitions of words, circuits, structural rules, and presentations, and $920$ lines that define the rings, matrices, and matrix groups in which several rows are interpreted. Where we did not cut a module down to the definitions that a statement mentions, we counted it whole, so the counts lean high. The count for the qudit Clifford row is the least precise. Its target group is built from a presentation (\Cref{sec:q-discussion}), and the count includes the rule set and the model of that presentation but not the general constructions of central extensions through which the group is defined. In three rows, two-qubit Clifford+\T, three-qubit Clifford+\CS, and Toffoli--Hadamard, the matrix of a gate is defined through a translation of the gate into multi-level generators, so this translation is among the definitions to read. The counts leave out the definitions of the rings $\D$, $\D[i]$, $\D[\sqrt2]$, and $\D[\omega]$ and of matrices over them, which come from a separate library for rings and exact synthesis.
+\paragraph{What a Reader Must Read} For each row we followed the names in the statement of its main theorem to their definitions: the relations, the gates or generators, the target group, and the semantics down to the matrix of each generator. By our count these statements and definitions take $8{,}207$ of the $376{,}627$ code lines, or $2.2\%$. Of these, $7{,}087$ lines are in the rows' own modules (the Statement column), and $1{,}120$ are shared by several rows: $200$ lines of the framework's definitions of words, circuits, structural rules, and presentations, and $920$ lines that define the rings, matrices, and matrix groups in which several rows are interpreted. Where we did not cut a module down to the definitions that a statement mentions, we counted it whole, so the counts lean high. The count for the qudit Clifford row is the least precise. Its target group is built from a presentation, and the count includes the rule set and the model of that presentation but not the general constructions of central extensions through which the group is defined. In three rows, two-qubit Clifford+\T, three-qubit Clifford+\CS, and Toffoli--Hadamard, the matrix of a gate is defined through a translation of the gate into multi-level generators, so this translation is among the definitions to read. The counts leave out the definitions of the rings $\D$, $\D[i]$, $\D[\sqrt2]$, and $\D[\omega]$ and of matrices over them, which come from a separate library for rings and exact synthesis.
 
 \paragraph{Origin of the Proofs} A module counts as generated or ported only when its header says so in words that our count recognizes. About $3{,}600$ lines are in modules whose headers say so in other words, and are counted as written: derivations found by search in rows~3 and~9, and a module of arithmetic modulo~$3$ in row~15. So the Generated column is a lower bound. Rows~4 and~5 present the same group by two sets of relations and share lemmas: row~5 proves the case that the proof in the source of row~4 leaves open (\Cref{sec:findings}), and uses the lemmas of row~4 on levels and its proof that the two sets of relations are equivalent. Rows~11 and~12 obtain completeness from the presentations of rows~1 and~2. Row~13 takes the completeness theorem that its source imports from row~5. Row~14 translates circuits into the groups of row~3. Row~16 transfers completeness from the rows listed. We count the commits to a row's folders under their current and earlier names. Every commit to fourteen of the sixteen rows carries the trailer of a coding agent. Of the $482$ commits to the qudit Clifford row, $121$ do; most of the others date from before the workflow of \Cref{sec:method}. Of the $28$ commits to the Toffoli--Hadamard row, $15$ do, and the other $13$ are the work of the second coding agent (\Cref{sec:ai-use}).
 
@@ -792,7 +712,7 @@ Per decision, Clifford, 100 gates & 5.0\,ms on 2 qubits, 24\,s on 6 & 5.8\,ms on
 
 \paragraph{Definitions and Semantics} The Lean framework keeps the definitions of the Agda one but adapts their representation to Mathlib. Agda uses its own word type, with explicit brackets, and the setoid-based algebra of the standard library. A presentation is a record containing a semantics and a group isomorphism, or a monomorphism for a sub-presentation. Lean uses Mathlib's free monoid and the monoid congruence generated by the relations. Its presentations are predicates in \texttt{Prop}, from which it derives isomorphisms out of the quotient. In both, the circuit infrastructure, the structural rules, and general completeness arguments are shared between formalizations.
 
-The semantic targets also differ. Most Agda formalizations work directly with exact representations of matrix entries. Lean states its matrix groups over Mathlib's real or complex numbers and proves bridges to them from computable exact rings. In particular, the Agda qudit Clifford formalization presents the constructed model of Appendix~\ref{app:qupit-details}, whereas Lean proves soundness and completeness against complex matrices for every odd prime. A common source therefore does not imply identical statements or intermediate lemmas.
+The semantic targets also differ. Most Agda formalizations work directly with exact representations of matrix entries. Lean states its matrix groups over Mathlib's real or complex numbers and proves bridges to them from computable exact rings. In particular, the Agda qudit Clifford formalization presents a constructed algebraic model, whereas Lean proves soundness and completeness against complex matrices for every odd prime. A common source therefore does not imply identical statements or intermediate lemmas.
 
 \paragraph{Proof Development} Excluding blank lines and comments, the Agda formalization of \Cref{tab:corpus} has about 377{,}000 lines and the Lean formalization about 339{,}000 (\Cref{tab:compare}). \Cref{fig:compare}(a) compares them row by row, except that for Toffoli--Hadamard it shows another pair, one proof in both assistants (see below). Lean's is shorter in thirteen of the sixteen rows, by a factor of five or more for qudit Clifford and qutrit Clifford, where the two take different routes. It is longer for Hadamard-$\Pi$, three-qubit Clifford+\CS, and real Clifford+\CH. Both counts include the derivations and certificates that scripts generate. The Agda proofs are explicit terms, built by pattern matching and equational reasoning, with reflection-based solvers for associativity and ring identities. Its library develops the group theory the proofs need, in about 13{,}200 lines against 1{,}200 in Lean. The Lean proofs rely on Mathlib's algebra and on tactics, with about 69{,}000 calls to automation such as \texttt{simp}, \texttt{omega}, \texttt{decide}, and \texttt{ring}.
 
@@ -820,131 +740,6 @@ The new result of \Cref{sec:xcxccx} gives a third pair. Coding agents translated
 \end{figure}
 
 % \clearpage
-\section{Details of the Multi-Qudit Clifford Case Study}\label{app:qupit-details}
-
-This appendix supplies the details of the case study in \Cref{sec:qudit-case-study}. We first fix the gate conventions and state the formal theorems (Appendix~\ref{app:q-circuits}). We then prove symplectic completeness by normalization (Appendix~\ref{app:q-symplectic}), restore Paulis and recover the source rule sets (Appendix~\ref{app:q-composing}), and restore scalar phases (Appendix~\ref{app:q-scalars}). Appendix~\ref{app:q-discussion} records the implementation and the boundary between the Agda proof and the external identification with unitary groups.
-
-\subsection{Gate Conventions, Syntax, and Theorem Statements}\label{app:q-circuits}
-
-We use the gate conventions of~\quditcite{}. Fix an odd prime $p$ and let $\omega = e^{2\pi i/p}$. On the basis $\ket{0},\dots,\ket{p-1}$ indexed by $\Zp$, the gates $\X\ket{j} = \ket{j+1}$ and $\Zg\ket{j} = \omega^{j}\ket{j}$ generate, with the phases $\omega^t$, the Pauli group $\Pauli$ on $n$ qudits. The gates
-\[
-\Hg\colon \ket{j} \mapsto \tfrac{\delta_p}{\sqrt p}\sum_k \omega^{jk}\ket{k}, \qquad
-\Sg\colon \ket{j} \mapsto \omega^{j(j-1)/2}\ket{j}, \qquad
-\CZ\colon \ket{j}\ket{l} \mapsto \omega^{jl}\ket{j}\ket{l}
-\]
-generate, with the same phases, the Clifford group $\Cliff$. Here $\delta_p = (-i)^{(p-1)/2}$, which makes the determinant of $\Hg$ equal to~$1$. Modulo scalars, we write $\PCliff = \Cliff/\langle\omega\rangle$ and $\PPauli = \Pauli/\langle\omega\rangle \cong \Zp^{2n}$. Then $\Cliff/\Pauli \cong \PCliff/\PPauli \cong \Sp$ and $\PCliff \cong \PPauli \rtimes \Sp$. We do not formalize these last two isomorphisms, because our semantic groups are \emph{defined} as their right-hand sides. \quditcite{} also include $-1$ among the global phases, so that the swap and the multiplier gates belong to $\Cliff$. We work mainly in the projective quotient, where $-1$ makes no difference and the relations are slightly simpler.
-
-Using the framework of \Cref{sec:form}, we encode circuits, rules, and reasoning with the rules. \Cref{fig:q-rewriting} shows the diagrams for the following encodings. We draw circuits in matrix-multiplication order, the reverse of the usual circuit order, so $w \bullet v$ applies $v$ first but draws it on the right. For example, this is the swap:
-
-\input{qudit/agda/ex-circuit}
-
-\noindent A rule set is an inductive family indexed by the width, with one constructor per rule. Each rule is stated once, on the bottom wires of every width at which it fits. For example, these are two of the fifteen constructors of our primary rule set \aid{{\_}SRel,{\_}==={\_}}, the order of the swap and the rule moving $\Hg$ across it:
-
-\input{qudit/agda/ex-relation}
-
-\noindent Reasoning with the rules is equational reasoning in the congruence $\approx$ they generate, with combinators for symmetry, associativity, and rewriting the left or right factor of a product. For example, conjugating by the swap moves $\Hg$ down a wire:
-
-\input{qudit/agda/ex-reasoning}
-
-\begin{theorem}[\aid{Paper-V1.presentation}]\label{thm:q-main}
-For every width $n$, the fifteen rules of \texttt{Paper-V1} (Appendix~\ref{app:q-composing}) present the projective Clifford model:
-\input{qudit/agda/thm-clifford}
-\end{theorem}
-
-\noindent These rules are the relations of~\quditcite{} read modulo scalars, with its rule~(C4) in an equivalent form. The relation \aid{{\_}QRel,{\_}==={\_}} closes \aid{{\_}SRel,{\_}==={\_}} under the structural rules (\Cref{sec:form}), and $\aid{Pauli⋊Sp}\;n$ is the semidirect product of $\Zp^{2n}$ by $\Sp$ (Appendix~\ref{app:q-composing}). The record \aid{{\_}IsPresentationOf{\_}} (\Cref{sec:form}) gives a group isomorphism from circuits modulo $\approx$ to $\PPauli \rtimes \Sp$. That this map is well defined is \emph{soundness}, since each rule holds. That it is injective is \emph{completeness}, and that it is surjective says that every element of the model is represented by a circuit.
-
-We refine the normal form of~\quditcite{} for symplectic operators, which are Clifford operators modulo Paulis, into a doubly inductive definition (Appendix~\ref{app:q-symplectic}), and we prove that normal forms are unique:
-
-\begin{theorem}[\aid{unique-nf}]\label{thm:q-unique}
-Normal forms with equal symplectic denotations are equal:
-\input{qudit/agda/thm-unique}
-\end{theorem}
-
-\paragraph{The Route} We mostly follow the paper. Its normal boxes, its symplectic normal form, and its parametrized \emph{box relations} reappear below. A box relation says that pushing a gate through a normal box yields an updated box and residual \emph{dirty} gates. We also keep the reduction to eighteen relations of its Theorem~4.4, a step the paper already delegated to Agda. The one major divergence is the step that promotes symplectic to projective completeness, its Proposition~4.9. There, the paper corrects each rule $C_l = C_r$ to $C_l = C_r\,;P$ for the unique Pauli $P$ that makes it projectively sound. It then replays the symplectic rewrites, pushing each correction to the end, where it becomes ``a potentially different Pauli''. We did not see how to verify this argument at reasonable cost. Instead, we work in a syntax where Paulis are trivial, since symplectic circuits have only $\Hg$, $\Sg$, and $\CZ$ and denote $\Sp$ itself. We then reintroduce Paulis and scalars by construction (\Cref{fig:q-route-details}). The Pauli bookkeeping of Proposition~4.9 is thus done once, by a theorem about semidirect products that the framework proves for arbitrary groups.
-
-\begin{figure}[tbp]
-\centering
-\input{figures/equacert-qudit-route.tikz}\unskip
-\caption{The chain of presentations used to formalize the qudit Clifford result of~\quditcite{}. Every arrow is a verified presentation theorem or isomorphism of presentations. The symplectic stages present $\Sp$, and the projective chain from the semidirect presentation to Paper-V1 presents $\PPauli\rtimes\Sp$. ``Exact'' is a central extension by $\langle\omega\rangle$, and the final two stages also include the direct factor $\langle-1\rangle$.}
-\Description{A two-column flow connects the full and simplified symplectic presentations, then combines the latter with a Pauli presentation by a semidirect-product theorem. Generator reduction yields Simplified-V1, followed by Paper-V0. One branch reaches Paper-V1 modulo scalars. The other adds scalar phases by a central extension, then adjoins minus one by a direct product and reaches the paper's Figure 1 by an isomorphism.}
-\label{fig:q-route-details}
-\end{figure}
-% \FloatBarrier
-
-\subsection{Normal Forms for the Symplectic Factor}\label{app:q-symplectic}
-
-We now give the datatypes and proof obligations behind \Cref{fig:q-normalforms}. We model $\Sp$ as the group of $\Zp$-linear bijections of the phase space $\aid{Pauli}\;n = \aid{Vec}\;(\Zp \times \Zp)\;n$ that preserve the symplectic form. An element of the phase space lists, for each wire, the exponents of $\X^{a}\Zg^{b}$ up to phase. Against this semantics, completeness rests on the normal form, which we refine into a doubly inductive datatype:
-
-\input{qudit/agda/rows}
-
-\medskip\noindent
-An $M$-row is a column of $D$ boxes ending in an $E$ box, the paper's $\X$-normal layer. An $L$-row is a column of $B$ boxes ending in an $A$ box, its $\Zg$-normal layer, with the $A$ box at the bottom. An $\ML$ box at width $m \ge 2$ is either a full pair of rows or a bottom $D$ box followed by an $\ML$ box one wire up, so it is a spine of $D$ boxes capped by a pair of rows. This is the first induction, on the width of a single coset representative. The second induction is the staircase:
-
-\input{qudit/agda/nf}
-
-\paragraph{The Table} The coset table is the paper's ``push a gate through a normal box'', written as a structurally recursive function \aid{ract} with its soundness law \aid{ract-sound} (about 5{,}600 lines together):
-
-\input{qudit/agda/ex-table}
-
-\noindent Each clause of \aid{ract-sound} is derived from the fifteen simplified symplectic relations. For instance, pushing $\Sg$ through an $E$ box is one step on powers of $\Sg$, namely $[\,b\,]^{\mathsf e} \bullet \Sg = \Sg^{-b} \bullet \Sg \approx \Sg^{-(b-1)} = [\,b-1\,]^{\mathsf e}$. A circuit is rewritten to its normal form by repeating this step gate by gate, so every rewrite is traced to a relation.
-
-\paragraph{Uniqueness} The symplectic group acts on $\aid{Vec}\;\mathrm{Pauli}_1\;n$, a $2n$-dimensional symplectic $\Zp$-vector space in which $\mathrm{Pauli}_1$ is the two-dimensional symplectic subspace of a single wire. The elements that fix the bottom wire's subspace pointwise form a copy of $\mathrm{Sp}(2(n{-}1), \Zp)$ acting above the bottom wire, and the $\ML$ boxes represent its cosets. Every $f \in \Sp$ factors as $f = f' \circ c_n$, with $c_n \in \ML_n$ and $f'$ acting above the bottom wire, and $c_n$ is unique because the image of the bottom wire determines the box. Recursing on $f'$ writes $f$ uniquely as $c_1 \circ c_2 \circ \cdots \circ c_n$ with $c_k \in \ML_k$, which is \Cref{thm:q-unique}.
-
-\paragraph{Surjectivity} Every symplectic transformation is the action of some circuit. We prove this constructively by clearing the bottom wire and recursing on the rest. This is the paper's Lemma~3.7, with the coset box computed rather than asserted:
-
-{\renewcommand{\AgdaCodeStyle}{\scriptsize}\input{qudit/agda/thm-lm}}
-
-\paragraph{Completeness} Circuits with the same denotation rewrite through the table to their normal forms. These normal forms denote the same map by soundness, so they are equal by \Cref{thm:q-unique}, and the circuits are equivalent. This argument is the framework's \aid{by-normalization} (\Cref{fig:normalform}). With surjectivity, it shows that the simplified relations, which their own module also calls \aid{{\_}SRel,{\_}==={\_}}, present the symplectic group:
-
-\input{qudit/agda/thm-sp}
-
-\subsection{Restoring Paulis and the Source Rule Sets}\label{app:q-composing}
-
-$\PPauli \cong (\Zp \times \Zp)^n$ is presented over $\X$ and $\Zg$ on each wire by $\X^{p} = \Zg^{p} = \varepsilon$ and $\Zg\X = \X\Zg$. Its semantic group is the phase space that $\Sp$ acts on, and its normal form is $\X^{a}\Zg^{b}$ on each wire. Combining this with the symplectic presentation of Appendix~\ref{app:q-symplectic} is an instance of the framework's theorem for semidirect products. The resulting presentation has the relations of both factors together with the conjugation relations $h\,n\,h^{-1} = \mathit{conj}\,h\,n$, where the action \aid{conj} spells out the paper's Lemmas~2.24--2.25. The theorem asks that the action respect the relations of each factor, and we prove this semantically. The conjugates of congruent words have equal denotations by soundness, so they are congruent by Pauli \emph{completeness}. For symplectic rules this is \aid{respects-Δ}, and it corresponds to the paper's ``Pauli complete'' rules (its Definition~4.7). Since every premise is a theorem, the semidirect presentation of \aid{Pauli⋊Sp} is unconditional.
-
-\paragraph{Reaching the Paper's Rules} The semidirect presentation has generators $\X$, $\Zg$, $\Hg$, $\Sg$, and $\CZ$ and $3 + 15 + 14$ relations (Pauli, symplectic, and conjugation), whereas the paper's rule sets have only $\Hg$, $\Sg$, and $\CZ$. Three isomorphisms of presentations close this gap (\Cref{fig:q-route-details}), through \texttt{Simplified-V1} (nineteen rules), \texttt{Paper-V0} (sixteen), and \texttt{Paper-V1} (the fifteen of \Cref{thm:q-main}). Along the way, $\X$ and $\Zg$ become words, and the Pauli and conjugation rules become theorems.
-
-The first isomorphism, from the semidirect presentation to \texttt{Simplified-V1}, is between different alphabets. Its map $f$ sends $\Sg$ to $R = \Sg \bullet \Zg^{1/2}$, and its inverse $h$ sends $\Sg$ to $\Zg^{-1/2} \bullet \Sg$. In particular, $f$ induces the embedding of the symplectic group into the projective Clifford group. The nineteen rules of \texttt{Simplified-V1} are the fifteen simplified symplectic rules together with $(\Sg\Hg)^3 = \varepsilon$, $\Hg^2\Sg\Hg^2\Sg = \Sg\Hg^2\Sg\Hg^2$, and the two rules pushing $\X$ through $\CZ$. From these, \aid{f-well-defined} derives the images under $f$ of the three Pauli rules and the fourteen conjugation rules.
-
-The second isomorphism, from \texttt{Simplified-V1} to \texttt{Paper-V0}, is the identity on circuits. The two rule sets share six rules word for word and three more up to the spelling of the multiplier, and each derives the rest of the other. The larger direction is \texttt{Paper-V0}'s module \texttt{Lemmas}, of about 4{,}750 lines.
-
-The third isomorphism, from \texttt{Paper-V0} to \texttt{Paper-V1}, changes how the multiplier $M_x\colon \ket{j} \mapsto \ket{xj}$ is spelled as a word. \texttt{Paper-V0} spells it over $R$, as $M_x = R^{x^{-1}}\Hg R^{x}\Hg R^{x^{-1}}\Hg$. The paper's~(T1) spells it over $\Sg$, up to a phase, as $M_x = \aid{SHS'}\;x\;x^{-1}$, where $\aid{SHS'}\;a\;b = \Zg^{(b-1)/2}\X^{(1-a)/2}\Sg^{b}\Hg\Sg^{a}\Hg\Sg^{b}\Hg$. Over $\Sg$, the rule \aid{semi-MR} reads $M_g\Sg^{g^2}\Zg^{(g^2-g)/2} = \Sg M_g$. \texttt{Paper-V1} restates the four multiplier rules over \aid{SHS'} and drops one rule. Since $M_1$ is now the word $(\Sg\Hg)^3$, \aid{M-power} at $k = 0$ already gives $(\Sg\Hg)^3 \approx \varepsilon$. Over $R$, $M_1$ is the different word $(R\Hg)^3$, so that axiom had to stay. The bridge $R^{a}\Hg R^{b}\Hg R^{a}\Hg \approx \aid{SHS'}\;b\;a$ for $ab = 1$ (\texttt{Shared.PauliBase}) carries the multiplier rules across, which gives \Cref{thm:q-main}. The paper's own rule~(C4) states the conjugation of $\Sg$ by $M_g$ in the other direction. Each of (C4) and \aid{semi-MR} derives the other (\aid{SemiMS}), so Figure~1 of~\quditcite{} read modulo scalars is isomorphic to \texttt{Paper-V1}.
-
-\subsection{Restoring Scalar Phases}\label{app:q-scalars}
-
- The theorem \aid{extension-presentation} extends a projective presentation by a scalar. We apply it to \texttt{Paper-V0}, which has \aid{order-SH} as an axiom. We add $\omega$ with $\omega^{p} = \varepsilon$, let $\omega$ commute with every gate, and \emph{correct} each rule by its scalar. The correction is $\varepsilon$ except on \aid{order-SH}, the one rule that does not hold exactly, since $(\Sg\Hg)^3 = \omega^{-1/8}$. The exponent $-1/8$ is computed in $\Zp$, where it equals $(p^2-1)/8$. The multiplier words now denote $\ket{j} \mapsto \ket{xj}$ only up to a scalar.
-
-The semantic extension is the Weyl cocycle on the natural semidirect product, $c((P,A),(Q,B)) = \tfrac12\,\mathrm{sform}(P,\ A \cdot Q)$. Here $A \cdot Q$ is the symplectic part acting on the Pauli vector, and $\mathrm{sform}$ is the symplectic form of the phase space, the exponent in $PQ = \omega^{\mathrm{sform}(P,Q)}\,QP$. The cocycle identity follows from the bilinearity and the symplectic invariance of \aid{sform}. The cocycle of the presented group is the pullback of $c$ along the presentation by \texttt{Paper-V0}, so the two agree by construction. The identification with unitary operators uses Weyl multiplication~\cite[Eq.~(4), Theorem~3]{gross2006hudson} and a \emph{linear} Weil representation with exact covariance~\cite[Theorem~1.3.2]{gurevich2007geometric}. The operators $U(e,v,A)=\omega^e W(v)\rho(A)$ satisfy
-\[
- U(e,v,A)\,U(f,w,B)
- =U\bigl(e+f+\tfrac12\mathrm{sform}(v,Aw),\ v+Aw,\ AB\bigr).
-\]
-This is the Heisenberg--Weil representation~\cite[\S 1.3]{gurevich2010bounds}. Conjugation on Weyl operators determines $A$ and $v$, so the representation is faithful and its scalars are exactly $\langle\omega I\rangle$ (at width zero, $e\mapsto\omega^e$). Adjoining $-I$ gives its direct product with $\mathbb Z_2$, whose scalars are $\langle-\omega I\rangle$. These finite phase choices differ from the full unitary normalizer, which contains $U(1)$. With no hypotheses, we obtain:
-
-{\renewcommand{\AgdaCodeStyle}{\scriptsize}\input{qudit/agda/thm-exact}}
-
-\noindent Agda also shows that the trivial cocycle cannot realize the correction of \aid{order-SH} (\aid{split-forces}).
-
-\paragraph{The Rules as Printed} Figure~1 of~\quditcite{} is stated over $-\omega$. Its multipliers carry Legendre symbols and its swap carries the sign $(-1)^{(p-1)/2}$, so it needs the $-1$ that the exact group lacks, since the scalars of that group have odd order. Adjoining $-1$ as a central involution presents the exact group times $\mathbb Z_2$, which is \aid{Clifford±}. Figure~1 is isomorphic to this rule set by $-\omega \mapsto -1\cdot\omega$, where the scalar of each exact rule is determined by reading its lift back. This is the paper's Theorem~4.10, stated against our group:
-
-\input{qudit/agda/thm-figure1}
-
-\subsection{Implementation and Semantic Boundary}\label{app:q-discussion}
-
-This formalization is checked by Agda~2.8 with standard library 2.4 under \texttt{-{}-safe}, with no postulates and no holes. The formalization has 216 modules and about 58{,}000 lines of code, of which about 27{,}000 are for the symplectic group, 18{,}000 for the projective chain, and 13{,}000 for the scalars. These counts exclude the shared library (Appendix~\ref{app:agda-lean-comparison}).
-
-The Agda formalization does not formalize the two isomorphisms of Appendix~\ref{app:q-circuits}~\cite{gross2006hudson,gurevich2007geometric}, and no matrix appears in it. The representation argument above is external mathematics, and matching the paper's gate phases remains a convention check~\cite{bian2026qupit,neuhauser2002metaplectic}. The Lean formalization needs neither, since it proves soundness and completeness against complex matrices directly (Appendix~\ref{app:agda-lean-comparison}).
-
-Versions of Claude were used for parts of this formalization: composing box relations to prove \aid{ract-sound}, defining the symplectic group, and establishing the equivalence between the code's relations and those in Figure~1 of~\quditcite{}, read modulo scalars. Claude also wrote \aid{presentation-exact} and the layer for Figure~1 with $-1$.
-
-% \emph{Next}: a verified matrix semantics over
-% $U_{p^n}(\mathbb{Z}[1/p,\omega])$, which would close the chain and
-% discharge the glue facts, and submission to the Agda standard
-% library.  The qubit case~\cite{selinger2015clifford} and the qutrit
-% rules of~\cite{li2025qutrit}, which the odd-prime formalization does not
-% cover, are now among the formalizations of \Cref{sec:corpus}.
-
-
 \section{Proofs for Four-Bit Reversible Circuits}\label{app:xcxccx}
 
 This appendix proves \Cref{thm:xcxccx-complete,thm:xcxccx-nf} as the Agda formalization~\cite{equacert2026alt16} does. Each subsection names the modules of \texttt{Examples/Groups/Alt16-RevCir} that it follows, and each statement names its Agda counterpart.
