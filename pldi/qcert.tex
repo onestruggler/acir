@@ -32,30 +32,26 @@ A set of circuit equations is complete if every equation between circuits with t
 Rewriting of quantum circuits is a standard tool in circuit optimization~\cite{hietala2021voqc,nam2018automated,maslov2008simplification,xu2022quartz}, equivalence checking~\cite{yamashita2010fast}, hardware mapping~\cite{sivarajah2020tket}, and reasoning about quantum programs~\cite{fang2026hadamard}. It relies on an \emph{equational theory} for a family of circuits: a set of equations between circuits, each used as a rewrite rule in either direction. A theory is \emph{sound} if the two sides of every rule have the same semantics, that is, denote the same unitary matrix. Conversely, it is \emph{complete} if any two circuits with the same semantics can be rewritten into each other, so the rules suffice to establish every equivalence. It is \emph{minimal} if no rule can be derived from the others. Studying minimality shows which rules are indispensable, which helps us understand the algebraic structure of a circuit family~\cite{blake2026simpler,clement2024minimal}.
 
 
-Completeness results have been established for a wide range of circuit families, including reversible linear circuits~\cite{lafont2003boolean,sakashita2013cnot}, reversible circuits over multiple-control Toffoli gates~\cite{feng2026complete}, Clifford~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, CNOT-dihedral~\cite{amy2018cnotdihedral,blake2026phaseaffine}, two-qubit Clifford+\T~\cite{bian2023cliffordt2}, three-qubit Clifford+\CS~\cite{bian2023cliffordcs3}, Toffoli--Hadamard~\cite{amy2024toffoli}, and real Clifford+\CH~\cite{clement2026realcliffordch} circuits, as well as universal quantum circuits~\cite{clement2023complete,clement2024extensions}. Completeness has also been obtained for the group of two-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimality has been shown for six of these families~\cite{blake2026simpler} and for universal quantum circuits~\cite{clement2024minimal}. Proofs of both properties typically follow a simple strategy, but carrying it out requires long case analyses, with supporting derivations spanning hundreds of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}.
+Completeness results have been established for a wide range of circuit families, including reversible linear circuits~\cite{lafont2003boolean,sakashita2013cnot}, reversible circuits over multiple-control Toffoli gates~\cite{feng2026complete}, Clifford~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, CNOT-dihedral~\cite{amy2018cnotdihedral,blake2026phaseaffine}, two-qubit Clifford+\T~\cite{bian2023cliffordt2}, three-qubit Clifford+\CS~\cite{bian2023cliffordcs3}, Toffoli--Hadamard~\cite{amy2024toffoli}, and real Clifford+\CH~\cite{clement2026realcliffordch} circuits, as well as universal quantum circuits~\cite{clement2023complete,clement2024extensions}. Completeness has also been obtained for the group of two-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimality has been shown for six of these families~\cite{blake2026simpler} and for universal quantum circuits~\cite{clement2024minimal}. Proofs of both properties typically follow a simple strategy, but carrying it out requires long case analyses, with supporting derivations sometimes spanning hundreds of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}.
 %such as rewriting every circuit into a unique normal form, 
 
-Peer review often does not check proofs of this length in detail. A case can be missed, and a long derivation can use an equation outside the stated rules or contain circular reasoning (i.e., rely, through earlier lemmas, on the equation being derived). A \emph{proof assistant} such as Agda or Lean accepts a proof only if every case is covered and every step follows from the stated rules. Until recently, formalizing these proofs was impractical, given their many lemmas and long derivations. LLM coding agents change this: they can now write proofs that a proof assistant accepts. For example, Anthropic reports that LLMs wrote a 13-million-line Lean proof of Fermat's Last Theorem within 11 days~\cite{anthropic2026flt}.
+Peer review often does not check proofs of this length in detail. A case can be missed, and a long derivation can use an equation outside the stated rules or contain circular reasoning (i.e., rely, through earlier lemmas, on the equation being derived). A \emph{proof assistant} such as Agda or Lean accepts a proof only if every case is covered and every step follows from the stated rules. Until recently, formalizing these proofs was impractical, given their many lemmas and long derivations. LLM coding agents change this: they can now write proofs that a proof assistant accepts. For example, Anthropic reports that LLMs wrote a 13-million-line Lean proof of Fermat's Last Theorem within 11 days~\cite{anthropic2026flt}. However, with this great power also comes great responsibility: a proof assistant checks a proof only against the theorem as stated, which may not match the intended
+result~\cite{hales2026reliability}. For example, \citet{bastounis2026navier} find that the Lean formalization of an
+announced Navier--Stokes result proves weaker intermediate statements than the written proof, because of mistranslations. So \emph{aligning} the formal statement with the source paper remains a human task. A reader who trusts the proof assistant needs to still check that statement and the definitions it uses, though they do not have to check the full proof.
 
-Before the advent of LLMs, work in quantum computing on formalisation has focused on verified compilers and program logics that prove that quantum programs are correct, or that circuit optimizations preserve their meaning~\cite{paykin2017qwire,hietala2021voqc,chareton2021qbricks,zhou2023coqq}. Mechanized libraries for circuit rewriting, such as VyZX for the ZX-calculus~\cite{lehmann2026vyzx}, prove the soundness of rewrite rules rather than the completeness of a rule set. Recent AI-assisted work has also formalized quantum program logics, algorithms, and complexity results~\cite{ren2026qedia,zhang2026leanquantumalg,lu2026formalflow}.
-
-Only a few completeness results have been formalized, each in isolation, mostly by its authors. \citet{choudhury2022symmetries} formalize in Agda that the equations of the reversible programming language~$\Pi$ are complete for permutations of finite sets. Also in Agda, Bian and Selinger formalize their completeness proofs for two-qubit Clifford+\T{} and three-qubit Clifford+\CS{} circuits~\cite{bian2023cliffordt2,bian2023cliffordcs3}.
-
-This isolation is problematic, because completeness results can build on one another. Bian and Selinger's formalizations assume the underlying matrix-group presentations~\cite{greylyn2014,bian2021un}. Cl\'ement's result for real Clifford+\CH{} circuits~\cite{clement2026realcliffordch} relies on Hadamard-$\Pi$'s presentation of $O_n(\Z[1/\sqrt2])$~\cite{fang2026hadamard}, whose proof misses a case (\Cref{sec:findings}). The completeness of $\sqrt{\Pi}$, a quantum extension of~$\Pi$~\cite{carette2024squareroots}, rests on the presentations~\cite{selinger2015clifford,bian2021un,bian2023cliffordt2}, whose relations it derives. A single framework makes such dependencies checkable, lets reviewers audit shared definitions once, and lets formalizations reuse earlier ones.
-
-We present EquaCert,\footnote{The name EquaCert combines ``equational''
-and ``certification.'' We use a proof assistant to certify that
-equational theories of quantum circuits are complete.} a framework in
+We present EquaCert (the \emph{Cert}ification of \emph{Equa}tional theories), a framework in
 Agda~\cite{norell2007thesis,bove2009agda} for verifying the
-completeness and minimality of circuit equational theories. This
-paper makes four contributions.
+completeness and minimality of circuit equational theories. In particular, we make the following contributions:
 \begin{itemize}
-\item \textbf{Framework.} EquaCert states every result over one
+\item \textbf{A general framework.} EquaCert states every result over one
   syntax for words and circuits and one definition of completeness,
-  and twelve of its sixteen results over one matrix semantics. It extends the
-  library of~\citet{bian2027popl} with
+  and twelve of its sixteen results over one matrix semantics. 
+  It extends the library of~\citet{bian2027popl} with
   matrix semantics, three-wire gates, zero-wire gates (scalars such as
   global phases), PROPs, and independence of relations.
+\item \textbf{Human-checked alignment.} The alignment between the formalized statements in Agda
+  and the text of the paper is checked directly by the authors. This process is made easy
+  by the usage of the standardized framework and the separation of the theorem statement from the proof.
 \item \textbf{Sixteen certifications.} We formalize the main results
   of sixteen papers, fifteen on completeness and one on minimality.
   Fifteen of the papers are published, and one is an unpublished
@@ -82,24 +78,31 @@ paper makes four contributions.
 \Cref{fig:equacert-pipeline} shows how EquaCert divides the work.
 LLM coding agents write the formal statement and its proof, guided by
 the paper's text, Agda checks the proof, and humans check that the
-statement says what the paper claims. This last check cannot be
-delegated: a proof assistant checks a proof only against the theorem
-as stated, which may not match the intended
-result~\cite{hales2026reliability}. For example,
-\citet{bastounis2026navier} find that the Lean formalization of an
-announced Navier--Stokes result proves weaker intermediate statements
-than the written proof, because of mistranslations. So aligning the formal statement with the source
-paper remains a human task, and a reader who trusts the proof
-assistant needs to audit only that statement and the definitions it
-uses, not the proof.
+statement says what the paper claims. 
+% This last check cannot be
+% delegated: a proof assistant checks a proof only against the theorem
+% as stated, which may not match the intended
+% result~\cite{hales2026reliability}. For example,
+% \citet{bastounis2026navier} find that the Lean formalization of an
+% announced Navier--Stokes result proves weaker intermediate statements
+% than the written proof, because of mistranslations. So aligning the formal statement with the source
+% paper remains a human task, and a reader who trusts the proof
+% assistant needs to audit only that statement and the definitions it
+% uses, not the proof.
 Because all results share one framework, the dependencies between
 them are checked as well. We also provide a
 Lean~\cite{moura2021lean4} version of the development, for a
 broader audience.
 
-\paragraph{Concurrent Work} Several concurrent projects divide the work as we do: humans check the statements and LLM agents write the proofs. MerLean formalizes three quantum computing papers~\cite{ren2026merlean}, EconCSLib formalizes twenty papers in economics and computation~\cite{garg2026econcslib}, and an LLM agent has proved part of a verified compiler correct~\cite{paraskevopoulou2026compiler}. QECert, a Lean library for quantum error correction, likewise gathers many results in one place~\cite{he2026qecert}. The closest to EquaCert is the work of \citet{shirobokov2026discovering} on quantum programs, in which LLM agents write both the programs and their proofs.
+\paragraph{Related Work} 
+Before the advent of LLMs, work in quantum computing on formalisation has focused on verified compilers and program logics that prove that quantum programs are correct, or that circuit optimizations preserve their meaning~\cite{paykin2017qwire,hietala2021voqc,chareton2021qbricks,zhou2023coqq}. Mechanized libraries for circuit rewriting, such as VyZX for the ZX-calculus~\cite{lehmann2026vyzx}, prove the soundness of rewrite rules rather than the completeness of a rule set. 
+Only a few completeness results have been formalized, each in isolation, mostly by its authors. \citet{choudhury2022symmetries} formalize in Agda that the equations of the reversible programming language~$\Pi$ are complete for permutations of finite sets. Also in Agda, Bian and Selinger formalize their completeness proofs for two-qubit Clifford+\T{} and three-qubit Clifford+\CS{} circuits~\cite{bian2023cliffordt2,bian2023cliffordcs3}.
+That these results are formalized independently, instead of in a common framework can be problematic because completeness results can build on one another. Bian and Selinger's formalizations assume the underlying matrix-group presentations~\cite{greylyn2014,bian2021un}. Cl\'ement's result for real Clifford+\CH{} circuits~\cite{clement2026realcliffordch} relies on Hadamard-$\Pi$'s presentation of $O_n(\Z[1/\sqrt2])$~\cite{fang2026hadamard}, whose proof we show misses a case (\Cref{sec:findings}). The completeness of $\sqrt{\Pi}$, a quantum extension of~$\Pi$~\cite{carette2024squareroots}, rests on the presentations~\cite{selinger2015clifford,bian2021un,bian2023cliffordt2}, whose relations it derives. A single framework such as EquaCert makes such dependencies checkable, lets reviewers check shared definitions once, and lets formalizations reuse earlier ones.
 
-\paragraph{Orientation} \Cref{sec:background} reviews equational theories and the main techniques for proving their completeness and minimality. \Cref{sec:case-study} introduces EquaCert's framework on Lafont's presentation of the alternating groups, on which the new result builds, and \Cref{sec:form} presents the framework. \Cref{sec:corpus,sec:findings} present the formalized results and the corrections to the source papers. \Cref{sec:xcxccx} gives the new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$, and explains how its proof is constructed and checked; Appendix~\ref{app:xcxccx} gives the full proof. \Cref{sec:conclusion} discusses limitations and future work. The remaining appendices give background, implementation details, the comparison with Lean, and the details of the corrections.
+Recent AI-assisted work has also formalized quantum program logics, algorithms, and complexity results~\cite{ren2026qedia,zhang2026leanquantumalg,lu2026formalflow}.
+Several concurrent projects divide the work as we do: humans check the statements and LLM agents write the proofs. MerLean formalizes three quantum computing papers~\cite{ren2026merlean}, EconCSLib formalizes twenty papers in economics and computation~\cite{garg2026econcslib}, and an LLM agent has proved part of a verified compiler correct~\cite{paraskevopoulou2026compiler}. QECert, a Lean library for quantum error correction, likewise gathers many results in one place~\cite{he2026qecert}. The closest to EquaCert is the work of \citet{shirobokov2026discovering} on quantum programs, in which LLM agents write both the programs and their proofs.
+
+\paragraph{Structure of the paper} \Cref{sec:background} reviews equational theories and the main techniques for proving their completeness and minimality. \Cref{sec:case-study} introduces EquaCert's framework on Lafont's presentation of the alternating groups, on which the new result builds, and \Cref{sec:form} presents the framework. \Cref{sec:corpus,sec:findings} present the formalized results and the corrections to the source papers. \Cref{sec:xcxccx} gives the new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$, and explains how its proof is constructed and checked; Appendix~\ref{app:xcxccx} gives the full proof. \Cref{sec:conclusion} discusses limitations and future work. The remaining appendices give background, implementation details, the comparison with Lean, and the details of the corrections.
 
 % \FloatBarrier
 
