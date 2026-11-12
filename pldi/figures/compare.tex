@@ -66,29 +66,3 @@
 \node[anchor=north] at ($(group c1r1.south east)!0.5!(group c2r1.south west) + (0,-28pt)$)
   {\pgfplotslegendfromname{cmpLegend}};
 \end{tikzpicture}
-
-\par\medskip
-\begin{tikzpicture}
-\begin{axis}[
-  title={(c) Execution time},
-  title style={font=\footnotesize\bfseries, yshift=-2pt},
-  width=0.62\linewidth, height=5.2cm,
-  xmin=1.7, xmax=8.3, xtick={2,...,8},
-  ymode=log, log basis y=10, ymin=1, ymax=100000,
-  xlabel={Qubits}, ylabel={Time per decision (ms), log scale},
-  xlabel style={font=\footnotesize}, ylabel style={font=\footnotesize},
-  tick label style={font=\scriptsize},
-  tick align=outside, tick pos=lower,
-  axis line style={cmpAxis}, major tick style={cmpAxis},
-  ymajorgrids, grid style={cmpGrid}, clip=false,
-]
-\addplot[color=cmpAgda, line width=1pt, mark=*, mark size=1.9pt]
-  coordinates {(2,5) (3,39.6) (4,335.2) (5,2765.8) (6,24356.6)};
-\addplot[color=cmpLean, line width=1pt, mark=square*, mark size=1.7pt]
-  coordinates {(2,5.8) (3,18.8) (4,56.4) (5,206.6) (6,612) (7,2314.8) (8,7895.4)};
-\node[font=\scriptsize, text=black!75, anchor=west, xshift=4pt]
-  at (axis cs:6,24356.6) {Agda};
-\node[font=\scriptsize, text=black!75, anchor=west, xshift=4pt]
-  at (axis cs:8,7895.4) {Lean};
-\end{axis}
-\end{tikzpicture}
