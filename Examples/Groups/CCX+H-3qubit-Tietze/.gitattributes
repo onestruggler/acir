@@ -1,2 +1,0 @@
-# The WSL runner must keep Unix line endings on Windows checkouts.
-tools/*.sh text eol=lf

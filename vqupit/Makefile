@@ -1,6 +1,6 @@
-# Makefile — build the OOPSLA submission PDF.
+# Makefile — build the paper PDF.
 #
-# Usage (from WSL, inside the paper/ directory):
+# Usage (from WSL, inside the vqupit/ directory):
 #   make          # run Agda on the literate sections, then latexmk
 #   make agda     # only regenerate latex/vqupit/sections/*.tex from the
 #                 # sections/*.lagda.tex files (needs the Agda library
@@ -12,7 +12,7 @@
 #   make cleanall # also remove main.pdf, png/ and the generated latex/
 #
 # From PowerShell (make, TeX Live and Agda live in WSL):
-#   wsl bash -lc "make -C /mnt/d/work/acir/vqupit"
+#   wsl --exec make -C vqupit
 #
 # Code highlighting: the five files that quote Agda are literate
 # Agda files (sections/*.lagda.tex).  `agda --latex --only-scope-checking`
@@ -53,8 +53,13 @@ agda: $(AGDATEX)
 # Agda must run from the repository root, where the .agda-lib file lives
 # and relative to which the literate sections are named
 # vqupit.sections.<name>.
-latex/vqupit/sections/%.tex: sections/%.lagda.tex
+latex/vqupit/sections/%.tex: sections/%.lagda.tex | latex/agda.sty
 	cd .. && $(AGDA) $(AGDAFLAGS) vqupit/$<
+
+# Use the bundled style even when Agda's installation omits its LaTeX data.
+latex/agda.sty: agda.sty
+	mkdir -p latex
+	cp $< $@
 
 $(MAIN).pdf: $(DEPS) $(AGDATEX)
 	$(LATEXMK) -pdf $(LMKFLAGS) $(MAIN).tex

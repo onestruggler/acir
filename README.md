@@ -1,77 +1,73 @@
-# qupit — Agda formalisation
+# Verified Generators and Relations for Qupit Clifford Operators
 
-Agda formalisation of group presentations, normal forms, and complete
-relation sets for multi-qudit Clifford circuits.
+The `vqupit-pldi27` branch contains the [paper](vqupit/), the Agda
+formalization it describes, and their transitive dependencies. It was
+branched from `ten-completeness` at `3c12abee`.
 
-## Versions
+## Contents
 
-| Component            | Version |
-| -------------------- | ------- |
-| Agda                 | 2.8     |
-| Agda standard library| 2.4     |
+- [`vqupit/`](vqupit/) contains the manuscript, bibliography, figures,
+  literate Agda snippets, generated LaTeX, and built PDF.
+- [`MainTheorems.agda`](MainTheorems.agda) states the headline results:
+  uniqueness of the symplectic normal form; the simplified symplectic
+  presentation; the projective Clifford presentations; the exact Clifford
+  presentation, with and without the extra scalar −1; and Figure 1 with
+  its scalars. It also checks the structural-rule independence results,
+  the symmetric-group example, and the generic constructions used in the
+  paper. `Qudit-Clifford` supplies Figure 1's completeness and soundness.
+- `Examples/` contains those developments and the supporting cyclic and
+  trivial groups. `Word/`, `Presentation/`, `Circuit/`, `Normalization/`,
+  and `ForStdlib/` contain the framework modules they depend on.
 
+Unrelated papers, Lean developments, Agda examples, and unused modules
+have been removed. The retained Agda modules are the import closure of
+`MainTheorems.agda` and `vqupit/sections/*.lagda.tex`. Existing proof
+modules are unchanged. The paper's figures and generated LaTeX are
+included locally; their original source directories are not needed to
+build it.
 
-The library configuration is in [`qupit.agda-lib`](qupit.agda-lib): it
-includes the repository root (`.`) and depends on `standard-library`
-and [`EucDomain`](https://github.com/onestruggler/EucDomain), which is
-a git submodule at `EucDomain/`.  Clone with `--recurse-submodules` (or
-run `git submodule update --init` afterwards) and add
-`EucDomain/EucDomain.agda-lib` to your `~/.agda/libraries`.
+## Check the formalization
 
-## Typechecking
+Use **Agda 2.8.0** and **standard library 2.4**. Register the standard
+library's `standard-library.agda-lib` in `~/.agda/libraries`.
+[`qupit.agda-lib`](qupit.agda-lib) includes the repository root and
+depends only on `standard-library`; this branch does not need EucDomain
+or any Git submodules.
 
-`MainTheorems.agda` restates the headline theorems of this branch, with
-full types, and reaches through them everything their proofs rest on:
+From the repository root:
 
-```bash
+```sh
 agda MainTheorems.agda
 ```
 
-It states
+On Windows, use WSL (with Agda installed on its PATH):
 
-- **the qupit chain, read modulo scalars**: the symplectic normal form
-  is unique (`unique-nf`); the simplified symplectic rules present
-  Sp(2n, ℤ/pℤ) (`simplified-presentation`); and the V1 Clifford rules
-  and the paper's Figure 1 rules, read modulo scalars, present
-  Pauli(n) ⋊ Sp(2n, ℤ/pℤ) (`v1-presentation`, `clifford-presentation`);
-- **the scalars restored**: the exact rule set, the scalar ω with its
-  one correction ω^((p²−1)/8), presents the central extension of that
-  group by ⟨ω⟩ (`exact-clifford-presentation`); with −1 adjoined it
-  presents that extension times ⟨−1⟩ (`clifford±-presentation`); and
-  the paper's Figure 1 itself — its sixteen rules C0–C15 over −ω, H, S,
-  CZ, with the Legendre symbols and phases of its derived generators —
-  presents the same group (`figure1-presentation`, the paper's
-  Theorem 4.10 against the constructed group);
-- **the structural rules are independent** (`Structural-Theorems`):
-  none of cong↑, comm₁, comm₂ and ω↑=ω follows from the others, and a
-  scalar's centrality, a theorem of them, needs scalars to commute
-  with one another.
+```powershell
+wsl --exec agda MainTheorems.agda
+```
 
-Every result is parametric in the odd prime p, the width n and a
-primitive root g, and every file is checked under `--safe`: there are
-no postulates and no holes.  The two "glue facts" — that the
-constructed groups are the groups of unitaries the gates generate — are
-classical and not formalised.  From scratch the root takes about half
-an hour, most of it the symplectic chain and `Qupit-Clifford/`.
+The exact qupit and scalar proofs can be memory intensive. A bounded
+compacting heap can be used with `+RTS -M5G -c -RTS`. If a fresh check
+runs out of memory, check the module it stopped on separately, then
+rerun the root to reuse its interface.
 
-This is the `qupit` branch, so the root covers only that chain.  The
-library's other developments are still in the tree but are not reached
-from it: the symmetric, trivial and cyclic groups, the wreath product,
-the Clifford+T and U₃(ℤ[½,i]) amalgamations, the qubit Clifford groups
-(`Clifford/Qubit/`, `ProjectiveClifford/Qubit/`), Real-Clifford+CH,
-CNOT-dihedral, and `ProjectiveClifford/Qupit/Simplified-V2`.  Check
-those on their own roots if you touch them.
+## Build the paper
 
-## Papers
+Install GNU Make, TeX Live with `acmart`, and `latexmk`, then run:
 
-- [`vqupit/`](vqupit) — *Verified Generators and Relations for Qupit
-  Clifford Operators*, the long version (`acmart`, 28 pages with the
-  references).  Its sections that quote Agda are literate Agda files,
-  scope-checked against this library: `make` there runs Agda on them,
-  then `latexmk`.
-- [`vqupit-short/`](vqupit-short) — the five-page version of the same
-  paper (12 pages with the references and appendices); `make` there
-  needs only `latexmk`.
+```sh
+make -C vqupit
+```
 
-Both directories carry a built `main.pdf` and a README with the build
-details.
+To regenerate every literate snippet before building:
+
+```sh
+make -B -C vqupit agda
+make -C vqupit
+```
+
+The literate snippets are deliberately abbreviated and are checked with
+`--only-scope-checking`. Check the actual proofs with `MainTheorems.agda`.
+See [`vqupit/README.md`](vqupit/README.md) for manuscript details;
+its source-history notes refer to the larger repository before this
+branch was extracted.
