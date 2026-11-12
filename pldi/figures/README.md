@@ -21,9 +21,10 @@ The `.tikz` files here are of two kinds.
   one in TikZiT and saving it replaces it with an empty picture.
 
 `xcxccx/` has its own TikZiT styles (`xcxccx/xcxccx.tikzstyles`).
-`xcxccx/draw_lafont.py` writes Lafont's cycle, relations and canonical forms
-(`lafont-*.tex`), for the case study's figure (Section 4) and Section 7's,
-after checking each against the permutations it draws.
+`xcxccx/draw_lafont.py` writes Lafont's cycle, relations, stairs, rewriting
+rules and canonical forms (`lafont-*.tex`), for Section 3 (the introduction
+to the framework on the alternating groups) and Section 7, after checking
+each against the permutations it draws.
 
 ## Notes on Figure 2 (`qubit-fragments.tikz`)
 
