@@ -35,9 +35,9 @@ Rewriting of quantum circuits is a standard tool in circuit optimization~\cite{h
 Completeness results have been established for a wide range of circuit families, including reversible linear circuits~\cite{lafont2003boolean,sakashita2013cnot}, reversible circuits over multiple-control Toffoli gates~\cite{feng2026complete}, Clifford~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, CNOT-dihedral~\cite{amy2018cnotdihedral,blake2026phaseaffine}, two-qubit Clifford+\T~\cite{bian2023cliffordt2}, three-qubit Clifford+\CS~\cite{bian2023cliffordcs3}, Toffoli--Hadamard~\cite{amy2024toffoli}, and real Clifford+\CH~\cite{clement2026realcliffordch} circuits, as well as universal quantum circuits~\cite{clement2023complete,clement2024extensions}. Completeness has also been obtained for the group of two-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimality has been shown for six of these families~\cite{blake2026simpler} and for universal quantum circuits~\cite{clement2024minimal}. Proofs of both properties typically follow a simple strategy, but carrying it out requires long case analyses, with supporting derivations spanning hundreds of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}.
 %such as rewriting every circuit into a unique normal form, 
 
-Peer review cannot check proofs of this volume in detail. A case can be missed, and a long derivation can use an equation outside the stated rules or contain circular reasoning (i.e., rely, through earlier lemmas, on the equation being derived). A \emph{proof assistant} such as Agda or Lean accepts a proof only if every case is covered and every step follows from the stated rules. Until recently, formalizing these proofs was impractical, given their many lemmas and long derivations. LLM coding agents change this: they can now write proofs that a proof assistant accepts. For example, Anthropic reports that LLMs wrote a 13-million-line Lean proof of Fermat's Last Theorem within 11 days~\cite{anthropic2026flt}.
+Peer review often does not check proofs of this length in detail. A case can be missed, and a long derivation can use an equation outside the stated rules or contain circular reasoning (i.e., rely, through earlier lemmas, on the equation being derived). A \emph{proof assistant} such as Agda or Lean accepts a proof only if every case is covered and every step follows from the stated rules. Until recently, formalizing these proofs was impractical, given their many lemmas and long derivations. LLM coding agents change this: they can now write proofs that a proof assistant accepts. For example, Anthropic reports that LLMs wrote a 13-million-line Lean proof of Fermat's Last Theorem within 11 days~\cite{anthropic2026flt}.
 
-In quantum computing, however, proof assistants and LLM agents have mostly been used to verify programs rather than circuit equational theories. Verified compilers and program logics prove that quantum programs are correct, or that circuit optimizations preserve their meaning~\cite{paykin2017qwire,hietala2021voqc,chareton2021qbricks,zhou2023coqq}. Mechanized libraries for circuit rewriting, such as VyZX for the ZX-calculus~\cite{lehmann2026vyzx}, prove the soundness of rewrite rules rather than the completeness of a rule set. AI-assisted work has also formalized quantum program logics, algorithms, and complexity results~\cite{ren2026qedia,zhang2026leanquantumalg,lu2026formalflow}.
+Before the advent of LLMs, work in quantum computing on formalisation has focused on verified compilers and program logics that prove that quantum programs are correct, or that circuit optimizations preserve their meaning~\cite{paykin2017qwire,hietala2021voqc,chareton2021qbricks,zhou2023coqq}. Mechanized libraries for circuit rewriting, such as VyZX for the ZX-calculus~\cite{lehmann2026vyzx}, prove the soundness of rewrite rules rather than the completeness of a rule set. Recent AI-assisted work has also formalized quantum program logics, algorithms, and complexity results~\cite{ren2026qedia,zhang2026leanquantumalg,lu2026formalflow}.
 
 Only a few completeness results have been formalized, each in isolation, mostly by its authors. \citet{choudhury2022symmetries} formalize in Agda that the equations of the reversible programming language~$\Pi$ are complete for permutations of finite sets. Also in Agda, Bian and Selinger formalize their completeness proofs for two-qubit Clifford+\T{} and three-qubit Clifford+\CS{} circuits~\cite{bian2023cliffordt2,bian2023cliffordcs3}.
 
@@ -59,13 +59,12 @@ paper makes four contributions.
 \item \textbf{Sixteen certifications.} We formalize the main results
   of sixteen papers, fifteen on completeness and one on minimality.
   Fifteen of the papers are published, and one is an unpublished
-  internship report~\cite{clement2019thesis}. They range from Clifford
-  to Toffoli--Hadamard circuits, and from qubits to
-  higher-dimensional qudits.
+  internship report~\cite{clement2019thesis}. These cover a variety of circuit families, from Clifford
+  to Toffoli--Hadamard circuits, and include results using both qubits or higher-dimensional qudits.
 \item \textbf{Corrections.} We find and fix gaps in two published
   papers: a proof that misses a case and a theorem that omits a
   relation.
-\item \textbf{New result.} Using EquaCert, we prove that seven
+\item \textbf{New result.} As a demonstration of how EquaCert can be used to find new results, we prove that seven
   equations are complete for four-bit reversible circuits over
   $\{\X,\CX,\CCX\}$.
 \end{itemize}
@@ -82,7 +81,7 @@ paper makes four contributions.
 
 \Cref{fig:equacert-pipeline} shows how EquaCert divides the work.
 LLM coding agents write the formal statement and its proof, guided by
-the paper's, Agda checks the proof, and humans check that the
+the paper's text, Agda checks the proof, and humans check that the
 statement says what the paper claims. This last check cannot be
 delegated: a proof assistant checks a proof only against the theorem
 as stated, which may not match the intended
