@@ -3,3 +3,4 @@
 # with CR line ends).
 lagda/** text eol=lf
 latex/** text eol=lf
+build.sh text eol=lf
