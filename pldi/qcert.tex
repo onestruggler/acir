@@ -645,24 +645,40 @@ We intend to submit the artifact for Artifact Evaluation and to release it under
 
 \section{Rings, Matrices, and Quantum Gates}\label{app:rings-gates}
 
-This appendix defines the notation of \Cref{fig:qubit-fragments} and gives the source of each of its matrix groups. It mostly follows~\citet{amy2020numbertheoretic}, whose families are shown in the figure. Indices start at~$0$, as in \Cref{sec:background} and~\cite{bian2021un}, whereas~\cite{amy2020numbertheoretic,giles2013exact,li2021on,fang2026hadamard} start them at~$1$. We write $\mathbb N=\{0,1,2,\dots\}$, $i$ for the imaginary unit, and $\omega=e^{i\pi/4}=(1+i)/\sqrt2$.
+In this appendix we define all the different rings, groups and quantum gates used for the qubit results in this paper. 
+We mostly follow~\citet{amy2020numbertheoretic}, whose families are shown in \Cref{fig:qubit-fragments}. We take indices to start at~$0$, as in \Cref{sec:background} and~\cite{bian2021un}. But note that~\cite{amy2020numbertheoretic,giles2013exact,li2021on,fang2026hadamard} start them at~$1$. We write $\mathbb N=\{0,1,2,\dots\}$, $i$ for the imaginary unit, and $\omega=e^{i\pi/4}=(1+i)/\sqrt2$.
 
-\paragraph{Rings} For a subring $R$ of $\mathbb C$ and $\alpha_1,\dots,\alpha_s\in\mathbb C$, $R[\alpha_1,\dots,\alpha_s]$ is the smallest subring of $\mathbb C$ that contains $R$ and $\alpha_1,\dots,\alpha_s$. The ring of \emph{dyadic fractions} is $\D=\Z[1/2]=\{u/2^q : u\in\Z,\ q\in\mathbb N\}$. Following~\cite[Definitions~3.1--3.3]{amy2020numbertheoretic}, for $\alpha\in\{\sqrt2,\,i,\,i\sqrt2\}$, $\D[\alpha]=\{x_0+x_1\alpha : x_0,x_1\in\D\}$, and
-\[
-\D[\omega]=\{x_0+x_1\omega+x_2\omega^2+x_3\omega^3 : x_0,\dots,x_3\in\D\}, \qquad
-\Z[i]=\{x_0+x_1i : x_0,x_1\in\Z\}.
-\]
+% This appendix defines the notation of \Cref{fig:qubit-fragments} and gives the source of each of its matrix groups.
+
+
+\paragraph{Rings} For a subring $R$ of $\mathbb C$ and $\alpha_1,\dots,\alpha_s\in\mathbb C$, $R[\alpha_1,\dots,\alpha_s]$ is the smallest subring of $\mathbb C$ that contains $R$ and $\alpha_1,\dots,\alpha_s$. The ring of \emph{dyadic fractions} is $\D=\Z[1/2]=\{u/2^q : u\in\Z,\ q\in\mathbb N\}$. 
+Note that we in particular have
+\begin{align*}
+    \D[\sqrt{2}]  \ &=\ \{x_0+x_1\sqrt{2} : x_0,x_1\in\D\} \\
+    \D[i]         \ &=\ \{x_0+x_1i : x_0,x_1\in\D\} \\
+    \D[i\sqrt{2}] \ &=\ \{x_0+x_1i\sqrt{2} : x_0,x_1\in\D\} \\
+    \D[\omega]    \ &= \ \{x_0+x_1\omega+x_2\omega^2+x_3\omega^3 : x_0,\dots,x_3\in\D\} \\
+    \Z[i]         \ &= \ \{x_0+x_1i : x_0,x_1\in\Z\}
+\end{align*}
+
+% Following~\cite[Definitions~3.1--3.3]{amy2020numbertheoretic}, for $\alpha\in\{\sqrt2,\,i,\,i\sqrt2\}$, $\D[\alpha]=\{x_0+x_1\alpha : x_0,x_1\in\D\}$, and
+% \[
+% \D[\omega]=\{x_0+x_1\omega+x_2\omega^2+x_3\omega^3 : x_0,\dots,x_3\in\D\}, \qquad
+% \Z[i]=\{x_0+x_1i : x_0,x_1\in\Z\}.
+% \]
 Thus $\D[\sqrt2]=\Z[1/\sqrt2]$, $\D[i]=\Z[1/2,i]$, and $\D[\omega]=\Z[1/\sqrt2,i]$. \Cref{fig:qubit-fragments} uses the first of these names, and \Cref{sec:background} and \Cref{tab:corpus} the second. All of these rings are closed under complex conjugation.
 
-\paragraph{Matrices and Groups} For a ring $R$, $R^{n\times n}$ is the set of $n\times n$ matrices with entries in~$R$. Rows and columns are indexed by $0,\dots,n-1$, $e_0,\dots,e_{n-1}$ is the standard basis of $\mathbb C^n$, and $I_n$ is the identity matrix. For a matrix~$M$, $M^{T}$ is its transpose and $M^\dagger$ its conjugate transpose. We write $\otimes$ for the Kronecker product and $\mathrm{diag}(M_1,\dots,M_r)$ for the block-diagonal matrix with diagonal blocks $M_1,\dots,M_r$. For a subring $R$ of $\mathbb C$ closed under complex conjugation, the \emph{unitary group} is $U_n(R)=\{M\in R^{n\times n} : M^\dagger M=I_n\}$. If $R\subseteq\mathbb R$, it equals the \emph{orthogonal group} $O_n(R)=\{M\in R^{n\times n} : M^{T}M=I_n\}$. The groups of the Toffoli--Hadamard~\cite[Definition~5.1]{li2021on} and super-Gaussian~\cite[Equation~(12)]{amy2020numbertheoretic} families consist of scaled matrices,
+\paragraph{Matrices and Groups} We write $e_0,\dots,e_{n-1}$ for the standard basis of $\mathbb C^n$ and write $I_n$ for the identity matrix. For a ring $R$, $R^{n\times n}$ is the set of $n\times n$ matrices with entries in~$R$. 
+For a matrix~$M$, its transpose is $M^{T}$ and its adjoint is $M^\dagger$. 
+We write $\otimes$ for the Kronecker product and $\mathrm{diag}(M_1,\dots,M_r)$ for the block-diagonal matrix with diagonal blocks $M_1,\dots,M_r$. For a subring $R$ of $\mathbb C$ closed under complex conjugation, the \emph{unitary group over $R$} is $U_n(R)=\{M\in R^{n\times n} : M^\dagger M=I_n\}$. If $R\subseteq\mathbb R$, the unitary group over $R$ equals the \emph{orthogonal group} $O_n(R)=\{M\in R^{n\times n} : M^{T}M=I_n\}$. The groups of the Toffoli--Hadamard~\cite[Definition~5.1]{li2021on} and super-Gaussian~\cite[Equation~(12)]{amy2020numbertheoretic} families consist of scaled matrices,
 \[
 L_n=\bigl\{M/\sqrt2^{\,q}\in O_n(\mathbb R) : M\in\Z^{n\times n},\ q\in\mathbb N\bigr\}
 \quad\text{and}\quad
 \bigl\{M/\sqrt2^{\,q}\in U_n(\mathbb C) : M\in\Z[i]^{n\times n},\ q\in\mathbb N\bigr\}.
 \]
-Taking $q$ even shows that they contain $O_n(\D)$ and $U_n(\D[i])$, respectively.
+Taking $q$ even shows that these scaled matrix groups contain $O_n(\D)$, respectively $U_n(\D[i])$.
 
-\paragraph{Gates} A gate on $k$ qubits is a unitary $2^k\times2^k$ matrix, so a gate on no qubits, such as~$\omega$, is a scalar. We write $\ket0=e_0$ and $\ket1=e_1$ in $\mathbb C^2$, and $\ket{x_1\cdots x_k}=\ket{x_1}\otimes\cdots\otimes\ket{x_k}$, which is $e_x$ for the number $x$ with binary digits $x_1\cdots x_k$. In circuit diagrams, the first tensor factor is the top wire. The one-qubit gates are~\cite[Section~4]{amy2020numbertheoretic}
+\paragraph{Gates} A gate on $k$ qubits is a unitary $2^k\times2^k$ matrix. The one-qubit gates are~\cite[Section~4]{amy2020numbertheoretic}
 \begin{gather*}
 \X=\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad
 \Zg=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\qquad
@@ -671,54 +687,62 @@ Taking $q$ even shows that they contain $O_n(\D)$ and $U_n(\D[i])$, respectively
 \Hg=\frac{1}{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix},\qquad
 \F=\frac12\begin{pmatrix}1+i\sqrt2&1\\1&-1+i\sqrt2\end{pmatrix}=\frac{\Hg+iI_2}{\sqrt2},
 \end{gather*}
-and $\omega\Hg$, the scalar $\omega$ times $\Hg$. The two-qubit gate $\Hg\otimes\Hg$ is also written~$\K$~\cite[Definition~2.4]{li2021on}. For a gate $G$ on $m$ qubits, the \emph{controlled} gate $\mathrm CG=\mathrm{diag}(I_{2^m},G)$ on $m+1$ qubits applies $G$ to the last $m$ qubits if the first is~$\ket1$. This defines $\CX$, $\CZ$, $\CS$, $\CH$, $\CCX=\mathrm C\CX$, and $\CCZ=\mathrm C\CZ$.
+and $\omega\Hg$, the scalar $\omega$ times $\Hg$. The two-qubit gate $\Hg\otimes\Hg$ is also written~$\K$~\cite[Definition~2.4]{li2021on}. 
+Note that a gate on zero qubits, such as~$\omega$, is just a number (a scalar). We write $\ket0=e_0$ and $\ket1=e_1$ in $\mathbb C^2$, and $\ket{x_1\cdots x_k}=\ket{x_1}\otimes\cdots\otimes\ket{x_k}$, which is $e_x$ for the number $x$ with binary digits $x_1\cdots x_k$. In circuit diagrams, the first tensor factor is the top wire. 
+For a gate $G$ on $m$ qubits, the \emph{controlled} gate $\mathrm CG=\mathrm{diag}(I_{2^m},G)$ on $m+1$ qubits applies $G$ to the last $m$ qubits if the first is~$\ket1$. This defines $\CX$, $\CZ$, $\CS$, $\CH$, $\CCX=\mathrm C(\CX)$, and $\CCZ=\mathrm C(\CZ)$.
 
-\paragraph{Circuits and Ancillas} In a circuit on $k$ qubits, a gate $G$ on $m$ qubits applied to the distinct tensor positions $j_1,\dots,j_m\in\{1,\dots,k\}$ denotes $P(G\otimes I_{2^{k-m}})P^{-1}$. Here $P$ is the permutation matrix with $P(v_1\otimes\cdots\otimes v_k)=u_1\otimes\cdots\otimes u_k$, where $u_{j_l}=v_l$ for $l\le m$ and $v_{m+1},\dots,v_k$ fill the other positions in order. A circuit $C$ that applies gates denoting $G_1,\dots,G_\ell$, in this order, denotes $\llbracket C\rrbracket=G_\ell\cdots G_1$. A circuit $C$ on $k+r$ qubits \emph{represents} $W\in U_{2^k}(\mathbb C)$ \emph{with $r$ clean ancillas} if $\llbracket C\rrbracket(v\otimes\ket0^{\otimes r})=(Wv)\otimes\ket0^{\otimes r}$ for every $v\in\mathbb C^{2^k}$~\cite{giles2013exact,amy2020numbertheoretic}. Without ancillas, that is, for $r=0$, this means $\llbracket C\rrbracket=W$.
+\paragraph{Circuits and Ancillas} In a circuit on $k$ qubits, applying a gate $G$ on $m$ qubits to the qubits at the distinct positions $j_1,\dots,j_m\in\{1,\dots,k\}$ corresponds to the unitary $P_\sigma(G\otimes I_{2^{k-m}})P^{-1}_\sigma$ where $P_\sigma$ is the permutation matrix of $\sigma$ satisfying $\sigma l = j_l$ for $l\leq m$ and is identity otherwise. That is: we first swap all the qubit wires so that $G$ applies to the top $m$ qubits, and then we swap the wires back.
+A circuit $C$ consisting of the list of gates $G_1,\dots,G_\ell$ has unitary interpretation $\llbracket C\rrbracket=G_\ell\cdots G_1$. 
+Given a unitary $W\in U_{2^k}(\mathbb C)$, a circuit $C$ on $k+r$ qubits \emph{represents $W$ with $r$ clean ancillas} if $\llbracket C\rrbracket(v\otimes\ket0^{\otimes r})=(Wv)\otimes\ket0^{\otimes r}$ for all $v\in\mathbb C^{2^k}$~\cite{giles2013exact,amy2020numbertheoretic}. Without ancillas ($r=0$), this means $\llbracket C\rrbracket=W$.
 
-\paragraph{Multi-Level Matrices} Let $M$ be an $m\times m$ matrix with entries $M_{jl}$ for $1\le j,l\le m$, and let $a_1,\dots,a_m\in\{0,\dots,n-1\}$ be distinct. The \emph{$m$-level matrix of type~$M$} is the $n\times n$ matrix $M_{[a_1,\dots,a_m]}$ with~\cite[Definition~3.7]{amy2020numbertheoretic}
+\paragraph{Multi-Level Matrices}\cite[Definition~3.7]{amy2020numbertheoretic} Fix $n\geq m$ and let $M$ be an $m\times m$ matrix with entries $M_{jl}$ for $1\le j,l\le m$, and let $a_1,\dots,a_m\in\{0,\dots,n-1\}$ be distinct. The \emph{$m$-level matrix} $M_{[a_1,\dots,a_m]}$ is the $n\times n$ matrix satisfying 
 \[
 M_{[a_1,\dots,a_m]}\,e_{a_l}=\sum_{j=1}^{m}M_{jl}\,e_{a_j}\ \ (1\le l\le m)
 \qquad\text{and}\qquad
 M_{[a_1,\dots,a_m]}\,e_b=e_b\ \ (b\notin\{a_1,\dots,a_m\}).
 \]
-A scalar $z$ is a $1\times1$ matrix, so $z_{[a]}$ multiplies $e_a$ by~$z$. For example, $(-1)_{[a]}$ negates $e_a$, $\X_{[a,b]}$ exchanges $e_a$ and $e_b$, and $\Hg_{[a,b]}$ sends $e_a$ to $(e_a+e_b)/\sqrt2$ and $e_b$ to $(e_a-e_b)/\sqrt2$. Two generators in \Cref{fig:qubit-fragments} are not multi-level matrices, namely the scalar matrix $\omega I_n$ and, for even~$n$, $I_{n/2}\otimes\Hg=\mathrm{diag}(\Hg,\dots,\Hg)$, which on $k$ qubits is $\Hg$ on the last qubit.
+That is, $M_{[a_1,\dots,a_m]}$ acts as $M$ on the subspace spanned by the unit vectors $e_{a_1},\ldots, e_{a_m}$ and acts as the identity otherwise.
+A scalar $z$ is a $1\times1$ matrix, so $z_{[a]}$ multiplies $e_a$ by~$z$. For example, $(-1)_{[a]}$ negates $e_a$, $\X_{[a,b]}$ exchanges $e_a$ and $e_b$, and $\Hg_{[a,b]}$ sends $e_a$ to $(e_a+e_b)/\sqrt2$ and $e_b$ to $(e_a-e_b)/\sqrt2$. 
+An $m$-level matrix for small $m$ and large $n$ generally corresponds to a highly-controlled operation. For instance $(-1)[\vec 1]$ on the $n=2^k$ space of $n$ qubits corresponds to an $(n-1)$-controlled \CCZ{} gate.
+% Two generators in \Cref{fig:qubit-fragments} are not multi-level matrices, namely the scalar matrix $\omega I_n$ and, for even~$n$, $I_{n/2}\otimes\Hg=\mathrm{diag}(\Hg,\dots,\Hg)$, which on $k$ qubits is $\Hg$ on the last qubit.
 
-\paragraph{The Families} \Cref{tab:fragments} gives the source of each matrix group of \Cref{fig:qubit-fragments}, with its gates and generators as the source states them. The presentations of~\cite{li2021on,fang2026hadamard,bian2021un} use these generators, some with their indices restricted to increasing order, and~\cite{bian2021un} uses $(\omega\Hg)^\dagger$ in place of $\omega\Hg$.
+% \paragraph{The Families} \Cref{tab:fragments} gives the source of each matrix group of \Cref{fig:qubit-fragments}, with its gates and generators as the source states them. The presentations of~\cite{li2021on,fang2026hadamard,bian2021un} use these generators, some with their indices restricted to increasing order, and~\cite{bian2021un} uses $(\omega\Hg)^\dagger$ in place of $\omega\Hg$.
 
-\begin{table}[!htbp]
-\small
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\linewidth}{@{}l >{\hsize=.85\hsize}Y >{\hsize=1.1\hsize}Y >{\hsize=1.05\hsize}Y l@{}}
-\toprule
-Family & Group & Gates & Generators & Source \\
-\midrule
-Integral & $O_n(\D)$ & $\X$, $\CX$, $\CCX$, ${\Hg\otimes\Hg}$ & $(-1)_{[a]}$, $\X_{[a,b]}$, $({\Hg\otimes\Hg})_{[a,b,c,d]}$ & Eq.~(2), Cor.~5.6 \\
-Toffoli--Hadamard & $L_n$ & $\X$, $\CX$, $\CCX$, $\Hg$ & those of Integral, ${I_{n/2}\otimes\Hg}$ & Eq.~(5), Cor.~5.11 \\
-Real & $O_n(\D[\sqrt2])$ & $\X$, $\CX$, $\CCX$, $\Hg$, $\CH$ & $(-1)_{[a]}$, $\X_{[a,b]}$, $\Hg_{[a,b]}$ & Eq.~(7), Cor.~5.16 \\
-Imaginary & $U_n(\D[i\sqrt2])$ & $\X$, $\CX$, $\CCX$, $\F$ & $(-1)_{[a]}$, $\X_{[a,b]}$, $\F_{[a,b]}$ & Eq.~(9), Cor.~5.21 \\
-Gaussian & $U_n(\D[i])$ & $\X$, $\CX$, $\CCX$, $\omega\Hg$, $\Sg$ & $i_{[a]}$, $\X_{[a,b]}$, $(\omega\Hg)_{[a,b]}$ & Eq.~(10), Cor.~5.27 \\
-Super-Gaussian & unitary $M/\sqrt2^{\,q}$, $M\in\Z[i]^{n\times n}$ & $\X$, $\CX$, $\CCX$, $\Hg$, $\Sg$ & those of Gaussian, $\omega I_n$ & Eq.~(13), Cor.~5.31 \\
-Clifford+\T & $U_n(\D[\omega])$ & $\omega$, $\Hg$, $\Sg$, $\CX$, $\T$ & of types $\X$, $\Hg$, $\T$, $\omega$ & \cite[Thm.~1, Lem.~6]{giles2013exact} \\
-\bottomrule
-\end{tabularx}
-\caption{The sources of the matrix groups of \Cref{fig:qubit-fragments}. Equation and corollary numbers refer to~\citet{amy2020numbertheoretic}. The cited corollary or theorem states that circuits over the gates represent, with at most one clean ancilla, exactly the elements of the group. The cited equation or lemma gives multi-level generators of the group, each with distinct indices.}
-\label{tab:fragments}
-\end{table}
+% \begin{table}[!htbp]
+% \small
+% \setlength{\tabcolsep}{4pt}
+% \renewcommand{\arraystretch}{1.3}
+% \begin{tabularx}{\linewidth}{@{}l >{\hsize=.85\hsize}Y >{\hsize=1.1\hsize}Y >{\hsize=1.05\hsize}Y l@{}}
+% \toprule
+% Family & Group & Gates & Generators & Source \\
+% \midrule
+% Integral & $O_n(\D)$ & $\X$, $\CX$, $\CCX$, ${\Hg\otimes\Hg}$ & $(-1)_{[a]}$, $\X_{[a,b]}$, $({\Hg\otimes\Hg})_{[a,b,c,d]}$ & Eq.~(2), Cor.~5.6 \\
+% Toffoli--Hadamard & $L_n$ & $\X$, $\CX$, $\CCX$, $\Hg$ & those of Integral, ${I_{n/2}\otimes\Hg}$ & Eq.~(5), Cor.~5.11 \\
+% Real & $O_n(\D[\sqrt2])$ & $\X$, $\CX$, $\CCX$, $\Hg$, $\CH$ & $(-1)_{[a]}$, $\X_{[a,b]}$, $\Hg_{[a,b]}$ & Eq.~(7), Cor.~5.16 \\
+% Imaginary & $U_n(\D[i\sqrt2])$ & $\X$, $\CX$, $\CCX$, $\F$ & $(-1)_{[a]}$, $\X_{[a,b]}$, $\F_{[a,b]}$ & Eq.~(9), Cor.~5.21 \\
+% Gaussian & $U_n(\D[i])$ & $\X$, $\CX$, $\CCX$, $\omega\Hg$, $\Sg$ & $i_{[a]}$, $\X_{[a,b]}$, $(\omega\Hg)_{[a,b]}$ & Eq.~(10), Cor.~5.27 \\
+% Super-Gaussian & unitary $M/\sqrt2^{\,q}$, $M\in\Z[i]^{n\times n}$ & $\X$, $\CX$, $\CCX$, $\Hg$, $\Sg$ & those of Gaussian, $\omega I_n$ & Eq.~(13), Cor.~5.31 \\
+% Clifford+\T & $U_n(\D[\omega])$ & $\omega$, $\Hg$, $\Sg$, $\CX$, $\T$ & of types $\X$, $\Hg$, $\T$, $\omega$ & \cite[Thm.~1, Lem.~6]{giles2013exact} \\
+% \bottomrule
+% \end{tabularx}
+% \caption{The sources of the matrix groups of \Cref{fig:qubit-fragments}. Equation and corollary numbers refer to~\citet{amy2020numbertheoretic}. The cited corollary or theorem states that circuits over the gates represent, with at most one clean ancilla, exactly the elements of the group. The cited equation or lemma gives multi-level generators of the group, each with distinct indices.}
+% \label{tab:fragments}
+% \end{table}
 
-\Cref{fig:qubit-fragments} differs from these sources in two ways, neither of which changes the matrices that circuits represent or the group that the generators generate. First, where a gate set contains $\Hg$, $\omega\Hg$, or~$\F$, the figure lists $\CZ$ and $\CCZ$ in place of $\CX$ and $\CCX$, and $\Zg$ in place of $\X$ unless $\Sg$ is listed. It also lists the Clifford+\T{} gates as $\{\Hg,\T,\CZ\}$. The identities $\X=\Hg\Zg\Hg=(\omega\Hg)\Zg(\omega\Hg)^\dagger=\F^2\Zg\F^6$, applied to the target, write each gate of one list as a circuit over the other, as do $\Zg=\Sg^2$, $\Sg=\T^2$, and $\omega=(\Sg\Hg)^3$. Second, outside the integral family, the figure omits the generators $\X_{[a,b]}$ and $\T_{[a,b]}$ of the sources, which are products of those it lists. Indeed,
-\begin{gather*}
-\X_{[a,b]}=\Hg_{[a,b]}(-1)_{[b]}\Hg_{[a,b]}=\F_{[a,b]}^2(-1)_{[b]}\F_{[a,b]}^6=(\omega\Hg)_{[a,b]}\,i_{[b]}^2\,(\omega\Hg)_{[a,b]}^\dagger,\\
-(-1)_{[b]}=\omega_{[b]}^4,
-\qquad
-\T_{[a,b]}=\omega_{[b]},\\
-(I_{n/2}\otimes\Hg)(-1)_{[2j+1]}(I_{n/2}\otimes\Hg)=\X_{[2j,2j+1]},
-\qquad
-(\Hg\otimes\Hg)_{[a,b,c,d]}\,\X_{[c,d]}\,(\Hg\otimes\Hg)_{[a,b,c,d]}=\X_{[b,d]},
-\end{gather*}
-and in the Toffoli--Hadamard family the identities of the third line make every $\X_{[a,b]}$ a product of $(-1)_{[a]}$, $({\Hg\otimes\Hg})_{[a,b,c,d]}$, and $I_{n/2}\otimes\Hg$.
+% \Cref{fig:qubit-fragments} differs from these sources in two ways, neither of which changes the matrices that circuits represent or the group that the generators generate. First, where a gate set contains $\Hg$, $\omega\Hg$, or~$\F$, the figure lists $\CZ$ and $\CCZ$ in place of $\CX$ and $\CCX$, and $\Zg$ in place of $\X$ unless $\Sg$ is listed. It also lists the Clifford+\T{} gates as $\{\Hg,\T,\CZ\}$. The identities $\X=\Hg\Zg\Hg=(\omega\Hg)\Zg(\omega\Hg)^\dagger=\F^2\Zg\F^6$, applied to the target, write each gate of one list as a circuit over the other, as do $\Zg=\Sg^2$, $\Sg=\T^2$, and $\omega=(\Sg\Hg)^3$. Second, outside the integral family, the figure omits the generators $\X_{[a,b]}$ and $\T_{[a,b]}$ of the sources, which are products of those it lists. Indeed,
+% \begin{gather*}
+% \X_{[a,b]}=\Hg_{[a,b]}(-1)_{[b]}\Hg_{[a,b]}=\F_{[a,b]}^2(-1)_{[b]}\F_{[a,b]}^6=(\omega\Hg)_{[a,b]}\,i_{[b]}^2\,(\omega\Hg)_{[a,b]}^\dagger,\\
+% (-1)_{[b]}=\omega_{[b]}^4,
+% \qquad
+% \T_{[a,b]}=\omega_{[b]},\\
+% (I_{n/2}\otimes\Hg)(-1)_{[2j+1]}(I_{n/2}\otimes\Hg)=\X_{[2j,2j+1]},
+% \qquad
+% (\Hg\otimes\Hg)_{[a,b,c,d]}\,\X_{[c,d]}\,(\Hg\otimes\Hg)_{[a,b,c,d]}=\X_{[b,d]},
+% \end{gather*}
+% and in the Toffoli--Hadamard family the identities of the third line make every $\X_{[a,b]}$ a product of $(-1)_{[a]}$, $({\Hg\otimes\Hg})_{[a,b,c,d]}$, and $I_{n/2}\otimes\Hg$.
 
-\FloatBarrier
+% \FloatBarrier
+
 %% This appendix is literate Agda, Section 2 of the vqupit paper: edit
 %% lagda/app-permutations.lagda.tex and lagda/app-constructions.lagda.tex
 %% and run lagda/make.sh on them, which writes the files input here.
