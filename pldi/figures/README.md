@@ -2,8 +2,13 @@
 
 The `.tikz` files here are of two kinds.
 
-- **TikZiT figures**, which TikZiT can open and save: `qubit-fragments.tikz`
-  (Figure 2), `qubit-progress.tikz` (Figure 7) and `amy-*.tikz`.
+- **TikZiT figures**, which TikZiT can open and save:
+  `qubit-fragments-plain.tikz` (Figure 2), `qubit-progress-plain.tikz`
+  (Figure 9) and `amy-*.tikz`. `qubit-fragments.tikz` and
+  `qubit-progress.tikz` are the earlier versions of those two figures, which
+  the paper no longer inputs: their rose boxes also name the family whose
+  group they share (`= Gaussian for k ≠ 2`), and each copy differs from its
+  original in those three lines only.
   `equacert-qudit-overview.tikz` and `equacert-qudit-route.tikz` drew the
   qudit Clifford case study, which the paper no longer has. Load `figures.tikzstyles` in TikZiT (Styles > Open) before
   opening them. The named colours and the status marks (`\pdone`, `\pchecked`,
@@ -67,7 +72,7 @@ Each main node pairs circuit gates with its exact-synthesis matrix group
 (at most one clean ancilla) and reduced multi-level generators.
 n = 2^k is the matrix dimension; k >= 1 is the number of qubits.
 
-## Notes on Figure 6 (`qubit-progress.tikz`)
+## Notes on Figure 9 (`qubit-progress-plain.tikz`, `qubit-progress.tikz`)
 
 Companion to qubit-fragments.tikz: preserve its nodes and inclusion edges.
 Status audit: relations_status.pdf (7 Nov 2026), pp. 1--3, Notes 13--15,
