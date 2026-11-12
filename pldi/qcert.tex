@@ -425,6 +425,7 @@ Four qualifications apply to the Agda results in \Cref{tab:corpus}. The two-qubi
 
 % Long computational derivations, such as those in Selinger's 105-page supplement and the qutrit box relations, come from scripts that follow the paper, as in \Cref{sec:method}, or search for the steps. In the real stabilizer formalization, half the lines are generated in this way, and a fifth formalize the paper's mathematics.
 
+\iffalse
 \subsection{Comparison of the Agda and Lean Formalizations}
 \label{sec:compare}
 
@@ -445,6 +446,8 @@ The Lean~\cite{moura2021lean4} version of EquaCert formalizes the same sixteen r
 \end{figure}
 
 Since the two versions share the design of their framework, their agreement does not independently validate it. \Cref{fig:compare} describes the two versions. The two proof assistants can be compared only where both check the same proof. Two formalizations are translated module for module: a second proof of the Toffoli--Hadamard result, which is the row marked~$\ast$ in panel~(a), and the four-bit theorem of \Cref{sec:xcxccx} (Appendix~\ref{app:agda-lean-comparison}). There the two versions need about the same amount of text, and Lean takes 3.4 and 10 times as long as Agda to check them, in the second case mostly to load Mathlib once for each of its 54 modules. In the other rows the proofs differ, and so do the two ways of measuring time, so apart from that row panels~(a) and~(b) describe the two formalizations and not the assistants: the Lean formalization is shorter in thirteen rows, and the Agda one is checked faster in thirteen. Agda's normal forms are executable functions, whereas Lean's are existence results or \texttt{noncomputable} definitions. Both versions can run a procedure that decides whether two Clifford circuits have the same matrix. They implement it differently, and Lean's is faster from three qubits onward (\Cref{fig:compare-exec} in Appendix~\ref{app:agda-lean-comparison}). What a reader should take from the comparison is that the two versions state the same sixteen theorems over different definitions, that the same proof needs about the same amount of text in both assistants, and that Lean takes several times as long to check it; the differences between the rows of \Cref{tab:corpus} come from the proofs. Appendix~\ref{app:agda-lean-comparison} gives the methods and the limits of each measurement, summarized in \Cref{tab:compare}.
+
+\fi
 
 %% No \FloatBarrier here: with one, the comparison figure leaves most
 %% of a page blank and the main text exceeds twenty pages.
@@ -695,8 +698,9 @@ and in the Toffoli--Hadamard family the identities of the third line make every 
 %% This appendix is literate Agda, Section 2 of the vqupit paper: edit
 %% lagda/app-permutations.lagda.tex and lagda/app-constructions.lagda.tex
 %% and run lagda/make.sh on them, which writes the files input here.
-\input{latex/pldi/lagda/app-permutations}
-\input{latex/pldi/lagda/app-constructions}
+%%\input{latex/pldi/lagda/app-permutations}
+%%\input{latex/pldi/lagda/app-constructions}
+
 
 \FloatBarrier
 \section{EquaCert Implementation Details}\label{app:equacert-implementation}
@@ -752,6 +756,7 @@ Minimality is stated for the rule set \aid{n ⊢{\_}==={\_}} in \Cref{agda:minim
 
 \paragraph{Origin of the Proofs} A module counts as generated or ported only when its header says so in words that our count recognizes. About $3{,}600$ lines are in modules whose headers say so in other words, and are counted as written: derivations found by search in rows~3 and~9, and a module of arithmetic modulo~$3$ in row~15. So the Generated column is a lower bound. Rows~4 and~5 present the same group by two sets of relations and share lemmas: row~5 proves the case that the proof in the source of row~4 leaves open (\Cref{sec:findings}), and uses the lemmas of row~4 on levels and its proof that the two sets of relations are equivalent. Rows~11 and~12 obtain completeness from the presentations of rows~1 and~2. Row~13 takes the completeness theorem that its source imports from row~5. Row~14 translates circuits into the groups of row~3. Row~16 transfers completeness from the rows listed. We count the commits to a row's folders under their current and earlier names. Every commit to fourteen of the sixteen rows carries the trailer of a coding agent. Of the $482$ commits to the qudit Clifford row, $121$ do; most of the others date from before the workflow of \Cref{sec:method}. Of the $28$ commits to the Toffoli--Hadamard row, $15$ do, and the other $13$ are the work of the second coding agent (\Cref{sec:ai-use}).
 
+\iffalse
 \section{Details of the Agda and Lean Comparison}\label{app:agda-lean-comparison}
 
 This appendix gives the detailed comparison and measurement methods for the two formalizations introduced in \Cref{sec:compare}.
@@ -818,6 +823,8 @@ The new result of \Cref{sec:xcxccx} gives a third pair. Coding agents translated
 \caption{The time each compiled formalization takes to decide that two Clifford circuits of 100 gates have the same matrix, by the procedure its soundness proof uses, as medians over three runs of five random circuits. The two procedures differ, and this measurement was made on a second machine.}
 \label{fig:compare-exec}
 \end{figure}
+
+\fi
 
 % \clearpage
 \section{Details of the Multi-Qudit Clifford Case Study}\label{app:qupit-details}
