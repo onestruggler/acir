@@ -102,7 +102,8 @@ That these results are formalized independently, instead of in a common framewor
 Recent AI-assisted work has also formalized quantum program logics, algorithms, and complexity results~\cite{ren2026qedia,zhang2026leanquantumalg,lu2026formalflow}.
 Several concurrent projects divide the work as we do: humans check the statements and LLM agents write the proofs. MerLean formalizes three quantum computing papers~\cite{ren2026merlean}, EconCSLib formalizes twenty papers in economics and computation~\cite{garg2026econcslib}, and an LLM agent has proved part of a verified compiler correct~\cite{paraskevopoulou2026compiler}. QECert, a Lean library for quantum error correction, likewise gathers many results in one place~\cite{he2026qecert}. The closest to EquaCert is the work of \citet{shirobokov2026discovering} on quantum programs, in which LLM agents write both the programs and their proofs.
 
-\paragraph{Structure of the paper} \Cref{sec:background} reviews equational theories and the main techniques for proving their completeness and minimality. \Cref{sec:form} introduces EquaCert, and \Cref{sec:qudit-case-study} illustrates it through the multi-qudit Clifford case study. \Cref{sec:corpus,sec:findings} present the formalized results and the corrections to the source papers. \Cref{sec:xcxccx} gives the new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$, and explains how its proof is constructed and checked; Appendix~\ref{app:xcxccx} gives the full proof. \Cref{sec:conclusion} discusses limitations and future work. The remaining appendices give background, an introduction to the framework on permutation circuits, implementation details, the comparison with Lean, the detailed qudit Clifford proofs, and the details of the corrections.
+\paragraph{Structure of the paper} \Cref{sec:background} reviews equational theories and the main techniques for proving their completeness and minimality. \Cref{sec:form} introduces our framework EquaCert. \Cref{sec:corpus} presents an overview of the formalized results and the corrections to the source papers. \Cref{sec:xcxccx} contains the new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$, and explains how its proof is constructed and checked. \Cref{sec:conclusion} discusses limitations and future work. 
+% The remaining appendices give background, an introduction to the framework on permutation circuits, implementation details, the comparison with Lean, the detailed qudit Clifford proofs, and the details of the corrections.
 
 % \FloatBarrier
 
@@ -368,6 +369,12 @@ The semantic boundary is also explicit. The Agda formalization presents independ
 
 \fi
 
+
+
+
+
+
+
 \section{Results}\label{sec:corpus}
 
 The 16 papers of which we formalize the results are presented in \Cref{tab:corpus}, and the corresponding web of formalized completeness results for qubit Clifford+T fragments is presented in \Cref{fig:qubit-progress}.
@@ -431,7 +438,7 @@ The Agda code of all these formalizations spans contains about 377{,}000 lines: 
 We make three qualifications about the Agda formalizations presented in \Cref{tab:corpus}. 
 First, the two-qubit Clifford+\T{} and three-qubit Clifford+\CS{} formalizations~\cite{bian2023cliffordt2,bian2023cliffordcs3} reuse the authors' Agda proofs and we just connect them to EquaCert's shared matrix presentations (\Cref{sec:form}). 
 Second, the qudit Clifford theorem of~\quditcite{} presents an independently constructed algebraic model in Agda that doesn't fit into the EquaCert framework.
-Third, the Toffoli--Hadamard formalization doesn't follow the proof of the paper, since there was an oversight in the original proof (see below).
+Third, the Toffoli--Hadamard formalization doesn't follow the proof of the paper, since that proof was slow to type check. We formalize a streamlined proof. 
 % In the minimality row, three of the six fragments are minimal and complete on every number of wires. The other three carry bounds: qutrit Clifford is complete on every number of wires, with every rule on at most two wires shown necessary; Clifford+\T{} is complete on at most two wires, with every rule on at most one shown necessary; and Clifford+\CS{} is complete on at most three, with every rule on at most two shown necessary.
 
 % Long computational derivations, such as those in Selinger's 105-page supplement and the qutrit box relations, come from scripts that follow the paper, as in \Cref{sec:method}, or search for the steps. In the real stabilizer formalization, half the lines are generated in this way, and a fifth formalize the paper's mathematics.
