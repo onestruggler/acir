@@ -3,9 +3,9 @@
 The `.tikz` files here are of two kinds.
 
 - **TikZiT figures**, which TikZiT can open and save: `qubit-fragments.tikz`
-  (Figure 2), `equacert-qudit-overview.tikz` (Figure 5), `qubit-progress.tikz`
-  (Figure 6), `equacert-qudit-route.tikz` (the qudit route in the appendix) and
-  `amy-*.tikz`. Load `figures.tikzstyles` in TikZiT (Styles > Open) before
+  (Figure 2), `qubit-progress.tikz` (Figure 7) and `amy-*.tikz`.
+  `equacert-qudit-overview.tikz` and `equacert-qudit-route.tikz` drew the
+  qudit Clifford case study, which the paper no longer has. Load `figures.tikzstyles` in TikZiT (Styles > Open) before
   opening them. The named colours and the status marks (`\pdone`, `\pchecked`,
   `\ppartial`, `\popen`) are defined in `../qcert.sty`, since a TikZiT file may
   hold only nodes and edges. When TikZiT saves a file it drops anchors other
@@ -21,6 +21,9 @@ The `.tikz` files here are of two kinds.
   one in TikZiT and saving it replaces it with an empty picture.
 
 `xcxccx/` has its own TikZiT styles (`xcxccx/xcxccx.tikzstyles`).
+`xcxccx/draw_lafont.py` writes Lafont's cycle, relations and canonical forms
+(`lafont-*.tex`), for the case study's figure (Section 4) and Section 7's,
+after checking each against the permutations it draws.
 
 ## Notes on Figure 2 (`qubit-fragments.tikz`)
 
