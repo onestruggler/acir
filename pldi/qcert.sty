@@ -52,11 +52,10 @@
 \def\input@path{{../planqc/}}
 \RequirePackage{agda-style}
 %% Agda's own style file, for the code blocks that `agda --latex'
-%% generates from the literate files of lagda/ (lagda/make.sh), as in
-%% ../vqupit: every name coloured by kind.  Same size and indent as there.
+%% generated for the qudit Clifford formalization (qudit/agda/).
 \RequirePackage{agda}
-\renewcommand{\AgdaCodeStyle}{\small}
-\setlength{\mathindent}{1.5em}
+\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\setlength{\mathindent}{1em}
 %% Characters of those code blocks that agda-style.sty does not declare.
 \DeclareUnicodeCharacter{02E2}{\textsuperscript{s}}
 \DeclareUnicodeCharacter{1D47}{\textsuperscript{b}}
@@ -176,20 +175,14 @@
 \newcommand{\rewrites}[1]{\overset{#1^{*}}{\longleftrightarrow}}
 %% Inline Agda identifiers, in a sans-serif face.
 \newcommand{\aid}[1]{\mbox{\textsf{\small #1}}}
-%% A numbered, referenceable statement of quoted Agda: a code block of
-%% the literate files of lagda/ opened with \begin{code}[number=label],
-%% numbered by agda.sty, its number at the right margin in text size.
-\renewcommand{\AgdaFormatCodeNumber}[1]{{\normalfont\normalsize(#1)}}
-\crefname{AgdaCodeNumber}{statement}{statements}
-\Crefname{AgdaCodeNumber}{Statement}{Statements}
-\creflabelformat{AgdaCodeNumber}{(#2#1#3)}
-%% Consecutive statements stand one per line, as in a listing: a group of
-%% them goes in agdastmts, which keeps it on one page with a medium skip
-%% above and below and none between the statements.
-\newenvironment{agdastmts}
-  {\par\vskip\medskipamount\noindent\begin{minipage}{\linewidth}%
-   \setlength{\abovedisplayskip}{0pt}\setlength{\belowdisplayskip}{0pt}}
-  {\end{minipage}\par\vskip\medskipamount}
+%% A numbered, referenceable line of quoted Agda: end the line of an
+%% agdacode block with escapechar=@ in @\agdatag{label}@.
+\newcounter{agdastmt}
+\crefname{agdastmt}{statement}{statements}
+\Crefname{agdastmt}{Statement}{Statements}
+\creflabelformat{agdastmt}{(#2#1#3)}
+\newcommand{\agdatag}[1]{\hfill\normalfont\normalsize
+  \refstepcounter{agdastmt}(\theagdastmt)\label{#1}}
 %% The rules of the theory T of four-bit reversible circuits
 %% (\Cref{sec:xcxccx}).
 \newcommand{\xrule}[1]{\textup{(T#1)}}
