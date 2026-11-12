@@ -1,4 +1,4 @@
-%% The last subsection of Section 3, "An Introduction to the Framework":
+%% The last subsection of the appendix "An Introduction to the Framework":
 %% the end of Section 2 of the vqupit paper
 %% (vqupit/sections/constructions.lagda.tex).  make.sh writes
 %% ../latex/pldi/lagda/app-constructions.tex; edit this file.
@@ -164,12 +164,12 @@
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaPrimitive{Set}\<%
 \end{code}
-\subsection{Products of Presentations, and Their Presentation Theorems}\label{sec:constructions}
+\subsection{Products of Presentations, and Their Presentation Theorems}\label{app:constructions}
 
-Presentations such as the one just obtained can be combined.  Relation
-sets over a disjoint union of alphabets are built from a single
-primitive, a three-way join whose \emph{mixed} component is the design
-parameter:
+Presentations such as the one just obtained are the factors that the
+case study of \Cref{sec:qudit-case-study} assembles.  Relation sets over
+a disjoint union of alphabets are built from a single primitive, a
+three-way join whose \emph{mixed} component is the design parameter:
 
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
@@ -257,9 +257,9 @@ a \emph{word}, $h \bullet n = \mathit{conj}\;h\;n \bullet h$) and
 definitional extension ($\aid{SugarRel}$).  For each, the library lifts
 normal forms from the factors to the construction and proves that if
 the factors present concrete groups, the constructed relation set
-presents the constructed group.  Beyond presentations of the factors,
-the semidirect theorem needs two well-definedness conditions on the
-action: that it respects
+presents the constructed group.  The semidirect theorem is the one
+\Cref{sec:q-composing} uses.  Beyond presentations of the factors it
+needs two well-definedness conditions on the action: that it respects
 the acting group's axioms in its first argument (\aid{conj-hyph}) and
 the normal subgroup's in its second (\aid{conj-hypn}):
 
@@ -398,7 +398,10 @@ correction, and the relation set of the recipe is
 \AgdaBound{corr}\AgdaSymbol{)}\<%
 \end{code}
 \endgroup
-Semidirect products are the special case with trivial corrections.
-With these theorems a presentation of a product or of an extension is
-\emph{assembled} from presentations of its factors, with no fresh coset
+Semidirect products are the special case with trivial corrections, and
+Appendix~\ref{app:q-scalars} uses the form for central extensions built
+from a cocycle.  These theorems are what make the composition step of
+\Cref{sec:q-composing} cheap: the semidirect product of the Pauli and
+symplectic presentations and the central extension by the scalars are
+\emph{assembled} from the factor presentations, with no fresh coset
 enumeration at all.

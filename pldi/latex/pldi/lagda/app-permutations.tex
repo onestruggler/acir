@@ -1,4 +1,4 @@
-%% Section 3, "An Introduction to the Framework": Section 2 of the vqupit
+%% Appendix "An Introduction to the Framework": Section 2 of the vqupit
 %% paper (vqupit/sections/permutations.lagda.tex), the swap circuits
 %% presenting the symmetric groups.  make.sh writes
 %% ../latex/pldi/lagda/app-permutations.tex; edit this file.
@@ -159,21 +159,23 @@
 \AgdaOperator{\AgdaPrimitive{⊔}}\AgdaSpace{}%
 \AgdaGeneralizable{ℓ}\AgdaSymbol{)}\<%
 \end{code}
-\section{An Introduction to the Framework}\label{sec:permutations}
+\section{An Introduction to the Framework}\label{app:permutations}
 
 EquaCert is built on a library for presentations, normal forms, and
 completeness of circuit relation sets~\cite{bian2027popl}.  This
-section introduces it on its smallest complete case study: circuits
+appendix introduces it on its smallest complete case study: circuits
 built from a single two-wire gate, the swap $\sigma$, which present the
 symmetric groups.  The walkthrough exhibits the pipeline --- gates,
 relations, cosets, tower, semantics, uniqueness, completeness,
-presentation --- that the formalizations by normalization instantiate
-with richer gates and richer actions.  The section closes with the
-product constructions (\Cref{sec:constructions}) by which such
-presentations are combined, and with what EquaCert adds to the library
-it extends (\Cref{sec:delta}).
+presentation --- that the case study of \Cref{sec:qudit-case-study}
+instantiates again for the symplectic factor
+(Appendix~\ref{app:q-symplectic}), concretely enough that the latter can
+be read as the same pipeline with richer gates and a richer action.  The
+appendix closes with the product constructions
+(Appendix~\ref{app:constructions}) by which \Cref{sec:q-composing} glues
+such presentations together.
 
-\subsection{Gates, Generators, and Circuits}\label{sec:sn-gates}
+\subsection{Gates, Generators, and Circuits}\label{app:sn-gates}
 
 A gate set is a family $\aid{Gate} : \mathbb{N} \to \mathsf{Set}$ giving,
 for each arity, the gates on that many adjacent wires; for permutations
@@ -364,7 +366,7 @@ the same crossing one wire higher, and $\sigma \aidop{•} \sigma\;{\uparrow}
 \aidop{•} \sigma$ the three-wire braid on the left of the
 \aid{yang-baxter} equation drawn beside its axiom below.
 
-\subsection{Relations: Two Axioms, Structure for Free}\label{sec:sn-relations}
+\subsection{Relations: Two Axioms, Structure for Free}\label{app:sn-relations}
 
 The group-specific relations are an inductive family indexed by the wire
 count.  Each axiom is stated once, with its gates at the bottom of the
@@ -584,7 +586,7 @@ invertible generators are invertible, the presented monoid is a group; we
 witness this by a \aid{Grouplike} proof (every generator has a left
 inverse), by induction on generators.
 
-\subsection{Cosets and the Staircase Normal Form}\label{sec:sn-cosets}
+\subsection{Cosets and the Staircase Normal Form}\label{app:sn-cosets}
 
 The engine behind the normal form is coset enumeration along the chain
 $S_1 < S_2 < \dots < S_n < S_{n+1}$, where $S_n$ sits inside $S_{n+1}$ as
@@ -901,7 +903,7 @@ c_2, c_3) \in \aid{NF}\;4$, the digit $c_0 \in \aid{C}\;0$ being the
 empty staircase --- one staircase per level, each shifted up to the
 wires of its level: a ``staircase of staircases''.
 
-\subsection{Semantics, Uniqueness, and Completeness}\label{sec:sn-semantics}
+\subsection{Semantics, Uniqueness, and Completeness}\label{app:sn-semantics}
 
 So far everything was syntax.  The development interprets circuits in
 the group $\aid{Permutation′-group}\;n$ of permutations of
@@ -971,7 +973,7 @@ says so is elided):
 \AgdaOperator{\AgdaField{⟦\AgdaUnderscore{}⟧}}\<%
 \end{code}
 
-\noindent The theorems of \Cref{tab:corpus} have the shape of
+\noindent The presentation theorems of \Cref{sec:form} have the shape of
 this one, or that of \aid{IsSubPresentationOf}, which asks for a group
 monomorphism in place of the isomorphism:
 
@@ -997,4 +999,8 @@ monomorphism in place of the isomorphism:
 
 \noindent read: the monoid of swap circuits modulo \{\aid{order},
 \aid{yang-baxter}\} and the structural rules \emph{is} the group of
-permutations of $\mathsf{Fin}\;n$.
+permutations of $\mathsf{Fin}\;n$.  The symplectic
+factor of the case study (\Cref{sec:q-symplectic},
+Appendix~\ref{app:q-symplectic}) is this pipeline again, with richer
+gates and a richer action, and \Cref{sec:q-composing} composes such
+presentations.

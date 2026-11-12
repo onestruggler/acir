@@ -149,11 +149,3 @@ last timing. `agdatime.json`, `loc.json` and `features.json` were measured on
 two modules of that folder that did not build were deleted (`99d329be`);
 nothing else changed in the recount. `leantime.json` keeps the timing of
 the build that included them.
-
-`delta.py` gives the numbers of Section 3.6, "Relation to the Earlier
-Library": from the repository root, `python delta.py origin/popl-submitted
-HEAD` compares the shared library (the `(shared)` entry of `loc.py`) at the
-branch of the earlier library and now, module by module, and counts code
-lines without blank lines and comments. Run on 12 November 2026: 59 modules
-and 8,588 lines then, 92 and 13,172 now; 43 earlier modules remain (15 with
-the same code), 16 were removed or reorganized, and 49 are new (6,474 lines).
