@@ -48,9 +48,31 @@ scratch scripts stayed on the first machine.
    If there is no time to re-time: keep the numbers, and reword the
    footnote and those sentences to say that the two modules were removed
    after the measurement.
-2. **The new text has not been checked by a second reader**: the Proof
-   column and its legend, the sentence in step (6), and the appendix
-   subsection. Points to check against the repository:
+2. **Checked by a second reader (12 November, second machine).** Found
+   right: the Proof codes (CNOT-dihedral's S: the Agda follows the paper's
+   Lemma 5.1 split into diagonal and affine parts, and proves the affine
+   part, which the paper cites from Lafont, in Lafont's style); the Uses
+   rows column, against the import closure of each row's `MainTheorem`,
+   once shared definitions and general lemmas (rings, matrices, matrix
+   groups, `Counting`, `Real-Clifford/Semantics/Laws`, Real-Clifford+CH's
+   matrix evaluation) are not counted as uses; row 8's `presentationᴼ`
+   does not use row 5 (only `DRootTwo`'s translation does, which
+   `MainTheorems` does not state); step (6)'s 8,207 of 376,627 lines; the
+   1,120 shared lines; Table 1 and Table 3 render without bad wraps.
+   Changed in `qcert.tex`: (a) the 3,383 lines of rows 3 and 9 are in
+   modules whose headers *do* say "generated" or "found by a search", in
+   words `loc.py`/`audit.py`'s pattern misses (also qutrit's `Z3.agda`,
+   191 lines, "the module is generated"), so the text says that, "about
+   3,600"; recounting with a wider pattern would move ~3,600 lines from
+   written to generated in Table 3, Section 4, Section 5 and the feature
+   counts of `features.py`, not done; (b) row 5 also uses row 4's
+   `Equivalence`; (c) Table 3's caption says what Uses rows leaves out;
+   (d) the Toffoli–Hadamard count (15 of 28) includes the folder's earlier
+   name `CCX+HH-3qubit`, the qudit one did not: on the same basis
+   (adding `Clifford/Qupit` and the three `Pauli/` files moved to
+   `ProjectivePauli`) it is 121 of 482, 358 of the 361 others before
+   19 September. Scripts: `uses.py`, `trailers.py`, `follow.py` in that
+   session's scratchpad (not kept). The points as originally listed:
    * the codes per row (S for CNOT-dihedral rests on the header of
      `Examples/Groups/CNOT+Dihedral/Completeness.agda`, "the paper's
      Lemma 5.1");
