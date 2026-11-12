@@ -102,7 +102,7 @@ That these results are formalized independently, instead of in a common framewor
 Recent AI-assisted work has also formalized quantum program logics, algorithms, and complexity results~\cite{ren2026qedia,zhang2026leanquantumalg,lu2026formalflow}.
 Several concurrent projects divide the work as we do: humans check the statements and LLM agents write the proofs. MerLean formalizes three quantum computing papers~\cite{ren2026merlean}, EconCSLib formalizes twenty papers in economics and computation~\cite{garg2026econcslib}, and an LLM agent has proved part of a verified compiler correct~\cite{paraskevopoulou2026compiler}. QECert, a Lean library for quantum error correction, likewise gathers many results in one place~\cite{he2026qecert}. The closest to EquaCert is the work of \citet{shirobokov2026discovering} on quantum programs, in which LLM agents write both the programs and their proofs.
 
-\paragraph{Structure of the paper} \Cref{sec:background} reviews equational theories and the main techniques for proving their completeness and minimality. \Cref{sec:form} introduces EquaCert. \Cref{sec:corpus,sec:findings} present the formalized results and the corrections to the source papers. \Cref{sec:xcxccx} gives the new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$, and explains how its proof is constructed and checked; Appendix~\ref{app:xcxccx} gives the full proof. \Cref{sec:conclusion} discusses limitations and future work. The remaining appendices give background, an introduction to the framework on permutation circuits, implementation details, the comparison with Lean, and the details of the corrections.
+\paragraph{Structure of the paper} \Cref{sec:background} reviews equational theories and the main techniques for proving their completeness and minimality. \Cref{sec:permutations} introduces EquaCert on its smallest complete example, the swap circuits that present the symmetric groups. \Cref{sec:corpus,sec:findings} present the formalized results and the corrections to the source papers. \Cref{sec:xcxccx} gives the new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$, and explains how its proof is constructed and checked; Appendix~\ref{app:xcxccx} gives the full proof. \Cref{sec:conclusion} discusses limitations and future work. The remaining appendices give background, the rest of the framework and the workflow, and implementation details.
 
 % \FloatBarrier
 
@@ -156,7 +156,7 @@ There are two main strategies for proving completeness of a rule set $\mathcal{R
 \end{figure}
 
 
-The exact synthesis algorithms used by the first strategy consider groups of $n\times n$ matrices, such as $O_n(\Z[1/2])$ and $U_n(\Z[1/\sqrt2,i])$, rather than circuits (the first block of \Cref{tab:corpus}). Their presentations by $m$-level matrices are stated and proved for every $n$. Circuits on $k$ qubits only reach the dimensions $n=2^k$, so a circuit completeness result built on such a presentation uses only the case $n=2^k$. For completeness proofs based on exact synthesis, the induction argument is the same in every formalization: one shared module in the Lean version, and a copy of about $200$ lines in each Agda formalization. So each such proof only has to relate the steps of its own algorithm, which reduces a matrix to the identity, to the rewrite rules. This separates the algorithm-specific case analysis, the main work in each formalization, from the common completeness proof. \Cref{app:main-lemma} expands on the inductive proof and states precisely what each formalization must prove.
+The exact synthesis algorithms used by the first strategy consider groups of $n\times n$ matrices, such as $O_n(\Z[1/2])$ and $U_n(\Z[1/\sqrt2,i])$, rather than circuits (the first block of \Cref{tab:corpus}). Their presentations by $m$-level matrices are stated and proved for every $n$. Circuits on $k$ qubits only reach the dimensions $n=2^k$, so a circuit completeness result built on such a presentation uses only the case $n=2^k$. For completeness proofs based on exact synthesis, the induction argument is the same in every formalization, a copy of about $200$ lines in each. So each such proof only has to relate the steps of its own algorithm, which reduces a matrix to the identity, to the rewrite rules. This separates the algorithm-specific case analysis, the main work in each formalization, from the common completeness proof. \Cref{app:main-lemma} expands on the inductive proof and states precisely what each formalization must prove.
 
 \Cref{fig:translation} illustrates the second strategy, which uses an already complete rule set $\mathcal{T}$ over a different gate set $\mathcal{G}'$~\cite{bian2023cliffordt2,bian2023cliffordcs3,clement2026realcliffordch,amy2024toffoli,blake2026simpler,clement2023complete,clement2024extensions,delorme2026control,schober2026control,blake2026qudit}. Here, $E$ and $D$ translate circuits from $\mathcal{G}$ to $\mathcal{G}'$ and back, replacing each gate with a circuit over the other gate set. Both $E$ and $D$ preserve circuit composition and the underlying matrix. Hence $C_1'=E(C_1)$ and $C_2'=E(C_2)$ have the same matrix, so completeness of $\mathcal{T}$ gives $C_1'\rewrites{\mathcal{T}}C_2'$. To transfer completeness from $\mathcal{T}$ to $\mathcal{R}$, we first show that every rule of $\mathcal{T}$, translated by $D$, can be derived using $\mathcal{R}$. We can then replace each step of these rewrites by its translated derivation, giving $D(C_1')\rewrites{\mathcal{R}}D(C_2')$. 
 It then remains to derive $C_j\rewrites{\mathcal{R}}D(C_j')$ for $j\in\{1,2\}$, for which it suffices to derive the round-trip rewrites $g\rewrites{\mathcal{R}}D(E(g))$ for each $g\in\mathcal{G}$.
@@ -169,117 +169,11 @@ Sometimes the two strategies are combined, as in~\citet{li2021on}, who extend th
 Starting from a complete rule set, we can remove a redundant rule by deriving it from the other rules, thereby preserving completeness. To show that the resulting rule set is minimal it suffices to give for each remaining rule $r$ another compositional interpretation of circuits (not necessarily into matrices) that every other rule preserves but $r$ does not. Any derivation using the other rules preserves this interpretation, so $r$ cannot be derived from them~\cite{clement2024minimal,blake2026simpler}.
  
 
-\section{The EquaCert Framework}
-\label{sec:form}
-
-Our Agda framework EquaCert states every completeness theorem as a group presentation. Appendix~\ref{app:permutations} introduces it on its smallest complete example, the swap circuits that present the symmetric groups.
-Gates are indexed by their arity: the number of wires on which they act. Each source relation is stated on its original wires, and shared \emph{structural rules} allow it to be used inside a larger circuit. These structural rules are independent of the gate set and make the circuit structure explicit that source papers often leave implicit.
-
-We associate to circuits a matrix semantics $\llbracket - \rrbracket$ with entries in a finitely generated ring such as $\Z\left[1/\sqrt2,i\right]$. This defines a group homomorphism to a unitary matrix group $G$, whose group structure is checked once per ring using Agda's standard library. The interpretation extends from gates to circuits, and the structural rules are sound for every gate set. The Lean version and the Agda semantics of the six minimality fragments prove this once; the other Agda formalizations prove the structural cases for their own gates from lemmas on Kronecker products. Beyond that, each formalization checks only its own rules.
-
-Soundness and completeness say the relations present the image of $\llbracket - \rrbracket$, which is the subgroup of $G$ generated by the gates. In Agda, mathematical structures such as groups are defined as records.
-The record $\mathcal{R}$~\aid{IsSubPresentationOf}~$G$ contains the semantics $\llbracket - \rrbracket$, with proofs of soundness and completeness. The record $\mathcal{R}$~\aid{IsPresentationOf}~$G$ adds surjectivity, so the relations present all of $G$.
-
-\Cref{fig:equacert-soundness-completeness} summarizes the two obligations: checking each rule's matrix equality for soundness, and deriving a known complete rule set $\mathcal T$ from $\mathcal R$ for completeness.
-
-\begin{figure}[!htbp]
-\centering
-\input{figures/equacert-soundness-completeness.tikz}
-\caption{EquaCert's shared matrix interpretation supports both proof obligations (soundness and completeness). The left column checks every rule of $\mathcal R$; the right derives every rule of a known complete set $\mathcal T$ in the same circuit language and matrix semantics. Each rewrite step uses a rule of $\mathcal R$, whose soundness is checked on the left. The displayed $U_n(\D[\omega])$ covers qubit fragments~\cite{amy2020numbertheoretic}, with $\D=\Z[1/2]$ and $\omega=e^{i\pi/4}$. Qudit circuit families use other rings.}
-\label{fig:equacert-soundness-completeness}
-\Description{Two columns show soundness and completeness. On the left, the highlighted uniform matrix semantics assigns a matrix to each gate or two-level operator. EquaCert lifts this assignment to circuits and words, then checks equality of the matrices on both sides of each rule. On the right, every equation in a known complete reference rule set is derived by rewrites from the proposed rule set. The rewrite arrows are green. An arrow from the completed soundness checks points to the statement that each step uses a sound rule from the proposed rule set. Deriving every reference rule establishes completeness.}
-\end{figure}
-
-Each formalization ends with one of these records. For example, \Cref{agda:stab} states that the real stabilizer relations~\cite{makary2021real} present the subgroup generated by their gates, while \Cref{agda:hpi} states that the Hadamard-$\Pi$ relations~\cite{fang2026hadamard} present the specified orthogonal group. The fields in \Cref{agda:complete,agda:sound} state the two directions: equal matrices imply a derivable circuit equation, and every derivable equation preserves the matrix.
-
-\noindent\begin{minipage}{\linewidth}
-\begin{agdacode}[escapechar=@]
-presentation : ∀ n → (n CRel,_===_) IsSubPresentationOf U (2 ^ n)@\agdatag{agda:stab}@
-presentation : ∀ n → (n MRel,_===_) IsPresentationOf (O n)@\agdatag{agda:hpi}@
-complete : ∀ {n} {w v : Circuit n} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → ⊢ w ≈ v@\agdatag{agda:complete}@
-sound : ∀ {n} {w v : Circuit n} → ⊢ w ≈ v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧@\agdatag{agda:sound}@
-\end{agdacode}
-\end{minipage}
-
-The minimality statement in \Cref{agda:minimal} says that the rule set is complete on $n$ wires and becomes incomplete there if any one of its rules stated on exactly $n$ wires is removed~\cite{blake2026simpler}. For three of the six fragments, the source leaves open completeness beyond a certain number of wires or the independence of some rules, and the formal statements also specify bounds on $n$ (\Cref{sec:corpus}).
-\begin{agdacode}[escapechar=@]
-minimal-complete : ∀ {n} → (n ⊢_===_) IsMinimal × (n ⊢_===_) IsComplete@\agdatag{agda:minimal}@
-\end{agdacode}
-
-For each presentation, a reader checks four components against the source paper: the transcribed relations, the target group, the matrix of each gate, and the assignment of $\llbracket - \rrbracket$ to the record. Each Agda formalization collects these components and its main theorem in a \aid{MainTheorem} module. The file \texttt{MainTheorems.agda} restates the results; the corresponding Lean statements are in each formalization's \texttt{Theorem} module, which \texttt{QCert/Table1.lean} imports (\texttt{QCert} is the folder of the Lean library).
-
-\paragraph{Wire Placement and Structural Rules}\label{app:wire-placement}
-
-Wires are numbered from $0$ at the bottom, and a gate is defined as acting on the bottom wires of a circuit. We define a shift  operator which places a circuit on $n$ wires onto wires $1,\dots,n$ of a circuit with $n+1$ wires. In the matrix semantics, this corresponds to taking the tensor product with the identity. This shift operation is defined once for all gate sets.
-
-Each source relation is stated on as many wires as the paper draws it on. Structural rules allow an equation to be shifted by one wire, gates on disjoint wires to commute, and a scalar to be placed on any wire. EquaCert extends the earlier framework's one- and two-wire syntax with three-wire gates and their structural rule. Scalars are zero-wire generators; their placement rule allows exact equations to account for global phase.
-
-In the earlier framework, swap is an ordinary gate whose laws must be included in each rule set. EquaCert also supports a PROP presentation, in which a designated two-wire gate is the swap and the framework supplies its involution law and the laws for moving gates across it. The source rule set then contains only its own relations, each on its original wires; swap and its laws are supplied by the framework. We use this representation for the circuits of~\cite{amy2018cnotdihedral,blake2026phaseaffine,blake2026simpler}, and for the reversible circuits of \Cref{sec:xcxccx}, whose structural rules are drawn in \Cref{fig:xcxccx-structural}. Appendix~\ref{app:equacert-implementation} defines PROPs and explains the theorem notation.
-
-\paragraph{Relation to the Earlier Library}\label{sec:delta}
-The library of~\citet{bian2027popl} has $74$ Agda modules and about $15{,}200$ lines of code. Its framework, $59$ modules and about $8{,}600$ lines, has words, presentations, normal forms, the Reidemeister--Schreier method, and presentations of direct, semidirect, and amalgamated products and of group extensions, with the symmetric, cyclic, and Pauli groups as examples. Its circuits have one- and two-wire gates and three structural rules. It has no matrix semantics, and it contains none of the results of \Cref{tab:corpus}. EquaCert's framework has $92$ modules and about $13{,}200$ lines: $45$ modules come from the earlier library, $14$ of them unchanged, and $47$ are new. The additions are zero-wire and three-wire gates with their structural rules, PROPs with the laws of the swap, independence of relations, the transport of presentations along embeddings and translations, and the tactic library of~\cite{bian2023cliffordt2,bian2023cliffordcs3}. The matrix semantics and the unitary and orthogonal groups that the formalizations share are new as well; they are defined in the formalizations of \Cref{tab:corpus} and are counted there.
-
-\subsection{Reusable Completeness Arguments}\label{app:main-lemma}
-
-For the matrix groups discussed in \Cref{sec:background}, normal forms come from exact synthesis, and the proof that every circuit can be transformed into its normal form has the same structure for each algorithm. Each matrix, or \emph{state}, has a \emph{level}, built from quantities such as the least denominator exponent of a column, and the algorithm reduces each state $M$ to the identity in steps that lower the level. These steps form the normal word $N_M$.
-
-The \emph{Main Lemma} says that for every state $M$ and generator $g$, a diagram of relations closes the square formed by $g$ and the algorithm's next steps from $M$ and $gM$, passing only through states of lower level (\Cref{fig:mainlemma}).
-
-By well-founded induction on the level, the relations then rewrite $N_{gM}\,g$ into $N_M$ (\Cref{fig:level}), and by induction on length, every word that reduces $M$ to the identity rewrites into $N_M$ (\Cref{fig:length}). Two words with the same matrix therefore rewrite into each other. These inductions have the same form for every presentation, so the main work in each formalization is its Main Lemma.
-
-\begin{figure}[!htb]
-\centering
-\begin{subfigure}[b]{0.26\linewidth}
-  \centering
-  \tikzfig{../planqc/figures/mainlemma}
-  \caption{The Main Lemma.}
-  \label{fig:mainlemma}
-\end{subfigure}\hfill
-\begin{subfigure}[b]{0.38\linewidth}
-  \centering
-  \tikzfig{../planqc/figures/levelinduction}
-  \caption{Induction on the level.}
-  \label{fig:level}
-\end{subfigure}\hfill
-\begin{subfigure}[b]{0.32\linewidth}
-  \centering
-  \tikzfig{../planqc/figures/lengthinduction}
-  \caption{Induction on length.}
-  \label{fig:length}
-\end{subfigure}
-\caption{Completeness from the Main Lemma. Plain arrows are words, double arrows are steps or runs of the algorithm, and dashed arrows are words through states of lower level.}
-\label{fig:proof}
-\end{figure}
-
-\subsection{Formalization Workflow}\label{sec:method}
-
-A formalization is carried out by a coding agent in sessions that a human directs, in six steps. They refine the three steps of \Cref{fig:equacert-pipeline}, whose human check is the sixth step here. \emph{(1)~Fix the target.} We name the paper and the result to be proved, in one sentence to the agent. The framework fixes the form of the statement: a set of relations, a group, and a semantics. \emph{(2)~Check the source.} The agent transcribes the paper's rewrite rules and gate matrices. It checks the rules, the intermediate results, and the lines of the derivations with exact matrices in short scripts, before and while it writes Agda code. These checks, and proof steps that failed in Agda, found the misprints of Appendix~\ref{app:corrections}. \emph{(3)~Prove.} The agent writes the proof, guided by the paper's. For a long derivation, it writes a script that turns each line of the paper into one step of the Agda proof, so a failing step points to a specific line of the paper; where the paper gives no derivation, a script searches for one. \emph{(4)~Check.} Agda checks every module. A step that is not yet proved is a parameter of a module, never a postulate, so each theorem shows what it still assumes. \emph{(5)~Record.} An agent carries little from one session to the next, so what it learns is written to a notes file in the repository that every later session reads: the conventions of each formalization, the cost of checking each module, and the mistakes not to repeat. \emph{(6)~Read the statements.} At the end, each formalization gets a \aid{MainTheorem} module that states its theorem with no unproved hypothesis, in one form for all formalizations. We read these statements against the papers: the relations, the target group, and the gate matrices. By our count, the statements and the definitions they mention take about $8{,}200$ of the $377{,}000$ lines of Agda code, about $2\%$ (Appendix~\ref{app:provenance}). Where a formalization has gate matrices, Agda also decides every rule against them by computation.
-
-The history of the repository gives the scale of this work. The fifteen formalizations other than qudit Clifford were written and first proved between 19~September and 16~October 2026, in about $400$ commits. Judging by the times of their commits, ten of the fifteen reached their main theorem less than a day after their first commit. Leaving out a port of existing Agda code and two whose first commit is already large, seven did, in between one and a half and ten hours. The largest, real Clifford+\CH, took more than three weeks. Making the proofs fast to check and giving them statements of one form took until 8~November.
-%With this workflow, coding agents wrote the fifteen formalizations other than qudit Clifford within four weeks, most in less than a day.
-
-\paragraph{Matrix Equality Checking}\label{app:matrix-equality}
-The main computational cost came from Agda's conversion checker. It accepts syntactically identical terms immediately; otherwise, it evaluates them to compare their results. For long matrix products, this evaluation can take exponential time. We keep circuit interpretations abstract and decide matrix equality by computing a single Boolean using row operations. For these products, this is orders of magnitude faster than comparing matrices entry by entry. The notes file records this technique, so later formalizations avoid the same slowdowns.
-
-\paragraph{Where the Workflow Failed}
-The agents' mistakes resembled human ones: a step taken from a garbled copy of a page, two products taken in the wrong order, a hypothesis stated more strongly than its source states it. A computation or a failed proof caught each of these, not the agent's own reading, and not always at once. The two products agree on three qubits, where an Agda decision procedure had checked the rules that use them, and differ from four qubits onward; a simulation found the error within six days, while a later result was being proved. The hypothesis was a theorem that the paper imports from another paper. It had been stated for all words over the generators, including degenerate generators that the source excludes, and in that form it is false, so every theorem that assumed it was vacuous. The false hypothesis stood for about eighteen days, until it was to be proved. Both errors were in intermediate statements, and neither was found by reading. A final theorem with no unproved hypothesis is safe from both kinds: a false hypothesis cannot remain in it, and a wrong auxiliary definition stops its proof. What Agda cannot check is the final statement itself against the paper. That is the sixth step, and it is done by a human.
-
-The work also cost more than its final size shows. Three formalizations first took between one and three and a half hours to check, and were reworked. The first proof of the theorem of \Cref{sec:xcxccx} was replaced by another within a day. Usage limits ended sessions in the middle of their work more than once.
-
-\paragraph{AI Use}\label{sec:ai-use}
-%% Required by the call for papers; it counts toward the page limit.
-The library of~\cite{bian2027popl} is the starting point of the framework, and the proofs of~\cite{bian2023cliffordt2,bian2023cliffordcs3} are ported from their authors' Agda code; agents revised both. The rest was written by LLM coding agents: the extensions of the framework, the Agda proofs, and the scripts that search for and generate derivations, in the workflow above, and the Lean version, from the source papers. The exception is the qudit Clifford formalization, which predates this workflow; agents wrote parts of it. Most of the agents' work was done by Claude Code, with several versions of Anthropic's Claude models. A second coding agent, Astra, worked on the Toffoli--Hadamard formalization of \Cref{tab:corpus} and on parts of the Lean version. Claude Code also helped to draft and revise the text of this paper, which we checked.
-
-\subsection{Avoiding Completeness Lost in Translation}
-\label{sec:lost}
-
-For a formalization to be useful, its formal statement must say what the source paper claims. We make this connection explicit in three ways.
-
-First, we define the target group independently of the circuit syntax, using matrices or an algebraic construction. A completeness theorem then relates the circuit equations to a semantics that does not depend on them, rather than to a group built from the equations themselves.
-
-Second, when a source rule set must be changed, the formal theorem names the revised set. This lets a reader tell a repair to the proof apart from a correction to the theorem itself (\Cref{sec:findings}).
-
-Finally, general completeness arguments and group constructions are verified once, among them the Reidemeister--Schreier method~\cite{magnus2004combinatorial} and presentations of semidirect products, both inherited from~\cite{bian2027popl}. Each formalization that uses them only needs to prove their hypotheses and check the connection to its own circuit semantics.
+%% Section 3 is literate Agda, Section 2 of the vqupit paper: edit
+%% lagda/app-permutations.lagda.tex and lagda/app-constructions.lagda.tex
+%% and run lagda/make.sh on them, which writes the files input here.
+\input{latex/pldi/lagda/app-permutations}
+\input{latex/pldi/lagda/app-constructions}
 
 \FloatBarrier
 
@@ -295,37 +189,37 @@ The sixteen formalizations in \Cref{tab:corpus} contain about 377{,}000 lines of
 \small
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\linewidth}{@{}l Y Y c r r r@{}}
+\begin{tabularx}{\linewidth}{@{}l Y Y c r r@{}}
 \toprule
-Source & Object & Result & Proof & \shortstack{Agda\\Mod} & \shortstack{Agda\\time (s)} & \shortstack{Lean\\time (s)} \\
+Source & Object & Result & Proof & \shortstack{Agda\\Mod} & \shortstack{Agda\\time (s)} \\
 \midrule
-\multicolumn{7}{@{}l}{\emph{Groups of $m$-level matrices}}\\
-\tabcite{greylyn2014} & $U_n(\Z[1/\sqrt2,i])$ & presentation, $n\le4$ & S & 34 & 37.28 & 145.34 \\
-\tabcite{bian2021un} & $U_n(\Z[1/2,i])$ & presentation & S & 39 & 53.73 & 126.99 \\
-\tabcite{li2021on} & $O_n(\Z[1/2])$, $L_n$ & presentations & S & 71 & 84.52 & 185.32 \\
-\tabcite{fang2026hadamard} & $O_n(\Z[1/\sqrt2])$ & presentation & S & 46 & 48.33 & 231.57 \\
-\tabcite{clement2019thesis} & $O_n(\Z[1/\sqrt2])$ & presentation & S & 43 & 67.72 & 51.99 \\
+\multicolumn{6}{@{}l}{\emph{Groups of $m$-level matrices}}\\
+\tabcite{greylyn2014} & $U_n(\Z[1/\sqrt2,i])$ & presentation, $n\le4$ & S & 34 & 37.28 \\
+\tabcite{bian2021un} & $U_n(\Z[1/2,i])$ & presentation & S & 39 & 53.73 \\
+\tabcite{li2021on} & $O_n(\Z[1/2])$, $L_n$ & presentations & S & 71 & 84.52 \\
+\tabcite{fang2026hadamard} & $O_n(\Z[1/\sqrt2])$ & presentation & S & 46 & 48.33 \\
+\tabcite{clement2019thesis} & $O_n(\Z[1/\sqrt2])$ & presentation & S & 43 & 67.72 \\
 \midrule
-\multicolumn{7}{@{}l}{\emph{Circuits}}\\
-\tabcite{selinger2015clifford} & Clifford & sub-presentation & S & 32 & 35.01 & 88.24 \\
-\citetalias{bian2026qupit}~[\citeyear{bian2026qupit}] & Clifford, odd prime~$p$ & presentation of a~model & E & 216 & 499.37 & 197.32 \\
-\tabcite{makary2021real} & real stabilizer & sub-presentation & S & 31 & 37.94 & 79.75 \\
-\tabcite{amy2018cnotdihedral} & CNOT-dihedral & sub-presentation & S & 31 & 21.24 & 101.22 \\
-\tabcite{blake2026phaseaffine} & phase-affine, prime~$d$ & sub-presentations & S & 57 & 83.30 & 257.24 \\
-\tabcite{bian2023cliffordt2} & two-qubit Clifford+\T{} & sub-presentation in~$U_4$ & P & 63 & 135.79 & 356.79 \\
-\tabcite{bian2023cliffordcs3} & three-qubit Clifford+\CS{} & sub-presentation in~$U_8$ & P & 125 & 298.29 & 1330.89 \\
-\tabcite{clement2026realcliffordch} & real Clifford+\CH{} & sub-presentation & S & 348 & 419.99 & 5478.79 \\
-\tabcite{amy2024toffoli} & three-qubit Toffoli--Hadamard & presentation of $L_8$ & R & 203 & 111.17 & 134.91 \\
-\tabcite{li2025qutrit} & qutrit Clifford & presentation & S & 90 & 285.58 & 179.60 \\
+\multicolumn{6}{@{}l}{\emph{Circuits}}\\
+\tabcite{selinger2015clifford} & Clifford & sub-presentation & S & 32 & 35.01 \\
+\citetalias{bian2026qupit}~[\citeyear{bian2026qupit}] & Clifford, odd prime~$p$ & presentation of a~model & E & 216 & 499.37 \\
+\tabcite{makary2021real} & real stabilizer & sub-presentation & S & 31 & 37.94 \\
+\tabcite{amy2018cnotdihedral} & CNOT-dihedral & sub-presentation & S & 31 & 21.24 \\
+\tabcite{blake2026phaseaffine} & phase-affine, prime~$d$ & sub-presentations & S & 57 & 83.30 \\
+\tabcite{bian2023cliffordt2} & two-qubit Clifford+\T{} & sub-presentation in~$U_4$ & P & 63 & 135.79 \\
+\tabcite{bian2023cliffordcs3} & three-qubit Clifford+\CS{} & sub-presentation in~$U_8$ & P & 125 & 298.29 \\
+\tabcite{clement2026realcliffordch} & real Clifford+\CH{} & sub-presentation & S & 348 & 419.99 \\
+\tabcite{amy2024toffoli} & three-qubit Toffoli--Hadamard & presentation of $L_8$ & R & 203 & 111.17 \\
+\tabcite{li2025qutrit} & qutrit Clifford & presentation & S & 90 & 285.58 \\
 \midrule
-\multicolumn{7}{@{}l}{\emph{Minimality}}\\
-\tabcite{blake2026simpler} & six fragments & minimal, complete\textsuperscript{\dag} & S & 80 & 180.10 & 358.87 \\
+\multicolumn{6}{@{}l}{\emph{Minimality}}\\
+\tabcite{blake2026simpler} & six fragments & minimal, complete\textsuperscript{\dag} & S & 80 & 180.10 \\
 \midrule
-Total & & & & 1{,}509 & 2{,}399.36 & 9{,}304.83 \\
+Total & & & & 1{,}509 & 2{,}399.36 \\
 \bottomrule
 \end{tabularx}
 \captionsetup{position=bottom}
-\caption{Completeness and minimality results formalized in EquaCert. A presentation gives generators and relations for a whole group, and a sub-presentation for the subgroup generated by the gate set named in the Object column of the Circuits block. $L_n$ is the group of orthogonal matrices $N/\sqrt2^{\,j}$, where $N$ is an integer matrix and $j \ge 0$. Appendix~\ref{app:rings-gates} gives precise definitions of the rings, matrix groups, and gates. Mod counts Agda modules. The Agda times are typechecking times from scratch with Agda~2.8, the times its profiler reports for the row's modules; the Lean times are elapsed folder-build times. Both were measured on the same machine, under the conditions in Appendix~\ref{app:agda-lean-comparison}. Both columns exclude the shared library and other formalizations on which a row depends. The Result column describes the Agda statements; Appendix~\ref{app:agda-lean-comparison} explains the semantic differences. The Proof column gives the origin of the Agda proof: S,~written by coding agents, guided by the proof in the source; P,~ported from the Agda proof of the source's authors; R,~a replay of the derivation files that accompany the source; E,~begun before the workflow of \Cref{sec:method}, with parts written by agents. Appendix~\ref{app:provenance} gives each row's size and what it uses. \textsuperscript{\dag}For three of the fragments, up to the numbers of wires given in the text. The source of the fifth row is an unpublished internship report.}
+\caption{Completeness and minimality results formalized in EquaCert. A presentation gives generators and relations for a whole group, and a sub-presentation for the subgroup generated by the gate set named in the Object column of the Circuits block. $L_n$ is the group of orthogonal matrices $N/\sqrt2^{\,j}$, where $N$ is an integer matrix and $j \ge 0$. Appendix~\ref{app:rings-gates} gives precise definitions of the rings, matrix groups, and gates. Mod counts Agda modules. The times are typechecking times from scratch with Agda~2.8, the times its profiler reports for the row's modules; they exclude the shared library and other formalizations on which a row depends. The Proof column gives the origin of the Agda proof: S,~written by coding agents, guided by the proof in the source; P,~ported from the Agda proof of the source's authors; R,~a replay of the derivation files that accompany the source; E,~begun before the workflow of \Cref{sec:method}, with parts written by agents. Appendix~\ref{app:provenance} gives each row's size and what it uses. \textsuperscript{\dag}For three of the fragments, up to the numbers of wires given in the text. The source of the fifth row is an unpublished internship report.}
 \label{tab:corpus}
 \end{table}
 
@@ -345,37 +239,59 @@ Four qualifications apply to the Agda results in \Cref{tab:corpus}. The two-qubi
 
 % Long computational derivations, such as those in Selinger's 105-page supplement and the qutrit box relations, come from scripts that follow the paper, as in \Cref{sec:method}, or search for the steps. In the real stabilizer formalization, half the lines are generated in this way, and a fifth formalize the paper's mathematics.
 
-\subsection{Comparison of the Agda and Lean Formalizations}
-\label{sec:compare}
-
-The Lean~\cite{moura2021lean4} version of EquaCert formalizes the same sixteen results on top of Mathlib~\cite{mathlib2020}. Its framework is a translation of the Agda framework, and, judging by its commits, coding agents then wrote its sixteen formalizations from the source papers within a week. It came second, and we present it as a second version of the same results and not as a second contribution of the same kind. Its point is its theorem statements. They rest on Mathlib's standard definitions, with matrix groups over Mathlib's real or complex numbers in place of our exact rings, so a reader can check them against the source papers using definitions that are already widely used and reviewed. For qudit Clifford, the Lean statement also removes an argument that the Agda statement leaves to external mathematics (\Cref{sec:corpus}). The Lean proofs use no \texttt{sorry} and no \texttt{native\_decide}, and the main theorems depend only on Lean's three standard axioms (Appendix~\ref{app:agda-lean-comparison}).
-
-\begin{figure}[!htbp]
-\centering
-% Keep the chart with its discussion without reducing label sizes.
-\begingroup
-\pgfplotsset{height/.code={%
-  \pgfmathsetlengthmacro{\equacertComparisonHeight}{0.74*(#1)}%
-  \pgfkeyslet{/pgfplots/height}\equacertComparisonHeight
-}}
-\input{figures/compare.tex}
-\endgroup
-\caption{The Agda and Lean formalizations of each row of \Cref{tab:corpus}. (a) Code lines, excluding blank lines and comments. For Toffoli--Hadamard$^{\ast}$ it shows another pair, one proof in both assistants (Appendix~\ref{app:agda-lean-comparison}): a second Agda proof and its translation to Lean. The last row is the shared library of each framework. (b) The check times of \Cref{tab:corpus}, Agda (circles) and Lean (squares), measured on the same machine, with methods described in Appendix~\ref{app:agda-lean-comparison}.}
-\label{fig:compare}
-\end{figure}
-
-Since the two versions share the design of their framework, their agreement does not independently validate it. \Cref{fig:compare} describes the two versions. The two proof assistants can be compared only where both check the same proof. Two formalizations are translated module for module: a second proof of the Toffoli--Hadamard result, which is the row marked~$\ast$ in panel~(a), and the four-bit theorem of \Cref{sec:xcxccx} (Appendix~\ref{app:agda-lean-comparison}). There the two versions need about the same amount of text, and Lean takes 3.4 and 10 times as long as Agda to check them, in the second case mostly to load Mathlib once for each of its 54 modules. In the other rows the proofs differ, and so do the two ways of measuring time, so apart from that row panels~(a) and~(b) describe the two formalizations and not the assistants: the Lean formalization is shorter in thirteen rows, and the Agda one is checked faster in thirteen. Agda's normal forms are executable functions, whereas Lean's are existence results or \texttt{noncomputable} definitions. Both versions can run a procedure that decides whether two Clifford circuits have the same matrix. They implement it differently, and Lean's is faster from three qubits onward (\Cref{fig:compare-exec} in Appendix~\ref{app:agda-lean-comparison}). What a reader should take from the comparison is that the two versions state the same sixteen theorems over different definitions, that the same proof needs about the same amount of text in both assistants, and that Lean takes several times as long to check it; the differences between the rows of \Cref{tab:corpus} come from the proofs. Appendix~\ref{app:agda-lean-comparison} gives the methods and the limits of each measurement, summarized in \Cref{tab:compare}.
-
-%% No \FloatBarrier here: with one, the comparison figure leaves most
-%% of a page blank and the main text exceeds twenty pages.
 \section{Corrections to the Source Papers}\label{sec:findings}
 
-The formalizations in \Cref{tab:corpus} identify two kinds of issues in the source papers. Most are typos, and some of them appear in statements that the proofs rely on. These are easy to fix, and Appendix~\ref{app:corrections} lists them by source. Two others are harder to repair. One is a gap in a proof, and the other is a relation missing from a theorem. We describe both below, and Appendix~\ref{app:corrections} gives the counterexamples to the lemmas and the interpretation that separates the missing relation.
+The formalizations in \Cref{tab:corpus} identify two kinds of issues in the source papers. Most are typos, and some of them appear in statements that the proofs rely on. These are easy to fix, and \Cref{sec:corr-list} lists them by source. Two others are harder to repair. One is a gap in a proof, and the other is a relation missing from a theorem. We describe both below, with the counterexamples to the lemmas and the interpretation that separates the missing relation, in a form that can be checked by hand.
+
+\subsection{The Gap in the Proof of Theorem~4.14 of Hadamard-$\Pi$}\label{sec:corr-hpi}
 
 The gap is in the proof of Theorem~4.14 of Hadamard-$\Pi$~\cite{fang2026hadamard}, which states that the relations in its Figure~6, over the one- and two-level matrices $(-1)_{[a]}$, $\X_{[a,b]}$, and $\Hg_{[a,b]}$, present the group $O_n\left(\Z\left[1/\sqrt2\right]\right)$. One case of the proof relies on Lemmas~A.16 and~A.17, which have counterexamples in dimension~$6$, and the case analysis built on them misses a matrix in dimension~$9$.
 Their main result is however still correct: Cl\'ement's unpublished internship report~\cite{clement2019thesis} presents the same group with different relations, and his case analysis covers the missing case, using which the formalization of Theorem~4.14 is completed. We also prove that the two sets of relations are equivalent in every dimension and formalize Cl\'ement's proof~\cite{equacert2026clement}.
 
+References are to the extended version of~\cite{fang2026hadamard}, whose Appendix~A proves Theorem~4.14, and indices start at~$1$, as there. Applied to a vector~$x$, the matrix $\Hg_{[i,j]}$ replaces the entries $x_i$ and $x_j$ by $(x_i+x_j)/\sqrt2$ and $(x_i-x_j)/\sqrt2$, and a product acts with its rightmost factor first. An element $a+b\sqrt2$ of $\Z[\sqrt2]$ is \emph{odd} if $a$ is odd.
+
+Lemma~A.16 concerns a unit vector $\hat v$ over $\Z[1/\sqrt2]$ and a $k\ge2$ such that $\sqrt2^{\,k}\hat v$ has entries in $\Z[\sqrt2]$, exactly four of them odd, namely the first four, which are congruent to $(1+\sqrt2,\,1,\,1+\sqrt2,\,1)$ or to $(1,\,1+\sqrt2,\,1,\,1+\sqrt2)$ modulo~$2$. Let $v$ consist of the first four entries of $\hat v$. The lemma states that if $\sqrt2^{\,k-1}\,\Hg_{[1,4]}\Hg_{[2,3]}\Hg_{[2,4]}\Hg_{[2,3]}\Hg_{[1,4]}\,v$ has entries in $\Z[\sqrt2]$, then so does $\sqrt2^{\,k-1}\,\Hg_{[1,3]}\Hg_{[2,4]}\Hg_{[1,2]}\Hg_{[1,3]}\Hg_{[2,4]}\,v$. It fails for $k=4$ in dimension~$6$, on
+\[
+4\,\hat v=(-1-\sqrt2,\ 1,\ -1-\sqrt2,\ 1,\ \sqrt2,\ -2+\sqrt2).
+\]
+The squares of these entries add up to $16$, so $\hat v$ is a unit vector, and the first four entries are odd and congruent to $(1+\sqrt2,1,1+\sqrt2,1)$. The first product gives $(0,\,0,\,-1-\sqrt2,\,-1)$, and the second gives $(-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2},\,-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2})$, which is not in $\Z[\sqrt2]^4$. Lemma~A.17 is the same statement with $\Hg_{[3,4]}$ in place of $\Hg_{[2,4]}$ in the two words, and it fails in the same way on $4\,\hat v=(1+\sqrt2,\,-1,\,1+\sqrt2,\,1,\,-\sqrt2,\,2-\sqrt2)$.
+
+Items~(c) and~(d) of Lemma~A.19 rest on these two lemmas, and Main Case~9 of the Main Lemma rests on Lemma~A.19. That case is not covered for the unit vector $\hat s$ in dimension~$9$ with
+\[
+\sqrt2^{\,7}\,\hat s=(1+3\sqrt2,\ 1,\ -3\sqrt2,\ 1+3\sqrt2,\ 2,\ 5,\ -2+\sqrt2,\ -4+2\sqrt2,\ -2-2\sqrt2),
+\]
+whose odd entries are the first, second, fourth, and sixth: none of the eight diagrams that the proof of Lemma~A.19 offers stays below the level of $\hat s$, as the Main Lemma requires. The step that the proof leaves open is $\Hg_{[c,d]}$ on two odd entries that are not congruent modulo~$2$, when exactly four entries are odd. It is Case~3.4 of~\cite{clement2019thesis}, which the formalization follows~\cite{equacert2026clement}.
+
+\subsection{The Relation Missing from Theorem~5.2 of Toffoli--Hadamard}\label{sec:corr-rk}
+
 The relation is missing from Theorem~5.2 of~\cite{amy2024toffoli}. It states that the relations in its Figures~4 and~7, over the Toffoli and $\K = \Hg\otimes\Hg$ gates, present the group $O_8\left(\Z\left[1/2\right]\right)$. This is the first of two steps toward presenting the scaled dyadic orthogonal group $L_8$ by three-qubit Toffoli--Hadamard circuits. The relation $r_{\K}$ in its Section~5.5, which splits $\K$ on two qubits into two copies controlled by the remaining qubit, one for each of its values, is in neither figure. Nor can it be derived from them. Hence, Theorem~5.2 fails as stated. Our formalization~\cite{equacert2026toffoli} shows that $r_{\K}$ is independent by giving an interpretation of circuits that every other relation preserves but $r_{\K}$ does not, and proves the presentations of $O_8\left(\Z\left[1/2\right]\right)$ and $L_8$ with $r_{\K}$ restored.
+
+Let $J$ be the $8\times8$ matrix whose entries are all~$1$, and let $R=I-J/4$, the reflection that negates the vector of all ones. Then $R^2=I$, since $J^2=8J$, and $R$ commutes with every permutation matrix. Read each gate $g$ of Figure~4 of~\cite{amy2024toffoli} as $RgR$, and the two further generators of its Figure~7, namely $\K_{[0,1,2,3]}$ and $\CCZ$, as themselves, and take both figures with the misprints of \Cref{tab:errata} corrected. Every relation of Figure~4 still holds, being a matrix identity conjugated by~$R$. So does every relation of Figure~7, since its other gates are permutation matrices, which are read as themselves. The relation $r_{\K}$ equates $I\otimes\K$ with a word in $\X\otimes I\otimes I$ and $\K_{[0,1,2,3]}$. Its left-hand side is read as $R\,(I\otimes\K)\,R$, whose entry in the first row and column is $1/2-2/4-2/4+4/16=-1/4$, and its right-hand side is read as itself, with the entry $1/2$ there. So $r_{\K}$ does not follow from the two figures. In the formalization, this is \aid{r\_K-independent}~\cite{equacert2026toffoli}.
+
+\subsection{Misprints by Source}\label{sec:corr-list}
+
+\Cref{tab:errata} lists the main things that the formalizations found besides the two corrections above. They were found by the checks of \Cref{sec:method} or when a step of a proof failed, and the formalizations state the corrected forms. The table leaves out smaller slips, such as a wrong label on a step of a derivation. For the other sources of \Cref{tab:corpus} we recorded none.
+
+\begin{table}[!htbp]
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\linewidth}{@{}l Y@{}}
+\toprule
+Source & What the formalization found \\
+\midrule
+\tabcite{amy2024toffoli} & Seven equations are false as printed: (33) of Figure~4, (97) and (100) of Figure~7, and four of Sections~5.5 to~5.7, among them $(r_{\CX})$ and a decomposition of $\CCZ$. Each is refuted in Agda by one matrix entry. The proof of Lemma~6.1 treats six of the twenty-five generators; the others need an induction. \\
+\tabcite{makary2021real} & Eleven of the 137 typed relations of Appendix~B are false as printed: six have a different right-hand side, and five lack a Pauli gate. \\
+\tabcite{selinger2015clifford} & Three steps of the supplement's derivations cite the wrong equation. The relations of the paper all hold. \\
+\tabcite{li2021on} & Relation (7d) of Table~2 has its two cases exchanged. \\
+\tabcite{li2025qutrit} & The third row of Figure~25 has one $\CZ$ in its residual circuit, not two. \\
+\tabcite{blake2026simpler} & The scalar of the qutrit rule (E) in Figure~4 is $\omega_{12}$, not $\omega_{12}^7$. One interpretation of Figure~8, which separates a rule on two wires, does not preserve a rule on three; the claim stands, since a derivation on two wires uses no rule on three. \\
+\tabcite{clement2026realcliffordch} & Equations (36) and (37) hold with the negations on the controls that are~$1$; we read the paper as placing them on those that are~$0$. Equations (30), (34), and (42) need the two indices of each of their letters to differ, which the figure leaves implicit. \\
+\bottomrule
+\end{tabularx}
+\caption{The main misprints and slips that the formalizations found in their sources, besides the two corrections of \Cref{sec:corr-hpi,sec:corr-rk}.}
+\label{tab:errata}
+\end{table}
 
 
 \section{A New Result: Complete Equations for Four-Bit Reversible Circuits}\label{sec:xcxccx}
@@ -514,8 +430,6 @@ The formalization consists of $38$ modules in \texttt{Examples/Groups/Alt16-RevC
 
 The scripts that find the derivations are part of the formalization. They are the Knuth--Bendix completion on two and three wires, the search for the pair lemmas of \Cref{prop:x-pairs}, which takes $20$~seconds, the best-first search for the relators of \Cref{prop:x-relations} and \Cref{lem:x-squares}, which takes at most a minute for each, and a compiler from macro derivations to steps of the engine, which replays every step. Each search is bounded, and runs within $1.5$~GB. Two changes brought the last four relators within this bound: another form of one cycle for three of them, and a compact storage of the words that the search has seen for the fourth.
 
-The formalization is translated to Lean module for module, with the same generated derivations: its $38$ modules, and sixteen more for what it imports from the library of EquaCert, Lafont's presentation among it (Appendix~\ref{app:agda-lean-comparison}).
-
 \section{Discussion and Future Work}\label{sec:conclusion}
 
 We formalize the results of sixteen papers in EquaCert using one syntax for words and circuits, one definition of group presentations, and shared libraries for rings and their matrix groups. Unifying these definitions has two benefits. First, presentations of the same group from different papers can be compared and proved equivalent. Second, a new completeness proof can reuse much of the existing work. When completeness follows from an exact synthesis algorithm, the induction that turns the algorithm into a proof carries over with little change, so the main new work is the case analysis over matrices and generators. That case analysis is the most error-prone part of the proof, so it is where machine checking matters most. Reusing these libraries, we also prove a new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$.
@@ -528,13 +442,17 @@ At the moment, not every completeness result fits into EquaCert, as its scope is
 %% TODO (authors): a draft; the authors will supply the statement.  It
 %% says that an anonymized supplement is submitted, which must be true.
 \section*{Data-Availability Statement}
-The Agda framework and the sixteen formalizations, the proof of \Cref{sec:xcxccx}, the Lean version, the scripts that search for and generate derivations, and the measurement scripts and records behind \Cref{tab:corpus} and \Cref{fig:compare} are submitted with this paper as anonymized supplementary material. The files \texttt{MainTheorems.agda} and \texttt{QCert/Table1.lean} restate the theorems of \Cref{tab:corpus}. The proofs are checked with Agda~2.8.0 and version~2.4 of its standard library, and with Lean~4.30.0 and a pinned revision of Mathlib; on the machine of Appendix~\ref{app:agda-lean-comparison}, the Agda check takes about an hour and the Lean build under three. We intend to submit the artifact for Artifact Evaluation and to release it under an open-source license.
+The Agda framework and the sixteen formalizations, the proof of \Cref{sec:xcxccx}, the Lean version, the scripts that search for and generate derivations, and the measurement scripts and records behind \Cref{tab:corpus} are submitted with this paper as anonymized supplementary material. The file \texttt{MainTheorems.agda} restates the theorems of \Cref{tab:corpus}. The proofs are checked with Agda~2.8.0 and version~2.4 of its standard library, in about an hour. We intend to submit the artifact for Artifact Evaluation and to release it under an open-source license.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{refs}
 
 \clearpage
 \appendix
+%% cleveref does not switch to appendix names here by itself: a \Cref to a
+%% section from now on reads ``Appendix B'', to a subsection ``Appendix B.2''.
+\crefalias{section}{appendix}
+\crefalias{subsection}{appendix}
 
 \section{Rings, Matrices, and Quantum Gates}\label{app:rings-gates}
 
@@ -612,11 +530,117 @@ Clifford+\T & $U_n(\D[\omega])$ & $\omega$, $\Hg$, $\Sg$, $\CX$, $\T$ & of types
 and in the Toffoli--Hadamard family the identities of the third line make every $\X_{[a,b]}$ a product of $(-1)_{[a]}$, $({\Hg\otimes\Hg})_{[a,b,c,d]}$, and $I_{n/2}\otimes\Hg$.
 
 \FloatBarrier
-%% This appendix is literate Agda, Section 2 of the vqupit paper: edit
-%% lagda/app-permutations.lagda.tex and lagda/app-constructions.lagda.tex
-%% and run lagda/make.sh on them, which writes the files input here.
-\input{latex/pldi/lagda/app-permutations}
-\input{latex/pldi/lagda/app-constructions}
+\section{The EquaCert Framework}
+\label{sec:form}
+
+Our Agda framework EquaCert states every completeness theorem as a group presentation. \Cref{sec:permutations} introduces it on its smallest complete example, the swap circuits that present the symmetric groups; this appendix describes the rest of the framework.
+Gates are indexed by their arity: the number of wires on which they act. Each source relation is stated on its original wires, and shared \emph{structural rules} allow it to be used inside a larger circuit. These structural rules are independent of the gate set and make the circuit structure explicit that source papers often leave implicit.
+
+We associate to circuits a matrix semantics $\llbracket - \rrbracket$ with entries in a finitely generated ring such as $\Z\left[1/\sqrt2,i\right]$. This defines a group homomorphism to a unitary matrix group $G$, whose group structure is checked once per ring using Agda's standard library. The interpretation extends from gates to circuits, and the structural rules are sound for every gate set. The semantics of the six minimality fragments prove this once; the other Agda formalizations prove the structural cases for their own gates from lemmas on Kronecker products. Beyond that, each formalization checks only its own rules.
+
+Soundness and completeness say the relations present the image of $\llbracket - \rrbracket$, which is the subgroup of $G$ generated by the gates. In Agda, mathematical structures such as groups are defined as records.
+The record $\mathcal{R}$~\aid{IsSubPresentationOf}~$G$ contains the semantics $\llbracket - \rrbracket$, with proofs of soundness and completeness. The record $\mathcal{R}$~\aid{IsPresentationOf}~$G$ adds surjectivity, so the relations present all of $G$.
+
+\Cref{fig:equacert-soundness-completeness} summarizes the two obligations: checking each rule's matrix equality for soundness, and deriving a known complete rule set $\mathcal T$ from $\mathcal R$ for completeness.
+
+\begin{figure}[!htbp]
+\centering
+\input{figures/equacert-soundness-completeness.tikz}
+\caption{EquaCert's shared matrix interpretation supports both proof obligations (soundness and completeness). The left column checks every rule of $\mathcal R$; the right derives every rule of a known complete set $\mathcal T$ in the same circuit language and matrix semantics. Each rewrite step uses a rule of $\mathcal R$, whose soundness is checked on the left. The displayed $U_n(\D[\omega])$ covers qubit fragments~\cite{amy2020numbertheoretic}, with $\D=\Z[1/2]$ and $\omega=e^{i\pi/4}$. Qudit circuit families use other rings.}
+\label{fig:equacert-soundness-completeness}
+\Description{Two columns show soundness and completeness. On the left, the highlighted uniform matrix semantics assigns a matrix to each gate or two-level operator. EquaCert lifts this assignment to circuits and words, then checks equality of the matrices on both sides of each rule. On the right, every equation in a known complete reference rule set is derived by rewrites from the proposed rule set. The rewrite arrows are green. An arrow from the completed soundness checks points to the statement that each step uses a sound rule from the proposed rule set. Deriving every reference rule establishes completeness.}
+\end{figure}
+
+Each formalization ends with one of these records. For example, \Cref{agda:stab} states that the real stabilizer relations~\cite{makary2021real} present the subgroup generated by their gates, while \Cref{agda:hpi} states that the Hadamard-$\Pi$ relations~\cite{fang2026hadamard} present the specified orthogonal group. The fields in \Cref{agda:complete,agda:sound} state the two directions: equal matrices imply a derivable circuit equation, and every derivable equation preserves the matrix.
+
+\noindent\begin{minipage}{\linewidth}
+\begin{agdacode}[escapechar=@]
+presentation : ∀ n → (n CRel,_===_) IsSubPresentationOf U (2 ^ n)@\agdatag{agda:stab}@
+presentation : ∀ n → (n MRel,_===_) IsPresentationOf (O n)@\agdatag{agda:hpi}@
+complete : ∀ {n} {w v : Circuit n} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → ⊢ w ≈ v@\agdatag{agda:complete}@
+sound : ∀ {n} {w v : Circuit n} → ⊢ w ≈ v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧@\agdatag{agda:sound}@
+\end{agdacode}
+\end{minipage}
+
+The minimality statement in \Cref{agda:minimal} says that the rule set is complete on $n$ wires and becomes incomplete there if any one of its rules stated on exactly $n$ wires is removed~\cite{blake2026simpler}. For three of the six fragments, the source leaves open completeness beyond a certain number of wires or the independence of some rules, and the formal statements also specify bounds on $n$ (\Cref{sec:corpus}).
+\begin{agdacode}[escapechar=@]
+minimal-complete : ∀ {n} → (n ⊢_===_) IsMinimal × (n ⊢_===_) IsComplete@\agdatag{agda:minimal}@
+\end{agdacode}
+
+For each presentation, a reader checks four components against the source paper: the transcribed relations, the target group, the matrix of each gate, and the assignment of $\llbracket - \rrbracket$ to the record. Each Agda formalization collects these components and its main theorem in a \aid{MainTheorem} module. The file \texttt{MainTheorems.agda} restates the results.
+
+\paragraph{Wire Placement and Structural Rules}\label{app:wire-placement}
+
+Wires are numbered from $0$ at the bottom, and a gate is defined as acting on the bottom wires of a circuit. We define a shift  operator which places a circuit on $n$ wires onto wires $1,\dots,n$ of a circuit with $n+1$ wires. In the matrix semantics, this corresponds to taking the tensor product with the identity. This shift operation is defined once for all gate sets.
+
+Each source relation is stated on as many wires as the paper draws it on. Structural rules allow an equation to be shifted by one wire, gates on disjoint wires to commute, and a scalar to be placed on any wire. EquaCert extends the earlier framework's one- and two-wire syntax with three-wire gates and their structural rule. Scalars are zero-wire generators; their placement rule allows exact equations to account for global phase.
+
+In the earlier framework, swap is an ordinary gate whose laws must be included in each rule set. EquaCert also supports a PROP presentation, in which a designated two-wire gate is the swap and the framework supplies its involution law and the laws for moving gates across it. The source rule set then contains only its own relations, each on its original wires; swap and its laws are supplied by the framework. We use this representation for the circuits of~\cite{amy2018cnotdihedral,blake2026phaseaffine,blake2026simpler}, and for the reversible circuits of \Cref{sec:xcxccx}, whose structural rules are drawn in \Cref{fig:xcxccx-structural}. Appendix~\ref{app:equacert-implementation} defines PROPs and explains the theorem notation.
+
+\paragraph{Relation to the Earlier Library}\label{sec:delta}
+The library of~\citet{bian2027popl} has $74$ Agda modules and about $15{,}200$ lines of code. Its framework, $59$ modules and about $8{,}600$ lines, has words, presentations, normal forms, the Reidemeister--Schreier method, and presentations of direct, semidirect, and amalgamated products and of group extensions, with the symmetric, cyclic, and Pauli groups as examples. Its circuits have one- and two-wire gates and three structural rules. It has no matrix semantics, and it contains none of the results of \Cref{tab:corpus}. EquaCert's framework has $92$ modules and about $13{,}200$ lines: $45$ modules come from the earlier library, $14$ of them unchanged, and $47$ are new. The additions are zero-wire and three-wire gates with their structural rules, PROPs with the laws of the swap, independence of relations, the transport of presentations along embeddings and translations, and the tactic library of~\cite{bian2023cliffordt2,bian2023cliffordcs3}. The matrix semantics and the unitary and orthogonal groups that the formalizations share are new as well; they are defined in the formalizations of \Cref{tab:corpus} and are counted there.
+
+\subsection{Reusable Completeness Arguments}\label{app:main-lemma}
+
+For the matrix groups discussed in \Cref{sec:background}, normal forms come from exact synthesis, and the proof that every circuit can be transformed into its normal form has the same structure for each algorithm. Each matrix, or \emph{state}, has a \emph{level}, built from quantities such as the least denominator exponent of a column, and the algorithm reduces each state $M$ to the identity in steps that lower the level. These steps form the normal word $N_M$.
+
+The \emph{Main Lemma} says that for every state $M$ and generator $g$, a diagram of relations closes the square formed by $g$ and the algorithm's next steps from $M$ and $gM$, passing only through states of lower level (\Cref{fig:mainlemma}).
+
+By well-founded induction on the level, the relations then rewrite $N_{gM}\,g$ into $N_M$ (\Cref{fig:level}), and by induction on length, every word that reduces $M$ to the identity rewrites into $N_M$ (\Cref{fig:length}). Two words with the same matrix therefore rewrite into each other. These inductions have the same form for every presentation, so the main work in each formalization is its Main Lemma.
+
+\begin{figure}[!htb]
+\centering
+\begin{subfigure}[b]{0.26\linewidth}
+  \centering
+  \tikzfig{../planqc/figures/mainlemma}
+  \caption{The Main Lemma.}
+  \label{fig:mainlemma}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.38\linewidth}
+  \centering
+  \tikzfig{../planqc/figures/levelinduction}
+  \caption{Induction on the level.}
+  \label{fig:level}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.32\linewidth}
+  \centering
+  \tikzfig{../planqc/figures/lengthinduction}
+  \caption{Induction on length.}
+  \label{fig:length}
+\end{subfigure}
+\caption{Completeness from the Main Lemma. Plain arrows are words, double arrows are steps or runs of the algorithm, and dashed arrows are words through states of lower level.}
+\label{fig:proof}
+\end{figure}
+
+\subsection{Formalization Workflow}\label{sec:method}
+
+A formalization is carried out by a coding agent in sessions that a human directs, in six steps. They refine the three steps of \Cref{fig:equacert-pipeline}, whose human check is the sixth step here. \emph{(1)~Fix the target.} We name the paper and the result to be proved, in one sentence to the agent. The framework fixes the form of the statement: a set of relations, a group, and a semantics. \emph{(2)~Check the source.} The agent transcribes the paper's rewrite rules and gate matrices. It checks the rules, the intermediate results, and the lines of the derivations with exact matrices in short scripts, before and while it writes Agda code. These checks, and proof steps that failed in Agda, found the misprints of \Cref{sec:corr-list}. \emph{(3)~Prove.} The agent writes the proof, guided by the paper's. For a long derivation, it writes a script that turns each line of the paper into one step of the Agda proof, so a failing step points to a specific line of the paper; where the paper gives no derivation, a script searches for one. \emph{(4)~Check.} Agda checks every module. A step that is not yet proved is a parameter of a module, never a postulate, so each theorem shows what it still assumes. \emph{(5)~Record.} An agent carries little from one session to the next, so what it learns is written to a notes file in the repository that every later session reads: the conventions of each formalization, the cost of checking each module, and the mistakes not to repeat. \emph{(6)~Read the statements.} At the end, each formalization gets a \aid{MainTheorem} module that states its theorem with no unproved hypothesis, in one form for all formalizations. We read these statements against the papers: the relations, the target group, and the gate matrices. By our count, the statements and the definitions they mention take about $8{,}200$ of the $377{,}000$ lines of Agda code, about $2\%$ (Appendix~\ref{app:provenance}). Where a formalization has gate matrices, Agda also decides every rule against them by computation.
+
+The history of the repository gives the scale of this work. The fifteen formalizations other than qudit Clifford were written and first proved between 19~September and 16~October 2026, in about $400$ commits. Judging by the times of their commits, ten of the fifteen reached their main theorem less than a day after their first commit. Leaving out a port of existing Agda code and two whose first commit is already large, seven did, in between one and a half and ten hours. The largest, real Clifford+\CH, took more than three weeks. Making the proofs fast to check and giving them statements of one form took until 8~November.
+%With this workflow, coding agents wrote the fifteen formalizations other than qudit Clifford within four weeks, most in less than a day.
+
+\paragraph{Matrix Equality Checking}\label{app:matrix-equality}
+The main computational cost came from Agda's conversion checker. It accepts syntactically identical terms immediately; otherwise, it evaluates them to compare their results. For long matrix products, this evaluation can take exponential time. We keep circuit interpretations abstract and decide matrix equality by computing a single Boolean using row operations. For these products, this is orders of magnitude faster than comparing matrices entry by entry. The notes file records this technique, so later formalizations avoid the same slowdowns.
+
+\paragraph{Where the Workflow Failed}
+The agents' mistakes resembled human ones: a step taken from a garbled copy of a page, two products taken in the wrong order, a hypothesis stated more strongly than its source states it. A computation or a failed proof caught each of these, not the agent's own reading, and not always at once. The two products agree on three qubits, where an Agda decision procedure had checked the rules that use them, and differ from four qubits onward; a simulation found the error within six days, while a later result was being proved. The hypothesis was a theorem that the paper imports from another paper. It had been stated for all words over the generators, including degenerate generators that the source excludes, and in that form it is false, so every theorem that assumed it was vacuous. The false hypothesis stood for about eighteen days, until it was to be proved. Both errors were in intermediate statements, and neither was found by reading. A final theorem with no unproved hypothesis is safe from both kinds: a false hypothesis cannot remain in it, and a wrong auxiliary definition stops its proof. What Agda cannot check is the final statement itself against the paper. That is the sixth step, and it is done by a human.
+
+The work also cost more than its final size shows. Three formalizations first took between one and three and a half hours to check, and were reworked. The first proof of the theorem of \Cref{sec:xcxccx} was replaced by another within a day. Usage limits ended sessions in the middle of their work more than once.
+
+\paragraph{AI Use}\label{sec:ai-use}
+%% Required by the call for papers; it counts toward the page limit.
+The library of~\cite{bian2027popl} is the starting point of the framework, and the proofs of~\cite{bian2023cliffordt2,bian2023cliffordcs3} are ported from their authors' Agda code; agents revised both. The rest was written by LLM coding agents: the extensions of the framework, the Agda proofs, and the scripts that search for and generate derivations, in the workflow above, and the Lean version, from the source papers. The exception is the qudit Clifford formalization, which predates this workflow; agents wrote parts of it. Most of the agents' work was done by Claude Code, with several versions of Anthropic's Claude models. A second coding agent, Astra, worked on the Toffoli--Hadamard formalization of \Cref{tab:corpus} and on parts of the Lean version. Claude Code also helped to draft and revise the text of this paper, which we checked.
+
+\subsection{Avoiding Completeness Lost in Translation}
+\label{sec:lost}
+
+For a formalization to be useful, its formal statement must say what the source paper claims. We make this connection explicit in three ways.
+
+First, we define the target group independently of the circuit syntax, using matrices or an algebraic construction. A completeness theorem then relates the circuit equations to a semantics that does not depend on them, rather than to a group built from the equations themselves.
+
+Second, when a source rule set must be changed, the formal theorem names the revised set. This lets a reader tell a repair to the proof apart from a correction to the theorem itself (\Cref{sec:findings}).
+
+Finally, general completeness arguments and group constructions are verified once, among them the Reidemeister--Schreier method~\cite{magnus2004combinatorial} and presentations of semidirect products, both inherited from~\cite{bian2027popl}. Each formalization that uses them only needs to prove their hypotheses and check the connection to its own circuit semantics.
 
 \FloatBarrier
 \section{EquaCert Implementation Details}\label{app:equacert-implementation}
@@ -672,74 +696,6 @@ Minimality is stated for the rule set \aid{n ⊢{\_}==={\_}} in \Cref{agda:minim
 
 \paragraph{Origin of the Proofs} A module counts as generated or ported only when its header says so in words that our count recognizes. About $3{,}600$ lines are in modules whose headers say so in other words, and are counted as written: derivations found by search in rows~3 and~9, and a module of arithmetic modulo~$3$ in row~15. So the Generated column is a lower bound. Rows~4 and~5 present the same group by two sets of relations and share lemmas: row~5 proves the case that the proof in the source of row~4 leaves open (\Cref{sec:findings}), and uses the lemmas of row~4 on levels and its proof that the two sets of relations are equivalent. Rows~11 and~12 obtain completeness from the presentations of rows~1 and~2. Row~13 takes the completeness theorem that its source imports from row~5. Row~14 translates circuits into the groups of row~3. Row~16 transfers completeness from the rows listed. We count the commits to a row's folders under their current and earlier names. Every commit to fourteen of the sixteen rows carries the trailer of a coding agent. Of the $482$ commits to the qudit Clifford row, $121$ do; most of the others date from before the workflow of \Cref{sec:method}. Of the $28$ commits to the Toffoli--Hadamard row, $15$ do, and the other $13$ are the work of the second coding agent (\Cref{sec:ai-use}).
 
-\section{Details of the Agda and Lean Comparison}\label{app:agda-lean-comparison}
-
-This appendix gives the detailed comparison and measurement methods for the two formalizations introduced in \Cref{sec:compare}.
-
-The Lean framework is not an independent implementation. The coding agents that wrote the Lean formalizations were instructed not to consult the Agda implementation, but the Lean framework is nonetheless a translation of the Agda one. Its words, circuit generators, structural rules, and presentation and sub-presentation predicates are those of the Agda framework, down to the names of the definitions and the wording of their documentation. The two formalizations therefore share the design of their framework, and would share any mistake in it, so their agreement is weaker evidence than two independent formalizations would give. They use different representations and sometimes different proofs, so the theorem statements of each must be checked against the source papers separately. We compare their definitions, proof formalization, verification time, and execution time; \Cref{tab:compare} summarizes the comparison. These observations concern our two formalizations, not Agda and Lean in general.
-
-\begin{table}[!htbp]
-\small
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\linewidth}{@{}l Y Y@{}}
-\toprule
-& Agda & Lean \\
-\midrule
-\multicolumn{3}{@{}l}{\emph{Proof development}}\\
-Logic & constructive: every module \texttt{-{}-safe}, no postulates & classical: every main theorem uses \texttt{Classical.choice} \\
-Library & standard library (104 modules imported), a library for rings and exact synthesis & Mathlib (56 modules imported directly) \\
-Proofs & terms, by pattern matching and equational reasoning; reflection-based solvers & tactics: about 74{,}000 tactic blocks, 69{,}000 automation calls \\
-Reused from the sources & the authors' Agda proofs for Clifford+\T{} and Clifford+\CS{}, and their derivations for Toffoli--Hadamard & no proofs; the authors' coset-action data for Clifford+\T{} \\
-Modules & 1{,}509 & 793 \\
-Code lines & 376{,}627 & 338{,}570 \\
-\midrule
-\multicolumn{3}{@{}l}{\emph{Verification time}}\\
-Decided equalities & a Boolean reduced to \texttt{true} & \texttt{decide +kernel} \\
-Check time, sixteen rows & 2{,}399\,s & 9{,}305\,s \\
-Faster for & thirteen rows & three rows \\
-\midrule
-\multicolumn{3}{@{}l}{\emph{Execution time}}\\
-Normal forms & executable functions & existence theorems or \texttt{noncomputable} definitions (460 declared) \\
-Benchmarked procedure & matrix of each circuit, by products of stored matrices & simulation of each circuit on every basis vector \\
-Compiled through & GHC (Haskell) & C \\
-Per decision, Clifford, 100 gates & 5.0\,ms on 2 qubits, 24\,s on 6 & 5.8\,ms on 2 qubits, 0.61\,s on 6 \\
-\bottomrule
-\end{tabularx}
-\caption{The Agda and Lean formalizations compared. Counts are over the files under version control in the sixteen formalization folders of \Cref{tab:corpus}, without the shared libraries, and code lines exclude blank lines and comments. Check times are those of \Cref{tab:corpus}, and execution times those of \Cref{fig:compare-exec}.}
-\label{tab:compare}
-\end{table}
-
-\paragraph{Definitions and Semantics} The Lean framework keeps the definitions of the Agda one but adapts their representation to Mathlib. Agda uses its own word type, with explicit brackets, and the setoid-based algebra of the standard library. A presentation is a record containing a semantics and a group isomorphism, or a monomorphism for a sub-presentation. Lean uses Mathlib's free monoid and the monoid congruence generated by the relations. Its presentations are predicates in \texttt{Prop}, from which it derives isomorphisms out of the quotient. In both, the circuit infrastructure, the structural rules, and general completeness arguments are shared between formalizations.
-
-The semantic targets also differ. Most Agda formalizations work directly with exact representations of matrix entries. Lean states its matrix groups over Mathlib's real or complex numbers and proves bridges to them from computable exact rings. In particular, the Agda qudit Clifford formalization presents a constructed algebraic model, whereas Lean proves soundness and completeness against complex matrices for every odd prime. A common source therefore does not imply identical statements or intermediate lemmas.
-
-\paragraph{Proof Development} Excluding blank lines and comments, the Agda formalization of \Cref{tab:corpus} has about 377{,}000 lines and the Lean formalization about 339{,}000 (\Cref{tab:compare}). \Cref{fig:compare}(a) compares them row by row, except that for Toffoli--Hadamard it shows another pair, one proof in both assistants (see below). Lean's is shorter in thirteen of the sixteen rows, by a factor of five or more for qudit Clifford and qutrit Clifford, where the two take different routes. It is longer for Hadamard-$\Pi$, three-qubit Clifford+\CS, and real Clifford+\CH. Both counts include the derivations and certificates that scripts generate. The Agda proofs are explicit terms, built by pattern matching and equational reasoning, with reflection-based solvers for associativity and ring identities. Its library develops the group theory the proofs need, in about 13{,}200 lines against 1{,}200 in Lean. The Lean proofs rely on Mathlib's algebra and on tactics, with about 69{,}000 calls to automation such as \texttt{simp}, \texttt{omega}, \texttt{decide}, and \texttt{ring}.
-
-Both implementations reuse normal-form, exact-synthesis, and translation arguments. Both also check generated derivations with a replay procedure that is proved correct. The proof assistant checks the computation and the theorem that a successful replay gives a derivation, so the scripts that search for derivations need not be trusted. For Clifford+\CS, Lean constructs its own coset certificates. The trust checks reflect the different foundations. Every Agda module is \texttt{-{}-safe} and uses no postulates, so the Agda formalization is constructive. The Lean formalization uses no \texttt{native\_decide}, and its main theorems depend on no unfinished proof. An audit of 105 declarations reports only the axioms \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
-
-\paragraph{Verification Time} \Cref{tab:corpus} and \Cref{fig:compare}(b) give the check times, both measured on the same machine. In total Agda took 2{,}399 seconds and Lean 9{,}305, or 1{,}979 and 3{,}826 without real Clifford+\CH, whose Lean build alone took 5{,}479 seconds, more than half of the total. Lean took between 1.2 and 4.8 times as long as Agda on twelve rows, and 13 times as long on real Clifford+\CH. Its five-wire certificate modules \texttt{Family267} and \texttt{Family268} alone took about 1{,}741 and 1{,}369 seconds. Lean was faster for three rows, Cl\'ement's presentation, qudit Clifford, and qutrit Clifford, whose Lean proofs take different routes. Both assistants decide equalities of matrices and certificates by evaluation in the checker. Agda reduces a Boolean to \texttt{true}, and Lean uses \texttt{decide +kernel}.
-
-Both columns were measured under WSL on an Intel Core i5-13400TEF with sixteen logical CPUs, about 26\,GiB of RAM, and 64\,GiB of swap. The Agda column comes from a check from scratch on 8~November~2026, with Agda~2.8.0 and version~2.4 of its standard library. We removed the repository's interface files, kept those of the standard library and of the library for rings and exact synthesis, and checked the shared library and then each row in an Agda process of its own, through a module that imports every module of the row. Agda's profiler reports the time spent on each module without its imports, and a row's time is the sum over its own modules, wherever they were checked. It leaves out process startup and the loading of interface files: the whole check, shared library included, took 3{,}210 seconds of wall time, and no process used more than 5.1\,GiB. No other proof assistant ran during the check. The Lean column comes from a clean build on 5--6~November~2026, with Lean~4.30.0 and the pinned Mathlib revision. We removed EquaCert's build artifacts, kept the Mathlib and other dependency caches, and built the folders one at a time in dependency order with \texttt{LEAN\_NUM\_THREADS=2}. Each time is the elapsed wall time of a folder, including Lake startup and artifact generation, and a shared dependency is counted only in the folder that defines it. The two columns therefore measure different things, per-module checking time in Agda and folder build time in Lean. Proof constructions, module boundaries, parallelism, and artifact generation also differ, so the differences cannot be attributed to the proof assistants alone. We have yet to separate the time Lean spends running automation from the time it spends checking the resulting proofs.
-
-The build covered 810 library modules, excluding three generator templates, and took \textbf{9{,}415.37 seconds (2\,h 36\,min 55\,s)} in timed build commands. Beyond the sixteen formalization folders, the shared \texttt{Circuit}, \texttt{Exact}, \texttt{Matrix}, and \texttt{NumberTheory} folders took 17.91, 15.51, 6.88, and 15.29 seconds, and the five root modules, including the audit, took 54.95 seconds. Lean builds of another project ran on the same machine during part of the run. We therefore re-timed the twenty folders and root modules they overlapped and report the second timing, during which the other project used about a quarter of one CPU on average. The two runs total 9{,}604 and 9{,}415 seconds, and the two timings of each formalization folder agree within 15\%, except for Toffoli--Hadamard (178 and 135 seconds).
-% Measurement records: pldi/compare/agdatime.json and leantime.json (written by agdatime.py and leantime.py).
-
-\paragraph{One Proof in Both Assistants} For Toffoli--Hadamard, the formalizations of \Cref{tab:corpus} have 28{,}629 lines in Agda and 4{,}401 in Lean, and they prove the result by different routes. The Agda proof replays the derivations in the authors' own files as generated certificates, which make up 22{,}572 of its lines. The Lean proof was written from the paper, over an alphabet of macro gates, with a Knuth--Bendix system for the symmetric group $S_8$ that the kernel checks. To compare the two assistants on one proof, \Cref{fig:compare}(a) shows another pair instead ($\ast$). A coding agent wrote a second Agda proof of the result, which finds its circuit derivations by a breadth-first search over the relations of Figure~4 of~\cite{amy2024toffoli}, and a coding agent translated it to Lean module for module, keeping its definitions, derivations, and proof route; this time we told the agent to follow the Agda. A coding agent also began translating the first Agda proof in the same way, porting its scripts so that they write the certificates in Lean, and we stopped it after 46 of the 203 modules: the relations, the 218 derivations replayed from the authors' files, the 642 certificates of the permutation fragment, and the frames built on them, 17{,}862 of the Agda proof's lines. On one proof the two assistants need about the same amount of text: 182{,}301 non-blank characters outside comments in Agda and 191{,}589 in Lean for the second proof and its translation, and 1{,}056{,}950 and 1{,}030{,}864 for the translated modules of the first. In lines the translation of the second proof is shorter, 5{,}672 against 7{,}161, only because its generated derivations put several rewrite steps on a line where Agda's put one, while the translated modules of the first, whose certificates take a step per line in both, are 6\% longer, 18{,}946 against 17{,}862. The part of the second proof's translation that is not generated is the larger of its pair, mostly because it proves the facts about $S_8$ that the Agda proof imports from the shared library. Lean took 164 seconds to check it and Agda 48, 3.4 times as long, while on the two proofs of \Cref{tab:corpus}, timed in the same way, Lean took 118 seconds and Agda 111, 1.1 times as long (\Cref{tab:corpus}, timing Lean's whole build, has 135 and 111). So the pair that \Cref{tab:corpus} and \Cref{fig:compare}(b) report reflects the difference between the proofs more than the difference between the assistants.
-
-The new result of \Cref{sec:xcxccx} gives a third pair. Coding agents translated the 38 Agda modules of its proof~\cite{equacert2026alt16} to Lean module for module, again told to follow the Agda, and ported the scripts that write its generated derivations, so that they write Lean from the same search results. Sixteen further Lean modules translate what the Agda imports from the shared library: Lafont's presentation of the alternating groups with his canonical forms, the Coxeter presentation of the symmetric groups, the swap rules, and the morphisms between presentations. Again the two need about the same amount of text: 462{,}926 non-blank characters outside comments in Agda and 536{,}855 in Lean, or 484{,}418 without the sixteen library modules, in 24{,}062 and 23{,}083 lines. Lean took 288 seconds to check the translation and Agda 28, ten times as long, but most of Lean's time does not go to the proofs. Every Lean module first loads Mathlib, which takes about four seconds for a module with no content, and the generated derivations are fourteen modules that import one another in a chain, as in the Agda. The 54 modules took 354 seconds in all, some of them at the same time, so about 220 of these went to loading, and what is left is between four and five times Agda's time. Reaching that needed two departures from the Agda, both forced by the cost of evaluation in Lean's kernel. Applying one gate to one state, as the Agda semantics defines it, costs the kernel about half a millisecond, so the translation decides equalities of circuits on states encoded as numbers, after checking the arithmetic of each gate against the semantics once; this took its semantics module from 79 seconds to 10. And where each step of an Agda derivation carries its own evidence, which Agda fills in by evaluation, the translation evaluates the evidence of all the steps of an equation in one kernel check, 788 checks for the 15{,}607 steps on four wires. These six times were measured on 10~November~2026 on the machine of \Cref{tab:corpus}, by its method, with no other check running.
-% Measurement records: pldi/compare/th4.json and part.json (written by th4.py and part.py).
-
-\paragraph{Execution Time} The Agda normal forms are executable functions. The Lean formalizations obtain normal forms either as existence theorems or as \texttt{noncomputable} definitions. For example, the Lean proofs for the Clifford and real stabilizer circuits of~\cite{selinger2015clifford,makary2021real} show that every circuit equals a normal form without defining a function that computes it, and the exact synthesis of the two-level groups is noncomputable. In all, 460 definitions in the sixteen Lean formalizations are declared \texttt{noncomputable}, so there is no Lean normalizer to time. Both formalizations can, however, execute the procedure that decides whether two circuits have the same matrix, which their soundness proofs run. We compiled this procedure for the Clifford circuits of~\cite{selinger2015clifford} to native code, through Agda's GHC backend and Lean's C backend. We then timed both on an Intel Core i5-14400, on the same random circuits of 100 gates over $\Hg$, $\Sg$, and $\CZ$, deciding that each circuit $w$ has the matrix of $w\,\Sg^4$ (\Cref{fig:compare-exec}). On two qubits Agda is slightly faster, at 5.0 against 5.8 milliseconds per decision. From three qubits on Lean is faster, by a factor of 2.1 on three qubits and 40 on six, where Agda takes 24 seconds and Lean 0.61. The gap comes mostly from the procedures rather than the compilers. Agda computes each circuit's matrix as a product of stored $2^n\times 2^n$ matrices, so its work grows about eightfold with each qubit. Lean simulates the circuit on each basis vector, so its work grows about fourfold.
-
-\begin{figure}[!htbp]
-\centering
-\input{figures/compare-exec.tex}
-\caption{The time each compiled formalization takes to decide that two Clifford circuits of 100 gates have the same matrix, by the procedure its soundness proof uses, as medians over three runs of five random circuits. The two procedures differ, and this measurement was made on a second machine.}
-\label{fig:compare-exec}
-\end{figure}
-
-% \clearpage
 \section{Proofs for Four-Bit Reversible Circuits}\label{app:xcxccx}
 
 This appendix proves \Cref{thm:xcxccx-complete,thm:xcxccx-nf} as the Agda formalization~\cite{equacert2026alt16} does. Each subsection names the modules of \texttt{Examples/Groups/Alt16-RevCir} that it follows, and each statement names its Agda counterpart.
@@ -1093,55 +1049,6 @@ six stairs of one cycle each, the other eight being empty (\Cref{fig:xcxccx-cano
 S_{10}(12)\,S_8(12)\,S_4(6)\,S_2(6)=(\Omega_{10}\,\Omega_{11})\,(\Omega_8\,\Omega_9\,\Omega_{10}\,\Omega_{11})\,(\Omega_4\,\Omega_5)\,(\Omega_2\,\Omega_3\,\Omega_4\,\Omega_5).
 \]
 Lafont's rewriting also computes the canonical form, but on the word of a circuit it passes through millions of letters, and the formalization never runs it.
-
-\section{Details of the Corrections}\label{app:corrections}
-
-This appendix states the two corrections of \Cref{sec:findings} in a form that can be checked by hand, and lists the main misprints that the formalizations found in their sources.
-
-\subsection{The Gap in the Proof of Theorem~4.14 of Hadamard-$\Pi$}\label{app:corr-hpi}
-
-References are to the extended version of~\cite{fang2026hadamard}, whose Appendix~A proves Theorem~4.14, and indices start at~$1$, as there. Applied to a vector~$x$, the matrix $\Hg_{[i,j]}$ replaces the entries $x_i$ and $x_j$ by $(x_i+x_j)/\sqrt2$ and $(x_i-x_j)/\sqrt2$, and a product acts with its rightmost factor first. An element $a+b\sqrt2$ of $\Z[\sqrt2]$ is \emph{odd} if $a$ is odd.
-
-Lemma~A.16 concerns a unit vector $\hat v$ over $\Z[1/\sqrt2]$ and a $k\ge2$ such that $\sqrt2^{\,k}\hat v$ has entries in $\Z[\sqrt2]$, exactly four of them odd, namely the first four, which are congruent to $(1+\sqrt2,\,1,\,1+\sqrt2,\,1)$ or to $(1,\,1+\sqrt2,\,1,\,1+\sqrt2)$ modulo~$2$. Let $v$ consist of the first four entries of $\hat v$. The lemma states that if $\sqrt2^{\,k-1}\,\Hg_{[1,4]}\Hg_{[2,3]}\Hg_{[2,4]}\Hg_{[2,3]}\Hg_{[1,4]}\,v$ has entries in $\Z[\sqrt2]$, then so does $\sqrt2^{\,k-1}\,\Hg_{[1,3]}\Hg_{[2,4]}\Hg_{[1,2]}\Hg_{[1,3]}\Hg_{[2,4]}\,v$. It fails for $k=4$ in dimension~$6$, on
-\[
-4\,\hat v=(-1-\sqrt2,\ 1,\ -1-\sqrt2,\ 1,\ \sqrt2,\ -2+\sqrt2).
-\]
-The squares of these entries add up to $16$, so $\hat v$ is a unit vector, and the first four entries are odd and congruent to $(1+\sqrt2,1,1+\sqrt2,1)$. The first product gives $(0,\,0,\,-1-\sqrt2,\,-1)$, and the second gives $(-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2},\,-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2})$, which is not in $\Z[\sqrt2]^4$. Lemma~A.17 is the same statement with $\Hg_{[3,4]}$ in place of $\Hg_{[2,4]}$ in the two words, and it fails in the same way on $4\,\hat v=(1+\sqrt2,\,-1,\,1+\sqrt2,\,1,\,-\sqrt2,\,2-\sqrt2)$.
-
-Items~(c) and~(d) of Lemma~A.19 rest on these two lemmas, and Main Case~9 of the Main Lemma rests on Lemma~A.19. That case is not covered for the unit vector $\hat s$ in dimension~$9$ with
-\[
-\sqrt2^{\,7}\,\hat s=(1+3\sqrt2,\ 1,\ -3\sqrt2,\ 1+3\sqrt2,\ 2,\ 5,\ -2+\sqrt2,\ -4+2\sqrt2,\ -2-2\sqrt2),
-\]
-whose odd entries are the first, second, fourth, and sixth: none of the eight diagrams that the proof of Lemma~A.19 offers stays below the level of $\hat s$, as the Main Lemma requires. The step that the proof leaves open is $\Hg_{[c,d]}$ on two odd entries that are not congruent modulo~$2$, when exactly four entries are odd. It is Case~3.4 of~\cite{clement2019thesis}, which the formalization follows~\cite{equacert2026clement}.
-
-\subsection{The Relation Missing from Theorem~5.2 of Toffoli--Hadamard}\label{app:corr-rk}
-
-Let $J$ be the $8\times8$ matrix whose entries are all~$1$, and let $R=I-J/4$, the reflection that negates the vector of all ones. Then $R^2=I$, since $J^2=8J$, and $R$ commutes with every permutation matrix. Read each gate $g$ of Figure~4 of~\cite{amy2024toffoli} as $RgR$, and the two further generators of its Figure~7, namely $\K_{[0,1,2,3]}$ and $\CCZ$, as themselves, and take both figures with the misprints of \Cref{tab:errata} corrected. Every relation of Figure~4 still holds, being a matrix identity conjugated by~$R$. So does every relation of Figure~7, since its other gates are permutation matrices, which are read as themselves. The relation $r_{\K}$ equates $I\otimes\K$ with a word in $\X\otimes I\otimes I$ and $\K_{[0,1,2,3]}$. Its left-hand side is read as $R\,(I\otimes\K)\,R$, whose entry in the first row and column is $1/2-2/4-2/4+4/16=-1/4$, and its right-hand side is read as itself, with the entry $1/2$ there. So $r_{\K}$ does not follow from the two figures. In the formalization, this is \aid{r\_K-independent}~\cite{equacert2026toffoli}.
-
-\subsection{Misprints by Source}\label{app:corr-list}
-
-\Cref{tab:errata} lists the main things that the formalizations found besides the two corrections above. They were found by the checks of \Cref{sec:method} or when a step of a proof failed, and the formalizations state the corrected forms. The table leaves out smaller slips, such as a wrong label on a step of a derivation. For the other sources of \Cref{tab:corpus} we recorded none.
-
-\begin{table}[!htbp]
-\small
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.25}
-\begin{tabularx}{\linewidth}{@{}l Y@{}}
-\toprule
-Source & What the formalization found \\
-\midrule
-\tabcite{amy2024toffoli} & Seven equations are false as printed: (33) of Figure~4, (97) and (100) of Figure~7, and four of Sections~5.5 to~5.7, among them $(r_{\CX})$ and a decomposition of $\CCZ$. Each is refuted in Agda by one matrix entry. The proof of Lemma~6.1 treats six of the twenty-five generators; the others need an induction. \\
-\tabcite{makary2021real} & Eleven of the 137 typed relations of Appendix~B are false as printed: six have a different right-hand side, and five lack a Pauli gate. \\
-\tabcite{selinger2015clifford} & Three steps of the supplement's derivations cite the wrong equation. The relations of the paper all hold. \\
-\tabcite{li2021on} & Relation (7d) of Table~2 has its two cases exchanged. \\
-\tabcite{li2025qutrit} & The third row of Figure~25 has one $\CZ$ in its residual circuit, not two. \\
-\tabcite{blake2026simpler} & The scalar of the qutrit rule (E) in Figure~4 is $\omega_{12}$, not $\omega_{12}^7$. One interpretation of Figure~8, which separates a rule on two wires, does not preserve a rule on three; the claim stands, since a derivation on two wires uses no rule on three. \\
-\tabcite{clement2026realcliffordch} & Equations (36) and (37) hold with the negations on the controls that are~$1$; we read the paper as placing them on those that are~$0$. Equations (30), (34), and (42) need the two indices of each of their letters to differ, which the figure leaves implicit. \\
-\bottomrule
-\end{tabularx}
-\caption{The main misprints and slips that the formalizations found in their sources, besides the two corrections of \Cref{sec:findings}.}
-\label{tab:errata}
-\end{table}
 
 \iffalse
 \section{A New Result: Toffoli–Hadamard Completeness for Any Number of Qubits}

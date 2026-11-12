@@ -1,4 +1,4 @@
-%% Appendix "An Introduction to the Framework": Section 2 of the vqupit
+%% Section 3, "An Introduction to the Framework": Section 2 of the vqupit
 %% paper (vqupit/sections/permutations.lagda.tex), the swap circuits
 %% presenting the symmetric groups.  make.sh writes
 %% ../latex/pldi/lagda/app-permutations.tex; edit this file.
@@ -27,20 +27,22 @@ postulate
   proof-elided : ∀ {ℓ} {A : Set ℓ} → A
   IsGroupIsomorphism : {G : Group a ℓ} → (Word X → Group.Carrier G) → Set (a ⊔ ℓ)
 \end{code}
-\section{An Introduction to the Framework}\label{app:permutations}
+\section{An Introduction to the Framework}\label{sec:permutations}
 
 EquaCert is built on a library for presentations, normal forms, and
 completeness of circuit relation sets~\cite{bian2027popl}.  This
-appendix introduces it on its smallest complete case study: circuits
+section introduces it on its smallest complete case study: circuits
 built from a single two-wire gate, the swap $\sigma$, which present the
 symmetric groups.  The walkthrough exhibits the pipeline --- gates,
 relations, cosets, tower, semantics, uniqueness, completeness,
 presentation --- that the formalizations by normalization instantiate
-with richer gates and richer actions.  The appendix closes with the
-product constructions (Appendix~\ref{app:constructions}) by which such
-presentations are combined.
+with richer gates and richer actions.  The section closes with the
+product constructions (\Cref{sec:constructions}) by which such
+presentations are combined.  \Cref{sec:form} describes the rest of the
+framework: its matrix semantics, its reusable completeness arguments,
+and the workflow in which the formalizations were written.
 
-\subsection{Gates, Generators, and Circuits}\label{app:sn-gates}
+\subsection{Gates, Generators, and Circuits}\label{sec:sn-gates}
 
 A gate set is a family $\aid{Gate} : \mathbb{N} \to \mathsf{Set}$ giving,
 for each arity, the gates on that many adjacent wires; for permutations
@@ -100,7 +102,7 @@ the same crossing one wire higher, and $\sigma \aidop{•} \sigma\;{\uparrow}
 \aidop{•} \sigma$ the three-wire braid on the left of the
 \aid{yang-baxter} equation drawn beside its axiom below.
 
-\subsection{Relations: Two Axioms, Structure for Free}\label{app:sn-relations}
+\subsection{Relations: Two Axioms, Structure for Free}\label{sec:sn-relations}
 
 The group-specific relations are an inductive family indexed by the wire
 count.  Each axiom is stated once, with its gates at the bottom of the
@@ -169,7 +171,7 @@ invertible generators are invertible, the presented monoid is a group; we
 witness this by a \aid{Grouplike} proof (every generator has a left
 inverse), by induction on generators.
 
-\subsection{Cosets and the Staircase Normal Form}\label{app:sn-cosets}
+\subsection{Cosets and the Staircase Normal Form}\label{sec:sn-cosets}
 
 The engine behind the normal form is coset enumeration along the chain
 $S_1 < S_2 < \dots < S_n < S_{n+1}$, where $S_n$ sits inside $S_{n+1}$ as
@@ -319,7 +321,7 @@ c_2, c_3) \in \aid{NF}\;4$, the digit $c_0 \in \aid{C}\;0$ being the
 empty staircase --- one staircase per level, each shifted up to the
 wires of its level: a ``staircase of staircases''.
 
-\subsection{Semantics, Uniqueness, and Completeness}\label{app:sn-semantics}
+\subsection{Semantics, Uniqueness, and Completeness}\label{sec:sn-semantics}
 
 So far everything was syntax.  The development interprets circuits in
 the group $\aid{Permutation′-group}\;n$ of permutations of
@@ -353,7 +355,7 @@ record _IsPresentationOf_ (_===_ : WRel X) (G : Group a ℓ) : Set (a ⊔ ℓ) w
     iso : IsGroupIsomorphism ⟦_⟧
 \end{code}
 
-\noindent The presentation theorems of \Cref{sec:form} have the shape of
+\noindent The theorems of \Cref{tab:corpus} have the shape of
 this one, or that of \aid{IsSubPresentationOf}, which asks for a group
 monomorphism in place of the isomorphism:
 
