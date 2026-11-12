@@ -185,7 +185,7 @@ The record $\mathcal{R}$~\aid{IsSubPresentationOf}~$G$ contains the semantics $\
 \begin{figure}[!htbp]
 \centering
 \input{figures/equacert-soundness-completeness.tikz}
-\caption{EquaCert's shared matrix interpretation supports both proof obligations. The left column checks every rule of $\mathcal R$; the right derives every rule of a known complete set $\mathcal T$ in the same circuit language and matrix semantics. Each rewrite step uses a rule of $\mathcal R$, whose soundness is checked on the left. The displayed $U_n(\D[\omega])$ covers qubit fragments~\cite{amy2020numbertheoretic}, with $\D=\Z[1/2]$ and $\omega=e^{i\pi/4}$. Qudit circuit families use other rings.}
+\caption{EquaCert's shared matrix interpretation supports both proof obligations (soundness and completeness). The left column checks every rule of $\mathcal R$; the right derives every rule of a known complete set $\mathcal T$ in the same circuit language and matrix semantics. Each rewrite step uses a rule of $\mathcal R$, whose soundness is checked on the left. The displayed $U_n(\D[\omega])$ covers qubit fragments~\cite{amy2020numbertheoretic}, with $\D=\Z[1/2]$ and $\omega=e^{i\pi/4}$. Qudit circuit families use other rings.}
 \label{fig:equacert-soundness-completeness}
 \Description{Two columns show soundness and completeness. On the left, the highlighted uniform matrix semantics assigns a matrix to each gate or two-level operator. EquaCert lifts this assignment to circuits and words, then checks equality of the matrices on both sides of each rule. On the right, every equation in a known complete reference rule set is derived by rewrites from the proposed rule set. The rewrite arrows are green. An arrow from the completed soundness checks points to the statement that each step uses a sound rule from the proposed rule set. Deriving every reference rule establishes completeness.}
 \end{figure}
@@ -201,7 +201,7 @@ sound : ∀ {n} {w v : Circuit n} → ⊢ w ≈ v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
 \end{agdacode}
 \end{minipage}
 
-The minimality statement in \Cref{agda:minimal} says that the rule set is complete on $n$ wires and becomes incomplete there if any one of its rules stated on exactly $n$ wires is removed~\cite{blake2026simpler}. For three of the six fragments, the source leaves open completeness beyond a certain number of wires or the independence of some rules, and the formal statements carry bounds on $n$ (\Cref{sec:corpus}).
+The minimality statement in \Cref{agda:minimal} says that the rule set is complete on $n$ wires and becomes incomplete there if any one of its rules stated on exactly $n$ wires is removed~\cite{blake2026simpler}. For three of the six fragments, the source leaves open completeness beyond a certain number of wires or the independence of some rules, and the formal statements also specify bounds on $n$ (\Cref{sec:corpus}).
 \begin{agdacode}[escapechar=@]
 minimal-complete : ∀ {n} → (n ⊢_===_) IsMinimal × (n ⊢_===_) IsComplete@\agdatag{agda:minimal}@
 \end{agdacode}
@@ -210,7 +210,7 @@ For each presentation, a reader checks four components against the source paper:
 
 \paragraph{Wire Placement and Structural Rules}\label{app:wire-placement}
 
-Wires are numbered from $0$ at the bottom, and a gate acts on the bottom wires of a circuit. A shift places a circuit on $n$ wires onto wires $1,\dots,n$ of a circuit with $n+1$ wires. In the matrix semantics, both placing a gate in a larger circuit and shifting a circuit are Kronecker products with an identity. This defines wire placement once for all gate sets.
+Wires are numbered from $0$ at the bottom, and a gate is defined as acting on the bottom wires of a circuit. We define a shift  operator which places a circuit on $n$ wires onto wires $1,\dots,n$ of a circuit with $n+1$ wires. In the matrix semantics, this corresponds to taking the tensor product with the identity. This shift operation is defined once for all gate sets.
 
 Each source relation is stated on as many wires as the paper draws it on. Structural rules allow an equation to be shifted by one wire, gates on disjoint wires to commute, and a scalar to be placed on any wire. EquaCert extends the earlier framework's one- and two-wire syntax with three-wire gates and their structural rule. Scalars are zero-wire generators; their placement rule allows exact equations to account for global phase.
 
