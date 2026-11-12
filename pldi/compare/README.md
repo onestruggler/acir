@@ -15,7 +15,7 @@ python mkfig.py ../figures/compare.tex  # the pgfplots figure
 
 * **Rows.** `loc.py` maps each row of Table 1 to its Agda folders (the qudit
   Clifford row is `Symplectic`, `ProjectiveClifford/Qupit`, `Clifford+MinusOne`,
-  `ProjectivePauli` and `Qupit-Clifford`, Table 1's 215 modules) and to
+  `ProjectivePauli` and `Qupit-Clifford`, Table 1's 216 modules) and to
   `Lean/QCert/<Row>`. The shared library is `Word`, `Presentation`, `Circuit`,
   `Normalization`, `Examples/Construct` and the small groups in Agda, and
   `Presentation`, `Circuit`, `Exact`, `Matrix`, `NumberTheory`, `Synthesis` in Lean.
