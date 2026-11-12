@@ -283,6 +283,9 @@ Finally, general completeness arguments and group constructions are verified onc
 
 The case study in \Cref{sec:qudit-case-study} shows how these design choices work together in a multi-qudit Clifford proof.
 
+
+\iffalse
+
 \section{Case Study: Multi-Qudit Clifford Completeness}\label{sec:qudit-case-study}
 
 The multi-qudit Clifford result of~\quditcite{} shows how EquaCert turns a circuit completeness proof into reusable, checked components. Here each qudit has odd prime dimension~$p$; the result covers every number $n$ of qudits and every such~$p$. Its sixteen rules must derive every valid equation between Clifford circuits. It illustrates two design choices of \Cref{sec:lost}, defining the semantic group independently of the circuit syntax and assembling completeness proofs from general theorems about groups, as \Cref{fig:q-route} summarizes.
@@ -362,6 +365,8 @@ Agda checks the presentations of the symplectic, projective, and scalar-extensio
 The semantic boundary is also explicit. The Agda formalization presents independently constructed algebraic models; identifying them with the unitary Clifford groups and matching the paper's gate phases uses external mathematics. The Lean formalization proves soundness and completeness directly against complex matrices (Appendix~\ref{app:agda-lean-comparison}). Appendix~\ref{app:qupit-details} gives the gate conventions, formal statements, and detailed proofs. Thus the case study shows both how the proof is assembled and exactly which connection each proof assistant checks.
 
 \FloatBarrier
+
+\fi
 
 \section{Results}\label{sec:corpus}
 
