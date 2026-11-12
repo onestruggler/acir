@@ -48,12 +48,15 @@ scratch scripts stayed on the first machine.
    If there is no time to re-time: keep the numbers, and reword the
    footnote and those sentences to say that the two modules were removed
    after the measurement.
-   **Decided 12 November: use the first machine's re-timing.** The second
-   machine (i5-14400, 8 threads in WSL) is not the machine of Table 1's
-   times (i5-13400TEF), so it does not re-time. On the first machine:
-   push `pldi/compare/leantime.json`, then make the updates above.
-   (The hold on committing `qcert.pdf` is lifted; commit it with the
-   source.)
+   **Done 12 November, by the author's decision: the numbers are kept
+   and every mention of the two modules is removed, with no footnote or
+   explanation in their place** (Table 1's `*` and its caption note, the
+   sentence in "Where the Workflow Failed", Appendix C's pass/fail
+   sentences; "all 810 tracked library modules" became "810 library
+   modules"). Table 3's Lean counts (795 modules, 338,866 lines) still
+   include the two deleted files. The re-timing on the first machine is
+   not needed any more. (The hold on committing `qcert.pdf` is lifted;
+   commit it with the source.)
 2. **Checked by a second reader (12 November, second machine).** Found
    right: the Proof codes (CNOT-dihedral's S: the Agda follows the paper's
    Lemma 5.1 split into diagonal and affine parts, and proves the affine
