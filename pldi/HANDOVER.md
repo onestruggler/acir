@@ -113,7 +113,15 @@ Build in a private copy, not in the working tree (other sessions edit it):
 copy `pldi/` and `planqc/` side by side into a temporary folder (figures
 are read from `../planqc/figures`) and run
 `latexmk -pdf -interaction=nonstopmode -halt-on-error qcert.tex` in the
-copy of `pldi/`. `pldi/qcert.pdf` is tracked: copy the built PDF back and
+copy of `pldi/`.
+
+The Agda code in the paper is typeset as in `../vqupit`: Section 3 and the
+numbered statements of Sections 4 and 7 are literate Agda files in
+`lagda/`, and `sh pldi/lagda/make.sh` (in WSL, under the Agda lock) runs
+`agda --latex --only-scope-checking` on them, which writes
+`latex/pldi/lagda/*.tex`, the files `qcert.tex` inputs. Section 3's text is
+therefore edited in `lagda/framework-intro.lagda.tex`, not in `qcert.tex`.
+The generated files are committed, so a LaTeX build needs no Agda. `pldi/qcert.pdf` is tracked: copy the built PDF back and
 commit it with the source.
 
 ## Conventions

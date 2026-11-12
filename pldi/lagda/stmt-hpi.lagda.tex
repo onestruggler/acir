@@ -1,0 +1,16 @@
+%% Statement (agda:hpi) of Section 4: the Hadamard-Pi theorem as
+%% Examples/Groups/Real-Clifford+CH-TwoLevel/MainTheorem.agda states it.
+%% make.sh writes ../latex/pldi/lagda/stmt-hpi.tex; edit this file.
+\begin{code}[hide]
+module pldi.lagda.stmt-hpi where
+
+open import Presentation.Definitions using (_IsPresentationOf_)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.MainTheorem as M
+  using (_MRel,_===_ ; O)
+\end{code}
+\begin{code}[number=agda:hpi]
+presentation : ∀ n → (n MRel,_===_) IsPresentationOf (O n)
+\end{code}
+\begin{code}[hide]
+presentation = M.presentation
+\end{code}

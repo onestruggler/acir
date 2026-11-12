@@ -1,0 +1,246 @@
+%% Section 3 of qcert.tex, "An Introduction to the Framework", as literate
+%% Agda, after Section 2 of ../../vqupit (sections/permutations.lagda.tex).
+%% `make.sh' runs `agda --latex --only-scope-checking' on it, which
+%% resolves every name of the code blocks against the library and colours
+%% it by kind, and writes ../latex/pldi/lagda/framework-intro.tex, which
+%% qcert.tex inputs.  Edit this file, not the generated one.
+%%
+%% The definitions copy those of the library (Circuit.Base and
+%% Examples/Groups/Alternating) as the text shows them; the code is
+%% scope-checked, not type-checked, and the hidden blocks supply what the
+%% text elides.
+\begin{code}[hide]
+module pldi.lagda.framework-intro where
+
+open import Algebra.Bundles using (Group)
+open import Data.Empty using (⊥ ; ⊥-elim)
+open import Data.Nat using (ℕ)
+open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Unit using (⊤)
+open import Level using (Level ; _⊔_ ; 0ℓ)
+open import Relation.Binary using (Rel)
+
+open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; wmap)
+open import Presentation.GroupLike using (Grouplike)
+open import Examples.Groups.Alternating.Syntactics using (₅₊)
+open import Examples.Groups.Alternating.Semantics using (Alt-group)
+import Examples.Groups.Alternating.Presentation as AP
+
+private variable
+  n : ℕ
+  a ℓ : Level
+  X : Set
+
+postulate
+  proof-elided : ∀ {ℓ} {A : Set ℓ} → A
+  IsGroupIsomorphism : {G : Group a ℓ} → (Word X → Group.Carrier G) → Set (a ⊔ ℓ)
+\end{code}
+\section{An Introduction to the Framework}\label{sec:case-study}
+
+EquaCert is built on a library for presentations, normal forms, and completeness of circuit relation sets~\cite{bian2027popl}. This section introduces it on a small complete case study: circuits built from a single three-wire gate, the cycle~$\omega$, which present the alternating groups~\cite[\S2.4]{lafont2003boolean}. The walkthrough exhibits the pipeline --- gates, relations, cosets, tower, semantics, uniqueness, completeness, presentation --- that the developments of \Cref{tab:corpus} that follow the first strategy of \Cref{fig:strategies} instantiate with richer gates and richer actions. The development has $14$ modules and about $1{,}000$ lines of Agda code, which Agda checks in under four seconds given the interfaces of the shared library, and \Cref{sec:xcxccx} derives the new result from it by the second strategy.
+
+\subsection{Gates, Generators, and Circuits}\label{sec:case-gates}
+
+A gate set is a family $\aid{Gate} : \mathbb{N} \to \mathsf{Set}$ giving, for each arity, the gates on that many adjacent wires; for the alternating groups there is one gate, on three wires. The generic circuit layer of the library turns any such family into wire-indexed \emph{generators}: a gate placed at the bottom of the wires, or a generator shifted up by one wire.
+\begin{center}
+\begin{minipage}[c]{0.8\linewidth}
+\begingroup\setlength{\mathindent}{0pt}
+\begin{code}
+data Gate : ℕ → Set where
+  ω-gate : Gate 3
+data Gen : ℕ → Set where
+  gate₀ : Gate 0 → Gen n          -- a global scalar
+  gate₁ : Gate 1 → Gen (₁₊ n)     -- on the bottom wire
+  gate₂ : Gate 2 → Gen (₂₊ n)     -- on the bottom two wires
+  gate₃ : Gate 3 → Gen (₃₊ n)     -- on the bottom three wires
+  _↥   : Gen n → Gen (₁₊ n)       -- one wire higher
+\end{code}
+\endgroup
+\end{minipage}\hfill%
+\begin{minipage}[c]{0.16\linewidth}\centering\small
+\input{figures/xcxccx/lafont-cycle}
+\end{minipage}
+\end{center}
+\begin{code}[hide]
+Circuit : ℕ → Set
+Circuit n = Word (Gen n)
+
+CRel : ℕ → Set₁
+CRel n = Rel (Circuit n) 0ℓ
+
+_↑ : Circuit n → Circuit (₁₊ n)
+_↑ = wmap _↥
+
+pattern ω-gen = gate₃ ω-gate
+
+ω : Circuit (₃₊ n)
+ω = [ ω-gen ]ʷ
+
+infix 4 _SRel,_===_ _VRel,_===_ _≈_
+infixr 10 ω•_
+
+private variable
+  w v : Circuit n
+
+postulate
+  _≈_ : Circuit n → Circuit n → Set
+  conj* : Circuit (₁₊ n) → Circuit (₂₊ n)
+  no-gen₂ : Gen 2 → ⊥
+\end{code}
+Here $\aid{₁₊}\;n$, $\aid{₂₊}\;n$, and $\aid{₃₊}\;n$ are the library's patterns for $1+n$, $2+n$, and $3+n$, and $n$ is an implicit argument, so $\aid{gate₃}\;\aid{ω-gate}$ is a generator at any width from three upward. An $n$-wire \emph{circuit} is a word of generators, $\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$: a single generator $[\,g\,]^{\mathsf w}$, the empty circuit $\varepsilon$ --- $n$ bare wires, the identity circuit at that width --- or a sequential composition $c \bullet c'$. We write $\omega$ for the one-letter circuit $[\,\aid{gate₃}\;\aid{ω-gate}\,]^{\mathsf w}$ and $c\;{\uparrow}$ for $c$ shifted up one wire ($\aid{{\_}↑} = \aid{wmap}\;\aid{{\_}↥}$). Read diagrammatically, with wires drawn bottom-up and a word drawn left to right as written, $\omega$ is the cycle of the bottom three wires, which carries the wire~$0$ to~$1$, $1$ to~$2$, and $2$ to~$0$. It is drawn on the right of the definitions above as Lafont draws it, a grey box in which each strand leaves at the height of the image of its wire, labelled $i$, $i{+}1$, $i{+}2$ for the cycle shifted up $i$ wires. Then $\omega\;{\uparrow}$ is the same cycle one wire higher, and $\omega \bullet \omega\;{\uparrow} \bullet \omega$ is the four-wire circuit on the left of the relation \aid{near} drawn beside its axiom below. Lafont writes $\omega_i$ for the cycle shifted up $i$ wires; we write products of cycles in diagram order, as words are written.
+
+\subsection{Relations: Three Axioms, Structure for Free}\label{sec:case-relations}
+
+The group-specific relations are an inductive family indexed by the wire count. Each axiom is stated once, with its gates at the bottom of the wires and the width left open (the implicit $n$), so that one constructor covers every width at which the axiom fits; the structural rule \aid{cong↑} below moves it to any height. (Agda names may be mixfix: each underscore in \aid{{\_}SRel,{\_}==={\_}} marks an argument position, so the family is applied as $n\;\aid{SRel,}\;w \mathrel{\aid{===}} v$, read ``$w = v$ is an axiom on $n$ wires''.)
+
+\begin{center}
+\begin{minipage}[c]{0.69\linewidth}
+\begingroup\setlength{\mathindent}{0pt}
+\begin{code}
+data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
+  order : (₃₊ n) SRel, ω • ω • ω === ε
+  near  : (₄₊ n) SRel, ω • ω ↑ • ω === ω ↑ • ω ↑
+  far   : (₅₊ n) SRel, ω • ω ↑ ↑ • ω === ω ↑ ↑ • ω • ω ↑
+\end{code}
+\endgroup
+\end{minipage}\hfill%
+\begin{minipage}[c]{0.305\linewidth}\centering\small
+\begin{tabular}{@{}r@{\enspace}c@{}}
+\aid{order} & \input{figures/xcxccx/lafont-order-l}\xeq\input{figures/xcxccx/lafont-order-r}\\[4pt]
+\aid{near} & \input{figures/xcxccx/lafont-near-l}\xeq\input{figures/xcxccx/lafont-near-r}\\[4pt]
+\aid{far} & \input{figures/xcxccx/lafont-far-l}\xeq\input{figures/xcxccx/lafont-far-r}
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\noindent These three axioms, (order), (near), and (far), are the relations of Lafont's Theorem~4: $\omega_i\,\omega_i\,\omega_i = \varepsilon$, $\omega_i\,\omega_{i+1}\,\omega_i = \omega_{i+1}\,\omega_{i+1}$, and $\omega_i\,\omega_{i+2}\,\omega_i = \omega_{i+2}\,\omega_i\,\omega_{i+1}$. (Lafont numbers the wires from~$1$ and writes products in the order of composition; on p.~268 he also replaces the second relation by $(\omega_i\,\omega_{i+1})^2=1$, which is $(\omega_{i+1}\,\omega_i)^2=1$ in our order.) The commutation of cycles on disjoint wires, (apart), $\omega_j\,\omega_i = \omega_i\,\omega_j$ for $j \ge i+3$, which his diagrams build in, is not specific to permutations: it is one of the relations every circuit theory needs, whatever its gates. By a \emph{circuit theory} we mean a gate set with gate-specific relations, presenting for each width $n$ a monoid of $n$-wire circuits under sequential composition. Such circuits are the fixed-width slices of a symmetric monoidal category (a PROP), and the monoidal structure leaves exactly two traces at fixed width: the shift $c \mapsto c\;{\uparrow}$ is ``tensoring with an identity wire'', so equations must be preserved by it, and the interchange law says that gates on disjoint wires commute. (The library also admits $0$-ary gates --- global scalars, available at every width --- with one more structural rule, that a scalar is identified with its own shift, \aid{ω↑=ω}; that it then commutes with every generator is a theorem, once scalars are assumed to commute with one another, which is vacuous for a single scalar.) These are the structural rules every circuit theory shares --- what a pen-and-paper presentation leaves implicit in ``a congruence compatible with composition and tensor product'' --- and the circuit layer adds them generically: \aid{Lift-Relation} extends any gate-specific family to the full relation set \aid{{\_}VRel,{\_}==={\_}}:
+\begin{code}
+data _VRel,_===_ : (n : ℕ) → CRel n where
+  srel  : n SRel, w === v → n VRel, w === v
+  cong↑ : n VRel, w === v → (₁₊ n) VRel, w ↑ === v ↑
+  comm₁ : (h : Gate 1) (g : Gen n) →
+          (₁₊ n) VRel, [ g ↥ ]ʷ • [ gate₁ h ]ʷ === [ gate₁ h ]ʷ • [ g ↥ ]ʷ
+  comm₂ : (h : Gate 2) (g : Gen n) →
+          (₂₊ n) VRel, [ g ↥ ↥ ]ʷ • [ gate₂ h ]ʷ === [ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ
+  comm₃ : (h : Gate 3) (g : Gen n) →
+          (₃₊ n) VRel, [ g ↥ ↥ ↥ ]ʷ • [ gate₃ h ]ʷ === [ gate₃ h ]ʷ • [ g ↥ ↥ ↥ ]ʷ
+\end{code}
+Here the cycle is the only gate, so \aid{comm₃} is (apart) and the other structural rules for gates have no instances. From here on, $\approx$ denotes the monoid congruence generated by $n\;\aid{VRel,{\_}==={\_}}$: the least relation containing the axioms and closed under reflexivity, symmetry, transitivity, congruence of~$\bullet$, associativity, and the unit laws; deciding it is the word problem. Because $\omega \bullet \omega$ is an inverse of~$\omega$, by \aid{order}, and shifts of invertible generators are invertible, the presented monoid is a group; we witness this by a \aid{Grouplike} proof (every generator has a left inverse), by induction on generators.
+
+\subsection{Cosets and the Staircase Normal Form}\label{sec:case-nf}
+
+The engine behind the normal form is coset enumeration along the chain $\mathrm{Alt}(1) \le \mathrm{Alt}(2) \le \dots \le \mathrm{Alt}(n) \le \mathrm{Alt}(n{+}1)$, where $\mathrm{Alt}(n)$ sits inside $\mathrm{Alt}(n{+}1)$ as the even permutations fixing the bottom wire --- syntactically, the circuits of the form $c\;{\uparrow}$. Read as permutations, two circuits lie in the same right coset of $\mathrm{Alt}(n)$ exactly when they carry the bottom wire to the same place; from $n = 2$ on, an even permutation can carry it to any of the $n{+}1$ wires, so $\mathrm{Alt}(n)$ has index $n{+}1$, and a natural representative of each coset is Lafont's \emph{stairs}, an ascending staircase of cycles that carries the bottom wire up, the stairs to the top wire repeating its last cycle. In the library a coset is not a set of circuits but a label naming one, an element of the finite type $\aid{C}\;n$; here the label records the stairs one cycle at a time, and the \emph{section} $[\,\_\,]^{\mathsf c}$ maps it to the stairs circuit. The representatives on four and three wires are drawn on the right:
+
+\begin{center}
+\begin{minipage}[c]{0.37\linewidth}
+\begingroup\setlength{\mathindent}{0pt}
+\begin{code}
+data C : ℕ → Set where
+  ε   : C n
+  ω•_ : C (₁₊ n) → C (₂₊ n)
+  ωω  : C 2
+[_]ᶜ : C n → Circuit (₁₊ n)
+[ ε    ]ᶜ = ε
+[ ω• c ]ᶜ = ω • [ c ]ᶜ ↑
+[ ωω   ]ᶜ = ω • ω
+\end{code}
+\endgroup
+\end{minipage}\hfill%
+\begin{minipage}[c]{0.58\linewidth}\centering\small
+\begin{tabular}{@{}l@{\;\;}cccc@{}}
+  $\aid{C}\;3$: & \input{figures/xcxccx/lafont-c3-0} & \input{figures/xcxccx/lafont-c3-1} & \input{figures/xcxccx/lafont-c3-2} & \input{figures/xcxccx/lafont-c3-3}\\
+  & $\varepsilon$ & $\omega{\bullet}\,\varepsilon$ & $\omega{\bullet}\,\omega{\bullet}\,\varepsilon$ & $\omega{\bullet}\,\omega\omega$\\[4pt]
+  $\aid{C}\;2$: & \input{figures/xcxccx/lafont-c2-0} & \input{figures/xcxccx/lafont-c2-1} & \input{figures/xcxccx/lafont-c2-2} & \\
+  & $\varepsilon$ & $\omega{\bullet}\,\varepsilon$ & $\omega\omega$ &
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\noindent So $\aid{C}\;n$ has exactly the $n{+}1$ elements drawn above for $n = 3, 2$, and one element for $n = 1, 0$, matching the index of $\mathrm{Alt}(n)$ in $\mathrm{Alt}(n{+}1)$. Why this yields a normal form is the classical argument of computational group theory~\cite{sims1994computation,holt2005handbook}: every $f \in \mathrm{Alt}(n{+}1)$ lies in one coset, say with representative $c_n$, so $f = f' \cdot c_n$ with $f' \in \mathrm{Alt}(n)$, and recursing on $f'$ writes $f$ uniquely as $c_0 c_1 \cdots c_n$ with $c_k \in \aid{C}\;k$, one digit per level, since $|\mathrm{Alt}(n{+}1)| = (n{+}1) \cdot n \cdots 3$.
+
+\emph{Computing} this factorisation is the job of the coset table. Given a coset, represented by its stairs, and one generator, the table says where their product lands --- the updated coset --- and what is left over on the wires above --- the residual circuit --- so that stairs followed by generator equals residual (shifted up) followed by updated stairs. A cycle on the bottom wires meets the first cycles of the stairs: it extends the stairs, completes $\omega^3 = \varepsilon$ with the doubled cycle, or passes through and comes out on the wires above, and which of Lafont's seven rewriting rules applies (his Fig.~10, drawn in \Cref{fig:pushing}) depends on how many cycles the stairs has left. A generator that does not touch the bottom wire passes the stairs one cycle at a time and comes out conjugated, $\omega \bullet w\;{\uparrow}\;{\uparrow} \approx \aid{conj*}\;w\;{\uparrow} \bullet \omega$ (Lafont's Lemma~7, from the first rule). The residual is a circuit on one wire fewer rather than a generator:
+\begin{code}
+ract : C n → Gen (₁₊ n) → Circuit n × C n
+ract ε             ω-gen = ε , ω• ε             -- grows
+ract ε             (g ↥) = [ g ]ʷ , ε           -- commutes past
+ract ωω            ω-gen = ε , ε                -- rule 7
+ract ωω            (g ↥) = ⊥-elim (no-gen₂ g)   -- no such g
+ract (ω• c)        (g ↥) =                      -- Lemma 7
+  conj* (proj₁ (ract c g)) , ω• proj₂ (ract c g)
+ract {2}    (ω• ε) ω-gen = ε , ωω               -- grows to the top
+ract {₃₊ _} (ω• ε) ω-gen = ω , ω• ω• ε          -- rule 4
+ract (ω• ωω)       ω-gen = ω • ω , ω• ωω        -- rule 6
+ract (ω• ω• ε)     ω-gen = ω • ω , ε            -- rule 3
+ract (ω• ω• ωω)    ω-gen = ω , ω• ω• ωω         -- rule 5
+ract (ω• ω• ω• c)  ω-gen = ω ↑ , ω• ω• ω• c     -- rule 2
+\end{code}
+
+\begin{figure}[!htbp]
+\centering
+\small
+\begin{tabular}{@{}l@{\;}c@{\;}l@{\qquad}l@{\;}c@{\;}l@{}}
+\textup{(1)}\enspace\input{figures/xcxccx/lafont-rule1-l} & $\rightarrow$ & \input{figures/xcxccx/lafont-rule1-r} &
+\textup{(2)}\enspace\input{figures/xcxccx/lafont-rule2-l} & $\rightarrow$ & \input{figures/xcxccx/lafont-rule2-r}\\[6pt]
+\textup{(3)}\enspace\input{figures/xcxccx/lafont-rule3-l} & $\rightarrow$ & \input{figures/xcxccx/lafont-rule3-r} &
+\textup{(4)}\enspace\input{figures/xcxccx/lafont-rule4-l} & $\rightarrow$ & \input{figures/xcxccx/lafont-rule4-r}\\[6pt]
+\textup{(5)}\enspace\input{figures/xcxccx/lafont-rule5-l} & $\rightarrow$ & \input{figures/xcxccx/lafont-rule5-r} &
+\textup{(6)}\enspace\input{figures/xcxccx/lafont-rule6-l} & $\rightarrow$ & \input{figures/xcxccx/lafont-rule6-r}\\[6pt]
+\textup{(7)}\enspace\input{figures/xcxccx/lafont-rule7-l} & $\rightarrow$ & \input{figures/xcxccx/lafont-rule7-r} & & &
+\end{tabular}
+\caption{Pushing a cycle through a stairs: the seven rewriting rules of Lafont's Fig.~10, in the order of his figure, which the clauses of the coset table \aid{ract} use. Rule~(1) gives Lafont's Lemma~7, rule~(7) is $\omega^3=\varepsilon$, and rule~(3) is the axiom \aid{near}.}
+\label{fig:pushing}
+\Description{Seven rewrites between drawings of wires crossing in grey boxes, each box a cycle of three adjacent wires. (1) On five wires, a cycle on the bottom three followed by a cycle on the top three becomes five cycles. (2) On five wires, a stairs of three cycles followed by a cycle on the bottom three becomes four cycles. (3) On four wires, bottom, top, bottom becomes two cycles on the top three. (4) On four wires, two cycles on the bottom three become top, bottom, top. (5) and (6) rewrite the stairs that ends in a doubled cycle. (7) On three wires, three cycles become three straight wires.}
+\end{figure}
+
+\noindent \aid{ω-gen} abbreviates $\aid{gate₃}\;\aid{ω-gate}$. The clause for a shifted generator is the recursion: a shifted generator meets a stairs by meeting its tail one wire up, and comes out conjugated. Each clause is certified by the \emph{soundness law}, proved once per table by a short equational derivation:
+\begin{code}
+ract-sound : ∀ c g → let (b , d) = ract c g in [ c ]ᶜ • [ g ]ʷ ≈ b ↑ • [ d ]ᶜ
+\end{code}
+\begin{code}[hide]
+ract-sound = proof-elided
+\end{code}
+The derivations use the seven rules, not the three axioms. Lafont's Fig.~11 derives the rules from the axioms, and the development does so in any theory in which the axioms hold (\aid{FromRelations}): two of the rules are axioms, and each of the others takes three to six rewriting steps, found by a breadth-first search over the axioms and checked on permutations before they were written in Agda.
+
+The stateful word traversal \aid{{\_}ᵗ} extends \aid{ract} to whole circuits, threading the coset from left to right and concatenating the residuals; run from the identity coset, it maps an $(n{+}1)$-wire circuit to an $n$-wire circuit and a coset --- one level of normalisation. \emph{Iterating} the level is the coset tower, whose carrier grows by one digit per level:
+\begin{code}
+NF : ℕ → Set
+NF 0      = ⊤
+NF (₁₊ n) = NF n × C n   -- ⊤ × C 0 × C 1 × ⋯ × C n
+\end{code}
+so $\aid{NF}\;n$ has exactly $n!/2$ elements for $n \ge 2$. The normal-form function $\aid{nf} : \aid{Circuit}\;n \to \aid{NF}\;n$ runs the tables; its \emph{section} $\aid{inv-nf} : \aid{NF}\;n \to \aid{Circuit}\;n$ rebuilds a circuit from its digits by concatenating the stairs, suitably shifted --- one stairs per level, each shifted up to the wires of its level, the highest first. These are Lafont's \emph{canonical forms} (\Cref{fig:lafont}), and that every circuit is equal to its canonical form, $\aid{inv-nf}\;(\aid{nf}\;w) \approx w$, is his Lemma~8, by induction on the circuit and the tower from \aid{ract-sound}; Lafont leaves this induction to the reader.
+
+\begin{figure}[!htbp]
+\centering
+\small
+\input{figures/xcxccx/lafont-six}
+\caption{The canonical form $s_3(4)\,s_2(3)\,s_1(5)\,s_0(3)$ on six wires, after Lafont's drawings: time runs left to right, a grey box is a cycle, and each strand is labelled with its wire at both ends, so it ends at the height of the image of its wire. The stairs $s_d(j)$ raises the strand of the wire~$d$ to the height~$j$, one wire at each cycle, and the stairs to the top wire, $s_1(5)$, repeats its last cycle.}
+\label{fig:lafont}
+\Description{Six wires labelled 0 to 5 from the bottom pass through nine boxes in four groups, labelled s3(4), s2(3), s1(5), and s0(3): one box on the wires 3 to 5, one on the wires 2 to 4, four boxes that climb from the wires 1 to 3 up to the wires 3 to 5 with the last box repeated, and three boxes that climb from the wires 0 to 2 up to the wires 2 to 4. At the right the strands arrive, from the bottom, in the order 5, 3, 4, 0, 2, 1.}
+\end{figure}
+
+In Lafont's notation, the \emph{stairs} from $d$ to $j$, for $d\le N-3$, is the word $s_d(j)=\omega_d\,\omega_{d+1}\cdots\omega_{j-1}$ for $d\le j\le N-2$, and $s_d(N-1)=s_d(N-2)\,\omega_{N-3}$; it carries $d$ to $j$ and fixes the wires below~$d$. A canonical form on $N$ wires is a product $s_{N-3}(j_{N-3})\cdots s_1(j_1)\,s_0(j_0)$ with $d\le j_d\le N-1$.
+
+\subsection{Semantics, Uniqueness, and Completeness}\label{sec:case-semantics}
+
+So far everything was syntax. The development interprets circuits in the group $\aid{Alt-group}\;n$ of even permutations of $\mathsf{Fin}\;n$, with $\omega$ cycling the bottom three elements. A permutation is even if its \emph{sign} is false, and the sign is the parity of the length of any circuit of swaps of adjacent wires that carries it out. That this is well defined is a theorem of the library: its swap circuits present the symmetric groups (Lafont's Theorem~1), their two axioms preserve the parity of the length, and any two swap circuits with the same permutation are equal modulo them. So the target group is defined without the cycles and their axioms. \emph{Soundness} --- $w \approx v$ implies $\llbracket w\rrbracket \doteq \llbracket v\rrbracket$ --- is a small case analysis over the axioms, each decided at the at most five wires it moves. The heart of the matter is the \emph{unique normal form} property, that normal forms with equal denotations are equal: $\llbracket \aid{inv-nf}\;u \rrbracket \doteq \llbracket \aid{inv-nf}\;v \rrbracket$ implies $u \equiv v$. It is proved by induction on the tower: the stairs of the higher levels fix the bottom wire, so the last stairs alone determines where the permutation sends it; equal denotations therefore force equal last digits, and cancelling them reduces the claim to the level below. Soundness, Lemma~8, and uniqueness give \emph{completeness} by the normalization argument of \Cref{fig:normalform}: $\llbracket w\rrbracket \doteq \llbracket v\rrbracket$ implies $w \approx v$. Here the coset table is never checked against the axioms, as the library's table for the symmetric groups is: that \aid{nf} respects $\approx$ follows from soundness and uniqueness. Together with surjectivity --- Lafont's Lemma~6 divides the stairs from $0$ to $\pi(0)$ out of an even permutation~$\pi$, which leaves an even permutation of the wires above, and on two wires an even permutation fixes the bottom wire --- these assemble into the library's \emph{presentation record}: a \aid{Grouplike} witness, which makes the presented monoid a group, and a proof that $\llbracket\_\rrbracket$ is a group isomorphism from that group onto the target (\aid{IsGroupIsomorphism} is the standard library's, between the group the witness induces and $G$; the record's module plumbing that says so is elided):
+\begin{code}
+record _IsPresentationOf_ (_===_ : WRel X) (G : Group a ℓ) : Set (a ⊔ ℓ) where
+  field
+    gl  : Grouplike _===_
+    ⟦_⟧ : Word X → Group.Carrier G
+    iso : IsGroupIsomorphism ⟦_⟧
+\end{code}
+Every presentation theorem in the paper has the shape of this one:
+\begin{code}
+presentation : ∀ {n} → (n VRel,_===_) IsPresentationOf (Alt-group n)
+\end{code}
+\begin{code}[hide]
+presentation = AP.presentation
+\end{code}
+read: the monoid of cycle circuits modulo \{\aid{order}, \aid{near}, \aid{far}\} and the structural rules \emph{is} the group of even permutations of $\mathsf{Fin}\;n$.
+
+The axioms enter the proof only through the seven rules, so the development proves completeness once, for every sound theory in which the rules hold, and states three presentations: by the three axioms, by the seven rules themselves, and by Lafont's relations of p.~268, in which \aid{near} is replaced by $(\omega_{i+1}\,\omega_i)^2=1$. \Cref{sec:xcxccx} imports the first for $n=16$ as its known complete rule set, and the canonical forms and Lemma~8 as the normal forms of four-bit circuits.
+
+\FloatBarrier
+

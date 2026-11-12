@@ -1,0 +1,3 @@
+# agda --latex copies its style file into the output directory; the paper
+# uses ./agda.sty, the same file.
+latex/agda.sty

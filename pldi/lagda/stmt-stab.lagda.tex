@@ -1,0 +1,17 @@
+%% Statement (agda:stab) of Section 4: Makary, Ross and Selinger's
+%% theorem as Examples/Groups/Real-Clifford/MainTheorem.agda states it.
+%% make.sh writes ../latex/pldi/lagda/stmt-stab.tex; edit this file.
+\begin{code}[hide]
+module pldi.lagda.stmt-stab where
+
+open import Data.Nat using (_^_)
+open import Presentation.Definitions using (_IsSubPresentationOf_)
+open import Examples.Groups.Real-Clifford.MainTheorem as M
+  using (_CRel,_===_ ; U)
+\end{code}
+\begin{code}[number=agda:stab]
+presentation : ∀ n → (n CRel,_===_) IsSubPresentationOf U (2 ^ n)
+\end{code}
+\begin{code}[hide]
+presentation = M.presentation
+\end{code}

@@ -1,0 +1,19 @@
+%% Statements (agda:complete) and (agda:sound) of Section 4, the two
+%% directions of Examples/Groups/Real-Clifford/MainTheorem.agda.
+%% make.sh writes ../latex/pldi/lagda/stmt-fields.tex; edit this file.
+\begin{code}[hide]
+module pldi.lagda.stmt-fields where
+
+open import Examples.Groups.Real-Clifford.MainTheorem as M
+  using (Circuit ; ⟦_⟧ ; _≈ᵁ_ ; ⊢_≈_)
+\end{code}
+\begin{code}[number=agda:complete]
+complete : ∀ {n} {w v : Circuit n} → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧ → ⊢ w ≈ v
+\end{code}
+\begin{code}[number=agda:sound]
+sound : ∀ {n} {w v : Circuit n} → ⊢ w ≈ v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
+\end{code}
+\begin{code}[hide]
+complete = M.complete
+sound = M.sound
+\end{code}

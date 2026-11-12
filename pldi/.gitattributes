@@ -1,0 +1,5 @@
+# The literate Agda sources, their script and Agda's output are read and
+# written in WSL: keep them LF in every checkout (make.sh fails under sh
+# with CR line ends).
+lagda/** text eol=lf
+latex/** text eol=lf
