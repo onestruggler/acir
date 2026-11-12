@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Draw Lafont's canonical forms of even permutations as circuits on the
-points (fig:xcxccx-lafont of Section 6).
+"""Draw Lafont's cycles, relations and canonical forms of even permutations
+as circuits on the points (fig:lafont of the case study, Section 4, and
+fig:xcxccx-lafont of Section 7).
 
 Lafont draws a permutation of N points as a circuit with one wire for each
 point, and his generator omega as a gate on three adjacent wires: the wire
@@ -10,6 +11,19 @@ the other circuits of the paper, so a picture is Lafont's turned a quarter
 of a turn.  Writes, next to this file,
 
   lafont-cycle.tex    the cycle omega_i
+  lafont-order-l.tex, lafont-order-r.tex, lafont-near-l.tex,
+  lafont-near-r.tex, lafont-far-l.tex, lafont-far-r.tex
+                      the two sides of each relation of Lafont's Theorem 4,
+                      omega_i omega_i omega_i = 1, omega_i omega_{i+1}
+                      omega_i = omega_{i+1} omega_{i+1} and omega_i
+                      omega_{i+2} omega_i = omega_{i+2} omega_i omega_{i+1},
+                      products in diagram order
+  lafont-c2-j.tex, lafont-c3-j.tex
+                      the stairs s_0(j) from the point 0 on three and four
+                      points, the coset representatives
+  lafont-rulek-l.tex, lafont-rulek-r.tex
+                      the two sides of the k-th of the seven rewriting
+                      rules of Lafont's Fig. 10
   lafont-six.tex      the canonical form s_3(4) s_2(3) s_1(5) s_0(3) of an
                       even permutation of six points, its stairs bracketed
   lafont-toffoli.tex  the canonical form omega_9 ... omega_4 of the
@@ -18,7 +32,8 @@ of a turn.  Writes, next to this file,
 
 Nothing is written until every picture has passed its checks: the height
 at which each strand ends is the image of its point under the product of
-the cycles, the targets of that permutation are the ones the picture
+the cycles, the two sides of each relation have the same permutation,
+the targets of that permutation are the ones the picture
 claims, and the last one is the permutation that draw_canon.py computes
 for the Toffoli gate.  Python 3, no dependencies:  python draw_lafont.py
 """
@@ -76,7 +91,7 @@ def targets(p):
 # a group are drawn side by side, and the groups a little apart.
 
 def picture(groups, n, step, width, names=None, font=r'\scriptsize',
-            gap=.16, margin=.22):
+            gap=.16, margin=.22, labels=True):
     def y(level):
         return -(n - 1 - level) * step
     level = list(range(n))                  # the height of each strand
@@ -112,6 +127,8 @@ def picture(groups, n, step, width, names=None, font=r'\scriptsize',
         out.append(r'\draw[rounded corners=1pt] '
                    + '--'.join('(%.3f,%.3f)' % q for q in pts) + ';')
         # Each strand carries the name of its point at both ends.
+        if not labels:
+            continue
         name = names[p] if names else str(p)
         out.append(r'\node[anchor=east,font=%s,inner sep=0pt] at (-.08,%.3f) {$%s$};'
                    % (font, y(p), name))
@@ -145,6 +162,41 @@ def main():
     ends = draw('lafont-cycle', [(None, [0])], 3, step=.36, width=.5,
                 names=['i', 'i{+}1', 'i{+}2'])
     assert ends == (1, 2, 0)
+
+    # The relations of Lafont's Theorem 4, on the points i, ..., i + 4
+    # (index 0 here), each side a word of cycles in diagram order.
+    for name, left, right, n in (('order', [0, 0, 0], [], 3),
+                                 ('near', [0, 1, 0], [1, 1], 4),
+                                 ('far', [0, 2, 0], [2, 0, 1], 5)):
+        ends_l = draw('lafont-%s-l' % name, [(None, left)], n,
+                      step=.2, width=.32, labels=False)
+        ends_r = draw('lafont-%s-r' % name, [(None, right)], n,
+                      step=.2, width=.32, labels=False)
+        assert ends_l == ends_r, name
+
+    # The coset representatives on three and four points: the stairs
+    # s_0(j), which carry the point 0 to j, the last repeating its cycle.
+    for n in (3, 4):
+        for j in range(n):
+            ends = draw('lafont-c%d-%d' % (n - 1, j), [(None, stairs(0, j, n))], n,
+                        step=.2, width=.34, labels=False)
+            assert ends[0] == j
+
+    # The seven rules of Lafont's Fig. 10, the clauses of the coset table,
+    # in the reading order of the figure; each side a word in diagram order.
+    rules = [([0, 2], [2, 2, 1, 2, 0], 5),
+             ([0, 1, 2, 0], [2, 0, 1, 2], 5),
+             ([0, 1, 0], [1, 1], 4),
+             ([0, 0], [1, 0, 1], 4),
+             ([0, 1, 2, 2, 0], [1, 0, 1, 2, 2], 5),
+             ([0, 1, 1, 0], [1, 1, 0, 1, 1], 4),
+             ([0, 0, 0], [], 3)]
+    for k, (left, right, n) in enumerate(rules, 1):
+        ends_l = draw('lafont-rule%d-l' % k, [(None, left)], n,
+                      step=.16, width=.3, margin=.14, labels=False)
+        ends_r = draw('lafont-rule%d-r' % k, [(None, right)], n,
+                      step=.16, width=.3, margin=.14, labels=False)
+        assert ends_l == ends_r, k
 
     # (b) A canonical form on six points, one stairs for each d, the
     # highest first: a stairs of one cycle (twice), the stairs to the last
@@ -181,7 +233,9 @@ def main():
 
     for name, text in PICTURES:
         (OUT / (name + '.tex')).write_text(text, encoding='utf-8')
-    print('PASS: the cycle, the canonical form of six points (targets %s),' % js)
+    print('PASS: the cycle, the three relations and the seven rules (both sides')
+    print('      alike), the stairs from 0 on three and four points,')
+    print('      the canonical form of six points (targets %s),' % js)
     print('      and the canonical form of the Toffoli gate on sixteen points')
     print('Wrote', ', '.join(name for name, _ in PICTURES))
 

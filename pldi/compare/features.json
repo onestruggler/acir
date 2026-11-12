@@ -376,17 +376,17 @@
   },
   "lean": {
    "noncomputable_decl_all": 2,
-   "by_all": 24035,
-   "automation_all": 21876,
-   "files": 274,
-   "written_files": 229,
+   "by_all": 23864,
+   "automation_all": 21724,
+   "files": 272,
+   "written_files": 227,
    "noncomputable_decl": 2,
    "noncomputable": 3,
-   "by": 13697,
-   "automation": 12615,
-   "case_split": 2910,
+   "by": 13526,
+   "automation": 12463,
+   "case_split": 2898,
    "decide_kernel": 867,
-   "theorem": 3811
+   "theorem": 3796
   }
  },
  "ToffoliHadamard": {

@@ -248,13 +248,17 @@
   archivePrefix = {arXiv}
 }
 
-@misc{clement2026realcliffordch,
-  author        = {Cl{\'e}ment, Alexandre},
-  title         = {A complete equational theory for real-{Clifford+CH} quantum
-                  circuits},
-  year          = {2026},
-  eprint        = {2602.06644},
-  archivePrefix = {arXiv}
+@inproceedings{clement2026realcliffordch,
+  author    = {Cl{\'e}ment, Alexandre},
+  title     = {A complete equational theory for real-{Clifford+CH} quantum
+               circuits},
+  booktitle = {41st Annual Symposium on Logic in Computer Science
+               (LICS 2026)},
+  series    = {Leibniz International Proceedings in Informatics (LIPIcs)},
+  volume    = {380},
+  pages     = {28:1--28:26},
+  year      = {2026},
+  doi       = {10.4230/LIPIcs.LICS.2026.28}
 }
 
 @article{backens2014zx,
@@ -546,7 +550,7 @@
                   and Tsoukalas, George and Bausch, Johannes and Wieser, Eric
                   and Heras, Francisco J. H. and Rubin, Nicholas C. and
                   Low, Guang Hao and Racani{\`e}re, S{\'e}bastien and
-                  Toma{\v{s}}ev, Nenad and Zhang, Lei M. and Watson, James and
+                  Toma{\v{s}}ev, Nenad and Zhang, Lei M. and Watson, James D. and
                   Khattar, Tanuj and Albarghouthi, Aws and Jain, Stavan and
                   Khan, Harun and Sarra, Leopoldo and Senior, Andrew W. and
                   Broughton, Michael and Masoom, Hussain and Boixo, Sergio and
@@ -1035,12 +1039,16 @@
   archivePrefix = {arXiv}
 }
 
-@misc{blake2026phaseaffine,
-  author        = {Blake, Colin},
-  title         = {Completeness for prime-dimensional phase-affine circuits},
-  year          = {2026},
-  eprint        = {2603.06466},
-  archivePrefix = {arXiv}
+@inproceedings{blake2026phaseaffine,
+  author    = {Blake, Colin},
+  title     = {Completeness for prime-dimensional phase-affine circuits},
+  booktitle = {Proceedings of the 23rd International Conference on Quantum
+               Physics and Logic (QPL 2026)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {456},
+  pages     = {40--127},
+  year      = {2026},
+  doi       = {10.4204/EPTCS.456.3}
 }
 
 %% ---------------------------------------------------------------------
@@ -1066,7 +1074,7 @@
                  group},
   year         = {2019},
   month        = mar,
-  howpublished = {Unfinished manuscript},
+  howpublished = {Internship report, unpublished},
   url          = {https://www.mathstat.dal.ca/~aclement/Case\%20distinction.pdf}
 }
 
@@ -1282,14 +1290,17 @@
   archivePrefix = {arXiv}
 }
 
-@misc{schober2026control,
-  author       = {Schober, William and Wesley, Scott},
-  title        = {A complete equational theory for quantum circuits with
-                 generalized control},
-  year         = {2026},
-  howpublished = {Accepted to the proceedings track of the 23rd International
-                 Conference on Quantum Physics and Logic (QPL 2026)},
-  url          = {https://cqi.inf.usi.ch/publications/Hierarchical_QPL2026.pdf}
+@inproceedings{schober2026control,
+  author    = {Schober, William and Wesley, Scott},
+  title     = {A complete equational theory for quantum circuits with
+               generalized control},
+  booktitle = {Proceedings of the 23rd International Conference on Quantum
+               Physics and Logic (QPL 2026)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {456},
+  pages     = {283--349},
+  year      = {2026},
+  doi       = {10.4204/EPTCS.456.11}
 }
 
 @article{feng2026complete,
@@ -1352,7 +1363,7 @@
   note   = {Supplementary material, module
             \texttt{Alt16-RevCir/MainTheorem} (completeness on one to four
             wires, the presentations of $\mathrm{Sym}(2^k)$ and
-            $\mathrm{Alt}(16)$, the two Reidemeister--Schreier steps, and
+            $\mathrm{Alt}(16)$, the two changes of presentation, and
             the canonical form), and its Lean translation
             \texttt{QCert/Alt16RevCir/MainTheorem}}
 }
@@ -1545,4 +1556,52 @@
                  Status by exact synthesis algorithm},
   year         = {2026},
   howpublished = {Unpublished working notes, version of 7 November 2026}
+}
+
+@inproceedings{cockett2019tof,
+  author    = {Cockett, J. Robin B. and Comfort, Cole},
+  title     = {The category {TOF}},
+  booktitle = {Proceedings of the 15th International Conference on Quantum
+               Physics and Logic (QPL 2018)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {287},
+  pages     = {67--84},
+  year      = {2019},
+  doi       = {10.4204/EPTCS.287.4}
+}
+
+@inproceedings{cockett2018cnot,
+  author    = {Cockett, Robin and Comfort, Cole and Srinivasan, Priyaa},
+  title     = {The category {CNOT}},
+  booktitle = {Proceedings of the 14th International Conference on Quantum
+               Physics and Logic (QPL 2017)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {266},
+  pages     = {258--293},
+  year      = {2018},
+  doi       = {10.4204/EPTCS.266.18}
+}
+
+@inproceedings{iwama2002transformation,
+  author    = {Iwama, Kazuo and Kambayashi, Yahiko and Yamashita, Shigeru},
+  title     = {Transformation rules for designing {CNOT}-based quantum
+               circuits},
+  booktitle = {Proceedings of the 39th Design Automation Conference
+               (DAC 2002)},
+  pages     = {419--424},
+  publisher = {ACM},
+  year      = {2002},
+  doi       = {10.1145/513918.514026}
+}
+
+@article{lehmann2026vyzx,
+  author  = {Lehmann, Adrian and Caldwell, Ben and Shah, Bhakti and
+             Spencer, William and Rand, Robert},
+  title   = {{VyZX}: Formal verification of a graphical quantum language},
+  journal = {ACM Transactions on Programming Languages and Systems},
+  volume  = {48},
+  number  = {3},
+  pages   = {1--39},
+  year    = {2026},
+  doi     = {10.1145/3807780}
 }

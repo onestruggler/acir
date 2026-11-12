@@ -1,0 +1,34 @@
+%% Statements (agda:x-sound) to (agda:x-unique) of Section 7, from
+%% Examples/Groups/Alt16-RevCir/MainTheorem.agda.
+%% make.sh writes ../latex/pldi/lagda/stmt-alt16.tex; edit this file.
+\begin{code}[hide]
+module pldi.lagda.stmt-alt16 where
+
+open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Presentation.Definitions using (_IsPresentationOf_)
+open import Examples.Groups.Alternating.Semantics using (Alt-group)
+open import Examples.Groups.Alt16-RevCir.MainTheorem as M
+  using (Circuit ; ⟦_⟧ ; _≐_ ; ⊢ᴿ_≈_ ; _RRel,_===_ ; NF ; canon ; nf)
+\end{code}
+\begin{code}[number=agda:x-sound]
+soundᴿ : ∀ {n} {w v : Circuit n} → ⊢ᴿ w ≈ v → ⟦ w ⟧ ≐ ⟦ v ⟧
+\end{code}
+\begin{code}[number=agda:x-complete]
+completeᴿ : ∀ {w v : Circuit 4} → ⟦ w ⟧ ≐ ⟦ v ⟧ → ⊢ᴿ w ≈ v
+\end{code}
+\begin{code}[number=agda:x-alt]
+presentationᴿ : (4 RRel,_===_) IsPresentationOf Alt-group 16
+\end{code}
+\begin{code}[number=agda:x-nf]
+normal-formᴿ : (w : Circuit 4) → ⊢ᴿ canon (nf w) ≈ w
+\end{code}
+\begin{code}[number=agda:x-unique]
+canon-unique : ∀ {x y : NF} → ⟦ canon x ⟧ ≐ ⟦ canon y ⟧ → x ≡ y
+\end{code}
+\begin{code}[hide]
+soundᴿ = M.soundᴿ
+completeᴿ = M.completeᴿ
+presentationᴿ = M.presentationᴿ
+normal-formᴿ = M.normal-formᴿ
+canon-unique = M.canon-unique
+\end{code}

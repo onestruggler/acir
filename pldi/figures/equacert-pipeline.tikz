@@ -115,7 +115,7 @@
 
 \node[pipe detail] at (.95,-.62) {Claim stated\\in the paper};
 \node[pipe detail] at (5.55,-.62) {Theorem stated\\in Lean / Agda};
-\node[pipe detail] at (7.85,-.62) {LLM follows the\\paper's argument};
+\node[pipe detail] at (7.85,-.62) {LLM guided by the\\paper's argument};
 \node[pipe detail,text width=2.2cm] at (10.15,-.62) {Lean / Agda checks\\the formal proof};
 \node[pipe detail] at (12.45,-.62) {Aligned claim +\\checked proof};
 

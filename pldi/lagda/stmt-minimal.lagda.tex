@@ -1,0 +1,16 @@
+%% Statement (agda:minimal) of Section 4: minimality and completeness of
+%% Cliff2, as Examples/Independence/Clifford/MainTheorem.agda states it.
+%% make.sh writes ../latex/pldi/lagda/stmt-minimal.tex; edit this file.
+\begin{code}[hide]
+module pldi.lagda.stmt-minimal where
+
+open import Data.Product using (_×_)
+open import Examples.Independence.Clifford.MainTheorem as M
+  using (_⊢_===_ ; _IsMinimal ; _IsComplete)
+\end{code}
+\begin{code}[number=agda:minimal]
+minimal-complete : ∀ {n} → (n ⊢_===_) IsMinimal × (n ⊢_===_) IsComplete
+\end{code}
+\begin{code}[hide]
+minimal-complete = M.minimal-complete
+\end{code}

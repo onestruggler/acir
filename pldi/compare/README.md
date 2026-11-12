@@ -15,7 +15,7 @@ python mkfig.py ../figures/compare.tex  # the pgfplots figure
 
 * **Rows.** `loc.py` maps each row of Table 1 to its Agda folders (the qudit
   Clifford row is `Symplectic`, `ProjectiveClifford/Qupit`, `Clifford+MinusOne`,
-  `ProjectivePauli` and `Qupit-Clifford`, Table 1's 215 modules) and to
+  `ProjectivePauli` and `Qupit-Clifford`, Table 1's 216 modules) and to
   `Lean/QCert/<Row>`. The shared library is `Word`, `Presentation`, `Circuit`,
   `Normalization`, `Examples/Construct` and the small groups in Agda, and
   `Presentation`, `Circuit`, `Exact`, `Matrix`, `NumberTheory`, `Synthesis` in Lean.
@@ -144,4 +144,8 @@ overlapped another project's Lean builds, so the twenty units they overlapped
 were re-timed on 6 November (`retimes`); `leantime.json` holds each unit's
 last timing. `agdatime.json`, `loc.json` and `features.json` were measured on
 8 November 2026, on the same machine as `leantime.json`, after the
-`MainTheorem` modules were added (revision `88440624`).
+`MainTheorem` modules were added (revision `88440624`). Their Lean
+`RealCliffordCH` entries were recounted on 12 November 2026, after the
+two modules of that folder that did not build were deleted (`99d329be`);
+nothing else changed in the recount. `leantime.json` keeps the timing of
+the build that included them.
