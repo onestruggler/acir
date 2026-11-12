@@ -251,7 +251,7 @@ By well-founded induction on the level, the relations then rewrite $N_{gM}\,g$ i
 
 \subsection{Formalization Workflow}\label{sec:method}
 
-A formalization is carried out by a coding agent in sessions that a human directs, in six steps. They refine the three steps of \Cref{fig:equacert-pipeline}, whose human check is the sixth step here. \emph{(1)~Fix the target.} We name the paper and the result to be proved, in one sentence to the agent. The framework fixes the form of the statement: a set of relations, a group, and a semantics. \emph{(2)~Check the source.} The agent transcribes the paper's rewrite rules and gate matrices. It checks the rules, the intermediate results, and the lines of the derivations with exact matrices in short scripts, before and while it writes Agda code. These checks, and proof steps that failed in Agda, found the misprints of Appendix~\ref{app:corrections}. \emph{(3)~Prove.} The agent writes the proof, guided by the paper's. For a long derivation, it writes a script that turns each line of the paper into one step of the Agda proof, so a failing step points to a specific line of the paper; where the paper gives no derivation, a script searches for one. \emph{(4)~Check.} Agda checks every module. A step that is not yet proved is a parameter of a module, never a postulate, so each theorem shows what it still assumes. \emph{(5)~Record.} An agent carries little from one session to the next, so what it learns is written to a notes file in the repository that every later session reads: the conventions of each development, the cost of checking each module, and the mistakes not to repeat. \emph{(6)~Read the statements.} At the end, each development gets a \aid{MainTheorem} module that states its theorem with no unproved hypothesis, in one form for all developments. We read these statements against the papers: the relations, the target group, and the gate matrices. Where a development has gate matrices, Agda also decides every rule against them by computation.
+A formalization is carried out by a coding agent in sessions that a human directs, in six steps. They refine the three steps of \Cref{fig:equacert-pipeline}, whose human check is the sixth step here. \emph{(1)~Fix the target.} We name the paper and the result to be proved, in one sentence to the agent. The framework fixes the form of the statement: a set of relations, a group, and a semantics. \emph{(2)~Check the source.} The agent transcribes the paper's rewrite rules and gate matrices. It checks the rules, the intermediate results, and the lines of the derivations with exact matrices in short scripts, before and while it writes Agda code. These checks, and proof steps that failed in Agda, found the misprints of Appendix~\ref{app:corrections}. \emph{(3)~Prove.} The agent writes the proof, guided by the paper's. For a long derivation, it writes a script that turns each line of the paper into one step of the Agda proof, so a failing step points to a specific line of the paper; where the paper gives no derivation, a script searches for one. \emph{(4)~Check.} Agda checks every module. A step that is not yet proved is a parameter of a module, never a postulate, so each theorem shows what it still assumes. \emph{(5)~Record.} An agent carries little from one session to the next, so what it learns is written to a notes file in the repository that every later session reads: the conventions of each development, the cost of checking each module, and the mistakes not to repeat. \emph{(6)~Read the statements.} At the end, each development gets a \aid{MainTheorem} module that states its theorem with no unproved hypothesis, in one form for all developments. We read these statements against the papers: the relations, the target group, and the gate matrices. By our count, the statements and the definitions they mention take about $8{,}200$ of the $377{,}000$ lines of Agda code, about $2\%$ (Appendix~\ref{app:provenance}). Where a development has gate matrices, Agda also decides every rule against them by computation.
 
 The history of the repository gives the scale of this work. The fifteen formalizations other than qudit Clifford were written and first proved between 19~September and 16~October 2026, in about $400$ commits. Judging by the times of their commits, ten of the fifteen reached their main theorem less than a day after their first commit. Leaving out a port of existing Agda code and two whose first commit is already large, seven did, in between one and a half and ten hours. The largest, real Clifford+\CH, took more than three weeks. Making the proofs fast to check and giving them statements of one form took until 8~November.
 %With this workflow, coding agents wrote the fifteen formalizations other than qudit Clifford within four weeks, most in less than a day.
@@ -373,37 +373,37 @@ The sixteen formalizations in \Cref{tab:corpus} contain about 377{,}000 lines of
 \small
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\linewidth}{@{}l Y Y r r r@{}}
+\begin{tabularx}{\linewidth}{@{}l Y Y c r r r@{}}
 \toprule
-Source & Object & Result & \shortstack{Agda\\Mod} & \shortstack{Agda\\time (s)} & \shortstack{Lean\\time (s)} \\
+Source & Object & Result & Proof & \shortstack{Agda\\Mod} & \shortstack{Agda\\time (s)} & \shortstack{Lean\\time (s)} \\
 \midrule
-\multicolumn{6}{@{}l}{\emph{Groups of $m$-level matrices}}\\
-\tabcite{greylyn2014} & $U_n(\Z[1/\sqrt2,i])$ & presentation, $n\le4$ & 34 & 37.28 & 145.34 \\
-\tabcite{bian2021un} & $U_n(\Z[1/2,i])$ & presentation & 39 & 53.73 & 126.99 \\
-\tabcite{li2021on} & $O_n(\Z[1/2])$, $L_n$ & presentations & 71 & 84.52 & 185.32 \\
-\tabcite{fang2026hadamard} & $O_n(\Z[1/\sqrt2])$ & presentation & 46 & 48.33 & 231.57 \\
-\tabcite{clement2019thesis} & $O_n(\Z[1/\sqrt2])$ & presentation & 43 & 67.72 & 51.99 \\
+\multicolumn{7}{@{}l}{\emph{Groups of $m$-level matrices}}\\
+\tabcite{greylyn2014} & $U_n(\Z[1/\sqrt2,i])$ & presentation, $n\le4$ & S & 34 & 37.28 & 145.34 \\
+\tabcite{bian2021un} & $U_n(\Z[1/2,i])$ & presentation & S & 39 & 53.73 & 126.99 \\
+\tabcite{li2021on} & $O_n(\Z[1/2])$, $L_n$ & presentations & S & 71 & 84.52 & 185.32 \\
+\tabcite{fang2026hadamard} & $O_n(\Z[1/\sqrt2])$ & presentation & S & 46 & 48.33 & 231.57 \\
+\tabcite{clement2019thesis} & $O_n(\Z[1/\sqrt2])$ & presentation & S & 43 & 67.72 & 51.99 \\
 \midrule
-\multicolumn{6}{@{}l}{\emph{Circuits}}\\
-\tabcite{selinger2015clifford} & Clifford & sub-presentation & 32 & 35.01 & 88.24 \\
-\citetalias{bian2026qupit}~[\citeyear{bian2026qupit}] & Clifford, odd prime~$p$ & presentation of a~model & 216 & 499.37 & 197.32 \\
-\tabcite{makary2021real} & real stabilizer & sub-presentation & 31 & 37.94 & 79.75 \\
-\tabcite{amy2018cnotdihedral} & CNOT-dihedral & sub-presentation & 31 & 21.24 & 101.22 \\
-\tabcite{blake2026phaseaffine} & phase-affine, prime~$d$ & sub-presentations & 57 & 83.30 & 257.24 \\
-\tabcite{bian2023cliffordt2} & two-qubit Clifford+\T{} & sub-presentation in~$U_4$ & 63 & 135.79 & 356.79 \\
-\tabcite{bian2023cliffordcs3} & three-qubit Clifford+\CS{} & sub-presentation in~$U_8$ & 125 & 298.29 & 1330.89 \\
-\tabcite{clement2026realcliffordch} & real Clifford+\CH{} & sub-presentation & 348 & 419.99 & 5478.79\textsuperscript{*} \\
-\tabcite{amy2024toffoli} & three-qubit Toffoli--Hadamard & presentation of $L_8$ & 203 & 111.17 & 134.91 \\
-\tabcite{li2025qutrit} & qutrit Clifford & presentation & 90 & 285.58 & 179.60 \\
+\multicolumn{7}{@{}l}{\emph{Circuits}}\\
+\tabcite{selinger2015clifford} & Clifford & sub-presentation & S & 32 & 35.01 & 88.24 \\
+\citetalias{bian2026qupit}~[\citeyear{bian2026qupit}] & Clifford, odd prime~$p$ & presentation of a~model & E & 216 & 499.37 & 197.32 \\
+\tabcite{makary2021real} & real stabilizer & sub-presentation & S & 31 & 37.94 & 79.75 \\
+\tabcite{amy2018cnotdihedral} & CNOT-dihedral & sub-presentation & S & 31 & 21.24 & 101.22 \\
+\tabcite{blake2026phaseaffine} & phase-affine, prime~$d$ & sub-presentations & S & 57 & 83.30 & 257.24 \\
+\tabcite{bian2023cliffordt2} & two-qubit Clifford+\T{} & sub-presentation in~$U_4$ & P & 63 & 135.79 & 356.79 \\
+\tabcite{bian2023cliffordcs3} & three-qubit Clifford+\CS{} & sub-presentation in~$U_8$ & P & 125 & 298.29 & 1330.89 \\
+\tabcite{clement2026realcliffordch} & real Clifford+\CH{} & sub-presentation & S & 348 & 419.99 & 5478.79\textsuperscript{*} \\
+\tabcite{amy2024toffoli} & three-qubit Toffoli--Hadamard & presentation of $L_8$ & R & 203 & 111.17 & 134.91 \\
+\tabcite{li2025qutrit} & qutrit Clifford & presentation & S & 90 & 285.58 & 179.60 \\
 \midrule
-\multicolumn{6}{@{}l}{\emph{Minimality}}\\
-\tabcite{blake2026simpler} & six fragments & minimal, complete\textsuperscript{\dag} & 80 & 180.10 & 358.87 \\
+\multicolumn{7}{@{}l}{\emph{Minimality}}\\
+\tabcite{blake2026simpler} & six fragments & minimal, complete\textsuperscript{\dag} & S & 80 & 180.10 & 358.87 \\
 \midrule
-Total & & & 1{,}509 & 2{,}399.36 & 9{,}304.83 \\
+Total & & & & 1{,}509 & 2{,}399.36 & 9{,}304.83 \\
 \bottomrule
 \end{tabularx}
 \captionsetup{position=bottom}
-\caption{Completeness and minimality results formalized in EquaCert. A presentation gives generators and relations for a whole group, and a sub-presentation for the subgroup generated by the gate set named in the Object column of the Circuits block. $L_n$ is the group of orthogonal matrices $N/\sqrt2^{\,j}$, where $N$ is an integer matrix and $j \ge 0$. Appendix~\ref{app:rings-gates} gives precise definitions of the rings, matrix groups, and gates. Mod counts Agda modules. The Agda times are typechecking times from scratch with Agda~2.8, the times its profiler reports for the row's modules; the Lean times are elapsed folder-build times. Both were measured on the same machine, under the conditions in Appendix~\ref{app:agda-lean-comparison}. Both columns exclude the shared library and other developments on which a row depends. The Result column describes the Agda statements; Appendix~\ref{app:agda-lean-comparison} explains the semantic differences. \textsuperscript{\dag}For three of the fragments, up to the numbers of wires given in the text. \textsuperscript{*}The build time of the whole folder. It includes two helper modules that no theorem imports and that did not build; every module that the main theorem depends on built. The source of the fifth row is an unpublished internship report.}
+\caption{Completeness and minimality results formalized in EquaCert. A presentation gives generators and relations for a whole group, and a sub-presentation for the subgroup generated by the gate set named in the Object column of the Circuits block. $L_n$ is the group of orthogonal matrices $N/\sqrt2^{\,j}$, where $N$ is an integer matrix and $j \ge 0$. Appendix~\ref{app:rings-gates} gives precise definitions of the rings, matrix groups, and gates. Mod counts Agda modules. The Agda times are typechecking times from scratch with Agda~2.8, the times its profiler reports for the row's modules; the Lean times are elapsed folder-build times. Both were measured on the same machine, under the conditions in Appendix~\ref{app:agda-lean-comparison}. Both columns exclude the shared library and other developments on which a row depends. The Result column describes the Agda statements; Appendix~\ref{app:agda-lean-comparison} explains the semantic differences. The Proof column gives the origin of the Agda proof: S,~written by coding agents, guided by the proof in the source; P,~ported from the Agda proof of the source's authors; R,~a replay of the derivation files that accompany the source; E,~begun before the workflow of \Cref{sec:method}, with parts written by agents. Appendix~\ref{app:provenance} gives each row's size and what it uses. \textsuperscript{\dag}For three of the fragments, up to the numbers of wires given in the text. \textsuperscript{*}The build time of the whole folder. It includes two helper modules that no theorem imports and that did not build; every module that the main theorem depends on built. The source of the fifth row is an unpublished internship report.}
 \label{tab:corpus}
 \end{table}
 
@@ -692,7 +692,7 @@ and in the Toffoli--Hadamard family the identities of the third line make every 
 \FloatBarrier
 \section{EquaCert Implementation Details}\label{app:equacert-implementation}
 
-This appendix defines PROPs and explains the theorem notation used by the framework in \Cref{sec:form}. Wire placement and matrix equality checking are described in \Cref{app:wire-placement,app:matrix-equality}.
+This appendix defines PROPs, explains the theorem notation used by the framework in \Cref{sec:form}, and gives the size and provenance of each formalization. Wire placement and matrix equality checking are described in \Cref{app:wire-placement,app:matrix-equality}.
 
 \paragraph{PROPs} A \emph{PRO} is a strict monoidal category whose objects are the natural numbers and whose tensor product is addition on objects, and a \emph{PROP} is a PRO that is moreover symmetric monoidal~\cite{MacLane1965categorical}. Circuits form a PRO~\cite{lafont2003boolean}, in which an object $n$ is a bundle of $n$ wires, a morphism from $m$ to $n$ is a circuit with $m$ input wires and $n$ output wires, composition places circuits in sequence, and the tensor product places them in parallel. In a PROP, every permutation of the wires is also a morphism. These permutations are generated by the swaps $\sigma_d$ of the wires $d$ and $d+1$, subject to two laws. The swap is an involution, $\sigma_d\sigma_d=\mathrm{id}$, and it is natural, so that a gate followed by a crossing of wires equals the crossing followed by the same gate on the wires to which the crossing carries it. Naturality at the swap itself is the Yang--Baxter equation $\sigma_0\sigma_1\sigma_0=\sigma_1\sigma_0\sigma_1$. These laws let a rule stated on its own wires be applied to any wires of a larger circuit, by bringing those wires together with swaps and moving them back afterwards. Several recent completeness results for quantum circuits are stated in PROPs~\cite{blake2026simpler,blake2026qudit}.
 
@@ -703,6 +703,45 @@ The signatures in \Cref{sec:form} use \aid{n CRel,{\_}==={\_}} for relations on 
 The judgement \aid{⊢ w ≈ v} states that $w$ and $v$ are equal by the relations. The qubit developments interpret matrices in $\D[\omega]$ and use \aid{{\_}≈ᵁ{\_}} for their equality; the qudit developments compare interpretations in their own groups. The \aid{IsSubPresentationOf} record contains the semantics and its soundness and completeness proofs, and \aid{IsPresentationOf} adds surjectivity.
 
 Minimality is stated for the rule set \aid{n ⊢{\_}==={\_}} in \Cref{agda:minimal}. Unlike the generated equivalence relation, this retains the individual rules, so removing one is defined. The predicate \aid{IsMinimal} therefore takes this rule set rather than its generated equivalence relation.
+
+\subsection{Size and Provenance of the Formalizations}\label{app:provenance}
+
+\Cref{tab:provenance} gives, for each row of \Cref{tab:corpus}, the origin of its Agda proof, its size, and the size of what a reader must read to know what its theorem says.
+
+\begin{table}[!htbp]
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}r l c r r r r l@{}}
+\toprule
+ & Source & Proof & Code lines & Generated & Ported & Statement & Uses rows \\
+\midrule
+1 & \tabcite{greylyn2014} & S & 7{,}348 & 0 & 0 & 91 &  \\
+2 & \tabcite{bian2021un} & S & 7{,}754 & 0 & 0 & 160 &  \\
+3 & \tabcite{li2021on} & S & 13{,}684 & 1{,}712 & 0 & 450 &  \\
+4 & \tabcite{fang2026hadamard} & S & 9{,}798 & 2{,}087 & 0 & 114 & 5 \\
+5 & \tabcite{clement2019thesis} & S & 9{,}167 & 1{,}948 & 0 & 114 & 4 \\
+6 & \tabcite{selinger2015clifford} & S & 10{,}768 & 6{,}855 & 0 & 228 &  \\
+7 & \citetalias{bian2026qupit}~[\citeyear{bian2026qupit}] & E & 57{,}867 & 224 & 0 & 2{,}167 &  \\
+8 & \tabcite{makary2021real} & S & 11{,}081 & 5{,}957 & 0 & 221 &  \\
+9 & \tabcite{amy2018cnotdihedral} & S & 5{,}064 & 82 & 0 & 235 &  \\
+10 & \tabcite{blake2026phaseaffine} & S & 10{,}821 & 140 & 0 & 530 &  \\
+11 & \tabcite{bian2023cliffordt2} & P & 11{,}069 & 24 & 10{,}377 & 355 & 1 \\
+12 & \tabcite{bian2023cliffordcs3} & P & 56{,}295 & 24 & 55{,}494 & 556 & 2 \\
+13 & \tabcite{clement2026realcliffordch} & S & 60{,}205 & 1{,}601 & 0 & 283 & 5 \\
+14 & \tabcite{amy2024toffoli} & R & 28{,}629 & 22{,}572 & 0 & 713 & 3 \\
+15 & \tabcite{li2025qutrit} & S & 53{,}882 & 49{,}388 & 0 & 232 &  \\
+16 & \tabcite{blake2026simpler} & S & 23{,}195 & 14{,}469 & 0 & 638 & 1, 2, 6--9, 11, 12 \\
+\midrule
+ & Total & & 376{,}627 & 107{,}083 & 65{,}871 & 7{,}087 & \\
+\bottomrule
+\end{tabular}
+\caption{Size and provenance of the Agda formalizations, row by row in the order of \Cref{tab:corpus}. The Proof column is that of \Cref{tab:corpus}. Code lines exclude blank lines and comments. Generated and Ported count the modules whose header says that a script wrote them or that they are ported from the Agda code of the source's authors. Statement counts the code lines, in the row's own modules, of the statement of the main theorem and of the definitions that it mentions. The last column lists the rows whose theorems the proof uses.}
+\label{tab:provenance}
+\end{table}
+
+\paragraph{What a Reader Must Read} For each row we followed the names in the statement of its main theorem to their definitions: the relations, the gates or generators, the target group, and the semantics down to the matrix of each generator. By our count these statements and definitions take $8{,}207$ of the $376{,}627$ code lines, or $2.2\%$. Of these, $7{,}087$ lines are in the rows' own modules (the Statement column), and $1{,}120$ are shared by several rows: $200$ lines of the framework's definitions of words, circuits, structural rules, and presentations, and $920$ lines that define the rings, matrices, and matrix groups in which several rows are interpreted. Where we did not cut a module down to the definitions that a statement mentions, we counted it whole, so the counts lean high. The count for the qudit Clifford row is the least precise. Its target group is built from a presentation (\Cref{sec:q-discussion}), and the count includes the rule set and the model of that presentation but not the general constructions of central extensions through which the group is defined. In three rows, two-qubit Clifford+\T, three-qubit Clifford+\CS, and Toffoli--Hadamard, the matrix of a gate is defined through a translation of the gate into multi-level generators, so this translation is among the definitions to read. The counts leave out the definitions of the rings $\D$, $\D[i]$, $\D[\sqrt2]$, and $\D[\omega]$ and of matrices over them, which come from a separate library for rings and exact synthesis.
+
+\paragraph{Origin of the Proofs} A module counts as generated or ported only when its header says so. About $3{,}400$ lines of derivations found by search, in rows~3 and~9, are in modules without such a header and are counted as written, so the Generated column is a lower bound. Rows~4 and~5 present the same group by two sets of relations and share lemmas: row~5 proves the case that the proof in the source of row~4 leaves open (\Cref{sec:findings}), and uses the lemmas of row~4 on levels. Rows~11 and~12 obtain completeness from the presentations of rows~1 and~2. Row~13 takes the completeness theorem that its source imports from row~5. Row~14 translates circuits into the groups of row~3. Row~16 transfers completeness from the rows listed. Every commit to fourteen of the sixteen rows carries the trailer of a coding agent. Of the $429$ commits to the qudit Clifford row, $116$ do; most of the others date from before the workflow of \Cref{sec:method}. Of the $28$ commits to the Toffoli--Hadamard row, $15$ do, and the other $13$ are the work of the second coding agent (\Cref{sec:ai-use}).
 
 \section{Details of the Agda and Lean Comparison}\label{app:agda-lean-comparison}
 
