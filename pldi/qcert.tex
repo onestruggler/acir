@@ -102,7 +102,7 @@ That these results are formalized independently, instead of in a common framewor
 Recent AI-assisted work has also formalized quantum program logics, algorithms, and complexity results~\cite{ren2026qedia,zhang2026leanquantumalg,lu2026formalflow}.
 Several concurrent projects divide the work as we do: humans check the statements and LLM agents write the proofs. MerLean formalizes three quantum computing papers~\cite{ren2026merlean}, EconCSLib formalizes twenty papers in economics and computation~\cite{garg2026econcslib}, and an LLM agent has proved part of a verified compiler correct~\cite{paraskevopoulou2026compiler}. QECert, a Lean library for quantum error correction, likewise gathers many results in one place~\cite{he2026qecert}. The closest to EquaCert is the work of \citet{shirobokov2026discovering} on quantum programs, in which LLM agents write both the programs and their proofs.
 
-\paragraph{Structure of the paper} \Cref{sec:background} reviews equational theories and the main techniques for proving their completeness and minimality. \Cref{sec:form} introduces EquaCert, and \Cref{sec:qudit-case-study} illustrates it through the multi-qudit Clifford case study. \Cref{sec:corpus,sec:findings} present the formalized results and the corrections to the source papers. \Cref{sec:xcxccx} gives the new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$, and explains how its proof is constructed and checked; Appendix~\ref{app:xcxccx} gives the full proof. \Cref{sec:conclusion} discusses limitations and future work. The remaining appendices give background, implementation details, the comparison with Lean, the detailed qudit Clifford proofs, and the details of the corrections.
+\paragraph{Structure of the paper} \Cref{sec:background} reviews equational theories and the main techniques for proving their completeness and minimality. \Cref{sec:form} introduces EquaCert, and \Cref{sec:qudit-case-study} illustrates it through the multi-qudit Clifford case study. \Cref{sec:corpus,sec:findings} present the formalized results and the corrections to the source papers. \Cref{sec:xcxccx} gives the new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$, and explains how its proof is constructed and checked; Appendix~\ref{app:xcxccx} gives the full proof. \Cref{sec:conclusion} discusses limitations and future work. The remaining appendices give background, an introduction to the framework on permutation circuits, implementation details, the comparison with Lean, the detailed qudit Clifford proofs, and the details of the corrections.
 
 % \FloatBarrier
 
@@ -172,7 +172,7 @@ Starting from a complete rule set, we can remove a redundant rule by deriving it
 \section{The EquaCert Framework}
 \label{sec:form}
 
-Our Agda framework EquaCert states every completeness theorem as a group presentation.
+Our Agda framework EquaCert states every completeness theorem as a group presentation. Appendix~\ref{app:permutations} introduces it on its smallest complete example, the swap circuits that present the symmetric groups.
 Gates are indexed by their arity, the number of wires on which they act. Each source relation is stated on its original wires, and shared \emph{structural rules} allow it to be used inside a larger circuit. These rules are independent of the gate set and make explicit the circuit structure that source papers often leave implicit.
 
 We associate to circuits a matrix semantics $\llbracket - \rrbracket$ with entries in a finitely generated ring such as $\Z\left[1/\sqrt2,i\right]$. This defines a group homomorphism to a unitary matrix group $G$, whose group structure is checked once per ring using Agda's standard library. The interpretation extends from gates to circuits, and the structural rules are sound for every gate set. The Lean version and the Agda semantics of the six minimality fragments prove this once; the other Agda developments prove the structural cases for their own gates from lemmas on Kronecker products. Beyond that, each development checks only its own rules.
@@ -690,6 +690,13 @@ Clifford+\T & $U_n(\D[\omega])$ & $\omega$, $\Hg$, $\Sg$, $\CX$, $\T$ & of types
 (\Hg\otimes\Hg)_{[a,b,c,d]}\,\X_{[c,d]}\,(\Hg\otimes\Hg)_{[a,b,c,d]}=\X_{[b,d]},
 \end{gather*}
 and in the Toffoli--Hadamard family the identities of the third line make every $\X_{[a,b]}$ a product of $(-1)_{[a]}$, $({\Hg\otimes\Hg})_{[a,b,c,d]}$, and $I_{n/2}\otimes\Hg$.
+
+\FloatBarrier
+%% This appendix is literate Agda, Section 2 of the vqupit paper: edit
+%% lagda/app-permutations.lagda.tex and lagda/app-constructions.lagda.tex
+%% and run lagda/make.sh on them, which writes the files input here.
+\input{latex/pldi/lagda/app-permutations}
+\input{latex/pldi/lagda/app-constructions}
 
 \FloatBarrier
 \section{EquaCert Implementation Details}\label{app:equacert-implementation}
