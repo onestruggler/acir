@@ -200,11 +200,11 @@
    "code": 60205
   },
   "lean": {
-   "files": 274,
-   "lines": 130403,
-   "blank": 16783,
-   "comment": 7728,
-   "code": 105892
+   "files": 272,
+   "lines": 130008,
+   "blank": 16738,
+   "comment": 7674,
+   "code": 105596
   }
  },
  "ToffoliHadamard": {

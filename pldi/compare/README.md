@@ -144,4 +144,8 @@ overlapped another project's Lean builds, so the twenty units they overlapped
 were re-timed on 6 November (`retimes`); `leantime.json` holds each unit's
 last timing. `agdatime.json`, `loc.json` and `features.json` were measured on
 8 November 2026, on the same machine as `leantime.json`, after the
-`MainTheorem` modules were added (revision `88440624`).
+`MainTheorem` modules were added (revision `88440624`). Their Lean
+`RealCliffordCH` entries were recounted on 12 November 2026, after the
+two modules of that folder that did not build were deleted (`99d329be`);
+nothing else changed in the recount. `leantime.json` keeps the timing of
+the build that included them.

@@ -53,8 +53,10 @@ scratch scripts stayed on the first machine.
    explanation in their place** (Table 1's `*` and its caption note, the
    sentence in "Where the Workflow Failed", Appendix C's pass/fail
    sentences; "all 810 tracked library modules" became "810 library
-   modules"). Table 3's Lean counts (795 modules, 338,866 lines) still
-   include the two deleted files. The re-timing on the first machine is
+   modules"). The Lean `RealCliffordCH` entries of `loc.json` and
+   `features.json` are recounted without the two files (the comparison
+   table: 793 modules, 338,570 lines, about 74,000 tactic blocks;
+   Figure 10(a)). The re-timing on the first machine is
    not needed any more. (The hold on committing `qcert.pdf` is lifted;
    commit it with the source.)
 2. **Checked by a second reader (12 November, second machine).** Found
