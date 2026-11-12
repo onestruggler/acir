@@ -12,17 +12,20 @@ branched from `ten-completeness` at `3c12abee`.
   uniqueness of the symplectic normal form; the simplified symplectic
   presentation; the projective Clifford presentations; the exact Clifford
   presentation, with and without the extra scalar −1; and Figure 1 with
-  its scalars. It also checks the structural-rule independence results,
+  its scalars; the isomorphism to the structural Weyl extension; and
+  the phase-repair certificate client and its two-qutrit example. It also
+  checks the structural-rule independence results,
   the symmetric-group example, and the generic constructions used in the
-  paper. `Qudit-Clifford` supplies Figure 1's completeness and soundness.
+  paper, plus nine closed normalizer execution checks. `Qudit-Clifford` supplies Figure 1's completeness and soundness.
 - `Examples/` contains those developments and the supporting cyclic and
   trivial groups. `Word/`, `Presentation/`, `Circuit/`, `Normalization/`,
   and `ForStdlib/` contain the framework modules they depend on.
 
 Unrelated papers, Lean developments, Agda examples, and unused modules
 have been removed. The retained Agda modules are the import closure of
-`MainTheorems.agda` and `vqupit/sections/*.lagda.tex`. Existing proof
-modules are unchanged. The paper's figures and generated LaTeX are
+`MainTheorems.agda` and `vqupit/sections/*.lagda.tex`. The review revision adds the structural scalar bridge, its sign
+extension, the phase-repair client, a checked twelve-to-six-gate replacement,
+and closed normalizer execution checks. The paper's figures and generated LaTeX are
 included locally; their original source directories are not needed to
 build it.
 

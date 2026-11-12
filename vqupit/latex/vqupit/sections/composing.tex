@@ -362,16 +362,11 @@
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaPrimitive{Set}\<%
 \end{code}
-\section{Composing: Paulis, the Semidirect Product, and Scalars}\label{sec:composing}
+\section{Composing the Clifford Presentations}\label{sec:composing}
 
-From the symplectic presentation to the Clifford presentation there are
-five steps: the Pauli factor; the semidirect product, gluing the Pauli
-and symplectic presentations along the conjugation action; plumbing,
-which simplifies the glued presentation to the paper's rules over $H$,
-$S$, $CZ$ alone; the central extension by $\langle\omega\rangle$,
-which restores the scalars; and the direct factor $\langle -1\rangle$,
-which with an exchange of scalar generators reaches the paper's
-Figure~1 itself.
+The symplectic result supplies one factor of the projective semantics.
+We now add the Pauli factor, translate the resulting presentation to
+the original gate language, and verify the scalar corrections.
 
 \subsection{The Pauli factor}\label{sec:pauli}
 
@@ -637,12 +632,8 @@ a shifted gate acts on a shifted Pauli only:
 (module qualifiers on the Pauli side elided; the relation is
 \aid{{\_}QRel,{\_}==={\_}} in the source).
 
-The generic theorem of \S\ref{sec:constructions} asks for two things
-beyond the factor presentations: that \aid{conj} respects the symplectic
-rules in its first argument and the Pauli rules in its second.  Neither
-is proved by hand --- by a case split over the axioms and the
-generators, as one would for a simpler action such as $S_n$ permuting
-the factors of $\mathbb{Z}_N^{\,n}$ in a wreath product.
+The generic theorem asks that \aid{conj} respect the symplectic
+rules in its first argument and the Pauli rules in its second.
 Both go through the semantics: the action of a symplectic word $c$ on a
 Pauli word $w$, computed syntactically by $(\mathit{conj}\,\aid{ʰ'})$,
 denotes $\aid{ap}\;\sem{c}\;(\mathit{sem}\;w)$ in the phase space, so if
@@ -716,14 +707,12 @@ words by Pauli \emph{completeness}:
 
 \noindent and symmetrically for \aid{respects-Γ}.  The long symplectic
 rules --- \aid{M-power}, \aid{semi-M↑CZ}, \aid{selinger-c10} to
-\aid{c15} --- are never conjugated by hand.  This is the first place the
-factored route pays off in a way the paper's route cannot: the paper's
-``Pauli complete'' rules (its Definition~4.7) are precisely these
-conjugation rules, and there they must be derived syntactically from
-its Figure~1 (its Proposition~4.8).  With every premise a theorem, the
-presentation \aid{(SemiDirect.{\_}QRel,{\_}==={\_} n) IsPresentationOf
-Pauli⋊Sp} is unconditional, where \aid{Pauli⋊Sp} is the theorem's
-\aid{G1⋊G2}.
+\aid{c15} --- are never conjugated by hand.  The resulting presentation theorem for \aid{Pauli⋊Sp} has no
+further proof obligations beyond the module's prime and primitive-root
+parameters.  The conjugation rules must still be derived from the
+smaller gate language in the next step; the semantic argument establishes
+the generic action interface without repeating those derivations for
+each symplectic axiom.
 
 \paragraph{The semantic side.}  \aid{Pauli⋊Sp} is the library's
 semidirect product of the two semantic groups, built from an
@@ -732,25 +721,25 @@ syntactic \aid{conj} transported through the two presentation
 isomorphisms.  The \emph{natural} semidirect product, with $\Sp$ acting
 on $\Zp^{2n}$ by \aid{ap}, is a different term, and the two are
 identified by a lemma $\aid{act≡ap}$ proving that the transported
-action is \aid{ap}.  This lemma lives in an \aid{abstract} block: with
-it transparent, the file's header records, a two-line lemma about
-$Z^{j}$ ``went from 27\,s to out-of-memory at 12\,GB'', because Agda
-tried to unfold the transported action through both presentation
-isomorphisms.
+action is \aid{ap}.  This lemma lives in an \aid{abstract} block, allowing later proofs
+to use the equality without unfolding the action through both
+presentation isomorphisms.
 
-\subsection{Plumbing: presentation simplification}\label{sec:plumbing}
+\subsection{Translating back to the circuit language}\label{sec:plumbing}
 
-Two presentations are \emph{equivalent} when the presented groups are
-isomorphic --- when each side's axioms are derivable from the other's.
-The semidirect presentation has five generators per wire, $X, Z, H, S,
-CZ$, and the relations of Table~\ref{tab:plumb}; the paper has three,
-$H, S, CZ$, and sixteen relations.  Getting from one to the other is
-\emph{generator reduction} --- $X$ and $Z$ become the derived words of
-\S\ref{sec:symplectic} --- and \emph{relation reduction} --- the Pauli
-rules and the fourteen conjugation rules become derivable.  For
-example, $CZ \bullet X{\uparrow} \approx X{\uparrow} \bullet
-Z{\downarrow} \bullet CZ$ (\aid{conj CZ-gen (X-gen ↥)}) becomes a
-theorem of the Clifford rules.
+To connect two presentations on different alphabets, we give
+word-valued generator maps in both directions, prove that they preserve
+the axioms, and prove that their composites are identities modulo
+congruence.  When the alphabets agree and the maps are identities, this
+reduces to mutual derivability of the rule sets.
+
+The semidirect presentation uses $X,Z,H,S,CZ$; the target uses
+$H,S,CZ$.  Table~\ref{tab:plumb} separates generator elimination from
+relation reduction.  Eliminating $X,Z$ requires deriving their Pauli
+identities and conjugation rules as equations between the corresponding
+$H,S,CZ$ words.  For example, the mixed equation
+$CZ\bullet X{\uparrow}\approx X{\uparrow}\bullet Z{\downarrow}\bullet CZ$
+must hold after substituting the derived word for each Pauli.
 
 \begin{table}[h]
 \caption{The three presentations of the projective Clifford group and
@@ -814,127 +803,26 @@ generators.  Composing with the semidirect theorem:
 \AgdaPostulate{proof-elided}\<%
 \end{code}
 
-This is where the mathematics of the composition step lives (about
-6\,000 lines): a multiplier calculus, a Pauli-conjugation calculus, the
+The generator reduction uses a multiplier calculus, a Pauli-conjugation calculus, the
 $CZ$ layer, and a small rewriting tactic that discharges the
 bookkeeping the paper's hand derivations spend most of their length
 on.
 
-\paragraph{From Simplified-V1 to our sixteen rules.}
-\texttt{Paper-V0} is our primary rule set: the qupit paper's Figure~1
-read modulo scalars, with the multiplier spelled over $R$ and with
-$(SH)^3 = \varepsilon$ kept as an axiom.  In Agda it is one inductive
-family \aid{{\_}SRel,{\_}==={\_}} with sixteen constructors, one per rule,
-each stated at the smallest number of wires at which it makes sense
-(two of them were shown in \S\ref{sec:encoding}; the name is the same
-as the symplectic family's of \S\ref{sec:reduction}, each rule set
-being its own module, and \aid{{\_}QRel,{\_}==={\_}} is again its
-closure under the structural rules);
-Figure~\ref{fig:rules} shows them as circuit equations, drawn from the
-Agda terms, under the constructor names used throughout.  Six are
-one-qupit rules: the orders $S^{p} = \varepsilon$, $H^{2} = M_{-1}$ and
-$(SH)^{3} = \varepsilon$, the multiplier calculus \aid{M-power}
-($M_g^{\,k} = M_{g^k}$) and \aid{semi-MR} ($R\,M_g = M_g\,R^{g^2}$),
-and \aid{comm-HHSHHS}.  Seven are two-qupit rules: the orders of $CZ$
-and of the swap $\mathit{Ex}$, the commutations of $CZ$ with $S$ and
-$M_g$ on the upper wire, the two rules moving $S$ and $H$ across the
-swap, and \aid{blake-c12}, which relates two circuits implementing
-controlled-$Z$.  Three are three-qupit rules: the Yang--Baxter and
-\aid{cz-slide} rules of the swap calculus, and \aid{semi-CX↑-CZ↓}.
-Beyond these, \emph{every} circuit theory in
-the framework gets the same three structural rules for free: congruence
-under $\uparrow$, and gates on disjoint wires commute, one rule per
-arity (a global scalar gate, when there is one, gets a fourth: it is
-the same gate on every wire; that it then commutes with every wire
-gate is a theorem).  Nothing else is an
-axiom: $XZ = ZX$ modulo scalars, the commutation of $\mathit{Ex}$ with
-$CZ$, and both rules for pushing a Pauli through $CZ$ are \emph{derived}.
-The count is sixteen where the paper's Figure~1 has fifteen non-scalar
-rules because we keep $(SH)^3 = \varepsilon$ as an axiom under the
-$R$-spelling; under the paper's own $S$-spelling it is a theorem, as
-the next paragraph shows.
-
-\begin{figure}
-\centering
-\begin{minipage}[t]{0.42\textwidth}\centering\scriptsize
-  \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
-    order-S & \ufig[0.48]{pv0-order-S-l} & $=$ & \ufig[0.48]{pv0-order-S-r}\\[1pt]
-    order-H & \ufig[0.48]{pv0-order-H-l} & $=$ & \ufig[0.48]{pv0-order-H-r}\\[1pt]
-    M-power & \ufig[0.48]{pv0-M-power-l} & $=$ & \ufig[0.48]{pv0-M-power-r}\\[1pt]
-    semi-MR & \ufig[0.48]{pv0-semi-MR-l} & $=$ & \ufig[0.48]{pv0-semi-MR-r}\\[1pt]
-    order-CZ & \ufig[0.48]{pv0-order-CZ-l} & $=$ & \ufig[0.48]{pv0-order-CZ-r}\\[1pt]
-    order-Ex & \ufig[0.48]{pv0-order-Ex-l} & $=$ & \ufig[0.48]{pv0-order-Ex-r}\\[1pt]
-    order-SH & \ufig[0.48]{pv0-order-SH-l} & $=$ & \ufig[0.48]{pv0-order-SH-r}\\
-  \end{tabular}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.55\textwidth}\centering\scriptsize
-  \begin{tabular}{@{}r@{\;\,}l@{}}
-    comm-CZ-S↑ & \ufig[0.48]{pv0-comm-CZ-Sup}\\[1pt]
-    semi-M↑CZ & \ufig[0.48]{pv0-semi-Mup-CZ}\\[1pt]
-    semi-Ex-S↑ & \ufig[0.48]{pv0-semi-Ex-Sup}\\[1pt]
-    semi-Ex-H↑ & \ufig[0.48]{pv0-semi-Ex-Hup}\\[1pt]
-    comm-HHSHHS & \ufig[0.4]{pv0-comm-HHSHHS-l} $=$ \ufig[0.4]{pv0-comm-HHSHHS-r}\\
-  \end{tabular}
-\end{minipage}\\[3pt]
-\scriptsize
-\begin{tabular}{@{}r@{\;\,}l@{\qquad}r@{\;\,}l@{}}
-  blake-c12 & \ufig[0.48]{pv0-blake-c12} & yang-baxter & \ufig[0.48]{pv0-yang-baxter}\\[2pt]
-  cz-slide & \ufig[0.48]{pv0-cz-slide} & semi-CX↑-CZ↓ & \ufig[0.48]{pv0-semi-CXup-CZdn}\\
-\end{tabular}
-\caption{The sixteen rules of \texttt{Paper-V0}'s
-\protect\aid{{\_}SRel,{\_}==={\_}} as circuit equations.  A word is
-drawn left to right as written and read in matrix-multiplication
-order, so in $w \bullet v$ the right factor $v$ acts first
-(\S\ref{sec:encoding}).
-\protect\aid{blake-c12} relates two circuits implementing
-controlled-$Z$; \protect\aid{yang-baxter} and \protect\aid{cz-slide}
-are the swap calculus.}
-\label{fig:rules}
-\end{figure}
-
-\texttt{Paper-V0} shares its alphabet with \texttt{Simplified-V1}, so
-the identity on words is the candidate isomorphism.  Ten of the axioms
-are shared verbatim; the rest is real work in both
-directions.  \texttt{Paper-V0} axiomatises the swap directly and
-two-qupit interactions through \aid{blake-c12} and
-\aid{semi-CX↑-CZ↓}, and from these its \texttt{Lemmas} (4\,750 lines)
-derives Selinger's c10--c15 natively together with the lower-wire
-rules, the two Pauli-versus-$CZ$ rules and the swap--$CZ$ commutation;
-conversely the seven swap rules are proved in \texttt{Simplified-V1} by
-transport along the chain symplectic $\to$ simplified $\to$ semidirect
-$\to$ V1 rather than by fresh derivations.  The module exports \aid{v1⇒pap}, which
-transports any Simplified-V1 theorem into \texttt{Paper-V0}'s theory;
-it is what lets later layers reuse the calculi rather than re-prove
-them.
-
-\paragraph{From our sixteen rules to the paper's fifteen: connecting
-the two routes.}  The paper's Figure~1 spells the multiplier over
-$S$, with an explicit Pauli prefix (its Lemma~2.14): $M_x =
-\aid{SHS'}\;x^{-1}\;x$ where $\aid{SHS'}\;a\;b = Z^{(b-1)/2}
-X^{(1-a)/2} S^{b} H S^{a} H S^{b} H$, and correspondingly states
-\aid{semi-MR} as
-$M_g \bullet S^{g^2} \bullet Z^{(g^2-g)/2} = S \bullet M_g$ (its rule
-C4), the $Z$-exponent being what is left after the $Z^{1/2}$ hidden in
-each $R$ is split off and carried across the multiplier, where it picks
-up a factor of $g$.  \texttt{Paper-V1} is the paper's Figure~1 modulo scalars in
-this spelling: our sixteen rules with \aid{order-H},
-\aid{M-power}, \aid{semi-MR} and \aid{semi-M↑CZ} restated over
-\aid{SHS'}, and \emph{fifteen} rules rather than sixteen, because
-$(SH)^3 = \varepsilon$ is now a theorem.
-Under the $S$-spelling, $M_1$ \emph{is} the word $(SH)^3$ --- at $x = 1$
-the Pauli prefix vanishes --- and \aid{M-power} at $k = 0$ already
-gives $M_1 \approx \varepsilon$; under our $R$-spelling $M_1$ is
-$(RH)^3$, a different word, which is why the axiom had to stay there.
-The isomorphism with \texttt{Paper-V0} is again the identity on words;
-eleven axioms cross directly, and the four multiplier rules need the
-bridge between the two spellings, $R^{a}HR^{b}HR^{a}H \approx
-\aid{SHS'}\;a\;b$, proved once over an abstract relation in
-\texttt{Shared.PauliBase} and transported by \aid{v1⇒pap}.  The result
-is the main theorem, as the index module states it:
+\paragraph{Why the intermediate presentations matter.}
+\texttt{Paper-V0} uses $R=S Z^{1/2}$ to spell multipliers and keeps
+$(SH)^3=\varepsilon$ as an axiom. \texttt{Paper-V1} spells the same
+multipliers over $S$ with a Pauli prefix; in that spelling the
+multiplier law already derives $(SH)^3=\varepsilon$.
+Thus sixteen and fifteen refer to two projective axiom sets with the
+same congruence, not different completeness claims.
+The identity on words transports between them once the multiplier
+identity is proved. Appendix~\ref{sec:presentation-details} gives the
+identities and the complete \texttt{Paper-V0} rule figure.
+None of these changes restarts the symplectic normalization proof.
 
 \begin{theorem}[\aid{clifford-presentation}]\label{thm:main}
 For every width $n$, the paper's fifteen rules, read modulo scalars,
-present the projective Clifford group:
+present the constructed projective Clifford group:
 \begin{code}%
 \>[0]\AgdaFunction{clifford-presentation}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -952,94 +840,48 @@ present the projective Clifford group:
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaPostulate{proof-elided}\<%
 \end{code}
-\noindent Home: \texttt{ProjectiveClifford.Qupit.Paper-V1.Presentation};
+\noindent\normalfont Home: \texttt{ProjectiveClifford.Qupit.Paper-V1.Presentation};
 the same theorem holds for our sixteen rules
 (\texttt{Paper-V0.Presentation}).
 \end{theorem}
 
-\noindent Its content is the diagram
+\noindent The checked statement is
 \[
-  \mathsf{Cir}\;n \,/\, {\approx_{\text{15 rules}}}
-  \;\xrightarrow{\ \sem{\_}\ \cong\ }\;
-  \PPauli \rtimes \Sp \;\cong\; \Cliff/\langle\omega\rangle :
+  \mathsf{Cir}\;n\,/\,{\approx_{\text{15 rules}}}
+  \;\xrightarrow{\;\sem{\_}\;\cong\;}\;
+  \PPauli\rtimes\Sp.
 \]
-\emph{soundness} --- $\sem{\_}$ is well defined, each rule holds
-semantically --- \emph{completeness} --- $\sem{\_}$ is injective,
-semantically equal circuits are related by the rules --- and
-\emph{surjectivity} --- each projective Clifford operator is
-represented by a circuit.  So the paper's
-Figure~1, read modulo scalars, presents the same group as the
-semidirect presentation of \S\ref{sec:semidirect}: the two routes ---
-the paper's single rule set with its projective use of relations, and
-our factored construction --- provably arrive at the same place.  With
-the scalar $\omega$ and its one correction added, the same holds for
-the exact Clifford group (\S\ref{sec:scalars}), and with $-1$ added as
-well, for the paper's Figure~1 as printed (\S\ref{sec:figure1}).
+It includes soundness, completeness, and surjectivity for that target.
+The further identification with a quotient of a unitary group is an
+external mathematical result, not an additional arrow in the checked
+theorem.  The scalar layers below first target the internal presented groups
+\aid{Exact-group} and \aid{Clifford±}; \S\ref{sec:structural} then
+connects them to the structural targets of Table~\ref{tab:targets}.
 
-\subsection{Getting the scalars back}\label{sec:scalars}
+\subsection{Restoring scalar-sensitive equations}\label{sec:scalars}
 
-The Clifford group is a central extension of the projective Clifford
-group by the scalars $\langle\omega\rangle$.  Following the extension
-recipe of \S\ref{sec:constructions}, the projective presentation is
-modified in four moves: add a generator $\omega$; add the relation
-$\omega^{p} = \varepsilon$; add relations that $\omega$ commutes with
-every gate; and \emph{correct} each projective relation by the scalar it
-actually picks up.  In Agda the recipe is instantiated rather than
-spelled out: \aid{extension-presentation} is applied to the cyclic
-relation $\langle \omega \mid \omega^{p} = \varepsilon\rangle$, the
-projective rules, the constant conjugation $\mathit{conj}\;\_\;\_ =
-\omega$, and a correction function that is $\varepsilon$ on every rule
-except \aid{order-SH}, where it is $\omega^{(p^2-1)/8}$.  Reading the
-generators as the paper's matrices, with $H$ normalised by
-$\delta_p$ so that all determinants are one, exactly \emph{one} of the
-sixteen rules fails to hold on the nose: $(SH)^3 = \varepsilon$ picks
-up $\omega^{(p^2-1)/8}$ (cf.\ the phase in the paper's (T1)), which is
-exact division since $8 \mid p^2 - 1$ for odd $p$, and whose residue
-modulo $p$ is $-1/8$ --- so the corrected rule reads
+The exact layer follows the central-extension recipe of
+\S\ref{sec:constructions}: add a central generator $\omega$ of order
+$p$, and attach a scalar correction to each projective relator.
+The correction is trivial except for \aid{order-SH}, which becomes
+$(SH)^3=\omega^{(p^2-1)/8}$.  The division is integral for odd $p$,
+and its residue in $\Zp$ is $-1/8$:
 \begin{center}
   \fitfig[0.5\textwidth]{sc-order-SH}
 \end{center}
-where $1/8$ is the inverse of $8$ in $\Zp$.  Every other rule holds
-exactly: the three multiplier rules and \aid{order-H} because $R = S
-\cdot Z^{1/2}$ has no Pauli part, \aid{blake-c12} because every Pauli in
-it is pure-$Z$, and pure-$Z$ Paulis have vanishing symplectic form.  Note that the quotient here is
-our sixteen-rule set, not the paper's fifteen; the paper's Figure~1,
-which writes its scalars with $-\omega$, is reached in
-\S\ref{sec:figure1} by an isomorphism rather than by a second
-extension.
+These corrections are verified using the algebraic phase function
+described below.  They concern \texttt{Paper-V0}'s sixteen-rule
+presentation.  The original rules, whose multiplier definitions and
+scalar generator have different spellings, are reached by a further
+translation in \S\ref{sec:figure1}.
 
-\paragraph{The unitary identification.}
-Write $V=\Zp^{2n}$ and $\omega=e^{2\pi i/p}$.  Gross's Weyl
-operators satisfy $W(v)W(w)=\omega^{\frac12\mathrm{sform}(v,w)}
-W(v+w)$, after matching the order of the position and momentum
-coordinates~\cite[\S II.1, Eq.~(4)]{gross2006hudson}.
-Every Clifford unitary is, up to phase, a Weyl operator followed by
-a symplectic implementer~\cite[Theorem~3]{gross2006hudson}.
-For finite fields of odd characteristic those implementers can be
-chosen as a \emph{linear} Weil representation $\rho$, with exact
-covariance $\rho(S)W(v)\rho(S)^{-1}=W(Sv)$
-\cite[Theorem~1.3.2]{gurevich2007geometric}.
-Thus, writing $U(e,v,S)=\omega^e W(v)\rho(S)$, one obtains
-\[
- U(e,v,S)U(f,w,T)
- =U\bigl(e+f+\tfrac12\mathrm{sform}(v,Sw),\,v+Sw,\,ST\bigr).
-\]
-This is the Heisenberg--Weil representation of the Jacobi group
-\cite[\S 1.3]{gurevich2010bounds}, and its multiplication is exactly
-our structural extension's.  For $n\geq1$ it is faithful: conjugation
-on Weyl operators determines $S$ and then $v$, and the remaining
-scalar determines $e$.  Its scalar subgroup is therefore exactly
-$\langle\omega I\rangle$; at width zero the representation is simply
-$e\mapsto\omega^e$.
-Adjoining $-I$ gives a direct product with $\mathbb Z_2$, since $p$ is
-odd, with scalar subgroup $\langle-\omega I\rangle$.
-These are the two finite scalar conventions used here; the full
-unitary normalizer allows every scalar in $U(1)$.
-The representation argument is mathematical background, not an Agda
-theorem.  Matching the paper's particular $\delta_p$-normalised gate
-matrices to this linearization is a further convention check; explicit
-constructions on symplectic generators are given by
-Neuhauser~\cite{neuhauser2002metaplectic}.
+The structural extension has a mathematical interpretation through Weyl
+operators and a linear Weil representation
+\cite{gross2006hudson,gurevich2007geometric}.
+Appendix~\ref{sec:matrix-background} records this external argument.
+Matching the named gates to their specified matrices and phases is a
+separate obligation; none of the presentation theorems below assumes
+that match has been verified.
 
 \paragraph{The semantic side.}  A central extension of a group $Q$ by
 an abelian group $K$ is determined by a 2-cocycle $c : Q \times Q \to
@@ -1059,8 +901,9 @@ by which the lifts of $a$ and $v$ fail to compose, together with the
 proof that this descends to the quotient and assigns each relator the
 same correction on both sides.  The generator data is obtained by pulling
 the Weyl cocycle back along the projective presentation theorem, so the
-two cocycles agree by construction.  The theorem, again on no hypothesis,
-is
+generated cocycle agrees with that pullback by the checked lemma
+\aid{agree}. Section~\ref{sec:structural} uses this agreement to build
+an isomorphism of the total groups.  With the prime and primitive-root parameters fixed, the theorem is
 
 \begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
 \begin{code}%
@@ -1093,7 +936,9 @@ an explicit phase function on circuits, discharged by Pauli arithmetic,
 by a one-wire calculus that reads a circuit as a triple (Pauli, $2
 \times 2$ symplectic matrix, phase) with an explicit concatenation law,
 and, for \aid{order-SH}, by the number-theoretic fact that the residue
-of $(p^2-1)/8$ is $-1/8$.  The extension is provably non-split.  This
+of $(p^2-1)/8$ is $-1/8$.  The lemma \aid{split-forces} checks that the trivial cocycle with
+trivial gate lifts would force this correction to be trivial; it is not
+a theorem ruling out every possible splitting of the extension.  This
 is the formal counterpart of the paper's remark before its Theorem~4.10
 that a complete rule set for $\langle\omega\rangle$ ``only needs
 $\omega^{d} = 1$'', with the one non-trivial correction computed and
@@ -1101,8 +946,8 @@ checked.
 
 \subsection{The paper's Figure~1, scalars included}\label{sec:figure1}
 
-The exact group of \S\ref{sec:scalars} does not contain $-1$: its
-scalars $\langle\omega\rangle$ have odd order $p$.  The paper's
+The scalar kernel of the exact group in \S\ref{sec:scalars} has
+odd order $p$, so it contains no scalar sign of order two.  The paper's
 Figure~1, however, is stated over $-\omega$, $H$, $S$, $CZ$, and its
 derived generators need $-1$: the multiplier $M_a$ (its (T1)) carries
 the Legendre symbol $(\frac{a}{p}) = \pm 1$ besides a power of $\omega$,
@@ -1115,7 +960,7 @@ the join of \S\ref{sec:constructions}: the rule set
 \aid{{\_}Exact±,{\_}==={\_}} is the exact one $\oplus$ the cyclic relation
 $(-1)^2 = \varepsilon$, and the direct-product theorem gives
 \aid{clifford±-presentation} onto $\aid{Clifford±}\;n$, the exact group
-times $\mathbb Z_2$, on no hypothesis.
+times $\mathbb Z_2$, with the same module parameters.
 
 Figure~1 itself is formalised as printed: $-\omega$ is a gate on no
 wires, $\nu$, whose centrality is the theorem \aid{comm₀} of the
@@ -1144,31 +989,8 @@ rule's own scalar there; and the presentation theorem reads a power of
 $-\omega$ off as its exponents modulo $p$ and modulo $2$, which pins
 $a$ down and rebuilds the scalar in Figure~1.
 
-\begin{theorem}[\aid{figure1-presentation}]\label{thm:figure1}
-For every width $n$, the paper's Figure~1, its sixteen rules over
-$-\omega$, $H$, $S$, $CZ$, presents the Clifford group with its scalars
-$\pm\omega^t$:
-\begin{code}%
-\>[0]\AgdaFunction{figure1-presentation}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaSymbol{∀}\AgdaSpace{}%
-\AgdaBound{n}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
-\AgdaOperator{\AgdaPostulate{F,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
-\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaPostulate{Clifford±}\AgdaSpace{}%
-\AgdaBound{n}\AgdaSymbol{)}\<%
-\end{code}
-\begin{code}[hide]%
-\>[0]\AgdaFunction{figure1-presentation}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaPostulate{proof-elided}\<%
-\end{code}
-\noindent Home: \texttt{Clifford+MinusOne.Qupit.Figure1.Presentation}.
-\end{theorem}
-
-\noindent This is the paper's Theorem~4.10, against our constructed
-group rather than the unitaries.  The index module states it together
-with \aid{clifford±-presentation} and the exact presentation, which it
-calls \aid{exact-clifford-presentation}.
+The existing \aid{presentation-Figure1} theorem therefore presents
+the internal group \aid{Clifford±}. Its interpretation is the checked
+translation of $-\omega$ to $-1\cdot\omega$ followed by the presentation
+with the sign adjoined. The next step removes the remaining word-group
+components from that target.

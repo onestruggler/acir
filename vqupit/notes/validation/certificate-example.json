@@ -1,0 +1,40 @@
+{
+  "prime": 3,
+  "width": 2,
+  "seed": 2027,
+  "enumerated_projective_values": 2440,
+  "trial": 158,
+  "input": [
+    "S1",
+    "CZ",
+    "H1",
+    "H0",
+    "H1",
+    "CZ",
+    "S1",
+    "S0",
+    "H0",
+    "CZ",
+    "S0",
+    "H0"
+  ],
+  "output": [
+    "S0",
+    "S0",
+    "S1",
+    "H1",
+    "H1",
+    "CZ"
+  ],
+  "input_phase": 1,
+  "output_phase": 0,
+  "correction": 1,
+  "gate_counts_excluding_scalar": [
+    12,
+    6
+  ],
+  "cz_counts": [
+    3,
+    1
+  ]
+}

@@ -1,0 +1,104 @@
+\section{Circuit Equations and the Proof Interface}\label{sec:framework}
+
+The framework~\cite{bian2026framework} represents a circuit language by
+a family of gates indexed by arity.  A generator is a gate on the bottom
+wires or a generator shifted up one wire; a circuit of width $n$ is a
+word over these generators.  Words have constructors $[g]^{\mathsf w}$,
+$\varepsilon$, and $u\bullet v$ for a gate, identity, and composition.
+Wire counts in the types rule out out-of-bounds placements.  Words are
+drawn left to right as written, with the right factor acting first.
+The operation $c\,{\uparrow}$ shifts every gate up one wire.
+
+\paragraph{From equations to derivations.}
+A rule set is an inductive family $\Gamma_n(u,v)$, written
+$n\;\aid{SRel,}\;u\;\aid{===}\;v$ in the code.  It contains the
+gate-specific equations.  The library adds structural rules for shifting
+equations and commuting gates on disjoint wires.  A zero-wire scalar
+also has a rule identifying it with its shift.  The resulting raw
+relation generates a monoid congruence $\approx$, closed under
+reflexivity, symmetry, transitivity, composition, associativity, and
+the unit laws.  A proof of $u\approx v$ is therefore an explicit
+equational derivation, not a test of semantic equality.  The relation
+$\aid{===}$ and its congruence $\approx$ remain distinct throughout.
+
+\paragraph{The presentation contract.}
+For a group $G$ with equality $\doteq$, a theorem
+$\Gamma\;\aid{IsPresentationOf}\;G$ supplies an interpretation
+$\sem{\_}$, inverses for the presented generators, and a group
+isomorphism.  In particular, it establishes
+\[
+  u\approx v\quad\Longleftrightarrow\quad
+  \sem{u}\doteq\sem{v},
+  \qquad
+  \forall x\in G.\;\exists u.\;\sem{u}\doteq x.
+\]
+The forward implication is soundness, the reverse is completeness, and
+the last property is expressiveness.  The semantic target matters:
+defining $G$ to be the same word quotient would not establish a connection
+to an independently specified semantics.
+
+\begin{table}[t]
+\caption{Semantic targets of the checked presentation chain.
+$V=\Zp^{2n}$, $J_p(n)$ is the structural Weyl extension defined in
+\S\ref{sec:structural}. Equality of symplectic maps is extensional.}
+\label{tab:targets}
+\centering\small
+\begin{tabular}{@{}p{0.25\textwidth}p{0.34\textwidth}p{0.34\textwidth}@{}}
+\toprule
+Circuit equations & Algebraic interpretation & Equality retained \\
+\midrule
+Symplectic rules & $\Sp$ & Symplectic action \\
+Projective rules & $V\rtimes\Sp$ & Action and Pauli correction \\
+Exact rules over $\omega$ & $J_p(n)$ &
+Action, Pauli correction, and phase \\
+Original rules over $-\omega$ & $J_p(n)\times\mathbb Z_2$ &
+The above and a scalar sign \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The last two interpretations pass through presented extensions
+internally; Theorem~\ref{thm:structural} removes their word-quotient
+components from the semantic endpoint. No row asserts equality of
+complex matrices. That further correspondence must preserve the
+interpretation of each named gate, not just the abstract group.
+
+\paragraph{Normal forms through coset tables.}
+One way to discharge this contract is to compute a normal form
+$\mathit{nf}:\mathsf{Circuit}\;n\to\NF_n$ and a circuit
+$[u]$ for each normal form, with $c\approx[\mathit{nf}(c)]$.
+If equal denotations imply equal normal forms, soundness then gives
+completeness.  The library constructs such normalizers one wire at a
+time.  A coset table takes a representative $c$ and a generator $g$ and
+returns a residual word $b'$ on fewer wires and a new representative
+$c'$, together with a derivation
+\[
+  [c]\bullet[g]^{\mathsf w}\approx b'\,{\uparrow}\bullet[c'].
+\]
+Iterating the table traverses a word; iterating the construction over
+the width builds a coset tower.  The table must also respect the axioms:
+equivalent inputs give equal representative labels and congruent
+residuals.  This well-definedness obligation is the key proof problem
+in \S\ref{sec:pushing}.
+
+Appendix~\ref{sec:permutations} illustrates this interface for swaps.
+In the symplectic case the representatives encode the action on a
+two-dimensional wire space.
+
+\paragraph{Composition and translations.}
+The other library interface combines presentations by adding interaction
+laws. In a semidirect product, these move an acting generator past a
+normal-subgroup generator by conjugating it. In a central extension,
+each quotient relator additionally receives a scalar correction.
+A change of presentation supplies word-valued maps in both directions,
+preservation of axioms, and inverse laws modulo congruence.
+Appendix~\ref{sec:constructions} gives the generic signatures; these
+constructions are dependencies rather than contributions of this paper.
+
+\paragraph{Reading the Agda excerpts.}
+Most excerpts abbreviate parameters and omit proofs; their literate
+sources contain hidden postulates and are scope-checked for typesetting.
+Check the actual safe implementations through \texttt{MainTheorems.agda},
+which restates their full signatures. The new structural and client
+excerpts in \S\ref{sec:structural} are also fully typechecked, without
+postulates. Module paths omit the prefix \texttt{Examples.Groups}.

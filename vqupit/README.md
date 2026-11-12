@@ -1,256 +1,140 @@
-# "Verified Generators and Relations for Qupit Clifford Operators" — draft
+# Compositional Verification of Qupit Clifford Circuit Equations
 
-Generated 2026-09-04 from `local/vqupit-paper-prompt.md`, the QPL 2026
-slides (`qpl26slides/`), the qupit paper (`local/ref-docs/qudit-quantum-july-9.pdf`),
-the framework paper (`local/ref-docs/popl27-paper911.pdf` = `paper/`), and
-a survey of the repository at commit `db998e6` (see `notes/`).
+PLDI 2027 submission draft, revised after the mock review on
+12 November 2026.
 
-## Target venue
+The paper explains the Agda formalization announced by the qupit
+presentation, distinguishing it from the companion generic framework.
+The central proof technique uses semantic head injectivity and
+completeness one width below to certify the next coset table.
 
-See `notes/venues.md`.  Recommendation: **OOPSLA 2027 Round 1 (deadline
-14 October 2026)**, fallback **PLDI 2027 (12 November 2026)** — both
-CCF-A and TH-CPL-A, both PACMPL (`acmart` `acmsmall`), so this source
-builds for either.  LICS 2027 is the best topical fit if a shorter
-version is wanted.
+This revision also strengthens the formalization:
 
-## Files
+- Qupit-Clifford.Structural identifies the presented scalar extension
+  with the independently defined structural Weyl group.
+- Clifford+MinusOne.Qupit.Figure1.Structural carries the original
+  sixteen-rule presentation to that structural group times the sign.
+- Qupit-Clifford.Certificate certifies phase repair: a projectively
+  valid replacement becomes an exact derivation with the computed
+  scalar correction.
+- Qupit-Clifford.CertificateExample checks a complete two-qutrit
+  replacement: twelve gates become six, three CZ gates become one,
+  and the certificate retains a computed nonzero scalar correction.
+- Symplectic.Normalization.Computations evaluates nine closed
+  normalizer equalities at primes 3, 5, and 7.
 
-- `main.tex` — acmart driver (`acmsmall,review,anonymous`; PACMPL
-  metadata; author block with the four authors, suppressed by
-  `anonymous`; the `\aid{…}` inline-code macro; circuit figure macros
-  `\fitfig`/`\ufig` shared with the slides, and `\ufigT`, which applies
-  the scale to the coordinates but not to the label text).  Drop `anonymous` for the
-  camera-ready, and restore the three anonymised self-citations in
-  `refs.bib` (`qupit-code`, `bian2026framework`, `vqupit-code`; the
-  original fields are kept in comments next to each).
-- `sections/*.tex` and `sections/*.lagda.tex` — one file per section
-  (plus `constructions`, §2's last subsection), `\input` from
-  `main.tex` in this order: `abstract`, `intro` (PL
-  framing, method first, contributions), `permutations` (§2, "An
-  Introduction to the Framework": the worked example from the
-  framework paper, `popl-revision1` §2 — the swap circuits presenting
-  $S_n$: gates, relations, the coset table, semantics) and
-  `constructions` (§2's last subsection, "Products of presentations,
-  and their presentation theorems", from that paper's §4.6 without the
-  amalgamated products), `two-routes` (§3, "Qupit Clifford Operators
-  and Two Routes to Completeness": the qupit gates and the groups the
-  semantics is built from; §3.2, the encoding on three examples with
-  the Agda beside the circuit picture — the swap as a word, two
-  constructors of the rule family, a five-step derivation — as in the
-  five-page version's §2; then the paper's proof, where ours follows
-  it and where it departs, and our route), `symplectic` (§4: the
-  circuit syntax and parameters, then semantics, the normal form with
-  its boxes, the coset table, uniqueness with the theorem `unique-nf`,
-  relation reduction, and the presentation theorem
-  `simplified-presentation`), `composing` (§5: Pauli, semidirect,
-  plumbing with the rules figure and the main theorem
-  `clifford-presentation`, scalars, and §5.5, the paper's Figure 1
-  with its scalars — −1 adjoined as a direct factor, the exchange of
-  scalar generators −ω ↦ −1·ω, and Theorem 5.2 `figure1-presentation`), `discussion` (§6), `related`
-  (§7), `conclusion` (§8).  There is no longer a section of main
-  theorems: each is stated where it is proved.  The five literate Agda
-  files (`*.lagda.tex`) — `permutations`,
-  `constructions`, `two-routes`, `symplectic`, `composing` — quote Agda as in
-  `paper/`: `make agda` runs `agda --latex --only-scope-checking` on them from
-  the repository root and writes `latex/vqupit/sections/<name>.tex`,
-  which `main.tex` inputs, so every identifier is coloured by kind
-  (`agda.sty`, Agda's own style file, copied from `paper/`).  Each
-  literate file starts with a hidden block (`\begin{code}[hide]`) that
-  postulates the names its snippets use, so the snippets need not
-  match the library's types, only its names; a snippet that shows a
-  type signature without its body is followed by a hidden
-  `name = proof-elided`.
-- `figures/*.tikz` — the 210 circuit pictures of the slides, copied
-  verbatim from `qpl26slides/latex/figures/` (generated by Cir2Tikz and
-  hand-adjusted there; do not edit here), plus `fig3_staircase.tikz`
-  from the framework paper (`popl-revision1:paper/figures/`);
-  `ex-word.tikz` is currently unused.  One exception to "do not edit
-  here": the eight pushing pictures `push1-l` … `push4-r` of Figure 1
-  have their labels b, c, b′, c′ moved clear of the box tops (and their
-  bounding boxes extended) so that they stay legible when the text is
-  not scaled, and they and `ract-l`/`ract-r` are included with `\ufigT`
-  rather than `\ufig`.  `circuits.tikzstyles` is the
-  shared style file.
-- `refs.bib` — `paper/refs.bib` plus the entries this paper adds
-  (`bian2026qudit`, `bian2026supplement`, `makary2021realstabilizer`,
-  `amy2018cnotdihedral`, `amy2024toffolihadamard`,
-  `clement2024extensions`, `blake2026polycontrolled`,
-  `blake2026phaseaffine`, `vqupit-code`, …).  Entries marked
-  `%% VERIFY-DETAIL` need a detail checked before camera-ready.
-- `agda-style.sty` — the Unicode tables for running text and `\aid{}`
-  (plus a `listings` fallback that the literate sections no longer
-  use).  If you add a Unicode character to an `\aid{}`, add it to the
-  `\DeclareUnicodeCharacter` table; characters inside `code` blocks are
-  handled by Agda's LaTeX backend.  `perl notes/qa.pl` checks labels,
-  citations and figure files.
-- `agda.sty` — Agda's style file for the rendered code (from `paper/`).
-- `latex/vqupit/sections/*.tex` — generated by `make agda`; rebuild
-  after editing any `*.lagda.tex`.
-- `notes/` — `venues.md` (venue survey), `survey-*.md` (the verified
-  fact base the method sections were written from, with file:line
-  references into the Agda), `qa.pl`.
+These results are indexed in MainTheorems.agda. The new literate
+results section uses actual checked theorem aliases without postulates.
+The complex-matrix interpretation and a full-circuit equivalence search
+procedure remain outside the artifact.
 
-## Building
+## Manuscript layout
 
-**Status (2026-10-04): builds clean, 28 pages** — TeX Live 2023
-(Ubuntu 24.04 packages) and Agda 2.8.0, in a container: the
-bibliography starts near the top of page 26, about 25.2 pages of text
-against the 23-page OOPSLA/PLDI limit, with zero errors, zero undefined
-references or citations and no overfull box over 3 pt.  The same
-toolchain builds the previous revision (below) to 27 pages with the
-bibliography on page 24, so the 2026-10-04 revision costs about a page
-and a quarter of text: it adds §5.5, *The paper's Figure 1, scalars
-included* — the exact group has no −1, the paper's group is the exact
-group times ⟨−1⟩, presented by the join with (−1)² = ε
-(`clifford±-presentation`), and Figure 1 itself, over −ω with its
-Legendre symbols and phases, presents the same group by the exchange of
-scalar generators (Theorem 5.2, `figure1-presentation`, the paper's
-Theorem 4.10 against the constructed group) — together with two boxes
-and arrows at the top of the chain figure, the matching sentences in
-the abstract, the introduction (contribution (4)), §3.1, §3.5, §5's
-opening and §5.4, the list of verified theorems and glue facts in §6.1,
-a row of Table 3 (`Clifford+MinusOne/Qupit`, 20 files, 7 138 lines),
-the AI-use statement and the conclusion.  `two-routes` and `composing`
-were regenerated with `agda --latex --only-scope-checking` (Agda 2.8.0),
-and their twins differ from the previous ones only where the sources
-were edited.
+- Sections 1–2: contribution boundary, presentation contract, and a table
+  identifying the semantic target at each layer.
+- Section 3: qupit gates, circuit derivations, and semantic dependencies.
+- Section 4: the coset normalizer, semantic well-definedness argument,
+  uniqueness, and symplectic presentation.
+- Section 5: Pauli composition, scalar extension, structural bridge,
+  and the phase-repair certificate client.
+- Section 6: proof-obligation comparison, validation, execution checks,
+  development size, remaining limits, and AI Use.
+- Sections 7–8: related work and conclusion.
+- Data-Availability Statement and references.
+- Appendices: permutation example; generic composition interface;
+  detailed projective presentation variants and the rule figure;
+  external matrix representation background; source inventory.
 
-**Status: builds clean; about half a page over the limit** — the
-2026-10-01 build (TeX Live 2023 and Agda 2.8.0 in WSL) gives 27 pages
-in `acmsmall,review,anonymous` mode, the bibliography starting in the
-middle of page 24 (so about 23.5 pages of text against the 23-page
-OOPSLA/PLDI limit), with zero errors, zero undefined references or
-citations and no overfull box over 3 pt; the new §3.2 (the three
-examples) costs about a third of a page, and the two one-line theorem
-statements `Theorem-LM` and `presentation-exact` are set at footnote
-size so that they fit the line.  The 2026-09-28 scratch build gave 26
-pages, the bibliography starting near the top of page 24 (about 23.2
-pages of text).  The previous 2026-09-18
-revision built with `make` (Agda on the literate sections, then
-`latexmk -pdf main.tex`) to 26 pages (23 pages of text, the
-bibliography starting on page 24), zero errors, zero undefined
-references or citations, no overfull box over 8 pt (verified 2026-09-18
-with Agda 2.8 at `/home/bonest/.local/bin/agda` and a user-local TeX
-Live 2026 in WSL, `/home/bonest/texlive/bin/x86_64-linux`).  The OOPSLA/PLDI limit is
-23 pages excluding references.  The 2026-09-18 revision refocused the
-paper for OOPSLA (method and PL framing first), restructured it into
-ten sections, replaced the framework recap by a two-page version, added
-the wreath-product warm-up, and dropped the second rules figure, the
-simplified-rules figure and most record listings to fit.  The
-2026-09-28 revision replaced that framework recap and the two warm-up
-examples (old §4–§5) by the framework paper's worked example of
-permutation circuits with its product constructions (§4), and added the
-third main theorem, the symplectic presentation, to §2 (§2.4), giving
-the nine sections above.  The same day the abstract, introduction, §3
-and conclusion were reworded to say where the formalisation follows
-the paper's proof (the symplectic factor: boxes, normal form, box
-relations and their reduction) and where it departs from it (the
-boosting step), in place of the earlier blanket "does not follow the
-paper's proof".  The worked example was then moved to just after the
-introduction and retitled "An Introduction to the Framework" (§2, with
-the constructions as §2.5), so that the main theorems (§3) and the
-comparison of routes (§4) can refer back to it; the text's own figure
-of the rules is now Figure 2, and every "Figure 1" in the text names
-the qupit paper's.  §2.4 ("Semantics, uniqueness, and completeness")
-then lost its loose semantics into endofunctions of `Fin n` and keeps
-only the permutation semantics, the one the presentation record is
-stated for.  The abstract was cut from about 410 words to 240,
-keeping the result, the follows/departs statement, the
-factor-present-compose method and the trust statement, and dropping
-the rule counts, the internal structure of the normal form, the
-isomorphism of presentations, the cocycle and the line counts (all of
-which the introduction and §7 still give).  Then contribution (1), the
-method-and-comparison item, was removed; so were the parenthetical on
-reading order in §2.1 and the paragraph in §2.3 listing the five
-hypotheses of the Reidemeister–Schreier engine (§5 now names them
-itself where it discusses `h-wd-ax`); and the labels of the
-coset-table pictures, previously scaled down to about 2.5 pt, were
-made legible (`\ufigT`, above).  §2.4 was then shortened to the
-semantics, the uniqueness idea, the completeness lemma and the
-presentation record, and now quotes the record `_IsPresentationOf_`
-itself (three fields; the module plumbing between them elided, and
-`IsGroupIsomorphism` postulated in the hidden block, so the literate
-file defines the record rather than importing it).  §2.5 was
-shortened in the same way, to the join primitive, the semidirect
-theorem with its two hypotheses and the extension recipe, its prose
-halved (the displayed list of presentation statements, the lemma
-inventory and the plumbing remarks went).  Finally the section of
-main theorems (old §3, `background.lagda.tex`, deleted with its twin)
-was dissolved: the qupit gates, Table 1 and the three quotients open
-the two-routes section (now §3, retitled), the circuit syntax and the
-parameters open §4, the boxes A/B/D/E sit in §4.2, `unique-nf` is
-stated in §4.4 and `simplified-presentation` in §4.6 with a note on
-`_SRel,_===_`, and the sixteen-rule figure and `clifford-presentation`
-(stated for the paper's fifteen rules, as in `MainTheorems`) sit in
-the plumbing subsection §5.3; theorems are numbered by section.  A
-scratch build of that revision (TeX Live 2023 and Agda 2.8.0 in a
-container, 2026-09-28) gave 26 pages, the bibliography starting near
-the top of page 24, i.e. about 23.2 pages of text — a fifth of a page
-over the 23-page limit — with zero errors, zero undefined references and no overfull
-box over 8 pt.
+The paper uses acmart with
+**acmsmall,screen,review,anonymous,nonacm**. The main text must fit within
+**20 pages**, including AI Use. The Data-Availability Statement,
+references, and appendices are excluded. See the
+[PLDI 2027 call](https://pldi27.sigplan.org/track/pldi-2027-papers).
+The revised PDF has 20 pages of main text and 29 pages overall.
 
-```
-make                                   # from a WSL shell in this directory
-wsl bash -lc "make -C /mnt/d/work/acir/vqupit"   # from PowerShell
-```
+## Sources and generated files
 
-The generated twins of the five literate sections
-(`latex/vqupit/sections/{permutations,constructions,two-routes,symplectic,composing}.tex`)
-were regenerated on 2026-10-01 with Agda 2.8.0 and agda-stdlib 2.4
-(`agda --latex --only-scope-checking`, run from the repository root as
-`make agda` does), so all five literate files are known to scope-check
-against the library on this branch.  (On a machine whose Agda package
-lacks its `agda.sty`, the backend fails copying it into `latex/`; put
-a copy of `agda.sty` at `latex/agda.sty` first — it is gitignored.)
+Edit main.tex, sections/*.tex, sections/*.lagda.tex, and refs.bib.
+The six literate sections generate latex/vqupit/sections/*.tex;
+do not edit those generated copies. The PDF and generated LaTeX are
+tracked in this branch.
 
-The 2026-10-01 revision ported the improvements made to the five-page
-version (`../vqupit-short`) back here: §3.1 says the Clifford
-generators come with the phases ω^t, states δ_p = i^{(p−1)/2} through
-the determinants, and notes the qupit paper's −1 among the global
-phases; a new §3.2 shows the encoding on three examples (code beside
-picture; `two-routes` became a literate file for it); §4.3 quotes the
-coset table's two signatures `ract`/`ract-sound` as code; §4.6 states
-`simplified-presentation` over `_QRel,_===_`, the closure, as
-`MainTheorems` does, and says so; §5.3 calls the Clifford family by its
-name in the code, `_SRel,_===_`, and Theorem 5.1's reading adds
-surjectivity; the AI-use statement names what Claude did; and the
-eight combined rule pictures and `sc-order-SH-r` were synced from the
-five-page version (equal signs at one size; the correction drawn as
-ω^{−1/8}).
+Most excerpts abbreviate module parameters and contain hidden
+postulates. They are scope-checked for typesetting, not theorem
+implementations. The exception is sections/results.lagda.tex, which
+contains safe, fully typechecked aliases of the new results.
+Check the library through MainTheorems.agda and the new excerpt
+separately as below.
 
-`make` reruns latexmk only when `main.tex`, `sections/*.tex`, `figures/*.tikz`,
-`refs.bib` or the style files changed; `make png` renders the pages to `png/`
-for a quick look; `make clean` / `make cleanall` tidy up.  (`make` and
-`gs` are user-local installs in `~/.local/bin`; TeX Live is in
-`~/texlive`, which the Makefile puts on the PATH itself.)
+The script notes/stats.py counts retained .agda sources, including
+blank lines and comments, excluding the external standard library
+and literate sections. The revised snapshot has 247 files and 76,439
+lines. Earlier notes/survey-*.md counts describe historical snapshots.
 
-Debian/Ubuntu packages: `texlive-latex-recommended texlive-latex-extra
-texlive-fonts-recommended texlive-fonts-extra texlive-publishers
-texlive-pictures texlive-science texlive-plain-generic latexmk`.
+## Build and validate
 
-## Relation to the Agda code
+Use WSL Agda 2.8.0 and standard library 2.4, registered in
+~/.agda/libraries. Only standard-library is required.
+From PowerShell at the repository root:
 
-- Every Agda snippet is quoted from the repository (branch `qupit`,
-  commit `db998e6`); a few are lightly abbreviated for the page (module
-  qualifiers elided, `XMg` written `Mg`), and the text says so where it
-  matters.  `notes/survey-*.md` records the source file and line of each.
-- `MainTheorems.agda` restates `unique-nf`, `simplified-presentation`,
-  `v1-presentation` and `clifford-presentation`; it typechecks with
-  `wsl --exec ~/.local/bin/agda MainTheorems.agda` (26 s from cache on
-  2026-09-04).  `Examples/Groups/Qupit-Clifford/Presentation.agda`
-  (`presentation-exact`) is not reached from that root and was checked
-  separately (5 m 50 s with the chain's interfaces cached).
-- Counts used in the paper: full symplectic rules 17 (+3 structural),
-  simplified 15 (+3 = 18), Simplified-V1 19, Paper-V0 16, Paper-V1 15;
-  box-relation case tables 42 in nine families (the paper's 42, its
-  Figures 15-21); line
-  counts in `sections/discussion.tex` Table 2 (`wc -l`, 2026-09-04).
+~~~powershell
+wsl --exec agda +RTS -M5G -c -RTS MainTheorems.agda
+wsl --exec agda +RTS -M5G -c -RTS vqupit/sections/results.lagda.tex
+wsl --exec make -B -C vqupit agda
+wsl --exec make -C vqupit
+wsl --exec python3 vqupit/notes/stats.py
+~~~
 
-## Things the authors should decide or check
+Run Agda sequentially. To reproduce the isolated fresh-project check:
 
-1. Author affiliations/emails in `main.tex` (Yuan Feng's email is a guess).
-2. The claim in the introduction and abstract that the paper's
-   derivations run to "roughly a hundred pages" (main text appendices
-   30–74 plus the supplement).
-3. Whether to keep §"On the use of a language model" in the Discussion.
-4. The `%% VERIFY-DETAIL` bib entries and `bian2026qudit`'s venue once known.
+~~~powershell
+wsl --exec python3 vqupit/notes/check-artifact.py
+~~~
+
+The script copies project sources to a temporary Linux directory without
+project interfaces and checks MainTheorems.agda with a 5 GiB compacting
+heap. Installed standard-library interfaces are retained. If the heap
+is exhausted, it checks the interrupted module separately and retries
+the root, recording each attempt. It does not remove the checkout's
+interfaces. Results and source fingerprint are written to
+notes/validation/fresh-check.json; raw process logs are also written
+there. The recorded run succeeded in one process: 442.867 seconds,
+3,838,972 KiB peak RSS (3.66 GiB), on an i5-13400TEF under WSL2.
+This is a build measurement, not a normalizer runtime benchmark.
+
+After building, inspect main.log for errors, undefined citations and
+references, and overfull boxes; render and visually inspect the PDF.
+The nine execution checks are reflexivity proofs in the normalization
+module, not uses of the corresponding circuit axioms.
+
+## Remaining author work
+
+The Data-Availability Statement records the intention to submit the
+artifact for evaluation if accepted. PLDI also requests anonymized proof
+scripts with the initial submission. Prepare and inspect that archive:
+the checkout contains authors in the suppressed author block,
+bibliography comments, and historical documentation. An anonymous PDF
+does not anonymize its sources.
+
+The introduction and related work acknowledge that version 2 of the
+qupit preprint already announces scalar-sensitive verification and
+refers to the companion formalization account. Review the contribution
+boundary and publication status across both companion manuscripts;
+include any manuscript described as supplementary material.
+
+Review the new theorem statements, intended gate conventions, and
+updated AI Use disclosure. The algebraic bridge is now checked; a
+gate-preserving correspondence to the specified complex matrices is
+still a substantive research task, as is a packaged full-circuit
+equivalence procedure. The cited bibliography entries with missing metadata have been repaired;
+notes/validation/bibliography-audit.json records the sources and corrections.
+
+notes/submission-abstract.txt contains the copy-ready abstract.
+Private submission administration and conflict notes are kept locally
+and excluded from version control.
+
+notes/freeze.py creates a hashed private snapshot beside the checkout;
+its local notes/validation/freeze-manifest.json records the archive and
+included file hashes. The snapshot contains author identities and is
+not an anonymous proof supplement. Conference submission and reviewer
+registration are separate from publishing this repository.

@@ -1,0 +1,82 @@
+{
+  "checked_utc": "2026-11-12",
+  "scope": "Missing metadata in cited entries; not a new audit of every unused bibliography entry.",
+  "checks": {
+    "lehmann2026vyzx": {
+      "source": "https://arxiv.org/abs/2311.11571v4",
+      "change": "Replace unverified TOPLAS 2025 claim by version-4 preprint dated 8 April 2026; include William Spencer."
+    },
+    "carette2024squareroots": {
+      "source": "https://homes.luddy.indiana.edu/sabry/files/2024/01/popl24main-p89-p-a8d84f909f-73053-final.pdf",
+      "change": "Article 19, 29 pages, DOI 10.1145/3632861."
+    },
+    "kharim2023freegroups": {
+      "source": "https://link.springer.com/chapter/10.1007/978-3-031-42753-4_11",
+      "change": "Pages 158-173; retain publisher-listed initials T. V. H.; publisher and DOI."
+    },
+    "clement2023complete": {
+      "source": "https://api.crossref.org/works/10.1109/LICS56636.2023.10175801",
+      "change": "Publisher-deposited metadata: IEEE, pages 1-13, DOI."
+    },
+    "poor2023travaganza": {
+      "source": "https://cgi.cse.unsw.edu.au/~eptcs/paper.cgi?QPL2023.13.pdf",
+      "change": "EPTCS 384, pages 220-264, DOI."
+    },
+    "selinger2015clifford": {
+      "source": "https://lmcs.episciences.org/1570/pdf",
+      "change": "Pages 1-17 and DOI."
+    },
+    "jeandel2018zx": {
+      "source": "https://radar.inria.fr/rapportsactivite/RA2018/mocqua/mocqua.pdf",
+      "change": "Pages 559-568 and DOI; ACM publisher metadata."
+    },
+    "booth2022qupitzx": {
+      "source": "https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.MFCS.2022.24",
+      "change": "Publisher, address and DOI from publisher BibTeX."
+    },
+    "blake2026polycontrolled": {
+      "source": "https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.MFCS.2026.6",
+      "change": "Publisher and address from publisher BibTeX."
+    },
+    "clement2024extensions": {
+      "source": "https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CSL.2024.20",
+      "change": "Publisher and address."
+    },
+    "chareton2021qbricks": {
+      "source": "https://link.springer.com/chapter/10.1007/978-3-030-72019-3_6",
+      "change": "Publisher, address and DOI."
+    },
+    "gonthier2013oddorder": {
+      "source": "https://link.springer.com/chapter/10.1007/978-3-642-39634-2_14",
+      "change": "Publisher, address and DOI."
+    },
+    "paykin2017qwire": {
+      "source": "https://doi.org/10.1145/3009837.3009894",
+      "change": "Publisher, address and DOI."
+    },
+    "mathlib2020": {
+      "source": "https://leanprover-community.github.io/papers/mathlib-paper.pdf",
+      "change": "Publisher, address and DOI."
+    },
+    "holt2005handbook": {
+      "source": "https://www.routledge.com/Handbook-of-Computational-Group-Theory/Holt-Holt-Eick-OBrien/p/book/9781584883722",
+      "change": "Publisher location Boca Raton, corroborated by catalogue record https://search.worldcat.org/title/171128432."
+    },
+    "sims1994computation": {
+      "source": "https://www.cambridge.org/core/books/computation-with-finitely-presented-groups/B4EA39C60B0A6253AA46A9D80443B9C7",
+      "change": "Publisher location Cambridge and DOI."
+    },
+    "EPTCS entry types": {
+      "source": "https://cgi.cse.unsw.edu.au/~eptcs/",
+      "change": "Use journal-series volume/page citation form for published EPTCS articles, retaining original years and page ranges."
+    },
+    "hietala2021voqc": {
+      "source": "https://www.cs.umd.edu/~mwh/papers/voqc.pdf",
+      "change": "Article 37, 29 pages, DOI 10.1145/3434318; resolved marked metadata check."
+    },
+    "zhou2023coqq": {
+      "source": "https://opus.lib.uts.edu.au/rest/bitstreams/6969ca91-af61-419a-b3d8-ae84f3413f76/retrieve",
+      "change": "Article 29, 33 pages, DOI 10.1145/3571222; resolved marked metadata check."
+    }
+  }
+}

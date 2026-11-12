@@ -1,0 +1,102 @@
+\section{Projective Presentation Variants}\label{sec:presentation-details}
+
+This appendix records the relation reductions behind Table~\ref{tab:plumb}.
+
+\paragraph{From Simplified-V1 to our sixteen rules.}
+\texttt{Paper-V0} is our primary rule set: the qupit paper's Figure~1
+read modulo scalars, with the multiplier spelled over $R$ and with
+$(SH)^3 = \varepsilon$ kept as an axiom.  In Agda it is one inductive
+family \aid{{\_}SRel,{\_}==={\_}} with sixteen constructors, one per rule,
+each stated at the smallest number of wires at which it makes sense
+(two of them were shown in \S\ref{sec:encoding}; the name is the same
+as the symplectic family's of \S\ref{sec:reduction}, each rule set
+being its own module, and \aid{{\_}QRel,{\_}==={\_}} is again its
+closure under the structural rules);
+Figure~\ref{fig:rules} shows them as circuit equations, drawn from the
+Agda terms, under the constructor names used throughout.  The figure groups the rules by arity.  As in \S\ref{sec:framework},
+shifting equations and disjoint commutations are supplied by the circuit
+layer, rather than counted among these gate-specific rules.  The scalar
+layer also identifies a scalar with its shift.  Pauli commutation and
+the Pauli-versus-$CZ$ rules are derived, not added as axioms.
+
+\begin{figure}
+\centering
+\begin{minipage}[t]{0.42\textwidth}\centering\scriptsize
+  \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
+    order-S & \ufig[0.48]{pv0-order-S-l} & $=$ & \ufig[0.48]{pv0-order-S-r}\\[1pt]
+    order-H & \ufig[0.48]{pv0-order-H-l} & $=$ & \ufig[0.48]{pv0-order-H-r}\\[1pt]
+    M-power & \ufig[0.48]{pv0-M-power-l} & $=$ & \ufig[0.48]{pv0-M-power-r}\\[1pt]
+    semi-MR & \ufig[0.48]{pv0-semi-MR-l} & $=$ & \ufig[0.48]{pv0-semi-MR-r}\\[1pt]
+    order-CZ & \ufig[0.48]{pv0-order-CZ-l} & $=$ & \ufig[0.48]{pv0-order-CZ-r}\\[1pt]
+    order-Ex & \ufig[0.48]{pv0-order-Ex-l} & $=$ & \ufig[0.48]{pv0-order-Ex-r}\\[1pt]
+    order-SH & \ufig[0.48]{pv0-order-SH-l} & $=$ & \ufig[0.48]{pv0-order-SH-r}\\
+  \end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.55\textwidth}\centering\scriptsize
+  \begin{tabular}{@{}r@{\;\,}l@{}}
+    comm-CZ-S↑ & \ufig[0.48]{pv0-comm-CZ-Sup}\\[1pt]
+    semi-M↑CZ & \ufig[0.48]{pv0-semi-Mup-CZ}\\[1pt]
+    semi-Ex-S↑ & \ufig[0.48]{pv0-semi-Ex-Sup}\\[1pt]
+    semi-Ex-H↑ & \ufig[0.48]{pv0-semi-Ex-Hup}\\[1pt]
+    comm-HHSHHS & \ufig[0.4]{pv0-comm-HHSHHS-l} $=$ \ufig[0.4]{pv0-comm-HHSHHS-r}\\
+  \end{tabular}
+\end{minipage}\\[3pt]
+\scriptsize
+\begin{tabular}{@{}r@{\;\,}l@{\qquad}r@{\;\,}l@{}}
+  blake-c12 & \ufig[0.48]{pv0-blake-c12} & yang-baxter & \ufig[0.48]{pv0-yang-baxter}\\[2pt]
+  cz-slide & \ufig[0.48]{pv0-cz-slide} & semi-CX↑-CZ↓ & \ufig[0.48]{pv0-semi-CXup-CZdn}\\
+\end{tabular}
+\caption{The sixteen rules of \texttt{Paper-V0}'s
+\protect\aid{{\_}SRel,{\_}==={\_}} as circuit equations.  A word is
+drawn left to right as written and read in matrix-multiplication
+order, so in $w \bullet v$ the right factor $v$ acts first
+(\S\ref{sec:encoding}).
+\protect\aid{blake-c12} relates two circuits implementing
+controlled-$Z$; \protect\aid{yang-baxter} and \protect\aid{cz-slide}
+are the swap calculus.}
+\label{fig:rules}
+\Description{Sixteen projective circuit equations, grouped into
+one-wire, two-wire and three-wire rules. They specify gate orders,
+multiplier laws, swap conjugations, disjoint interactions and the
+Yang--Baxter and controlled-phase identities. Each row is labeled with
+its constructor name in the Agda relation family.}
+\end{figure}
+
+\texttt{Paper-V0} shares its alphabet with \texttt{Simplified-V1}, so
+the identity on words is the candidate isomorphism.  Ten of the axioms
+are shared verbatim; the rest is real work in both
+directions.  \texttt{Paper-V0} axiomatises the swap directly and
+two-qupit interactions through \aid{blake-c12} and
+\aid{semi-CX↑-CZ↓}, and from these its \texttt{Lemmas}
+derives Selinger's c10--c15 natively together with the lower-wire
+rules, the two Pauli-versus-$CZ$ rules and the swap--$CZ$ commutation;
+conversely the seven swap rules are proved in \texttt{Simplified-V1} by
+transport along the chain symplectic $\to$ simplified $\to$ semidirect
+$\to$ V1 rather than by fresh derivations.  The module exports \aid{v1⇒pap}, which
+transports any Simplified-V1 theorem into \texttt{Paper-V0}'s theory;
+it is what lets later layers reuse the calculi rather than re-prove
+them.
+
+\paragraph{From our sixteen rules to the paper's fifteen: connecting
+the two routes.}  The paper's Figure~1 spells the multiplier over
+$S$, with an explicit Pauli prefix (its Lemma~2.14): $M_x =
+\aid{SHS'}\;x^{-1}\;x$ where $\aid{SHS'}\;a\;b = Z^{(b-1)/2}
+X^{(1-a)/2} S^{b} H S^{a} H S^{b} H$, and correspondingly states
+\aid{semi-MR} as
+$M_g \bullet S^{g^2} \bullet Z^{(g^2-g)/2} = S \bullet M_g$ (its rule
+C4), the $Z$-exponent being what is left after the $Z^{1/2}$ hidden in
+each $R$ is split off and carried across the multiplier, where it picks
+up a factor of $g$.  \texttt{Paper-V1} is the paper's Figure~1 modulo scalars in
+this spelling: our sixteen rules with \aid{order-H},
+\aid{M-power}, \aid{semi-MR} and \aid{semi-M↑CZ} restated over
+\aid{SHS'}, and \emph{fifteen} rules rather than sixteen, because
+$(SH)^3 = \varepsilon$ is now a theorem.
+Under the $S$-spelling, $M_1$ \emph{is} the word $(SH)^3$ --- at $x = 1$
+the Pauli prefix vanishes --- and \aid{M-power} at $k = 0$ already
+gives $M_1 \approx \varepsilon$; under our $R$-spelling $M_1$ is
+$(RH)^3$, a different word, which is why the axiom had to stay there.
+The isomorphism with \texttt{Paper-V0} is again the identity on words;
+eleven axioms cross directly, and the four multiplier rules need the
+bridge between the two spellings, $R^{a}HR^{b}HR^{a}H \approx
+\aid{SHS'}\;a\;b$, proved once over an abstract relation in
+\texttt{Shared.PauliBase} and transported by \aid{v1⇒pap}.  The resulting presentation is Theorem~\ref{thm:main}.

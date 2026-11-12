@@ -160,12 +160,11 @@
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaPrimitive{Set}\<%
 \end{code}
-\subsection{Products of presentations, and their presentation theorems}\label{sec:constructions}
+\section{Generic Presentation Composition}\label{sec:constructions}
 
-The presentation just obtained is one factor of the groups
-\S\ref{sec:composing} assembles.  Relation sets over a disjoint union
-of alphabets are built from a single primitive, a three-way join whose
-\emph{mixed} component is the design parameter:
+The second proof interface combines presentations of smaller groups.
+For relations over a disjoint union of alphabets, a three-way join keeps
+the two factors' rules and a mixed relation:
 
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
@@ -394,10 +393,8 @@ correction, and the relation set of the recipe is
 \AgdaBound{corr}\AgdaSymbol{)}\<%
 \end{code}
 \endgroup
-Semidirect products are the special case with trivial corrections, and
-\S\ref{sec:scalars} uses the form for central extensions built from a
-cocycle.  These theorems are what make the composition step of
-\S\ref{sec:composing} cheap: the semidirect product of the Pauli and
-symplectic presentations and the central extension by the scalars are
-\emph{assembled} from the factor presentations, with no fresh coset
-enumeration at all.
+Semidirect products have trivial relator corrections.  The exact
+qupit layer uses the central-extension recipe, but proves completeness
+by splitting scalar and gate words (\S\ref{sec:scalars}); it does not
+instantiate the general theorem's bijective-normal-form premises.
+The direct-product theorem is then used to adjoin the sign.

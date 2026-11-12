@@ -1,69 +1,13 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Reducing the qupit generator data to a factor set.
+-- Transport a finite-field factor set to scalar words and extend its
+-- generator data. The agreement lemma identifies the generated cocycle
+-- with the transported factor set on every pair of words.
 --
--- Qupit-Clifford.Semantics.Presented-Extension derives the scalar
--- cocycle of
---
---     1 ─→ A ─→ A ×_γᶜ H ─→ H ─→ 1
---
--- from a record `GeneratorData` — the correction G that one gate carries
--- against a word, plus its congruence, its normalisation, and f-axiom.
--- This file supplies that record from a FACTOR SET for the quotient,
---
---     generator-data : FactorSet ℤ/pℤ (H n) trivial → GeneratorData n,
---
--- which is the qupit copy of Qubit.SemGeneratorData, and shares its two
--- generic halves: the reduction is CocycleGen.Generator-Data.
--- From-FactorSet, and the transport ℤ/pℤ → words is Cyclic.Scalars at
--- order p.  Only the instantiation is new — the two kernels, the trivial
--- action, and the quotient being the Paper-V0 rule set rather than the
--- mod-scalar Figure 8.
---
--- What is NOT here: the factor set itself.  For qubits that is
--- Qubit.SemFE; for qupits it is now Qupit-Clifford.SemFE, which is
--- unconditional and takes a route none of what follows describes — it
--- pulls the WEYL cocycle of Qupit-Clifford.Semantics back along
--- Paper-V0's presentation, so no section is chosen, no scalar kernel is
--- computed, and ω-faithfulness is not needed (in that model ω is
--- faithful by construction).  What remains open is not the factor set
--- but Presented-Extension.Realises: that the corrections it accumulates
--- are the ones `corr` records.
---
--- The rest of this note describes the OTHER route, the one the qubit
--- development took — a factor set built as the defect of a lifting.  It
--- needs three things, exactly as the qubit SemFE's header lists them:
---
---   * a normalised SECTION of the quotient — one word per class, taking
---     ε to ε — which for qubits comes from a bijective normal form of
---     the mod-scalar rule set with a DISCRETE codomain, so that rep-cong
---     is propositional;
---   * a SCALAR KERNEL theorem: two words equal mod scalars have exact
---     images differing by a power of ω.  Over Qupit-Clifford.Syntactics.
---     _Exact,_===_ this is an induction on Paper-V0 derivations that
---     accumulates `corr`, and it is nearly definitional at a relator,
---     the twisted relator being [ u ]ᵣ === [ corr r ]ₗ • [ v ]ᵣ;
---   * ω-FAITHFULNESS, that ω has order exactly p in the exact group,
---     which makes the defect UNIQUE and hence every cocycle law
---     provable.  This is the semantic one: for qubits it is a theorem
---     about a mod-17 matrix model, and for qupits the natural target is
---     the central extension already in Qupit-Clifford.Semantics, where ω
---     is faithful by construction — but mapping into it needs soundness
---     of the exact rule set, i.e. lifts of S, H and CZ satisfying all
---     sixteen relations with their corrections.  That is the piece of
---     work this file is waiting on.
---
--- A factor set produced that way is the defect of a lifting, which is
--- also what makes the resulting cocycle REALISE corr in the sense of
--- Presented-Extension.Realises — being a cocycle at all is weaker, and
--- the split one is a cocycle too.
---
--- One discipline to keep when that day comes: name the concrete factor
--- set in a module PARAMETER, never in a definition.  Qubit.
--- SemCentralExt's header measures what a definition costs when the value
--- comes from an existence proof — every conversion check forces the
--- whole proof to weak head normal form.  Hence the shape below.
+-- SemFE supplies the Weyl factor set by pullback along the projective
+-- presentation. SemSRel verifies the relator corrections; Structural
+-- uses agreement to identify the total group with the structural model.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -151,11 +95,10 @@ module From-FactorSet (n : ℕ) (γ : FactorSet Scalars (H n) (Trivial n)) where
     }
 
 ------------------------------------------------------------------------
--- What a factor set would close
+-- Constructions parameterized by the factor set
 --
--- Each of these is the corresponding definition of Presented-Extension
--- with the record filled, so a qupit SemFE would turn all three
--- unconditional at a stroke.
+-- Each definition fills the generator-data record from a factor set.
+-- SemFE supplies the concrete factor set used by the exact development.
 
 γᶜ : (n : ℕ) → FactorSet Scalars (H n) (Trivial n) → Cocycle (A n) (H n)
 γᶜ n γ = PE.γᶜ n (From-FactorSet.generator-data n γ)

@@ -51,10 +51,9 @@
 -- over CZ and H alone.  comm₁ and comm₂ quantify over an ARBITRARY 1-
 -- or 2-ary gate, S included, so their Pauli-freeness is false as
 -- stated; what makes them hold is that the two sides act on disjoint
--- wires, and sform of disjointly supported Paulis vanishes.  That, and
--- cong↑, wait on shift lemmas for the Paper-V0 denotation — how the
--- Pauli and symplectic parts of ⟦ w ↑ ⟧ relate to those of ⟦ w ⟧ —
--- which nothing in the library has yet.
+-- wires, and sform of disjointly supported Paulis vanishes. SemShift
+-- supplies the shift lemmas for the Paper-V0 denotation; the latter
+-- part of this module uses them for cong↑ and disjoint commutation.
 --
 -- The remaining ten base rules all mention S and are the real
 -- computation: order-S, order-H, M-power (∀ k), semi-MR, order-SH,
@@ -70,7 +69,8 @@
 --
 -- for a total of -⅛, which is (p² - 1)/8 mod p — exactly the exponent
 -- Syntactics.corr assigns it.  So Φ-Corr is true, and the convention
--- fixed by δ_p is the one this section reproduces.
+-- used in the algebraic presentation is reproduced. Identification
+-- with the specified complex gate matrices is a separate obligation.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

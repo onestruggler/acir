@@ -29,10 +29,12 @@
 
 module MainTheorems where
 
-open import Data.Fin using (toℕ)
+open import Algebra.Bundles using (Group)
+open import Algebra.Morphism.Structures using (module GroupMorphisms)
+open import Data.Fin as Fin using (toℕ)
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)
-open import Data.Product using (_,_ ; ∃)
+open import Data.Product using (_,_ ; _×_ ; ∃)
 import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Nullary.Negation using (¬_)
 
@@ -42,6 +44,7 @@ open import ForStdlib.Data.Fin.Mod using (ℤ ; ℤ* ; _^′_)
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat using (module PrimeModulus')
 import Presentation.Base as PB
 open import Presentation.Definitions using (_IsPresentationOf_)
+open import Presentation.Construct.Base using ([_]ₗ ; [_]ᵣ)
 
 import Circuit.Base as CB
 import Circuit.Independence as CI
@@ -61,6 +64,16 @@ import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Syntactics
 import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Presentation
   as PapV1Pres
 import Examples.Groups.Qupit-Clifford.Presentation as QupitExact
+import Examples.Groups.Qupit-Clifford.Semantics as QupitSem
+import Examples.Groups.Qupit-Clifford.Structural as QupitStructural
+import Examples.Groups.Qupit-Clifford.Certificate as QupitCertificate
+import Examples.Groups.Qupit-Clifford.CertificateExample as CertificateExample
+import Examples.Groups.Qupit-Clifford.Syntactics as QupitSyn
+import Examples.Groups.Qupit-Clifford.SemFE as QupitFE
+import Examples.Groups.Cyclic.Scalars as CyclicScalars
+import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Structural
+  as Fig1Structural
+import Examples.Groups.Symplectic.Normalization.Computations
 import Examples.Groups.Clifford+MinusOne.Qupit.Syntactics as Qupit±Syn
 import Examples.Groups.Clifford+MinusOne.Qupit.Semantics as Qupit±Sem
 import Examples.Groups.Clifford+MinusOne.Qupit.Presentation as Qupit±Pres
@@ -247,6 +260,59 @@ module Qupit-Clifford-Scalar-Theorems
   -- Figure 1 presents the same group.
   figure1-presentation : ∀ n → (n F,_===_) IsPresentationOf (Clifford± n)
   figure1-presentation = Pres₁.presentation-Figure1
+
+  private
+    module Structural = QupitStructural p-3 p-prime g* g-gen
+    module Structural₁ = Fig1Structural p-3 p-prime g* g-gen
+    module Model = QupitSem p-3 p-prime
+    module Client = QupitCertificate p-3 p-prime g* g-gen
+    module Syn = QupitSyn p-3 p-prime g* g-gen
+    module FE = QupitFE p-3 p-prime g* g-gen
+    module Sc = CyclicScalars p-2
+
+  -- The semantic endpoint now contains finite-field data, not word groups.
+  exact-structural-isomorphism : ∀ n →
+    GroupMorphisms.IsGroupIsomorphism
+      (Group.rawGroup (Exact-group n))
+      (Group.rawGroup (Model.Clifford-group n))
+      (Structural.Bridge.to-structural n)
+  exact-structural-isomorphism = Structural.Bridge.structural-iso
+
+  exact-structural-presentation : ∀ n →
+    (n Exact,_===_) IsPresentationOf (Model.Clifford-group n)
+  exact-structural-presentation = Structural.Bridge.structural-presentation
+
+  figure1-structural-presentation : ∀ n →
+    (n F,_===_) IsPresentationOf (Structural₁.StructuralClifford± n)
+  figure1-structural-presentation = Structural₁.At.presentation
+
+  -- A projectively valid replacement, repaired by its computed phase.
+  phase-repair : ∀ n (u v : Syn.Circuit n) →
+    Group._≈_ (Model.Pauli⋊Sp-group n)
+      (FE.Weyl.⟦_⟧ n u) (FE.Weyl.⟦_⟧ n v) →
+    PB._≈_ (n Exact,_===_) [ u ]ᵣ
+      ([ Sc.emb (Client.At.correction n u v) ]ₗ • [ v ]ᵣ)
+  phase-repair = Client.At.repair
+
+
+------------------------------------------------------------------------
+-- A complete two-qutrit certificate, with a computed nonzero phase
+
+two-qutrit-certificate : CertificateExample.E._≈_
+  [ CertificateExample.before ]ᵣ
+  ([ CyclicScalars.emb 1 (Fin.suc Fin.zero) ]ₗ •
+    [ CertificateExample.after ]ᵣ)
+two-qutrit-certificate = CertificateExample.certificate
+
+two-qutrit-gate-counts : Eq._≡_ {A = ℕ × ℕ}
+  (CertificateExample.size CertificateExample.input ,
+    CertificateExample.size CertificateExample.output) (12 , 6)
+two-qutrit-gate-counts = CertificateExample.gate-counts
+
+two-qutrit-entangling-counts : Eq._≡_ {A = ℕ × ℕ}
+  (CertificateExample.cz-count CertificateExample.input ,
+    CertificateExample.cz-count CertificateExample.output) (3 , 1)
+two-qutrit-entangling-counts = CertificateExample.entangling-counts
 
 ------------------------------------------------------------------------
 -- The structural rules are independent

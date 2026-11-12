@@ -37,3 +37,8 @@ __pycache__/
 vqupit/comment.cut
 vqupit/latex/agda.sty
 vqupit/png/
+
+# Private submission administration and local archive metadata.
+/vqupit/notes/conflicts-proposed.txt
+/vqupit/notes/submission.txt
+/vqupit/notes/validation/freeze-manifest.json

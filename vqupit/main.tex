@@ -1,9 +1,7 @@
-%% main.tex -- "Verified Generators and Relations for Qupit Clifford Operators"
+%% main.tex -- "Compositional Verification of Qupit Clifford Circuit Equations"
 %%
-%% Target: PACMPL (OOPSLA 2027 Round 1, deadline 14 Oct 2026; or PLDI
-%% 2027, 12 Nov 2026) -- see notes/venues.md.  Both are double-blind:
-%% add the `anonymous' option to \documentclass for submission; the
-%% author block and acknowledgements are then suppressed automatically.
+%% Target: PLDI 2027. At most 20 pages of main text, including AI Use;
+%% references, the Data-Availability Statement and appendices excluded.
 %%
 %% Build (see README.md):
 %%   latexmk -pdf main.tex          (pdflatex; Unicode in code handled by
@@ -11,14 +9,15 @@
 %%                                   agda-style.sty)
 %%   latexmk -lualatex main.tex     (fallback if pdflatex chokes on a
 %%                                   Unicode character in running text)
-\documentclass[acmsmall,review,anonymous]{acmart}
+\documentclass[acmsmall,screen,review,anonymous,nonacm]{acmart}
 
 %% PACMPL journal metadata (placeholders for the review version).
 \acmJournal{PACMPL}
-\acmVolume{1}
-\acmNumber{OOPSLA}
-\acmArticle{1}
-\acmMonth{10}
+\acmVolume{11}
+\acmNumber{PLDI}
+\acmYear{2027}
+\copyrightyear{2027}
+\acmMonth{6}
 \setcopyright{none}
 
 %% Packages -----------------------------------------------------------
@@ -111,7 +110,7 @@
 
 \begin{document}
 
-\title{Verified Generators and Relations for Qupit Clifford Operators}
+\title{Compositional Verification of Qupit Clifford Circuit Equations}
 
 \author{Xiaoning Bian}
 \affiliation{%
@@ -182,11 +181,11 @@ verification}
 \maketitle
 
 \input{sections/intro}
-\input{latex/vqupit/sections/permutations}   % from sections/permutations.lagda.tex
-\input{latex/vqupit/sections/constructions}  % from sections/constructions.lagda.tex
+\input{sections/framework}
 \input{latex/vqupit/sections/two-routes}   % from sections/two-routes.lagda.tex
 \input{latex/vqupit/sections/symplectic}   % from sections/symplectic.lagda.tex
 \input{latex/vqupit/sections/composing}    % from sections/composing.lagda.tex
+\input{latex/vqupit/sections/results}
 \input{sections/discussion}
 \input{sections/related}
 \input{sections/conclusion}
@@ -200,7 +199,18 @@ paper according to our outline; the paper was later checked and revised
 by us.
 \end{acks}
 
+\clearpage
+\input{sections/availability}
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{refs}
+
+\clearpage
+\appendix
+\input{latex/vqupit/sections/permutations}
+\input{latex/vqupit/sections/constructions}
+\input{sections/presentation-details}
+\input{sections/matrix-background}
+\clearpage
+\input{sections/source-inventory}
 
 \end{document}

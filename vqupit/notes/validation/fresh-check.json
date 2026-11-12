@@ -1,0 +1,24 @@
+{
+  "date_utc": "2026-11-12T09:47:28Z",
+  "source_sha256": "7076c84424e23c705d9f98737129a1cfcc2854aa141dc561ce00aa96b0dfd4eb",
+  "agda_files": 247,
+  "agda_version": "Agda version 2.8.0",
+  "standard_library": "2.4 (registered installation; interfaces retained)",
+  "project_interfaces": "absent at start; isolated copy on Linux filesystem",
+  "kernel": "6.18.33.2-microsoft-standard-WSL2",
+  "cpu": "13th Gen Intel(R) Core(TM) i5-13400TEF",
+  "logical_cpus_visible": 16,
+  "memory_visible_kib": 27704968,
+  "heap_limit": "5 GiB, compacting GC",
+  "attempts": [
+    {
+      "target": "MainTheorems.agda",
+      "exit_code": 0,
+      "elapsed_seconds": 442.867,
+      "peak_rss_kib": 3838972
+    }
+  ],
+  "success": true,
+  "total_elapsed_seconds": 442.867,
+  "max_peak_rss_kib": 3838972
+}

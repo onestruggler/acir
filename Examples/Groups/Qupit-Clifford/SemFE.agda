@@ -9,11 +9,9 @@
 --
 --     FactorSet ℤ/pℤ (H n) trivial  →  GeneratorData n,
 --
--- and its header records that the factor set itself does not exist —
--- naming three things a construction of it would need: a normalised
--- section of the quotient, a scalar-kernel theorem, and ω-faithfulness.
--- That is the shape a factor set built as the DEFECT OF A LIFTING has
--- to take, and it is how the qubit development builds its (Qubit.SemFE).
+-- A factor set can be constructed as the defect of a lifting, using a
+-- normalised section and a scalar-kernel theorem. That is not the
+-- construction used here.
 --
 -- This file builds one a different way, and needs none of the three.
 -- Qupit-Clifford.Semantics already proves `weyl`: the Weyl cocycle
@@ -51,9 +49,10 @@
 -- for each of the sixteen Paper-V0 relations, that the ½·sform
 -- accumulated along the two sides differs by exactly corr: zero for
 -- fifteen of them and ω^((p²-1)/8) for order-SH.  That is the qupit
--- analogue of Selinger.ScalarKernel and is still open.  With this file,
--- it is the ONLY thing still open: Qupit-Clifford.Presentation's
--- presentation theorem now takes one hypothesis rather than two.
+-- scalar-realisation obligation. SemSRel now discharges it, and
+-- Presentation.presentation-exact has no remaining Realises premise.
+-- Structural additionally identifies the resulting total group with
+-- the independently defined Weyl extension.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

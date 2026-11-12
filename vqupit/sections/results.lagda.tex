@@ -1,0 +1,172 @@
+\begin{code}[hide]
+{-# OPTIONS --cubical-compatible --safe #-}
+
+open import Data.Fin using (toℕ)
+open import Data.Nat using (ℕ ; suc)
+open import Data.Nat.Primality using (Prime)
+open import Data.Product using (_,_ ; ∃)
+open import Relation.Binary.PropositionalEquality using (_≡_)
+
+open import Notations
+open import ForStdlib.Data.Fin.Mod
+open import ForStdlib.Data.Fin.Mod.Prime.Fermat
+
+module vqupit.sections.results
+  (p-3 : ℕ)
+  (let p-2 = ₁₊ p-3)
+  (p-prime : Prime (suc (₁₊ p-2)))
+  (let open PrimeModulus' p-2 p-prime)
+  (g*@(g , g≠0) : ℤ* ₚ)
+  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ λ (k : ℤ ₚ-₁) → x ≡ g ^′ toℕ k)
+  where
+
+open import Algebra.Bundles using (Group)
+open import Word.Base using (_•_)
+open import Presentation.Construct.Base using ([_]ₗ ; [_]ᵣ)
+open import Presentation.Definitions using (_IsPresentationOf_)
+import Presentation.Base as PB
+import Examples.Groups.Qupit-Clifford.Syntactics
+  p-3 p-prime g* g-gen as Syn
+import Examples.Groups.Qupit-Clifford.Semantics p-3 p-prime as Model
+import Examples.Groups.Qupit-Clifford.Structural
+  p-3 p-prime g* g-gen as Structural
+import Examples.Groups.Qupit-Clifford.Certificate
+  p-3 p-prime g* g-gen as Client
+import Examples.Groups.Qupit-Clifford.SemFE
+  p-3 p-prime g* g-gen as FE
+import Examples.Groups.Cyclic.Scalars as CyclicScalars
+import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Syntactics
+  p-3 p-prime g* g-gen as F
+import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Structural
+  p-3 p-prime g* g-gen as Signed
+
+module Sc = CyclicScalars p-2
+open Syn using (_Exact,_===_)
+open F using (_F,_===_)
+open Signed using (StructuralClifford±)
+\end{code}
+\subsection{Structural semantics and a certificate client}\label{sec:structural}
+
+Write $J_p(n)$ for the structural Weyl extension. Its elements are
+$(e,P,S)\in\Zp\times\Zp^{2n}\times\Sp$, with multiplication
+\[
+(e,P,S)(f,Q,T)=
+\bigl(e+f+\tfrac12\mathrm{sform}(P,SQ),\ P+SQ,\ ST\bigr).
+\]
+This definition contains no circuit congruence. To connect it to
+\aid{Exact-group}, define $\chi(a,u)=(\mathrm{read}(a),\sem{u}_{\rm proj})$,
+where $a$ is a scalar word and $u$ a projective gate word.
+
+\begin{theorem}[Structural scalar presentation]\label{thm:structural}
+For every width $n$, $\chi$ is a group isomorphism from the presented
+scalar extension to $J_p(n)$. Composing it with the exact presentation
+gives a presentation of $J_p(n)$ with the specified interpretation.
+\end{theorem}
+\begin{proof}
+The scalar presentation reads $\omega^k$ as $k\bmod p$, and the
+projective presentation reads $u$ as its Pauli and symplectic components.
+The generated cocycle is congruent to the scalar-word embedding of the
+pulled-back Weyl cocycle (\aid{SemGeneratorData.agree}).
+Reading this equation in $\Zp$ proves that $\chi$ preserves the twisted
+multiplication. Injectivity and surjectivity follow componentwise from
+the two factor presentations. This also fixes the interpretation:
+scalar words retain their exponents, and gate words retain their
+projective interpretation and accumulated Weyl phase.
+\end{proof}
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+exact-structural-presentation : ∀ n →
+  (n Exact,_===_) IsPresentationOf (Model.Clifford-group n)
+exact-structural-presentation = Structural.Bridge.structural-presentation
+\end{code}
+\endgroup
+
+\begin{theorem}[Original scalar-sensitive rules]\label{thm:figure1}
+For every width $n$, the original sixteen rules over $-\omega,H,S,CZ$
+present $J_p(n)\times\mathbb Z_2$.
+\end{theorem}
+The map is $\chi$ on the exact component and the identity on the sign.
+Composing with the checked Figure~1 translation gives:
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+figure1-structural-presentation : ∀ n →
+  (n F,_===_) IsPresentationOf (StructuralClifford± n)
+figure1-structural-presentation = Signed.At.presentation
+\end{code}
+\endgroup
+These excerpts are aliases of the actual implementations, with no
+postulated abbreviations; their literate module is also fully typechecked.
+The parameters are the odd prime and primitive-root witness of
+\S\ref{sec:symplectic}. The result strengthens the semantic endpoint,
+but does not assert that the named generators denote the intended
+complex matrices.
+
+\paragraph{Repairing a projectively valid replacement.}
+Suppose a client proposes to replace $u$ by $v$ and proves
+$\sem u_{\rm proj}=\sem v_{\rm proj}$. This premise includes the Pauli
+component: agreement of symplectic matrices alone is insufficient.
+The Weyl evaluator computes the scalar phase by
+\[
+\Phi(\varepsilon)=\Phi([a])=0,\qquad
+\Phi(uv)=\Phi(u)+\Phi(v)+c(\sem u_{\rm proj},\sem v_{\rm proj}).
+\]
+Define $t=\Phi(u)-\Phi(v)$ in $\Zp$. The client returns the exact
+derivation
+\[
+ [u]_{\rm gate}\ \approx_{\rm exact}\
+ [\omega^t]_{\rm scalar}\bullet[v]_{\rm gate}.
+\]
+Its implementation reads both sides in $J_p(n)$, proves equality by
+finite-field arithmetic and the supplied projective equality, and
+applies the presentation's injectivity. It performs no search through
+the circuit equations.
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+phase-repair : ∀ n (u v : Syn.Circuit n) →
+  Group._≈_ (Model.Pauli⋊Sp-group n)
+    (FE.Weyl.⟦_⟧ n u) (FE.Weyl.⟦_⟧ n v) →
+  PB._≈_ (n Exact,_===_) [ u ]ᵣ
+    ([ Sc.emb (Client.At.correction n u v) ]ₗ • [ v ]ᵣ)
+phase-repair = Client.At.repair
+\end{code}
+\endgroup
+
+\paragraph{A checked two-qutrit replacement.}\label{sec:client-example}
+At $p=3$, let $H_i,S_i$ act on wire $i$, with wire zero at the bottom,
+and write $C=CZ_{0,1}$. Products use the circuit syntax's order. Consider
+\[
+\begin{aligned}
+u &= S_1 C H_1 H_0 H_1 C S_1 S_0 H_0 C S_0 H_0,\\
+v &= S_0 S_0 S_1 H_1 H_1 C.
+\end{aligned}
+\]
+The module \texttt{Qupit-Clifford.CertificateExample} supplies the
+complete semantic premise and calls \aid{repair}. A compact evaluator
+computes the Pauli vector, symplectic action, and Weyl phase; a structural
+induction proves agreement with the presentation's interpretation.
+Agda checks equality of the Pauli vectors, checks the actions on all
+$3^4=81$ phase-space vectors, and computes
+$\Phi(u)=1$, $\Phi(v)=0$. The result is the exact certificate
+$[u]_{\rm gate}\approx_{\rm exact}
+[\omega]_{\rm scalar}\bullet[v]_{\rm gate}$,
+which \aid{replace} lifts into arbitrary surrounding words.
+
+The gate counts are also checked: twelve $H,S,CZ$ gates become six,
+and three entangling gates become one. The replacement retains one
+explicit scalar gate; the counts exclude that scalar. Deleting it
+would lose the exact phase. An external bounded search found this
+candidate; \path{notes/find-certificate-example.py} reproduces the
+search. Its output is untrusted: the Agda module separately verifies
+the equality and constructs the derivation. This example exercises
+semantic checking, phase repair, and contextual replacement together;
+it is not a benchmark or an optimality result.
+
+For the original gate language, \aid{Figure1.Structural.certify} takes
+equality in $J_p(n)\times\mathbb Z_2$ and returns a derivation in its
+sixteen rules. Its \aid{replace} operation lifts that derivation into
+any surrounding words $l,r$. These interfaces demonstrate certificate
+construction, not equivalence discovery: the caller must supply the
+semantic equality proof. There is no packaged full-circuit decision
+procedure, optimizer, or claim about certificate size.

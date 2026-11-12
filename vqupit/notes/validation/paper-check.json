@@ -1,0 +1,25 @@
+{
+  "checked_utc": "2026-11-12T09:56:36.519512+00:00",
+  "pdf_sha256": "0b2b3be8460e62d610ff6795fe353cac592aefe439a840526ae9e0e9d2da11e3",
+  "main_text_pages": 20,
+  "total_pages": 29,
+  "anonymous_author_metadata": true,
+  "all_fonts_embedded": true,
+  "undefined_references_or_citations": 0,
+  "overfull_boxes": 0,
+  "missing_glyphs": 0,
+  "bibtex_warnings": 0,
+  "remaining_latex_warnings": [
+    "Class acmart Warning: \\vspace should only be used to provide space above/below ",
+    "Class acmart Warning: \\vspace should only be used to provide space above/below ",
+    "Class acmart Warning: \\vspace should only be used to provide space above/below ",
+    "Class acmart Warning: \\vspace should only be used to provide space above/below "
+  ],
+  "visual_review": "All pages reviewed via contact sheets; focused inspection of the certificate example and final changed pages. No clipping or overlapping content observed.",
+  "root_check": "fresh-check.json: safe MainTheorems.agda, Agda 2.8.0 / stdlib 2.4, exit 0",
+  "literate_results_full_typecheck": true,
+  "literate_regeneration": "make -B -C vqupit agda, exit 0",
+  "paper_build": "make -C vqupit, exit 0",
+  "submitted": false,
+  "tpms_registered": false
+}

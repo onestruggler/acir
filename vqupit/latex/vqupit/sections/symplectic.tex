@@ -437,21 +437,18 @@
 \end{code}
 \section{The Symplectic Factor}\label{sec:symplectic}
 
-This section fixes the circuit syntax shared by the symplectic and the
-Clifford developments, then presents the symplectic factor, where the
-real rewriting happens, in six steps: the semantics; the normal form;
-the coset table that rewrites to it, which is the $S_n$ table of
-\S\ref{sec:sn-cosets} under a richer action; uniqueness; the reduction
-of the relations the table uses to the eighteen rules that present
-$\Sp$; and the presentation theorem they assemble into
-(\S\ref{sec:sptheorem}).
+The symplectic layer is the part of the development that requires a
+new normalizer.  We specify its semantic action, encode the original
+normal form, certify the coset tables, and prove uniqueness.  A final
+relation reduction gives the smaller presentation used by the
+composition step.
 
 \paragraph{Circuits.}  In the formalisation a gate set is a family of gate types indexed by
 arity, and a circuit on $n$ wires is a \emph{word} over wire-indexed
 generators: $\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$ is the free
 monoid on the generators of $H$, $S$ and $CZ$ placed on each wire, and
 $\aid{{\_}↑}$ shifts a circuit up one wire (the generic machinery is
-that of \S\ref{sec:permutations}, and the reading order of diagrams
+that of \S\ref{sec:framework}, and the reading order of diagrams
 that of \S\ref{sec:encoding}).  The remaining usual gates are \emph{words}, not extra
 generators: $Z = H H S H H S^{-1}$, $X = H S H H S^{-1} H$, the swap
 $\mathit{Ex} = (CZ \cdot H{\downarrow} \cdot H{\uparrow})^{3}$, and the
@@ -487,7 +484,7 @@ g^{k \bmod (p-1)}$ are derived.)
 Rather than $2n \times 2n$ matrices, the formalisation models $\Sp$ as
 the group of $\Zp$-linear, symplectic-form-preserving bijections of the
 phase space $\aid{Pauli}\;n = \aid{Vec}\;(\Zp \times \Zp)\;n$ --- one
-pair $(a,b)$, the exponents of $Z^{a}X^{b}$ (up to phase), per wire.
+pair $(a,b)$, the exponents of $X^{a}Z^{b}$ (up to phase), per wire.
 A symplectic transformation is a record \aid{Symplectic}~$n$ carrying
 the action \aid{ap}, its inverse, and proofs that the two are inverse,
 that \aid{ap} is linear, and that it preserves the symplectic form
@@ -591,13 +588,14 @@ exponent vectors, and $\sem{\_}$ is the homomorphic extension:
 \end{code}
 \endgroup
 
-\noindent Words are read left to right, so $w \bullet v$ applies $w$
-first and its denotation composes on the right.  The seven proof
+\noindent Composition follows the convention of \S\ref{sec:framework}:
+$w \bullet v$ applies $v$ first, so
+$\sem{w\bullet v}=\sem{w}\circ\sem{v}$.  The seven proof
 obligations per
 generator --- inverses, linearity, preservation of the form --- are
 identities in $\Zp$, discharged with the ring solver.  Soundness of
 every axiom of \S\ref{sec:reduction} in this semantics is one clause per
-axiom in \texttt{SoundnessDirect} (1\,100 lines).
+axiom in \texttt{SoundnessDirect}.
 
 \subsection{The normal form: boxes, rows, and the staircase}\label{sec:nf}
 
@@ -606,7 +604,7 @@ by an $X$-normal layer on $n$ wires, then a normal form on $n-1$ wires.
 We refine this into a doubly inductive datatype, built from four kinds
 of atomic boxes:
 
-\begin{minipage}[c]{0.46\textwidth}
+\noindent\begin{minipage}[c]{0.46\textwidth}
 \begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
 \begin{code}%
 \>[0]\AgdaFunction{A}\AgdaSpace{}%
@@ -911,22 +909,15 @@ $A_{0,1}$ at the bottom, and the section sends it to $\varepsilon$ up to
 $\approx$, because $\mathit{Ex}^2 \approx \varepsilon$ collapses each
 $D_{0,0}$ and $B_{0,0}$.
 
-\subsection{From symmetric to symplectic: change the action}\label{sec:pushing}
+\subsection{Certifying the coset tables}\label{sec:pushing}
 
-The coset table of \S\ref{sec:sn-cosets} serves the symplectic group under a
-richer action.  There are three ways of looking at the wires.  $S_n$
-acts on $\{0,\dots,n-1\}$: a wire is a position, and $c \circ f^{-1}$
-fixes $0$.  $S_n$ acts on $\aid{Vec}\;\mathsf{Bit}\;n$: a wire is a
-bit, and $c \circ f^{-1}$ fixes the $\mathbb{Z}_2$-linear subspace of
-the bottom wire.  Adding $H$, $S$, $CZ$, the group acts on
-$\aid{Vec}\;\mathrm{Pauli}_1\;n$, a $2n$-dimensional symplectic
-$\Zp$-vector space in which a wire is a two-dimensional symplectic
-subspace; enlarging the coset layer from staircases to $\ML$ boxes, for
-each $f \in \Sp$ there is a $c$ such that $c \circ f^{-1}$ fixes the
-symplectic subspace of the bottom wire.  The cosets at width $1{+}n$
-are the $\ML$ boxes, their section is $[\_]^{\mathsf{ml}}$, and the coset
-table is the paper's ``push a gate through a normal box'', now a
-function with the same soundness law as in \S\ref{sec:sn-cosets}:
+The subgroup on $n$ wires acts trivially on the bottom wire of
+an $(n+1)$-wire circuit.  A coset representative records the remaining
+action on that wire's two-dimensional symplectic space.  The
+representatives are the $\ML$ boxes, with section
+$[\_]^{\mathsf{ml}}$.  As in the swap example of
+Appendix~\ref{sec:sn-cosets}, a table entry returns a smaller residual
+circuit and a new representative:
 
 \begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
 \begin{code}%
@@ -997,7 +988,7 @@ function with the same soundness law as in \S\ref{sec:sn-cosets}:
 \noindent \aid{ract} dispatches on the shape of the coset --- a flat box or a
 $D$-spine --- and on the generator --- $S$ or $H$ on the bottom wire,
 $CZ$ on the bottom two, or a lifted gate --- and delegates each case to
-a module of the \texttt{Pushing} directory (26 files, 5\,600 lines):
+a module of the \texttt{Pushing} directory:
 $S$ and $H$ through a flat box, $CZ$ through a flat box, $CZ$ meeting a
 $D$ box and a flat box, a lifted gate through the spine.  The residual
 $b'$ lives one wire up, as the type says.  The soundness proof
@@ -1008,38 +999,68 @@ past the lifted $\mathit{lm}$, then the box relation
 $D \leftarrow S$ rewrites $D_{a,b} \bullet S$ to $\mathit{dir}{\uparrow}
 \bullet D_{a,b-a}$, and re-association finishes.
 
-So far this is the $S_n$ story with bigger cosets.  The difference is in
-what the library asks of a coset table before it builds a normal form
-from it.  Four of its five hypotheses --- that the table inverts the
-embedding at the identity coset, that the embedding respects the axioms
-(here the structural rule \aid{cong↑} itself), that the identity coset
-is represented by $\varepsilon$, and the soundness law, here
-\aid{ract-sound} --- close as they do for $S_n$, by evaluation or a
-short derivation.  The fifth, \aid{h-wd-ax} --- that the table respects
-the axioms, i.e.\ congruent inputs produce equal cosets and congruent
-residuals --- does \emph{not} close by evaluation, because the axioms of $\Sp$ (unlike
-$\sigma^2 = e$) are not decided by a finite computation on the coset
-data.  The formalisation proves it in two halves.  The \emph{coset half}
-is proved semantically: apply $\sem{\_}$ to \aid{ract-sound} on both
-sides of an axiom, observe that residuals live one wire up and so cannot
-move the bottom wire, and conclude from head-injectivity of the coset
-section (\S\ref{sec:uniqueness}) that the two cosets are equal.  The
-\emph{residual half} then follows by cancellation --- provided the shift
-$\uparrow$ is injective on congruence classes at the lower width, which
-is a consequence of faithfulness (completeness) there.  This makes the
-tower a well-founded induction on the width, \aid{tower : ∀ n →
-TowerLevel n}, where a level packages the normal form at that width
-together with the agreement of its section with the coset sections: a
-normal form at width $k$ gives faithfulness at $k$ (by
-\aid{by-normalization}); faithfulness gives injectivity of $\uparrow$
-on congruence classes (using that a lifted word acts as $\mathrm{id}
-\oplus \sem{w}$); that discharges \aid{h-wd-ax} at width $k$; and the
-generic normal-form transport produces the normal form at width
-$k{+}1$.  The base case, width $1$, is built by hand.  This is the
-formal counterpart
-of the paper's Lemma~4.2 and Proposition~4.3: no termination argument is
-needed beyond structural recursion, and ``the dirty gates eventually get
-removed'' is the type of \aid{ract}.
+The generic coset construction has five obligations.  Four follow by
+evaluation or a local derivation: the table inverts the subgroup
+embedding at the identity coset, the embedding respects the axioms, the
+identity representative denotes $\varepsilon$, and the table satisfies
+\aid{ract-sound}.  The fifth, \aid{h-wd-ax}, requires congruent inputs
+to produce equal coset labels and congruent residuals.  A direct
+symbolic comparison of table executions would repeat the large case
+analysis.  Instead, we use the semantic action.
+\begin{lemma}[Semantic discharge of table well-definedness]
+\label{lem:semantic-wd}
+Suppose a table certifies decompositions
+$x\approx b{\uparrow}\bullet[c]$ at width $n+1$.
+Assume soundness at that width, that the bottom-wire action determines
+$c$, that shifting a residual preserves its semantics injectively, and
+completeness at width $n$. Then equal input denotations give equal
+representatives and congruent residuals.
+\end{lemma}
+\begin{proof}
+For two outputs, soundness gives
+$\sem{b{\uparrow}}\sem{[c]}=\sem{b'{\uparrow}}\sem{[c']}$.
+The shifted residual fixes the bottom wire, so observing that wire
+identifies $c=c'$. Right cancellation of the representative gives
+$\sem{b{\uparrow}}=\sem{b'{\uparrow}}$.
+Injectivity of the shifted interpretation gives $\sem b=\sem{b'}$;
+completeness at width $n$ gives $b\approx b'$.
+\end{proof}
+
+For \aid{h-wd-ax}, the inputs differ by one axiom inside a table
+execution; soundness supplies their semantic equality. Head injectivity
+(\S\ref{sec:uniqueness}) supplies the representative hypothesis.
+The shift acts as $\mathrm{id}\oplus\sem b$, so restricting to the
+upper wires proves its semantic injectivity. The proof therefore
+requires no independent comparison of all pairs of table executions.
+
+There is no circular appeal to completeness at the current width.
+The dependency is
+\[
+\begin{gathered}
+ \text{normalization at }n
+ \ \Longrightarrow\ \text{completeness at }n\\
+ \ \Longrightarrow\ \text{table well-definedness at }n+1
+ \ \Longrightarrow\ \text{normalization at }n+1.
+\end{gathered}
+\]
+Semantic uniqueness is proved independently of normalization, by
+induction on the datatype. The base normalizer at width one is built
+directly. The implementation packages each level and its section
+agreement as \aid{tower : ∀ n → TowerLevel n}.
+Lemma~\ref{lem:semantic-wd} summarizes the argument used in that
+implementation; it is not a new generic library combinator.
+
+The transfer criterion is concrete: a language must admit a decreasing
+family of sublanguages, certified decompositions, and a semantic
+observation that separates representatives while ignoring the residual
+sublanguage. Cancellation and a faithful residual embedding then reduce
+the obligation to completeness at the smaller instance. Here the
+observation is the bottom wire's action. These hypotheses explain both
+reuse and failure: an observation that merges distinct heads cannot
+justify the table, and a lossy residual embedding prevents the induction.
+This is a conditional proof pattern, not a claim that every normalizer
+admits such a decomposition. Local derivations and head injectivity
+remain the instance-specific work.
 
 \subsection{Uniqueness of the normal form}\label{sec:uniqueness}
 
@@ -1080,8 +1101,7 @@ Normal forms with equal symplectic denotations are equal:
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaPostulate{Unq.⟦[]⟧-injective}\<%
 \end{code}
-\noindent Home: \texttt{Symplectic.Normalization.Uniqueness} (module
-paths here are under \texttt{Examples.Groups}).
+\noindent\normalfont Home: \texttt{Symplectic.Normalization.Uniqueness}.
 \end{theorem}
 
 \noindent The action of a normal form on a Pauli vector peels the
@@ -1176,8 +1196,7 @@ and injectivity is a structural induction on the staircase:
 Two obligations.  \emph{Tail surjectivity} is free, because a
 symplectic transformation carries its inverse.  \emph{Head injectivity}
 --- the bottom-wire output determines the coset --- is the crux, and it
-is itself an induction on the $\ML$ type (\texttt{LMHeadInj},
-1\,300 lines): at width $1$ a case analysis on the four shapes of an
+is itself an induction on the $\ML$ type (\texttt{LMHeadInj}): at width $1$ a case analysis on the four shapes of an
 $A$ box using closed forms for the actions of $S^{k}$, $HS^{k}$ and the
 multipliers; a separation lemma showing a flat box and a spine never
 agree on heads; and, for two spines, the $D$ box is read off by probing
@@ -1185,7 +1204,7 @@ with the two basis Paulis $Z$ and $X$ on the bottom wire and the identity
 above, after which the hypothesis descends one width.  With these two
 lemmas the generic \texttt{Circuit.Uniqueness} module of the library
 assembles \aid{⟦[]⟧-injective} and the \aid{UniqueNormalForm} witness
-(the unique-normal-form property of \S\ref{sec:sn-semantics});
+(the uniqueness condition of \S\ref{sec:framework});
 the module's header records the one subtlety, that \aid{ap} is a
 \emph{left} action --- \aid{ap} of a composite applies its right factor
 first --- so the coset factor of a normal form is the one next to the
@@ -1229,9 +1248,8 @@ obtains the other by a duality lemma).  The width-3 relations are stated
 at width~3 and widened to arbitrary width by a congruence
 $\aid{cong↓ᵏ}$.
 
-The box relations are derived (\texttt{BR}, 7\,000 lines, on top of a
-calculus of $\mathit{Ex}$-conjugations and two-qupit lemmas of 11\,000
-lines) from the \emph{full} symplectic rule set, seventeen group-specific
+The box relations (\texttt{BR}) are derived using a calculus of
+$\mathit{Ex}$-conjugations and two-qupit lemmas from the \emph{full} symplectic rule set, seventeen group-specific
 axioms whose two- and three-qupit members are Selinger's
 c10--c15~\cite{selinger2015clifford} verbatim and whose one-qupit
 members are the multiplier calculus --- $S^{p} = H^{4} = (SH)^{3} =
@@ -1368,9 +1386,7 @@ axiom from the simplified ones.  The multiplier law $M_x \bullet M_y
 \approx M_{xy}$ is typical: write $x = g^{k}$, $y = g^{l}$, use
 \aid{M-power} twice, add the exponents, reduce modulo $p-1$ using
 $M_g^{\,p-1} \approx \varepsilon$, which is Fermat's little theorem, and
-use \aid{M-power} once more.  The whole reduction from seventeen rules
-to fifteen is 900 lines; the reduction from the box relations to the
-seventeen is 18\,000.  This is the formal counterpart of the paper's
+use \aid{M-power} once more.  This is the formal counterpart of the paper's
 Theorem~4.4, whose proof the paper already delegated to Agda.  Read
 modulo Paulis and scalars, Selinger's three-qubit
 relations~\cite{selinger2015clifford} are \emph{identical} to
@@ -1410,8 +1426,10 @@ wire, recurse on the tail'': the single-level input is
 \AgdaBound{q}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaInductiveConstructor{₁}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
-\AgdaFunction{∃}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaFunction{∃}\AgdaSpace{}%
 \AgdaSymbol{λ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{lm}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -1470,12 +1488,12 @@ symplectic group:
 \AgdaPostulate{Pres.presentation}\AgdaSpace{}%
 \AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\<%
 \end{code}
-\noindent Home: \texttt{Symplectic.Simplified.Presentation}.
+\noindent\normalfont Home: \texttt{Symplectic.Simplified.Presentation}.
 \end{theorem}
 
 \noindent Here \aid{{\_}QRel,{\_}==={\_}} closes the fifteen rules
 \aid{{\_}SRel,{\_}==={\_}} of \S\ref{sec:reduction} under the three
-structural rules (\aid{Lift-Relation}, as in \S\ref{sec:sn-relations});
+structural rules (\aid{Lift-Relation}, as in \S\ref{sec:framework});
 the statement is the index module \texttt{MainTheorems}'s.
 Theorem~\ref{thm:main} is then built on
 this theorem: the semidirect product of \S\ref{sec:semidirect}

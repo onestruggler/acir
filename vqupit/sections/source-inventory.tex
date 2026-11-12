@@ -1,0 +1,33 @@
+\section{Artifact Source Inventory}\label{sec:source-inventory}
+
+Table~\ref{tab:stats} measures retained sources, including comments and
+blank lines, excluding the external standard library and literate
+excerpts. The counts are reproduced by
+\texttt{python3} \path{vqupit/notes/stats.py}. Roughly 40\% of the source remains
+in the symplectic layer and 21\% in projective composition and
+translations. The latter cost is substantial even though there is no
+second large normalizer. These counts describe the proof's distribution;
+they do not measure saved effort, runtime, or generality.
+
+\begin{table}[htbp]
+\caption{Retained Agda sources, measured 12 November 2026.
+Counts include comments and blank lines.}
+\label{tab:stats}
+\centering\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Component & Files & Lines \\
+\midrule
+Presentation framework and supporting algebra & 49 & 12\,445 \\
+Symplectic semantics, normalization, and relations & 107 & 30\,871 \\
+Projective Pauli presentation & 2 & 1\,148 \\
+Projective Clifford composition and translations & 25 & 15\,900 \\
+Exact scalar extension & 14 & 5\,530 \\
+Original Figure~1 with scalars & 22 & 7\,329 \\
+Symmetric, cyclic, and trivial examples & 26 & 2\,773 \\
+Theorem index and notation & 2 & 443 \\
+\midrule
+Total & 247 & 76\,439 \\
+\bottomrule
+\end{tabular}
+\end{table}
