@@ -1,6 +1,6 @@
 \begin{tikzpicture}
 	\begin{pgfonlayer}{nodelayer}
-		\node [style=status family] (integral) at (0, 0) {Integral~\cite{amy2024toffoli}\\ $k\le2:\ {-}\quad k=3:\ \pdone$\\ $k\ge4:\ \popen$ \nodepart{two}$O_n(\D)\quad\pchecked$~\cite{li2021on}};
+		\node [style=status family] (integral) at (0, 0) {Integral~\cite{amy2024toffoli}\\ $k\le2:\ {-}\quad k=3:\ \pchecked^{\ast}$\\ $k\ge4:\ \popen$ \nodepart{two}$O_n(\D)\quad\pchecked$~\cite{li2021on}};
 		\node [style=status family] (th) at (4.05, 2.9) {Toffoli--Hadamard~\cite{amy2024toffoli}\\ $k\le2:\ \pchecked\quad k=3:\ \pchecked^{\ast}$\\ $k\ge4:\ \popen$ \nodepart{two}$L_n\quad\pchecked$~\cite{li2021on}\\ $n\ \text{even}$};
 		\node [style=status family] (gaussian) at (8.1, 0) {Gaussian\\ $k=1,3:\ \ppartial\quad k=2:\ {-}$\\ $k\ge4:\ \popen$ \nodepart{two}$U_n(\D[i])\quad\pchecked$~\cite{bian2021un}};
 		\node [style=status family] (imaginary) at (0, 6.8) {Imaginary\\ ${-}$ \nodepart{two}$U_n(\D[i\sqrt2])\quad{-}$};
