@@ -1,0 +1,57 @@
+% Adapted from C1C2puisC3.tikz in Figure 1 of Clement,
+% A Complete Equational Theory for Real-Clifford+CH Quantum Circuits
+% (arXiv:2602.06644v1), supplied in local/clement-real-cli-ch.zip.
+\begin{tikzpicture}[scale=0.25, yscale=0.85]
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (4) at (-11, 1.5) {};
+		\node [style=none] (8) at (-11, -1.5) {};
+		\node [style=none] (9) at (-8.5, 1.5) {};
+		\node [style=none] (12) at (-8.5, -1.5) {};
+		\node [style=none] (13) at (-8.5, -1.5) {};
+		\node [style=none] (18) at (-4.5, 1.5) {};
+		\node [style=none] (23) at (-4.5, -1.5) {};
+		\node [style=none] (24) at (8.5, 1.5) {};
+		\node [style=none] (27) at (8.5, -1.5) {};
+		\node [style=none] (30) at (11, 1.5) {};
+		\node [style=none] (31) at (11, -1.5) {};
+		\node [style=none] (33) at (-2, 1.5) {};
+		\node [style=none] (34) at (-2, -1.5) {};
+		\node [style=boitecircuit] (38) at (-6.5, 0) {$C_1$};
+		\node [style=boitecircuit] (39) at (0, 0) {$C_2$};
+		\node [style=none] (43) at (2, 1.5) {};
+		\node [style=none] (44) at (2, -1.5) {};
+		\node [style=none] (45) at (4.5, 1.5) {};
+		\node [style=none] (46) at (4.5, -1.5) {};
+		\node [style=boitecircuit] (47) at (6.5, 0) {$C_3$};
+		\node [style=none] (51) at (-9.125, 4) {};
+		\node [style=none] (52) at (-9.125, -4) {};
+		\node [style=none] (53) at (2.625, -4) {};
+		\node [style=none] (54) at (2.625, 4) {};
+		\node [style=dot] (55) at (-9.75, -0.75) {};
+		\node [style=dot] (56) at (-9.75, 0.75) {};
+		\node [style=dot] (57) at (-9.75, 0) {};
+		\node [style=dot] (58) at (-3.25, -0.75) {};
+		\node [style=dot] (59) at (-3.25, 0.75) {};
+		\node [style=dot] (60) at (-3.25, 0) {};
+		\node [style=dot] (61) at (3.25, -0.75) {};
+		\node [style=dot] (62) at (3.25, 0.75) {};
+		\node [style=dot] (63) at (3.25, 0) {};
+		\node [style=dot] (64) at (9.75, -0.75) {};
+		\node [style=dot] (65) at (9.75, 0.75) {};
+		\node [style=dot] (66) at (9.75, 0) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=new] (4.center) to (9.center);
+		\draw [style=new] (8.center) to (13.center);
+		\draw [style=new] (24.center) to (30.center);
+		\draw [style=new] (27.center) to (31.center);
+		\draw [style=new] (18.center) to (33.center);
+		\draw [style=new] (23.center) to (34.center);
+		\draw [style=new] (43.center) to (45.center);
+		\draw [style=new] (44.center) to (46.center);
+		\draw [style=boxed] (51.center) to (54.center);
+		\draw [style=boxed] (54.center) to (53.center);
+		\draw [style=boxed] (53.center) to (52.center);
+		\draw [style=boxed] (52.center) to (51.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

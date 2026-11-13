@@ -1,0 +1,76 @@
+% Seven standard PROP laws, following Figure 1 of Clement (2026).
+% Diagram sources are attributed in prop/*.tikz. Products use this
+% paper's left-to-right order: C_1 \bullet C_2 applies C_1 first.
+% Parallel composition places its first argument above its second.
+\begingroup
+\small
+\setlength{\fboxsep}{6pt}
+\setlength{\fboxrule}{.4pt}
+% Keep the reference diagrams' styles local to this figure.
+\tikzset{
+  every picture/.style={baseline=-.25em,scale=.5},
+  none/.style={inner sep=0pt},
+  boitecircuit/.style={fill=white,draw=black,rectangle,
+    minimum height=.6cm,minimum width=.5cm,inner sep=.1em},
+  dot/.style={circle,fill=black,draw=none,inner sep=0pt,
+    outer sep=0pt,minimum size=1pt},
+  new/.style={draw=black,line width=.45pt},
+  boxed/.style={draw=gray,dashed,line width=.45pt},
+  msdiagrammevide/.style={rectangle,fill=white,draw=gray,
+    dashed,line width=.45pt,inner sep=.5em}
+}
+\newcommand{\propdiagram}[1]{%
+  \scalebox{.8}{\input{figures/prop/#1.tikz}}}
+\newcommand{\proplaw}[3]{%
+  \textup{#1}\par\vspace{2pt}%
+  $\displaystyle #2$\par\vspace{4pt}%
+  #3\par}
+\fbox{%
+\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+\begin{minipage}[t]{.49\linewidth}
+\centering
+\proplaw{(a) Sequential unit}
+  {1_n\mathbin{\bullet} C=C=C\mathbin{\bullet}1_n}
+  {\propdiagram{sequential-unit-left}\enspace$=$\enspace
+   \propdiagram{circuit}\enspace$=$\enspace
+   \propdiagram{sequential-unit-right}}
+\vspace{8pt}
+\proplaw{(b) Sequential associativity}
+  {(C_1\mathbin{\bullet}C_2)\mathbin{\bullet}C_3
+    =C_1\mathbin{\bullet}(C_2\mathbin{\bullet}C_3)}
+  {\propdiagram{sequential-assoc-left}\enspace$=$\enspace
+   \propdiagram{sequential-assoc-right}}
+\vspace{8pt}
+\proplaw{(c) Parallel unit}
+  {1_0\otimes C=C=C\otimes1_0}
+  {\propdiagram{tensor-unit-left}\enspace$=$\enspace
+   \propdiagram{circuit}\enspace$=$\enspace
+   \propdiagram{tensor-unit-right}}
+\vspace{8pt}
+\proplaw{(f) Swap naturality}
+  {(C\otimes1_1)\mathbin{\bullet}\sigma_n
+    =\sigma_n\mathbin{\bullet}(1_1\otimes C)}
+  {\propdiagram{naturality-left}\enspace$=$\enspace
+   \propdiagram{naturality-right}}
+\end{minipage}\hfill
+\begin{minipage}[t]{.49\linewidth}
+\centering
+\proplaw{(d) Parallel associativity}
+  {(C_1\otimes C_2)\otimes C_3=C_1\otimes(C_2\otimes C_3)}
+  {\propdiagram{tensor-assoc-left}\enspace$=$\enspace
+   \propdiagram{tensor-assoc-right}}
+\vspace{8pt}
+\proplaw{(e) Interchange}
+  {(C_1\mathbin{\bullet}C_2)\otimes(C_3\mathbin{\bullet}C_4)
+    =(C_1\otimes C_3)\mathbin{\bullet}(C_2\otimes C_4)}
+  {\propdiagram{interchange-left}\enspace$=$\enspace
+   \propdiagram{interchange-right}}
+\vspace{8pt}
+\proplaw{(g) Swap involution}
+  {\sigma\mathbin{\bullet}\sigma=1_2}
+  {\propdiagram{involution-left}\enspace$=$\enspace
+   \propdiagram{involution-right}}
+\end{minipage}
+\end{minipage}%
+}
+\endgroup

@@ -1,0 +1,230 @@
+{
+  "measurement_date": "2026-11-01",
+  "source_revision": "62d6e3b3c5e11e93629daec011bef55e25fa3552",
+  "lean_version": "4.30.0",
+  "mathlib_revision": "c5ea00351c28e24afc9f0f84379aa41082b1188f",
+  "machine": {
+    "cpu": "Intel Core i5-14400",
+    "wsl_logical_cpus": 8,
+    "wsl_ram_approx_gib": 12,
+    "wsl_swap_approx_gib": 24
+  },
+  "method": {
+    "clean_command": "lake clean QCert",
+    "build_command": "lake --no-cache --no-ansi build <tracked module source paths in the group>",
+    "group_order": "dependency order, one Lake invocation per group",
+    "environment": {
+      "LEAN_NUM_THREADS": "2"
+    },
+    "external_dependency_artifacts": "retained",
+    "lean_artifact_generation_included": true,
+    "lake_startup_included": true,
+    "cleaning_and_inter_command_pauses_timed": false,
+    "scope": "all tracked library modules in Lean/QCert plus Lean/QCert.lean; generator templates excluded"
+  },
+  "excluded_generator_templates": [
+    "Lean/QCert/CliffordCS3/gen/cosets_template.lean",
+    "Lean/QCert/LiRossSelinger/gen/meet_head.lean",
+    "Lean/QCert/LiRossSelinger/gen/meet_tail.lean"
+  ],
+  "attempted_modules": 831,
+  "successful_modules": 829,
+  "failed_modules": [
+    "QCert.RealCliffordCH.Sec8.A.ItemBFun",
+    "QCert.RealCliffordCH.Sec8.A.ItemASteps"
+  ],
+  "failed_modules_are_unused_helpers": true,
+  "main_entry_point_passed": true,
+  "audit_passed": true,
+  "audited_declarations": 105,
+  "sorryAx_dependencies": 0,
+  "total_timed_wall_seconds": 12573.261893,
+  "development_folders_wall_seconds": 12470.737021,
+  "shared_folders_wall_seconds": 47.691131,
+  "root_modules_wall_seconds": 54.83374,
+  "observations": [
+    "Substantial swapping was observed during the RealCliffordCH build.",
+    "Lake reported Family267 at 5217 s and Family268 at 1551 s; these per-module log durations are truncated to whole seconds.",
+    "The Agda column in the manuscript retains its pre-existing measurements; this run measures Lean only."
+  ],
+  "groups": [
+    {
+      "group": "(root) QCert.Presentation",
+      "modules": 1,
+      "wall_seconds": 10.758729,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "Exact",
+      "modules": 3,
+      "wall_seconds": 13.904454,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "Matrix",
+      "modules": 2,
+      "wall_seconds": 5.052934,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "NumberTheory",
+      "modules": 2,
+      "wall_seconds": 14.568887,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "(root) QCert.Synthesis",
+      "modules": 1,
+      "wall_seconds": 4.346699,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "Circuit",
+      "modules": 3,
+      "wall_seconds": 14.164856,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "BianSelingerUn",
+      "modules": 25,
+      "wall_seconds": 140.989916,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "CNOTDihedral",
+      "modules": 15,
+      "wall_seconds": 77.292532,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "HadamardPi",
+      "modules": 36,
+      "wall_seconds": 315.699167,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "LiRossSelinger",
+      "modules": 36,
+      "wall_seconds": 157.759353,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "PhaseAffine",
+      "modules": 32,
+      "wall_seconds": 176.591116,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "QuditClifford",
+      "modules": 37,
+      "wall_seconds": 166.921143,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "QutritClifford",
+      "modules": 73,
+      "wall_seconds": 164.763394,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "SelingerClifford",
+      "modules": 24,
+      "wall_seconds": 103.608282,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "Clement2019",
+      "modules": 15,
+      "wall_seconds": 52.936996,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "Greylyn",
+      "modules": 23,
+      "wall_seconds": 115.61859,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "RealStabilizer",
+      "modules": 19,
+      "wall_seconds": 62.87221,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "CliffordT2",
+      "modules": 34,
+      "wall_seconds": 275.395783,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "CliffordCS3",
+      "modules": 86,
+      "wall_seconds": 1162.66,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "ToffoliHadamard",
+      "modules": 19,
+      "wall_seconds": 328.837373,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "Minimality",
+      "modules": 68,
+      "wall_seconds": 300.201284,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "RealCliffordCH",
+      "modules": 274,
+      "wall_seconds": 8868.589884,
+      "exit_code": 1,
+      "failed_modules": [
+        "QCert.RealCliffordCH.Sec8.A.ItemBFun",
+        "QCert.RealCliffordCH.Sec8.A.ItemASteps"
+      ]
+    },
+    {
+      "group": "(root) QCert.Table1",
+      "modules": 1,
+      "wall_seconds": 18.259157,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "(root) QCert",
+      "modules": 1,
+      "wall_seconds": 10.672831,
+      "exit_code": 0,
+      "failed_modules": []
+    },
+    {
+      "group": "(root) QCert.Audit",
+      "modules": 1,
+      "wall_seconds": 10.796325,
+      "exit_code": 0,
+      "failed_modules": []
+    }
+  ]
+}

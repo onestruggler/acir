@@ -1,0 +1,77 @@
+% Adapted from C1puissurC2surC3.tikz in Figure 1 of Clement,
+% A Complete Equational Theory for Real-Clifford+CH Quantum Circuits
+% (arXiv:2602.06644v1), supplied in local/clement-real-cli-ch.zip.
+\begin{tikzpicture}[scale=0.25, yscale=0.85]
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (4) at (-4.5, -10) {};
+		\node [style=none] (8) at (-4.5, -7) {};
+		\node [style=none] (9) at (-2, -10) {};
+		\node [style=none] (12) at (-2, -7) {};
+		\node [style=none] (13) at (-2, -7) {};
+		\node [style=none] (18) at (2, -10) {};
+		\node [style=none] (23) at (2, -7) {};
+		\node [style=none] (33) at (4.5, -10) {};
+		\node [style=none] (34) at (4.5, -7) {};
+		\node [style=boitecircuit] (38) at (0, 8.5) {$C_1$};
+		\node [style=none] (51) at (-2.625, -12.5) {};
+		\node [style=none] (52) at (-2.625, 4) {};
+		\node [style=none] (53) at (2.625, 4) {};
+		\node [style=none] (54) at (2.625, -12.5) {};
+		\node [style=none] (55) at (-4.5, -1.5) {};
+		\node [style=none] (56) at (-4.5, 1.5) {};
+		\node [style=none] (57) at (-2, -1.5) {};
+		\node [style=none] (58) at (-2, 1.5) {};
+		\node [style=none] (59) at (-2, 1.5) {};
+		\node [style=none] (60) at (2, -1.5) {};
+		\node [style=none] (61) at (2, 1.5) {};
+		\node [style=none] (62) at (4.5, -1.5) {};
+		\node [style=none] (63) at (4.5, 1.5) {};
+		\node [style=boitecircuit] (64) at (0, 0) {$C_2$};
+		\node [style=none] (72) at (-4.5, 7) {};
+		\node [style=none] (73) at (-4.5, 10) {};
+		\node [style=none] (74) at (-2, 7) {};
+		\node [style=none] (75) at (-2, 10) {};
+		\node [style=none] (76) at (-2, 10) {};
+		\node [style=none] (77) at (2, 7) {};
+		\node [style=none] (78) at (2, 10) {};
+		\node [style=none] (79) at (4.5, 7) {};
+		\node [style=none] (80) at (4.5, 10) {};
+		\node [style=boitecircuit] (81) at (0, -8.5) {$C_3$};
+		\node [style=dot] (88) at (-3.25, 7.75) {};
+		\node [style=dot] (89) at (-3.25, 9.25) {};
+		\node [style=dot] (90) at (-3.25, 8.5) {};
+		\node [style=dot] (91) at (3.25, 7.75) {};
+		\node [style=dot] (92) at (3.25, 9.25) {};
+		\node [style=dot] (93) at (3.25, 8.5) {};
+		\node [style=dot] (94) at (-3.25, -0.75) {};
+		\node [style=dot] (95) at (-3.25, 0.75) {};
+		\node [style=dot] (96) at (-3.25, 0) {};
+		\node [style=dot] (97) at (3.25, -0.75) {};
+		\node [style=dot] (98) at (3.25, 0.75) {};
+		\node [style=dot] (99) at (3.25, 0) {};
+		\node [style=dot] (100) at (-3.25, -9.25) {};
+		\node [style=dot] (101) at (-3.25, -7.75) {};
+		\node [style=dot] (102) at (-3.25, -8.5) {};
+		\node [style=dot] (103) at (3.25, -9.25) {};
+		\node [style=dot] (104) at (3.25, -7.75) {};
+		\node [style=dot] (105) at (3.25, -8.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=new] (4.center) to (9.center);
+		\draw [style=new] (8.center) to (13.center);
+		\draw [style=new] (18.center) to (33.center);
+		\draw [style=new] (23.center) to (34.center);
+		\draw [style=boxed] (51.center) to (54.center);
+		\draw [style=boxed] (54.center) to (53.center);
+		\draw [style=boxed] (53.center) to (52.center);
+		\draw [style=boxed] (52.center) to (51.center);
+		\draw [style=new] (55.center) to (57.center);
+		\draw [style=new] (56.center) to (59.center);
+		\draw [style=new] (60.center) to (62.center);
+		\draw [style=new] (61.center) to (63.center);
+		\draw [style=new] (72.center) to (74.center);
+		\draw [style=new] (73.center) to (76.center);
+		\draw [style=new] (77.center) to (79.center);
+		\draw [style=new] (78.center) to (80.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

@@ -1,0 +1,46 @@
+% Adapted from swapn1C.tikz in Figure 1 of Clement,
+% A Complete Equational Theory for Real-Clifford+CH Quantum Circuits
+% (arXiv:2602.06644v1), supplied in local/clement-real-cli-ch.zip.
+\begin{tikzpicture}[scale=0.25, yscale=0.85]
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (4) at (7.75, -1) {};
+		\node [style=none] (8) at (7.75, -4) {};
+		\node [style=none] (9) at (6.25, -1) {};
+		\node [style=none] (13) at (6.25, -4) {};
+		\node [style=none] (42) at (2.25, -1) {};
+		\node [style=none] (43) at (2.25, -4) {};
+		\node [style=none] (44) at (1, -1) {};
+		\node [style=none] (48) at (0.5, -4) {};
+		\node [style=boitecircuit] (53) at (4.25, -2.5) {$C$};
+		\node [style=none] (54) at (-5.75, 4) {};
+		\node [style=none] (55) at (-6.25, 1) {};
+		\node [style=none] (56) at (-8, 4) {};
+		\node [style=none] (57) at (-8, 1) {};
+		\node [style=none] (61) at (7.75, 4) {};
+		\node [style=none] (62) at (0.75, 4) {};
+		\node [style=none] (63) at (-6, -4) {};
+		\node [style=none] (64) at (-8, -4) {};
+		\node [style=dot] (65) at (-7, 3.25) {};
+		\node [style=dot] (66) at (-7, 1.75) {};
+		\node [style=dot] (67) at (-7, 2.5) {};
+		\node [style=dot] (68) at (1.5, -1.75) {};
+		\node [style=dot] (69) at (1.5, -3.25) {};
+		\node [style=dot] (70) at (1.5, -2.5) {};
+		\node [style=dot] (71) at (7, -1.75) {};
+		\node [style=dot] (72) at (7, -3.25) {};
+		\node [style=dot] (73) at (7, -2.5) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=new] (4.center) to (9.center);
+		\draw [style=new] (8.center) to (13.center);
+		\draw [style=new] (42.center) to (44.center);
+		\draw [style=new] (43.center) to (48.center);
+		\draw [style=new] (54.center) to (56.center);
+		\draw [style=new] (55.center) to (57.center);
+		\draw [in=0, out=-180] (44.center) to (54.center);
+		\draw [in=0, out=-180] (48.center) to (55.center);
+		\draw (61.center) to (62.center);
+		\draw [in=0, out=-180] (62.center) to (63.center);
+		\draw (63.center) to (64.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

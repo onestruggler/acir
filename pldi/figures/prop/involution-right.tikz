@@ -1,0 +1,15 @@
+% Adapted from filsparalleleslongs-xxs.tikz in Figure 1 of Clement,
+% A Complete Equational Theory for Real-Clifford+CH Quantum Circuits
+% (arXiv:2602.06644v1), supplied in local/clement-real-cli-ch.zip.
+\begin{tikzpicture}[scale=0.4]
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (0) at (-3, 1) {};
+		\node [style=none] (1) at (3, 1) {};
+		\node [style=none] (2) at (3, -1) {};
+		\node [style=none] (3) at (-3, -1) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=new] (0.center) to (1.center);
+		\draw [style=new] (3.center) to (2.center);
+	\end{pgfonlayer}
+\end{tikzpicture}

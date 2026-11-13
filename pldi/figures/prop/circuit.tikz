@@ -1,0 +1,28 @@
+% Adapted from Cmultifils.tikz in Figure 1 of Clement,
+% A Complete Equational Theory for Real-Clifford+CH Quantum Circuits
+% (arXiv:2602.06644v1), supplied in local/clement-real-cli-ch.zip.
+\begin{tikzpicture}[scale=0.25, yscale=0.85]
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=none] (4) at (-3.5, 1.5) {};
+		\node [style=none] (8) at (-3.5, -1.5) {};
+		\node [style=none] (9) at (-2, 1.5) {};
+		\node [style=none] (13) at (-2, -1.5) {};
+		\node [style=none] (42) at (2, 1.5) {};
+		\node [style=none] (43) at (2, -1.5) {};
+		\node [style=none] (44) at (3.5, 1.5) {};
+		\node [style=none] (48) at (3.5, -1.5) {};
+		\node [style=boitecircuit] (53) at (0, 0) {$C$};
+		\node [style=dot] (54) at (-2.75, -0.75) {};
+		\node [style=dot] (55) at (-2.75, 0.75) {};
+		\node [style=dot] (56) at (-2.75, 0) {};
+		\node [style=dot] (57) at (2.75, -0.75) {};
+		\node [style=dot] (58) at (2.75, 0.75) {};
+		\node [style=dot] (59) at (2.75, 0) {};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=new] (4.center) to (9.center);
+		\draw [style=new] (8.center) to (13.center);
+		\draw [style=new] (42.center) to (44.center);
+		\draw [style=new] (43.center) to (48.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
