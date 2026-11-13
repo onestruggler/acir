@@ -812,6 +812,19 @@ The second is the three-qubit Toffoli--Hadamard theory~\cite{amy2024toffoli}, wh
 
 At the moment, not every completeness result fits into EquaCert, as its scope is limited in two ways. First, it supports only discrete gate sets, so it does not cover completeness results for circuits with continuous parameters, such as rotations by arbitrary angles~\cite{clement2023complete,clement2024extensions,clement2024minimal}. Second, control is not a circuit constructor in EquaCert, so it does not cover results that treat control as a primitive operation on circuits~\cite{delorme2026control,schober2026control,blake2026qudit}. We plan to extend EquaCert past both limitations.
 
+\section*{AI Use}
+We used Opus~5.5, Fable~5.1, and Astra~6 in AI coding-agent workflows,
+including Claude Code and Codex, to develop the Agda and Lean
+formalizations, write and refine proof-search and derivation-generation
+scripts, and assist with drafting and revising this paper.
+The agents worked from source papers and the shared library under
+author direction. The authors selected the results to formalize and
+checked the correspondence between the source claims and the formal
+definitions and theorem statements, as described in \Cref{sec:alignment}.
+Agda and Lean check the resulting proofs; this establishes the formal
+statements, while their alignment with the source papers remains a
+human responsibility.
+
 %% Required by the call for papers; it does not count toward the page limit.
 %% TODO (authors): a draft; the authors will supply the statement.  It
 %% says that an anonymized supplement is submitted, which must be true.
@@ -1494,7 +1507,7 @@ Lafont's rewriting also computes the canonical form, but on the word of a circui
 
 \section{Details of the Corrections}\label{app:corrections}
 
-This appendix states the two corrections of \Cref{sec:findings} in a form that can be checked by hand, and lists the main misprints that the formalizations found in their sources.
+This appendix states the two corrections of \Cref{sec:findings} in a form that can be checked by hand, and summarizes further corrections found during formalization.
 
 \subsection{The Gap in the Proof of Theorem~4.14 of Hadamard-$\Pi$}\label{app:corr-hpi}
 
@@ -1516,9 +1529,15 @@ whose odd entries are the first, second, fourth, and sixth: none of the eight di
 
 Let $J$ be the $8\times8$ matrix whose entries are all~$1$, and let $R=I-J/4$, the reflection that negates the vector of all ones. Then $R^2=I$, since $J^2=8J$, and $R$ commutes with every permutation matrix. Read each gate $g$ of Figure~4 of~\cite{amy2024toffoli} as $RgR$, and the two further generators of its Figure~7, namely $\K_{[0,1,2,3]}$ and $\CCZ$, as themselves, and take both figures with the misprints of \Cref{tab:errata} corrected. Every relation of Figure~4 still holds, being a matrix identity conjugated by~$R$. So does every relation of Figure~7, since its other gates are permutation matrices, which are read as themselves. The relation $r_{\K}$ equates $I\otimes\K$ with a word in $\X\otimes I\otimes I$ and $\K_{[0,1,2,3]}$. Its left-hand side is read as $R\,(I\otimes\K)\,R$, whose entry in the first row and column is $1/2-2/4-2/4+4/16=-1/4$, and its right-hand side is read as itself, with the entry $1/2$ there. So $r_{\K}$ does not follow from the two figures. In the formalization, this is \aid{r\_K-independent}~\cite{equacert2026toffoli}.
 
-\subsection{Misprints by Source}\label{app:corr-list}
+\subsection{Further Corrections by Source}\label{app:corr-list}
 
-\Cref{tab:errata} lists the main things that the formalizations found besides the two corrections above. They were found by the checks of \Cref{sec:method} or when a step of a proof failed, and the formalizations state the corrected forms. The table leaves out smaller slips, such as a wrong label on a step of a derivation. For the other sources of \Cref{tab:corpus} we recorded none.
+\Cref{tab:errata} summarizes additional issues identified while checking
+the source equations and formalizing their proofs. These include
+incorrect gate placements, omitted gates or side conditions, and
+incomplete proof steps. The formalizations use the corrected
+statements. Equation and figure numbers in the table refer to the
+cited sources. The list omits minor typographical slips; we recorded
+no further corrections for the other sources in \Cref{tab:corpus}.
 
 \begin{table}[!htbp]
 \small
@@ -1526,18 +1545,19 @@ Let $J$ be the $8\times8$ matrix whose entries are all~$1$, and let $R=I-J/4$, t
 \renewcommand{\arraystretch}{1.25}
 \begin{tabularx}{\linewidth}{@{}l Y@{}}
 \toprule
-Source & What the formalization found \\
+Source & Correction \\
 \midrule
-\tabcite{amy2024toffoli} & Seven equations are false as printed: (33) of Figure~4, (97) and (100) of Figure~7, and four of Sections~5.5 to~5.7, among them $(r_{\CX})$ and a decomposition of $\CCZ$. Each is refuted in Agda by one matrix entry. The proof of Lemma~6.1 treats six of the twenty-five generators; the others need an induction. \\
-\tabcite{makary2021real} & Eleven of the 137 typed relations of Appendix~B are false as printed: six have a different right-hand side, and five lack a Pauli gate. \\
-\tabcite{selinger2015clifford} & Three steps of the supplement's derivations cite the wrong equation. The relations of the paper all hold. \\
-\tabcite{li2021on} & Relation (7d) of Table~2 has its two cases exchanged. \\
-\tabcite{li2025qutrit} & The third row of Figure~25 has one $\CZ$ in its residual circuit, not two. \\
-\tabcite{blake2026simpler} & The scalar of the qutrit rule (E) in Figure~4 is $\omega_{12}$, not $\omega_{12}^7$. One interpretation of Figure~8, which separates a rule on two wires, does not preserve a rule on three; the claim stands, since a derivation on two wires uses no rule on three. \\
-\tabcite{clement2026realcliffordch} & Equations (36) and (37) hold with the negations on the controls that are~$1$; we read the paper as placing them on those that are~$0$. Equations (30), (34), and (42) need the two indices of each of their letters to differ, which the figure leaves implicit. \\
+\tabcite{amy2024toffoli} & Correct seven equations: (33) in Figure~4, (97) and (100) in Figure~7, and four in Sections~5.5--5.7, including $(r_{\CX})$ and a $\CCZ$ decomposition. Each printed equation is refuted by a matrix entry in Agda. Complete the proof of Lemma~6.1, which treats six of its twenty-five generators, by induction for the remaining generators. \\
+\tabcite{makary2021real} & Correct eleven of the 137 typed relations in Appendix~B: six require a different right-hand side, and five are missing a Pauli gate. \\
+\tabcite{selinger2015clifford} & Correct three equation references in the supplement's derivations. The stated relations themselves are sound. \\
+\tabcite{li2021on} & Exchange the two cases of relation (7d) in Table~2. \\
+\tabcite{li2025qutrit} & Retain one $\CZ$ in the residual circuit in the third row of Figure~25, rather than two. \\
+\tabcite{blake2026simpler} & Replace $\omega_{12}^7$ by $\omega_{12}$ in the qutrit rule (E) of Figure~4. Restrict one separating interpretation in Figure~8 to two-wire derivations: it fails a three-wire rule, but that rule cannot occur in a two-wire derivation, so the independence claim still holds. \\
+\tabcite{clement2026realcliffordch} & Place the negations in (36) and (37) on controls whose values are~$1$; our reading of the diagrams places them on controls whose values are~$0$. Make explicit in (30), (34), and (42) that the two indices of each letter must be distinct. \\
 \bottomrule
 \end{tabularx}
-\caption{The main misprints and slips that the formalizations found in their sources, besides the two corrections of \Cref{sec:findings}.}
+\caption{Further corrections incorporated into the formalizations,
+in addition to the two main corrections of \Cref{sec:findings}.}
 \label{tab:errata}
 \end{table}
 
