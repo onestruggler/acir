@@ -565,7 +565,7 @@ form. Whether the seven equations are independent, or remain complete
 on five or more wires, is open.
 
 The gates $\X$ (NOT), $\CX$ (CNOT), and $\CCX$ (Toffoli) permute bit
-strings. On $k\le3$ wires they generate $\mathrm{Sym}(2^k)$; on
+strings. On $k\le3$ wires they generate all permutations of length $k$ bit strings $\mathrm{Sym}(2^k)$; on
 $k\ge4$ wires they generate exactly the even permutations,
 $\mathrm{Alt}(2^k)$~\cite{shende2003synthesis}.
 Existing completeness results cover linear reversible
@@ -582,7 +582,7 @@ wires.
 \subsection{Rules and Completeness}
 
 A circuit $u$ on $k$ wires denotes a permutation
-$\llbracket u\rrbracket$ of the $2^k$ bit strings. Wires are numbered
+$\llbracket u\rrbracket$ of the $2^k$ possible values of length $k$ bit strings. Wires are numbered
 from~0 at the bottom, and bit strings list the top wire first.
 Circuits and permutations compose from left to right: $pq$ applies
 $p$ and then $q$.
@@ -629,11 +629,14 @@ On any number of wires, two circuits that are equal modulo~$\mathcal{T}$ denote 
 
 \subsection{Canonical Circuits}
 
-The normal form comes from Lafont's presentation of the alternating
-groups~\cite{lafont2003boolean}. Number $N$ points from~0 to $N-1$,
-and let $\omega_i$ cycle $i$ to $i+1$, $i+1$ to $i+2$, and $i+2$ back
+We prove completeness by reducing to another set of equations that are known to be complete.
+Namely, Lafont's presentation of the alternating groups~\cite{lafont2003boolean}.
+That proof is based on reduction to a unique normal form that we will present here.
+
+Let 0 to $N-1$ be the points that we permute,
+and let $\omega_i$ be the cycle that maps $i$ to $i+1$, $i+1$ to $i+2$, and $i+2$ back
 to $i$, fixing the other points. These cycles generate all even
-permutations. A \emph{stair} $s_d(j)$ carries point~$d$ to a
+permutations. A \emph{stair} $s_d(j)$ takes a point~$d$ to a
 \emph{target}~$j$ while fixing all points below~$d$:
 \[
 s_d(j)=
@@ -750,7 +753,7 @@ between circuits.
 \paragraph{Translating the Known Presentation}
 The first change of presentation replaces Lafont's cycles by the
 circuits $\Omega_i$. The resulting \emph{translated relation}
-contains 111 equations: 105 relations between the cycles and six
+contains 111 equations: 105 relations between the cycles and 6
 equations expressing the three basic gates and the three adjacent
 swaps as products of cycles. The framework proves this relation
 complete by checking the translations and their inverse properties.
@@ -758,27 +761,28 @@ complete by checking the translations and their inverse properties.
 \paragraph{Deriving the Circuit Equations}
 To derive those 111 equations from $\mathcal{T}$, we first prove
 completeness on at most three wires by transfer from the library's
-Coxeter presentation of the symmetric groups. Search finds the
+Coxeter presentation of the symmetric groups. Search based on 
+the Knuth-Bendix completion algorithm finds the
 required derivations from the seven rules.
 This smaller completeness result then supplies steps for the
 four-wire proof: an equality between circuits on three adjacent
-wires can be established by comparing their permutations.
+wires can be established by directly comparing their permutations.
 Together with thirteen rule instances involving all four wires,
 these steps form the basis of the search.
-Lemmas about $\X$ gates and swaps transport gates and equations
+Additional lemmas about $\X$ gates and swaps transform rewrite rules
 to other wire placements.
 
-The search derives the 105 cycle relations and the six gate
+The search derives the 105 cycle relations and the 6 gate
 equations. Each resulting derivation uses only $\mathcal{T}$ and
 previously proved lemmas. In particular, semantic comparison
-justifies three-wire steps through the smaller completeness theorem;
-the four-wire completeness theorem is obtained only after all
-these derivations have been checked.
+justifies rewrite steps using just three wires through the smaller completeness theorem.
+% the four-wire completeness theorem is obtained only after all
+% these derivations have been checked.
 
 \paragraph{Transferring Completeness and Normal Forms}
 The second change of presentation identifies equality generated
-by the translated relation with equality modulo~$\mathcal{T}$.
-Completeness of the translated relation therefore gives
+by the translated relations with equality modulo~$\mathcal{T}$.
+Completeness of the translated relations therefore gives
 \Cref{thm:xcxccx-complete}. Translating Lafont's canonical forms
 back to circuits gives existence of the normal form, and their
 semantic uniqueness gives \Cref{thm:xcxccx-nf}.
@@ -802,10 +806,10 @@ They also expand intermediate lemmas into steps of the engine.
 The four-wire output contains 788 equations and 15,607 steps,
 which Agda replays in about 20~seconds.
 
-\paragraph{Implementation}\label{app:xcxccx-impl}
-Agda checks the formalization with its \texttt{-{}-safe} flag in
-about 43~seconds, with the shared library already checked.
-A Lean translation checks the same generated derivations.
+% \paragraph{Implementation}\label{app:xcxccx-impl}
+% Agda checks the formalization with its \texttt{-{}-safe} flag in
+% about 43~seconds, with the shared library already checked.
+% A Lean translation checks the same generated derivations.
 
 \section{Discussion and Future Work}\label{sec:conclusion}
 
