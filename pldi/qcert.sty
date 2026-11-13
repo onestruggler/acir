@@ -19,26 +19,33 @@
   \def\@shortauthors{}
 \fi
 
-%% The contact footnote lists the e-mail addresses only; the names and
-%% affiliations stay in the title block.
-%% Commented out for double-blind review (it prints ``Contact:'' even
-%% with no authors); restore with the authors for the camera-ready version.
-% \def\@mkauthorsaddresses{%
-%   Contact:
-%   \bgroup
-%   \def\position##1{\unskip\ignorespaces}%
-%   \def\institution##1{\unskip\ignorespaces}%
-%   \def\city##1{\unskip\ignorespaces}%
-%   \def\state##1{\unskip\ignorespaces}%
-%   \renewcommand\department[2][0]{\unskip\ignorespaces}%
-%   \def\country##1{\unskip\ignorespaces}%
-%   \def\and{\unskip, }%
-%   \def\@author##1{\ignorespaces}%
-%   \def\email##1##2{\unskip\ \mbox{\nolinkurl{##2}}}%
-%   \addresses
-%   \egroup}
-% %% No final period, which would read as part of the last address.
-% \def\@setauthorsaddresses{\@authorsaddresses\unskip}
+%% The contact footnote lists the e-mail addresses only, in the order of
+%% the authors; the names and affiliations are in the title block.
+%% Skipped under `anonymous' (double-blind review), where it would print
+%% ``Contact:'' with no authors.
+\if@ACM@anonymous\else
+\def\@mkauthorsaddresses{%
+  Contact:
+  \bgroup
+  \def\position##1{\unskip\ignorespaces}%
+  \def\institution##1{\unskip\ignorespaces}%
+  \def\city##1{\unskip\ignorespaces}%
+  \def\state##1{\unskip\ignorespaces}%
+  \renewcommand\department[2][0]{\unskip\ignorespaces}%
+  \def\country##1{\unskip\ignorespaces}%
+  \def\and{\unskip, }%
+  \def\@author##1{\ignorespaces}%
+  \def\email##1##2{\unskip\ \mbox{\nolinkurl{##2}}}%
+  \addresses
+  \egroup}
+%% No final period, which would read as part of the last address.
+\def\@setauthorsaddresses{\@authorsaddresses\unskip}
+\fi
+
+%% The title block is acmart's, one line per author, ``Name, Affiliation'',
+%% but with the names as typed, not in capitals.
+\let\qc@mkauthors@i\@mkauthors@i
+\def\@mkauthors@i{\let\MakeUppercase\@firstofone\qc@mkauthors@i}
 
 %% ---------------------------------------------------------------------
 %% Packages
