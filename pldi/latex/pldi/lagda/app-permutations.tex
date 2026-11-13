@@ -163,15 +163,15 @@
 
 EquaCert is an extension of an existing library for verifying
 completeness of circuit equational theory~\cite{bian2027popl}. We
-first introduce the basics through an exmaple and then explain the
-extension. The example is presenting symmetric group through circuits
-of swap gate, which shows how gates, relations, cosets, tower,
-semantics, uniqueness, completeness, presentation are defined in code.
+first introduce the basics through an example and then explain our
+extension. The example is the presentation of the symmetric group through circuits
+of swap gates, which shows how gates, relations, cosets,
+semantics, uniqueness, completeness and presentation are defined in code.
 \subsection{Gates, Generators, and Circuits}\label{app:sn-gates}
 
 A gate set is a family $\aid{Gate} : \mathbb{N} \to \mathsf{Set}$
 giving, for each arity, the gates of that arity; for permutation
-circuit there is one gate, on two wires. A generic wraper $\aid{Gen}$
+circuits there is one gate, on two wires (the swap). A generic wrapper $\aid{Gen}$
 turns any such family into wire-indexed \emph{generators}: a gate
 placed at the bottom of the wires, or a generator shifted up by one
 wire.
@@ -343,9 +343,8 @@ wire.
 Here $n$ is a uninstantiated parameter, so $\aid{gate₂}\;\aid{σ-gate}$
 is a generator at any width from two upward.  An $n$-wire
 \emph{circuit} is a word of generators,
-$\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$, which is a single
-generator $[\,g\,]$\aid{ʷ}, or the empty circuit \aid{ε} ($n$ bare
-wires, the identity circuit at that width), or a sequential
+$\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$, which is either a single
+generator $[\,g\,]$\aid{ʷ}, the empty circuit \aid{ε}, or a sequential
 composition $c \aidop{•} c'$.  We write $\sigma$ for the one-letter
 circuit $[\,\aid{gate₂}\;\aid{σ-gate}\;]$\aid{ʷ} and $c\;{\uparrow}$
 for $c$ shifted up one wire. Read diagrammatically, with wires drawn
@@ -359,12 +358,14 @@ axiom below.
 \subsection{Relations and structural
   relations}\label{app:sn-relations}
 
-The relations are a familiy of pairs indexed by the wire count --- the
-uninstantiated $n$. Simlilarly to circuit, one relation covers every
-width at which the relation fits. Agda names may be mixfix: each
-underscore in \aid{{\_}SRel,{\_}==={\_}} marks an argument position,
-so the family is applied as $n\;\aid{SRel,}\;w \aidrel{===} v$, read
-``$w = v$ is an axiom on $n$ wires''.
+Relations are defined as a family of pairs indexed by the wire count, corresponding to the
+uninstantiated $n$. We make a distinction between relations specific to
+the circuit family, and structural relations that hold for every circuit family.
+One relation covers every
+width at which the relation fits. 
+If we want to write ``$w = v$ is an axiom on $n$ wires''
+we write $n\;\aid{SRel,}\;w \aidrel{===} v$.
+This looks as follows in Agda:
 
 \begin{center}
 \begin{minipage}[c]{0.58\linewidth}
@@ -423,9 +424,12 @@ so the family is applied as $n\;\aid{SRel,}\;w \aidrel{===} v$, read
 \end{minipage}
 \end{center}
 
-\noindent These two axioms are two thirds of the Coxeter presentation
-of $S_n$: $\sigma^2 = \varepsilon$ and the braid relation.  The third
-Coxeter relation that swaps on disjoint wires commute, is not specific
+
+\noindent Note here that we used that Agda names may be mixfix: each
+underscore in \aid{{\_}SRel,{\_}==={\_}} marks an argument position.
+These two axioms are two thirds of the Coxeter presentation
+of $S_n$: $\sigma^2 = \varepsilon$ and the braid relation.  
+The third Coxeter relation that swaps on disjoint wires commute, is not specific
 to permutations. It is one of the relations every circuit theory
 needs, whatever its gates.  In code, \aid{Lift-Relation} extends any
 relation family with the structural relations to the full relation set
