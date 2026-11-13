@@ -243,7 +243,7 @@ EquaCert designates a two-wire gate as the swap and supplies its
 involution and naturality rules, which describe how gates move across
 wire permutations. These rules let an equation stated on its original
 wires be applied to any chosen wires of a larger circuit. Each source
-rule set therefore states only its own relations; the framework
+rule set therefore states only its own relations, while the framework
 supplies the structural rules.
 
 \begin{figure}[!htbp]
@@ -291,16 +291,16 @@ there.
 
 Agda checks that a proof establishes the theorem expressed by its
 type. To certify a result from a paper, we must also check that this
-type and the definitions it uses express the paper's claim. The
-authors check this correspondence directly. EquaCert makes the
+type and the definitions it uses express the paper's claim. 
+This has to be done manually. EquaCert makes the
 comparison manageable by separating each theorem statement from its
 proof and using shared definitions of circuits, semantics, and
 presentations.
 
-\subsection{Checking the Formal Statement}\label{sec:lost}
+% \subsection{Checking the Formal Statement}\label{sec:lost}
 
-The file \texttt{MainTheorems.agda} indexes the results. Each result
-has a \aid{MainTheorem} module that collects its statement and the
+The file \texttt{MainTheorems.agda} indexes all our certified results. 
+Each result has a \aid{MainTheorem} module that collects its statement and the
 definitions it mentions, with references to the modules that prove
 it. A reader starts from this statement and follows the definitions
 needed for three checks.
@@ -327,7 +327,8 @@ needed for three checks.
 
 For matrix-based results, the target group is defined through its
 matrices, independently of the circuit equations being certified.
-The qudit Clifford result in Agda instead targets an algebraic model
+For the qudit Clifford completeness result we formalise, 
+we instead target an algebraic model
 built from Pauli and symplectic groups and scalar extensions. Its
 identification with the source paper's matrix group is an additional
 mathematical check outside the Agda theorem.
@@ -336,20 +337,23 @@ The shared definitions need to be checked once for the results that
 use them. Agda then checks that each proof uses these definitions and
 discharges the hypotheses of the general results it invokes, such as
 the Reidemeister--Schreier method and the presentation of a
-semidirect product. When a correction changes a source rule set, the
-formal theorem names the corrected set. This distinguishes repairing
-a proof from changing the theorem being proved
-(\Cref{sec:findings}).
+semidirect product. If a correction is needed that changes a source rule set, the
+formal theorem names the corrected rule set. This distinguishes repairing
+a proof from changing the theorem being proved (\Cref{sec:findings}).
 
-\subsection{Size and Scope of the Review}
+% \subsection{Size and Scope of the Review}
 
 Across the sixteen formalizations in \Cref{tab:corpus}, the theorem
-statements and definitions selected for review occupy about
+statements and definitions that need to be directly reviewed occupy about
 $8{,}200$ of $377{,}000$ code lines ($2.2\%$), counting shared
 definitions once. This estimate excludes imported ring and matrix
 definitions and some generic group constructions used by the qudit
 model; these remain part of the mathematical background needed to
 understand the statements.
+
+While manually checking $8{,}200$ lines of Agda code is no small feat,
+the fact that only about $2\%$ of the total codebase has to be checked
+shows the usefulness of the shared interface.
 
 
 \iffalse
