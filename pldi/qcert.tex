@@ -203,9 +203,11 @@ soundness and completeness.
 \end{figure}
 
 
-$\aid{\_IsComplete\_}$ packs completeness into a record;
-$\aid{\_IsSubPresentationOf\_}$ packs soundness and completeness into
-a record; $\aid{\_IsPresentationOf\_}$ also packs the surjectivity of
+$\aid{\_IsComplete}$ packs completeness into a type;
+$\aid{\_IsSubPresentationOf\_}$ packs soundness (interpretation
+function is well-definedness in math terms) and completeness
+(interpretation is injective) into a record;
+$\aid{\_IsPresentationOf\_}$ also packs the surjectivity of
 $\aid{⟦}\_\aid{⟧}$. A relation set is \emph{mimimal}
 (\emph{independent}) if none of its relation follows from the
 rest. $\aid{\_IsMinimal\_}$ packs minimality property into a
@@ -449,6 +451,15 @@ The semantic boundary is also explicit. The Agda formalization presents independ
 \section{Certifications at scale}\label{sec:corpus}
 
 The 16 papers of which we formalize the results are presented in \Cref{tab:corpus}, and the corresponding web of formalized completeness results for qubit Clifford+T fragments is presented in \Cref{fig:qubit-progress}.
+
+We used LLM coding agents to develop the Agda formalizations from the
+source papers and EquaCert's library. The agents adapted existing Agda
+proofs where available, wrote new proofs, and generated long
+derivations with scripts. The authors checked the formal definitions
+and theorem statements against the source papers
+(\Cref{sec:alignment}), while Agda checked the proofs, including the
+generated derivations. The Lean formalizaton is a translation of the
+Agda formalization by LLM coding agents.
 
 \begin{table}[tbp]
 \small
@@ -843,6 +854,7 @@ human responsibility.
 The Agda framework and the sixteen formalizations, the proof of \Cref{sec:xcxccx}, the Lean version of EquaCert, the scripts that search for and generate derivations, and the measurement scripts and records behind \Cref{tab:corpus} %and \Cref{fig:compare} 
 are submitted with this paper as anonymized supplementary material. The files \texttt{MainTheorems.agda} and \texttt{QCert/Table1.lean} restate the theorems of \Cref{tab:corpus}. The proofs are checked with Agda~2.8.0 and version~2.4 of its standard library, and with Lean~4.30.0 and a pinned revision of Mathlib.
 %on the machine of Appendix~\ref{app:agda-lean-comparison}, the Agda check takes about an hour and the Lean build under three. 
+The archive includes verification instructions and logs of successful checks for the designated proof targets. Checking the supplied derivations does not require rerunning proof search. The archive verification did not rerun the reported timing experiments.
 We intend to submit the artifact for Artifact Evaluation and to release it under an open-source license.
 
 \bibliographystyle{ACM-Reference-Format}
