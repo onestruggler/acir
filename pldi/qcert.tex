@@ -67,18 +67,14 @@ result~\cite{hales2026reliability}. For example, \citet{bastounis2026navier} fin
 announced Navier--Stokes result proves weaker intermediate statements than the written proof in~\cite{openai2026navierstokes}. Therefore, \emph{aligning} the formal statement with the source paper remains a human task. A reader who trusts the proof assistant still needs to compare this statement and its definitions with those in the paper.
 
 We present EquaCert,\footnote{EquaCert is short for the
-  \emph{Cert}ification of \emph{Equa}tional theories.} a framework in
-Agda~\cite{norell2007thesis,bove2009agda} for verifying the
-completeness and minimality of circuit equational theories. In particular, we make the following contributions:
+  \emph{Cert}ification of \emph{Equa}tional theories.} a framework in Agda~\cite{norell2007thesis,bove2009agda} for verifying the
+completeness and minimality of circuit equational theories. In summary, we made six contributions:
 \begin{itemize}
 \item \textbf{A general framework.} EquaCert extends the Agda library
   of~\cite{bian2027popl} with matrix semantics, three-wire gates,
   zero-wire gates (scalars such as global phases), PROPs, and
   independence of relations. It states every result over one syntax
-  for words and circuits, and one definition of completeness. Each
-  formalization therefore reuses these definitions rather than
-  rebuilding them, and a theorem proved in one formalization can be
-  used directly in the proof of another.
+  for words and circuits, and one definition of completeness. Each formalization reuses these definitions rather than introducing its own, and a theorem proved in one formalization can be used directly in the proof of another.
 \item \textbf{Human-checked alignment.} We check by hand that the
   formal statement of each paper's main result, together with the
   definitions it mentions, expresses what the paper claims. The shared
@@ -92,13 +88,9 @@ completeness and minimality of circuit equational theories. In particular, we ma
 \item \textbf{Corrections.} We find and fix gaps in two published
   papers: a proof that misses a case and a theorem that omits a
   relation.
-\item \textbf{New result.} We prove that seven equations are complete
-  for four-bit reversible circuits over the gate set $\{\X,\CX,\CCX\}$.
-  An LLM agent found both the equations and the proof, and Agda
-  checked the proof before any of us read it. That check is what made
-  it worth our time to work through the proof and write the exposition
-  in \Cref{sec:xcxccx}.
-\item \textbf{A Lean version.} We also provide a Lean version of EquaCert, with the sixteen results checked using Mathlib's standard definitions, so that the larger community of Lean and Mathlib users can build on EquaCert.
+\item \textbf{A new result.} EquaCert also certifies results that an LLM produces. An LLM agent found seven equations and a proof that they are complete for four-bit reversible circuits over the gate set $\{\X,\CX,\CCX\}$, and Agda checked the proof before any of us read it. Only then did we work through the proof and write the exposition in
+\Cref{sec:xcxccx}.
+\item \textbf{A Lean version.} We also provide a Lean version of EquaCert, with the sixteen theorems stated over Mathlib's standard definitions. The formalizations of quantum information and quantum programs in Lean~\cite{zhu2026leanqit,kasaura2026leanquantum,benshahar2026cryptography,shirobokov2026discovering} can thus use verified rule sets and completeness theorems to justify circuit rewrites in a verified program.
 \end{itemize}
 
 \begin{figure}[!htb]
