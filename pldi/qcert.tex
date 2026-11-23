@@ -319,7 +319,7 @@ there.
 %% No \FloatBarrier here: with one, the lower part of page 9 stays
 %% blank and the paper gains a page.
 
-\section{Human-checked Alignment}\label{sec:alignment}
+\section{Human-Checked Alignment}\label{sec:alignment}
 
 Agda checks that a proof establishes the theorem expressed by its
 type. To certify a result from a paper, we must also check that this
@@ -359,7 +359,7 @@ needed for three checks.
 
 For matrix-based results, the target group is defined through its
 matrices, independently of the circuit equations being certified.
-For the qudit Clifford completeness result we formalise, 
+For the qudit Clifford completeness result we formalize,
 we instead target an algebraic model
 built from Pauli and symplectic groups and scalar extensions. Its
 identification with the source paper's matrix group is an additional
@@ -854,6 +854,15 @@ which Agda replays in about 20~seconds.
 
 \section{Discussion and Future Work}\label{sec:conclusion}
 
+We formalize the results of sixteen papers in EquaCert using one circuit syntax, one definition of group presentations, and shared libraries for rings and their matrix groups. Unifying these definitions has two benefits. First, presentations of the same group from different papers can be compared and proved equivalent. Second, a new completeness proof can reuse much of the existing work. When completeness follows from an exact synthesis algorithm, the induction that turns the algorithm into a proof carries over with little change, so the main new work is the case analysis over matrices and generators. That case analysis is the most error-prone part of the proof, so it is where machine checking matters most. Reusing these libraries, we also prove a new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$ (\Cref{sec:xcxccx}).
+
+We are now using EquaCert to extend two completeness results to any number of wires. The first is our four-bit theory. For $n\ge4$, circuits over $\{\X,\CX,\CCX\}$ realize exactly the even permutations~\cite{shende2003synthesis}, and related complete rule sets use cycles instead of gates~\cite{lafont2003boolean} or allow multiple-control Toffoli gates~\cite{feng2026complete,feng2026ancillas}. The second is the three-qubit Toffoli--Hadamard theory~\cite{amy2024toffoli}, which we extend using the presentation of $O_n(\Z[1/2])$~\cite{li2021on} and Cl\'ement's method for real Clifford+\CH{} circuits~\cite{clement2026realcliffordch}. More broadly, completeness is still open for many other discrete gate sets, especially in higher dimensions, and we plan to study Clifford circuits in all dimensions with EquaCert. Beyond completeness, the exact synthesis libraries can be reused for \T-count optimization of multi-qubit Clifford+\T{} circuits.
+
+At the moment, not every completeness result fits into EquaCert, as its scope is limited in two ways. First, it supports only discrete gate sets, so it does not cover completeness results for circuits with continuous parameters, such as rotations by arbitrary angles~\cite{clement2023complete,clement2024extensions,clement2024minimal}. Second, control is not a circuit constructor in EquaCert, so it does not cover results that treat control as a primitive operation on circuits~\cite{delorme2026control,schober2026control,blake2026qudit}. We plan to extend EquaCert past both limitations.
+
+% The conclusion of 12--16 November, commented out on 23 November 2026;
+% the text above is the version of 11 November.
+\iffalse
 We introduced the Agda framework EquaCert for formalizing quantum circuit completeness results.
 We formalize the results of sixteen papers using one syntax for words and circuits, one definition of group presentations, and shared libraries for rings and their matrix groups. Unifying these definitions has two benefits. First, presentations of the same group from different papers can be compared and proved equivalent. Second, a new completeness proof can reuse much of the existing work. When completeness follows from an exact synthesis algorithm, the induction that turns the algorithm into a proof carries over with little change, so the main new work is the case analysis over matrices and generators. That case analysis is the most error-prone part of the proof, so it is where machine checking is the most valuable. Indeed, we find in two of the 16 papers we formalise some oversights or bugs in the proof that needed to be fixed.
 Further demonstrating the usefulness of EquaCert, we also prove a new result: a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$.
@@ -865,6 +874,7 @@ We are now using EquaCert to extend two completeness results to any number of wi
 The second is the three-qubit Toffoli--Hadamard theory~\cite{amy2024toffoli}, which we extend using the presentation of $O_n(\Z[1/2])$~\cite{li2021on}. More broadly, completeness is still open for many other discrete gate sets, especially in higher dimensions. We plan for instance to study Clifford circuits in all (i.e.~non prime-dimensional) dimensions with EquaCert. Beyond completeness, the exact synthesis libraries can be reused for \T-count optimization of multi-qubit Clifford+\T{} circuits.
 
 At the moment, not every completeness result fits into EquaCert, as its scope is limited in two ways. First, it supports only discrete gate sets, so it does not cover completeness results for circuits with continuous parameters, such as rotations by arbitrary angles~\cite{clement2023complete,clement2024extensions,clement2024minimal}. Second, control is not a circuit constructor in EquaCert, so it does not cover results that treat control as a primitive operation on circuits~\cite{delorme2026control,schober2026control,blake2026qudit}. We plan to extend EquaCert past both limitations.
+\fi
 
 \begin{acks}
 The authors would like to thank Colin Blake and Neil J. Ross for insightful discussions. The circuit diagrams in this paper were typeset using TikZiT~\cite{tikzit}.
