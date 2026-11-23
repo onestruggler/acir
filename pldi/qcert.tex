@@ -146,9 +146,9 @@ EquaCert verifies the completeness and minimality of rule sets over gates or mul
 \end{figure}
 
 
-Most of the circuit families we formalize are restricted Clifford+\T{} circuits. \citet{amy2020numbertheoretic} show that several of these circuit families represent exactly the unitary matrices over a subring of $\Z\left[1/\sqrt2,i\right]$, with at most one ancilla. Appendix~\ref{app:rings-gates} defines the restricted gate sets, the underlying rings and matrix groups, and what it means for a circuit with ancillas to represent a matrix. These finitely generated rings are helpful for us, because in Agda we can then encode each element of $\Z\left[1/\sqrt2,i\right]$ and of its subrings $\Z\left[1/2,i\right]$, $\Z\left[1/\sqrt2\right]$, and $\Z\left[1/2\right]$ exactly, as a few integers with no rounding. For example, $(a+b\sqrt2)/\sqrt2^{\,q}\in\Z\left[1/\sqrt2\right]$ is encoded as the integers $a$, $b$, and $q$.\footnote{Circuits with continuous parameters, such as the universal circuits of~\cite{clement2023complete}, have matrix entries that cannot be encoded this way. See \Cref{sec:conclusion}, where we discuss the limitations of EquaCert and future work.}
+Most of the circuit families we formalize are restricted Clifford+\T{} circuits. \citet{amy2020numbertheoretic} show that several of these circuit families represent exactly the unitary matrices over a subring of $\Z\left[1/\sqrt2,i\right]$, with at most one ancilla. Appendix~\ref{app:rings-gates} defines the gates, the underlying rings and matrix groups, and what it means for a circuit with ancillas to represent a matrix. These finitely generated rings are helpful for us, because in Agda we can then encode each element of $\Z\left[1/\sqrt2,i\right]$ and of its subrings $\Z\left[1/2,i\right]$, $\Z\left[1/\sqrt2\right]$, and $\Z\left[1/2\right]$ exactly, as a few integers with no rounding. For example, $(a+b\sqrt2)/\sqrt2^{\,q}\in\Z\left[1/\sqrt2\right]$ is encoded as the integers $a$, $b$, and $q$.\footnote{Circuits with continuous parameters, such as the universal circuits of~\cite{clement2023complete}, have matrix entries that cannot be encoded this way. See \Cref{sec:conclusion}, where we discuss the limitations of EquaCert and future work.}
 
-\Cref{fig:qubit-fragments} displays the restricted Clifford+\T{} gate sets, their matrix groups, and multi-level generators (defined below). An arrow from one family to another means that every matrix represented by an ancilla-free circuit of the first is also represented by one of the second. If both boxes show a matrix group, then the first group is a subgroup of the second. \Cref{app:rings-gates} defines the remaining notation and gives the source of each matrix group.
+\Cref{fig:qubit-fragments} displays the restricted Clifford+\T{} gate sets, their matrix groups, and multi-level generators (defined below). An arrow from one family to another means that every matrix represented by an ancilla-free circuit of the first is also represented by one of the second. If both boxes show a matrix group, then the first group is a subgroup of the second. \Cref{app:rings-gates} defines the remaining notation.
 
 For an $m\times m$ matrix $M$ and distinct indices $a_0,\dots,a_{m-1}$ in $\{0,\dots,n-1\}$, the \emph{$m$-level} matrix $M_{[a_0,\dots,a_{m-1}]}$ is the $n\times n$ matrix that acts as $M$ on the standard basis vectors $e_{a_0},\dots,e_{a_{m-1}}$ and as the identity on the others. For example, $(-1)_{[a]}$ negates $e_a$, and $\X_{[a,b]}$ exchanges $e_a$ and $e_b$. 
 These $m$-level matrices are useful for providing presentations of matrix groups, since they allow for the localized simplification of a matrix, making it more straightforward to transform a matrix into the identity by multiplying with the right $m$-level matrices in a Gaussian-elimination-like fashion. This then gives a unique normal form, and the rewrite rules just have to specify how $m$-level matrices combine or commute.
@@ -188,7 +188,7 @@ There are two main strategies for proving completeness of a rule set $\mathcal{R
 \end{figure}
 
 
-The exact synthesis algorithms used by the first strategy consider groups of $n\times n$ matrices, such as $O_n(\Z[1/2])$ and $U_n(\Z[1/\sqrt2,i])$, rather than circuits (the first block of \Cref{tab:corpus}). Their presentations by $m$-level matrices are stated and proved for every $n$. Circuits on $k$ qubits only reach the dimensions $n=2^k$, so a circuit completeness result built on such a presentation uses only the case $n=2^k$. 
+The exact synthesis algorithms used by the first strategy consider groups of $n\times n$ matrices, such as $O_n(\Z[1/2])$ and $U_n(\Z[1/2,i])$, rather than circuits (the first block of \Cref{tab:corpus}). Their presentations by $m$-level matrices are stated and proved for every $n$. Circuits on $k$ qubits only reach the dimensions $n=2^k$, so a circuit completeness result built on such a presentation uses only the case $n=2^k$. 
 For completeness proofs based on exact synthesis, the induction argument is the same in every formalization, so each such proof only has to relate the steps of its own algorithm, which reduces a matrix to the identity, to the rewrite rules. This separates the algorithm-specific case analysis, the main work in each formalization, from the common completeness proof. 
 
 \Cref{fig:translation} illustrates the second strategy, which uses an already complete rule set $\mathcal{T}$ over a different gate set $\mathcal{G}'$~\cite{bian2023cliffordt2,bian2023cliffordcs3,clement2026realcliffordch,amy2024toffoli,blake2026simpler,clement2023complete,clement2024extensions,delorme2026control,schober2026control,blake2026qudit}. Here, $E$ and $D$ translate circuits from $\mathcal{G}$ to $\mathcal{G}'$ and back, replacing each gate with a circuit over the other gate set. Both $E$ and $D$ preserve circuit composition and the underlying matrix. Hence $C_1'=E(C_1)$ and $C_2'=E(C_2)$ have the same matrix, so completeness of $\mathcal{T}$ gives $C_1'\rewrites{\mathcal{T}}C_2'$. To transfer completeness from $\mathcal{T}$ to $\mathcal{R}$, we first show that every rule of $\mathcal{T}$, translated by $D$, can be derived using $\mathcal{R}$. We can then replace each step of these rewrites by its translated derivation, giving $D(C_1')\rewrites{\mathcal{R}}D(C_2')$. 
@@ -217,8 +217,8 @@ extending an interpretation map of gates. \emph{Soundness}
 ($w \approx v$ implies $\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$) is a
 small case analysis over the axioms.  But \emph{completeness}
 ($\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ implies $w \approx v$) is
-usually rather convoluted to prove. Figure
-\ref{fig:equacert-soundness-completeness} shows one way of proving
+usually rather convoluted to prove.
+\Cref{fig:equacert-soundness-completeness} shows one way of proving
 soundness and completeness.
 
 
@@ -230,7 +230,7 @@ soundness and completeness.
   every rule of $\mathcal R$; the right derives every rule of a known
   complete set $\mathcal T$. Each rewrite step uses a rule of
   $\mathcal R$. The same group $U_n(\D[\omega])$ semantics is used in
-  many of our sixteen certifications, see Section~\ref{sec:corpus}.}
+  many of our sixteen certifications, see \Cref{sec:corpus}.}
 \label{fig:equacert-soundness-completeness}
 \Description{Two columns of three numbered cards. The left column, soundness of R, interprets each generator, a gate or multi-level matrix, as a matrix, lifts the interpretation to circuits and words, and checks for each rule of R that both sides have the same matrix. The right column, completeness of R, fixes a known complete reference set T, derives each equation of T by a chain of rewrites that each use a sound rule of R, and concludes that every valid equation is derivable from R. An arrow leads from the third card of the left column to the second card of the right column.}
 \end{figure}
@@ -239,10 +239,10 @@ soundness and completeness.
 $\aid{\_IsComplete}$ packs completeness into a type;
 $\aid{\_IsSubPresentationOf\_}$ packs soundness (the interpretation
 is well defined) and completeness
-(interpretation is injective) into a record;
+(the interpretation is injective) into a record;
 $\aid{\_IsPresentationOf\_}$ also packs the surjectivity of
 $\aid{⟦}\_\aid{⟧}$. A rule set is \emph{minimal}
-(\emph{independent}) if none of its relations follows from the
+(\emph{independent}) if none of its rules follows from the
 rest. $\aid{\_IsMinimal}$ packs minimality into a
 type. In code, for example, these properties are
 
@@ -520,7 +520,7 @@ Source & Object & Result & Proof & \shortstack{Agda\\Mod} & \shortstack{Agda\\ti
 \multicolumn{7}{@{}l}{\emph{Circuits}}\\
 \tabcite{selinger2015clifford} & Clifford & sub-presentation & S & 32 & 35.01 & 88.24 \\
 \citetalias{bian2026qupit}~[\citeyear{bian2026qupit}] & Clifford, odd prime~$p$ & presentation of a~model & P & 216 & 499.37 & 197.32 \\
-\tabcite{makary2021real} & real stabilizer & sub-presentation & S & 31 & 37.94 & 79.75 \\
+\tabcite{makary2021real} & real Clifford & sub-presentation & S & 31 & 37.94 & 79.75 \\
 \tabcite{amy2018cnotdihedral} & CNOT-dihedral & sub-presentation & S & 31 & 21.24 & 101.22 \\
 \tabcite{blake2026phaseaffine} & phase-affine, prime~$d$ & sub-presentations & S & 57 & 83.30 & 257.24 \\
 \tabcite{bian2023cliffordt2} & two-qubit Clifford+\T{} & sub-presentation in~$U_4$ & P & 63 & 135.79 & 356.79 \\
@@ -537,7 +537,7 @@ Total & & & & 1{,}509 & 2{,}399.36 & 9{,}304.83 \\
 \end{tabularx}
 \captionsetup{position=bottom}
 \caption{Completeness and minimality results formalized in EquaCert. 
-\textbf{Object} is the group of which a presentation is formalized; see Appendix~\ref{app:rings-gates} for the precise definitions. 
+\textbf{Object} is the group or circuit family of which a presentation is formalized; see Appendix~\ref{app:rings-gates} for the precise definitions. 
 \textbf{Result} states whether we formalized a full surjective presentation of the whole group, or just a sub-presentation, that is, a presentation of the subgroup generated by the gates.
 \textbf{Proof} specifies the origin of the Agda proof: S means we formalize from the source paper; P means there was a pre-existing Agda proof we fit into our framework.
 \textbf{Agda Mod} states how many files are in the formalization of that result. \textbf{Agda time} and \textbf{Lean time} measure how long it takes to type-check the formalization, not counting the time for common framework files.
@@ -551,7 +551,7 @@ Total & & & & 1{,}509 & 2{,}399.36 & 9{,}304.83 \\
 \resizebox{\linewidth}{!}{\input{figures/qubit-progress-plain.tikz}\unskip}
 \caption{Overview of completeness and formalization on the same families and inclusion arrows as \Cref{fig:qubit-fragments}. 
 % Gates and multi-level generators are omitted;
-The top half of the block describes the gate set, the lower half the corresponding matrix fragment. Here $k$ denotes the number of qubits and $n$ is the matrix dimension ($n=2^k$ for a circuit). We write a $\checkmark$ for a known completeness result, and $\checkmark_E$ for one formalized in EquaCert. A cross $\times$ denotes that the question of completeness is still open, a dash -- that we do not consider this case, and an asterisk $^*$ denotes an error in the original publication that we correct.
+The top half of the block describes the gate set, the lower half the corresponding matrix group. Here $k$ denotes the number of qubits and $n$ is the matrix dimension ($n=2^k$ for a circuit). We write a $\checkmark$ for a known completeness result, and $\checkmark_E$ for one formalized in EquaCert. A cross $\times$ denotes that the question of completeness is still open, a dash -- that we do not consider this case, and an asterisk $^*$ denotes an error in the original publication that we correct.
 }\label{fig:qubit-progress}
 \Description{A status companion to Figure 2 preserves all thirteen families and their inclusion arrows. Two-compartment nodes distinguish circuit relations from matrix presentations. A legend distinguishes complete relations, EquaCert-checked results, open problems, and untreated cases. Width bounds identify small-qubit results, and asterisks identify the real-matrix and three-qubit Toffoli-Hadamard source repairs. The imaginary family is marked as not treated, and Toffoli-Hadamard circuits beyond three qubits as open.}
 \end{figure}
@@ -561,7 +561,7 @@ The Agda code of all these formalizations contains about 377{,}000 lines. About 
 We make three qualifications about the Agda formalizations presented in \Cref{tab:corpus}. 
 First, the two-qubit Clifford+\T{} and three-qubit Clifford+\CS{} formalizations~\cite{bian2023cliffordt2,bian2023cliffordcs3} reuse the authors' Agda proofs and we just connect them to EquaCert's shared matrix presentations (\Cref{sec:form}). 
 Second, the qudit Clifford theorem of~\quditcite{} presents an independently constructed algebraic model in Agda that does not fit into the EquaCert framework.
-Third, the Toffoli--Hadamard formalization does not follow the proof of the paper, since that proof was slow to type-check. We instead formalize a streamlined proof. 
+Third, the Toffoli--Hadamard formalization does not follow the proof of the paper, since a formalization of that proof was slow to type-check. We instead formalize a streamlined proof. 
 % In the minimality row, three of the six fragments are minimal and complete on every number of wires. The other three carry bounds: qutrit Clifford is complete on every number of wires, with every rule on at most two wires shown necessary; Clifford+\T{} is complete on at most two wires, with every rule on at most one shown necessary; and Clifford+\CS{} is complete on at most three, with every rule on at most two shown necessary.
 
 % Long computational derivations, such as those in Selinger's 105-page supplement and the qutrit box relations, come from scripts that follow the paper, as in \Cref{sec:method}, or search for the steps. In the real stabilizer formalization, half the lines are generated in this way, and a fifth formalize the paper's mathematics.
@@ -906,10 +906,10 @@ human responsibility.
 
 %% Required by the call for papers; it does not count toward the page limit.
 %% TODO (authors): a draft; the authors will supply the statement.  It
-%% says that an anonymized supplement is submitted, which must be true.
+%% says that a supplement is submitted, which must be true.
 \section*{Data-Availability Statement}
 The Agda framework and the sixteen formalizations, the proof of \Cref{sec:xcxccx}, the Lean version of EquaCert, the scripts that search for and generate derivations, and the measurement scripts and records behind \Cref{tab:corpus} %and \Cref{fig:compare} 
-are submitted with this paper as anonymized supplementary material. The files \texttt{MainTheorems.agda} and \texttt{QCert/Table1.lean} restate the theorems of \Cref{tab:corpus}. The proofs are checked with Agda~2.8.0 and version~2.4 of its standard library, and with Lean~4.30.0 and a pinned revision of Mathlib.
+are submitted with this paper as supplementary material. The files \texttt{MainTheorems.agda} and \texttt{QCert/Table1.lean} restate the theorems of \Cref{tab:corpus}. The proofs are checked with Agda~2.8.0 and version~2.4 of its standard library, and with Lean~4.30.0 and a pinned revision of Mathlib.
 %on the machine of Appendix~\ref{app:agda-lean-comparison}, the Agda check takes about an hour and the Lean build under three. 
 The archive includes verification instructions and logs of successful checks for the designated proof targets. Checking the supplied derivations does not require rerunning proof search. The archive verification did not rerun the reported timing experiments.
 We intend to submit the artifact for Artifact Evaluation and to release it under an open-source license.
@@ -917,7 +917,7 @@ We intend to submit the artifact for Artifact Evaluation and to release it under
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{refs}
 
-\clearpage
+% \clearpage
 \appendix
 
 \section{Rings, Matrices, and Quantum Gates}\label{app:rings-gates}
@@ -967,7 +967,7 @@ and $\omega\Hg$, the scalar $\omega$ times $\Hg$. The two-qubit gate $\Hg\otimes
 Note that a gate on zero qubits, such as~$\omega$, is just a number (a scalar). We write $\ket0=e_0$ and $\ket1=e_1$ in $\mathbb C^2$, and $\ket{x_0\cdots x_{k-1}}=\ket{x_0}\otimes\cdots\otimes\ket{x_{k-1}}$, which is $e_x$ for the number $x$ with binary digits $x_0\cdots x_{k-1}$. In circuit diagrams, the first tensor factor is the top wire. 
 For a gate $G$ on $m$ qubits, the \emph{controlled} gate $\mathrm CG=\mathrm{diag}(I_{2^m},G)$ on $m+1$ qubits applies $G$ to the last $m$ qubits if the first is~$\ket1$. This defines $\CX$, $\CZ$, $\CS$, $\CH$, $\CCX=\mathrm C(\CX)$, and $\CCZ=\mathrm C(\CZ)$.
 
-\paragraph{Circuits and Ancillas} In a circuit on $k$ qubits, applying a gate $G$ on $m$ qubits to the qubits at the distinct positions $j_0,\dots,j_{m-1}\in\{0,\dots,k-1\}$ corresponds to the unitary $P_\sigma(G\otimes I_{2^{k-m}})P^{-1}_\sigma$ where $P_\sigma$ is the permutation matrix of $\sigma$ satisfying $\sigma l = j_l$ for $l<m$ and is identity otherwise. That is, we first swap all the qubit wires so that $G$ applies to the top $m$ qubits, and then we swap the wires back.
+\paragraph{Circuits and Ancillas} In a circuit on $k$ qubits, a gate $G$ on $m$ qubits applied to the qubits at the distinct positions $j_0,\dots,j_{m-1}\in\{0,\dots,k-1\}$ is the $2^k\times2^k$ unitary that acts as $G$ on those tensor factors, in that order, and as the identity on the others.
 A circuit $C$ consisting of the list of gates $G_1,\dots,G_\ell$ has unitary interpretation $\llbracket C\rrbracket=G_\ell\cdots G_1$. 
 Given a unitary $W\in U_{2^k}(\mathbb C)$, a circuit $C$ on $k+r$ qubits \emph{represents $W$ with $r$ clean ancillas} if $\llbracket C\rrbracket(v\otimes\ket0^{\otimes r})=(Wv)\otimes\ket0^{\otimes r}$ for all $v\in\mathbb C^{2^k}$~\cite{giles2013exact,amy2020numbertheoretic}. Without ancillas ($r=0$), this means $\llbracket C\rrbracket=W$.
 
