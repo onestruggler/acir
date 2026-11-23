@@ -58,13 +58,13 @@ Rewriting quantum circuits is a standard tool in circuit optimization~\cite{hiet
 Completeness results have been established for a wide range of circuit families, including linear reversible circuits~\cite{lafont2003boolean,sakashita2013cnot}, reversible circuits over multiple-control Toffoli gates~\cite{feng2026complete}, Clifford circuits in prime dimensions~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, qubit CNOT-dihedral circuits~\cite{amy2018cnotdihedral} and their prime-dimensional phase-affine analogues~\cite{blake2026phaseaffine}, real Clifford+\CH~\cite{clement2026realcliffordch}, two-qubit Clifford+\T~\cite{bian2023cliffordt2}, three-qubit Clifford+\CS~\cite{bian2023cliffordcs3} and Toffoli--Hadamard~\cite{amy2024toffoli} circuits, as well as universal quantum circuits~\cite{clement2023complete,clement2024extensions}. Completeness has also been obtained for the groups of multi-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimality has been shown for six of these families~\cite{blake2026simpler} and for universal quantum circuits~\cite{clement2024minimal}. Proofs of both properties typically follow a simple strategy, but carrying it out requires long case analyses, with supporting derivations sometimes spanning hundreds of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}.
 %such as rewriting every circuit into a unique normal form, 
 
-Peer review often does not check proofs of this length in detail. A case can be missed, and a long derivation can use an equation outside the stated rules or rely indirectly on the very equation being derived. A \emph{proof assistant} such as Agda~\cite{norell2007thesis,bove2009agda} or Lean~\cite{moura2015lean,moura2021lean4} checks the logic of a formal proof mechanically~\cite{barendregt2005challenge,hales2008formalproof,geuvers2009proofassistants,avigad2014formally}, so none of these errors goes unnoticed. The difficult part is writing the proof in a form the assistant accepts. A paper can leave routine steps to the reader and assume earlier results, whereas a formalization must justify every step. In \emph{automatic formalization}, LLMs write the formal proof and the proof assistant verifies it. Formalizing Fermat's Last Theorem in Lean was expected to take years, yet Anthropic reports that its coding agents, building on earlier formalizations and with occasional human guidance, produced a 13-million-line proof in 11~days~\cite{anthropic2026flt}.
+Peer review often does not check proofs of this length in detail. A case can be missed, and a long derivation can use an equation outside the stated rules or rely indirectly on the very equation being derived. A \emph{proof assistant} such as Agda~\cite{norell2007thesis,bove2009agda} or Lean~\cite{moura2015lean,moura2021lean4} checks the logic of a formal proof mechanically~\cite{barendregt2005challenge,hales2008formalproof,geuvers2009proofassistants,avigad2014formally}, so none of these errors goes unnoticed. The difficult part is writing the proof in a form the assistant accepts. A paper can leave routine steps to the reader and assume earlier results, whereas a formalization must justify every step. In \emph{automatic formalization}, large language models (LLMs) write the formal proof and the proof assistant verifies it. Formalizing Fermat's Last Theorem in Lean was expected to take years, yet Anthropic reports that its coding agents, building on earlier formalizations and with occasional human guidance, produced a 13-million-line proof in 11~days~\cite{anthropic2026flt}.
 
 Consequently, automatic formalization can reduce the burden of reviewing new work, and allow a referee to concentrate on the core proof strategy. This will matter more as LLMs start to produce new proofs, since such proofs can be written much faster than experts can check them by hand. With a formalization at hand, a researcher can first confirm that a claimed completeness result holds and then decide whether its proof is worth the time to understand.
 
 Despite these benefits, there is one caveat. A proof assistant checks a proof only against the theorem as stated, which may not match the intended
 result~\cite{hales2026reliability}. For example, \citet{bastounis2026navier} find that, due to mistranslations, the Lean formalization of an
-announced Navier--Stokes result proves weaker intermediate statements than the written proof in~\cite{openai2026navierstokes}. Therefore, \emph{aligning} the formal statement with the source paper remains a human task. A reader who trusts the proof assistant still needs to compare this statement and its definitions with those in the paper.
+announced Navier--Stokes result proves weaker intermediate statements than the written proof in~\cite{openai2026navierstokes}. Therefore, \emph{aligning} the formal statement and its definitions with the source paper remains a human task.
 
 We present EquaCert,\footnote{EquaCert is short for the
   \emph{Cert}ification of \emph{Equa}tional theories.} an Agda framework for verifying the
@@ -188,7 +188,7 @@ There are two main strategies for proving completeness of a rule set $\mathcal{R
 \end{figure}
 
 
-The exact synthesis algorithms used by the first strategy consider groups of $n\times n$ matrices, such as $O_n(\Z[1/2])$ and $U_n(\Z[1/2,i])$, rather than circuits (the first block of \Cref{tab:corpus}). Their presentations by $m$-level matrices are stated and proved for every $n$. Circuits on $k$ qubits only reach the dimensions $n=2^k$, so a circuit completeness result built on such a presentation uses only the case $n=2^k$. 
+The exact synthesis algorithms used by the first strategy consider groups of $n\times n$ matrices, such as $O_n(\Z[1/2])$ and $U_n(\Z[1/2,i])$, rather than circuits (the first block of \Cref{tab:corpus}). Their presentations by $m$-level matrices are stated and proved for every $n$. A circuit completeness result on $k$ qubits uses only the case $n=2^k$. 
 For completeness proofs based on exact synthesis, the induction argument is the same in every formalization, so each such proof only has to relate the steps of its own algorithm, which reduces a matrix to the identity, to the rewrite rules. This separates the algorithm-specific case analysis, the main work in each formalization, from the common completeness proof. 
 
 \Cref{fig:translation} illustrates the second strategy, which uses an already complete rule set $\mathcal{T}$ over a different gate set $\mathcal{G}'$~\cite{bian2023cliffordt2,bian2023cliffordcs3,clement2026realcliffordch,amy2024toffoli,blake2026simpler,clement2023complete,clement2024extensions,delorme2026control,schober2026control,blake2026qudit}. Here, $E$ and $D$ translate circuits from $\mathcal{G}$ to $\mathcal{G}'$ and back, replacing each gate with a circuit over the other gate set. Both $E$ and $D$ preserve circuit composition and the underlying matrix. Hence $C_1'=E(C_1)$ and $C_2'=E(C_2)$ have the same matrix, so completeness of $\mathcal{T}$ gives $C_1'\rewrites{\mathcal{T}}C_2'$. To transfer completeness from $\mathcal{T}$ to $\mathcal{R}$, we first show that every rule of $\mathcal{T}$, translated by $D$, can be derived using $\mathcal{R}$. We can then replace each step of these rewrites by its translated derivation, giving $D(C_1')\rewrites{\mathcal{R}}D(C_2')$. 
@@ -241,9 +241,7 @@ $\aid{\_IsSubPresentationOf\_}$ packs soundness (the interpretation
 is well defined) and completeness
 (the interpretation is injective) into a record;
 $\aid{\_IsPresentationOf\_}$ also packs the surjectivity of
-$\aid{⟦}\_\aid{⟧}$. A rule set is \emph{minimal}
-(\emph{independent}) if none of its rules follows from the
-rest. $\aid{\_IsMinimal}$ packs minimality into a
+$\aid{⟦}\_\aid{⟧}$. $\aid{\_IsMinimal}$ packs minimality into a
 type. In code, for example, these properties are
 
 
@@ -393,10 +391,6 @@ definitions once. This estimate excludes imported ring and matrix
 definitions and some generic group constructions used by the qudit
 model; these remain part of the mathematical background needed to
 understand the statements.
-
-While manually checking $8{,}200$ lines of Agda code is no small feat,
-the fact that only about $2\%$ of the total codebase has to be checked
-shows the usefulness of the shared interface.
 
 
 \iffalse
@@ -797,8 +791,7 @@ canon-unique : ∀ {x y : NF} → ⟦ canon x ⟧ ≐ ⟦ canon y ⟧ → x ≡ 
 The proof follows the transfer strategy of \Cref{fig:translation}.
 Lafont's presentation~$\mathcal{T}$ of $\mathrm{Alt}(16)$ and its canonical forms
 are already proved in EquaCert. We connect that presentation to
-$\mathcal{R}$ by two changes of presentation, using the framework's
-single-coset instance of Reidemeister--Schreier.
+$\mathcal{R}$ by two changes of presentation.
 This reduces the new completeness theorem to concrete equations
 between circuits.
 
@@ -826,8 +819,7 @@ to other wire placements.
 
 The search derives the 105 cycle relations and the 6 gate
 equations. Each resulting derivation uses only $\mathcal{R}$ and
-previously proved lemmas. In particular, semantic comparison
-justifies rewrite steps using just three wires through the smaller completeness theorem.
+previously proved lemmas.
 % the four-wire completeness theorem is obtained only after all
 % these derivations have been checked.
 
