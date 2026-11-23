@@ -55,7 +55,7 @@ A set of circuit equations is complete if every equation between circuits with t
 Rewriting quantum circuits is a standard tool in circuit optimization~\cite{hietala2021voqc,nam2018automated,maslov2008simplification,xu2022quartz}, equivalence checking~\cite{yamashita2010fast}, hardware mapping~\cite{sivarajah2020tket}, and reasoning about quantum programs~\cite{fang2026hadamard}. It relies on an \emph{equational theory} for a family of circuits: a set of equations between circuits, each used as a rewrite rule in either direction. A theory is \emph{sound} if the two sides of every rule have the same semantics, that is, denote the same unitary matrix. Conversely, it is \emph{complete} if any two circuits with the same semantics can be rewritten into each other using its rules. We call a rule set \emph{minimal} if no rule can be derived from the others. Studying minimality shows which rules are indispensable. This helps us understand the algebraic structure of a circuit family~\cite{blake2026simpler,clement2024minimal}.
 
 
-Completeness results have been established for a wide range of circuit families, including linear reversible circuits~\cite{lafont2003boolean,sakashita2013cnot}, reversible circuits over multiple-control Toffoli gates~\cite{feng2026complete}, Clifford circuits in prime dimensions~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, qubit CNOT-dihedral circuits~\cite{amy2018cnotdihedral} and their prime-dimensional phase-affine analogues~\cite{blake2026phaseaffine}, real Clifford+\CH~\cite{clement2026realcliffordch}, two-qubit Clifford+\T~\cite{bian2023cliffordt2}, three-qubit Clifford+\CS~\cite{bian2023cliffordcs3} and Toffoli--Hadamard~\cite{amy2024toffoli} circuits, as well as universal quantum circuits~\cite{clement2023complete,clement2024extensions}. Completeness has also been obtained for the groups of multi-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimality has been shown for six of these families~\cite{blake2026simpler} and for universal quantum circuits~\cite{clement2024minimal}. Proofs of both properties typically follow a simple strategy, but carrying it out requires long case analyses, with supporting derivations sometimes spanning hundreds of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}.
+Completeness results have been established for a wide range of circuit families, including linear reversible circuits~\cite{lafont2003boolean,sakashita2013cnot}, reversible circuits over multiple-control Toffoli gates~\cite{feng2026complete}, Clifford circuits in prime dimensions~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, qubit CNOT-dihedral circuits~\cite{amy2018cnotdihedral} and their prime-dimensional phase-affine analogues~\cite{blake2026phaseaffine}, real Clifford+\CH~\cite{clement2026realcliffordch}, two-qubit Clifford+\T~\cite{bian2023cliffordt2}, three-qubit Clifford+\CS~\cite{bian2023cliffordcs3} and Toffoli--Hadamard~\cite{amy2024toffoli} circuits, as well as universal quantum circuits~\cite{clement2023complete,clement2024extensions}. Completeness has also been obtained for the matrix groups underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimality has been shown for six of these families~\cite{blake2026simpler} and for universal quantum circuits~\cite{clement2024minimal}. Proofs of both properties typically follow a simple strategy, but carrying it out requires long case analyses, with supporting derivations sometimes spanning hundreds of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}.
 %such as rewriting every circuit into a unique normal form, 
 
 Peer review often does not check proofs of this length in detail. A case can be missed, and a long derivation can use an equation outside the stated rules or rely indirectly on the very equation being derived. A \emph{proof assistant} such as Agda~\cite{norell2007thesis,bove2009agda} or Lean~\cite{moura2015lean,moura2021lean4} checks the logic of a formal proof mechanically~\cite{barendregt2005challenge,hales2008formalproof,geuvers2009proofassistants,avigad2014formally}, so none of these errors goes unnoticed. The difficult part is writing the proof in a form the assistant accepts. A paper can leave routine steps to the reader and assume earlier results, whereas a formalization must justify every step. In \emph{automatic formalization}, large language models (LLMs) write the formal proof and the proof assistant verifies it. Formalizing Fermat's Last Theorem in Lean was expected to take years, yet Anthropic reports that its coding agents, building on earlier formalizations and with occasional human guidance, produced a 13-million-line proof in 11~days~\cite{anthropic2026flt}.
@@ -72,7 +72,7 @@ completeness and minimality of circuit equational theories. In summary, we make 
 \begin{itemize}
 \item \textbf{A general framework.} EquaCert extends the Agda library
   of~\citet{bian2027popl} with matrix semantics, three-wire gates,
-  zero-wire gates (scalars such as global phases), PROPs, and
+  zero-wire gates (scalars such as global phases), wire permutations (PROPs), and
   independence of relations. It states every result over one syntax for words and circuits, and one definition of completeness. Each formalization reuses these definitions rather than introducing its own, and a theorem proved in one formalization can be used directly in the proof of another.
 \item \textbf{Human-checked alignment.} We check by hand that the
   Agda statement of each paper's main result, with the definitions it
@@ -146,11 +146,11 @@ EquaCert verifies the completeness and minimality of rule sets over gates or mul
 \end{figure}
 
 
-Most of the circuit families we formalize are restricted Clifford+\T{} circuits. \citet{amy2020numbertheoretic} show that several of these circuit families represent exactly the unitary matrices over a subring of $\Z\left[1/\sqrt2,i\right]$, with at most one ancilla. Appendix~\ref{app:rings-gates} defines the gates, the underlying rings and matrix groups, and what it means for a circuit with ancillas to represent a matrix. These finitely generated rings are helpful for us, because in Agda we can then encode each element of $\Z\left[1/\sqrt2,i\right]$ and of its subrings $\Z\left[1/2,i\right]$, $\Z\left[1/\sqrt2\right]$, and $\Z\left[1/2\right]$ exactly, as a few integers with no rounding. For example, $(a+b\sqrt2)/\sqrt2^{\,q}\in\Z\left[1/\sqrt2\right]$ is encoded as the integers $a$, $b$, and $q$.\footnote{Circuits with continuous parameters, such as the universal circuits of~\cite{clement2023complete}, have matrix entries that cannot be encoded this way. See \Cref{sec:conclusion}, where we discuss the limitations of EquaCert and future work.}
+Most of the circuit families we formalize are restricted Clifford+\T{} circuits~\cite{amy2020numbertheoretic}. Clifford+\T{} circuits represent exactly the unitary matrices over the ring $\Z\left[1/\sqrt2,i\right]$~\cite{giles2013exact}, and several of the restricted families represent exactly the unitary matrices over a subring of it~\cite{amy2020numbertheoretic}, in each case with at most one ancilla. Appendix~\ref{app:rings-gates} defines the gates, the underlying rings and matrix groups, and what it means for a circuit with ancillas to represent a matrix. These finitely generated rings are helpful for us, because in Agda we can then encode each element of $\Z\left[1/\sqrt2,i\right]$ and of its subrings $\Z\left[1/2,i\right]$, $\Z\left[1/\sqrt2\right]$, and $\Z\left[1/2\right]$ exactly, as a few integers with no rounding. For example, $(a+b\sqrt2)/\sqrt2^{\,q}\in\Z\left[1/\sqrt2\right]$ is encoded as the integers $a$, $b$, and $q$.\footnote{Circuits with continuous parameters, such as the universal circuits of~\cite{clement2023complete}, have matrix entries that cannot be encoded this way. See \Cref{sec:conclusion}, where we discuss the limitations of EquaCert and future work.}
 
 \Cref{fig:qubit-fragments} displays the restricted Clifford+\T{} gate sets, their matrix groups, and multi-level generators (defined below). An arrow from one family to another means that every matrix represented by an ancilla-free circuit of the first is also represented by one of the second. If both boxes show a matrix group, then the first group is a subgroup of the second. \Cref{app:rings-gates} defines the remaining notation.
 
-For an $m\times m$ matrix $M$ and distinct indices $a_0,\dots,a_{m-1}$ in $\{0,\dots,n-1\}$, the \emph{$m$-level} matrix $M_{[a_0,\dots,a_{m-1}]}$ is the $n\times n$ matrix that acts as $M$ on the standard basis vectors $e_{a_0},\dots,e_{a_{m-1}}$ and as the identity on the others. For example, $(-1)_{[a]}$ negates $e_a$, and $\X_{[a,b]}$ exchanges $e_a$ and $e_b$. 
+For an $m\times m$ matrix $M$ and distinct indices $a_0,\dots,a_{m-1}$ in $\{0,\dots,n-1\}$, the \emph{$m$-level} matrix (a \emph{multi-level} matrix) $M_{[a_0,\dots,a_{m-1}]}$ is the $n\times n$ matrix that acts as $M$ on the standard basis vectors $e_{a_0},\dots,e_{a_{m-1}}$ and as the identity on the others. For example, $(-1)_{[a]}$ negates $e_a$, and $\X_{[a,b]}$ exchanges $e_a$ and $e_b$. 
 These $m$-level matrices are useful for providing presentations of matrix groups, since they allow for the localized simplification of a matrix, making it more straightforward to transform a matrix into the identity by multiplying with the right $m$-level matrices in a Gaussian-elimination-like fashion. This then gives a unique normal form, and the rewrite rules just have to specify how $m$-level matrices combine or commute.
 % Two generators in \Cref{fig:qubit-fragments}, $I_{n/2}\otimes\Hg$ and $\omega I_n$, are not multi-level matrices, since they act on every basis vector. 
 
@@ -214,7 +214,7 @@ So far everything was syntax. Throughout, we use monoids or groups as
 semantics. An interpretation $\aid{⟦}\_\aid{⟧}$ is a monoid
 homomorphism from circuits to a monoid, which is usually obtained by
 extending an interpretation map of gates. \emph{Soundness}
-($w \approx v$ implies $\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$) is a
+($w \approx v$ implies $\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$, where $\doteq$ is equality in the monoid) is a
 small case analysis over the axioms.  But \emph{completeness}
 ($\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ implies $w \approx v$) is
 usually rather convoluted to prove.
@@ -377,7 +377,7 @@ mathematical check outside the Agda theorem.
 The shared definitions need to be checked once for the results that
 use them. Agda then checks that each proof uses these definitions and
 discharges the hypotheses of the general results it invokes, such as
-the Reidemeister--Schreier method and the presentation of a
+the Reidemeister--Schreier method, which carries a presentation of a group over to a subgroup, and the presentation of a
 semidirect product. If a correction is needed that changes a source rule set, the
 formal theorem names the corrected rule set. This distinguishes repairing
 a proof from changing the theorem being proved (\Cref{sec:findings}).
@@ -638,8 +638,9 @@ a filled control with an $\X$ gate before and after it on the control wire.
 The basic CNOT and Toffoli act on adjacent wires with the target
 below the controls; other placements abbreviate conjugation by swaps.
 
-Two circuits are \emph{equal modulo $\mathcal{R}$} when the seven
-equations of \Cref{fig:xcxccx-rules}, together with the structural
+Let $\mathcal{R}$ be the set of seven equations of \Cref{fig:xcxccx-rules}.
+Two circuits are \emph{equal modulo $\mathcal{R}$} when these
+equations, together with the structural
 laws of \Cref{fig:equacert-structural}, rewrite one into the other.
 The structural laws allow an equation to be applied within a larger
 circuit and on any choice and ordering of wires.
@@ -1582,19 +1583,19 @@ This appendix states the two corrections of \Cref{sec:findings} in a form that c
 
 \subsection{The Gap in the Proof of Theorem~4.14 of Hadamard-\texorpdfstring{$\Pi$}{Pi}}\label{app:corr-hpi}
 
-References are to the extended version of~\cite{fang2026hadamard}, whose Appendix~A proves Theorem~4.14. Indices start at~$0$ here and at~$1$ there, so $\Hg_{[i,j]}$ below is $\Hg_{[i+1,j+1]}$ there. Applied to a vector~$x=(x_0,x_1,\dots)$, the matrix $\Hg_{[i,j]}$ replaces the entries $x_i$ and $x_j$ by $(x_i+x_j)/\sqrt2$ and $(x_i-x_j)/\sqrt2$, and a product acts with its rightmost factor first. An element $a+b\sqrt2$ of $\Z[\sqrt2]$ is \emph{odd} if $a$ is odd.
+References are to the extended version of~\cite{fang2026hadamard}, whose Appendix~A proves Theorem~4.14. Indices start at~$0$ here and at~$1$ there, so $\Hg_{[i,j]}$ below is $\Hg_{[i+1,j+1]}$ there. Applied to a vector~$x=(x_0,x_1,\dots)$, the matrix $\Hg_{[i,j]}$ replaces the entries $x_i$ and $x_j$ by $(x_i+x_j)/\sqrt2$ and $(x_i-x_j)/\sqrt2$, and a product acts with its rightmost factor first. An element $a+b\sqrt2$ of $\Z[\sqrt2]$ is \emph{odd} if $a$ is odd. The \emph{level} of a unit vector~$x$ over $\Z[1/\sqrt2]$ consists of the least $k$ for which $\sqrt2^{\,k}x$ has entries in $\Z[\sqrt2]$, followed by the number of odd entries of $\sqrt2^{\,k}x$, and levels are compared lexicographically.
 
-Lemma~A.16 concerns a unit vector $\hat v$ over $\Z[1/\sqrt2]$ and a $k\ge2$ such that $\sqrt2^{\,k}\hat v$ has entries in $\Z[\sqrt2]$, exactly four of them odd, namely the first four, which are congruent to $(1+\sqrt2,\,1,\,1+\sqrt2,\,1)$ or to $(1,\,1+\sqrt2,\,1,\,1+\sqrt2)$ modulo~$2$. Let $v$ consist of the first four entries of $\hat v$. The lemma states that if $\sqrt2^{\,k-1}\,\Hg_{[0,3]}\Hg_{[1,2]}\Hg_{[1,3]}\Hg_{[1,2]}\Hg_{[0,3]}\,v$ has entries in $\Z[\sqrt2]$, then so does $\sqrt2^{\,k-1}\,\Hg_{[0,2]}\Hg_{[1,3]}\Hg_{[0,1]}\Hg_{[0,2]}\Hg_{[1,3]}\,v$. It fails for $k=4$ in dimension~$6$, on
+Lemma~A.16 concerns a unit vector $u$ over $\Z[1/\sqrt2]$, given in the source as a column of a matrix in $O_n(\Z[1/\sqrt2])$, and a $k\ge2$ such that $\sqrt2^{\,k}u$ has entries in $\Z[\sqrt2]$, exactly four of them odd, namely the first four, which are congruent to $(1+\sqrt2,\,1,\,1+\sqrt2,\,1)$ or to $(1,\,1+\sqrt2,\,1,\,1+\sqrt2)$ modulo~$2$. Let $v$ consist of the first four entries of $u$. The lemma states that if $\sqrt2^{\,k-1}\,\Hg_{[0,3]}\Hg_{[1,2]}\Hg_{[1,3]}\Hg_{[1,2]}\Hg_{[0,3]}\,v$ has entries in $\Z[\sqrt2]$, then so does $\sqrt2^{\,k-1}\,\Hg_{[0,2]}\Hg_{[1,3]}\Hg_{[0,1]}\Hg_{[0,2]}\Hg_{[1,3]}\,v$. It fails for $k=4$ in dimension~$6$, on
 \[
-4\,\hat v=(-1-\sqrt2,\ 1,\ -1-\sqrt2,\ 1,\ \sqrt2,\ -2+\sqrt2).
+4\,u=(-1-\sqrt2,\ 1,\ -1-\sqrt2,\ 1,\ \sqrt2,\ -2+\sqrt2).
 \]
-The squares of these entries add up to $16$, so $\hat v$ is a unit vector, and the first four entries are odd and congruent to $(1+\sqrt2,1,1+\sqrt2,1)$. The first product gives $(0,\,0,\,-1-\sqrt2,\,-1)$, and the second gives $(-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2},\,-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2})$, which is not in $\Z[\sqrt2]^4$. Lemma~A.17 is the same statement with $\Hg_{[2,3]}$ in place of $\Hg_{[1,3]}$ in the two words, and it fails in the same way on $4\,\hat v=(1+\sqrt2,\,-1,\,1+\sqrt2,\,1,\,-\sqrt2,\,2-\sqrt2)$.
+The squares of these entries add up to $16$, so $u$ is a unit vector, and the first four entries are odd and congruent to $(1+\sqrt2,1,1+\sqrt2,1)$. The first product gives $(0,\,0,\,-1-\sqrt2,\,-1)$, and the second gives $(-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2},\,-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2})$, which is not in $\Z[\sqrt2]^4$. Lemma~A.17 is the same statement with $\Hg_{[2,3]}$ in place of $\Hg_{[1,3]}$ in the two words, and it fails in the same way on $4\,u=(1+\sqrt2,\,-1,\,1+\sqrt2,\,1,\,-\sqrt2,\,2-\sqrt2)$.
 
-Items~(c) and~(d) of Lemma~A.19 rest on these two lemmas, and Main Case~9 of the Main Lemma rests on Lemma~A.19. That case is not covered for the unit vector $\hat s$ in dimension~$9$ with
+Items~(c) and~(d) of Lemma~A.19 rest on these two lemmas, and Main Case~9 of the Main Lemma rests on Lemma~A.19. That case is not covered for the unit vector $s$ in dimension~$9$ with
 \[
-\sqrt2^{\,7}\,\hat s=(1+3\sqrt2,\ 1,\ -3\sqrt2,\ 1+3\sqrt2,\ 2,\ 5,\ -2+\sqrt2,\ -4+2\sqrt2,\ -2-2\sqrt2),
+\sqrt2^{\,7}\,s=(1+3\sqrt2,\ 1,\ -3\sqrt2,\ 1+3\sqrt2,\ 2,\ 5,\ -2+\sqrt2,\ -4+2\sqrt2,\ -2-2\sqrt2),
 \]
-whose odd entries are the first, second, fourth, and sixth: none of the eight diagrams that the proof of Lemma~A.19 offers stays below the level of $\hat s$, as the Main Lemma requires. The step that the proof leaves open is $\Hg_{[c,d]}$ on two odd entries that are not congruent modulo~$2$, when exactly four entries are odd. It is Case~3.4 of~\cite{clement2019thesis}, which the formalization follows~\cite{equacert2026clement}.
+whose odd entries are the first, second, fourth, and sixth: none of the eight diagrams that the proof of Lemma~A.19 offers stays below the level of $s$, which is $(7,4)$, as the Main Lemma requires. The step that the proof leaves open is $\Hg_{[c,d]}$ on two odd entries that are not congruent modulo~$2$, when exactly four entries are odd. It is Case~3.4 of~\cite{clement2019thesis}, which the formalization follows~\cite{equacert2026clement}.
 
 \subsection{The Relation Missing from Theorem~5.2 of Toffoli--Hadamard}\label{app:corr-rk}
 
