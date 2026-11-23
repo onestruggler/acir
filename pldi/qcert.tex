@@ -638,8 +638,8 @@ $\llbracket u\rrbracket$ of the $2^k$ possible values of length-$k$ bit strings.
 from~0 at the bottom, and bit strings list the top wire first.
 Circuits and permutations compose from left to right: $pq$ applies
 $p$ and then $q$.
-In the diagrams, $\oplus$ is a NOT target and crossed wires denote
-swap. A filled control tests~1; an open control tests~0 and abbreviates
+In the diagrams, $\oplus$ is a NOT target and a pair of crossed wires denotes
+a swap. A filled control tests~1; an open control tests~0 and abbreviates
 a filled control with an $\X$ gate before and after it on the control wire.
 The basic CNOT and Toffoli act on adjacent wires with the target
 below the controls; other placements abbreviate conjugation by swaps.
@@ -685,11 +685,11 @@ We prove completeness by reducing to another set of equations that are known to 
 namely Lafont's presentation of the alternating groups~\cite{lafont2003boolean}.
 That proof is based on reduction to a unique normal form that we will present here.
 
-Let 0 to $N-1$ be the points that we permute,
-and let $\omega_i$ be the cycle that maps $i$ to $i+1$, $i+1$ to $i+2$, and $i+2$ back
-to $i$, fixing the other points. These cycles generate all even
-permutations. A \emph{stair} $s_d(j)$ takes a point~$d$ to a
-\emph{target}~$j$ while fixing all points below~$d$:
+We permute $N$ \emph{positions}, numbered 0 to $N-1$.
+Let $\omega_i$ be the $3$-cycle that maps $i$ to $i+1$, $i+1$ to $i+2$, and $i+2$ back
+to $i$, fixing the other positions. These cycles generate all even
+permutations. A \emph{stair} $s_d(j)$ takes a position~$d$ to a
+\emph{target}~$j$ while fixing all positions below~$d$:
 \[
 s_d(j)=
 \begin{cases}
@@ -699,7 +699,7 @@ s_d(N-2)\,\omega_{N-3}, & j=N-1.
 \end{cases}
 \]
 Here $0\le d\le N-3$, and $s_d(d)$ is the empty word.
-A stair climbs through consecutive points; reaching the last point
+A stair climbs through consecutive positions; reaching the last position
 requires repeating its final cycle.
 Lafont's canonical form is a product of stairs in descending order,
 \[
@@ -717,11 +717,11 @@ Thus a tuple of targets determines the permutation uniquely.
 \textup{(b)}\enspace\input{figures/xcxccx/lafont-six}\hfill
 \textup{(c)}\enspace\input{figures/xcxccx/lafont-toffoli}}
 \caption{Lafont's canonical forms, drawn with one strand per
-\emph{point}, rather than per circuit wire. Time runs left to right,
-point~0 is at the bottom, and each grey box is a cycle.
+\emph{position}, rather than per circuit wire. Time runs left to right,
+position~0 is at the bottom, and each grey box is a cycle.
 (a)~The cycle $\omega_i$.
-(b)~The canonical form $s_3(4)\,s_2(3)\,s_1(5)\,s_0(3)$ on six points;
-the stair to the last point repeats its final cycle.
+(b)~The canonical form $s_3(4)\,s_2(3)\,s_1(5)\,s_0(3)$ on six positions;
+the stair to the last position repeats its final cycle.
 (c)~The product $\omega_9\,\omega_8\,\omega_7\,\omega_6\,\omega_5\,\omega_4$
 exchanges positions 4 and~5, and 10 and~11. It is the permutation
 of the Toffoli gate in \Cref{fig:xcxccx-canon}(b).}
@@ -729,7 +729,7 @@ of the Toffoli gate in \Cref{fig:xcxccx-canon}(b).}
 \Description{Three drawings of wires that cross inside grey boxes. In the first, three wires labelled i, i+1, and i+2 from the bottom pass through one box: the wires of i and i+1 each move up one place, and the wire of i+2 comes down to the bottom. In the second, six wires labelled 0 to 5 from the bottom pass through nine boxes in four groups, labelled s3(4), s2(3), s1(5), and s0(3): one box on the wires 3 to 5, one on the wires 2 to 4, four boxes that climb from the wires 1 to 3 up to the wires 3 to 5 with the last box repeated, and three boxes that climb from the wires 0 to 2 up to the wires 2 to 4. At the right the strands arrive, from the bottom, in the order 5, 3, 4, 0, 2, 1. In the third, sixteen wires labelled 0 to 15 pass through six boxes labelled omega 9 down to omega 4, which step down from the wires 9 to 11 to the wires 4 to 6. At the right the strands of 4 and 5 have changed places, as have those of 10 and 11, and every other strand is back at its own height.}
 \end{figure}
 
-For four-wire circuits, the points are the sixteen bit strings.
+For four-wire circuits, the positions are the sixteen bit strings.
 We number them along the reflected Gray code: position~$i$ is the
 bit string representing $i\oplus\lfloor i/2\rfloor$, where $\oplus$
 here means bitwise exclusive-or. Consecutive positions differ on
@@ -1632,7 +1632,7 @@ Source & Correction \\
 \tabcite{li2021on} & Exchange the two cases of relation (7d) in Table~2. \\
 \tabcite{li2025qutrit} & Retain one $\CZ$ in the residual circuit in the third row of Figure~25, rather than two. \\
 \tabcite{blake2026simpler} & Replace $\omega_{12}^7$ by $\omega_{12}$ in the qutrit rule (E) of Figure~4. Restrict one separating interpretation in Figure~8 to two-wire derivations: it fails a three-wire rule, but that rule cannot occur in a two-wire derivation, so the independence claim still holds. \\
-\tabcite{clement2026realcliffordch} & Place the negations in (36) and (37) on controls whose values are~$1$; our reading of the diagrams places them on controls whose values are~$0$. Make explicit in (30), (34), and (42) that the two indices of each letter must be distinct. \\
+\tabcite{clement2026realcliffordch} & Place the negations in (36) and (37) on controls whose values are~$1$; as printed, the diagrams place them on controls whose values are~$0$. Make explicit in (30), (34), and (42) that the two indices of each letter must be distinct. \\
 \bottomrule
 \end{tabularx}
 \caption{Further corrections incorporated into the formalizations,
