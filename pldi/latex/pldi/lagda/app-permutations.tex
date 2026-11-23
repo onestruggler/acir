@@ -162,11 +162,11 @@
 \section{The EquaCert Framework}\label{sec:form}
 
 EquaCert is an extension of an existing library for verifying
-completeness of circuit equational theory~\cite{bian2027popl}. We
+completeness of circuit equational theories~\cite{bian2027popl}. We
 first introduce the basics through an example and then explain our
-extension. The example is the presentation of the symmetric group through circuits
-of swap gates, which shows how gates, relations, cosets,
-semantics, uniqueness, completeness and presentation are defined in code.
+extensions. The example is the presentation of the symmetric group through circuits
+of swap gates, which shows how gates, relations,
+semantics, completeness, and presentations are defined in code.
 \subsection{Gates, Generators, and Circuits}\label{app:sn-gates}
 
 A gate set is a family $\aid{Gate} : \mathbb{N} \to \mathsf{Set}$
@@ -340,7 +340,7 @@ wire.
 \AgdaPrimitive{Set}\<%
 \end{code}
 
-Here $n$ is a uninstantiated parameter, so $\aid{gate₂}\;\aid{σ-gate}$
+Here $n$ is an uninstantiated parameter, so $\aid{gate₂}\;\aid{σ-gate}$
 is a generator at any width from two upward.  An $n$-wire
 \emph{circuit} is a word of generators,
 $\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$, which is either a single
@@ -355,8 +355,8 @@ $\sigma \aidop{•} \sigma\;{\uparrow} \aidop{•} \sigma$ the three-wire
 braid on the left of the \aid{yang-baxter} equation drawn beside its
 axiom below.
 
-\subsection{Relations and structural
-  relations}\label{app:sn-relations}
+\subsection{Relations and Structural
+  Relations}\label{app:sn-relations}
 
 Relations are defined as a family of pairs indexed by the wire count, corresponding to the
 uninstantiated $n$. We make a distinction between relations specific to
@@ -429,7 +429,7 @@ This looks as follows in Agda:
 underscore in \aid{{\_}SRel,{\_}==={\_}} marks an argument position.
 These two axioms are two thirds of the Coxeter presentation
 of $S_n$: $\sigma^2 = \varepsilon$ and the braid relation.  
-The third Coxeter relation that swaps on disjoint wires commute, is not specific
+The third Coxeter relation, that swaps on disjoint wires commute, is not specific
 to permutations. It is one of the relations every circuit theory
 needs, whatever its gates.  In code, \aid{Lift-Relation} extends any
 relation family with the structural relations to the full relation set

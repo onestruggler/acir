@@ -43,7 +43,7 @@
 \email{john@vdwetering.name}
 
 \begin{abstract}
-A set of circuit equations is complete if every equation between circuits with the same semantics follows from it, and minimal if no equation can be derived from the others. Proofs of these properties involve long case analyses that can span hundreds of pages, making the details hard to check by hand. To address this, we extend an existing Agda library into EquaCert, a framework that divides the work between humans and machines. Humans set up shared definitions of circuits, matrix semantics, and group presentations, and state each paper's main theorem using them. LLM coding agents then write the proofs following the papers' arguments, and Agda checks them. A human therefore need only compare each formalization's equations, gate semantics, and theorem statement with those of the paper. Using EquaCert, we check the main results of sixteen papers, fifteen on completeness and one on minimality. These results cover discrete gate sets such as Clifford, Clifford+\T, and Toffoli--Hadamard, on qubits or qudits of every odd prime dimension. We verify fourteen of them and fix mathematical errors we find in the remaining two. We demonstrate EquaCert's ability to help prove new results by presenting a new complete circuit family: seven equations that are complete for four-bit reversible circuits over the gate set $\{\X,\CX,\CCX\}$. We expect EquaCert to help with other open completeness problems, especially for quantum circuits in higher dimensions. To further promote adoptability, we also provide a Lean translation of EquaCert, with its theorems stated over Mathlib's standard definitions.
+A set of circuit equations is complete if every equation between circuits with the same semantics follows from it, and minimal if no equation can be derived from the others. Proofs of these properties involve long case analyses that can span hundreds of pages, making the details hard to check by hand. To address this, we extend an existing Agda library into EquaCert, a framework that divides the work between humans and machines. Humans set up shared definitions of circuits, matrix semantics, and group presentations. LLM coding agents then state each paper's main theorem over these definitions and write the proofs following the papers' arguments, and Agda checks them. A human therefore need only compare each formalization's equations, gate semantics, and theorem statement with those of the paper. Using EquaCert, we check the main results of sixteen papers, fifteen on completeness and one on minimality. These results cover discrete gate sets such as Clifford, Clifford+\T, and Toffoli--Hadamard, on qubits or qudits of every odd prime dimension. We verify fourteen of them and fix mathematical errors we find in the remaining two. We demonstrate EquaCert's ability to help prove new results by presenting a new complete equational theory: seven equations that are complete for four-bit reversible circuits over the gate set $\{\X,\CX,\CCX\}$. We expect EquaCert to help with other open completeness problems, especially for quantum circuits in higher dimensions. To further promote adoptability, we also provide a Lean version of EquaCert, with its theorems stated over Mathlib's standard definitions.
 \end{abstract}
 
 \maketitle
@@ -55,7 +55,7 @@ A set of circuit equations is complete if every equation between circuits with t
 Rewriting quantum circuits is a standard tool in circuit optimization~\cite{hietala2021voqc,nam2018automated,maslov2008simplification,xu2022quartz}, equivalence checking~\cite{yamashita2010fast}, hardware mapping~\cite{sivarajah2020tket}, and reasoning about quantum programs~\cite{fang2026hadamard}. It relies on an \emph{equational theory} for a family of circuits: a set of equations between circuits, each used as a rewrite rule in either direction. A theory is \emph{sound} if the two sides of every rule have the same semantics, that is, denote the same unitary matrix. Conversely, it is \emph{complete} if any two circuits with the same semantics can be rewritten into each other using its rules. We call a rule set \emph{minimal} if no rule can be derived from the others. Studying minimality shows which rules are indispensable. This helps us understand the algebraic structure of a circuit family~\cite{blake2026simpler,clement2024minimal}.
 
 
-Completeness results have been established for a wide range of circuit families, including linear reversible circuits~\cite{lafont2003boolean,sakashita2013cnot}, reversible circuits over multi-controlled Toffoli gates~\cite{feng2026complete}, Clifford circuits in prime dimensions~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, qubit CNOT-dihedral circuits~\cite{amy2018cnotdihedral} and their prime-dimensional phase-affine analogues~\cite{blake2026phaseaffine}, real Clifford+\CH~\cite{clement2026realcliffordch}, two-qubit Clifford+\T~\cite{bian2023cliffordt2}, three-qubit Clifford+\CS~\cite{bian2023cliffordcs3} and Toffoli--Hadamard~\cite{amy2024toffoli} circuits, as well as universal quantum circuits~\cite{clement2023complete,clement2024extensions}. Completeness has also been obtained for the group of two-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimality has been shown for six of these families~\cite{blake2026simpler} and for universal quantum circuits~\cite{clement2024minimal}. Proofs of both properties typically follow a simple strategy, but carrying it out requires long case analyses, with supporting derivations sometimes spanning hundreds of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}.
+Completeness results have been established for a wide range of circuit families, including linear reversible circuits~\cite{lafont2003boolean,sakashita2013cnot}, reversible circuits over multiple-control Toffoli gates~\cite{feng2026complete}, Clifford circuits in prime dimensions~\cite{selinger2015clifford,makary2021real,li2025qutrit,bian2026qupit}, qubit CNOT-dihedral circuits~\cite{amy2018cnotdihedral} and their prime-dimensional phase-affine analogues~\cite{blake2026phaseaffine}, real Clifford+\CH~\cite{clement2026realcliffordch}, two-qubit Clifford+\T~\cite{bian2023cliffordt2}, three-qubit Clifford+\CS~\cite{bian2023cliffordcs3} and Toffoli--Hadamard~\cite{amy2024toffoli} circuits, as well as universal quantum circuits~\cite{clement2023complete,clement2024extensions}. Completeness has also been obtained for the groups of multi-level matrices underlying several of these circuit families~\cite{greylyn2014,bian2021un,li2021on,fang2026hadamard,clement2019thesis}. Minimality has been shown for six of these families~\cite{blake2026simpler} and for universal quantum circuits~\cite{clement2024minimal}. Proofs of both properties typically follow a simple strategy, but carrying it out requires long case analyses, with supporting derivations sometimes spanning hundreds of pages~\cite{fang2026hadamard,li2025qutrit,clement2026realcliffordch}.
 %such as rewriting every circuit into a unique normal form, 
 
 Peer review often does not check proofs of this length in detail. A case can be missed, and a long derivation can use an equation outside the stated rules or rely indirectly on the very equation being derived. A \emph{proof assistant} such as Agda~\cite{norell2007thesis,bove2009agda} or Lean~\cite{moura2015lean,moura2021lean4} checks the logic of a formal proof mechanically~\cite{barendregt2005challenge,hales2008formalproof,geuvers2009proofassistants,avigad2014formally}, so none of these errors goes unnoticed. The difficult part is writing the proof in a form the assistant accepts. A paper can leave routine steps to the reader and assume earlier results, whereas a formalization must justify every step. In \emph{automatic formalization}, LLMs write the formal proof and the proof assistant verifies it. Formalizing Fermat's Last Theorem in Lean was expected to take years, yet Anthropic reports that its coding agents, building on earlier formalizations and with occasional human guidance, produced a 13-million-line proof in 11~days~\cite{anthropic2026flt}.
@@ -68,10 +68,10 @@ announced Navier--Stokes result proves weaker intermediate statements than the w
 
 We present EquaCert,\footnote{EquaCert is short for the
   \emph{Cert}ification of \emph{Equa}tional theories.} an Agda framework for verifying the
-completeness and minimality of circuit equational theories. In summary, we made six contributions:
+completeness and minimality of circuit equational theories. In summary, we make six contributions:
 \begin{itemize}
 \item \textbf{A general framework.} EquaCert extends the Agda library
-  of~\cite{bian2027popl} with matrix semantics, three-wire gates,
+  of~\citet{bian2027popl} with matrix semantics, three-wire gates,
   zero-wire gates (scalars such as global phases), PROPs, and
   independence of relations. It states every result over one syntax for words and circuits, and one definition of completeness. Each formalization reuses these definitions rather than introducing its own, and a theorem proved in one formalization can be used directly in the proof of another.
 \item \textbf{Human-checked alignment.} We check by hand that the
@@ -101,6 +101,7 @@ completeness and minimality of circuit equational theories. In summary, we made 
 \resizebox{\linewidth}{!}{\input{figures/equacert-pipeline.tikz}}
 \caption{The workflow of EquaCert.}
 \label{fig:equacert-pipeline}
+\Description{A workflow in two panels. In the left panel, labelled step 1, human check of theorem alignment, a two-headed arrow asking whether they are the same mathematical statement joins the paper's result, a claim stated in the paper, to the EquaCert main theorem, a theorem stated in Lean or Agda. In the right panel, labelled LLM proof construction and machine checking, arrows lead from the main theorem to step 2, formalizing the proof with an LLM guided by the paper's argument, then to step 3, proof checking by Lean or Agda, and then to a faithful formalization, an aligned claim with a checked proof. Notes below say that the theorem and definitions are the only manual audit and that generated proofs need no manual audit.}
 \end{figure}
 
 \Cref{fig:equacert-pipeline} shows how EquaCert divides the work of
@@ -125,7 +126,7 @@ So far, there has been no scalable verification of circuit equational theories. 
 
 \paragraph{Benefits of One Framework} Completeness results build on one another, so formalizing them in isolation leaves their dependencies unchecked. Bian and Selinger's formalizations assume the underlying matrix-group presentations~\cite{greylyn2014,bian2021un}. Cl\'ement's result for real Clifford+\CH{} circuits~\cite{clement2026realcliffordch} relies on a presentation of $O_n(\Z[1/\sqrt2])$~\cite{clement2019thesis,fang2026hadamard}. The completeness of $\sqrt{\Pi}$, a quantum extension of~$\Pi$~\cite{carette2024squareroots}, rests on the group presentations in~\cite{selinger2015clifford,bian2021un,bian2023cliffordt2}. A single framework such as EquaCert makes such dependencies checkable and lets us formalize a large collection of completeness results systematically, which can both catch errors in the literature and reduce the burden of refereeing new work.
 
-\paragraph{Structure of the Paper} \Cref{sec:background} reviews equational theories and the main techniques for proving their completeness and minimality. \Cref{sec:form} introduces our framework EquaCert. \Cref{sec:alignment} discusses which parts have to be manually checked. \Cref{sec:corpus} presents an overview of the formalized results and the corrections to the source papers. \Cref{sec:xcxccx} contains the new result, a complete equational theory for four-bit reversible circuits over the gate set $\{\X,\CX,\CCX\}$, and explains how its proof is constructed and checked. \Cref{sec:conclusion} discusses limitations and future work. 
+\paragraph{Structure of the Paper} \Cref{sec:background} reviews equational theories and the main techniques for proving their completeness and minimality. \Cref{sec:form} introduces our framework EquaCert. \Cref{sec:alignment} discusses which parts have to be manually checked. \Cref{sec:corpus} presents an overview of the formalized results in Agda and Lean and the corrections to the source papers. \Cref{sec:xcxccx} contains the new result, a complete equational theory for four-bit reversible circuits over the gate set $\{\X,\CX,\CCX\}$, and explains how its proof is constructed and checked. \Cref{sec:conclusion} discusses limitations and future work. 
 % The remaining appendices give background, an introduction to the framework on permutation circuits, implementation details, the comparison with Lean, the detailed qudit Clifford proofs, and the details of the corrections.
 
 % \FloatBarrier
@@ -141,19 +142,20 @@ EquaCert verifies the completeness and minimality of rule sets over gates or mul
 \resizebox{\linewidth}{!}{\input{figures/qubit-fragments-plain.tikz}\unskip}
 \caption{Restricted Clifford+\T{} circuit families and their underlying matrix groups, where $k$ is the number of qubits and $n=2^k$ is the dimension. The circuits over a gate set represent exactly the matrices of the group below it when allowing for at most one clean ancilla. Arrows denote inclusion. Here $\D=\Z[1/2]$, $\omega=e^{i\pi/4}$, and $\F=(\Hg+iI)/\sqrt2$. Clifford+\CS+$\omega$ denotes adjoining the scalar $\omega$ to Clifford+\CS. The top part of a box denotes the gates of the gate set, while the bottom part denotes the $m$-level matrices for that matrix group.}
 \label{fig:qubit-fragments}
+\Description{A diagram of thirteen circuit families joined by inclusion arrows. Seven boxes have three parts, a gate set, its matrix group, and multi-level generators of that group. They are the integral, Toffoli-Hadamard, Gaussian, imaginary, real, super-Gaussian, and Clifford+T families. Six further boxes show a gate set only. Three of them, real Clifford, Clifford, and CNOT-dihedral, are marked as finite circuit groups, and three, real Clifford+CH, Clifford+CS, and Clifford+CS with the scalar omega, as gate sets sharing a group. Arrows lead from the integral family to the Toffoli-Hadamard, Gaussian, and imaginary families, from Toffoli-Hadamard to the real and super-Gaussian families, from Gaussian to super-Gaussian and Clifford+CS, from real Clifford to Clifford and Toffoli-Hadamard, from Clifford to super-Gaussian, from real Clifford+CH to real, from super-Gaussian and Clifford+CS to Clifford+CS with omega, and from the imaginary, real, super-Gaussian, CNOT-dihedral, and Clifford+CS with omega families to Clifford+T. A legend distinguishes circuit gate sets, gate sets sharing a group, matrix groups, multi-level generators, and finite circuit groups.}
 \end{figure}
 
 
-Most of the circuit families we formalize are restricted Clifford+\T{} circuits. \citet{amy2020numbertheoretic} show that several of these circuit families represent exactly the unitary matrices over a subring of $\Z\left[1/\sqrt2,i\right]$, with at most one ancilla. Appendix~\ref{app:rings-gates} defines the restricted gate sets, the underlying rings and matrix groups, and what it means for a circuit with ancillas to represent a matrix. These finitely-generated rings are helpful for us, because in Agda we can then encode each element of $\Z\left[1/\sqrt2,i\right]$ and of its subrings $\Z\left[1/2,i\right]$, $\Z\left[1/\sqrt2\right]$, and $\Z\left[1/2\right]$ exactly, as a few integers with no rounding. For example, $(a+b\sqrt2)/\sqrt2^{\,k}\in\Z\left[1/\sqrt2\right]$ is encoded as the integers $a$, $b$, and $k$.\footnote{Circuits with continuous parameters, such as the universal circuits of~\cite{clement2023complete}, have matrix entries that cannot be encoded this way. See \Cref{sec:conclusion}, where we discuss the limitations of EquaCert and future work.}
+Most of the circuit families we formalize are restricted Clifford+\T{} circuits. \citet{amy2020numbertheoretic} show that several of these circuit families represent exactly the unitary matrices over a subring of $\Z\left[1/\sqrt2,i\right]$, with at most one ancilla. Appendix~\ref{app:rings-gates} defines the restricted gate sets, the underlying rings and matrix groups, and what it means for a circuit with ancillas to represent a matrix. These finitely generated rings are helpful for us, because in Agda we can then encode each element of $\Z\left[1/\sqrt2,i\right]$ and of its subrings $\Z\left[1/2,i\right]$, $\Z\left[1/\sqrt2\right]$, and $\Z\left[1/2\right]$ exactly, as a few integers with no rounding. For example, $(a+b\sqrt2)/\sqrt2^{\,q}\in\Z\left[1/\sqrt2\right]$ is encoded as the integers $a$, $b$, and $q$.\footnote{Circuits with continuous parameters, such as the universal circuits of~\cite{clement2023complete}, have matrix entries that cannot be encoded this way. See \Cref{sec:conclusion}, where we discuss the limitations of EquaCert and future work.}
 
 \Cref{fig:qubit-fragments} displays the restricted Clifford+\T{} gate sets, their matrix groups, and multi-level generators (defined below). An arrow from one family to another means that every matrix represented by an ancilla-free circuit of the first is also represented by one of the second. If both boxes show a matrix group, then the first group is a subgroup of the second. \Cref{app:rings-gates} defines the remaining notation and gives the source of each matrix group.
 
-For an $m\times m$ matrix $M$ and distinct indices $a_1,\dots,a_m$ in $\{0,\dots,n-1\}$, the \emph{$m$-level} matrix $M_{[a_1,\dots,a_m]}$ is the $n\times n$ matrix that acts as $M$ on the standard basis vectors $e_{a_1},\dots,e_{a_m}$ and as the identity on the others. For example, $(-1)_{[a]}$ negates $e_a$, and $\X_{[a,b]}$ exchanges $e_a$ and $e_b$. 
-These $m$-level matrices are useful for providing presentations of matrix groups, since they allow for the localised simplification of a matrix, making it more straightforward to transform a matrix into the identity by multiplying with the right $m$-level matrices in a Gaussian-elimination-like fashion. This then gives a unique normal form, and the rewrite rules just have to specify how $m$-level matrices combine or commute.
+For an $m\times m$ matrix $M$ and distinct indices $a_0,\dots,a_{m-1}$ in $\{0,\dots,n-1\}$, the \emph{$m$-level} matrix $M_{[a_0,\dots,a_{m-1}]}$ is the $n\times n$ matrix that acts as $M$ on the standard basis vectors $e_{a_0},\dots,e_{a_{m-1}}$ and as the identity on the others. For example, $(-1)_{[a]}$ negates $e_a$, and $\X_{[a,b]}$ exchanges $e_a$ and $e_b$. 
+These $m$-level matrices are useful for providing presentations of matrix groups, since they allow for the localized simplification of a matrix, making it more straightforward to transform a matrix into the identity by multiplying with the right $m$-level matrices in a Gaussian-elimination-like fashion. This then gives a unique normal form, and the rewrite rules just have to specify how $m$-level matrices combine or commute.
 % Two generators in \Cref{fig:qubit-fragments}, $I_{n/2}\otimes\Hg$ and $\omega I_n$, are not multi-level matrices, since they act on every basis vector. 
 
-There is no direct relationship between $m$-level matrices and quantum gates. In particular, an $m$-level matrix where $m$ is much smaller than the matrix dimension $n$ corresponds to a `highly-controlled' quantum gate, where the gate has control wires on most qubits and it acts on all qubits at once. Transforming a completeness result specified by $m$-level matrices into a gate-level completeness result is hence not trivial.
-\Cref{fig:qubit-fragments} shows completeness results for both $m$-level matrices and gate sets, and we formalize results for both.
+There is no direct relationship between $m$-level matrices and quantum gates. In particular, an $m$-level matrix where $m$ is much smaller than the matrix dimension $n$ corresponds to a `highly controlled' quantum gate, where the gate has control wires on most qubits and it acts on all qubits at once. Transforming a completeness result specified by $m$-level matrices into a gate-level completeness result is hence not trivial.
+\Cref{fig:qubit-progress} shows completeness results for both $m$-level matrices and gate sets, and we formalize results for both.
 
 \subsection{Proof Strategies for Completeness and Minimality}\label{sec:strategies}
 A circuit is a word over an alphabet~$\mathcal{G}$ of gates. A rewrite rule is then a relation between words over this alphabet, and a rule set $\mathcal{R}$ generates a congruence on circuits.\footnote{A congruence on circuits is an equivalence relation (i.e., reflexive, symmetric, and transitive) that is also compatible with composition. The congruence generated by $\mathcal{R}$, written $\rewrites{\mathcal{R}}$, is the smallest such relation that contains every rule of $\mathcal{R}$.} We associate an \emph{interpretation} $\llbracket C \rrbracket$ to each circuit $C$, namely its underlying matrix. A sound and complete rule set is then a \emph{presentation} of the group of matrices that circuits denote, with the gates as generators and the rules as relations. 
@@ -182,6 +184,7 @@ There are two main strategies for proving completeness of a rule set $\mathcal{R
 % \captionsetup{singlelinecheck=false}
 \caption{Two strategies for proving completeness of $\mathcal{R}$ over a gate set $\mathcal{G}$. $\;\rewrites{\mathcal{R}}\;$ means applying a finite sequence of rewrites using $\mathcal{R}$ in either direction, where $*$ denotes zero or more steps. Dashed $\equiv_u$ lines assert equal matrices.}
 \label{fig:strategies}
+\Description{Two diagrams. In the first, circuits C1 and C2, joined by a dashed line asserting equal matrices, each have a two-headed arrow labelled R star to a common normal form N. In the second, C1 and C2, again joined by a dashed line, are sent by arrows labelled E to circuits C1 prime and C2 prime, which are joined by a dashed line and by a two-headed arrow labelled T star. An arrow labelled D carries that arrow back to a two-headed arrow labelled R star between C1 and C2.}
 \end{figure}
 
 
@@ -194,7 +197,7 @@ It then remains to derive $C_j\rewrites{\mathcal{R}}D(C_j')$ for $j\in\{1,2\}$, 
 % \[
 % C_1\rewrites{\mathcal{R}}D(C_1')\rewrites{\mathcal{R}}D(C_2')\rewrites{\mathcal{R}}C_2.
 % \]
-Sometimes the two strategies are combined, as in~\citet{li2021on}, who extend their presentation of $O_n(\Z[1/2])$ to the group $L_n$ of orthogonal matrices $N/\sqrt2^{\,j}$, where $N$ is an integer matrix and $j\ge0$.
+Sometimes the two strategies are combined, as in~\citet{li2021on}, who extend their presentation of $O_n(\Z[1/2])$ to the group $L_n$ of orthogonal matrices $M/\sqrt2^{\,q}$, where $M$ is an integer matrix and $q\ge0$.
 
 Starting from a complete rule set, we can remove a redundant rule by deriving it from the other rules, thereby preserving completeness. To show that the resulting rule set is minimal it suffices to give for each remaining rule $r$ another compositional interpretation of circuits (not necessarily into matrices) that every other rule preserves but $r$ does not. Any derivation using the other rules preserves this interpretation, so $r$ cannot be derived from them~\cite{clement2024minimal,blake2026simpler}.
  
@@ -212,10 +215,10 @@ semantics. An interpretation $\aid{⟦}\_\aid{⟧}$ is a monoid
 homomorphism from circuits to a monoid, which is usually obtained by
 extending an interpretation map of gates. \emph{Soundness}
 ($w \approx v$ implies $\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$) is a
-small case analysis over the axioms.  But \emph{completeness} (
-$\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ implies $w \approx v$) is
+small case analysis over the axioms.  But \emph{completeness}
+($\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ implies $w \approx v$) is
 usually rather convoluted to prove. Figure
-\ref{fig:equacert-soundness-completeness} show one way of proving
+\ref{fig:equacert-soundness-completeness} shows one way of proving
 soundness and completeness.
 
 
@@ -227,20 +230,21 @@ soundness and completeness.
   every rule of $\mathcal R$; the right derives every rule of a known
   complete set $\mathcal T$. Each rewrite step uses a rule of
   $\mathcal R$. The same group $U_n(\D[\omega])$ semantics is used in
-  many of our 16 certifications, see Section~\ref{sec:corpus}.}
+  many of our sixteen certifications, see Section~\ref{sec:corpus}.}
 \label{fig:equacert-soundness-completeness}
+\Description{Two columns of three numbered cards. The left column, soundness of R, interprets each generator, a gate or multi-level matrix, as a matrix, lifts the interpretation to circuits and words, and checks for each rule of R that both sides have the same matrix. The right column, completeness of R, fixes a known complete reference set T, derives each equation of T by a chain of rewrites that each use a sound rule of R, and concludes that every valid equation is derivable from R. An arrow leads from the third card of the left column to the second card of the right column.}
 \end{figure}
 
 
 $\aid{\_IsComplete}$ packs completeness into a type;
-$\aid{\_IsSubPresentationOf\_}$ packs soundness (interpretation
-function is well-definedness in math terms) and completeness
+$\aid{\_IsSubPresentationOf\_}$ packs soundness (the interpretation
+is well defined) and completeness
 (interpretation is injective) into a record;
 $\aid{\_IsPresentationOf\_}$ also packs the surjectivity of
-$\aid{⟦}\_\aid{⟧}$. A relation set is \emph{mimimal}
-(\emph{independent}) if none of its relation follows from the
-rest. $\aid{\_IsMinimal\_}$ packs minimality property into a
-record. In code, for example, these properties are
+$\aid{⟦}\_\aid{⟧}$. A rule set is \emph{minimal}
+(\emph{independent}) if none of its relations follows from the
+rest. $\aid{\_IsMinimal}$ packs minimality into a
+type. In code, for example, these properties are
 
 
 
@@ -253,6 +257,13 @@ sound : ∀ {n} {w v : Circuit n} → ⊢ w ≈ v → ⟦ w ⟧ ≈ᵁ ⟦ v ⟧
 minimal-complete : ∀ {n} → (n ⊢_===_) IsMinimal × (n ⊢_===_) IsComplete@\agdatag{agda:minimal}@
 \end{agdacode}
 \end{minipage}
+
+\noindent Here $n\;\aid{CRel,{\_}==={\_}}$ and $n\;\aid{⊢{\_}==={\_}}$
+both name the relation set $n\;\aid{VRel,{\_}==={\_}}$ of a circuit
+family, and $n\;\aid{MRel,{\_}==={\_}}$ is its analogue for words of
+multi-level matrices of dimension~$n$. The statement
+$\aid{⊢}\;w \aidrel{≈} v$ says that $w \approx v$ holds for these relations, and
+$\aidrel{≈ᵁ}$ is the equality $\doteq$ of matrices over $\D[\omega]$.
 
 \subsection{Extensions to the Earlier Library}\label{sec:delta}
 EquaCert extends the library of~\citet{bian2027popl} in four ways.
@@ -478,9 +489,9 @@ The semantic boundary is also explicit. The Agda formalization presents independ
 
 
 
-\section{Certifications at scale}\label{sec:corpus}
+\section{Certifications at Scale}\label{sec:corpus}
 
-The 16 papers of which we formalize the results are presented in \Cref{tab:corpus}, and the corresponding web of formalized completeness results for qubit Clifford+T fragments is presented in \Cref{fig:qubit-progress}.
+The sixteen papers of which we formalize the results are presented in \Cref{tab:corpus}, and the corresponding web of formalized completeness results for qubit Clifford+\T{} fragments is presented in \Cref{fig:qubit-progress}.
 
 We used LLM coding agents to develop the Agda formalizations from the
 source papers and EquaCert's library. The agents adapted existing Agda
@@ -488,7 +499,7 @@ proofs where available, wrote new proofs, and generated long
 derivations with scripts. The authors checked the formal definitions
 and theorem statements against the source papers
 (\Cref{sec:alignment}), while Agda checked the proofs, including the
-generated derivations. The Lean formalizaton is a translation of the
+generated derivations. The Lean formalization is a translation of the
 Agda formalization by LLM coding agents.
 
 \begin{table}[tbp]
@@ -519,7 +530,7 @@ Source & Object & Result & Proof & \shortstack{Agda\\Mod} & \shortstack{Agda\\ti
 \tabcite{li2025qutrit} & qutrit Clifford & presentation & S & 90 & 285.58 & 179.60 \\
 \midrule
 \multicolumn{7}{@{}l}{\emph{Minimality}}\\
-\tabcite{blake2026simpler} & six fragments & minimal, complete\textsuperscript{\dag} & S & 80 & 180.10 & 358.87 \\
+\tabcite{blake2026simpler} & six fragments & minimal, complete & S & 80 & 180.10 & 358.87 \\
 \midrule
 Total & & & & 1{,}509 & 2{,}399.36 & 9{,}304.83 \\
 \bottomrule
@@ -527,8 +538,8 @@ Total & & & & 1{,}509 & 2{,}399.36 & 9{,}304.83 \\
 \captionsetup{position=bottom}
 \caption{Completeness and minimality results formalized in EquaCert. 
 \textbf{Object} is the group of which a presentation is formalized; see Appendix~\ref{app:rings-gates} for the precise definitions. 
-\textbf{Result} states whether we formalized a full surjective presentation of the whole group, or just a sub-presentation generated by the gate set.
-\textbf{Proof} specifies the origin of the Agda proof: S means we formalize the source paper; P means there was a pre-existing Agda proof we fit into our framework.
+\textbf{Result} states whether we formalized a full surjective presentation of the whole group, or just a sub-presentation, that is, a presentation of the subgroup generated by the gates.
+\textbf{Proof} specifies the origin of the Agda proof: S means we formalize from the source paper; P means there was a pre-existing Agda proof we fit into our framework.
 \textbf{Agda Mod} states how many files are in the formalization of that result. \textbf{Agda time} and \textbf{Lean time} measure how long it takes to type-check the formalization, not counting the time for common framework files.
 % Mod counts Agda modules. The Agda times are typechecking times from scratch with Agda~2.8, the times its profiler reports for the row's modules; the Lean times are elapsed folder-build times. Both were measured on the same machine, under the conditions in Appendix~\ref{app:agda-lean-comparison}. Both columns exclude the shared library and other formalizations on which a row depends. The Result column describes the Agda statements; Appendix~\ref{app:agda-lean-comparison} explains the semantic differences.. Appendix~\ref{app:provenance} gives each row's size and what it uses. \textsuperscript{\dag}For three of the fragments, up to the numbers of wires given in the text. The source of the fifth row is an unpublished internship report.
 }
@@ -540,17 +551,17 @@ Total & & & & 1{,}509 & 2{,}399.36 & 9{,}304.83 \\
 \resizebox{\linewidth}{!}{\input{figures/qubit-progress-plain.tikz}\unskip}
 \caption{Overview of completeness and formalization on the same families and inclusion arrows as \Cref{fig:qubit-fragments}. 
 % Gates and multi-level generators are omitted;
-The top half of the block describes the gate set, the lower half the corresponding matrix fragment. Here $k$ denotes the number of qubits and $n$ is the matrix dimension ($n=2^k$ for a circuit). We write a $\checkmark$ for a known completeness result, and $\checkmark_E$ for one formalized in EquaCert. A cross $\times$ denote that the question of completeness is still open, a dash -- that we don't consider this case, and an asterisk $^*$ denotes an error in the original publication that we correct.
-% \Description{A status companion to Figure 2 preserves all thirteen families and their inclusion arrows. Two-compartment nodes distinguish circuit relations from matrix presentations. A legend distinguishes complete relations, EquaCert-checked results, open problems, and untreated cases. Width bounds identify small-qubit results, and asterisks identify the real-matrix and three-qubit Toffoli-Hadamard source repairs. The imaginary family is marked as not treated, and Toffoli-Hadamard circuits beyond three qubits as open.
+The top half of the block describes the gate set, the lower half the corresponding matrix fragment. Here $k$ denotes the number of qubits and $n$ is the matrix dimension ($n=2^k$ for a circuit). We write a $\checkmark$ for a known completeness result, and $\checkmark_E$ for one formalized in EquaCert. A cross $\times$ denotes that the question of completeness is still open, a dash -- that we do not consider this case, and an asterisk $^*$ denotes an error in the original publication that we correct.
 }\label{fig:qubit-progress}
+\Description{A status companion to Figure 2 preserves all thirteen families and their inclusion arrows. Two-compartment nodes distinguish circuit relations from matrix presentations. A legend distinguishes complete relations, EquaCert-checked results, open problems, and untreated cases. Width bounds identify small-qubit results, and asterisks identify the real-matrix and three-qubit Toffoli-Hadamard source repairs. The imaginary family is marked as not treated, and Toffoli-Hadamard circuits beyond three qubits as open.}
 \end{figure}
 
-The Agda code of all these formalizations spans contains about 377{,}000 lines: about 311{,}000 written by LLMs and 66{,}000 ported from the Agda proofs of~\cite{bian2023cliffordt2,bian2023cliffordcs3}. Every module is checked with Agda's \texttt{-{}-safe} flag, so no proof uses a postulate. 
+The Agda code of all these formalizations contains about 377{,}000 lines. About 253{,}000 were written by LLMs, 58{,}000 come from the pre-existing Agda proof of the qudit Clifford theorem of~\quditcite{}, and 66{,}000 are ported from the Agda proofs of~\cite{bian2023cliffordt2,bian2023cliffordcs3}. Every module is checked with Agda's \texttt{-{}-safe} flag, so no proof uses a postulate. 
 
 We make three qualifications about the Agda formalizations presented in \Cref{tab:corpus}. 
 First, the two-qubit Clifford+\T{} and three-qubit Clifford+\CS{} formalizations~\cite{bian2023cliffordt2,bian2023cliffordcs3} reuse the authors' Agda proofs and we just connect them to EquaCert's shared matrix presentations (\Cref{sec:form}). 
-Second, the qudit Clifford theorem of~\quditcite{} presents an independently constructed algebraic model in Agda that doesn't fit into the EquaCert framework.
-Third, the Toffoli--Hadamard formalization doesn't follow the proof of the paper, since that proof was slow to type check. We instead formalize a streamlined proof. 
+Second, the qudit Clifford theorem of~\quditcite{} presents an independently constructed algebraic model in Agda that does not fit into the EquaCert framework.
+Third, the Toffoli--Hadamard formalization does not follow the proof of the paper, since that proof was slow to type-check. We instead formalize a streamlined proof. 
 % In the minimality row, three of the six fragments are minimal and complete on every number of wires. The other three carry bounds: qutrit Clifford is complete on every number of wires, with every rule on at most two wires shown necessary; Clifford+\T{} is complete on at most two wires, with every rule on at most one shown necessary; and Clifford+\CS{} is complete on at most three, with every rule on at most two shown necessary.
 
 % Long computational derivations, such as those in Selinger's 105-page supplement and the qutrit box relations, come from scripts that follow the paper, as in \Cref{sec:method}, or search for the steps. In the real stabilizer formalization, half the lines are generated in this way, and a fifth formalize the paper's mathematics.
@@ -581,7 +592,7 @@ Since the two versions share the design of their framework, their agreement does
 
 %% No \FloatBarrier here: with one, the comparison figure leaves most
 %% of a page blank and the main text exceeds twenty pages.
-\subsection{Corrections to published results}\label{sec:findings}
+\subsection{Corrections to Published Results}\label{sec:findings}
 
 The formalizations in \Cref{tab:corpus} identified two kinds of issues in the source papers. Most are typos, and some of them appear in statements that the proofs rely on. These are easy to fix, and Appendix~\ref{app:corrections} lists them by source. Two others are harder to repair. One is a gap in a proof, and the other is a relation missing from a theorem. We describe both below, and Appendix~\ref{app:corrections} gives the counterexamples to the lemmas and the interpretation that shows the necessity of the missing relation.
 
@@ -590,7 +601,7 @@ First, the gap is in the proof of Theorem~4.14 of Hadamard-$\Pi$~\cite{fang2026h
 present the group $O_n\left(\Z\left[1/\sqrt2\right]\right)$. One case of the proof relies on their Lemmas~A.16 and~A.17, which have counterexamples in dimension~$6$, and the case analysis built on them misses a matrix in dimension~$9$.
 Their main result is however still correct: Cl\'ement's unpublished internship report~\cite{clement2019thesis} presents the same group with different relations, and his case analysis covers the missing case, using which the formalization of Theorem~4.14 is completed. We also prove that the two sets of relations are equivalent in every dimension and formalize Cl\'ement's proof~\cite{equacert2026clement}.
 
-Second, the missing relation is from Theorem~5.2 of~\cite{amy2024toffoli}. It states that the relations in its Figures~4 and~7, over the Toffoli and $\K = \Hg\otimes\Hg$ gates, present the group $O_8\left(\Z\left[1/2\right]\right)$. This is the first of two steps toward presenting the scaled dyadic orthogonal group $L_8$ by three-qubit Toffoli--Hadamard circuits. The relation $r_{\K}$ in its Section~5.5, which splits $\K$ on two qubits into two copies controlled by the remaining qubit, one for each of its values, is in neither figure and neither can it be derived from them (as we show). Hence, their Theorem~5.2 fails as stated. Our formalization~\cite{equacert2026toffoli} shows that $r_{\K}$ is independent by giving an interpretation of circuits that every other relation preserves but $r_{\K}$ does not, and proves the presentations of $O_8\left(\Z\left[1/2\right]\right)$ and $L_8$ with $r_{\K}$ added as an axiom.
+Second, the missing relation is from Theorem~5.2 of~\cite{amy2024toffoli}. It states that the relations in its Figures~4 and~7, over the Toffoli and $\K = \Hg\otimes\Hg$ gates, present the group $O_8\left(\Z\left[1/2\right]\right)$. This is the first of two steps toward presenting the scaled dyadic orthogonal group $L_8$ by three-qubit Toffoli--Hadamard circuits. The relation $r_{\K}$ in its Section~5.5, which splits $\K$ on two qubits into two copies controlled by the remaining qubit, one for each of its values, is in neither figure, nor can it be derived from them (as we show). Hence, their Theorem~5.2 fails as stated. Our formalization~\cite{equacert2026toffoli} shows that $r_{\K}$ is independent by giving an interpretation of circuits that every other relation preserves but $r_{\K}$ does not, and proves the presentations of $O_8\left(\Z\left[1/2\right]\right)$ and $L_8$ with $r_{\K}$ added as an axiom.
 
 
 \section{A New Result: Complete Equations for Four-Bit Reversible Circuits}\label{sec:xcxccx}
@@ -606,7 +617,7 @@ form. Whether the seven equations are independent, or remain complete
 on five or more wires, is open.
 
 The gates $\X$ (NOT), $\CX$ (CNOT), and $\CCX$ (Toffoli) permute bit
-strings. On $k\le3$ wires they generate all permutations of length $k$ bit strings $\mathrm{Sym}(2^k)$; on
+strings. On $k\le3$ wires they generate all permutations of length-$k$ bit strings, $\mathrm{Sym}(2^k)$; on
 $k\ge4$ wires they generate exactly the even permutations,
 $\mathrm{Alt}(2^k)$~\cite{shende2003synthesis}.
 Existing completeness results cover linear reversible
@@ -623,7 +634,7 @@ wires.
 \subsection{Rules and Completeness}
 
 A circuit $u$ on $k$ wires denotes a permutation
-$\llbracket u\rrbracket$ of the $2^k$ possible values of length $k$ bit strings. Wires are numbered
+$\llbracket u\rrbracket$ of the $2^k$ possible values of length-$k$ bit strings. Wires are numbered
 from~0 at the bottom, and bit strings list the top wire first.
 Circuits and permutations compose from left to right: $pq$ applies
 $p$ and then $q$.
@@ -633,7 +644,7 @@ a filled control with an $\X$ gate before and after it on the control wire.
 The basic CNOT and Toffoli act on adjacent wires with the target
 below the controls; other placements abbreviate conjugation by swaps.
 
-Two circuits are \emph{equal modulo $\mathcal{T}$} when the seven
+Two circuits are \emph{equal modulo $\mathcal{R}$} when the seven
 equations of \Cref{fig:xcxccx-rules}, together with the structural
 laws of \Cref{fig:equacert-structural}, rewrite one into the other.
 The structural laws allow an equation to be applied within a larger
@@ -655,7 +666,7 @@ circuit and on any choice and ordering of wires.
 \end{tabular}
 \par\vspace{1em}
 \xrule{7}\enspace\input{figures/xcxccx/rule-7-l}\xeq\input{figures/xcxccx/rule-7-r}\unskip
-\caption{The seven equations of $\mathcal{T}$. Time runs left to right,
+\caption{The seven equations of $\mathcal{R}$. Time runs left to right,
 and wire~0 is at the bottom. Each equation may be used in either
 direction and on any choice and ordering of wires, using the
 structural laws of \Cref{fig:equacert-structural}.}
@@ -665,13 +676,13 @@ structural laws of \Cref{fig:equacert-structural}.}
 \end{figure}
 
 \begin{theorem}[soundness and completeness]\label{thm:xcxccx-complete}
-On any number of wires, two circuits that are equal modulo~$\mathcal{T}$ denote the same permutation. Conversely, for $1\le k\le4$, two circuits on $k$ wires that denote the same permutation are equal modulo~$\mathcal{T}$, and the circuits on $k$ wires modulo~$\mathcal{T}$ form a group that $u\mapsto\llbracket u\rrbracket$ maps isomorphically onto the symmetric group $\mathrm{Sym}(2^k)$ for $k\le3$ and onto the alternating group $\mathrm{Alt}(16)$ for $k=4$.
+On any number of wires, two circuits that are equal modulo~$\mathcal{R}$ denote the same permutation. Conversely, for $1\le k\le4$, two circuits on $k$ wires that denote the same permutation are equal modulo~$\mathcal{R}$, and the circuits on $k$ wires modulo~$\mathcal{R}$ form a group that $u\mapsto\llbracket u\rrbracket$ maps isomorphically onto the symmetric group $\mathrm{Sym}(2^k)$ for $k\le3$ and onto the alternating group $\mathrm{Alt}(16)$ for $k=4$.
 \end{theorem}
 
 \subsection{Canonical Circuits}
 
-We prove completeness by reducing to another set of equations that are known to be complete.
-Namely, Lafont's presentation of the alternating groups~\cite{lafont2003boolean}.
+We prove completeness by reducing to another set of equations that are known to be complete,
+namely Lafont's presentation of the alternating groups~\cite{lafont2003boolean}.
 That proof is based on reduction to a unique normal form that we will present here.
 
 Let 0 to $N-1$ be the points that we permute,
@@ -723,14 +734,14 @@ We number them along the reflected Gray code: position~$i$ is the
 bit string representing $i\oplus\lfloor i/2\rfloor$, where $\oplus$
 here means bitwise exclusive-or. Consecutive positions differ on
 one wire. Each cycle $\omega_i$ is realized by a circuit $\Omega_i$,
-which we prove equal modulo~$\mathcal{T}$ to a commutator of two
+which we prove equal modulo~$\mathcal{R}$ to a commutator of two
 Toffoli gates, possibly with open controls
 (\Cref{fig:xcxccx-canon}(a)).
 Replacing each $\omega_i$ in a canonical form by $\Omega_i$ gives
 the \emph{canonical circuit} $\mathrm{Can}(j_0,\dots,j_{13})$.
 
 \begin{theorem}[normal form]\label{thm:xcxccx-nf}
-Every four-wire circuit $u$ is equal modulo~$\mathcal{T}$ to exactly one canonical circuit, the one with the targets of the permutation that $u$ carries out. Moreover, $(j_0,\dots,j_{13})\mapsto\llbracket\mathrm{Can}(j_0,\dots,j_{13})\rrbracket$ is a bijection from the $16!/2$ tuples of targets onto $\mathrm{Alt}(16)$.
+Every four-wire circuit $u$ is equal modulo~$\mathcal{R}$ to exactly one canonical circuit, the one with the targets of the permutation that $u$ carries out. Moreover, $(j_0,\dots,j_{13})\mapsto\llbracket\mathrm{Can}(j_0,\dots,j_{13})\rrbracket$ is a bijection from the $16!/2$ tuples of targets onto $\mathrm{Alt}(16)$.
 \end{theorem}
 
 For example, the Toffoli in \Cref{fig:xcxccx-canon}(b) exchanges
@@ -753,7 +764,7 @@ repeated four times) and an equal commutator of two Toffoli gates.
 $\Omega_9\,\Omega_8\,\Omega_7\,\Omega_6\,\Omega_5\,\Omega_4$,
 corresponding to \Cref{fig:xcxccx-lafont}(c).
 Each cycle is drawn in its commutator form; all equalities are
-derivable from $\mathcal{T}$.}
+derivable from $\mathcal{R}$.}
 \label{fig:xcxccx-canon}
 \Description{Two rows of circuits on four wires. In the first row, the cycle Omega 9 is drawn as a block repeated four times: two crossings, of the wires 0 and 1 and of the wires 2 and 3, and then a Toffoli gate with its controls on the wires 2 and 1 and its target on wire 0. It equals a circuit of four Toffoli gates: one with its controls on the wires 3 and 0 and its target on wire 1, one with its controls on the wires 2 and 1 and its target on wire 0, and the same two again. In the second row, a single Toffoli gate with its controls on the wires 2 and 1 and its target on wire 0 equals a circuit of twenty-four Toffoli gates in six groups of four, labelled Omega 9 down to Omega 4. Each group is a commutator of two Toffoli gates, some with open controls.}
 \end{figure}
@@ -762,12 +773,12 @@ The formalization's \aid{MainTheorem} module exposes soundness,
 completeness, the presentation of $\mathrm{Alt}(16)$, and the two
 normal-form properties~\cite{equacert2026alt16}.
 In the statements below, $\vdash^{\mathsf{R}}$ denotes equality
-modulo~$\mathcal{T}$ and $\doteq$ denotes pointwise equality of
+modulo~$\mathcal{R}$ and $\doteq$ denotes pointwise equality of
 functions on bit strings. The type \aid{NF} contains the tuples of
 targets, \aid{canon x} constructs the corresponding circuit, and
 \aid{nf w} returns the targets of the permutation denoted by \aid{w}.
 The last two statements assert that normalization preserves the
-circuit modulo~$\mathcal{T}$ and that distinct tuples denote
+circuit modulo~$\mathcal{R}$ and that distinct tuples denote
 distinct permutations.
 
 \par\vskip\medskipamount\noindent\begin{minipage}{\linewidth}
@@ -783,10 +794,10 @@ canon-unique : ∀ {x y : NF} → ⟦ canon x ⟧ ≐ ⟦ canon y ⟧ → x ≡ 
 \FloatBarrier
 \subsection{Constructing and Checking the Proof}\label{sec:xcxccx-construction}
 
-The proof follows the transfer strategy of \Cref{fig:strategies}.
-Lafont's presentation of $\mathrm{Alt}(16)$ and its canonical forms
+The proof follows the transfer strategy of \Cref{fig:translation}.
+Lafont's presentation~$\mathcal{T}$ of $\mathrm{Alt}(16)$ and its canonical forms
 are already proved in EquaCert. We connect that presentation to
-$\mathcal{T}$ by two changes of presentation, using the framework's
+$\mathcal{R}$ by two changes of presentation, using the framework's
 single-coset instance of Reidemeister--Schreier.
 This reduces the new completeness theorem to concrete equations
 between circuits.
@@ -800,10 +811,10 @@ swaps as products of cycles. The framework proves this relation
 complete by checking the translations and their inverse properties.
 
 \paragraph{Deriving the Circuit Equations}
-To derive those 111 equations from $\mathcal{T}$, we first prove
+To derive those 111 equations from $\mathcal{R}$, we first prove
 completeness on at most three wires by transfer from the library's
 Coxeter presentation of the symmetric groups. Search based on 
-the Knuth-Bendix completion algorithm finds the
+the Knuth--Bendix completion algorithm finds the
 required derivations from the seven rules.
 This smaller completeness result then supplies steps for the
 four-wire proof: an equality between circuits on three adjacent
@@ -814,7 +825,7 @@ Additional lemmas about $\X$ gates and swaps transform rewrite rules
 to other wire placements.
 
 The search derives the 105 cycle relations and the 6 gate
-equations. Each resulting derivation uses only $\mathcal{T}$ and
+equations. Each resulting derivation uses only $\mathcal{R}$ and
 previously proved lemmas. In particular, semantic comparison
 justifies rewrite steps using just three wires through the smaller completeness theorem.
 % the four-wire completeness theorem is obtained only after all
@@ -822,8 +833,8 @@ justifies rewrite steps using just three wires through the smaller completeness 
 
 \paragraph{Transferring Completeness and Normal Forms}
 The second change of presentation identifies equality generated
-by the translated relations with equality modulo~$\mathcal{T}$.
-Completeness of the translated relations therefore gives
+by the translated relation with equality modulo~$\mathcal{R}$.
+Completeness of the translated relation therefore gives
 \Cref{thm:xcxccx-complete}. Translating Lafont's canonical forms
 back to circuits gives existence of the normal form, and their
 semantic uniqueness gives \Cref{thm:xcxccx-nf}.
@@ -854,9 +865,9 @@ which Agda replays in about 20~seconds.
 
 \section{Discussion and Future Work}\label{sec:conclusion}
 
-We formalize the results of sixteen papers in EquaCert using one circuit syntax, one definition of group presentations, and shared libraries for rings and their matrix groups. Unifying these definitions has two benefits. First, presentations of the same group from different papers can be compared and proved equivalent. Second, a new completeness proof can reuse much of the existing work. When completeness follows from an exact synthesis algorithm, the induction that turns the algorithm into a proof carries over with little change, so the main new work is the case analysis over matrices and generators. That case analysis is the most error-prone part of the proof, so it is where machine checking matters most. Reusing these libraries, we also prove a new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$ (\Cref{sec:xcxccx}).
+We formalize the results of sixteen papers in EquaCert using one circuit syntax, one definition of group presentations, and shared libraries for rings and their matrix groups. Unifying these definitions has two benefits. First, presentations of the same group from different papers can be compared and proved equivalent. Second, a new completeness proof can reuse much of the existing work. When completeness follows from an exact synthesis algorithm, the induction that turns the algorithm into a proof carries over with little change, so the main new work is the case analysis over matrices and generators. That case analysis is the most error-prone part of the proof, so it is where machine checking matters most. Reusing these libraries, we also prove a new result, a complete equational theory for four-bit reversible circuits over $\{\X,\CX,\CCX\}$.
 
-We are now using EquaCert to extend two completeness results to any number of wires. The first is our four-bit theory. For $n\ge4$, circuits over $\{\X,\CX,\CCX\}$ realize exactly the even permutations~\cite{shende2003synthesis}, and related complete rule sets use cycles instead of gates~\cite{lafont2003boolean} or allow multiple-control Toffoli gates~\cite{feng2026complete,feng2026ancillas}. The second is the three-qubit Toffoli--Hadamard theory~\cite{amy2024toffoli}, which we extend using the presentation of $O_n(\Z[1/2])$~\cite{li2021on} and Cl\'ement's method for real Clifford+\CH{} circuits~\cite{clement2026realcliffordch}. More broadly, completeness is still open for many other discrete gate sets, especially in higher dimensions, and we plan to study Clifford circuits in all dimensions with EquaCert. Beyond completeness, the exact synthesis libraries can be reused for \T-count optimization of multi-qubit Clifford+\T{} circuits.
+We are now using EquaCert to extend two completeness results to any number of wires. The first is our four-bit theory. For $k\ge4$, circuits over $\{\X,\CX,\CCX\}$ realize exactly the even permutations~\cite{shende2003synthesis}, and related complete rule sets use $3$-cycles instead of gates~\cite{lafont2003boolean} or allow multiple-control Toffoli gates~\cite{feng2026complete,feng2026ancillas}. The second is the three-qubit Toffoli--Hadamard theory~\cite{amy2024toffoli}, which we extend using the presentation of $O_n(\Z[1/2])$~\cite{li2021on} and Cl\'ement's method for real Clifford+\CH{} circuits~\cite{clement2026realcliffordch}. More broadly, completeness is still open for many other discrete gate sets, especially in higher dimensions, and we plan to study Clifford circuits in all dimensions with EquaCert. Beyond completeness, the exact synthesis libraries can be reused for \T-count optimization of multi-qubit Clifford+\T{} circuits.
 
 At the moment, not every completeness result fits into EquaCert, as its scope is limited in two ways. First, it supports only discrete gate sets, so it does not cover completeness results for circuits with continuous parameters, such as rotations by arbitrary angles~\cite{clement2023complete,clement2024extensions,clement2024minimal}. Second, control is not a circuit constructor in EquaCert, so it does not cover results that treat control as a primitive operation on circuits~\cite{delorme2026control,schober2026control,blake2026qudit}. We plan to extend EquaCert past both limitations.
 
@@ -911,8 +922,7 @@ We intend to submit the artifact for Artifact Evaluation and to release it under
 
 \section{Rings, Matrices, and Quantum Gates}\label{app:rings-gates}
 
-In this appendix we define all the different rings, groups and quantum gates used for the qubit results in this paper. 
-We mostly follow~\citet{amy2020numbertheoretic}, whose families are shown in \Cref{fig:qubit-fragments}. We take indices to start at~$0$, as in \Cref{sec:background} and~\cite{bian2021un}. But note that~\cite{amy2020numbertheoretic,giles2013exact,li2021on,fang2026hadamard} start them at~$1$. We write $\mathbb N=\{0,1,2,\dots\}$, $i$ for the imaginary unit, and $\omega=e^{i\pi/4}=(1+i)/\sqrt2$.
+In this appendix, we define all the different rings, groups, and quantum gates used for the qubit results in this paper. We mostly follow~\citet{amy2020numbertheoretic}, whose families are shown in \Cref{fig:qubit-fragments}. We take all indices to start at~$0$, as in \Cref{sec:background} and~\cite{bian2021un}. But note that~\cite{amy2020numbertheoretic,giles2013exact,li2021on,fang2026hadamard} start them at~$1$. We write $\mathbb N=\{0,1,2,\dots\}$, $i$ for the imaginary unit, and $\omega=e^{i\pi/4}=(1+i)/\sqrt2$.
 
 % This appendix defines the notation of \Cref{fig:qubit-fragments} and gives the source of each of its matrix groups.
 
@@ -954,22 +964,22 @@ Taking $q$ even shows that these scaled matrix groups contain $O_n(\D)$, respect
 \F=\frac12\begin{pmatrix}1+i\sqrt2&1\\1&-1+i\sqrt2\end{pmatrix}=\frac{\Hg+iI_2}{\sqrt2},
 \end{gather*}
 and $\omega\Hg$, the scalar $\omega$ times $\Hg$. The two-qubit gate $\Hg\otimes\Hg$ is also written~$\K$~\cite[Definition~2.4]{li2021on}. 
-Note that a gate on zero qubits, such as~$\omega$, is just a number (a scalar). We write $\ket0=e_0$ and $\ket1=e_1$ in $\mathbb C^2$, and $\ket{x_1\cdots x_k}=\ket{x_1}\otimes\cdots\otimes\ket{x_k}$, which is $e_x$ for the number $x$ with binary digits $x_1\cdots x_k$. In circuit diagrams, the first tensor factor is the top wire. 
+Note that a gate on zero qubits, such as~$\omega$, is just a number (a scalar). We write $\ket0=e_0$ and $\ket1=e_1$ in $\mathbb C^2$, and $\ket{x_0\cdots x_{k-1}}=\ket{x_0}\otimes\cdots\otimes\ket{x_{k-1}}$, which is $e_x$ for the number $x$ with binary digits $x_0\cdots x_{k-1}$. In circuit diagrams, the first tensor factor is the top wire. 
 For a gate $G$ on $m$ qubits, the \emph{controlled} gate $\mathrm CG=\mathrm{diag}(I_{2^m},G)$ on $m+1$ qubits applies $G$ to the last $m$ qubits if the first is~$\ket1$. This defines $\CX$, $\CZ$, $\CS$, $\CH$, $\CCX=\mathrm C(\CX)$, and $\CCZ=\mathrm C(\CZ)$.
 
-\paragraph{Circuits and Ancillas} In a circuit on $k$ qubits, applying a gate $G$ on $m$ qubits to the qubits at the distinct positions $j_1,\dots,j_m\in\{1,\dots,k\}$ corresponds to the unitary $P_\sigma(G\otimes I_{2^{k-m}})P^{-1}_\sigma$ where $P_\sigma$ is the permutation matrix of $\sigma$ satisfying $\sigma l = j_l$ for $l\leq m$ and is identity otherwise. That is: we first swap all the qubit wires so that $G$ applies to the top $m$ qubits, and then we swap the wires back.
+\paragraph{Circuits and Ancillas} In a circuit on $k$ qubits, applying a gate $G$ on $m$ qubits to the qubits at the distinct positions $j_0,\dots,j_{m-1}\in\{0,\dots,k-1\}$ corresponds to the unitary $P_\sigma(G\otimes I_{2^{k-m}})P^{-1}_\sigma$ where $P_\sigma$ is the permutation matrix of $\sigma$ satisfying $\sigma l = j_l$ for $l<m$ and is identity otherwise. That is, we first swap all the qubit wires so that $G$ applies to the top $m$ qubits, and then we swap the wires back.
 A circuit $C$ consisting of the list of gates $G_1,\dots,G_\ell$ has unitary interpretation $\llbracket C\rrbracket=G_\ell\cdots G_1$. 
 Given a unitary $W\in U_{2^k}(\mathbb C)$, a circuit $C$ on $k+r$ qubits \emph{represents $W$ with $r$ clean ancillas} if $\llbracket C\rrbracket(v\otimes\ket0^{\otimes r})=(Wv)\otimes\ket0^{\otimes r}$ for all $v\in\mathbb C^{2^k}$~\cite{giles2013exact,amy2020numbertheoretic}. Without ancillas ($r=0$), this means $\llbracket C\rrbracket=W$.
 
-\paragraph{Multi-Level Matrices}\cite[Definition~3.7]{amy2020numbertheoretic} Fix $n\geq m$ and let $M$ be an $m\times m$ matrix with entries $M_{jl}$ for $1\le j,l\le m$, and let $a_1,\dots,a_m\in\{0,\dots,n-1\}$ be distinct. The \emph{$m$-level matrix} $M_{[a_1,\dots,a_m]}$ is the $n\times n$ matrix satisfying 
+\paragraph{Multi-Level Matrices}\cite[Definition~3.7]{amy2020numbertheoretic} Fix $n\geq m$ and let $M$ be an $m\times m$ matrix with entries $M_{jl}$ for $0\le j,l<m$, and let $a_0,\dots,a_{m-1}\in\{0,\dots,n-1\}$ be distinct. The \emph{$m$-level matrix} $M_{[a_0,\dots,a_{m-1}]}$ is the $n\times n$ matrix satisfying 
 \[
-M_{[a_1,\dots,a_m]}\,e_{a_l}=\sum_{j=1}^{m}M_{jl}\,e_{a_j}\ \ (1\le l\le m)
+M_{[a_0,\dots,a_{m-1}]}\,e_{a_l}=\sum_{j=0}^{m-1}M_{jl}\,e_{a_j}\ \ (0\le l<m)
 \qquad\text{and}\qquad
-M_{[a_1,\dots,a_m]}\,e_b=e_b\ \ (b\notin\{a_1,\dots,a_m\}).
+M_{[a_0,\dots,a_{m-1}]}\,e_b=e_b\ \ (b\notin\{a_0,\dots,a_{m-1}\}).
 \]
-That is, $M_{[a_1,\dots,a_m]}$ acts as $M$ on the subspace spanned by the unit vectors $e_{a_1},\ldots, e_{a_m}$ and acts as the identity otherwise.
+That is, $M_{[a_0,\dots,a_{m-1}]}$ acts as $M$ on the subspace spanned by the unit vectors $e_{a_0},\ldots, e_{a_{m-1}}$ and acts as the identity otherwise.
 A scalar $z$ is a $1\times1$ matrix, so $z_{[a]}$ multiplies $e_a$ by~$z$. For example, $(-1)_{[a]}$ negates $e_a$, $\X_{[a,b]}$ exchanges $e_a$ and $e_b$, and $\Hg_{[a,b]}$ sends $e_a$ to $(e_a+e_b)/\sqrt2$ and $e_b$ to $(e_a-e_b)/\sqrt2$. 
-An $m$-level matrix for small $m$ and large $n$ generally corresponds to a highly-controlled operation. For instance $(-1)[\vec 1]$ on the $n=2^k$ space of $n$ qubits corresponds to an $(n-1)$-controlled \CCZ{} gate.
+
 % Two generators in \Cref{fig:qubit-fragments} are not multi-level matrices, namely the scalar matrix $\omega I_n$ and, for even~$n$, $I_{n/2}\otimes\Hg=\mathrm{diag}(\Hg,\dots,\Hg)$, which on $k$ qubits is $\Hg$ on the last qubit.
 
 % \paragraph{The Families} \Cref{tab:fragments} gives the source of each matrix group of \Cref{fig:qubit-fragments}, with its gates and generators as the source states them. The presentations of~\cite{li2021on,fang2026hadamard,bian2021un} use these generators, some with their indices restricted to increasing order, and~\cite{bian2021un} uses $(\omega\Hg)^\dagger$ in place of $\omega\Hg$.
@@ -1224,7 +1234,7 @@ This appendix proves \Cref{thm:xcxccx-complete,thm:xcxccx-nf} as the Agda formal
 
 \subsection{Conventions and Outline}\label{app:xcxccx-conventions}
 
-The gates and the theory are the modules \aid{Syntactics} and \aid{Theory}, and the proof engine is \aid{Engine}. Wires are numbered from $0$ at the bottom. A state of $k$ wires is a bit string $b_{k-1}\cdots b_0$, the bit of the top wire first. Circuits are words in diagram order, and products of permutations follow the same order, so $uw$ applies $u$ and then $w$. We write $u\approx w$ when $u$ and $w$ are equal modulo $\mathcal{T}$, $\varepsilon$ for the empty circuit, and $G_k$ for the circuits on $k$ wires modulo $\mathcal{T}$, with the product of circuits.
+The gates and the theory are the modules \aid{Syntactics} and \aid{Theory}, and the proof engine is \aid{Engine}. Wires are numbered from $0$ at the bottom. A state of $k$ wires is a bit string $b_{k-1}\cdots b_0$, the bit of the top wire first. Circuits are words in diagram order, and products of permutations follow the same order, so $uw$ applies $u$ and then $w$. We write $u\approx w$ when $u$ and $w$ are equal modulo $\mathcal{R}$, $\varepsilon$ for the empty circuit, and $G_k$ for the circuits on $k$ wires modulo $\mathcal{R}$, with the product of circuits.
 
 The gate $\X$ acts on wire~0, $\CX$ has its control on wire~1 and its target on wire~0, $\CCX$ has its controls on wires~2 and~1 and its target on wire~0, and the structural swap $\sigma$ exchanges the wires 0 and~1. The \emph{generators} of the circuits on $k$ wires are these four gates, shifted up by any number of wires. A gate in any other position is a generator between swaps, and an open control is a filled one between two $\X$ gates on its wire. We write $\X_t$, $\CX_{c\to t}$, and $\CCX_{ab\to t}$ for the gates with target~$t$ and controls $c$, or $a$ and $b$ in either order, with a bar over an open control as in $\CCX_{\bar3 2\to0}$, and $\sigma_d$ for the swap of the wires $d$ and $d+1$. On four wires there are twelve generators: $\X_0,\dots,\X_3$, $\CX_{1\to0}$, $\CX_{2\to1}$, $\CX_{3\to2}$, $\CCX_{21\to0}$, $\CCX_{32\to1}$, and $\sigma_0$, $\sigma_1$, $\sigma_2$. In this notation the equations of \Cref{fig:xcxccx-rules} are
 \[
@@ -1345,17 +1355,17 @@ On $k\le3$ wires, number the $N=2^k$ states along the reflected Gray code, as in
 each written as $\CCX_{21\to0}$ between $\X$ gates on its open controls and the swaps that bring its wires into place.
 
 \begin{proposition}[\aid{complete₁}--\aid{complete₃}, \aid{presentation₁}--\aid{presentation₃}]\label{prop:x-small}
-For $1\le k\le3$, the theory $\mathcal{T}$ is complete on $k$ wires, $G_k$ is a group, and $u\mapsto\llbracket u\rrbracket$ is an isomorphism from $G_k$ onto $\mathrm{Sym}(2^k)$.
+For $1\le k\le3$, the theory $\mathcal{R}$ is complete on $k$ wires, $G_k$ is a group, and $u\mapsto\llbracket u\rrbracket$ is an isomorphism from $G_k$ onto $\mathrm{Sym}(2^k)$.
 \end{proposition}
 
 \begin{proof}
-The module \aid{BySymmetric} carries out the step between the circuits on $k$ wires modulo $\mathcal{T}$ and the Coxeter presentation of $\mathrm{Sym}(2^k)$, for any~$k$, from the two facts toward the circuits and from the semantics of the two translations on generators. The translation $g$ reads $\tau_d$ as $\Theta_d$, and $f$ reads a generator as a word in the transpositions. On three wires, for example,
+The module \aid{BySymmetric} carries out the step between the circuits on $k$ wires modulo $\mathcal{R}$ and the Coxeter presentation of $\mathrm{Sym}(2^k)$, for any~$k$, from the two facts toward the circuits and from the semantics of the two translations on generators. The translation $g$ reads $\tau_d$ as $\Theta_d$, and $f$ reads a generator as a word in the transpositions. On three wires, for example,
 \[
 f(\X_0)=\tau_0\tau_2\tau_4\tau_6,\qquad f(\CX_{1\to0})=\tau_2\tau_4,\qquad f(\CCX_{21\to0})=\tau_4,\qquad f(\sigma_0)=\tau_1\tau_2\tau_1\,\tau_4\tau_5\tau_4,
 \]
 $f(\sigma_1)$ has $14$ letters, and the generators further up are between the words of swaps, as in Appendix~\ref{app:xcxccx-first}.
 
-The two facts toward the Coxeter words are semantic, as in \Cref{prop:x-first}: $\mathcal{T}$ is sound by \Cref{prop:x-sound}, a word in the transpositions permutes the numbers as its circuit maps the states, which is decided by evaluation on the generators, and the Coxeter presentation is complete. The two facts toward the circuits are derivations from $\mathcal{T}$. They ask for the Coxeter relations between the $\Theta_d$, and for each gate on its own wires to be the circuit of its word; a generator further up then follows by the naturality of the swap. On one wire the only relation is \xrule{1}. On two wires these are nine equations, and on three wires $33$: seven of the form $\Theta_d\Theta_d\approx\varepsilon$, six braid relations, fifteen commutations, and five gates.
+The two facts toward the Coxeter words are semantic, as in \Cref{prop:x-first}: $\mathcal{R}$ is sound by \Cref{prop:x-sound}, a word in the transpositions permutes the numbers as its circuit maps the states, which is decided by evaluation on the generators, and the Coxeter presentation is complete. The two facts toward the circuits are derivations from $\mathcal{R}$. They ask for the Coxeter relations between the $\Theta_d$, and for each gate on its own wires to be the circuit of its word; a generator further up then follows by the naturality of the swap. On one wire the only relation is \xrule{1}. On two wires these are nine equations, and on three wires $33$: seven of the form $\Theta_d\Theta_d\approx\varepsilon$, six braid relations, fifteen commutations, and five gates.
 
 A Knuth--Bendix completion~\cite{knuth1970simple} finds the derivations. It starts from the instances of the rules on the given wires, oriented as rewrite rules by length and then alphabetically: seven instances on two wires, and $23$ on three, of \xrule{1}--\xrule{6}, of the laws of the swap, and of the commutations of generators on disjoint wires. Each rule that the completion adds comes from an overlap of two earlier rules, and is thereby an equation derived from them. The completion stops as soon as the two sides of every target rewrite to the same word. The derivations of the targets use $16$ added rules on two wires and $316$ on three. Each added rule and each target becomes one derivation of the engine, $1{,}596$ steps in all. On three wires only \xrule{1}--\xrule{6} are used, since \xrule{7} needs four.
 
@@ -1367,7 +1377,7 @@ The step makes $f$ an isomorphism from $G_k$ onto the group of the Coxeter prese
 This part follows the modules \aid{FourWire}, \aid{Frames}, and \aid{Letters}. Each of the twelve generators on four wires lies on the bottom three wires, on the top three, or on both.
 
 \begin{lemma}[three-wire steps, \aid{bot}, \aid{top}]\label{lem:x-narrow}
-Two circuits on the wires 0, 1, 2 of four wires that denote the same function are equal modulo $\mathcal{T}$, and so are two circuits on the wires 1, 2, 3.
+Two circuits on the wires 0, 1, 2 of four wires that denote the same function are equal modulo $\mathcal{R}$, and so are two circuits on the wires 1, 2, 3.
 \end{lemma}
 
 \begin{proof}
@@ -1379,7 +1389,7 @@ Thirteen instances of the rules involve all four wires and are not three-wire st
 \paragraph{Symmetry words} A \emph{symmetry word} is a word in $\X_0,\dots,\X_3$ and $\sigma_0,\sigma_1,\sigma_2$. These circuits carry out the $384$ symmetries of the 4-cube, which permute the wires and complement some of them. The reversed word $p^{-1}$ of a symmetry word $p$ has the inverse function. A \emph{normal form} is a triple $(q,e,r)$ of a symmetry word $q$ on the bottom three wires, a bit~$e$, and one of the four words $r\in\{\varepsilon,\ \sigma_2,\ \sigma_2\sigma_1,\ \sigma_2\sigma_1\sigma_0\}$, which bring each of the four wires to the top. Its circuit is $q\,\X_3^{\,e}\,r$.
 
 \begin{lemma}[\aid{hstep}]\label{lem:x-hstep}
-Every symmetry word $p$ has a normal form $\mathrm{nf}(p)=(q,e,r)$ with $p\approx q\,\X_3^{\,e}\,r$. Hence two symmetry words are equal modulo $\mathcal{T}$ if their normal forms have the same $e$, the same $r$, and words $q$ with the same function.
+Every symmetry word $p$ has a normal form $\mathrm{nf}(p)=(q,e,r)$ with $p\approx q\,\X_3^{\,e}\,r$. Hence two symmetry words are equal modulo $\mathcal{R}$ if their normal forms have the same $e$, the same $r$, and words $q$ with the same function.
 \end{lemma}
 
 \begin{proof}
@@ -1435,7 +1445,7 @@ $\CCX_{21\to0},\ \CCX_{3\bar1\to0}$ & identity & 8 & $\CX_{1\to0},\ \CCX_{30\to2
 \end{table}
 
 \begin{proposition}[pair lemmas]\label{prop:x-pairs}
-The representatives of the twelve orbits hold modulo $\mathcal{T}$, and so does every pair lemma that a derivation of the formalization uses.
+The representatives of the twelve orbits hold modulo $\mathcal{R}$, and so does every pair lemma that a derivation of the formalization uses.
 \end{proposition}
 
 \begin{proof}
@@ -1452,10 +1462,10 @@ The representatives of the twelve orbits hold modulo $\mathcal{T}$, and so does 
 
 This part follows the generated modules \aid{Four.Part1}--\aid{Four.Part14} and \aid{Four.Relations}.
 
-\paragraph{The forms of a cycle} With $T=\CCX_{30\to1}$ and $C=\CCX_{21\to0}$ as in Appendix~\ref{app:xcxccx-cycles}, the circuit $K$ is equal modulo $\mathcal{T}$ to $T\,C\,T\,C$ as a word of placed gates, by two uses of the commutation of $\sigma_0$ and $\sigma_2$. Each $\Omega_i$ is $K$ between a symmetry word and its reverse, so by \Cref{lem:x-frame} it is equal to a word $T_iC_iT_iC_i$ of four placed Toffoli gates. Let wire~$a$ change from position $i$ to $i+1$, wire~$b$ from $i+1$ to $i+2$, and let $c$ and $d$ be the other two wires. Then one of the two gates flips wire~$b$ where wire~$a$ is as in position $i+1$ and wire~$d$ as in position~$i$, and the other flips wire~$a$ where wire~$b$ is as in position $i+1$ and wire~$c$ as in position~$i$. The wires $c$ and $d$ may be given to the two gates either way round, so a cycle has two such words, its \emph{forms}. For $\Omega_9$ they are $(\CCX_{20\to1}\,\CCX_{31\to0})^2$ and $(\CCX_{30\to1}\,\CCX_{21\to0})^2$.
+\paragraph{The forms of a cycle} With $T=\CCX_{30\to1}$ and $C=\CCX_{21\to0}$ as in Appendix~\ref{app:xcxccx-cycles}, the circuit $K$ is equal modulo $\mathcal{R}$ to $T\,C\,T\,C$ as a word of placed gates, by two uses of the commutation of $\sigma_0$ and $\sigma_2$. Each $\Omega_i$ is $K$ between a symmetry word and its reverse, so by \Cref{lem:x-frame} it is equal to a word $T_iC_iT_iC_i$ of four placed Toffoli gates. Let wire~$a$ change from position $i$ to $i+1$, wire~$b$ from $i+1$ to $i+2$, and let $c$ and $d$ be the other two wires. Then one of the two gates flips wire~$b$ where wire~$a$ is as in position $i+1$ and wire~$d$ as in position~$i$, and the other flips wire~$a$ where wire~$b$ is as in position $i+1$ and wire~$c$ as in position~$i$. The wires $c$ and $d$ may be given to the two gates either way round, so a cycle has two such words, its \emph{forms}. For $\Omega_9$ they are $(\CCX_{20\to1}\,\CCX_{31\to0})^2$ and $(\CCX_{30\to1}\,\CCX_{21\to0})^2$.
 
 \begin{lemma}[the two forms]\label{lem:x-forms}
-The two forms of each cycle are equal modulo $\mathcal{T}$.
+The two forms of each cycle are equal modulo $\mathcal{R}$.
 \end{lemma}
 
 \begin{proof}
@@ -1465,7 +1475,7 @@ For $\Omega_9$, a search finds a macro derivation of $17$ moves. A symmetry of t
 \paragraph{Shapes} A symmetry of the cube carries three corners of a face to three corners of a face. The $105$ instances of Lafont's relations fall into $24$ orbits under the symmetries, their \emph{shapes}: one for (order), two for (near), two for (far), and $19$ for (apart).
 
 \begin{proposition}[\aid{orderᵀ}, \aid{nearᵀ}, \aid{farᵀ}, \aid{apartᵀ}]\label{prop:x-relations}
-The $105$ instances of \textup{(order)}, \textup{(near)}, \textup{(far)}, and \textup{(apart)} between the circuits $\Omega_i$ hold modulo $\mathcal{T}$.
+The $105$ instances of \textup{(order)}, \textup{(near)}, \textup{(far)}, and \textup{(apart)} between the circuits $\Omega_i$ hold modulo $\mathcal{R}$.
 \end{proposition}
 
 \begin{proof}
@@ -1503,7 +1513,7 @@ For each of the seventeen equations, a search finds a macro derivation of its re
 \end{proof}
 
 \begin{lemma}[\aid{gate-Xᵀ}, \aid{gate-CXᵀ}, \aid{gate-CCXᵀ}, \aid{gate-Ex₀ᵀ}, \aid{gate-Ex₁ᵀ}, \aid{gate-Ex₂ᵀ}]\label{lem:x-some-word}
-Each of $\X_0$, $\CX_{1\to0}$, $\CCX_{21\to0}$, $\sigma_0$, $\sigma_1$, and $\sigma_2$ is equal modulo $\mathcal{T}$ to the circuit $g(v)$ of some word $v$ in the cycles.
+Each of $\X_0$, $\CX_{1\to0}$, $\CCX_{21\to0}$, $\sigma_0$, $\sigma_1$, and $\sigma_2$ is equal modulo $\mathcal{R}$ to the circuit $g(v)$ of some word $v$ in the cycles.
 \end{lemma}
 
 \begin{proof}
@@ -1511,15 +1521,15 @@ By \Cref{lem:x-squares} each $t_i$ and $t'_i$ is such a circuit, and so is $\CCX
 \end{proof}
 
 \begin{lemma}[\aid{to-f}]\label{lem:x-tof}
-If a four-wire circuit $c$ is equal modulo $\mathcal{T}$ to $g(v)$ for some word $v$ in the cycles, then $c\approx g(f(c))$.
+If a four-wire circuit $c$ is equal modulo $\mathcal{R}$ to $g(v)$ for some word $v$ in the cycles, then $c\approx g(f(c))$.
 \end{lemma}
 
 \begin{proof}
-By \Cref{prop:x-sound} and \Cref{lem:x-bridge}, $v$ permutes the positions as $c$ maps the states, and so does $f(c)$. So $v$ and $f(c)$ are equal modulo Lafont's relations, by his completeness. By \Cref{prop:x-relations} each instance of his relations, read through $g$, holds modulo $\mathcal{T}$, so $g$ carries that derivation to $g(v)\approx g(f(c))$ \textup{(\aid{Lemmas.FromCycles})}.
+By \Cref{prop:x-sound} and \Cref{lem:x-bridge}, $v$ permutes the positions as $c$ maps the states, and so does $f(c)$. So $v$ and $f(c)$ are equal modulo Lafont's relations, by his completeness. By \Cref{prop:x-relations} each instance of his relations, read through $g$, holds modulo $\mathcal{R}$, so $g$ carries that derivation to $g(v)\approx g(f(c))$ \textup{(\aid{Lemmas.FromCycles})}.
 \end{proof}
 
 \begin{proposition}[\aid{lemma-g-fᵀ}]\label{prop:x-gates}
-The six gate equations of the translated relation hold modulo $\mathcal{T}$, and every generator $x$ on four wires satisfies $x\approx g(f(x))$.
+The six gate equations of the translated relation hold modulo $\mathcal{R}$, and every generator $x$ on four wires satisfies $x\approx g(f(x))$.
 \end{proposition}
 
 \begin{proof}
@@ -1531,15 +1541,15 @@ For the six gates on their own wires, combine \Cref{lem:x-some-word,lem:x-tof}. 
 This part follows the modules \aid{Equivalence} and \aid{MainTheorem}.
 
 \begin{proposition}[\aid{s⇒t}, \aid{t⇒s}, \aid{rules≅relations}]\label{prop:x-second}
-Two four-wire circuits are equal modulo the translated relation if and only if they are equal modulo $\mathcal{T}$.
+Two four-wire circuits are equal modulo the translated relation if and only if they are equal modulo $\mathcal{R}$.
 \end{proposition}
 
 \begin{proof}
-The step is between two relations on the same circuits, with the identity translations, so its third and fourth facts are trivial and the other two say that each relation derives the equations of the other. The structural rules are the same on both sides. The equations of the translated relation hold modulo $\mathcal{T}$ by \Cref{prop:x-relations,prop:x-gates}. Conversely, by \Cref{prop:x-sound} the two sides of an equation that holds modulo $\mathcal{T}$ denote the same function, so they are equal modulo the translated relation, which is complete by \Cref{prop:x-first}.
+The step is between two relations on the same circuits, with the identity translations, so its third and fourth facts are trivial and the other two say that each relation derives the equations of the other. The structural rules are the same on both sides. The equations of the translated relation hold modulo $\mathcal{R}$ by \Cref{prop:x-relations,prop:x-gates}. Conversely, by \Cref{prop:x-sound} the two sides of an equation that holds modulo $\mathcal{R}$ denote the same function, so they are equal modulo the translated relation, which is complete by \Cref{prop:x-first}.
 \end{proof}
 
 \begin{proof}[Proof of \Cref{thm:xcxccx-complete}]
-Soundness is \Cref{prop:x-sound}. For $k\le3$, completeness and the group $G_k$ are \Cref{prop:x-small}. On four wires, two circuits with the same function are equal modulo the translated relation by \Cref{prop:x-first}, hence modulo $\mathcal{T}$ by \Cref{prop:x-second} \textup{(\aid{completeᴿ})}. By the same two propositions, $G_4$ is the group of the circuits modulo the translated relation, which reading a circuit as the permutation that it carries out on the positions maps isomorphically onto $\mathrm{Alt}(16)$ \textup{(\aid{presentationᴿ})}. The formalization also proves the four facts of the first step for $\mathcal{T}$ itself, with the same $f$ and $g$ \textup{(\aid{Theorem-Rules-iso-Cycles})}: toward Lafont's words by soundness and his completeness, and toward the circuits by \Cref{prop:x-relations,prop:x-gates}.
+Soundness is \Cref{prop:x-sound}. For $k\le3$, completeness and the group $G_k$ are \Cref{prop:x-small}. On four wires, two circuits with the same function are equal modulo the translated relation by \Cref{prop:x-first}, hence modulo $\mathcal{R}$ by \Cref{prop:x-second} \textup{(\aid{completeᴿ})}. By the same two propositions, $G_4$ is the group of the circuits modulo the translated relation, which reading a circuit as the permutation that it carries out on the positions maps isomorphically onto $\mathrm{Alt}(16)$ \textup{(\aid{presentationᴿ})}. The formalization also proves the four facts of the first step for $\mathcal{R}$ itself, with the same $f$ and $g$ \textup{(\aid{Theorem-Rules-iso-Cycles})}: toward Lafont's words by soundness and his completeness, and toward the circuits by \Cref{prop:x-relations,prop:x-gates}.
 \end{proof}
 
 \subsection{The Canonical Form}\label{app:xcxccx-nf}
@@ -1557,12 +1567,12 @@ For existence, the stairs from $0$ to $\pi(0)$ is divided out of an even permuta
 Write $S_d(j)$ for the circuit $g(s_d(j))$ of a stairs. The canonical circuits of \Cref{sec:xcxccx} are $g$ of Lafont's canonical forms for $N=16$, letter for letter \textup{(\aid{canon-g})}: $\mathrm{Can}(j_0,\dots,j_{13})=S_{13}(j_{13})\cdots S_1(j_1)\,S_0(j_0)$. In Agda a tuple of targets is a tuple of stairs, \aid{nf w} is the canonical form that \Cref{lem:x-lafont} gives for the word $f(w)$, and \aid{canon} is $g$ of a canonical form.
 
 \begin{proof}[Proof of \Cref{thm:xcxccx-nf}]
-\emph{Existence} \textup{(\aid{normal-formᴿ}, \aid{nf-sem})}. Let $u$ be a four-wire circuit and $v$ the canonical form equal to $f(u)$ modulo Lafont's relations. His relations are sound, so $v$ has the permutation of $f(u)$, which by \Cref{lem:x-bridge} is the permutation that $u$ carries out, and $g(v)$ carries out the same permutation. So $u$ and the canonical circuit $g(v)$ have the same function, and they are equal modulo $\mathcal{T}$ by \Cref{thm:xcxccx-complete}. By the uniqueness in \Cref{lem:x-lafont}, $v$ is the canonical form that the existence proof computes from that permutation, so its targets are those of the permutation.
+\emph{Existence} \textup{(\aid{normal-formᴿ}, \aid{nf-sem})}. Let $u$ be a four-wire circuit and $v$ the canonical form equal to $f(u)$ modulo Lafont's relations. His relations are sound, so $v$ has the permutation of $f(u)$, which by \Cref{lem:x-bridge} is the permutation that $u$ carries out, and $g(v)$ carries out the same permutation. So $u$ and the canonical circuit $g(v)$ have the same function, and they are equal modulo $\mathcal{R}$ by \Cref{thm:xcxccx-complete}. By the uniqueness in \Cref{lem:x-lafont}, $v$ is the canonical form that the existence proof computes from that permutation, so its targets are those of the permutation.
 
-\emph{Uniqueness and the bijection} \textup{(\aid{canon-unique}, \aid{canon-onto}, \aid{nf-canon}, \aid{nf-congᴿ})}. Two canonical circuits with the same function are $g$ of two canonical forms with the same permutation, by \Cref{lem:x-bridge}, and these are the same by \Cref{lem:x-lafont}. Every even permutation of the positions is the permutation of a canonical form, whose circuit carries it out. If $u$ is equal modulo $\mathcal{T}$ to a canonical circuit, then by \Cref{prop:x-sound} they carry out the same permutation, so that circuit is the one above. The count $16\cdot15\cdots3=16!/2$ is the number of tuples of targets.
+\emph{Uniqueness and the bijection} \textup{(\aid{canon-unique}, \aid{canon-onto}, \aid{nf-canon}, \aid{nf-congᴿ})}. Two canonical circuits with the same function are $g$ of two canonical forms with the same permutation, by \Cref{lem:x-bridge}, and these are the same by \Cref{lem:x-lafont}. Every even permutation of the positions is the permutation of a canonical form, whose circuit carries it out. If $u$ is equal modulo $\mathcal{R}$ to a canonical circuit, then by \Cref{prop:x-sound} they carry out the same permutation, so that circuit is the one above. The count $16\cdot15\cdots3=16!/2$ is the number of tuples of targets.
 \end{proof}
 
-\paragraph{Example} The canonical circuit that a circuit is equal to is thus read off its permutation. The Toffoli gate $\CCX_{21\to0}$ exchanges the states $0110$ and $0111$, which are the positions 4 and~5, and the states $1111$ and $1110$, the positions 10 and~11, and it fixes the other twelve positions. Let $\pi$ be this permutation. It fixes the positions below~4, so $j_d=d$ and $\pi_{d+1}=\pi$ for $d\le3$. Then $j_4=\pi(4)=5$, and dividing by the stairs $s_4(5)=\omega_4$ leaves $\pi_5$, which exchanges 5 with~6 and still 10 with~11. In the same way $j_d=d+1$ for $d=5,\dots,8$, the first exchange moving up one position at each step, until $\pi_9$ is the cycle $\omega_9$ itself, so that $j_9=10$, $\pi_{10}$ is the identity, and $j_d=d$ for $d\ge10$. The canonical form of $\pi$ is therefore $\omega_9\,\omega_8\,\omega_7\,\omega_6\,\omega_5\,\omega_4$ (\Cref{fig:xcxccx-lafont}(c)), and the gate is equal modulo $\mathcal{T}$ to the canonical circuit
+\paragraph{Example} The canonical circuit that a circuit is equal to is thus read off its permutation. The Toffoli gate $\CCX_{21\to0}$ exchanges the states $0110$ and $0111$, which are the positions 4 and~5, and the states $1111$ and $1110$, the positions 10 and~11, and it fixes the other twelve positions. Let $\pi$ be this permutation. It fixes the positions below~4, so $j_d=d$ and $\pi_{d+1}=\pi$ for $d\le3$. Then $j_4=\pi(4)=5$, and dividing by the stairs $s_4(5)=\omega_4$ leaves $\pi_5$, which exchanges 5 with~6 and still 10 with~11. In the same way $j_d=d+1$ for $d=5,\dots,8$, the first exchange moving up one position at each step, until $\pi_9$ is the cycle $\omega_9$ itself, so that $j_9=10$, $\pi_{10}$ is the identity, and $j_d=d$ for $d\ge10$. The canonical form of $\pi$ is therefore $\omega_9\,\omega_8\,\omega_7\,\omega_6\,\omega_5\,\omega_4$ (\Cref{fig:xcxccx-lafont}(c)), and the gate is equal modulo $\mathcal{R}$ to the canonical circuit
 \[
 S_9(10)\,S_8(9)\,S_7(8)\,S_6(7)\,S_5(6)\,S_4(5)=\Omega_9\,\Omega_8\,\Omega_7\,\Omega_6\,\Omega_5\,\Omega_4 ,
 \]
@@ -1578,15 +1588,15 @@ Lafont's rewriting also computes the canonical form, but on the word of a circui
 
 This appendix states the two corrections of \Cref{sec:findings} in a form that can be checked by hand, and summarizes further corrections found during formalization.
 
-\subsection{The Gap in the Proof of Theorem~4.14 of Hadamard-$\Pi$}\label{app:corr-hpi}
+\subsection{The Gap in the Proof of Theorem~4.14 of Hadamard-\texorpdfstring{$\Pi$}{Pi}}\label{app:corr-hpi}
 
-References are to the extended version of~\cite{fang2026hadamard}, whose Appendix~A proves Theorem~4.14, and indices start at~$1$, as there. Applied to a vector~$x$, the matrix $\Hg_{[i,j]}$ replaces the entries $x_i$ and $x_j$ by $(x_i+x_j)/\sqrt2$ and $(x_i-x_j)/\sqrt2$, and a product acts with its rightmost factor first. An element $a+b\sqrt2$ of $\Z[\sqrt2]$ is \emph{odd} if $a$ is odd.
+References are to the extended version of~\cite{fang2026hadamard}, whose Appendix~A proves Theorem~4.14. Indices start at~$0$ here and at~$1$ there, so $\Hg_{[i,j]}$ below is $\Hg_{[i+1,j+1]}$ there. Applied to a vector~$x=(x_0,x_1,\dots)$, the matrix $\Hg_{[i,j]}$ replaces the entries $x_i$ and $x_j$ by $(x_i+x_j)/\sqrt2$ and $(x_i-x_j)/\sqrt2$, and a product acts with its rightmost factor first. An element $a+b\sqrt2$ of $\Z[\sqrt2]$ is \emph{odd} if $a$ is odd.
 
-Lemma~A.16 concerns a unit vector $\hat v$ over $\Z[1/\sqrt2]$ and a $k\ge2$ such that $\sqrt2^{\,k}\hat v$ has entries in $\Z[\sqrt2]$, exactly four of them odd, namely the first four, which are congruent to $(1+\sqrt2,\,1,\,1+\sqrt2,\,1)$ or to $(1,\,1+\sqrt2,\,1,\,1+\sqrt2)$ modulo~$2$. Let $v$ consist of the first four entries of $\hat v$. The lemma states that if $\sqrt2^{\,k-1}\,\Hg_{[1,4]}\Hg_{[2,3]}\Hg_{[2,4]}\Hg_{[2,3]}\Hg_{[1,4]}\,v$ has entries in $\Z[\sqrt2]$, then so does $\sqrt2^{\,k-1}\,\Hg_{[1,3]}\Hg_{[2,4]}\Hg_{[1,2]}\Hg_{[1,3]}\Hg_{[2,4]}\,v$. It fails for $k=4$ in dimension~$6$, on
+Lemma~A.16 concerns a unit vector $\hat v$ over $\Z[1/\sqrt2]$ and a $k\ge2$ such that $\sqrt2^{\,k}\hat v$ has entries in $\Z[\sqrt2]$, exactly four of them odd, namely the first four, which are congruent to $(1+\sqrt2,\,1,\,1+\sqrt2,\,1)$ or to $(1,\,1+\sqrt2,\,1,\,1+\sqrt2)$ modulo~$2$. Let $v$ consist of the first four entries of $\hat v$. The lemma states that if $\sqrt2^{\,k-1}\,\Hg_{[0,3]}\Hg_{[1,2]}\Hg_{[1,3]}\Hg_{[1,2]}\Hg_{[0,3]}\,v$ has entries in $\Z[\sqrt2]$, then so does $\sqrt2^{\,k-1}\,\Hg_{[0,2]}\Hg_{[1,3]}\Hg_{[0,1]}\Hg_{[0,2]}\Hg_{[1,3]}\,v$. It fails for $k=4$ in dimension~$6$, on
 \[
 4\,\hat v=(-1-\sqrt2,\ 1,\ -1-\sqrt2,\ 1,\ \sqrt2,\ -2+\sqrt2).
 \]
-The squares of these entries add up to $16$, so $\hat v$ is a unit vector, and the first four entries are odd and congruent to $(1+\sqrt2,1,1+\sqrt2,1)$. The first product gives $(0,\,0,\,-1-\sqrt2,\,-1)$, and the second gives $(-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2},\,-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2})$, which is not in $\Z[\sqrt2]^4$. Lemma~A.17 is the same statement with $\Hg_{[3,4]}$ in place of $\Hg_{[2,4]}$ in the two words, and it fails in the same way on $4\,\hat v=(1+\sqrt2,\,-1,\,1+\sqrt2,\,1,\,-\sqrt2,\,2-\sqrt2)$.
+The squares of these entries add up to $16$, so $\hat v$ is a unit vector, and the first four entries are odd and congruent to $(1+\sqrt2,1,1+\sqrt2,1)$. The first product gives $(0,\,0,\,-1-\sqrt2,\,-1)$, and the second gives $(-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2},\,-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2})$, which is not in $\Z[\sqrt2]^4$. Lemma~A.17 is the same statement with $\Hg_{[2,3]}$ in place of $\Hg_{[1,3]}$ in the two words, and it fails in the same way on $4\,\hat v=(1+\sqrt2,\,-1,\,1+\sqrt2,\,1,\,-\sqrt2,\,2-\sqrt2)$.
 
 Items~(c) and~(d) of Lemma~A.19 rest on these two lemmas, and Main Case~9 of the Main Lemma rests on Lemma~A.19. That case is not covered for the unit vector $\hat s$ in dimension~$9$ with
 \[

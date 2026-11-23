@@ -34,7 +34,7 @@
   (.20,5.25) rectangle (6.02,7.10);
 \node[sc title,text=scGreenText] at (3.11,6.81)
   {1. Interpret generators};
-\node[sc text] at (3.11,6.43) {Gates or two-level operators};
+\node[sc text] at (3.11,6.43) {Gates or multi-level matrices};
 \node[sc math,font=\fontsize{12}{13}\selectfont] at (3.11,6.00)
   {$g\longmapsto M_g\in U_n(\D[\omega])$};
 \node[sc text,font=\sffamily\bfseries\fontsize{7.7}{9.1}\selectfont,
