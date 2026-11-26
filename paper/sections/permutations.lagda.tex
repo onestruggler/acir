@@ -308,7 +308,7 @@ So far everything was syntax.  The development interprets circuits twice:
 by a \emph{loose} semantics $\aid{⟦\_⟧} : \aid{Circuit}\;n \to
 (\mathsf{Fin}\;n \to \mathsf{Fin}\;n)$ into endofunctions of
 $\mathsf{Fin}\;n$ ($\sigma$ swaps the bottom two elements), a monoid that
-is \emph{not} a group; and by a \emph{tight} semantics into
+is not a group for $n \ge 2$; and by a \emph{tight} semantics into
 $\aid{Permutation′-group}\;n$, the standard library's permutations of
 $\mathsf{Fin}\;n$ bundled as a \aid{Group} by our \texttt{ForStdlib}
 layer (\S\ref{sec:forstdlib}).  \emph{Soundness}, that $w \approx v$

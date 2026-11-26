@@ -3,7 +3,7 @@
 \subsection{Mechanization statistics}\label{sec:stats}
 
 The repository contains about 22\,000 lines of Agda in 74 files
-(October 2026; \texttt{wc -l}, comments included).  The verified index
+(November 2026; \texttt{wc -l}, comments included).  The verified index
 module reaches 61 of these; the remainder includes auxiliary examples
 and unfinished experiments.
 The reusable core --- words, presentations, normal forms, the engine, the
@@ -19,80 +19,59 @@ and presentation theorems, the amalgamation alone 1\,800; 600 are the
 solvers; and the rest is the join primitive and the $S_n$ and wreath
 presentations over a plain alphabet that the $U_3$ study uses.
 
-Typechecking cost is modest.  Checking the index module's dependency closure from
-scratch with Agda~2.8.0 (61 modules, the standard library's interfaces
-cached) takes 1\,min\,42\,s and peaks at 3.5\,GB of memory; a third of
-the time is the amalgamated-product construction (31\,s), checked once
-and for all; the three amalgamation case studies take 19\,s together,
-and every other module is under 4\,s.
+A fresh check of the index module's 61-module dependency closure took
+2\,min\,33\,s wall time and peaked at 3.54\,GiB resident memory in one
+run on 26 November 2026.  We used Agda~2.8.0 and stdlib~2.4 on Ubuntu~26.04
+under WSL2, with an Intel Core i5-13400TEF and 26\,GiB of memory visible
+to WSL.  The command was \texttt{agda -{}-safe -{}-cubical-compatible
+MainTheorems.agda}, measured with \texttt{/usr/bin/time -v}; project
+interfaces were absent and the standard library's interfaces were cached.
 
 \subsection{Setoids versus quotients, revisited}\label{sec:setoids}
 
-The deliberate design decision of \S\ref{sec:presentations} --- presented
-monoids as setoids over inductive congruences, not as quotient types ---
-deserves a balance sheet now that the case studies are on the table.
-What it cost: every function out of the presented monoid carries a
+Every function out of a presented monoid requires a
 congruence proof, and records like \aid{Injection} bundle that bookkeeping.
-What it bought: (i) normal-form maps, coset tables, and sections are
-plain structurally recursive programs, so the hundreds of table
-well-definedness obligations in \S\ref{sec:examples} reduce to \aid{refl}
-by evaluation;
-(ii) sections, maps \emph{into} the syntax
-choosing representatives (the load-bearing ingredient of
-\aid{NormalForm}, Schreier transversals, and amalgamation tails), are
-natural for setoids and awkward for quotients, where they are not in
-general definable; (iii) the library remains inside plain Agda and the
-standard library's algebra hierarchy, a requirement for upstreaming;
-and, secondarily, (iv) derivations of $\approx$ are data, on which the
-congruence-lifting lemmas of \S\ref{sec:constructions} are inductions.
-The univalent alternative \cite{vezzosi2019cubical,cubicallibrary} would
-turn equational reasoning into rewriting, but its eliminator still
-demands a congruence proof for every function out of the quotient, and
-(ii) and (iii) would be forfeited.  For this problem domain --- where
-the whole game is computing canonical representatives --- we found the
-setoid side of the trade clearly favourable; the standard library's
-function bundles meant the ``zoo'' of \S\ref{sec:nfproperty} needed no
-new theory at all.
+Setoids let the implementation retain explicit word representatives and
+use the standard library's algebra and function bundles directly.
+Normalizers and reconstruction maps are ordinary recursive programs,
+and many closed table obligations reduce to \aid{refl} by evaluation.
+Derivations of $\approx$ are also data, on which the congruence-lifting
+lemmas of \S\ref{sec:constructions} are inductions.
+A quotient implementation would require suitable eliminations and
+congruence proofs.  It could still expose computable representatives
+once a canonical normalization function had been established, as in the
+cubical library's free-group development~\cite{cubicallibrary}.
+Our choice avoids that additional quotient interface and retains
+compatibility with the standard library.
 
 \subsection{What the standard library lacked}
 
-The \texttt{ForStdlib} layer (\S\ref{sec:forstdlib}) is a measure of the
-gap between textbook group theory and what a widely used dependently
-typed standard library currently provides: no semidirect products, no
-amalgamated products or pushouts of monoids, no extensions or exact
-sequences, no epimorphism structures, not even the permutations of
-$\mathsf{Fin}\;n$ bundled as a group.  None of these are hard (the
-seven modules total 865 lines), but each was necessary for some
-semantic side of a presentation theorem, and we submit them as
-independently useful.  The deeper omission is thematic: the standard
-library's algebra hierarchy is rich in \emph{structures} but thin in
-\emph{constructions}, and presentation-level results force the
-constructions into existence.
+The \texttt{ForStdlib} layer (\S\ref{sec:forstdlib}) adds constructions
+missing from the standard library: semidirect products, monoid
+amalgamations, group extensions and exact sequences, epimorphism
+structures, and a bundled permutation group.  These seven modules total
+865 lines and support the semantic presentation theorems.
 
 \subsection{Proof engineering lessons}
 
-Four lessons generalize beyond this library.  \emph{Choose indices for
-the unifier.}  The circuit layer's successor-only indexing
-(\S\ref{sec:circuits}) looks like a small stylistic choice; it is the
-difference between coverage checking succeeding by injectivity of
-constructors and stuck arithmetic side conditions contaminating every
-table.  \emph{Make certificates finite.}  The five coset-table
-hypotheses quantify over generators, cosets, and axiom instances only,
-so in our finite-index case studies obligations split into finitely many closed goals, the
-precondition for \aid{refl}-discharge; hypotheses phrased over all words
-would have demanded inductions in every instance.  \emph{Let evaluation
-prove what it can.}  The single most effective tool in the development
-is \aid{by-equal-nf Eq.refl}: once a normal form for a level exists, all
-equational facts \emph{about that level} that happen to be true become
-free.  This does not remove the case analyses (the soundness law and
-the uniqueness proof of each level are still proved by hand, case by
-case), but it shifts the effort to setting up the next normal form,
-after which the obligations that are mere computation cost nothing.
+Four design choices were useful in this development.  \emph{Choose indices for
+the unifier.}  Successor-only indexing (\S\ref{sec:circuits}) lets the
+coverage checker use constructor injectivity, avoiding arithmetic
+constraints in coset-table definitions.  \emph{Use generator-level
+certificates.}  The five coset-table hypotheses reduce whole-word laws
+to conditions on generators, coset labels, and axiom instances.  For
+fixed finite tables these can yield closed goals; parameterized
+families such as $S_n$ also require induction.  \emph{Let evaluation
+prove what it can.}  Once a normal form is available for a level,
+\aid{by-equal-nf Eq.refl} proves equations whose two sides compute to
+definitionally equal normal forms.  Soundness and uniqueness still
+require equational or inductive proofs, but the closed computational
+cases need no further equational derivation once the lower-level normal
+form is available.
 \emph{Separate search from checking.}  Coset tables were found by
 ordinary computation outside Agda, and only their verification is
-formal.  Nothing in the formal development depends on how a table was
-produced, which kept the trusted story simple and the exploration loop
-fast.
+formal.  Agda verifies the coset-table hypotheses independently of the
+procedure used to find the table.
 
 \subsection{Limitations}\label{sec:threats}
 
@@ -106,7 +85,7 @@ or the unitaries over
 $\mathbb{Z}[\tfrac12,i]$~\cite{amy2020numbertheoretic,bian2021un})
 additionally uses the paper-mathematics identification of those groups
 with the amalgamated products, which we have not formalized.
-Second, statistics like ``every well-definedness obligation closed by
-\aid{refl}'' describe our case studies, not a theorem about the method;
-gate sets whose coset structure is not finitely enumerable per level
-would need genuinely new ideas.
+Second, the counts of obligations discharged by \aid{refl} describe
+particular fixed tables.  The method does not guarantee this behavior:
+parameterized families already use induction, and infinite label types
+would need proofs beyond finite enumeration.

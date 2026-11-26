@@ -163,18 +163,18 @@
 \section{Library Design}\label{sec:design}
 
 This section presents the library bottom-up.  Each subsection names its
-home module; code is quoted from the library, lightly abridged (implicit
-arguments and absurd clauses omitted).  The design brief throughout: stay on
-the standard library's abstractions (setoids, function bundles, algebra
-bundles), keep everything safe and axiom-free, and arrange definitions so
-that Agda's evaluator does the heavy lifting in concrete instances.
-Concretely, words stay unquotiented so that normal forms and sections
-compute (\S\ref{sec:words}); finite coset tables reduce their five
-verification obligations to case splits (\S\ref{sec:engine}); and
+home module; code excerpts are abridged and scope-checked for highlighting,
+as explained in \S\ref{sec:intro}.  The checked library uses the standard
+library's setoids, function bundles, and algebra bundles and is safe and
+axiom-free.  The definitions allow Agda to discharge
+computational proof obligations by evaluation.
+Concretely, words stay unquotiented to retain explicit syntax
+(\S\ref{sec:words}); fixed finite tables support verification by case
+splitting and evaluation (\S\ref{sec:engine}); and
 successor-only wire indices avoid arithmetic in coverage checking
 (\S\ref{sec:circuits}).
 
-\subsection{Words: the free monoid}\label{sec:words}
+\subsection{Word syntax and the free monoid}\label{sec:words}
 
 A word over a generator set $X$ (\texttt{Word.Base}) is an unquotiented
 syntax tree, deliberately \emph{not} a list:
@@ -304,8 +304,9 @@ substitution to words, written postfix,
 \AgdaFunction{wconcatmap}\<%
 \end{code}
 
-\noindent so \aid{(f ʷ)} is ``the unique monoid homomorphism extending $f$''.  Two
-stateful traversals drive everything in \S\ref{sec:engine}: a \emph{coset
+\noindent Modulo associativity and unit laws, \aid{(f ʷ)} induces the
+unique monoid homomorphism extending $f$.
+The construction in \S\ref{sec:engine} uses two stateful word traversals: a \emph{coset
 action} on letters extends to words by threading the coset left to right,
 
 \begin{code}%
@@ -466,8 +467,8 @@ types in cubical Agda~\cite{vezzosi2019cubical,cubicallibrary}), the
 setoid design pays a congruence obligation per function out of the type,
 but keeps the normal-form maps of \S\ref{sec:nfproperty} \emph{ordinary
 computable functions on words}, with no quotient to eliminate through ---
-crucial for the proof-by-evaluation style of the case studies, and
-compatible with a standard-library-first policy
+supporting the proof-by-evaluation style of the case studies and
+compatibility with the standard library
 (cf.~\cite{barthe2003setoids} for the tradition).
 \texttt{Presentation.Properties} packages $\approx$ as an equivalence, a
 setoid (the \emph{word setoid}, the domain of every normal form in
@@ -615,9 +616,8 @@ surjectivity separately, and the records assemble the isomorphism.
 
 Normal forms (\texttt{Normalization.NormalForm.Setoid}), parameterized by
 $\Gamma$ and a codomain setoid $\mathit{NF}$, are defined as what it means
-for a function out of words to be a normal form.  The definitions are thin
-wrappers around the standard library's function bundles from the word
-setoid --- no new theory, just names for the roles they play:
+for a function out of words to be a normal form.  The normal-form witnesses
+use the standard library's function bundles from the word setoid:
 \[
 \begin{array}{lcl}
 \aid{NormalFormInjective} & = & \aid{Injection}\ \text{(word setoid)}\ \mathit{NF} \\
@@ -663,7 +663,7 @@ which proves word equations by \emph{computing} both normal forms
 \AgdaPostulate{proof-elided}\<%
 \end{code}
 so a normal form with decidable carrier \emph{decides the word problem}.
-A \aid{RightInverse} additionally carries a section
+A \aid{RightInverse} additionally carries a reconstruction map
 $\aid{inv-nf} : |\mathit{NF}| \to \aid{Word}\;X$ with
 $\aid{inv-nf} \circ \aid{nf} \approx \mathrm{id}$; from it we
 derive $\aid{normalize} = \aid{inv-nf} \circ \aid{nf}$, its idempotence,
@@ -673,19 +673,16 @@ rather than the interderivable \aid{Inverse}: its section is read off the
 surjectivity witness, as in the extension construction
 (\S\ref{sec:constructions}).
 
-The converse direction is where constructivity bites.  Classically, any
-injective $\aid{nf}$ whose image can be identified has a section by
-choosing preimages; constructively, \emph{the section is data}.  An
-\aid{Injection} gives no algorithm producing, for a normal form $u$ in
-its image, a word realizing it --- that algorithm is the extra data of
-\aid{RightInverse}, and it is what the completeness lemma below consumes
-($\aid{inv-nf}$ recovers each word from its normal form).  So the two
-witnesses are different strengths in Agda, injectivity weaker as
-\emph{data}; we therefore keep both, use the weak one where only
-word-problem reasoning is needed (\aid{by-equal-nf}, decidability), and
-demand the strong one for completeness and presentations.  Exactness,
-$\aid{nf} \circ \aid{inv-nf} \approx \mathrm{id}$, is a separate hypothesis
-for \aid{by-completeness}; it excludes unused carrier elements.  A fourth,
+Injectivity alone does not supply an algorithm that reconstructs a word
+from its normal form.  The extra map in \aid{RightInverse} supplies that
+data, with $\aid{inv-nf} \circ \aid{nf} \approx \mathrm{id}$ making
+\aid{inv-nf} a left inverse of \aid{nf}.  The converse equation,
+$\aid{nf} \circ \aid{inv-nf} \approx \mathrm{id}$, is \emph{exactness}:
+it makes \aid{inv-nf} a section of \aid{nf} and excludes unused carrier
+elements.  Exactness is a separate hypothesis of \aid{by-completeness}.
+We use \aid{Injection} for word-problem reasoning
+(\aid{by-equal-nf}, decidability) and require reconstruction data for
+the completeness and presentation constructions.  A fourth,
 deliberately crude witness, \aid{WeakNormalForm}, drops even the
 congruence of the map --- an injective map suffices to separate words,
 which is occasionally all one needs when transporting along unions of
@@ -768,11 +765,11 @@ value is that completeness reduces to \aid{unique} --- a
 statement about \emph{normal forms}, i.e.\ about concrete first-order data
 --- rather than arbitrary words.  A companion lemma
 (\aid{by-normalization-wsurj}) similarly reduces surjectivity of the
-semantics to surjectivity on normal forms.  Sub-presentations then come
-for free (\texttt{Normalization.StarPresentation}): given soundness on
-axioms, a \aid{NormalForm}, and a \aid{UniqueNormalForm}, the module
-assembles the monoid (or, with \aid{Grouplike}, group) monomorphism,
-the injectivity field being literally \aid{by-normalization}.
+semantics to surjectivity on normal forms.  Given soundness on axioms,
+a \aid{NormalForm}, and a \aid{UniqueNormalForm},
+\texttt{Normalization.StarPresentation} constructs a monoid monomorphism,
+or a group monomorphism when supplied with \aid{Grouplike}.  Its
+injectivity field is \aid{by-normalization}.
 
 \subsection{Inductively defined circuits}\label{sec:circuits}
 
@@ -782,7 +779,9 @@ wire-indexed generators \aid{Gen} and circuits $\aid{Circuit}\;n =
 \aid{Word}\;(\aid{Gen}\;n)$ exactly as in \S\ref{sec:permutations}.
 A generator is a 1- or 2-ary gate at the bottom of the wires, shifted up
 by some number of \aid{{\_}↥}s; $c{\uparrow} = \aid{wmap}\;\aid{{\_}↥}$
-shifts a whole circuit.  Two design choices matter more than they look.
+shifts a whole circuit.  Successor-based indices simplify coverage
+checking, and shared structural rules avoid duplication across circuit
+theories.
 First, the indices are built from successors only: \aid{gate₂} lands in
 $\aid{Gen}\,(2{+}n)$, not in $\aid{Gen}\,(k)$ with a side condition
 $k \ge 2$, and the $k$-fold shift has type
@@ -802,9 +801,10 @@ lifts the \emph{entire congruence} one wire up --- proved once, by
 induction over the eight constructors of $\approx$ --- so equational
 developments can move freely along the wire homomorphisms
 $\mathsf{Cir}\,k \to \mathsf{Cir}\,(k{+}1)$ of
-\S\ref{sec:circuit-chain}; injectivity follows from the coset-table hypotheses.  Instantiating \aid{Gate} together with its
-gate-specific relation set is all it takes to define a new circuit
-theory; the structural rules and their lemmas come for free.
+\S\ref{sec:circuit-chain}; injectivity follows from the coset-table hypotheses.
+A new circuit theory supplies a \aid{Gate} family and its gate-specific
+relations.  The generic circuit layer supplies the structural rules and
+their lemmas.
 
 \subsection{The Reidemeister--Schreier engine}\label{sec:engine}
 
@@ -823,9 +823,9 @@ amalgamation case study via the \aid{StarIsomorphism} builder of
 generator-level conditions into an \aid{IsMonoidIsomorphism} of the
 presented monoids.
 
-The \emph{full} form works from a coset table.  Its packaging
-(\texttt{Normalization.CosetNF}) is the heart of the library
-(\aid{SingleLevel} shown; a setoid-coset variant exists):
+The \emph{full} form works from a coset table, packaged by
+\texttt{Normalization.CosetNF}.  The \aid{SingleLevel} module is shown
+below; a variant supports setoid-valued cosets:
 
 \begin{code}%
 \>[0]\AgdaKeyword{module}\AgdaSpace{}%
@@ -938,15 +938,16 @@ The \emph{full} form works from a coset table.  Its packaging
 \AgdaPostulate{Y}\<%
 \end{code}
 
-Think of $\Gamma$ as presenting a subgroup $H$ of the group $G$ presented
-by $\Delta$, over the letters $X$ and $Y$ respectively; $C$ is the set of
-right cosets, $I$ the identity coset, $f$ the embedding of generators, and
-$[\,\_\,]$ the Schreier section.  The table $h$ pushes one letter of $G$
-past a coset, emitting a word of $H$ and the successor coset, so
+In the intended group instances, $\Gamma$ presents a subgroup $H$ of
+the group $G$ presented by $\Delta$, over letters $X$ and $Y$ respectively.
+The interface takes candidate coset labels $C$, a distinguished label $I$,
+a proposed generator embedding $f$, and a representative map $[\,\_\,]$.
+The table $h$ pushes one letter past a representative, emitting a word
+over $X$ and a successor label, so
 $\aid{nf} = (h\,\aid{ᵗ})\,I : \aid{Word}\;Y \to \aid{Word}\;X \times C$
-runs the whole word from the identity coset.  A submodule
-\aid{Transfer} takes the five hypotheses that make the data a genuine
-coset presentation (in the code, $\aid{===₁}$, $\approx_1$ and
+runs the whole word from $I$.  A submodule
+\aid{Transfer} takes five hypotheses sufficient for normal-form transport
+and embedding injectivity (in the code, $\aid{===₁}$, $\approx_1$ and
 $\aid{===₂}$, $\approx_2$ are the axioms and congruences of $\Gamma$ and
 $\Delta$, and $\sim$ compares word-and-coset pairs, the words up
 to $\approx_1$):
@@ -1084,32 +1085,35 @@ injectivity, and the payoff, the \emph{normal-form transport}
   \aid{nfp'} : \mathrm{NormalForm}\;\Gamma\;\mathit{NF}
     \to \mathrm{NormalForm}\;\Delta\;(\mathit{NF} \times C),
 \]
-a normal form for the subgroup yields one for the group, with one more
-coset digit.  A record \aid{CosetTower.Extension} bundles the data and
+a normal form for $\Gamma$ yields one for $\Delta$, with one more label.
+These conditions do not ensure that labels are all reached or represent
+distinct cosets; the transversal interpretation additionally needs
+coverage and uniqueness of the representatives.  A record
+\aid{CosetTower.Extension} bundles the data and
 hypotheses as a single value --- so a whole verified level is an ordinary
 first-class object --- and \aid{CosetTower} iterates levels up an
 $\mathbb{N}$-indexed family of presentations, with carrier
 $\aid{tower-carrier}\;\mathit{NF}_0\;(k{+}1) =
- \aid{tower-carrier}\;\mathit{NF}_0\;k \times C_k$: the mixed-radix normal
-form of \S\ref{sec:preliminaries}, one verified digit per level.
+ \aid{tower-carrier}\;\mathit{NF}_0\;k \times C_k$.
+When the labels form transversals, this has the mixed-radix interpretation
+of \S\ref{sec:preliminaries}.
 The stronger \aid{PackedCosetTable}, used for amalgamation, additionally
 requires preservation of nonidentity cosets and exact traversal of
 embedded generators at the identity.
 
-Two facts make this engine pleasant in practice.  The hypotheses are
-\emph{quantifier-small}: each ranges over cosets and generators (finite
-at each level in our case studies) and axioms (a finite inductive family),
-so the obligations are finite case splits.  And the cases of an obligation like
-(2) close by \emph{computation}: with $\Gamma$'s normal form in scope,
-each becomes \aid{by-equal-nf Eq.refl}: both sides normalize to the
-same value, and Agda's evaluator checks it.  In the qutrit Clifford+$T$
+For the fixed finite tables in the amalgamation examples, many
+axiom-preservation obligations reduce to closed computations.  With
+$\Gamma$'s normal form in scope, a case of (2) can close by
+\aid{by-equal-nf Eq.refl}: both residual words normalize to the same
+value, and Agda's evaluator checks it.  In the qutrit Clifford+$T$
 tower (\S\ref{sec:qutrit}), the nine-coset level imposes seventy-two
 such obligations; every
-one is discharged by \aid{refl}.  The other hypotheses, the soundness
-law (5) above all, are equational derivations done by hand, one per
-case, as \aid{ract-sound} was in \S\ref{sec:permutations}.  This is the
-sense in which the framework mechanizes part of the ``gigantic
-computations'' of \S\ref{sec:intro}.
+one is discharged by \aid{refl}.  Other obligations, notably the
+soundness law (5), use equational derivations.  The parameterized
+permutation and wreath-product developments also require structural
+induction, including in their compatibility proofs.  This is the
+sense in which the framework mechanizes part of the case analyses
+discussed in \S\ref{sec:intro}.
 
 \subsection{Products of presentations, and their presentation theorems}\label{sec:constructions}
 
@@ -1262,26 +1266,26 @@ $\otimes\aid{-group}\;n$ the $n$-fold product group):
 \end{array}
 \]
 where the semantic groups on the right are built by the
-\texttt{ForStdlib} constructions below (for the amalgamated product, the
+\texttt{ForStdlib} constructions below.  For the semidirect product, the
+action is obtained by interpreting syntactic conjugation on representatives
+supplied by the factor presentations.  For the amalgamated product, the
 premises are two \aid{PackedCosetTable}s over a common base presentation
 --- the record \aid{AmalDataNF} --- plus presentations of the three
 groups; UNF additionally requires exactness of the base and coset sections.
 The amalgamating homomorphisms $\varphi, \psi$ are then
 \emph{derived} from the syntactic embeddings through the presentation
-isomorphisms).  A further module proves the recipe for arbitrary group
+isomorphisms.  A further module proves the recipe for arbitrary group
 \emph{extensions}: given a short exact sequence
 $1 \to N \to G \to Q \to 1$ realizing conjugation and relator-correction
 data, the union of $N$'s relations, word-valued conjugation rules, and
 twisted lifts of $Q$'s relators presents $G$
-(cf.\ Proposition~2.55 of~\cite{holt2005handbook}); semidirect products are
+(cf.\ the treatment of group extensions in~\cite{holt2005handbook}); semidirect products are
 the special case with trivial corrections.  The formalization assumes
 bijective factor normal forms over propositional equality and
 $\aid{inv-nf}\,(\aid{nf}\,\varepsilon) \equiv \varepsilon$ for the quotient.
-These construction theorems
-are what make the catalogue of \S\ref{sec:examples} cheap: the Pauli
-presentation, for instance, is \emph{assembled} from cyclic factors, one
-binary product, and one $n$-fold product, with no fresh coset table
-at all.
+The Pauli presentation in \S\ref{sec:examples}, for example, combines
+cyclic factors with a binary product and an $n$-fold product, without a
+new coset table.
 
 \subsection{The semantic side: contributions to the standard library}\label{sec:forstdlib}
 
@@ -1298,15 +1302,17 @@ $M_1 \ast_{M_0} M_2$ of \emph{monoids}, as a setoid rather than a set:
 elements are words over $|M_1| \uplus |M_2|$ and equality is the least
 congruence multiplying out same-factor letters, deleting units, and gluing
 $\varphi\,c$ to $\psi\,c$ for $c \in M_0$; when $\varphi, \psi$ are
-homomorphisms this is the pushout in the category of monoids.
+homomorphisms this is the usual pushout construction in the category of
+monoids (its universal property is not separately formalized here).
 \path{Algebra.Construct.Extension}
 and \path{.SplitExtension} define short exact sequences of groups, without
 and with a homomorphic section, semidirect products being the canonical
 split model.  \path{Algebra.Morphism.Consequences} proves that a monoid
 homomorphism between groups is a group homomorphism (previously derivable
 only via a deprecated stdlib module), and
-\path{Algebra.Morphism.Structures} adds \aid{IsMonoidEpimorphism} (stdlib
-has monomorphisms and isomorphisms, but no epimorphisms).  Finally,
+\path{Algebra.Morphism.Structures} adds \aid{IsMonoidEpimorphism}, bundling
+a surjective monoid homomorphism; stdlib has no corresponding bundle.
+Finally,
 \path{Data.Fin.Permutation.Properties} bundles stdlib's
 \aid{Permutation′}~$n$ with composition, identity, and \aid{flip} as the
 \aid{Group} used by the tight semantics of \S\ref{sec:permutations}.
@@ -1325,8 +1331,8 @@ with holes, useful when the \emph{next} rule application needs a
 particular association.  \aid{by-equal-nf} (\S\ref{sec:nfproperty})
 closes any goal whose two sides have the same computed normal form; since
 coset tables and normal-form maps are structurally recursive programs,
-this turns the well-definedness half of table verification into
-evaluation.  Finally, mundane but effective: a shared \texttt{Notations}
+this discharges the closed computational cases of table
+well-definedness by evaluation.  A shared \texttt{Notations}
 module of numeral patterns
 (\aid{₀} … \aid{₁₅}, successor patterns \aid{₁₊} … \aid{₄₊} overloaded
 over $\mathbb{N}$ and $\mathsf{Fin}$, and \aid{auto} for \aid{refl})

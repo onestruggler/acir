@@ -81,14 +81,13 @@ together with, for each step, the element of $H$ by which $\bar t y$ differs fro
 its representative, the residual $h$ with $\bar t\, y = h
 \cdot \overline{\tau(t,y)}$.  These are exactly the two components that
 \aid{ract} returns in \S\ref{sec:sn-cosets}, and the equation is its
-soundness law.  Classical treatments run this as an algorithm
-(Todd--Coxeter coset enumeration~\cite{sims1994computation,
-holt2005handbook}); we instead take a \emph{claimed} coset table
-as input and \emph{verify} it, by exhibiting five equational
-hypotheses relating the table, the section, and the relations
-(\S\ref{sec:engine}).  Verification rather than search is the right
-division of labour in a proof assistant: tables are found offline (by
-computation, or on paper), and the checked artifact certifies them.
+soundness law.  Classical implementations obtain coset tables by
+Todd--Coxeter enumeration and use Reidemeister--Schreier rewriting to
+derive subgroup presentations~\cite{sims1994computation,holt2005handbook}.
+We take candidate table and representative data as input and verify five
+equational conditions sufficient for normal-form transport and embedding
+injectivity (\S\ref{sec:engine}).  We find candidate tables outside Agda, by
+computation or on paper, and verify their required properties in Agda.
 Bian and Selinger pioneered this monoid-level, verified use of
 Reidemeister--Schreier in Agda for their gate-group
 presentations~\cite{bian2023cliffordt2,bian2023cliffordcs3,bian2023thesis};
@@ -105,13 +104,15 @@ its injectivity, giving
 $\mathsf{Cir}\,k \le \mathsf{Cir}\,(k{+}1)$
 as ``the circuits that do not touch the bottom wire''.  The digit that a
 normal form for $\mathsf{Cir}\,(k{+}1)$ adds to one for $\mathsf{Cir}\,k$
-then ranges over a transversal of
-this subgroup --- for permutations, the staircases of
+then has a transversal interpretation when coverage and uniqueness of
+the representatives have also been established.  For permutations these
+representatives are the staircases of
 \S\ref{sec:sn-cosets}; for Clifford-style groups, the staircase-shaped
 representatives of Selinger~\cite{selinger2015clifford} and their qutrit
-analogues~\cite{li2025qutrit} --- and a normal form for the whole group is
+analogues~\cite{li2025qutrit}.  A normal form for the whole group is
 a tower of such levels.  The library's \aid{CosetTower}
-(\S\ref{sec:engine}) is precisely this specialization.  Where the subgroup chain branches instead of nesting (two
+(\S\ref{sec:engine}) implements the normal-form transport; its generic
+interface also permits unused labels.  Where the subgroup chain branches instead of nesting (two
 subgroups sharing a common base, as for the Clifford+$T$ groups),
 the appropriate gluing is the \emph{amalgamated free product}, whose
 classical alternating normal form~\cite{magnus2004combinatorial} we
