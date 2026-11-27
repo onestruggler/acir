@@ -76,15 +76,17 @@ large enough to exercise every part of it.
 
 \begin{enumerate}
 \item[(0)] \textbf{A library for circuit normal forms and complete relation
-  sets.}  An Agda library in which a relation set is an inductive
-  family on words, the presented monoid is the inductively generated
-  congruence closure (\S\ref{sec:presentations}), normal-form witnesses are the
-  standard library's function bundles out of the word setoid, and a single
-  generic lemma, \aid{by-normalization}, turns soundness plus a \emph{unique
-  normal form} into completeness (\S\ref{sec:nfproperty}).  A verified,
-  monoid-level Reidemeister--Schreier engine constructs normal forms from
-  verified coset tables, one per level
-  (\S\ref{sec:engine}).
+  sets.}  A relation set is an inductive family on words with one
+  constructor per axiom, and the monoid it presents is the setoid of words
+  under the congruence that the axioms generate
+  (\S\ref{sec:presentations}).  A normal form is a function out of this
+  setoid with a section back to words, stated with the standard library's
+  function bundles, and one generic lemma, \aid{by-normalization}, derives
+  completeness from soundness and a \emph{unique normal form}
+  (\S\ref{sec:nfproperty}).  Normal forms are built one level at a time:
+  given a coset table and proofs of five equational hypotheses about it, a
+  Reidemeister--Schreier module turns a normal form for a subgroup into one
+  for the whole group, with one more digit (\S\ref{sec:engine}).
 
 \item[(1)] \textbf{Inductively defined circuits, for easy normalization and
   completeness proofs.}  A generic circuit layer represents $n$-wire circuits
