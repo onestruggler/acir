@@ -6,8 +6,8 @@ The repository contains about 22\,000 lines of Agda in 74 files
 (October 2026; \texttt{wc -l}, comments included).  The verified index
 module reaches 61 of these; the remainder includes auxiliary examples
 and unfinished experiments.
-The reusable core --- words, presentations, normal forms, the engine, the
-constructions, the circuit layer --- is under ten thousand lines, with the
+The reusable core (words, presentations, normal forms, the engine, the
+constructions, the circuit layer) is under ten thousand lines, with the
 \texttt{ForStdlib} additions and a support library of modular arithmetic
 beside it; the verified examples add
 about the same again, and the largest single objects are two of the three
@@ -28,79 +28,75 @@ and every other module is under 4\,s.
 
 \subsection{Setoids versus quotients, revisited}\label{sec:setoids}
 
-The deliberate design decision of \S\ref{sec:presentations} --- presented
-monoids as setoids over inductive congruences, not as quotient types ---
-deserves a balance sheet now that the case studies are on the table.
-What it cost: every function out of the presented monoid carries a
+We now assess the decision of \S\ref{sec:presentations} to present
+monoids as setoids over inductive congruences rather than as quotient types.
+The cost is that every function out of the presented monoid carries a
 congruence proof, and records like \aid{Injection} bundle that bookkeeping.
-What it bought: (i) normal-form maps, coset tables, and sections are
+The benefits are: (i) normal-form maps, coset tables, and sections are
 plain structurally recursive programs, so the hundreds of table
 well-definedness obligations in \S\ref{sec:examples} reduce to \aid{refl}
 by evaluation;
-(ii) sections, maps \emph{into} the syntax
-choosing representatives (the load-bearing ingredient of
+(ii) sections, that is, maps into the syntax that
+choose representatives (the essential ingredient of
 \aid{NormalForm}, Schreier transversals, and amalgamation tails), are
-natural for setoids and awkward for quotients, where they are not in
-general definable; (iii) the library remains inside plain Agda and the
+directly definable for setoids but not, in general, for quotients;
+(iii) the library remains inside plain Agda and the
 standard library's algebra hierarchy, a requirement for upstreaming;
 and, secondarily, (iv) derivations of $\approx$ are data, on which the
 congruence-lifting lemmas of \S\ref{sec:constructions} are inductions.
 The univalent alternative \cite{vezzosi2019cubical,cubicallibrary} would
 turn equational reasoning into rewriting, but its eliminator still
 demands a congruence proof for every function out of the quotient, and
-(ii) and (iii) would be forfeited.  For this problem domain --- where
-the whole game is computing canonical representatives --- we found the
-setoid side of the trade clearly favourable; the standard library's
-function bundles meant the ``zoo'' of \S\ref{sec:nfproperty} needed no
-new theory at all.
+(ii) and (iii) would be forfeited.  Since this domain consists largely of
+computing canonical representatives, we found setoids the better choice;
+with the standard library's function bundles, the witnesses of
+\S\ref{sec:nfproperty} needed no new theory.
 
 \subsection{What the standard library lacked}
 
-The \texttt{ForStdlib} layer (\S\ref{sec:forstdlib}) is a measure of the
-gap between textbook group theory and what a widely used dependently
-typed standard library currently provides: no semidirect products, no
-amalgamated products or pushouts of monoids, no extensions or exact
-sequences, no epimorphism structures, not even the permutations of
-$\mathsf{Fin}\;n$ bundled as a group.  None of these are hard (the
-seven modules total 865 lines), but each was necessary for some
-semantic side of a presentation theorem, and we submit them as
-independently useful.  The deeper omission is thematic: the standard
-library's algebra hierarchy is rich in \emph{structures} but thin in
-\emph{constructions}, and presentation-level results force the
-constructions into existence.
+The \texttt{ForStdlib} layer (\S\ref{sec:forstdlib}) records what we
+needed from textbook group theory and did not find in the standard
+library: semidirect products,
+amalgamated products or pushouts of monoids, extensions and exact
+sequences, epimorphism structures, and the permutations of
+$\mathsf{Fin}\;n$ bundled as a group.  None of these is hard (the
+seven modules total 865 lines), but each was needed for the
+semantic side of some presentation theorem, and we expect them to be
+useful independently.  More generally, the standard
+library's algebra hierarchy has many structures and comparatively few
+constructions, and presentation theorems need the constructions.
 
 \subsection{Proof engineering lessons}
 
-Four lessons generalize beyond this library.  \emph{Choose indices for
-the unifier.}  The circuit layer's successor-only indexing
-(\S\ref{sec:circuits}) looks like a small stylistic choice; it is the
-difference between coverage checking succeeding by injectivity of
-constructors and stuck arithmetic side conditions contaminating every
-table.  \emph{Make certificates finite.}  The five coset-table
+We draw four lessons.  \emph{Choose indices for
+the unifier.}  With the circuit layer's successor-only indexing
+(\S\ref{sec:circuits}), coverage checking succeeds by injectivity of
+constructors; with general arithmetic indices, every table would carry
+stuck side conditions.  \emph{Make certificates finite.}  The five coset-table
 hypotheses quantify over generators, cosets, and axiom instances only,
 so in our finite-index case studies obligations split into finitely many closed goals, the
 precondition for \aid{refl}-discharge; hypotheses phrased over all words
 would have demanded inductions in every instance.  \emph{Let evaluation
-prove what it can.}  The single most effective tool in the development
-is \aid{by-equal-nf Eq.refl}: once a normal form for a level exists, all
-equational facts \emph{about that level} that happen to be true become
-free.  This does not remove the case analyses (the soundness law and
+prove what it can.}  The most useful tool in the development
+is \aid{by-equal-nf Eq.refl}: once a level has a normal form, any true
+closed equation at that level is proved by evaluation.  The case analyses
+remain (the soundness law and
 the uniqueness proof of each level are still proved by hand, case by
-case), but it shifts the effort to setting up the next normal form,
-after which the obligations that are mere computation cost nothing.
+case), but the effort moves to constructing the next normal form,
+and the purely computational obligations need no manual proof.
 \emph{Separate search from checking.}  Coset tables were found by
 ordinary computation outside Agda, and only their verification is
-formal.  Nothing in the formal development depends on how a table was
-produced, which kept the trusted story simple and the exploration loop
-fast.
+formal.  The formal development does not depend on how a table was
+produced, so the search code is outside the trusted base and could be
+changed freely.
 
 \subsection{Limitations}\label{sec:threats}
 
-Two limitations.  First, our completeness theorems are stated against
+We note two limitations.  First, our completeness theorems are stated against
 semantic groups built compositionally ($\mathbb{Z}_N \wr S_n$, product
 groups, extension groups) or against permutations; for the amalgamation
 case studies the final theorems are isomorphisms between two
-\emph{presentations}, whose semantic reading as the concrete matrix
+presentations, whose semantic reading as the concrete matrix
 monoids (e.g.\ Clifford+$T$~\cite{giles2013remarks,glaudell2019qutrit},
 or the unitaries over
 $\mathbb{Z}[\tfrac12,i]$~\cite{amy2020numbertheoretic,bian2021un})
@@ -109,4 +105,4 @@ with the amalgamated products, which we have not formalized.
 Second, statistics like ``every well-definedness obligation closed by
 \aid{refl}'' describe our case studies, not a theorem about the method;
 gate sets whose coset structure is not finitely enumerable per level
-would need genuinely new ideas.
+would need a different approach.

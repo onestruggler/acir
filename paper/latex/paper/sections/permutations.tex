@@ -118,9 +118,9 @@
 
 We begin with the library's smallest complete case study: circuits built
 from a single two-wire gate, the swap $\sigma$, which present the symmetric
-groups.  The point of the walkthrough is to exhibit the pipeline --- gates,
-relations, cosets, tower, semantics, uniqueness, completeness, presentation
---- that later tower-based case studies instantiate.
+groups.  The walkthrough covers, in order, the steps that the later
+tower-based case studies repeat: gates, relations, cosets, the tower,
+semantics, uniqueness, completeness, and the presentation theorem.
 
 \subsection{Gates, generators, and circuits}
 
@@ -312,7 +312,7 @@ the same crossing one wire higher, and $\sigma \aidop{•} \sigma\;{\uparrow}
 \aidop{•} \sigma$ the three-wire braid on the left of the
 \aid{yang-baxter} equation drawn beside its axiom below.
 
-\subsection{Relations: two axioms, structure for free}
+\subsection{Relations: two axioms and the structural rules}
 
 The group-specific relations are an inductive family indexed by the wire
 count (a $\aid{WRel}\;X$ is a binary relation on words over $X$).  Each
@@ -394,10 +394,9 @@ monoidal interpretation of circuits: the shift $c \mapsto c\;{\uparrow}$ is
 it, and the interchange law says that gates on disjoint wires commute.
 With compatible tensor and symmetry laws, these are fixed-width
 consequences of a symmetric monoidal category (a PROP).
-These are the structural rules every circuit theory shares, what a
-pen-and-paper presentation leaves implicit in ``a congruence compatible
-with composition and tensor product'', and the circuit layer adds them
-generically: \aid{Lift-Relation} (\S\ref{sec:circuits}) extends any
+Pen-and-paper presentations leave these rules implicit in the phrase ``a
+congruence compatible with composition and tensor product''; the circuit
+layer adds them generically: \aid{Lift-Relation} (\S\ref{sec:circuits}) extends any
 gate-specific family to the full relation set \aid{{\_}VRel,{\_}==={\_}}
 (here $\aid{CRel}\;n$ abbreviates $\aid{WRel}\;(\aid{Gen}\;n)$, the
 binary relations on $n$-wire circuits):
@@ -624,7 +623,7 @@ uniquely as $c_1 c_2 \cdots c_n$ with $c_k \in \aid{C}\;k$, a numeral
 in the \emph{factorial number system}, one digit per level, since
 $|S_{n+1}| = (n{+}1) \cdot n \cdots 2$.
 
-\emph{Computing} this factorization is the job of the coset table.
+Computing this factorization is the job of the coset table.
 Given a coset, represented by its staircase, and one generator, the
 table says where their product lands (the updated coset) and what
 is left over on the wires above (the residual circuit), so that
@@ -800,7 +799,7 @@ The stateful word traversal \aid{{\_}ᵗ} (\S\ref{sec:words}) extends
 concatenating the residuals; run from the identity coset, it maps an
 $(n{+}2)$-wire circuit to an $(n{+}1)$-wire circuit and a coset, one
 level of normalization, the normal-form transport of
-\S\ref{sec:engine}.  \emph{Iterating} this is the coset tower, whose
+\S\ref{sec:engine}.  Iterating this step gives the coset tower, whose
 carrier grows by one digit per level above the one-wire base ($\top$ is
 the unit type, with sole element $\mathsf{tt}$):
 
@@ -858,19 +857,19 @@ So far everything was syntax.  The development interprets circuits twice:
 by a \emph{loose} semantics $\aid{⟦\_⟧} : \aid{Circuit}\;n \to
 (\mathsf{Fin}\;n \to \mathsf{Fin}\;n)$ into endofunctions of
 $\mathsf{Fin}\;n$ ($\sigma$ swaps the bottom two elements), a monoid that
-is \emph{not} a group; and by a \emph{tight} semantics into
+is not a group; and by a \emph{tight} semantics into
 $\aid{Permutation′-group}\;n$, the standard library's permutations of
 $\mathsf{Fin}\;n$ bundled as a \aid{Group} by our \texttt{ForStdlib}
 layer (\S\ref{sec:forstdlib}).  \emph{Soundness}, that $w \approx v$
 implies $\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$, is a small case
-analysis over the axioms.  The heart of the matter is the \emph{unique
+analysis over the axioms.  The main step is the \emph{unique
 normal form} property (\S\ref{sec:nfproperty}), that normal forms with
 equal denotations are equal: $\aid{⟦}\;\aid{inv-nf}\;u\,\aid{⟧} \doteq
 \aid{⟦}\;\aid{inv-nf}\;v\,\aid{⟧}$ implies $u \equiv v$, proved by
 induction on the tower: the lower digits fix the bottom point ($0$), so the top
 digit alone determines where the permutation sends it; equal denotations
 therefore force equal top digits, and cancelling them reduces the claim
-to the level below.  Soundness and uniqueness are exactly the premises of the generic
+to the level below.  Soundness and uniqueness are the premises of the generic
 lemma \aid{by-normalization}, which concludes \emph{completeness}:
 $\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ implies $w \approx v$.
 Unfolding the lemma on this example shows where the axioms enter.  Each
@@ -879,13 +878,12 @@ each of those is an instance of \aid{order}, of \aid{yang-baxter}, or of
 the structural rules (the far commutation \aid{comm₂}, lifted to the
 wires above by \aid{cong↑}); so $w \approx \aid{inv-nf}\;(\aid{nf}\;w)$
 (the law of the \aid{NormalForm} witness) is a derivation from
-exactly those rules.  Now suppose $\aid{⟦}w\aid{⟧} \doteq
+those rules.  Now suppose $\aid{⟦}w\aid{⟧} \doteq
 \aid{⟦}v\aid{⟧}$.  By soundness the normal forms of $w$ and $v$ have the
 same denotation, so by uniqueness they are equal, and hence $w \approx
 \aid{inv-nf}\;(\aid{nf}\;w) = \aid{inv-nf}\;(\aid{nf}\;v) \approx v$, a
-derivation assembled from the two normal-form derivations and nothing
-else.  Completeness thus never appeals to a rule beyond the axioms and
-structural rules above.  The index module states these for every $n$ (\aid{symmetric-soundness},
+derivation that uses only the two normal-form derivations, and hence only
+the axioms and structural rules above.  The index module states these for every $n$ (\aid{symmetric-soundness},
 \aid{symmetric-completeness}, \aid{symmetric-unique-nf}).  Completeness
 for the \emph{loose} semantics says that, even read as mere endofunctions,
 circuits equal as functions are provably equal.  For the tight semantics,
@@ -919,7 +917,7 @@ paper has its shape:
 \end{code}
 
 \noindent read: the monoid of swap circuits modulo \{\aid{order},
-\aid{yang-baxter}\} and the structural rules \emph{is} the group of
+\aid{yang-baxter}\} and the structural rules is the group of
 permutations of $\mathsf{Fin}\;n$ (\aid{IsPresentationOf} is the mixfix
 record name \aid{{\_}IsPresentationOf{\_}} used infix).  Later tower-based
 case studies repeat this pipeline, with richer gates, longer towers,

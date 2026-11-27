@@ -33,19 +33,17 @@ factorization expresses every $g \in G$ uniquely as
 The tuple $(t_1,\dots,t_n)$ is a \emph{normal form} for $g$: existence is
 the iterated factorization, uniqueness is uniqueness of coset
 representatives at each level.  When the indices $[G_k : G_{k-1}] = r_k$
-are finite, $|G| = r_1 r_2 \cdots r_n$, and the normal form is literally a
+are finite, $|G| = r_1 r_2 \cdots r_n$, and the normal form is a
 \emph{mixed-radix positional numeral}: the $k$-th digit ranges over $r_k$
 values, and enumerating tuples lexicographically enumerates the group.  For
 the chain $S_1 < S_2 < \dots < S_n$ of symmetric groups the radices are
 $2, 3, \dots, n$ and the numeral system is the factorial number system,
-which is exactly the carrier $\aid{NF}\;n = \top \times C\,1 \times \dots
+which is the carrier $\aid{NF}\;n = \top \times C\,1 \times \dots
 \times C\,(n{-}1)$ built by the coset tower in \S\ref{sec:permutations}.
-This digit reading of
-stabilizer-chain normal forms is the conceptual core of the
-Schreier--Sims method for permutation
-groups~\cite{holt2005handbook}, where the $G_k$ are
-point stabilizers; our chains are chosen syntactically instead, but the
-arithmetic is the same.
+The Schreier--Sims method for permutation
+groups~\cite{holt2005handbook} reads stabilizer-chain normal forms in the
+same way, with the $G_k$ point stabilizers; our chains are chosen
+syntactically, but the counting argument is identical.
 
 \subsection{Words, presentations, and the word problem}\label{sec:wordproblem}
 
@@ -74,22 +72,21 @@ Given $H \le G$ with $G = \langle Y \mid S \rangle$, the
 generators are the \emph{Schreier generators} $\bar t y\,\overline{\bar t y}^{\,-1}$
 ($t$ a coset label, $y \in Y$), and its relations are rewrites of the
 relators of $G$ through the coset table.  For finite index and finite $Y$,
-the data one must supply is finite and concrete --- the coset table
+the data one must supply is finite and concrete: the coset table
 $\tau : \text{cosets} \times Y \to \text{cosets}$ recording
 $H\bar t y = H\overline{\tau(t,y)}$,
 together with, for each step, the element of $H$ by which $\bar t y$ differs from
 its representative, the residual $h$ with $\bar t\, y = h
-\cdot \overline{\tau(t,y)}$.  These are exactly the two components that
+\cdot \overline{\tau(t,y)}$.  These are the two components that
 \aid{ract} returns in \S\ref{sec:sn-cosets}, and the equation is its
 soundness law.  Classical treatments run this as an algorithm
 (Todd--Coxeter coset enumeration~\cite{sims1994computation,
-holt2005handbook}); we instead take a \emph{claimed} coset table
-as input and \emph{verify} it, by exhibiting five equational
+holt2005handbook}); we instead take a claimed coset table
+as input and verify it, by exhibiting five equational
 hypotheses relating the table, the section, and the relations
-(\S\ref{sec:engine}).  Verification rather than search is the right
-division of labour in a proof assistant: tables are found offline (by
-computation, or on paper), and the checked artifact certifies them.
-Bian and Selinger pioneered this monoid-level, verified use of
+(\S\ref{sec:engine}).  This suits a proof assistant: tables are found
+offline, by computation or on paper, and Agda only checks them.
+Bian and Selinger introduced this monoid-level, verified use of
 Reidemeister--Schreier in Agda for their gate-group
 presentations~\cite{bian2023cliffordt2,bian2023cliffordcs3,bian2023thesis};
 we turn it into a reusable module with the hypotheses packaged as
@@ -97,8 +94,7 @@ a record.
 
 \subsection{Specialization to circuits}\label{sec:circuit-chain}
 
-For circuits a candidate chain is handed to us by the wire
-structure.  Writing $\mathsf{Cir}\,k$ for the group (or monoid) presented
+For circuits, the wire structure supplies a candidate chain.  Writing $\mathsf{Cir}\,k$ for the group (or monoid) presented
 by $k$-wire circuits modulo a relation set, the shift operation
 $c \mapsto c{\uparrow}$ is a homomorphism.  Verified coset tables establish
 its injectivity, giving
@@ -106,12 +102,12 @@ $\mathsf{Cir}\,k \le \mathsf{Cir}\,(k{+}1)$
 as ``the circuits that do not touch the bottom wire''.  The digit that a
 normal form for $\mathsf{Cir}\,(k{+}1)$ adds to one for $\mathsf{Cir}\,k$
 then ranges over a transversal of
-this subgroup --- for permutations, the staircases of
+this subgroup (for permutations, the staircases of
 \S\ref{sec:sn-cosets}; for Clifford-style groups, the staircase-shaped
 representatives of Selinger~\cite{selinger2015clifford} and their qutrit
-analogues~\cite{li2025qutrit} --- and a normal form for the whole group is
+analogues~\cite{li2025qutrit}), and a normal form for the whole group is
 a tower of such levels.  The library's \aid{CosetTower}
-(\S\ref{sec:engine}) is precisely this specialization.  Where the subgroup chain branches instead of nesting (two
+(\S\ref{sec:engine}) implements this specialization.  Where the subgroup chain branches instead of nesting (two
 subgroups sharing a common base, as for the Clifford+$T$ groups),
 the appropriate gluing is the \emph{amalgamated free product}, whose
 classical alternating normal form~\cite{magnus2004combinatorial} we

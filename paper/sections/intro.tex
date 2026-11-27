@@ -1,23 +1,22 @@
 \section{Introduction}\label{sec:intro}
 
-Equational reasoning is the daily bread of circuit design.  Whether one
-optimizes a quantum circuit, verifies a compiler pass, or normalizes a
-diagram, the justification is always the same: a finite set of local rewrite
-rules, applied to a syntactic object, preserving a semantic interpretation.
-Two questions attach to any such rule set.  \emph{Soundness} --- does every
-rule preserve the semantics? --- is typically easy: it is a finite collection
-of small algebraic identities.  \emph{Completeness} --- can every true
-semantic equation be derived from the rules? --- is a different animal
-altogether.
+Circuit design relies on equational reasoning.  Optimizing a quantum
+circuit, verifying a compiler pass, and normalizing a diagram are all
+justified by a finite set of local rewrite rules that preserve the
+semantics of the circuit.  Two questions arise for any such rule set.
+\emph{Soundness}, that every rule preserves the semantics, is usually easy:
+it is a finite collection of small algebraic identities.
+\emph{Completeness}, that every true semantic equation can be derived from
+the rules, is much harder.
 
-Completeness proofs are gigantic computations.  The standard strategy defines
+Completeness proofs are large computations.  The standard strategy defines
 a \emph{normal form} for circuits, proves that every circuit can be rewritten
 to normal form using the rules, and proves that distinct normal forms denote
-distinct semantic objects.  The middle step is where the explosion happens:
-one must show, for every rule and every way a generator can meet a normal
-form, that the combination reduces again, a case analysis that is
-mechanical, unforgiving, and enormous.  The literature wears the scars
-openly.  Selinger's presentation of the $n$-qubit Clifford group already
+distinct semantic objects.  The middle step accounts for most of the work:
+for every rule and every way a generator can meet a normal form, one must
+show that the combination reduces to a normal form again.  The case
+analysis is mechanical but very large, as the sizes of published proofs
+show.  Selinger's presentation of the $n$-qubit Clifford group already
 required a substantial rewrite system and normal form
 analysis~\cite{selinger2015clifford}.  Its recent qutrit
 analogue by Li, Mosca, Ross, van~de~Wetering, and Zhao, the first
@@ -29,21 +28,19 @@ Valiron~\cite{clement2023complete}, and its minimal
 refinement~\cite{clement2024minimal}, rest on intricate normal-form
 manipulations; and Cl\'ement's complete equational theory for
 Real-Clifford+$CH$ circuits consists of a thirteen-page paper attached to an
-appendix of \emph{264 pages} of equational
-derivations~\cite{clement2026realcliffordch}.  These are not outliers:
-tens of pages of mechanical calculation also stand behind the
+appendix of 264 pages of equational
+derivations~\cite{clement2026realcliffordch}.  Tens of pages of mechanical
+calculation likewise support the
 rig-categorical completeness theorems for quantum programming
-languages~\cite{carette2024squareroots,fang2026hadamard} and behind the
+languages~\cite{carette2024squareroots,fang2026hadamard} and the
 recent uniform simplification of the rule sets of six near-Clifford circuit
-fragments~\cite{blake2026simpler} --- long, hand-written
-derivations, every one of which deserves a machine's
-scrutiny.  Proofs of this shape --- long, regular, and computational --- are
-precisely the proofs that should be machine-checked, and precisely the
-proofs that a proof assistant with a strong evaluator can check largely
-\emph{by computation}.
+fragments~\cite{blake2026simpler}.  Such proofs are long, regular, and
+computational.  They are therefore good candidates for machine checking,
+and a proof assistant with a strong evaluator can check much of them by
+computation.
 
-This paper reports on an Agda library built for exactly this purpose: a
-general, reusable formal framework for \emph{presentations of monoids and
+This paper reports on an Agda library for this purpose: a
+reusable formal framework for \emph{presentations of monoids and
 groups by generators and relations}, for \emph{normal forms}, and for
 \emph{completeness} of finite relation sets, with circuits (words of
 wire-indexed gates) as the motivating instance.  In plain terms, a circuit
@@ -59,20 +56,19 @@ the standard library lacked (semidirect products, amalgamated free products
 of monoids, group extensions, epimorphisms, the permutation group bundled as
 a group) are staged in a dedicated \texttt{ForStdlib} hierarchy.
 
-One design decision deserves to be announced up front: a presented
-monoid is a setoid on words, not a quotient type, so the library is
-written in plain rather than cubical Agda.  The reason is that it
+A presented monoid is a setoid on words rather than a quotient type, so
+the library is written in plain Agda, not cubical Agda.  The library
 computes with syntax, and its central devices (sections of normal forms,
-coset representatives) are maps \emph{into} the syntax, which need
-concrete representatives to land on; \S\ref{sec:setoids} weighs the
-trade.
+coset representatives) are maps into the syntax, which need
+concrete representatives as values; \S\ref{sec:setoids} discusses the
+trade-off.
 
 \paragraph{Why this is a programming-languages problem.}
 Completeness of a circuit calculus licenses normal-form decision
 procedures, tells an optimizer that no valid rewrite is missing, and
 underlies the rig-categorical completeness theorems of recent
 POPLs~\cite{choudhury2022symmetries,carette2024squareroots,fang2026hadamard}.
-Our contribution is a \emph{design} for presentations, normal forms, and
+Our contribution is a design for presentations, normal forms, and
 completeness in a dependently typed language, validated on examples
 large enough to exercise every part of it.
 
@@ -93,8 +89,8 @@ large enough to exercise every part of it.
 \item[(1)] \textbf{Inductively defined circuits, for easy normalization and
   completeness proofs.}  A generic circuit layer represents $n$-wire circuits
   as words over wire-indexed generators, and extends any gate-specific
-  relation set with the structural rules --- shift congruence and
-  far-commutation --- shared by every circuit presentation
+  relation set with the structural rules (shift congruence and
+  far-commutation) shared by every circuit presentation
   (\S\ref{sec:circuits}).  The indexing discipline is chosen so that
   coset tables can be written by direct pattern matching and, where their
   obligations reduce to computation, checked by Agda's evaluator.
@@ -151,10 +147,10 @@ Everything stated as a theorem in this paper typechecks with the flags
 \texttt{-{}-cubical-compatible} and \texttt{-{}-safe}: there are no
 postulates, no unfinished holes, and no appeals to classical axioms
 anywhere in the development described here.  The development is also
-constructive in a way that matters: normal forms and their sections
+constructive: normal forms and their sections
 compute, so a normal form with decidable equality gives a decision procedure
 for the word problem of its theory.  Wherever a statement in this
-paper is \emph{not} formalized, the text says so explicitly, and
+paper is not formalized, the text says so explicitly, and
 \S\ref{sec:threats} discusses the main such gap.
 
 \subsection{Paper outline}
